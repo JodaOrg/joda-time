@@ -55,6 +55,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationType;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -162,6 +163,23 @@ public abstract class AbstractConverter implements Converter {
         return chrono;
     }
     
+    //-----------------------------------------------------------------------
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @param totalMillisMaster  true if total millis based duration
+     * @return the duration type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    public DurationType getDurationType(Object object, boolean totalMillisMaster) {
+        if (totalMillisMaster) {
+            return DurationType.getPreciseAllType();
+        }
+        return DurationType.getAllType();
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets a debugging string version of this converter.
      * 

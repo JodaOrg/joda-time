@@ -97,6 +97,11 @@ public class Duration
 
     /**
      * Creates a duration from the given millisecond duration using AllType.
+     * <p>
+     * The millisecond duration will be split to fields using a UTC version of
+     * the duration type. This ensures that there are no odd effects caused by
+     * time zones. The add methods will still use the time zone specific version
+     * of the duration type.
      *
      * @param duration  the duration, in milliseconds
      */
@@ -106,6 +111,11 @@ public class Duration
 
     /**
      * Creates a duration from the given millisecond duration.
+     * <p>
+     * The millisecond duration will be split to fields using a UTC version of
+     * the duration type. This ensures that there are no odd effects caused by
+     * time zones. The add methods will still use the time zone specific version
+     * of the duration type.
      *
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports

@@ -404,7 +404,7 @@ public class TestConverterManager extends TestCase {
             public boolean isPrecise(Object object) {return false;}
             public long getDurationMillis(Object object) {return 0;}
             public void setInto(ReadWritableDuration duration, Object object) {}
-            public DurationType getDurationType(Object object) {return null;}
+            public DurationType getDurationType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         try {
@@ -423,7 +423,7 @@ public class TestConverterManager extends TestCase {
             public boolean isPrecise(Object object) {return false;}
             public long getDurationMillis(Object object) {return 0;}
             public void setInto(ReadWritableDuration duration, Object object) {}
-            public DurationType getDurationType(Object object) {return null;}
+            public DurationType getDurationType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return String.class;}
         };
         try {
@@ -475,7 +475,7 @@ public class TestConverterManager extends TestCase {
             public boolean isPrecise(Object object) {return false;}
             public long getDurationMillis(Object object) {return 0;}
             public void setInto(ReadWritableDuration duration, Object object) {}
-            public DurationType getDurationType(Object object) {return null;}
+            public DurationType getDurationType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         DurationConverter removed = ConverterManager.getInstance().removeDurationConverter(c);

@@ -204,7 +204,7 @@ public class TestMutableDuration_Basics extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockMutableDuration(123L)));
-        assertEquals(false, test1.equals(new Duration(123L, DurationType.getAverageYearMonthType())));
+        assertEquals(false, test1.equals(new Duration(123L, DurationType.getDayHourType())));
     }
     
     class MockMutableDuration extends AbstractDuration {
@@ -340,14 +340,14 @@ public class TestMutableDuration_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testAddTo1() {
         long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, 1);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, 2);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, 3);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, 4);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, 5);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, 6);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, 7);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, 8);
+        expected = ISOChronology.getInstance().years().add(expected, 1);
+        expected = ISOChronology.getInstance().months().add(expected, 2);
+        expected = ISOChronology.getInstance().weeks().add(expected, 3);
+        expected = ISOChronology.getInstance().days().add(expected, 4);
+        expected = ISOChronology.getInstance().hours().add(expected, 5);
+        expected = ISOChronology.getInstance().minutes().add(expected, 6);
+        expected = ISOChronology.getInstance().seconds().add(expected, 7);
+        expected = ISOChronology.getInstance().millis().add(expected, 8);
         
         MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
         long added = test.addTo(TEST_TIME_NOW, 1);
@@ -355,6 +355,22 @@ public class TestMutableDuration_Basics extends TestCase {
     }
     
     public void testAddTo2() {
+        long expected = TEST_TIME_NOW;
+        expected = ISOChronology.getInstance().years().add(expected, -2);
+        expected = ISOChronology.getInstance().months().add(expected, -4);
+        expected = ISOChronology.getInstance().weeks().add(expected, -6);
+        expected = ISOChronology.getInstance().days().add(expected, -8);
+        expected = ISOChronology.getInstance().hours().add(expected, -10);
+        expected = ISOChronology.getInstance().minutes().add(expected, -12);
+        expected = ISOChronology.getInstance().seconds().add(expected, -14);
+        expected = ISOChronology.getInstance().millis().add(expected, -16);
+        
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        long added = test.addTo(TEST_TIME_NOW, -2);
+        assertEquals(expected, added);
+    }
+    
+    public void testAddTo3() {
         long expected = TEST_TIME_NOW;
         expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
         expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
@@ -365,8 +381,22 @@ public class TestMutableDuration_Basics extends TestCase {
         expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
         expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
         
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
         long added = test.addTo(TEST_TIME_NOW, -2);
+        assertEquals(expected, added);
+    }
+    
+    public void testAddTo4() {
+        long expected = TEST_TIME_NOW;
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        long added = test.addTo(TEST_TIME_NOW, 0);
+        assertEquals(expected, added);
+    }
+    
+    public void testAddTo5() {
+        long expected = TEST_TIME_NOW + 100L;
+        MutableDuration test = new MutableDuration(100L);
+        long added = test.addTo(TEST_TIME_NOW, 1);
         assertEquals(expected, added);
     }
     
@@ -398,12 +428,29 @@ public class TestMutableDuration_Basics extends TestCase {
         expected = ISOChronology.getInstance().seconds().add(expected, -14);
         expected = ISOChronology.getInstance().millis().add(expected, -16);
         
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, -2, ISOChronology.getInstance());
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
+        long added = test.addTo(TEST_TIME_NOW, -2, ISOChronology.getInstance());  // local specified so use it
         assertEquals(expected, added);
     }
     
     public void testAddToWithChronology3() {
+        long expected = TEST_TIME_NOW;
+        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
+        
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
+        long added = test.addTo(TEST_TIME_NOW, -2, null);  // no chrono specified so drop back to duration (UTC)
+        assertEquals(expected, added);
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testAddToRI1() {
         long expected = TEST_TIME_NOW;
         expected = ISOChronology.getInstance().years().add(expected, 1);
         expected = ISOChronology.getInstance().months().add(expected, 2);
@@ -415,24 +462,7 @@ public class TestMutableDuration_Basics extends TestCase {
         expected = ISOChronology.getInstance().millis().add(expected, 8);
         
         MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 1, null);
-        assertEquals(expected, added);
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddToRI1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, 1);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, 2);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, 3);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, 4);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, 5);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, 6);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, 7);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, 8);
-        
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(new Instant(), 1);  // Instant has no time zone, uses duration's UTC
+        Instant added = test.addTo(new Instant(), 1);  // Instant has no time zone, uses duration's zone (local)
         assertEquals(expected, added.getMillis());
     }
     
@@ -447,8 +477,8 @@ public class TestMutableDuration_Basics extends TestCase {
         expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
         expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
         
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(new Instant(), -2);  // Instant has no time zone, uses duration's UTC
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
+        Instant added = test.addTo(new Instant(), -2);  // Instant has no time zone, uses duration's zone (UTC)
         assertEquals(expected, added.getMillis());
     }
     
@@ -463,24 +493,24 @@ public class TestMutableDuration_Basics extends TestCase {
         expected = ISOChronology.getInstance().seconds().add(expected, -14);
         expected = ISOChronology.getInstance().millis().add(expected, -16);
         
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
         Instant added = test.addTo(new DateTime(), -2);  // DateTime has local time zone
         assertEquals(expected, added.getMillis());
     }
     
     public void testAddToRI4() {
         long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, 1);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, 2);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, 3);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, 4);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, 5);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, 6);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, 7);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, 8);
+        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
         
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(null, 1);  // null has no time zone, uses duration's UTC
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
+        Instant added = test.addTo(null, -2);  // null has no time zone, uses duration's zone (UTC)
         assertEquals(expected, added.getMillis());
     }
     
@@ -513,9 +543,9 @@ public class TestMutableDuration_Basics extends TestCase {
         expected = ISOChronology.getInstance().seconds().add(expected, -14);
         expected = ISOChronology.getInstance().millis().add(expected, -16);
         
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType(ISOChronology.getInstanceUTC()));
         MutableDateTime mdt = new MutableDateTime();
-        test.addInto(mdt, -2);
+        test.addInto(mdt, -2);  // MutableDateTime has a chronology, use it
         assertEquals(expected, mdt.getMillis());
     }
     

@@ -399,18 +399,18 @@ public class TestMutableDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_8int__DurationType2() throws Throwable {
-        MutableDuration test = new MutableDuration(0, 0, 0, 4, 5, 6, 7, 8, DurationType.getDayHourType());
+        MutableDuration test = new MutableDuration(0, 0, 0, 0, 5, 6, 7, 8, DurationType.getDayHourType());
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(4, test.getDays());
+        assertEquals(0, test.getDays());
         assertEquals(5, test.getHours());
         assertEquals(6, test.getMinutes());
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(4 * DateTimeConstants.MILLIS_PER_DAY +
+        assertEquals(
             5 * DateTimeConstants.MILLIS_PER_HOUR + 6 * DateTimeConstants.MILLIS_PER_MINUTE +
             7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.getTotalMillis());
     }

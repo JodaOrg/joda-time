@@ -96,9 +96,10 @@ public interface DurationConverter extends Converter {
      * Selects a suitable duration type for the given object.
      *
      * @param object  the object to examine, must not be null
+     * @param totalMillisMaster  true if total millis based duration
      * @return the duration type, never null
      * @throws ClassCastException if the object is invalid
      */
-    DurationType getDurationType(Object object);
+    DurationType getDurationType(Object object, boolean totalMillisMaster);
 
 }

@@ -122,11 +122,12 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * Selects a suitable duration type for the given object.
      *
      * @param object  the object to examine, must not be null
+     * @param totalMillisMaster  true if total millis based duration
      * @return the duration type from the readable duration
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
-    public DurationType getDurationType(Object object) {
+    public DurationType getDurationType(Object object, boolean totalMillisMaster) {
         return ((ReadableDuration) object).getDurationType();
     }
 

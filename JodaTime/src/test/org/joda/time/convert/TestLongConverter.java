@@ -152,7 +152,10 @@ public class TestLongConverter extends TestCase {
     }
 
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getMillisType(), LongConverter.INSTANCE.getDurationType(new Long(123L)));
+        assertEquals(DurationType.getAllType(),
+            LongConverter.INSTANCE.getDurationType(new Long(123L), false));
+        assertEquals(DurationType.getPreciseAllType(),
+            LongConverter.INSTANCE.getDurationType(new Long(123L), true));
     }
 
     public void testIsPrecise_Object() throws Exception {

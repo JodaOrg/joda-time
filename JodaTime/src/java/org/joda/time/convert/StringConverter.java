@@ -55,7 +55,6 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
 import org.joda.time.ReadWritableDuration;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
@@ -157,17 +156,6 @@ class StringConverter extends AbstractConverter
     }
 
     /**
-     * Selects a suitable duration type for the given object.
-     *
-     * @param object  the object to examine, must not be null
-     * @return the duration type, never null
-     * @throws ClassCastException if the object is invalid
-     */
-    public DurationType getDurationType(Object object) {
-        return DurationType.getAllType();
-    }
-
-    /**
      * Sets the value of the mutable interval from the string.
      * 
      * @param writableInterval  the interval to set
@@ -198,7 +186,7 @@ class StringConverter extends AbstractConverter
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            duration = durationParser.parseDuration(getDurationType(leftStr), leftStr);
+            duration = durationParser.parseDuration(getDurationType(leftStr, false), leftStr);
         } else {
             startInstant = dateTimeParser.parseMillis(leftStr);
             duration = null;
@@ -209,7 +197,7 @@ class StringConverter extends AbstractConverter
             if (duration != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            duration = durationParser.parseDuration(getDurationType(rightStr), rightStr);
+            duration = durationParser.parseDuration(getDurationType(rightStr, false), rightStr);
             writableInterval.setStartMillis(startInstant);
             writableInterval.setDurationAfterStart(duration);
         } else {

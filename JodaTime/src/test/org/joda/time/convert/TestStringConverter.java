@@ -321,8 +321,10 @@ public class TestStringConverter extends TestCase {
     }
 
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getAllType(), StringConverter.INSTANCE.getDurationType("P2Y6M9D"));
-        assertEquals(DurationType.getAllType(), StringConverter.INSTANCE.getDurationType("P2Y6W4D"));
+        assertEquals(DurationType.getAllType(),
+            StringConverter.INSTANCE.getDurationType("P2Y6M9D", false));
+        assertEquals(DurationType.getPreciseAllType(),
+            StringConverter.INSTANCE.getDurationType("P2Y6M9D", true));
     }
 
     public void testIsPrecise_Object() throws Exception {

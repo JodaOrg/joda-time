@@ -191,7 +191,7 @@ public class TestDurationType extends TestCase {
         assertEquals(false, type.seconds().isSupported());
         assertEquals(true, type.millis().isSupported());
         assertEquals(true, type.isPrecise());
-        assertEquals(null, type.getChronology());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, type == DurationType.getMillisType());
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -216,8 +216,8 @@ public class TestDurationType extends TestCase {
         assertEquals(true, type.minutes().isSupported());
         assertEquals(true, type.seconds().isSupported());
         assertEquals(true, type.millis().isSupported());
-        assertEquals(true, type.isPrecise());
-        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(false, type.isPrecise());
+        assertEquals(ISOChronology.getInstance(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, type == DurationType.getDayHourType());
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -228,7 +228,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[DayHourType]", type.toString());
         assertSameAfterSerialization(type);
         assertSame(type, type.withChronology(null));
-        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -247,7 +247,7 @@ public class TestDurationType extends TestCase {
         assertEquals(BuddhistChronology.getInstanceUTC(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, DurationType.getDayHourType() == DurationType.getDayHourType(null));
-        assertEquals(true, DurationType.getDayHourType() == DurationType.getDayHourType(ISOChronology.getInstanceUTC()));
+        assertEquals(true, DurationType.getDayHourType() == DurationType.getDayHourType(ISOChronology.getInstance()));
         assertEquals(true, type.equals(DurationType.getDayHourType(BuddhistChronology.getInstanceUTC())));
         assertEquals(false, type.equals(DurationType.getDayHourType()));
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -258,7 +258,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[DayHourType]", type.toString());
         assertEqualsAfterSerialization(type);
         assertSame(DurationType.getDayHourType(), type.withChronology(null));
-        assertSame(DurationType.getDayHourType(), type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(DurationType.getDayHourType(), type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -274,7 +274,7 @@ public class TestDurationType extends TestCase {
         assertEquals(true, type.seconds().isSupported());
         assertEquals(true, type.millis().isSupported());
         assertEquals(false, type.isPrecise());
-        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(ISOChronology.getInstance(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, type == DurationType.getYearWeekType());
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -285,7 +285,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[YearWeekType]", type.toString());
         assertSameAfterSerialization(type);
         assertSame(type, type.withChronology(null));
-        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -304,7 +304,7 @@ public class TestDurationType extends TestCase {
         assertEquals(BuddhistChronology.getInstanceUTC(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, DurationType.getYearWeekType() == DurationType.getYearWeekType(null));
-        assertEquals(true, DurationType.getYearWeekType() == DurationType.getYearWeekType(ISOChronology.getInstanceUTC()));
+        assertEquals(true, DurationType.getYearWeekType() == DurationType.getYearWeekType(ISOChronology.getInstance()));
         assertEquals(true, type.equals(DurationType.getYearWeekType(BuddhistChronology.getInstanceUTC())));
         assertEquals(false, type.equals(DurationType.getYearWeekType()));
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -315,7 +315,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[YearWeekType]", type.toString());
         assertEqualsAfterSerialization(type);
         assertSame(DurationType.getYearWeekType(), type.withChronology(null));
-        assertSame(DurationType.getYearWeekType(), type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(DurationType.getYearWeekType(), type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -331,7 +331,7 @@ public class TestDurationType extends TestCase {
         assertEquals(true, type.seconds().isSupported());
         assertEquals(true, type.millis().isSupported());
         assertEquals(false, type.isPrecise());
-        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(ISOChronology.getInstance(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, type == DurationType.getYearMonthType());
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -342,7 +342,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[YearMonthType]", type.toString());
         assertSameAfterSerialization(type);
         assertSame(type, type.withChronology(null));
-        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -361,7 +361,7 @@ public class TestDurationType extends TestCase {
         assertEquals(BuddhistChronology.getInstanceUTC(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, DurationType.getYearMonthType() == DurationType.getYearMonthType(null));
-        assertEquals(true, DurationType.getYearMonthType() == DurationType.getYearMonthType(ISOChronology.getInstanceUTC()));
+        assertEquals(true, DurationType.getYearMonthType() == DurationType.getYearMonthType(ISOChronology.getInstance()));
         assertEquals(true, type.equals(DurationType.getYearMonthType(BuddhistChronology.getInstanceUTC())));
         assertEquals(false, type.equals(DurationType.getYearMonthType()));
         assertEquals(false, type.equals(DurationType.getAllType()));
@@ -372,7 +372,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[YearMonthType]", type.toString());
         assertEqualsAfterSerialization(type);
         assertSame(DurationType.getYearMonthType(), type.withChronology(null));
-        assertSame(DurationType.getYearMonthType(), type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(DurationType.getYearMonthType(), type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -388,7 +388,7 @@ public class TestDurationType extends TestCase {
         assertEquals(true, type.seconds().isSupported());
         assertEquals(true, type.millis().isSupported());
         assertEquals(false, type.isPrecise());
-        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(ISOChronology.getInstance(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, type == DurationType.getAllType());
         assertEquals(false, type.equals(DurationType.getMillisType()));
@@ -399,7 +399,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[AllType]", type.toString());
         assertSameAfterSerialization(type);
         assertSame(type, type.withChronology(null));
-        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -418,7 +418,7 @@ public class TestDurationType extends TestCase {
         assertEquals(BuddhistChronology.getInstanceUTC(), type.getChronology());
         assertEquals(true, type.equals(type));
         assertEquals(true, DurationType.getAllType() == DurationType.getAllType(null));
-        assertEquals(true, DurationType.getAllType() == DurationType.getAllType(ISOChronology.getInstanceUTC()));
+        assertEquals(true, DurationType.getAllType() == DurationType.getAllType(ISOChronology.getInstance()));
         assertEquals(true, type.equals(DurationType.getAllType(BuddhistChronology.getInstanceUTC())));
         assertEquals(false, type.equals(DurationType.getAllType()));
         assertEquals(false, type.equals(DurationType.getMillisType()));
@@ -429,64 +429,7 @@ public class TestDurationType extends TestCase {
         assertEquals("DurationType[AllType]", type.toString());
         assertEqualsAfterSerialization(type);
         assertSame(DurationType.getAllType(), type.withChronology(null));
-        assertSame(DurationType.getAllType(), type.withChronology(ISOChronology.getInstanceUTC()));
-        assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testAverageYearMonthType() throws Exception {
-        DurationType type = DurationType.getAverageYearMonthType();
-        assertEquals(true, type.years().isSupported());
-        assertEquals(true, type.months().isSupported());
-        assertEquals(false, type.weeks().isSupported());
-        assertEquals(true, type.days().isSupported());
-        assertEquals(true, type.hours().isSupported());
-        assertEquals(true, type.minutes().isSupported());
-        assertEquals(true, type.seconds().isSupported());
-        assertEquals(true, type.millis().isSupported());
-        assertEquals(true, type.isPrecise());
-        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
-        assertEquals(true, type.equals(type));
-        assertEquals(true, type == DurationType.getAverageYearMonthType());
-        assertEquals(false, type.equals(DurationType.getAllType()));
-        assertEquals(true, type.hashCode() == type.hashCode());
-        assertEquals(true, type.hashCode() == DurationType.getAverageYearMonthType().hashCode());
-        assertEquals(false, type.hashCode() == DurationType.getAllType().hashCode());
-        assertEquals("AverageYearMonthType", type.getName());
-        assertEquals("DurationType[AverageYearMonthType]", type.toString());
-        assertSameAfterSerialization(type);
-        assertSame(type, type.withChronology(null));
-        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
-        assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testAverageYearMonthType_Chronology() throws Exception {
-        DurationType type = DurationType.getAverageYearMonthType(BuddhistChronology.getInstanceUTC());
-        assertEquals(true, type.years().isSupported());
-        assertEquals(true, type.months().isSupported());
-        assertEquals(false, type.weeks().isSupported());
-        assertEquals(true, type.days().isSupported());
-        assertEquals(true, type.hours().isSupported());
-        assertEquals(true, type.minutes().isSupported());
-        assertEquals(true, type.seconds().isSupported());
-        assertEquals(true, type.millis().isSupported());
-        assertEquals(true, type.isPrecise());
-        assertEquals(BuddhistChronology.getInstanceUTC(), type.getChronology());
-        assertEquals(true, type.equals(type));
-        assertEquals(true, DurationType.getAverageYearMonthType() == DurationType.getAverageYearMonthType(null));
-        assertEquals(true, DurationType.getAverageYearMonthType() == DurationType.getAverageYearMonthType(ISOChronology.getInstanceUTC()));
-        assertEquals(true, type.equals(DurationType.getAverageYearMonthType(BuddhistChronology.getInstanceUTC())));
-        assertEquals(false, type.equals(DurationType.getAverageYearMonthType()));
-        assertEquals(false, type.equals(DurationType.getAllType()));
-        assertEquals(true, type.hashCode() == type.hashCode());
-        assertEquals(false, type.hashCode() == DurationType.getAverageYearMonthType().hashCode());
-        assertEquals(false, type.hashCode() == DurationType.getAllType().hashCode());
-        assertEquals("AverageYearMonthType", type.getName());
-        assertEquals("DurationType[AverageYearMonthType]", type.toString());
-        assertEqualsAfterSerialization(type);
-        assertSame(DurationType.getAverageYearMonthType(), type.withChronology(null));
-        assertSame(DurationType.getAverageYearMonthType(), type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(DurationType.getAllType(), type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
     }
 
@@ -845,7 +788,7 @@ public class TestDurationType extends TestCase {
     public void testMaskWithChronology() throws Exception {
         DurationType type = DurationType.getAllType().withYearsRemoved();
         assertEquals(type, type.withChronology(null));
-        assertEquals(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertEquals(type, type.withChronology(ISOChronology.getInstance()));
         
         DurationType type2 = type.withChronology(CopticChronology.getInstanceUTC());
         assertEquals(CopticChronology.getInstanceUTC(), type2.getChronology());

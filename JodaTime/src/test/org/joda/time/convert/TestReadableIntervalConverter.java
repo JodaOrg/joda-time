@@ -127,7 +127,10 @@ public class TestReadableIntervalConverter extends TestCase {
 
     public void testGetDurationType_Object() throws Exception {
         Interval i = new Interval(0L, 123L);
-        assertEquals(DurationType.getMillisType(), ReadableIntervalConverter.INSTANCE.getDurationType(i));
+        assertEquals(DurationType.getAllType(),
+            ReadableIntervalConverter.INSTANCE.getDurationType(i, false));
+        assertEquals(DurationType.getPreciseAllType(),
+            ReadableIntervalConverter.INSTANCE.getDurationType(i, true));
     }
 
     public void testIsPrecise_Object() throws Exception {

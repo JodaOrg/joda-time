@@ -54,7 +54,6 @@
 package org.joda.time.convert;
 
 import org.joda.time.DateTimeUtils;
-import org.joda.time.DurationType;
 import org.joda.time.ReadWritableDuration;
 
 /**
@@ -116,16 +115,6 @@ class NullConverter extends AbstractConverter implements InstantConverter, Durat
      */
     public void setInto(ReadWritableDuration duration, Object object) {
         duration.setTotalMillis(0L);
-    }
-
-    /**
-     * Returns null to allow the caller to determine the best type.
-     *
-     * @param object  the object to examine
-     * @return null
-     */
-    public DurationType getDurationType(Object object) {
-        return null;
     }
 
     //-----------------------------------------------------------------------

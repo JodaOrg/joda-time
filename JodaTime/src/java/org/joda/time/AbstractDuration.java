@@ -111,6 +111,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
 
     /**
      * Creates a duration from the given millisecond duration.
+     * <p>
+     * The millisecond duration will be split to fields using a UTC version of
+     * the duration type.
      *
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports
@@ -204,7 +207,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     public AbstractDuration(Object duration, DurationType type, boolean totalMillisMaster) {
         super();
         DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-        type = (type == null ? converter.getDurationType(duration) : type);
+        type = (type == null ? converter.getDurationType(duration, totalMillisMaster) : type);
         type = init(type, totalMillisMaster);
         iType = type;
         if (type.isPrecise() && converter.isPrecise(duration)) {
@@ -958,6 +961,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             return;
         }
         
+        type = type.withChronology(type.getChronology().withUTC());
         long startInstant = 0;
         int years = 0, months = 0, weeks = 0, days = 0;
         int hours = 0, minutes = 0, seconds = 0, millis = 0;

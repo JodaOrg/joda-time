@@ -53,7 +53,6 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.DurationType;
 import org.joda.time.ReadWritableDuration;
 
 /**
@@ -123,16 +122,6 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      */
     public void setInto(ReadWritableDuration duration, Object object) {
         duration.setTotalMillis(((Long) object).longValue());
-    }
-
-    /**
-     * Returns the millis duration type.
-     *
-     * @param object  the object to examine, must not be null
-     * @return the millis duration type
-     */
-    public DurationType getDurationType(Object object) {
-        return DurationType.getMillisType();
     }
 
     //-----------------------------------------------------------------------

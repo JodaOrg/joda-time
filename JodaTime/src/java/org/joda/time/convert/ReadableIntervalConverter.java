@@ -53,10 +53,9 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.DurationType;
-import org.joda.time.ReadableInterval;
 import org.joda.time.ReadWritableDuration;
 import org.joda.time.ReadWritableInterval;
+import org.joda.time.ReadableInterval;
 
 /**
  * Converts intervals into durations of any requested duration type.
@@ -94,16 +93,6 @@ class ReadableIntervalConverter extends AbstractConverter implements IntervalCon
      */
     public long getDurationMillis(Object object) {
         return (((ReadableInterval) object)).getDurationMillis();
-    }
-
-    /**
-     * Selects a suitable duration type for the given object.
-     *
-     * @param object  the interval
-     * @return the duration type, never null
-     */
-    public DurationType getDurationType(Object object) {
-        return ((ReadableInterval) object).getDuration().getDurationType();
     }
 
     /**

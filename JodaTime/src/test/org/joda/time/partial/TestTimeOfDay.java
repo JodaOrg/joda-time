@@ -833,36 +833,62 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(23, test.hourOfDay().getMaximumValueOverall());
     }
 
+    public void testPropertyAddHour() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.hourOfDay().addCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 19, 20, 30, 40);
+        
+        copy = test.hourOfDay().addCopy(0);
+        check(copy, 10, 20, 30, 40);
+        
+        copy = test.hourOfDay().addCopy(13);
+        check(copy, 23, 20, 30, 40);
+        
+        try {
+            test.hourOfDay().addCopy(14);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.hourOfDay().addCopy(-10);
+        check(copy, 0, 20, 30, 40);
+        
+        try {
+            test.hourOfDay().addCopy(-11);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+    }
+
     public void testPropertyAddInFieldHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay updated = test.hourOfDay().addInFieldCopy(9);
-        assertEquals(19, updated.getHourOfDay());
-        assertEquals(20, updated.getMinuteOfHour());
-        assertEquals(30, updated.getSecondOfMinute());
-        assertEquals(40, updated.getMillisOfSecond());
-        updated = updated.hourOfDay().addInFieldCopy(9);
-        assertEquals(4, updated.getHourOfDay());
-        assertEquals(20, updated.getMinuteOfHour());
-        assertEquals(30, updated.getSecondOfMinute());
-        assertEquals(40, updated.getMillisOfSecond());
+        TimeOfDay copy = test.hourOfDay().addInFieldCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 19, 20, 30, 40);
+        
+        copy = test.hourOfDay().addInFieldCopy(0);
+        check(copy, 10, 20, 30, 40);
+        
+        copy = test.hourOfDay().addInFieldCopy(18);
+        check(copy, 4, 20, 30, 40);
+        
+        copy = test.hourOfDay().addInFieldCopy(-15);
+        check(copy, 19, 20, 30, 40);
     }
 
     public void testPropertySetHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.hourOfDay().setCopy(12);
-        assertEquals(12, set.getHourOfDay());
-        assertEquals(20, set.getMinuteOfHour());
-        assertEquals(30, set.getSecondOfMinute());
-        assertEquals(40, set.getMillisOfSecond());
+        TimeOfDay copy = test.hourOfDay().setCopy(12);
+        check(test, 10, 20, 30, 40);
+        check(copy, 12, 20, 30, 40);
     }
 
     public void testPropertySetTextHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.hourOfDay().setCopy("12");
-        assertEquals(12, set.getHourOfDay());
-        assertEquals(20, set.getMinuteOfHour());
-        assertEquals(30, set.getSecondOfMinute());
-        assertEquals(40, set.getMillisOfSecond());
+        TimeOfDay copy = test.hourOfDay().setCopy("12");
+        check(test, 10, 20, 30, 40);
+        check(copy, 12, 20, 30, 40);
     }
 
     public void testPropertyCompareToHour() {
@@ -914,36 +940,77 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(59, test.minuteOfHour().getMaximumValueOverall());
     }
 
+    public void testPropertyAddMinute() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.minuteOfHour().addCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 29, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(39);
+        check(copy, 10, 59, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(40);
+        check(copy, 11, 0, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(1 * 60 + 45);
+        check(copy, 12, 5, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(13 * 60 + 39);
+        check(copy, 23, 59, 30, 40);
+        
+        try {
+            test.minuteOfHour().addCopy(13 * 60 + 40);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(-9);
+        check(copy, 10, 11, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(-19);
+        check(copy, 10, 1, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(-20);
+        check(copy, 10, 0, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(-21);
+        check(copy, 9, 59, 30, 40);
+        
+        copy = test.minuteOfHour().addCopy(-(10 * 60 + 20));
+        check(copy, 0, 0, 30, 40);
+        
+        try {
+            test.minuteOfHour().addCopy(-(10 * 60 + 21));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+    }
+
     public void testPropertyAddInFieldMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay updated = test.minuteOfHour().addInFieldCopy(9);
-        assertEquals(10, updated.getHourOfDay());
-        assertEquals(29, updated.getMinuteOfHour());
-        assertEquals(30, updated.getSecondOfMinute());
-        assertEquals(40, updated.getMillisOfSecond());
-        updated = updated.minuteOfHour().addInFieldCopy(49);
-        assertEquals(10, updated.getHourOfDay());
-        assertEquals(18, updated.getMinuteOfHour());
-        assertEquals(30, updated.getSecondOfMinute());
-        assertEquals(40, updated.getMillisOfSecond());
+        TimeOfDay copy = test.minuteOfHour().addInFieldCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 29, 30, 40);
+        
+        copy = test.minuteOfHour().addInFieldCopy(49);
+        check(copy, 10, 9, 30, 40);
+        
+        copy = test.minuteOfHour().addInFieldCopy(-47);
+        check(copy, 10, 33, 30, 40);
     }
 
     public void testPropertySetMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.minuteOfHour().setCopy(12);
-        assertEquals(10, set.getHourOfDay());
-        assertEquals(12, set.getMinuteOfHour());
-        assertEquals(30, set.getSecondOfMinute());
-        assertEquals(40, set.getMillisOfSecond());
+        TimeOfDay copy = test.minuteOfHour().setCopy(12);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 12, 30, 40);
     }
 
     public void testPropertySetTextMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.minuteOfHour().setCopy("12");
-        assertEquals(10, set.getHourOfDay());
-        assertEquals(12, set.getMinuteOfHour());
-        assertEquals(30, set.getSecondOfMinute());
-        assertEquals(40, set.getMillisOfSecond());
+        TimeOfDay copy = test.minuteOfHour().setCopy("12");
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 12, 30, 40);
     }
 
     public void testPropertyCompareToMinute() {
@@ -995,36 +1062,74 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(59, test.secondOfMinute().getMaximumValueOverall());
     }
 
+    public void testPropertyAddSecond() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.secondOfMinute().addCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 39, 40);
+        
+        copy = test.secondOfMinute().addCopy(29);
+        check(copy, 10, 20, 59, 40);
+        
+        copy = test.secondOfMinute().addCopy(30);
+        check(copy, 10, 21, 0, 40);
+        
+        copy = test.secondOfMinute().addCopy(39 * 60 + 29);
+        check(copy, 10, 59, 59, 40);
+        
+        copy = test.secondOfMinute().addCopy(39 * 60 + 30);
+        check(copy, 11, 0, 0, 40);
+        
+        try {
+            test.secondOfMinute().addCopy(13 * 60 * 60 + 39 * 60 + 30);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.secondOfMinute().addCopy(-9);
+        check(copy, 10, 20, 21, 40);
+        
+        copy = test.secondOfMinute().addCopy(-30);
+        check(copy, 10, 20, 0, 40);
+        
+        copy = test.secondOfMinute().addCopy(-31);
+        check(copy, 10, 19, 59, 40);
+        
+        copy = test.secondOfMinute().addCopy(-(10 * 60 * 60 + 20 * 60 + 30));
+        check(copy, 0, 0, 0, 40);
+        
+        try {
+            test.secondOfMinute().addCopy(-(10 * 60 * 60 + 20 * 60 + 31));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+    }
+
     public void testPropertyAddInFieldSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay updated = test.secondOfMinute().addInFieldCopy(9);
-        assertEquals(10, updated.getHourOfDay());
-        assertEquals(20, updated.getMinuteOfHour());
-        assertEquals(39, updated.getSecondOfMinute());
-        assertEquals(40, updated.getMillisOfSecond());
-        updated = updated.secondOfMinute().addInFieldCopy(49);
-        assertEquals(10, updated.getHourOfDay());
-        assertEquals(20, updated.getMinuteOfHour());
-        assertEquals(28, updated.getSecondOfMinute());
-        assertEquals(40, updated.getMillisOfSecond());
+        TimeOfDay copy = test.secondOfMinute().addInFieldCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 39, 40);
+        
+        copy = test.secondOfMinute().addInFieldCopy(49);
+        check(copy, 10, 20, 19, 40);
+        
+        copy = test.secondOfMinute().addInFieldCopy(-47);
+        check(copy, 10, 20, 43, 40);
     }
 
     public void testPropertySetSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.secondOfMinute().setCopy(12);
-        assertEquals(10, set.getHourOfDay());
-        assertEquals(20, set.getMinuteOfHour());
-        assertEquals(12, set.getSecondOfMinute());
-        assertEquals(40, set.getMillisOfSecond());
+        TimeOfDay copy = test.secondOfMinute().setCopy(12);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 12, 40);
     }
 
     public void testPropertySetTextSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.secondOfMinute().setCopy("12");
-        assertEquals(10, set.getHourOfDay());
-        assertEquals(20, set.getMinuteOfHour());
-        assertEquals(12, set.getSecondOfMinute());
-        assertEquals(40, set.getMillisOfSecond());
+        TimeOfDay copy = test.secondOfMinute().setCopy("12");
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 12, 40);
     }
 
     public void testPropertyCompareToSecond() {
@@ -1076,36 +1181,71 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(999, test.millisOfSecond().getMaximumValueOverall());
     }
 
+    public void testPropertyAddMilli() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.millisOfSecond().addCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 30, 49);
+        
+        copy = test.millisOfSecond().addCopy(959);
+        check(copy, 10, 20, 30, 999);
+        
+        copy = test.millisOfSecond().addCopy(960);
+        check(copy, 10, 20, 31, 0);
+        
+        copy = test.millisOfSecond().addCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
+        check(copy, 23, 59, 59, 999);
+        
+        try {
+            test.millisOfSecond().addCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.millisOfSecond().addCopy(-9);
+        check(copy, 10, 20, 30, 31);
+        
+        copy = test.millisOfSecond().addCopy(-40);
+        check(copy, 10, 20, 30, 0);
+        
+        copy = test.millisOfSecond().addCopy(-41);
+        check(copy, 10, 20, 29, 999);
+        
+        copy = test.millisOfSecond().addCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
+        check(copy, 0, 0, 0, 0);
+        
+        try {
+            test.millisOfSecond().addCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+    }
+
     public void testPropertyAddInFieldMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay updated = test.millisOfSecond().addInFieldCopy(9);
-        assertEquals(10, updated.getHourOfDay());
-        assertEquals(20, updated.getMinuteOfHour());
-        assertEquals(30, updated.getSecondOfMinute());
-        assertEquals(49, updated.getMillisOfSecond());
-        updated = updated.millisOfSecond().addInFieldCopy(990);
-        assertEquals(10, updated.getHourOfDay());
-        assertEquals(20, updated.getMinuteOfHour());
-        assertEquals(30, updated.getSecondOfMinute());
-        assertEquals(39, updated.getMillisOfSecond());
+        TimeOfDay copy = test.millisOfSecond().addInFieldCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 30, 49);
+        
+        copy = test.millisOfSecond().addInFieldCopy(995);
+        check(copy, 10, 20, 30, 35);
+        
+        copy = test.millisOfSecond().addInFieldCopy(-47);
+        check(copy, 10, 20, 30, 993);
     }
 
     public void testPropertySetMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.millisOfSecond().setCopy(12);
-        assertEquals(10, set.getHourOfDay());
-        assertEquals(20, set.getMinuteOfHour());
-        assertEquals(30, set.getSecondOfMinute());
-        assertEquals(12, set.getMillisOfSecond());
+        TimeOfDay copy = test.millisOfSecond().setCopy(12);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 30, 12);
     }
 
     public void testPropertySetTextMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        TimeOfDay set = test.millisOfSecond().setCopy("12");
-        assertEquals(10, set.getHourOfDay());
-        assertEquals(20, set.getMinuteOfHour());
-        assertEquals(30, set.getSecondOfMinute());
-        assertEquals(12, set.getMillisOfSecond());
+        TimeOfDay copy = test.millisOfSecond().setCopy("12");
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 30, 12);
     }
 
     public void testPropertyCompareToMilli() {
@@ -1130,4 +1270,11 @@ public class TestTimeOfDay extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    //-----------------------------------------------------------------------
+    private void check(TimeOfDay test, int hour, int min, int sec, int milli) {
+        assertEquals(hour, test.getHourOfDay());
+        assertEquals(min, test.getMinuteOfHour());
+        assertEquals(sec, test.getSecondOfMinute());
+        assertEquals(milli, test.getMillisOfSecond());
+    }
 }

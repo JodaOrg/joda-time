@@ -207,6 +207,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    public int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
     public long addWrapped(long instant, int value) {
         throw unsupported();
     }
@@ -352,6 +361,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    public int getMinimumValue(PartialInstant instant, int[] values) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
     public int getMaximumValue() {
         throw unsupported();
     }
@@ -371,6 +389,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * @throws UnsupportedOperationException
      */
     public int getMaximumValue(PartialInstant instant) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
+    public int getMaximumValue(PartialInstant instant, int[] values) {
         throw unsupported();
     }
 

@@ -163,6 +163,15 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
     }
 
     /**
+     * Always returns 1.
+     * 
+     * @return the minimum value of 1
+     */
+    public int getMinimumValue(PartialInstant instant, int[] values) {
+        return 1;
+    }
+
+    /**
      * Get the maximum value for the field, which is one more than the wrapped
      * field's maximum value.
      * 
@@ -190,6 +199,16 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      */
     public int getMaximumValue(PartialInstant instant) {
         return getWrappedField().getMaximumValue(instant) + 1;
+    }
+
+    /**
+     * Get the maximum value for the field, which is one more than the wrapped
+     * field's maximum value.
+     * 
+     * @return the maximum value
+     */
+    public int getMaximumValue(PartialInstant instant, int[] values) {
+        return getWrappedField().getMaximumValue(instant, values) + 1;
     }
 
     public long roundFloor(long instant) {

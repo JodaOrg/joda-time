@@ -169,6 +169,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.add(instant, value);
     }
 
+    public int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+        return iField.add(instant, fieldIndex, values, valueToAdd);
+    }
+
     public long addWrapped(long instant, int value) {
         return iField.addWrapped(instant, value);
     }
@@ -237,6 +241,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getMinimumValue(instant);
     }
 
+    public int getMinimumValue(PartialInstant instant, int[] values) {
+        return iField.getMinimumValue(instant, values);
+    }
+
     public int getMaximumValue() {
         return iField.getMaximumValue();
     }
@@ -247,6 +255,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
 
     public int getMaximumValue(PartialInstant instant) {
         return iField.getMaximumValue(instant);
+    }
+
+    public int getMaximumValue(PartialInstant instant, int[] values) {
+        return iField.getMaximumValue(instant, values);
     }
 
     public int getMaximumTextLength(Locale locale) {

@@ -88,7 +88,7 @@ public abstract class AbstractDateTimeFormatter {
     static String createErrorMessage(final String text, final int errorPos) {
         int sampleLen = errorPos + 20;
         String sampleText;
-        if (text.length() <= sampleLen) {
+        if (text.length() <= sampleLen + 3) {
             sampleText = text;
         } else {
             sampleText = text.substring(0, sampleLen).concat("...");

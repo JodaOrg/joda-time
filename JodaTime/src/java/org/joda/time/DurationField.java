@@ -68,7 +68,8 @@ package org.joda.time;
 public interface DurationField extends Comparable {
 
     /**
-     * Get the name of the field.
+     * Get the name of the field, intended for debugging purposes only. By
+     * convention, names are plural.
      * 
      * @return field name
      */

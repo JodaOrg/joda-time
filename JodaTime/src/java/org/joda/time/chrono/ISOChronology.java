@@ -73,9 +73,9 @@ import org.joda.time.field.RemainderDateTimeField;
  * <p>
  * With the exception of century related fields, ISOChronology is exactly the
  * same as {@link GregorianChronology}. In this chronology, centuries and year
- * of century are zero based. For CE years, the century is determined by
- * dropping the last two digits of the year. The year of century is the value
- * of the last two digits.
+ * of century are zero based. For all years, the century is determined by
+ * dropping the last two digits of the year, ignoring sign. The year of century
+ * is the value of the last two year digits.
  * <p>
  * ISOChronology is thread-safe and immutable.
  *
@@ -204,7 +204,7 @@ public final class ISOChronology extends AssembledChronology {
         if (getBase().getDateTimeZone() == DateTimeZone.UTC) {
             // Use zero based century and year of century.
             fields.centuryOfEra = new DividedDateTimeField
-                (fields.yearOfEra, "centuryOfEra", "centuries", 100);
+                (ISOYearOfEraDateTimeField.INSTANCE, "centuryOfEra", "centuries", 100);
             fields.yearOfCentury = new RemainderDateTimeField
                 ((DividedDateTimeField)fields.centuryOfEra, "yearOfCentury");
 

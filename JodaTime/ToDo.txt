@@ -4,8 +4,14 @@ JodaTime ToDo list
 1.0B1
 -----
 
-Partial.resolve doesn't use chronology
+Fix bugs identified by tests
+- PeriodFormatting
+- Chronology lost in serialization
 
+
+
+Ideas longer term
+-----------------
 DateTimeField.setNext(instant, value, howManyNext)
 
 DateHourMinute
@@ -18,16 +24,6 @@ DateHMS
 
 DurationProperty on DateTime, Period and related
 
-...
-
-Fix bugs identified by tests
-
-
-
-
-
-Ideas longer term
------------------
 Factories for DateTime clases?
  Is a locale dependent one needed at least?
 

@@ -53,9 +53,6 @@
  */
 package org.joda.time;
 
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.ISOChronology;
-
 /**
  * Chronology provides access to the individual date time fields for a
  * chronological calendar system. Various chronologies are supported by
@@ -81,103 +78,6 @@ import org.joda.time.chrono.ISOChronology;
  */
 public abstract class Chronology {
 
-    /**
-     * Gets an instance of the ISOChronology in the default zone.
-     * <p>
-     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
-     * This chronology is the default, and is suitable for all normal datetime processing.
-     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
-     * as it applies the modern Gregorian calendar rules before that date.
-     *
-     * @return the ISO chronology
-     */
-    public static Chronology getISO() {
-        return ISOChronology.getInstance();
-    }
-
-    /**
-     * Gets an instance of the ISOChronology in the UTC zone.
-     * <p>
-     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
-     * This chronology is the default, and is suitable for all normal datetime processing.
-     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
-     * as it applies the modern Gregorian calendar rules before that date.
-     *
-     * @return the ISO chronology
-     */
-    public static Chronology getISOUTC() {
-        return ISOChronology.getInstanceUTC();
-    }
-
-    /**
-     * Gets an instance of the ISOChronology in the specified zone.
-     * <p>
-     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
-     * This chronology is the default, and is suitable for all normal datetime processing.
-     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
-     * as it applies the modern Gregorian calendar rules before that date.
-     *
-     * @param zone  the zone to use, null means default zone
-     * @return the ISO chronology
-     */
-    public static Chronology getISO(DateTimeZone zone) {
-        return ISOChronology.getInstance(zone);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets an instance of the GJChronology in the default zone.
-     * <p>
-     * {@link GJChronology} defines all fields using standard meanings.
-     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
-     * The Gregorian calendar system is used after October 15, 1582, while the
-     * Julian calendar system is used before.
-     * <p>
-     * When dealing solely with dates in the modern era, from 1600 onwards,
-     * we recommend using ISOChronology, which is the default.
-     *
-     * @return the GJ chronology
-     */
-    public static Chronology getGJ() {
-        return GJChronology.getInstance();
-    }
-
-    /**
-     * Gets an instance of the GJChronology in the UTC zone.
-     * <p>
-     * {@link GJChronology} defines all fields using standard meanings.
-     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
-     * The Gregorian calendar system is used after October 15, 1582, while the
-     * Julian calendar system is used before.
-     * <p>
-     * When dealing solely with dates in the modern era, from 1600 onwards,
-     * we recommend using ISOChronology, which is the default.
-     *
-     * @return the GJ chronology
-     */
-    public static Chronology getGJUTC() {
-        return GJChronology.getInstanceUTC();
-    }
-
-    /**
-     * Gets an instance of the GJChronology in the specified zone.
-     * <p>
-     * {@link GJChronology} defines all fields using standard meanings.
-     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
-     * The Gregorian calendar system is used after October 15, 1582, while the
-     * Julian calendar system is used before.
-     * <p>
-     * When dealing solely with dates in the modern era, from 1600 onwards,
-     * we recommend using ISOChronology, which is the default.
-     *
-     * @param zone  the zone to use, null means default zone
-     * @return the GJ chronology
-     */
-    public static Chronology getGJ(DateTimeZone zone) {
-        return GJChronology.getInstance(zone);
-    }
-
-    //-----------------------------------------------------------------------
     /**
      * Returns the DateTimeZone that this Chronology operates in, or null if
      * unspecified.

@@ -59,9 +59,6 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.ISOChronology;
-
 /**
  * This class is a Junit unit test for Chronology.
  *
@@ -140,34 +137,6 @@ public class TestChronology extends TestCase {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
         assertEquals("2003-05-06T14:28:00.000Z", new Instant(TEST_TIME2).toString());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testGetISO() {
-        assertEquals(ISOChronology.getInstance(), Chronology.getISO());
-    }
-
-    public void testGetISOUTC() {
-        assertEquals(ISOChronology.getInstanceUTC(), Chronology.getISOUTC());
-    }
-
-    public void testGetISO_Zone() {
-        assertEquals(ISOChronology.getInstance(PARIS), Chronology.getISO(PARIS));
-        assertEquals(ISOChronology.getInstance(), Chronology.getISO(null));
-    }
-
-    //-----------------------------------------------------------------------
-    public void testGetGJ() {
-        assertEquals(GJChronology.getInstance(), Chronology.getGJ());
-    }
-
-    public void testGetGJUTC() {
-        assertEquals(GJChronology.getInstanceUTC(), Chronology.getGJUTC());
-    }
-
-    public void testGetGJ_Zone() {
-        assertEquals(GJChronology.getInstance(PARIS), Chronology.getGJ(PARIS));
-        assertEquals(GJChronology.getInstance(), Chronology.getGJ(null));
     }
 
 }

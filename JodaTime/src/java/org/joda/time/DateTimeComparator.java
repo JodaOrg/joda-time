@@ -56,6 +56,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 
 /**
@@ -126,10 +127,17 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
      * @param upperLimit  exclusive upper limit for fields to be compared, null means no limit
      * @return a comparator over all fields between the limits
+     * @throws IllegalArgumentException if the lower limit is greater than the upper
      */
     public static DateTimeComparator getInstance(DateTimeField lowerLimit, DateTimeField upperLimit) {
         if (lowerLimit == null && upperLimit == null) {
             return INSTANCE;
+        }
+        if (lowerLimit != null && upperLimit != null) {
+            if (lowerLimit.getDurationField().getUnitMillis() > upperLimit.getDurationField().getUnitMillis()) {
+                throw new IllegalArgumentException("Lower limit greater than upper: " +
+                    lowerLimit.getName() + " > " + upperLimit.getName());
+            }
         }
         return new DateTimeComparator(lowerLimit, upperLimit);
     }
@@ -142,6 +150,9 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a comparator over all date fields
      */
     public static DateTimeComparator getDateOnlyInstance(Chronology chrono) {
+        if (chrono == null) {
+            chrono = ISOChronology.getInstance();
+        }
         return getInstance(chrono.dayOfYear(), null);
     }
 
@@ -153,6 +164,9 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a comparator over all time fields
      */
     public static DateTimeComparator getTimeOnlyInstance(Chronology chrono) {
+        if (chrono == null) {
+            chrono = ISOChronology.getInstance();
+        }
         return getInstance(null, chrono.dayOfYear());
     }
 
@@ -162,7 +176,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @param lowerLimit  the lower field limit, null means no limit
      * @param upperLimit  the upper field limit, null means no limit
      */
-    private DateTimeComparator(DateTimeField lowerLimit, DateTimeField upperLimit) {
+    protected DateTimeComparator(DateTimeField lowerLimit, DateTimeField upperLimit) {
         super();
         iLowerLimit = lowerLimit;
         iUpperLimit = upperLimit;
@@ -203,15 +217,14 @@ public class DateTimeComparator implements Comparator, Serializable {
         long lhsMillis = getMillisFromObject(lhsObj);
         long rhsMillis = getMillisFromObject(rhsObj);
 
-        DateTimeField field;
-        if ((field = iLowerLimit) != null) {
-            lhsMillis = field.roundFloor(lhsMillis);
-            rhsMillis = field.roundFloor(rhsMillis);
+        if (iLowerLimit != null) {
+            lhsMillis = iLowerLimit.roundFloor(lhsMillis);
+            rhsMillis = iLowerLimit.roundFloor(rhsMillis);
         }
 
-        if ((field = iUpperLimit) != null) {
-            lhsMillis = field.remainder(lhsMillis);
-            rhsMillis = field.remainder(rhsMillis);
+        if (iUpperLimit != null) {
+            lhsMillis = iUpperLimit.remainder(lhsMillis);
+            rhsMillis = iUpperLimit.remainder(rhsMillis);
         }
 
         if (lhsMillis < rhsMillis) {
@@ -247,10 +260,10 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a debugging string
      */
     public String toString() {
-        return "DateTimeComparator[lowerLimit:"
-            + (iLowerLimit == null ? "none" : iLowerLimit.getName())
-            + ",upperLimit:"
-            + (iUpperLimit == null ? "none" : iUpperLimit.getName())
+        return "DateTimeComparator["
+            + (iLowerLimit == null ? "" : iLowerLimit.getName())
+            + (iLowerLimit == null && iUpperLimit == null ? "" : "-")
+            + (iUpperLimit == null ? "" : iUpperLimit.getName())
             + "]";
     }
 

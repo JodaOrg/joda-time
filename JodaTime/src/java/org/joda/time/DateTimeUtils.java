@@ -61,7 +61,7 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class DateTimeUtils {
+public class DateTimeUtils {
 
     /** The singleton instance of the system millisecond provider */
     private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
@@ -72,7 +72,7 @@ public final class DateTimeUtils {
     /**
      * Restrictive constructor
      */
-    private DateTimeUtils() {
+    protected DateTimeUtils() {
         super();
     }
 
@@ -85,7 +85,7 @@ public final class DateTimeUtils {
      * 
      * @return the current time in milliseconds from 1970-01-01T00:00:00Z
      */
-    public static long currentTimeMillis() {
+    public static final long currentTimeMillis() {
         return cMillisProvider.getMillis();
     }
 
@@ -95,7 +95,7 @@ public final class DateTimeUtils {
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, {@link System#currentTimeMillis()} is used.
      */
-    public static void setCurrentMillisSystem() throws SecurityException {
+    public static final void setCurrentMillisSystem() throws SecurityException {
         checkPermission();
         cMillisProvider = SYSTEM_MILLIS_PROVIDER;
     }
@@ -108,7 +108,7 @@ public final class DateTimeUtils {
      * 
      * @param fixedMillis  the fixed millisecond time to use
      */
-    public static void setCurrentMillisFixed(long fixedMillis) throws SecurityException {
+    public static final void setCurrentMillisFixed(long fixedMillis) throws SecurityException {
         checkPermission();
         cMillisProvider = new FixedMillisProvider(fixedMillis);
     }
@@ -122,7 +122,7 @@ public final class DateTimeUtils {
      * 
      * @param offsetMillis  the fixed millisecond time to use
      */
-    public static void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
+    public static final void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
         checkPermission();
         cMillisProvider = new OffsetMillisProvider(offsetMillis);
     }

@@ -53,6 +53,7 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.DurationType;
 import org.joda.time.ReadWritableDuration;
 
 /**
@@ -116,6 +117,17 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      */
     public void setInto(ReadWritableDuration duration, Object object) {
         duration.setTotalMillis(((Long) object).longValue());
+    }
+
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @return the duration type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    public DurationType getDurationType(Object object) {
+        return DurationType.getAverageYearMonthType();
     }
 
     //-----------------------------------------------------------------------

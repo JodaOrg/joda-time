@@ -53,6 +53,7 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.DurationType;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadWritableDuration;
 
@@ -91,5 +92,14 @@ public interface DurationConverter extends Converter {
      * @throws ClassCastException if the object is invalid
      */
     void setInto(ReadWritableDuration duration, Object object);
+
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @return the duration type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    DurationType getDurationType(Object object);
 
 }

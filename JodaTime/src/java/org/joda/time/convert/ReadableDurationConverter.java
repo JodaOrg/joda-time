@@ -53,6 +53,7 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.DurationType;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadWritableDuration;
 
@@ -109,6 +110,17 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      */
     public void setInto(ReadWritableDuration duration, Object object) {
         duration.setDuration((ReadableDuration) object);
+    }
+
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @return the duration type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    public DurationType getDurationType(Object object) {
+        return ((ReadableDuration) object).getDurationType();
     }
 
     //-----------------------------------------------------------------------

@@ -30,6 +30,8 @@ Bug fixes since 0.98
 
 - DateTimeFormatterBuilder was using wrong time zone for text fields
 
+- Avoid NPE in property(DateTimeFieldType) methods
+
 New features since 0.98
 -----------------------
 

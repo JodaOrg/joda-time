@@ -61,6 +61,7 @@ Current interfaces and implementations include:
 <li>DateOnly</li>
 <li>TimeOnly</li>
 <li>Duration</li>
+<li>Interval</li>
 <li>DateTimeZone</li>
 <li>...plus formatting and parsing</li>
 </ul>

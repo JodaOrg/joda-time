@@ -72,7 +72,14 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
+        
+        suite.addTest(TestBuddhistChronology.suite());
+        suite.addTest(TestCopticChronology.suite());
+        suite.addTest(TestGJChronology.suite());
+        suite.addTest(TestGregorianChronology.suite());
+        suite.addTest(TestJulianChronology.suite());
         suite.addTest(TestISOChronology.suite());
+        
         return suite;
     }
 

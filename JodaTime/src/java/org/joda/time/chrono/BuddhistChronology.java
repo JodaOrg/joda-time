@@ -209,7 +209,9 @@ public final class BuddhistChronology extends AssembledChronology {
         if (getParam() == null) {
             DateTimeField field = fields.year;
             fields.year = new OffsetDateTimeField(field, field.getName(), BUDDHIST_OFFSET);
-            fields.yearOfEra = fields.year;
+            
+            field = fields.yearOfEra;
+            fields.yearOfEra = new OffsetDateTimeField(fields.year, field.getName(), BUDDHIST_OFFSET);
             
             field = fields.weekyear;
             fields.weekyear = new OffsetDateTimeField(field, field.getName(), BUDDHIST_OFFSET);

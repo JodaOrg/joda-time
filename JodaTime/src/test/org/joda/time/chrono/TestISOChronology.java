@@ -64,7 +64,7 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 
 /**
- * This class is a Junit unit test for Instant.
+ * This class is a Junit unit test for ISOChronology.
  *
  * @author Stephen Colebourne
  */
@@ -121,18 +121,22 @@ public class TestISOChronology extends TestCase {
     //-----------------------------------------------------------------------
     public void testFactoryUTC() {
         assertEquals(DateTimeZone.UTC, ISOChronology.getInstanceUTC().getZone());
+        assertSame(ISOChronology.class, ISOChronology.getInstanceUTC().getClass());
     }
 
     public void testFactory() {
         assertEquals(LONDON, ISOChronology.getInstance().getZone());
+        assertSame(ISOChronology.class, ISOChronology.getInstance().getClass());
     }
 
     public void testFactory_Zone() {
         assertEquals(TOKYO, ISOChronology.getInstance(TOKYO).getZone());
         assertEquals(PARIS, ISOChronology.getInstance(PARIS).getZone());
         assertEquals(LONDON, ISOChronology.getInstance(null).getZone());
+        assertSame(ISOChronology.class, ISOChronology.getInstance(TOKYO).getClass());
     }
 
+    //-----------------------------------------------------------------------
     public void testEquality() {
         assertSame(ISOChronology.getInstance(TOKYO), ISOChronology.getInstance(TOKYO));
         assertSame(ISOChronology.getInstance(LONDON), ISOChronology.getInstance(LONDON));
@@ -164,6 +168,7 @@ public class TestISOChronology extends TestCase {
         assertEquals("ISOChronology[UTC]", ISOChronology.getInstanceUTC().toString());
     }
 
+    //-----------------------------------------------------------------------
     public void testDurationFields() {
         assertEquals("eras", ISOChronology.getInstance().eras().getName());
         assertEquals("centuries", ISOChronology.getInstance().centuries().getName());

@@ -297,10 +297,11 @@ public abstract class BaseGJChronology extends AssembledChronology {
         DateTimeZone zone = getZone();
         if (zone != null) {
             sb.append(zone.getID());
-            sb.append(", ");
         }
-        sb.append("mdfw=");
-        sb.append(getMinimumDaysInFirstWeek());
+        if (getMinimumDaysInFirstWeek() != 4) {
+            sb.append(",mdfw=");
+            sb.append(getMinimumDaysInFirstWeek());
+        }
         sb.append(']');
         return sb.toString();
     }

@@ -58,6 +58,7 @@ package org.joda.time;
  * <p>
  * A time interval represents a period of time between two instants.
  * Intervals are inclusive of the start instant and exclusive of the end.
+ * The end instant is always greater than or equal to the start instant.
  * <p>
  * Intervals have a fixed millisecond duration.
  * This is the difference between the start and end instants.
@@ -320,6 +321,8 @@ public interface ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Get the value as a String in the ISO8601 interval format.
+     * <p>
+     * For example, "2004-06-09T12:30:00.000/2004-07-10T13:30:00.000".
      *
      * @return the value as an ISO8601 string
      */

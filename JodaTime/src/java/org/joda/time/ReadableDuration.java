@@ -193,10 +193,10 @@ public interface ReadableDuration extends Comparable {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the value as a String in the ISO8601 duration format.
+     * Gets the value as a String in the ISO8601 duration format using hours,
+     * minutes and seconds (including fractional milliseconds).
      * <p>
-     * For example, "P6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
-     * The field values are determined using the PreciseAll period type.
+     * For example, "PT6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
      *
      * @return the value as an ISO8601 string
      */

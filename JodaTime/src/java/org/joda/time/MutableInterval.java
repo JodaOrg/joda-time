@@ -60,6 +60,7 @@ import java.io.Serializable;
  * <p>
  * A time interval represents a period of time between two instants.
  * Intervals are inclusive of the start instant and exclusive of the end.
+ * The end instant is always greater than or equal to the start instant.
  * <p>
  * Intervals have a fixed millisecond duration.
  * This is the difference between the start and end instants.

@@ -291,11 +291,12 @@ public interface ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the value as a String in the ISO8601 duration format.
+     * Gets the value as a String in the style of the ISO8601 duration format.
+     * Technically, the output can breach the ISO specification as weeks may be included.
      * <p>
-     * For example, "P6H3M5S" represents 6 hours, 3 minutes, 5 seconds.
+     * For example, "PT6H3M5S" represents 6 hours, 3 minutes, 5 seconds.
      *
-     * @return the value as an ISO8601 string
+     * @return the value as an ISO8601 style string
      */
     String toString();
 

@@ -507,5 +507,5 @@ public class TestMutablePeriod_Basics extends TestCase {
         assertEquals(test.isPrecise(), copy.isPrecise());
         assertEquals(test.toDurationMillis(), copy.toDurationMillis());
     }
-
+    
 }

@@ -594,19 +594,23 @@ public class TestPeriod_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testImmutable() {
         MockChangeDuration test = new MockChangeDuration(111L);
-        test.testSetDuration_RD();
+        test.testSetPeriod_RP();
         assertEquals(111L, test.toDurationMillis());
         
         test = new MockChangeDuration(111L);
-        test.testSetDuration_ints();
+        test.testSetPeriod_RD();
         assertEquals(111L, test.toDurationMillis());
         
         test = new MockChangeDuration(111L);
-        test.testSetTotalMillis_1();
+        test.testSetPeriod_ints();
         assertEquals(111L, test.toDurationMillis());
         
         test = new MockChangeDuration(111L);
-        test.testSetTotalMillis_2();
+        test.testSetPeriod_1();
+        assertEquals(111L, test.toDurationMillis());
+        
+        test = new MockChangeDuration(111L);
+        test.testSetPeriod_2();
         assertEquals(111L, test.toDurationMillis());
         
         test = new MockChangeDuration(111L);
@@ -650,16 +654,19 @@ public class TestPeriod_Basics extends TestCase {
         MockChangeDuration(long duration) {
             super(duration);
         }
-        public void testSetDuration_RD() {
+        public void testSetPeriod_RP() {
+            setPeriod((ReadablePeriod) null);
+        }
+        public void testSetPeriod_RD() {
             setPeriod((ReadableDuration) null);
         }
-        public void testSetDuration_ints() {
+        public void testSetPeriod_ints() {
             setPeriod(1, 2, 3, 4, 5, 6, 7, 8);
         }
-        public void testSetTotalMillis_1() {
+        public void testSetPeriod_1() {
             setPeriod(123L);
         }
-        public void testSetTotalMillis_2() {
+        public void testSetPeriod_2() {
             setPeriod(123L, 321L);
         }
         public void testSetYears() {

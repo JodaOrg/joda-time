@@ -295,12 +295,19 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDuration() {
+    public void testToDuration1() {
         Duration test = new Duration(123L);
         Duration result = test.toDuration();
         assertSame(test, result);
     }
-
+    
+    public void testToDuration2() {
+        MockDuration test = new MockDuration(123L);
+        Duration result = test.toDuration();
+        assertNotSame(test, result);
+        assertEquals(test, result);
+    }
+    
     //-----------------------------------------------------------------------
     public void testToPeriod1() {
         long length =
@@ -384,7 +391,11 @@ public class TestDuration_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testImmutable() {
         MockChangeDuration test = new MockChangeDuration(111L);
-        test.testSetDuration_RD();
+        test.testSetDuration_RD_1();
+        assertEquals(111L, test.getMillis());
+        
+        test = new MockChangeDuration(111L);
+        test.testSetDuration_RD_2();
         assertEquals(111L, test.getMillis());
         
         test = new MockChangeDuration(111L);
@@ -396,11 +407,42 @@ public class TestDuration_Basics extends TestCase {
         MockChangeDuration(long duration) {
             super(duration);
         }
-        public void testSetDuration_RD() {
+        public void testSetDuration_RD_1() {
             setDuration(null);
+        }
+        public void testSetDuration_RD_2() {
+            setDuration(new Duration(0L));
         }
         public void testSetMillis() {
             setMillis(0L);
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMutable() {
+        // No MutableDuration class, so this tests relevant methods in AbstractDuration
+        MockMutableDuration mutable = new MockMutableDuration(111L);
+        assertEquals(111L, mutable.getMillis());
+        
+        mutable.setMillis(1234L);
+        assertEquals(1234L, mutable.getMillis());
+        
+        mutable.setDuration(null);
+        assertEquals(0L, mutable.getMillis());
+        
+        mutable.setDuration(new Duration(123L));
+        assertEquals(123L, mutable.getMillis());
+    }
+    
+    static class MockMutableDuration extends AbstractDuration {
+        MockMutableDuration(long duration) {
+            super(duration);
+        }
+        public void setDuration(ReadableDuration d) {
+            super.setDuration(d);
+        }
+        public void setMillis(long d) {
+            super.setMillis(d);
         }
     }
 

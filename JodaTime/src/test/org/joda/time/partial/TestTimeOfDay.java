@@ -882,6 +882,15 @@ public class TestTimeOfDay extends TestCase {
         TimeOfDay copy = test.hourOfDay().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 12, 20, 30, 40);
+        
+        try {
+            test.hourOfDay().setCopy(24);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.hourOfDay().setCopy(-1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextHour() {
@@ -1004,6 +1013,15 @@ public class TestTimeOfDay extends TestCase {
         TimeOfDay copy = test.minuteOfHour().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 12, 30, 40);
+        
+        try {
+            test.minuteOfHour().setCopy(60);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.minuteOfHour().setCopy(-1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextMinute() {
@@ -1123,6 +1141,15 @@ public class TestTimeOfDay extends TestCase {
         TimeOfDay copy = test.secondOfMinute().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 12, 40);
+        
+        try {
+            test.secondOfMinute().setCopy(60);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.secondOfMinute().setCopy(-1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextSecond() {
@@ -1239,6 +1266,15 @@ public class TestTimeOfDay extends TestCase {
         TimeOfDay copy = test.millisOfSecond().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 30, 12);
+        
+        try {
+            test.millisOfSecond().setCopy(1000);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.millisOfSecond().setCopy(-1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextMilli() {

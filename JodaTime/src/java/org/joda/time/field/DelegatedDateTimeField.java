@@ -86,7 +86,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
      * 
      * @param field  the field being decorated
      */
-    protected DelegatedDateTimeField(DateTimeField field) {
+    public DelegatedDateTimeField(DateTimeField field) {
         this(field, null);
     }
 
@@ -96,7 +96,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
      * @param field  the field being decorated
      * @param type  the field type override
      */
-    protected DelegatedDateTimeField(DateTimeField field, DateTimeFieldType type) {
+    public DelegatedDateTimeField(DateTimeField field, DateTimeFieldType type) {
         super();
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");

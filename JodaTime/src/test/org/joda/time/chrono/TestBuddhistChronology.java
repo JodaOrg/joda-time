@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,9 +59,13 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
 
 /**
  * This class is a Junit unit test for BuddhistChronology.
@@ -73,6 +77,11 @@ public class TestBuddhistChronology extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
+    private static final Chronology BUDDHIST_UTC = Chronology.getBuddhistUTC();
+    private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
+    private static final Chronology JULIAN_UTC = Chronology.getJulianUTC();
+    private static final Chronology GJ_UTC = Chronology.getGJUTC();
+    private static final Chronology ISO_UTC = Chronology.getISOUTC();
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -273,6 +282,104 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, BuddhistChronology.getInstance().secondOfMinute().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().millisOfDay().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().millisOfSecond().isSupported());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEpoch() {
+        DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        assertEquals(new DateTime(-543, 1, 1, 0, 0, 0, 0, JULIAN_UTC), epoch.withChronology(JULIAN_UTC));
+    }
+
+    public void testEra() {
+        assertEquals(1, BuddhistChronology.BE);
+        try {
+            new DateTime(-1, 13, 5, 0, 0, 0, 0, BUDDHIST_UTC);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testKeyYears() {
+        DateTime bd = new DateTime(2513, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        DateTime jd = new DateTime(1970, 1, 1, 0, 0, 0, 0, GJ_UTC);
+        assertEquals(jd, bd.withChronology(GJ_UTC));
+        assertEquals(2513, bd.getYear());
+        assertEquals(2513, bd.getYearOfEra());
+        assertEquals(2513, bd.plus(Period.weeks(1)).getWeekyear());
+        
+        bd = new DateTime(2126, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        jd = new DateTime(1583, 1, 1, 0, 0, 0, 0, GJ_UTC);
+        assertEquals(jd, bd.withChronology(GJ_UTC));
+        assertEquals(2126, bd.getYear());
+        assertEquals(2126, bd.getYearOfEra());
+        assertEquals(2126, bd.plus(Period.weeks(1)).getWeekyear());
+        
+        bd = new DateTime(2125, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        jd = new DateTime(1582, 1, 1, 0, 0, 0, 0, GJ_UTC);
+        assertEquals(jd, bd.withChronology(GJ_UTC));
+        assertEquals(2125, bd.getYear());
+        assertEquals(2125, bd.getYearOfEra());
+        assertEquals(2125, bd.plus(Period.weeks(1)).getWeekyear());
+        
+        bd = new DateTime(544, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        jd = new DateTime(1, 1, 1, 0, 0, 0, 0, GJ_UTC);
+        assertEquals(jd, bd.withChronology(GJ_UTC));
+        assertEquals(544, bd.getYear());
+        assertEquals(544, bd.getYearOfEra());
+        assertEquals(544, bd.plus(Period.weeks(1)).getWeekyear());
+        
+        bd = new DateTime(543, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        jd = new DateTime(-1, 1, 1, 0, 0, 0, 0, GJ_UTC);
+        assertEquals(jd, bd.withChronology(GJ_UTC));
+        assertEquals(543, bd.getYear());
+        assertEquals(543, bd.getYearOfEra());
+        assertEquals(543, bd.plus(Period.weeks(1)).getWeekyear());
+        
+        bd = new DateTime(1, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        jd = new DateTime(-543, 1, 1, 0, 0, 0, 0, GJ_UTC);
+        assertEquals(jd, bd.withChronology(GJ_UTC));
+        assertEquals(1, bd.getYear());
+        assertEquals(1, bd.getYearOfEra());
+        assertEquals(1, bd.plus(Period.weeks(1)).getWeekyear());
+    }
+
+    public void testCalendar() {
+        System.out.println("\nTestBuddhistChronology.testCalendar");
+        DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
+        long oneDay = DateTimeConstants.MILLIS_PER_DAY;
+        long millis = epoch.getMillis();
+        long end = new DateTime(3000, 1, 1, 0, 0, 0, 0, ISO_UTC).getMillis();
+        DateTimeField dayOfWeek = BUDDHIST_UTC.dayOfWeek();
+        DateTimeField weekOfWeekyear = GJ_UTC.weekOfWeekyear();
+        DateTimeField dayOfYear = BUDDHIST_UTC.dayOfYear();
+        DateTimeField dayOfMonth = BUDDHIST_UTC.dayOfMonth();
+        DateTimeField monthOfYear = BUDDHIST_UTC.monthOfYear();
+        DateTimeField year = BUDDHIST_UTC.year();
+        DateTimeField yearOfEra = BUDDHIST_UTC.yearOfEra();
+        DateTimeField era = BUDDHIST_UTC.era();
+        DateTimeField gjDayOfWeek = GJ_UTC.dayOfWeek();
+        DateTimeField gjWeekOfWeekyear = GJ_UTC.weekOfWeekyear();
+        DateTimeField gjDayOfYear = GJ_UTC.dayOfYear();
+        DateTimeField gjDayOfMonth = GJ_UTC.dayOfMonth();
+        DateTimeField gjMonthOfYear = GJ_UTC.monthOfYear();
+        DateTimeField gjYear = GJ_UTC.year();
+        DateTimeField gjYearOfEra = GJ_UTC.yearOfEra();
+        DateTimeField gjEra = GJ_UTC.era();
+        while (millis < end) {
+            assertEquals(gjDayOfWeek.get(millis), dayOfWeek.get(millis));
+            assertEquals(gjDayOfYear.get(millis), dayOfYear.get(millis));
+            assertEquals(gjDayOfMonth.get(millis), dayOfMonth.get(millis));
+            assertEquals(gjMonthOfYear.get(millis), monthOfYear.get(millis));
+            assertEquals(gjWeekOfWeekyear.get(millis), weekOfWeekyear.get(millis));
+            assertEquals(1, era.get(millis));
+            int yearValue = gjYear.get(millis);
+            if (yearValue <= 0) {
+                yearValue++;
+            }
+            yearValue += 543;
+            assertEquals(yearValue, year.get(millis));
+            assertEquals(yearValue, yearOfEra.get(millis));
+            millis += oneDay;
+        }
     }
 
 }

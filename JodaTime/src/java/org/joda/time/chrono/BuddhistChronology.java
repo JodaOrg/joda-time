@@ -62,17 +62,25 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
+import org.joda.time.field.DelegatedDateTimeField;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.OffsetDateTimeField;
 import org.joda.time.field.RemainderDateTimeField;
+import org.joda.time.field.SkipUndoDateTimeField;
 
 /**
- * Implements the Buddhist calendar system, which is similar to Gregorian/Julian,
- * except with the year offset by 543.
+ * A chronology that matches the BuddhistCalendar class supplied by Sun.
  * <p>
- * The Buddhist calendar differs from the Gregorian/Julian calendar only 
- * in the year. This class is compatable with the BuddhistCalendar class 
- * supplied by Sun.
+ * The chronology is identical to the Gregorian/Julian, except that the
+ * year is offset by +543 and the era is named 'BE' for Buddhist Era.
+ * <p>
+ * This class was intended by Sun to model the calendar used in Thailand.
+ * However, the actual rules for Thailand are much more involved than
+ * this class covers. (This class is accurate after 1941-01-01 ISO).
+ * <p>
+ * This chronlogy is being retained for those who want a same effect
+ * replacement for the Sun class. It is hoped that community support will
+ * enable a more accurate chronology for Thailand, to be developed.
  * <p>
  * BuddhistChronology is thread-safe and immutable.
  *
@@ -208,15 +216,20 @@ public final class BuddhistChronology extends AssembledChronology {
 
     protected void assemble(Fields fields) {
         if (getParam() == null) {
+            // julian chrono removed zero, but we need to put it back
             DateTimeField field = fields.year;
-            fields.year = new OffsetDateTimeField(field, BUDDHIST_OFFSET);
+            fields.year = new OffsetDateTimeField(
+                    new SkipUndoDateTimeField(this, field), BUDDHIST_OFFSET);
             
+            // one era, so yearOfEra is the same
             field = fields.yearOfEra;
-            fields.yearOfEra = new OffsetDateTimeField(
-                fields.year, DateTimeFieldType.yearOfEra(), BUDDHIST_OFFSET);
+            fields.yearOfEra = new DelegatedDateTimeField(
+                fields.year, DateTimeFieldType.yearOfEra());
             
+            // julian chrono removed zero, but we need to put it back
             field = fields.weekyear;
-            fields.weekyear = new OffsetDateTimeField(field, BUDDHIST_OFFSET);
+            fields.weekyear = new OffsetDateTimeField(
+                    new SkipUndoDateTimeField(this, field), BUDDHIST_OFFSET);
             
             field = new OffsetDateTimeField(fields.yearOfEra, 99);
             fields.centuryOfEra = new DividedDateTimeField(

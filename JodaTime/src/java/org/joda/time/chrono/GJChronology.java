@@ -615,7 +615,7 @@ public final class GJChronology extends AssembledChronology {
 
         CutoverField(DateTimeField julianField, DateTimeField gregorianField,
                      long cutoverMillis, boolean convertByWeekyear) {
-            super(gregorianField.getName());
+            super(gregorianField.getType());
             iJulianField = julianField;
             iGregorianField = gregorianField;
             iCutover = cutoverMillis;

@@ -53,6 +53,7 @@
  */
 package org.joda.time.chrono.gj;
 
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -61,7 +62,7 @@ import org.joda.time.DurationField;
  */
 class TestGJWeekOfWeekyearField extends TestGJDateTimeField {
     public TestGJWeekOfWeekyearField(TestGJChronology chrono) {
-        super("weekOfWeekyear", "weeks",
+        super(DateTimeFieldType.weekOfWeekyear(), "weeks",
               (long)(chrono.MILLIS_PER_DAY * 7), chrono);
     }
 

@@ -61,6 +61,7 @@ import java.util.Locale;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.MillisDurationField;
@@ -1743,7 +1744,7 @@ public class DateTimeFormatterBuilder {
 
             if (iParseField == null) {
                 iParseField = new PreciseDateTimeField
-                    ("", MillisDurationField.INSTANCE, iField.getDurationField());
+                    (DateTimeFieldType.millisOfSecond(), MillisDurationField.INSTANCE, iField.getDurationField());
             }
 
             bucket.saveField(iParseField, (int)value);

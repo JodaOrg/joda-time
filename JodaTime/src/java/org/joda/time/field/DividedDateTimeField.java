@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -84,14 +85,14 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * Constructor.
      * 
      * @param field  the field to wrap, like "year()".
-     * @param name  short, descriptive name, like "century".
+     * @param type  the field type this field will actually use
      * @param durationName  short, descriptive name, like "centuries".
      * @param divisor  divisor, such as 100 years in a century
      * @throws IllegalArgumentException if divisor is less than two
      */
     public DividedDateTimeField(DateTimeField field,
-                                String name, String durationName, int divisor) {
-        super(field, name);
+                                DateTimeFieldType type, String durationName, int divisor) {
+        super(field, type);
                 
         if (divisor < 2) {
             throw new IllegalArgumentException("The divisor must be at least 2");
@@ -121,10 +122,10 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * RemainderDateTimeField.
      *
      * @param remainderField  complimentary remainder field, like "yearOfCentury()".
-     * @param name  short, descriptive name, like "century".
+     * @param type  the field type this field will actually use
      */
-    public DividedDateTimeField(RemainderDateTimeField remainderField, String name) {
-        super(remainderField.getWrappedField(), name);
+    public DividedDateTimeField(RemainderDateTimeField remainderField, DateTimeFieldType type) {
+        super(remainderField.getWrappedField(), type);
         int divisor = iDivisor = remainderField.iDivisor;
         iDurationField = remainderField.iRangeField;
 

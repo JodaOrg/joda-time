@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -80,14 +81,14 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * Constructor.
      * 
      * @param field  the field to wrap, like "year()".
-     * @param name  short, descriptive name, like "yearOfCentury".
+     * @param type  the field type this field actually uses
      * @param rangeName  short, descriptive name, like "centuries".
      * @param divisor  divisor, such as 100 years in a century
      * @throws IllegalArgumentException if divisor is less than two
      */
     public RemainderDateTimeField(DateTimeField field,
-                                  String name, String rangeName, int divisor) {
-        super(field, name);
+                                  DateTimeFieldType type, String rangeName, int divisor) {
+        super(field, type);
 
         if (divisor < 2) {
             throw new IllegalArgumentException("The divisor must be at least 2");
@@ -108,14 +109,25 @@ public class RemainderDateTimeField extends DecoratedDateTimeField {
      * DividedDateTimeField.
      *
      * @param dividedField  complimentary divided field, like "century()".
-     * @param name  short, descriptive name, like "yearOfCentury".
      */
-    public RemainderDateTimeField(DividedDateTimeField dividedField, String name) {
-        super(dividedField.getWrappedField(), name);
+    public RemainderDateTimeField(DividedDateTimeField dividedField) {
+        this(dividedField, dividedField.getType());
+    }
+
+    /**
+     * Construct a RemainderDateTimeField that compliments the given
+     * DividedDateTimeField.
+     *
+     * @param dividedField  complimentary divided field, like "century()".
+     * @param type  the field type this field actually uses
+     */
+    public RemainderDateTimeField(DividedDateTimeField dividedField, DateTimeFieldType type) {
+        super(dividedField.getWrappedField(), type);
         iDivisor = dividedField.iDivisor;
         iRangeField = dividedField.iDurationField;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Get the remainder from the specified time instant.
      * 

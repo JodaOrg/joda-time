@@ -53,10 +53,10 @@
  */
 package org.joda.time.chrono;
 
-import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
-import org.joda.time.field.ImpreciseDateTimeField;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
  *
@@ -73,7 +73,7 @@ final class CopticYearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     CopticYearDateTimeField(BaseGJChronology chronology) {
-        super("year", "years", chronology.getAverageMillisPerYear());
+        super(DateTimeFieldType.year(), "years", chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
 

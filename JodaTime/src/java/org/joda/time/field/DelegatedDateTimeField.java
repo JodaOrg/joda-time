@@ -56,6 +56,7 @@ package org.joda.time.field;
 import java.io.Serializable;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
@@ -77,8 +78,8 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
 
     /** The DateTimeField being wrapped */
     private final DateTimeField iField;
-    /** A desriptive name for the field */
-    private final String iName;
+    /** The override field type */
+    private final DateTimeFieldType iType;
 
     /**
      * Constructor.
@@ -93,15 +94,15 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
      * Constructor.
      * 
      * @param field  the field being decorated
-     * @param name  the name of the field
+     * @param type  the field type override
      */
-    protected DelegatedDateTimeField(DateTimeField field, String name) {
+    protected DelegatedDateTimeField(DateTimeField field, DateTimeFieldType type) {
         super();
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");
         }
         iField = field;
-        iName = name;
+        iType = (type == null ? field.getType() : type);
     }
 
     /**
@@ -113,8 +114,12 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField;
     }
 
+    public DateTimeFieldType getType() {
+        return iType;
+    }
+
     public String getName() {
-        return (iName == null) ? iField.getName() : iName;
+        return iType.getName();
     }
 
     public boolean isSupported() {
@@ -294,8 +299,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
     }
 
     public String toString() {
-        return (iName == null) ? iField.toString() :
-            ("DateTimeField[" + iName + ']');
+        return ("DateTimeField[" + getName() + ']');
     }
 
 }

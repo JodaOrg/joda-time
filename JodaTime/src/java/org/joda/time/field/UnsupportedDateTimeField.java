@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
@@ -85,41 +86,41 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * @throws IllegalArgumentException if durationField is null
      */
     public static synchronized UnsupportedDateTimeField getInstance(
-            String name, DurationField durationField) {
+            DateTimeFieldType type, DurationField durationField) {
 
         UnsupportedDateTimeField field;
         if (cCache == null) {
             cCache = new HashMap(7);
             field = null;
         } else {
-            field = (UnsupportedDateTimeField)cCache.get(name);
+            field = (UnsupportedDateTimeField)cCache.get(type);
             if (field != null && field.getDurationField() != durationField) {
                 field = null;
             }
         }
         if (field == null) {
-            field = new UnsupportedDateTimeField(name, durationField);
-            cCache.put(name, field);
+            field = new UnsupportedDateTimeField(type, durationField);
+            cCache.put(type, field);
         }
         return field;
     }
 
-    /** The name of the datetime field */
-    private final String iName;
+    /** The field type */
+    private final DateTimeFieldType iType;
     /** The duration of the datetime field */
     private final DurationField iDurationField;
 
     /**
      * Constructor.
      * 
-     * @param name  the name to use
+     * @param type  the field type
      * @param durationField  the duration to use
      */
-    private UnsupportedDateTimeField(String name, DurationField durationField) {
-        if (durationField == null) {
+    private UnsupportedDateTimeField(DateTimeFieldType type, DurationField durationField) {
+        if (type == null || durationField == null) {
             throw new IllegalArgumentException();
         }
-        iName = name;
+        iType = type;
         iDurationField = durationField;
     }
 
@@ -127,8 +128,12 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     // Design note: Simple accessors return a suitable value, but methods
     // intended to perform calculations throw an UnsupportedOperationException.
 
+    public DateTimeFieldType getType() {
+        return iType;
+    }
+
     public String getName() {
-        return iName;
+        return iType.getName();
     }
 
     /**
@@ -542,11 +547,11 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * Ensure proper singleton serialization
      */
     private Object readResolve() {
-        return getInstance(iName, iDurationField);
+        return getInstance(iType, iDurationField);
     }
 
     private UnsupportedOperationException unsupported() {
-        return new UnsupportedOperationException(iName + " field is unsupported");
+        return new UnsupportedOperationException(iType + " field is unsupported");
     }
 
 }

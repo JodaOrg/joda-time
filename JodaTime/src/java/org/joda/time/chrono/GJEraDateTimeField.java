@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
@@ -80,7 +81,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
      * Restricted constructor
      */
     GJEraDateTimeField(BaseGJChronology chronology) {
-        super("era");
+        super(DateTimeFieldType.era());
         iChronology = chronology;
     }
 

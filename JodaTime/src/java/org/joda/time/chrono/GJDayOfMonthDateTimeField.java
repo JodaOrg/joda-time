@@ -54,6 +54,7 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.PreciseDurationDateTimeField;
@@ -76,7 +77,7 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
      * Restricted constructor.
      */
     GJDayOfMonthDateTimeField(BaseGJChronology chronology, DurationField days) {
-        super("dayOfMonth", days);
+        super(DateTimeFieldType.dayOfMonth(), days);
         iChronology = chronology;
     }
 

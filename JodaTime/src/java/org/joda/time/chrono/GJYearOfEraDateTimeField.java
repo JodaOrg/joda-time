@@ -54,6 +54,7 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
@@ -73,7 +74,7 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
      * Restricted constructor.
      */
     GJYearOfEraDateTimeField(DateTimeField yearField, BaseGJChronology chronology) {
-        super(yearField, "yearOfEra");
+        super(yearField, DateTimeFieldType.yearOfEra());
         iChronology = chronology;
     }
 

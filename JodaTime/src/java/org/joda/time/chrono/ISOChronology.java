@@ -61,6 +61,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.RemainderDateTimeField;
@@ -205,10 +206,10 @@ public final class ISOChronology extends AssembledChronology {
     protected void assemble(Fields fields) {
         if (getBase().getZone() == DateTimeZone.UTC) {
             // Use zero based century and year of century.
-            fields.centuryOfEra = new DividedDateTimeField
-                (ISOYearOfEraDateTimeField.INSTANCE, "centuryOfEra", "centuries", 100);
-            fields.yearOfCentury = new RemainderDateTimeField
-                ((DividedDateTimeField)fields.centuryOfEra, "yearOfCentury");
+            fields.centuryOfEra = new DividedDateTimeField(
+                ISOYearOfEraDateTimeField.INSTANCE, DateTimeFieldType.centuryOfEra(), "centuries", 100);
+            fields.yearOfCentury = new RemainderDateTimeField(
+                (DividedDateTimeField) fields.centuryOfEra, DateTimeFieldType.yearOfCentury());
 
             fields.centuries = fields.centuryOfEra.getDurationField();
         }

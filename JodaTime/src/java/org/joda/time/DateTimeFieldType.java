@@ -86,6 +86,8 @@ public class DateTimeFieldType implements Serializable {
     private static final DateTimeFieldType MONTH_OF_YEAR = new DateTimeFieldType("monthOfYear");
     /** The dayOfMonth field. */
     private static final DateTimeFieldType DAY_OF_MONTH = new DateTimeFieldType("dayOfMonth");
+    /** The weekyearOfCentury field. */
+    private static final DateTimeFieldType WEEKYEAR_OF_CENTURY = new DateTimeFieldType("weekyearOfCentury");
     /** The weekyear field. */
     private static final DateTimeFieldType WEEKYEAR = new DateTimeFieldType("weekyear");
     /** The weekOfWeekyear field. */
@@ -325,6 +327,15 @@ public class DateTimeFieldType implements Serializable {
      */
     public static DateTimeFieldType weekyear() {
         return WEEKYEAR;
+    }
+
+    /**
+     * Get the year of a week based year within a century field type.
+     * 
+     * @return the DateTimeFieldType constant
+     */
+    public static DateTimeFieldType weekyearOfCentury() {
+        return WEEKYEAR_OF_CENTURY;
     }
 
     /**

@@ -53,6 +53,7 @@
  */
 package org.joda.time.chrono.gj;
 
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -61,7 +62,7 @@ import org.joda.time.DurationField;
  */
 class TestGJMonthOfYearField extends TestGJDateTimeField {
     public TestGJMonthOfYearField(TestGJChronology chrono) {
-        super("monthOfYear", "months", chrono.millisPerMonth(), chrono);
+        super(DateTimeFieldType.monthOfYear(), "months", chrono.millisPerMonth(), chrono);
     }
 
     public int get(long millis) {

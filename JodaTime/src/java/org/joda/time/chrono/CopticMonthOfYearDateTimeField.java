@@ -54,6 +54,7 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
 
@@ -72,7 +73,7 @@ final class CopticMonthOfYearDateTimeField extends PreciseDurationDateTimeField 
      * Restricted constructor.
      */
     CopticMonthOfYearDateTimeField(BaseGJChronology chronology, DurationField months) {
-        super("monthOfYear", months);
+        super(DateTimeFieldType.monthOfYear(), months);
         iChronology = chronology;
     }
 

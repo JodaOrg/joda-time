@@ -53,6 +53,7 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -75,13 +76,13 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
     /**
      * Constructor.
      * 
-     * @param name  short, descriptive name, like "dayOfMonth".
+     * @param type  the field type
      * @param unit  precise unit duration, like "days()".
      * @throws IllegalArgumentException if duration field is imprecise
      * @throws IllegalArgumentException if unit milliseconds is less than one
      */
-    public PreciseDurationDateTimeField(String name, DurationField unit) {
-        super(name);
+    public PreciseDurationDateTimeField(DateTimeFieldType type, DurationField unit) {
+        super(type);
 
         if (!unit.isPrecise()) {
             throw new IllegalArgumentException("Unit duration field must be precise");

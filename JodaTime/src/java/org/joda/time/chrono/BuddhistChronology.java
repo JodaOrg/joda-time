@@ -60,6 +60,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.OffsetDateTimeField;
@@ -208,20 +209,23 @@ public final class BuddhistChronology extends AssembledChronology {
     protected void assemble(Fields fields) {
         if (getParam() == null) {
             DateTimeField field = fields.year;
-            fields.year = new OffsetDateTimeField(field, field.getName(), BUDDHIST_OFFSET);
+            fields.year = new OffsetDateTimeField(field, BUDDHIST_OFFSET);
             
             field = fields.yearOfEra;
-            fields.yearOfEra = new OffsetDateTimeField(fields.year, field.getName(), BUDDHIST_OFFSET);
+            fields.yearOfEra = new OffsetDateTimeField(
+                fields.year, DateTimeFieldType.yearOfEra(), BUDDHIST_OFFSET);
             
             field = fields.weekyear;
-            fields.weekyear = new OffsetDateTimeField(field, field.getName(), BUDDHIST_OFFSET);
+            fields.weekyear = new OffsetDateTimeField(field, BUDDHIST_OFFSET);
             
-            field = new OffsetDateTimeField(fields.yearOfEra, "", 99);
-            fields.centuryOfEra = new DividedDateTimeField(field, "centuryOfEra", "centuries", 100);
+            field = new OffsetDateTimeField(fields.yearOfEra, 99);
+            fields.centuryOfEra = new DividedDateTimeField(
+                field, DateTimeFieldType.centuryOfEra(), "centuries", 100);
             
-            field = new RemainderDateTimeField
-                ((DividedDateTimeField)fields.centuryOfEra, "");
-            fields.yearOfCentury = new OffsetDateTimeField(field, "yearOfCentury", 1);
+            field = new RemainderDateTimeField(
+                (DividedDateTimeField) fields.centuryOfEra);
+            fields.yearOfCentury = new OffsetDateTimeField(
+                field, DateTimeFieldType.yearOfCentury(), 1);
             
             fields.era = BuddhistEraDateTimeField.INSTANCE;
         }

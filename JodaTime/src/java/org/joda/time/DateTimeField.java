@@ -71,6 +71,13 @@ import java.util.Locale;
 public abstract class DateTimeField {
 
     /**
+     * Get the type of the field.
+     * 
+     * @return field type
+     */
+    public abstract DateTimeFieldType getType();
+
+    /**
      * Get the name of the field, intended for debugging purposes only. By
      * convention, names follow a pattern of "dddOfRrr", where "ddd" represents
      * the (singular) duration field name and "Rrr" represents the (singular)

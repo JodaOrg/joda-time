@@ -64,6 +64,7 @@ import java.util.Map;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
@@ -289,15 +290,15 @@ public class DateTimeFormat {
                     switch (c) {
                     case 'x':
                         field = new RemainderDateTimeField
-                            (chronoUTC.weekyear(), "weekyearOfCentury", "centuries", 100);
+                            (chronoUTC.weekyear(), DateTimeFieldType.weekyearOfCentury(), "centuries", 100);
                         break;
                     case 'y': default:
                         field = new RemainderDateTimeField
-                            (chronoUTC.year(), "yearOfCentury", "centuries", 100);
+                            (chronoUTC.year(), DateTimeFieldType.yearOfCentury(), "centuries", 100);
                         break;
                     case 'Y':
                         field = new RemainderDateTimeField
-                            (chronoUTC.yearOfEra(), "yearOfCentury", "centuries", 100);
+                            (chronoUTC.yearOfEra(), DateTimeFieldType.yearOfCentury(), "centuries", 100);
                         break;
                     }
                     builder.appendDecimal(field, 2, 2);

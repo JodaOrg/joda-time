@@ -315,7 +315,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfSecond() {
-        return UnsupportedDateTimeField.getInstance("millisOfSecond", millis());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.millisOfSecond(), millis());
     }
 
     /**
@@ -324,7 +324,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfDay() {
-        return UnsupportedDateTimeField.getInstance("millisOfDay", millis());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.millisOfDay(), millis());
     }
 
     // Second
@@ -344,7 +344,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfMinute() {
-        return UnsupportedDateTimeField.getInstance("secondOfMinute", seconds());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.secondOfMinute(), seconds());
     }
 
     /**
@@ -353,7 +353,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfDay() {
-        return UnsupportedDateTimeField.getInstance("secondOfDay", seconds());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.secondOfDay(), seconds());
     }
 
     // Minute
@@ -373,7 +373,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfHour() {
-        return UnsupportedDateTimeField.getInstance("minuteOfHour", minutes());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.minuteOfHour(), minutes());
     }
 
     /**
@@ -382,7 +382,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfDay() {
-        return UnsupportedDateTimeField.getInstance("minuteOfDay", minutes());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.minuteOfDay(), minutes());
     }
 
     // Hour
@@ -402,7 +402,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfDay() {
-        return UnsupportedDateTimeField.getInstance("hourOfDay", hours());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.hourOfDay(), hours());
     }
 
     /**
@@ -411,7 +411,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfDay() {
-        return UnsupportedDateTimeField.getInstance("clockhourOfDay", hours());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.clockhourOfDay(), hours());
     }
 
     /**
@@ -420,7 +420,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfHalfday() {
-        return UnsupportedDateTimeField.getInstance("hourOfHalfday", hours());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.hourOfHalfday(), hours());
     }
 
     /**
@@ -429,7 +429,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfHalfday() {
-        return UnsupportedDateTimeField.getInstance("clockhourOfHalfday", hours());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.clockhourOfHalfday(), hours());
     }
 
     /**
@@ -439,7 +439,7 @@ public abstract class BaseChronology
      */
     public DateTimeField halfdayOfDay() {
         return UnsupportedDateTimeField.getInstance
-            ("halfdayOfDay", UnsupportedDurationField.getInstance("halfdays"));
+            (DateTimeFieldType.halfdayOfDay(), UnsupportedDurationField.getInstance("halfdays"));
     }
 
     // Day
@@ -463,7 +463,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfWeek() {
-        return UnsupportedDateTimeField.getInstance("dayOfWeek", days());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.dayOfWeek(), days());
     }
 
     /**
@@ -472,7 +472,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfMonth() {
-        return UnsupportedDateTimeField.getInstance("dayOfMonth", days());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.dayOfMonth(), days());
     }
 
     /**
@@ -481,7 +481,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfYear() {
-        return UnsupportedDateTimeField.getInstance("dayOfYear", days());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.dayOfYear(), days());
     }
 
     // Week
@@ -501,7 +501,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekOfWeekyear() {
-        return UnsupportedDateTimeField.getInstance("weekOfWeekyear", weeks());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekOfWeekyear(), weeks());
     }
 
     /**
@@ -519,7 +519,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekyear() {
-        return UnsupportedDateTimeField.getInstance("weekyear", weekyears());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekyear(), weekyears());
     }
 
     // Month
@@ -539,7 +539,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField monthOfYear() {
-        return UnsupportedDateTimeField.getInstance("monthOfYear", months());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.monthOfYear(), months());
     }
 
     // Year
@@ -559,7 +559,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField year() {
-        return UnsupportedDateTimeField.getInstance("year", years());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.year(), years());
     }
 
     /**
@@ -568,7 +568,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfEra() {
-        return UnsupportedDateTimeField.getInstance("yearOfEra", years());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.yearOfEra(), years());
     }
 
     /**
@@ -577,7 +577,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfCentury() {
-        return UnsupportedDateTimeField.getInstance("yearOfCentury", years());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.yearOfCentury(), years());
     }
 
     /**
@@ -595,7 +595,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField centuryOfEra() {
-        return UnsupportedDateTimeField.getInstance("centuryOfEra", centuries());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.centuryOfEra(), centuries());
     }
 
     /**
@@ -613,7 +613,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField era() {
-        return UnsupportedDateTimeField.getInstance("era", eras());
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.era(), eras());
     }
 
     /**

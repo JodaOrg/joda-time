@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.ImpreciseDateTimeField;
@@ -83,7 +84,7 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     GJMonthOfYearDateTimeField(BaseGJChronology chronology) {
-        super("monthOfYear", "months", chronology.getAverageMillisPerMonth());
+        super(DateTimeFieldType.monthOfYear(), "months", chronology.getAverageMillisPerMonth());
         iChronology = chronology;
     }
 

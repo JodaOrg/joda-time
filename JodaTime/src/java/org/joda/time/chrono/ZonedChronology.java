@@ -356,7 +356,7 @@ public final class ZonedChronology extends AssembledChronology {
                            DurationField durationField,
                            DurationField rangeDurationField,
                            DurationField leapDurationField) {
-            super(field.getName());
+            super(field.getType());
             if (!field.isSupported()) {
                 throw new IllegalArgumentException();
             }

@@ -53,10 +53,10 @@
  */
 package org.joda.time.field;
 
-import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
@@ -75,27 +75,28 @@ import org.joda.time.ReadablePartial;
  * @since 1.0
  * @see DecoratedDateTimeField
  */
-public abstract class BaseDateTimeField extends DateTimeField implements Serializable {
+public abstract class BaseDateTimeField extends DateTimeField {
 
-    /** Serialization version */
-    private static final long serialVersionUID = -4388055220581798589L;
-
-    /** A desriptive name for the field */
-    private final String iName;
+    /** The field type. */
+    private final DateTimeFieldType iType;
 
     /**
      * Constructor.
      */
-    protected BaseDateTimeField(String name) {
+    protected BaseDateTimeField(DateTimeFieldType type) {
         super();
-        if (name == null) {
-            throw new IllegalArgumentException("The name must not be null");
+        if (type == null) {
+            throw new IllegalArgumentException("The type must not be null");
         }
-        iName = name;
+        iType = type;
     }
     
+    public final DateTimeFieldType getType() {
+        return iType;
+    }
+
     public final String getName() {
-        return iName;
+        return iType.getName();
     }
 
     /**

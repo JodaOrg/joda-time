@@ -53,6 +53,7 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -81,7 +82,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Constructor.
      * 
-     * @param name  short, descriptive name, like "secondOfMinute".
+     * @param type  the field type this field uses
      * @param unit  precise unit duration, like "seconds()".
      * @param range precise range duration, preferably a multiple of the unit,
      * like "minutes()".
@@ -89,9 +90,9 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      * @throws IllegalArgumentException if unit milliseconds is less than one
      * or effective value range is less than two.
      */
-    public PreciseDateTimeField(String name,
+    public PreciseDateTimeField(DateTimeFieldType type,
                                 DurationField unit, DurationField range) {
-        super(name, unit);
+        super(type, unit);
 
         if (!range.isPrecise()) {
             throw new IllegalArgumentException("Range duration field must be precise");

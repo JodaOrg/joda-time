@@ -54,6 +54,7 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
@@ -79,7 +80,7 @@ class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
      * Restricted constructor.
      */
     private ISOYearOfEraDateTimeField() {
-        super(GregorianChronology.getInstanceUTC().year(), "yearOfEra");
+        super(GregorianChronology.getInstanceUTC().year(), DateTimeFieldType.yearOfEra());
     }
 
     public int get(long instant) {

@@ -441,7 +441,7 @@ public final class LimitChronology extends AssembledChronology {
                            DurationField durationField,
                            DurationField rangeDurationField,
                            DurationField leapDurationField) {
-            super(field, field.getName());
+            super(field, field.getType());
             iDurationField = durationField;
             iRangeDurationField = rangeDurationField;
             iLeapDurationField = leapDurationField;

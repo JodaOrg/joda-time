@@ -53,6 +53,7 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -83,12 +84,12 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
     /**
      * Constructor.
      * 
-     * @param name  short, descriptive name, like "monthOfYear".
+     * @param type  the field type
      * @param durationName  short, descriptive name, like "months".
      * @param unitMillis  the average duration unit milliseconds
      */
-    public ImpreciseDateTimeField(String name, String durationName, long unitMillis) {
-        super(name);
+    public ImpreciseDateTimeField(DateTimeFieldType type, String durationName, long unitMillis) {
+        super(type);
         iUnitMillis = unitMillis;
         iDurationField = new LinkedDurationField(durationName);
     }

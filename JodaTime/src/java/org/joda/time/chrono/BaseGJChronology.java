@@ -58,6 +58,7 @@ import java.util.Locale;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.field.DividedDateTimeField;
@@ -157,34 +158,34 @@ public abstract class BaseGJChronology extends AssembledChronology {
             ("weeks", DateTimeConstants.MILLIS_PER_WEEK);
 
         cMillisOfSecondField = new PreciseDateTimeField
-            ("millisOfSecond", cMillisField, cSecondsField);
+            (DateTimeFieldType.millisOfSecond(), cMillisField, cSecondsField);
 
         cMillisOfDayField = new PreciseDateTimeField
-            ("millisOfDay", cMillisField, cDaysField);
+            (DateTimeFieldType.millisOfDay(), cMillisField, cDaysField);
              
         cSecondOfMinuteField = new PreciseDateTimeField
-            ("secondOfMinute", cSecondsField, cMinutesField);
+            (DateTimeFieldType.secondOfMinute(), cSecondsField, cMinutesField);
 
         cSecondOfDayField = new PreciseDateTimeField
-            ("secondOfDay", cSecondsField, cDaysField);
+            (DateTimeFieldType.secondOfDay(), cSecondsField, cDaysField);
 
         cMinuteOfHourField = new PreciseDateTimeField
-            ("minuteOfHour", cMinutesField, cHoursField);
+            (DateTimeFieldType.minuteOfHour(), cMinutesField, cHoursField);
 
         cMinuteOfDayField = new PreciseDateTimeField
-            ("minuteOfDay", cMinutesField, cDaysField);
+            (DateTimeFieldType.minuteOfDay(), cMinutesField, cDaysField);
 
         cHourOfDayField = new PreciseDateTimeField
-            ("hourOfDay", cHoursField, cDaysField);
+            (DateTimeFieldType.hourOfDay(), cHoursField, cDaysField);
 
         cHourOfHalfdayField = new PreciseDateTimeField
-            ("hourOfHalfday", cHoursField, cHalfdaysField);
+            (DateTimeFieldType.hourOfHalfday(), cHoursField, cHalfdaysField);
 
         cClockhourOfDayField = new NonZeroDateTimeField
-            (cHourOfDayField, "clockhourOfDay");
+            (cHourOfDayField, DateTimeFieldType.clockhourOfDay());
 
         cClockhourOfHalfdayField = new NonZeroDateTimeField
-            (cHourOfHalfdayField, "clockhourOfHalfday");
+            (cHourOfHalfdayField, DateTimeFieldType.clockhourOfHalfday());
 
         cHalfdayOfDayField = new HalfdayField();
     }
@@ -337,13 +338,15 @@ public abstract class BaseGJChronology extends AssembledChronology {
         fields.yearOfEra = new GJYearOfEraDateTimeField(fields.year, this);
 
         // Define one-based centuryOfEra and yearOfCentury.
-        DateTimeField field = new OffsetDateTimeField(fields.yearOfEra, "", 99);
-        fields.centuryOfEra = new DividedDateTimeField
-            (field, "centuryOfEra", "centuries", 100);
+        DateTimeField field = new OffsetDateTimeField(
+            fields.yearOfEra, 99);
+        fields.centuryOfEra = new DividedDateTimeField(
+            field, DateTimeFieldType.centuryOfEra(), "centuries", 100);
         
-        field = new RemainderDateTimeField
-            ((DividedDateTimeField)fields.centuryOfEra, "");
-        fields.yearOfCentury = new OffsetDateTimeField(field, "yearOfCentury", 1);
+        field = new RemainderDateTimeField(
+            (DividedDateTimeField) fields.centuryOfEra);
+        fields.yearOfCentury = new OffsetDateTimeField(
+            field, DateTimeFieldType.yearOfCentury(), 1);
 
         fields.era = new GJEraDateTimeField(this);
         fields.dayOfWeek = new GJDayOfWeekDateTimeField(this, fields.days);
@@ -819,7 +822,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
         private static final long serialVersionUID = 581601443656929254L;
 
         HalfdayField() {
-            super("halfdayOfDay", cHalfdaysField, cDaysField);
+            super(DateTimeFieldType.halfdayOfDay(), cHalfdaysField, cDaysField);
         }
 
         protected String getAsText(int fieldValue, Locale locale) {

@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
 
@@ -79,7 +80,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * Restricted constructor.
      */
     GJDayOfWeekDateTimeField(BaseGJChronology chronology, DurationField days) {
-        super("dayOfWeek", days);
+        super(DateTimeFieldType.dayOfWeek(), days);
         iChronology = chronology;
     }
 

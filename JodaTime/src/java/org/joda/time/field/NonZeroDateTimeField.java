@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 
@@ -72,11 +73,14 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
     private static final long serialVersionUID = 961749798233026866L;
 
     /**
-     * @param name  short, descriptive name, like "clockhourOfDay".
+     * Constructor.
+     * 
+     * @param field  the base field
+     * @param type  the field type this field will actually use
      * @throws IllegalArgumentException if wrapped field's minimum value is not zero
      */
-    public NonZeroDateTimeField(DateTimeField field, String name) {
-        super(field, name);
+    public NonZeroDateTimeField(DateTimeField field, DateTimeFieldType type) {
+        super(field, type);
         if (field.getMinimumValue() != 0) {
             throw new IllegalArgumentException("Wrapped field's minumum value must be zero");
         }

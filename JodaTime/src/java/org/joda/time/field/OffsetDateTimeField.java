@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -73,30 +74,41 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
     private final int iMax;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param field  the field to wrap, like "year()".
-     * @param name  short, descriptive name, like "offsetYear".
      * @param offset  offset to add to field values
      * @throws IllegalArgumentException if offset is zero
      */
-    public OffsetDateTimeField(DateTimeField field, String name, int offset) {
-        this(field, name, offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public OffsetDateTimeField(DateTimeField field, int offset) {
+        this(field, field.getType(), offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param field  the field to wrap, like "year()".
-     * @param name  short, descriptive name, like "offsetYear".
+     * @param type  the field type this field actually uses
+     * @param offset  offset to add to field values
+     * @throws IllegalArgumentException if offset is zero
+     */
+    public OffsetDateTimeField(DateTimeField field, DateTimeFieldType type, int offset) {
+        this(field, type, offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param field  the field to wrap, like "year()".
+     * @param type  the field type this field actually uses
      * @param offset  offset to add to field values
      * @param minValue  minimum allowed value
      * @param maxValue  maximum allowed value
      * @throws IllegalArgumentException if offset is zero
      */
-    public OffsetDateTimeField(DateTimeField field, String name, int offset,
+    public OffsetDateTimeField(DateTimeField field, DateTimeFieldType type, int offset,
                                int minValue, int maxValue) {
-        super(field, name);
+        super(field, type);
                 
         if (offset == 0) {
             throw new IllegalArgumentException("The offset cannot be zero");

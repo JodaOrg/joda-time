@@ -54,6 +54,7 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.PreciseDurationDateTimeField;
@@ -74,7 +75,7 @@ final class CopticDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
      * Restricted constructor.
      */
     CopticDayOfMonthDateTimeField(BaseGJChronology chronology, DurationField days) {
-        super("dayOfMonth", days);
+        super(DateTimeFieldType.dayOfMonth(), days);
         iChronology = chronology;
     }
 

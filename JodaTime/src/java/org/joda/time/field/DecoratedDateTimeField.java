@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 
 /**
@@ -85,10 +86,10 @@ public abstract class DecoratedDateTimeField extends BaseDateTimeField {
      * Constructor.
      * 
      * @param field  the field being decorated
-     * @param name  allow name to be overridden
+     * @param type  allow type to be overridden
      */
-    protected DecoratedDateTimeField(DateTimeField field, String name) {
-        super(name);
+    protected DecoratedDateTimeField(DateTimeField field, DateTimeFieldType type) {
+        super(type);
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");
         }

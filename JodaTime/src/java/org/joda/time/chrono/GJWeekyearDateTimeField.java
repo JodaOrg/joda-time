@@ -54,10 +54,10 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
-import org.joda.time.field.ImpreciseDateTimeField;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
  * Provides time calculations for the week of the weekyear component of time.
@@ -81,7 +81,7 @@ final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     GJWeekyearDateTimeField(BaseGJChronology chronology) {
-        super("weekyear", "weekyears", chronology.getAverageMillisPerYear());
+        super(DateTimeFieldType.weekyear(), "weekyears", chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
 

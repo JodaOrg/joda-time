@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import java.util.Locale;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
@@ -81,7 +82,7 @@ final class CopticEraDateTimeField extends BaseDateTimeField {
      * Restricted constructor
      */
     private CopticEraDateTimeField() {
-        super("era");
+        super(DateTimeFieldType.era());
     }
 
     /**

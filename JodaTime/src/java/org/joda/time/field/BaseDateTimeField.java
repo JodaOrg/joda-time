@@ -61,21 +61,21 @@ import org.joda.time.DurationField;
 import org.joda.time.partial.PartialInstant;
 
 /**
- * AbstractDateTimeField provides the common behaviour for DateTimeField
+ * BaseDateTimeField provides the common behaviour for DateTimeField
  * implementations. 
  * <p>
  * This class should generally not be used directly by API users. The
  * DateTimeField interface should be used when different kinds of DateTimeField
  * objects are to be referenced.
  * <p>
- * AbstractDateTimeField is thread-safe and immutable, and its subclasses must
+ * BaseDateTimeField is thread-safe and immutable, and its subclasses must
  * be as well.
  *
  * @author Brian S O'Neill
  * @since 1.0
  * @see DecoratedDateTimeField
  */
-public abstract class AbstractDateTimeField extends DateTimeField implements Serializable {
+public abstract class BaseDateTimeField extends DateTimeField implements Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = -4388055220581798589L;
@@ -86,7 +86,7 @@ public abstract class AbstractDateTimeField extends DateTimeField implements Ser
     /**
      * Constructor.
      */
-    protected AbstractDateTimeField(String name) {
+    protected BaseDateTimeField(String name) {
         super();
         if (name == null) {
             throw new IllegalArgumentException("The name must not be null");

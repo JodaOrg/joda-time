@@ -57,7 +57,7 @@ import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DurationField;
-import org.joda.time.field.AbstractDateTimeField;
+import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.field.FieldUtils;
 
@@ -69,7 +69,7 @@ import org.joda.time.field.FieldUtils;
  * @version 1.0
  * @since 1.0
  */
-final class GJEraDateTimeField extends AbstractDateTimeField {
+final class GJEraDateTimeField extends BaseDateTimeField {
     
     /** Serialization version */
     private static final long serialVersionUID = 4240986525305515528L;

@@ -57,7 +57,7 @@ import java.util.Locale;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.field.AbstractDateTimeField;
+import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.field.FieldUtils;
 
@@ -67,7 +67,7 @@ import org.joda.time.field.FieldUtils;
  * @author Brian S O'Neill
  * @since 1.0
  */
-final class CopticEraDateTimeField extends AbstractDateTimeField {
+final class CopticEraDateTimeField extends BaseDateTimeField {
     
     /** Serialization version */
     private static final long serialVersionUID = 4090856468123006167L;

@@ -64,7 +64,7 @@ import org.joda.time.DurationField;
  * {@link PreciseDateTimeField} should be used instead.
  * <p>
  * When defining imprecise DateTimeFields where a matching DurationField is
- * already available, just extend AbstractDateTimeField directly so as not to
+ * already available, just extend BaseDateTimeField directly so as not to
  * create redundant DurationField instances.
  * <p>
  * ImpreciseDateTimeField is thread-safe and immutable, and its subclasses must
@@ -73,7 +73,7 @@ import org.joda.time.DurationField;
  * @author Brian S O'Neill
  * @see PreciseDateTimeField
  */
-public abstract class ImpreciseDateTimeField extends AbstractDateTimeField {
+public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
 
     static final long serialVersionUID = 7190739608550251860L;
 

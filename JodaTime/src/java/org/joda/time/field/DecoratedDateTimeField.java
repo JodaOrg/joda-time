@@ -57,13 +57,13 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
 
 /**
- * <code>DecoratedDateTimeField</code> extends {@link AbstractDateTimeField},
+ * <code>DecoratedDateTimeField</code> extends {@link BaseDateTimeField},
  * implementing only the minimum required set of methods. These implemented
  * methods delegate to a wrapped field.
  * <p>
  * This design allows new DateTimeField types to be defined that piggyback on
  * top of another, inheriting all the safe method implementations from
- * AbstractDateTimeField. Should any method require pure delegation to the
+ * BaseDateTimeField. Should any method require pure delegation to the
  * wrapped field, simply override and use the provided getWrappedField method.
  * <p>
  * DecoratedDateTimeField is thread-safe and immutable, and its subclasses must
@@ -73,7 +73,7 @@ import org.joda.time.DurationField;
  * @since 1.0
  * @see DelegatedDateTimeField
  */
-public abstract class DecoratedDateTimeField extends AbstractDateTimeField {
+public abstract class DecoratedDateTimeField extends BaseDateTimeField {
 
     /** Serialization version */
     private static final long serialVersionUID = 203115783733757597L;

@@ -66,7 +66,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.Instant;
 import org.joda.time.ReadableInstant;
-import org.joda.time.field.AbstractDateTimeField;
+import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.DecoratedDurationField;
 import org.joda.time.format.DateTimePrinter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -599,7 +599,7 @@ public final class GJChronology extends AssembledChronology {
      * This basic cutover field adjusts calls to 'get' and 'set' methods, and
      * assumes that calls to add and addWrapped are unaffected by the cutover.
      */
-    private class CutoverField extends AbstractDateTimeField {
+    private class CutoverField extends BaseDateTimeField {
         static final long serialVersionUID = 3528501219481026402L;
 
         final DateTimeField iJulianField;

@@ -61,7 +61,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
-import org.joda.time.field.AbstractDateTimeField;
+import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.AbstractDurationField;
 
 /**
@@ -355,7 +355,7 @@ public final class ZonedChronology extends AssembledChronology {
      * This class converts passed in instants to local wall time, and vice
      * versa on output.
      */
-    static final class ZonedDateTimeField extends AbstractDateTimeField {
+    static final class ZonedDateTimeField extends BaseDateTimeField {
         static final long serialVersionUID = -3968986277775529794L;
 
         final DateTimeField iField;

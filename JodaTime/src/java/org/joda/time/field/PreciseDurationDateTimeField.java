@@ -63,7 +63,7 @@ import org.joda.time.DurationField;
  *
  * @author Brian S O'Neill
  */
-public abstract class PreciseDurationDateTimeField extends AbstractDateTimeField {
+public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
 
     static final long serialVersionUID = 5004523158306266035L;
 

@@ -142,17 +142,24 @@ public class ISODateTimeFormat {
 
     private transient DateTimeFormatter
         ye,  // year element (yyyy)
-        me,  // month element (-MM)
-        de,  // day element (-dd)
-        he,  // hour element (HH)
-        mne, // minute element (:mm)
-        se,  // second element (:ss)
-        fe,  // fraction element (.SSS)
+        mye, // monthOfYear element (-MM)
+        dme, // dayOfMonth element (-dd)
+        we,  // weekyear element (xxxx)
+        wwe, // weekOfWeekyear element (-ww)
+        dwe, // dayOfWeek element (-ee)
+        hde, // hourOfDay element (HH)
+        mhe, // minuteOfHour element (:mm)
+        sme, // secondOfMinute element (:ss)
+        fse, // fractionOfSecond element (.SSS)
         ze,  // zone offset element
         
         //y,   // year (same as year element)
         ym,  // year month
         ymd, // year month day
+
+        //w,   // weekyear (same as weekyear element)
+        ww,  // weekyear week
+        wwd, // weekyear week day
 
         //h,    // hour (same as hour element)
         hm,   // hour minute
@@ -168,15 +175,21 @@ public class ISODateTimeFormat {
         t,  // time
         dt, // date time
 
+        //wd,  // week date (same as wwd)
+        wdt, // week date time
+
         bd,  // basic date
         bt,  // basic time
-        bdt; // basic date time
+        bdt, // basic date time
+
+        bwd,  // basic week date
+        bwdt; // basic week date time
 
     private transient DateTimeParser
         dpe, // date parser element
         tpe, // time parser element
-        dp, // date parser
-        tp, // time parser
+        dp,  // date parser
+        tp,  // time parser
         dtp; // date time parser
 
     /**
@@ -193,9 +206,10 @@ public class ISODateTimeFormat {
      * Returns a generic ISO date parser. It accepts formats described by
      * the following syntax:
      * <pre>
-     * date         = date-element ['T' offset]
-     * date-element = yyyy ['-' MM ['-' dd]]
-     * offset       = 'Z' | (('+' | '-') HH ':' mm)
+     * date              = date-element ['T' offset]
+     * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
+     * week-date-element = xxxx '-W' ww ['-' e]
+     * offset            = 'Z' | (('+' | '-') HH ':' mm)
      * </pre>
      */
     public DateTimeParser dateParser() {
@@ -216,18 +230,28 @@ public class ISODateTimeFormat {
      * Returns a generic ISO date parser. It accepts formats described by
      * the following syntax:
      * <pre>
-     * date-element = yyyy ['-' MM ['-' dd]]
+     * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
+     * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
      */
     public DateTimeParser dateElementParser() {
         if (dpe == null) {
             dpe = new DateTimeFormatterBuilder(iChrono)
-                .append(yearElement())
-                .appendOptional
-                (new DateTimeFormatterBuilder(iChrono)
-                 .append(monthElement())
-                 .appendOptional(dayElement())
-                 .toParser())
+                .append(null, new DateTimeParser[] {
+                    new DateTimeFormatterBuilder(iChrono)
+                    .append(yearElement())
+                    .appendOptional
+                    (new DateTimeFormatterBuilder(iChrono)
+                     .append(monthElement())
+                     .appendOptional(dayOfMonthElement())
+                     .toParser())
+                    .toParser(),
+                    new DateTimeFormatterBuilder(iChrono)
+                    .append(weekyearElement())
+                    .append(weekElement())
+                    .appendOptional(dayOfWeekElement())
+                    .toParser()
+                })
                 .toParser();
         }
         return dpe;
@@ -285,11 +309,12 @@ public class ISODateTimeFormat {
      * Returns a generic ISO datetime parser. It accepts formats described by
      * the following syntax:
      * <pre>
-     * datetime     = time | (date-element [time | ('T' offset)])
-     * time         = 'T' time-element [offset]
-     * date-element = yyyy ['-' MM ['-' dd]]
-     * time-element = HH [':' mm [':' ss ['.' SSS]]]
-     * offset       = 'Z' | (('+' | '-') HH ':' mm)
+     * datetime          = time | (date-element [time | ('T' offset)])
+     * time              = 'T' time-element [offset]
+     * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
+     * week-date-element = xxxx '-W' ww ['-' e]
+     * time-element      = HH [':' mm [':' ss ['.' SSS]]]
+     * offset            = 'Z' | (('+' | '-') HH ':' mm)
      * </pre>
      */
     public DateTimeParser dateTimeParser() {
@@ -334,8 +359,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, three digit fraction of second, and
-     * time zone offset. (HH:mm:ss.SSSZ) The time zone offset is 'Z' for zero, and
-     * of the form '\u00b1HH:mm' for non-zero.
+     * time zone offset. (HH:mm:ss.SSSZ) The time zone offset is 'Z' for zero,
+     * and of the form '\u00b1HH:mm' for non-zero.
      */
     public DateTimeFormatter time() {
         if (t == null) {
@@ -348,8 +373,8 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a formatter that combines a full date and time, separated by a 'T'.
-     * (yyyy-MM-ddTHH:mm:ss.SSSZ)
+     * Returns a formatter that combines a full date and time, separated by a
+     * 'T'. (yyyy-MM-dd'T'HH:mm:ss.SSSZ)
      */
     public DateTimeFormatter dateTime() {
         if (dt == null) {
@@ -360,6 +385,29 @@ public class ISODateTimeFormat {
                 .toFormatter();
         }
         return dt;
+    }
+
+    /**
+     * Returns a formatter for a full date as four digit weekyear, two digit
+     * week of weekyear, and one digit day of week. (xxxx-'W'ww-e)
+     */
+    public DateTimeFormatter weekDate() {
+        return weekyearWeekDay();
+    }
+
+    /**
+     * Returns a formatter that combines a full weekyear date and time,
+     * separated by a 'T'. (xxxx-'W'ww-e'T'HH:mm:ss.SSSZ)
+     */
+    public DateTimeFormatter weekDateTime() {
+        if (wdt == null) {
+            wdt = new DateTimeFormatterBuilder(iChrono)
+                .append(weekDate())
+                .appendLiteral('T')
+                .append(time())
+                .toFormatter();
+        }
+        return wdt;
     }
 
     //-----------------------------------------------------------------------
@@ -397,7 +445,7 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a basic formatter that combines a basic date and time, separated
-     * by a 'T'. (yyyyMMddTHHmmssZ)
+     * by a 'T'. (yyyyMMdd'T'HHmmssZ)
      */
     public DateTimeFormatter basicDateTime() {
         if (bdt == null) {
@@ -408,6 +456,37 @@ public class ISODateTimeFormat {
                 .toFormatter();
         }
         return bdt;
+    }
+
+    /**
+     * Returns a basic formatter for a full date as four digit weekyear, two
+     * digit week of weekyear, and one digit day of week. (xxxx'W'wwe)
+     */
+    public DateTimeFormatter basicWeekDate() {
+        if (bwd == null) {
+            bwd = new DateTimeFormatterBuilder(iChrono)
+                .appendWeekyear(4, 4)
+                .appendLiteral('W')
+                .appendWeekOfWeekyear(2)
+                .appendDayOfWeek(1)
+                .toFormatter();
+        }
+        return bwd;
+    }
+
+    /**
+     * Returns a basic formatter that combines a basic weekyear date and time,
+     * separated by a 'T'. (xxxx'W'wwe'T'HHmmssZ)
+     */
+    public DateTimeFormatter basicWeekDateTime() {
+        if (bwdt == null) {
+            bwdt = new DateTimeFormatterBuilder(iChrono)
+                .append(basicWeekDate())
+                .appendLiteral('T')
+                .append(basicTime())
+                .toFormatter();
+        }
+        return bwdt;
     }
 
     //-----------------------------------------------------------------------
@@ -441,10 +520,46 @@ public class ISODateTimeFormat {
             ymd = new DateTimeFormatterBuilder(iChrono)
                 .append(yearElement())
                 .append(monthElement())
-                .append(dayElement())
+                .append(dayOfMonthElement())
                 .toFormatter();
         }
         return ymd;
+    }
+
+    /**
+     * Returns a formatter for a four digit weekyear. (xxxx)
+     */
+    public DateTimeFormatter weekyear() {
+        return weekyearElement();
+    }
+
+    /**
+     * Returns a formatter for a four digit weekyear and two digit week of
+     * weekyear. (xxxx-'W'ww)
+     */
+    public DateTimeFormatter weekyearWeek() {
+        if (ww == null) {
+            ww = new DateTimeFormatterBuilder(iChrono)
+                .append(weekyearElement())
+                .append(weekElement())
+                .toFormatter();
+        }
+        return ww;
+    }
+
+    /**
+     * Returns a formatter for a four digit weekyear, two digit week of
+     * weekyear, and one digit day of week. (xxxx-'W'ww-e)
+     */
+    public DateTimeFormatter weekyearWeekDay() {
+        if (wwd == null) {
+            wwd = new DateTimeFormatterBuilder(iChrono)
+                .append(weekyearElement())
+                .append(weekElement())
+                .append(dayOfWeekElement())
+                .toFormatter();
+        }
+        return wwd;
     }
 
     /**
@@ -502,7 +617,7 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full date and two digit hour of
-     * day. (yyyy-MM-ddTHH)
+     * day. (yyyy-MM-dd'T'HH)
      */
     public DateTimeFormatter dateHour() {
         if (dh == null) {
@@ -517,7 +632,7 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
-     * and two digit minute of hour. (yyyy-MM-ddTHH:mm)
+     * and two digit minute of hour. (yyyy-MM-dd'T'HH:mm)
      */
     public DateTimeFormatter dateHourMinute() {
         if (dhm == null) {
@@ -533,7 +648,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, and two digit second of
-     * minute. (yyyy-MM-ddTHH:mm:ss)
+     * minute. (yyyy-MM-dd'T'HH:mm:ss)
      */
     public DateTimeFormatter dateHourMinuteSecond() {
         if (dhms == null) {
@@ -549,7 +664,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, two digit second of minute, and three digit
-     * fraction of second. (yyyy-MM-ddTHH:mm:ss.SSS)
+     * fraction of second. (yyyy-MM-dd'T'HH:mm:ss.SSS)
      */
     public DateTimeFormatter dateHourMinuteSecondFraction() {
         if (dhmsf == null) {
@@ -573,64 +688,93 @@ public class ISODateTimeFormat {
     }
 
     private DateTimeFormatter monthElement() {
-        if (me == null) {
-            me = new DateTimeFormatterBuilder(iChrono)
+        if (mye == null) {
+            mye = new DateTimeFormatterBuilder(iChrono)
                 .appendLiteral('-')
                 .appendMonthOfYear(2)
                 .toFormatter();
         }
-        return me;
+        return mye;
     }
 
-    private DateTimeFormatter dayElement() {
-        if (de == null) {
-            de = new DateTimeFormatterBuilder(iChrono)
+    private DateTimeFormatter dayOfMonthElement() {
+        if (dme == null) {
+            dme = new DateTimeFormatterBuilder(iChrono)
                 .appendLiteral('-')
                 .appendDayOfMonth(2)
                 .toFormatter();
         }
-        return de;
+        return dme;
+    }
+
+    private DateTimeFormatter weekyearElement() {
+        if (we == null) {
+            we = new DateTimeFormatterBuilder(iChrono)
+                .appendWeekyear(4, 9)
+                .toFormatter();
+        }
+        return we;
+    }
+
+    private DateTimeFormatter weekElement() {
+        if (wwe == null) {
+            wwe = new DateTimeFormatterBuilder(iChrono)
+                .appendLiteral("-W")
+                .appendWeekOfWeekyear(2)
+                .toFormatter();
+        }
+        return wwe;
+    }
+
+    private DateTimeFormatter dayOfWeekElement() {
+        if (dwe == null) {
+            dwe = new DateTimeFormatterBuilder(iChrono)
+                .appendLiteral('-')
+                .appendDayOfWeek(1)
+                .toFormatter();
+        }
+        return dwe;
     }
 
     private DateTimeFormatter hourElement() {
-        if (he == null) {
-            he = new DateTimeFormatterBuilder(iChrono)
+        if (hde == null) {
+            hde = new DateTimeFormatterBuilder(iChrono)
                 .appendHourOfDay(2)
                 .toFormatter();
         }
-        return he;
+        return hde;
     }
 
     private DateTimeFormatter minuteElement() {
-        if (mne == null) {
-            mne = new DateTimeFormatterBuilder(iChrono)
+        if (mhe == null) {
+            mhe = new DateTimeFormatterBuilder(iChrono)
                 .appendLiteral(':')
                 .appendMinuteOfHour(2)
                 .toFormatter();
         }
-        return mne;
+        return mhe;
     }
 
     private DateTimeFormatter secondElement() {
-        if (se == null) {
-            se = new DateTimeFormatterBuilder(iChrono)
+        if (sme == null) {
+            sme = new DateTimeFormatterBuilder(iChrono)
                 .appendLiteral(':')
                 .appendSecondOfMinute(2)
                 .toFormatter();
         }
-        return se;
+        return sme;
     }
 
     private DateTimeFormatter fractionElement() {
-        if (fe == null) {
-            fe = new DateTimeFormatterBuilder(iChrono)
+        if (fse == null) {
+            fse = new DateTimeFormatterBuilder(iChrono)
                 .appendLiteral('.')
                 // Support parsing up to nanosecond precision even though
                 // those extra digits will be dropped.
                 .appendFractionOfSecond(3, 9)
                 .toFormatter();
         }
-        return fe;
+        return fse;
     }
 
     private DateTimeFormatter offsetElement() {

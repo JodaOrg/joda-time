@@ -486,8 +486,6 @@ public class DateTime extends AbstractDateTime
 
     /**
      * Get the day of month property.
-     * <p>
-     * The values for day of month are defined in {@link DateTimeConstants}.
      * 
      * @return the day of month property
      */
@@ -497,8 +495,6 @@ public class DateTime extends AbstractDateTime
 
     /**
      * Get the day of week property.
-     * <p>
-     * The values for day of week are defined in {@link DateTimeConstants}.
      * 
      * @return the day of week property
      */

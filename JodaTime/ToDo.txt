@@ -11,15 +11,6 @@ Tests:
  ...write tests to cover all functionality
  Ensure all tests pass!
 
-Consistency:
- Check API for design and naming consistency
- eg. withXxx() vs toXxx() vs asXxx vs toCopyXxx()
- 
- Chronology: withUTC(), withDateTimeZone()
- DurationType: withChronology()
- ReadableInstant: withChronology(), withDateTimeZone()
- DateTimeProperty: addToCopy(), setCopy(), ...
- 
 
 Ideas longer term
 -----------------

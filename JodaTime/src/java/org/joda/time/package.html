@@ -60,11 +60,11 @@
 </head>
 <body>
 <p>
-Provides support for dates, times, time zones, durations, and intervals. This
-package aims to fully replace the Java Date, Calendar, and TimeZone
-classes. This implementation covers both the Gregorian/Julian calendar system
-and the ISO8601 standard. Additional calendar systems and extensions can be
-created as well.
+Provides support for dates, times, time zones, durations, intervals, and
+partials. This package aims to fully replace the Java <code>Date</code>,
+<code>Calendar</code>, and <code>TimeZone</code> classes. This implementation
+covers both the Gregorian/Julian calendar system and the ISO8601
+standard. Additional calendar systems and extensions can be created as well.
 </p>
 <p>
 The ISO8601 standard is the international standard for dates, times, durations,
@@ -93,8 +93,9 @@ The main API concepts are defined by interfaces:
 </ul>
 <p>
 These define the public interface to dates, times, and durations. As with
-java.util.Date and Calendar, the design is millisecond based with an epoch of
-1970-01-01. This should enable easy conversions.
+<code>java.util.Date</code> and <code>Calendar</code>, the design is
+millisecond based with an epoch of 1970-01-01. This should enable easy
+conversions.
 </p>
 
 <h4>Implementations</h4>
@@ -146,7 +147,7 @@ only limit the allowed set of operations, but they do <i>not</i> guarantee that
 the object is immutable. Care must be taken when saving a parameter of this
 type. Calling a conversion method like <code>toDateTime</code> beforehand
 guarantees immutability of the saved object, but does not add any significant
-overhead if the object was already a DateTime.
+overhead if the object was already a <code>DateTime</code>.
 </p>
 <p>
 User defined methods that return instants or durations should generally declare
@@ -160,7 +161,7 @@ shared and accessed by multiple threads.
 <p>
 In order to enable the package to be easily extended, each field of the
 datetime, such as the month, is calculated by an implementation of
-<code>DateTimeField</code>). Likewise, duration fields are calculated by
+<code>DateTimeField</code>. Likewise, duration fields are calculated by
 specialized <code>DurationField</code> instances. If desired, users can write
 their own implementations to retrieve an unusual field from the millisecond
 value.
@@ -173,18 +174,47 @@ in a specific calendar system. Chronologies are provided for ISO and
 Gregorian/Julian (GJ). (ISO is in fact a special case of GJ).
 </p>
 <p>
-This design results in a low overhead on the date and time classes. Java
-Calendar class performs poorly because it has many internal fields that are
+This design results in a low overhead on the date and time classes. The Java
+<code>Calendar</code> class performs poorly because it has many internal fields that are
 constantly kept in sync. This design only calculates fields when required,
 resulting in lightweight and simple date time classes.
+</p>
+
+<h4>Partials</h4>
+<p>
+Partials are like instants, except they do not completely specify a point in
+time. The main interface is <code>ReadablePartial</code>, and implementations
+include <code>TimeOfDay</code> (contains hour, minute, second, and millis) and
+<code>YearMonthDay</code>.
+</p>
+<p>
+The API of a partial is remarkably similar to an instant, however there are
+internal differences. <code>DateTime</code> and <code>Instant</code> store a
+long millisecond value internally and calculate field values on demand. The
+partial classes work the other way around, storing field values internally
+and providing a means to resolve to a millisecond value on demand.
+</p>
+<p>
+Since a partial does not represent a specific point in time, it must be
+<i>resolved</i> to create a full instant. For example, a <code>TimeOfDay</code>
+might represent 12:30. To convert to a <code>DateTime</code> requires the
+specification of a date, and is performed using the <code>resolve</code>
+methods of <code>ReadablePartial</code>. For example,
+<pre>
+    <code>new TimeOfDay("12:30").resolveDateTime(new DateTime("2004-06-07T06:00"));</code>
+</pre>
+equals
+<pre>
+    <code>new DateTime("2004-06-07T12:30");</code>
+</pre>
 </p>
 
 <h4>Formatting</h4>
 <p>
 Formatting is provided by the <code>format</code> subpackage. Comprehensive
 support is provided for outputting dates and times in multiple formats. A
-pattern similar to Java SimpleDateFormat can be used, but a more advanced
-programmatic technique is available.
+pattern similar to Java <code>SimpleDateFormat</code> can be used, but a more
+advanced programmatic technique is available.
 </p>
 
 <h4>General</h4>

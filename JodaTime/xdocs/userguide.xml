@@ -102,7 +102,7 @@ more advanced topics.
 <section name="Architecture Overview">
 <p>
 The major building blocks of joda time are introduced below. These are the concepts
-of <em>instant</em>, <em>interval</em>, <em>duration</em>, <em>period</em> and
+of <em>instant</em>, <em>interval</em>, <em>duration</em>, <em>period</em>,
 <em>chronology</em> and <em>timezones</em>. We then say a few words about the role
 of interfaces in the library design, which is a little different than the norm. We
 end with a few words on package structure. Usage examples for instant are delayed until the
@@ -140,7 +140,7 @@ time fields.
 We discuss the chronology concept a litte further on in this overview.
 </p>
 <p>
-A companion mutable class to DateTime is
+A companion mutable class to <code>DateTime</code> is
 <code>MutableDateTime</code>. Objects
 of this class can be modified and are not thread-safe.
 </p>
@@ -190,7 +190,7 @@ Both end-points are restricted to having the same chronology and the same time z
 </p>
 <p>
 Two implementations are provided, <code>Interval</code> and <code>MutableInterval</code>,
-both specialization of <code>ReadableInterval</code>.
+both are specializations of <code>ReadableInterval</code>.
 </p>
 </section>
 
@@ -285,17 +285,17 @@ The actual calculations of the chronology are split between the
 Together, the subclasses of these three classes form the bulk of the code
 in the library.
 Most users will never need to use or refer directly to the subclasses.
-Instead, they will simply obtain the chronology and use it as a singleton:
+Instead, they will simply obtain the chronology and use it as a singleton, as follows:
 <source>
 Chronology coptic = Chronology.getCoptic();
 </source>
-shows an example of creating a default Coptic chronology.
 </p>
 <p>
 Internally, all the chronology, field, etc. classes are maintained as singletons.
 Thus there is an initial setup cost when using Joda-Time, but after that only
-the main API instance classes (DateTime, Interval, Period, etc.) have creation and
-garbage collector costs.
+the main API instance classes
+(<code>DateTime</code>, <code>Interval</code>, <code>Period</code>, etc.)
+have creation and garbage collector costs.
 </p>
 <p>
 Although the Chronology is key to the design, it is not key to using the API !!
@@ -316,7 +316,7 @@ like the Coptic calendar illustrated earlier.
 The chronology class also supports the time zone functionality.
 This is applied to the underlying chronology via the decorator design pattern.
 The <code>DateTimeZone</code> class provides
-access to the zones large through one factory method used as:
+access to the zones primarily through one factory method, as follows:
 <source>
 DateTimeZone zone = DateTimeZone.forID("Europe/London");
 </source>
@@ -337,14 +337,14 @@ throughout the javadocs. The most important is <code>ReadableInstant</code> whic
 currently has 4 implementations.
 Other significant interfaces include <code>ReadableInterval</code> and
 <code>ReadablePeriod</code>. These are currently used as generalizations for
-a value-only and a mutable class.
+a value-only and a mutable class, respectively.
 </p>
 <p>
 An important point to mention here is that the Joda interfaces are used differently
 than, for instance, the JDK Collections Framework interfaces.
-When working with a Collections interface, such as List or Map you will normally
-hold your variable as a type of List or Map, only referencing the concrete class
-when you create the object.
+When working with a Collections interface, such as <code>List</code> or <code>Map</code>
+you will normally hold your variable as a type of <code>List</code> or <code>Map</code>, 
+only referencing the concrete class when you create the object.
 <source>
     List list = new ArrayList();
     Map map = new HashMap();
@@ -364,7 +364,7 @@ parameters using the Joda-Time interface.
 A method on the interface can obtain the concrete class for use within the method.
 <source>
     public void process(ReadableInstant instant) {
-      DateTime dt = instant.toDateTime();
+        DateTime dt = instant.toDateTime();
     }
 </source>
 </p>
@@ -392,7 +392,7 @@ Most applications should not need to import classes from the private packages.
 <a name="construction"/>
 <subsection name="Construction">
 <p>
-A datetime object is created by using a DateTime constructor. The default
+A datetime object is created by using a <code>DateTime</code> constructor. The default
 constructor is used as follows
 <source>
     DateTime dt = new DateTime();
@@ -422,7 +422,7 @@ fields. This also permits the use of any calendar and timezone.
 The <code>DateTime</code> class has a constructor which takes an <code>Object</code>
 as input. In particular this constructor can be passed a JDK <code>Date</code>,
 JDK <code>Calendar</code> or JDK <code>GregorianCalendar</code> (It also accepts an
-ISO8601 formatted String, or Long object representing milliseconds). This is one half
+ISO8601 formatted String, or <code>Long</code> object representing milliseconds). This is one half
 of the interoperability with the JDK. The other half of interoperability with JDK
 is provided by <code>DateTime</code> methods which return JDK objects.
 </p>
@@ -533,7 +533,7 @@ would be written instead of the more indirect code presented earlier.
 </p>
 <p>
 Note: For the single case of getting the numerical value of a field, we recommend
-using the get method on the main DateTime object as it is more efficient.
+using the get method on the main <code>DateTime</code> object as it is more efficient.
 <source>
     iDoW = dt.getDayOfWeek();
 </source>
@@ -871,7 +871,7 @@ print and parse dates of the form "22-Jan-65", you could do the following:
             .appendLiteral('-')
             .appendMonthOfYearShortText()
             .appendLiteral('-')
-            .appendTwoDigitYear(1956)
+            .appendTwoDigitYear(1956)  // pivot = 1956
             .toFormatter();
 </source>
 Each append method appends a new field to be parsed/printed to the
@@ -915,7 +915,7 @@ The constructors on each major concrete class in the API take an <code>Object</c
 as a parameter.
 This is passed to the converter subsystem which is responsible for converting
 the object to one acceptable to Joda-Time.
-For example, the converters can convert a JDK Date object to a DateTime.
+For example, the converters can convert a JDK <code>Date</code> object to a <code>DateTime</code>.
 If required, you can add your own converters to those supplied in Joda-Time.
 </p>
 </subsection>

@@ -496,9 +496,8 @@ exists in the default time zone <em>now</em>. This is done as follows
 </p>
 <p>
 A set of all TimeZone ID strings (such as "Europe/London") may be obtained by
-calling <code>DateTimeZone.getAvailableIDs()</code>.
-<b>it may make sense to have a page (like the field reference) with an exhaustive
-list of timezone id's.</b>
+calling <code>DateTimeZone.getAvailableIDs()</code>. A full list of available
+time zones is provided <a href="timezones.html">here</a>.
 </p>
 </section>
 

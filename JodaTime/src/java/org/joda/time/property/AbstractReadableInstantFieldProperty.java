@@ -56,6 +56,7 @@ package org.joda.time.property;
 import java.util.Locale;
 import java.io.Serializable;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationField;
 import org.joda.time.ReadableInstant;
 
@@ -169,13 +170,13 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * matches that of compareTo. In other words, this field property's instant
      * is the minuend.
      *
-     * @param instant the subtrahend
+     * @param instant  the subtrahend, null means now
      * @return the difference in the units of this field
      * @see DateTimeField#getDifference
      */
     public int getDifference(ReadableInstant instant) {
         if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+            return getField().getDifference(getReadableInstant().getMillis(), DateTimeUtils.currentTimeMillis());
         }
         return getField().getDifference(getReadableInstant().getMillis(), instant.getMillis());
     }
@@ -186,13 +187,13 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * matches that of compareTo. In other words, this field property's instant
      * is the minuend.
      *
-     * @param instant the subtrahend
+     * @param instant  the subtrahend, null means now
      * @return the difference in the units of this field
      * @see DateTimeField#getDifference
      */
     public long getDifferenceAsLong(ReadableInstant instant) {
         if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+            return getField().getDifferenceAsLong(getReadableInstant().getMillis(), DateTimeUtils.currentTimeMillis());
         }
         return getField().getDifferenceAsLong(getReadableInstant().getMillis(), instant.getMillis());
     }

@@ -74,6 +74,7 @@ import org.joda.time.JodaTimePermission;
  * <li>Calendar
  * <li>Date
  * <li>Long (milliseconds)
+ * <li>null (now)
  * </ul>
  * The default duration converters are:
  * <ul>
@@ -81,6 +82,7 @@ import org.joda.time.JodaTimePermission;
  * <li>ReadableInterval
  * <li>String
  * <li>Long (milliseconds)
+ * <li>null (zero ms)
  * </ul>
  *
  * The default interval converters are:
@@ -185,8 +187,8 @@ public final class ConverterManager {
      * @return replaced converter, or null
      */
     public InstantConverter addInstantConverter(InstantConverter converter)
-        throws SecurityException
-    {
+            throws SecurityException {
+        
         checkAlterInstantConverters();
         if (converter == null) {
             return null;
@@ -204,8 +206,8 @@ public final class ConverterManager {
      * @return replaced converter, or null
      */
     public InstantConverter removeInstantConverter(InstantConverter converter)
-        throws SecurityException
-    {
+            throws SecurityException {
+        
         checkAlterInstantConverters();
         if (converter == null) {
             return null;
@@ -216,19 +218,10 @@ public final class ConverterManager {
     }
     
     /**
-     * Removes a converter from the set of converters, by index.
+     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
      * 
-     * @param index  the index to remove
-     * @return replaced converter, or null
-     * @throws IndexOutOfBoundsException if the index is invalid
+     * @throws SecurityException if the user does not have the permission
      */
-    public InstantConverter removeInstantConverter(int index) throws SecurityException {
-        checkAlterInstantConverters();
-        InstantConverter[] removed = new InstantConverter[1];
-        iInstantConverters = iInstantConverters.remove(index, removed);
-        return removed[0];
-    }
-
     private void checkAlterInstantConverters() throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
@@ -281,8 +274,8 @@ public final class ConverterManager {
      * @return replaced converter, or null
      */
     public DurationConverter addDurationConverter(DurationConverter converter)
-        throws SecurityException
-    {
+            throws SecurityException {
+        
         checkAlterDurationConverters();
         if (converter == null) {
             return null;
@@ -300,8 +293,8 @@ public final class ConverterManager {
      * @return replaced converter, or null
      */
     public DurationConverter removeDurationConverter(DurationConverter converter)
-        throws SecurityException
-    {
+            throws SecurityException {
+        
         checkAlterDurationConverters();
         if (converter == null) {
             return null;
@@ -312,19 +305,10 @@ public final class ConverterManager {
     }
     
     /**
-     * Removes a converter from the set of converters, by index.
+     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
      * 
-     * @param index  the index to remove
-     * @return replaced converter, or null
-     * @throws IndexOutOfBoundsException if the index is invalid
+     * @throws SecurityException if the user does not have the permission
      */
-    public DurationConverter removeDurationConverter(int index) throws SecurityException {
-        checkAlterDurationConverters();
-        DurationConverter[] removed = new DurationConverter[1];
-        iDurationConverters = iDurationConverters.remove(index, removed);
-        return removed[0];
-    }
-
     private void checkAlterDurationConverters() throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
@@ -377,8 +361,8 @@ public final class ConverterManager {
      * @return replaced converter, or null
      */
     public IntervalConverter addIntervalConverter(IntervalConverter converter) 
-        throws SecurityException
-    {
+            throws SecurityException {
+        
         checkAlterIntervalConverters();
         if (converter == null) {
             return null;
@@ -396,8 +380,8 @@ public final class ConverterManager {
      * @return replaced converter, or null
      */
     public IntervalConverter removeIntervalConverter(IntervalConverter converter)
-        throws SecurityException
-    {
+            throws SecurityException {
+        
         checkAlterIntervalConverters();
         if (converter == null) {
             return null;
@@ -408,19 +392,10 @@ public final class ConverterManager {
     }
     
     /**
-     * Removes a converter from the set of converters, by index.
+     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
      * 
-     * @param index  the index to remove
-     * @return replaced converter, or null
-     * @throws IndexOutOfBoundsException if the index is invalid
+     * @throws SecurityException if the user does not have the permission
      */
-    public IntervalConverter removeIntervalConverter(int index) throws SecurityException {
-        checkAlterIntervalConverters();
-        IntervalConverter[] removed = new IntervalConverter[1];
-        iIntervalConverters = iIntervalConverters.remove(index, removed);
-        return removed[0];
-    }
-
     private void checkAlterIntervalConverters() throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
@@ -430,13 +405,13 @@ public final class ConverterManager {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a debug representation of the object
+     * Gets a debug representation of the object.
      */
     public String toString() {
         return "ConverterManager[" +
-            iInstantConverters.size() + " instant converters," +
-            iDurationConverters.size() + " duration converters," +
-            iIntervalConverters.size() + " interval converters]";
+            iInstantConverters.size() + " instant," +
+            iDurationConverters.size() + " duration," +
+            iIntervalConverters.size() + " interval]";
     }
 
 }

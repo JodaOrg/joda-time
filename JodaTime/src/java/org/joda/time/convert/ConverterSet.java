@@ -82,7 +82,7 @@ class ConverterSet {
      * @throws IllegalStateException if multiple converters match the type
      * equally well
      */
-    public Converter select(Class type) throws IllegalStateException {
+    Converter select(Class type) throws IllegalStateException {
         // Check the hashtable first.
         Entry[] entries = iSelectEntries;
         int length = entries.length;
@@ -152,14 +152,14 @@ class ConverterSet {
     /**
      * Returns the amount of converters in the set.
      */
-    public int size() {
+    int size() {
         return iConverters.length;
     }
 
     /**
      * Copies all the converters in the set to the given array.
      */
-    public void copyInto(Converter[] converters) {
+    void copyInto(Converter[] converters) {
         System.arraycopy(iConverters, 0, converters, 0, iConverters.length);
     }
 
@@ -169,15 +169,11 @@ class ConverterSet {
      * it. If the converter is exactly the same as one already in the set, the
      * original set is returned.
      *
-     * @param converter converter to add
-     * @param removed if not null, element 0 is set to the removed converter
-     * @throws IllegalArgumentException if converter is null
+     * @param converter  converter to add, must not be null
+     * @param removed  if not null, element 0 is set to the removed converter
+     * @throws NullPointerException if converter is null
      */
-    public ConverterSet add(Converter converter, Converter[] removed) {
-        if (converter == null) {
-            throw new IllegalArgumentException();
-        }
-
+    ConverterSet add(Converter converter, Converter[] removed) {
         Converter[] converters = iConverters;
         int length = converters.length;
 
@@ -225,11 +221,11 @@ class ConverterSet {
      * Returns a copy of this set, with the given converter removed. If the
      * converter was not in the set, the original set is returned.
      *
-     * @param converter converter to remove
-     * @param removed if not null, element 0 is set to the removed converter
+     * @param converter  converter to remove, must not be null
+     * @param removed  if not null, element 0 is set to the removed converter
      * @throws NullPointerException if converter is null
      */
-    public ConverterSet remove(Converter converter, Converter[] removed) {
+    ConverterSet remove(Converter converter, Converter[] removed) {
         Converter[] converters = iConverters;
         int length = converters.length;
 
@@ -254,7 +250,7 @@ class ConverterSet {
      * @param removed if not null, element 0 is set to the removed converter
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public ConverterSet remove(final int index, Converter[] removed) {
+    ConverterSet remove(final int index, Converter[] removed) {
         Converter[] converters = iConverters;
         int length = converters.length;
         if (index >= length) {
@@ -357,9 +353,9 @@ class ConverterSet {
         throw new IllegalStateException(msg.toString());
     }
 
-    private static class Entry {
-        public final Class iType;
-        public final Converter iConverter;
+    static class Entry {
+        final Class iType;
+        final Converter iConverter;
 
         Entry(Class type, Converter converter) {
             iType = type;

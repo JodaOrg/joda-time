@@ -37,7 +37,7 @@ String monthInFrench = dt.monthOfYear().getAsText(Locale.FRENCH);
 String dateAsISO8601Format = dt.toString();
 </source>
 <p>
-And this is only a flavour of what is available, see the <a href="api-0.95/index.html">API</a>
+And this is only a flavour of what is available, see the <a href="api-1.0/index.html">API</a>
 or <a href="userguide.html">users guide</a> for more detail.
 </p>
 
@@ -72,7 +72,7 @@ Various documentation is available:
 <ul>
 <li>The <a href="userguide.html">user guide</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
-<li>The javadoc for the <a href="api-0.95/index.html">current release</a></li>
+<li>The javadoc for the <a href="api-1.0/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime">CVS repository</a></li>
@@ -82,11 +82,10 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212&amp;release_id=217327">Release 0.95</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.0</a>
 is the current latest release.
-This release is stable in that it tells the right time, and we are aware of sites where it has been used in production.
-However, there have been significant API changes to the CVS version since 0.95, all resulting from issues identified in testing.
-It is hoped to release a new release in Q4 2004.
+This release is a stable release that has extensive testing suites.
+Our intention is to support the release as would be expected of a 1.0 release.
 </p>
 </section>
 

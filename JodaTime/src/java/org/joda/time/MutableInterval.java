@@ -58,6 +58,19 @@ import java.io.Serializable;
 /**
  * MutableInterval is the standard implementation of a mutable time interval.
  * <p>
+ * A time interval represents a period of time between two instants.
+ * Intervals are inclusive of the start instant and exclusive of the end.
+ * <p>
+ * Intervals have a fixed millisecond duration.
+ * This is the difference between the start and end instants.
+ * The duration is represented separately by {@link ReadableDuration}.
+ * As a result, intervals are not comparable.
+ * To compare the length of two intervals, you should compare their durations.
+ * <p>
+ * An interval can also be converted to a {@link ReadablePeriod}.
+ * This represents the difference between the start and end points in terms of fields
+ * such as years and days.
+ * <p>
  * If performing significant calculations on an interval, it may be faster to
  * convert an Interval object to a MutableInterval one.
  * <p>

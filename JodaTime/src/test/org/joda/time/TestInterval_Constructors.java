@@ -145,6 +145,22 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(dt2.getMillis(), test.getEndMillis());
     }
 
+    public void testConstructor_long_long2() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Interval test = new Interval(dt1.getMillis(), dt1.getMillis());
+        assertEquals(dt1.getMillis(), test.getStartMillis());
+        assertEquals(dt1.getMillis(), test.getEndMillis());
+    }
+
+    public void testConstructor_long_long3() throws Throwable {
+        DateTime dt1 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        try {
+            new Interval(dt1.getMillis(), dt2.getMillis());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
     //-----------------------------------------------------------------------
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
@@ -171,7 +187,7 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     public void testConstructor_RI_RI4() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt1 = new DateTime(2000, 6, 9, 0, 0, 0, 0);
         Interval test = new Interval(dt1, (ReadableInstant) null);
         assertEquals(dt1.getMillis(), test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
@@ -182,6 +198,22 @@ public class TestInterval_Constructors extends TestCase {
         Interval test = new Interval((ReadableInstant) null, dt2);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(dt2.getMillis(), test.getEndMillis());
+    }
+
+    public void testConstructor_RI_RI6() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Interval test = new Interval(dt1, dt1);
+        assertEquals(dt1.getMillis(), test.getStartMillis());
+        assertEquals(dt1.getMillis(), test.getEndMillis());
+    }
+
+    public void testConstructor_RI_RI7() throws Throwable {
+        DateTime dt1 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        try {
+            new Interval(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -261,6 +293,15 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+    public void testConstructor_RI_RP8() throws Throwable {
+        DateTime dt = new DateTime(TEST_TIME_NOW);
+        Period dur = new Period(0, 0, 0, 0, 0, 0, 0, -1);
+        try {
+            new Interval(dt, dur);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
     //-----------------------------------------------------------------------
     public void testConstructor_RP_RI1() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
@@ -338,6 +379,15 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+    public void testConstructor_RP_RI8() throws Throwable {
+        DateTime dt = new DateTime(TEST_TIME_NOW);
+        Period dur = new Period(0, 0, 0, 0, 0, 0, 0, -1);
+        try {
+            new Interval(dur, dt);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
     //-----------------------------------------------------------------------
     public void testConstructor_RI_RD1() throws Throwable {
         long result = TEST_TIME_NOW;
@@ -377,6 +427,15 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(result, test.getEndMillis());
     }
 
+    public void testConstructor_RI_RD5() throws Throwable {
+        DateTime dt = new DateTime(TEST_TIME_NOW);
+        Duration dur = new Duration(-1);
+        try {
+            new Interval(dt, dur);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
     //-----------------------------------------------------------------------
     public void testConstructor_RD_RI1() throws Throwable {
         long result = TEST_TIME_NOW;
@@ -414,6 +473,15 @@ public class TestInterval_Constructors extends TestCase {
         Interval test = new Interval(dur, (ReadableInstant) null);
         assertEquals(result, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
+    }
+
+    public void testConstructor_RD_RI5() throws Throwable {
+        DateTime dt = new DateTime(TEST_TIME_NOW);
+        Duration dur = new Duration(-1);
+        try {
+            new Interval(dur, dt);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -539,6 +607,9 @@ public class TestInterval_Constructors extends TestCase {
         public boolean contains(long millisInstant) {
             return false;
         }
+        public boolean containsNow() {
+            return false;
+        }
         public boolean contains(ReadableInstant instant) {
             return false;
         }
@@ -551,10 +622,16 @@ public class TestInterval_Constructors extends TestCase {
         public boolean isBefore(long millisInstant) {
             return false;
         }
+        public boolean isBeforeNow() {
+            return false;
+        }
         public boolean isBefore(ReadableInstant instant) {
             return false;
         }
         public boolean isAfter(long millisInstant) {
+            return false;
+        }
+        public boolean isAfterNow() {
             return false;
         }
         public boolean isAfter(ReadableInstant instant) {

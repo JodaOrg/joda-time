@@ -58,8 +58,18 @@ import java.io.Serializable;
 /**
  * Interval is the standard implementation of an immutable time interval.
  * <p>
- * The duration of the time interval is always a precise amount of milliseconds
- * even if a variable length duration was passed into the constructor.
+ * A time interval represents a period of time between two instants.
+ * Intervals are inclusive of the start instant and exclusive of the end.
+ * <p>
+ * Intervals have a fixed millisecond duration.
+ * This is the difference between the start and end instants.
+ * The duration is represented separately by {@link ReadableDuration}.
+ * As a result, intervals are not comparable.
+ * To compare the length of two intervals, you should compare their durations.
+ * <p>
+ * An interval can also be converted to a {@link ReadablePeriod}.
+ * This represents the difference between the start and end points in terms of fields
+ * such as years and days.
  * <p>
  * Interval is thread-safe and immutable.
  *
@@ -171,7 +181,13 @@ public class Interval
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
-    protected final void storeDuration(Duration duration) {
+    protected void setDurationAfterStart(ReadableDuration duration) {
+    }
+
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
+     */
+    protected void setDurationBeforeEnd(ReadableDuration duration) {
     }
 
 }

@@ -54,10 +54,20 @@
 package org.joda.time;
 
 /** 
- * Readable interface for a time interval.
+ * Readable interface for an interval of time between two instants.
  * <p>
  * A time interval represents a period of time between two instants.
- * This interval has a duration, represented separately by ReadableDuration.
+ * Intervals are inclusive of the start instant and exclusive of the end.
+ * <p>
+ * Intervals have a fixed millisecond duration.
+ * This is the difference between the start and end instants.
+ * The duration is represented separately by {@link ReadableDuration}.
+ * As a result, intervals are not comparable.
+ * To compare the length of two intervals, you should compare their durations.
+ * <p>
+ * An interval can also be converted to a {@link ReadablePeriod}.
+ * This represents the difference between the start and end points in terms of fields
+ * such as years and days.
  *
  * @author Sean Geoghegan
  * @author Brian S O'Neill
@@ -67,7 +77,7 @@ package org.joda.time;
 public interface ReadableInterval {
 
     /**
-     * Gets the start of this time interval.
+     * Gets the start of this time interval which is inclusive.
      *
      * @return the start of the time interval,
      *  millisecond instant from 1970-01-01T00:00:00Z
@@ -75,14 +85,14 @@ public interface ReadableInterval {
     long getStartMillis();
 
     /**
-     * Gets the start of this time interval as an Instant.
+     * Gets the start of this time interval, which is inclusive, as an Instant.
      *
      * @return the start of the time interval
      */
     Instant getStartInstant();
 
     /** 
-     * Gets the end of this time interval.
+     * Gets the end of this time interval which is exclusive.
      *
      * @return the end of the time interval,
      *  millisecond instant from 1970-01-01T00:00:00Z
@@ -90,7 +100,7 @@ public interface ReadableInterval {
     long getEndMillis();
 
     /** 
-     * Gets the end of this time interval as an Instant.
+     * Gets the end of this time interval, which is exclusive, as an Instant.
      *
      * @return the end of the time interval
      */
@@ -100,8 +110,7 @@ public interface ReadableInterval {
     /**
      * Gets the duration of this time interval in milliseconds.
      * <p>
-     * The duration returned will always be precise because it is relative to
-     * a known date.
+     * The duration is equal to the end millis minus the start millis.
      *
      * @return the duration of the time interval in milliseconds
      * @throws ArithmeticException if the duration exceeds the capacity of a long
@@ -111,10 +120,10 @@ public interface ReadableInterval {
     /**
      * Gets the millisecond duration of this time interval.
      * <p>
-     * If this interval was constructed using a precise duration then that object will
-     * be returned. Otherwise a new Duration instance using the MillisType is returned.
+     * If this interval was constructed using a Duration then that object will
+     * be returned. Otherwise a new Duration instance is returned.
      *
-     * @return the precise duration of the time interval
+     * @return the millisecond duration of the time interval
      * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
     Duration getDuration();
@@ -122,88 +131,132 @@ public interface ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Does this time interval contain the specified millisecond instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval contains the millisecond
      */
-    public boolean contains(long millisInstant);
+    boolean contains(long millisInstant);
+    
+    /**
+     * Does this time interval contain the current instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @return true if this time interval contains the current instant
+     */
+    boolean containsNow();
     
     /**
      * Does this time interval contain the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
      */
-    public boolean contains(ReadableInstant instant);
+    boolean contains(ReadableInstant instant);
     
     /**
      * Does this time interval contain the specified time interval completely.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param interval  the time interval to compare to
      * @return true if this time interval contains the time interval
      * @throws IllegalArgumentException if the interval is null
      */
-    public boolean contains(ReadableInterval interval);
+    boolean contains(ReadableInterval interval);
     
     /**
      * Does this time interval overlap the specified time interval.
      * <p>
      * The intervals overlap if at least some of the time interval is in common.
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param interval  the time interval to compare to
      * @return true if the time intervals overlap
      * @throws IllegalArgumentException if the interval is null
      */
-    public boolean overlaps(ReadableInterval interval);
+    boolean overlaps(ReadableInterval interval);
     
     //-----------------------------------------------------------------------
     /**
      * Is this time interval before the specified millisecond instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is before the instant
      */
-    public boolean isBefore(long millisInstant);
+    boolean isBefore(long millisInstant);
+    
+    /**
+     * Is this time interval before the current instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @return true if this time interval is before the current instant
+     */
+    boolean isBeforeNow();
     
     /**
      * Is this time interval before the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param instant  the instant to compare to, null means now
      * @return true if this time interval is before the instant
      */
-    public boolean isBefore(ReadableInstant instant);
+    boolean isBefore(ReadableInstant instant);
     
     /**
      * Is this time interval after the specified millisecond instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is after the instant
      */
-    public boolean isAfter(long millisInstant);
+    boolean isAfter(long millisInstant);
+    
+    /**
+     * Is this time interval after the current instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @return true if this time interval is after the current instant
+     */
+    boolean isAfterNow();
     
     /**
      * Is this time interval after the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param instant  the instant to compare to, null means now
      * @return true if this time interval is after the instant
      */
-    public boolean isAfter(ReadableInstant instant);
+    boolean isAfter(ReadableInstant instant);
     
     //-----------------------------------------------------------------------
     /**
-     * Get the value as a simple immutable object. This can be useful if you
-     * don't trust the implementation of the interface to be well-behaved, or
-     * to get a guaranteed immutable object.
+     * Get this interval as an <code>Interval</code> object.
+     * <p>
+     * This will either typecast this instance, or create a new <code>Interval</code>.
      *
-     * @return the value as an Interval object
+     * @return the interval as an Interval object
      */
     Interval toInterval();
 
     /**
-     * Get this time interval as a MutableInterval object.
+     * Get this time interval as a <code>MutableInterval</code> object.
+     * <p>
+     * This will always return a new <code>MutableInterval</code> with the same interval.
      *
      * @return the time interval as a MutableInterval object
      */
@@ -211,7 +264,7 @@ public interface ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts the duration of the interval to a time period using the
+     * Converts the duration of the interval to a <code>Period</code> using the
      * All period type.
      * <p>
      * This method should be used to exract the field values describing the
@@ -224,7 +277,7 @@ public interface ReadableInterval {
     Period toPeriod();
 
     /**
-     * Converts the duration of the interval to a time period using the
+     * Converts the duration of the interval to a <code>Period</code> using the
      * specified period type.
      * <p>
      * This method should be used to exract the field values describing the
@@ -232,7 +285,7 @@ public interface ReadableInterval {
      * The time period may not be precise - if you want the millisecond duration
      * then you should use {@link #getDuration()}.
      *
-     * @param type  the requested type of the period, null means AllType
+     * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
     Period toPeriod(PeriodType type);

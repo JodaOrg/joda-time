@@ -112,6 +112,7 @@ public abstract class AbstractInterval implements ReadableInterval {
                 iDuration = ri.iDuration;
             }
         }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -124,6 +125,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public AbstractInterval(long startInstant, long endInstant) {
         super();
+        checkInterval(startInstant, endInstant);
         iStartMillis = startInstant;
         iEndMillis = endInstant;
     }
@@ -157,6 +159,7 @@ public abstract class AbstractInterval implements ReadableInterval {
                 }
             }
         }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -182,8 +185,11 @@ public abstract class AbstractInterval implements ReadableInterval {
             iEndMillis = iStartMillis;
         } else {
             iEndMillis = FieldUtils.safeAdd(iStartMillis, duration.getMillis());
-            iDuration = duration.toDuration();
+            if (duration instanceof Duration) {
+                iDuration = (Duration) duration;
+            }
         }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -209,8 +215,11 @@ public abstract class AbstractInterval implements ReadableInterval {
             iStartMillis = iEndMillis;
         } else {
             iStartMillis = FieldUtils.safeAdd(iEndMillis, -duration.getMillis());
-            iDuration = duration.toDuration();
+            if (duration instanceof Duration) {
+                iDuration = (Duration) duration;
+            }
         }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -240,6 +249,7 @@ public abstract class AbstractInterval implements ReadableInterval {
         } else {
             iEndMillis = period.addTo(iStartMillis, 1, chrono);
         }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -269,21 +279,36 @@ public abstract class AbstractInterval implements ReadableInterval {
         } else {
             iStartMillis = period.addTo(iEndMillis, -1, chrono);
         }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the start of this interval as the number of milliseconds elapsed
-     * since 1970-01-01T00:00:00Z.
+     * Validates an interval.
+     * 
+     * @param start  the start instant in milliseconds
+     * @param end  the end instant in milliseconds
+     * @throws IllegalArgumentException if the interval is invalid
+     */
+    private void checkInterval(long start, long end) {
+        if (end < start) {
+            throw new IllegalArgumentException("The end instant must be greater or equal to the start");
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the start of this time interval which is inclusive.
      *
-     * @return the start of the interval
+     * @return the start of the time interval,
+     *  millisecond instant from 1970-01-01T00:00:00Z
      */
     public final long getStartMillis() {
         return iStartMillis;
     }
 
     /**
-     * Gets the start of this time interval as an Instant.
+     * Gets the start of this time interval, which is inclusive, as an Instant.
      *
      * @return the start of the time interval
      */
@@ -294,18 +319,18 @@ public abstract class AbstractInterval implements ReadableInterval {
         return iStartInstant;
     }
 
-    /**
-     * Gets the end of this interval as the number of milliseconds elapsed
-     * since 1970-01-01T00:00:00Z.
+    /** 
+     * Gets the end of this time interval which is exclusive.
      *
-     * @return the start of the interval
+     * @return the end of the time interval,
+     *  millisecond instant from 1970-01-01T00:00:00Z
      */
     public final long getEndMillis() {
         return iEndMillis;
     }
 
-    /**
-     * Gets the end of this time interval as an Instant.
+    /** 
+     * Gets the end of this time interval, which is exclusive, as an Instant.
      *
      * @return the end of the time interval
      */
@@ -320,8 +345,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Gets the duration of this time interval in milliseconds.
      * <p>
-     * The duration returned will always be precise because it is relative to
-     * a known date.
+     * The duration is equal to the end millis minus the start millis.
      *
      * @return the duration of the time interval in milliseconds
      * @throws ArithmeticException if the duration exceeds the capacity of a long
@@ -333,18 +357,19 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Gets the millisecond duration of this time interval.
      * <p>
-     * If this interval was constructed using a precise duration then that object will
-     * be returned. Otherwise a new Duration instance using the MillisType is returned.
+     * If this interval was constructed using a Duration then that object will
+     * be returned. Otherwise a new Duration instance is returned.
      *
-     * @return the precise duration of the time interval
+     * @return the millisecond duration of the time interval
      * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
     public final Duration getDuration() {
         if (iDuration == null) {
-            if (iStartMillis == iEndMillis) {
+            long durMillis = getDurationMillis();
+            if (durMillis == 0) {
                 iDuration = Duration.ZERO;
             } else {
-                iDuration = new Duration(iStartMillis, iEndMillis);
+                iDuration = new Duration(durMillis);
             }
         }
         return iDuration;
@@ -353,17 +378,34 @@ public abstract class AbstractInterval implements ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Does this time interval contain the specified millisecond instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval contains the millisecond
      */
     public final boolean contains(long millisInstant) {
-        return (millisInstant >= getStartMillis() && millisInstant <= getEndMillis());
+        long thisStart = getStartMillis();
+        long thisEnd = getEndMillis();
+        return (millisInstant >= thisStart && millisInstant < thisEnd);
     }
-    
+
+    /**
+     * Does this time interval contain the current instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @return true if this time interval contains the current instant
+     */
+    public final boolean containsNow() {
+        return contains(DateTimeUtils.currentTimeMillis());
+    }
+
     /**
      * Does this time interval contain the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
@@ -374,12 +416,14 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         return contains(instant.getMillis());
     }
-    
+
     /**
      * Does this time interval contain the specified time interval completely.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param interval  the time interval to compare to
-     * @return true if this interval contains the time interval
+     * @return true if this time interval contains the time interval
      * @throws IllegalArgumentException if the interval is null
      */
     public final boolean contains(ReadableInterval interval) {
@@ -388,15 +432,16 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         long otherStart = interval.getStartMillis();
         long otherEnd = interval.getEndMillis();
-        return 
-            (otherStart >= getStartMillis() && otherStart <= getEndMillis())
-            && (otherEnd >= getStartMillis() && otherEnd <= getEndMillis());
+        long thisStart = getStartMillis();
+        long thisEnd = getEndMillis();
+        return (otherStart >= thisStart && otherStart < thisEnd && otherEnd <= thisEnd);
     }
-    
+
     /**
      * Does this time interval overlap the specified time interval.
      * <p>
      * The intervals overlap if at least some of the time interval is in common.
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param interval  the time interval to compare to
      * @return true if the time intervals overlap
@@ -408,25 +453,40 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         long otherStart = interval.getStartMillis();
         long otherEnd = interval.getEndMillis();
-        return 
-            (otherStart >= getStartMillis() && otherStart <= getEndMillis())
-            || (otherEnd >= getStartMillis() && otherEnd <= getEndMillis());
+        long thisStart = getStartMillis();
+        long thisEnd = getEndMillis();
+        return (thisStart < otherEnd && otherStart < thisEnd);
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Is this time interval before the specified millisecond instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is before the instant
      */
     public final boolean isBefore(long millisInstant) {
-        return (getStartMillis() < millisInstant && getEndMillis() < millisInstant);
+        return (getEndMillis() <= millisInstant);
     }
-    
+
+    /**
+     * Is this time interval before the current instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @return true if this time interval is before the current instant
+     */
+    public final boolean isBeforeNow() {
+        return isBefore(DateTimeUtils.currentTimeMillis());
+    }
+
     /**
      * Is this time interval before the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param instant  the instant to compare to, null means now
      * @return true if this time interval is before the instant
@@ -437,20 +497,35 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         return isBefore(instant.getMillis());
     }
-    
+
     /**
      * Is this time interval after the specified millisecond instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is after the instant
      */
     public final boolean isAfter(long millisInstant) {
-        return (getStartMillis() > millisInstant && getEndMillis() > millisInstant);
+        return (getStartMillis() > millisInstant);
     }
-    
+
+    /**
+     * Is this time interval after the current instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @return true if this time interval is after the current instant
+     */
+    public final boolean isAfterNow() {
+        return isAfter(DateTimeUtils.currentTimeMillis());
+    }
+
     /**
      * Is this time interval after the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
      * 
      * @param instant  the instant to compare to, null means now
      * @return true if this time interval is after the instant
@@ -461,12 +536,14 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         return isAfter(instant.getMillis());
     }
-    
+
     //-----------------------------------------------------------------------
     /**
-     * Get the object as an Interval.
-     * 
-     * @return an immutable interval object
+     * Get this interval as an <code>Interval</code> object.
+     * <p>
+     * This will either typecast this instance, or create a new <code>Interval</code>.
+     *
+     * @return the interval as an Interval object
      */
     public final Interval toInterval() {
         if (this instanceof Interval) {
@@ -476,9 +553,11 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     /**
-     * Get the object as a MutableInterval always returning a new instance.
-     * 
-     * @return a mutable interval object
+     * Get this time interval as a <code>MutableInterval</code> object.
+     * <p>
+     * This will always return a new <code>MutableInterval</code> with the same interval.
+     *
+     * @return the time interval as a MutableInterval object
      */
     public final MutableInterval toMutableInterval() {
         return new MutableInterval(this);
@@ -486,7 +565,7 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts the duration of the interval to a time period using the
+     * Converts the duration of the interval to a <code>Period</code> using the
      * All period type.
      * <p>
      * This method should be used to exract the field values describing the
@@ -501,7 +580,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     /**
-     * Converts the duration of the interval to a time period using the
+     * Converts the duration of the interval to a <code>Period</code> using the
      * specified period type.
      * <p>
      * This method should be used to exract the field values describing the
@@ -509,7 +588,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * The time period may not be precise - if you want the millisecond duration
      * then you should use {@link #getDuration()}.
      *
-     * @param type  the requested type of the period, null means AllType
+     * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
     public final Period toPeriod(PeriodType type) {
@@ -545,9 +624,11 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return suitable hashcode
      */
     public final int hashCode() {
+        long start = getStartMillis();
+        long end = getEndMillis();
         int result = 97;
-        result = 31 * result + ((int) (getStartMillis() ^ (getStartMillis() >>> 32)));
-        result = 31 * result + ((int) (getEndMillis() ^ (getEndMillis() >>> 32)));
+        result = 31 * result + ((int) (start ^ (start >>> 32)));
+        result = 31 * result + ((int) (end ^ (end >>> 32)));
         return result;
     }
 
@@ -604,20 +685,6 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
     }
 
-    /**
-     * Stores the duration of this time interval.
-     * <p>
-     * Subclasses that wish to be immutable should override this method with an
-     * empty implementation that is protected and final. This also ensures that
-     * all lower subclasses are also immutable.
-     *
-     * @param duration  new duration for interval, null means zero length
-     */
-    protected void storeDuration(Duration duration) {
-        // this method exists so that subclasses can block it
-        iDuration = duration;
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Sets the duration of this time interval, preserving the start instant.
@@ -650,7 +717,9 @@ public abstract class AbstractInterval implements ReadableInterval {
             setEndMillis(getStartMillis());
         } else {
             setEndMillis(FieldUtils.safeAdd(getStartMillis(), duration.getMillis()));
-            storeDuration(duration.toDuration());
+            if (duration instanceof Duration) {
+                iDuration = (Duration) duration;
+            }
         }
     }
 
@@ -665,7 +734,9 @@ public abstract class AbstractInterval implements ReadableInterval {
             setStartMillis(getEndMillis());
         } else {
             setStartMillis(FieldUtils.safeAdd(getEndMillis(), -duration.getMillis()));
-            storeDuration(duration.toDuration());
+            if (duration instanceof Duration) {
+                iDuration = (Duration) duration;
+            }
         }
     }
 

@@ -93,7 +93,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestDuration_Basics.suite());
         
         suite.addTest(TestInterval_Constructors.suite());
-//        suite.addTest(TestInterval_Basics.suite());
+        suite.addTest(TestInterval_Basics.suite());
         
         suite.addTest(TestPeriod_Constructors.suite());
         suite.addTest(TestPeriod_Basics.suite());

@@ -971,6 +971,13 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("2003-12-31T00:00:00.000Z", copy.toString());
     }
 
+    public void testPropertyAddLongDayOfWeek() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfWeek().addToCopy(1L);
+        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("2004-06-10T00:00:00.000+01:00", copy.toString());
+    }        
+
     public void testPropertyAddWrapFieldDayOfWeek() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);  // Wed
         DateTime copy = test.dayOfWeek().addWrapFieldToCopy(1);
@@ -1057,6 +1064,82 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(test.getChronology().days(), test.hourOfDay().getRangeDurationField());
         assertEquals(2, test.hourOfDay().getMaximumTextLength(null));
         assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
+    }
+
+    public void testPropertyGetDifferenceHourOfDay() {
+        DateTime test1 = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        DateTime test2 = new DateTime(2004, 6, 9, 15, 30, 0, 0);
+        assertEquals(-2, test1.hourOfDay().getDifference(test2));
+        assertEquals(2, test2.hourOfDay().getDifference(test1));
+        assertEquals(-2L, test1.hourOfDay().getDifferenceAsLong(test2));
+        assertEquals(2L, test2.hourOfDay().getDifferenceAsLong(test1));
+        
+        DateTime test = new DateTime(TEST_TIME_NOW + (13L * DateTimeConstants.MILLIS_PER_HOUR));
+        assertEquals(13, test.hourOfDay().getDifference(null));
+        assertEquals(13L, test.hourOfDay().getDifferenceAsLong(null));
+    }
+
+    public void testPropertyRoundFloorHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        DateTime copy = test.hourOfDay().roundFloorCopy();
+        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundCeilingHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        DateTime copy = test.hourOfDay().roundCeilingCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundHalfFloorHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        DateTime copy = test.hourOfDay().roundHalfFloorCopy();
+        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 13, 30, 0, 1);
+        copy = test.hourOfDay().roundHalfFloorCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 13, 29, 59, 999);
+        copy = test.hourOfDay().roundHalfFloorCopy();
+        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundHalfCeilingHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        DateTime copy = test.hourOfDay().roundHalfCeilingCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 13, 30, 0, 1);
+        copy = test.hourOfDay().roundHalfCeilingCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 13, 29, 59, 999);
+        copy = test.hourOfDay().roundHalfCeilingCopy();
+        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundHalfEvenHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        DateTime copy = test.hourOfDay().roundHalfEvenCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 14, 30, 0, 0);
+        copy = test.hourOfDay().roundHalfEvenCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 13, 30, 0, 1);
+        copy = test.hourOfDay().roundHalfEvenCopy();
+        assertEquals("2004-06-09T14:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(2004, 6, 9, 13, 29, 59, 999);
+        copy = test.hourOfDay().roundHalfEvenCopy();
+        assertEquals("2004-06-09T13:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRemainderHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 30, 0, 0);
+        assertEquals(30L * DateTimeConstants.MILLIS_PER_MINUTE, test.hourOfDay().remainder());
     }
 
     //-----------------------------------------------------------------------

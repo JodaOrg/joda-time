@@ -282,6 +282,126 @@ public class TestDateMidnight_Properties extends TestCase {
         assertEquals(12, test.monthOfYear().getMaximumValueOverall());
     }
 
+    public void testPropertySetMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.monthOfYear().setCopy(8);
+        assertEquals(2004, test.getYear());
+        assertEquals(8, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    public void testPropertySetTextMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.monthOfYear().setCopy("8");
+        assertEquals(2004, test.getYear());
+        assertEquals(8, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    public void testPropertySetTextLocaleMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.monthOfYear().setCopy("mars", Locale.FRENCH);
+        assertEquals(2004, test.getYear());
+        assertEquals(3, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    public void testPropertyAddMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.monthOfYear().addToCopy(8);
+        assertEquals(2005, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    public void testPropertyAddLongMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.monthOfYear().addToCopy(8L);
+        assertEquals(2005, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    public void testPropertyAddWrapFieldMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.monthOfYear().addWrapFieldToCopy(8);
+        assertEquals(2004, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    public void testPropertyGetDifferenceMonthOfYear() {
+        DateMidnight test1 = new DateMidnight(2004, 6, 9);
+        DateMidnight test2 = new DateMidnight(2004, 8, 9);
+        assertEquals(-2, test1.monthOfYear().getDifference(test2));
+        assertEquals(2, test2.monthOfYear().getDifference(test1));
+        assertEquals(-2L, test1.monthOfYear().getDifferenceAsLong(test2));
+        assertEquals(2L, test2.monthOfYear().getDifferenceAsLong(test1));
+    }
+
+    public void testPropertyRoundFloorMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 7, 16);
+        DateMidnight copy = test.monthOfYear().roundFloorCopy();
+        assertEquals("2004-07-00T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundCeilingMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 7, 16);
+        DateMidnight copy = test.monthOfYear().roundCeilingCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundHalfFloorMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 7, 16);
+        DateMidnight copy = test.monthOfYear().roundHalfFloorCopy();
+        assertEquals("2004-07-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 7, 17);
+        copy = test.monthOfYear().roundHalfFloorCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 7, 15);
+        copy = test.monthOfYear().roundHalfFloorCopy();
+        assertEquals("2004-07-00T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundHalfCeilingMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 7, 16);
+        DateMidnight copy = test.monthOfYear().roundHalfCeilingCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 7, 17);
+        copy = test.monthOfYear().roundHalfCeilingCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 7, 15);
+        copy = test.monthOfYear().roundHalfCeilingCopy();
+        assertEquals("2004-07-00T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRoundHalfEvenMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 7, 16);
+        DateMidnight copy = test.monthOfYear().roundHalfEvenCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 8, 16);
+        copy = test.monthOfYear().roundHalfEvenCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 7, 17);
+        copy = test.monthOfYear().roundHalfEvenCopy();
+        assertEquals("2004-08-00T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateMidnight(2004, 7, 15);
+        copy = test.monthOfYear().roundHalfEvenCopy();
+        assertEquals("2004-07-00T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyRemainderMonthOfYear() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        assertEquals(9L * DateTimeConstants.MILLIS_PER_DAY, test.monthOfYear().remainder());
+    }
+
     //-----------------------------------------------------------------------
     public void testPropertyGetDayOfMonth() {
         DateMidnight test = new DateMidnight(2004, 6, 9);

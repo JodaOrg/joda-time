@@ -72,13 +72,16 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
+        suite.addTest(TestConverterManager.suite());
+        suite.addTest(TestConverterSet.suite());
+        
         suite.addTest(TestCalendarConverter.suite());
         suite.addTest(TestDateConverter.suite());
         suite.addTest(TestLongConverter.suite());
         suite.addTest(TestNullConverter.suite());
-        suite.addTest(TestReadableInstantConverter.suite());
-        
         suite.addTest(TestReadableDurationConverter.suite());
+        suite.addTest(TestReadableInstantConverter.suite());
+        suite.addTest(TestStringConverter.suite());
         return suite;
     }
 

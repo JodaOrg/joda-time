@@ -89,7 +89,7 @@ public interface ReadablePartial {
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      *
-     * @return the fields supported (cloned), largest to smallest
+     * @return the fields supported in an array that may be altered, largest to smallest
      */
     DateTimeField[] getFields();
 
@@ -108,7 +108,7 @@ public interface ReadablePartial {
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      * Each value corresponds to the same array index as <code>getFields()</code>
      *
-     * @return the current values of each field (cloned), largest to smallest
+     * @return the current values of each field in an array that may be altered, largest to smallest
      */
     int[] getValues();
 
@@ -118,7 +118,7 @@ public interface ReadablePartial {
      * The {@link Chronology} is the calculation engine behind the partial and
      * provides conversion and validation of the fields in a particular calendar system.
      * 
-     * @return the chronology
+     * @return the chronology, never null
      */
     Chronology getChronology();
 

@@ -312,7 +312,8 @@
     </junit>
   </target>
 
-  <target name="test.jar" depends="compile.tests,jar">
+  <!-- don't depend on jar, so we can test jar built on another JDK version -->
+  <target name="test.jar" depends="compile.tests">
     <echo message="Running time tests from jar ..."/>
     <junit printsummary="yes" haltonfailure="yes">
       <formatter type="plain" usefile="false" />

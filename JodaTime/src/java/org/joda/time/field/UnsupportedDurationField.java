@@ -69,13 +69,17 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     /** Serialization lock. */
     private static final long serialVersionUID = -6390301302770925357L;
 
-    /**
-     * Instance with the name "unsupported".
-     */
-    public static final UnsupportedDurationField INSTANCE = getInstance("unsupported");
-
+    /** The cache of unsupported duration field instances */
     private static HashMap cCache;
 
+    /**
+     * Gets an instance of UnsupportedDurationField for a specific named field.
+     * Names should be plural, such as 'years' or 'hours'.
+     * The returned instance is cached.
+     * 
+     * @param name  the name to obtain
+     * @return the instance
+     */
     public static synchronized UnsupportedDurationField getInstance(String name) {
         UnsupportedDurationField field;
         if (cCache == null) {
@@ -91,12 +95,19 @@ public final class UnsupportedDurationField extends DurationField implements Ser
         return field;
     }
 
+    /** The name of the field */
     private final String iName;
 
+    /**
+     * Constructor.
+     * 
+     * @param name  the name to use
+     */
     private UnsupportedDurationField(String name) {
         iName = name;
     }
 
+    //-----------------------------------------------------------------------
     // Design note: Simple Accessors return a suitable value, but methods
     // intended to perform calculations throw an UnsupportedOperationException.
 
@@ -256,8 +267,14 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * @return true if equal
      */
     public boolean equals(Object obj) {
-        if (obj instanceof UnsupportedDurationField) {
-            return (((UnsupportedDurationField) obj).getName().equals(getName()));
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof UnsupportedDurationField) {
+            UnsupportedDurationField other = (UnsupportedDurationField) obj;
+            if (other.getName() == null) {
+                return (getName() == null);
+            }
+            return (other.getName().equals(getName()));
         }
         return false;
     }

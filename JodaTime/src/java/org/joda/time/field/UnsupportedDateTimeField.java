@@ -72,19 +72,20 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     /** Serialilzation version */
     private static final long serialVersionUID = -1934618396111902255L;
 
-    /**
-     * Instance with the name "unsupported".
-     */
-    public static final UnsupportedDateTimeField INSTANCE =
-        getInstance("unsupported", UnsupportedDurationField.INSTANCE);
-
+    /** The cache of unsupported datetime field instances */
     private static HashMap cCache;
 
     /**
+     * Gets an instance of UnsupportedDateTimeField for a specific named field.
+     * Names should be of standard format, such as 'monthOfYear' or 'hourOfDay'.
+     * The returned instance is cached.
+     * 
+     * @param name  the name to obtain
+     * @return the instance
      * @throws IllegalArgumentException if durationField is null
      */
-    public static synchronized UnsupportedDateTimeField getInstance
-        (String name, DurationField durationField) {
+    public static synchronized UnsupportedDateTimeField getInstance(
+            String name, DurationField durationField) {
 
         UnsupportedDateTimeField field;
         if (cCache == null) {
@@ -103,9 +104,17 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
         return field;
     }
 
+    /** The name of the datetime field */
     private final String iName;
+    /** The duration of the datetime field */
     private final DurationField iDurationField;
 
+    /**
+     * Constructor.
+     * 
+     * @param name  the name to use
+     * @param durationField  the duration to use
+     */
     private UnsupportedDateTimeField(String name, DurationField durationField) {
         if (durationField == null) {
             throw new IllegalArgumentException();
@@ -114,6 +123,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
         iDurationField = durationField;
     }
 
+    //-----------------------------------------------------------------------
     // Design note: Simple accessors return a suitable value, but methods
     // intended to perform calculations throw an UnsupportedOperationException.
 

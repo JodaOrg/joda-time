@@ -56,7 +56,6 @@ package org.joda.time.convert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
@@ -136,7 +135,7 @@ public class TestConverterSet extends TestCase {
         set.select(Long.class);
         set.select(Float.class);
         set.select(Double.class);
-        set.select(Date.class);
+        set.select(null);
         set.select(Calendar.class);
         set.select(GregorianCalendar.class);
         set.select(DateTime.class);
@@ -145,6 +144,7 @@ public class TestConverterSet extends TestCase {
         set.select(ReadableDateTime.class);
         set.select(ReadWritableInstant.class);  // 16
         set.select(ReadWritableDateTime.class);
+        set.select(DateTime.class);
         assertEquals(4, set.size());
     }
 
@@ -174,7 +174,7 @@ public class TestConverterSet extends TestCase {
         };
         ConverterSet set = new ConverterSet(array);
         ConverterSet result = set.add(c4a, null);
-        assertNotSame(set, result);
+        assertTrue(set != result);
         assertEquals(4, set.size());
         assertEquals(4, result.size());
     }
@@ -188,6 +188,15 @@ public class TestConverterSet extends TestCase {
         ConverterSet result = set.remove(c3, null);
         assertEquals(4, set.size());
         assertEquals(3, result.size());
+    }
+
+    public void testRemoveNullRemoved2() {
+        Converter[] array = new Converter[] {
+            c1, c2, c3, c4,
+        };
+        ConverterSet set = new ConverterSet(array);
+        ConverterSet result = set.remove(c5, null);
+        assertSame(set, result);
     }
 
     //-----------------------------------------------------------------------

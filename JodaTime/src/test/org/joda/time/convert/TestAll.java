@@ -80,6 +80,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestLongConverter.suite());
         suite.addTest(TestNullConverter.suite());
         suite.addTest(TestReadableDurationConverter.suite());
+        suite.addTest(TestReadableIntervalConverter.suite());
         suite.addTest(TestReadableInstantConverter.suite());
         suite.addTest(TestStringConverter.suite());
         return suite;

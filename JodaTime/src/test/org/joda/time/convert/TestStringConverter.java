@@ -66,6 +66,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationType;
 import org.joda.time.MutableDuration;
+import org.joda.time.MutableInterval;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -174,6 +175,9 @@ public class TestStringConverter extends TestCase {
         
         dt = new DateTime(2004, 6, 9, 12, 24, 48, 500, ONE_HOUR);
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.5+01:00"));
+        
+        dt = new DateTime(2004, 6, 9, 12, 24, 48, 501);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501"));
     }
 
     public void testGetInstantMillis_Object_Zone() throws Exception {
@@ -363,6 +367,68 @@ public class TestStringConverter extends TestCase {
         
         try {
             StringConverter.INSTANCE.setInto(m, "PXY");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSetIntoInterval_Object1() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "2004-06-09/P1Y2M");
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).toInstant(), m.getStartInstant());
+        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0).toInstant(), m.getEndInstant());
+    }
+
+    public void testSetIntoInterval_Object2() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09");
+        assertEquals(new DateTime(2003, 4, 9, 0, 0, 0, 0).toInstant(), m.getStartInstant());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).toInstant(), m.getEndInstant());
+    }
+
+    public void testSetIntoInterval_Object3() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "2003-08-09/2004-06-09");
+        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0).toInstant(), m.getStartInstant());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).toInstant(), m.getEndInstant());
+    }
+
+    public void testSetIntoIntervalEx_Object1() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        try {
+            StringConverter.INSTANCE.setInto(m, "");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testSetIntoIntervalEx_Object2() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        try {
+            StringConverter.INSTANCE.setInto(m, "/");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testSetIntoIntervalEx_Object3() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        try {
+            StringConverter.INSTANCE.setInto(m, "P1Y/");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testSetIntoIntervalEx_Object4() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        try {
+            StringConverter.INSTANCE.setInto(m, "/P1Y");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testSetIntoIntervalEx_Object5() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        try {
+            StringConverter.INSTANCE.setInto(m, "P1Y/P2Y");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

@@ -64,13 +64,13 @@ import org.joda.time.ReadWritableInterval;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class ReadableIntervalConverter implements IntervalConverter, DurationConverter {
+class ReadableIntervalConverter extends AbstractConverter implements IntervalConverter, DurationConverter {
 
     /**
      * Singleton instance.
      */
     static final ReadableIntervalConverter INSTANCE = new ReadableIntervalConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -80,31 +80,49 @@ class ReadableIntervalConverter implements IntervalConverter, DurationConverter 
 
     /**
      * Returns true always.
+     * 
+     * @param object  the interval
      */
     public boolean isPrecise(Object object) {
         return true;
     }
 
+    /**
+     * Gets the millisecond length of the interval.
+     * 
+     * @param object  the interval
+     */
     public long getDurationMillis(Object object) {
         return (((ReadableInterval) object)).getDurationMillis();
-    }
-
-    public void setInto(ReadWritableDuration duration, Object object) {
-        ReadableInterval interval = (ReadableInterval) object;
-        duration.setTotalMillis(interval.getStartMillis(), interval.getEndMillis());
     }
 
     /**
      * Selects a suitable duration type for the given object.
      *
-     * @param object  the object to examine, must not be null
+     * @param object  the interval
      * @return the duration type, never null
-     * @throws ClassCastException if the object is invalid
      */
     public DurationType getDurationType(Object object) {
         return ((ReadableInterval) object).getDuration().getDurationType();
     }
 
+    /**
+     * Sets the values of the mutable duration from the specified interval.
+     * 
+     * @param writableDuration  the duration to set
+     * @param object  the interval to set from
+     */
+    public void setInto(ReadWritableDuration writableDuration, Object object) {
+        ReadableInterval interval = (ReadableInterval) object;
+        writableDuration.setTotalMillis(interval.getStartMillis(), interval.getEndMillis());
+    }
+
+    /**
+     * Sets the values of the mutable interval from the specified interval.
+     * 
+     * @param writableInterval  the interval to set
+     * @param object  the interval to set from
+     */
     public void setInto(ReadWritableInterval writableInterval, Object object) {
         ReadableInterval interval = (ReadableInterval) object;
         writableInterval.setStartMillis(interval.getStartMillis());
@@ -117,4 +135,5 @@ class ReadableIntervalConverter implements IntervalConverter, DurationConverter 
     public Class getSupportedType() {
         return ReadableInterval.class;
     }
+
 }

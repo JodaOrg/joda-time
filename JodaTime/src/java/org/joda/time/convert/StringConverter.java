@@ -61,6 +61,7 @@ import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.DurationFormatter;
 import org.joda.time.format.DurationParser;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISODurationFormat;
@@ -170,6 +171,12 @@ class StringConverter extends AbstractConverter
         return DurationType.getYearMonthType();
     }
 
+    /**
+     * Sets the value of the mutable interval from the string.
+     * 
+     * @param writableInterval  the interval to set
+     * @param object  the string to set from
+     */
     public void setInto(ReadWritableInterval writableInterval, Object object) {
         String str = (String) object;
 
@@ -180,23 +187,24 @@ class StringConverter extends AbstractConverter
 
         String leftStr = str.substring(0, separator);
         if (leftStr.length() <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Format invalid: " + str);
         }
         String rightStr = str.substring(separator + 1);
         if (rightStr.length() <= 0) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Format invalid: " + str);
         }
 
+        DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
+        DurationFormatter durationParser = ISODurationFormat.getInstance().standard();
         long startInstant;
         ReadableDuration duration;
 
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            duration = ISODurationFormat.getInstance().standard()
-                .parseDuration(getDurationType(leftStr), leftStr);
+            duration = durationParser.parseDuration(getDurationType(leftStr), leftStr);
         } else {
-            startInstant = ISODateTimeFormat.getInstanceUTC().dateTimeParser().parseMillis(leftStr);
+            startInstant = dateTimeParser.parseMillis(leftStr);
             duration = null;
         }
 
@@ -205,12 +213,11 @@ class StringConverter extends AbstractConverter
             if (duration != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            duration = ISODurationFormat.getInstance().standard()
-                .parseDuration(getDurationType(rightStr), rightStr);
+            duration = durationParser.parseDuration(getDurationType(rightStr), rightStr);
             writableInterval.setStartMillis(startInstant);
             writableInterval.setDurationAfterStart(duration);
         } else {
-            long endInstant = ISODateTimeFormat.getInstanceUTC().dateTimeParser().parseMillis(rightStr);
+            long endInstant = dateTimeParser.parseMillis(rightStr);
             writableInterval.setEndMillis(endInstant);
             if (duration == null) {
                 writableInterval.setStartMillis(startInstant);

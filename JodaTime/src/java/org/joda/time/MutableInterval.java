@@ -54,7 +54,6 @@
 package org.joda.time;
 
 import java.io.Serializable;
-import java.text.ParseException;
 
 /**
  * MutableInterval is the standard implementation of a mutable time interval.
@@ -72,7 +71,8 @@ import java.text.ParseException;
 public final class MutableInterval extends AbstractInterval
         implements ReadWritableInterval, Serializable {
 
-    static final long serialVersionUID = -5982824024992428470L;
+    /** Serialization version */
+    private static final long serialVersionUID = -5982824024992428470L;
 
     /**
      * Constructs a time interval as a copy of another.

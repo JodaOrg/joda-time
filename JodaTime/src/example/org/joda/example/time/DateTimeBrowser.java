@@ -183,7 +183,9 @@ public class DateTimeBrowser extends JFrame {
      */
     private static void usage() {
             System.err.println("Usage:");
-            System.err.println("DateTimeBrowser <options> <filename>");
+            System.err.print("java <options> ");
+            System.err.print(DateTimeBrowser.class.getName());
+            System.err.println(" <filename>");
             System.err.println("<filename> contains a list of Strings");
             System.err.println("\twhich are valid for DateTime instantiation.");
             System.err.println("<optons>");

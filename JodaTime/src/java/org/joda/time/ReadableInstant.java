@@ -164,32 +164,33 @@ public interface ReadableInstant extends Comparable {
      */
     int compareTo(Object readableInstant);
 
+    //-----------------------------------------------------------------------
     /**
-     * Is the millisecond value after the millisecond passed in.
+     * Is this instant after the instant passed in
+     * comparing solely by millisecond.
      *
-     * @param readableInstant  an instant to check against
+     * @param instant  an instant to check against, null means now
      * @return true if the instant is after the instant passed in
-     * @throws IllegalArgumentException if the instant is null
      */
-    boolean isAfter(ReadableInstant readableInstant);
+    boolean isAfter(ReadableInstant instant);
 
     /**
-     * Is the millisecond value before the millisecond passed in.
+     * Is this instant before the instant passed in
+     * comparing solely by millisecond.
      *
-     * @param readableInstant  an instant to check against
+     * @param instant  an instant to check against, null means now
      * @return true if the instant is before the instant passed in
-     * @throws IllegalArgumentException if the instant is null
      */
-    boolean isBefore(ReadableInstant readableInstant);
+    boolean isBefore(ReadableInstant instant);
 
     /**
-     * Is the millisecond value equal to the millisecond passed in.
+     * Is this instant equal to the instant passed in
+     * comparing solely by millisecond.
      *
-     * @param readableInstant  an instant to check against
+     * @param instant  an instant to check against, null means now
      * @return true if the instant is equal to the instant passed in
-     * @throws IllegalArgumentException if the instant is null
      */
-    boolean isEqual(ReadableInstant readableInstant);
+    boolean isEqual(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
     /**

@@ -29,7 +29,7 @@
   
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTime</connection>
-    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/</url>
+    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime/</url>
   </repository>
   
   <mailingLists>

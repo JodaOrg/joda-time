@@ -327,6 +327,22 @@ public abstract class BasePeriod
         return new Duration(startMillis, endMillis);
     }
 
+    /**
+     * Gets the total millisecond duration of this period relative to an end instant.
+     * <p>
+     * This method subtracts the period from the specifed instant.
+     *
+     * @param endInstant  the instant to subtract the period from, thus obtaining the duration
+     * @return the total length of the period as a duration relative to the end instant
+     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     */
+    public Duration toDurationTo(ReadableInstant endInstant) {
+        long endMillis = DateTimeUtils.getInstantMillis(endInstant);
+        Chronology chrono = DateTimeUtils.getInstantChronology(endInstant);
+        long startMillis = chrono.add(this, endMillis, -1);
+        return new Duration(startMillis, endMillis);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Checks whether a field type is supported, and if so adds the new value

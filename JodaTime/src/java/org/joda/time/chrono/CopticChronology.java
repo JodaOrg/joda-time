@@ -64,6 +64,7 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.PreciseDurationField;
+import org.joda.time.field.SkipDateTimeField;
 
 /**
  * Implements the Coptic calendar system, which defines every fourth year as
@@ -320,8 +321,8 @@ public final class CopticChronology extends BaseGJChronology {
             fields.years = fields.year.getDurationField();
 
             // Coptic, like Julian, has no year zero.
-            fields.year = new JulianChronology.NoYearZeroField(this, fields.year);
-            fields.weekyear = new JulianChronology.NoWeekyearZeroField(this, fields.weekyear);
+            fields.year = new SkipDateTimeField(this, fields.year);
+            fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
             
             fields.era = CopticEraDateTimeField.INSTANCE;
             fields.months = cMonthsField;

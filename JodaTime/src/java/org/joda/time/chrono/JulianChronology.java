@@ -58,10 +58,8 @@ import java.util.Map;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
-import org.joda.time.field.DelegatedDateTimeField;
-import org.joda.time.field.FieldUtils;
+import org.joda.time.field.SkipDateTimeField;
 
 /**
  * Implements a pure proleptic Julian calendar system, which defines every
@@ -291,61 +289,8 @@ public final class JulianChronology extends BaseGJChronology {
         if (getBase() == null) {
             super.assemble(fields);
             // Julian chronology has no year zero.
-            fields.year = new NoYearZeroField(this, fields.year);
-            fields.weekyear = new NoWeekyearZeroField(this, fields.weekyear);
-        }
-    }
-
-    static class NoYearZeroField extends DelegatedDateTimeField {
-        private static final long serialVersionUID = -8869148464118507846L;
-
-        final BaseGJChronology iChronology;
-        private transient int iMinYear;
-
-        NoYearZeroField(BaseGJChronology chronology, DateTimeField field) {
-            super(field);
-            iChronology = chronology;
-            int min = super.getMinimumValue();
-            if (min < 0) {
-                iMinYear = min - 1;
-            } else if (min == 0) {
-                iMinYear = 1;
-            } else {
-                iMinYear = min;
-            }
-        }
-        
-        public int get(long millis) {
-            int year = super.get(millis);
-            if (year <= 0) {
-                year--;
-            }
-            return year;
-        }
-
-        public long set(long millis, int year) {
-            FieldUtils.verifyValueBounds(this, year, iMinYear, getMaximumValue());
-            return super.set(millis, adjustYearForSet(year));
-        }
-
-        public int getMinimumValue() {
-            return iMinYear;
-        }
-
-        private Object readResolve() {
-            return iChronology.year();
-        }
-    }
-
-    static class NoWeekyearZeroField extends NoYearZeroField {
-        private static final long serialVersionUID = -5013429014495501104L;
-
-        NoWeekyearZeroField(BaseGJChronology chronology, DateTimeField field) {
-            super(chronology, field);
-        }
-        
-        private Object readResolve() {
-            return iChronology.weekyear();
+            fields.year = new SkipDateTimeField(this, fields.year);
+            fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
         }
     }
 

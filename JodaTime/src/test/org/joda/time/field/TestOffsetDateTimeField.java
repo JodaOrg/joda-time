@@ -62,6 +62,7 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
 
 /**
@@ -104,6 +105,12 @@ public class TestOffsetDateTimeField extends TestCase {
         
         try {
             field = new OffsetDateTimeField(Chronology.getISO().secondOfMinute(), 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        
+        try {
+            field = new OffsetDateTimeField(UnsupportedDateTimeField.getInstance(
+                DateTimeFieldType.secondOfMinute(), UnsupportedDurationField.getInstance(DurationFieldType.seconds())), 0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -155,6 +162,11 @@ public class TestOffsetDateTimeField extends TestCase {
     public void test_isSupported() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(true, field.isSupported());
+    }
+
+    public void test_isLenient() {
+        OffsetDateTimeField field = new MockOffsetDateTimeField();
+        assertEquals(false, field.isLenient());
     }
 
     public void test_getOffset() {

@@ -10,7 +10,7 @@
       <item name="Overview" href="/index.html"/>
       <item name="Users guide" href="/userguide.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
-      <item name="Javadoc (Release)" href="/apidocs-release/index.html"/>
+      <item name="Javadoc (Release)" href="/api-0.95/index.html"/>
       <item name="Test results" href="/junit-report.html"/>
       <item name="Mailing lists" href="/mail-lists.html"/>
       <item name="Tasks" href="/tasks.html"/>

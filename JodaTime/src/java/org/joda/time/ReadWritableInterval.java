@@ -57,6 +57,7 @@ package org.joda.time;
  * Writable interface for an interval.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
 public interface ReadWritableInterval extends ReadableInterval {
@@ -90,5 +91,33 @@ public interface ReadWritableInterval extends ReadableInterval {
      * @param instant  the end of the time interval
      */
     void setEndInstant(ReadableInstant instant);
+
+    /**
+     * Sets the duration of this time interval, preserving the start instant.
+     *
+     * @param millisDuration  new duration for interval
+     */
+    void setDurationAfterStart(long millisDuration);
+
+    /**
+     * Sets the duration of this time interval, preserving the start instant.
+     *
+     * @param duration  new duration for interval
+     */
+    void setDurationAfterStart(ReadableDuration duration);
+
+    /**
+     * Sets the duration of this time interval, preserving the end instant.
+     *
+     * @param millisDuration  new duration for interval
+     */
+    void setDurationBeforeEnd(long millisDuration);
+
+    /**
+     * Sets the duration of this time interval, preserving the end instant.
+     *
+     * @param duration  new duration for interval
+     */
+    void setDurationBeforeEnd(ReadableDuration duration);
 
 }

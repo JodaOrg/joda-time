@@ -621,7 +621,7 @@ public class DateTimeFormat {
         public DateTimeField getField(Chronology chrono) {
             DateTimeField wrappedField = iWrappedType.getField(chrono);
             RemainderDateTimeField field = iRecent;
-            if (field.getWrappedField() == wrappedField) {
+            if (field != null && field.getWrappedField() == wrappedField) {
                 return field;
             }
             field = new RemainderDateTimeField(wrappedField, iType, iDivisor);

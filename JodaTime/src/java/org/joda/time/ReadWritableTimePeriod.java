@@ -110,6 +110,29 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
     /**
      * Sets all the fields in one go from a duration dividing the
      * fields using the duration type.
+     * <p>
+     * The exact impact of this method is determined by the duration type.
+     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly. The situation is more complex
+     * for larger durations.
+     * <p>
+     * If this period uses the PreciseAll duration type then all fields can be set.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 1 year, 2 months and 5 days using the PreciseAll type.
+     * <p>
+     * If the period uses the All duration type then the years and months fields
+     * will remain as zero, with the duration allocated to the weeks field.
+     * Normally, the weeks and days fields are imprecise, but this method
+     * calculates using the UTC time zone making weeks and days precise.
+     * The effect is that a large duration of several years or months will be converted
+     * to a period including a large number of weeks and zero years and months.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 61 weeks and 3 days.
+     * <p>
+     * For more control over the conversion process, you should convert the duration
+     * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param duration  the duration to set, null means zero length
      */
@@ -118,6 +141,29 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
     /**
      * Sets all the fields in one go from a millisecond duration dividing the
      * fields using the duration type.
+     * <p>
+     * The exact impact of this method is determined by the duration type.
+     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly. The situation is more complex
+     * for larger durations.
+     * <p>
+     * If this period uses the PreciseAll duration type then all fields can be set.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 1 year, 2 months and 5 days using the PreciseAll type.
+     * <p>
+     * If the period uses the All duration type then the years and months fields
+     * will remain as zero, with the duration allocated to the weeks field.
+     * Normally, the weeks and days fields are imprecise, but this method
+     * calculates using the UTC time zone making weeks and days precise.
+     * The effect is that a large duration of several years or months will be converted
+     * to a period including a large number of weeks and zero years and months.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 61 weeks and 3 days.
+     * <p>
+     * For more control over the conversion process, you should convert the duration
+     * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param duration  the duration, in milliseconds
      */
@@ -135,6 +181,24 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
     void add(ReadableTimePeriod period);
 
     /**
+     * Adds to each field of this period.
+     * 
+     * @param years  amount of years to add to this period, which must be zero if unsupported
+     * @param months  amount of months to add to this period, which must be zero if unsupported
+     * @param weeks  amount of weeks to add to this period, which must be zero if unsupported
+     * @param days  amount of days to add to this period, which must be zero if unsupported
+     * @param hours  amount of hours to add to this period, which must be zero if unsupported
+     * @param minutes  amount of minutes to add to this period, which must be zero if unsupported
+     * @param seconds  amount of seconds to add to this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds to add to this period, which must be zero if unsupported
+     * @throws IllegalArgumentException if the period being added contains a field
+     * not supported by this period
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    void add(int years, int months, int weeks, int days,
+                    int hours, int minutes, int seconds, int millis);
+
+    /**
      * Adds an interval to this one by dividing the interval into
      * fields and then adding each field in turn.
      * 
@@ -146,6 +210,29 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
     /**
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
+     * <p>
+     * The exact impact of this method is determined by the duration type.
+     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly. The situation is more complex
+     * for larger durations.
+     * <p>
+     * If this period uses the PreciseAll duration type then all fields can be set.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 1 year, 2 months and 5 days using the PreciseAll type.
+     * <p>
+     * If the period uses the All duration type then the years and months fields
+     * will remain as zero, with the duration allocated to the weeks field.
+     * Normally, the weeks and days fields are imprecise, but this method
+     * calculates using the UTC time zone making weeks and days precise.
+     * The effect is that a large duration of several years or months will be converted
+     * to a period including a large number of weeks and zero years and months.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 61 weeks and 3 days.
+     * <p>
+     * For more control over the conversion process, you should convert the duration
+     * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param duration  the duration to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
@@ -155,6 +242,29 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
     /**
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
+     * <p>
+     * The exact impact of this method is determined by the duration type.
+     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly. The situation is more complex
+     * for larger durations.
+     * <p>
+     * If this period uses the PreciseAll duration type then all fields can be set.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 1 year, 2 months and 5 days using the PreciseAll type.
+     * <p>
+     * If the period uses the All duration type then the years and months fields
+     * will remain as zero, with the duration allocated to the weeks field.
+     * Normally, the weeks and days fields are imprecise, but this method
+     * calculates using the UTC time zone making weeks and days precise.
+     * The effect is that a large duration of several years or months will be converted
+     * to a period including a large number of weeks and zero years and months.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 61 weeks and 3 days.
+     * <p>
+     * For more control over the conversion process, you should convert the duration
+     * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param duration  the duration to add
      * @throws ArithmeticException if the addition exceeds the capacity of the period

@@ -201,6 +201,28 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(6, test.getMinutes());
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
+    }
+
+    public void testConstructor_long2() throws Throwable {
+        long length =
+                5 * DateTimeConstants.MILLIS_PER_HOUR +
+                6 * DateTimeConstants.MILLIS_PER_MINUTE +
+                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        MutableTimePeriod test = new MutableTimePeriod(length);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
         assertEquals(true, test.isPrecise());
         assertEquals(length, test.toDurationMillis());
     }
@@ -221,8 +243,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(6, test.getMinutes());
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(length, test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_long_DurationType2() throws Throwable {
@@ -259,12 +284,15 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(6, test.getMinutes());
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(length, test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_long_DurationType4() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
+        long length =
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
@@ -273,7 +301,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(4, test.getDays());
+        assertEquals(0, test.getDays());
         assertEquals(5, test.getHours());
         assertEquals(6, test.getMinutes());
         assertEquals(7, test.getSeconds());
@@ -385,8 +413,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_long_long2() throws Throwable {
@@ -402,8 +433,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -420,8 +454,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_long_long_DurationType2() throws Throwable {
@@ -437,19 +474,22 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_long_long_DurationType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
+        DateTime dt2 = new DateTime(2004, 6, 9, 1, 1, 1, 1);
         MutableTimePeriod test = new MutableTimePeriod(dt1.getMillis(), dt2.getMillis(), DurationType.getAllType().withMillisRemoved());
         assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
-        assertEquals(1, test.getYears());
-        assertEquals(1, test.getMonths());
-        assertEquals(1, test.getWeeks());
-        assertEquals(1, test.getDays());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
         assertEquals(1, test.getHours());
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
@@ -472,8 +512,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_RI_RI2() throws Throwable {
@@ -489,8 +532,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_RI_RI3() throws Throwable {
@@ -506,11 +552,34 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_RI_RI4() throws Throwable {
+        DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
+        DateTime dt2 = null;  // 2002-06-09T01:00+01:00
+        MutableTimePeriod test = new MutableTimePeriod(dt1, dt2);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(-3, test.getYears());
+        assertEquals(-1, test.getMonths());
+        assertEquals(-1, test.getWeeks());
+        assertEquals(-1, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(-1, test.getMinutes());
+        assertEquals(-1, test.getSeconds());
+        assertEquals(-1, test.getMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
+    }
+
+    public void testConstructor_RI_RI5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
         MutableTimePeriod test = new MutableTimePeriod(dt1, dt2);
@@ -541,8 +610,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_RI_RI_DurationType2() throws Throwable {
@@ -558,19 +630,22 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_RI_RI_DurationType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
+        DateTime dt2 = new DateTime(2004, 6, 9, 1, 1, 1, 1);
         MutableTimePeriod test = new MutableTimePeriod(dt1, dt2, DurationType.getAllType().withMillisRemoved());
         assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
-        assertEquals(1, test.getYears());
-        assertEquals(1, test.getMonths());
-        assertEquals(1, test.getWeeks());
-        assertEquals(1, test.getDays());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
         assertEquals(1, test.getHours());
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
@@ -592,8 +667,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     public void testConstructor_RI_RI_DurationType5() throws Throwable {
@@ -667,9 +745,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object4() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        TimePeriod base = new TimePeriod(dt1, dt2);  // AllType and precise
+        TimePeriod base = new TimePeriod(1, 1, 0, 1, 1, 1, 1, 1, DurationType.getAllType());
         MutableTimePeriod test = new MutableTimePeriod(base);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
@@ -680,13 +756,16 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.toDurationMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Test constructor (Object)
+     * Test constructor (Object,DurationType)
      */
     public void testConstructor_Object_DurationType1() throws Throwable {
         MutableTimePeriod test = new MutableTimePeriod("P1Y2M3D", DurationType.getYearMonthType());

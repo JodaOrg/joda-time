@@ -1001,6 +1001,35 @@ public abstract class AbstractTimePeriod
     }
 
     /**
+     * Adds to each field of this period.
+     * 
+     * @param years  amount of years to add to this period, which must be zero if unsupported
+     * @param months  amount of months to add to this period, which must be zero if unsupported
+     * @param weeks  amount of weeks to add to this period, which must be zero if unsupported
+     * @param days  amount of days to add to this period, which must be zero if unsupported
+     * @param hours  amount of hours to add to this period, which must be zero if unsupported
+     * @param minutes  amount of minutes to add to this period, which must be zero if unsupported
+     * @param seconds  amount of seconds to add to this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds to add to this period, which must be zero if unsupported
+     * @throws IllegalArgumentException if the period being added contains a field
+     * not supported by this period
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    protected void add(int years, int months, int weeks, int days,
+                       int hours, int minutes, int seconds, int millis) {
+        setTimePeriod(
+            FieldUtils.safeAdd(getYears(), years),
+            FieldUtils.safeAdd(getMonths(), months),
+            FieldUtils.safeAdd(getWeeks(), weeks),
+            FieldUtils.safeAdd(getDays(), days),
+            FieldUtils.safeAdd(getHours(), hours),
+            FieldUtils.safeAdd(getMinutes(), minutes),
+            FieldUtils.safeAdd(getSeconds(), seconds),
+            FieldUtils.safeAdd(getMillis(), millis)
+        );
+    }
+
+    /**
      * Adds an interval to this one by dividing the interval into
      * fields and calling {@link #add(ReadableTimePeriod)}.
      * 
@@ -1022,7 +1051,7 @@ public abstract class AbstractTimePeriod
      */
     protected void add(ReadableDuration duration) {
         if (duration != null) {
-            add(new TimePeriod(duration.getMillis()));
+            add(new TimePeriod(duration.getMillis(), getDurationType()));
         }
     }
 
@@ -1034,7 +1063,7 @@ public abstract class AbstractTimePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     protected void add(long duration) {
-        add(new TimePeriod(duration));
+        add(new TimePeriod(duration, getDurationType()));
     }
 
     /**

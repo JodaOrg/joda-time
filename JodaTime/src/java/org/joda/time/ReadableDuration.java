@@ -86,17 +86,25 @@ public interface ReadableDuration extends Comparable {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this duration to a TimePeriod instance using the PreciseAll type.
+     * Converts this duration to a TimePeriod instance using the All type.
      * <p>
-     * The PreciseAll type fixes days at 24 hours, months ay 30 days and years at 365 days
-     * thus the time period will be precise. As a result there is no loss of precision
-     * with regards the length of the duration and the following code will work:
-     * <pre>
-     * Duration dur = new Duration(123456789L);
-     * TimePeriod period = d.toTimePeriod();
-     * Duration dur2 = period.toDuration();
-     * // dur.getMillis() == dur2.getMillis()
-     * </pre>
+     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly. The situation is more complex
+     * for larger durations.
+     * <p>
+     * If the duration is larger then the years and months fields will remain as zero,
+     * with the duration allocated to the weeks field.
+     * Normally, the weeks and days fields are imprecise, but this method
+     * calculates using the UTC time zone making weeks and days precise.
+     * The effect is that a large duration of several years or months will be converted
+     * to a period including a large number of weeks and zero years and months.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 61 weeks and 3 days.
+     * <p>
+     * For more control over the conversion process, you should convert the duration
+     * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @return a TimePeriod created using the millisecond duration from this instance
      */
@@ -106,9 +114,26 @@ public interface ReadableDuration extends Comparable {
      * Converts this duration to a TimePeriod instance specifying a duration type
      * to control how the duration is split into fields.
      * <p>
-     * If a non-precise duration type is used, the resulting time period will only
-     * represent an approximation of the duration. As a result it will not be
-     * possible to call {@link TimePeriod#toDuration()} to get the duration back.
+     * The exact impact of this method is determined by the duration type.
+     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly. The situation is more complex
+     * for larger durations.
+     * <p>
+     * If the duration type is PreciseAll then all fields can be set.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 1 year, 2 months and 5 days using the PreciseAll type.
+     * <p>
+     * If the duration type is All then the years and months fields will remain as zero,
+     * with the duration allocated to the weeks and days fields.
+     * The effect is that a large duration of several years or months will be converted
+     * to a period including a large number of weeks and zero years and months.
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * 61 weeks and 3 days.
+     * <p>
+     * For more control over the conversion process, you should convert the duration
+     * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param type  the duration type determining how to split the duration into fields
      * @return a TimePeriod created using the millisecond duration from this instance

@@ -34,9 +34,9 @@ import junit.framework.TestSuite;
  */
 public class TestTimeOfDay_Basics extends TestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final int OFFSET = 1;
     private static final Chronology COPTIC_PARIS = Chronology.getCoptic(PARIS);
     private static final Chronology COPTIC_LONDON = Chronology.getCoptic(LONDON);

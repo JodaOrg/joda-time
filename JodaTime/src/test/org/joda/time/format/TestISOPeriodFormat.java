@@ -41,9 +41,9 @@ public class TestISOPeriodFormat extends TestCase {
     private static final Period TIME_PERIOD = new Period(0, 0, 0, 0, 5, 6, 7, 8);
     private static final Period DATE_PERIOD = new Period(1, 2, 3, 4, 0, 0, 0, 0);
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 

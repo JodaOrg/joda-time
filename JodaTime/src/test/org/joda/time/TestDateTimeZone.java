@@ -64,8 +64,8 @@ public class TestDateTimeZone extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -184,118 +184,128 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstance_String() {
-        assertEquals(DateTimeZone.getDefault(), DateTimeZone.getInstance((String) null));
+    public void testForID_String() {
+        assertEquals(DateTimeZone.getDefault(), DateTimeZone.forID((String) null));
         
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+        DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("Europe/London", zone.getID());
         
-        zone = DateTimeZone.getInstance("UTC");
+        zone = DateTimeZone.forID("UTC");
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance("+00:00");
+        zone = DateTimeZone.forID("+00:00");
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance("+00");
+        zone = DateTimeZone.forID("+00");
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance("+01:23");
+        zone = DateTimeZone.forID("+01:23");
         assertEquals("+01:23", zone.getID());
         assertEquals(DateTimeConstants.MILLIS_PER_HOUR + (23L * DateTimeConstants.MILLIS_PER_MINUTE),
                 zone.getOffset(TEST_TIME_SUMMER));
         
-        zone = DateTimeZone.getInstance("-02:00");
+        zone = DateTimeZone.forID("-02:00");
         assertEquals("-02:00", zone.getID());
         assertEquals((-2L * DateTimeConstants.MILLIS_PER_HOUR),
                 zone.getOffset(TEST_TIME_SUMMER));
         
         try {
-            DateTimeZone.getInstance("SST");
+            DateTimeZone.forID("SST");
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance("Europe/UK");
+            DateTimeZone.forID("Europe/UK");
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance("+");
+            DateTimeZone.forID("+");
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance("+0");
+            DateTimeZone.forID("+0");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstance_int() {
-        assertEquals(DateTimeZone.UTC, DateTimeZone.getInstance(0));
-        assertEquals(DateTimeZone.getInstance("+03:00"), DateTimeZone.getInstance(3));
-        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstance(-2));
+    public void testForOffsetHours_int() {
+        assertEquals(DateTimeZone.UTC, DateTimeZone.forOffsetHours(0));
+        assertEquals(DateTimeZone.forID("+03:00"), DateTimeZone.forOffsetHours(3));
+        assertEquals(DateTimeZone.forID("-02:00"), DateTimeZone.forOffsetHours(-2));
         try {
-            DateTimeZone.getInstance(999999);
+            DateTimeZone.forOffsetHours(999999);
             fail();
         } catch (IllegalArgumentException ex) {}
     }        
 
     //-----------------------------------------------------------------------
-    public void testGetInstance_int_int() {
-        assertEquals(DateTimeZone.UTC, DateTimeZone.getInstance(0));
-        assertEquals(DateTimeZone.getInstance("+03:15"), DateTimeZone.getInstance(3, 15));
-        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstance(-2, 0));
-        assertEquals(DateTimeZone.getInstance("-02:30"), DateTimeZone.getInstance(-2, 30));
+    public void testForOffsetHoursMinutes_int_int() {
+        assertEquals(DateTimeZone.UTC, DateTimeZone.forOffsetHoursMinutes(0, 0));
+        assertEquals(DateTimeZone.forID("+03:15"), DateTimeZone.forOffsetHoursMinutes(3, 15));
+        assertEquals(DateTimeZone.forID("-02:00"), DateTimeZone.forOffsetHoursMinutes(-2, 0));
+        assertEquals(DateTimeZone.forID("-02:30"), DateTimeZone.forOffsetHoursMinutes(-2, 30));
         try {
-            DateTimeZone.getInstance(2, 60);
+            DateTimeZone.forOffsetHoursMinutes(2, 60);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(-2, 60);
+            DateTimeZone.forOffsetHoursMinutes(-2, 60);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(2, -1);
+            DateTimeZone.forOffsetHoursMinutes(2, -1);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(-2, -1);
+            DateTimeZone.forOffsetHoursMinutes(-2, -1);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(999999, 0);
+            DateTimeZone.forOffsetHoursMinutes(999999, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }        
 
     //-----------------------------------------------------------------------
-    public void testGetInstance_TimeZone() {
-        assertEquals(DateTimeZone.getDefault(), DateTimeZone.getInstance((TimeZone) null));
+    public void testForOffsetMillis_int() {
+        assertSame(DateTimeZone.UTC, DateTimeZone.forOffsetMillis(0));
+        assertEquals(DateTimeZone.forID("+03:00"), DateTimeZone.forOffsetMillis(3 * 60 * 60 * 1000));
+        assertEquals(DateTimeZone.forID("-02:00"), DateTimeZone.forOffsetMillis(-2 * 60 * 60 * 1000));
+        assertEquals(DateTimeZone.forID("+04:45:17.045"),
+                DateTimeZone.forOffsetMillis(
+                        4 * 60 * 60 * 1000 + 45 * 60 * 1000 + 17 * 1000 + 45));
+    }        
+
+    //-----------------------------------------------------------------------
+    public void testForTimeZone_TimeZone() {
+        assertEquals(DateTimeZone.getDefault(), DateTimeZone.forTimeZone((TimeZone) null));
         
-        DateTimeZone zone = DateTimeZone.getInstance(TimeZone.getTimeZone("Europe/London"));
+        DateTimeZone zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("Europe/London"));
         assertEquals("Europe/London", zone.getID());
-        assertSame(DateTimeZone.UTC, DateTimeZone.getInstance(TimeZone.getTimeZone("UTC")));
+        assertSame(DateTimeZone.UTC, DateTimeZone.forTimeZone(TimeZone.getTimeZone("UTC")));
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("+00:00"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("+00:00"));
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("GMT+00:00"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("GMT+00:00"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+00:00"));
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("GMT+00"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+00"));
         assertSame(DateTimeZone.UTC, zone);
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("GMT+01:23"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+01:23"));
         assertEquals("+01:23", zone.getID());
         assertEquals(DateTimeConstants.MILLIS_PER_HOUR + (23L * DateTimeConstants.MILLIS_PER_MINUTE),
                 zone.getOffset(TEST_TIME_SUMMER));
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("GMT-02:00"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT-02:00"));
         assertEquals("-02:00", zone.getID());
         assertEquals((-2L * DateTimeConstants.MILLIS_PER_HOUR), zone.getOffset(TEST_TIME_SUMMER));
         
-        zone = DateTimeZone.getInstance(TimeZone.getTimeZone("EST"));
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST"));
         assertEquals("America/New_York", zone.getID());
     }
 
@@ -543,18 +553,18 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetID() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals("Europe/Paris", zone.getID());
     }
 
     public void testGetNameKey() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+        DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("BST", zone.getNameKey(TEST_TIME_SUMMER));
         assertEquals("GMT", zone.getNameKey(TEST_TIME_WINTER));
     }
 
     public void testGetShortName() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+        DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("BST", zone.getShortName(TEST_TIME_SUMMER));
         assertEquals("GMT", zone.getShortName(TEST_TIME_WINTER));
         assertEquals("BST", zone.getShortName(TEST_TIME_SUMMER, Locale.ENGLISH));
@@ -573,7 +583,7 @@ public class TestDateTimeZone extends TestCase {
     }
     
     public void testGetName() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+        DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER));
         assertEquals("Greenwich Mean Time", zone.getName(TEST_TIME_WINTER));
         assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER, Locale.ENGLISH));
@@ -621,7 +631,7 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetOffset() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals(2L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
         assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_WINTER));
         
@@ -638,7 +648,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     public void testGetOffsetFixed() {
-        DateTimeZone zone = DateTimeZone.getInstance("+01:00");
+        DateTimeZone zone = DateTimeZone.forID("+01:00");
         assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_SUMMER));
         assertEquals(1L * DateTimeConstants.MILLIS_PER_HOUR, zone.getOffset(TEST_TIME_WINTER));
         
@@ -673,14 +683,14 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testIsFixed() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals(false, zone.isFixed());
         assertEquals(true, DateTimeZone.UTC.isFixed());
     }
 
     //-----------------------------------------------------------------------
     public void testTransitionFixed() {
-        DateTimeZone zone = DateTimeZone.getInstance("+01:00");
+        DateTimeZone zone = DateTimeZone.forID("+01:00");
         assertEquals(TEST_TIME_SUMMER, zone.nextTransition(TEST_TIME_SUMMER));
         assertEquals(TEST_TIME_WINTER, zone.nextTransition(TEST_TIME_WINTER));
         assertEquals(TEST_TIME_SUMMER, zone.previousTransition(TEST_TIME_SUMMER));
@@ -689,22 +699,22 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToTimeZone() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         TimeZone tz = zone.toTimeZone();
         assertEquals("Europe/Paris", tz.getID());
     }
 
     //-----------------------------------------------------------------------
     public void testEqualsHashCode() {
-        DateTimeZone zone1 = DateTimeZone.getInstance("Europe/Paris");
-        DateTimeZone zone2 = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone1 = DateTimeZone.forID("Europe/Paris");
+        DateTimeZone zone2 = DateTimeZone.forID("Europe/Paris");
         assertEquals(true, zone1.equals(zone1));
         assertEquals(true, zone1.equals(zone2));
         assertEquals(true, zone2.equals(zone1));
         assertEquals(true, zone2.equals(zone2));
         assertEquals(true, zone1.hashCode() == zone2.hashCode());
         
-        DateTimeZone zone3 = DateTimeZone.getInstance("Europe/London");
+        DateTimeZone zone3 = DateTimeZone.forID("Europe/London");
         assertEquals(true, zone3.equals(zone3));
         assertEquals(false, zone1.equals(zone3));
         assertEquals(false, zone2.equals(zone3));
@@ -713,7 +723,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(false, zone1.hashCode() == zone3.hashCode());
         assertEquals(true, zone3.hashCode() == zone3.hashCode());
         
-        DateTimeZone zone4 = DateTimeZone.getInstance("+01:00");
+        DateTimeZone zone4 = DateTimeZone.forID("+01:00");
         assertEquals(true, zone4.equals(zone4));
         assertEquals(false, zone1.equals(zone4));
         assertEquals(false, zone2.equals(zone4));
@@ -724,7 +734,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(false, zone1.hashCode() == zone4.hashCode());
         assertEquals(true, zone4.hashCode() == zone4.hashCode());
         
-        DateTimeZone zone5 = DateTimeZone.getInstance("+02:00");
+        DateTimeZone zone5 = DateTimeZone.forID("+02:00");
         assertEquals(true, zone5.equals(zone5));
         assertEquals(false, zone1.equals(zone5));
         assertEquals(false, zone2.equals(zone5));
@@ -740,14 +750,14 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals("Europe/Paris", zone.toString());
         assertEquals("UTC", DateTimeZone.UTC.toString());
     }
 
     //-----------------------------------------------------------------------
     public void testSerialization1() throws Exception {
-        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -765,7 +775,7 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSerialization2() throws Exception {
-        DateTimeZone zone = DateTimeZone.getInstance("+01:00");
+        DateTimeZone zone = DateTimeZone.forID("+01:00");
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);

@@ -31,8 +31,8 @@ import org.joda.time.convert.MockZeroNullIntegerConverter;
  */
 public class TestInstant_Constructors extends TestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     // 1970-06-09
     private long TEST_TIME_NOW =

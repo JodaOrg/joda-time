@@ -27,8 +27,8 @@ import junit.framework.TestSuite;
  */
 public class TestTimeOfDay_Properties extends TestCase {
 
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR

@@ -46,7 +46,7 @@ public class TimeZoneTable {
             int i = 0;
             while (it.hasNext()) {
                 String id = (String) it.next();
-                zones[i++] = new ZoneData(id, DateTimeZone.getInstance(id));
+                zones[i++] = new ZoneData(id, DateTimeZone.forID(id));
             }
             Arrays.sort(zones);
         }

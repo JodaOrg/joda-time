@@ -34,10 +34,10 @@ import org.joda.time.DateTimeZone;
 public class TestDateTimeFormat extends TestCase {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
-    private static final DateTimeZone NEWYORK = DateTimeZone.getInstance("America/New_York");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 

@@ -318,7 +318,7 @@ This is applied to the underlying chronology via the decorator design pattern.
 The <code>DateTimeZone</code> class provides
 access to the zones large through one factory method used as:
 <source>
-DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+DateTimeZone zone = DateTimeZone.forID("Europe/London");
 </source>
 </p>
 <p>
@@ -663,9 +663,9 @@ very moment, you would do the following
     // get current moment in default time zone
     DateTime dt = new DateTime();
     // translate to London local time
-    DateTime dtLondon = dt.withZone(DateTimeZone.getInstance("Europe/London"));
+    DateTime dtLondon = dt.withZone(DateTimeZone.forID("Europe/London"));
 </source>
-where <code>DateTimeZone.getInstance("Europe/London")</code> returns the timezone
+where <code>DateTimeZone.forID("Europe/London")</code> returns the timezone
 value for London. The resulting value <code>dtLondon</code> has the same absolute
 millisecond time, but a different set of field values.
 </p>
@@ -677,7 +677,7 @@ exists in the default time zone <em>now</em>. This is done as follows
     // get current moment in default time zone
     DateTime dt = new DateTime();
     // find the moment when London will have / had the same time
-    dtLondonSameTime = dt.withZoneRetainFields(DateTimeZone.getInstance("Europe/London"));
+    dtLondonSameTime = dt.withZoneRetainFields(DateTimeZone.forID("Europe/London"));
 </source>
 </p>
 <p>

@@ -51,7 +51,7 @@ public class TestNullConverter extends TestCase {
             + 40L;
             
     private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static Chronology ISO;
     private static Chronology JULIAN;
@@ -78,7 +78,7 @@ public class TestNullConverter extends TestCase {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
-        DateTimeZone.setDefault(DateTimeZone.getInstance("Europe/London"));
+        DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"));
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
         Locale.setDefault(Locale.UK);
         

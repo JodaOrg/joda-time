@@ -162,7 +162,7 @@ public class AgeCalculator extends JFrame {
         zoneSelector.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String id = (String)zoneSelector.getSelectedItem();
-                iChronology = ISOChronology.getInstance(DateTimeZone.getInstance(id));
+                iChronology = ISOChronology.getInstance(DateTimeZone.forID(id));
                 updateResults();
             }
         });

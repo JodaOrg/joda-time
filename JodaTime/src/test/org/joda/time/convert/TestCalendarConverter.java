@@ -44,8 +44,8 @@ import org.joda.time.chrono.JulianChronology;
 public class TestCalendarConverter extends TestCase {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone MOSCOW = DateTimeZone.getInstance("Europe/Moscow");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");
     private static Chronology JULIAN;
     private static Chronology ISO;
     

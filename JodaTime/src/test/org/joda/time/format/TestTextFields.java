@@ -34,10 +34,10 @@ public class TestTextFields extends TestCase {
 
     private static final DateTimeZone[] ZONES = {
         DateTimeZone.UTC,
-        DateTimeZone.getInstance("Europe/Paris"),
-        DateTimeZone.getInstance("Europe/London"),
-        DateTimeZone.getInstance("Asia/Tokyo"),
-        DateTimeZone.getInstance("America/Los_Angeles"),
+        DateTimeZone.forID("Europe/Paris"),
+        DateTimeZone.forID("Europe/London"),
+        DateTimeZone.forID("Asia/Tokyo"),
+        DateTimeZone.forID("America/Los_Angeles"),
     };
 
     private static final String[] MONTHS = {

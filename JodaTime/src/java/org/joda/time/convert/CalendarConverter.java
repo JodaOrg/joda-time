@@ -68,7 +68,7 @@ final class CalendarConverter extends AbstractConverter
         Calendar cal = (Calendar) object;
         DateTimeZone zone = null;
         try {
-            zone = DateTimeZone.getInstance(cal.getTimeZone());
+            zone = DateTimeZone.forTimeZone(cal.getTimeZone());
             
         } catch (IllegalArgumentException ex) {
             zone = DateTimeZone.getDefault();

@@ -30,8 +30,8 @@ import org.joda.time.chrono.JulianChronology;
  */
 public class TestTimeOfDay_Constructors extends TestCase {
 
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final int OFFSET = 1;
     
     private long TEST_TIME_NOW =

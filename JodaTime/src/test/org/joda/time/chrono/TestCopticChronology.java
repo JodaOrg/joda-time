@@ -37,9 +37,9 @@ public class TestCopticChronology extends TestCase {
 
     private static int SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
     private static final Chronology JULIAN_UTC = Chronology.getJulianUTC();
     private static final Chronology ISO_UTC = Chronology.getISOUTC();

@@ -27,8 +27,8 @@ import junit.framework.TestSuite;
  */
 public class TestYearMonthDay_Constructors extends TestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
     private static final Chronology ISO_UTC = Chronology.getISOUTC();
     private static final Chronology BUDDHIST_UTC = Chronology.getBuddhistUTC();

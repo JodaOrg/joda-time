@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.ISOChronology;
@@ -114,12 +115,12 @@ public abstract class DateTimeZone implements Serializable {
 
         try {
             try {
-                cDefault = getInstance(System.getProperty("user.timezone"));
+                cDefault = forID(System.getProperty("user.timezone"));
             } catch (RuntimeException ex) {
                 // ignored
             }
             if (cDefault == null) {
-                cDefault = getInstance(java.util.TimeZone.getDefault());
+                cDefault = forTimeZone(TimeZone.getDefault());
             }
         } catch (IllegalArgumentException ex) {
             // ignored
@@ -130,6 +131,7 @@ public abstract class DateTimeZone implements Serializable {
         }
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets the default time zone.
      * 
@@ -157,8 +159,9 @@ public abstract class DateTimeZone implements Serializable {
         cDefault = zone;
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Get the time zone by id.
+     * Gets a time zone instance for the specified time zone id.
      * <p>
      * The time zone id may be one of those returned by getAvailableIDs.
      * Short ids, as accepted by {@link java.util.TimeZone}, are not accepted.
@@ -172,7 +175,7 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the ID
      * @throws IllegalArgumentException if the ID is not recognised
      */
-    public static DateTimeZone getInstance(String id) throws IllegalArgumentException {
+    public static DateTimeZone forID(String id) {
         if (id == null) {
             return getDefault();
         }
@@ -197,7 +200,7 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     /**
-     * Get the time zone by the number of hours difference from UTC.
+     * Gets a time zone instance for the specified offset to UTC in hours.
      * This method assumes standard length hours.
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
@@ -206,12 +209,12 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the offset
      * @throws IllegalArgumentException if the offset is too large or too small
      */
-    public static DateTimeZone getInstance(int hoursOffset) throws IllegalArgumentException {
-        return getInstance(hoursOffset, 0);
+    public static DateTimeZone forOffsetHours(int hoursOffset) throws IllegalArgumentException {
+        return forOffsetHoursMinutes(hoursOffset, 0);
     }
 
     /**
-     * Get the time zone by the number of hours and minutes difference from UTC.
+     * Gets a time zone instance for the specified offset to UTC in hours and minutes.
      * This method assumes 60 minutes in an hour, and standard length minutes.
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
@@ -223,7 +226,7 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the offset
      * @throws IllegalArgumentException if the offset or minute is too large or too small
      */
-    public static DateTimeZone getInstance(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
+    public static DateTimeZone forOffsetHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
         if (hoursOffset == 0 && minutesOffset == 0) {
             return DateTimeZone.UTC;
         }
@@ -242,12 +245,22 @@ public abstract class DateTimeZone implements Serializable {
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }
-        String id = printOffset(offset);
-        return fixedOffsetZone(id, offset);
+        return forOffsetMillis(offset);
     }
 
     /**
-     * Get the time zone by Java TimeZone.
+     * Gets a time zone instance for the specified offset to UTC in milliseconds.
+     *
+     * @param millisOffset  the offset in millis from UTC
+     * @return the DateTimeZone object for the offset
+     */
+    public static DateTimeZone forOffsetMillis(int millisOffset) {
+        String id = printOffset(millisOffset);
+        return fixedOffsetZone(id, millisOffset);
+    }
+
+    /**
+     * Gets a time zone instance for a JDK TimeZone.
      * <p>
      * DateTimeZone only accepts a subset of the IDs from TimeZone. The
      * excluded IDs are the short three letter form (except UTC). This 
@@ -258,7 +271,7 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the zone
      * @throws IllegalArgumentException if the zone is not recognised
      */
-    public static DateTimeZone getInstance(java.util.TimeZone zone) {
+    public static DateTimeZone forTimeZone(TimeZone zone) {
         if (zone == null) {
             return getDefault();
         }
@@ -298,6 +311,44 @@ public abstract class DateTimeZone implements Serializable {
         throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Deprecated, use {@link #forID(String)}.
+     * 
+     * @deprecated use forID(String)
+     */
+    public static DateTimeZone getInstance(String id) {
+        return forID(id);
+    }
+
+    /**
+     * Deprecated, use {@link #forOffsetHours(int)}.
+     * 
+     * @deprecated use forOffsetHours(int)
+     */
+    public static DateTimeZone getInstance(int hours) {
+        return forOffsetHours(hours);
+    }
+
+    /**
+     * Deprecated, use {@link #forOffsetHoursMinutes(int, int)}.
+     * 
+     * @deprecated use forOffsetHoursMinutes(int,int)
+     */
+    public static DateTimeZone getInstance(int hours, int mins) {
+        return forOffsetHoursMinutes(hours, mins);
+    }
+
+    /**
+     * Deprecated, use {@link #forTimeZone(TimeZone)}.
+     * 
+     * @deprecated use forTimeZone(TimeZone)
+     */
+    public static DateTimeZone getInstance(TimeZone jdkZone) {
+        return forTimeZone(jdkZone);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets the zone using a fixed offset amount.
      * 
@@ -306,6 +357,9 @@ public abstract class DateTimeZone implements Serializable {
      * @return the zone
      */
     private static synchronized DateTimeZone fixedOffsetZone(String id, int offset) {
+        if (offset == 0) {
+            return DateTimeZone.UTC;
+        }
         if (iFixedOffsetCache == null) {
             iFixedOffsetCache = new HashMap();
         }
@@ -925,7 +979,7 @@ public abstract class DateTimeZone implements Serializable {
         }
 
         private Object readResolve() throws ObjectStreamException {
-            return getInstance(iID);
+            return forID(iID);
         }
     }
 }

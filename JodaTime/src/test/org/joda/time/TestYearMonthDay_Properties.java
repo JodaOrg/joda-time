@@ -27,7 +27,7 @@ import junit.framework.TestSuite;
  */
 public class TestYearMonthDay_Properties extends TestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;

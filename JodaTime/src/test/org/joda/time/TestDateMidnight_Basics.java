@@ -44,9 +44,9 @@ public class TestDateMidnight_Basics extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final DateTimeZone NEWYORK = DateTimeZone.getInstance("America/New_York");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 

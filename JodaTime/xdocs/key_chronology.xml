@@ -55,7 +55,7 @@ garbage collector costs.
 <p>
 A Chronology is obtained and used in Joda-Time as a singleton:
 <source>
-DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+DateTimeZone zone = DateTimeZone.forID("Europe/London");
 Chronology coptic = Chronology.getCoptic(zone);
 
 // current time with coptic chronology

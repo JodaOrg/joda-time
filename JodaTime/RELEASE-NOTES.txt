@@ -38,6 +38,13 @@ Incompatible changes since 0.98
   Change to the method TimeOfDay.Property.addNoWrapToCopy() to restore the old behaviour.
 
 
+Deprecations since 0.98
+-----------------------
+- DateTimeZone - factory methods changed:
+  getInstance() -> forID/forOffsetHours/forOffsetHoursMinutes/forTimeZone
+  Aim to clarify meaning of each method
+
+
 Bug fixes since 0.98
 --------------------
 

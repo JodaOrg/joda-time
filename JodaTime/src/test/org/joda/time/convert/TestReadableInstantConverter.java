@@ -41,7 +41,7 @@ import org.joda.time.chrono.JulianChronology;
 public class TestReadableInstantConverter extends TestCase {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static Chronology JULIAN;
     private static Chronology ISO;

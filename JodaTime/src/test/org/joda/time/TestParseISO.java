@@ -315,7 +315,7 @@ public class TestParseISO extends TestCase {
                 String str = "0" + Math.abs(zone) + ":00";
                 str = str.substring(str.length() - 4);
                 str = (zone < 0 ? "-" : "+") + str;
-                z = DateTimeZone.getInstance(str);
+                z = DateTimeZone.forID(str);
             }
             assertEquals(msg + "\nZone: ", z, dt.getZone());
         }

@@ -56,6 +56,7 @@ package org.joda.time.convert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Locale;
 
 import junit.framework.TestCase;
@@ -67,6 +68,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableInterval;
 import org.joda.time.MutablePeriod;
 import org.joda.time.PeriodType;
+import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -231,6 +233,14 @@ public class TestStringConverter extends TestCase {
         assertEquals(JulianChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501", JULIAN));
         assertEquals(ISOChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501+01:00", (Chronology) null));
         assertEquals(ISOChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501", (Chronology) null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetPartialValues() throws Exception {
+        TimeOfDay tod = new TimeOfDay();
+        int[] expected = new int[] {3, 4, 5, 6};
+        int[] actual = StringConverter.INSTANCE.getPartialValues(tod, "T03:04:05.006", Chronology.getISO());
+        assertEquals(true, Arrays.equals(expected, actual));
     }
 
     //-----------------------------------------------------------------------

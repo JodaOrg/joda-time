@@ -56,6 +56,7 @@ package org.joda.time.convert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -66,6 +67,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
@@ -213,6 +215,16 @@ public class TestCalendarConverter extends TestCase {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Paris"));
         assertEquals(JULIAN, CalendarConverter.INSTANCE.getChronology(cal, JULIAN));
         assertEquals(ISO, CalendarConverter.INSTANCE.getChronology(cal, (Chronology) null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetPartialValues() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar();
+        cal.setTime(new Date(12345678L));
+        TimeOfDay tod = new TimeOfDay();
+        int[] expected = Chronology.getISO().get(tod, 12345678L);
+        int[] actual = CalendarConverter.INSTANCE.getPartialValues(tod, cal, Chronology.getISO());
+        assertEquals(true, Arrays.equals(expected, actual));
     }
 
     //-----------------------------------------------------------------------

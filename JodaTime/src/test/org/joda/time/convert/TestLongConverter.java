@@ -56,12 +56,14 @@ package org.joda.time.convert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -142,6 +144,14 @@ public class TestLongConverter extends TestCase {
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, LongConverter.INSTANCE.getChronology(new Long(123L), JULIAN));
         assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (Chronology) null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetPartialValues() throws Exception {
+        TimeOfDay tod = new TimeOfDay();
+        int[] expected = Chronology.getISO().get(tod, 12345678L);
+        int[] actual = LongConverter.INSTANCE.getPartialValues(tod, new Long(12345678L), Chronology.getISO());
+        assertEquals(true, Arrays.equals(expected, actual));
     }
 
     //-----------------------------------------------------------------------

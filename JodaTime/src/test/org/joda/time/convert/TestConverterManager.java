@@ -75,6 +75,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
+import org.joda.time.ReadablePartial;
 import org.joda.time.ReadablePeriod;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -343,6 +344,195 @@ public class TestConverterManager extends TestCase {
     }
 
     public void testRemoveInstantConverterSecurity() {
+        try {
+            Policy.setPolicy(RESTRICT);
+            System.setSecurityManager(new SecurityManager());
+            ConverterManager.getInstance().removeInstantConverter(StringConverter.INSTANCE);
+            fail();
+        } catch (SecurityException ex) {
+            // ok
+        } finally {
+            System.setSecurityManager(null);
+            Policy.setPolicy(ALLOW);
+        }
+        assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
+    }
+
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    public void testGetPartialConverter() {
+        PartialConverter c = ConverterManager.getInstance().getPartialConverter(new Long(0L));
+        assertEquals(Long.class, c.getSupportedType());
+        
+        c = ConverterManager.getInstance().getPartialConverter(new DateTime());
+        assertEquals(ReadableInstant.class, c.getSupportedType());
+        
+        c = ConverterManager.getInstance().getPartialConverter("");
+        assertEquals(String.class, c.getSupportedType());
+        
+        c = ConverterManager.getInstance().getPartialConverter(new Date());
+        assertEquals(Date.class, c.getSupportedType());
+        
+        c = ConverterManager.getInstance().getPartialConverter(new GregorianCalendar());
+        assertEquals(Calendar.class, c.getSupportedType());
+        
+        c = ConverterManager.getInstance().getPartialConverter(null);
+        assertEquals(null, c.getSupportedType());
+        
+        try {
+            ConverterManager.getInstance().getPartialConverter(Boolean.TRUE);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testGetPartialConverterRemovedNull() {
+        try {
+            ConverterManager.getInstance().removePartialConverter(NullConverter.INSTANCE);
+            try {
+                ConverterManager.getInstance().getPartialConverter(null);
+                fail();
+            } catch (IllegalArgumentException ex) {}
+        } finally {
+            ConverterManager.getInstance().addPartialConverter(NullConverter.INSTANCE);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testGetPartialConverterOKMultipleMatches() {
+        PartialConverter c = new PartialConverter() {
+            public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
+            public Chronology getChronology(Object object, Chronology chrono) {return null;}
+            public Class getSupportedType() {return ReadableDateTime.class;}
+        };
+        try {
+            ConverterManager.getInstance().addPartialConverter(c);
+            PartialConverter ok = ConverterManager.getInstance().getPartialConverter(new DateTime());
+            // ReadableDateTime and ReadablePartial both match, but RI discarded as less specific
+            assertEquals(ReadableDateTime.class, ok.getSupportedType());
+        } finally {
+            ConverterManager.getInstance().removePartialConverter(c);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testGetPartialConverterBadMultipleMatches() {
+        PartialConverter c = new PartialConverter() {
+            public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
+            public Chronology getChronology(Object object, Chronology chrono) {return null;}
+            public Class getSupportedType() {return Serializable.class;}
+        };
+        try {
+            ConverterManager.getInstance().addPartialConverter(c);
+            try {
+                ConverterManager.getInstance().getPartialConverter(new DateTime());
+                fail();
+            } catch (IllegalStateException ex) {
+                // Serializable and ReadablePartial both match, so cannot pick
+            }
+        } finally {
+            ConverterManager.getInstance().removePartialConverter(c);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetPartialConverters() {
+        PartialConverter[] array = ConverterManager.getInstance().getPartialConverters();
+        assertEquals(6, array.length);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAddPartialConverter1() {
+        PartialConverter c = new PartialConverter() {
+            public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
+            public Chronology getChronology(Object object, Chronology chrono) {return null;}
+            public Class getSupportedType() {return Boolean.class;}
+        };
+        try {
+            PartialConverter removed = ConverterManager.getInstance().addPartialConverter(c);
+            assertEquals(null, removed);
+            assertEquals(Boolean.class, ConverterManager.getInstance().getPartialConverter(Boolean.TRUE).getSupportedType());
+            assertEquals(7, ConverterManager.getInstance().getPartialConverters().length);
+        } finally {
+            ConverterManager.getInstance().removePartialConverter(c);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testAddPartialConverter2() {
+        PartialConverter c = new PartialConverter() {
+            public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
+            public Chronology getChronology(Object object, Chronology chrono) {return null;}
+            public Class getSupportedType() {return String.class;}
+        };
+        try {
+            PartialConverter removed = ConverterManager.getInstance().addPartialConverter(c);
+            assertEquals(StringConverter.INSTANCE, removed);
+            assertEquals(String.class, ConverterManager.getInstance().getPartialConverter("").getSupportedType());
+            assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        } finally {
+            ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testAddPartialConverter3() {
+        PartialConverter removed = ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
+        assertEquals(null, removed);
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testAddPartialConverter4() {
+        PartialConverter removed = ConverterManager.getInstance().addPartialConverter(null);
+        assertEquals(null, removed);
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testAddPartialConverterSecurity() {
+        try {
+            Policy.setPolicy(RESTRICT);
+            System.setSecurityManager(new SecurityManager());
+            ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
+            fail();
+        } catch (SecurityException ex) {
+            // ok
+        } finally {
+            System.setSecurityManager(null);
+            Policy.setPolicy(ALLOW);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testRemovePartialConverter1() {
+        try {
+            PartialConverter removed = ConverterManager.getInstance().removePartialConverter(StringConverter.INSTANCE);
+            assertEquals(StringConverter.INSTANCE, removed);
+            assertEquals(5, ConverterManager.getInstance().getPartialConverters().length);
+        } finally {
+            ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
+        }
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testRemovePartialConverter2() {
+        PartialConverter c = new PartialConverter() {
+            public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
+            public Chronology getChronology(Object object, Chronology chrono) {return null;}
+            public Class getSupportedType() {return Boolean.class;}
+        };
+        PartialConverter removed = ConverterManager.getInstance().removePartialConverter(c);
+        assertEquals(null, removed);
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testRemovePartialConverter3() {
+        PartialConverter removed = ConverterManager.getInstance().removePartialConverter(null);
+        assertEquals(null, removed);
+        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+    }
+
+    public void testRemovePartialConverterSecurity() {
         try {
             Policy.setPolicy(RESTRICT);
             System.setSecurityManager(new SecurityManager());

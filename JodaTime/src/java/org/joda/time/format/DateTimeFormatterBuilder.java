@@ -416,7 +416,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field is null
      */
-    public DateTimeFormatterBuilder appendNumeric(
+    public DateTimeFormatterBuilder appendDecimal(
             DateTimeField field, int minDigits, int maxDigits) {
         if (field == null) {
             throw new IllegalArgumentException("Field must not be null");
@@ -445,7 +445,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field is null
      */
-    public DateTimeFormatterBuilder appendSignedNumeric(
+    public DateTimeFormatterBuilder appendSignedDecimal(
             DateTimeField field, int minDigits, int maxDigits) {
         if (field == null) {
             throw new IllegalArgumentException("Field must not be null");
@@ -555,7 +555,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMillisOfSecond(final int minDigits) {
-        return appendNumeric(iChronoUTC.millisOfSecond(), minDigits, 3);
+        return appendDecimal(iChronoUTC.millisOfSecond(), minDigits, 3);
     }
 
     /**
@@ -565,7 +565,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMillisOfDay(final int minDigits) {
-        return appendNumeric(iChronoUTC.millisOfDay(), minDigits, 8);
+        return appendDecimal(iChronoUTC.millisOfDay(), minDigits, 8);
     }
 
     /**
@@ -575,7 +575,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendSecondOfMinute(final int minDigits) {
-        return appendNumeric(iChronoUTC.secondOfMinute(), minDigits, 2);
+        return appendDecimal(iChronoUTC.secondOfMinute(), minDigits, 2);
     }
 
     /**
@@ -585,7 +585,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendSecondOfDay(final int minDigits) {
-        return appendNumeric(iChronoUTC.secondOfDay(), minDigits, 5);
+        return appendDecimal(iChronoUTC.secondOfDay(), minDigits, 5);
     }
 
     /**
@@ -595,7 +595,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMinuteOfHour(final int minDigits) {
-        return appendNumeric(iChronoUTC.minuteOfHour(), minDigits, 2);
+        return appendDecimal(iChronoUTC.minuteOfHour(), minDigits, 2);
     }
 
     /**
@@ -605,7 +605,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMinuteOfDay(final int minDigits) {
-        return appendNumeric(iChronoUTC.minuteOfDay(), minDigits, 4);
+        return appendDecimal(iChronoUTC.minuteOfDay(), minDigits, 4);
     }
 
     /**
@@ -615,7 +615,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendHourOfDay(final int minDigits) {
-        return appendNumeric(iChronoUTC.hourOfDay(), minDigits, 2);
+        return appendDecimal(iChronoUTC.hourOfDay(), minDigits, 2);
     }
 
     /**
@@ -625,7 +625,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendClockhourOfDay(final int minDigits) {
-        return appendNumeric(iChronoUTC.clockhourOfDay(), minDigits, 2);
+        return appendDecimal(iChronoUTC.clockhourOfDay(), minDigits, 2);
     }
 
     /**
@@ -635,7 +635,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendHourOfHalfday(final int minDigits) {
-        return appendNumeric(iChronoUTC.hourOfHalfday(), minDigits, 2);
+        return appendDecimal(iChronoUTC.hourOfHalfday(), minDigits, 2);
     }
 
     /**
@@ -645,7 +645,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendClockhourOfHalfday(final int minDigits) {
-        return appendNumeric(iChronoUTC.clockhourOfHalfday(), minDigits, 2);
+        return appendDecimal(iChronoUTC.clockhourOfHalfday(), minDigits, 2);
     }
 
     /**
@@ -655,7 +655,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfWeek(final int minDigits) {
-        return appendNumeric(iChronoUTC.dayOfWeek(), minDigits, 1);
+        return appendDecimal(iChronoUTC.dayOfWeek(), minDigits, 1);
     }
 
     /**
@@ -665,7 +665,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfMonth(final int minDigits) {
-        return appendNumeric(iChronoUTC.dayOfMonth(), minDigits, 2);
+        return appendDecimal(iChronoUTC.dayOfMonth(), minDigits, 2);
     }
 
     /**
@@ -675,7 +675,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfYear(final int minDigits) {
-        return appendNumeric(iChronoUTC.dayOfYear(), minDigits, 3);
+        return appendDecimal(iChronoUTC.dayOfYear(), minDigits, 3);
     }
 
     /**
@@ -685,7 +685,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendWeekOfWeekyear(final int minDigits) {
-        return appendNumeric(iChronoUTC.weekOfWeekyear(), minDigits, 2);
+        return appendDecimal(iChronoUTC.weekOfWeekyear(), minDigits, 2);
     }
 
     /**
@@ -697,7 +697,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendWeekyear(final int minDigits, final int maxDigits) {
-        return appendNumeric
+        return appendDecimal
             (iChronoUTC.weekyear(), minDigits, maxDigits);
     }
 
@@ -708,7 +708,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMonthOfYear(final int minDigits) {
-        return appendNumeric(iChronoUTC.monthOfYear(), minDigits, 2);
+        return appendDecimal(iChronoUTC.monthOfYear(), minDigits, 2);
     }
 
     /**
@@ -720,7 +720,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendYear(final int minDigits, final int maxDigits) {
-        return appendSignedNumeric(iChronoUTC.year(), minDigits, maxDigits);
+        return appendSignedDecimal(iChronoUTC.year(), minDigits, maxDigits);
     }
 
     /**
@@ -732,7 +732,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendYearOfEra(final int minDigits, final int maxDigits) {
-        return appendNumeric(iChronoUTC.yearOfEra(), minDigits, maxDigits);
+        return appendDecimal(iChronoUTC.yearOfEra(), minDigits, maxDigits);
     }
 
     /**
@@ -744,7 +744,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendYearOfCentury(final int minDigits, final int maxDigits) {
-        return appendNumeric(iChronoUTC.yearOfCentury(), minDigits, maxDigits);
+        return appendDecimal(iChronoUTC.yearOfCentury(), minDigits, maxDigits);
     }
 
     /**
@@ -756,7 +756,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendCenturyOfEra(final int minDigits, final int maxDigits) {
-        return appendSignedNumeric(iChronoUTC.centuryOfEra(), minDigits, maxDigits);
+        return appendSignedDecimal(iChronoUTC.centuryOfEra(), minDigits, maxDigits);
     }
 
     /**

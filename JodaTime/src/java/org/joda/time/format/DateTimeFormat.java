@@ -299,7 +299,7 @@ public class DateTimeFormat {
                             (chronoUTC.yearOfEra(), "yearOfCentury", "centuries", 100);
                         break;
                     }
-                    builder.appendNumeric(field, 2, 2);
+                    builder.appendDecimal(field, 2, 2);
                 } else {
                     // Try to support long year values.
                     int maxDigits = 9;

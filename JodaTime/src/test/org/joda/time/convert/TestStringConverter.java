@@ -404,6 +404,54 @@ public class TestStringConverter extends TestCase {
     }        
 
     public void testSetIntoPeriod_Object3() throws Exception {
+        MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
+        StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48.034S", null);
+        assertEquals(2, m.getYears());
+        assertEquals(4, m.getWeeks());
+        assertEquals(3, m.getDays());
+        assertEquals(12, m.getHours());
+        assertEquals(24, m.getMinutes());
+        assertEquals(48, m.getSeconds());
+        assertEquals(34, m.getMillis());
+    }        
+
+    public void testSetIntoPeriod_Object4() throws Exception {
+        MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
+        StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M.056S", null);
+        assertEquals(2, m.getYears());
+        assertEquals(4, m.getWeeks());
+        assertEquals(3, m.getDays());
+        assertEquals(12, m.getHours());
+        assertEquals(24, m.getMinutes());
+        assertEquals(0, m.getSeconds());
+        assertEquals(56, m.getMillis());
+    }        
+
+    public void testSetIntoPeriod_Object5() throws Exception {
+        MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
+        StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M56.S", null);
+        assertEquals(2, m.getYears());
+        assertEquals(4, m.getWeeks());
+        assertEquals(3, m.getDays());
+        assertEquals(12, m.getHours());
+        assertEquals(24, m.getMinutes());
+        assertEquals(56, m.getSeconds());
+        assertEquals(0, m.getMillis());
+    }        
+
+    public void testSetIntoPeriod_Object6() throws Exception {
+        MutablePeriod m = new MutablePeriod(PeriodType.yearWeekDayTime());
+        StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M56.1234567S", null);
+        assertEquals(2, m.getYears());
+        assertEquals(4, m.getWeeks());
+        assertEquals(3, m.getDays());
+        assertEquals(12, m.getHours());
+        assertEquals(24, m.getMinutes());
+        assertEquals(56, m.getSeconds());
+        assertEquals(123, m.getMillis());
+    }        
+
+    public void testSetIntoPeriod_Object7() throws Exception {
         MutablePeriod m = new MutablePeriod(1, 0, 1, 1, 1, 1, 1, 1, PeriodType.yearWeekDayTime());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3D", null);
         assertEquals(2, m.getYears());
@@ -415,7 +463,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(0, m.getMillis());
     }        
 
-    public void testSetIntoPeriod_Object4() throws Exception {
+    public void testSetIntoPeriod_Object8() throws Exception {
         MutablePeriod m = new MutablePeriod();
         try {
             StringConverter.INSTANCE.setInto(m, "", null);

@@ -1098,13 +1098,16 @@ public class PeriodFormatterBuilder {
             } else {
                 limit = Math.min(iMaxParsedDigits, text.length() - position);
             }
-
+            
+            // validate input number
             boolean negative = false;
             int length = 0;
+            int dp = -1;
             while (length < limit) {
                 char c = text.charAt(position + length);
+                // leading sign
                 if (length == 0 && (c == '-' || c == '+') && !iRejectSignedValues) {
-                    negative = c == '-';
+                    negative = (c == '-');
                     if (negative) {
                         length++;
                     } else {
@@ -1115,13 +1118,21 @@ public class PeriodFormatterBuilder {
                     limit = Math.min(limit + 1, text.length() - position);
                     continue;
                 }
+                // main number
                 if (c < '0' || c > '9') {
-                    break;
+                    if (c == '.' && (iFieldType == SECONDS_MILLIS || iFieldType == SECONDS_OPTIONAL_MILLIS)) {
+                        if (dp >= 0) {
+                            // can't have two decimals
+                            return position + length;
+                        }
+                        dp = length;
+                    } else {
+                        break;
+                    }
                 }
                 length++;
             }
-
-            if (length == 0) {
+            if (length == 0 || (length == 1 && dp == 0) || (dp == -1 && iFieldType == SECONDS_MILLIS)) {
                 return ~position;
             }
 
@@ -1132,7 +1143,43 @@ public class PeriodFormatterBuilder {
                 // another parser can continue on.
                 return position;
             }
+            
+            if (iFieldType == SECONDS_MILLIS || iFieldType == SECONDS_OPTIONAL_MILLIS) {
+                if (dp == -1) {
+                    position = parseField(period, text, position, negative, length, SECONDS);
+                    setFieldValue(period, MILLIS, 0);
+                } else {
+                    if (dp > 0) {
+                        position = parseField(period, text, position, negative, dp, SECONDS);
+                    } else {
+                        setFieldValue(period, SECONDS, 0);
+                    }
+                    position++; // skip dp
+                    int millisLength = length - 1 - dp;
+                    if (millisLength > 3) {
+                        position = parseField(period, text, position, false, 3, MILLIS);
+                        position += (millisLength - 3);
+                    } else if (millisLength == 0) {
+                        setFieldValue(period, MILLIS, 0);
+                    } else {
+                        position = parseField(period, text, position, false, millisLength, MILLIS);
+                    }
+                }
+            } else {
+                position = parseField(period, text, position, negative, length, iFieldType);
+            }
+                
+            if (position >= 0 && iSuffix != null) {
+                position = iSuffix.parse(text, position);
+            }
+                
+            return position;
+        }
 
+        private int parseField(
+                ReadWritablePeriod period, String text, int position,
+                boolean negative, int length, int type) {
+            
             int value;
             if (length >= 9) {
                 // Since value may exceed max, use stock parser which checks
@@ -1154,12 +1201,7 @@ public class PeriodFormatterBuilder {
                 }
             }
             
-            setFieldValue(period, iFieldType, value);
-                
-            if (position >= 0 && iSuffix != null) {
-                position = iSuffix.parse(text, position);
-            }
-                
+            setFieldValue(period, type, value);
             return position;
         }
 

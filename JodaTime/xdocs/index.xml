@@ -3,38 +3,27 @@
 <document>
 
  <properties>
-  <title>Joda Time</title>
+  <title>Java date and time API - Home</title>
   <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
  </properties>
 
  <body>
 
-<section name="Joda Time">
+<section name="Joda Time - Java date and time API">
 
 <p>
-<b>Joda-Time is an open-source project to provide a quality Java date and time API.</b>
+Joda-Time aims to provide a quality replacement for the Java <i>date</i> and <i>time</i> classes.
+The design allows for multiple <i>calendar</i> systems, while still providing simple API.
+The 'default' calendar is the <a href="cal_iso.html">ISO8601</a> standard which is used by XML.
+The Gregorian, Julian, Buddhist and Coptic systems are also included, and we welcome further additions.
+Supporting classes include time zone, duration, format and parsing.
 </p>
 
 <p>
-Date and Time handling is fundamental to many applications.
-However, the classes supplied in Java have always been weak.
-Date should have been immutable, like String.
-Instead, it has many deprecated methods.
+The decision to create a cleanroom date implementation to replace Java's is based on the flaws in the JDK code.
+Date should have been immutable, like String, instead it it is mutable and has many deprecated methods.
 Calendar makes accessing 'normal' dates difficult, due to the lack of simple methods.
-Calendar also has some strange performance characteristics. 
-</p>
-
-<p>
-The Joda Dates project seeks to provide an implementation of dates and times for the Java community.
-The 'default' calendar system implemented will be the ISO8601 standard.
-This specifies a framework for date and time independent of locale.
-Thus, in the standard, the first day of the week is Monday, and this has the index 1.
-This avoids any ambiguity across national boundaries.
-</p>
-
-<p>
-Additional calendar systems supported are Gregorian, Julian, GregorianJulian (GJ), Buddhist and Coptic.
-The design is flexible and pluggable, so adding additional calendar systems should be easy. 
+It also has some strange performance characteristics as it recalculates fields at unexpected moments.
 </p>
 
 <p>

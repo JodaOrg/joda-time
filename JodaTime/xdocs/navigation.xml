@@ -12,12 +12,23 @@
       <item name="FAQ" href="/faq.html"/>
       <item name="Javadoc (Release)" href="/api-0.95/index.html"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
-      <item name="Test results" href="/junit-report.html"/>
+      <!--item name="Test results" href="/junit-report.html"/-->
       <item name="Mailing lists" href="/mail-lists.html"/>
       <item name="Tasks" href="/tasks.html"/>
       <item name="License" href="/license.html"/>
       <item name="CVS" href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime/"/>
       <item name="Javadoc (CVS)" href="/apidocs/index.html"/>
+    </menu>
+    
+    <menu name="Chronologies">
+      <item name="ISO8601" href="/cal_iso.html"/>
+      <item name="GregorianJulian" href="/cal_gj.html"/>
+      <!--
+      <item name="Gregorian" href="/cal_gregorian.html"/>
+      <item name="Julian" href="/cal_julian.html"/>
+      <item name="Buddhist" href="/cal_buddhist.html"/>
+      <item name="Coptic" href="/cal_coptic.html"/>
+      -->
     </menu>
     
     <menu name="Joda">

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - GregorianJulian (GJ) calendar system</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="GregorianJulian (GJ) calendar system">
+
+<p>
+Joda-Time provides a quality replacement for the Java date and time classes.
+The calendar system most commonly used for historical work is the GregorianJulian or GJ.
+This corresponds to the JDK <code>GregorianCalendar</code> class.
+</p>
+
+<p>
+The GregorianJulian calendar is a combination of two separate calendar systems.
+The switch from one to the other occurs at a configurable date.
+The default date is 1582-10-15, as defined by Pope Gregory XIII, working with the Council of Trent.
+</p>
+
+<p>
+The two calendar systems differ mainly in their accuracy of recording leap years.
+The Julian calendar defines a leap year as being once every four years.
+The Gregorian calendar adds two extra rules to state that years divisible by 100 are not leap, but those divisible by 400 are.
+</p>
+
+<p>
+Within Joda-Time this calendar system can be used by obtaining an instance of
+<a href="apidocs/org/joda/time/chrono/GJChronology.html">GJChronology</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for the Battle of Hastings in 1066
+Chronology chrono = GJChronology.getInstance();
+DateTime dt = new DateTime(1066, 10, 14, 10, 0, 0, 0, chrono);
+</source>
+
+</section>
+</body>
+</document>

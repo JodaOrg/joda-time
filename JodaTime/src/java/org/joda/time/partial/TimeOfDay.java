@@ -478,11 +478,11 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * If the result would be too large, beyond 23:59:59:999, then an
          * IllegalArgumentException is thrown.
          * <p>
-         * The TimeOnly attached to this property is unchanged by this call.
+         * The TimeOfDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
          * 
          * @param valueToAdd  the value to add to the field in the copy
-         * @return a copy of the TimeOnly with the field value changed
+         * @return a copy of the TimeOfDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
         public TimeOfDay addCopy(int valueToAdd) {

@@ -169,7 +169,7 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, null means now
-     * @throws IllegalArgumentException if the date is null
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public TimeOfDay(Object instant) {
         super(instant);
@@ -189,7 +189,7 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
      *
      * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISOChronology
-     * @throws IllegalArgumentException if the date is null
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public TimeOfDay(Object instant, Chronology chronology) {
         super(instant, chronology);

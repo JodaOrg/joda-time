@@ -166,7 +166,7 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, null means now
-     * @throws IllegalArgumentException if the date is null
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonthDay(Object instant) {
         super(instant);
@@ -186,7 +186,7 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
      *
      * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISOChronology
-     * @throws IllegalArgumentException if the date is null
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonthDay(Object instant, Chronology chronology) {
         super(instant, chronology);

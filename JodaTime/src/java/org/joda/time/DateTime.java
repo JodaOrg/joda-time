@@ -184,8 +184,8 @@ public class DateTime extends AbstractDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @param instant  the datetime object, null means now
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public DateTime(Object instant) {
         super(instant);
@@ -202,9 +202,9 @@ public class DateTime extends AbstractDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @param zone  the time zone, null means default time zone
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public DateTime(Object instant, DateTimeZone zone) {
         super(instant, zone);
@@ -220,9 +220,9 @@ public class DateTime extends AbstractDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISOChronology in default zone
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public DateTime(Object instant, Chronology chronology) {
         super(instant, chronology);

@@ -395,7 +395,7 @@ public class MutableInterval
      */
     public void setDurationBeforeEnd(ReadableDuration duration) {
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
-        setStartMillis(FieldUtils.safeAdd(getStartMillis(), -durationMillis));
+        setStartMillis(FieldUtils.safeAdd(getEndMillis(), -durationMillis));
     }
 
     //-----------------------------------------------------------------------

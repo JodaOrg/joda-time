@@ -364,7 +364,8 @@ public abstract class AbstractPeriod
      */
     public final Instant addTo(ReadableInstant instant, int scalar) {
         long instantMillis = DateTimeUtils.getInstantMillis(instant);
-        return new Instant(addTo(instantMillis, scalar, instant.getChronology()));
+        Chronology chrono = DateTimeUtils.getInstantChronology(instant, null);
+        return new Instant(addTo(instantMillis, scalar, chrono));
     }
 
     /**

@@ -1,0 +1,64 @@
+JodaTime ToDo list
+==================
+
+1.0
+---
+Duration:
+ Write formatters/parsers
+ Write tests
+ 
+Interval:
+ Write classes
+ Write formatters/parsers
+ Write tests
+ 
+Tests:
+ Write tests to cover functionality
+ Ensure all tests pass!
+
+Serializable:
+ Tests
+ 
+DateOnly/TimeOnly:
+ Enable DateTimeProperty
+
+Consistency:
+ Check API for design and naming consistency
+ eg. withXxx() vs toXxx() vs asXxx vs toCopyXxx()
+ 
+ Chronology: withUTC(), withDateTimeZone()
+ AbstractInstant: toCopy()
+ DateTimeProperty: addToCopy(), setCopy(), ...
+ DurationSupport: withChronology()
+ 
+
+Ideas longer term
+-----------------
+Factories for DateTime clases?
+ Is a locale dependent one needed at least?
+
+More chronologies:
+ Implement more chronologies, like ChineseChronology, HebrewChronology,
+ PersianChronology, etc. This may require more work in localization.
+
+Chronology:
+ Add daysFrom(year)
+ This would be a DateTimeField that, given a base year, returns the number of
+ elapsed days from 1st Jan that year. Apparantly useful for Excel, where a
+ standard format is days from 1900.
+
+ISOCalendar:
+ Calendar subclass that implements our interface. This might be difficult to
+ do since Calendar has so many final methods and a rigid specification.
+
+ISODate:
+ Date subclasses that implements our interface. This might not be a worthwhile
+ effort since almost all Date methods are deprecated.
+
+Recurrence:
+ Create a set of classes for supporting recurrences. This will need to support
+ complex specifications such as "2nd Wednesday in May" and "next Thursday".
+ A builder design might be helpful.
+
+Holidays:
+ These can simply be special instances of Recurrences.

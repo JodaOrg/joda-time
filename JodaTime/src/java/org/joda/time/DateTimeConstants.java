@@ -138,9 +138,23 @@ public class DateTimeConstants {
     /** Alternative constant (0) representing BCE, Before Common Era (secular) */
     public static final int BCE = 0;
 
-    /** Constant (1) representing AD, years after zero (from Calendar) */
+    /**
+     * Constant (1) representing AD, years after zero (from Calendar).
+     * <p>
+     * All new chronologies with differrent Era values should try to assign
+     * eras as follows. The era that was in force at 1970-01-01 (ISO) is assigned
+     * the value 1. Earlier eras are assigned sequentially earlier numbers.
+     * Later eras are assigned sequentially later numbers.
+     */
     public static final int AD = 1;
-    /** Alternative constant (1) representing CE, Common Era (secular) */
+    /**
+     * Alternative constant (1) representing CE, Common Era (secular).
+     * <p>
+     * All new chronologies with differrent Era values should try to assign
+     * eras as follows. The era that was in force at 1970-01-01 (ISO) is assigned
+     * the value 1. Earlier eras are assigned sequentially earlier numbers.
+     * Later eras are assigned sequentially later numbers.
+     */
     public static final int CE = 1;
 
 

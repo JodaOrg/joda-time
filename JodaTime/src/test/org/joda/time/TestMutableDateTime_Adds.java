@@ -150,19 +150,33 @@ public class TestMutableDateTime_Adds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testAdd_Object1() {
+    public void testAdd_RD1() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.add(new Long(123456L));
+        test.add(new Duration(123456L));
         assertEquals(TEST_TIME1 + 123456L, test.getMillis());
     }
 
-    public void testAdd_Object2() {
+    public void testAdd_RD2() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.add((Object) null);
+        test.add((ReadableDuration) null);
         assertEquals(TEST_TIME1, test.getMillis());
     }
 
-    public void testAdd_Object3() {
+    //-----------------------------------------------------------------------
+    public void testAdd_RD_int1() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        test.add(new Duration(123456L), -2);
+        assertEquals(TEST_TIME1 - (2L * 123456L), test.getMillis());
+    }
+
+    public void testAdd_RD_int2() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        test.add((ReadableDuration) null, 1);
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAdd_RP1() {
         Period d = new Period(1, 1, 0, 1, 1, 1, 1, 1);
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
@@ -170,41 +184,23 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals("2003-07-10T06:07:08.009+01:00", test.toString());
     }
 
-    //-----------------------------------------------------------------------
-    public void testAdd_Object_int1() {
+    public void testAdd_RP2() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.add(new Long(123L), -2);
-        assertEquals(TEST_TIME1 + (-2 * 123L), test.getMillis());
-    }
-
-    public void testAdd_Object_int2() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.add((ReadableDuration) null, 1);
+        test.add((ReadablePeriod) null);
         assertEquals(TEST_TIME1, test.getMillis());
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-    }
-
-    public void testAdd_Object_int3() {
-        Period d = new Period(1, 1, 0, 1, 1, 1, 1, 1);
-        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
-        assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
-        test.add(d, -2);
-        assertEquals("2000-04-07T03:04:05.006+01:00", test.toString());
     }
 
     //-----------------------------------------------------------------------
-    public void testAdd_DateTimeField_int1() {
+    public void testAdd_RP_int1() {
+        Period d = new Period(0, 0, 0, 0, 0, 0, 1, 2);
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.add(ISOChronology.getInstance().year(), 8);
-        assertEquals(2010, test.getYear());
+        test.add(d, -2);
+        assertEquals(TEST_TIME1 - (2L * 1002L), test.getMillis());
     }
 
-    public void testAdd_DateTimeField_int2() {
+    public void testAdd_RP_int2() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        try {
-            test.add((DateTimeField) null, 2010);
-            fail();
-        } catch (IllegalArgumentException ex) {}
+        test.add((ReadablePeriod) null, 1);
         assertEquals(TEST_TIME1, test.getMillis());
     }
 
@@ -219,22 +215,6 @@ public class TestMutableDateTime_Adds extends TestCase {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         try {
             test.add((DurationField) null, 2010);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        assertEquals(TEST_TIME1, test.getMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testAddWrapField_DateTimeField_int1() {
-        MutableDateTime test = new MutableDateTime(2002, 6, 1, 0, 0, 0, 0);
-        test.addWrapField(ISOChronology.getInstance().monthOfYear(), 8);
-        assertEquals(2, test.getMonthOfYear());
-    }
-
-    public void testAddWrapField_DateTimeField_int2() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        try {
-            test.addWrapField(null, 2010);
             fail();
         } catch (IllegalArgumentException ex) {}
         assertEquals(TEST_TIME1, test.getMillis());

@@ -59,6 +59,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -211,18 +212,18 @@ public class TestMutableDateTime_Sets extends TestCase {
     }        
 
     //-----------------------------------------------------------------------
-    public void testSetMillis_Object1() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.setMillis(new Long(TEST_TIME2));
+    public void testSetMillis_RI1() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        test.setMillis(new Instant(TEST_TIME2));
         assertEquals(TEST_TIME2, test.getMillis());
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(BuddhistChronology.getInstance(), test.getChronology());
     }
 
-    public void testSetMillis_Object2() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+    public void testSetMillis_RI2() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, BuddhistChronology.getInstance());
         test.setMillis(null);
         assertEquals(TEST_TIME_NOW, test.getMillis());
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(BuddhistChronology.getInstance(), test.getChronology());
     }
 
     //-----------------------------------------------------------------------
@@ -287,8 +288,8 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSetDate_Object1() {
-        Long setter = new Long(new DateTime(2010, 12, 3, 5, 7, 9, 501).getMillis());
+    public void testSetDate_RI1() {
+        DateTime setter = new DateTime(2010, 12, 3, 5, 7, 9, 501);
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 12, 24, 48, 501);
         test.setDate(setter);
         assertEquals(2010, test.getYear());
@@ -300,7 +301,7 @@ public class TestMutableDateTime_Sets extends TestCase {
         assertEquals(501, test.getMillisOfSecond());
     }
 
-    public void testSetDate_Object2() {
+    public void testSetDate_RI2() {
         MutableDateTime test = new MutableDateTime(2010, 7, 8, 12, 24, 48, 501);
         test.setDate(null);  // sets to TEST_TIME_NOW
         assertEquals(2002, test.getYear());
@@ -349,8 +350,8 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSetTime_Object1() {
-        Long setter = new Long(new DateTime(2010, 12, 3, 5, 7, 9, 11).getMillis());
+    public void testSetTime_RI1() {
+        DateTime setter = new DateTime(2010, 12, 3, 5, 7, 9, 11);
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 12, 24, 48, 501);
         test.setTime(setter);
         assertEquals(2002, test.getYear());
@@ -362,7 +363,7 @@ public class TestMutableDateTime_Sets extends TestCase {
         assertEquals(11, test.getMillisOfSecond());
     }
 
-    public void testSetTime_Object2() {
+    public void testSetTime_RI2() {
         MutableDateTime test = new MutableDateTime(2010, 7, 8, 12, 24, 48, 501);
         test.setTime(null);  // sets to TEST_TIME_NOW, which has no time part
         assertEquals(2010, test.getYear());
@@ -409,29 +410,6 @@ public class TestMutableDateTime_Sets extends TestCase {
         } catch (IllegalArgumentException ex) {
         }
         assertEquals(TEST_TIME1, test.getMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testSetDateTime_long1() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.setDateTime(TEST_TIME2);
-        assertEquals(TEST_TIME2, test.getMillis());
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testSetDateTime_Object1() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.setDateTime(new Long(TEST_TIME2));
-        assertEquals(TEST_TIME2, test.getMillis());
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-    }
-
-    public void testSetDateTime_Object2() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.setDateTime(null);
-        assertEquals(TEST_TIME_NOW, test.getMillis());
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
     }
 
     //-----------------------------------------------------------------------

@@ -76,16 +76,14 @@ public interface ReadWritableInstant extends ReadableInstant {
     void setMillis(long instant);
 
     /**
-     * Sets the value from an Object representing an instant.
+     * Sets the millisecond instant of this instant from another.
      * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * This method does not change the chronology of this instant, just the
+     * millisecond instant.
      * 
-     * @param instant  an object representing an instant
-     * @throws IllegalArgumentException if the value is invalid
+     * @param instant  the instant to use, null means now
      */
-    void setMillis(Object instant);
+    void setMillis(ReadableInstant instant);
 
     /**
      * Sets the chronology of the datetime, which has no effect if not applicable.
@@ -126,11 +124,9 @@ public interface ReadWritableInstant extends ReadableInstant {
 
     //-----------------------------------------------------------------------
     /**
-     * Adds a number of millis to the value.
+     * Adds a millisecond duration to this instant.
      * <p>
-     * If the resulting value is too large for millis, seconds
-     * will change and so on unless it is too large for the
-     * implementation, when an exception is thrown.
+     * This will typically change the value of ost fields.
      *
      * @param duration  the millis to add
      * @throws IllegalArgumentException if the value is invalid
@@ -138,37 +134,46 @@ public interface ReadWritableInstant extends ReadableInstant {
     void add(long duration);
 
     /**
-     * Adds an amount of time to this instant.
+     * Adds a duration to this instant.
      * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableDuration, String and Long.
+     * This will typically change the value of most fields.
      *
-     * @param duration  an object representing a duration
-     * @throws IllegalArgumentException if the duration is invalid
+     * @param duration  the duration to add, null means add zero
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    void add(Object duration);
+    void add(ReadableDuration duration);
 
     /**
-     * Adds an amount of time to this instant specifying how many times to add.
+     * Adds a duration to this instant specifying how many times to add.
      * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableDuration, String and Long.
+     * This will typically change the value of most fields.
      *
-     * @param duration  an object representing a duration
+     * @param duration  the duration to add, null means add zero
      * @param scalar  direction and amount to add, which may be negative
-     * @throws IllegalArgumentException if the duration is invalid
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    void add(Object duration, int scalar);
+    void add(ReadableDuration duration, int scalar);
+
+    /**
+     * Adds a period to this instant.
+     * <p>
+     * This will typically change the value of most fields.
+     *
+     * @param period  the period to add, null means add zero
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
+     */
+    void add(ReadablePeriod period);
+
+    /**
+     * Adds a period to this instant specifying how many times to add.
+     * <p>
+     * This will typically change the value of most fields.
+     *
+     * @param period  the period to add, null means add zero
+     * @param scalar  direction and amount to add, which may be negative
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
+     */
+    void add(ReadablePeriod period, int scalar);
 
     //-----------------------------------------------------------------------
     /**
@@ -198,22 +203,5 @@ public interface ReadWritableInstant extends ReadableInstant {
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
     void add(DurationField field, int value);
-
-    /**
-     * Adds to the value of one of the fields of a datetime, wrapping within that field.
-     * <p>
-     * For example, 2002-03-01 add 14 months gives 2003-05-01. But 2002-03-01 add wrapped
-     * 14 months gives 2002-05-01. This is similar to the <code>roll</code> method on Calendar.
-     * <p>
-     * DateTimeField instances are generally obtained from a {@link Chronology} subclass.
-     * However, an application can create its own DateTimeField to manipulate the
-     * date time millis in new ways.
-     *
-     * @param field  a DateTimeField instance, usually obtained from a Chronology
-     * @param value  the number of times to add the duration
-     * @throws IllegalArgumentException if the field is null
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    void addWrapField(DateTimeField field, int value);
 
 }

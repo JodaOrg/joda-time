@@ -57,9 +57,6 @@ import java.io.Serializable;
 
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.DurationConverter;
-import org.joda.time.convert.InstantConverter;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.ReadWritableInstantFieldProperty;
@@ -395,7 +392,6 @@ public class MutableDateTime
         setMillis(getMillis());
     }
 
-    // Millis
     //-----------------------------------------------------------------------
     /**
      * Set the milliseconds of the datetime.
@@ -431,21 +427,18 @@ public class MutableDateTime
     }
 
     /**
-     * Set the date and time from an object representing an instant.
+     * Sets the millisecond instant of this instant from another.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  an object representing an instant
-     * @throws IllegalArgumentException if the object is invalid
-     * @see #setDateTime(Object)
+     * This method does not change the chronology of this instant, just the
+     * millisecond instant.
+     * 
+     * @param instant  the instant to use, null means now
      */
-    public void setMillis(Object instant) {
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        setMillis(converter.getInstantMillis(instant));  // set via this class not super
+    public void setMillis(ReadableInstant instant) {
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        setMillis(instantMillis);  // set via this class not super
     }
 
-    // Add
     //-----------------------------------------------------------------------
     /**
      * Add an amount of time to the datetime.
@@ -458,47 +451,59 @@ public class MutableDateTime
     }
 
     /**
-     * Adds an amount of time to this instant.
+     * Adds a duration to this instant.
      * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableDuration, String and Long.
+     * This will typically change the value of most fields.
      *
-     * @param duration  an object representing a duration
-     * @throws IllegalArgumentException if the duration is invalid
+     * @param duration  the duration to add, null means add zero
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    public void add(Object duration) {
+    public void add(ReadableDuration duration) {
         add(duration, 1);
     }
 
     /**
-     * Adds an amount of time to this instant specifying how many times to add.
+     * Adds a duration to this instant specifying how many times to add.
      * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableDuration, String and Long.
+     * This will typically change the value of most fields.
      *
-     * @param duration  duration to add.
+     * @param duration  the duration to add, null means add zero
      * @param scalar  direction and amount to add, which may be negative
-     * @throws IllegalArgumentException if the duration is invalid
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    public void add(Object duration, int scalar) {
-        if (duration instanceof ReadablePeriod) {
-            ReadablePeriod d = (ReadablePeriod) duration;
-            d.addInto(this, scalar);
-        } else {
-            DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-            add(FieldUtils.safeMultiply(converter.getDurationMillis(duration), scalar));
+    public void add(ReadableDuration duration, int scalar) {
+        if (duration != null) {
+            add(FieldUtils.safeMultiply(duration.getMillis(), scalar));
         }
     }
 
-    // Chronology
+    /**
+     * Adds a period to this instant.
+     * <p>
+     * This will typically change the value of most fields.
+     *
+     * @param period  the period to add, null means add zero
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
+     */
+    public void add(ReadablePeriod period) {
+        add(period, 1);
+    }
+
+    /**
+     * Adds a period to this instant specifying how many times to add.
+     * <p>
+     * This will typically change the value of most fields.
+     *
+     * @param period  the period to add, null means add zero
+     * @param scalar  direction and amount to add, which may be negative
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
+     */
+    public void add(ReadablePeriod period, int scalar) {
+        if (period != null) {
+            setMillis(period.addTo(getMillis(), scalar));  // set via this class not super
+        }
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Set the chronology of the datetime.
@@ -511,7 +516,6 @@ public class MutableDateTime
         super.setChronology(chronology);
     }
 
-    // Time zone
     //-----------------------------------------------------------------------
     /**
      * Sets the time zone of the datetime, changing the chronology and field values.
@@ -558,7 +562,6 @@ public class MutableDateTime
         setMillis(millis);
     }
 
-    // Field based
     //-----------------------------------------------------------------------
     /**
      * Sets the value of the specified field.
@@ -582,29 +585,6 @@ public class MutableDateTime
     }
 
     /**
-     * Adds to the value to the specified field.
-     * It is permitted to use a field from another Chronology.
-     * For example:
-     * <pre>
-     * MutableDateTime dt = new MutableDateTime();
-     * dt.add(GJChronology.getInstance().year(), 2);
-     * </pre>
-     * Where possible the {@link #add(DurationField, int)} is a better choice as
-     * it is more explicit about what is being added.
-     * 
-     * @param field  the DateTimeField to use
-     * @param value the value
-     * @throws IllegalArgumentException if the field is null
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    public void add(final DateTimeField field, final int value) {
-        if (field == null) {
-            throw new IllegalArgumentException("The DateTimeField must not be null");
-        }
-        setMillis(field.add(getMillis(), value));
-    }
-
-    /**
      * Adds the to the datetime the amount represented by the duration multiplied by the value.
      * It is permitted to use a field from another Chronology.
      * For example:
@@ -625,28 +605,6 @@ public class MutableDateTime
         setMillis(field.add(getMillis(), value));
     }
 
-    /**
-     * Add a value to the specified field, wrapping within that field.
-     * It is permitted to use a field from another Chronology.
-     * For example:
-     * <pre>
-     * MutableDateTime dt = new MutableDateTime();
-     * addWrapField(GJChronology.getInstance().monthOfYear(), 6);
-     * </pre>
-     * 
-     * @param field  the DateTimeField to use
-     * @param value the value
-     * @throws IllegalArgumentException if the field is null
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    public void addWrapField(final DateTimeField field, final int value) {
-        if (field == null) {
-            throw new IllegalArgumentException("The DateTimeField must not be null");
-        }
-        setMillis(field.addWrapField(getMillis(), value));
-    }
-
-    // Date methods
     //-----------------------------------------------------------------------
     /**
      * Set the year to the specified value.
@@ -772,7 +730,6 @@ public class MutableDateTime
         setMillis(getChronology().days().add(getMillis(), days));
     }
 
-    // Time methods
     //-----------------------------------------------------------------------
     /**
      * Set the hour of the day to the specified value.
@@ -889,13 +846,12 @@ public class MutableDateTime
         setMillis(getChronology().millis().add(getMillis(), millis));
     }
 
-    // Setters
     //-----------------------------------------------------------------------
     /**
      * Set the date from milliseconds.
      * The time part of this object will be unaffected.
      *
-     * @param instant  milliseconds from 1970-01-01T00:00:00Z, time part ignored
+     * @param instant  an instant to copy the date from, time part ignored
      * @throws IllegalArgumentException if the value is invalid
      */
     public void setDate(final long instant) {
@@ -903,19 +859,16 @@ public class MutableDateTime
     }
 
     /**
-     * Set the date from an object representing an instant.
+     * Set the date from another instant.
      * The time part of this object will be unaffected.
-     * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  an object representing an instant, time part ignored
+     * @param instant  an instant to copy the date from, time part ignored
      * @throws IllegalArgumentException if the object is invalid
      */
-    public void setDate(final Object instant) {
-        // TODO: Does time zone need to be considered? See setTime(Object)
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        setDate(converter.getInstantMillis(instant));
+    public void setDate(final ReadableInstant instant) {
+        // TODO: Does time zone need to be considered? See setTime(ReadableInstant)
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        setDate(instantMillis);
     }
 
     /**
@@ -941,7 +894,7 @@ public class MutableDateTime
      * Set the time from milliseconds.
      * The date part of this object will be unaffected.
      *
-     * @param millis milliseconds from T00:00:00Z, date part ignored
+     * @param instant  an instant to copy the time from, date part ignored
      * @throws IllegalArgumentException if the value is invalid
      */
     public void setTime(final long millis) {
@@ -950,23 +903,20 @@ public class MutableDateTime
     }
 
     /**
-     * Set the time from an object representing an instant.
+     * Set the time from another instant.
      * The date part of this object will be unaffected.
-     * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  an object representing an instant, date part ignored
+     * @param instant  an instant to copy the time from, date part ignored
      * @throws IllegalArgumentException if the object is invalid
      */
-    public void setTime(final Object instant) {
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        long millis = converter.getInstantMillis(instant);
-        DateTimeZone zone = converter.getChronology(instant).getZone();
+    public void setTime(final ReadableInstant instant) {
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        Chronology instantChrono = DateTimeUtils.getInstantChronology(instant);
+        DateTimeZone zone = instantChrono.getZone();
         if (zone != null) {
-            millis = zone.getMillisKeepLocal(DateTimeZone.UTC, millis);
+            instantMillis = zone.getMillisKeepLocal(DateTimeZone.UTC, instantMillis);
         }
-        setTime(millis);
+        setTime(instantMillis);
     }
 
     /**
@@ -986,32 +936,6 @@ public class MutableDateTime
             final int millisOfSecond) {
         long instant = getChronology().getDateTimeMillis(
             getMillis(), hour, minuteOfHour, secondOfMinute, millisOfSecond);
-        setMillis(instant);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Set the date and time from milliseconds.
-     * This method is a synonym for {@link #setMillis(long)}.
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    public void setDateTime(final long instant) {
-        setMillis(instant);
-    }
-
-    /**
-     * Set the date and time from an object representing an instant.
-     * This method is a synonym for {@link #setMillis(Object)}.
-     * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  an object representing an instant
-     * @throws IllegalArgumentException if the object is invalid
-     */
-    public void setDateTime(final Object instant) {
         setMillis(instant);
     }
 
@@ -1037,10 +961,9 @@ public class MutableDateTime
             final int millisOfSecond) {
         long instant = getChronology().getDateTimeMillis(
             year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        setDateTime(instant);
+        setMillis(instant);
     }
 
-    // Date properties
     //-----------------------------------------------------------------------
     /**
      * Get the era property.
@@ -1145,7 +1068,6 @@ public class MutableDateTime
         return new ReadWritableInstantFieldProperty(this, getChronology().dayOfWeek());
     }
 
-    // Time properties
     //-----------------------------------------------------------------------
     /**
      * Get the hour of day field property
@@ -1210,7 +1132,6 @@ public class MutableDateTime
         return new ReadWritableInstantFieldProperty(this, getChronology().millisOfSecond());
     }
 
-    // Misc
     //-----------------------------------------------------------------------
     /**
      * Clone this object without having to cast the returned object.
@@ -1221,7 +1142,6 @@ public class MutableDateTime
         return (MutableDateTime)clone();
     }
 
-    // Basics
     //-----------------------------------------------------------------------
     /**
      * Clone this object.

@@ -262,29 +262,6 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      */
     void addMillis(int millis);
 
-    //-----------------------------------------------------------------------
-    /**
-     * Set the date from milliseconds.
-     * The time part of this object will be unaffected.
-     *
-     * @param instant  milliseconds from 1970-01-01T00:00:00Z, time part ignored
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    void setDate(long instant);
-
-    /**
-     * Set the date from an object representing an instant.
-     * The time part of this object will be unaffected.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  an object representing an instant, time part ignored
-     * @throws IllegalArgumentException if the object is null or invalid
-     */
-    void setDate(Object instant);
-
     /**
      * Set the date from fields.
      * The time part of this object will be unaffected.
@@ -292,32 +269,9 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @param year  the year
      * @param monthOfYear  the month of the year
      * @param dayOfMonth  the day of the month
-     * @throws IllegalArgumentException if the value is invalid
+     * @throws IllegalArgumentException if any value is invalid
      */
     void setDate(int year, int monthOfYear, int dayOfMonth);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Set the time from milliseconds.
-     * The date part of this object will be unaffected.
-     *
-     * @param millis milliseconds from T00:00:00Z, date part ignored
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    void setTime(long millis);
-
-    /**
-     * Set the date from an object representing an instant.
-     * The date part of this object will be unaffected.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  an object representing an instant, date part ignored
-     * @throws IllegalArgumentException if the object is null or invalid
-     */
-    void setTime(Object instant);
 
     /**
      * Set the time from fields.
@@ -327,32 +281,9 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
      * @param millisOfSecond  the millisecond of the second
-     * @throws IllegalArgumentException if the value is invalid
+     * @throws IllegalArgumentException if any value is invalid
      */
     void setTime(int hour, int minuteOfHour, int secondOfMinute, int millisOfSecond);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Set the date and time from milliseconds.
-     * This method is a synonym for {@link #setMillis(long)}.
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @throws IllegalArgumentException if the value is invalid
-     */
-    void setDateTime(long instant);
-
-    /**
-     * Set the date and time from an object representing an instant.
-     * This method is a synonym for {@link #setMillis(Object)}.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  an object representing an instant
-     * @throws IllegalArgumentException if the object is null or invalid
-     */
-    void setDateTime(Object instant);
 
     /**
      * Set the date and time from fields.
@@ -364,7 +295,7 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
      * @param millisOfSecond  the millisecond of the second
-     * @throws IllegalArgumentException if the value is invalid
+     * @throws IllegalArgumentException if any value is invalid
      */
     void setDateTime(
         int year, int monthOfYear, int dayOfMonth,

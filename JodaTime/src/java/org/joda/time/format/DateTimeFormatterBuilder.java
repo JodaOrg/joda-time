@@ -1798,6 +1798,9 @@ public class DateTimeFormatterBuilder {
         public void printTo(StringBuffer buf,
                             long instant, Chronology chrono,
                             int displayOffset, DateTimeZone displayZone) {
+            if (displayZone == null) {
+                return;  // no zone
+            }
             if (displayOffset == 0 && iZeroOffsetText != null) {
                 buf.append(iZeroOffsetText);
                 return;
@@ -1854,6 +1857,9 @@ public class DateTimeFormatterBuilder {
         public void printTo(Writer out,
                             long instant, Chronology chrono,
                             int displayOffset, DateTimeZone displayZone) throws IOException {
+            if (displayZone == null) {
+                return;  // no zone
+            }
             if (displayOffset == 0 && iZeroOffsetText != null) {
                 out.write(iZeroOffsetText);
                 return;
@@ -2141,6 +2147,9 @@ public class DateTimeFormatterBuilder {
 
         public String print(long instant, Chronology chrono,
                             int displayOffset, DateTimeZone displayZone) {
+            if (displayZone == null) {
+                return "";  // no zone
+            }
             if (iShortFormat) {
                 return displayZone.getShortName(instant, this.iLocale);
             } else {

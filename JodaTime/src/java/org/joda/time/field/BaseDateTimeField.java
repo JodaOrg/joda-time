@@ -538,15 +538,13 @@ public abstract class BaseDateTimeField extends DateTimeField {
         values[fieldIndex] = newValue;
         
         // may need to adjust smaller fields
-        if (fieldIndex < partial.size()) {
-            for (int i = fieldIndex + 1; i < partial.size(); i++) {
-                DateTimeField field = partial.getField(i);
-                if (values[i] > field.getMaximumValue(partial, values)) {
-                    values[i] = field.getMaximumValue(partial, values);
-                }
-                if (values[i] < field.getMinimumValue(partial, values)) {
-                    values[i] = field.getMinimumValue(partial, values);
-                }
+        for (int i = fieldIndex + 1; i < partial.size(); i++) {
+            DateTimeField field = partial.getField(i);
+            if (values[i] > field.getMaximumValue(partial, values)) {
+                values[i] = field.getMaximumValue(partial, values);
+            }
+            if (values[i] < field.getMinimumValue(partial, values)) {
+                values[i] = field.getMinimumValue(partial, values);
             }
         }
         return values;

@@ -61,6 +61,8 @@ import java.text.ParseException;
  * class. The duration of the time interval is always a precise amount of
  * milliseconds even if a variable length duration was passed into the
  * constructor.
+ * <p>
+ * Interval is thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @author Sean Geoghegan
@@ -79,6 +81,16 @@ public final class Interval extends AbstractInterval
      * @throws IllegalArgumentException if the interval is null
      */
     public Interval(ReadableInterval interval) {
+        super(interval);
+    }
+
+    /**
+     * Constructs a time interval as a copy of another.
+     * 
+     * @param interval  the time interval to convert
+     * @throws IllegalArgumentException if the interval is null
+     */
+    public Interval(Object interval) {
         super(interval);
     }
 
@@ -110,6 +122,7 @@ public final class Interval extends AbstractInterval
      * 
      * @param start  start of this interval
      * @param duration  duration of this interval
+     * @throws IllegalArgumentException if start or duration is null
      */
     public Interval(ReadableInstant start, ReadableDuration duration) {
         super(start, duration);
@@ -120,27 +133,11 @@ public final class Interval extends AbstractInterval
      * 
      * @param duration duration of this interval
      * @param end end of this interval
+     * @throws IllegalArgumentException if duration or end is null
      */
     public Interval(ReadableDuration duration, ReadableInstant end) {
         super(duration, end);
     }
-
-    /** 
-     * Creates new TimePeriod.
-     *
-     * TimePeriod is created from an ISO formatted
-     * TimePeriod string. Only accepts strings in the
-     * ISO_STANDARD_BASIC_FORMAT pattern.
-     *
-     * @param period an ISO interval string
-     */
-    /* TODO
-    public Interval(String period) throws ParseException {
-        Interval temp = (Interval)TimePeriodFormat.ISO_STANDARD_BASIC_FORMAT.parseObject(period);
-        iStartMillis = temp.iStartMillis;
-        iEndMillis = temp.iEndMillis;
-    }
-    */
 
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are

@@ -54,6 +54,8 @@
 package org.joda.time;
 
 import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.IntervalConverter;
 import org.joda.time.format.DateTimePrinter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -63,6 +65,8 @@ import org.joda.time.format.ISODateTimeFormat;
  * This class should generally not be used directly by API users. The 
  * {@link ReadableInterval} interface should be used when different 
  * kinds of intervals are to be referenced.
+ * <p>
+ * AbstractInterval subclasses may be mutable and not thread-safe.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
@@ -97,6 +101,31 @@ public abstract class AbstractInterval implements ReadableInterval {
         iEndMillis = interval.getEndMillis();
     }
     
+    /**
+     * Constructs a time interval as a copy of another.
+     * 
+     * @param interval the time interval to convert
+     * @throws IllegalArgumentException if the interval is null
+     */
+    public AbstractInterval(Object interval) {
+        super();
+        if (interval instanceof ReadableInterval) {
+            ReadableInterval ri = (ReadableInterval) interval;
+            iStartMillis = ri.getStartMillis();
+            iEndMillis = ri.getEndMillis();
+        } else {
+            IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
+            if (this instanceof ReadWritableInterval) {
+                converter.setInto((ReadWritableInterval) this, interval);
+            } else {
+                MutableInterval mi = new MutableInterval(0, 0);
+                converter.setInto(mi, interval);
+                iStartMillis = mi.getStartMillis();
+                iEndMillis = mi.getEndMillis();
+            }
+        }
+    }
+
     /**
      * Constructs an interval from a start and end instant.
      * 
@@ -141,6 +170,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @param start  start of this interval
      * @param duration  duration of this interval
+     * @throws IllegalArgumentException if start or duration is null
      */
     public AbstractInterval(ReadableInstant start, ReadableDuration duration) {
         super();
@@ -162,6 +192,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @param duration duration of this interval
      * @param end end of this interval
+     * @throws IllegalArgumentException if duration or end is null
      */
     public AbstractInterval(ReadableDuration duration, ReadableInstant end) {
         super();
@@ -185,7 +216,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the start of the interval
      */
-    public long getStartMillis() {
+    public final long getStartMillis() {
         return iStartMillis;
     }
 
@@ -194,7 +225,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the start of the time interval
      */
-    public Instant getStartInstant() {
+    public final Instant getStartInstant() {
         if (iStartInstant == null) {
             iStartInstant = new Instant(getStartMillis());
         }
@@ -207,7 +238,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the start of the interval
      */
-    public long getEndMillis() {
+    public final long getEndMillis() {
         return iEndMillis;
     }
 
@@ -216,7 +247,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the end of the time interval
      */
-    public Instant getEndInstant() {
+    public final Instant getEndInstant() {
         if (iEndInstant == null) {
             iEndInstant = new Instant(getEndMillis());
         }
@@ -231,7 +262,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the duration of the time interval in milliseconds
      */
-    public long getDurationMillis() {
+    public final long getDurationMillis() {
         return (getEndMillis() - getStartMillis());
     }
 
@@ -243,9 +274,9 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the duration of the time interval
      */
-    public Duration getDuration() {
+    public final Duration getDuration() {
         if (iDuration == null) {
-            iDuration = new Duration(DurationType.getDayHourType(),
+            iDuration = new Duration(DurationType.getPreciseYearMonthType(),
                                      getEndMillis() - getStartMillis());
         }
         return iDuration;
@@ -259,7 +290,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval contains the millisecond
      */
-    public boolean contains(long millisInstant) {
+    public final boolean contains(long millisInstant) {
         return (millisInstant >= getStartMillis() && millisInstant <= getEndMillis());
     }
     
@@ -270,7 +301,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if this time interval contains the instant
      * @throws IllegalArgumentException if the instant is null
      */
-    public boolean contains(ReadableInstant instant) {
+    public final boolean contains(ReadableInstant instant) {
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
@@ -284,7 +315,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if this interval contains the time interval
      * @throws IllegalArgumentException if the interval is null
      */
-    public boolean contains(ReadableInterval interval) {
+    public final boolean contains(ReadableInterval interval) {
         if (interval == null) {
             throw new IllegalArgumentException("The time interval must not be null");
         }
@@ -304,7 +335,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if the time intervals overlap
      * @throws IllegalArgumentException if the interval is null
      */
-    public boolean overlaps(ReadableInterval interval) {
+    public final boolean overlaps(ReadableInterval interval) {
         if (interval == null) {
             throw new IllegalArgumentException("The time interval must not be null");
         }
@@ -323,7 +354,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is before the instant
      */
-    public boolean isBefore(long millisInstant) {
+    public final boolean isBefore(long millisInstant) {
         return (getStartMillis() < millisInstant && getEndMillis() < millisInstant);
     }
     
@@ -334,7 +365,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if this time interval is before the instant
      * @throws IllegalArgumentException if the instant is null
      */
-    public boolean isBefore(ReadableInstant instant) {
+    public final boolean isBefore(ReadableInstant instant) {
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
@@ -348,7 +379,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is after the instant
      */
-    public boolean isAfter(long millisInstant) {
+    public final boolean isAfter(long millisInstant) {
         return (getStartMillis() > millisInstant && getEndMillis() > millisInstant);
     }
     
@@ -359,7 +390,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if this time interval is after the instant
      * @throws IllegalArgumentException if the instant is null
      */
-    public boolean isAfter(ReadableInstant instant) {
+    public final boolean isAfter(ReadableInstant instant) {
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
@@ -372,7 +403,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @return an immutable interval object
      */
-    public Interval toInterval() {
+    public final Interval toInterval() {
         if (this instanceof Interval) {
             return (Interval) this;
         }
@@ -384,7 +415,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @return a mutable interval object
      */
-    public MutableInterval toMutableInterval() {
+    public final MutableInterval toMutableInterval() {
         return new MutableInterval(this);
     }
 

@@ -93,7 +93,6 @@ public class ISOPeriodFormat {
         if (iStandard == null) {
             iStandard = new PeriodFormatterBuilder()
                 .appendLiteral("P")
-                .printZeroRarely()
                 .appendYears()
                 .appendSuffix("Y")
                 .appendMonths()

@@ -222,6 +222,23 @@ public class DateTimeUtils {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the zone handling null.
+     * <p>
+     * If the zone is <code>null</code>, {@link DateTimeZone#getDefault()}
+     * will be returned. Otherwise, the chronology is returned.
+     * 
+     * @param chrono  the chronology to use, null means the default zone
+     * @return the chronology, or default if null
+     */
+    public static final DateTimeZone getZone(DateTimeZone zone) {
+        if (zone == null) {
+            return DateTimeZone.getDefault();
+        }
+        return zone;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the millisecond duration from the specified duration object handling null.
      * <p>
      * If the duration object is <code>null</code>, zero will be returned.

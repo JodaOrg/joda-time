@@ -55,8 +55,9 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.convert.InstantConverter;
+import org.joda.time.base.AbstractInstant;
 import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.InstantConverter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -72,7 +73,8 @@ import org.joda.time.format.ISODateTimeFormat;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class Instant extends AbstractInstant
+public final class Instant
+        extends AbstractInstant
         implements ReadableInstant, Serializable {
 
     /** Serialization lock */
@@ -126,7 +128,7 @@ public final class Instant extends AbstractInstant
      * @return a copy of this instant with different millis
      */
     public Instant withMillis(long newMillis) {
-        return newMillis == iMillis ? this : new Instant(newMillis);
+        return (newMillis == iMillis ? this : new Instant(newMillis));
     }
 
     // Accessors
@@ -157,7 +159,7 @@ public final class Instant extends AbstractInstant
     // Output
     //-----------------------------------------------------------------------
     /**
-     * Output the date time in ISO8601 format.
+     * Output the date time in ISO8601 format using the UTC time zone.
      * <p>
      * ISO8601 is deliberately used here so that the resulting string can be
      * re-parsed by the constructor.

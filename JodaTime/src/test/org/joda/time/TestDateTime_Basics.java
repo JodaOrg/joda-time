@@ -66,6 +66,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.AbstractChronology;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
@@ -463,12 +464,12 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(DateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
 
-        test = new MockUntrustedDateTime(TEST_TIME1);
-        result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+//        test = new MockUntrustedDateTime(TEST_TIME1);
+//        result = test.toTrustedISODateTime();
+//        assertSame(DateTime.class, result.getClass());
+//        assertSame(ISOChronology.class, result.getChronology().getClass());
+//        assertEquals(test.getMillis(), result.getMillis());
+//        assertEquals(ISOChronology.getInstance(), result.getChronology());
 
         test = new DateTime(TEST_TIME1, new MockUntrustedZone("Europe/Paris"));
         result = test.toTrustedISODateTime();
@@ -478,11 +479,11 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
-    static class MockUntrustedDateTime extends DateTime {
-        MockUntrustedDateTime(long millis) {
-            super(millis);
-        }
-    }
+//    static class MockUntrustedDateTime extends DateTime {
+//        MockUntrustedDateTime(long millis) {
+//            super(millis);
+//        }
+//    }
 
     static class MockUntrustedZone extends DateTimeZone {
         MockUntrustedZone(String id) {
@@ -803,53 +804,35 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(expected, result);
     }
     
-    //-----------------------------------------------------------------------
-    public void testImmutable() {
-        MockChangeDateTime test = new MockChangeDateTime(TEST_TIME_NOW);
-        assertEquals(TEST_TIME_NOW, test.getMillis());
-        test.testSetMillis();
-        assertEquals(TEST_TIME_NOW, test.getMillis());
-        
-        test = new MockChangeDateTime(TEST_TIME_NOW);
-        assertEquals(TEST_TIME_NOW, test.getMillis());
-        test.testSetMillisObject();
-        assertEquals(TEST_TIME_NOW, test.getMillis());
-        
-        test = new MockChangeDateTime(TEST_TIME_NOW);
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        test.testSetChronology();
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        
-        test = new MockChangeDateTime(TEST_TIME_NOW);
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        test.testSetZone();
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        
-        test = new MockChangeDateTime(TEST_TIME_NOW);
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        test.testSetZoneRetainFields();
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-    }
-    
-    static class MockChangeDateTime extends DateTime {
-        MockChangeDateTime(long instant) {
-            super(instant);
-        }
-        public void testSetMillis() {
-            setMillis(0L);
-        }
-        public void testSetMillisObject() {
-            setMillis(new Date(0L));
-        }
-        public void testSetChronology() {
-            setChronology(GregorianChronology.getInstance(PARIS));
-        }
-        public void testSetZone() {
-            setZone(PARIS);
-        }
-        public void testSetZoneRetainFields() {
-            setZoneRetainFields(PARIS);
-        }
-    }
+//    //-----------------------------------------------------------------------
+//    public void testImmutable() {
+//        MockChangeDateTime test = new MockChangeDateTime(TEST_TIME_NOW);
+//        assertEquals(TEST_TIME_NOW, test.getMillis());
+//        try {
+//            test.testSetMillis();
+//            fail();
+//        } catch (UnsupportedOperationException ex) {}
+//        assertEquals(TEST_TIME_NOW, test.getMillis());
+//        
+//        test = new MockChangeDateTime(TEST_TIME_NOW);
+//        assertEquals(ISOChronology.getInstance(), test.getChronology());
+//        try {
+//            test.testSetChronology();
+//            fail();
+//        } catch (UnsupportedOperationException ex) {}
+//        assertEquals(ISOChronology.getInstance(), test.getChronology());
+//    }
+//    
+//    static class MockChangeDateTime extends DateTime {
+//        MockChangeDateTime(long instant) {
+//            super(instant);
+//        }
+//        public void testSetMillis() {
+//            setMillis(0L);
+//        }
+//        public void testSetChronology() {
+//            setChronology(GregorianChronology.getInstance(PARIS));
+//        }
+//    }
 
 }

@@ -56,8 +56,8 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.joda.time.base.BaseDateTime;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
 /**
@@ -96,13 +96,13 @@ import org.joda.time.property.AbstractReadableInstantFieldProperty;
  * @since 1.0
  * @see MutableDateTime
  */
-public class DateTime extends AbstractDateTime
+public final class DateTime
+        extends BaseDateTime
         implements ReadableDateTime, Serializable {
-    
+
     /** Serialization lock */
     private static final long serialVersionUID = -5171125899451703815L;
 
-    // Constructors
     //-----------------------------------------------------------------------
     /**
      * Constructs an instance set to the current system millisecond time
@@ -322,7 +322,7 @@ public class DateTime extends AbstractDateTime
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this datetime with different millis
      */
-    public final DateTime withMillis(long newMillis) {
+    public DateTime withMillis(long newMillis) {
         return (newMillis == getMillis() ? this : new DateTime(newMillis, getChronology()));
     }
 
@@ -336,7 +336,7 @@ public class DateTime extends AbstractDateTime
      * @param newChronology  the new chronology
      * @return a copy of this datetime with a different chronology
      */
-    public final DateTime withChronology(Chronology newChronology) {
+    public DateTime withChronology(Chronology newChronology) {
         return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
     }
 
@@ -358,7 +358,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with a different time zone
      * @see #withZoneRetainFields
      */
-    public final DateTime withZone(DateTimeZone newDateTimeZone) {
+    public DateTime withZone(DateTimeZone newDateTimeZone) {
         return withChronology(getChronology().withZone(newDateTimeZone));
     }
 
@@ -379,7 +379,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with a different time zone
      * @see #withZone
      */
-    public final DateTime withZoneRetainFields(DateTimeZone newZone) {
+    public DateTime withZoneRetainFields(DateTimeZone newZone) {
         newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
         DateTimeZone originalZone = getZone();
         originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
@@ -408,7 +408,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with a different date
      * @throws IllegalArgumentException if any value if invalid
      */
-    public final DateTime withDate(int year, int monthOfYear, int dayOfMonth) {
+    public DateTime withDate(int year, int monthOfYear, int dayOfMonth) {
         Chronology chrono = getChronology();
         long instant = getMillis();
         instant = chrono.year().set(instant, year);
@@ -434,7 +434,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with a different time
      * @throws IllegalArgumentException if any value if invalid
      */
-    public final DateTime withTime(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
+    public DateTime withTime(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
         Chronology chrono = getChronology();
         long instant = getMillis();
         instant = chrono.hourOfDay().set(instant, hourOfDay);
@@ -456,7 +456,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with a different set of fields
      * @throws IllegalArgumentException if any value if invalid
      */
-    public final DateTime withFields(ReadablePartial partial) {
+    public DateTime withFields(ReadablePartial partial) {
         if (partial == null) {
             return this;
         }
@@ -473,7 +473,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public final DateTime withDurationAdded(long durationToAdd) {
+    public DateTime withDurationAdded(long durationToAdd) {
         return withDurationAdded(durationToAdd, 1);
     }
 
@@ -487,7 +487,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public final DateTime withDurationAdded(long durationToAdd, int scalar) {
+    public DateTime withDurationAdded(long durationToAdd, int scalar) {
         if (durationToAdd == 0 || scalar == 0) {
             return this;
         }
@@ -505,7 +505,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public final DateTime withDurationAdded(ReadableDuration durationToAdd) {
+    public DateTime withDurationAdded(ReadableDuration durationToAdd) {
         if (durationToAdd == null) {
             return this;
         }
@@ -522,7 +522,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public final DateTime withDurationAdded(ReadableDuration durationToAdd, int scalar) {
+    public DateTime withDurationAdded(ReadableDuration durationToAdd, int scalar) {
         if (durationToAdd == null || scalar == 0) {
             return this;
         }
@@ -544,7 +544,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public final DateTime withPeriodAdded(ReadablePeriod periodToAdd) {
+    public DateTime withPeriodAdded(ReadablePeriod periodToAdd) {
         return withPeriodAdded(periodToAdd, 1);
     }
 
@@ -563,7 +563,7 @@ public class DateTime extends AbstractDateTime
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public final DateTime withPeriodAdded(ReadablePeriod periodToAdd, int scalar) {
+    public DateTime withPeriodAdded(ReadablePeriod periodToAdd, int scalar) {
         if (periodToAdd == null || scalar == 0) {
             return this;
         }
@@ -578,7 +578,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the era property
      */
-    public final Property era() {
+    public Property era() {
         return new Property(this, getChronology().era());
     }
 
@@ -587,7 +587,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final Property centuryOfEra() {
+    public Property centuryOfEra() {
         return new Property(this, getChronology().centuryOfEra());
     }
 
@@ -596,7 +596,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final Property yearOfCentury() {
+    public Property yearOfCentury() {
         return new Property(this, getChronology().yearOfCentury());
     }
 
@@ -605,7 +605,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final Property yearOfEra() {
+    public Property yearOfEra() {
         return new Property(this, getChronology().yearOfEra());
     }
 
@@ -614,7 +614,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year property
      */
-    public final Property year() {
+    public Property year() {
         return new Property(this, getChronology().year());
     }
 
@@ -623,7 +623,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of a week based year property
      */
-    public final Property weekyear() {
+    public Property weekyear() {
         return new Property(this, getChronology().weekyear());
     }
 
@@ -632,7 +632,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the month of year property
      */
-    public final Property monthOfYear() {
+    public Property monthOfYear() {
         return new Property(this, getChronology().monthOfYear());
     }
 
@@ -641,7 +641,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the week of a week based year property
      */
-    public final Property weekOfWeekyear() {
+    public Property weekOfWeekyear() {
         return new Property(this, getChronology().weekOfWeekyear());
     }
 
@@ -650,7 +650,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the day of year property
      */
-    public final Property dayOfYear() {
+    public Property dayOfYear() {
         return new Property(this, getChronology().dayOfYear());
     }
 
@@ -659,7 +659,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the day of month property
      */
-    public final Property dayOfMonth() {
+    public Property dayOfMonth() {
         return new Property(this, getChronology().dayOfMonth());
     }
 
@@ -668,7 +668,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the day of week property
      */
-    public final Property dayOfWeek() {
+    public Property dayOfWeek() {
         return new Property(this, getChronology().dayOfWeek());
     }
 
@@ -679,7 +679,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the hour of day property
      */
-    public final Property hourOfDay() {
+    public Property hourOfDay() {
         return new Property(this, getChronology().hourOfDay());
     }
 
@@ -688,7 +688,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the minute of day property
      */
-    public final Property minuteOfDay() {
+    public Property minuteOfDay() {
         return new Property(this, getChronology().minuteOfDay());
     }
 
@@ -697,7 +697,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the minute of hour property
      */
-    public final Property minuteOfHour() {
+    public Property minuteOfHour() {
         return new Property(this, getChronology().minuteOfHour());
     }
 
@@ -706,7 +706,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the second of day property
      */
-    public final Property secondOfDay() {
+    public Property secondOfDay() {
         return new Property(this, getChronology().secondOfDay());
     }
 
@@ -715,7 +715,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the second of minute property
      */
-    public final Property secondOfMinute() {
+    public Property secondOfMinute() {
         return new Property(this, getChronology().secondOfMinute());
     }
 
@@ -724,7 +724,7 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the millis of day property
      */
-    public final Property millisOfDay() {
+    public Property millisOfDay() {
         return new Property(this, getChronology().millisOfDay());
     }
 
@@ -733,35 +733,11 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the millis of second property
      */
-    public final Property millisOfSecond() {
+    public Property millisOfSecond() {
         return new Property(this, getChronology().millisOfSecond());
     }
 
-    // Output
     //-----------------------------------------------------------------------
-    /**
-     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).
-     * 
-     * @return ISO8601 time formatted string.
-     */
-    public final String toString() {
-        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
-     */
-    protected final void setMillis(long millis) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
-     */
-    protected final void setChronology(Chronology chronology) {
-    }
-
     /**
      * DateTime.Property binds a DateTime to a DateTimeField allowing powerful
      * datetime functionality to be easily accessed.
@@ -791,7 +767,7 @@ public class DateTime extends AbstractDateTime
      * @author Brian S O'Neill
      * @since 1.0
      */
-    public static class Property extends AbstractReadableInstantFieldProperty {
+    public static final class Property extends AbstractReadableInstantFieldProperty {
         
         /** Serialization version */
         private static final long serialVersionUID = -6983323811635733510L;
@@ -938,7 +914,7 @@ public class DateTime extends AbstractDateTime
          * @return a copy of the DateTime with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        public final DateTime setCopy(String text) {
+        public DateTime setCopy(String text) {
             return setCopy(text, null);
         }
         

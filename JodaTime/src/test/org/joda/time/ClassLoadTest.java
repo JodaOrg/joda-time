@@ -53,11 +53,8 @@
  */
 package org.joda.time;
 
-import org.joda.time.AbstractDateTime;
-import org.joda.time.AbstractInstant;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadableDateTime;
+import org.joda.time.base.AbstractDateTime;
+import org.joda.time.base.AbstractInstant;
 
 /**
  * This class displays what the ClassLoader is up to.

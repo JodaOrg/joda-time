@@ -66,6 +66,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -476,12 +477,12 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(ISOChronology.getInstance(), result.getChronology());
 
-        test = new MockUntrustedDateMidnight(TEST_TIME1_UTC);
-        result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+//        test = new MockUntrustedDateMidnight(TEST_TIME1_UTC);
+//        result = test.toTrustedISODateTime();
+//        assertSame(DateTime.class, result.getClass());
+//        assertSame(ISOChronology.class, result.getChronology().getClass());
+//        assertEquals(test.getMillis(), result.getMillis());
+//        assertEquals(ISOChronology.getInstance(), result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC, new MockUntrustedZone("Europe/Paris"));
         result = test.toTrustedISODateTime();
@@ -491,11 +492,11 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
-    static class MockUntrustedDateMidnight extends DateMidnight {
-        MockUntrustedDateMidnight(long millis) {
-            super(millis);
-        }
-    }
+//    static class MockUntrustedDateMidnight extends DateMidnight {
+//        MockUntrustedDateMidnight(long millis) {
+//            super(millis);
+//        }
+//    }
 
     static class MockUntrustedZone extends DateTimeZone {
         MockUntrustedZone(String id) {
@@ -677,52 +678,4 @@ public class TestDateMidnight_Basics extends TestCase {
         assertSame(test, result);
     }
     
-    public void testImmutable() {
-        MockChangeDateMidnight test = new MockChangeDateMidnight(TEST_TIME_NOW_UTC);
-        assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
-        test.testSetMillis();
-        assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
-        
-        test = new MockChangeDateMidnight(TEST_TIME_NOW_UTC);
-        assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
-        test.testSetMillisObject();
-        assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
-        
-        test = new MockChangeDateMidnight(TEST_TIME_NOW_UTC);
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        test.testSetChronology();
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        
-        test = new MockChangeDateMidnight(TEST_TIME_NOW_UTC);
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        test.testSetZone();
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        
-        test = new MockChangeDateMidnight(TEST_TIME_NOW_UTC);
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-        test.testSetZoneRetainFields();
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
-    }
-    
-    static class MockChangeDateMidnight extends DateMidnight {
-        MockChangeDateMidnight(long instant) {
-            super(instant);
-        }
-        public void testSetMillis() {
-            setMillis(0L);
-        }
-        public void testSetMillisObject() {
-            setMillis(new Date(0L));
-        }
-        public void testSetChronology() {
-            setChronology(GregorianChronology.getInstance(PARIS));
-        }
-        public void testSetZone() {
-            setZone(PARIS);
-        }
-        public void testSetZoneRetainFields() {
-            setZoneRetainFields(PARIS);
-        }
-    }
-
 }

@@ -55,6 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
@@ -101,7 +102,8 @@ import org.joda.time.property.ReadWritableInstantFieldProperty;
  * @since 1.0
  * @see DateTime
  */
-public class MutableDateTime extends AbstractDateTime
+public class MutableDateTime
+        extends BaseDateTime
         implements ReadWritableDateTime, Cloneable, Serializable {
 
     /** Serialization version */
@@ -125,7 +127,6 @@ public class MutableDateTime extends AbstractDateTime
     /** The mode of rounding */
     private int iRoundingMode;
 
-    // Constructors
     //-----------------------------------------------------------------------
     /**
      * Constructs an instance set to the current system millisecond time
@@ -205,10 +206,11 @@ public class MutableDateTime extends AbstractDateTime
      * If the object contains no chronology, <code>ISOChronology</code>
      * in the default time zone is used.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
      */
     public MutableDateTime(Object instant) {
@@ -222,10 +224,11 @@ public class MutableDateTime extends AbstractDateTime
      * If the object contains no chronology, <code>ISOChronology</code> is used.
      * If the specified time zone is null, the default zone is used.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @param zone  the time zone, null means default time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
@@ -235,14 +238,15 @@ public class MutableDateTime extends AbstractDateTime
 
     /**
      * Constructs an instance from an Object that represents a datetime,
-     * using the specifed chronology.
+     * using the specified chronology.
      * <p>
      * If the chronology is null, ISOChronology in the default time zone is used.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISOChronology in default zone
      * @throws IllegalArgumentException if the instant is invalid
      */
@@ -330,7 +334,8 @@ public class MutableDateTime extends AbstractDateTime
         super(year, monthOfYear, dayOfMonth,
               hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
-    
+
+    //-----------------------------------------------------------------------
     /**
      * Gets the field used for rounding this instant, returning null if rounding
      * is not enabled.
@@ -394,6 +399,8 @@ public class MutableDateTime extends AbstractDateTime
     //-----------------------------------------------------------------------
     /**
      * Set the milliseconds of the datetime.
+     * <p>
+     * All changes to the millisecond field occurs via this method.
      *
      * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the
      * datetime to
@@ -434,7 +441,8 @@ public class MutableDateTime extends AbstractDateTime
      * @see #setDateTime(Object)
      */
     public void setMillis(Object instant) {
-        super.setMillis(instant);
+        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        setMillis(converter.getInstantMillis(instant));  // set via this class not super
     }
 
     // Add
@@ -443,9 +451,10 @@ public class MutableDateTime extends AbstractDateTime
      * Add an amount of time to the datetime.
      * 
      * @param duration  the millis to add
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    public void add(final long duration) {
-        setMillis(getMillis() + duration);
+    public void add(long duration) {
+        setMillis(FieldUtils.safeAdd(getMillis(), duration));  // set via this class not super
     }
 
     /**
@@ -461,7 +470,7 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the duration is invalid
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    public void add(final Object duration) {
+    public void add(Object duration) {
         add(duration, 1);
     }
 
@@ -479,12 +488,8 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the duration is invalid
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    public void add(final Object duration, final int scalar) {
-        // TODO Change from Object to individual methods
-        if (duration instanceof ReadableDuration) {
-            ReadableDuration d = (ReadableDuration) duration;
-            add(FieldUtils.safeMultiply(d.getMillis(), scalar));
-        } else if (duration instanceof ReadablePeriod) {
+    public void add(Object duration, int scalar) {
+        if (duration instanceof ReadablePeriod) {
             ReadablePeriod d = (ReadablePeriod) duration;
             d.addInto(this, scalar);
         } else {
@@ -497,6 +502,8 @@ public class MutableDateTime extends AbstractDateTime
     //-----------------------------------------------------------------------
     /**
      * Set the chronology of the datetime.
+     * <p>
+     * All changes to the chronology occur via this method.
      * 
      * @param chronology  the chronology to use, null means ISOChronology in default zone
      */
@@ -521,7 +528,11 @@ public class MutableDateTime extends AbstractDateTime
      * @see #setZoneRetainFields
      */
     public void setZone(DateTimeZone zone) {
-        super.setZone(zone);
+        zone = DateTimeUtils.getZone(zone);
+        Chronology chrono = getChronology();
+        if (chrono.getZone() != zone) {
+            setChronology(chrono.withZone(zone));  // set via this class not super
+        }
     }
 
     /**
@@ -536,7 +547,16 @@ public class MutableDateTime extends AbstractDateTime
      * @see #setZone
      */
     public void setZoneRetainFields(DateTimeZone zone) {
-        super.setZoneRetainFields(zone);
+        zone = DateTimeUtils.getZone(zone);
+        DateTimeZone originalZone = getZone();
+        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
+        if (zone == originalZone) {
+            return;
+        }
+        
+        long millis = originalZone.getMillisKeepLocal(zone, getMillis());
+        setChronology(getChronology().withZone(zone));  // set via this class not super
+        setMillis(millis);
     }
 
     // Field based

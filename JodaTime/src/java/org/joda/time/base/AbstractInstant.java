@@ -51,13 +51,22 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.base;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Instant;
+import org.joda.time.MutableDateTime;
+import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * AbstractInstant provides the common behaviour for instant classes.
@@ -68,6 +77,9 @@ import org.joda.time.chrono.ISOChronology;
  * This class should generally not be used directly by API users. The 
  * {@link ReadableInstant} interface should be used when different 
  * kinds of date/time objects are to be referenced.
+ * <p>
+ * Whenever you want to implement <code>ReadableInstant</code> you should
+ * extend this class.
  * <p>
  * AbstractInstant itself is thread-safe and immutable, but subclasses may be
  * mutable and not thread-safe.
@@ -93,7 +105,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return the DateTimeZone that the datetime is using
      */
-    public final DateTimeZone getZone() {
+    public DateTimeZone getZone() {
         Chronology chrono = getChronology();
         return (chrono != null ? chrono.getZone() : null);
     }
@@ -112,7 +124,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return the value
      * @throws IllegalArgumentException if the field is null
      */
-    public final int get(DateTimeField field) {
+    public int get(DateTimeField field) {
         if (field == null) {
             throw new IllegalArgumentException("The DateTimeField must not be null");
         }
@@ -126,7 +138,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return an Instant using the same millis
      */
-    public final Instant toInstant() {
+    public Instant toInstant() {
         if (this instanceof Instant) {
             return (Instant) this;
         }
@@ -138,7 +150,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return a DateTime using the same millis
      */
-    public final DateTime toDateTime() {
+    public DateTime toDateTime() {
         if (this instanceof DateTime) {
             return (DateTime) this;
         }
@@ -151,7 +163,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
      */
-    public final DateTime toDateTime(DateTimeZone zone) {
+    public DateTime toDateTime(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
@@ -167,7 +179,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a DateTime using the same millis
      */
-    public final DateTime toDateTime(Chronology chronology) {
+    public DateTime toDateTime(Chronology chronology) {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
@@ -191,7 +203,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @throws IllegalArgumentException if the time zone is not trusted, and
      * no matching trusted time zone can be found.
      */
-    public final DateTime toTrustedISODateTime() {
+    public DateTime toTrustedISODateTime() {
         DateTimeZone zone = getZone();
         if (zone == null) {
             return new DateTime(this, (Chronology)null);
@@ -218,7 +230,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return a MutableDateTime using the same millis
      */
-    public final MutableDateTime toMutableDateTime() {
+    public MutableDateTime toMutableDateTime() {
         return new MutableDateTime(this);
     }
 
@@ -228,7 +240,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param zone time zone to apply, or default if null
      * @return a MutableDateTime using the same millis
      */
-    public final MutableDateTime toMutableDateTime(DateTimeZone zone) {
+    public MutableDateTime toMutableDateTime(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
@@ -241,7 +253,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param chronology chronology to apply, or ISOChronology if null
      * @return a MutableDateTime using the same millis
      */
-    public final MutableDateTime toMutableDateTime(Chronology chronology) {
+    public MutableDateTime toMutableDateTime(Chronology chronology) {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
@@ -253,7 +265,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return a Date initialised with this datetime
      */
-    public final Date toDate() {
+    public Date toDate() {
         return new Date(getMillis());
     }
 
@@ -265,7 +277,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param locale  the locale to get the Calendar for, or default if null
      * @return a localized Calendar initialised with this datetime
      */
-    public final Calendar toCalendar(Locale locale) {
+    public Calendar toCalendar(Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -285,7 +297,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return a GregorianCalendar initialised with this datetime
      */
-    public final GregorianCalendar toGregorianCalendar() {
+    public GregorianCalendar toGregorianCalendar() {
         DateTimeZone zone = getZone();
         GregorianCalendar cal;
         if (zone == null) {
@@ -312,8 +324,8 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return true if millisecond and chronology are equal, false if
      *  not or the instant is null or of an incorrect type
      */
-    public final boolean equals(Object readableInstant) {
-        // must be final to fulfil ReadableInstant contract
+    public boolean equals(Object readableInstant) {
+        // must be to fulfil ReadableInstant contract
         if (this == readableInstant) {
             return true;
         }
@@ -337,8 +349,8 @@ public abstract class AbstractInstant implements ReadableInstant {
      *
      * @return a suitable hash code
      */
-    public final int hashCode() {
-        // must be final to fulfil ReadableInstant contract
+    public int hashCode() {
+        // must be to fulfil ReadableInstant contract
         return
             ((int) (getMillis() ^ (getMillis() >>> 32))) +
             (getChronology() == null ? 0 : getChronology().hashCode());
@@ -356,7 +368,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */
-    public final int compareTo(Object instant) {
+    public int compareTo(Object instant) {
         if (this == instant) {
             return 0;
         }
@@ -383,7 +395,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param instant  an instant to check against, null returns false
      * @return true if the instant is after the instant passed in
      */
-    public final boolean isAfter(ReadableInstant instant) {
+    public boolean isAfter(ReadableInstant instant) {
         if (instant == null) {
             return false;
         }
@@ -396,7 +408,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param instant  an instant to check against, null returns false
      * @return true if the instant is before the instant passed in
      */
-    public final boolean isBefore(ReadableInstant instant) {
+    public boolean isBefore(ReadableInstant instant) {
         if (instant == null) {
             return false;
         }
@@ -409,7 +421,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @param instant  an instant to check against, null returns false
      * @return true if the instant is equal to the instant passed in
      */
-    public final boolean isEqual(ReadableInstant instant) {
+    public boolean isEqual(ReadableInstant instant) {
         if (instant == null) {
             return false;
         }
@@ -419,13 +431,12 @@ public abstract class AbstractInstant implements ReadableInstant {
     // Output    
     //-----------------------------------------------------------------------
     /**
-     * Get the value as a String in a recognisable ISO8601 format.
-     * <p>
-     * The string output is in ISO8601 format to enable the String
-     * constructor to correctly parse it.
-     *
-     * @return the value as an ISO8601 string
+     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).
+     * 
+     * @return ISO8601 time formatted string.
      */
-    public abstract String toString();
+    public String toString() {
+        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
+    }
 
 }

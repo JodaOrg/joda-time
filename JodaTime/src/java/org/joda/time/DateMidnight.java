@@ -56,7 +56,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.base.BaseDateTime;
 import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
 /**
@@ -100,7 +100,8 @@ import org.joda.time.property.AbstractReadableInstantFieldProperty;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public class DateMidnight extends AbstractDateTime
+public final class DateMidnight
+        extends BaseDateTime
         implements ReadableDateTime, Serializable {
     
     /** Serialization lock */
@@ -299,7 +300,7 @@ public class DateMidnight extends AbstractDateTime
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @param chronology  the chronology to use, not null
      */
-    protected long round(long instant, Chronology chronology) {
+    protected long checkInstant(long instant, Chronology chronology) {
         return chronology.dayOfMonth().roundFloor(instant);
     }
 
@@ -314,9 +315,9 @@ public class DateMidnight extends AbstractDateTime
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public final DateMidnight withMillis(long newMillis) {
+    public DateMidnight withMillis(long newMillis) {
         Chronology chrono = getChronology();
-        newMillis = round(newMillis, chrono);
+        newMillis = checkInstant(newMillis, chrono);
         return (newMillis == getMillis() ? this : new DateMidnight(newMillis, chrono));
     }
 
@@ -341,7 +342,7 @@ public class DateMidnight extends AbstractDateTime
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
      */
-    public final DateMidnight withChronology(Chronology newChronology) {
+    public DateMidnight withChronology(Chronology newChronology) {
         return (newChronology == getChronology() ? this : new DateMidnight(getMillis(), newChronology));
     }
 
@@ -353,7 +354,7 @@ public class DateMidnight extends AbstractDateTime
      * @param newZone  the new time zone, null means default
      * @return a copy of this instant with a different time zone
      */
-    public final DateMidnight withZoneRetainFields(DateTimeZone newZone) {
+    public DateMidnight withZoneRetainFields(DateTimeZone newZone) {
         newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
         DateTimeZone originalZone = getZone();
         originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
@@ -372,7 +373,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the era property
      */
-    public final Property era() {
+    public Property era() {
         return new Property(this, getChronology().era());
     }
 
@@ -381,7 +382,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final Property centuryOfEra() {
+    public Property centuryOfEra() {
         return new Property(this, getChronology().centuryOfEra());
     }
 
@@ -390,7 +391,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final Property yearOfCentury() {
+    public Property yearOfCentury() {
         return new Property(this, getChronology().yearOfCentury());
     }
 
@@ -399,7 +400,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final Property yearOfEra() {
+    public Property yearOfEra() {
         return new Property(this, getChronology().yearOfEra());
     }
 
@@ -408,7 +409,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the year property
      */
-    public final Property year() {
+    public Property year() {
         return new Property(this, getChronology().year());
     }
 
@@ -417,7 +418,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the year of a week based year property
      */
-    public final Property weekyear() {
+    public Property weekyear() {
         return new Property(this, getChronology().weekyear());
     }
 
@@ -426,7 +427,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the month of year property
      */
-    public final Property monthOfYear() {
+    public Property monthOfYear() {
         return new Property(this, getChronology().monthOfYear());
     }
 
@@ -435,7 +436,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the week of a week based year property
      */
-    public final Property weekOfWeekyear() {
+    public Property weekOfWeekyear() {
         return new Property(this, getChronology().weekOfWeekyear());
     }
 
@@ -444,7 +445,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the day of year property
      */
-    public final Property dayOfYear() {
+    public Property dayOfYear() {
         return new Property(this, getChronology().dayOfYear());
     }
 
@@ -453,7 +454,7 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the day of month property
      */
-    public final Property dayOfMonth() {
+    public Property dayOfMonth() {
         return new Property(this, getChronology().dayOfMonth());
     }
 
@@ -462,35 +463,11 @@ public class DateMidnight extends AbstractDateTime
      * 
      * @return the day of week property
      */
-    public final Property dayOfWeek() {
+    public Property dayOfWeek() {
         return new Property(this, getChronology().dayOfWeek());
     }
 
-    // Output
     //-----------------------------------------------------------------------
-    /**
-     * Output the date time in ISO8601 format (yyyy-MM-dd'T'00:00:00.000Z).
-     * 
-     * @return ISO8601 time formatted string.
-     */
-    public final String toString() {
-        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
-     */
-    protected final void setMillis(long millis) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
-     */
-    protected final void setChronology(Chronology chronology) {
-    }
-
     /**
      * DateMidnight.Property binds a DateMidnight to a DateTimeField allowing powerful
      * datetime functionality to be easily accessed.
@@ -519,7 +496,7 @@ public class DateMidnight extends AbstractDateTime
      * @author Brian S O'Neill
      * @since 1.0
      */
-    public static class Property extends AbstractReadableInstantFieldProperty {
+    public static final class Property extends AbstractReadableInstantFieldProperty {
     
         /** Serialization lock */
         private static final long serialVersionUID = 257629620L;
@@ -666,7 +643,7 @@ public class DateMidnight extends AbstractDateTime
          * @return a copy of the DateMidnight with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        public final DateMidnight setCopy(String text) {
+        public DateMidnight setCopy(String text) {
             return setCopy(text, null);
         }
 

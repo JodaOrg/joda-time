@@ -597,7 +597,7 @@ public final class GJChronology extends AssembledChronology {
 
     /**
      * This basic cutover field adjusts calls to 'get' and 'set' methods, and
-     * assumes that calls to add and addWrapped are unaffected by the cutover.
+     * assumes that calls to add and addWrapField are unaffected by the cutover.
      */
     private class CutoverField extends BaseDateTimeField {
         static final long serialVersionUID = 3528501219481026402L;
@@ -879,7 +879,7 @@ public final class GJChronology extends AssembledChronology {
     /**
      * Cutover field for variable length fields. These fields internally call
      * set whenever add is called. As a result, the same correction applied to
-     * set must be applied to add and addWrapped. Knowing when to use this
+     * set must be applied to add and addWrapField. Knowing when to use this
      * field requires specific knowledge of how the GJ fields are implemented.
      */
     private final class ImpreciseCutoverField extends CutoverField {

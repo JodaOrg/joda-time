@@ -341,11 +341,11 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * smaller field is adjusted to be in range.
      * <p>
      * For example, in the ISO chronology:<br>
-     * 2000-08-20 addWrapped six months is 2000-02-20<br>
-     * 2000-08-20 addWrapped twenty months is 2000-04-20<br>
-     * 2000-08-20 addWrapped minus nine months is 2000-11-20<br>
-     * 2001-01-31 addWrapped one month  is 2001-02-28<br>
-     * 2001-01-31 addWrapped two months is 2001-03-31<br>
+     * 2000-08-20 addWrapField six months is 2000-02-20<br>
+     * 2000-08-20 addWrapField twenty months is 2000-04-20<br>
+     * 2000-08-20 addWrapField minus nine months is 2000-11-20<br>
+     * 2001-01-31 addWrapField one month  is 2001-02-28<br>
+     * 2001-01-31 addWrapField two months is 2001-03-31<br>
      * <p>
      * The default implementation internally calls set. Subclasses are
      * encouraged to provide a more efficient implementation.
@@ -354,7 +354,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param value  the value to add, in the units of the field
      * @return the updated milliseconds
      */
-    public long addWrapped(long instant, int value) {
+    public long addWrapField(long instant, int value) {
         int current = get(instant);
         int wrapped = FieldUtils.getWrappedValue
             (current, value, getMinimumValue(instant), getMaximumValue(instant));
@@ -372,11 +372,11 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * smaller field is adjusted to be in range.
      * <p>
      * For example, in the ISO chronology:<br>
-     * 2000-08-20 addInField six months is 2000-02-20<br>
-     * 2000-08-20 addInField twenty months is 2000-04-20<br>
-     * 2000-08-20 addInField minus nine months is 2000-11-20<br>
-     * 2001-01-31 addInField one month  is 2001-02-28<br>
-     * 2001-01-31 addInField two months is 2001-03-31<br>
+     * 2000-08-20 addWrapField six months is 2000-02-20<br>
+     * 2000-08-20 addWrapField twenty months is 2000-04-20<br>
+     * 2000-08-20 addWrapField minus nine months is 2000-11-20<br>
+     * 2001-01-31 addWrapField one month  is 2001-02-28<br>
+     * 2001-01-31 addWrapField two months is 2001-03-31<br>
      * <p>
      * The default implementation internally calls set. Subclasses are
      * encouraged to provide a more efficient implementation.
@@ -388,7 +388,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         int current = values[fieldIndex];
         int wrapped = FieldUtils.getWrappedValue
             (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));

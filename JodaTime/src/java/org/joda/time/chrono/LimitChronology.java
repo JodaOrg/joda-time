@@ -508,9 +508,9 @@ public final class LimitChronology extends AssembledChronology {
             return result;
         }
 
-        public long addWrapped(long instant, int amount) {
+        public long addWrapField(long instant, int amount) {
             checkLimits(instant, null);
-            long result = getWrappedField().addWrapped(instant, amount);
+            long result = getWrappedField().addWrapField(instant, amount);
             checkLimits(result, "resulting");
             return result;
         }

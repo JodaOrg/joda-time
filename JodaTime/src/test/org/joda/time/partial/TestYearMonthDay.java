@@ -634,48 +634,48 @@ public class TestYearMonthDay extends TestCase {
 
     public void testPropertyAddYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        YearMonthDay copy = test.year().addCopy(9);
+        YearMonthDay copy = test.year().addToCopy(9);
         check(test, 1972, 6, 9);
         check(copy, 1981, 6, 9);
         
-        copy = test.year().addCopy(0);
+        copy = test.year().addToCopy(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().addCopy(292277023 - 1972);
+        copy = test.year().addToCopy(292277023 - 1972);
         check(copy, 292277023, 6, 9);
         
         try {
-            test.year().addCopy(292277023 - 1972 + 1);
+            test.year().addToCopy(292277023 - 1972 + 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 1972, 6, 9);
         
-        copy = test.year().addCopy(-1972);
+        copy = test.year().addToCopy(-1972);
         check(copy, 0, 6, 9);
         
-        copy = test.year().addCopy(-1973);
+        copy = test.year().addToCopy(-1973);
         check(copy, -1, 6, 9);
         
         try {
-            test.year().addCopy(-292275054 - 1972 - 1);
+            test.year().addToCopy(-292275054 - 1972 - 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 1972, 6, 9);
     }
 
-    public void testPropertyAddInFieldYear() {
+    public void testPropertyAddWrapFieldYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        YearMonthDay copy = test.year().addInFieldCopy(9);
+        YearMonthDay copy = test.year().addWrapFieldToCopy(9);
         check(test, 1972, 6, 9);
         check(copy, 1981, 6, 9);
         
-        copy = test.year().addInFieldCopy(0);
+        copy = test.year().addWrapFieldToCopy(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().addInFieldCopy(292277023 - 1972 + 1);
+        copy = test.year().addWrapFieldToCopy(292277023 - 1972 + 1);
         check(copy, -292275054, 6, 9);
         
-        copy = test.year().addInFieldCopy(-292275054 - 1972 - 1);
+        copy = test.year().addWrapFieldToCopy(-292275054 - 1972 - 1);
         check(copy, 292277023, 6, 9);
     }
 
@@ -747,58 +747,58 @@ public class TestYearMonthDay extends TestCase {
 
     public void testPropertyAddMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        YearMonthDay copy = test.monthOfYear().addCopy(6);
+        YearMonthDay copy = test.monthOfYear().addToCopy(6);
         check(test, 1972, 6, 9);
         check(copy, 1972, 12, 9);
         
-        copy = test.monthOfYear().addCopy(7);
+        copy = test.monthOfYear().addToCopy(7);
         check(copy, 1973, 1, 9);
         
-        copy = test.monthOfYear().addCopy(-5);
+        copy = test.monthOfYear().addToCopy(-5);
         check(copy, 1972, 1, 9);
         
-        copy = test.monthOfYear().addCopy(-6);
+        copy = test.monthOfYear().addToCopy(-6);
         check(copy, 1971, 12, 9);
         
         test = new YearMonthDay(1972, 1, 31);
-        copy = test.monthOfYear().addCopy(1);
+        copy = test.monthOfYear().addToCopy(1);
         check(copy, 1972, 2, 29);
         
-        copy = test.monthOfYear().addCopy(2);
+        copy = test.monthOfYear().addToCopy(2);
         check(copy, 1972, 3, 31);
         
-        copy = test.monthOfYear().addCopy(3);
+        copy = test.monthOfYear().addToCopy(3);
         check(copy, 1972, 4, 30);
         
         test = new YearMonthDay(1971, 1, 31);
-        copy = test.monthOfYear().addCopy(1);
+        copy = test.monthOfYear().addToCopy(1);
         check(copy, 1971, 2, 28);
     }
 
-    public void testPropertyAddInFieldMonth() {
+    public void testPropertyAddWrapFieldMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        YearMonthDay copy = test.monthOfYear().addInFieldCopy(4);
+        YearMonthDay copy = test.monthOfYear().addWrapFieldToCopy(4);
         check(test, 1972, 6, 9);
         check(copy, 1972, 10, 9);
         
-        copy = test.monthOfYear().addInFieldCopy(8);
+        copy = test.monthOfYear().addWrapFieldToCopy(8);
         check(copy, 1972, 2, 9);
         
-        copy = test.monthOfYear().addInFieldCopy(-8);
+        copy = test.monthOfYear().addWrapFieldToCopy(-8);
         check(copy, 1972, 10, 9);
         
         test = new YearMonthDay(1972, 1, 31);
-        copy = test.monthOfYear().addInFieldCopy(1);
+        copy = test.monthOfYear().addWrapFieldToCopy(1);
         check(copy, 1972, 2, 29);
         
-        copy = test.monthOfYear().addInFieldCopy(2);
+        copy = test.monthOfYear().addWrapFieldToCopy(2);
         check(copy, 1972, 3, 31);
         
-        copy = test.monthOfYear().addInFieldCopy(3);
+        copy = test.monthOfYear().addWrapFieldToCopy(3);
         check(copy, 1972, 4, 30);
         
         test = new YearMonthDay(1971, 1, 31);
-        copy = test.monthOfYear().addInFieldCopy(1);
+        copy = test.monthOfYear().addWrapFieldToCopy(1);
         check(copy, 1971, 2, 28);
     }
 
@@ -894,64 +894,64 @@ public class TestYearMonthDay extends TestCase {
 
     public void testPropertyAddDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        YearMonthDay copy = test.dayOfMonth().addCopy(9);
+        YearMonthDay copy = test.dayOfMonth().addToCopy(9);
         check(test, 1972, 6, 9);
         check(copy, 1972, 6, 18);
         
-        copy = test.dayOfMonth().addCopy(21);
+        copy = test.dayOfMonth().addToCopy(21);
         check(copy, 1972, 6, 30);
         
-        copy = test.dayOfMonth().addCopy(22);
+        copy = test.dayOfMonth().addToCopy(22);
         check(copy, 1972, 7, 1);
         
-        copy = test.dayOfMonth().addCopy(22 + 30);
+        copy = test.dayOfMonth().addToCopy(22 + 30);
         check(copy, 1972, 7, 31);
         
-        copy = test.dayOfMonth().addCopy(22 + 31);
+        copy = test.dayOfMonth().addToCopy(22 + 31);
         check(copy, 1972, 8, 1);
 
-        copy = test.dayOfMonth().addCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
+        copy = test.dayOfMonth().addToCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
         check(copy, 1972, 12, 31);
         
-        copy = test.dayOfMonth().addCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
+        copy = test.dayOfMonth().addToCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
         check(copy, 1973, 1, 1);
         
-        copy = test.dayOfMonth().addCopy(-8);
+        copy = test.dayOfMonth().addToCopy(-8);
         check(copy, 1972, 6, 1);
         
-        copy = test.dayOfMonth().addCopy(-9);
+        copy = test.dayOfMonth().addToCopy(-9);
         check(copy, 1972, 5, 31);
         
-        copy = test.dayOfMonth().addCopy(-8 - 31 - 30 - 31 - 29 - 31);
+        copy = test.dayOfMonth().addToCopy(-8 - 31 - 30 - 31 - 29 - 31);
         check(copy, 1972, 1, 1);
         
-        copy = test.dayOfMonth().addCopy(-9 - 31 - 30 - 31 - 29 - 31);
+        copy = test.dayOfMonth().addToCopy(-9 - 31 - 30 - 31 - 29 - 31);
         check(copy, 1971, 12, 31);
     }
 
-    public void testPropertyAddInFieldDay() {
+    public void testPropertyAddWrapFieldDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        YearMonthDay copy = test.dayOfMonth().addInFieldCopy(21);
+        YearMonthDay copy = test.dayOfMonth().addWrapFieldToCopy(21);
         check(test, 1972, 6, 9);
         check(copy, 1972, 6, 30);
         
-        copy = test.dayOfMonth().addInFieldCopy(22);
+        copy = test.dayOfMonth().addWrapFieldToCopy(22);
         check(copy, 1972, 6, 1);
         
-        copy = test.dayOfMonth().addInFieldCopy(-12);
+        copy = test.dayOfMonth().addWrapFieldToCopy(-12);
         check(copy, 1972, 6, 27);
         
         test = new YearMonthDay(1972, 7, 9);
-        copy = test.dayOfMonth().addInFieldCopy(21);
+        copy = test.dayOfMonth().addWrapFieldToCopy(21);
         check(copy, 1972, 7, 30);
     
-        copy = test.dayOfMonth().addInFieldCopy(22);
+        copy = test.dayOfMonth().addWrapFieldToCopy(22);
         check(copy, 1972, 7, 31);
     
-        copy = test.dayOfMonth().addInFieldCopy(23);
+        copy = test.dayOfMonth().addWrapFieldToCopy(23);
         check(copy, 1972, 7, 1);
     
-        copy = test.dayOfMonth().addInFieldCopy(-12);
+        copy = test.dayOfMonth().addWrapFieldToCopy(-12);
         check(copy, 1972, 7, 28);
     }
 

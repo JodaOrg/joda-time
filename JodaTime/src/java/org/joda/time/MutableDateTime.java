@@ -525,15 +525,15 @@ public class MutableDateTime extends AbstractDateTime
      * For example:
      * <pre>
      * MutableDateTime dt = new MutableDateTime();
-     * dt.addWrapped(GJChronology.getInstance().monthOfYear(), 6);
+     * addWrapField(GJChronology.getInstance().monthOfYear(), 6);
      * </pre>
      * 
      * @param field  the DateTimeField to use
      * @param value the value
      * @throws NullPointerException if the field is null
      */
-    public void addWrapped(final DateTimeField field, final int value) {
-        setMillis(field.addWrapped(getMillis(), value));
+    public void addWrapField(final DateTimeField field, final int value) {
+        setMillis(field.addWrapField(getMillis(), value));
     }
 
     // Date methods

@@ -280,10 +280,10 @@ public class MainTest extends TestCase {
         y = fieldB.add(millis, value);
         testMillis(fieldA, fieldB, "add", millis, x, y);
 
-        // addWrapped test
-        x = fieldA.addWrapped(millis, value);
-        y = fieldB.addWrapped(millis, value);
-        testMillis(fieldA, fieldB, "addWrapped", millis, x, y);
+        // addWrapField test
+        x = fieldA.addWrapField(millis, value);
+        y = fieldB.addWrapField(millis, value);
+        testMillis(fieldA, fieldB, "addWrapField", millis, x, y);
 
         // getDifference test
         x = fieldA.getDifference(millis, millis2);

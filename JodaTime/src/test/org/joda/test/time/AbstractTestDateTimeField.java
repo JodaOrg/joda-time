@@ -461,13 +461,13 @@ public abstract class AbstractTestDateTimeField extends TestCase {
         long[] var = getAllTestPositions();
         for (int i = 0; i < var.length; i++) {
             long millis = var[i];
-            assertEquals(var, i, getAddWrappedResult(millis, 1), field.addWrapped(millis, 1));
-            assertEquals(var, i, getAddWrappedResult(millis, -1), field.addWrapped(millis, -1));
-            assertEquals(var, i, getAddWrappedResult(millis, 0), field.addWrapped(millis, 0));
-            assertEquals(var, i, getAddWrappedResult(millis, 2), field.addWrapped(millis, 2));
-            assertEquals(var, i, getAddWrappedResult(millis, 8), field.addWrapped(millis, 8));
-            assertEquals(var, i, getAddWrappedResult(millis, 9), field.addWrapped(millis, 9));
-            assertEquals(var, i, getAddWrappedResult(millis, -13), field.addWrapped(millis, -13));
+            assertEquals(var, i, getAddWrappedResult(millis, 1), field.addWrapField(millis, 1));
+            assertEquals(var, i, getAddWrappedResult(millis, -1), field.addWrapField(millis, -1));
+            assertEquals(var, i, getAddWrappedResult(millis, 0), field.addWrapField(millis, 0));
+            assertEquals(var, i, getAddWrappedResult(millis, 2), field.addWrapField(millis, 2));
+            assertEquals(var, i, getAddWrappedResult(millis, 8), field.addWrapField(millis, 8));
+            assertEquals(var, i, getAddWrappedResult(millis, 9), field.addWrapField(millis, 9));
+            assertEquals(var, i, getAddWrappedResult(millis, -13), field.addWrapField(millis, -13));
         }
     }
 

@@ -496,7 +496,7 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
          * @return a copy of the TimeOfDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public TimeOfDay addCopy(int valueToAdd) {
+        public TimeOfDay addToCopy(int valueToAdd) {
             int[] newValues = iTimeOfDay.getValues();
             newValues = getField().add(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
             return new TimeOfDay(iTimeOfDay, newValues);
@@ -511,7 +511,7 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
          * Other fields are unaffected.
          * <p>
          * For example,
-         * <code>12:59:37</code> addInField one minute returns <code>12:00:37</code>.
+         * <code>12:59:37</code> addWrapField one minute returns <code>12:00:37</code>.
          * <p>
          * The TimeOfDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
@@ -520,9 +520,9 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
          * @return a copy of the TimeOfDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public TimeOfDay addInFieldCopy(int valueToAdd) {
+        public TimeOfDay addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iTimeOfDay.getValues();
-            newValues = getField().addInField(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
+            newValues = getField().addWrapField(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
             return new TimeOfDay(iTimeOfDay, newValues);
         }
 

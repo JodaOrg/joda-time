@@ -271,17 +271,17 @@ public abstract class DateTimeField {
      * smaller field is adjusted to be in range.
      * <p>
      * For example, in the ISO chronology:<br>
-     * 2000-08-20 addWrapped six months is 2000-02-20<br>
-     * 2000-08-20 addWrapped twenty months is 2000-04-20<br>
-     * 2000-08-20 addWrapped minus nine months is 2000-11-20<br>
-     * 2001-01-31 addWrapped one month  is 2001-02-28<br>
-     * 2001-01-31 addWrapped two months is 2001-03-31<br>
+     * 2000-08-20 addWrapField six months is 2000-02-20<br>
+     * 2000-08-20 addWrapField twenty months is 2000-04-20<br>
+     * 2000-08-20 addWrapField minus nine months is 2000-11-20<br>
+     * 2001-01-31 addWrapField one month  is 2001-02-28<br>
+     * 2001-01-31 addWrapField two months is 2001-03-31<br>
      * 
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
      * @param value  the value to add, in the units of the field
      * @return the updated milliseconds
      */
-    public abstract long addWrapped(long instant, int value) ;
+    public abstract long addWrapField(long instant, int value) ;
 
     /**
      * Adds a value (which may be negative) to the partial instant,
@@ -294,11 +294,11 @@ public abstract class DateTimeField {
      * smaller field is adjusted to be in range.
      * <p>
      * For example, in the ISO chronology:<br>
-     * 2000-08-20 addInField six months is 2000-02-20<br>
-     * 2000-08-20 addInField twenty months is 2000-04-20<br>
-     * 2000-08-20 addInField minus nine months is 2000-11-20<br>
-     * 2001-01-31 addInField one month  is 2001-02-28<br>
-     * 2001-01-31 addInField two months is 2001-03-31<br>
+     * 2000-08-20 addWrapField six months is 2000-02-20<br>
+     * 2000-08-20 addWrapField twenty months is 2000-04-20<br>
+     * 2000-08-20 addWrapField minus nine months is 2000-11-20<br>
+     * 2001-01-31 addWrapField one month  is 2001-02-28<br>
+     * 2001-01-31 addWrapField two months is 2001-03-31<br>
      * 
      * @param instant  the partial instant
      * @param fieldIndex  the index of this field in the instant
@@ -307,7 +307,7 @@ public abstract class DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public abstract int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd);
+    public abstract int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd);
 
     /**
      * Computes the difference between two instants, as measured in the units

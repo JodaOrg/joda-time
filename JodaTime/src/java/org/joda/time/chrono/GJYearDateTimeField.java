@@ -125,7 +125,7 @@ final class GJYearDateTimeField extends ImpreciseDateTimeField {
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long instant, int years) {
+    public long addWrapField(long instant, int years) {
         if (years == 0) {
             return instant;
         }

@@ -162,7 +162,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long instant, int amount) {
+    public long addWrapField(long instant, int amount) {
         return set(instant, FieldUtils.getWrappedValue(get(instant), amount, iMin, iMax));
     }
 

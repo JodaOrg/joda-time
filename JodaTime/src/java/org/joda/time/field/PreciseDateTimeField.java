@@ -128,7 +128,7 @@ public class PreciseDateTimeField extends PreciseDurationDateTimeField {
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long instant, int amount) {
+    public long addWrapField(long instant, int amount) {
         int thisValue = get(instant);
         int wrappedValue = FieldUtils.getWrappedValue
             (thisValue, amount, getMinimumValue(), getMaximumValue());

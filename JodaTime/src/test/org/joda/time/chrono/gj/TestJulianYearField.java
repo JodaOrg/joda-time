@@ -64,7 +64,7 @@ class TestJulianYearField extends TestGJYearField {
         super(chrono);
     }
 
-    public long addWrapped(long millis, int value) {
+    public long addWrapField(long millis, int value) {
         int year = get(millis);
         int wrapped = FieldUtils.getWrappedValue
             (year, value, getMinimumValue(), getMaximumValue());

@@ -408,7 +408,7 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
          * @return a copy of the YearMonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public YearMonthDay addCopy(int valueToAdd) {
+        public YearMonthDay addToCopy(int valueToAdd) {
             int[] newValues = iYearMonthDay.getValues();
             newValues = getField().add(iYearMonthDay, iFieldIndex, newValues, valueToAdd);
             return new YearMonthDay(iYearMonthDay, newValues);
@@ -423,7 +423,7 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
          * Other fields are unaffected.
          * <p>
          * For example,
-         * <code>2004-12-20</code> addInField one month returns <code>2004-01-20</code>.
+         * <code>2004-12-20</code> addWrapField one month returns <code>2004-01-20</code>.
          * <p>
          * The YearMonthDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
@@ -432,9 +432,9 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
          * @return a copy of the YearMonthDay with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public YearMonthDay addInFieldCopy(int valueToAdd) {
+        public YearMonthDay addWrapFieldToCopy(int valueToAdd) {
             int[] newValues = iYearMonthDay.getValues();
-            newValues = getField().addInField(iYearMonthDay, iFieldIndex, newValues, valueToAdd);
+            newValues = getField().addWrapField(iYearMonthDay, iFieldIndex, newValues, valueToAdd);
             return new YearMonthDay(iYearMonthDay, newValues);
         }
 

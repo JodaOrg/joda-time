@@ -93,12 +93,12 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().add(instant, years);
     }
 
-    public long addWrapped(long instant, int years) {
-        return getWrappedField().addWrapped(instant, years);
+    public long addWrapField(long instant, int years) {
+        return getWrappedField().addWrapField(instant, years);
     }
 
-    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int years) {
-        return getWrappedField().addInField(instant, fieldIndex, values, years);
+    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int years) {
+        return getWrappedField().addWrapField(instant, fieldIndex, values, years);
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {

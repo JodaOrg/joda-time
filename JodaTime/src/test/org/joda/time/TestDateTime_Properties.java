@@ -248,19 +248,19 @@ public class TestDateTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testPropertyAddInFieldYear() {
+    public void testPropertyAddWrapFieldYear() {
         DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
-        DateTime copy = test.year().addWrappedToCopy(9);
+        DateTime copy = test.year().addWrapFieldToCopy(9);
         assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
         assertEquals("1981-06-09T00:00:00.000+01:00", copy.toString());
         
-        copy = test.year().addWrappedToCopy(0);
+        copy = test.year().addWrapFieldToCopy(0);
         assertEquals(1972, copy.getYear());
         
-        copy = test.year().addWrappedToCopy(292277023 - 1972 + 1);
+        copy = test.year().addWrapFieldToCopy(292277023 - 1972 + 1);
         assertEquals(-292275054, copy.getYear());
         
-        copy = test.year().addWrappedToCopy(-292275054 - 1972 - 1);
+        copy = test.year().addWrapFieldToCopy(-292275054 - 1972 - 1);
         assertEquals(292277023, copy.getYear());
     }
 
@@ -355,31 +355,31 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("1971-02-28T00:00:00.000Z", copy.toString());
     }
 
-    public void testPropertyAddInFieldMonth() {
+    public void testPropertyAddWrapFieldMonth() {
         DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
-        DateTime copy = test.monthOfYear().addWrappedToCopy(4);
+        DateTime copy = test.monthOfYear().addWrapFieldToCopy(4);
         assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
         assertEquals("1972-10-09T00:00:00.000+01:00", copy.toString());
         
-        copy = test.monthOfYear().addWrappedToCopy(8);
+        copy = test.monthOfYear().addWrapFieldToCopy(8);
         assertEquals("1972-02-09T00:00:00.000Z", copy.toString());
         
-        copy = test.monthOfYear().addWrappedToCopy(-8);
+        copy = test.monthOfYear().addWrapFieldToCopy(-8);
         assertEquals("1972-10-09T00:00:00.000+01:00", copy.toString());
         
         test = new DateTime(1972, 1, 31, 0, 0, 0, 0);
-        copy = test.monthOfYear().addWrappedToCopy(1);
+        copy = test.monthOfYear().addWrapFieldToCopy(1);
         assertEquals("1972-01-31T00:00:00.000Z", test.toString());
         assertEquals("1972-02-29T00:00:00.000Z", copy.toString());
         
-        copy = test.monthOfYear().addWrappedToCopy(2);
+        copy = test.monthOfYear().addWrapFieldToCopy(2);
         assertEquals("1972-03-31T00:00:00.000+01:00", copy.toString());
         
-        copy = test.monthOfYear().addWrappedToCopy(3);
+        copy = test.monthOfYear().addWrapFieldToCopy(3);
         assertEquals("1972-04-30T00:00:00.000+01:00", copy.toString());
         
         test = new DateTime(1971, 1, 31, 0, 0, 0, 0);
-        copy = test.monthOfYear().addWrappedToCopy(1);
+        copy = test.monthOfYear().addWrapFieldToCopy(1);
         assertEquals("1971-01-31T00:00:00.000Z", test.toString());
         assertEquals("1971-02-28T00:00:00.000Z", copy.toString());
     }
@@ -515,29 +515,29 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("1971-12-31T00:00:00.000Z", copy.toString());
     }
 
-    public void testPropertyAddInFieldDay() {
+    public void testPropertyAddWrapFieldDay() {
         DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
-        DateTime copy = test.dayOfMonth().addWrappedToCopy(21);
+        DateTime copy = test.dayOfMonth().addWrapFieldToCopy(21);
         assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
         assertEquals("1972-06-30T00:00:00.000+01:00", copy.toString());
         
-        copy = test.dayOfMonth().addWrappedToCopy(22);
+        copy = test.dayOfMonth().addWrapFieldToCopy(22);
         assertEquals("1972-06-01T00:00:00.000+01:00", copy.toString());
         
-        copy = test.dayOfMonth().addWrappedToCopy(-12);
+        copy = test.dayOfMonth().addWrapFieldToCopy(-12);
         assertEquals("1972-06-27T00:00:00.000+01:00", copy.toString());
         
         test = new DateTime(1972, 7, 9, 0, 0, 0, 0);
-        copy = test.dayOfMonth().addWrappedToCopy(21);
+        copy = test.dayOfMonth().addWrapFieldToCopy(21);
         assertEquals("1972-07-30T00:00:00.000+01:00", copy.toString());
     
-        copy = test.dayOfMonth().addWrappedToCopy(22);
+        copy = test.dayOfMonth().addWrapFieldToCopy(22);
         assertEquals("1972-07-31T00:00:00.000+01:00", copy.toString());
     
-        copy = test.dayOfMonth().addWrappedToCopy(23);
+        copy = test.dayOfMonth().addWrapFieldToCopy(23);
         assertEquals("1972-07-01T00:00:00.000+01:00", copy.toString());
     
-        copy = test.dayOfMonth().addWrappedToCopy(-12);
+        copy = test.dayOfMonth().addWrapFieldToCopy(-12);
         assertEquals("1972-07-28T00:00:00.000+01:00", copy.toString());
     }
 

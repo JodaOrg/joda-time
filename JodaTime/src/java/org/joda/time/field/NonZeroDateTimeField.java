@@ -98,12 +98,12 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().add(instant, value);
     }
 
-    public long addWrapped(long instant, int value) {
-        return getWrappedField().addWrapped(instant, value);
+    public long addWrapField(long instant, int value) {
+        return getWrappedField().addWrapField(instant, value);
     }
 
-    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
-        return getWrappedField().addInField(instant, fieldIndex, values, valueToAdd);
+    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+        return getWrappedField().addWrapField(instant, fieldIndex, values, valueToAdd);
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {

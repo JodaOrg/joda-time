@@ -144,10 +144,10 @@ public class ReadWritableInstantFieldProperty extends AbstractReadableInstantFie
      * Adds a value, possibly wrapped, to the millis value.
      * 
      * @param value  the value to add
-     * @see DateTimeField#addWrapped
+     * @see DateTimeField#addWrapField
      */
-    public void addWrapped(int value) {
-        iInstant.setMillis(getField().addWrapped(iInstant.getMillis(), value));
+    public void addWrapField(int value) {
+        iInstant.setMillis(getField().addWrapField(iInstant.getMillis(), value));
     }
 
     //-----------------------------------------------------------------------

@@ -171,7 +171,7 @@ public class FieldUtils {
     }
 
     /**
-     * Utility method used by addWrapped implementations to ensure the new
+     * Utility method used by addWrapField implementations to ensure the new
      * value lies within the field's legal value range.
      *
      * @param currentValue the current value of the data, which may lie outside

@@ -410,9 +410,9 @@ public final class ZonedChronology extends AssembledChronology {
             return instant - (iTimeField ? offset : this.iZone.getOffsetFromLocal(instant));
         }
 
-        public long addWrapped(long instant, int value) {
+        public long addWrapField(long instant, int value) {
             int offset = this.iZone.getOffset(instant);
-            instant = iField.addWrapped(instant + offset, value);
+            instant = iField.addWrapField(instant + offset, value);
             return instant - (iTimeField ? offset : this.iZone.getOffsetFromLocal(instant));
         }
 

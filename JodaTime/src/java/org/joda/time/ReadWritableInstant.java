@@ -262,6 +262,6 @@ public interface ReadWritableInstant extends ReadableInstant {
      * @param value  the value of that field for the millis set in the implementation
      * @throws IllegalArgumentException if the value is invalid
      */
-    void addWrapped(DateTimeField field, int value);
+    void addWrapField(DateTimeField field, int value);
     
 }

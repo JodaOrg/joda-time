@@ -96,7 +96,7 @@ final class CopticYearDateTimeField extends ImpreciseDateTimeField {
         return add(instant, FieldUtils.safeToInt(years));
     }
 
-    public long addWrapped(long instant, int years) {
+    public long addWrapField(long instant, int years) {
         if (years == 0) {
             return instant;
         }

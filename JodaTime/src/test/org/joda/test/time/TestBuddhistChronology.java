@@ -202,8 +202,8 @@ public class TestBuddhistChronology extends BulkTest {
         assertEquals(MILLIS_1971, iChrono.year().add(MILLIS_1970, 1));
         assertEquals(MILLIS_1969, iChrono.year().add(MILLIS_1970, -1));
         
-        assertEquals(MILLIS_1971, iChrono.year().addWrapped(MILLIS_1970, 1));
-        assertEquals(MILLIS_1969, iChrono.year().addWrapped(MILLIS_1970, -1));
+        assertEquals(MILLIS_1971, iChrono.year().addWrapField(MILLIS_1970, 1));
+        assertEquals(MILLIS_1969, iChrono.year().addWrapField(MILLIS_1970, -1));
         
         assertEquals("2513", iChrono.year().getAsShortText(MILLIS_1970));
         assertEquals(9, iChrono.year().getMaximumShortTextLength(null));
@@ -257,7 +257,7 @@ public class TestBuddhistChronology extends BulkTest {
         } catch (UnsupportedOperationException ex) {}
         
         try {
-            iChrono.era().addWrapped(SMALL_MILLIS, 1);
+            iChrono.era().addWrapField(SMALL_MILLIS, 1);
             fail();
         } catch (UnsupportedOperationException ex) {}
         

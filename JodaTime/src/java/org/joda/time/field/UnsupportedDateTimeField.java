@@ -216,7 +216,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public long addWrapped(long instant, int value) {
+    public long addWrapField(long instant, int value) {
         throw unsupported();
     }
 
@@ -225,7 +225,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addWrapField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         throw unsupported();
     }
 

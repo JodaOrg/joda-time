@@ -175,7 +175,7 @@ public class DateTimeFieldProperty extends AbstractReadableInstantFieldProperty 
     /**
      * Adds to this field, possibly wrapped, in a copy of this DateTime.
      * A wrapped operation only changes this field.
-     * Thus 31st January addWrapped one day goes to the 1st January.
+     * Thus 31st January addWrapField one day goes to the 1st January.
      * <p>
      * The DateTime attached to this property is unchanged by this call.
      * This operation is faster than converting a DateTime to a MutableDateTime
@@ -186,9 +186,9 @@ public class DateTimeFieldProperty extends AbstractReadableInstantFieldProperty 
      * @return a copy of the DateTime with the field value changed
      * @throws IllegalArgumentException if the value isn't valid
      */
-    public DateTime addWrappedToCopy(int value) {
+    public DateTime addWrapFieldToCopy(int value) {
         DateTime instant = iInstant;
-        return instant.withMillis(iField.addWrapped(instant.getMillis(), value));
+        return instant.withMillis(iField.addWrapField(instant.getMillis(), value));
     }
 
     //-----------------------------------------------------------------------

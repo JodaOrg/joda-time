@@ -130,7 +130,11 @@ public class DateTimeUtils {
      */
     public static final void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
         checkPermission();
-        cMillisProvider = new OffsetMillisProvider(offsetMillis);
+        if (offsetMillis == 0) {
+            cMillisProvider = SYSTEM_MILLIS_PROVIDER;
+        } else {
+            cMillisProvider = new OffsetMillisProvider(offsetMillis);
+        }
     }
 
     /**

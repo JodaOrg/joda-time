@@ -281,6 +281,9 @@ public class MutablePeriod
     /**
      * Creates a period from the given interval endpoints using the standard
      * set of fields.
+     * <p>
+     * The chronology of the start instant is used, unless that is null when the
+     * chronology of the end instant is used instead.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -291,6 +294,9 @@ public class MutablePeriod
 
     /**
      * Creates a period from the given interval endpoints.
+     * <p>
+     * The chronology of the start instant is used, unless that is null when the
+     * chronology of the end instant is used instead.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -375,6 +381,17 @@ public class MutablePeriod
 
     //-----------------------------------------------------------------------
     /**
+     * Sets the value of one of the fields by index.
+     *
+     * @param index  the field index
+     * @param value  the new value for the field
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public void setValue(int index, int value) {
+        super.setValue(index, value);
+    }
+
+    /**
      * Sets the value of one of the fields.
      * <p>
      * The field type specified must be one of those that is supported by the period.
@@ -420,52 +437,35 @@ public class MutablePeriod
      * and dividing the fields using the period type.
      * 
      * @param interval  the interval to set, null means zero length
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableInterval interval) {
-        setPeriod(interval, null);
-    }
-
-    /**
-     * Sets all the fields in one go from an interval dividing the
-     * fields using the period type.
-     * 
-     * @param interval  the interval to set, null means zero length
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    public void setPeriod(ReadableInterval interval, Chronology chrono) {
         if (interval == null) {
             setPeriod(0L);
         } else {
+            Chronology chrono = DateTimeUtils.getChronology(interval.getChronology());
             setPeriod(interval.getStartMillis(), interval.getEndMillis(), chrono);
         }
     }
 
     /**
-     * Sets all the fields in one go from two instants using
-     * the ISO chronology and dividing the fields using the period type.
+     * Sets all the fields in one go from two instants representing an interval.
+     * <p>
+     * The chronology of the start instant is used, unless that is null when the
+     * chronology of the end instant is used instead.
      * 
      * @param start  the start instant, null means now
      * @param end  the end instant, null means now
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableInstant start, ReadableInstant end) {
-        setPeriod(start, end, null);
-    }
-
-    /**
-     * Sets all the fields in one go from two instants using
-     * the specified chronology and dividing the fields using the period type.
-     * 
-     * @param start  the start instant, null means now
-     * @param end  the end instant, null means now
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    public void setPeriod(ReadableInstant start, ReadableInstant end, Chronology chrono) {
         if (start == end) {
             setPeriod(0L);
         } else {
             long startMillis = DateTimeUtils.getInstantMillis(start);
             long endMillis = DateTimeUtils.getInstantMillis(end);
-            setPeriod(start, end, chrono);
+            Chronology chrono = DateTimeUtils.getIntervalChronology(start, end);
+            setPeriod(startMillis, endMillis, chrono);
         }
     }
 
@@ -475,21 +475,23 @@ public class MutablePeriod
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long startInstant, long endInstant) {
         setPeriod(startInstant, endInstant, null);
     }
 
     /**
-     * Sets all the fields in one go from a millisecond interval dividing the
-     * fields using the period type.
+     * Sets all the fields in one go from a millisecond interval.
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param chrono  the chronology to use, null means ISO default
+     * @param chrono  the chronology to use, not null
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long startInstant, long endInstant, Chronology chrono) {
-        super.setPeriod(startInstant, endInstant, chrono);
+        chrono = DateTimeUtils.getChronology(chrono);
+        setValues(chrono.get(this, startInstant, endInstant));
     }
 
     /**
@@ -501,6 +503,7 @@ public class MutablePeriod
      * available precise field.
      * 
      * @param duration  the duration to set, null means zero length
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableDuration duration) {
         setPeriod(duration, null);
@@ -516,6 +519,7 @@ public class MutablePeriod
      * 
      * @param duration  the duration to set, null means zero length
      * @param chrono  the chronology to use, null means ISO default
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(ReadableDuration duration, Chronology chrono) {
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
@@ -531,24 +535,26 @@ public class MutablePeriod
      * available precise field.
      * 
      * @param duration  the duration, in milliseconds
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long duration) {
         setPeriod(duration, null);
     }
 
     /**
-     * Sets all the fields in one go from a millisecond duration dividing the
-     * fields using the period type.
+     * Sets all the fields in one go from a millisecond duration.
      * <p>
      * When dividing the duration, only precise fields in the period type will be used.
      * For large durations, all the remaining duration will be stored in the largest
      * available precise field.
      * 
      * @param duration  the duration, in milliseconds
-     * @param chrono  the chronology to use, null means ISO default
+     * @param chrono  the chronology to use, not null
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long duration, Chronology chrono) {
-        super.setPeriod(duration, chrono);
+        chrono = DateTimeUtils.getChronology(chrono);
+        setValues(chrono.get(this, duration));
     }
 
     //-----------------------------------------------------------------------

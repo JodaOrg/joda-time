@@ -375,7 +375,7 @@ public class MutableInterval
         if (period == null) {
             setEndMillis(getStartMillis());
         } else {
-            setEndMillis(getChronology().add(getStartMillis(), period, 1));
+            setEndMillis(getChronology().add(period, getStartMillis(), 1));
         }
     }
 
@@ -391,7 +391,7 @@ public class MutableInterval
         if (period == null) {
             setStartMillis(getEndMillis());
         } else {
-            setStartMillis(getChronology().add(getEndMillis(), period, -1));
+            setStartMillis(getChronology().add(period, getEndMillis(), -1));
         }
     }
 

@@ -249,7 +249,7 @@ public abstract class BaseChronology
      *
      * @param partial  the partial instant to use
      * @param instant  the instant to query
-     * @return the values of this partial extracted from the instant
+     * @return the values of the partial extracted from the instant
      */
     public int[] get(ReadablePartial partial, long instant) {
         int size = partial.size();
@@ -276,14 +276,60 @@ public abstract class BaseChronology
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the values of a period from an interval.
+     *
+     * @param period  the period instant to use
+     * @param startInstant  the start instant of an interval to query
+     * @param endInstant  the start instant of an interval to query
+     * @return the values of the period extracted from the interval
+     */
+    public int[] get(ReadablePeriod period, long startInstant, long endInstant) {
+        int size = period.size();
+        int[] values = new int[size];
+        if (startInstant != endInstant) {
+            for (int i = 0; i < size; i++) {
+                DurationField field = period.getFieldType(i).getField(this);
+                int value = field.getDifference(endInstant, startInstant);
+                startInstant = field.add(startInstant, value);
+                values[i] = value;
+            }
+        }
+        return values;
+    }
+
+    /**
+     * Gets the values of a period from an interval.
+     *
+     * @param period  the period instant to use
+     * @param duration  the duration to query
+     * @return the values of the period extracted from the duration
+     */
+    public int[] get(ReadablePeriod period, long duration) {
+        int size = period.size();
+        int[] values = new int[size];
+        if (duration != 0) {
+            long current = 0;
+            for (int i = 0; i < size; i++) {
+                DurationField field = period.getFieldType(i).getField(this);
+                if (field.isPrecise()) {
+                    int value = field.getDifference(duration, current);
+                    current = field.add(current, value);
+                    values[i] = value;
+                }
+            }
+        }
+        return values;
+    }
+
+    /**
      * Adds the period to the instant, specifying the number of times to add.
      *
-     * @param instant  the instant to add to
      * @param period  the period to add, null means add nothing
+     * @param instant  the instant to add to
      * @param scalar  the number of times to add
      * @return the updated instant
      */
-    public long add(long instant, ReadablePeriod period, int scalar) {
+    public long add(ReadablePeriod period, long instant, int scalar) {
         if (scalar != 0 && period != null) {
             for (int i = 0, isize = period.size(); i < isize; i++) {
                 long value = period.getValue(i); // use long to allow for multiplication (fits OK)

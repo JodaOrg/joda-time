@@ -537,14 +537,33 @@ public abstract class Chronology {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the values of a period from an interval.
+     *
+     * @param period  the period instant to use
+     * @param startInstant  the start instant of an interval to query
+     * @param endInstant  the start instant of an interval to query
+     * @return the values of the period extracted from the interval
+     */
+    public abstract int[] get(ReadablePeriod period, long startInstant, long endInstant);
+
+    /**
+     * Gets the values of a period from an interval.
+     *
+     * @param period  the period instant to use
+     * @param duration  the duration to query
+     * @return the values of the period extracted from the duration
+     */
+    public abstract int[] get(ReadablePeriod period, long duration);
+
+    /**
      * Adds the period to the instant, specifying the number of times to add.
      *
-     * @param instant  the instant to add to
      * @param period  the period to add, null means add nothing
+     * @param instant  the instant to add to
      * @param scalar  the number of times to add
      * @return the updated instant
      */
-    public abstract long add(long instant, ReadablePeriod period, int scalar);
+    public abstract long add(ReadablePeriod period, long instant, int scalar);
 
     // Millis
     //-----------------------------------------------------------------------

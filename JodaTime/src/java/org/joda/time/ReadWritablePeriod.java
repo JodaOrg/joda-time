@@ -66,6 +66,15 @@ package org.joda.time;
 public interface ReadWritablePeriod extends ReadablePeriod {
 
     /**
+     * Sets the value of one of the fields by index.
+     *
+     * @param index  the field index
+     * @param value  the new value for the field
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    void setValue(int index, int value);
+
+    /**
      * Sets the value of one of the fields.
      * <p>
      * The field type specified must be one of those that is supported by the period.
@@ -105,22 +114,8 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * fields using the period type.
      * 
      * @param interval  the interval to set, null means zero length
-     * @param chrono  the chronology to use, null means ISO default
      */
-    void setPeriod(ReadableInterval interval, Chronology chrono);
-
-    /**
-     * Sets all the fields in one go from a duration dividing the
-     * fields using the period type.
-     * <p>
-     * When dividing the duration, only precise fields in the period type will be used.
-     * For large durations, all the remaining duration will be stored in the largest
-     * available precise field.
-     * 
-     * @param duration  the duration to set, null means zero length
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void setPeriod(ReadableDuration duration, Chronology chrono);
+    void setPeriod(ReadableInterval interval);
 
     //-----------------------------------------------------------------------
     /**
@@ -170,19 +165,6 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void add(ReadableInterval interval);
-
-    /**
-     * Adds a duration to this one by dividing the duration into
-     * fields and then adding each field in turn.
-     * <p>
-     * When dividing the duration, only precise fields in the period type will be used.
-     * For large durations, all the remaining duration will be added to the largest
-     * available precise field.
-     * 
-     * @param duration  the duration to add, null means add nothing
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
-     */
-    void add(ReadableDuration duration);
 
     //-----------------------------------------------------------------------
     /**

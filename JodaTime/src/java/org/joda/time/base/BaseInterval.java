@@ -185,7 +185,7 @@ public abstract class BaseInterval
         if (period == null) {
             iEndMillis = iStartMillis;
         } else {
-            iEndMillis = chrono.add(iStartMillis, period, 1);
+            iEndMillis = chrono.add(period, iStartMillis, 1);
         }
         checkInterval(iStartMillis, iEndMillis);
     }
@@ -209,7 +209,7 @@ public abstract class BaseInterval
         if (period == null) {
             iStartMillis = iEndMillis;
         } else {
-            iStartMillis = chrono.add(iEndMillis, period, -1);
+            iStartMillis = chrono.add(period, iEndMillis, -1);
         }
         checkInterval(iStartMillis, iEndMillis);
     }

@@ -619,7 +619,7 @@ public final class DateTime
         if (period == null || scalar == 0) {
             return this;
         }
-        long instant = getChronology().add(getMillis(), period, scalar);
+        long instant = getChronology().add(period, getMillis(), scalar);
         return withMillis(instant);
     }
 

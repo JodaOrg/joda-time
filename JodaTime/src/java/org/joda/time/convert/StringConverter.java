@@ -246,14 +246,14 @@ class StringConverter extends AbstractConverter
             }
             period = periodParser.parsePeriod(getPeriodType(rightStr), rightStr);
             chrono = (chrono != null ? chrono : parsedChrono);
-            endInstant = chrono.add(startInstant, period, 1);
+            endInstant = chrono.add(period, startInstant, 1);
         } else {
             DateTime end = dateTimeParser.parseDateTime(rightStr);
             endInstant = end.getMillis();
             parsedChrono = (parsedChrono != null ? parsedChrono : end.getChronology());
             chrono = (chrono != null ? chrono : parsedChrono);
             if (period != null) {
-                startInstant = chrono.add(endInstant, period, -1);
+                startInstant = chrono.add(period, endInstant, -1);
             }
         }
         

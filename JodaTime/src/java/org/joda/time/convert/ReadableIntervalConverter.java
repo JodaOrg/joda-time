@@ -54,6 +54,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadableInterval;
@@ -99,7 +100,13 @@ class ReadableIntervalConverter extends AbstractConverter
      */
     public void setInto(ReadWritablePeriod writablePeriod, Object object, Chronology chrono) {
         ReadableInterval interval = (ReadableInterval) object;
-        writablePeriod.setPeriod(interval, chrono);
+        chrono = (chrono != null ? chrono : DateTimeUtils.getIntervalChronology(interval));
+        long start = interval.getStartMillis();
+        long end = interval.getEndMillis();
+        int[] values = chrono.get(writablePeriod, start, end);
+        for (int i = 0; i < values.length; i++) {
+            writablePeriod.setValue(i, values[i]);
+        }
     }
 
     //-----------------------------------------------------------------------

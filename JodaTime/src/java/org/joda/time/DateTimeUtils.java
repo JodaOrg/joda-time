@@ -182,6 +182,53 @@ public class DateTimeUtils {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the chronology from the specified instant based interval handling null.
+     * <p>
+     * The chronology is obtained from the start if that is not null, or from the
+     * end if the start is null. The result is additionally checked, and if still
+     * null then {@link ISOChronology#getInstance()} will be returned.
+     * 
+     * @param start  the instant to examine and use as the primary source of the chronology
+     * @param end  the instant to examine and use as the secondary source of the chronology
+     * @return the chronology, never null
+     */
+    public static final Chronology getIntervalChronology(ReadableInstant start, ReadableInstant end) {
+        Chronology chrono = null;
+        if (start != null) {
+            chrono = start.getChronology();
+        } else if (end != null) {
+            chrono = end.getChronology();
+        }
+        if (chrono == null) {
+            chrono = ISOChronology.getInstance();
+        }
+        return chrono;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the chronology from the specified interval object handling null.
+     * <p>
+     * If the interval object is <code>null</code>, or the interval's chronology is
+     * <code>null</code>, {@link ISOChronology#getInstance()} will be returned.
+     * Otherwise, the chronology from the object is returned.
+     * 
+     * @param interval  the interval to examine, null means ISO in the default zone
+     * @return the chronology, never null
+     */
+    public static final Chronology getIntervalChronology(ReadableInterval interval) {
+        if (interval == null) {
+            return ISOChronology.getInstance();
+        }
+        Chronology chrono = interval.getChronology();
+        if (chrono == null) {
+            return ISOChronology.getInstance();
+        }
+        return chrono;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the chronology handling null.
      * <p>
      * If the chronology is <code>null</code>, {@link ISOChronology#getInstance()}

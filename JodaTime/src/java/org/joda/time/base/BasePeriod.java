@@ -58,7 +58,6 @@ import java.io.Serializable;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.Duration;
-import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
 import org.joda.time.PeriodType;
@@ -133,8 +132,9 @@ public abstract class BasePeriod
     protected BasePeriod(long startInstant, long endInstant, PeriodType type, Chronology chrono) {
         super();
         type = checkPeriodType(type);
+        chrono = DateTimeUtils.getChronology(chrono);
         iType = type;
-        setPeriodInternal(startInstant, endInstant, chrono); // internal method
+        iValues = chrono.get(this, startInstant, endInstant);
     }
 
     /**
@@ -145,18 +145,19 @@ public abstract class BasePeriod
      * @param type  which set of fields this period supports, null means standard
      * @throws IllegalArgumentException if period type is invalid
      */
-    protected BasePeriod(ReadableInstant startInstant, ReadableInstant  endInstant, PeriodType type) {
+    protected BasePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super();
         type = checkPeriodType(type);
         if (startInstant == null && endInstant == null) {
             iType = type;
             iValues = new int[size()];
         } else {
-            long start = DateTimeUtils.getInstantMillis(startInstant);
-            long end = DateTimeUtils.getInstantMillis(endInstant);
-            Chronology chrono = (startInstant != null ? startInstant.getChronology() : endInstant.getChronology());
+            long startMillis = DateTimeUtils.getInstantMillis(startInstant);
+            long endMillis = DateTimeUtils.getInstantMillis(endInstant);
+            Chronology chrono = DateTimeUtils.getIntervalChronology(startInstant, endInstant);
+            chrono = DateTimeUtils.getChronology(chrono);
             iType = type;
-            setPeriodInternal(start, end, chrono); // internal method
+            iValues = chrono.get(this, startMillis, endMillis);
         }
     }
 
@@ -175,7 +176,7 @@ public abstract class BasePeriod
         long endMillis = FieldUtils.safeAdd(startMillis, durationMillis);
         Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
         iType = type;
-        setPeriodInternal(startMillis, endMillis, chrono); // internal method
+        iValues = chrono.get(this, startMillis, endMillis);
     }
 
     /**
@@ -193,8 +194,9 @@ public abstract class BasePeriod
     protected BasePeriod(long duration, PeriodType type, Chronology chrono) {
         super();
         type = checkPeriodType(type);
+        chrono = DateTimeUtils.getChronology(chrono);
         iType = type;
-        setPeriodInternal(duration, chrono); // internal method
+        iValues = chrono.get(this, duration);
     }
 
     /**
@@ -217,7 +219,7 @@ public abstract class BasePeriod
             chrono = DateTimeUtils.getChronology(chrono);
             converter.setInto((ReadWritablePeriod) this, period, chrono);
         } else {
-            setPeriodInternal(new MutablePeriod(period, type, chrono));
+            iValues = new MutablePeriod(period, type, chrono).getValues();
         }
     }
 
@@ -303,7 +305,7 @@ public abstract class BasePeriod
     public Duration toDurationFrom(ReadableInstant startInstant) {
         long startMillis = DateTimeUtils.getInstantMillis(startInstant);
         Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
-        long endMillis = chrono.add(startMillis, this, 1);
+        long endMillis = chrono.add(this, startMillis, 1);
         return new Duration(startMillis, endMillis);
     }
 
@@ -337,7 +339,7 @@ public abstract class BasePeriod
      */
     protected void setPeriod(ReadablePeriod period) {
         if (period == null) {
-            setPeriodInternal(0L, null);
+            setValues(new int[size()]);
         } else {
             setPeriodInternal(period);
         }
@@ -389,70 +391,6 @@ public abstract class BasePeriod
         checkAndUpdate(DurationFieldType.seconds(), newValues, seconds);
         checkAndUpdate(DurationFieldType.millis(), newValues, millis);
         iValues = newValues;
-    }
-
-    /**
-     * Sets all the fields in one go from a millisecond interval.
-     * 
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
-     * @param chrono  the chronology to use, not null
-     */
-    protected void setPeriod(long startInstant, long endInstant, Chronology chrono) {
-        setPeriodInternal(startInstant, endInstant, chrono);
-    }
-
-    /**
-     * Private method called from constructor.
-     */
-    private void setPeriodInternal(long startInstant, long endInstant, Chronology chrono) {
-        int[] newValues = new int[size()];
-        if (startInstant == endInstant) {
-            iValues = newValues;
-        } else {
-            for (int i = 0, isize = size(); i < isize; i++) {
-                DurationField field = getFieldType(i).getField(chrono);
-                int value = field.getDifference(endInstant, startInstant);
-                startInstant = field.add(startInstant, value);
-                newValues[i] = value;
-            }
-            iValues = newValues;
-        }
-    }
-
-    /**
-     * Sets all the fields in one go from a millisecond duration.
-     * <p>
-     * This calculates the period relative to 1970-01-01 but only sets those
-     * fields which are precise.
-     * 
-     * @param duration  the duration, in milliseconds
-     * @throws ArithmeticException if the set exceeds the capacity of the period
-     * @param chrono  the chronology to use, not null
-     */
-    protected void setPeriod(long duration, Chronology chrono) {
-        setPeriodInternal(duration, chrono);
-    }
-
-    /**
-     * Private method called from constructor.
-     */
-    private void setPeriodInternal(long duration, Chronology chrono) {
-        int[] newValues = new int[size()];
-        if (duration == 0) {
-            iValues = newValues;
-        } else {
-            long current = 0;
-            for (int i = 0, isize = size(); i < isize; i++) {
-                DurationField field = getFieldType(i).getField(chrono);
-                if (field.isPrecise()) {
-                    int value = field.getDifference(duration, current);
-                    current = field.add(current, value);
-                    newValues[i] = value;
-                }
-            }
-            iValues = newValues;
-        }
     }
 
     //-----------------------------------------------------------------------
@@ -589,9 +527,7 @@ public abstract class BasePeriod
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     protected void setValue(int index, int value) {
-        if (value != getValue(index)) {
-            iValues[index] = value;
-        }
+        iValues[index] = value;
     }
 
     /**

@@ -364,7 +364,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @throws IllegalArgumentException if the value is invalid
      */
     public int[] set(PartialInstant instant, int fieldIndex, int value) {
-        FieldUtils.verifyValueBounds(this, value, getMinimumValue(), getMaximumValue());
+        FieldUtils.verifyValueBounds(this, value, getMinimumValue(instant), getMaximumValue(instant));
         int[] array = instant.getValues();
         array[fieldIndex] = value;
         return array;
@@ -471,6 +471,18 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
     }
 
     /**
+     * Get the minimum value for this field evaluated at the specified time.
+     * <p>
+     * This implementation returns the same as {@link #getMinimumValue()}.
+     * 
+     * @param instant  the partial instant to query
+     * @return the minimum value for this field, in the units of the field
+     */
+    public int getMinimumValue(PartialInstant instant) {
+        return getMinimumValue();
+    }
+
+    /**
      * Get the maximum allowable value for this field.
      * 
      * @return the maximum valid value for this field, in the units of the
@@ -487,6 +499,18 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @return the maximum value for this field, in the units of the field
      */
     public int getMaximumValue(long instant) {
+        return getMaximumValue();
+    }
+
+    /**
+     * Get the maximum value for this field evaluated at the specified time.
+     * <p>
+     * This implementation returns the same as {@link #getMaximumValue()}.
+     * 
+     * @param instant  the partial instant to query
+     * @return the maximum value for this field, in the units of the field
+     */
+    public int getMaximumValue(PartialInstant instant) {
         return getMaximumValue();
     }
 

@@ -175,46 +175,45 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     //-----------------------------------------------------------------------
-// TODO
-//    /**
-//     * Gets the minimum value for the field ignoring the current time.
-//     * 
-//     * @return the minimum value
-//     * @see DateTimeField#getMinimumValue
-//     */
-//    public int getMinimumValueOverall() {
-//        return getField().getMinimumValue();
-//    }
-//
-//    /**
-//     * Gets the minimum value for the field.
-//     * 
-//     * @return the minimum value
-//     * @see DateTimeField#getMinimumValue
-//     */
-//    public int getMinimumValue() {
-//        return getField().getMinimumValue(getPartialInstant(), get());
-//    }
-//
-//    /**
-//     * Gets the maximum value for the field ignoring the current time.
-//     * 
-//     * @return the maximum value
-//     * @see DateTimeField#getMaximumValue
-//     */
-//    public int getMaximumValueOverall() {
-//        return getField().getMaximumValue();
-//    }
-//
-//    /**
-//     * Gets the maximum value for the field.
-//     * 
-//     * @return the maximum value
-//     * @see DateTimeField#getMaximumValue
-//     */
-//    public int getMaximumValue() {
-//        return getField().getMaximumValue(getPartialInstant(), get());
-//    }
+    /**
+     * Gets the minimum value for the field ignoring the current time.
+     * 
+     * @return the minimum value
+     * @see DateTimeField#getMinimumValue
+     */
+    public int getMinimumValueOverall() {
+        return getField().getMinimumValue();
+    }
+
+    /**
+     * Gets the minimum value for this field given the current field values.
+     * 
+     * @return the minimum value
+     * @see DateTimeField#getMinimumValue
+     */
+    public int getMinimumValue() {
+        return getField().getMinimumValue(getPartialInstant());
+    }
+
+    /**
+     * Gets the maximum value for the field ignoring the current time.
+     * 
+     * @return the maximum value
+     * @see DateTimeField#getMaximumValue
+     */
+    public int getMaximumValueOverall() {
+        return getField().getMaximumValue();
+    }
+
+    /**
+     * Gets the maximum value for this field given the current field values.
+     * 
+     * @return the maximum value
+     * @see DateTimeField#getMaximumValue
+     */
+    public int getMaximumValue() {
+        return getField().getMaximumValue(getPartialInstant());
+    }
 
     /**
      * Gets the maximum text length for the field.

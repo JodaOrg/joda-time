@@ -55,6 +55,7 @@ package org.joda.time.chrono;
 
 import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * Provides time calculations for the day of the month component of time.
@@ -97,6 +98,21 @@ final class CopticDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 			return 30;
 		}
 		return iChronology.isLeapYear(iChronology.getYear(instant)) ? 6 : 5;
+    }
+
+    public int getMaximumValue(PartialInstant instant) {
+        if (instant.isSupported(iChronology.monthOfYear())) {
+            int month = instant.get(iChronology.monthOfYear());
+            if (month <= 12) {
+                return 30;
+            }
+            if (instant.isSupported(iChronology.year())) {
+                int year = instant.get(iChronology.year());
+                return iChronology.isLeapYear(year) ? 6 : 5;
+            }
+            return 6;
+        }
+        return 30;
     }
 
     /**

@@ -419,6 +419,14 @@ public abstract class DateTimeField {
     public abstract int getMinimumValue(long instant);
 
     /**
+     * Get the minimum value for this field evaluated at the specified time.
+     * 
+     * @param instant  the partial instant to query
+     * @return the minimum value for this field, in the units of the field
+     */
+    public abstract int getMinimumValue(PartialInstant instant);
+
+    /**
      * Get the maximum allowable value for this field.
      * 
      * @return the maximum valid value for this field, in the units of the
@@ -433,6 +441,14 @@ public abstract class DateTimeField {
      * @return the maximum value for this field, in the units of the field
      */
     public abstract int getMaximumValue(long instant);
+
+    /**
+     * Get the maximum value for this field evaluated at the specified time.
+     * 
+     * @param instant  the partial instant to query
+     * @return the maximum value for this field, in the units of the field
+     */
+    public abstract int getMaximumValue(PartialInstant instant);
 
     /**
      * Get the maximum text value for this field.

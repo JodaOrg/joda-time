@@ -225,11 +225,19 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getMinimumValue(instant);
     }
 
+    public int getMinimumValue(PartialInstant instant) {
+        return iField.getMinimumValue(instant);
+    }
+
     public int getMaximumValue() {
         return iField.getMaximumValue();
     }
 
     public int getMaximumValue(long instant) {
+        return iField.getMaximumValue(instant);
+    }
+
+    public int getMaximumValue(PartialInstant instant) {
         return iField.getMaximumValue(instant);
     }
 

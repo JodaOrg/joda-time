@@ -55,6 +55,7 @@ package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * Wraps another field such that zero values are replaced with one more than
@@ -149,6 +150,15 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
     }
 
     /**
+     * Always returns 1.
+     * 
+     * @return the minimum value of 1
+     */
+    public int getMinimumValue(PartialInstant instant) {
+        return 1;
+    }
+
+    /**
      * Get the maximum value for the field, which is one more than the wrapped
      * field's maximum value.
      * 
@@ -165,6 +175,16 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      * @return the maximum value
      */
     public int getMaximumValue(long instant) {
+        return getWrappedField().getMaximumValue(instant) + 1;
+    }
+
+    /**
+     * Get the maximum value for the field, which is one more than the wrapped
+     * field's maximum value.
+     * 
+     * @return the maximum value
+     */
+    public int getMaximumValue(PartialInstant instant) {
         return getWrappedField().getMaximumValue(instant) + 1;
     }
 

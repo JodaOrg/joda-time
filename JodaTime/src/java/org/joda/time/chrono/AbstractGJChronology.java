@@ -435,6 +435,16 @@ public abstract class AbstractGJChronology extends AssembledChronology {
     }
 
     /**
+     * Gets the maximum days in the specified month.
+     * 
+     * @param month  the month
+     * @return the max days
+     */
+    final int getDaysInMonthMax(int month) {
+        return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
+    }
+
+    /**
      * Returns the total number of milliseconds elapsed in the year, by the end
      * of the month.
      */

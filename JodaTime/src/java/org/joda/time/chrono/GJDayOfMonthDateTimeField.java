@@ -55,6 +55,7 @@ package org.joda.time.chrono;
 
 import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * Provides time calculations for the day of the month component of time.
@@ -104,6 +105,18 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         int thisYear = iChronology.getYear(instant);
         int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
         return iChronology.getDaysInYearMonth(thisYear, thisMonth);
+    }
+
+    public int getMaximumValue(PartialInstant instant) {
+        if (instant.isSupported(iChronology.monthOfYear())) {
+            int month = instant.get(iChronology.monthOfYear());
+            if (instant.isSupported(iChronology.year())) {
+                int year = instant.get(iChronology.year());
+                return iChronology.getDaysInYearMonth(year, month);
+            }
+            return iChronology.getDaysInMonthMax(month);
+        }
+        return 31;
     }
 
     protected int getMaximumValueForSet(long instant, int value) {

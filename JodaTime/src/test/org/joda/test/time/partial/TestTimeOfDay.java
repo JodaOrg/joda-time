@@ -337,7 +337,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals("1970-01-01T10:20:30.040Z", result.toString());
     }
 
-    public void testProperty() {
+    public void testPropertyGet() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertSame(test.getChronology().hourOfDay(), test.hourOfDay().getField());
         assertEquals("hourOfDay", test.hourOfDay().getName());
@@ -352,6 +352,10 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(test.getChronology().days(), test.hourOfDay().getRangeDurationField());
         assertEquals(2, test.hourOfDay().getMaximumTextLength(null));
         assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
+        assertEquals(0, test.hourOfDay().getMinimumValue());
+        assertEquals(0, test.hourOfDay().getMinimumValueOverall());
+        assertEquals(23, test.hourOfDay().getMaximumValue());
+        assertEquals(23, test.hourOfDay().getMaximumValueOverall());
     }
 
     public void testPropertySet() {

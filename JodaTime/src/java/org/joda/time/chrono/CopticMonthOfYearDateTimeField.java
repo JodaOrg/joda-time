@@ -53,6 +53,7 @@
  */
 package org.joda.time.chrono;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
 
@@ -77,6 +78,18 @@ final class CopticMonthOfYearDateTimeField extends PreciseDurationDateTimeField 
 
     public int get(long instant) {
         return (iChronology.getDayOfYear(instant) - 1) / 30 + 1;
+    }
+
+    public long set(long instant, int value) {
+        instant = super.set(instant, value);
+        if (value == 13) {
+            int day = iChronology.getDayOfYear(instant);
+            if (day < 30) {
+                // Move back a few days to the end of the 13th "month".
+                instant -= (long)DateTimeConstants.MILLIS_PER_DAY * day;
+            }
+        }
+        return instant;
     }
 
     public DurationField getRangeDurationField() {

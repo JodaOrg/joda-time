@@ -334,7 +334,9 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
     /**
      * The property class for YearMonthDay.
      */
-    public static class Property extends AbstractPartialFieldProperty {
+    public static class Property extends AbstractPartialFieldProperty implements Serializable {
+
+        static final long serialVersionUID = 5727734012190224363L;
 
         /** The partial */
         private final YearMonthDay iYearMonthDay;

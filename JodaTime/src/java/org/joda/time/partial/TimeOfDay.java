@@ -422,7 +422,9 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
     /**
      * The property class for TimeOfDay.
      */
-    public static class Property extends AbstractPartialFieldProperty {
+    public static class Property extends AbstractPartialFieldProperty implements Serializable {
+
+        static final long serialVersionUID = 5598459141741063833L;
 
         /** The partial */
         private final TimeOfDay iTimeOfDay;

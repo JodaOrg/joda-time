@@ -72,13 +72,14 @@ import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.FixedDateTimeZone;
 import org.joda.time.tz.NameProvider;
 import org.joda.time.tz.Provider;
+import org.joda.time.tz.UTCProvider;
 import org.joda.time.tz.ZoneInfoProvider;
 
 /**
  * DateTimeZone represents a time zone.
  * <p>
  * A time zone is a system of rules to convert time from one geographic 
- * location to another. For example, Paris, France in one hour ahead of
+ * location to another. For example, Paris, France is one hour ahead of
  * London, England. Thus when it is 10:00 in London, it is 11:00 in Paris.
  * <p>
  * All time zone rules are expressed, for historical reasons, relative to
@@ -121,7 +122,7 @@ public abstract class DateTimeZone implements Serializable {
     
     static final long serialVersionUID = 5546345482340108586L;
 
-    /** The UTC time zone */
+    /** The time zone for Universal Coordinated Time */
     public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
 
     private static Provider cProvider;
@@ -699,19 +700,6 @@ public abstract class DateTimeZone implements Serializable {
      */
     protected Object writeReplace() throws ObjectStreamException {
         return new Stub(iID);
-    }
-
-    static class UTCProvider implements Provider {
-        public DateTimeZone getDateTimeZone(String id) {
-            if ("UTC".equals(id)) {
-                return UTC;
-            }
-            return null;
-        }
-
-        public Set getAvailableIDs() {
-            return Collections.singleton("UTC");
-        }
     }
 
     /**

@@ -41,6 +41,7 @@ New features since 0.98
 
 - Durations can be converted to intervals by end instant too
 
+- Restored formatting interfaces to provide same functionality as version 0.95
 
 Feedback
 --------

@@ -84,6 +84,8 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      * 
      * @param object  the object to convert, must not be null
      * @return the millisecond instant
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
     public long getInstantMillis(Object object) {
         return ((Long) object).longValue();
@@ -102,6 +104,8 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      * 
      * @param object  the object to convert, must not be null
      * @return the millisecond duration
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
     public long getDurationMillis(Object object) {
         return ((Long) object).longValue();
@@ -114,6 +118,8 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      * @param duration duration to get modified
      * @param object  the object to convert, must not be null
      * @return the millisecond duration
+     * @throws NullPointerException if the duration or object is null
+     * @throws ClassCastException if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setInto(ReadWritableDuration duration, Object object) {
@@ -121,11 +127,10 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
     }
 
     /**
-     * Selects a suitable duration type for the given object.
+     * Returns the millis duration type.
      *
      * @param object  the object to examine, must not be null
-     * @return the duration type, never null
-     * @throws ClassCastException if the object is invalid
+     * @return the millis duration type
      */
     public DurationType getDurationType(Object object) {
         return DurationType.getMillisType();

@@ -83,7 +83,8 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * Returns true if the given support object represents a precice
      * duration. If so, getDurationMillis can be called.
      *
-     * @throws ClassCastException if the object is invalid
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
     public boolean isPrecise(Object object) {
         return ((ReadableDuration) object).isPrecise();
@@ -94,6 +95,9 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * 
      * @param object  the object to convert, must not be null
      * @return the millisecond value
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
+     * @throws IllegalArgumentException if the object is invalid
      */
     public long getDurationMillis(Object object) {
         return ((ReadableDuration) object).getTotalMillis();
@@ -106,7 +110,9 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * @param duration duration to get modified
      * @param object  the object to convert, must not be null
      * @return the millisecond duration
-     * @throws ClassCastException if the object is invalid
+     * @throws NullPointerException if the duration or object is null
+     * @throws ClassCastException if the object is an invalid type
+     * @throws IllegalArgumentException if the object is invalid
      */
     public void setInto(ReadWritableDuration duration, Object object) {
         duration.setDuration((ReadableDuration) object);
@@ -116,8 +122,9 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * Selects a suitable duration type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @return the duration type, never null
-     * @throws ClassCastException if the object is invalid
+     * @return the duration type from the readable duration
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
     public DurationType getDurationType(Object object) {
         return ((ReadableDuration) object).getDurationType();

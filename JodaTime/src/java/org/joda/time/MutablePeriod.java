@@ -947,7 +947,7 @@ public class MutablePeriod
      * @return a clone of the this object.
      */
     public MutablePeriod copy() {
-        return (MutablePeriod)clone();
+        return (MutablePeriod) clone();
     }
 
     /**

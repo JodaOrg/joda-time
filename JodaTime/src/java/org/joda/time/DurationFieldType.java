@@ -302,33 +302,33 @@ public abstract class DurationFieldType implements Serializable {
             chronology = DateTimeUtils.getChronology(chronology);
             
             switch (iOrdinal) {
-            case ERAS:
-                return chronology.eras();
-            case CENTURIES:
-                return chronology.centuries();
-            case WEEKYEARS:
-                return chronology.weekyears();
-            case YEARS:
-                return chronology.years();
-            case MONTHS:
-                return chronology.months();
-            case WEEKS:
-                return chronology.weeks();
-            case DAYS:
-                return chronology.days();
-            case HALFDAYS:
-                return chronology.halfdays();
-            case HOURS:
-                return chronology.hours();
-            case MINUTES:
-                return chronology.minutes();
-            case SECONDS:
-                return chronology.seconds();
-            case MILLIS:
-                return chronology.millis();
-            default:
-                // Shouldn't happen.
-                throw new InternalError();
+                case ERAS:
+                    return chronology.eras();
+                case CENTURIES:
+                    return chronology.centuries();
+                case WEEKYEARS:
+                    return chronology.weekyears();
+                case YEARS:
+                    return chronology.years();
+                case MONTHS:
+                    return chronology.months();
+                case WEEKS:
+                    return chronology.weeks();
+                case DAYS:
+                    return chronology.days();
+                case HALFDAYS:
+                    return chronology.halfdays();
+                case HOURS:
+                    return chronology.hours();
+                case MINUTES:
+                    return chronology.minutes();
+                case SECONDS:
+                    return chronology.seconds();
+                case MILLIS:
+                    return chronology.millis();
+                default:
+                    // Shouldn't happen.
+                    throw new InternalError();
             }
         }
 
@@ -339,33 +339,33 @@ public abstract class DurationFieldType implements Serializable {
          */
         private Object readResolve() {
             switch (iOrdinal) {
-            case ERAS:
-                return ERAS_TYPE;
-            case CENTURIES:
-                return CENTURIES_TYPE;
-            case WEEKYEARS:
-                return WEEKYEARS_TYPE;
-            case YEARS:
-                return YEARS_TYPE;
-            case MONTHS:
-                return MONTHS_TYPE;
-            case WEEKS:
-                return WEEKS_TYPE;
-            case DAYS:
-                return DAYS_TYPE;
-            case HALFDAYS:
-                return HALFDAYS_TYPE;
-            case HOURS:
-                return HOURS_TYPE;
-            case MINUTES:
-                return MINUTES_TYPE;
-            case SECONDS:
-                return SECONDS_TYPE;
-            case MILLIS:
-                return MILLIS_TYPE;
-            default:
-                // Shouldn't happen.
-                return this;
+                case ERAS:
+                    return ERAS_TYPE;
+                case CENTURIES:
+                    return CENTURIES_TYPE;
+                case WEEKYEARS:
+                    return WEEKYEARS_TYPE;
+                case YEARS:
+                    return YEARS_TYPE;
+                case MONTHS:
+                    return MONTHS_TYPE;
+                case WEEKS:
+                    return WEEKS_TYPE;
+                case DAYS:
+                    return DAYS_TYPE;
+                case HALFDAYS:
+                    return HALFDAYS_TYPE;
+                case HOURS:
+                    return HOURS_TYPE;
+                case MINUTES:
+                    return MINUTES_TYPE;
+                case SECONDS:
+                    return SECONDS_TYPE;
+                case MILLIS:
+                    return MILLIS_TYPE;
+                default:
+                    // Shouldn't happen.
+                    return this;
             }
         }
 

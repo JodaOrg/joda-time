@@ -65,6 +65,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
@@ -231,7 +232,8 @@ public abstract class DateTimeZone implements Serializable {
             return zone;
         }
         if (id.startsWith("+") || id.startsWith("-")) {
-            int offset = -(int) offsetFormatter().parseMillis(id);
+            // Pass in explicit chronology since default time zone may not yet be initialized.
+            int offset = -(int) offsetFormatter().parseMillis(id, ISOChronology.getInstance(UTC));
             if (offset == 0L) {
                 return DateTimeZone.UTC;
             } else {
@@ -332,7 +334,9 @@ public abstract class DateTimeZone implements Serializable {
             convId = zone.getDisplayName();
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
-                int offset = -(int) offsetFormatter().parseMillis(convId);
+                // Pass in explicit chronology since default time zone may not yet be initialized.
+                int offset = -(int) offsetFormatter().parseMillis
+                    (convId, ISOChronology.getInstance(UTC));
                 if (offset == 0L) {
                     return DateTimeZone.UTC;
                 } else {

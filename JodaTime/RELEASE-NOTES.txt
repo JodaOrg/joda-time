@@ -22,6 +22,8 @@ Bug fixes since 0.98
 
 - Fixed parsing of fractional seconds in Periods
 
+- Default time zone based on offset was being interpreted as UTC
+
 New features since 0.98
 -----------------------
 

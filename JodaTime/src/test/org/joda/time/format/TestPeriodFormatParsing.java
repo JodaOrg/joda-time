@@ -90,8 +90,8 @@ public class TestPeriodFormatParsing extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testParseStandard1() {
-        PeriodParser parser = PeriodFormat.getInstance().getDefault();
-        Period p = parser.parsePeriod(PeriodType.standard(), "6 years, 3 months and 2 days");
+        PeriodFormatter parser = PeriodFormat.getInstance().getDefault();
+        Period p = parser.parsePeriod("6 years, 3 months and 2 days");
         assertEquals(new Period(6, 3, 0, 2, 0, 0, 0, 0), p);
     }
 

@@ -17,13 +17,23 @@ package org.joda.time.format;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Locale;
 
 import org.joda.time.ReadablePeriod;
 
 /**
- * Defines an interface for creating textual representations of time periods.
+ * Internal interface for printing textual representations of time periods.
+ * <p>
+ * Application users will rarely use this class directly. Instead, you
+ * will use one of the factory classes to create a {@link PeriodFormatter}.
+ * <p>
+ * The factory classes are:<br />
+ * - {@link PeriodFormatterBuilder}<br />
+ * - {@link PeriodFormat}<br />
+ * - {@link ISOPeriodFormat}<br />
  *
  * @author Brian S O'Neill
+ * @author Stephen Colebourne
  * @since 1.0
  * @see PeriodFormatter
  * @see PeriodFormatterBuilder
@@ -35,28 +45,21 @@ public interface PeriodPrinter {
      * Returns the exact number of characters produced for the given period.
      * 
      * @param period  the period to use
+     * @param locale  the locale to use
      * @return the estimated length
      */
-    int calculatePrintedLength(ReadablePeriod period);
+    int calculatePrintedLength(ReadablePeriod period, Locale iLocale);
 
     /**
      * Returns the amount of fields from the given period that this printer
      * will print.
      * 
      * @param period  the period to use
+     * @param stopAt stop counting at this value, enter a number &ge; 256 to count all
+     * @param locale  the locale to use
      * @return amount of fields printed
      */
-    int countFieldsToPrint(ReadablePeriod period);
-
-    /**
-     * Returns the amount of fields from the given period that this printer
-     * will print.
-     * 
-     * @param period  the period to use
-     * @param stopAt stop counting at this value
-     * @return amount of fields printed
-     */
-    int countFieldsToPrint(ReadablePeriod period, int stopAt);
+    int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale iLocale);
 
     //-----------------------------------------------------------------------
     /**
@@ -64,23 +67,17 @@ public interface PeriodPrinter {
      *
      * @param buf  the formatted period is appended to this buffer
      * @param period  the period to format
+     * @param locale  the locale to use
      */
-    void printTo(StringBuffer buf, ReadablePeriod period);
+    void printTo(StringBuffer buf, ReadablePeriod period, Locale iLocale);
 
     /**
      * Prints a ReadablePeriod to a Writer.
      *
      * @param out  the formatted period is written out
      * @param period  the period to format
+     * @param locale  the locale to use
      */
-    void printTo(Writer out, ReadablePeriod period) throws IOException;
-
-    /**
-     * Prints a ReadablePeriod to a new String.
-     *
-     * @param period  the period to format
-     * @return the printed result
-     */
-    String print(ReadablePeriod period);
+    void printTo(Writer out, ReadablePeriod period, Locale iLocale) throws IOException;
 
 }

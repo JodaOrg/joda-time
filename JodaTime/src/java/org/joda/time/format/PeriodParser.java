@@ -15,15 +15,23 @@
  */
 package org.joda.time.format;
 
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.MutablePeriod;
+import java.util.Locale;
+
 import org.joda.time.ReadWritablePeriod;
 
 /**
- * Defines an interface for parsing textual representations of time periods.
+ * Internal interface for parsing textual representations of time periods.
+ * <p>
+ * Application users will rarely use this class directly. Instead, you
+ * will use one of the factory classes to create a {@link PeriodFormatter}.
+ * <p>
+ * The factory classes are:<br />
+ * - {@link PeriodFormatterBuilder}<br />
+ * - {@link PeriodFormat}<br />
+ * - {@link ISOPeriodFormat}<br />
  *
  * @author Brian S O'Neill
+ * @author Stephen Colebourne
  * @since 1.0
  * @see PeriodFormatter
  * @see PeriodFormatterBuilder
@@ -44,30 +52,11 @@ public interface PeriodParser {
      * @param period  a period that will be modified
      * @param periodStr  text to parse
      * @param position position to start parsing from
+     * @param locale  the locale to use for parsing
      * @return new position, if negative, parse failed. Apply complement
      * operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
-    int parseInto(ReadWritablePeriod period, String periodStr, int position);
-
-    /**
-     * Parses a period from the given text, returning a new Period.
-     *
-     * @param type  defines which fields may be parsed
-     * @param periodStr  text to parse
-     * @return parsed value in a Period object
-     * @throws IllegalArgumentException if any field is out of range
-     */
-    Period parsePeriod(PeriodType type, String periodStr);
-
-    /**
-     * Parses a period from the given text, returning a new MutablePeriod.
-     *
-     * @param type  defines which fields may be parsed
-     * @param periodStr  text to parse
-     * @return parsed value in a MutablePeriod object
-     * @throws IllegalArgumentException if any field is out of range
-     */
-    MutablePeriod parseMutablePeriod(PeriodType type, String periodStr);
+    int parseInto(ReadWritablePeriod period, String periodStr, int position, Locale locale);
 
 }

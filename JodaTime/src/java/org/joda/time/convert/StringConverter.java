@@ -25,7 +25,6 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodParser;
 
 /**
  * StringConverter converts from a String to an instant, partial,
@@ -131,13 +130,13 @@ class StringConverter extends AbstractConverter
      */
     public void setInto(ReadWritablePeriod period, Object object, Chronology chrono) {
         String str = (String) object;
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
         period.clear();
         int pos = parser.parseInto(period, str, 0);
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutablePeriod(period.getPeriodType(), str);
+                parser.withParseType(period.getPeriodType()).parseMutablePeriod(str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
@@ -178,7 +177,7 @@ class StringConverter extends AbstractConverter
         // before slash
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
-            period = periodParser.parsePeriod(getPeriodType(leftStr), leftStr);
+            period = periodParser.withParseType(getPeriodType(leftStr)).parsePeriod(leftStr);
         } else {
             DateTime start = dateTimeParser.parseDateTime(leftStr);
             startInstant = start.getMillis();
@@ -191,7 +190,7 @@ class StringConverter extends AbstractConverter
             if (period != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            period = periodParser.parsePeriod(getPeriodType(rightStr), rightStr);
+            period = periodParser.withParseType(getPeriodType(rightStr)).parsePeriod(rightStr);
             chrono = (chrono != null ? chrono : parsedChrono);
             endInstant = chrono.add(period, startInstant, 1);
         } else {

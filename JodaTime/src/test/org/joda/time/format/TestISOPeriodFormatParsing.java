@@ -90,113 +90,113 @@ public class TestISOPeriodFormatParsing extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testParseStandard1() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P1Y2M3W4DT5H6M7.008S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P1Y2M3W4DT5H6M7.008S");
         assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 8), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard2() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P0Y0M0W0DT5H6M7.008S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P0Y0M0W0DT5H6M7.008S");
         assertEquals(new Period(0, 0, 0, 0, 5, 6, 7, 8), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard3() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P0DT5H6M7.008S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P0DT5H6M7.008S");
         assertEquals(new Period(0, 0, 0, 0, 5, 6, 7, 8), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard4() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P2Y3DT5H6M7.008S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P2Y3DT5H6M7.008S");
         assertEquals(new Period(2, 0, 0, 3, 5, 6, 7, 8), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard5() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P2YT5H6M7.008S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P2YT5H6M7.008S");
         assertEquals(new Period(2, 0, 0, 0, 5, 6, 7, 8), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard6() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "PT5H6M7.008S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("PT5H6M7.008S");
         assertEquals(new Period(0, 0, 0, 0, 5, 6, 7, 8), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard7() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P1Y2M3W4D");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P1Y2M3W4D");
         assertEquals(new Period(1, 2, 3, 4, 0, 0, 0, 0), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard8() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "PT5H6M7S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("PT5H6M7S");
         assertEquals(new Period(0, 0, 0, 0, 5, 6, 7, 0), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard9() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "PT0S");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("PT0S");
         assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 0), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard10() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P0D");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P0D");
         assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 0), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandard11() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        Period p = parser.parsePeriod(PeriodType.standard(), "P0Y");
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        Period p = parser.parsePeriod("P0Y");
         assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 0), p);
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandardFail1() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
         try {
-            parser.parsePeriod(PeriodType.standard(), "P1Y2S");
+            parser.parsePeriod("P1Y2S");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandardFail2() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
         try {
-            parser.parsePeriod(PeriodType.standard(), "PS");
+            parser.parsePeriod("PS");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandardFail3() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
         try {
-            parser.parsePeriod(PeriodType.standard(), "PTS");
+            parser.parsePeriod("PTS");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
     public void testParseStandardFail4() {
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
         try {
-            parser.parsePeriod(PeriodType.standard(), "PXS");
+            parser.parsePeriod("PXS");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

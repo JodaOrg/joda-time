@@ -53,7 +53,6 @@
  */
 package org.joda.time.format;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -76,7 +75,11 @@ public class DateTimeParserBucket {
     DateTimeZone iZone;
     int iOffset;
 
-    ArrayList iSavedFields = new ArrayList();
+    SavedField[] iSavedFields = new SavedField[8];
+    int iSavedFieldsCount;
+    boolean iSavedFieldsShared;
+
+    private Object iSavedState;
 
     /**
      * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
@@ -100,6 +103,7 @@ public class DateTimeParserBucket {
      * @param zone the date time zone to operate in, or null if UTC
      */
     public void setDateTimeZone(DateTimeZone zone) {
+        iSavedState = null;
         iZone = zone == DateTimeZone.UTC ? null : zone;
         iOffset = 0;
     }
@@ -117,6 +121,7 @@ public class DateTimeParserBucket {
      * overrides the time zone.
      */
     public void setOffset(int offset) {
+        iSavedState = null;
         iOffset = offset;
         iZone = null;
     }
@@ -125,14 +130,33 @@ public class DateTimeParserBucket {
      * Saves a datetime field value.
      */
     public void saveField(DateTimeField field, int value) {
-        iSavedFields.add(new SavedField(field, value));
+        saveField(new SavedField(field, value));
     }
 
     /**
      * Saves a datetime field text value.
      */
     public void saveField(DateTimeField field, String text, Locale locale) {
-        iSavedFields.add(new SavedField(field, text, locale));
+        saveField(new SavedField(field, text, locale));
+    }
+
+    private void saveField(SavedField field) {
+        SavedField[] savedFields = iSavedFields;
+        int savedFieldsCount = iSavedFieldsCount;
+
+        if (savedFieldsCount == savedFields.length) {
+            SavedField[] newArray = new SavedField[savedFieldsCount * 2];
+            System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);
+            iSavedFields = savedFields = newArray;
+            iSavedFieldsShared = false;
+        } else if (iSavedFieldsShared) {
+            iSavedFields = savedFields = (SavedField[])savedFields.clone();
+            iSavedFieldsShared = false;
+        }
+
+        iSavedState = null;
+        savedFields[savedFieldsCount] = field;
+        iSavedFieldsCount = savedFieldsCount + 1;
     }
 
     /**
@@ -143,9 +167,10 @@ public class DateTimeParserBucket {
      * @return opaque saved state, which may be passed to undoChanges
      */
     public Object saveState() {
-        Object state = new SavedState();
-        iSavedFields = (ArrayList)iSavedFields.clone();
-        return state;
+        if (iSavedState == null) {
+            iSavedState = new SavedState();
+        }
+        return iSavedState;
     }
 
     /**
@@ -161,27 +186,28 @@ public class DateTimeParserBucket {
      */
     public boolean undoChanges(Object savedState) {
         if (savedState instanceof SavedState) {
-            return ((SavedState)savedState).revertState(this);
+            if (((SavedState)savedState).revertState(this)) {
+                iSavedState = savedState;
+                return true;
+            }
         }
         return false;
     }
 
     /**
-     * Computes the parsed datetime by setting the saved fields.
-     * Calling this method does not affect the state of this object.
+     * Computes the parsed datetime by setting the saved fields. This method is
+     * idempotent, but it is not thread-safe.
      *
      * @return milliseconds since 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if any field is out of range
      */
     public long computeMillis() {
-        int length = iSavedFields.size();
-        SavedField[] savedFields = new SavedField[length];
-        iSavedFields.toArray(savedFields);
-
-        Arrays.sort(savedFields);
+        SavedField[] savedFields = iSavedFields;
+        int count = iSavedFieldsCount;
+        Arrays.sort(savedFields, 0, count);
 
         long millis = iMillis;
-        for (int i=0; i<length; i++) {
+        for (int i=0; i<count; i++) {
             millis = savedFields[i].set(millis);
         }
 
@@ -263,12 +289,15 @@ public class DateTimeParserBucket {
     private class SavedState {
         final DateTimeZone iZone;
         final int iOffset;
-        final ArrayList iSavedFields;
+        final SavedField[] iSavedFields;
+        final int iSavedFieldsCount;
 
         SavedState() {
             this.iZone = DateTimeParserBucket.this.iZone;
             this.iOffset = DateTimeParserBucket.this.iOffset;
             this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
+            this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
+            DateTimeParserBucket.this.iSavedFieldsShared = true;
         }
 
         boolean revertState(DateTimeParserBucket enclosing) {
@@ -278,6 +307,8 @@ public class DateTimeParserBucket {
             DateTimeParserBucket.this.iZone = this.iZone;
             DateTimeParserBucket.this.iOffset = this.iOffset;
             DateTimeParserBucket.this.iSavedFields = this.iSavedFields;
+            DateTimeParserBucket.this.iSavedFieldsCount = this.iSavedFieldsCount;
+            DateTimeParserBucket.this.iSavedFieldsShared = true;
             return true;
         }
     }

@@ -9,11 +9,11 @@
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
-    <logo>/joda.png</logo>
+    <logo>/images/joda.png</logo>
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>org.joda.time.*</package>
-  <logo>/jodatime.png</logo>
+  <logo>/images/jodatime.png</logo>
 
   <description>
     Date and time library to replace JDK date handling.

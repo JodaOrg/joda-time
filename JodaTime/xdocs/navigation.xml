@@ -34,7 +34,7 @@
     </menu>
     
     <menu name="Development">
-      <item name="Sourceforge" href="http://sourceforge.net/projects/Joda-Time/"/>
+      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
       <item name="Test results" href="/junit-report.html"/>
       <!--item name="Test coverage" href="/clover/index.html"/-->
       <item name="Test coverage" href="/jcoverage/index.html"/>

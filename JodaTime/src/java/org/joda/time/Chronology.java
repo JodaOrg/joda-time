@@ -169,12 +169,13 @@ public interface Chronology {
         throws IllegalArgumentException;
 
     /**
-     * Validates whether the fields stored in a partial instant are valid.
+     * Validates whether the values are valid for the fields of a partial instant.
      *
      * @param instant  the partial instant to validate
+     * @param values  the values to validate, not null, match fields in partial
      * @throws IllegalArgumentException if the instant is invalid
      */
-    void validate(ReadablePartial instant);
+    void validate(ReadablePartial instant, int[] values);
 
     // Millis
     //-----------------------------------------------------------------------

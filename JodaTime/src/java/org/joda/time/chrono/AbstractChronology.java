@@ -200,15 +200,17 @@ public abstract class AbstractChronology implements Chronology, Serializable {
     /**
      * Validates whether the fields stored in a partial instant are valid.
      * <p>
-     * This implementation uses {@link DateTimeField#getMinimumValue()} and
-     * {@link DateTimeField#getMaximumValue()}.
+     * This implementation uses {@link DateTimeField#getMinimumValue(ReadablePartial, int[])}
+     * and {@link DateTimeField#getMaximumValue(ReadablePartial, int[])}.
      *
      * @param instant  the partial instant to validate
+     * @param values  the values to validate, not null
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public void validate(ReadablePartial instant) {
+    public void validate(ReadablePartial instant, int[] values) {
         DateTimeField[] fields = instant.getFields();
-        int[] values = instant.getValues();
+        // check values in standard range, catching really stupid cases like -1
+        // this means that the second check will not hit trouble
         for (int i = 0; i < fields.length; i++) {
             if (values[i] < fields[i].getMinimumValue()) {
                 throw new IllegalArgumentException("Value " + values[i] +
@@ -219,12 +221,13 @@ public abstract class AbstractChronology implements Chronology, Serializable {
                         " for " + fields[i].getName() + " is greater than maximum");
             }
         }
+        // check values in specific range, catching really cases like 30th Feb
         for (int i = 0; i < fields.length; i++) {
-            if (values[i] < fields[i].getMinimumValue(instant)) {
+            if (values[i] < fields[i].getMinimumValue(instant, values)) {
                 throw new IllegalArgumentException("Value " + values[i] +
                         " for " + fields[i].getName() + " is less than minimum");
             }
-            if (values[i] > fields[i].getMaximumValue(instant)) {
+            if (values[i] > fields[i].getMaximumValue(instant, values)) {
                 throw new IllegalArgumentException("Value " + values[i] +
                         " for " + fields[i].getName() + " is greater than maximum");
             }

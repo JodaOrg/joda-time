@@ -54,42 +54,42 @@
 package org.joda.time.format;
 
 /**
- * ISOTimePeriodFormat provides factory methods for the ISO8601 standard.
+ * ISOPeriodFormat provides factory methods for the ISO8601 standard.
  * <p>
- * ISOTimePeriodFormat is thread-safe and immutable, and the formatters it
+ * ISOPeriodFormat is thread-safe and immutable, and the formatters it
  * returns are as well.
  *
  * @author Brian S O'Neill
- * @see TimePeriodFormat
- * @see TimePeriodFormatterBuilder
+ * @see PeriodFormat
+ * @see PeriodFormatterBuilder
  */
-public class ISOTimePeriodFormat {
-    private static final ISOTimePeriodFormat INSTANCE = new ISOTimePeriodFormat();
+public class ISOPeriodFormat {
+    private static final ISOPeriodFormat INSTANCE = new ISOPeriodFormat();
 
     /**
-     * Returns a singleton instance of ISOTimePeriodFormat.
+     * Returns a singleton instance of ISOPeriodFormat.
      */
-    public static ISOTimePeriodFormat getInstance() {
+    public static ISOPeriodFormat getInstance() {
         return INSTANCE;
     }
 
-    private transient TimePeriodFormatter
+    private transient PeriodFormatter
         iStandard,
         iAlternate,
         iAlternateExtended,
         iAlternateWithWeeks,
         iAlternateExtendedWihWeeks;
 
-    private ISOTimePeriodFormat() {
+    private ISOPeriodFormat() {
     }
 
     /**
      * The standard ISO format - PyYmMwWdDThHmMsS.
      * Milliseconds are not output.
      */
-    public TimePeriodFormatter standard() {
+    public PeriodFormatter standard() {
         if (iStandard == null) {
-            iStandard = new TimePeriodFormatterBuilder()
+            iStandard = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroRarely()
                 .appendYears()
@@ -115,9 +115,9 @@ public class ISOTimePeriodFormat {
     /**
      * PyyyymmddThhmmss
      */
-    public TimePeriodFormatter alternate() {
+    public PeriodFormatter alternate() {
         if (iAlternate == null) {
-            iAlternate = new TimePeriodFormatterBuilder()
+            iAlternate = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -137,9 +137,9 @@ public class ISOTimePeriodFormat {
     /**
      * Pyyyy-mm-ddThh:mm:ss
      */
-    public TimePeriodFormatter alternateExtended() {
+    public PeriodFormatter alternateExtended() {
         if (iAlternateExtended == null) {
-            iAlternateExtended = new TimePeriodFormatterBuilder()
+            iAlternateExtended = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -163,9 +163,9 @@ public class ISOTimePeriodFormat {
     /**
      * PyyyyWwwddThhmmss
      */
-    public TimePeriodFormatter alternateWithWeeks() {
+    public PeriodFormatter alternateWithWeeks() {
         if (iAlternateWithWeeks == null) {
-            iAlternateWithWeeks = new TimePeriodFormatterBuilder()
+            iAlternateWithWeeks = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -186,9 +186,9 @@ public class ISOTimePeriodFormat {
     /**
      * Pyyyy-Www-ddThh:mm:ss
      */
-    public TimePeriodFormatter alternateExtendedWithWeeks() {
+    public PeriodFormatter alternateExtendedWithWeeks() {
         if (iAlternateExtendedWihWeeks == null) {
-            iAlternateExtendedWihWeeks = new TimePeriodFormatterBuilder()
+            iAlternateExtendedWihWeeks = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)

@@ -53,60 +53,59 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.Period;
 import org.joda.time.PeriodType;
-import org.joda.time.MutableTimePeriod;
-import org.joda.time.ReadableTimePeriod;
-import org.joda.time.TimePeriod;
+import org.joda.time.MutablePeriod;
+import org.joda.time.ReadWritablePeriod;
 
 /**
- * Abstract base class for implementing {@link TimePeriodPrinter}s,
- * {@link TimePeriodParser}s, and {@link TimePeriodFormatter}s. This class
- * intentionally does not implement any of those interfaces. You can subclass
- * and implement only the interfaces that you need to.
- * <p>
- * The print methods assume that your subclass has implemented TimePeriodPrinter or
- * TimePeriodFormatter. If not, a ClassCastException is thrown when calling those
- * methods.
- * <p>
- * Likewise, the parse methods assume that your subclass has implemented
- * TimePeriodParser or TimePeriodFormatter. If not, a ClassCastException is thrown
- * when calling the parse methods.
- * 
+ * Defines an interface for parsing textual representations of time periods.
+ *
  * @author Brian S O'Neill
+ * @see PeriodFormatter
+ * @see PeriodFormatterBuilder
+ * @see PeriodFormat
  * @since 1.0
  */
-public abstract class AbstractTimePeriodFormatter {
-    
-    public int countFieldsToPrint(ReadableTimePeriod period) {
-        return ((TimePeriodPrinter) this).countFieldsToPrint(period, Integer.MAX_VALUE);
-    }
+public interface PeriodParser {
 
-    public String print(ReadableTimePeriod period) {
-        TimePeriodPrinter p = (TimePeriodPrinter) this;
-        StringBuffer buf = new StringBuffer(p.calculatePrintedLength(period));
-        p.printTo(buf, period);
-        return buf.toString();
-    }
+    /**
+     * Parses a period from the given text, at the given position, saving the
+     * result into the fields of the given ReadWritableDuration. If the parse
+     * succeeds, the return value is the new text position. Note that the parse
+     * may succeed without fully reading the text.
+     * <p>
+     * If it fails, the return value is negative, but the period may still be
+     * modified. To determine the position where the parse failed, apply the
+     * one's complement operator (~) on the return value.
+     *
+     * @param period  a period that will be modified
+     * @param periodStr  text to parse
+     * @param position position to start parsing from
+     * @return new position, if negative, parse failed. Apply complement
+     * operator (~) to get position of failure
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    int parseInto(ReadWritablePeriod period, String periodStr, int position);
 
-    public TimePeriod parseTimePeriod(PeriodType type, String text) {
-        return parseMutableTimePeriod(type, text).toTimePeriod();
-    }
+    /**
+     * Parses a period from the given text, returning a new Period.
+     *
+     * @param type  defines which fields may be parsed
+     * @param periodStr  text to parse
+     * @return parsed value in a Duration object
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    Period parsePeriod(PeriodType type, String periodStr);
 
-    public MutableTimePeriod parseMutableTimePeriod(PeriodType type, String text) {
-        TimePeriodParser p = (TimePeriodParser) this;
-        MutableTimePeriod period = new MutableTimePeriod(0, type);
-
-        int newPos = p.parseInto(period, text, 0);
-        if (newPos >= 0) {
-            if (newPos >= text.length()) {
-                return period;
-            }
-        } else {
-            newPos = ~newPos;
-        }
-
-        throw new IllegalArgumentException(
-            AbstractDateTimeFormatter.createErrorMessage(text, newPos));
-    }
+    /**
+     * Parses a period from the given text, returning a new MutablePeriod.
+     *
+     * @param type  defines which fields may be parsed
+     * @param periodStr  text to parse
+     * @return parsed value in a MutableDuration object
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    MutablePeriod parseMutablePeriod(PeriodType type, String periodStr);
 
 }

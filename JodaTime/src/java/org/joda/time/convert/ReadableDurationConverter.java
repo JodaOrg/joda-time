@@ -54,7 +54,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.PeriodType;
-import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadableDuration;
 
 /**
@@ -65,7 +65,7 @@ import org.joda.time.ReadableDuration;
  * @since 1.0
  */
 class ReadableDurationConverter extends AbstractConverter
-        implements DurationConverter, TimePeriodConverter {
+        implements DurationConverter, PeriodConverter {
 
     /**
      * Singleton instance.
@@ -105,8 +105,8 @@ class ReadableDurationConverter extends AbstractConverter
      * @throws ClassCastException if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
-    public void setInto(ReadWritableTimePeriod duration, Object object) {
-        duration.setTimePeriod((ReadableDuration) object);
+    public void setInto(ReadWritablePeriod duration, Object object) {
+        duration.setPeriod((ReadableDuration) object);
     }
 
     /**

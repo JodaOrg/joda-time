@@ -60,7 +60,7 @@ import java.io.Serializable;
  * <p>
  * A duration is defined by a fixed number of milliseconds.
  * There is no concept of fields, such as days or seconds, as these fields can vary in length.
- * A duration may be converted to a {@link TimePeriod} to obtain field values.
+ * A duration may be converted to a {@link Period} to obtain field values.
  * This conversion will typically cause a loss of precision however.
  * <p>
  * Duration is thread-safe and immutable.

@@ -222,7 +222,7 @@ public interface ReadableInterval {
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
-    TimePeriod toTimePeriod();
+    Period toPeriod();
 
     /**
      * Converts the duration of the interval to a time period using the
@@ -236,7 +236,7 @@ public interface ReadableInterval {
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
-    TimePeriod toTimePeriod(PeriodType type);
+    Period toPeriod(PeriodType type);
 
     //-----------------------------------------------------------------------
     /**

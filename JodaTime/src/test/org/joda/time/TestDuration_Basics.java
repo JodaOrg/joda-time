@@ -194,7 +194,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(false, test1.equals(new TimePeriod(123L, PeriodType.getDayHourType())));
     }
     
-    class MockDuration extends AbstractTimePeriod {
+    class MockDuration extends AbstractPeriod {
         public MockDuration(long value) {
             super(value, null);
         }
@@ -565,7 +565,7 @@ public class TestDuration_Basics extends TestCase {
 
     public void testToMutableTimePeriod() {
         TimePeriod test = new TimePeriod(123L);
-        MutableTimePeriod result = test.toMutableTimePeriod();
+        MutablePeriod result = test.toMutableTimePeriod();
         assertEquals(test, result);
     }
 

@@ -60,7 +60,7 @@ package org.joda.time;
  * interface only gives access to retrieve data, never to change it.
  *
  * @see ReadableInterval
- * @see ReadableTimePeriod
+ * @see ReadablePeriod
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
@@ -86,7 +86,7 @@ public interface ReadableDuration extends Comparable {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this duration to a TimePeriod instance using the All type.
+     * Converts this duration to a Period instance using the All type.
      * <p>
      * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
@@ -106,12 +106,12 @@ public interface ReadableDuration extends Comparable {
      * For more control over the conversion process, you should convert the duration
      * to an interval by referencing a fixed instant and then obtain the period.
      * 
-     * @return a TimePeriod created using the millisecond duration from this instance
+     * @return a Period created using the millisecond duration from this instance
      */
-    TimePeriod toTimePeriod();
+    Period toPeriod();
 
     /**
-     * Converts this duration to a TimePeriod instance specifying a period type
+     * Converts this duration to a Period instance specifying a period type
      * to control how the duration is split into fields.
      * <p>
      * The exact impact of this method is determined by the period type.
@@ -136,9 +136,9 @@ public interface ReadableDuration extends Comparable {
      * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param type  the period type determining how to split the duration into fields
-     * @return a TimePeriod created using the millisecond duration from this instance
+     * @return a Period created using the millisecond duration from this instance
      */
-    TimePeriod toTimePeriod(PeriodType type);
+    Period toPeriod(PeriodType type);
 
     //-----------------------------------------------------------------------
     /**

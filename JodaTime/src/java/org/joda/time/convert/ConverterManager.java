@@ -88,7 +88,7 @@ import org.joda.time.JodaTimePermission;
  *
  * The default time period converters are:
  * <ul>
- * <li>ReadableTimePeriod
+ * <li>ReadablePeriod
  * <li>ReadableInterval
  * <li>String
  * <li>null (zero)
@@ -120,7 +120,7 @@ public final class ConverterManager {
     
     private ConverterSet iInstantConverters;
     private ConverterSet iDurationConverters;
-    private ConverterSet iTimePeriodConverters;
+    private ConverterSet iPeriodConverters;
     private ConverterSet iIntervalConverters;
     
     /**
@@ -140,16 +140,16 @@ public final class ConverterManager {
 
         iDurationConverters = new ConverterSet(new Converter[] {
             ReadableDurationConverter.INSTANCE,
-            ReadableTimePeriodConverter.INSTANCE,
+            ReadablePeriodConverter.INSTANCE,
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
             LongConverter.INSTANCE,
             NullConverter.INSTANCE,
         });
 
-        iTimePeriodConverters = new ConverterSet(new Converter[] {
+        iPeriodConverters = new ConverterSet(new Converter[] {
             ReadableDurationConverter.INSTANCE,
-            ReadableTimePeriodConverter.INSTANCE,
+            ReadablePeriodConverter.INSTANCE,
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
             NullConverter.INSTANCE,
@@ -345,9 +345,9 @@ public final class ConverterManager {
      * @throws IllegalStateException if multiple converters match the type
      * equally well
      */
-    public TimePeriodConverter getTimePeriodConverter(Object object) {
-        TimePeriodConverter converter =
-            (TimePeriodConverter)iTimePeriodConverters.select(object == null ? null : object.getClass());
+    public PeriodConverter getPeriodConverter(Object object) {
+        PeriodConverter converter =
+            (PeriodConverter)iPeriodConverters.select(object == null ? null : object.getClass());
         if (converter != null) {
             return converter;
         }
@@ -361,9 +361,9 @@ public final class ConverterManager {
      * 
      * @return the converters, a copy of the real data, never null
      */
-    public TimePeriodConverter[] getTimePeriodConverters() {
-        ConverterSet set = iTimePeriodConverters;
-        TimePeriodConverter[] converters = new TimePeriodConverter[set.size()];
+    public PeriodConverter[] getPeriodConverters() {
+        ConverterSet set = iPeriodConverters;
+        PeriodConverter[] converters = new PeriodConverter[set.size()];
         set.copyInto(converters);
         return converters;
     }
@@ -379,15 +379,15 @@ public final class ConverterManager {
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
      */
-    public TimePeriodConverter addTimePeriodConverter(TimePeriodConverter converter)
+    public PeriodConverter addPeriodConverter(PeriodConverter converter)
             throws SecurityException {
         
-        checkAlterTimePeriodConverters();
+        checkAlterPeriodConverters();
         if (converter == null) {
             return null;
         }
-        TimePeriodConverter[] removed = new TimePeriodConverter[1];
-        iTimePeriodConverters = iTimePeriodConverters.add(converter, removed);
+        PeriodConverter[] removed = new PeriodConverter[1];
+        iPeriodConverters = iPeriodConverters.add(converter, removed);
         return removed[0];
     }
     
@@ -398,15 +398,15 @@ public final class ConverterManager {
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
      */
-    public TimePeriodConverter removeTimePeriodConverter(TimePeriodConverter converter)
+    public PeriodConverter removePeriodConverter(PeriodConverter converter)
             throws SecurityException {
         
-        checkAlterTimePeriodConverters();
+        checkAlterPeriodConverters();
         if (converter == null) {
             return null;
         }
-        TimePeriodConverter[] removed = new TimePeriodConverter[1];
-        iTimePeriodConverters = iTimePeriodConverters.remove(converter, removed);
+        PeriodConverter[] removed = new PeriodConverter[1];
+        iPeriodConverters = iPeriodConverters.remove(converter, removed);
         return removed[0];
     }
     
@@ -415,10 +415,10 @@ public final class ConverterManager {
      * 
      * @throws SecurityException if the user does not have the permission
      */
-    private void checkAlterTimePeriodConverters() throws SecurityException {
+    private void checkAlterPeriodConverters() throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterTimePeriodConverters"));
+            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPeriodConverters"));
         }
     }
 
@@ -517,7 +517,7 @@ public final class ConverterManager {
         return "ConverterManager[" +
             iInstantConverters.size() + " instant," +
             iDurationConverters.size() + " duration," +
-            iTimePeriodConverters.size() + " period," +
+            iPeriodConverters.size() + " period," +
             iIntervalConverters.size() + " interval]";
     }
 

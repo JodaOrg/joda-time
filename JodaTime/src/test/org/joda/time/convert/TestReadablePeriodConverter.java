@@ -63,14 +63,14 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
-import org.joda.time.MutableTimePeriod;
-import org.joda.time.ReadableTimePeriod;
-import org.joda.time.TimePeriod;
+import org.joda.time.MutablePeriod;
+import org.joda.time.ReadablePeriod;
+import org.joda.time.Period;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
 /**
- * This class is a Junit unit test for ReadableTimePeriodConverter.
+ * This class is a Junit unit test for ReadablePeriodConverter.
  *
  * @author Stephen Colebourne
  */
@@ -98,7 +98,7 @@ public class TestReadablePeriodConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSingleton() throws Exception {
-        Class cls = ReadableTimePeriodConverter.class;
+        Class cls = ReadablePeriodConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
         assertEquals(false, Modifier.isPrivate(cls.getModifiers()));
@@ -115,29 +115,29 @@ public class TestReadablePeriodConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {
-        assertEquals(ReadableTimePeriod.class, ReadableTimePeriodConverter.INSTANCE.getSupportedType());
+        assertEquals(ReadablePeriod.class, ReadablePeriodConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
-    public void testGetTimePeriodMillis_Object() throws Exception {
-        assertEquals(123L, ReadableTimePeriodConverter.INSTANCE.getDurationMillis(new TimePeriod(123L)));
+    public void testGetPeriodMillis_Object() throws Exception {
+        assertEquals(123L, ReadablePeriodConverter.INSTANCE.getDurationMillis(new Period(123L)));
     }
 
     //-----------------------------------------------------------------------
     public void testGetPeriodType_Object() throws Exception {
         assertEquals(PeriodType.getAllType(),
-            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L), false));
+            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L), false));
         assertEquals(PeriodType.getPreciseAllType(),
-            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L), true));
+            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L), true));
         assertEquals(PeriodType.getPreciseAllType(),
-            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L, PeriodType.getAllType()), true));
+            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.getAllType()), true));
         assertEquals(PeriodType.getPreciseYearDayType(),
-            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L, PeriodType.getPreciseYearDayType()), true));
+            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.getPreciseYearDayType()), true));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getYearMonthType());
-        ReadableTimePeriodConverter.INSTANCE.setInto(m, new TimePeriod(0, 0, 0, 3, 0, 4, 0, 5));
+        MutablePeriod m = new MutablePeriod(PeriodType.getYearMonthType());
+        ReadablePeriodConverter.INSTANCE.setInto(m, new Period(0, 0, 0, 3, 0, 4, 0, 5));
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());
@@ -150,7 +150,7 @@ public class TestReadablePeriodConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("Converter[org.joda.time.ReadableTimePeriod]", ReadableTimePeriodConverter.INSTANCE.toString());
+        assertEquals("Converter[org.joda.time.ReadablePeriod]", ReadablePeriodConverter.INSTANCE.toString());
     }
 
 }

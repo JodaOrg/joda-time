@@ -137,7 +137,7 @@ public class Interval
      * @param period  the period of this interval, null means zero length
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public Interval(ReadableInstant start, ReadableTimePeriod period) {
+    public Interval(ReadableInstant start, ReadablePeriod period) {
         super(start, period);
     }
 
@@ -151,7 +151,7 @@ public class Interval
      * @param end  end of this interval, null means now
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public Interval(ReadableTimePeriod period, ReadableInstant end) {
+    public Interval(ReadablePeriod period, ReadableInstant end) {
         super(period, end);
     }
 

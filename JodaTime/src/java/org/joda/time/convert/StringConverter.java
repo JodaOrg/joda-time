@@ -56,16 +56,16 @@ package org.joda.time.convert;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
-import org.joda.time.MutableTimePeriod;
+import org.joda.time.MutablePeriod;
 import org.joda.time.ReadWritableInterval;
-import org.joda.time.ReadWritableTimePeriod;
-import org.joda.time.TimePeriod;
+import org.joda.time.ReadWritablePeriod;
+import org.joda.time.Period;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.format.ISOTimePeriodFormat;
-import org.joda.time.format.TimePeriodFormatter;
-import org.joda.time.format.TimePeriodParser;
+import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodParser;
 
 /**
  * StringConverter converts a String to milliseconds in the ISOChronology.
@@ -75,7 +75,7 @@ import org.joda.time.format.TimePeriodParser;
  * @since 1.0
  */
 class StringConverter extends AbstractConverter
-        implements InstantConverter, DurationConverter, TimePeriodConverter, IntervalConverter {
+        implements InstantConverter, DurationConverter, PeriodConverter, IntervalConverter {
 
     /**
      * Singleton instance.
@@ -130,13 +130,13 @@ class StringConverter extends AbstractConverter
      */
     public long getDurationMillis(Object object) {
         String str = (String) object;
-        MutableTimePeriod period = new MutableTimePeriod(PeriodType.getPreciseAllType());
-        TimePeriodParser parser = ISOTimePeriodFormat.getInstance().standard();
+        MutablePeriod period = new MutablePeriod(PeriodType.getPreciseAllType());
+        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
         int pos = parser.parseInto(period, str, 0);
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutableTimePeriod(period.getPeriodType(), str);
+                parser.parseMutablePeriod(period.getPeriodType(), str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
@@ -153,14 +153,14 @@ class StringConverter extends AbstractConverter
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
-    public void setInto(ReadWritableTimePeriod period, Object object) {
+    public void setInto(ReadWritablePeriod period, Object object) {
         String str = (String) object;
-        TimePeriodParser parser = ISOTimePeriodFormat.getInstance().standard();
+        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
         int pos = parser.parseInto(period, str, 0);
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutableTimePeriod(period.getPeriodType(), str);
+                parser.parseMutablePeriod(period.getPeriodType(), str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
@@ -191,14 +191,14 @@ class StringConverter extends AbstractConverter
         }
 
         DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
-        TimePeriodFormatter durationParser = ISOTimePeriodFormat.getInstance().standard();
+        PeriodFormatter durationParser = ISOPeriodFormat.getInstance().standard();
         long startInstant;
-        TimePeriod period;
+        Period period;
 
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            period = durationParser.parseTimePeriod(getPeriodType(leftStr, false), leftStr);
+            period = durationParser.parsePeriod(getPeriodType(leftStr, false), leftStr);
         } else {
             startInstant = dateTimeParser.parseMillis(leftStr);
             period = null;
@@ -209,16 +209,16 @@ class StringConverter extends AbstractConverter
             if (period != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            period = durationParser.parseTimePeriod(getPeriodType(rightStr, false), rightStr);
+            period = durationParser.parsePeriod(getPeriodType(rightStr, false), rightStr);
             writableInterval.setStartMillis(startInstant);
-            writableInterval.setTimePeriodAfterStart(period);
+            writableInterval.setPeriodAfterStart(period);
         } else {
             long endInstant = dateTimeParser.parseMillis(rightStr);
             writableInterval.setEndMillis(endInstant);
             if (period == null) {
                 writableInterval.setStartMillis(startInstant);
             } else {
-                writableInterval.setTimePeriodBeforeEnd(period);
+                writableInterval.setPeriodBeforeEnd(period);
             }
         }
     }

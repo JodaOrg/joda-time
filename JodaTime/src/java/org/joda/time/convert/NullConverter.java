@@ -54,7 +54,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.DateTimeUtils;
-import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.ReadWritablePeriod;
 
 /**
  * NullConverter converts null to milliseconds (now) in the ISOChronology.
@@ -64,7 +64,7 @@ import org.joda.time.ReadWritableTimePeriod;
  * @since 1.0
  */
 class NullConverter extends AbstractConverter
-        implements InstantConverter, DurationConverter, TimePeriodConverter {
+        implements InstantConverter, DurationConverter, PeriodConverter {
     
     /**
      * Singleton instance.
@@ -108,8 +108,8 @@ class NullConverter extends AbstractConverter
      * @param object  the object to convert
      * @throws NullPointerException if the duration is null
      */
-    public void setInto(ReadWritableTimePeriod duration, Object object) {
-        duration.setTimePeriod(0L);
+    public void setInto(ReadWritablePeriod duration, Object object) {
+        duration.setPeriod(0L);
     }
 
     //-----------------------------------------------------------------------

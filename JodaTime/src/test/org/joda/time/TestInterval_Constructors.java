@@ -185,7 +185,7 @@ public class TestInterval_Constructors extends TestCase {
     //-----------------------------------------------------------------------
     public void testConstructor_RI_RP1() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
-        TimePeriod dur = new TimePeriod(0, 6, 0, 0, 1, 0, 0, 0);
+        Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstance().monthOfYear().add(result, 6);
         result = ISOChronology.getInstance().hourOfDay().add(result, 1);
@@ -197,7 +197,7 @@ public class TestInterval_Constructors extends TestCase {
 
     public void testConstructor_RI_RP2() throws Throwable {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
-        TimePeriod dur = new TimePeriod(0, 6, 0, 0, 1, 0, 0, 0);
+        Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstanceUTC().monthOfYear().add(result, 6);
         result = ISOChronology.getInstanceUTC().hourOfDay().add(result, 1);
@@ -210,7 +210,7 @@ public class TestInterval_Constructors extends TestCase {
 
     public void testConstructor_RI_RP3() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW);
-        TimePeriod dur = new TimePeriod(1 * DateTimeConstants.MILLIS_PER_HOUR + 23L);
+        Period dur = new Period(1 * DateTimeConstants.MILLIS_PER_HOUR + 23L);
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstance().hourOfDay().add(result, 1);
         result = ISOChronology.getInstance().millisOfSecond().add(result, 23);
@@ -234,7 +234,7 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     public void testConstructor_RI_RP6() throws Throwable {
-        TimePeriod dur = new TimePeriod(0, 6, 0, 0, 1, 0, 0, 0);
+        Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstanceUTC().monthOfYear().add(result, 6);
         result = ISOChronology.getInstanceUTC().hourOfDay().add(result, 1);

@@ -54,35 +54,90 @@
 package org.joda.time.convert;
 
 import org.joda.time.PeriodType;
-import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadablePeriod;
 
 /**
- * TimePeriodConverter defines how an object is converted to a time period.
+ * ReadablePeriodConverter extracts milliseconds and chronology from a ReadablePeriod.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public interface TimePeriodConverter extends Converter {
+class ReadablePeriodConverter extends AbstractConverter
+        implements PeriodConverter, DurationConverter {
 
     /**
-     * Extracts duration values from an object of this converter's type, and
-     * sets them into the given ReadWritableDuration.
-     *
-     * @param period  the period to modify
-     * @param object  the object to convert, must not be null
-     * @throws ClassCastException if the object is invalid
+     * Singleton instance.
      */
-    void setInto(ReadWritableTimePeriod period, Object object);
+    static final ReadablePeriodConverter INSTANCE = new ReadablePeriodConverter();
+
+    /**
+     * Restricted constructor.
+     */
+    protected ReadablePeriodConverter() {
+        super();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Extracts the millis from an object of this convertor's type.
+     * 
+     * @param object  the object to convert, must not be null
+     * @return the millisecond value
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
+     * @throws IllegalArgumentException if the object is invalid
+     */
+    public long getDurationMillis(Object object) {
+        return ((ReadablePeriod) object).toDurationMillis();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritablePeriod.
+     *
+     * @param duration duration to get modified
+     * @param object  the object to convert, must not be null
+     * @return the millisecond duration
+     * @throws NullPointerException if the duration or object is null
+     * @throws ClassCastException if the object is an invalid type
+     * @throws IllegalArgumentException if the object is invalid
+     */
+    public void setInto(ReadWritablePeriod duration, Object object) {
+        duration.setPeriod((ReadablePeriod) object);
+    }
 
     /**
      * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param precise  true if the period type must be precise
-     * @return the period type, never null
-     * @throws ClassCastException if the object is invalid
+     * @param precise  true if a precise type is required
+     * @return the period type from the readable duration
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
-    PeriodType getPeriodType(Object object, boolean precise);
+    public PeriodType getPeriodType(Object object, boolean precise) {
+        ReadablePeriod period = (ReadablePeriod) object;
+        if (precise) {
+            if (period.getPeriodType().isPrecise()) {
+                return period.getPeriodType();
+            } else {
+                return PeriodType.getPreciseAllType();
+            }
+        }
+        return period.getPeriodType();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns ReadablePeriod class.
+     * 
+     * @return ReadablePeriod.class
+     */
+    public Class getSupportedType() {
+        return ReadablePeriod.class;
+    }
 
 }

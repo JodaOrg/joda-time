@@ -53,59 +53,16 @@
  */
 package org.joda.time.format;
 
-import org.joda.time.TimePeriod;
-import org.joda.time.PeriodType;
-import org.joda.time.MutableTimePeriod;
-import org.joda.time.ReadWritableTimePeriod;
-
 /**
- * Defines an interface for parsing textual representations of time periods.
+ * Combined interface for printing and parsing.
+ * <p>
+ * See each extended interface for details of the methods.
  *
  * @author Brian S O'Neill
- * @see TimePeriodFormatter
- * @see TimePeriodFormatterBuilder
- * @see TimePeriodFormat
+ * @author Stephen Colebourne
  * @since 1.0
  */
-public interface TimePeriodParser {
+public interface PeriodFormatter extends PeriodPrinter, PeriodParser {
 
-    /**
-     * Parses a period from the given text, at the given position, saving the
-     * result into the fields of the given ReadWritableDuration. If the parse
-     * succeeds, the return value is the new text position. Note that the parse
-     * may succeed without fully reading the text.
-     * <p>
-     * If it fails, the return value is negative, but the period may still be
-     * modified. To determine the position where the parse failed, apply the
-     * one's complement operator (~) on the return value.
-     *
-     * @param period  a period that will be modified
-     * @param periodStr  text to parse
-     * @param position position to start parsing from
-     * @return new position, if negative, parse failed. Apply complement
-     * operator (~) to get position of failure
-     * @throws IllegalArgumentException if any field is out of range
-     */
-    int parseInto(ReadWritableTimePeriod period, String periodStr, int position);
-
-    /**
-     * Parses a period from the given text, returning a new TimePeriod.
-     *
-     * @param type  defines which fields may be parsed
-     * @param periodStr  text to parse
-     * @return parsed value in a Duration object
-     * @throws IllegalArgumentException if any field is out of range
-     */
-    TimePeriod parseTimePeriod(PeriodType type, String periodStr);
-
-    /**
-     * Parses a period from the given text, returning a new MutableTimePeriod.
-     *
-     * @param type  defines which fields may be parsed
-     * @param periodStr  text to parse
-     * @return parsed value in a MutableDuration object
-     * @throws IllegalArgumentException if any field is out of range
-     */
-    MutableTimePeriod parseMutableTimePeriod(PeriodType type, String periodStr);
-
+    // Methods inherited
 }

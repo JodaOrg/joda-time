@@ -484,8 +484,8 @@ public class MutableDateTime extends AbstractDateTime
         if (duration instanceof ReadableDuration) {
             ReadableDuration d = (ReadableDuration) duration;
             add(FieldUtils.safeMultiply(d.getMillis(), scalar));
-        } else if (duration instanceof ReadableTimePeriod) {
-            ReadableTimePeriod d = (ReadableTimePeriod) duration;
+        } else if (duration instanceof ReadablePeriod) {
+            ReadablePeriod d = (ReadablePeriod) duration;
             d.addInto(this, scalar);
         } else {
             DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);

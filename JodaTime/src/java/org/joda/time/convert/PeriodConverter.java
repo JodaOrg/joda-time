@@ -51,18 +51,38 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.format;
+package org.joda.time.convert;
+
+import org.joda.time.PeriodType;
+import org.joda.time.ReadWritablePeriod;
 
 /**
- * Combined interface for printing and parsing.
- * <p>
- * See each extended interface for details of the methods.
+ * PeriodConverter defines how an object is converted to a time period.
  *
- * @author Brian S O'Neill
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
-public interface TimePeriodFormatter extends TimePeriodPrinter, TimePeriodParser {
+public interface PeriodConverter extends Converter {
 
-    // Methods inherited
+    /**
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritableDuration.
+     *
+     * @param period  the period to modify
+     * @param object  the object to convert, must not be null
+     * @throws ClassCastException if the object is invalid
+     */
+    void setInto(ReadWritablePeriod period, Object object);
+
+    /**
+     * Selects a suitable period type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @param precise  true if the period type must be precise
+     * @return the period type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    PeriodType getPeriodType(Object object, boolean precise);
+
 }

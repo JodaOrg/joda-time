@@ -144,7 +144,7 @@ public final class MutableInterval
      * @param period  the period of this interval, null means zero length
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public MutableInterval(ReadableInstant start, ReadableTimePeriod period) {
+    public MutableInterval(ReadableInstant start, ReadablePeriod period) {
         super(start, period);
     }
 
@@ -158,7 +158,7 @@ public final class MutableInterval
      * @param end  end of this interval, null means now
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public MutableInterval(ReadableTimePeriod period, ReadableInstant end) {
+    public MutableInterval(ReadablePeriod period, ReadableInstant end) {
         super(period, end);
     }
 
@@ -254,8 +254,8 @@ public final class MutableInterval
      * @param period  new period for interval, null means zero length
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public void setTimePeriodAfterStart(ReadableTimePeriod period) {
-        super.setTimePeriodAfterStart(period);
+    public void setPeriodAfterStart(ReadablePeriod period) {
+        super.setPeriodAfterStart(period);
     }
 
     /**
@@ -264,8 +264,8 @@ public final class MutableInterval
      * @param period  new period for interval, null means zero length
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public void setTimePeriodBeforeEnd(ReadableTimePeriod period) {
-        super.setTimePeriodBeforeEnd(period);
+    public void setPeriodBeforeEnd(ReadablePeriod period) {
+        super.setPeriodBeforeEnd(period);
     }
 
 }

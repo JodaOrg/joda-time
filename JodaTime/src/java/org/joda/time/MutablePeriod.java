@@ -58,17 +58,17 @@ import java.io.Serializable;
 /**
  * Standard mutable time period implementation.
  * <p>
- * MutableTimePeriod is mutable and not thread-safe, unless concurrent threads
+ * MutablePeriod is mutable and not thread-safe, unless concurrent threads
  * are not invoking mutator methods.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
- * @see TimePeriod
+ * @see Period
  */
-public class MutableTimePeriod
-        extends AbstractTimePeriod
-        implements ReadWritableTimePeriod, Cloneable, Serializable {
+public class MutablePeriod
+        extends AbstractPeriod
+        implements ReadWritablePeriod, Cloneable, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 3436451121567212165L;
@@ -76,7 +76,7 @@ public class MutableTimePeriod
     /**
      * Creates a zero-length period using AllType.
      */
-    public MutableTimePeriod() {
+    public MutablePeriod() {
         super(0L, null);
     }
 
@@ -85,7 +85,7 @@ public class MutableTimePeriod
      *
      * @param type  which set of fields this period supports
      */
-    public MutableTimePeriod(PeriodType type) {
+    public MutablePeriod(PeriodType type) {
         super(0L, type);
     }
 
@@ -117,7 +117,7 @@ public class MutableTimePeriod
      *
      * @param duration  the duration, in milliseconds
      */
-    public MutableTimePeriod(long duration) {
+    public MutablePeriod(long duration) {
         super(duration, null);
     }
 
@@ -150,7 +150,7 @@ public class MutableTimePeriod
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports
      */
-    public MutableTimePeriod(long duration, PeriodType type) {
+    public MutablePeriod(long duration, PeriodType type) {
         super(duration, type);
     }
 
@@ -163,7 +163,7 @@ public class MutableTimePeriod
      * @param seconds  amount of seconds in this period
      * @param millis  amount of milliseconds in this period
      */
-    public MutableTimePeriod(int hours, int minutes, int seconds, int millis) {
+    public MutablePeriod(int hours, int minutes, int seconds, int millis) {
         super(0, 0, 0, 0, hours, minutes, seconds, millis, null);
     }
 
@@ -179,7 +179,7 @@ public class MutableTimePeriod
      * @param seconds  amount of seconds in this period
      * @param millis  amount of milliseconds in this period
      */
-    public MutableTimePeriod(int years, int months, int weeks, int days,
+    public MutablePeriod(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, null);
     }
@@ -198,7 +198,7 @@ public class MutableTimePeriod
      * @param type  which set of fields this period supports, null means AllType
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public MutableTimePeriod(int years, int months, int weeks, int days,
+    public MutablePeriod(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis, PeriodType type) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, type);
     }
@@ -210,7 +210,7 @@ public class MutableTimePeriod
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    public MutableTimePeriod(long startInstant, long endInstant) {
+    public MutablePeriod(long startInstant, long endInstant) {
         super(startInstant, endInstant, null);
     }
 
@@ -222,7 +222,7 @@ public class MutableTimePeriod
      * @param endInstant  interval end, in milliseconds
      * @param type  which set of fields this period supports, null means AllType
      */
-    public MutableTimePeriod(long startInstant, long endInstant, PeriodType type) {
+    public MutablePeriod(long startInstant, long endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -233,7 +233,7 @@ public class MutableTimePeriod
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
      */
-    public MutableTimePeriod(ReadableInstant startInstant, ReadableInstant endInstant) {
+    public MutablePeriod(ReadableInstant startInstant, ReadableInstant endInstant) {
         super(startInstant, endInstant, null);
     }
 
@@ -245,7 +245,7 @@ public class MutableTimePeriod
      * @param endInstant  interval end, null means now
      * @param type  which set of fields this period supports, null means AllType
      */
-    public MutableTimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
+    public MutablePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -257,7 +257,7 @@ public class MutableTimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableTimePeriod(Object period) {
+    public MutablePeriod(Object period) {
         super(period, null);
     }
 
@@ -270,7 +270,7 @@ public class MutableTimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableTimePeriod(Object period, PeriodType type) {
+    public MutablePeriod(Object period, PeriodType type) {
         super(period, type);
     }
 
@@ -292,13 +292,13 @@ public class MutableTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Sets all the fields in one go from another ReadableTimePeriod.
+     * Sets all the fields in one go from another ReadablePeriod.
      * 
      * @param period  the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public void setTimePeriod(ReadableTimePeriod period) {
-        super.setTimePeriod(period);
+    public void setPeriod(ReadablePeriod period) {
+        super.setPeriod(period);
     }
 
     /**
@@ -314,9 +314,9 @@ public class MutableTimePeriod
      * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public void setTimePeriod(int years, int months, int weeks, int days,
+    public void setPeriod(int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis) {
-        super.setTimePeriod(years, months, weeks, days,
+        super.setPeriod(years, months, weeks, days,
                           hours, minutes, seconds, millis);
     }
 
@@ -326,8 +326,8 @@ public class MutableTimePeriod
      * 
      * @param interval  the interval to set, null means zero length
      */
-    public void setTimePeriod(ReadableInterval interval) {
-        super.setTimePeriod(interval);
+    public void setPeriod(ReadableInterval interval) {
+        super.setPeriod(interval);
     }
 
     /**
@@ -337,8 +337,8 @@ public class MutableTimePeriod
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    public void setTimePeriod(long startInstant, long endInstant) {
-        super.setTimePeriod(startInstant, endInstant);
+    public void setPeriod(long startInstant, long endInstant) {
+        super.setPeriod(startInstant, endInstant);
     }
 
     /**
@@ -370,8 +370,8 @@ public class MutableTimePeriod
      * 
      * @param duration  the duration to set, null means zero length
      */
-    public void setTimePeriod(ReadableDuration duration) {
-        super.setTimePeriod(duration);
+    public void setPeriod(ReadableDuration duration) {
+        super.setPeriod(duration);
     }
 
     /**
@@ -403,8 +403,8 @@ public class MutableTimePeriod
      * 
      * @param duration  the duration, in milliseconds
      */
-    public void setTimePeriod(long duration) {
-        super.setTimePeriod(duration);
+    public void setPeriod(long duration) {
+        super.setPeriod(duration);
     }
     
     //-----------------------------------------------------------------------
@@ -416,7 +416,7 @@ public class MutableTimePeriod
      * not supported by this period
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
-    public void add(ReadableTimePeriod period) {
+    public void add(ReadablePeriod period) {
         super.add(period);
     }
 
@@ -713,8 +713,8 @@ public class MutableTimePeriod
      *
      * @return a clone of the this object.
      */
-    public MutableTimePeriod copy() {
-        return (MutableTimePeriod)clone();
+    public MutablePeriod copy() {
+        return (MutablePeriod)clone();
     }
 
     /**

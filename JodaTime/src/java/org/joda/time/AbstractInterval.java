@@ -96,7 +96,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public AbstractInterval(Object interval) {
         super();
-        TimePeriod duration;
+        Period duration;
         if (interval instanceof AbstractInterval) {
             AbstractInterval ri = (AbstractInterval) interval;
             iStartMillis = ri.iStartMillis;
@@ -232,7 +232,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param period  the period of this interval, null means zero length
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public AbstractInterval(ReadableInstant start, ReadableTimePeriod period) {
+    public AbstractInterval(ReadableInstant start, ReadablePeriod period) {
         super();
         Chronology chrono = null;
         if (start == null) {
@@ -261,7 +261,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param end  end of this interval, null means now
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public AbstractInterval(ReadableTimePeriod period, ReadableInstant end) {
+    public AbstractInterval(ReadablePeriod period, ReadableInstant end) {
         super();
         Chronology chrono = null;
         if (end == null) {
@@ -506,8 +506,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
-    public final TimePeriod toTimePeriod() {
-        return new TimePeriod(getStartMillis(), getEndMillis());
+    public final Period toPeriod() {
+        return new Period(getStartMillis(), getEndMillis());
     }
 
     /**
@@ -522,8 +522,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
-    public final TimePeriod toTimePeriod(PeriodType type) {
-        return new TimePeriod(getStartMillis(), getEndMillis(), type);
+    public final Period toPeriod(PeriodType type) {
+        return new Period(getStartMillis(), getEndMillis(), type);
     }
 
     //-----------------------------------------------------------------------
@@ -685,7 +685,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param period  new period for interval, null means zero length
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    protected void setTimePeriodAfterStart(ReadableTimePeriod period) {
+    protected void setPeriodAfterStart(ReadablePeriod period) {
         if (period == null) {
             setEndMillis(getStartMillis());
         } else {
@@ -699,7 +699,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param period  new period for interval, null means zero length
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    protected void setTimePeriodBeforeEnd(ReadableTimePeriod period) {
+    protected void setPeriodBeforeEnd(ReadablePeriod period) {
         if (period == null) {
             setStartMillis(getEndMillis());
         } else {

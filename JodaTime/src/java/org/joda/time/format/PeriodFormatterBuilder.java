@@ -59,19 +59,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.PeriodType;
-import org.joda.time.ReadWritableTimePeriod;
-import org.joda.time.ReadableTimePeriod;
+import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadablePeriod;
 
 /**
- * TimePeriodFormatterBuilder is used for constructing {@link TimePeriodFormatter}s.
- * TimePeriodFormatters are built by appending specific fields and separators.
+ * PeriodFormatterBuilder is used for constructing {@link PeriodFormatter}s.
+ * PeriodFormatters are built by appending specific fields and separators.
  *
  * <p>
  * For example, a formatter that prints years and months, like "15 years and 8 months",
  * can be constructed as follows:
  * <p>
  * <pre>
- * TimePeriodFormatter yearsAndMonths = new TimePeriodFormatterBuilder()
+ * PeriodFormatter yearsAndMonths = new PeriodFormatterBuilder()
  *     .printZeroAlways()
  *     .appendYears()
  *     .appendSuffix(" year", " years")
@@ -82,13 +82,13 @@ import org.joda.time.ReadableTimePeriod;
  *     .toFormatter();
  * </pre>
  * <p>
- * TimePeriodFormatterBuilder itself is mutable and not thread-safe, but the
+ * PeriodFormatterBuilder itself is mutable and not thread-safe, but the
  * formatters that it builds are thread-safe and immutable.
  *
- * @see TimePeriodFormat
+ * @see PeriodFormat
  * @author Brian S O'Neill
  */
-public class TimePeriodFormatterBuilder {
+public class PeriodFormatterBuilder {
     private static final int PRINT_ZERO_RARELY = 1;
     private static final int PRINT_ZERO_IF_SUPPORTED = 2;
     private static final int PRINT_ZERO_ALWAYS = 3;
@@ -102,42 +102,42 @@ public class TimePeriodFormatterBuilder {
 
     private DurationFieldAffix iPrefix;
 
-    // List of TimePeriodFormatters used to build a final formatter.
+    // List of PeriodFormatters used to build a final formatter.
     private List iFormatters;
 
-    // List of TimePeriodFormatters used to build an alternate formatter. The
+    // List of PeriodFormatters used to build an alternate formatter. The
     // alternate is chosen if no other fields are printed.
     private List iAlternateFormatters;
 
-    public TimePeriodFormatterBuilder() {
+    public PeriodFormatterBuilder() {
         clear();
     }
 
     /**
-     * Converts to a TimePeriodPrinter that prints using all the appended
+     * Converts to a PeriodPrinter that prints using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
      * printer.
      */
-    public TimePeriodPrinter toPrinter() {
+    public PeriodPrinter toPrinter() {
         return toFormatter();
     }
 
     /**
-     * Converts to a TimePeriodParser that parses using all the appended
+     * Converts to a PeriodParser that parses using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
      * parser.
      */
-    public TimePeriodParser toParser() {
+    public PeriodParser toParser() {
         return toFormatter();
     }
 
     /**
-     * Converts to a TimePeriodFormatter that formats using all the appended
+     * Converts to a PeriodFormatter that formats using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
      * formatter.
      */
-    public TimePeriodFormatter toFormatter() {
-        TimePeriodFormatter formatter = toFormatter(iFormatters);
+    public PeriodFormatter toFormatter() {
+        PeriodFormatter formatter = toFormatter(iFormatters);
         List altFormatters = iAlternateFormatters;
         if (altFormatters.size() > 0) {
             // Alternate is needed only if field formatters were
@@ -153,10 +153,10 @@ public class TimePeriodFormatterBuilder {
         return formatter;
     }
 
-    private static TimePeriodFormatter toFormatter(List formatters) {
+    private static PeriodFormatter toFormatter(List formatters) {
         int size = formatters.size();
         if (size >= 2 && formatters.get(1) instanceof Separator) {
-            TimePeriodFormatter before = (TimePeriodFormatter) formatters.get(0);
+            PeriodFormatter before = (PeriodFormatter) formatters.get(0);
             if (size == 2) {
                 // Separator at the end would never format anything.
                 return before;
@@ -193,9 +193,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Appends another formatter.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder append(TimePeriodFormatter formatter)
+    public PeriodFormatterBuilder append(PeriodFormatter formatter)
         throws IllegalArgumentException
     {
         if (formatter == null) {
@@ -210,10 +210,10 @@ public class TimePeriodFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect
      * it. The parser is case-insensitive.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @throws IllegalArgumentException if text is null
      */
-    public TimePeriodFormatterBuilder appendLiteral(String text) {
+    public PeriodFormatterBuilder appendLiteral(String text) {
         if (text == null) {
             throw new IllegalArgumentException("Literal must not be null");
         }
@@ -229,9 +229,9 @@ public class TimePeriodFormatterBuilder {
      * fields. By default, the minimum digits printed is one. If the field value
      * is zero, it is not printed unless a printZero rule is applied.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder minimumPrintedDigits(int minDigits) {
+    public PeriodFormatterBuilder minimumPrintedDigits(int minDigits) {
         iMinPrintedDigits = minDigits;
         return this;
     }
@@ -240,9 +240,9 @@ public class TimePeriodFormatterBuilder {
      * Set the maximum digits parsed for the next and following appended
      * fields. By default, the maximum digits parsed is ten.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder maximumParsedDigits(int maxDigits) {
+    public PeriodFormatterBuilder maximumParsedDigits(int maxDigits) {
         iMaxParsedDigits = maxDigits;
         return this;
     }
@@ -250,9 +250,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Reject signed values when parsing the next and following appended fields.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder rejectSignedValues(boolean v) {
+    public PeriodFormatterBuilder rejectSignedValues(boolean v) {
         iRejectSignedValues = v;
         return this;
     }
@@ -264,11 +264,11 @@ public class TimePeriodFormatterBuilder {
      * <p>
      * This field setting is the default.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @see #favorLastFieldForZero()
      * @see #favorFirstFieldForZero()
      */
-    public TimePeriodFormatterBuilder printZeroRarely() {
+    public PeriodFormatterBuilder printZeroRarely() {
         iPrintZeroSetting = PRINT_ZERO_RARELY;
         return this;
     }
@@ -277,9 +277,9 @@ public class TimePeriodFormatterBuilder {
      * Print zero values for the next and following appened fields only if the
      * duration supports it.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder printZeroIfSupported() {
+    public PeriodFormatterBuilder printZeroIfSupported() {
         iPrintZeroSetting = PRINT_ZERO_IF_SUPPORTED;
         return this;
     }
@@ -289,9 +289,9 @@ public class TimePeriodFormatterBuilder {
      * even if the duration doesn't support it. The parser requires values for
      * fields that always print zero.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder printZeroAlways() {
+    public PeriodFormatterBuilder printZeroAlways() {
         iPrintZeroSetting = PRINT_ZERO_ALWAYS;
         return this;
     }
@@ -301,10 +301,10 @@ public class TimePeriodFormatterBuilder {
      * the field is not printed, neither is the prefix.
      *
      * @param text text to print before field only if field is printed
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @see #appendSuffix
      */
-    public TimePeriodFormatterBuilder appendPrefix(String text) {
+    public PeriodFormatterBuilder appendPrefix(String text) {
         if (text == null) {
             throw new IllegalArgumentException();
         }
@@ -320,10 +320,10 @@ public class TimePeriodFormatterBuilder {
      *
      * @param singularText text to print if field value is one
      * @param pluralText text to print if field value is not one
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @see #appendSuffix
      */
-    public TimePeriodFormatterBuilder appendPrefix(String singularText,
+    public PeriodFormatterBuilder appendPrefix(String singularText,
                                                  String pluralText) {
         if (singularText == null || pluralText == null) {
             throw new IllegalArgumentException();
@@ -336,10 +336,10 @@ public class TimePeriodFormatterBuilder {
      * the field is not printed, neither is the prefix.
      *
      * @param prefix custom prefix
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @see #appendSuffix
      */
-    private TimePeriodFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
+    private PeriodFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException();
         }
@@ -353,9 +353,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer years field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendYears() {
+    public PeriodFormatterBuilder appendYears() {
         appendField(1);
         return this;
     }
@@ -363,9 +363,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer years field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendMonths() {
+    public PeriodFormatterBuilder appendMonths() {
         appendField(2);
         return this;
     }
@@ -373,9 +373,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer weeks field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendWeeks() {
+    public PeriodFormatterBuilder appendWeeks() {
         appendField(3);
         return this;
     }
@@ -383,9 +383,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer days field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendDays() {
+    public PeriodFormatterBuilder appendDays() {
         appendField(4);
         return this;
     }
@@ -393,9 +393,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer hours field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendHours() {
+    public PeriodFormatterBuilder appendHours() {
         appendField(5);
         return this;
     }
@@ -403,9 +403,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer minutes field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendMinutes() {
+    public PeriodFormatterBuilder appendMinutes() {
         appendField(6);
         return this;
     }
@@ -413,9 +413,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer seconds field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendSeconds() {
+    public PeriodFormatterBuilder appendSeconds() {
         appendField(7);
         return this;
     }
@@ -423,9 +423,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer millis field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendMillis() {
+    public PeriodFormatterBuilder appendMillis() {
         appendField(8);
         return this;
     }
@@ -433,9 +433,9 @@ public class TimePeriodFormatterBuilder {
     /**
      * Instruct the printer to emit an integer millis field, if supported.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendMillis3Digit() {
+    public PeriodFormatterBuilder appendMillis3Digit() {
         appendField(8, 3);
         return this;
     }
@@ -459,11 +459,11 @@ public class TimePeriodFormatterBuilder {
      * the field is not printed, neither is the suffix.
      *
      * @param text text to print after field only if field is printed
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    public TimePeriodFormatterBuilder appendSuffix(String text) {
+    public PeriodFormatterBuilder appendSuffix(String text) {
         if (text == null) {
             throw new IllegalArgumentException();
         }
@@ -479,11 +479,11 @@ public class TimePeriodFormatterBuilder {
      *
      * @param singularText text to print if field value is one
      * @param pluralText text to print if field value is not one
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    public TimePeriodFormatterBuilder appendSuffix(String singularText,
+    public PeriodFormatterBuilder appendSuffix(String singularText,
                                                  String pluralText) {
         if (singularText == null || pluralText == null) {
             throw new IllegalArgumentException();
@@ -496,11 +496,11 @@ public class TimePeriodFormatterBuilder {
      * the field is not printed, neither is the suffix.
      *
      * @param suffix custom suffix
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    private TimePeriodFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
+    private PeriodFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
         final Object originalField;
         if (iFormatters.size() > 0) {
             originalField = iFormatters.get(iFormatters.size() - 1);
@@ -531,9 +531,9 @@ public class TimePeriodFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendSeparator(String text) {
+    public PeriodFormatterBuilder appendSeparator(String text) {
         return appendSeparator(text, text);
     }
 
@@ -549,9 +549,9 @@ public class TimePeriodFormatterBuilder {
      *
      * @param finalText alternate used if this is the final separator
      * printed
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      */
-    public TimePeriodFormatterBuilder appendSeparator(String text,
+    public PeriodFormatterBuilder appendSeparator(String text,
                                                     String finalText) {
         if (text == null || finalText == null) {
             throw new IllegalArgumentException();
@@ -581,7 +581,7 @@ public class TimePeriodFormatterBuilder {
             // Merge two adjacent separators together.
             iFormatters.set(i, lastSeparator.merge(text, finalText));
         } else {
-            TimePeriodFormatter composite = createComposite(formatters);
+            PeriodFormatter composite = createComposite(formatters);
             formatters.clear();
             formatters.add(composite);
             
@@ -603,10 +603,10 @@ public class TimePeriodFormatterBuilder {
      * <p>
      * This setting is the default.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @see #printZeroRarely()
      */
-    public TimePeriodFormatterBuilder favorLastFieldForZero() {
+    public PeriodFormatterBuilder favorLastFieldForZero() {
         iFavorFirstFieldForZero = false;
         return this;
     }
@@ -620,10 +620,10 @@ public class TimePeriodFormatterBuilder {
      * stopping until it finds a field that is supported by the duration being
      * printed. If no supported fields are found, then no fields are printed.
      *
-     * @return this TimePeriodFormatterBuilder
+     * @return this PeriodFormatterBuilder
      * @see #printZeroRarely()
      */
-    public TimePeriodFormatterBuilder favorFirstFieldForZero() {
+    public PeriodFormatterBuilder favorFirstFieldForZero() {
         iFavorFirstFieldForZero = true;
         return this;
     }
@@ -635,9 +635,9 @@ public class TimePeriodFormatterBuilder {
         iPrefix = null;
     }
 
-    private static TimePeriodFormatter createComposite(List formatters) {
+    private static PeriodFormatter createComposite(List formatters) {
         if (formatters.size() == 1) {
-            return (TimePeriodFormatter)formatters.get(0);
+            return (PeriodFormatter)formatters.get(0);
         } else {
             return new Composite(formatters);
         }
@@ -817,8 +817,8 @@ public class TimePeriodFormatterBuilder {
         }
     }
 
-    private static final class FieldFormatter extends AbstractTimePeriodFormatter
-        implements TimePeriodFormatter
+    private static final class FieldFormatter extends AbstractPeriodFormatter
+        implements PeriodFormatter
     {
         private final int iMinPrintedDigits;
         private final int iPrintZeroSetting;
@@ -865,18 +865,18 @@ public class TimePeriodFormatterBuilder {
             iSuffix = field.iSuffix;
         }
 
-        public int countFieldsToPrint(ReadableTimePeriod period) {
+        public int countFieldsToPrint(ReadablePeriod period) {
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS || getFieldValue(period) >= 0) {
                 return 1;
             }
             return 0;
         }
 
-        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+        public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             return stopAt <= 0 ? 0 : countFieldsToPrint(period);
         }
 
-        public int calculatePrintedLength(ReadableTimePeriod period) {
+        public int calculatePrintedLength(ReadablePeriod period) {
             long valueLong = getFieldValue(period);
             if (valueLong < 0) {
                 return 0;
@@ -902,7 +902,7 @@ public class TimePeriodFormatterBuilder {
             return sum;
         }
         
-        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+        public void printTo(StringBuffer buf, ReadablePeriod period) {
             long valueLong = getFieldValue(period);
             if (valueLong < 0) {
                 return;
@@ -924,7 +924,7 @@ public class TimePeriodFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+        public void printTo(Writer out, ReadablePeriod period) throws IOException {
             long valueLong = getFieldValue(period);
             if (valueLong < 0) {
                 return;
@@ -946,7 +946,7 @@ public class TimePeriodFormatterBuilder {
             }
         }
 
-        public int parseInto(ReadWritableTimePeriod period,
+        public int parseInto(ReadWritablePeriod period,
                              String text, int position) {
 
             boolean mustParse = (iPrintZeroSetting == PRINT_ZERO_ALWAYS);
@@ -1066,7 +1066,7 @@ public class TimePeriodFormatterBuilder {
          * @return negative value if nothing to print, otherwise lower 32 bits
          * is signed int value.
          */
-        long getFieldValue(ReadableTimePeriod period) {
+        long getFieldValue(ReadablePeriod period) {
             PeriodType type;
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS) {
                 type = null; // Don't need to check if supported.
@@ -1159,7 +1159,7 @@ public class TimePeriodFormatterBuilder {
             }
         }
 
-        void setFieldValue(ReadWritableTimePeriod period, int value) {
+        void setFieldValue(ReadWritablePeriod period, int value) {
             switch (iFieldType) {
             default:
                 break;
@@ -1195,8 +1195,8 @@ public class TimePeriodFormatterBuilder {
         }
     }
 
-    private static final class Literal extends AbstractTimePeriodFormatter
-        implements TimePeriodFormatter
+    private static final class Literal extends AbstractPeriodFormatter
+        implements PeriodFormatter
     {
         private final String iText;
 
@@ -1204,23 +1204,23 @@ public class TimePeriodFormatterBuilder {
             iText = text;
         }
 
-        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+        public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             return 0;
         }
 
-        public int calculatePrintedLength(ReadableTimePeriod period) {
+        public int calculatePrintedLength(ReadablePeriod period) {
             return iText.length();
         }
 
-        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+        public void printTo(StringBuffer buf, ReadablePeriod period) {
             buf.append(iText);
         }
 
-        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+        public void printTo(Writer out, ReadablePeriod period) throws IOException {
             out.write(iText);
         }
 
-        public int parseInto(ReadWritableTimePeriod period,
+        public int parseInto(ReadWritablePeriod period,
                              String periodStr, int position) {
             if (periodStr.regionMatches(true, position, iText, 0, iText.length())) {
                 return position + iText.length();
@@ -1229,28 +1229,28 @@ public class TimePeriodFormatterBuilder {
         }
     }
 
-    private static final class Separator extends AbstractTimePeriodFormatter
-        implements TimePeriodFormatter
+    private static final class Separator extends AbstractPeriodFormatter
+        implements PeriodFormatter
     {
         private final String iText;
         private final String iFinalText;
 
-        private final TimePeriodFormatter iBefore;
-        private final TimePeriodFormatter iAfter;
+        private final PeriodFormatter iBefore;
+        private final PeriodFormatter iAfter;
 
         Separator(String text, String finalText) {
             this(text, finalText, null, null);
         }
 
         Separator(String text, String finalText,
-                  TimePeriodFormatter before, TimePeriodFormatter after) {
+                  PeriodFormatter before, PeriodFormatter after) {
             iText = text;
             iFinalText = finalText;
             iBefore = before;
             iAfter = after;
         }
 
-        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+        public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             int sum = iBefore.countFieldsToPrint(period, stopAt);
             if (sum < stopAt) {
                 sum += iAfter.countFieldsToPrint(period, stopAt);
@@ -1258,7 +1258,7 @@ public class TimePeriodFormatterBuilder {
             return sum;
         }
 
-        public int calculatePrintedLength(ReadableTimePeriod period) {
+        public int calculatePrintedLength(ReadablePeriod period) {
             int sum = iBefore.calculatePrintedLength(period)
                 + iAfter.calculatePrintedLength(period);
 
@@ -1272,9 +1272,9 @@ public class TimePeriodFormatterBuilder {
             return sum;
         }
 
-        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
-            TimePeriodPrinter before = iBefore;
-            TimePeriodPrinter after = iAfter;
+        public void printTo(StringBuffer buf, ReadablePeriod period) {
+            PeriodPrinter before = iBefore;
+            PeriodPrinter after = iAfter;
 
             before.printTo(buf, period);
 
@@ -1288,9 +1288,9 @@ public class TimePeriodFormatterBuilder {
             after.printTo(buf, period);
         }
 
-        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
-            TimePeriodPrinter before = iBefore;
-            TimePeriodPrinter after = iAfter;
+        public void printTo(Writer out, ReadablePeriod period) throws IOException {
+            PeriodPrinter before = iBefore;
+            PeriodPrinter after = iAfter;
 
             before.printTo(out, period);
 
@@ -1304,7 +1304,7 @@ public class TimePeriodFormatterBuilder {
             after.printTo(out, period);
         }
 
-        public int parseInto(ReadWritableTimePeriod period,
+        public int parseInto(ReadWritablePeriod period,
                              String periodStr, int position) {
             final int oldPos = position;
 
@@ -1332,58 +1332,58 @@ public class TimePeriodFormatterBuilder {
             return new Separator(iText + text, iFinalText + finalText, iBefore, iAfter);
         }
 
-        Separator finish(TimePeriodFormatter before, TimePeriodFormatter after) {
+        Separator finish(PeriodFormatter before, PeriodFormatter after) {
             return new Separator(iText, iFinalText, before, after);
         }
     }
 
-    private static final class Composite extends AbstractTimePeriodFormatter
-        implements TimePeriodFormatter
+    private static final class Composite extends AbstractPeriodFormatter
+        implements PeriodFormatter
     {
-        private final TimePeriodFormatter[] iFormatters;
+        private final PeriodFormatter[] iFormatters;
 
         Composite(List formatters) {
-            iFormatters = (TimePeriodFormatter[])formatters.toArray
-                (new TimePeriodFormatter[formatters.size()]);
+            iFormatters = (PeriodFormatter[])formatters.toArray
+                (new PeriodFormatter[formatters.size()]);
         }
 
-        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+        public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             int sum = 0;
-            TimePeriodPrinter[] printers = iFormatters;
+            PeriodPrinter[] printers = iFormatters;
             for (int i=printers.length; sum < stopAt && --i>=0; ) {
                 sum += printers[i].countFieldsToPrint(period);
             }
             return sum;
         }
 
-        public int calculatePrintedLength(ReadableTimePeriod period) {
+        public int calculatePrintedLength(ReadablePeriod period) {
             int sum = 0;
-            TimePeriodPrinter[] printers = iFormatters;
+            PeriodPrinter[] printers = iFormatters;
             for (int i=printers.length; --i>=0; ) {
                 sum += printers[i].calculatePrintedLength(period);
             }
             return sum;
         }
 
-        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
-            TimePeriodPrinter[] printers = iFormatters;
+        public void printTo(StringBuffer buf, ReadablePeriod period) {
+            PeriodPrinter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
                 printers[i].printTo(buf, period);
             }
         }
 
-        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
-            TimePeriodPrinter[] printers = iFormatters;
+        public void printTo(Writer out, ReadablePeriod period) throws IOException {
+            PeriodPrinter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
                 printers[i].printTo(out, period);
             }
         }
 
-        public int parseInto(ReadWritableTimePeriod period,
+        public int parseInto(ReadWritablePeriod period,
                              String periodStr, int position) {
-            TimePeriodParser[] parsers = iFormatters;
+            PeriodParser[] parsers = iFormatters;
 
             if (parsers == null) {
                 throw new UnsupportedOperationException();
@@ -1397,23 +1397,23 @@ public class TimePeriodFormatterBuilder {
         }
     }
 
-    private static final class AlternateSelector extends AbstractTimePeriodFormatter
-        implements TimePeriodFormatter
+    private static final class AlternateSelector extends AbstractPeriodFormatter
+        implements PeriodFormatter
     {
-        private final TimePeriodFormatter iPrimaryFormatter;
-        private final TimePeriodPrinter[] iAlternatePrinters;
+        private final PeriodFormatter iPrimaryFormatter;
+        private final PeriodPrinter[] iAlternatePrinters;
         private final boolean iFavorFirstFieldForZero;
 
-        AlternateSelector(TimePeriodFormatter primaryFormatter,
+        AlternateSelector(PeriodFormatter primaryFormatter,
                           List alternatePrinters,
                           boolean favorFirstFieldForZero) {
             iPrimaryFormatter = primaryFormatter;
-            iAlternatePrinters = (TimePeriodPrinter[])alternatePrinters.toArray
-                (new TimePeriodPrinter[alternatePrinters.size()]);
+            iAlternatePrinters = (PeriodPrinter[])alternatePrinters.toArray
+                (new PeriodPrinter[alternatePrinters.size()]);
             iFavorFirstFieldForZero = favorFirstFieldForZero;
         }
 
-        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+        public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             int count = iPrimaryFormatter.countFieldsToPrint(period, stopAt);
             if (count < 1 && stopAt >= 1) {
                 if (chooseFieldToPrint(period) != null) {
@@ -1423,7 +1423,7 @@ public class TimePeriodFormatterBuilder {
             return count;
         }
 
-        public int calculatePrintedLength(ReadableTimePeriod period) {
+        public int calculatePrintedLength(ReadablePeriod period) {
             if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
                 return iPrimaryFormatter.calculatePrintedLength(period);
             }
@@ -1431,9 +1431,9 @@ public class TimePeriodFormatterBuilder {
             Object chosenOne = chooseFieldToPrint(period);
 
             int sum = 0;
-            TimePeriodPrinter[] printers = iAlternatePrinters;
+            PeriodPrinter[] printers = iAlternatePrinters;
             for (int i=printers.length; --i>=0; ) {
-                TimePeriodPrinter dp = printers[i];
+                PeriodPrinter dp = printers[i];
                 if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
                     sum += dp.calculatePrintedLength(period);
                 }
@@ -1441,7 +1441,7 @@ public class TimePeriodFormatterBuilder {
             return sum;
         }
 
-        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+        public void printTo(StringBuffer buf, ReadablePeriod period) {
             if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
                 iPrimaryFormatter.printTo(buf, period);
                 return;
@@ -1449,17 +1449,17 @@ public class TimePeriodFormatterBuilder {
 
             Object chosenOne = chooseFieldToPrint(period);
             
-            TimePeriodPrinter[] printers = iAlternatePrinters;
+            PeriodPrinter[] printers = iAlternatePrinters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
-                TimePeriodPrinter dp = printers[i];
+                PeriodPrinter dp = printers[i];
                 if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
                     dp.printTo(buf, period);
                 }
             }
         }
 
-        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+        public void printTo(Writer out, ReadablePeriod period) throws IOException {
             if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
                 iPrimaryFormatter.printTo(out, period);
                 return;
@@ -1467,28 +1467,28 @@ public class TimePeriodFormatterBuilder {
             
             Object chosenOne = chooseFieldToPrint(period);
 
-            TimePeriodPrinter[] printers = iAlternatePrinters;
+            PeriodPrinter[] printers = iAlternatePrinters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
-                TimePeriodPrinter dp = printers[i];
+                PeriodPrinter dp = printers[i];
                 if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
                     dp.printTo(out, period);
                 }
             }
         }
 
-        public int parseInto(ReadWritableTimePeriod period,
+        public int parseInto(ReadWritablePeriod period,
                              String periodStr, int position) {
             return iPrimaryFormatter.parseInto(period, periodStr, position);
         }
 
-        private FieldFormatter chooseFieldToPrint(ReadableTimePeriod period) {
+        private FieldFormatter chooseFieldToPrint(ReadablePeriod period) {
             PeriodType type = period.getPeriodType();
-            TimePeriodPrinter[] printers = iAlternatePrinters;
+            PeriodPrinter[] printers = iAlternatePrinters;
             if (iFavorFirstFieldForZero) {
                 int len = printers.length;
                 for (int i=0; i<len; i++) {
-                    TimePeriodPrinter dp = printers[i];
+                    PeriodPrinter dp = printers[i];
                     if (dp instanceof FieldFormatter) {
                         FieldFormatter ff = (FieldFormatter) dp;
                         if (ff.isSupported(type)) {
@@ -1502,7 +1502,7 @@ public class TimePeriodFormatterBuilder {
                 }
             } else {
                 for (int i=printers.length; --i>=0; ) {
-                    TimePeriodPrinter dp = printers[i];
+                    PeriodPrinter dp = printers[i];
                     if (dp instanceof FieldFormatter) {
                         FieldFormatter ff = (FieldFormatter) dp;
                         if (ff.isSupported(type)) {

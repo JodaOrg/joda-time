@@ -129,7 +129,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * @param period  new period for interval, null means zero length
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    void setTimePeriodAfterStart(ReadableTimePeriod period);
+    void setPeriodAfterStart(ReadablePeriod period);
 
     /**
      * Sets the period of this time interval, preserving the end instant.
@@ -137,6 +137,6 @@ public interface ReadWritableInterval extends ReadableInterval {
      * @param period  new period for interval, null means zero length
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    void setTimePeriodBeforeEnd(ReadableTimePeriod period);
+    void setPeriodBeforeEnd(ReadablePeriod period);
 
 }

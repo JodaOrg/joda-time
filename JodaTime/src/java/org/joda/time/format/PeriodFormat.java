@@ -56,27 +56,27 @@ package org.joda.time.format;
 import java.util.Locale;
 
 /**
- * TimePeriodFormat provides basic printing and parsing capabilities for
+ * PeriodFormat provides basic printing and parsing capabilities for
  * durations. Eventually, this class will also support localization.
  * <p>
- * TimePeriodFormat is thread-safe and immutable, and the formatters it returns
+ * PeriodFormat is thread-safe and immutable, and the formatters it returns
  * are as well.
  *
  * @author Brian S O'Neill
  * @since 1.0
- * @see ISOTimePeriodFormat
- * @see TimePeriodFormatterBuilder
+ * @see ISOPeriodFormat
+ * @see PeriodFormatterBuilder
  */
-public class TimePeriodFormat {
+public class PeriodFormat {
 
-    private static final TimePeriodFormat INSTANCE = new TimePeriodFormat();
+    private static final PeriodFormat INSTANCE = new PeriodFormat();
 
     /**
      * Gets a formatter provider that works using the default locale.
      * 
      * @return a format provider
      */
-    public static TimePeriodFormat getInstance() {
+    public static PeriodFormat getInstance() {
         return INSTANCE;
     }
 
@@ -86,14 +86,14 @@ public class TimePeriodFormat {
      * @param locale  the Locale to use, null for default locale
      * @return a format provider
      */
-    public static TimePeriodFormat getInstance(Locale locale) {
+    public static PeriodFormat getInstance(Locale locale) {
         return INSTANCE;
     }
 
-    private final TimePeriodFormatter iDefault;
+    private final PeriodFormatter iDefault;
 
-    private TimePeriodFormat() {
-        iDefault = new TimePeriodFormatterBuilder()
+    private PeriodFormat() {
+        iDefault = new PeriodFormatterBuilder()
             .appendYears()
             .appendSuffix(" year", " years")
             .appendSeparator(", ", " and ")
@@ -121,9 +121,9 @@ public class TimePeriodFormat {
     }
 
     /**
-     * Returns the default TimePeriodFormatter.
+     * Returns the default PeriodFormatter.
      */
-    public TimePeriodFormatter getDefault() {
+    public PeriodFormatter getDefault() {
         return iDefault;
     }
 }

@@ -63,16 +63,16 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadWritableTimePeriod extends ReadableTimePeriod {
+public interface ReadWritablePeriod extends ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Sets all the fields in one go from another ReadableTimePeriod.
+     * Sets all the fields in one go from another ReadablePeriod.
      * 
      * @param period  the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    void setTimePeriod(ReadableTimePeriod period);
+    void setPeriod(ReadablePeriod period);
 
     /**
      * Sets all the fields in one go.
@@ -87,7 +87,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    void setTimePeriod(int years, int months, int weeks, int days,
+    void setPeriod(int years, int months, int weeks, int days,
                        int hours, int minutes, int seconds, int millis);
 
     /**
@@ -96,7 +96,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * 
      * @param interval  the interval to set, null means zero length
      */
-    void setTimePeriod(ReadableInterval interval);
+    void setPeriod(ReadableInterval interval);
 
     /**
      * Sets all the fields in one go from a millisecond interval dividing the
@@ -105,7 +105,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    void setTimePeriod(long startInstant, long endInstant);
+    void setPeriod(long startInstant, long endInstant);
 
     /**
      * Sets all the fields in one go from a duration dividing the
@@ -136,7 +136,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * 
      * @param duration  the duration to set, null means zero length
      */
-    void setTimePeriod(ReadableDuration duration);
+    void setPeriod(ReadableDuration duration);
 
     /**
      * Sets all the fields in one go from a millisecond duration dividing the
@@ -167,7 +167,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * 
      * @param duration  the duration, in milliseconds
      */
-    void setTimePeriod(long duration);
+    void setPeriod(long duration);
 
     //-----------------------------------------------------------------------
     /**
@@ -178,7 +178,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * not supported by this period
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
-    void add(ReadableTimePeriod period);
+    void add(ReadablePeriod period);
 
     /**
      * Adds to each field of this period.

@@ -53,7 +53,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableInterval;
 
@@ -64,7 +64,7 @@ import org.joda.time.ReadableInterval;
  * @since 1.0
  */
 class ReadableIntervalConverter extends AbstractConverter
-        implements IntervalConverter, DurationConverter, TimePeriodConverter {
+        implements IntervalConverter, DurationConverter, PeriodConverter {
 
     /**
      * Singleton instance.
@@ -95,9 +95,9 @@ class ReadableIntervalConverter extends AbstractConverter
      * @param writablePeriod  the period to modify
      * @param object  the interval to set from
      */
-    public void setInto(ReadWritableTimePeriod writablePeriod, Object object) {
+    public void setInto(ReadWritablePeriod writablePeriod, Object object) {
         ReadableInterval interval = (ReadableInterval) object;
-        writablePeriod.setTimePeriod(interval.getStartMillis(), interval.getEndMillis());
+        writablePeriod.setPeriod(interval.getStartMillis(), interval.getEndMillis());
     }
 
     //-----------------------------------------------------------------------

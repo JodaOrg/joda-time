@@ -65,7 +65,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
-import org.joda.time.MutableTimePeriod;
+import org.joda.time.MutablePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -177,7 +177,7 @@ public class TestNullConverter extends TestCase {
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getMillisType());
+        MutablePeriod m = new MutablePeriod(PeriodType.getMillisType());
         NullConverter.INSTANCE.setInto(m, null);
         assertEquals(0L, m.toDurationMillis());
     }

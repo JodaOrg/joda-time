@@ -75,12 +75,12 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
-import org.joda.time.ReadableTimePeriod;
-import org.joda.time.TimePeriod;
+import org.joda.time.ReadablePeriod;
+import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.Interval;
 import org.joda.time.JodaTimePermission;
-import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.ReadableDuration;
@@ -368,7 +368,7 @@ public class TestConverterManager extends TestCase {
         c = ConverterManager.getInstance().getDurationConverter(new Duration(123L));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getDurationConverter(new TimePeriod(PeriodType.getMillisType()));
+        c = ConverterManager.getInstance().getDurationConverter(new Period(PeriodType.getMillisType()));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getDurationConverter(new Interval(0L, 1000L));
@@ -506,93 +506,93 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     private static int PERIOD_SIZE = 5;
     
-    public void testGetTimePeriodConverter() {
-        TimePeriodConverter c = ConverterManager.getInstance().getTimePeriodConverter(new TimePeriod(PeriodType.getMillisType()));
-        assertEquals(ReadableTimePeriod.class, c.getSupportedType());
+    public void testGetPeriodConverter() {
+        PeriodConverter c = ConverterManager.getInstance().getPeriodConverter(new Period(PeriodType.getMillisType()));
+        assertEquals(ReadablePeriod.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getTimePeriodConverter(new Duration(123L));
+        c = ConverterManager.getInstance().getPeriodConverter(new Duration(123L));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getTimePeriodConverter(new Interval(0L, 1000L));
+        c = ConverterManager.getInstance().getPeriodConverter(new Interval(0L, 1000L));
         assertEquals(ReadableInterval.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getTimePeriodConverter("");
+        c = ConverterManager.getInstance().getPeriodConverter("");
         assertEquals(String.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getTimePeriodConverter(null);
+        c = ConverterManager.getInstance().getPeriodConverter(null);
         assertEquals(null, c.getSupportedType());
         
         try {
-            ConverterManager.getInstance().getTimePeriodConverter(Boolean.TRUE);
+            ConverterManager.getInstance().getPeriodConverter(Boolean.TRUE);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testGetTimePeriodConverterRemovedNull() {
+    public void testGetPeriodConverterRemovedNull() {
         try {
-            ConverterManager.getInstance().removeTimePeriodConverter(NullConverter.INSTANCE);
+            ConverterManager.getInstance().removePeriodConverter(NullConverter.INSTANCE);
             try {
-                ConverterManager.getInstance().getTimePeriodConverter(null);
+                ConverterManager.getInstance().getPeriodConverter(null);
                 fail();
             } catch (IllegalArgumentException ex) {}
         } finally {
-            ConverterManager.getInstance().addTimePeriodConverter(NullConverter.INSTANCE);
+            ConverterManager.getInstance().addPeriodConverter(NullConverter.INSTANCE);
         }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
     //-----------------------------------------------------------------------
-    public void testGetTimePeriodConverters() {
-        TimePeriodConverter[] array = ConverterManager.getInstance().getTimePeriodConverters();
+    public void testGetPeriodConverters() {
+        PeriodConverter[] array = ConverterManager.getInstance().getPeriodConverters();
         assertEquals(PERIOD_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
-    public void testAddTimePeriodConverter1() {
-        TimePeriodConverter c = new TimePeriodConverter() {
-            public void setInto(ReadWritableTimePeriod duration, Object object) {}
+    public void testAddPeriodConverter1() {
+        PeriodConverter c = new PeriodConverter() {
+            public void setInto(ReadWritablePeriod duration, Object object) {}
             public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         try {
-            TimePeriodConverter removed = ConverterManager.getInstance().addTimePeriodConverter(c);
+            PeriodConverter removed = ConverterManager.getInstance().addPeriodConverter(c);
             assertEquals(null, removed);
-            assertEquals(Boolean.class, ConverterManager.getInstance().getTimePeriodConverter(Boolean.TRUE).getSupportedType());
-            assertEquals(PERIOD_SIZE + 1, ConverterManager.getInstance().getTimePeriodConverters().length);
+            assertEquals(Boolean.class, ConverterManager.getInstance().getPeriodConverter(Boolean.TRUE).getSupportedType());
+            assertEquals(PERIOD_SIZE + 1, ConverterManager.getInstance().getPeriodConverters().length);
         } finally {
-            ConverterManager.getInstance().removeTimePeriodConverter(c);
+            ConverterManager.getInstance().removePeriodConverter(c);
         }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testAddTimePeriodConverter2() {
-        TimePeriodConverter c = new TimePeriodConverter() {
-            public void setInto(ReadWritableTimePeriod duration, Object object) {}
+    public void testAddPeriodConverter2() {
+        PeriodConverter c = new PeriodConverter() {
+            public void setInto(ReadWritablePeriod duration, Object object) {}
             public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return String.class;}
         };
         try {
-            TimePeriodConverter removed = ConverterManager.getInstance().addTimePeriodConverter(c);
+            PeriodConverter removed = ConverterManager.getInstance().addPeriodConverter(c);
             assertEquals(StringConverter.INSTANCE, removed);
-            assertEquals(String.class, ConverterManager.getInstance().getTimePeriodConverter("").getSupportedType());
-            assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+            assertEquals(String.class, ConverterManager.getInstance().getPeriodConverter("").getSupportedType());
+            assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
         } finally {
-            ConverterManager.getInstance().addTimePeriodConverter(StringConverter.INSTANCE);
+            ConverterManager.getInstance().addPeriodConverter(StringConverter.INSTANCE);
         }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testAddTimePeriodConverter3() {
-        TimePeriodConverter removed = ConverterManager.getInstance().addTimePeriodConverter(null);
+    public void testAddPeriodConverter3() {
+        PeriodConverter removed = ConverterManager.getInstance().addPeriodConverter(null);
         assertEquals(null, removed);
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testAddTimePeriodConverterSecurity() {
+    public void testAddPeriodConverterSecurity() {
         try {
             Policy.setPolicy(RESTRICT);
             System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().addTimePeriodConverter(StringConverter.INSTANCE);
+            ConverterManager.getInstance().addPeriodConverter(StringConverter.INSTANCE);
             fail();
         } catch (SecurityException ex) {
             // ok
@@ -600,43 +600,43 @@ public class TestConverterManager extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
     //-----------------------------------------------------------------------
-    public void testRemoveTimePeriodConverter1() {
+    public void testRemovePeriodConverter1() {
         try {
-            TimePeriodConverter removed = ConverterManager.getInstance().removeTimePeriodConverter(StringConverter.INSTANCE);
+            PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(StringConverter.INSTANCE);
             assertEquals(StringConverter.INSTANCE, removed);
-            assertEquals(PERIOD_SIZE - 1, ConverterManager.getInstance().getTimePeriodConverters().length);
+            assertEquals(PERIOD_SIZE - 1, ConverterManager.getInstance().getPeriodConverters().length);
         } finally {
-            ConverterManager.getInstance().addTimePeriodConverter(StringConverter.INSTANCE);
+            ConverterManager.getInstance().addPeriodConverter(StringConverter.INSTANCE);
         }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testRemoveTimePeriodConverter2() {
-        TimePeriodConverter c = new TimePeriodConverter() {
-            public void setInto(ReadWritableTimePeriod duration, Object object) {}
+    public void testRemovePeriodConverter2() {
+        PeriodConverter c = new PeriodConverter() {
+            public void setInto(ReadWritablePeriod duration, Object object) {}
             public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
-        TimePeriodConverter removed = ConverterManager.getInstance().removeTimePeriodConverter(c);
+        PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(c);
         assertEquals(null, removed);
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testRemoveTimePeriodConverter3() {
-        TimePeriodConverter removed = ConverterManager.getInstance().removeTimePeriodConverter(null);
+    public void testRemovePeriodConverter3() {
+        PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(null);
         assertEquals(null, removed);
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    public void testRemoveTimePeriodConverterSecurity() {
+    public void testRemovePeriodConverterSecurity() {
         try {
             Policy.setPolicy(RESTRICT);
             System.setSecurityManager(new SecurityManager());
-            ConverterManager.getInstance().removeTimePeriodConverter(StringConverter.INSTANCE);
+            ConverterManager.getInstance().removePeriodConverter(StringConverter.INSTANCE);
             fail();
         } catch (SecurityException ex) {
             // ok
@@ -644,7 +644,7 @@ public class TestConverterManager extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getTimePeriodConverters().length);
+        assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
     //-----------------------------------------------------------------------

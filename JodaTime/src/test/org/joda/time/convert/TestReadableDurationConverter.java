@@ -65,7 +65,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.PeriodType;
-import org.joda.time.MutableTimePeriod;
+import org.joda.time.MutablePeriod;
 import org.joda.time.ReadableDuration;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
@@ -133,7 +133,7 @@ public class TestReadableDurationConverter extends TestCase {
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getYearMonthType());
+        MutablePeriod m = new MutablePeriod(PeriodType.getYearMonthType());
         ReadableDurationConverter.INSTANCE.setInto(m, new Duration(
             3L * DateTimeConstants.MILLIS_PER_DAY +
             4L * DateTimeConstants.MILLIS_PER_MINUTE + 5L

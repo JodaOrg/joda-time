@@ -64,7 +64,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
 import org.joda.time.Interval;
-import org.joda.time.MutableTimePeriod;
+import org.joda.time.MutablePeriod;
 import org.joda.time.MutableInterval;
 import org.joda.time.ReadableInterval;
 import org.joda.time.chrono.ISOChronology;
@@ -136,7 +136,7 @@ public class TestReadableIntervalConverter extends TestCase {
 
     public void testSetInto_Object() throws Exception {
         Interval i = new Interval(100L, 223L);
-        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getMillisType());
+        MutablePeriod m = new MutablePeriod(PeriodType.getMillisType());
         ReadableIntervalConverter.INSTANCE.setInto(m, i);
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());

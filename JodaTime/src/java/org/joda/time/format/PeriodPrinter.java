@@ -56,18 +56,18 @@ package org.joda.time.format;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.joda.time.ReadableTimePeriod;
+import org.joda.time.ReadablePeriod;
 
 /**
  * Defines an interface for creating textual representations of time periods.
  *
  * @author Brian S O'Neill
- * @see TimePeriodFormatter
- * @see TimePeriodFormatterBuilder
- * @see TimePeriodFormat
+ * @see PeriodFormatter
+ * @see PeriodFormatterBuilder
+ * @see PeriodFormat
  * @since 1.0
  */
-public interface TimePeriodPrinter {
+public interface PeriodPrinter {
 
     /**
      * Returns the amount of fields from the given duration that this printer
@@ -76,7 +76,7 @@ public interface TimePeriodPrinter {
      * @param period  the period to use
      * @return amount of fields printed
      */
-    int countFieldsToPrint(ReadableTimePeriod period);
+    int countFieldsToPrint(ReadablePeriod period);
 
     /**
      * Returns the amount of fields from the given duration that this printer
@@ -86,7 +86,7 @@ public interface TimePeriodPrinter {
      * @param stopAt stop counting at this value
      * @return amount of fields printed
      */
-    int countFieldsToPrint(ReadableTimePeriod period, int stopAt);
+    int countFieldsToPrint(ReadablePeriod period, int stopAt);
 
     /**
      * Returns the exact number of characters produced for the given duration.
@@ -94,31 +94,31 @@ public interface TimePeriodPrinter {
      * @param period  the period to use
      * @return the estimated length
      */
-    int calculatePrintedLength(ReadableTimePeriod period);
+    int calculatePrintedLength(ReadablePeriod period);
 
     //-----------------------------------------------------------------------
     /**
-     * Prints a ReadableTimePeriod to a StringBuffer.
+     * Prints a ReadablePeriod to a StringBuffer.
      *
      * @param buf  the formatted period is appended to this buffer
      * @param period  the period to format
      */
-    void printTo(StringBuffer buf, ReadableTimePeriod period);
+    void printTo(StringBuffer buf, ReadablePeriod period);
 
     /**
-     * Prints a ReadableTimePeriod to a Writer.
+     * Prints a ReadablePeriod to a Writer.
      *
      * @param out  the formatted period is written out
      * @param period  the period to format
      */
-    void printTo(Writer out, ReadableTimePeriod period) throws IOException;
+    void printTo(Writer out, ReadablePeriod period) throws IOException;
 
     /**
-     * Prints a ReadableTimePeriod to a new String.
+     * Prints a ReadablePeriod to a new String.
      *
      * @param period  the period to format
      * @return the printed result
      */
-    String print(ReadableTimePeriod period);
+    String print(ReadablePeriod period);
 
 }

@@ -54,12 +54,13 @@
 package org.joda.time;
 
 /**
- * Defines a time period specified in terms of individual duration fields.
+ * Defines a time period specified in terms of individual duration fields
+ * such as years and days.
  * <p>
  * The implementation of this interface may be mutable or immutable. This
  * interface only gives access to retrieve data, never to change it.
  * <p>
- * Time periods are split up into multiple fields, for example days and seconds.
+ * Periods are split up into multiple fields, for example days and seconds.
  * Implementations are not required to evenly distribute the values across the fields.
  * The value for each field may be positive or negative.
  * The {@link PeriodType} defines the rules for dividing the fields and which fields
@@ -77,7 +78,7 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadableTimePeriod {
+public interface ReadablePeriod {
 
     /**
      * Returns the period type which defines which fields this period supports.
@@ -218,20 +219,20 @@ public interface ReadableTimePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets this object as an immutable TimePeriod. This can be useful if you
+     * Gets this object as an immutable Period. This can be useful if you
      * don't trust the implementation of the interface to be well-behaved, or
      * to get a guaranteed immutable object.
      * 
      * @return a Duration using the same field set and values
      */
-    TimePeriod toTimePeriod();
+    Period toPeriod();
 
     /**
-     * Get this object as a MutableTimePeriod.
+     * Get this object as a MutablePeriod.
      * 
-     * @return a MutableTimePeriod using the same field set and values
+     * @return a MutablePeriod using the same field set and values
      */
-    MutableTimePeriod toMutableTimePeriod();
+    MutablePeriod toMutablePeriod();
 
     /**
      * Gets the total length of this time period in milliseconds, 
@@ -254,7 +255,7 @@ public interface ReadableTimePeriod {
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on the value of each field. All ReadableTimePeriod instances are accepted.
+     * on the value of each field. All ReadablePeriod instances are accepted.
      * <p>
      * To compare two periods for absolute duration (ie. millisecond duration
      * ignoring the fields), use {@link #toDurationMillis()} or {@link #toDuration()}.

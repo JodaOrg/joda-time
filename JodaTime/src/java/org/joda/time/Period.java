@@ -61,13 +61,13 @@ import java.io.Serializable;
  * A time period is divided into a number of fields, such as hours and seconds.
  * The way in which that divide occurs is controlled by the PeriodType class.
  * <p>
- * <code>TimePeriod</code> can use any period type to split the milliseconds into fields.
+ * <code>Period</code> can use any period type to split the milliseconds into fields.
  * The {@link PeriodType#getAllType() All} type is used by default.
  * <code>All</code> uses the ISO chronology and divides a duration into years, months,
  * weeks, days, hours, minutes, seconds and milliseconds as best it can.
  * <p>
  * This class performs calculations using the individual fields.
- * It <i>may</i> be possible to convert a <code>TimePeriod</code> to a <code>Duration</code>.
+ * It <i>may</i> be possible to convert a <code>Period</code> to a <code>Duration</code>.
  * The conversion will succeed if the time period is precise.
  * A time period is precise if all of the populated fields have a fixed known duration.
  * <p>
@@ -77,17 +77,17 @@ import java.io.Serializable;
  * 23 hours rather than 24 to ensure that the time remains the same.
  * If this is not the behaviour you want, then see {@link Duration}.
  * <p>
- * TimePeriod is thread-safe and immutable, provided that the PeriodType is as well.
+ * Period is thread-safe and immutable, provided that the PeriodType is as well.
  * All standard PeriodType classes supplied are thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
- * @see MutableTimePeriod
+ * @see MutablePeriod
  */
-public class TimePeriod
-        extends AbstractTimePeriod
-        implements ReadableTimePeriod, Serializable {
+public class Period
+        extends AbstractPeriod
+        implements ReadablePeriod, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 741052353876488155L;
@@ -102,7 +102,7 @@ public class TimePeriod
      *
      * @param duration  the duration, in milliseconds
      */
-    public TimePeriod(long duration) {
+    public Period(long duration) {
         super(duration, null);
     }
 
@@ -117,7 +117,7 @@ public class TimePeriod
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this period supports
      */
-    public TimePeriod(long duration, PeriodType type) {
+    public Period(long duration, PeriodType type) {
         super(duration, type);
     }
 
@@ -130,7 +130,7 @@ public class TimePeriod
      * @param seconds  amount of seconds in this period
      * @param millis  amount of milliseconds in this period
      */
-    public TimePeriod(int hours, int minutes, int seconds, int millis) {
+    public Period(int hours, int minutes, int seconds, int millis) {
         super(0, 0, 0, 0, hours, minutes, seconds, millis, null);
     }
 
@@ -146,7 +146,7 @@ public class TimePeriod
      * @param seconds  amount of seconds in this period
      * @param millis  amount of milliseconds in this period
      */
-    public TimePeriod(int years, int months, int weeks, int days,
+    public Period(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, null);
     }
@@ -165,7 +165,7 @@ public class TimePeriod
      * @param type  which set of fields this period supports, null means AllType
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public TimePeriod(int years, int months, int weeks, int days,
+    public Period(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis, PeriodType type) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, type);
     }
@@ -177,7 +177,7 @@ public class TimePeriod
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    public TimePeriod(long startInstant, long endInstant) {
+    public Period(long startInstant, long endInstant) {
         super(startInstant, endInstant, null);
     }
 
@@ -189,7 +189,7 @@ public class TimePeriod
      * @param endInstant  interval end, in milliseconds
      * @param type  which set of fields this period supports, null means AllType
      */
-    public TimePeriod(long startInstant, long endInstant, PeriodType type) {
+    public Period(long startInstant, long endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -200,7 +200,7 @@ public class TimePeriod
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
      */
-    public TimePeriod(ReadableInstant startInstant, ReadableInstant endInstant) {
+    public Period(ReadableInstant startInstant, ReadableInstant endInstant) {
         super(startInstant, endInstant, null);
     }
 
@@ -212,7 +212,7 @@ public class TimePeriod
      * @param endInstant  interval end, null means now
      * @param type  which set of fields this period supports, null means AllType
      */
-    public TimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
+    public Period(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -224,7 +224,7 @@ public class TimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public TimePeriod(Object period) {
+    public Period(Object period) {
         super(period, null);
     }
 
@@ -237,7 +237,7 @@ public class TimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public TimePeriod(Object period, PeriodType type) {
+    public Period(Object period, PeriodType type) {
         super(period, type);
     }
 
@@ -259,77 +259,77 @@ public class TimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new TimePeriod instance with the same field values but
+     * Creates a new Period instance with the same field values but
      * different PeriodType.
      * 
      * @param type  the period type to use, null means AllType
      * @return the new period instance
      * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
-    public TimePeriod withPeriodType(PeriodType type) {
+    public final Period withPeriodType(PeriodType type) {
         if (type == null) {
             type = PeriodType.getAllType();
         }
         if (type.equals(getPeriodType())) {
             return this;
         }
-        return new TimePeriod(getYears(), getMonths(), getWeeks(), getDays(),
+        return new Period(getYears(), getMonths(), getWeeks(), getDays(),
                     getHours(), getMinutes(), getSeconds(), getMillis(), type);
     }
 
     /**
-     * Creates a new TimePeriod instance with the same millisecond duration but
+     * Creates a new Period instance with the same millisecond duration but
      * different PeriodType.
      * 
      * @param type  the period type to use, null means AllType
      * @return the new period instance
      * @throws IllegalStateException if this period is imprecise
      */
-    public TimePeriod withPeriodTypeRetainDuration(PeriodType type) {
+    public final Period withPeriodTypeRetainDuration(PeriodType type) {
         if (type == null) {
             type = PeriodType.getAllType();
         }
         if (type.equals(getPeriodType())) {
             return this;
         }
-        return new TimePeriod(toDurationMillis(), type);
+        return new Period(toDurationMillis(), type);
     }
 
     /**
-     * Creates a new TimePeriod instance with the same millisecond duration but
+     * Creates a new Period instance with the same millisecond duration but
      * all the fields normalized to be within their standard ranges.
      * 
      * @return the new period instance
      * @throws IllegalStateException if this period is imprecise
      */
-    public TimePeriod withFieldsNormalized() {
-        return new TimePeriod(toDurationMillis(), getPeriodType());
+    public final Period withFieldsNormalized() {
+        return new Period(toDurationMillis(), getPeriodType());
     }
 
     //-----------------------------------------------------------------------
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
-    protected final void setTimePeriod(ReadableTimePeriod period) {
+    protected final void setPeriod(ReadablePeriod period) {
     }
 
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
-    protected final void setTimePeriod(int years, int months, int weeks, int days,
+    protected final void setPeriod(int years, int months, int weeks, int days,
                                        int hours, int minutes, int seconds, int millis) {
     }
 
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
-    protected final void setTimePeriod(long startInstant, long endInstant) {
+    protected final void setPeriod(long startInstant, long endInstant) {
     }
 
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
-    protected final void setTimePeriod(long duration) {
+    protected final void setPeriod(long duration) {
     }
 
     /**

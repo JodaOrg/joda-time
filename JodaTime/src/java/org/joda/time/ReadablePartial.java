@@ -53,7 +53,6 @@
  */
 package org.joda.time;
 
-
 /**
  * Defines an partial time that does not support every datetime field.
  * <p>

@@ -56,7 +56,7 @@ package org.joda.time;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.format.ISOTimePeriodFormat;
+import org.joda.time.format.ISOPeriodFormat;
 
 /**
  * AbstractDuration provides the common behaviour for duration classes.
@@ -156,7 +156,7 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this duration to a TimePeriod instance using the All type.
+     * Converts this duration to a Period instance using the All type.
      * <p>
      * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
@@ -174,14 +174,14 @@ public abstract class AbstractDuration implements ReadableDuration {
      * For more control over the conversion process, you should convert the duration
      * to an interval by referencing a fixed instant and then obtain the period.
      * 
-     * @return a TimePeriod created using the millisecond duration from this instance
+     * @return a Period created using the millisecond duration from this instance
      */
-    public final TimePeriod toTimePeriod() {
-        return new TimePeriod(this, PeriodType.getAllType());
+    public final Period toPeriod() {
+        return new Period(this, PeriodType.getAllType());
     }
 
     /**
-     * Converts this duration to a TimePeriod instance specifying a period type
+     * Converts this duration to a Period instance specifying a period type
      * to control how the duration is split into fields.
      * <p>
      * The exact impact of this method is determined by the period type.
@@ -208,10 +208,10 @@ public abstract class AbstractDuration implements ReadableDuration {
      * to an interval by referencing a fixed instant and then obtain the period.
      * 
      * @param type  the period type determining how to split the duration into fields
-     * @return a TimePeriod created using the millisecond duration from this instance
+     * @return a Period created using the millisecond duration from this instance
      */
-    public final TimePeriod toTimePeriod(PeriodType type) {
-        return new TimePeriod(this, type);
+    public final Period toPeriod(PeriodType type) {
+        return new Period(this, type);
     }
 
     //-----------------------------------------------------------------------
@@ -320,7 +320,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @return the value as an ISO8601 string
      */
     public String toString() {
-        return ISOTimePeriodFormat.getInstance().standard().print(toTimePeriod());
+        return ISOPeriodFormat.getInstance().standard().print(toPeriod());
     }
 
     //-----------------------------------------------------------------------

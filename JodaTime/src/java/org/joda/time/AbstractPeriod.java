@@ -56,9 +56,9 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.TimePeriodConverter;
+import org.joda.time.convert.PeriodConverter;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.format.ISOTimePeriodFormat;
+import org.joda.time.format.ISOPeriodFormat;
 
 /**
  * AbstractDuration provides the common behaviour for duration classes.
@@ -73,8 +73,8 @@ import org.joda.time.format.ISOTimePeriodFormat;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public abstract class AbstractTimePeriod
-        implements ReadableTimePeriod, Serializable {
+public abstract class AbstractPeriod
+        implements ReadablePeriod, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = -2110953284060001145L;
@@ -118,12 +118,12 @@ public abstract class AbstractTimePeriod
      * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if period type is invalid
      */
-    public AbstractTimePeriod(long duration, PeriodType type) {
+    public AbstractPeriod(long duration, PeriodType type) {
         super();
         type = checkPeriodType(type);
         iType = type;
         // Only call a private method
-        setTimePeriod(type, duration);
+        setPeriod(type, duration);
     }
 
     /**
@@ -141,14 +141,14 @@ public abstract class AbstractTimePeriod
      * @throws IllegalArgumentException if period type is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractTimePeriod(int years, int months, int weeks, int days,
+    public AbstractPeriod(int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis,
                             PeriodType type) {
         super();
         type = checkPeriodType(type);
         iType = type;
         // Only call a private method
-        setTimePeriod(type, years, months, weeks, days, hours, minutes, seconds, millis);
+        setPeriod(type, years, months, weeks, days, hours, minutes, seconds, millis);
     }
 
     /**
@@ -159,12 +159,12 @@ public abstract class AbstractTimePeriod
      * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if period type is invalid
      */
-    public AbstractTimePeriod(long startInstant, long endInstant, PeriodType type) {
+    public AbstractPeriod(long startInstant, long endInstant, PeriodType type) {
         super();
         type = checkPeriodType(type);
         iType = type;
         // Only call a private method
-        setTimePeriod(type, startInstant, endInstant);
+        setPeriod(type, startInstant, endInstant);
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class AbstractTimePeriod
      * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if period type is invalid
      */
-    public AbstractTimePeriod(
+    public AbstractPeriod(
             ReadableInstant startInstant, ReadableInstant  endInstant, PeriodType type) {
         super();
         type = checkPeriodType(type);
@@ -186,7 +186,7 @@ public abstract class AbstractTimePeriod
             long end = (endInstant == null ? DateTimeUtils.currentTimeMillis() : endInstant.getMillis());
             iType = type;
             // Only call a private method
-            setTimePeriod(type, start, end);
+            setPeriod(type, start, end);
         }
     }
 
@@ -198,17 +198,17 @@ public abstract class AbstractTimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractTimePeriod(Object period, PeriodType type) {
+    public AbstractPeriod(Object period, PeriodType type) {
         super();
-        TimePeriodConverter converter = ConverterManager.getInstance().getTimePeriodConverter(period);
+        PeriodConverter converter = ConverterManager.getInstance().getPeriodConverter(period);
         type = (type == null ? converter.getPeriodType(period, false) : type);
         type = checkPeriodType(type);
         iType = type;
-        if (this instanceof ReadWritableTimePeriod) {
-            converter.setInto((ReadWritableTimePeriod) this, period);
+        if (this instanceof ReadWritablePeriod) {
+            converter.setInto((ReadWritablePeriod) this, period);
         } else {
             // Only call a private method
-            setTimePeriod(type, new MutableTimePeriod(period, type));
+            setPeriod(type, new MutablePeriod(period, type));
         }
     }
 
@@ -470,26 +470,26 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Get this object as an immutable TimePeriod. This can be useful if you
+     * Get this object as an immutable Period. This can be useful if you
      * don't trust the implementation of the interface to be well-behaved, or
      * to get a guaranteed immutable object.
      * 
      * @return a Duration using the same field set and values
      */
-    public final TimePeriod toTimePeriod() {
-        if (this instanceof TimePeriod) {
-            return (TimePeriod) this;
+    public final Period toPeriod() {
+        if (this instanceof Period) {
+            return (Period) this;
         }
-        return new TimePeriod(this);
+        return new Period(this);
     }
 
     /**
-     * Get this object as a MutableTimePeriod.
+     * Get this object as a MutablePeriod.
      * 
-     * @return a MutableTimePeriod using the same field set and values
+     * @return a MutablePeriod using the same field set and values
      */
-    public final MutableTimePeriod toMutableTimePeriod() {
-        return new MutableTimePeriod(this);
+    public final MutablePeriod toMutablePeriod() {
+        return new MutablePeriod(this);
     }
 
     //-----------------------------------------------------------------------
@@ -527,7 +527,7 @@ public abstract class AbstractTimePeriod
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on the value of each field. All ReadableTimePeriod instances are accepted.
+     * on the value of each field. All ReadablePeriod instances are accepted.
      * <p>
      * To compare two periods for absolute duration (ie. millisecond duration
      * ignoring the fields), use {@link #toDurationMillis()} or {@link #toDuration()}.
@@ -540,10 +540,10 @@ public abstract class AbstractTimePeriod
         if (this == readablePeriod) {
             return true;
         }
-        if (readablePeriod instanceof ReadableTimePeriod == false) {
+        if (readablePeriod instanceof ReadablePeriod == false) {
             return false;
         }
-        ReadableTimePeriod other = (ReadableTimePeriod) readablePeriod;
+        ReadablePeriod other = (ReadablePeriod) readablePeriod;
         PeriodType type = getPeriodType();
         if (type.equals(other.getPeriodType()) == false) {
             return false;
@@ -586,7 +586,7 @@ public abstract class AbstractTimePeriod
      * @return the value as an ISO8601 string
      */
     public String toString() {
-        return ISOTimePeriodFormat.getInstance().standard().print(this);
+        return ISOPeriodFormat.getInstance().standard().print(this);
     }
 
     //-----------------------------------------------------------------------
@@ -611,7 +611,7 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Sets all the fields in one go from another ReadableTimePeriod.
+     * Sets all the fields in one go from another ReadablePeriod.
      * <p>
      * Subclasses that wish to be immutable should override this method with an
      * empty implementation that is protected and final. This also ensures that
@@ -620,19 +620,19 @@ public abstract class AbstractTimePeriod
      * @param period  the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    protected void setTimePeriod(ReadableTimePeriod period) {
+    protected void setPeriod(ReadablePeriod period) {
         if (period == null) {
-            setTimePeriod(iType, 0L);
+            setPeriod(iType, 0L);
         } else {
-            setTimePeriod(iType, period);
+            setPeriod(iType, period);
         }
     }
 
     /**
      * This method is private to prevent subclasses from overriding.
      */
-    private void setTimePeriod(PeriodType type, ReadableTimePeriod period) {
-        setTimePeriod(type,
+    private void setPeriod(PeriodType type, ReadablePeriod period) {
+        setPeriod(type,
             period.getYears(), period.getMonths(),
             period.getWeeks(), period.getDays(),
             period.getHours(), period.getMinutes(),
@@ -656,15 +656,15 @@ public abstract class AbstractTimePeriod
      * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    protected void setTimePeriod(int years, int months, int weeks, int days,
+    protected void setPeriod(int years, int months, int weeks, int days,
                                int hours, int minutes, int seconds, int millis) {
-        setTimePeriod(iType, years, months, weeks, days, hours, minutes, seconds, millis);
+        setPeriod(iType, years, months, weeks, days, hours, minutes, seconds, millis);
     }
 
     /**
      * This method is private to prevent subclasses from overriding.
      */
-    private void setTimePeriod(PeriodType type,
+    private void setPeriod(PeriodType type,
                              int years, int months, int weeks, int days,
                              int hours, int minutes, int seconds, int millis) {
         if (years != 0) {
@@ -714,8 +714,8 @@ public abstract class AbstractTimePeriod
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    protected void setTimePeriod(long startInstant, long endInstant) {
-        setTimePeriod(iType, startInstant, endInstant);
+    protected void setPeriod(long startInstant, long endInstant) {
+        setPeriod(iType, startInstant, endInstant);
     }
 
     /**
@@ -724,7 +724,7 @@ public abstract class AbstractTimePeriod
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    private void setTimePeriod(PeriodType type, long startInstant, long endInstant) {
+    private void setPeriod(PeriodType type, long startInstant, long endInstant) {
         long baseTotalMillis = (endInstant - startInstant);
         int years = 0, months = 0, weeks = 0, days = 0;
         int hours = 0, minutes = 0, seconds = 0, millis = 0;
@@ -791,8 +791,8 @@ public abstract class AbstractTimePeriod
      * 
      * @param duration  the duration, in milliseconds
      */
-    protected void setTimePeriod(long duration) {
-        setTimePeriod(iType, duration);
+    protected void setPeriod(long duration) {
+        setPeriod(iType, duration);
     }
 
     /**
@@ -800,7 +800,7 @@ public abstract class AbstractTimePeriod
      *
      * @param duration  the duration, in milliseconds
      */
-    private void setTimePeriod(PeriodType type, long duration) {
+    private void setPeriod(PeriodType type, long duration) {
         if (duration == 0) {
             iDuration = duration;
             iYears = 0;
@@ -880,11 +880,11 @@ public abstract class AbstractTimePeriod
      * 
      * @param interval  the interval to set, null means zero length
      */
-    protected void setTimePeriod(ReadableInterval interval) {
+    protected void setPeriod(ReadableInterval interval) {
         if (interval != null) {
-            setTimePeriod(interval.getStartMillis(), interval.getEndMillis());
+            setPeriod(interval.getStartMillis(), interval.getEndMillis());
         } else {
-            setTimePeriod(0L);
+            setPeriod(0L);
         }
     }
 
@@ -894,11 +894,11 @@ public abstract class AbstractTimePeriod
      * 
      * @param duration  the duration to set, null means zero length
      */
-    protected void setTimePeriod(ReadableDuration duration) {
+    protected void setPeriod(ReadableDuration duration) {
         if (duration != null) {
-            setTimePeriod(duration.getMillis());
+            setPeriod(duration.getMillis());
         } else {
-            setTimePeriod(0L);
+            setPeriod(0L);
         }
     }
 
@@ -985,9 +985,9 @@ public abstract class AbstractTimePeriod
      * not supported by this period
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
-    protected void add(ReadableTimePeriod period) {
+    protected void add(ReadablePeriod period) {
         if (period != null) {
-            setTimePeriod(
+            setPeriod(
                 FieldUtils.safeAdd(getYears(), period.getYears()),
                 FieldUtils.safeAdd(getMonths(), period.getMonths()),
                 FieldUtils.safeAdd(getWeeks(), period.getWeeks()),
@@ -1017,7 +1017,7 @@ public abstract class AbstractTimePeriod
      */
     protected void add(int years, int months, int weeks, int days,
                        int hours, int minutes, int seconds, int millis) {
-        setTimePeriod(
+        setPeriod(
             FieldUtils.safeAdd(getYears(), years),
             FieldUtils.safeAdd(getMonths(), months),
             FieldUtils.safeAdd(getWeeks(), weeks),
@@ -1031,39 +1031,39 @@ public abstract class AbstractTimePeriod
 
     /**
      * Adds an interval to this one by dividing the interval into
-     * fields and calling {@link #add(ReadableTimePeriod)}.
+     * fields and calling {@link #add(ReadablePeriod)}.
      * 
      * @param interval  the interval to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     protected void add(ReadableInterval interval) {
         if (interval != null) {
-            add(interval.toTimePeriod(getPeriodType()));
+            add(interval.toPeriod(getPeriodType()));
         }
     }
 
     /**
      * Adds a duration to this one by dividing the duration into
-     * fields and calling {@link #add(ReadableTimePeriod)}.
+     * fields and calling {@link #add(ReadablePeriod)}.
      * 
      * @param duration  the duration to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     protected void add(ReadableDuration duration) {
         if (duration != null) {
-            add(new TimePeriod(duration.getMillis(), getPeriodType()));
+            add(new Period(duration.getMillis(), getPeriodType()));
         }
     }
 
     /**
      * Adds a millisecond duration to this one by dividing the duration into
-     * fields and calling {@link #add(ReadableTimePeriod)}.
+     * fields and calling {@link #add(ReadablePeriod)}.
      * 
      * @param duration  the duration, in milliseconds
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     protected void add(long duration) {
-        add(new TimePeriod(duration, getPeriodType()));
+        add(new Period(duration, getPeriodType()));
     }
 
     /**
@@ -1074,7 +1074,7 @@ public abstract class AbstractTimePeriod
      * @throws IllegalStateException if this period is imprecise
      */
     protected void normalize() {
-        setTimePeriod(toDurationMillis());
+        setPeriod(toDurationMillis());
     }
 
     //-----------------------------------------------------------------------

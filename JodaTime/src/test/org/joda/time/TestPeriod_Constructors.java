@@ -138,7 +138,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        TimePeriod test = new TimePeriod(length);
+        Period test = new Period(length);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -160,7 +160,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        TimePeriod test = new TimePeriod(length);
+        Period test = new Period(length);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -180,7 +180,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        TimePeriod test = new TimePeriod(length, null);
+        Period test = new Period(length, null);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -202,7 +202,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        TimePeriod test = new TimePeriod(length, PeriodType.getMillisType());
+        Period test = new Period(length, PeriodType.getMillisType());
         assertEquals(PeriodType.getMillisType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -221,7 +221,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        TimePeriod test = new TimePeriod(length, PeriodType.getDayHourType());
+        Period test = new Period(length, PeriodType.getDayHourType());
         assertEquals(PeriodType.getDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -243,7 +243,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        TimePeriod test = new TimePeriod(length, PeriodType.getAllType().withMillisRemoved());
+        Period test = new Period(length, PeriodType.getAllType().withMillisRemoved());
         assertEquals(PeriodType.getAllType().withMillisRemoved(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -262,7 +262,7 @@ public class TestPeriod_Constructors extends TestCase {
      * Test constructor (4ints)
      */
     public void testConstructor_4int1() throws Throwable {
-        TimePeriod test = new TimePeriod(5, 6, 7, 8);
+        Period test = new Period(5, 6, 7, 8);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -283,7 +283,7 @@ public class TestPeriod_Constructors extends TestCase {
      * Test constructor (8ints)
      */
     public void testConstructor_8int1() throws Throwable {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -305,7 +305,7 @@ public class TestPeriod_Constructors extends TestCase {
      * Test constructor (8ints)
      */
     public void testConstructor_8int__PeriodType1() throws Throwable {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, null);
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, null);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -323,7 +323,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_8int__PeriodType2() throws Throwable {
-        TimePeriod test = new TimePeriod(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.getDayHourType());
+        Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.getDayHourType());
         assertEquals(PeriodType.getDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -341,7 +341,7 @@ public class TestPeriod_Constructors extends TestCase {
 
     public void testConstructor_8int__PeriodType3() throws Throwable {
         try {
-            new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getDayHourType());
+            new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getDayHourType());
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -350,7 +350,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_long_long1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis());
+        Period test = new Period(dt1.getMillis(), dt2.getMillis());
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -370,7 +370,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_long_long2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis());
+        Period test = new Period(dt1.getMillis(), dt2.getMillis());
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -391,7 +391,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_long_long_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis(), null);
+        Period test = new Period(dt1.getMillis(), dt2.getMillis(), null);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -411,7 +411,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_long_long_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis(), PeriodType.getDayHourType());
+        Period test = new Period(dt1.getMillis(), dt2.getMillis(), PeriodType.getDayHourType());
         assertEquals(PeriodType.getDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -431,7 +431,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_long_long_PeriodType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 6, 9, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis(), PeriodType.getAllType().withMillisRemoved());
+        Period test = new Period(dt1.getMillis(), dt2.getMillis(), PeriodType.getAllType().withMillisRemoved());
         assertEquals(PeriodType.getAllType().withMillisRemoved(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -449,7 +449,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2);
+        Period test = new Period(dt1, dt2);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -469,7 +469,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2);
+        Period test = new Period(dt1, dt2);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -489,7 +489,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI3() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2);
+        Period test = new Period(dt1, dt2);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(3, test.getYears());
         assertEquals(1, test.getMonths());
@@ -509,7 +509,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI4() throws Throwable {
         DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        TimePeriod test = new TimePeriod(dt1, dt2);
+        Period test = new Period(dt1, dt2);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(-3, test.getYears());
         assertEquals(-1, test.getMonths());
@@ -529,7 +529,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        TimePeriod test = new TimePeriod(dt1, dt2);
+        Period test = new Period(dt1, dt2);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -547,7 +547,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2, null);
+        Period test = new Period(dt1, dt2, null);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -567,7 +567,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2, PeriodType.getDayHourType());
+        Period test = new Period(dt1, dt2, PeriodType.getDayHourType());
         assertEquals(PeriodType.getDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -587,7 +587,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI_PeriodType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 6, 9, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2, PeriodType.getAllType().withMillisRemoved());
+        Period test = new Period(dt1, dt2, PeriodType.getAllType().withMillisRemoved());
         assertEquals(PeriodType.getAllType().withMillisRemoved(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -604,7 +604,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI_PeriodType4() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        TimePeriod test = new TimePeriod(dt1, dt2, PeriodType.getAllType());
+        Period test = new Period(dt1, dt2, PeriodType.getAllType());
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(3, test.getYears());
         assertEquals(1, test.getMonths());
@@ -624,7 +624,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RI_PeriodType5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        TimePeriod test = new TimePeriod(dt1, dt2, PeriodType.getAllType());
+        Period test = new Period(dt1, dt2, PeriodType.getAllType());
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -643,7 +643,7 @@ public class TestPeriod_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_Object1() throws Throwable {
-        TimePeriod test = new TimePeriod("P1Y2M3D");
+        Period test = new Period("P1Y2M3D");
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -661,7 +661,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object2() throws Throwable {
-        TimePeriod test = new TimePeriod((Object) null);
+        Period test = new Period((Object) null);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -676,7 +676,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object3() throws Throwable {
-        TimePeriod test = new TimePeriod(new TimePeriod(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType()));
+        Period test = new Period(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType()));
         assertEquals(PeriodType.getDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -692,8 +692,8 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object4() throws Throwable {
-        TimePeriod base = new TimePeriod(1, 1, 0, 1, 1, 1, 1, 1, PeriodType.getAllType());
-        TimePeriod test = new TimePeriod(base);
+        Period base = new Period(1, 1, 0, 1, 1, 1, 1, 1, PeriodType.getAllType());
+        Period test = new Period(base);
         assertEquals(PeriodType.getAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -715,7 +715,7 @@ public class TestPeriod_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_Object_PeriodType1() throws Throwable {
-        TimePeriod test = new TimePeriod("P1Y2M3D", PeriodType.getYearMonthType());
+        Period test = new Period("P1Y2M3D", PeriodType.getYearMonthType());
         assertEquals(PeriodType.getYearMonthType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -733,7 +733,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_PeriodType2() throws Throwable {
-        TimePeriod test = new TimePeriod((Object) null, PeriodType.getYearMonthType());
+        Period test = new Period((Object) null, PeriodType.getYearMonthType());
         assertEquals(PeriodType.getYearMonthType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -748,7 +748,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_PeriodType3() throws Throwable {
-        TimePeriod test = new TimePeriod(new TimePeriod(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType()), PeriodType.getYearMonthType());
+        Period test = new Period(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType()), PeriodType.getYearMonthType());
         assertEquals(PeriodType.getYearMonthType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -764,7 +764,7 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_PeriodType4() throws Throwable {
-        TimePeriod test = new TimePeriod(new TimePeriod(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType()), null);
+        Period test = new Period(new Period(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType()), null);
         assertEquals(PeriodType.getDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());

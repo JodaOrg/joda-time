@@ -195,6 +195,7 @@ public final class ZonedChronology extends AssembledChronology {
         fields.weeks = convertField(fields.weeks, converted);
         fields.days = convertField(fields.days, converted);
 
+        fields.halfdays = convertField(fields.halfdays, converted);
         fields.hours = convertField(fields.hours, converted);
         fields.minutes = convertField(fields.minutes, converted);
         fields.seconds = convertField(fields.seconds, converted);
@@ -213,6 +214,7 @@ public final class ZonedChronology extends AssembledChronology {
         fields.monthOfYear = convertField(fields.monthOfYear, converted);
         fields.weekOfWeekyear = convertField(fields.weekOfWeekyear, converted);
         fields.weekyear = convertField(fields.weekyear, converted);
+        fields.weekyearOfCentury = convertField(fields.weekyearOfCentury, converted);
 
         fields.millisOfSecond = convertField(fields.millisOfSecond, converted);
         fields.millisOfDay = convertField(fields.millisOfDay, converted);

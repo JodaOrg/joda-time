@@ -608,6 +608,15 @@ public abstract class Chronology {
      */
     public abstract DateTimeField clockhourOfDay();
 
+    // Halfday
+    //-----------------------------------------------------------------------
+    /**
+     * Get the halfdays duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public abstract DurationField halfdays();
+
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
      * 
@@ -678,6 +687,8 @@ public abstract class Chronology {
      */
     public abstract DateTimeField weekOfWeekyear();
 
+    // Weekyear
+    //-----------------------------------------------------------------------
     /**
      * Get the weekyears duration field for this chronology.
      * 
@@ -691,6 +702,13 @@ public abstract class Chronology {
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public abstract DateTimeField weekyear();
+
+    /**
+     * Get the year of a week based year in a century field for this chronology.
+     * 
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
+     */
+    public abstract  DateTimeField weekyearOfCentury();
 
     // Month
     //-----------------------------------------------------------------------
@@ -738,6 +756,8 @@ public abstract class Chronology {
      */
     public abstract DateTimeField yearOfCentury();
 
+    // Century
+    //-----------------------------------------------------------------------
     /**
      * Get the centuries duration field for this chronology.
      * 
@@ -752,6 +772,8 @@ public abstract class Chronology {
      */
     public abstract DateTimeField centuryOfEra();
 
+    // Era
+    //-----------------------------------------------------------------------
     /**
      * Get the eras duration field for this chronology.
      * 
@@ -766,6 +788,7 @@ public abstract class Chronology {
      */
     public abstract DateTimeField era();
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a debugging toString.
      * 

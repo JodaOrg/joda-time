@@ -316,7 +316,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
         fields.seconds = cSecondsField;
         fields.minutes = cMinutesField;
         fields.hours = cHoursField;
-        //fields.halfdays = cHalfdaysField;  Doesn't exist in public interface
+        fields.halfdays = cHalfdaysField;
         fields.days = cDaysField;
         fields.weeks = cWeeksField;
 
@@ -356,7 +356,12 @@ public abstract class BaseGJChronology extends AssembledChronology {
         fields.monthOfYear = new GJMonthOfYearDateTimeField(this);
         fields.weekyear = new GJWeekyearDateTimeField(this);
         fields.weekOfWeekyear = new GJWeekOfWeekyearDateTimeField(this, fields.weeks);
-
+        
+        field = new RemainderDateTimeField(
+            fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
+        fields.weekyearOfCentury = new OffsetDateTimeField(
+            field, DateTimeFieldType.weekyearOfCentury(), 1);
+        
         // The remaining (imprecise) durations are available from the newly
         // created datetime fields.
 

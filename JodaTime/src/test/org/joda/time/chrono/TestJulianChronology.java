@@ -193,6 +193,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals("months", JulianChronology.getInstance().months().getName());
         assertEquals("weeks", JulianChronology.getInstance().weeks().getName());
         assertEquals("days", JulianChronology.getInstance().days().getName());
+        assertEquals("halfdays", JulianChronology.getInstance().halfdays().getName());
         assertEquals("hours", JulianChronology.getInstance().hours().getName());
         assertEquals("minutes", JulianChronology.getInstance().minutes().getName());
         assertEquals("seconds", JulianChronology.getInstance().seconds().getName());
@@ -205,6 +206,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals(true, JulianChronology.getInstance().months().isSupported());
         assertEquals(true, JulianChronology.getInstance().weeks().isSupported());
         assertEquals(true, JulianChronology.getInstance().days().isSupported());
+        assertEquals(true, JulianChronology.getInstance().halfdays().isSupported());
         assertEquals(true, JulianChronology.getInstance().hours().isSupported());
         assertEquals(true, JulianChronology.getInstance().minutes().isSupported());
         assertEquals(true, JulianChronology.getInstance().seconds().isSupported());
@@ -216,6 +218,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals(false, JulianChronology.getInstance().months().isPrecise());
         assertEquals(false, JulianChronology.getInstance().weeks().isPrecise());
         assertEquals(false, JulianChronology.getInstance().days().isPrecise());
+        assertEquals(false, JulianChronology.getInstance().halfdays().isPrecise());
         assertEquals(true, JulianChronology.getInstance().hours().isPrecise());
         assertEquals(true, JulianChronology.getInstance().minutes().isPrecise());
         assertEquals(true, JulianChronology.getInstance().seconds().isPrecise());
@@ -227,6 +230,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals(false, JulianChronology.getInstanceUTC().months().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().weeks().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().days().isPrecise());
+        assertEquals(true, JulianChronology.getInstanceUTC().halfdays().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().hours().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().seconds().isPrecise());
@@ -240,6 +244,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals("yearOfEra", JulianChronology.getInstance().yearOfEra().getName());
         assertEquals("year", JulianChronology.getInstance().year().getName());
         assertEquals("monthOfYear", JulianChronology.getInstance().monthOfYear().getName());
+        assertEquals("weekyearOfCentury", JulianChronology.getInstance().weekyearOfCentury().getName());
         assertEquals("weekyear", JulianChronology.getInstance().weekyear().getName());
         assertEquals("weekOfWeekyear", JulianChronology.getInstance().weekOfWeekyear().getName());
         assertEquals("dayOfYear", JulianChronology.getInstance().dayOfYear().getName());
@@ -252,6 +257,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals(true, JulianChronology.getInstance().yearOfEra().isSupported());
         assertEquals(true, JulianChronology.getInstance().year().isSupported());
         assertEquals(true, JulianChronology.getInstance().monthOfYear().isSupported());
+        assertEquals(true, JulianChronology.getInstance().weekyearOfCentury().isSupported());
         assertEquals(true, JulianChronology.getInstance().weekyear().isSupported());
         assertEquals(true, JulianChronology.getInstance().weekOfWeekyear().isSupported());
         assertEquals(true, JulianChronology.getInstance().dayOfYear().isSupported());

@@ -193,6 +193,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals("months", GregorianChronology.getInstance().months().getName());
         assertEquals("weeks", GregorianChronology.getInstance().weeks().getName());
         assertEquals("days", GregorianChronology.getInstance().days().getName());
+        assertEquals("halfdays", GregorianChronology.getInstance().halfdays().getName());
         assertEquals("hours", GregorianChronology.getInstance().hours().getName());
         assertEquals("minutes", GregorianChronology.getInstance().minutes().getName());
         assertEquals("seconds", GregorianChronology.getInstance().seconds().getName());
@@ -205,6 +206,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, GregorianChronology.getInstance().months().isSupported());
         assertEquals(true, GregorianChronology.getInstance().weeks().isSupported());
         assertEquals(true, GregorianChronology.getInstance().days().isSupported());
+        assertEquals(true, GregorianChronology.getInstance().halfdays().isSupported());
         assertEquals(true, GregorianChronology.getInstance().hours().isSupported());
         assertEquals(true, GregorianChronology.getInstance().minutes().isSupported());
         assertEquals(true, GregorianChronology.getInstance().seconds().isSupported());
@@ -216,6 +218,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(false, GregorianChronology.getInstance().months().isPrecise());
         assertEquals(false, GregorianChronology.getInstance().weeks().isPrecise());
         assertEquals(false, GregorianChronology.getInstance().days().isPrecise());
+        assertEquals(false, GregorianChronology.getInstance().halfdays().isPrecise());
         assertEquals(true, GregorianChronology.getInstance().hours().isPrecise());
         assertEquals(true, GregorianChronology.getInstance().minutes().isPrecise());
         assertEquals(true, GregorianChronology.getInstance().seconds().isPrecise());
@@ -227,6 +230,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(false, GregorianChronology.getInstanceUTC().months().isPrecise());
         assertEquals(true, GregorianChronology.getInstanceUTC().weeks().isPrecise());
         assertEquals(true, GregorianChronology.getInstanceUTC().days().isPrecise());
+        assertEquals(true, GregorianChronology.getInstanceUTC().halfdays().isPrecise());
         assertEquals(true, GregorianChronology.getInstanceUTC().hours().isPrecise());
         assertEquals(true, GregorianChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, GregorianChronology.getInstanceUTC().seconds().isPrecise());
@@ -240,6 +244,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals("yearOfEra", GregorianChronology.getInstance().yearOfEra().getName());
         assertEquals("year", GregorianChronology.getInstance().year().getName());
         assertEquals("monthOfYear", GregorianChronology.getInstance().monthOfYear().getName());
+        assertEquals("weekyearOfCentury", GregorianChronology.getInstance().weekyearOfCentury().getName());
         assertEquals("weekyear", GregorianChronology.getInstance().weekyear().getName());
         assertEquals("weekOfWeekyear", GregorianChronology.getInstance().weekOfWeekyear().getName());
         assertEquals("dayOfYear", GregorianChronology.getInstance().dayOfYear().getName());
@@ -252,6 +257,7 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, GregorianChronology.getInstance().yearOfEra().isSupported());
         assertEquals(true, GregorianChronology.getInstance().year().isSupported());
         assertEquals(true, GregorianChronology.getInstance().monthOfYear().isSupported());
+        assertEquals(true, GregorianChronology.getInstance().weekyearOfCentury().isSupported());
         assertEquals(true, GregorianChronology.getInstance().weekyear().isSupported());
         assertEquals(true, GregorianChronology.getInstance().weekOfWeekyear().isSupported());
         assertEquals(true, GregorianChronology.getInstance().dayOfYear().isSupported());

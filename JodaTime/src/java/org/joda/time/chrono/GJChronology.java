@@ -557,6 +557,8 @@ public final class GJChronology extends AssembledChronology {
             fields.months = fields.monthOfYear.getDurationField();
             
             fields.weekyear = new ImpreciseCutoverField(julian.weekyear(), fields.weekyear, true);
+            fields.weekyearOfCentury = new ImpreciseCutoverField
+                (julian.weekyearOfCentury(), fields.weekyearOfCentury, fields.weekyears);
             fields.weekyears = fields.weekyear.getDurationField();
         }
     }

@@ -227,6 +227,11 @@ public final class BuddhistChronology extends AssembledChronology {
             fields.yearOfCentury = new OffsetDateTimeField(
                 field, DateTimeFieldType.yearOfCentury(), 1);
             
+            field = new RemainderDateTimeField(
+                fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);
+            fields.weekyearOfCentury = new OffsetDateTimeField(
+                field, DateTimeFieldType.weekyearOfCentury(), 1);
+            
             fields.era = BuddhistEraDateTimeField.INSTANCE;
         }
     }

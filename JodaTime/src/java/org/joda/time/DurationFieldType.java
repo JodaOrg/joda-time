@@ -295,9 +295,8 @@ public abstract class DurationFieldType implements Serializable {
                 return chronology.weeks();
             case DAYS:
                 return chronology.days();
-                // TODO: Add to Chronology
-                //case HALFDAYS:
-                //return chronology.halfdays();
+            case HALFDAYS:
+                return chronology.halfdays();
             case HOURS:
                 return chronology.hours();
             case MINUTES:

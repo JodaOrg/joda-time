@@ -81,6 +81,7 @@ public abstract class AssembledChronology extends BaseChronology {
     private transient DurationField iSeconds;
     private transient DurationField iMinutes;
     private transient DurationField iHours;
+    private transient DurationField iHalfdays;
 
     private transient DurationField iDays;
     private transient DurationField iWeeks;
@@ -107,6 +108,7 @@ public abstract class AssembledChronology extends BaseChronology {
     private transient DateTimeField iDayOfYear;
     private transient DateTimeField iWeekOfWeekyear;
     private transient DateTimeField iWeekyear;
+    private transient DateTimeField iWeekyearOfCentury;
     private transient DateTimeField iMonthOfYear;
     private transient DateTimeField iYear;
     private transient DateTimeField iYearOfEra;
@@ -236,6 +238,10 @@ public abstract class AssembledChronology extends BaseChronology {
         return iClockhourOfDay;
     }
 
+    public final DurationField halfdays() {
+        return iHalfdays;
+    }
+
     public final DateTimeField hourOfHalfday() {
         return iHourOfHalfday;
     }
@@ -278,6 +284,10 @@ public abstract class AssembledChronology extends BaseChronology {
 
     public final DateTimeField weekyear() {
         return iWeekyear;
+    }
+
+    public final DateTimeField weekyearOfCentury() {
+        return iWeekyearOfCentury;
     }
 
     public final DurationField months() {
@@ -356,6 +366,7 @@ public abstract class AssembledChronology extends BaseChronology {
             iSeconds   = (f = fields.seconds)   != null ? f : super.seconds();
             iMinutes   = (f = fields.minutes)   != null ? f : super.minutes();
             iHours     = (f = fields.hours)     != null ? f : super.hours();
+            iHalfdays  = (f = fields.halfdays)  != null ? f : super.halfdays();
             iDays      = (f = fields.days)      != null ? f : super.days();
             iWeeks     = (f = fields.weeks)     != null ? f : super.weeks();
             iWeekyears = (f = fields.weekyears) != null ? f : super.weekyears();
@@ -383,6 +394,7 @@ public abstract class AssembledChronology extends BaseChronology {
             iDayOfYear          = (f = fields.dayOfYear)          != null ? f : super.dayOfYear();
             iWeekOfWeekyear     = (f = fields.weekOfWeekyear)     != null ? f : super.weekOfWeekyear();
             iWeekyear           = (f = fields.weekyear)           != null ? f : super.weekyear();
+            iWeekyearOfCentury  = (f = fields.weekyearOfCentury)  != null ? f : super.weekyearOfCentury();
             iMonthOfYear        = (f = fields.monthOfYear)        != null ? f : super.monthOfYear();
             iYear               = (f = fields.year)               != null ? f : super.year();
             iYearOfEra          = (f = fields.yearOfEra)          != null ? f : super.yearOfEra();
@@ -424,6 +436,7 @@ public abstract class AssembledChronology extends BaseChronology {
         public DurationField seconds;
         public DurationField minutes;
         public DurationField hours;
+        public DurationField halfdays;
     
         public DurationField days;
         public DurationField weeks;
@@ -450,6 +463,7 @@ public abstract class AssembledChronology extends BaseChronology {
         public DateTimeField dayOfYear;
         public DateTimeField weekOfWeekyear;
         public DateTimeField weekyear;
+        public DateTimeField weekyearOfCentury;
         public DateTimeField monthOfYear;
         public DateTimeField year;
         public DateTimeField yearOfEra;
@@ -477,6 +491,9 @@ public abstract class AssembledChronology extends BaseChronology {
                 }
                 if (isSupported(f = chrono.hours())) {
                     hours = f;
+                }
+                if (isSupported(f = chrono.halfdays())) {
+                    halfdays = f;
                 }
                 if (isSupported(f = chrono.days())) {
                     days = f;
@@ -550,6 +567,9 @@ public abstract class AssembledChronology extends BaseChronology {
                 }
                 if (isSupported(f = chrono.weekyear())) {
                     weekyear = f;
+                }
+                if (isSupported(f = chrono.weekyearOfCentury())) {
+                    weekyearOfCentury = f;
                 }
                 if (isSupported(f = chrono.monthOfYear())) {
                     monthOfYear = f;

@@ -133,6 +133,7 @@ public final class LenientChronology extends AssembledChronology {
         fields.monthOfYear = convertField(fields.monthOfYear);
         fields.weekOfWeekyear = convertField(fields.weekOfWeekyear);
         fields.weekyear = convertField(fields.weekyear);
+        fields.weekyearOfCentury = convertField(fields.weekyearOfCentury);
 
         fields.millisOfSecond = convertField(fields.millisOfSecond);
         fields.millisOfDay = convertField(fields.millisOfDay);

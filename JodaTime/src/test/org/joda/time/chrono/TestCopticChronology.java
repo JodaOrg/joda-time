@@ -177,6 +177,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals("months", CopticChronology.getInstance().months().getName());
         assertEquals("weeks", CopticChronology.getInstance().weeks().getName());
         assertEquals("days", CopticChronology.getInstance().days().getName());
+        assertEquals("halfdays", CopticChronology.getInstance().halfdays().getName());
         assertEquals("hours", CopticChronology.getInstance().hours().getName());
         assertEquals("minutes", CopticChronology.getInstance().minutes().getName());
         assertEquals("seconds", CopticChronology.getInstance().seconds().getName());
@@ -189,6 +190,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstance().months().isSupported());
         assertEquals(true, CopticChronology.getInstance().weeks().isSupported());
         assertEquals(true, CopticChronology.getInstance().days().isSupported());
+        assertEquals(true, CopticChronology.getInstance().halfdays().isSupported());
         assertEquals(true, CopticChronology.getInstance().hours().isSupported());
         assertEquals(true, CopticChronology.getInstance().minutes().isSupported());
         assertEquals(true, CopticChronology.getInstance().seconds().isSupported());
@@ -200,6 +202,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(false, CopticChronology.getInstance().months().isPrecise());
         assertEquals(false, CopticChronology.getInstance().weeks().isPrecise());
         assertEquals(false, CopticChronology.getInstance().days().isPrecise());
+        assertEquals(false, CopticChronology.getInstance().halfdays().isPrecise());
         assertEquals(true, CopticChronology.getInstance().hours().isPrecise());
         assertEquals(true, CopticChronology.getInstance().minutes().isPrecise());
         assertEquals(true, CopticChronology.getInstance().seconds().isPrecise());
@@ -211,6 +214,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstanceUTC().months().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().weeks().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().days().isPrecise());
+        assertEquals(true, CopticChronology.getInstanceUTC().halfdays().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().hours().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().seconds().isPrecise());
@@ -224,6 +228,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals("yearOfEra", CopticChronology.getInstance().yearOfEra().getName());
         assertEquals("year", CopticChronology.getInstance().year().getName());
         assertEquals("monthOfYear", CopticChronology.getInstance().monthOfYear().getName());
+        assertEquals("weekyearOfCentury", CopticChronology.getInstance().weekyearOfCentury().getName());
         assertEquals("weekyear", CopticChronology.getInstance().weekyear().getName());
         assertEquals("weekOfWeekyear", CopticChronology.getInstance().weekOfWeekyear().getName());
         assertEquals("dayOfYear", CopticChronology.getInstance().dayOfYear().getName());
@@ -236,6 +241,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstance().yearOfEra().isSupported());
         assertEquals(true, CopticChronology.getInstance().year().isSupported());
         assertEquals(true, CopticChronology.getInstance().monthOfYear().isSupported());
+        assertEquals(true, CopticChronology.getInstance().weekyearOfCentury().isSupported());
         assertEquals(true, CopticChronology.getInstance().weekyear().isSupported());
         assertEquals(true, CopticChronology.getInstance().weekOfWeekyear().isSupported());
         assertEquals(true, CopticChronology.getInstance().dayOfYear().isSupported());

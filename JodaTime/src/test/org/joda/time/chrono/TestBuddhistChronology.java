@@ -177,6 +177,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals("months", BuddhistChronology.getInstance().months().getName());
         assertEquals("weeks", BuddhistChronology.getInstance().weeks().getName());
         assertEquals("days", BuddhistChronology.getInstance().days().getName());
+        assertEquals("halfdays", GregorianChronology.getInstance().halfdays().getName());
         assertEquals("hours", BuddhistChronology.getInstance().hours().getName());
         assertEquals("minutes", BuddhistChronology.getInstance().minutes().getName());
         assertEquals("seconds", BuddhistChronology.getInstance().seconds().getName());
@@ -189,6 +190,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, BuddhistChronology.getInstance().months().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().weeks().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().days().isSupported());
+        assertEquals(true, BuddhistChronology.getInstance().halfdays().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().hours().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().minutes().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().seconds().isSupported());
@@ -200,6 +202,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(false, BuddhistChronology.getInstance().months().isPrecise());
         assertEquals(false, BuddhistChronology.getInstance().weeks().isPrecise());
         assertEquals(false, BuddhistChronology.getInstance().days().isPrecise());
+        assertEquals(false, BuddhistChronology.getInstance().halfdays().isPrecise());
         assertEquals(true, BuddhistChronology.getInstance().hours().isPrecise());
         assertEquals(true, BuddhistChronology.getInstance().minutes().isPrecise());
         assertEquals(true, BuddhistChronology.getInstance().seconds().isPrecise());
@@ -211,6 +214,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(false, BuddhistChronology.getInstanceUTC().months().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().weeks().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().days().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstanceUTC().halfdays().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().hours().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().seconds().isPrecise());
@@ -224,6 +228,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals("yearOfEra", BuddhistChronology.getInstance().yearOfEra().getName());
         assertEquals("year", BuddhistChronology.getInstance().year().getName());
         assertEquals("monthOfYear", BuddhistChronology.getInstance().monthOfYear().getName());
+        assertEquals("weekyearOfCentury", BuddhistChronology.getInstance().weekyearOfCentury().getName());
         assertEquals("weekyear", BuddhistChronology.getInstance().weekyear().getName());
         assertEquals("weekOfWeekyear", BuddhistChronology.getInstance().weekOfWeekyear().getName());
         assertEquals("dayOfYear", BuddhistChronology.getInstance().dayOfYear().getName());
@@ -236,6 +241,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, BuddhistChronology.getInstance().yearOfEra().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().year().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().monthOfYear().isSupported());
+        assertEquals(true, BuddhistChronology.getInstance().weekyearOfCentury().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().weekyear().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().weekOfWeekyear().isSupported());
         assertEquals(true, BuddhistChronology.getInstance().dayOfYear().isSupported());

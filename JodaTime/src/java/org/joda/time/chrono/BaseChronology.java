@@ -56,9 +56,9 @@ package org.joda.time.chrono;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.ReadablePartial;
@@ -358,6 +358,8 @@ public abstract class BaseChronology
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.clockhourOfDay(), hours());
     }
 
+    // Halfday
+    //-----------------------------------------------------------------------
     /**
      * Get the halfdays duration field for this chronology.
      * 
@@ -456,6 +458,8 @@ public abstract class BaseChronology
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekOfWeekyear(), weeks());
     }
 
+    // Weekyear
+    //-----------------------------------------------------------------------
     /**
      * Get the weekyears duration field for this chronology.
      * 
@@ -472,6 +476,15 @@ public abstract class BaseChronology
      */
     public DateTimeField weekyear() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekyear(), weekyears());
+    }
+
+    /**
+     * Get the year of a week based year in a century field for this chronology.
+     * 
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
+     */
+    public DateTimeField weekyearOfCentury() {
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.weekyearOfCentury(), weekyears());
     }
 
     // Month
@@ -532,6 +545,8 @@ public abstract class BaseChronology
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.yearOfCentury(), years());
     }
 
+    // Century
+    //-----------------------------------------------------------------------
     /**
      * Get the centuries duration field for this chronology.
      * 
@@ -550,6 +565,8 @@ public abstract class BaseChronology
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.centuryOfEra(), centuries());
     }
 
+    // Era
+    //-----------------------------------------------------------------------
     /**
      * Get the eras duration field for this chronology.
      * 
@@ -568,6 +585,7 @@ public abstract class BaseChronology
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.era(), eras());
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a debugging toString.
      * 

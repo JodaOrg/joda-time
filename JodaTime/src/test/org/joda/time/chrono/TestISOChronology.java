@@ -177,6 +177,7 @@ public class TestISOChronology extends TestCase {
         assertEquals("months", ISOChronology.getInstance().months().getName());
         assertEquals("weeks", ISOChronology.getInstance().weeks().getName());
         assertEquals("days", ISOChronology.getInstance().days().getName());
+        assertEquals("halfdays", ISOChronology.getInstance().halfdays().getName());
         assertEquals("hours", ISOChronology.getInstance().hours().getName());
         assertEquals("minutes", ISOChronology.getInstance().minutes().getName());
         assertEquals("seconds", ISOChronology.getInstance().seconds().getName());
@@ -189,6 +190,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstance().months().isSupported());
         assertEquals(true, ISOChronology.getInstance().weeks().isSupported());
         assertEquals(true, ISOChronology.getInstance().days().isSupported());
+        assertEquals(true, ISOChronology.getInstance().halfdays().isSupported());
         assertEquals(true, ISOChronology.getInstance().hours().isSupported());
         assertEquals(true, ISOChronology.getInstance().minutes().isSupported());
         assertEquals(true, ISOChronology.getInstance().seconds().isSupported());
@@ -200,6 +202,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(false, ISOChronology.getInstance().months().isPrecise());
         assertEquals(false, ISOChronology.getInstance().weeks().isPrecise());
         assertEquals(false, ISOChronology.getInstance().days().isPrecise());
+        assertEquals(false, ISOChronology.getInstance().halfdays().isPrecise());
         assertEquals(true, ISOChronology.getInstance().hours().isPrecise());
         assertEquals(true, ISOChronology.getInstance().minutes().isPrecise());
         assertEquals(true, ISOChronology.getInstance().seconds().isPrecise());
@@ -211,6 +214,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(false, ISOChronology.getInstanceUTC().months().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().weeks().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().days().isPrecise());
+        assertEquals(true, ISOChronology.getInstanceUTC().halfdays().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().hours().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().seconds().isPrecise());
@@ -224,6 +228,7 @@ public class TestISOChronology extends TestCase {
         assertEquals("yearOfEra", ISOChronology.getInstance().yearOfEra().getName());
         assertEquals("year", ISOChronology.getInstance().year().getName());
         assertEquals("monthOfYear", ISOChronology.getInstance().monthOfYear().getName());
+        assertEquals("weekyearOfCentury", ISOChronology.getInstance().weekyearOfCentury().getName());
         assertEquals("weekyear", ISOChronology.getInstance().weekyear().getName());
         assertEquals("weekOfWeekyear", ISOChronology.getInstance().weekOfWeekyear().getName());
         assertEquals("dayOfYear", ISOChronology.getInstance().dayOfYear().getName());
@@ -236,6 +241,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstance().yearOfEra().isSupported());
         assertEquals(true, ISOChronology.getInstance().year().isSupported());
         assertEquals(true, ISOChronology.getInstance().monthOfYear().isSupported());
+        assertEquals(true, ISOChronology.getInstance().weekyearOfCentury().isSupported());
         assertEquals(true, ISOChronology.getInstance().weekyear().isSupported());
         assertEquals(true, ISOChronology.getInstance().weekOfWeekyear().isSupported());
         assertEquals(true, ISOChronology.getInstance().dayOfYear().isSupported());

@@ -99,6 +99,7 @@ that take a chronology as a parameter will use the ISO chronology if null is pas
 There is almost always a version of the method without the chronology parameter, and this
 will default to ISO chronology.
 </p>
+<p>
 The actual chronology class is
 <a href="apidocs/org/joda/time/chrono/ISOChronology.html">ISOChronology</a>.
 This is normally created if required using the factory method

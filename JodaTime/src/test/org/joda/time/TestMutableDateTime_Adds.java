@@ -225,6 +225,13 @@ public class TestMutableDateTime_Adds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testAddWrapField_DateTimeField_int1() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 1, 0, 0, 0, 0);
+        test.addWrapField(ISOChronology.getInstance().monthOfYear(), 8);
+        assertEquals(2, test.getMonthOfYear());
+    }
+
+    //-----------------------------------------------------------------------
     public void testAddYears_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         test.addYears(8);

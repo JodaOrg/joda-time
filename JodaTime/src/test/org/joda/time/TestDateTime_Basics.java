@@ -67,6 +67,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.chrono.AbstractChronology;
+import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -674,6 +675,135 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
     
+    //-----------------------------------------------------------------------
+    public void testWithDate_int_int_int() {
+        DateTime test = new DateTime(2002, 4, 5, 1, 2, 3, 4, ISOChronology.getInstanceUTC());
+        DateTime result = test.withDate(2003, 5, 6);
+        DateTime expected = new DateTime(2003, 5, 6, 1, 2, 3, 4, ISOChronology.getInstanceUTC());
+        assertEquals(expected, result);
+        
+        test = new DateTime(TEST_TIME1);
+        try {
+            test.withDate(2003, 13, 1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    public void testWithTime_int_int_int() {
+        DateTime test = new DateTime(TEST_TIME1 - 12345L, BuddhistChronology.getInstanceUTC());
+        DateTime result = test.withTime(12, 24, 0, 0);
+        assertEquals(TEST_TIME1, result.getMillis());
+        assertEquals(BuddhistChronology.getInstanceUTC(), result.getChronology());
+        
+        test = new DateTime(TEST_TIME1);
+        try {
+            test.withTime(25, 1, 1, 1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    public void testWithFields_RPartial() {
+        DateTime test = new DateTime(2004, 5, 6, 7, 8, 9, 0);
+        DateTime result = test.withFields(new YearMonthDay(2003, 4, 5));
+        DateTime expected = new DateTime(2003, 4, 5, 7, 8, 9, 0);
+        assertEquals(expected, result);
+        
+        test = new DateTime(TEST_TIME1);
+        result = test.withFields(null);
+        assertSame(test, result);
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_long() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.withDurationAdded(123456789L);
+        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    public void testWithDurationAdded_long_int() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.withDurationAdded(123456789L, 1);
+        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(123456789L, 0);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(123456789L, 2);
+        expected = new DateTime(TEST_TIME1 + (2L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(123456789L, -3);
+        expected = new DateTime(TEST_TIME1 - (3L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_RD() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.withDurationAdded(new Duration(123456789L));
+        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(null);
+        assertSame(test, result);
+    }
+    
+    public void testWithDurationAdded_RD_int() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.withDurationAdded(new Duration(123456789L), 1);
+        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(null, 1);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), 0);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), 2);
+        expected = new DateTime(TEST_TIME1 + (2L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), -3);
+        expected = new DateTime(TEST_TIME1 - (3L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testWithPeriodAdded_RP() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8));
+        DateTime expected = new DateTime(2003, 7, 28, 6, 8, 10, 12, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withPeriodAdded(null);
+        assertSame(test, result);
+    }
+    
+    public void testWithDurationAdded_RP_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 1);
+        DateTime expected = new DateTime(2003, 7, 28, 6, 8, 10, 12, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withPeriodAdded(null, 1);
+        assertSame(test, result);
+        
+        result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 0);
+        assertSame(test, result);
+        
+        result = test.withPeriodAdded(new Period(1, 2, 0, 4, 5, 6, 7, 8), 3);
+        expected = new DateTime(2005, 11, 15, 16, 20, 24, 28, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withPeriodAdded(new Period(1, 2, 0, 1, 1, 2, 3, 4), -1);
+        expected = new DateTime(2001, 3, 2, 0, 0, 0, 0, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    //-----------------------------------------------------------------------
     public void testImmutable() {
         MockChangeDateTime test = new MockChangeDateTime(TEST_TIME_NOW);
         assertEquals(TEST_TIME_NOW, test.getMillis());

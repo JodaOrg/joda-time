@@ -56,6 +56,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
@@ -312,35 +313,36 @@ public class DateTime extends AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instant with different millis.
+     * Gets a copy of this datetime with different millis.
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the millis will change, the chronology and time zone are kept.
      * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
-     * @return a copy of this instant with different millis
+     * @return a copy of this datetime with different millis
      */
     public final DateTime withMillis(long newMillis) {
         return (newMillis == getMillis() ? this : new DateTime(newMillis, getChronology()));
     }
 
     /**
-     * Gets a copy of this instant with a different chronology.
+     * Gets a copy of this datetime with a different chronology.
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the chronology will change, the millis are kept.
      * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newChronology  the new chronology
-     * @return a copy of this instant with a different chronology
+     * @return a copy of this datetime with a different chronology
      */
     public final DateTime withChronology(Chronology newChronology) {
         return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instant with a different time zone, preserving the
+     * Gets a copy of this datetime with a different time zone, preserving the
      * millisecond instant.
      * <p>
      * This method is useful for finding the local time in another timezone.
@@ -353,7 +355,7 @@ public class DateTime extends AbstractDateTime
      * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newDateTimeZone  the new time zone
-     * @return a copy of this instant with a different time zone
+     * @return a copy of this datetime with a different time zone
      * @see #withZoneRetainFields
      */
     public final DateTime withZone(DateTimeZone newDateTimeZone) {
@@ -361,7 +363,7 @@ public class DateTime extends AbstractDateTime
     }
 
     /**
-     * Gets a copy of this instant with a different time zone, preserving the
+     * Gets a copy of this datetime with a different time zone, preserving the
      * field values.
      * <p>
      * This method is useful for finding the millisecond time in another timezone.
@@ -374,7 +376,7 @@ public class DateTime extends AbstractDateTime
      * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newZone  the new time zone, null means default
-     * @return a copy of this instant with a different time zone
+     * @return a copy of this datetime with a different time zone
      * @see #withZone
      */
     public final DateTime withZoneRetainFields(DateTimeZone newZone) {
@@ -387,6 +389,186 @@ public class DateTime extends AbstractDateTime
         
         long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
         return new DateTime(millis, getChronology().withZone(newZone));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this datetime with the specified date, retaining the time fields.
+     * <p>
+     * If the date is already the date passed in, then <code>this</code> is returned.
+     * <p>
+     * To set a single field use the properties, for example:
+     * <pre>
+     * DateTime set = monthOfYear().setCopy(6);
+     * </pre>
+     *
+     * @param year  the new year value
+     * @param monthOfYear  the new monthOfYear value
+     * @param dayOfMonth  the new dayOfMonth value
+     * @return a copy of this datetime with a different date
+     * @throws IllegalArgumentException if any value if invalid
+     */
+    public final DateTime withDate(int year, int monthOfYear, int dayOfMonth) {
+        Chronology chrono = getChronology();
+        long instant = getMillis();
+        instant = chrono.year().set(instant, year);
+        instant = chrono.monthOfYear().set(instant, monthOfYear);
+        instant = chrono.dayOfMonth().set(instant, dayOfMonth);
+        return withMillis(instant);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified time, retaining the date fields.
+     * <p>
+     * If the time is already the time passed in, then <code>this</code> is returned.
+     * <p>
+     * To set a single field use the properties, for example:
+     * <pre>
+     * DateTime set = dt.hourOfDay().setCopy(6);
+     * </pre>
+     *
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the millisecond of the second
+     * @return a copy of this datetime with a different time
+     * @throws IllegalArgumentException if any value if invalid
+     */
+    public final DateTime withTime(int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
+        Chronology chrono = getChronology();
+        long instant = getMillis();
+        instant = chrono.hourOfDay().set(instant, hourOfDay);
+        instant = chrono.minuteOfHour().set(instant, minuteOfHour);
+        instant = chrono.secondOfMinute().set(instant, secondOfMinute);
+        instant = chrono.millisOfSecond().set(instant, millisOfSecond);
+        return withMillis(instant);
+    }
+
+    /**
+     * Gets a copy of this datetime with the partial set of fields replacing those
+     * from this instance.
+     * <p>
+     * For example, if the partial is a <code>TimeOfDay</code> then the time fields
+     * would be changed in the returned instance.
+     * If the partial is null, then <code>this</code> is returned.
+     *
+     * @param partial  the partial set of fields to apply to this datetime
+     * @return a copy of this datetime with a different set of fields
+     * @throws IllegalArgumentException if any value if invalid
+     */
+    public final DateTime withFields(ReadablePartial partial) {
+        if (partial == null) {
+            return this;
+        }
+        return partial.resolveDateTime(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this datetime with the specified duration added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one
+     * @return a copy of this datetime with the duration added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public final DateTime withDurationAdded(long durationToAdd) {
+        return withDurationAdded(durationToAdd, 1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified duration added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this datetime with the duration added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public final DateTime withDurationAdded(long durationToAdd, int scalar) {
+        if (durationToAdd == 0 || scalar == 0) {
+            return this;
+        }
+        long add = FieldUtils.safeMultiply(durationToAdd, scalar);
+        long instant = FieldUtils.safeAdd(getMillis(), add);
+        return withMillis(instant);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified duration added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @return a copy of this datetime with the duration added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public final DateTime withDurationAdded(ReadableDuration durationToAdd) {
+        if (durationToAdd == null) {
+            return this;
+        }
+        return withDurationAdded(durationToAdd.getMillis(), 1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified duration added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this datetime with the duration added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public final DateTime withDurationAdded(ReadableDuration durationToAdd, int scalar) {
+        if (durationToAdd == null || scalar == 0) {
+            return this;
+        }
+        return withDurationAdded(durationToAdd.getMillis(), scalar);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this datetime with the specified period added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * <p>
+     * To add or subtract on a single field use the properties, for example:
+     * <pre>
+     * DateTime added = dt.hourOfDay().addToCopy(6);
+     * </pre>
+     * 
+     * @param periodToAdd  the duration to add to this one, null means zero
+     * @return a copy of this datetime with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public final DateTime withPeriodAdded(ReadablePeriod periodToAdd) {
+        return withPeriodAdded(periodToAdd, 1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified period added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * <p>
+     * To add or subtract on a single field use the properties, for example:
+     * <pre>
+     * DateTime added = dt.hourOfDay().addToCopy(6);
+     * </pre>
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this datetime with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public final DateTime withPeriodAdded(ReadablePeriod periodToAdd, int scalar) {
+        if (periodToAdd == null || scalar == 0) {
+            return this;
+        }
+        long instant = periodToAdd.addTo(getMillis(), scalar, getChronology());
+        return withMillis(instant);
     }
 
     // Date properties

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -102,7 +102,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
     }
 

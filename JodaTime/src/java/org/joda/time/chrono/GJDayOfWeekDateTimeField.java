@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -101,7 +101,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the day of the week, such as 'Monday'
      */
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(fieldValue);
     }
 
@@ -112,7 +112,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the day of the week, such as 'Mon'
      */
-    protected String getAsShortText(int fieldValue, Locale locale) {
+    public String getAsShortText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(fieldValue);
     }
 

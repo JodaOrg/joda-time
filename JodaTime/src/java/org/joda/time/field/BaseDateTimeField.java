@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -186,7 +186,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @param locale the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return Integer.toString(fieldValue);
     }
 
@@ -260,7 +260,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @param locale the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    protected String getAsShortText(int fieldValue, Locale locale) {
+    public String getAsShortText(int fieldValue, Locale locale) {
         return getAsText(fieldValue, locale);
     }
 

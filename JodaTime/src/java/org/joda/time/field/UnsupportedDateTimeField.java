@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -205,6 +205,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    public String getAsText(int fieldValue, Locale locale) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
     public String getAsShortText(long instant, Locale locale) {
         throw unsupported();
     }
@@ -233,6 +242,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * @throws UnsupportedOperationException
      */
     public String getAsShortText(ReadablePartial partial, Locale locale) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
+    public String getAsShortText(int fieldValue, Locale locale) {
         throw unsupported();
     }
 

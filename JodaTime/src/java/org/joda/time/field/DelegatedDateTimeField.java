@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -150,6 +150,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getAsText(partial, locale);
     }
 
+    public String getAsText(int fieldValue, Locale locale) {
+        return iField.getAsText(fieldValue, locale);
+    }
+
     public String getAsShortText(long instant, Locale locale) {
         return iField.getAsShortText(instant, locale);
     }
@@ -164,6 +168,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
 
     public String getAsShortText(ReadablePartial partial, Locale locale) {
         return iField.getAsShortText(partial, locale);
+    }
+
+    public String getAsShortText(int fieldValue, Locale locale) {
+        return iField.getAsShortText(fieldValue, locale);
     }
 
     public long add(long instant, int value) {

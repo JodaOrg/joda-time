@@ -77,6 +77,8 @@ public class MutableDuration extends AbstractDuration
     /**
      * Copies another duration to this one.
      *
+     * @param duration duration to copy
+     * @throws IllegalArgumentException if duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -85,9 +87,22 @@ public class MutableDuration extends AbstractDuration
     }
 
     /**
+     * Copies another duration to this one.
+     *
+     * @param duration duration to convert
+     * @throws IllegalArgumentException if duration is null
+     * @throws UnsupportedOperationException if an unsupported field's value is
+     * non-zero
+     */
+    public MutableDuration(Object duration) {
+        super(duration);
+    }
+
+    /**
      * Creates a zero length duration.
      *
      * @param type determines which set of fields this duration supports
+     * @throws IllegalArgumentException if type is null
      */
     public MutableDuration(DurationType type) {
         super(type);
@@ -98,6 +113,7 @@ public class MutableDuration extends AbstractDuration
      *
      * @param type use a different DurationType
      * @param duration duration to copy
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -110,13 +126,12 @@ public class MutableDuration extends AbstractDuration
      *
      * @param type use a different DurationType
      * @param duration duration to convert
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public MutableDuration(DurationType type, Object duration) {
-        super(type);
-        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-        converter.setInto(this, duration);
+        super(type, duration);
     }
 
     /**
@@ -139,6 +154,7 @@ public class MutableDuration extends AbstractDuration
      * unsupported.
      * @param millis amount of milliseconds in this duration, which must be
      * zero if unsupported.
+     * @throws IllegalArgumentException if type is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -154,6 +170,7 @@ public class MutableDuration extends AbstractDuration
      * @param type determines which set of fields this duration supports
      * @param startInstant interval start, in milliseconds
      * @param endInstant interval end, in milliseconds
+     * @throws IllegalArgumentException if type is null
      */
     public MutableDuration(DurationType type, long startInstant, long endInstant) {
         super(type, startInstant, endInstant);
@@ -165,6 +182,7 @@ public class MutableDuration extends AbstractDuration
      * @param type determines which set of fields this duration supports
      * @param startInstant interval start
      * @param endInstant interval end
+     * @throws IllegalArgumentException if type is null
      */
     public MutableDuration(DurationType type,
                            ReadableInstant startInstant, ReadableInstant endInstant) {
@@ -178,6 +196,7 @@ public class MutableDuration extends AbstractDuration
      *
      * @param type determines which set of fields this duration supports
      * @param duration  the duration, in milliseconds
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if any fields are imprecise
      */
     public MutableDuration(DurationType type, long duration) {

@@ -108,21 +108,57 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     /**
      * Copies another duration to this one.
      *
+     * @param duration duration to copy
+     * @throws IllegalArgumentException if duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public AbstractDuration(ReadableDuration duration) {
+        super();
         // Only call a private method
         setDuration(iType = duration.getDurationType(), duration);
+    }
+
+    /**
+     * Copies another duration to this one.
+     *
+     * @param duration duration to convert
+     * @throws IllegalArgumentException if duration is null
+     * @throws UnsupportedOperationException if an unsupported field's value is
+     * non-zero
+     */
+    public AbstractDuration(Object duration) {
+        super();
+        if (duration instanceof ReadableDuration) {
+            // Only call a private method
+            ReadableDuration rd = (ReadableDuration) duration;
+            setDuration(iType = rd.getDurationType(), rd);
+        } else {
+            DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+            DurationType type = converter.getDurationType(duration);
+            if (type.isPrecise() && converter.isPrecise(duration)) {
+                // Only call a private method
+                setTotalMillis(iType = type, converter.getDurationMillis(duration));
+            } else if (this instanceof ReadWritableDuration) {
+                iType = type;
+                converter.setInto((ReadWritableDuration) this, duration);
+            } else {
+                // Only call a private method
+                setDuration(iType = type, new MutableDuration(type, duration));
+            }
+        }
     }
 
     /**
      * Creates a zero length duration.
      *
      * @param type determines which set of fields this duration supports
+     * @throws IllegalArgumentException if type is null
      */
     public AbstractDuration(DurationType type) {
-        iType = type;
+        super();
+        // Only call a private method
+        setTotalMillis(iType = type, 0);
     }
 
     /**
@@ -130,10 +166,12 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      *
      * @param type use a different DurationType
      * @param duration duration to copy
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public AbstractDuration(DurationType type, ReadableDuration duration) {
+        super();
         // Only call a private method
         setDuration(iType = type, duration);
     }
@@ -143,10 +181,12 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      *
      * @param type use a different DurationType
      * @param duration duration to convert
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public AbstractDuration(DurationType type, Object duration) {
+        super();
         if (duration instanceof ReadableDuration) {
             // Only call a private method
             setDuration(iType = type, (ReadableDuration) duration);
@@ -155,6 +195,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             if (type.isPrecise() && converter.isPrecise(duration)) {
                 // Only call a private method
                 setTotalMillis(iType = type, converter.getDurationMillis(duration));
+            } else if (this instanceof ReadWritableDuration) {
+                iType = type;
+                converter.setInto((ReadWritableDuration) this, duration);
             } else {
                 // Only call a private method
                 setDuration(iType = type, new MutableDuration(type, duration));
@@ -182,12 +225,14 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * unsupported.
      * @param millis amount of milliseconds in this duration, which must be
      * zero if unsupported.
+     * @throws IllegalArgumentException if type is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public AbstractDuration(DurationType type,
                             int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis) {
+        super();
         // Only call a private method
         setDuration(iType = type, years, months, weeks, days, hours, minutes, seconds, millis);
     }
@@ -198,8 +243,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @param type determines which set of fields this duration supports
      * @param startInstant interval start, in milliseconds
      * @param endInstant interval end, in milliseconds
+     * @throws IllegalArgumentException if type is null
      */
     public AbstractDuration(DurationType type, long startInstant, long endInstant) {
+        super();
         // Only call a private method
         setTotalMillis(iType = type, startInstant, endInstant);
     }
@@ -210,9 +257,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @param type determines which set of fields this duration supports
      * @param startInstant interval start
      * @param endInstant interval end
+     * @throws IllegalArgumentException if type is null
      */
     public AbstractDuration(DurationType type,
                             ReadableInstant startInstant, ReadableInstant  endInstant) {
+        super();
         // Only call a private method
         setTotalMillis(iType = type, startInstant.getMillis(), endInstant.getMillis());
     }
@@ -224,9 +273,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      *
      * @param type determines which set of fields this duration supports
      * @param duration  the duration, in milliseconds
+     * @throws IllegalArgumentException if type is null
      * @throws UnsupportedOperationException if any fields are imprecise
      */
     public AbstractDuration(DurationType type, long duration) {
+        super();
         // Only call a private method
         setTotalMillis(iType = type, duration);
     }
@@ -776,6 +827,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     private void setDuration(DurationType type,
                              int years, int months, int weeks, int days,
                              int hours, int minutes, int seconds, int millis) {
+        if (type == null) {
+            throw new IllegalArgumentException("The type must not be null");
+        }
 
         if (years != 0) {
             checkSupport(type.years(), "years");
@@ -835,6 +889,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @param endInstant interval end, in milliseconds
      */
     private void setTotalMillis(DurationType type, long startInstant, long endInstant) {
+        if (type == null) {
+            throw new IllegalArgumentException("The type must not be null");
+        }
+
         iTotalMillis = endInstant - startInstant;
 
         boolean isPrecise = true;
@@ -923,6 +981,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @throws UnsupportedOperationException if any fields are imprecise
      */
     private void setTotalMillis(DurationType type, final long duration) {
+        if (type == null) {
+            throw new IllegalArgumentException("The type must not be null");
+        }
+
         if (duration == 0) {
             iTotalMillis = duration;
             iTotalMillisState = 2;
@@ -1309,4 +1371,3 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     }
 
 }
-

@@ -77,6 +77,8 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
     /**
      * Copies another duration to this one.
      *
+     * @param duration duration to copy
+     * @throws IllegalArgumentException if duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -85,9 +87,22 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
     }
 
     /**
+     * Copies another duration to this one.
+     *
+     * @param duration duration to convert
+     * @throws IllegalArgumentException if duration is null
+     * @throws UnsupportedOperationException if an unsupported field's value is
+     * non-zero
+     */
+    public Duration(Object duration) {
+        super(duration);
+    }
+
+    /**
      * Creates a zero length duration.
      *
      * @param type determines which set of fields this duration supports
+     * @throws IllegalArgumentException if type is null
      */
     public Duration(DurationType type) {
         super(type);
@@ -98,6 +113,7 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
      *
      * @param type use a different DurationType
      * @param duration duration to copy
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -110,6 +126,7 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
      *
      * @param type use a different DurationType
      * @param duration duration to convert
+     * @throws IllegalArgumentException if type or duration is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -137,6 +154,7 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
      * unsupported.
      * @param millis amount of milliseconds in this duration, which must be
      * zero if unsupported.
+     * @throws IllegalArgumentException if type is null
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
@@ -152,6 +170,7 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
      * @param type determines which set of fields this duration supports
      * @param startInstant interval start, in milliseconds
      * @param endInstant interval end, in milliseconds
+     * @throws IllegalArgumentException if type is null
      */
     public Duration(DurationType type, long startInstant, long endInstant) {
         super(type, startInstant, endInstant);
@@ -163,6 +182,7 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
      * @param type determines which set of fields this duration supports
      * @param startInstant interval start
      * @param endInstant interval end
+     * @throws IllegalArgumentException if type is null
      */
     public Duration(DurationType type,
                     ReadableInstant startInstant, ReadableInstant endInstant) {
@@ -176,6 +196,7 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
      *
      * @param type determines which set of fields this duration supports
      * @param duration  the duration, in milliseconds
+     * @throws IllegalArgumentException if type is null
      * @throws UnsupportedOperationException if any fields are imprecise
      */
     public Duration(DurationType type, long duration) {

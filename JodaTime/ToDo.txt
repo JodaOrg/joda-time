@@ -4,7 +4,6 @@ JodaTime ToDo list
 1.0
 ---
 Duration:
- Write formatters/parsers
  Write tests
  
 Interval:

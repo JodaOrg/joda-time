@@ -185,10 +185,10 @@ public abstract class AbstractPartialInstant extends AbstractInstant
      */
     protected AbstractPartialInstant(Object instant) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        final Chronology chronology = converter.getChronology(instant);
-        iChronology = selectChronologyUTC(chronology);
+        Chronology original = converter.getChronology(instant);
+        iChronology = selectChronologyUTC(original);
         iMillis = resetUnsupportedFields
-            (toLocalTime(converter.getInstantMillis(instant), chronology, iChronology));
+            (toLocalTime(converter.getInstantMillis(instant), original, iChronology));
     }
 
     /**
@@ -203,11 +203,11 @@ public abstract class AbstractPartialInstant extends AbstractInstant
      * @throws IllegalArgumentException if the date or chronology is null
      */
     protected AbstractPartialInstant(Object instant, final Chronology chronology) {
-        iChronology = selectChronologyUTC(chronology);
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        Chronology original = converter.getChronology(instant, chronology);
+        iChronology = selectChronologyUTC(original);
         iMillis = resetUnsupportedFields
-            (toLocalTime(converter.getInstantMillis(instant),
-                         converter.getChronology(instant), iChronology));
+            (toLocalTime(converter.getInstantMillis(instant, chronology), original, iChronology));
     }
 
     /**

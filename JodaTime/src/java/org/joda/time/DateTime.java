@@ -54,9 +54,10 @@
 package org.joda.time;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.property.DateTimeFieldProperty;
+import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.
@@ -398,8 +399,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the era property
      */
-    public final DateTimeFieldProperty era() {
-        return new DateTimeFieldProperty(this, getChronology().era());
+    public final Property era() {
+        return new Property(this, getChronology().era());
     }
 
     /**
@@ -407,8 +408,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final DateTimeFieldProperty centuryOfEra() {
-        return new DateTimeFieldProperty(this, getChronology().centuryOfEra());
+    public final Property centuryOfEra() {
+        return new Property(this, getChronology().centuryOfEra());
     }
 
     /**
@@ -416,8 +417,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final DateTimeFieldProperty yearOfCentury() {
-        return new DateTimeFieldProperty(this, getChronology().yearOfCentury());
+    public final Property yearOfCentury() {
+        return new Property(this, getChronology().yearOfCentury());
     }
 
     /**
@@ -425,8 +426,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public final DateTimeFieldProperty yearOfEra() {
-        return new DateTimeFieldProperty(this, getChronology().yearOfEra());
+    public final Property yearOfEra() {
+        return new Property(this, getChronology().yearOfEra());
     }
 
     /**
@@ -434,8 +435,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year property
      */
-    public final DateTimeFieldProperty year() {
-        return new DateTimeFieldProperty(this, getChronology().year());
+    public final Property year() {
+        return new Property(this, getChronology().year());
     }
 
     /**
@@ -443,8 +444,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the year of a week based year property
      */
-    public final DateTimeFieldProperty weekyear() {
-        return new DateTimeFieldProperty(this, getChronology().weekyear());
+    public final Property weekyear() {
+        return new Property(this, getChronology().weekyear());
     }
 
     /**
@@ -452,8 +453,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the month of year property
      */
-    public final DateTimeFieldProperty monthOfYear() {
-        return new DateTimeFieldProperty(this, getChronology().monthOfYear());
+    public final Property monthOfYear() {
+        return new Property(this, getChronology().monthOfYear());
     }
 
     /**
@@ -461,8 +462,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the week of a week based year property
      */
-    public final DateTimeFieldProperty weekOfWeekyear() {
-        return new DateTimeFieldProperty(this, getChronology().weekOfWeekyear());
+    public final Property weekOfWeekyear() {
+        return new Property(this, getChronology().weekOfWeekyear());
     }
 
     /**
@@ -470,8 +471,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the day of year property
      */
-    public final DateTimeFieldProperty dayOfYear() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfYear());
+    public final Property dayOfYear() {
+        return new Property(this, getChronology().dayOfYear());
     }
 
     /**
@@ -479,8 +480,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the day of month property
      */
-    public final DateTimeFieldProperty dayOfMonth() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfMonth());
+    public final Property dayOfMonth() {
+        return new Property(this, getChronology().dayOfMonth());
     }
 
     /**
@@ -488,8 +489,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the day of week property
      */
-    public final DateTimeFieldProperty dayOfWeek() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfWeek());
+    public final Property dayOfWeek() {
+        return new Property(this, getChronology().dayOfWeek());
     }
 
     // Time properties
@@ -499,8 +500,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the hour of day property
      */
-    public final DateTimeFieldProperty hourOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().hourOfDay());
+    public final Property hourOfDay() {
+        return new Property(this, getChronology().hourOfDay());
     }
 
     /**
@@ -508,8 +509,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the minute of day property
      */
-    public final DateTimeFieldProperty minuteOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().minuteOfDay());
+    public final Property minuteOfDay() {
+        return new Property(this, getChronology().minuteOfDay());
     }
 
     /**
@@ -517,8 +518,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the minute of hour property
      */
-    public final DateTimeFieldProperty minuteOfHour() {
-        return new DateTimeFieldProperty(this, getChronology().minuteOfHour());
+    public final Property minuteOfHour() {
+        return new Property(this, getChronology().minuteOfHour());
     }
 
     /**
@@ -526,8 +527,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the second of day property
      */
-    public final DateTimeFieldProperty secondOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().secondOfDay());
+    public final Property secondOfDay() {
+        return new Property(this, getChronology().secondOfDay());
     }
 
     /**
@@ -535,8 +536,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the second of minute property
      */
-    public final DateTimeFieldProperty secondOfMinute() {
-        return new DateTimeFieldProperty(this, getChronology().secondOfMinute());
+    public final Property secondOfMinute() {
+        return new Property(this, getChronology().secondOfMinute());
     }
 
     /**
@@ -544,8 +545,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the millis of day property
      */
-    public final DateTimeFieldProperty millisOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().millisOfDay());
+    public final Property millisOfDay() {
+        return new Property(this, getChronology().millisOfDay());
     }
 
     /**
@@ -553,8 +554,8 @@ public class DateTime extends AbstractDateTime
      * 
      * @return the millis of second property
      */
-    public final DateTimeFieldProperty millisOfSecond() {
-        return new DateTimeFieldProperty(this, getChronology().millisOfSecond());
+    public final Property millisOfSecond() {
+        return new Property(this, getChronology().millisOfSecond());
     }
 
     // Output
@@ -580,6 +581,246 @@ public class DateTime extends AbstractDateTime
      * immutable.
      */
     protected final void setChronology(Chronology chronology) {
+    }
+
+    /**
+     * DateTime.Property binds a DateTime to a DateTimeField allowing powerful
+     * datetime functionality to be easily accessed.
+     * <p>
+     * The simplest use of this class is as an alternative get method, here used to
+     * get the year '1972' (as an int) and the month 'December' (as a String).
+     * <pre>
+     * DateTime dt = new DateTime(1972, 12, 3, 0, 0, 0, 0);
+     * int year = dt.year().get();
+     * String monthStr = dt.month().getAsText();
+     * </pre>
+     * <p>
+     * Methods are also provided that allow date modification. These return new instances
+     * of DateTime - they do not modify the original. The example below yields two
+     * independent immutable date objects 20 years apart.
+     * <pre>
+     * DateTime dt = new DateTime(1972, 12, 3, 0, 0, 0, 0);
+     * DateTime dt20 = dt.year().addToCopy(20);
+     * </pre>
+     * Serious modification of dates (ie. more than just changing one or two fields)
+     * should use the {@link org.joda.time.MutableDateTime MutableDateTime} class.
+     * <p>
+     * DateTime.Propery itself is thread-safe and immutable, as well as the
+     * DateTime being operated on.
+     *
+     * @author Stephen Colebourne
+     * @author Brian S O'Neill
+     * @since 1.0
+     */
+    public static class Property extends AbstractReadableInstantFieldProperty {
+        
+        static final long serialVersionUID = -6983323811635733510L;
+        
+        /** The instant this property is working against */
+        private final DateTime iInstant;
+        /** The field this property is working against */
+        private final DateTimeField iField;
+        
+        /**
+         * Constructor.
+         * 
+         * @param instant  the instant to set
+         * @param field  the field to use
+         */
+        Property(DateTime instant, DateTimeField field) {
+            super();
+            iInstant = instant;
+            iField = field;
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Gets the field being used.
+         * 
+         * @return the field
+         */
+        public DateTimeField getField() {
+            return iField;
+        }
+        
+        /**
+         * Gets the instant being used.
+         * 
+         * @return the instant
+         */
+        public ReadableInstant getReadableInstant() {
+            return iInstant;
+        }
+        
+        /**
+         * Gets the datetime being used.
+         * 
+         * @return the datetime
+         */
+        public DateTime getDateTime() {
+            return iInstant;
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Adds to this field in a copy of this DateTime.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         * This operation is faster than converting a DateTime to a MutableDateTime
+         * and back again when setting one field. When setting multiple fields,
+         * it is generally quicker to make the conversion to MutableDateTime.
+         * 
+         * @param value  the value to add to the field in the copy
+         * @return a copy of the DateTime with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public DateTime addToCopy(int value) {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.add(instant.getMillis(), value));
+        }
+        
+        /**
+         * Adds to this field in a copy of this DateTime.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         * This operation is faster than converting a DateTime to a MutableDateTime
+         * and back again when setting one field. When setting multiple fields,
+         * it is generally quicker to make the conversion to MutableDateTime.
+         * 
+         * @param value  the value to add to the field in the copy
+         * @return a copy of the DateTime with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public DateTime addToCopy(long value) {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.add(instant.getMillis(), value));
+        }
+        
+        /**
+         * Adds to this field, possibly wrapped, in a copy of this DateTime.
+         * A wrapped operation only changes this field.
+         * Thus 31st January addWrapField one day goes to the 1st January.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         * This operation is faster than converting a DateTime to a MutableDateTime
+         * and back again when setting one field. When setting multiple fields,
+         * it is generally quicker to make the conversion to MutableDateTime.
+         * 
+         * @param value  the value to add to the field in the copy
+         * @return a copy of the DateTime with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public DateTime addWrapFieldToCopy(int value) {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.addWrapField(instant.getMillis(), value));
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Sets this field in a copy of the DateTime.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         * This operation is faster than converting a DateTime to a MutableDateTime
+         * and back again when setting one field. When setting multiple fields,
+         * it is generally quicker to make the conversion to MutableDateTime.
+         * 
+         * @param value  the value to set the field in the copy to
+         * @return a copy of the DateTime with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public DateTime setCopy(int value) {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.set(instant.getMillis(), value));
+        }
+        
+        /**
+         * Sets this field in a copy of the DateTime to a parsed text value.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         * This operation is faster than converting a DateTime to a MutableDateTime
+         * and back again when setting one field. When setting multiple fields,
+         * it is generally quicker to make the conversion to MutableDateTime.
+         * 
+         * @param text  the text value to set
+         * @param locale  optional locale to use for selecting a text symbol
+         * @return a copy of the DateTime with the field value changed
+         * @throws IllegalArgumentException if the text value isn't valid
+         */
+        public DateTime setCopy(String text, Locale locale) {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.set(instant.getMillis(), text, locale));
+        }
+        
+        /**
+         * Sets this field in a copy of the DateTime to a parsed text value.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         * This operation is faster than converting a DateTime to a MutableDateTime
+         * and back again when setting one field. When setting multiple fields,
+         * it is generally quicker to make the conversion to MutableDateTime.
+         * 
+         * @param text  the text value to set
+         * @return a copy of the DateTime with the field value changed
+         * @throws IllegalArgumentException if the text value isn't valid
+         */
+        public final DateTime setCopy(String text) {
+            return setCopy(text, null);
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Rounds to the lowest whole unit of this field on a copy of this DateTime.
+         *
+         * @return a copy of the DateTime with the field value changed
+         */
+        public DateTime roundFloorCopy() {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.roundFloor(instant.getMillis()));
+        }
+        
+        /**
+         * Rounds to the highest whole unit of this field on a copy of this DateTime.
+         *
+         * @return a copy of the DateTime with the field value changed
+         */
+        public DateTime roundCeilingCopy() {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.roundCeiling(instant.getMillis()));
+        }
+        
+        /**
+         * Rounds to the nearest whole unit of this field on a copy of this DateTime,
+         * favoring the floor if halfway.
+         *
+         * @return a copy of the DateTime with the field value changed
+         */
+        public DateTime roundHalfFloorCopy() {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.roundHalfFloor(instant.getMillis()));
+        }
+        
+        /**
+         * Rounds to the nearest whole unit of this field on a copy of this DateTime,
+         * favoring the ceiling if halfway.
+         *
+         * @return a copy of the DateTime with the field value changed
+         */
+        public DateTime roundHalfCeilingCopy() {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.roundHalfCeiling(instant.getMillis()));
+        }
+        
+        /**
+         * Rounds to the nearest whole unit of this field on a copy of this
+         * DateTime.  If halfway, the ceiling is favored over the floor only if
+         * it makes this field's value even.
+         *
+         * @return a copy of the DateTime with the field value changed
+         */
+        public DateTime roundHalfEvenCopy() {
+            DateTime instant = iInstant;
+            return instant.withMillis(iField.roundHalfEven(instant.getMillis()));
+        }
     }
 
 }

@@ -148,4 +148,32 @@ public class PreciseDurationField extends BaseDurationField {
         return (minuendInstant - subtrahendInstant) / iUnitMillis;
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Compares this duration field to another.
+     * Two fields are equal if of the same type and duration.
+     * 
+     * @param obj  the object to compare to
+     * @return if equal
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof PreciseDurationField) {
+            PreciseDurationField other = (PreciseDurationField) obj;
+            return (iUnitMillis == other.iUnitMillis);
+        }
+        return false;
+    }
+
+    /**
+     * Gets a hash code for this instance.
+     * 
+     * @return a suitable hashcode
+     */
+    public int hashCode() {
+        long millis = iUnitMillis;
+        return (int) (millis ^ (millis >>> 32));
+    }
+
 }

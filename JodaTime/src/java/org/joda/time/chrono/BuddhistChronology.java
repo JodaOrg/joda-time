@@ -87,7 +87,7 @@ public final class BuddhistChronology extends AssembledChronology {
 
     /**
      * Constant value for 'Buddhist Era', equivalent to the value returned
-     * for AD/CE.
+     * for AD/CE. Note that this differs from the constant in BuddhistCalendar.
      */
     public static final int BE = DateTimeConstants.CE;
 

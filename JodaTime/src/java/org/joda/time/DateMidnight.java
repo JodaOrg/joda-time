@@ -68,8 +68,8 @@ import org.joda.time.property.AbstractReadableInstantFieldProperty;
  * Note that midnight is defined as 00:00, which is at the very start of a day.
  * <p>
  * This class does not represent a day, but the millisecond instant at midnight.
- * If you need a class that represnts the whole day, then an {@link Interval} or
- * a {@link YearMonthDay} may be more suitable.
+ * If you need a class that represents the whole day, then an {@link Interval} or
+ * a {@link org.joda.time.partial.YearMonthDay YearMonthDay} may be more suitable.
  * <p>
  * This class uses a Chronology internally. The Chronology determines how the
  * millisecond instant value is converted into the date time fields.
@@ -495,7 +495,7 @@ public class DateMidnight extends AbstractDateTime
     }
 
     /**
-     * DateTimeFieldProperty binds a DateMidnight to a DateTimeField allowing powerful
+     * DateMidnight.Property binds a DateMidnight to a DateTimeField allowing powerful
      * datetime functionality to be easily accessed.
      * <p>
      * The simplest use of this class is as an alternative get method, here used to
@@ -538,7 +538,7 @@ public class DateMidnight extends AbstractDateTime
          * @param instant  the instant to set
          * @param field  the field to use
          */
-        public Property(DateMidnight instant, DateTimeField field) {
+        Property(DateMidnight instant, DateTimeField field) {
             super();
             iInstant = instant;
             iField = field;

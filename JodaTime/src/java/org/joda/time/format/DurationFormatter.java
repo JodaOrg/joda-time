@@ -64,4 +64,5 @@ package org.joda.time.format;
  */
 public interface DurationFormatter extends DurationPrinter, DurationParser {
 
+    // Methods inherited
 }

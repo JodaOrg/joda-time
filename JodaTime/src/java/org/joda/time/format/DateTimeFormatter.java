@@ -54,9 +54,12 @@
 package org.joda.time.format;
 
 /**
- * Defines a combined interface for printing and parsing.
+ * Combined interface for printing and parsing.
+ * <p>
+ * See each extended interface for details of the methods.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public interface DateTimeFormatter extends DateTimePrinter, DateTimeParser {
     

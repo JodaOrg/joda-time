@@ -56,6 +56,9 @@ package org.joda.time;
 /**
  * Defines a duration of time that can be queried using fields.
  * <p>
+ * The implementation of this interface may be mutable or immutable. This
+ * interface only gives access to retrieve data, never to change it.
+ * <p>
  * Durations can be split up into multiple fields, but implementations are not
  * required to evenly distribute the values across the fields. Nor are they
  * required to normalize the fields nor match the signs.

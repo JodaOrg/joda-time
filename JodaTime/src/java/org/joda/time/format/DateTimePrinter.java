@@ -67,6 +67,7 @@ import org.joda.time.ReadableInstant;
  * @see DateTimeFormatter
  * @see DateTimeFormatterBuilder
  * @see DateTimeFormat
+ * @since 1.0
  */
 public interface DateTimePrinter {
     

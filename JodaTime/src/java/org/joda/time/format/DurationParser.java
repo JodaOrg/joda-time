@@ -59,9 +59,12 @@ import org.joda.time.MutableDuration;
 import org.joda.time.ReadWritableDuration;
 
 /**
- * Converts sequences of human-readable characters into durations.
+ * Defines an interface for parsing textual representations of durations.
  *
  * @author Brian S O'Neill
+ * @see DurationFormatter
+ * @see DurationFormatterBuilder
+ * @see DurationFormat
  * @since 1.0
  */
 public interface DurationParser {

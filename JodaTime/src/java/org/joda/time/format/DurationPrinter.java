@@ -59,9 +59,12 @@ import java.io.Writer;
 import org.joda.time.ReadableDuration;
 
 /**
- * Converts durations into a sequence of human-readable characters.
+ * Defines an interface for creating textual representations of durations.
  *
  * @author Brian S O'Neill
+ * @see DurationFormatter
+ * @see DurationFormatterBuilder
+ * @see DurationFormat
  * @since 1.0
  */
 public interface DurationPrinter {

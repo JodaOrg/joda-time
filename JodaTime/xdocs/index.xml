@@ -81,9 +81,9 @@ as it recalculates fields at unexpected moments. Joda-Time does only the minimal
 calculation for the field that is being accessed.</li>
 <li><b>Good Test Coverage</b>. Joda-Time has a comprehensive set of developer tests,
 providing assurance of the library's quality.</li>
-<li><b>Complete Documentation</b>. There is an introductory
+<li><b>Complete Documentation</b>. There is a full
 <a href="userguide.html">User Guide</a> which provides an overview and covers
-common usage scenarios. The <a href="api-0.99/index.html">javadoc</a>
+common usage scenarios. The <a href="api-release/index.html">javadoc</a>
 is extremely detailed and covers most of the API.</li>
 <li><b>Maturity</b>. The library has been under active development since 2002.
 Although it continues to be improved with the addition of new features and
@@ -98,9 +98,9 @@ bug-fixes, it is a mature and reliable code base.</li>
 <p>
 Various documentation is available:
 <ul>
-<li>The <a href="userguide.html">user guide</a> which is a good starting point</li>
+<li>Two user guides - <a href="quickstart.html">quick</a> and <a href="userguide.html">full</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
-<li>The javadoc for the <a href="api-0.99/index.html">current release</a></li>
+<li>The javadoc for the <a href="api-release/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>

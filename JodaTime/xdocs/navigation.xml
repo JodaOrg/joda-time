@@ -8,9 +8,10 @@
   <body>
     <menu name="Joda Time">
       <item name="Overview" href="/index.html"/>
+      <item name="Quick start guide" href="/quickstart.html"/>
       <item name="Users guide" href="/userguide.html"/>
       <item name="FAQ" href="/faq.html"/>
-      <item name="Javadoc (Release)" href="/api-0.99/index.html"/>
+      <item name="Javadoc (Release)" href="/api-release/index.html"/>
       <item name="License" href="/license.html"/>
       <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=97367"/>
     </menu>

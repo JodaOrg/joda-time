@@ -11,9 +11,8 @@
  <body>
 
 <section name="Joda Time - Java date and time API">
-
 <p>
-Joda-Time aims to provide a quality replacement for the Java <em>date</em>
+Joda-Time provides a quality replacement for the Java <em>date</em>
 and <em>time</em> classes. The design allows for multiple <em>calendar</em>
 systems, while still providing a simple API.
 The 'default' calendar is the <a href="cal_iso.html">ISO8601</a> standard which
@@ -21,20 +20,35 @@ is used by XML. The Gregorian, Julian, Buddhist and Coptic systems are also
 included, and we welcome further additions. Supporting classes include time zone,
 duration, format and parsing.
 </p>
+<subsection name="Quick example">
+<p>
+<source>
+DateTime dt = new DateTime();
+int year = dt.getYear();
+String monthText = dt.monthOfYear().getAsText();
+boolean leap = dt.year().isLeap();
+Period oneMonthSixDays = new Period().withMonths(1).withDays(6);
+DateTime laterDate = dt.plus(oneMonthSixDays);
+String dateAsISO8601Format = dt.toString();
+</source>
+</p>
+</subsection>
+</section>
+
 
 <section name="Why Joda Time?">
 <p>
-The decision to create a cleanroom date implementation to replace Java's is based
-on the flaws in the JDK code. Date should have been immutable, like String,
-instead it is mutable and has many deprecated methods. Here are the reasons we
-use Joda-time.
+Joda-Time has been created to radically change date and time handling is Java.
+The JDK classes Date and Calendar are very badly designed, have had numerous bugs
+and have odd performance effects.
+Here are some of our reasons for developing and using Joda-Time:
 <ul>
 <li><b>Easy to Use</b>. Calendar makes accessing 'normal' dates difficult, due to the
-lack of simple methods. Joda-time has straightforward field accessors.</li>
+lack of simple methods. Joda-Time has straightforward field accessors.</li>
 <li><b>Easy to Extend</b>. The JDK supports multiple calendar systems via subclasses
 of <code>Calendar</code>.
 This is clunky, and in practice it is very difficult to write another calendar system.
-Joda-time supports multiple calendar systems via a pluggable system based on the
+Joda-Time supports multiple calendar systems via a pluggable system based on the
 <code>Chronology</code> class.</li>
 <li><b>Comprehensive Feature Set</b>. The library is intended to provide all the
 functionality that is required for date-time calculations. It already provides
@@ -42,17 +56,17 @@ out-of-the-box features, such as support for oddball date formats, which are dif
 to replicate with the JDK.</li>
 <li><b>Up-to-date Time Zone calculations</b>. The timezone implementation is based on
 the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>. As these files are updated (several times a year),
-joda-time incorporates the changes. The user always has up-to-date timezone
+Joda-Time incorporates the changes. The user always has up-to-date timezone
 computations.</li>
 <li><b>Calendar support</b>. The library currently provides 6 calendar systems. More
 will be added in the future.</li>
 <li><b>Easy interoperability</b>. The library internally uses a millisecond instant
 which is identical to the JDK and similar to other common time representations. This makes
-interoperability easy, and joda-time comes with out-of-the-box JDK interoperability.</li>
+interoperability easy, and Joda-Time comes with out-of-the-box JDK interoperability.</li>
 <li><b>Better Performance Characteristics</b>. Calendar has strange performance characteristics
-as it recalculates fields at unexpected moments. Joda-time does only the minimal
+as it recalculates fields at unexpected moments. Joda-Time does only the minimal
 calculation for the field that is being accessed.</li>
-<li><b>Good Test Coverage</b>. Joda-time has a comprehensive set of developer tests,
+<li><b>Good Test Coverage</b>. Joda-Time has a comprehensive set of developer tests,
 providing assurance of the library's quality.</li>
 <li><b>Complete Documentation</b>. There is an introductory
 <a href="userguide.html">User Guide</a> which provides an overview and covers
@@ -61,7 +75,7 @@ is extremely detailed and covers most of the API.</li>
 <li><b>Maturity</b>. The library has been under active development since 2002.
 Although it continues to be improved with the addition of new features and
 bug-fixes, it is a mature and reliable code base.</li>
-<li><b>Open Source</b>. Joda-time is licenced under the <a href="license.html">Joda licence</a>,
+<li><b>Open Source</b>. Joda-Time is licenced under the <a href="license.html">Joda licence</a>,
 which is an Apache/BSD cloned licence and is relatively unrestricted.</li>
 </ul>
 </p>
@@ -69,9 +83,16 @@ which is an Apache/BSD cloned licence and is relatively unrestricted.</li>
 
 <section name="Documentation">
 <p>
-We recommend beginning with the <a href="userguide.html">user guide</a> for an introduction to 
-using the library. For more detail, refer to the <a href="api-0.98/index.html">API javadoc</a>.
-A <a href="faq.html">FAQ</a> and some reference material is also available.
+Various documentation is available:
+<ul>
+<li>The <a href="userguide.html">user guide</a> which is a good starting point</li>
+<li>The key concepts and chronology documents in the left navigation area</li>
+<li>The javadoc for the <a href="api-0.98/index.html">current release</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
+<li>A <a href="faq.html">FAQ</a> list</li>
+<li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>
+<li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime">CVS repository</a></li>
+</ul>
 </p>
 </section>
 
@@ -98,7 +119,6 @@ For support on bugs, using the library or to volunteer please contact the <a hre
 Alternatively, you can contact the project lead, Stephen Colebourne via
 <a href="mailto:scolebourne@users.sourceforge.net">scolebourne@users.sourceforge.net</a>.
 </p>
-</section>
 </section>
 </body>
 </document>

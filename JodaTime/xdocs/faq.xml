@@ -179,9 +179,9 @@ classes are thread-safe and immutable.
 <a name="leapseconds" />
 <subsection name="Are leap seconds supported?">
 <p>
-Joda-time does not support leap seconds. Leap seconds can be supported by
+Joda-Time does not support leap seconds. Leap seconds can be supported by
 writing a new, specialized chronology, or by making a few enhancements to the
-existing ZonedChronology class. In either case, future versions of Joda-time
+existing ZonedChronology class. In either case, future versions of Joda-Time
 will not enable leap seconds by default. Most applications have no need for it,
 and it might have additional performance costs.
 </p>

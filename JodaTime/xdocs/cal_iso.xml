@@ -10,12 +10,11 @@
  <body>
 
 <section name="ISO8601 calendar system">
-
 <p>
-Joda-Time provides a quality replacement for the Java date and time classes.
-The default calendar system used internally is ISO8601.
+The ISO8601 calendar system is the default implementation within Joda-Time.
+The standard formalises the <a href="cal_gregorian.html">Gregorian</a> calendar
+system used by the modern business world.
 </p>
-
 <p>
 The ISO8601 standard was created by the International Organization for Standards based in Geneva.
 It aims to eliminate the risk of misinterpretting dates and times when representations
@@ -23,7 +22,6 @@ are passed between systems and across national boundaries.
 We are unable to provide a direct link to the standard as it is a paid-for document.
 However some <a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.ISO.8601.Commentary.Links">ISO8601 links</a> may be useful.
 </p>
-
 <p>
 The ISO8601 standard is based on the <i>proleptic Gregorian calendar</i>.
 This makes it fully compatible with the calendar system used in most countries today.
@@ -31,11 +29,18 @@ The <i>proleptic</i> means that the Gregorian rules for leap years are applied f
 thus the ISO8601 standard gives different results for dates before the year 1583 when
 the historic cutover from the Julian calendar occurred.
 </p>
-
 <p>
 The standard sets out a framework within which dates and times can be represented.
 It offers many choices, however in reality there are three main date representations,
 year month day, year dayOfYear and year week dayOfWeek.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.ISO.8601.Commentary.Links">ISO8601 links</a></li>
+<li><a href="http://en.wikipedia.org/wiki/ISO8601">Wikipedia - ISO Calendar</a></li>
+</ul>
 </p>
 
 <subsection name="Month based">
@@ -92,7 +97,7 @@ The weekyear field is defined to refer to the year that owns the week, which may
 
 </section>
 
-<section name="Using ISO8601 in Joda-time">
+<section name="Using ISO8601 in Joda-Time">
 <p>
 Within Joda-Time the ISO8601 calendar system is the default. As such, all methods
 that take a chronology as a parameter will use the ISO chronology if null is passed in.

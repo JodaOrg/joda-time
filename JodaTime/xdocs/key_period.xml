@@ -12,7 +12,7 @@
 <section name="Period">
 
 <p>
-A <i>period</i> in Joda-time represents a period of time defined in terms of fields,
+A <i>period</i> in Joda-Time represents a period of time defined in terms of fields,
 for example, 3 years 5 months 2 days and 7 hours.
 This differs from a <a href="key_duration.html">duration</a> in that it is inexact in terms of milliseconds.
 A period can only be resolved to an exact number of milliseconds by specifying the
@@ -53,7 +53,7 @@ In datetime maths you could say:
 
 </section>
 
-<section name="Using Periods in Joda-time">
+<section name="Using Periods in Joda-Time">
 <p>
 Within Joda-Time a period is represented by the
 <a href="apidocs/org/joda/time/ReadablePeriod.html">ReadablePeriod</a> interface.
@@ -87,7 +87,7 @@ Instead, you should usually refer directly to the implementation classes in your
 
 <subsection name="Nulls">
 <p>
-Joda-time defines a null period as a zero length period.
+Joda-Time defines a null period as a zero length period.
 Thus, when a method is defined as taking a <code>ReadablePeriod</code>, passing null in
 will be the same as passing in a zero length period.
 </p>

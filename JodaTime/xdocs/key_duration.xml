@@ -12,7 +12,7 @@
 <section name="Duration">
 
 <p>
-A <i>duration</i> in Joda-time represents a duration of time measured in milliseconds.
+A <i>duration</i> in Joda-Time represents a duration of time measured in milliseconds.
 The duration is often obtained from an <a href="key_interval.html">interval</a>.
 </p>
 <p>
@@ -34,7 +34,7 @@ Durations implement <code>Comparable</code> which compares the lengths of the tw
 
 </section>
 
-<section name="Using Durations in Joda-time">
+<section name="Using Durations in Joda-Time">
 <p>
 Within Joda-Time a duration is represented by the
 <a href="apidocs/org/joda/time/ReadableDuration.html">ReadableDuration</a> interface.
@@ -65,7 +65,7 @@ Instead, you should usually refer directly to the implementation class in your A
 
 <subsection name="Nulls">
 <p>
-Joda-time defines a null duration as zero length.
+Joda-Time defines a null duration as zero length.
 Thus, when a method is defined as taking a <code>ReadableDuration</code>, passing null in
 will be the same as passing in a zero length duration.
 </p>

@@ -12,11 +12,14 @@
 <section name="Tasks outstanding">
 
 <p>
-The following tasks still need doing:
+The following tasks are on the possible TODO list - contact the mailing lists for more details:
 </p>
 
 <ul>
-<li>Review format package</li>
+<li>Add more chronologies - Ethiopian, Hebrew, Islamic, Persian, Hindu, Thai, Chinese, Japanese,...</li>
+<li>Consider methods to easily get to the last day in a month</li>
+<li>Consider formatting ordinal numbers, like 1st, 2nd, 3rd</li>
+<li>Consider allowing the text output to be altered</li>
 </ul>
 
 <p>

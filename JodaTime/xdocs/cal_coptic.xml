@@ -10,24 +10,36 @@
  <body>
 
 <section name="Coptic calendar system">
-
 <p>
-The Coptic calendar system implemented in Joda-time is as follows.
-Leap years are defined as per the <a href="cal_julian.html">Julian</a> calendar system,
-that is once every four years.
-The year is broken down into 12 months, each of exactly 30 days in length.
-An extra period at the end of the year is either 5 or 6 days in length (depending on whether it is a leap year).
-Joda-time defines this period as a 13th month.
+The Coptic calendar system is based on those used in ancient Egypt.
+It is sometimes referred to as the Alexandrian Calendar.
+The calendar system is in use today by the Coptic Orthodox Church and by farmers
+tracking the seasons in Egypt.
 </p>
 <p>
-Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
-Coptic years do not begin at the same time as Julian years.
-The implementation is not proleptic, as it does not allow dates before the first Coptic year.
+The Coptic calendar system consists of 12 months of exactly 30 days, followed by
+a 5 or 6 day intercalary month making a year of 365 or 366 days.
+Leap years (6 day intercalary month) occur every 4 years without exception (as per the Julian calendar).
+They occur when the remainder left after dividing the Coptic year by four is 3.
+The Coptic year starts on Septamber 11th/12th depending on leap years.
+The epoch date for the calendar is 0284-08-29 (Julian), which therefore is 0001-01-01 (Coptic).
+The current era is 'AM' (Anno Martyrum or Year of the Martyrs).
 </p>
-
+<p>
+Joda-Time implements the rules described above.
+We model the 5 or 6 day intercalary month as month 13.
+We also prevent the entry of dates before year 1.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Coptic_calendar">Wikipedia - Coptic Calendar</a></li>
+</ul>
+</p>
 </section>
 
-<section name="Using Coptic chronology in Joda-time">
+<section name="Using Coptic chronology in Joda-Time">
 <p>
 Within Joda-Time the Coptic calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/CopticChronology.html">CopticChronology</a>.
@@ -36,8 +48,10 @@ This is normally created using the factory method
 This is then passed into the constructors of the main date and time classes.
 </p>
 <source>
-// setup date object for midday on Christmas 2004 (ISO year 2004)
-DateTime dtISO = new DateTime(2004, 12, 25, 12, 0, 0, 0);
+// setup date object for midday on May Day 2004 (ISO year 2004)
+DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
+
+// find out what the same instant is using the Coptic Chronology
 DateTime dtCopt = dtISO.withChronology(Chronology.getCoptic());
 </source>
 

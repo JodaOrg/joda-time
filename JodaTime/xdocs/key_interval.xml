@@ -12,7 +12,7 @@
 <section name="Interval">
 
 <p>
-An <i>interval</i> in Joda-time represents an interval of time from one millisecond
+An <i>interval</i> in Joda-Time represents an interval of time from one millisecond
 <a href="key_instant.html">instant</a> to another instant.
 Both instants are fully specified instants in the datetime continuum, complete with time zone.
 </p>
@@ -34,7 +34,7 @@ If you want to compare the length of intervals you must obtain the duration of e
 
 </section>
 
-<section name="Using Intervals in Joda-time">
+<section name="Using Intervals in Joda-Time">
 <p>
 Within Joda-Time an interval is represented by the
 <a href="apidocs/org/joda/time/ReadableInterval.html">ReadableInterval</a> interface.
@@ -71,7 +71,7 @@ Instead, you should usually refer directly to the implementation classes in your
 
 <subsection name="Nulls">
 <p>
-Joda-time defines a null interval as a zero length interval from now to now.
+Joda-Time defines a null interval as a zero length interval from now to now.
 Thus, when a method is defined as taking a <code>ReadableInterval</code>, passing null in
 will be the same as passing in a zero length interval at the current time.
 </p>

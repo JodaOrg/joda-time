@@ -8,16 +8,14 @@
  </properties>
 <body>
 
+<!-- ========================================================================= -->
+
 <section name="Introduction">
 <p>
 Joda Time is like an iceberg, 9/10ths of it is invisible to user-code.
 Many, perhaps most, applications will never need to see what's below the surface.
 This document provides an introduction to the Joda-Time API for the
 average user, not for the would-be API developer.
-</p>
-<p>
-This user guide provide an intial overview of the major concepts in joda-time,
-including a brief summary of the more advanced parts of the API.
 </p>
 <p>
 The bulk of the
@@ -32,40 +30,43 @@ more advanced topics.
 </p>
 <p>
 <ul>
-<li><a href="#architecture_overview">Architecture Overview</a>
+<li><a href="#Architecture_Overview">Architecture Overview</a>
   <ul>
-    <li><a href="#instants">Instants</a>
+    <li><a href="#Instants">Instants</a>
       <ul>
-        <li><a href="#fields">Fields</a></li>
-        <li><a href="#properties">Properties</a></li>
+        <li><a href="#Fields">Fields</a></li>
+        <li><a href="#Properties">Properties</a></li>
       </ul>
     </li>
-    <li><a href="#intervals">Intervals</a></li>
-    <li><a href="#durations">Durations</a></li>
-    <li><a href="#periods">Periods</a></li>
-    <li><a href="#chronology">Chronology</a></li>
-    <li><a href="#timezones">TimeZones</a></li>
-    <li><a href="#interfaces">Interface Usage</a></li>
-    <li><a href="#package_structure">Package Structure</a></li>
+    <li><a href="#Intervals">Intervals</a></li>
+    <li><a href="#Durations">Durations</a></li>
+    <li><a href="#Periods">Periods</a></li>
+    <li><a href="#Chronology">Chronology</a></li>
+    <li><a href="#TimeZones">TimeZones</a></li>
+    <li><a href="#Interface_usage">Interface usage</a></li>
+    <li><a href="#Package_structure">Package structure</a></li>
   </ul>
 </li>
-<li><a href="#working_with_datetime">Working with DateTime</a>
+<li><a href="#Working_with_DateTime">Working with DateTime</a>
   <ul>
-    <li><a href="#construction">Construction</a></li>
-    <li><a href="#jdk_interoperability">JDK Interoperability</a></li>
-    <li><a href="#properties_and_fields">Properties and Fields</a></li>
-    <li><a href="#accessing_fields">Acessing Fields</a></li>
-    <li><a href="#date_fields">Date Fields</a></li>
-    <li><a href="#time_fields">Time Fields</a></li>
-    <li><a href="#manipulating_datetimes">Manipulating DateTimes</a>
-		<ul>
-			<li><a href="#modifying_fields">Modifying Fields</a></li>
-			<li><a href="#datetime_methods">DateTime Methods</a></li>
-			<li><a href="#using_a_mutabledatetime">Using a MutableDateTime</a></li>
-		</ul>
-	</li>
-    <li><a href="#changing_timezones">Changing Timezones</a></li>
-    <li><a href="#changing_calendars">Changing Calendars</a></li>
+    <li><a href="#Construction">Construction</a></li>
+    <li><a href="#JDK_Interoperability">JDK Interoperability</a></li>
+    <li><a href="#Querying_DateTimes">Querying DateTimes</a>
+      <ul>
+        <li><a href="#Accessing_fields">Acessing fields</a></li>
+        <li><a href="#Date_fields">Date fields</a></li>
+        <li><a href="#Time_fields">Time fields</a></li>
+      </ul>
+    </li>
+    <li><a href="#Manipulating_DateTimes">Manipulating DateTimes</a>
+      <ul>
+        <li><a href="#Modifying_fields">Modifying fields</a></li>
+        <li><a href="#DateTime_methods">DateTime methods</a></li>
+        <li><a href="#Using_a_MutableDateTime">Using a MutableDateTime</a></li>
+      </ul>
+    </li>
+    <li><a href="#Changing_TimeZone">Changing TimeZone</a></li>
+    <li><a href="#Changing_Chronology">Changing Chronology</a></li>
   </ul>
 </li>
 <!---
@@ -77,7 +78,7 @@ more advanced topics.
   </ul>
 </li>
 -->
-<li><a href="#serialization">Serialization and Formats</a>
+<li><a href="#serialization">Input and Output</a>
 <ul>
     <li><a href="#formatters">Formatters: DateTimeFormatter</a></li>
     <li><a href="#standard_formatters">Standard Formatters: ISODateTimeFormat</a></li>
@@ -85,18 +86,19 @@ more advanced topics.
     <li><a href="#freaky_formatters">Freaky Formatters: DateTimeFormatterBuilder</a></li>
 </ul>
 </li>
-<li><a href="#advancedfeatures">Advanced Features</a>
+<li><a href="#Advanced_features">Advanced features</a>
 <ul>
-    <li><a href="#changetime">Change the Current Time</a></li>
-    <li><a href="#converters">Object Converters</a></li>
-    <li><a href="#security">Security</a></li>
+    <li><a href="#Change_the_Current_Time">Change the Current Time</a></li>
+    <li><a href="#Converters">Converters</a></li>
+    <li><a href="#Security">Security</a></li>
 </ul>
 </li>
 </ul>
 </p>
 </section>
 
-<a name="architecture_overview"/>
+<!-- ========================================================================= -->
+
 <section name="Architecture Overview">
 <p>
 The major building blocks of joda time are introduced below. These are the concepts
@@ -107,11 +109,13 @@ end with a few words on package structure. Usage examples for instant are delaye
 following sections of the guide. Examples for interval, duration and period may be
 found in the appropriate section in the "Key Concepts" part of the documentation.
 </p>
+</section>
 
-<a name="instants"/>
+<!-- ========================================================================= -->
+
 <section name="Instants">
 <p>
-The most frequently used concept in Joda-time is that of the <em>instant</em>.
+The most frequently used concept in Joda-Time is that of the <em>instant</em>.
 An Instant is defined as <em>a moment in the datetime continuum specified as a
 number of milliseconds from 1970-01-01T00:00Z</em>.
 This definition of milliseconds is consistent with that of the JDK in <code>Date</code>
@@ -144,7 +148,7 @@ of this class can be modified and are not thread-safe.
 Other implementations of <code>ReadableInstant</code> include <code>Instant</code>
 and <code>DateMidnight</code>.
 </p>
-<a name="fields"/>
+
 <subsection name="Fields">
 <p>
 The main API of <code>DateTime</code> has been kept small, limited to just
@@ -155,7 +159,6 @@ a complete list of fields and their descriptions, see the
 </p>
 </subsection>
 
-<a name="properties"/>
 <subsection name="Properties">
 <p>
 There is much more power available, however, through the use of what is termed a
@@ -172,10 +175,11 @@ We have more to say on the usage of properties later in this document.
 </subsection>
 </section>
 
-<a name="intervals"/>
+<!-- ========================================================================= -->
+
 <section name="Intervals">
 <p>
-An <em>interval</em> in Joda-time represents an interval of time from one
+An <em>interval</em> in Joda-Time represents an interval of time from one
 instant to another instant. Both instants are fully specified instants in the
 datetime continuum, complete with time zone.
 </p>
@@ -190,10 +194,11 @@ both specialization of <code>ReadableInterval</code>.
 </p>
 </section>
 
-<a name="durations"/>
+<!-- ========================================================================= -->
+
 <section name="Durations">
 <p>
-A <em>duration</em> in Joda-time represents a duration of time measured in milliseconds.
+A <em>duration</em> in Joda-Time represents a duration of time measured in milliseconds.
 The duration is often obtained from an interval.
 </p>
 <p>
@@ -214,11 +219,12 @@ interface: <code>Duration</code>.
 </p>
 </section>
 
-<a name="Periods"/>
+<!-- ========================================================================= -->
+
 <section name="Periods">
 
 <p>
-A <em>period</em> in Joda-time represents a period of time defined in terms of fields,
+A <em>period</em> in Joda-Time represents a period of time defined in terms of fields,
 for example, 3 years 5 months 2 days and 7 hours.
 This differs from a duration in that it is inexact in terms of milliseconds.
 A period can only be resolved to an exact number of milliseconds by specifying the
@@ -262,7 +268,8 @@ There are two implementations of the <code>ReadablePeriod</code> interface,
 </p>
 </section>
 
-<a name="chronology"/>
+<!-- ========================================================================= -->
+
 <section name="Chronology">
 <p>
 The Joda-Time design is based around the
@@ -286,7 +293,7 @@ shows an example of creating a default Coptic chronology.
 </p>
 <p>
 Internally, all the chronology, field, etc. classes are maintained as singletons.
-Thus there is an initial setup cost when using Joda-time, but after that only
+Thus there is an initial setup cost when using Joda-Time, but after that only
 the main API instance classes (DateTime, Interval, Period, etc.) have creation and
 garbage collector costs.
 </p>
@@ -302,7 +309,8 @@ like the Coptic calendar illustrated earlier.
 </p>
 </section>
 
-<a name="timezones"/>
+<!-- ========================================================================= -->
+
 <section name="TimeZones">
 <p>
 The chronology class also supports the time zone functionality.
@@ -320,8 +328,9 @@ otherwise known as the Olson database.
 </p>
 </section>
 
-<a name="interfaces"/>
-<section name="Interface Usage">
+<!-- ========================================================================= -->
+
+<section name="Interface usage">
 <p>
 As you have seen, Joda-Time defines a number of new interfaces which are visible
 throughout the javadocs. The most important is <code>ReadableInstant</code> which
@@ -361,8 +370,9 @@ A method on the interface can obtain the concrete class for use within the metho
 </p>
 </section>
 
-<a name="package_structure"/>
-<section name="Package Structure">
+<!-- ========================================================================= -->
+
+<section name="Package structure">
 <p>
 The package structure is designed to separate the methods in the public API
 from the private API.
@@ -373,12 +383,14 @@ The private packages are the <code>base</code>, <code>chrono</code>,
 Most applications should not need to import classes from the private packages.
 </p>
 </section>
-</section>
 
-<a name="working_with_datetime"/>
+<!-- ========================================================================= -->
+<!-- ========================================================================= -->
+<!-- ========================================================================= -->
+
 <section name="Working with DateTime">
 <a name="construction"/>
-<section name="Construction">
+<subsection name="Construction">
 <p>
 A datetime object is created by using a DateTime constructor. The default
 constructor is used as follows
@@ -403,10 +415,9 @@ standard.
 constructors</a> to create a specific date and time using a variety of standard
 fields. This also permits the use of any calendar and timezone.
 </p>
-</section>
+</subsection>
 
-<a name="jdk_interoperability"/>
-<section name="JDK Interoperability">
+<subsection name="JDK Interoperability">
 <p>
 The <code>DateTime</code> class has a constructor which takes an <code>Object</code>
 as input. In particular this constructor can be passed a JDK <code>Date</code>,
@@ -419,34 +430,42 @@ is provided by <code>DateTime</code> methods which return JDK objects.
 Thus inter-conversion between Joda <code>DateTime</code> and JDK <code>Date</code>
 can be performed as follows
 <source>
+    // from Joda to JDK
+    DateTime dt = new DateTime();
     Date jdkDate = dt.toDate();
-    // modifications to jdkDate
-    ...
+
+    // from JDK to Joda
     dt = new DateTime(jdkDate);
 </source>
 </p>
 <p>
 Similarly, for JDK <code>Calendar</code>:
 <source>
+    // from Joda to JDK
+    DateTime dt = new DateTime();
     Calendar jdkCal = dt.toCalendar(Locale.CHINESE);
-    // modifications to jdkCal
-    ...
+
+    // from JDK to Joda
     dt = new DateTime(jdkCal);
 </source>
 </p>
 <p>
 and JDK <code>GregorianCalendar</code>:
 <source>
-    GregorianCalendar jdkGC = dt.toGregorianCalendar();
-    // modifications to jdkGC
-    ...
-    dt = new DateTime(jdkGC);
+    // from Joda to JDK
+    DateTime dt = new DateTime();
+    GregorianCalendar jdkGCal = dt.toGregorianCalendar();
+
+    // from JDK to Joda
+    dt = new DateTime(jdkGCal);
 </source>
 </p>
+</subsection>
 </section>
 
-<a name="properties_and_fields"/>
-<section name="Properties and Fields">
+<!-- ========================================================================= -->
+
+<section name="Querying DateTimes">
 <p>
 The separation of the calculation of calendar fields (<code>DateTimeField</code>)
 from the representation of the calendar instant (<code>DateTime</code>) makes
@@ -473,8 +492,7 @@ where <code>iDoW</code> can take the values (from class
 </source>
 </p>
 
-<a name="accessing_fields"/>
-<section name="Accessing Fields">
+<subsection name="Accessing fields">
 <p>The direct methods are fine for simple usage, but more flexibility can be achieved via the
 property/field mechanism. The day of week property is obtained by
 <source>
@@ -520,10 +538,9 @@ using the get method on the main DateTime object as it is more efficient.
     iDoW = dt.getDayOfWeek();
 </source>
 </p>
-</section>
+</subsection>
 
-<a name="date_fields"/>
-<section name="Date Fields">
+<subsection name="Date fields">
 <p>
 The <code>DateTime</code> implementation provides a complete list of standard
 calendar fields:
@@ -545,7 +562,7 @@ Each of these also has a corresponding property method, which returns a
 <code>year()</code> or <code>monthOfYear()</code>.
 The fields represented by these properties behave pretty much as their
 names would suggest. The precise definitions are available in the
-<code>DateTime</code> <a href="apidocs/org/joda/time/DateTime.html">javadoc</a>.
+<a href="field.html">field reference</a>.
 </p>
 <p>
 As you would expect, all the methods we showed above in the day-of-week example
@@ -557,10 +574,9 @@ month, day and year fields from a datetime, we can write
     boolean leapYear = dt.yearOfEra().isLeap();
 </source>
 </p>
-</section>
+</subsection>
 
-<a name="time_fields"/>
-<section name="Time Fields">
+<subsection name="Time fields">
 <p>
 Another set of properties access fields representing intra-day durations for
 time calculations. Thus to compute the hours, minutes and seconds of the instant
@@ -571,13 +587,14 @@ represented by a <code>DateTime</code>, we would write
     int sec = dt.getSecondOfMinute();
 </source>
 Again each of these has a corresponding property method for more complex manipulation.
-The complete list of time fields can be found in the <code>DateTime</code>
-<a href="apidocs/org/joda/time/DateTime.html">javadoc</a>
+The complete list of time fields can be found in the 
+<a href="field.html">field reference</a>.
 </p>
-</section>
+</subsection>
 </section>
 
-<a name="manipulating_datetimes"/>
+<!-- ========================================================================= -->
+
 <section name="Manipulating DateTimes">
 <p>
 <code>DateTime</code> objects have value semantics, and cannot be modified after
@@ -585,8 +602,8 @@ construction (they are immutable).
 Therefore, most simple manipulation of a datetime object involves
 construction of a new datetime as a modified copy of the original.
 </p>
-<a name="modifying_fields"/>
-<section name="Modifying Fields">
+
+<subsection name="Modifying fields">
 <p>
 One way to do this is to use methods on properties. To
 return to our prior example, if we wish to modify the <code>dt</code> object
@@ -604,10 +621,9 @@ To add to a date you could use the <code>addToCopy</code> method.
     DateTime dt1 = dt.dayOfWeek().addToCopy(3);
 </source>
 </p>
-</section>
+</subsection>
 
-<a name="datetime_methods"/>
-<section name="DateTime Methods">
+<subsection name="DateTime methods">
 <p>
 Another means of accomplishing similar calculations is to use methods on the
 <code>DateTime</code> object itself. Thus we could add 3 days to <code>dt</code>
@@ -616,10 +632,9 @@ directly as follows:
     DateTime dt1 = dt.plus(Period.days(3));
 </source>
 </p>
-</section>
+</subsection>
 
-<a name="using_a_mutabledatetime"/>
-<section name="Using a MutableDateTime">
+<subsection name="Using a MutableDateTime">
 <p>
 The methods outlined above are suitable for simple calculations involving one
 or two fields. In situations where multiple fields need to be modified, it is
@@ -634,11 +649,12 @@ finally create a new value datetime.
 <code>MutableDateTime</code> has a number of methods, including standard setters,
 for directly modifying the datetime.
 </p>
-</section>
+</subsection>
 </section>
 
-<a name="changing_timezones"/>
-<section name="Changing TimeZones">
+<!-- ========================================================================= -->
+
+<section name="Changing TimeZone">
 <p>
 <code>DateTime</code> comes with support for a couple of common timezone
 calculations. For instance, if you want to get the local time in London at this
@@ -671,8 +687,9 @@ time zones is provided <a href="timezones.html">here</a>.
 </p>
 </section>
 
-<a name="changing_calendars"/>
-<section name="Changing Calendars">
+<!-- ========================================================================= -->
+
+<section name="Changing Chronology">
 <p>
 The <code>DateTime</code> class also has one method for changing calendars. This
 allows you to change the calendar for a given moment in time. Thus if you want to
@@ -689,7 +706,8 @@ where <code>Chronology.getBuddhist</code> is a factory method for obtaining a
 Buddhist chronology.
 </p>
 </section>
-</section>
+
+<!-- ========================================================================= -->
 
 <!---
 <a name="#intervals_durations_periods"/>
@@ -753,8 +771,10 @@ DateTime calc = start.plus(period);
 </section>
 -->
 
+<!-- ========================================================================= -->
+
 <a name="serialization"/>
-<section name="Serialization and Formats">
+<section name="Input and Output">
 <p>
 Reading date time information from external sources which have their own custom
 format is a frequent requirement for applications that have datetime
@@ -780,7 +800,7 @@ We will now describe the various elements of this architecture.
 </p>
 
 <a name="formatter"/>
-<section name="Formatters">
+<subsection name="Formatters">
 <p>
 All serialization is performed by a <code>DateTimeFormatter</code> object. Given
 such an object <code>fmt</code>, input is performed as follows
@@ -796,10 +816,10 @@ formatter. Similarly, output is performed as
     String strOutputDateTime = fmt.print(dt);
 </source>
 </p>
-</section>
+</subsection>
 
 <a name="standard_formatters"/>
-<section name="Standard Formatters: ISODateTimeFormat">
+<subsection name="Standard Formatters: ISODateTimeFormat">
 <p>
 Support for standard or "canned" formats is provided by the
 <code>ISODateTimeFormat</code> class which provides a number of factory methods
@@ -816,10 +836,10 @@ You would then use <code>fmt</code> as described above, to read or write datetim
 objects in this format. <code>ISODateTimeFormat.getInstance()</code> returns an
 instance of the formatter-provider.
 </p>
-</section>
+</subsection>
 
 <a name="custom_formatters"/>
-<section name="Custom Formatters: DateTimeFormat">
+<subsection name="Custom Formatters: DateTimeFormat">
 <p>
 If you need a custom formatter which can be described in terms of
 a format pattern, you can use the factory method provided by the
@@ -834,10 +854,10 @@ The pattern string is compatible with JDK date patterns.
 formatter-provider for the current locale. A localized version
 of <code>getInstance</code> also exists.
 </p>
-</section>
+</subsection>
 
 <a name="freaky_formatters"/>
-<section name="Freaky Formatters: DateTimeFormatterBuilder">
+<subsection name="Freaky Formatters: DateTimeFormatterBuilder">
 <p>
 Finally, if you have a format that is not easily represented by a pattern string,
 Joda Time architecture exposes a builder class that can be used to build a custom
@@ -865,14 +885,14 @@ the range will be (1956 - 50) = 1906, to (1956 + 49) = 2005. Thus 04 will be 200
 but 07 will be 1907. This kind of conversion is not possible with ordinary format
 strings, highlighting the power of the Joda time formatting architecture.
 </p>
-</section>
+</subsection>
 </section>
 
-<a name="advancedfeatures"/>
+<!-- ========================================================================= -->
+
 <section name="Advanced features">
 
-<a name="changetime"/>
-<section name="Change the Current Time">
+<subsection name="Change the Current Time">
 <p>
 Joda-Time allows you to change the current time.
 All methods that get the current time are indirected via <code>DateTimeUtils</code>.
@@ -885,10 +905,9 @@ This allows the current time to be changed, which can be very useful for testing
 </source>
 Note that changing the current time this way does not affect the system clock.
 </p>
-</section>
+</subsection>
 
-<a name="converters"/>
-<section name="Object Converters">
+<subsection name="Converters">
 <p>
 The constructors on each major concrete class in the API take an <code>Object</code>
 as a parameter.
@@ -897,18 +916,19 @@ the object to one acceptable to Joda-Time.
 For example, the converters can convert a JDK Date object to a DateTime.
 If required, you can add your own converters to those supplied in Joda-Time.
 </p>
-</section>
+</subsection>
 
-<a name="security"/>
-<section name="Security">
+<subsection name="Security">
 <p>
 Joda-Time includes hooks into the standard JDK security scheme for sensitive changes.
 These include changing the time zone handler, changing the current time and changing
 the converters.
 See <code>JodaTimePermission</code> for details.
 </p>
+</subsection>
 </section>
-</section>
+
+<!-- ========================================================================= -->
 
 <section name="Where to Go Next">
 <p><b>list of resources</b></p>

@@ -12,7 +12,7 @@
 <section name="Instant">
 
 <p>
-The most frequently used concept in Joda-time is that of the <i>instant</i>.
+The most frequently used concept in Joda-Time is that of the <i>instant</i>.
 An Instant is defined as <i>an instant in the datetime continuum specified as a
 number of milliseconds from 1970-01-01T00:00Z</i>.
 This definition of milliseconds is consistent with that of the JDK in <code>Date</code>
@@ -38,7 +38,7 @@ you should use the <a href="key_partial.html">partial</a> classes.
 
 </section>
 
-<section name="Using Instants in Joda-time">
+<section name="Using Instants in Joda-Time">
 <p>
 Within Joda-Time an instant is represented by the
 <a href="apidocs/org/joda/time/ReadableInstant.html">ReadableInstant</a> interface.
@@ -70,7 +70,7 @@ int dow = dt.getDayOfWeek();
 // get the text, such as 'Tuesday'
 String dowStr = dt.dayOfWeek().getAsText();
 </source>
-Compared to <code>GregorianCalendar</code> Joda-time classes use 1-12 for months, and are
+Compared to <code>GregorianCalendar</code> Joda-Time classes use 1-12 for months, and are
 immutable in the standard implementations.
 It is also easy to convert to and from the JDK classes.
 <source>
@@ -93,7 +93,7 @@ interface which extends <code>ReadableInstant</code> to provide additional metho
 
 <subsection name="Nulls">
 <p>
-Joda-time defines a null instant as the current time.
+Joda-Time defines a null instant as the current time.
 Thus, when a method is defined as taking a <code>ReadableInstant</code>, passing null in
 will be the same as passing in an instant set to the current time.
 </p>

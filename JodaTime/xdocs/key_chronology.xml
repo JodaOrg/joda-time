@@ -12,13 +12,13 @@
 <section name="Chronology">
 
 <p>
-A <i>chronology</i> in Joda-time is a pluggable calendar system.
+A <i>chronology</i> in Joda-Time is a pluggable calendar system.
 The JDK supports multiple calendar systems via subclasses of <code>Calendar</code>.
 This is clunky, and in practice it is very difficult to write another calendar system.
-Joda-time supports multiple calendar systems by designing a pluggable system.
+Joda-Time supports multiple calendar systems by designing a pluggable system.
 </p>
 <p>
-The default chronology in Joda-time is <a href="cal_iso.html">ISO</a>.
+The default chronology in Joda-Time is <a href="cal_iso.html">ISO</a>.
 This calendar system is the same as that used by business in the majority of the world today.
 The ISO system is unsuitable for historical work before 1583 as it applies the leap year rules
 from today back in time (it is a proleptic calendar).
@@ -40,19 +40,20 @@ The chronology class also supports the time zone functionality.
 This is applied to the underlying chronology via the decorator design pattern.
 The <a href="apidocs/org/joda/time/DateTimeZone.html">DateTimeZone</a> class provides
 access to the zones via factories, and also supports a default zone concept.
+A full list of time zones can be found <a href="timezones.html">here</a>.
 </p>
 <p>
 Internally, all the chronology, field and time zone classes are maintained as singletons.
-Thus there is an initial setup cost when using Joda-time, but after that only
+Thus there is an initial setup cost when using Joda-Time, but after that only
 the main API instance classes (DateTime, Interval, Period, etc.) have creation and
 garbage collector costs.
 </p>
 
 </section>
 
-<section name="Using Chronology in Joda-time">
+<section name="Using Chronology in Joda-Time">
 <p>
-A Chronology is obtained and used in Joda-time as a singleton:
+A Chronology is obtained and used in Joda-Time as a singleton:
 <source>
 DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
 Chronology coptic = Chronology.getCoptic(zone);
@@ -61,7 +62,7 @@ Chronology coptic = Chronology.getCoptic(zone);
 DateTime dt = new DateTime(coptic);
 
 int year = dt.getYear();   // gets the current coptic year
-int month = dt.getMonth(); // gets the current coptic month
+int month = dt.getMonthOfYear(); // gets the current coptic month
 </source>
 </p>
 

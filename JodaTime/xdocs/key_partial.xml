@@ -12,7 +12,7 @@
 <section name="Partial">
 
 <p>
-A <i>partial</i> in Joda-time is a partial date and time representation.
+A <i>partial</i> in Joda-Time is a partial date and time representation.
 The two supplied implementations are <code>TimeofDay</code> and <code>YearMonthDay</code>.
 These classes do not store the date or time using a <code>long</code> millisecond instant,
 but instead store individual <code>int</code> field values.
@@ -39,7 +39,7 @@ In terms of datetime maths, you could write:
 
 <subsection name="Date representations">
 <p>
-Two classes represent a date in Joda-time - <code>DateMidnight</code> and <code>YearMonthDay</code>.
+Two classes represent a date in Joda-Time - <code>DateMidnight</code> and <code>YearMonthDay</code>.
 These have different meanings.
 <code>DateMidnight</code> is a fully specified instant, with a time zone.
 It is defined as the milliseond instant at exactly mignight (00:00) at the start of a day.
@@ -50,7 +50,7 @@ It can be thought of as a local date that covers the whole of the day from 00:00
 
 </section>
 
-<section name="Using Partials in Joda-time">
+<section name="Using Partials in Joda-Time">
 <p>
 Within Joda-Time a partial is represented by the
 <a href="apidocs/org/joda/time/ReadablePartial.html">ReadablePartial</a> interface.
@@ -94,7 +94,7 @@ Instead, you should refer directly to the implementation classes in your APIs.
 
 <subsection name="Nulls">
 <p>
-Joda-time defines a null partial as the current time.
+Joda-Time defines a null partial as the current time.
 Thus, when a method is defined as taking a <code>ReadablePartial</code>, passing null in
 will be the same as passing in a partial set to the current time.
 </p>

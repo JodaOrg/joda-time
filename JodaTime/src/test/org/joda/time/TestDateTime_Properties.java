@@ -115,6 +115,84 @@ public class TestDateTime_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testPropertyGetEra() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().era(), test.era().getField());
+        assertEquals("era", test.era().getName());
+        assertEquals("Property[era]", test.era().toString());
+        assertSame(test, test.era().getInstant());
+        assertSame(test, test.era().getDateTime());
+        assertEquals(1, test.era().get());
+        assertEquals("AD", test.era().getAsText());
+        assertEquals("ap. J.-C.", test.era().getAsText(Locale.FRENCH));
+        assertEquals("AD", test.era().getAsShortText());
+        assertEquals("ap. J.-C.", test.era().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().eras(), test.era().getDurationField());
+        assertEquals(null, test.era().getRangeDurationField());
+        assertEquals(2, test.era().getMaximumTextLength(null));
+        assertEquals(9, test.era().getMaximumTextLength(Locale.FRENCH));
+        assertEquals(2, test.era().getMaximumShortTextLength(null));
+        assertEquals(9, test.era().getMaximumShortTextLength(Locale.FRENCH));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetYearOfEra() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().yearOfEra(), test.yearOfEra().getField());
+        assertEquals("yearOfEra", test.yearOfEra().getName());
+        assertEquals("Property[yearOfEra]", test.yearOfEra().toString());
+        assertSame(test, test.yearOfEra().getInstant());
+        assertSame(test, test.yearOfEra().getDateTime());
+        assertEquals(1972, test.yearOfEra().get());
+        assertEquals("1972", test.yearOfEra().getAsText());
+        assertEquals("1972", test.yearOfEra().getAsText(Locale.FRENCH));
+        assertEquals("1972", test.yearOfEra().getAsShortText());
+        assertEquals("1972", test.yearOfEra().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().years(), test.yearOfEra().getDurationField());
+        assertEquals(null, test.yearOfEra().getRangeDurationField());
+        assertEquals(9, test.yearOfEra().getMaximumTextLength(null));
+        assertEquals(9, test.yearOfEra().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetCenturyOfEra() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().centuryOfEra(), test.centuryOfEra().getField());
+        assertEquals("centuryOfEra", test.centuryOfEra().getName());
+        assertEquals("Property[centuryOfEra]", test.centuryOfEra().toString());
+        assertSame(test, test.centuryOfEra().getInstant());
+        assertSame(test, test.centuryOfEra().getDateTime());
+        assertEquals(19, test.centuryOfEra().get());
+        assertEquals("19", test.centuryOfEra().getAsText());
+        assertEquals("19", test.centuryOfEra().getAsText(Locale.FRENCH));
+        assertEquals("19", test.centuryOfEra().getAsShortText());
+        assertEquals("19", test.centuryOfEra().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().centuries(), test.centuryOfEra().getDurationField());
+        assertEquals(null, test.centuryOfEra().getRangeDurationField());
+        assertEquals(7, test.centuryOfEra().getMaximumTextLength(null));
+        assertEquals(7, test.centuryOfEra().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetYearOfCentury() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().yearOfCentury(), test.yearOfCentury().getField());
+        assertEquals("yearOfCentury", test.yearOfCentury().getName());
+        assertEquals("Property[yearOfCentury]", test.yearOfCentury().toString());
+        assertSame(test, test.yearOfCentury().getInstant());
+        assertSame(test, test.yearOfCentury().getDateTime());
+        assertEquals(72, test.yearOfCentury().get());
+        assertEquals("72", test.yearOfCentury().getAsText());
+        assertEquals("72", test.yearOfCentury().getAsText(Locale.FRENCH));
+        assertEquals("72", test.yearOfCentury().getAsShortText());
+        assertEquals("72", test.yearOfCentury().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().years(), test.yearOfCentury().getDurationField());
+        assertEquals(test.getChronology().centuries(), test.yearOfCentury().getRangeDurationField());
+        assertEquals(2, test.yearOfCentury().getMaximumTextLength(null));
+        assertEquals(2, test.yearOfCentury().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testPropertyGetYear() {
         DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
         assertSame(test.getChronology().year(), test.year().getField());
@@ -212,295 +290,300 @@ public class TestDateTime_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-//    //-----------------------------------------------------------------------
-//    public void testPropertyGetMonth() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
-//        assertEquals("monthOfYear", test.monthOfYear().getName());
-//        assertEquals("Property[monthOfYear]", test.monthOfYear().toString());
-//        assertSame(test, test.monthOfYear().getReadablePartial());
-//        assertSame(test, test.monthOfYear().getDateTime());
-//        assertEquals(6, test.monthOfYear().get());
-//        assertEquals("June", test.monthOfYear().getAsText());
-//        assertEquals("juin", test.monthOfYear().getAsText(Locale.FRENCH));
-//        assertEquals("Jun", test.monthOfYear().getAsShortText());
-//        assertEquals("juin", test.monthOfYear().getAsShortText(Locale.FRENCH));
-//        assertEquals(test.getChronology().months(), test.monthOfYear().getDurationField());
-//        assertEquals(test.getChronology().years(), test.monthOfYear().getRangeDurationField());
-//        assertEquals(9, test.monthOfYear().getMaximumTextLength(null));
-//        assertEquals(3, test.monthOfYear().getMaximumShortTextLength(null));
-//        test = new DateTime(1972, 7, 9);
-//        assertEquals("juillet", test.monthOfYear().getAsText(Locale.FRENCH));
-//        assertEquals("juil.", test.monthOfYear().getAsShortText(Locale.FRENCH));
-//    }
-//
-//    public void testPropertyGetMaxMinValuesMonth() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        assertEquals(1, test.monthOfYear().getMinimumValue());
-//        assertEquals(1, test.monthOfYear().getMinimumValueOverall());
-//        assertEquals(12, test.monthOfYear().getMaximumValue());
-//        assertEquals(12, test.monthOfYear().getMaximumValueOverall());
-//    }
-//
-//    public void testPropertyAddMonth() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.monthOfYear().addCopy(6);
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 12, 9);
-//        
-//        copy = test.monthOfYear().addCopy(7);
-//        check(copy, 1973, 1, 9);
-//        
-//        copy = test.monthOfYear().addCopy(-5);
-//        check(copy, 1972, 1, 9);
-//        
-//        copy = test.monthOfYear().addCopy(-6);
-//        check(copy, 1971, 12, 9);
-//        
-//        test = new DateTime(1972, 1, 31);
-//        copy = test.monthOfYear().addCopy(1);
-//        check(copy, 1972, 2, 29);
-//        
-//        copy = test.monthOfYear().addCopy(2);
-//        check(copy, 1972, 3, 31);
-//        
-//        copy = test.monthOfYear().addCopy(3);
-//        check(copy, 1972, 4, 30);
-//        
-//        test = new DateTime(1971, 1, 31);
-//        copy = test.monthOfYear().addCopy(1);
-//        check(copy, 1971, 2, 28);
-//    }
-//
-//    public void testPropertyAddInFieldMonth() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.monthOfYear().addWrappedToCopy(4);
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 10, 9);
-//        
-//        copy = test.monthOfYear().addWrappedToCopy(8);
-//        check(copy, 1972, 2, 9);
-//        
-//        copy = test.monthOfYear().addWrappedToCopy(-8);
-//        check(copy, 1972, 10, 9);
-//        
-//        test = new DateTime(1972, 1, 31);
-//        copy = test.monthOfYear().addWrappedToCopy(1);
-//        check(copy, 1972, 2, 29);
-//        
-//        copy = test.monthOfYear().addWrappedToCopy(2);
-//        check(copy, 1972, 3, 31);
-//        
-//        copy = test.monthOfYear().addWrappedToCopy(3);
-//        check(copy, 1972, 4, 30);
-//        
-//        test = new DateTime(1971, 1, 31);
-//        copy = test.monthOfYear().addWrappedToCopy(1);
-//        check(copy, 1971, 2, 28);
-//    }
-//
-//    public void testPropertySetMonth() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.monthOfYear().setCopy(12);
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 12, 9);
-//        
-//        test = new DateTime(1972, 1, 31);
-//        copy = test.monthOfYear().setCopy(2);
-//        check(copy, 1972, 2, 29);
-//        
-//        try {
-//            test.monthOfYear().setCopy(13);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//        try {
-//            test.monthOfYear().setCopy(0);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//    }
-//
-//    public void testPropertySetTextMonth() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.monthOfYear().setCopy("12");
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 12, 9);
-//        
-//        copy = test.monthOfYear().setCopy("December");
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 12, 9);
-//        
-//        copy = test.monthOfYear().setCopy("Dec");
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 12, 9);
-//    }
-//
-//    public void testPropertyCompareToMonth() {
-//        DateTime test1 = new DateTime(TEST_TIME1);
-//        DateTime test2 = new DateTime(TEST_TIME2);
-//        assertEquals(true, test1.monthOfYear().compareTo(test2) < 0);
-//        assertEquals(true, test2.monthOfYear().compareTo(test1) > 0);
-//        assertEquals(true, test1.monthOfYear().compareTo(test1) == 0);
-//        try {
-//            test1.monthOfYear().compareTo((ReadablePartial) null);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//        
-//        DateTime dt1 = new DateTime(TEST_TIME1);
-//        DateTime dt2 = new DateTime(TEST_TIME2);
-//        assertEquals(true, test1.monthOfYear().compareTo(dt2) < 0);
-//        assertEquals(true, test2.monthOfYear().compareTo(dt1) > 0);
-//        assertEquals(true, test1.monthOfYear().compareTo(dt1) == 0);
-//        try {
-//            test1.monthOfYear().compareTo((ReadableInstant) null);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//    }
-//
-//    //-----------------------------------------------------------------------
-//    public void testPropertyGetDay() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        assertSame(test.getChronology().dayOfMonth(), test.dayOfMonth().getField());
-//        assertEquals("dayOfMonth", test.dayOfMonth().getName());
-//        assertEquals("Property[dayOfMonth]", test.dayOfMonth().toString());
-//        assertSame(test, test.dayOfMonth().getReadablePartial());
-//        assertSame(test, test.dayOfMonth().getDateTime());
-//        assertEquals(9, test.dayOfMonth().get());
-//        assertEquals("9", test.dayOfMonth().getAsText());
-//        assertEquals("9", test.dayOfMonth().getAsText(Locale.FRENCH));
-//        assertEquals("9", test.dayOfMonth().getAsShortText());
-//        assertEquals("9", test.dayOfMonth().getAsShortText(Locale.FRENCH));
-//        assertEquals(test.getChronology().days(), test.dayOfMonth().getDurationField());
-//        assertEquals(test.getChronology().months(), test.dayOfMonth().getRangeDurationField());
-//        assertEquals(2, test.dayOfMonth().getMaximumTextLength(null));
-//        assertEquals(2, test.dayOfMonth().getMaximumShortTextLength(null));
-//    }
-//
-//    public void testPropertyGetMaxMinValuesDay() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        assertEquals(1, test.dayOfMonth().getMinimumValue());
-//        assertEquals(1, test.dayOfMonth().getMinimumValueOverall());
-//        assertEquals(30, test.dayOfMonth().getMaximumValue());
-//        assertEquals(31, test.dayOfMonth().getMaximumValueOverall());
-//        test = new DateTime(1972, 7, 9);
-//        assertEquals(31, test.dayOfMonth().getMaximumValue());
-//        test = new DateTime(1972, 2, 9);
-//        assertEquals(29, test.dayOfMonth().getMaximumValue());
-//        test = new DateTime(1971, 2, 9);
-//        assertEquals(28, test.dayOfMonth().getMaximumValue());
-//    }
-//
-//    public void testPropertyAddDay() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.dayOfMonth().addCopy(9);
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 6, 18);
-//        
-//        copy = test.dayOfMonth().addCopy(21);
-//        check(copy, 1972, 6, 30);
-//        
-//        copy = test.dayOfMonth().addCopy(22);
-//        check(copy, 1972, 7, 1);
-//        
-//        copy = test.dayOfMonth().addCopy(22 + 30);
-//        check(copy, 1972, 7, 31);
-//        
-//        copy = test.dayOfMonth().addCopy(22 + 31);
-//        check(copy, 1972, 8, 1);
-//
-//        copy = test.dayOfMonth().addCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
-//        check(copy, 1972, 12, 31);
-//        
-//        copy = test.dayOfMonth().addCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
-//        check(copy, 1973, 1, 1);
-//        
-//        copy = test.dayOfMonth().addCopy(-8);
-//        check(copy, 1972, 6, 1);
-//        
-//        copy = test.dayOfMonth().addCopy(-9);
-//        check(copy, 1972, 5, 31);
-//        
-//        copy = test.dayOfMonth().addCopy(-8 - 31 - 30 - 31 - 29 - 31);
-//        check(copy, 1972, 1, 1);
-//        
-//        copy = test.dayOfMonth().addCopy(-9 - 31 - 30 - 31 - 29 - 31);
-//        check(copy, 1971, 12, 31);
-//    }
-//
-//    public void testPropertyAddInFieldDay() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.dayOfMonth().addWrappedToCopy(21);
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 6, 30);
-//        
-//        copy = test.dayOfMonth().addWrappedToCopy(22);
-//        check(copy, 1972, 6, 1);
-//        
-//        copy = test.dayOfMonth().addWrappedToCopy(-12);
-//        check(copy, 1972, 6, 27);
-//        
-//        test = new DateTime(1972, 7, 9);
-//        copy = test.dayOfMonth().addWrappedToCopy(21);
-//        check(copy, 1972, 7, 30);
-//    
-//        copy = test.dayOfMonth().addWrappedToCopy(22);
-//        check(copy, 1972, 7, 31);
-//    
-//        copy = test.dayOfMonth().addWrappedToCopy(23);
-//        check(copy, 1972, 7, 1);
-//    
-//        copy = test.dayOfMonth().addWrappedToCopy(-12);
-//        check(copy, 1972, 7, 28);
-//    }
-//
-//    public void testPropertySetDay() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.dayOfMonth().setCopy(12);
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 6, 12);
-//        
-//        try {
-//            test.dayOfMonth().setCopy(31);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//        try {
-//            test.dayOfMonth().setCopy(0);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//    }
-//
-//    public void testPropertySetTextDay() {
-//        DateTime test = new DateTime(1972, 6, 9);
-//        DateTime copy = test.dayOfMonth().setCopy("12");
-//        check(test, 1972, 6, 9);
-//        check(copy, 1972, 6, 12);
-//    }
-//
-//    public void testPropertyCompareToDay() {
-//        DateTime test1 = new DateTime(TEST_TIME1);
-//        DateTime test2 = new DateTime(TEST_TIME2);
-//        assertEquals(true, test1.dayOfMonth().compareTo(test2) < 0);
-//        assertEquals(true, test2.dayOfMonth().compareTo(test1) > 0);
-//        assertEquals(true, test1.dayOfMonth().compareTo(test1) == 0);
-//        try {
-//            test1.dayOfMonth().compareTo((ReadablePartial) null);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//        
-//        DateTime dt1 = new DateTime(TEST_TIME1);
-//        DateTime dt2 = new DateTime(TEST_TIME2);
-//        assertEquals(true, test1.dayOfMonth().compareTo(dt2) < 0);
-//        assertEquals(true, test2.dayOfMonth().compareTo(dt1) > 0);
-//        assertEquals(true, test1.dayOfMonth().compareTo(dt1) == 0);
-//        try {
-//            test1.dayOfMonth().compareTo((ReadableInstant) null);
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
-//    }
-//
-//    //-----------------------------------------------------------------------
-//    private void check(DateTime test, int hour, int min, int sec) {
-//        assertEquals(hour, test.getYear());
-//        assertEquals(min, test.getMonthOfYear());
-//        assertEquals(sec, test.getDayOfMonth());
-//    }
+    //-----------------------------------------------------------------------
+    public void testPropertyGetMonth() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
+        assertEquals("monthOfYear", test.monthOfYear().getName());
+        assertEquals("Property[monthOfYear]", test.monthOfYear().toString());
+        assertSame(test, test.monthOfYear().getInstant());
+        assertSame(test, test.monthOfYear().getDateTime());
+        assertEquals(6, test.monthOfYear().get());
+        assertEquals("June", test.monthOfYear().getAsText());
+        assertEquals("juin", test.monthOfYear().getAsText(Locale.FRENCH));
+        assertEquals("Jun", test.monthOfYear().getAsShortText());
+        assertEquals("juin", test.monthOfYear().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().months(), test.monthOfYear().getDurationField());
+        assertEquals(test.getChronology().years(), test.monthOfYear().getRangeDurationField());
+        assertEquals(9, test.monthOfYear().getMaximumTextLength(null));
+        assertEquals(3, test.monthOfYear().getMaximumShortTextLength(null));
+        test = new DateTime(1972, 7, 9, 0, 0, 0, 0);
+        assertEquals("juillet", test.monthOfYear().getAsText(Locale.FRENCH));
+        assertEquals("juil.", test.monthOfYear().getAsShortText(Locale.FRENCH));
+        assertEquals(1, test.monthOfYear().getMinimumValue());
+        assertEquals(1, test.monthOfYear().getMinimumValueOverall());
+        assertEquals(12, test.monthOfYear().getMaximumValue());
+        assertEquals(12, test.monthOfYear().getMaximumValueOverall());
+    }
+
+    public void testPropertyGetMaxMinValuesMonth() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertEquals(1, test.monthOfYear().getMinimumValue());
+        assertEquals(1, test.monthOfYear().getMinimumValueOverall());
+        assertEquals(12, test.monthOfYear().getMaximumValue());
+        assertEquals(12, test.monthOfYear().getMaximumValueOverall());
+    }
+
+    public void testPropertyAddMonth() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.monthOfYear().addToCopy(6);
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-12-09T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addToCopy(7);
+        assertEquals("1973-01-09T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addToCopy(-5);
+        assertEquals("1972-01-09T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addToCopy(-6);
+        assertEquals("1971-12-09T00:00:00.000Z", copy.toString());
+        
+        test = new DateTime(1972, 1, 31, 0, 0, 0, 0);
+        copy = test.monthOfYear().addToCopy(1);
+        assertEquals("1972-01-31T00:00:00.000Z", test.toString());
+        assertEquals("1972-02-29T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addToCopy(2);
+        assertEquals("1972-03-31T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addToCopy(3);
+        assertEquals("1972-04-30T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(1971, 1, 31, 0, 0, 0, 0);
+        copy = test.monthOfYear().addToCopy(1);
+        assertEquals("1971-02-28T00:00:00.000Z", copy.toString());
+    }
+
+    public void testPropertyAddInFieldMonth() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.monthOfYear().addWrappedToCopy(4);
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-10-09T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.monthOfYear().addWrappedToCopy(8);
+        assertEquals("1972-02-09T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addWrappedToCopy(-8);
+        assertEquals("1972-10-09T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(1972, 1, 31, 0, 0, 0, 0);
+        copy = test.monthOfYear().addWrappedToCopy(1);
+        assertEquals("1972-01-31T00:00:00.000Z", test.toString());
+        assertEquals("1972-02-29T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().addWrappedToCopy(2);
+        assertEquals("1972-03-31T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.monthOfYear().addWrappedToCopy(3);
+        assertEquals("1972-04-30T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(1971, 1, 31, 0, 0, 0, 0);
+        copy = test.monthOfYear().addWrappedToCopy(1);
+        assertEquals("1971-01-31T00:00:00.000Z", test.toString());
+        assertEquals("1971-02-28T00:00:00.000Z", copy.toString());
+    }
+
+    public void testPropertySetMonth() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.monthOfYear().setCopy(12);
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-12-09T00:00:00.000Z", copy.toString());
+        
+        test = new DateTime(1972, 1, 31, 0, 0, 0, 0);
+        copy = test.monthOfYear().setCopy(2);
+        assertEquals("1972-02-29T00:00:00.000Z", copy.toString());
+        
+        try {
+            test.monthOfYear().setCopy(13);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.monthOfYear().setCopy(0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testPropertySetTextMonth() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.monthOfYear().setCopy("12");
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-12-09T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().setCopy("December");
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-12-09T00:00:00.000Z", copy.toString());
+        
+        copy = test.monthOfYear().setCopy("Dec");
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-12-09T00:00:00.000Z", copy.toString());
+    }
+
+    public void testPropertyCompareToMonth() {
+        DateTime test1 = new DateTime(TEST_TIME1);
+        DateTime test2 = new DateTime(TEST_TIME2);
+        assertEquals(true, test1.monthOfYear().compareTo(test2) < 0);
+        assertEquals(true, test2.monthOfYear().compareTo(test1) > 0);
+        assertEquals(true, test1.monthOfYear().compareTo(test1) == 0);
+        try {
+            test1.monthOfYear().compareTo((ReadableInstant) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        
+        DateTime dt1 = new DateTime(TEST_TIME1);
+        DateTime dt2 = new DateTime(TEST_TIME2);
+        assertEquals(true, test1.monthOfYear().compareTo(dt2) < 0);
+        assertEquals(true, test2.monthOfYear().compareTo(dt1) > 0);
+        assertEquals(true, test1.monthOfYear().compareTo(dt1) == 0);
+        try {
+            test1.monthOfYear().compareTo((ReadableInstant) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetDay() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().dayOfMonth(), test.dayOfMonth().getField());
+        assertEquals("dayOfMonth", test.dayOfMonth().getName());
+        assertEquals("Property[dayOfMonth]", test.dayOfMonth().toString());
+        assertSame(test, test.dayOfMonth().getInstant());
+        assertSame(test, test.dayOfMonth().getDateTime());
+        assertEquals(9, test.dayOfMonth().get());
+        assertEquals("9", test.dayOfMonth().getAsText());
+        assertEquals("9", test.dayOfMonth().getAsText(Locale.FRENCH));
+        assertEquals("9", test.dayOfMonth().getAsShortText());
+        assertEquals("9", test.dayOfMonth().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().days(), test.dayOfMonth().getDurationField());
+        assertEquals(test.getChronology().months(), test.dayOfMonth().getRangeDurationField());
+        assertEquals(2, test.dayOfMonth().getMaximumTextLength(null));
+        assertEquals(2, test.dayOfMonth().getMaximumShortTextLength(null));
+        assertEquals(1, test.dayOfMonth().getMinimumValue());
+        assertEquals(1, test.dayOfMonth().getMinimumValueOverall());
+        assertEquals(30, test.dayOfMonth().getMaximumValue());
+        assertEquals(31, test.dayOfMonth().getMaximumValueOverall());
+    }
+
+    public void testPropertyGetMaxMinValuesDay() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        assertEquals(1, test.dayOfMonth().getMinimumValue());
+        assertEquals(1, test.dayOfMonth().getMinimumValueOverall());
+        assertEquals(30, test.dayOfMonth().getMaximumValue());
+        assertEquals(31, test.dayOfMonth().getMaximumValueOverall());
+        test = new DateTime(1972, 7, 9, 0, 0, 0, 0);
+        assertEquals(31, test.dayOfMonth().getMaximumValue());
+        test = new DateTime(1972, 2, 9, 0, 0, 0, 0);
+        assertEquals(29, test.dayOfMonth().getMaximumValue());
+        test = new DateTime(1971, 2, 9, 0, 0, 0, 0);
+        assertEquals(28, test.dayOfMonth().getMaximumValue());
+    }
+
+    public void testPropertyAddDay() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfMonth().addToCopy(9);
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-06-18T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(21);
+        assertEquals("1972-06-30T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(22);
+        assertEquals("1972-07-01T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(22 + 30);
+        assertEquals("1972-07-31T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(22 + 31);
+        assertEquals("1972-08-01T00:00:00.000+01:00", copy.toString());
+
+        copy = test.dayOfMonth().addToCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
+        assertEquals("1972-12-31T00:00:00.000Z", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
+        assertEquals("1973-01-01T00:00:00.000Z", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(-8);
+        assertEquals("1972-06-01T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(-9);
+        assertEquals("1972-05-31T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(-8 - 31 - 30 - 31 - 29 - 31);
+        assertEquals("1972-01-01T00:00:00.000Z", copy.toString());
+        
+        copy = test.dayOfMonth().addToCopy(-9 - 31 - 30 - 31 - 29 - 31);
+        assertEquals("1971-12-31T00:00:00.000Z", copy.toString());
+    }
+
+    public void testPropertyAddInFieldDay() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfMonth().addWrappedToCopy(21);
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-06-30T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addWrappedToCopy(22);
+        assertEquals("1972-06-01T00:00:00.000+01:00", copy.toString());
+        
+        copy = test.dayOfMonth().addWrappedToCopy(-12);
+        assertEquals("1972-06-27T00:00:00.000+01:00", copy.toString());
+        
+        test = new DateTime(1972, 7, 9, 0, 0, 0, 0);
+        copy = test.dayOfMonth().addWrappedToCopy(21);
+        assertEquals("1972-07-30T00:00:00.000+01:00", copy.toString());
+    
+        copy = test.dayOfMonth().addWrappedToCopy(22);
+        assertEquals("1972-07-31T00:00:00.000+01:00", copy.toString());
+    
+        copy = test.dayOfMonth().addWrappedToCopy(23);
+        assertEquals("1972-07-01T00:00:00.000+01:00", copy.toString());
+    
+        copy = test.dayOfMonth().addWrappedToCopy(-12);
+        assertEquals("1972-07-28T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertySetDay() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfMonth().setCopy(12);
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-06-12T00:00:00.000+01:00", copy.toString());
+        
+        try {
+            test.dayOfMonth().setCopy(31);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.dayOfMonth().setCopy(0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testPropertySetTextDay() {
+        DateTime test = new DateTime(1972, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfMonth().setCopy("12");
+        assertEquals("1972-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("1972-06-12T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyCompareToDay() {
+        DateTime test1 = new DateTime(TEST_TIME1);
+        DateTime test2 = new DateTime(TEST_TIME2);
+        assertEquals(true, test1.dayOfMonth().compareTo(test2) < 0);
+        assertEquals(true, test2.dayOfMonth().compareTo(test1) > 0);
+        assertEquals(true, test1.dayOfMonth().compareTo(test1) == 0);
+        try {
+            test1.dayOfMonth().compareTo((ReadableInstant) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        
+        DateTime dt1 = new DateTime(TEST_TIME1);
+        DateTime dt2 = new DateTime(TEST_TIME2);
+        assertEquals(true, test1.dayOfMonth().compareTo(dt2) < 0);
+        assertEquals(true, test2.dayOfMonth().compareTo(dt1) > 0);
+        assertEquals(true, test1.dayOfMonth().compareTo(dt1) == 0);
+        try {
+            test1.dayOfMonth().compareTo((ReadableInstant) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
 }

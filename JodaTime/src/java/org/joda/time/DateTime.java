@@ -557,7 +557,7 @@ public final class DateTime
      * DateTime added = dt.hourOfDay().addToCopy(6);
      * </pre>
      * 
-     * @param durationToAdd  the duration to add to this one, null means zero
+     * @param periodToAdd  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long

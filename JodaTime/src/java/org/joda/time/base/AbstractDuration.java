@@ -116,9 +116,10 @@ public abstract class AbstractDuration implements ReadableDuration {
      * <p>
      * For more control over the conversion process, you have two options:
      * <ul>
-     * <li>convert the duration to an {@link Interval}, and from there obtain the period
-     * <li>specify a period type that contains precise definitions of the day and larger
-     * fields, such as the UTC or precise types.
+     * <li>convert the duration to an {@link org.joda.time.Interval}, and from
+     * there obtain the period
+     * <li>specify a period type that contains precise definitions of the day
+     * and larger fields, such as the UTC or precise types.
      * </ul>
      * 
      * @return a Period created using the millisecond duration from this instance

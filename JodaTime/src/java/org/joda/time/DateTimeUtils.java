@@ -227,8 +227,8 @@ public class DateTimeUtils {
      * If the zone is <code>null</code>, {@link DateTimeZone#getDefault()}
      * will be returned. Otherwise, the chronology is returned.
      * 
-     * @param chrono  the chronology to use, null means the default zone
-     * @return the chronology, or default if null
+     * @param zone  the time zone to use, null means the default zone
+     * @return the time zone, or default if null
      */
     public static final DateTimeZone getZone(DateTimeZone zone) {
         if (zone == null) {

@@ -171,7 +171,7 @@ public abstract class AbstractDateTime
     /**
      * Get the day of month field value.
      * <p>
-     * The values for the day of month are defined in {@link DateTimeConstants}.
+     * The values for the day of month are defined in {@link org.joda.time.DateTimeConstants}.
      * 
      * @return the day of month
      */
@@ -182,7 +182,7 @@ public abstract class AbstractDateTime
     /**
      * Get the day of week field value.
      * <p>
-     * The values for the day of week are defined in {@link DateTimeConstants}.
+     * The values for the day of week are defined in {@link org.joda.time.DateTimeConstants}.
      * 
      * @return the day of week
      */

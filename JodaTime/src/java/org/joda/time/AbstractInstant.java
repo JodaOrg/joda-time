@@ -465,7 +465,13 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        Calendar cal = Calendar.getInstance(locale);
+        DateTimeZone zone = getDateTimeZone();
+        Calendar cal;
+        if (zone == null) {
+            cal = Calendar.getInstance(locale);
+        } else {
+            cal = Calendar.getInstance(zone.toTimeZone(), locale);
+        }
         cal.setTime(toDate());
         return cal;
     }
@@ -476,7 +482,13 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a GregorianCalendar initialised with this datetime
      */
     public final GregorianCalendar toGregorianCalendar() {
-        GregorianCalendar cal = new GregorianCalendar();
+        DateTimeZone zone = getDateTimeZone();
+        GregorianCalendar cal;
+        if (zone == null) {
+            cal = new GregorianCalendar();
+        } else {
+            cal = new GregorianCalendar(zone.toTimeZone());
+        }
         cal.setTime(toDate());
         return cal;
     }

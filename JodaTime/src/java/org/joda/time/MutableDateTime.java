@@ -524,14 +524,14 @@ public class MutableDateTime
      * <p>
      * If the chronology already has this time zone, no change occurs.
      *
-     * @param zone  the time zone to use, null means default zone
+     * @param newZone  the time zone to use, null means default zone
      * @see #setZoneRetainFields
      */
-    public void setZone(DateTimeZone zone) {
-        zone = DateTimeUtils.getZone(zone);
+    public void setZone(DateTimeZone newZone) {
+        newZone = DateTimeUtils.getZone(newZone);
         Chronology chrono = getChronology();
-        if (chrono.getZone() != zone) {
-            setChronology(chrono.withZone(zone));  // set via this class not super
+        if (chrono.getZone() != newZone) {
+            setChronology(chrono.withZone(newZone));  // set via this class not super
         }
     }
 
@@ -543,19 +543,18 @@ public class MutableDateTime
      * <p>
      * If the chronology already has this time zone, no change occurs.
      *
-     * @param zone  the time zone to use, null means default zone
+     * @param newZone  the time zone to use, null means default zone
      * @see #setZone
      */
-    public void setZoneRetainFields(DateTimeZone zone) {
-        zone = DateTimeUtils.getZone(zone);
-        DateTimeZone originalZone = getZone();
-        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
-        if (zone == originalZone) {
+    public void setZoneRetainFields(DateTimeZone newZone) {
+        newZone = DateTimeUtils.getZone(newZone);
+        DateTimeZone originalZone = DateTimeUtils.getZone(getZone());
+        if (newZone == originalZone) {
             return;
         }
         
-        long millis = originalZone.getMillisKeepLocal(zone, getMillis());
-        setChronology(getChronology().withZone(zone));  // set via this class not super
+        long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
+        setChronology(getChronology().withZone(newZone));  // set via this class not super
         setMillis(millis);
     }
 

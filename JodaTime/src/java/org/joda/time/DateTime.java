@@ -354,12 +354,12 @@ public final class DateTime
      * millisecond instant, with the effect that the field values usually change.
      * The returned object will be either be a new instance or <code>this</code>.
      *
-     * @param newDateTimeZone  the new time zone
+     * @param newZone  the new time zone
      * @return a copy of this datetime with a different time zone
      * @see #withZoneRetainFields
      */
-    public DateTime withZone(DateTimeZone newDateTimeZone) {
-        return withChronology(getChronology().withZone(newDateTimeZone));
+    public DateTime withZone(DateTimeZone newZone) {
+        return withChronology(getChronology().withZone(newZone));
     }
 
     /**
@@ -380,9 +380,8 @@ public final class DateTime
      * @see #withZone
      */
     public DateTime withZoneRetainFields(DateTimeZone newZone) {
-        newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
-        DateTimeZone originalZone = getZone();
-        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
+        newZone = DateTimeUtils.getZone(newZone);
+        DateTimeZone originalZone = DateTimeUtils.getZone(getZone());
         if (newZone == originalZone) {
             return this;
         }

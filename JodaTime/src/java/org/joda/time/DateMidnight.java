@@ -355,9 +355,8 @@ public final class DateMidnight
      * @return a copy of this instant with a different time zone
      */
     public DateMidnight withZoneRetainFields(DateTimeZone newZone) {
-        newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
-        DateTimeZone originalZone = getZone();
-        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
+        newZone = DateTimeUtils.getZone(newZone);
+        DateTimeZone originalZone = DateTimeUtils.getZone(getZone());
         if (newZone == originalZone) {
             return this;
         }

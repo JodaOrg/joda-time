@@ -245,7 +245,7 @@ public interface ReadableInterval {
     
     //-----------------------------------------------------------------------
     /**
-     * Get this interval as an <code>Interval</code> object.
+     * Get this interval as an immutable <code>Interval</code> object.
      * <p>
      * This will either typecast this instance, or create a new <code>Interval</code>.
      *
@@ -254,7 +254,7 @@ public interface ReadableInterval {
     Interval toInterval();
 
     /**
-     * Get this time interval as a <code>MutableInterval</code> object.
+     * Get this time interval as a <code>MutableInterval</code>.
      * <p>
      * This will always return a new <code>MutableInterval</code> with the same interval.
      *

@@ -219,16 +219,18 @@ public interface ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets this object as an immutable Period. This can be useful if you
-     * don't trust the implementation of the interface to be well-behaved, or
-     * to get a guaranteed immutable object.
+     * Get this period as an immutable <code>Period</code> object.
+     * <p>
+     * This will either typecast this instance, or create a new <code>Period</code>.
      * 
      * @return a Duration using the same field set and values
      */
     Period toPeriod();
 
     /**
-     * Get this object as a MutablePeriod.
+     * Get this object as a <code>MutablePeriod</code>.
+     * <p>
+     * This will always return a new <code>MutablePeriod</code> with the same fields.
      * 
      * @return a MutablePeriod using the same field set and values
      */

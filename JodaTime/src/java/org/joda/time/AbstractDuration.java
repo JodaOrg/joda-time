@@ -146,7 +146,9 @@ public abstract class AbstractDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this duration to a Duration instance.
+     * Get this duration as an immutable <code>Duration</code> object.
+     * <p>
+     * This will either typecast this instance, or create a new <code>Duration</code>.
      * 
      * @return a Duration created using the millisecond duration from this instance
      */

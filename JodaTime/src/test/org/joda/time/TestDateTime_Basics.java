@@ -475,7 +475,7 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null));
     }
 
-    public void testToString_String_String() {
+    public void testToString_String_Locale() {
         DateTime test = new DateTime(TEST_TIME_NOW);
         assertEquals("Sun 9/6", test.toString("EEE d/M", Locale.ENGLISH));
         assertEquals("dim. 9/6", test.toString("EEE d/M", Locale.FRENCH));

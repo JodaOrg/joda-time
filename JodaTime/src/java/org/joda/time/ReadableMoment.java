@@ -54,59 +54,53 @@
 package org.joda.time;
 
 /**
- * Defines a local time (no time zone) that does not fully define a single
- * instant in the datetime continuum.
+ * Represents a moment in time that can be accessed via a datetime field type.
  * <p>
- * A <code>ReadableLocal</code> will never have a timezone, thus is
- * always a local time. It may also only support a subset of the fields
- * on the chronology, see also {@link ReadablePartial}.
+ * <code>ReadableMoment</code> is the highest abstraction in the model.
+ * It allows different kinds of datetime objects to be accessed in a uniform way.
+ * <p>
+ * The implementation class will almost always implement another interface:
+ * <ul>
+ * <li>{@link ReadableInstant} - for a fully specified datetime (with a time zone)
+ * <li>{@link ReadableLocal} - for a local datetime, date or time (without a time zone)
+ * <li>{@link ReadablePartial} - for a partially defined datetime (a collection of datetime fields)
+ * </ul>
+ * Thus, the implementation may not represent a full datetime where all fields
+ * can be queried. That is why the {@link #isSupported(DateTimeFieldType)} method
+ * is provided.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadableLocal extends ReadableMoment {
+public interface ReadableMoment {
 
     /**
-     * Gets the amount of time this instance represents.
+     * Gets the chronology of the instance which is never null.
      * <p>
-     * The value returned from this method will be relative to the epoch
-     * returned by {@link #getEpoch()} and in the units of {@link #getUnitDurationType()}.
-     *
-     * @return the amount of time this local represents
+     * The {@link Chronology} is the calculation engine and provides conversion
+     * and validation of the fields in a particular calendar system.
+     * 
+     * @return the chronology, never null
      */
-    long getAmount();
+    Chronology getChronology();
 
     /**
-     * Gets the length of each unit that this instance uses for the amount.
+     * Gets the value of one of the fields.
      * <p>
-     * A <code>ReadableLocal</code> measures time in units defined by this method.
-     * The result of {@link #getAmount()} must be interpretted in terms of these units.
+     * The field type specified must be one of those that is supported by the implementation.
      *
-     * @return the duration of each unit of time this local represents
+     * @param field  the field type to use, which must be supported by this implementation
+     * @return the value of that field
+     * @throws IllegalArgumentException if the field is null or not supported
      */
-    DurationFieldType getUnitDurationType();
+    int get(DateTimeFieldType field);
 
     /**
-     * Gets the epoch that this instance uses.
-     * <p>
-     * A <code>ReadableLocal</code> measures time in units whose duration is
-     * defined by {@link #getUnitDurationType()}. This method returns the zero point,
-     * allowing conversion between a <code>ReadableLocal</code> and a
-     * <code>ReadableInstant</code>.
+     * Checks whether the field type specified is supported by this implementation.
      *
-     * @return the epoch that this instance measures against
+     * @param field  the field type to check, may be null which returns false
+     * @return true if the field is supported
      */
-    DateTime getEpoch();
-
-    /**
-     * Get the value as a String in a recognisable ISO8601 format, only
-     * displaying supported fields.
-     * <p>
-     * The string output is in ISO8601 format to enable the String
-     * constructor to correctly parse it.
-     *
-     * @return the value as an ISO8601 string
-     */
-    String toString();
+    boolean isSupported(DateTimeFieldType field);
 
 }

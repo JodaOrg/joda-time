@@ -69,7 +69,7 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadablePartial {
+public interface ReadablePartial extends ReadableMoment {
 
     /**
      * Gets the number of fields that this partial supports.
@@ -104,35 +104,6 @@ public interface ReadablePartial {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     int getValue(int index);
-
-    /**
-     * Gets the chronology of the partial which is never null.
-     * <p>
-     * The {@link Chronology} is the calculation engine behind the partial and
-     * provides conversion and validation of the fields in a particular calendar system.
-     * 
-     * @return the chronology, never null
-     */
-    Chronology getChronology();
-
-    /**
-     * Gets the value of one of the fields.
-     * <p>
-     * The field type specified must be one of those that is supported by the partial.
-     *
-     * @param field  a DateTimeFieldType instance that is supported by this partial
-     * @return the value of that field
-     * @throws IllegalArgumentException if the field is null or not supported
-     */
-    int get(DateTimeFieldType field);
-
-    /**
-     * Checks whether the field type specified is supported by this partial.
-     *
-     * @param field  the field to check, may be null which returns false
-     * @return true if the field is supported
-     */
-    boolean isSupported(DateTimeFieldType field);
 
     /**
      * Converts this partial to a full datetime using the specified time zone and

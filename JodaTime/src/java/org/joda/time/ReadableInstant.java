@@ -67,7 +67,7 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadableInstant extends Comparable {
+public interface ReadableInstant extends ReadableMoment, Comparable {
 
     /**
      * Get the value as the number of milliseconds since
@@ -78,32 +78,11 @@ public interface ReadableInstant extends Comparable {
     long getMillis();
 
     /**
-     * Gets the chronology of the instant.
-     * <p>
-     * The {@link Chronology} provides conversion from the millisecond
-     * value to meaningful fields in a particular calendar system.
-     * 
-     * @return the Chronology, never null
-     */
-    Chronology getChronology();
-
-    /**
      * Gets the time zone of the instant from the chronology.
      * 
      * @return the DateTimeZone that the instant is using, never null
      */
     DateTimeZone getZone();
-
-    /**
-     * Get the value of one of the fields of a datetime.
-     * <p>
-     * This method uses the chronology of the instant to obtain the value.
-     *
-     * @param type  a field type, usually obtained from DateTimeFieldType, not null
-     * @return the value of that field
-     * @throws IllegalArgumentException if the field type is null
-     */
-    int get(DateTimeFieldType type);
 
     //-----------------------------------------------------------------------
     /**

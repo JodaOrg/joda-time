@@ -1,4 +1,4 @@
-# @(#)southamerica	7.51
+# @(#)southamerica	7.52
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -155,17 +155,47 @@ Rule	Arg	2000	only	-	Mar	Sun>=1	0:00	0	-
 # </a> says that standard time in Argentina from 1894-10-31
 # to 1920-05-01 was -4:16:48.25.  Go with this more-precise value
 # over Shanks.
+#
+# From Mariano Absatz (2004-06-05):
+# These media articles from a major newspaper mostly cover the current state:
+# http://www.lanacion.com.ar/04/05/27/de_604825.asp
+# http://www.lanacion.com.ar/04/05/28/de_605203.asp
+#
+# The following eight (8) provinces pulled clocks back to UTC-04:00 at
+# midnight Monday May 31st. (that is, the night between 05/31 and 06/01).
+# Apparently, all nine provinces would go back to UTC-03:00 at the same
+# time in October 17th.
+#
+# Catamarca, Chubut, La Rioja, San Juan, San Luis, Santa Cruz,
+# Tierra del Fuego, Tucuman.
+#
+# From Mariano Absatz (2004-06-14):
+# ... this weekend, the Province of Tucuman decided it'd go back to UTC-03:00
+# yesterday midnight (that is, at 24:00 Saturday 12th), since the people's
+# annoyance with the change is much higher than the power savings obtained....
+#
+# From Gwillim Law (2004-06-14):
+# http://www.lanacion.com.ar/04/06/10/de_609078.asp ...
+#     "The time change in Tierra del Fuego was a conflicted decision from
+#   the start.  The government had decreed that the measure would take
+#   effect on June 1, but a normative error forced the new time to begin
+#   three days earlier, from a Saturday to a Sunday....
+# Our understanding was that the change was originally scheduled to take place
+# on June 1 at 00:00 in Chubut, Santa Cruz, Tierra del Fuego (and some other
+# provinces).  Sunday was May 30, only two days earlier.  So the article
+# contains a contradiction.  I would give more credence to the Saturday/Sunday
+# date than the "three days earlier" phrase, and conclude that Tierra del
+# Fuego set its clocks back at 2004-05-30 00:00.
 
 # Unless otherwise specified, data are from Shanks through 1992, from
 # the IATA otherwise.  As noted below, Shanks says that
-# America/Cordoba split into 7 subregions during 1991/1992, but we
+# America/Cordoba split into 6 subregions during 1991/1992, but we
 # haven't verified this yet so for now we'll keep it a single region.
 #
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 #
-# Buenos Aires (BA), Capital Federal (CF), Santa Cruz (SC),
-# Tierra del Fuego, Antartida e Islas del Atlantico Sur (TF)
-Zone America/Buenos_Aires -3:53:48 -	LMT	1894 Oct 31
+# Buenos Aires (BA), Capital Federal (CF),
+Zone America/Argentina/Buenos_Aires -3:53:48 - LMT 1894 Oct 31
 			-4:16:48 -	CMT	1920 May # Cordoba Mean Time
 			-4:00	-	ART	1930 Dec
 			-4:00	Arg	AR%sT	1969 Oct  5
@@ -174,24 +204,19 @@ Zone America/Buenos_Aires -3:53:48 -	LMT	1894 Oct 31
 			-3:00	-	ART
 #
 # Santa Fe (SF), Entre Rios (ER), Corrientes (CN), Misiones (MN), Chaco (CC),
-# Formosa (FM), Salta (SA), Tucuman (TM), Santiago del Estero (SE),
-# Cordoba (CB), La Rioja (LR), San Juan (SJ), San Luis (SL), La Pampa (LP),
-# Neuquen (NQ), Rio Negro (RN), Chubut (CH)
+# Formosa (FM), Salta (SA), Santiago del Estero (SE), Cordoba (CB),
+# San Luis (SL), La Pampa (LP), Neuquen (NQ), Rio Negro (RN)
 #
 # Shanks also makes the following claims, which we haven't verified:
 # - Formosa switched to -3:00 on 1991-01-07.
-# - La Rioja and San Juan switched to -4:00 on 1991-03-01
-#   and then to -3:00 on 1991-05-07.
 # - Misiones switched to -3:00 on 1990-12-29.
 # - Chaco switched to -3:00 on 1991-01-04.
 # - San Luis switched to -4:00 on 1990-03-14, then to -3:00 on 1990-10-15,
 #   then to -4:00 on 1991-03-01, then to -3:00 on 1991-06-01.
 # - Santiago del Estero switched to -4:00 on 1991-04-01,
 #   then to -3:00 on 1991-04-26.
-# If we need to add Zones for these areas, we may need to have a subdirectory
-# for Argentina, as e.g. "America/San_Luis" is too ambiguious.
 #
-Zone America/Cordoba	-4:16:48 -	LMT	1894 Oct 31
+Zone America/Argentina/Cordoba -4:16:48 - LMT	1894 Oct 31
 			-4:16:48 -	CMT	1920 May
 			-4:00	-	ART	1930 Dec
 			-4:00	Arg	AR%sT	1969 Oct  5
@@ -201,8 +226,47 @@ Zone America/Cordoba	-4:16:48 -	LMT	1894 Oct 31
 			-4:00	Arg	AR%sT	2000 Mar  3
 			-3:00	-	ART
 #
+# Tucuman (TM)
+Zone America/Argentina/Tucuman -4:20:52 - LMT	1894 Oct 31
+			-4:16:48 -	CMT	1920 May
+			-4:00	-	ART	1930 Dec
+			-4:00	Arg	AR%sT	1969 Oct  5
+			-3:00	Arg	AR%sT	1991 Mar  3
+			-4:00	-	WART	1991 Oct 20
+			-3:00	Arg	AR%sT	1999 Oct  3
+			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 Jun  1
+			-4:00	-	WART	2004 Jun 13
+			-3:00	-	ART
+#
+# La Rioja (LR)
+Zone America/Argentina/La_Rioja -4:27:24 - LMT	1894 Oct 31
+			-4:16:48 -	CMT	1920 May
+			-4:00	-	ART	1930 Dec
+			-4:00	Arg	AR%sT	1969 Oct  5
+			-3:00	Arg	AR%sT	1991 Mar  1
+			-4:00	-	WART	1991 May  7
+			-3:00	Arg	AR%sT	1999 Oct  3
+			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 Jun  1
+			-4:00	-	WART	2004 Jun 20
+			-3:00	-	ART
+#
+# San Juan (SJ)
+Zone America/Argentina/San_Juan -4:34:04 - LMT	1894 Oct 31
+			-4:16:48 -	CMT	1920 May
+			-4:00	-	ART	1930 Dec
+			-4:00	Arg	AR%sT	1969 Oct  5
+			-3:00	Arg	AR%sT	1991 Mar  1
+			-4:00	-	WART	1991 May  7
+			-3:00	Arg	AR%sT	1999 Oct  3
+			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 Jun  1
+			-4:00	-	WART	2004 Oct 17
+			-3:00	-	ART
+#
 # Jujuy (JY)
-Zone America/Jujuy	-4:21:12 -	LMT	1894 Oct 31
+Zone America/Argentina/Jujuy -4:21:12 -	LMT	1894 Oct 31
 			-4:16:48 -	CMT	1920 May
 			-4:00	-	ART	1930 Dec
 			-4:00	Arg	AR%sT	1969 Oct  5
@@ -216,7 +280,7 @@ Zone America/Jujuy	-4:21:12 -	LMT	1894 Oct 31
 			-3:00	-	ART
 #
 # Catamarca (CT)
-Zone America/Catamarca	-4:23:08 -	LMT	1894 Oct 31
+Zone America/Argentina/Catamarca -4:23:08 - LMT	1894 Oct 31
 			-4:16:48 -	CMT	1920 May
 			-4:00	-	ART	1930 Dec
 			-4:00	Arg	AR%sT	1969 Oct  5
@@ -224,10 +288,12 @@ Zone America/Catamarca	-4:23:08 -	LMT	1894 Oct 31
 			-4:00	-	WART	1991 Oct 20
 			-3:00	Arg	AR%sT	1999 Oct  3
 			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 Jun  1
+			-4:00	-	WART	2004 Jun 20
 			-3:00	-	ART
 #
 # Mendoza (MZ)
-Zone America/Mendoza	-4:35:16 -	LMT	1894 Oct 31
+Zone America/Argentina/Mendoza -4:35:16 - LMT	1894 Oct 31
 			-4:16:48 -	CMT	1920 May
 			-4:00	-	ART	1930 Dec
 			-4:00	Arg	AR%sT	1969 Oct  5
@@ -241,6 +307,42 @@ Zone America/Mendoza	-4:35:16 -	LMT	1894 Oct 31
 			-4:00	Arg	AR%sT	2000 Mar  3
 			-3:00	-	ART	2004 May 23
 			-4:00	-	WART	2004 Oct 17
+			-3:00	-	ART
+#
+# Chubut (CH)
+# The name "Comodoro Rivadavia" exceeds the 14-byte POSIX limit.
+Zone America/Argentina/ComodRivadavia -4:30:00 - LMT	1894 Oct 31
+			-4:16:48 -	CMT	1920 May
+			-4:00	-	ART	1930 Dec
+			-4:00	Arg	AR%sT	1969 Oct  5
+			-3:00	Arg	AR%sT	1991 Mar  3
+			-4:00	-	WART	1991 Oct 20
+			-3:00	Arg	AR%sT	1999 Oct  3
+			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 Jun  1
+			-4:00	-	WART	2004 Jun 20
+			-3:00	-	ART
+#
+# Santa Cruz (SC)
+Zone America/Argentina/Rio_Gallegos -4:36:52 - LMT 1894 Oct 31
+			-4:16:48 -	CMT	1920 May # Cordoba Mean Time
+			-4:00	-	ART	1930 Dec
+			-4:00	Arg	AR%sT	1969 Oct  5
+			-3:00	Arg	AR%sT	1999 Oct  3
+			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 Jun  1
+			-4:00	-	WART	2004 Jun 20
+			-3:00	-	ART
+#
+# Tierra del Fuego, Antartida e Islas del Atlantico Sur (TF)
+Zone America/Argentina/Ushuaia -4:33:12 - LMT 1894 Oct 31
+			-4:16:48 -	CMT	1920 May # Cordoba Mean Time
+			-4:00	-	ART	1930 Dec
+			-4:00	Arg	AR%sT	1969 Oct  5
+			-3:00	Arg	AR%sT	1999 Oct  3
+			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 May 30
+			-4:00	-	WART	2004 Jun 20
 			-3:00	-	ART
 
 # Aruba

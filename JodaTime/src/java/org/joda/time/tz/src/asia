@@ -1,4 +1,4 @@
-# @(#)asia	7.74
+# @(#)asia	7.75
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -335,6 +335,16 @@ Link	Asia/Nicosia	Europe/Nicosia
 # Instead of putting back clocks at the end of October, Georgia
 # will stay on daylight savings time this winter to save energy,
 # President Eduard Shevardnadze decreed Wednesday.
+#
+# From the BBC via Joseph S. Myers (2004-06-27):
+#  	
+# Georgia moved closer to Western Europe on Sunday...  The former Soviet
+# republic has changed its time zone back to that of Moscow.  As a result it
+# is now just four hours ahead of Greenwich Mean Time, rather than five hours
+# ahead.  The switch was decreed by the pro-Western president of Georgia,
+# Mikhail Saakashvili, who said the change was partly prompted by the process
+# of integration into Europe.
+
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Tbilisi	2:59:16 -	LMT	1880
 			2:59:16	-	TBMT	1924 May  2 # Tbilisi Mean Time
@@ -345,7 +355,8 @@ Zone	Asia/Tbilisi	2:59:16 -	LMT	1880
 			3:00 E-EurAsia	GE%sT	1994 Sep lastSun
 			4:00 E-EurAsia	GE%sT	1996 Oct lastSun
 			4:00	1:00	GEST	1997 Mar lastSun
-			4:00 E-EurAsia	GE%sT
+			4:00 E-EurAsia	GE%sT	2004 Jun 27
+			3:00 RussiaAsia	GE%sT
 
 # East Timor
 

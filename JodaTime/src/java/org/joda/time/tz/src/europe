@@ -1,4 +1,4 @@
-# @(#)europe	7.87
+# @(#)europe	7.88
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -920,6 +920,10 @@ Zone	Europe/Helsinki	1:39:52 -	LMT	1878 May 31
 			1:39:52	-	HMT	1921 May    # Helsinki Mean Time
 			2:00	Finland	EE%sT	1981 Mar 29 2:00
 			2:00	EU	EE%sT
+
+# Aaland Is
+Link	Europe/Helsinki	Europe/Mariehamn
+
 
 # France
 

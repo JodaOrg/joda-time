@@ -59,8 +59,18 @@ import org.joda.time.chrono.iso.ISOChronology;
 // Import for @link support
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.property.DateOnlyFieldProperty;
 
-/*
+/**
+ * DateOnly is the basic implementation of a date only class supporting
+ * chronologies. It holds the date as milliseconds from the Java epoch of
+ * 1970-01-01. The time component and time zone is fixed at T00:00:00Z.
+ * <p>
+ * This class uses a Chronology internally. The Chronology determines how the
+ * millisecond instant value is converted into the date time fields.
+ * The default Chronology is <code>ISOChronology</code> which is the agreed
+ * international standard and compatable with the modern Gregorian calendar.
+ *
  * <p>Each individual field can be queried in two ways:
  * <ul>
  * <li><code>getYear()</code>
@@ -75,12 +85,6 @@ import org.joda.time.format.ISODateTimeFormat;
  * <li>maximum value
  * <li>minimum value
  * </ul>
- */
-
-/**
- * DateOnly is the basic implementation of a date only class supporting
- * chronologies. It holds the date as milliseconds from the Java epoch of
- * 1970-01-01. The time component and time zone is fixed at T00:00:00Z.
  * <p>
  * DateOnly is thread-safe and immutable, provided that the Chronology is as
  * well. All standard Chronology classes supplied are thread-safe and
@@ -89,6 +93,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
+ * @see MutableDateOnly
  * @see TimeOnly
  * @see DateTime
  */
@@ -215,6 +220,40 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
     }
 
     /**
+     * Gets a copy of this instant with different millis.
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * Only the millis will change, the chronology is kept.
+     * Immutable subclasses may return <code>this</code> if appropriate.
+     *
+     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
+     * @return a copy of this instant with different millis
+     */
+    public ReadableInstant toCopy(long newMillis) {
+        newMillis = resetUnsupportedFields(newMillis);
+        return newMillis == getMillis() ? this : new DateOnly(newMillis, getChronology());
+    }
+    
+    /**
+     * Gets a copy of this instant with a different chronology.
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * Only the chronology will change, the millis are kept.
+     * Immutable subclasses may return <code>this</code> if appropriate.
+     *
+     * @param newChronology  the new chronology
+     * @return a copy of this instant with a different chronology
+     * @throws IllegalArgumentException if the chronology is null
+     */
+    public ReadableInstant toCopy(Chronology newChronology) {
+        if (newChronology == null) {
+            throw new IllegalArgumentException("The Chronology must not be null");
+        }
+        newChronology = newChronology.withUTC();
+        return newChronology == getChronology() ? this : new DateOnly(getMillis(), newChronology);
+    }
+
+    /**
      * Returns the lower limiting field, dayOfYear.
      *
      * @return dayOfYear field
@@ -230,10 +269,6 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      */
     public final DateTimeField getUpperLimit() {
         return null;
-    }
-
-    public final boolean isMatchingType(ReadableInstant instant) {
-        return instant instanceof DateOnly;
     }
 
     // Date field access
@@ -341,8 +376,6 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
         return getChronology().dayOfWeek().get(getMillis());
     }
 
-    // TODO: DateTimeFieldProperty cannot be constructed with anything but
-    // DateTime.
 
     // Properties
     //-----------------------------------------------------------------------
@@ -352,101 +385,100 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      * The values for day of week are defined in {@link DateTimeConstants}.
      * 
      * @return the day of week property
-     * /
-    public final DateTimeFieldProperty dayOfWeek() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfWeek());
+     */
+    public final DateOnlyFieldProperty dayOfWeek() {
+        return new DateOnlyFieldProperty(this, getChronology().dayOfWeek());
     }
 
     /**
      * Get the day of month property.
      * 
      * @return the day of month property
-     * /
-    public final DateTimeFieldProperty dayOfMonth() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfMonth());
+     */
+    public final DateOnlyFieldProperty dayOfMonth() {
+        return new DateOnlyFieldProperty(this, getChronology().dayOfMonth());
     }
 
     /**
      * Get the day of year property.
      * 
      * @return the day of year property
-     * /
-    public final DateTimeFieldProperty dayOfYear() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfYear());
+     */
+    public final DateOnlyFieldProperty dayOfYear() {
+        return new DateOnlyFieldProperty(this, getChronology().dayOfYear());
     }
 
     /**
      * Get the week of a week based year property.
      * 
      * @return the week of a week based year property
-     * /
-    public final DateTimeFieldProperty weekOfWeekyear() {
-        return new DateTimeFieldProperty(this, getChronology().weekOfWeekyear());
+     */
+    public final DateOnlyFieldProperty weekOfWeekyear() {
+        return new DateOnlyFieldProperty(this, getChronology().weekOfWeekyear());
     }
 
     /**
      * Get the year of a week based year property.
      * 
      * @return the year of a week based year property
-     * /
-    public final DateTimeFieldProperty weekyear() {
-        return new DateTimeFieldProperty(this, getChronology().weekyear());
+     */
+    public final DateOnlyFieldProperty weekyear() {
+        return new DateOnlyFieldProperty(this, getChronology().weekyear());
     }
 
     /**
      * Get the month of year property.
      * 
      * @return the month of year property
-     * /
-    public final DateTimeFieldProperty monthOfYear() {
-        return new DateTimeFieldProperty(this, getChronology().monthOfYear());
+     */
+    public final DateOnlyFieldProperty monthOfYear() {
+        return new DateOnlyFieldProperty(this, getChronology().monthOfYear());
     }
 
     /**
      * Get the year property.
      * 
      * @return the year property
-     * /
-    public final DateTimeFieldProperty year() {
-        return new DateTimeFieldProperty(this, getChronology().year());
+     */
+    public final DateOnlyFieldProperty year() {
+        return new DateOnlyFieldProperty(this, getChronology().year());
     }
 
     /**
      * Get the year of era property.
      * 
      * @return the year of era property
-     * /
-    public final DateTimeFieldProperty yearOfEra() {
-        return new DateTimeFieldProperty(this, getChronology().yearOfEra());
+     */
+    public final DateOnlyFieldProperty yearOfEra() {
+        return new DateOnlyFieldProperty(this, getChronology().yearOfEra());
     }
 
     /**
      * Get the year of century property.
      * 
      * @return the year of era property
-     * /
-    public final DateTimeFieldProperty yearOfCentury() {
-        return new DateTimeFieldProperty(this, getChronology().yearOfCentury());
+     */
+    public final DateOnlyFieldProperty yearOfCentury() {
+        return new DateOnlyFieldProperty(this, getChronology().yearOfCentury());
     }
 
     /**
      * Get the century of era property.
      * 
      * @return the year of era property
-     * /
-    public final DateTimeFieldProperty centuryOfEra() {
-        return new DateTimeFieldProperty(this, getChronology().centuryOfEra());
+     */
+    public final DateOnlyFieldProperty centuryOfEra() {
+        return new DateOnlyFieldProperty(this, getChronology().centuryOfEra());
     }
 
     /**
      * Get the era property.
      * 
      * @return the era property
-     * /
-    public final DateTimeFieldProperty era() {
-        return new DateTimeFieldProperty(this, getChronology().era());
+     */
+    public final DateOnlyFieldProperty era() {
+        return new DateOnlyFieldProperty(this, getChronology().era());
     }
-    */
 
     // Output
     //-----------------------------------------------------------------------
@@ -457,16 +489,6 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      */
     public final String toString() {
         return ISODateTimeFormat.getInstance(getChronology()).date().print(getMillis());
-    }
-
-    protected ReadableInstant create(long millis, Chronology chronology) {
-        if (chronology == null) {
-            throw new IllegalArgumentException("The Chronology must not be null");
-        }
-        if (millis == getMillis() && chronology == getChronology()) {
-            return this;
-        }
-        return new DateOnly(millis, chronology);
     }
 
     /**

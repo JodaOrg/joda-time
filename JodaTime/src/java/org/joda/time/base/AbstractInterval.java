@@ -53,9 +53,9 @@
  */
 package org.joda.time.base;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.Duration;
-import org.joda.time.Instant;
 import org.joda.time.Interval;
 import org.joda.time.MutableInterval;
 import org.joda.time.Period;
@@ -105,49 +105,21 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the start of this time interval, which is inclusive, as an Instant.
+     * Gets the start of this time interval, which is inclusive, as a DateTime.
      *
      * @return the start of the time interval
      */
-    public Instant getStartInstant() {
-        return new Instant(getStartMillis());
+    public DateTime getStart() {
+        return new DateTime(getStartMillis(), getChronology());
     }
 
     /** 
-     * Gets the end of this time interval, which is exclusive, as an Instant.
+     * Gets the end of this time interval, which is exclusive, as a DateTime.
      *
      * @return the end of the time interval
      */
-    public Instant getEndInstant() {
-        return new Instant(getEndMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the duration of this time interval in milliseconds.
-     * <p>
-     * The duration is equal to the end millis minus the start millis.
-     *
-     * @return the duration of the time interval in milliseconds
-     * @throws ArithmeticException if the duration exceeds the capacity of a long
-     */
-    public long getDurationMillis() {
-        return FieldUtils.safeAdd(getEndMillis(), -getStartMillis());
-    }
-
-    /**
-     * Gets a <code>Duration</code> holding the millisecond duration of this time interval.
-     *
-     * @return the duration of the time interval
-     * @throws ArithmeticException if the duration exceeds the capacity of a long
-     */
-    public Duration getDuration() {
-        long durMillis = getDurationMillis();
-        if (durMillis == 0) {
-            return Duration.ZERO;
-        } else {
-            return new Duration(durMillis);
-        }
+    public DateTime getEnd() {
+        return new DateTime(getEndMillis(), getChronology());
     }
 
     //-----------------------------------------------------------------------
@@ -364,13 +336,41 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the duration of this time interval in milliseconds.
+     * <p>
+     * The duration is equal to the end millis minus the start millis.
+     *
+     * @return the duration of the time interval in milliseconds
+     * @throws ArithmeticException if the duration exceeds the capacity of a long
+     */
+    public long toDurationMillis() {
+        return FieldUtils.safeAdd(getEndMillis(), -getStartMillis());
+    }
+
+    /**
+     * Gets the duration of this time interval.
+     * <p>
+     * The duration is equal to the end millis minus the start millis.
+     *
+     * @return the duration of the time interval
+     * @throws ArithmeticException if the duration exceeds the capacity of a long
+     */
+    public Duration toDuration() {
+        long durMillis = toDurationMillis();
+        if (durMillis == 0) {
+            return Duration.ZERO;
+        } else {
+            return new Duration(durMillis);
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Converts the duration of the interval to a <code>Period</code> using the
      * All period type.
      * <p>
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
-     * The time period may not be precise - if you want the millisecond duration
-     * then you should use {@link #getDuration()}.
      *
      * @return a time period derived from the interval
      */
@@ -384,8 +384,6 @@ public abstract class AbstractInterval implements ReadableInterval {
      * <p>
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
-     * The time period may not be precise - if you want the millisecond duration
-     * then you should use {@link #getDuration()}.
      *
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
@@ -397,7 +395,8 @@ public abstract class AbstractInterval implements ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on start and end millis. All ReadableInterval instances are accepted.
+     * on start and end millis plus the chronology.
+     * All ReadableInterval instances are accepted.
      * <p>
      * To compare the duration of two time intervals, use {@link #getDuration()}
      * to get the durations and compare those.
@@ -414,7 +413,8 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         ReadableInterval other = (ReadableInterval) readableInterval;
         return (getStartMillis() == other.getStartMillis() &&
-                getEndMillis() == other.getEndMillis());
+                getEndMillis() == other.getEndMillis() &&
+                getChronology() == other.getChronology());
     }
 
     /**
@@ -428,6 +428,7 @@ public abstract class AbstractInterval implements ReadableInterval {
         int result = 97;
         result = 31 * result + ((int) (start ^ (start >>> 32)));
         result = 31 * result + ((int) (end ^ (end >>> 32)));
+        result = 31 * result + getChronology().hashCode();
         return result;
     }
 

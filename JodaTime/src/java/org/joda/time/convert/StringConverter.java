@@ -54,6 +54,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.joda.time.ReadWritableInterval;
@@ -198,34 +199,13 @@ class StringConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the start and end millisecond instants from the object.
-     *
-     * @param object  the object to convert, must not be null
-     * @return the start millis and end millis in an array
-     * @throws ClassCastException if the object is invalid
-     */
-    public long[] getIntervalMillis(Object object) {
-        return parseInterval(null, object);
-    }
-
-    /**
      * Sets the value of the mutable interval from the string.
      * 
      * @param writableInterval  the interval to set
      * @param object  the string to set from
+     * @param chrono  the chronology to use, may be null
      */
-    public void setInto(ReadWritableInterval writableInterval, Object object) {
-        parseInterval(writableInterval, object);
-    }
-
-    /**
-     * Sets the value of the mutable interval from the string.
-     * 
-     * @param writableInterval  the interval to populate, may be null
-     * @param object  the string to set from
-     * @return an array of size two, containing the start and end millis if interval input is null
-     */
-    private long[] parseInterval(ReadWritableInterval writableInterval, Object object) {
+    public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {
         String str = (String) object;
 
         int separator = str.indexOf('/');
@@ -244,17 +224,18 @@ class StringConverter extends AbstractConverter
 
         DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
         PeriodFormatter periodParser = ISOPeriodFormat.getInstance().standard();
-        long startInstant, endInstant;
-        Period period;
+        long startInstant = 0, endInstant = 0;
+        Period period = null;
+        Chronology parsedChrono = null;
         
         // before slash
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
-            startInstant = 0;
             period = periodParser.parsePeriod(getPeriodType(leftStr), leftStr);
         } else {
-            startInstant = dateTimeParser.parseMillis(leftStr);
-            period = null;
+            DateTime start = dateTimeParser.parseDateTime(leftStr);
+            startInstant = start.getMillis();
+            parsedChrono = start.getChronology();
         }
         
         // after slash
@@ -264,21 +245,20 @@ class StringConverter extends AbstractConverter
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
             period = periodParser.parsePeriod(getPeriodType(rightStr), rightStr);
-            endInstant = ISOChronology.getInstance().add(startInstant, period, 1); // TODO
+            chrono = (chrono != null ? chrono : parsedChrono);
+            endInstant = chrono.add(startInstant, period, 1);
         } else {
-            endInstant = dateTimeParser.parseMillis(rightStr);
+            DateTime end = dateTimeParser.parseDateTime(rightStr);
+            endInstant = end.getMillis();
+            parsedChrono = (parsedChrono != null ? parsedChrono : end.getChronology());
+            chrono = (chrono != null ? chrono : parsedChrono);
             if (period != null) {
-                startInstant = ISOChronology.getInstance().add(endInstant, period, -1); // TODO
+                startInstant = chrono.add(endInstant, period, -1);
             }
         }
         
-        // return data avoiding object creation and code duplication
-        if (writableInterval == null) {
-            return new long[] {startInstant, endInstant};
-        } else {
-            writableInterval.setInterval(startInstant, endInstant);
-            return null;
-        }
+        writableInterval.setInterval(startInstant, endInstant);
+        writableInterval.setChronology(chrono);
     }
 
     //-----------------------------------------------------------------------

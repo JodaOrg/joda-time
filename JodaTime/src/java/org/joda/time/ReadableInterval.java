@@ -81,6 +81,13 @@ package org.joda.time;
 public interface ReadableInterval {
 
     /**
+     * Gets the chronology of the interval, which is the chronology of the first datetime.
+     *
+     * @return the chronology of the interval
+     */
+    Chronology getChronology();
+
+    /**
      * Gets the start of this time interval which is inclusive.
      *
      * @return the start of the time interval,
@@ -89,11 +96,11 @@ public interface ReadableInterval {
     long getStartMillis();
 
     /**
-     * Gets the start of this time interval, which is inclusive, as an Instant.
+     * Gets the start of this time interval, which is inclusive, as a DateTime.
      *
      * @return the start of the time interval
      */
-    Instant getStartInstant();
+    DateTime getStart();
 
     /** 
      * Gets the end of this time interval which is exclusive.
@@ -104,33 +111,11 @@ public interface ReadableInterval {
     long getEndMillis();
 
     /** 
-     * Gets the end of this time interval, which is exclusive, as an Instant.
+     * Gets the end of this time interval, which is exclusive, as a DateTime.
      *
      * @return the end of the time interval
      */
-    Instant getEndInstant();
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the duration of this time interval in milliseconds.
-     * <p>
-     * The duration is equal to the end millis minus the start millis.
-     *
-     * @return the duration of the time interval in milliseconds
-     * @throws ArithmeticException if the duration exceeds the capacity of a long
-     */
-    long getDurationMillis();
-
-    /**
-     * Gets the millisecond duration of this time interval.
-     * <p>
-     * If this interval was constructed using a Duration then that object will
-     * be returned. Otherwise a new Duration instance is returned.
-     *
-     * @return the millisecond duration of the time interval
-     * @throws ArithmeticException if the duration exceeds the capacity of a long
-     */
-    Duration getDuration();
+    DateTime getEnd();
 
     //-----------------------------------------------------------------------
     /**
@@ -226,28 +211,40 @@ public interface ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts the duration of the interval to a <code>Period</code> using the
-     * All period type.
+     * Gets the millisecond duration of this time interval.
+     *
+     * @return the millisecond duration of the time interval
+     * @throws ArithmeticException if the duration exceeds the capacity of a long
+     */
+    Duration toDuration();
+
+    /**
+     * Gets the millisecond duration of this time interval.
+     *
+     * @return the millisecond duration of the time interval
+     * @throws ArithmeticException if the duration exceeds the capacity of a long
+     */
+    long toDurationMillis();
+
+    /**
+     * Converts the duration of the interval to a period using the
+     * standard period type.
      * <p>
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
-     * The time period may not be precise - if you want the millisecond duration
-     * then you should use {@link #getDuration()}.
      *
      * @return a time period derived from the interval
      */
     Period toPeriod();
 
     /**
-     * Converts the duration of the interval to a <code>Period</code> using the
+     * Converts the duration of the interval to a period using the
      * specified period type.
      * <p>
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
-     * The time period may not be precise - if you want the millisecond duration
-     * then you should use {@link #getDuration()}.
      *
-     * @param type  the requested type of the duration, null means AllType
+     * @param type  the requested type of the duration, null means standard
      * @return a time period derived from the interval
      */
     Period toPeriod(PeriodType type);
@@ -255,7 +252,8 @@ public interface ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on start and end millis. All ReadableInterval instances are accepted.
+     * on start and end millis plus the chronology.
+     * All ReadableInterval instances are accepted.
      * <p>
      * To compare the duration of two time intervals, use {@link #getDuration()}
      * to get the durations and compare those.
@@ -273,6 +271,7 @@ public interface ReadableInterval {
      * <pre>int result = 97;
      * result = 31 * result + ((int) (getStartMillis() ^ (getStartMillis() >>> 32)));
      * result = 31 * result + ((int) (getEndMillis() ^ (getEndMillis() >>> 32)));
+     * result = 31 * result + getChronology().hashCode();
      * return result;</pre>
      *
      * @return a hash code

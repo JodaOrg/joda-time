@@ -646,6 +646,8 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+    private static int INTERVAL_SIZE = 3;
+
     public void testGetIntervalConverter() {
         IntervalConverter c = ConverterManager.getInstance().getIntervalConverter(new Interval(0L, 1000L));
         assertEquals(ReadableInterval.class, c.getSupportedType());
@@ -653,12 +655,15 @@ public class TestConverterManager extends TestCase {
         c = ConverterManager.getInstance().getIntervalConverter("");
         assertEquals(String.class, c.getSupportedType());
         
+        c = ConverterManager.getInstance().getIntervalConverter(null);
+        assertEquals(null, c.getSupportedType());
+        
         try {
             ConverterManager.getInstance().getIntervalConverter(Boolean.TRUE);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            ConverterManager.getInstance().getIntervalConverter(null);
+            ConverterManager.getInstance().getIntervalConverter(new Long(0));
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -666,48 +671,48 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetIntervalConverters() {
         IntervalConverter[] array = ConverterManager.getInstance().getIntervalConverters();
-        assertEquals(2, array.length);
+        assertEquals(INTERVAL_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
     public void testAddIntervalConverter1() {
         IntervalConverter c = new IntervalConverter() {
-            public long[] getIntervalMillis(Object object) {return null;}
-            public void setInto(ReadWritableInterval interval, Object object) {}
+            public boolean isReadableInterval(Object object, Chronology chrono) {return false;}
+            public void setInto(ReadWritableInterval interval, Object object, Chronology chrono) {}
             public Class getSupportedType() {return Boolean.class;}
         };
         try {
             IntervalConverter removed = ConverterManager.getInstance().addIntervalConverter(c);
             assertEquals(null, removed);
             assertEquals(Boolean.class, ConverterManager.getInstance().getIntervalConverter(Boolean.TRUE).getSupportedType());
-            assertEquals(3, ConverterManager.getInstance().getIntervalConverters().length);
+            assertEquals(INTERVAL_SIZE + 1, ConverterManager.getInstance().getIntervalConverters().length);
         } finally {
             ConverterManager.getInstance().removeIntervalConverter(c);
         }
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     public void testAddIntervalConverter2() {
         IntervalConverter c = new IntervalConverter() {
-            public long[] getIntervalMillis(Object object) {return null;}
-            public void setInto(ReadWritableInterval interval, Object object) {}
+            public boolean isReadableInterval(Object object, Chronology chrono) {return false;}
+            public void setInto(ReadWritableInterval interval, Object object, Chronology chrono) {}
             public Class getSupportedType() {return String.class;}
         };
         try {
             IntervalConverter removed = ConverterManager.getInstance().addIntervalConverter(c);
             assertEquals(StringConverter.INSTANCE, removed);
             assertEquals(String.class, ConverterManager.getInstance().getIntervalConverter("").getSupportedType());
-            assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+            assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
         } finally {
             ConverterManager.getInstance().addIntervalConverter(StringConverter.INSTANCE);
         }
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     public void testAddIntervalConverter3() {
         IntervalConverter removed = ConverterManager.getInstance().addIntervalConverter(null);
         assertEquals(null, removed);
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     public void testAddIntervalConverterSecurity() {
@@ -722,7 +727,7 @@ public class TestConverterManager extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     //-----------------------------------------------------------------------
@@ -730,28 +735,28 @@ public class TestConverterManager extends TestCase {
         try {
             IntervalConverter removed = ConverterManager.getInstance().removeIntervalConverter(StringConverter.INSTANCE);
             assertEquals(StringConverter.INSTANCE, removed);
-            assertEquals(1, ConverterManager.getInstance().getIntervalConverters().length);
+            assertEquals(INTERVAL_SIZE - 1, ConverterManager.getInstance().getIntervalConverters().length);
         } finally {
             ConverterManager.getInstance().addIntervalConverter(StringConverter.INSTANCE);
         }
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     public void testRemoveIntervalConverter2() {
         IntervalConverter c = new IntervalConverter() {
-            public long[] getIntervalMillis(Object object) {return null;}
-            public void setInto(ReadWritableInterval interval, Object object) {}
+            public boolean isReadableInterval(Object object, Chronology chrono) {return false;}
+            public void setInto(ReadWritableInterval interval, Object object, Chronology chrono) {}
             public Class getSupportedType() {return Boolean.class;}
         };
         IntervalConverter removed = ConverterManager.getInstance().removeIntervalConverter(c);
         assertEquals(null, removed);
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     public void testRemoveIntervalConverter3() {
         IntervalConverter removed = ConverterManager.getInstance().removeIntervalConverter(null);
         assertEquals(null, removed);
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     public void testRemoveIntervalConverterSecurity() {
@@ -766,12 +771,12 @@ public class TestConverterManager extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-        assertEquals(2, ConverterManager.getInstance().getIntervalConverters().length);
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("ConverterManager[6 instant,5 duration,5 period,2 interval]", ConverterManager.getInstance().toString());
+        assertEquals("ConverterManager[6 instant,5 duration,5 period,3 interval]", ConverterManager.getInstance().toString());
     }
 
 }

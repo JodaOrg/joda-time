@@ -92,26 +92,41 @@ public class MutableInterval
     /** Serialization version */
     private static final long serialVersionUID = -5982824024992428470L;
 
+    //-----------------------------------------------------------------------
     /**
      * Constructs a zero length time interval from 1970-01-01 to 1970-01-01.
      */
     public MutableInterval() {
-        super(0L, 0L);
+        super(0L, 0L, null);
     }
 
     /**
-     * Constructs an interval from a start and end instant.
+     * Constructs an interval from a start and end instant with the ISO default chronology.
      * 
      * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
     public MutableInterval(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
+        super(startInstant, endInstant, null);
+    }
+
+    /**
+     * Constructs an interval from a start and end instant with a chronology.
+     * 
+     * @param chronology  the chronology to use, null is ISO default
+     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @throws IllegalArgumentException if the end is before the start
+     */
+    public MutableInterval(long startInstant, long endInstant, Chronology chronology) {
+        super(startInstant, endInstant, chronology);
     }
 
     /**
      * Constructs an interval from a start and end instant.
+     * <p>
+     * The chronology used is that of the start instant.
      * 
      * @param start  start of this interval, null means now
      * @param end  end of this interval, null means now
@@ -176,28 +191,37 @@ public class MutableInterval
     }
 
     /**
-     * Constructs a time interval as a copy of another.
+     * Constructs a time interval by converting or copying from another object.
      * 
      * @param interval  the time interval to copy
-     * @throws IllegalArgumentException if the interval is null or invalid
+     * @throws IllegalArgumentException if the interval is invalid
      */
     public MutableInterval(Object interval) {
-        super(interval);
+        super(interval, null);
+    }
+
+    /**
+     * Constructs a time interval by converting or copying from another object,
+     * overriding the chronology.
+     * 
+     * @param interval  the time interval to copy
+     * @param chronology  the chronology to use, null means ISO default
+     * @throws IllegalArgumentException if the interval is invalid
+     */
+    public MutableInterval(Object interval, Chronology chronology) {
+        super(interval, chronology);
     }
 
     //-----------------------------------------------------------------------
-    // NOTE: All updates go via setInterval(long,long), setStartMillis(long)
-    // or setEndMillis(long) on this class
-    
     /**
-     * Sets this interval from two millisecond instants.
+     * Sets this interval from two millisecond instants retaining the chronology.
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setInterval(long startInstant, long endInstant) {
-        super.setInterval(startInstant, endInstant);
+        super.setInterval(startInstant, endInstant, getChronology());
     }
 
     /**
@@ -212,11 +236,13 @@ public class MutableInterval
         }
         long startMillis = interval.getStartMillis();
         long endMillis = interval.getEndMillis();
-        setInterval(startMillis, endMillis);
+        Chronology chrono = interval.getChronology();
+        super.setInterval(startMillis, endMillis, chrono);
     }
 
     /**
-     * Sets this interval from two instants.
+     * Sets this interval from two instants, replacing the chronology with
+     * that from the start instant.
      *
      * @param start  the start of the time interval
      * @param end  the start of the time interval
@@ -229,11 +255,21 @@ public class MutableInterval
         } else {
             long startMillis = DateTimeUtils.getInstantMillis(start);
             long endMillis = DateTimeUtils.getInstantMillis(end);
-            setInterval(startMillis, endMillis);
+            Chronology chrono = DateTimeUtils.getInstantChronology(start);
+            super.setInterval(startMillis, endMillis, chrono);
         }
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the chronology of this time interval.
+     *
+     * @param chrono  the chronology to use, null means ISO default
+     */
+    public void setChronology(Chronology chrono) {
+        super.setInterval(getStartMillis(), getEndMillis(), chrono);
+    }
+
     /**
      * Sets the start of this time interval.
      *
@@ -242,7 +278,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setStartMillis(long startInstant) {
-        super.setStartMillis(startInstant);
+        super.setInterval(startInstant, getEndMillis(), getChronology());
     }
 
     /**
@@ -251,12 +287,11 @@ public class MutableInterval
      * @param start  the start of the time interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
-    public void setStartInstant(ReadableInstant start) {
+    public void setStart(ReadableInstant start) {
         long startMillis = DateTimeUtils.getInstantMillis(start);
-        setStartMillis(startMillis);
+        super.setInterval(startMillis, getEndMillis(), getChronology());
     }
 
-    //-----------------------------------------------------------------------
     /** 
      * Sets the end of this time interval.
      *
@@ -265,7 +300,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setEndMillis(long endInstant) {
-        super.setEndMillis(endInstant);
+        super.setInterval(getStartMillis(), endInstant, getChronology());
     }
 
     /** 
@@ -274,9 +309,9 @@ public class MutableInterval
      * @param end  the end of the time interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
-    public void setEndInstant(ReadableInstant end) {
+    public void setEnd(ReadableInstant end) {
         long endMillis = DateTimeUtils.getInstantMillis(end);
-        setEndMillis(endMillis);
+        super.setInterval(getStartMillis(), endMillis, getChronology());
     }
 
     //-----------------------------------------------------------------------
@@ -337,23 +372,10 @@ public class MutableInterval
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public void setPeriodAfterStart(ReadablePeriod period) {
-        setPeriodAfterStart(period, null);
-    }
-
-    /**
-     * Sets the period of this time interval, preserving the start instant.
-     *
-     * @param period  new period for interval, null means zero length
-     * @param chrono  the chronology to add using, null means ISO default
-     * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
-     */
-    public void setPeriodAfterStart(ReadablePeriod period, Chronology chrono) {
         if (period == null) {
             setEndMillis(getStartMillis());
         } else {
-            chrono = DateTimeUtils.getChronology(chrono);
-            setEndMillis(chrono.add(getStartMillis(), period, 1));
+            setEndMillis(getChronology().add(getStartMillis(), period, 1));
         }
     }
 
@@ -366,23 +388,10 @@ public class MutableInterval
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public void setPeriodBeforeEnd(ReadablePeriod period) {
-        setPeriodBeforeEnd(period, null);
-    }
-
-    /**
-     * Sets the period of this time interval, preserving the end instant.
-     *
-     * @param period  new period for interval, null means zero length
-     * @param chrono  the chronology to add using, null means ISO default
-     * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
-     */
-    public void setPeriodBeforeEnd(ReadablePeriod period, Chronology chrono) {
         if (period == null) {
             setStartMillis(getEndMillis());
         } else {
-            chrono = DateTimeUtils.getChronology(chrono);
-            setStartMillis(chrono.add(getEndMillis(), period, -1));
+            setStartMillis(getChronology().add(getEndMillis(), period, -1));
         }
     }
 

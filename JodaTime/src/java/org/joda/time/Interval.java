@@ -91,19 +91,34 @@ public final class Interval
     /** Serialization version */
     private static final long serialVersionUID = 4922451897541386752L;
 
+    //-----------------------------------------------------------------------
     /**
-     * Constructs an interval from a start and end instant.
+     * Constructs an interval from a start and end instant with the ISO default chronology.
      * 
      * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
     public Interval(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
+        super(startInstant, endInstant, null);
+    }
+
+    /**
+     * Constructs an interval from a start and end instant with a chronology.
+     * 
+     * @param chronology  the chronology to use, null is ISO default
+     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @throws IllegalArgumentException if the end is before the start
+     */
+    public Interval(long startInstant, long endInstant, Chronology chronology) {
+        super(startInstant, endInstant, chronology);
     }
 
     /**
      * Constructs an interval from a start and end instant.
+     * <p>
+     * The chronology used is that of the start instant.
      * 
      * @param start  start of this interval, null means now
      * @param end  end of this interval, null means now
@@ -168,13 +183,25 @@ public final class Interval
     }
 
     /**
-     * Constructs a time interval as a copy of another.
+     * Constructs a time interval by converting or copying from another object.
      * 
      * @param interval  the time interval to copy
-     * @throws IllegalArgumentException if the interval is null or invalid
+     * @throws IllegalArgumentException if the interval is invalid
      */
     public Interval(Object interval) {
-        super(interval);
+        super(interval, null);
+    }
+
+    /**
+     * Constructs a time interval by converting or copying from another object,
+     * overriding the chronology.
+     * 
+     * @param interval  the time interval to copy
+     * @param chronology  the chronology to use, null means ISO default
+     * @throws IllegalArgumentException if the interval is invalid
+     */
+    public Interval(Object interval, Chronology chronology) {
+        super(interval, chronology);
     }
 
     //-----------------------------------------------------------------------
@@ -189,6 +216,19 @@ public final class Interval
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Creates a new interval with the same start and end, but a different chronology.
+     *
+     * @param chronology  the chronology to use, null means ISO default
+     * @return an interval with a different chronology
+     */
+    public Interval withChronology(Chronology chronology) {
+        if (getChronology() == chronology) {
+            return this;
+        }
+        return new Interval(getStartMillis(), getEndMillis(), chronology);
+    }
+
     /**
      * Creates a new interval with the specified start millisecond instant.
      *
@@ -210,7 +250,7 @@ public final class Interval
      * @return an interval with the end from this interval and the specified start
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
-    public Interval withStartInstant(ReadableInstant start) {
+    public Interval withStart(ReadableInstant start) {
         long startMillis = DateTimeUtils.getInstantMillis(start);
         return withStartMillis(startMillis);
     }
@@ -230,13 +270,13 @@ public final class Interval
     }
 
     /**
-     * Creates a new interval with the specified start instant.
+     * Creates a new interval with the specified end instant.
      *
      * @param end  the end instant for the new interval, null means now
      * @return an interval with the start from this interval and the specified end
      * @throws IllegalArgumentException if the resulting interval has end before start
      */
-    public Interval withEndInstant(ReadableInstant end) {
+    public Interval withEnd(ReadableInstant end) {
         long endMillis = DateTimeUtils.getInstantMillis(end);
         return withEndMillis(endMillis);
     }

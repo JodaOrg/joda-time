@@ -149,22 +149,22 @@ public class TestInterval_Basics extends TestCase {
     public void testGetMillis() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME1, test.getStartMillis());
-        assertEquals(TEST_TIME1, test.getStartInstant().getMillis());
+        assertEquals(TEST_TIME1, test.getStart().getMillis());
         assertEquals(TEST_TIME2, test.getEndMillis());
-        assertEquals(TEST_TIME2, test.getEndInstant().getMillis());
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
+        assertEquals(TEST_TIME2, test.getEnd().getMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDurationMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
     public void testGetDuration1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDurationMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
     public void testGetDuration2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME1);
-        assertSame(Duration.ZERO, test.getDuration());
+        assertSame(Duration.ZERO, test.toDuration());
     }
 
     public void testEqualsHashCode() {
@@ -186,16 +186,25 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test1.hashCode() == test3.hashCode());
         assertEquals(false, test2.hashCode() == test3.hashCode());
         
-        MutableInterval test4 = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        assertEquals(true, test1.equals(test4));
-        assertEquals(true, test2.equals(test4));
-        assertEquals(false, test3.equals(test4));
-        assertEquals(true, test4.equals(test1));
-        assertEquals(true, test4.equals(test2));
-        assertEquals(false, test4.equals(test3));
-        assertEquals(true, test1.hashCode() == test4.hashCode());
-        assertEquals(true, test2.hashCode() == test4.hashCode());
-        assertEquals(false, test3.hashCode() == test4.hashCode());
+        Interval test4 = new Interval(TEST_TIME1, TEST_TIME1, Chronology.getGJ());
+        assertEquals(true, test4.equals(test4));
+        assertEquals(false, test1.equals(test4));
+        assertEquals(false, test2.equals(test4));
+        assertEquals(false, test4.equals(test1));
+        assertEquals(false, test4.equals(test2));
+        assertEquals(false, test1.hashCode() == test4.hashCode());
+        assertEquals(false, test2.hashCode() == test4.hashCode());
+        
+        MutableInterval test5 = new MutableInterval(TEST_TIME1, TEST_TIME2);
+        assertEquals(true, test1.equals(test5));
+        assertEquals(true, test2.equals(test5));
+        assertEquals(false, test3.equals(test5));
+        assertEquals(true, test5.equals(test1));
+        assertEquals(true, test5.equals(test2));
+        assertEquals(false, test5.equals(test3));
+        assertEquals(true, test1.hashCode() == test5.hashCode());
+        assertEquals(true, test2.hashCode() == test5.hashCode());
+        assertEquals(false, test3.hashCode() == test5.hashCode());
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInterval()));
@@ -205,6 +214,9 @@ public class TestInterval_Basics extends TestCase {
     class MockInterval extends AbstractInterval {
         public MockInterval() {
             super();
+        }
+        public Chronology getChronology() {
+            return Chronology.getISO();
         }
         public long getStartMillis() {
             return TEST_TIME1;
@@ -543,7 +555,7 @@ public class TestInterval_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testWithStartInstant_RI1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withStartInstant(new Instant(TEST_TIME1 - 1));
+        Interval result = test.withStart(new Instant(TEST_TIME1 - 1));
         assertEquals(TEST_TIME1 - 1, result.getStartMillis());
         assertEquals(TEST_TIME2, result.getEndMillis());
     }
@@ -551,14 +563,14 @@ public class TestInterval_Basics extends TestCase {
     public void testWithStartInstant_RI2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         try {
-            test.withStartInstant(new Instant(TEST_TIME2 + 1));
+            test.withStart(new Instant(TEST_TIME2 + 1));
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testWithStartInstant_RI3() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withStartInstant(null);
+        Interval result = test.withStart(null);
         assertEquals(TEST_TIME_NOW, result.getStartMillis());
         assertEquals(TEST_TIME2, result.getEndMillis());
     }
@@ -588,7 +600,7 @@ public class TestInterval_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testWithEndInstant_RI1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withEndInstant(new Instant(TEST_TIME2 - 1));
+        Interval result = test.withEnd(new Instant(TEST_TIME2 - 1));
         assertEquals(TEST_TIME1, result.getStartMillis());
         assertEquals(TEST_TIME2 - 1, result.getEndMillis());
     }
@@ -596,14 +608,14 @@ public class TestInterval_Basics extends TestCase {
     public void testWithEndInstant_RI2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         try {
-            test.withEndInstant(new Instant(TEST_TIME1 - 1));
+            test.withEnd(new Instant(TEST_TIME1 - 1));
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testWithEndInstant_RI3() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withEndInstant(null);
+        Interval result = test.withEnd(null);
         assertEquals(TEST_TIME1, result.getStartMillis());
         assertEquals(TEST_TIME_NOW, result.getEndMillis());
     }

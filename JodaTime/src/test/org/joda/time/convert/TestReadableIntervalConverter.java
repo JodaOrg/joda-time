@@ -147,19 +147,27 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetIntervalMillis_Object() throws Exception {
+    public void testIsReadableInterval_Object_Chronology() throws Exception {
         Interval i = new Interval(1234L, 5678L);
-        long[] data = ReadableIntervalConverter.INSTANCE.getIntervalMillis(i);
-        assertEquals(1234L, data[0]);
-        assertEquals(5678L, data[1]);
+        assertEquals(true, ReadableIntervalConverter.INSTANCE.isReadableInterval(i, null));
     }
 
-    public void testSetIntoInterval_Object() throws Exception {
+    public void testSetIntoInterval_Object1() throws Exception {
         Interval i = new Interval(0L, 123L);
-        MutableInterval m = new MutableInterval(-1000L, 1000L);
-        ReadableIntervalConverter.INSTANCE.setInto(m, i);
+        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getCoptic());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
+        assertEquals(Chronology.getCoptic(), m.getChronology());
+    }
+
+    public void testSetIntoInterval_Object2() throws Exception {
+        Interval i = new Interval(0L, 123L);
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getGJ());
+        assertEquals(0L, m.getStartMillis());
+        assertEquals(123L, m.getEndMillis());
+        assertEquals(Chronology.getGJ(), m.getChronology());
     }
 
     //-----------------------------------------------------------------------

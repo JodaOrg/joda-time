@@ -710,7 +710,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RD1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration dur = new Interval(dt1, dt2).getDuration();
+        Duration dur = new Interval(dt1, dt2).toDuration();
         Period test = new Period(dt1, dur);
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(1, test.getYears());
@@ -742,7 +742,7 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RI_RD_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration dur = new Interval(dt1, dt2).getDuration();
+        Duration dur = new Interval(dt1, dt2).toDuration();
         Period test = new Period(dt1, dur, PeriodType.yearDayTime());
         assertEquals(PeriodType.yearDayTime(), test.getPeriodType());
         assertEquals(1, test.getYears());

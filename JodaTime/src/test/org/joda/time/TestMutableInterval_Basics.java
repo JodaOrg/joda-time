@@ -149,22 +149,22 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testGetMillis() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME1, test.getStartMillis());
-        assertEquals(TEST_TIME1, test.getStartInstant().getMillis());
+        assertEquals(TEST_TIME1, test.getStart().getMillis());
         assertEquals(TEST_TIME2, test.getEndMillis());
-        assertEquals(TEST_TIME2, test.getEndInstant().getMillis());
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
+        assertEquals(TEST_TIME2, test.getEnd().getMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDurationMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
     public void testGetDuration1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
-        assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDurationMillis());
+        assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
     public void testGetDuration2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME1);
-        assertSame(Duration.ZERO, test.getDuration());
+        assertSame(Duration.ZERO, test.toDuration());
     }
 
     public void testEqualsHashCode() {
@@ -205,6 +205,9 @@ public class TestMutableInterval_Basics extends TestCase {
     class MockInterval extends AbstractInterval {
         public MockInterval() {
             super();
+        }
+        public Chronology getChronology() {
+            return Chronology.getISO();
         }
         public long getStartMillis() {
             return TEST_TIME1;

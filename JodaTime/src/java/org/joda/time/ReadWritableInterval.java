@@ -90,6 +90,14 @@ public interface ReadWritableInterval extends ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
+     * Sets the chronology of this time interval.
+     *
+     * @param chrono  the chronology to use, null means ISO default
+     */
+    void setChronology(Chronology chrono);
+
+    //-----------------------------------------------------------------------
+    /**
      * Sets the start of this time interval.
      *
      * @param millisInstant  the start of the time interval,
@@ -104,7 +112,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * @param instant  the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
-    void setStartInstant(ReadableInstant instant);
+    void setStart(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
     /** 
@@ -122,26 +130,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * @param instant  the end of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
-    void setEndInstant(ReadableInstant instant);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets the duration of this time interval, preserving the start instant.
-     *
-     * @param millisDuration  new duration for interval
-     * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the end instant exceeds the capacity of a long
-     */
-    void setDurationAfterStart(long millisDuration);
-
-    /**
-     * Sets the duration of this time interval, preserving the end instant.
-     *
-     * @param millisDuration  new duration for interval
-     * @throws IllegalArgumentException if the end is before the start
-     * @throws ArithmeticException if the start instant exceeds the capacity of a long
-     */
-    void setDurationBeforeEnd(long millisDuration);
+    void setEnd(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
     /**
@@ -167,20 +156,18 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the period of this time interval, preserving the start instant.
      *
      * @param period  new period for interval, null means zero length
-     * @param chrono  the chronology to add using, null means ISO default
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    void setPeriodAfterStart(ReadablePeriod period, Chronology chrono);
+    void setPeriodAfterStart(ReadablePeriod period);
 
     /**
      * Sets the period of this time interval, preserving the end instant.
      *
      * @param period  new period for interval, null means zero length
-     * @param chrono  the chronology to add using, null means ISO default
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    void setPeriodBeforeEnd(ReadablePeriod period, Chronology chrono);
+    void setPeriodBeforeEnd(ReadablePeriod period);
 
 }

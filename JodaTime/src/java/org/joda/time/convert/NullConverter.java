@@ -56,6 +56,7 @@ package org.joda.time.convert;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.Period;
+import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
 
 /**
@@ -66,7 +67,7 @@ import org.joda.time.ReadWritablePeriod;
  * @since 1.0
  */
 class NullConverter extends AbstractConverter
-        implements InstantConverter, DurationConverter, PeriodConverter {
+        implements InstantConverter, DurationConverter, PeriodConverter, IntervalConverter {
     
     /**
      * Singleton instance.
@@ -113,6 +114,22 @@ class NullConverter extends AbstractConverter
      */
     public void setInto(ReadWritablePeriod duration, Object object, Chronology chrono) {
         duration.setPeriod((Period) null);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Extracts interval endpoint values from an object of this converter's
+     * type, and sets them into the given ReadWritableInterval.
+     *
+     * @param writableInterval interval to get modified, not null
+     * @param object  the object to convert, must not be null
+     * @param chrono  the chronology to use, may be null
+     * @throws NullPointerException if the interval is null
+     */
+    public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {
+        writableInterval.setChronology(chrono);
+        long now = DateTimeUtils.currentTimeMillis();
+        writableInterval.setInterval(now, now);
     }
 
     //-----------------------------------------------------------------------

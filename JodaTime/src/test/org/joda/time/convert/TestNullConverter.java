@@ -64,8 +64,8 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
-import org.joda.time.PeriodType;
 import org.joda.time.MutablePeriod;
+import org.joda.time.PeriodType;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -178,6 +178,11 @@ public class TestNullConverter extends TestCase {
         MutablePeriod m = new MutablePeriod(PeriodType.millis());
         NullConverter.INSTANCE.setInto(m, null, null);
         assertEquals(0L, m.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testIsReadableInterval_Object_Chronology() throws Exception {
+        assertEquals(false, NullConverter.INSTANCE.isReadableInterval(null, null));
     }
 
     //-----------------------------------------------------------------------

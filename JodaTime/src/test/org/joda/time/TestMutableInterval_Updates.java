@@ -211,6 +211,9 @@ public class TestMutableInterval_Updates extends TestCase {
     }
     
     class MockBadInterval extends AbstractInterval {
+        public Chronology getChronology() {
+            return Chronology.getISO();
+        }
         public long getStartMillis() {
             return TEST_TIME1 - 1;
         }
@@ -244,24 +247,24 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSetStartInstant_RI1() {
+    public void testSetStart_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        test.setStartInstant(new Instant(TEST_TIME1 - 1));
+        test.setStart(new Instant(TEST_TIME1 - 1));
         assertEquals(TEST_TIME1 - 1, test.getStartMillis());
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
 
-    public void testSetStartInstant_RI2() {
+    public void testSetStart_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
-            test.setStartInstant(new Instant(TEST_TIME2 + 1));
+            test.setStart(new Instant(TEST_TIME2 + 1));
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testSetStartInstant_RI3() {
+    public void testSetStart_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        test.setStartInstant(null);
+        test.setStart(null);
         assertEquals(TEST_TIME_NOW, test.getStartMillis());
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
@@ -283,24 +286,24 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSetEndInstant_RI1() {
+    public void testSetEnd_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        test.setEndInstant(new Instant(TEST_TIME2 + 1));
+        test.setEnd(new Instant(TEST_TIME2 + 1));
         assertEquals(TEST_TIME1, test.getStartMillis());
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
-    public void testSetEndInstant_RI2() {
+    public void testSetEnd_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
-            test.setEndInstant(new Instant(TEST_TIME1 - 1));
+            test.setEnd(new Instant(TEST_TIME1 - 1));
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testSetEndInstant_RI3() {
+    public void testSetEnd_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        test.setEndInstant(null);
+        test.setEnd(null);
         assertEquals(TEST_TIME1, test.getStartMillis());
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }

@@ -57,6 +57,7 @@ import java.io.Serializable;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.MutableInterval;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
@@ -88,6 +89,8 @@ public abstract class BaseInterval
     /** Serialization version */
     private static final long serialVersionUID = 576586928732749278L;
 
+    /** The chronology of the interval */
+    private Chronology iChronology;
     /** The start of the interval */
     private long iStartMillis;
     /** The end of the interval */
@@ -98,10 +101,12 @@ public abstract class BaseInterval
      * 
      * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param chrono  the chronology to use, null is ISO default
      * @throws IllegalArgumentException if the end is before the start
      */
-    protected BaseInterval(long startInstant, long endInstant) {
+    protected BaseInterval(long startInstant, long endInstant, Chronology chrono) {
         super();
+        iChronology = DateTimeUtils.getChronology(chrono);
         checkInterval(startInstant, endInstant);
         iStartMillis = startInstant;
         iEndMillis = endInstant;
@@ -118,7 +123,9 @@ public abstract class BaseInterval
         super();
         if (start == null && end == null) {
             iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+            iChronology = Chronology.getISO();
         } else {
+            iChronology = DateTimeUtils.getInstantChronology(start);
             iStartMillis = DateTimeUtils.getInstantMillis(start);
             iEndMillis = DateTimeUtils.getInstantMillis(end);
             checkInterval(iStartMillis, iEndMillis);
@@ -135,6 +142,7 @@ public abstract class BaseInterval
      */
     protected BaseInterval(ReadableInstant start, ReadableDuration duration) {
         super();
+        iChronology = DateTimeUtils.getInstantChronology(start);
         iStartMillis = DateTimeUtils.getInstantMillis(start);
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
         iEndMillis = FieldUtils.safeAdd(iStartMillis, durationMillis);
@@ -151,6 +159,7 @@ public abstract class BaseInterval
      */
     protected BaseInterval(ReadableDuration duration, ReadableInstant end) {
         super();
+        iChronology = DateTimeUtils.getInstantChronology(end);
         iEndMillis = DateTimeUtils.getInstantMillis(end);
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
         iStartMillis = FieldUtils.safeAdd(iEndMillis, -durationMillis);
@@ -170,11 +179,12 @@ public abstract class BaseInterval
      */
     protected BaseInterval(ReadableInstant start, ReadablePeriod period) {
         super();
+        Chronology chrono = DateTimeUtils.getInstantChronology(start);
+        iChronology = chrono;
         iStartMillis = DateTimeUtils.getInstantMillis(start);
         if (period == null) {
             iEndMillis = iStartMillis;
         } else {
-            Chronology chrono = DateTimeUtils.getInstantChronology(start);
             iEndMillis = chrono.add(iStartMillis, period, 1);
         }
         checkInterval(iStartMillis, iEndMillis);
@@ -193,36 +203,55 @@ public abstract class BaseInterval
      */
     protected BaseInterval(ReadablePeriod period, ReadableInstant end) {
         super();
+        Chronology chrono = DateTimeUtils.getInstantChronology(end);
+        iChronology = chrono;
         iEndMillis = DateTimeUtils.getInstantMillis(end);
         if (period == null) {
             iStartMillis = iEndMillis;
         } else {
-            Chronology chrono = DateTimeUtils.getInstantChronology(end);
             iStartMillis = chrono.add(iEndMillis, period, -1);
         }
         checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
-     * Constructs a time interval as a copy of another.
+     * Constructs a time interval converting or copying from another object
+     * that describes an interval.
      * 
      * @param interval  the time interval to copy
-     * @throws IllegalArgumentException if the interval is null or invalid
+     * @param chrono  the chronology to use, null means let converter decide
+     * @throws IllegalArgumentException if the interval is invalid
      */
-    protected BaseInterval(Object interval) {
+    protected BaseInterval(Object interval, Chronology chrono) {
         super();
         IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
-        if (this instanceof ReadWritableInterval) {
-            converter.setInto((ReadWritableInterval) this, interval);
+        if (converter.isReadableInterval(interval, chrono)) {
+            ReadableInterval input = (ReadableInterval) interval;
+            iChronology = (chrono != null ? chrono : input.getChronology());
+            iStartMillis = input.getStartMillis();
+            iEndMillis = input.getEndMillis();
+        } else if (this instanceof ReadWritableInterval) {
+            converter.setInto((ReadWritableInterval) this, interval, chrono);
         } else {
-            long[] millis = converter.getIntervalMillis(interval);
-            iStartMillis = millis[0];
-            iEndMillis = millis[1];
+            MutableInterval mi = new MutableInterval();
+            converter.setInto(mi, interval, chrono);
+            iChronology = mi.getChronology();
+            iStartMillis = mi.getStartMillis();
+            iEndMillis = mi.getEndMillis();
         }
         checkInterval(iStartMillis, iEndMillis);
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Gets the chronology of this interval.
+     *
+     * @return the chronology
+     */
+    public Chronology getChronology() {
+        return iChronology;
+    }
+
     /**
      * Gets the start of this time interval which is inclusive.
      *
@@ -245,38 +274,18 @@ public abstract class BaseInterval
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the start of this time interval which is inclusive.
-     *
-     * @param startInstant  the new start of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     */
-    protected void setStartMillis(long startInstant) {
-        checkInterval(startInstant, iEndMillis);
-        iStartMillis = startInstant;
-    }
-
-    /**
-     * Sets the end of this time interval which is exclusive.
-     *
-     * @param endInstant  the new end of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     */
-    protected void setEndMillis(long endInstant) {
-        checkInterval(iStartMillis, endInstant);
-        iEndMillis = endInstant;
-    }
-
-    /**
-     * Sets this interval from two millisecond instants.
+     * Sets this interval from two millisecond instants and a chronology.
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
+     * @param chrono  the chronology, not null
      * @throws IllegalArgumentException if the end is before the start
      */
-    protected void setInterval(long startInstant, long endInstant) {
+    protected void setInterval(long startInstant, long endInstant, Chronology chrono) {
         checkInterval(startInstant, endInstant);
         iStartMillis = startInstant;
         iEndMillis = endInstant;
+        iChronology = DateTimeUtils.getChronology(chrono);
     }
 
 }

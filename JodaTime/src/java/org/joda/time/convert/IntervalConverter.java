@@ -53,6 +53,7 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.Chronology;
 import org.joda.time.ReadWritableInterval;
 
 /**
@@ -65,22 +66,26 @@ import org.joda.time.ReadWritableInterval;
 public interface IntervalConverter extends Converter {
 
     /**
-     * Extracts the start and end millisecond instants from the object.
+     * Checks if the input is a ReadableInterval.
+     * <p>
+     * If it is, then the calling code should cast and copy the fields directly.
      *
      * @param object  the object to convert, must not be null
-     * @return the start millis and end millis in an array of size two
+     * @param chrono  the chronology to use, may be null
+     * @return true if the input is a ReadableInterval
      * @throws ClassCastException if the object is invalid
      */
-    long[] getIntervalMillis(Object object);
+    boolean isReadableInterval(Object object, Chronology chrono);
 
     /**
      * Extracts interval endpoint values from an object of this converter's
      * type, and sets them into the given ReadWritableInterval.
      *
-     * @param interval interval to get modified
+     * @param writableInterval  interval to get modified, not null
      * @param object  the object to convert, must not be null
+     * @param chrono  the chronology to use, may be null
      * @throws ClassCastException if the object is invalid
      */
-    void setInto(ReadWritableInterval interval, Object object);
+    void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono);
 
 }

@@ -98,6 +98,7 @@ import org.joda.time.JodaTimePermission;
  * <ul>
  * <li>ReadableInterval
  * <li>String
+ * <li>null (zero-length from now to now)
  * </ul>
  *
  * @author Stephen Colebourne
@@ -157,6 +158,7 @@ public final class ConverterManager {
         iIntervalConverters = new ConverterSet(new Converter[] {
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
+            NullConverter.INSTANCE,
         });
     }
 

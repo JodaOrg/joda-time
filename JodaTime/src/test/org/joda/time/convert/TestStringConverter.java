@@ -429,70 +429,94 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetIntervalMillis_Object() throws Exception {
-        MutableInterval m = new MutableInterval(-1000L, 1000L);
-        long[] data = StringConverter.INSTANCE.getIntervalMillis("2004-06-09/P1Y2M");
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).getMillis(), data[0]);
-        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0).getMillis(), data[1]);
+    public void testIsReadableInterval_Object_Chronology() throws Exception {
+        assertEquals(false, StringConverter.INSTANCE.isReadableInterval("", null));
     }
 
-    public void testSetIntoInterval_Object1() throws Exception {
+    public void testSetIntoInterval_Object_Chronology1() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
-        StringConverter.INSTANCE.setInto(m, "2004-06-09/P1Y2M");
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).toInstant(), m.getStartInstant());
-        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0).toInstant(), m.getEndInstant());
+        StringConverter.INSTANCE.setInto(m, "2004-06-09/P1Y2M", null);
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0), m.getStart());
+        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0), m.getEnd());
+        assertEquals(Chronology.getISO(), m.getChronology());
     }
 
-    public void testSetIntoInterval_Object2() throws Exception {
+    public void testSetIntoInterval_Object_Chronology2() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
-        StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09");
-        assertEquals(new DateTime(2003, 4, 9, 0, 0, 0, 0).toInstant(), m.getStartInstant());
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).toInstant(), m.getEndInstant());
+        StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09", null);
+        assertEquals(new DateTime(2003, 4, 9, 0, 0, 0, 0), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0), m.getEnd());
+        assertEquals(Chronology.getISO(), m.getChronology());
     }
 
-    public void testSetIntoInterval_Object3() throws Exception {
+    public void testSetIntoInterval_Object_Chronology3() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
-        StringConverter.INSTANCE.setInto(m, "2003-08-09/2004-06-09");
-        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0).toInstant(), m.getStartInstant());
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).toInstant(), m.getEndInstant());
+        StringConverter.INSTANCE.setInto(m, "2003-08-09/2004-06-09", null);
+        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0), m.getEnd());
+        assertEquals(Chronology.getISO(), m.getChronology());
     }
 
-    public void testSetIntoIntervalEx_Object1() throws Exception {
+    public void testSetIntoInterval_Object_Chronology4() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "2004-06-09T+06:00/P1Y2M", null);
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getStart());
+        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getEnd());
+        assertEquals(Chronology.getISO(DateTimeZone.getInstance(6)), m.getChronology());
+    }
+
+    public void testSetIntoInterval_Object_Chronology5() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09T+06:00", null);
+        assertEquals(new DateTime(2003, 4, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getEnd());
+        assertEquals(Chronology.getISO(DateTimeZone.getInstance(6)), m.getChronology());
+    }
+
+    public void testSetIntoInterval_Object_Chronology6() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "2003-08-09T+06:00/2004-06-09T+07:00", null);
+        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getEnd());
+        assertEquals(Chronology.getISO(DateTimeZone.getInstance(6)), m.getChronology());
+    }
+
+    public void testSetIntoIntervalEx_Object_Chronology1() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
-            StringConverter.INSTANCE.setInto(m, "");
+            StringConverter.INSTANCE.setInto(m, "", null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testSetIntoIntervalEx_Object2() throws Exception {
+    public void testSetIntoIntervalEx_Object_Chronology2() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
-            StringConverter.INSTANCE.setInto(m, "/");
+            StringConverter.INSTANCE.setInto(m, "/", null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testSetIntoIntervalEx_Object3() throws Exception {
+    public void testSetIntoIntervalEx_Object_Chronology3() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
-            StringConverter.INSTANCE.setInto(m, "P1Y/");
+            StringConverter.INSTANCE.setInto(m, "P1Y/", null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testSetIntoIntervalEx_Object4() throws Exception {
+    public void testSetIntoIntervalEx_Object_Chronology4() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
-            StringConverter.INSTANCE.setInto(m, "/P1Y");
+            StringConverter.INSTANCE.setInto(m, "/P1Y", null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testSetIntoIntervalEx_Object5() throws Exception {
+    public void testSetIntoIntervalEx_Object_Chronology5() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         try {
-            StringConverter.INSTANCE.setInto(m, "P1Y/P2Y");
+            StringConverter.INSTANCE.setInto(m, "P1Y/P2Y", null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

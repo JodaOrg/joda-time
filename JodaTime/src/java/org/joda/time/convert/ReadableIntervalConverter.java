@@ -86,7 +86,7 @@ class ReadableIntervalConverter extends AbstractConverter
      * @param object  the interval
      */
     public long getDurationMillis(Object object) {
-        return (((ReadableInterval) object)).getDurationMillis();
+        return (((ReadableInterval) object)).toDurationMillis();
     }
 
     //-----------------------------------------------------------------------
@@ -98,31 +98,42 @@ class ReadableIntervalConverter extends AbstractConverter
      * @param chrono  the chronology to use
      */
     public void setInto(ReadWritablePeriod writablePeriod, Object object, Chronology chrono) {
-        writablePeriod.setPeriod((ReadableInterval) object, chrono);
+        ReadableInterval interval = (ReadableInterval) object;
+        writablePeriod.setPeriod(interval, chrono);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the start and end millisecond instants from the object.
+     * Checks if the input is a ReadableInterval.
+     * <p>
+     * If it is, then the calling code should cast and copy the fields directly.
      *
      * @param object  the object to convert, must not be null
-     * @return the start millis and end millis in an array of size two
+     * @param chrono  the chronology to use, may be null
+     * @return true if the input is a ReadableInterval
      * @throws ClassCastException if the object is invalid
      */
-    public long[] getIntervalMillis(Object object) {
-        ReadableInterval interval = (ReadableInterval) object;
-        return new long[] {interval.getStartMillis(), interval.getEndMillis()};
+    public boolean isReadableInterval(Object object, Chronology chrono) {
+        return true;
     }
 
     /**
-     * Sets the values of the mutable interval from the specified interval.
-     * 
-     * @param writableInterval  the interval to set
-     * @param object  the interval to set from
+     * Extracts interval endpoint values from an object of this converter's
+     * type, and sets them into the given ReadWritableInterval.
+     *
+     * @param writableInterval interval to get modified, not null
+     * @param object  the object to convert, must not be null
+     * @param chrono  the chronology to use, may be null
+     * @throws ClassCastException if the object is invalid
      */
-    public void setInto(ReadWritableInterval writableInterval, Object object) {
-        ReadableInterval interval = (ReadableInterval) object;
-        writableInterval.setInterval(interval);
+    public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {
+        ReadableInterval input = (ReadableInterval) object;
+        writableInterval.setInterval(input);
+        if (chrono != null) {
+            writableInterval.setChronology(chrono);
+        } else {
+            writableInterval.setChronology(input.getChronology());
+        }
     }
 
     //-----------------------------------------------------------------------

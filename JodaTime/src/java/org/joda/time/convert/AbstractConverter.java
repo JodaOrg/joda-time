@@ -177,6 +177,21 @@ public abstract class AbstractConverter implements Converter {
 
     //-----------------------------------------------------------------------
     /**
+     * Checks if the input is a ReadableInterval.
+     * <p>
+     * If it is, then the calling code should cast and copy the fields directly.
+     *
+     * @param object  the object to convert, must not be null
+     * @param chrono  the chronology to use, may be null
+     * @return true if the input is a ReadableInterval
+     * @throws ClassCastException if the object is invalid
+     */
+    public boolean isReadableInterval(Object object, Chronology chrono) {
+        return false;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets a debugging string version of this converter.
      * 
      * @return a debugging string

@@ -58,10 +58,9 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DurationField;
 import org.joda.time.DurationType;
-import org.joda.time.ReadableDuration;
 import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadableDuration;
 
 /**
  * DurationFormatterBuilder is used for constructing {@link DurationFormatter}s.
@@ -352,7 +351,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal years field, if supported.
+     * Instruct the printer to emit an integer years field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -362,7 +361,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal years field, if supported.
+     * Instruct the printer to emit an integer years field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -372,7 +371,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal weeks field, if supported.
+     * Instruct the printer to emit an integer weeks field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -382,7 +381,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal days field, if supported.
+     * Instruct the printer to emit an integer days field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -392,7 +391,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal hours field, if supported.
+     * Instruct the printer to emit an integer hours field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -402,7 +401,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal minutes field, if supported.
+     * Instruct the printer to emit an integer minutes field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -412,7 +411,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal seconds field, if supported.
+     * Instruct the printer to emit an integer seconds field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -422,7 +421,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a decimal millis field, if supported.
+     * Instruct the printer to emit an integer millis field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -431,11 +430,23 @@ public class DurationFormatterBuilder {
         return this;
     }
 
+    /**
+     * Instruct the printer to emit an integer millis field, if supported.
+     *
+     * @return this DurationFormatterBuilder
+     */
+    public DurationFormatterBuilder appendMillis3Digit() {
+        appendField(8, 3);
+        return this;
+    }
+
     private void appendField(int type) {
-        FieldFormatter field = new FieldFormatter
-            (iMinPrintedDigits, iPrintZeroSetting,
-             iMaxParsedDigits, iRejectSignedValues,
-             type, iPrefix, null);
+        appendField(type, iMinPrintedDigits);
+    }
+
+    private void appendField(int type, int minPrinted) {
+        FieldFormatter field = new FieldFormatter(minPrinted, iPrintZeroSetting,
+            iMaxParsedDigits, iRejectSignedValues, type, iPrefix, null);
         iFormatters.add(field);
         if (iPrintZeroSetting == PRINT_ZERO_RARELY) {
             iAlternateFormatters.add(field);

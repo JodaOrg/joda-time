@@ -163,7 +163,7 @@ public class TestMutableDateTime_Adds extends TestCase {
     }
 
     public void testAdd_Object3() {
-        Duration d = new Duration(DurationType.getYearMonthType(), 1, 1, 0, 1, 1, 1, 1, 1);
+        Duration d = new Duration(1, 1, 0, 1, 1, 1, 1, 1);
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
         test.add(d);
@@ -185,7 +185,7 @@ public class TestMutableDateTime_Adds extends TestCase {
     }
 
     public void testAdd_Object_int3() {
-        Duration d = new Duration(DurationType.getYearMonthType(), 1, 1, 0, 1, 1, 1, 1, 1);
+        Duration d = new Duration(1, 1, 0, 1, 1, 1, 1, 1);
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
         assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
         test.add(d, -2);

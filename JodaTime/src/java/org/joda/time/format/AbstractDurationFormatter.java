@@ -94,7 +94,7 @@ public abstract class AbstractDurationFormatter {
 
     public MutableDuration parseMutableDuration(DurationType type, String text) {
         DurationParser p = (DurationParser) this;
-        MutableDuration duration = new MutableDuration(type, 0);
+        MutableDuration duration = new MutableDuration(0, type);
 
         int newPos = p.parseInto(duration, text, 0);
         if (newPos >= 0) {

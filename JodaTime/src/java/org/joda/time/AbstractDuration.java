@@ -74,8 +74,22 @@ import org.joda.time.format.ISODurationFormat;
  */
 public abstract class AbstractDuration implements ReadableDuration, Serializable {
 
-    static final long serialVersionUID = -2110953284060001145L;
+    /** Serialization version */
+    private static final long serialVersionUID = -2110953284060001145L;
 
+    /**
+     * Checks whether the field is supported.
+     */
+    private static void checkArgument(DurationField field, String name) {
+        if (!field.isSupported()) {
+            throw new IllegalArgumentException
+                ("Duration does not support field \"" + name + '"');
+        }
+    }
+
+    /**
+     * Checks whether the field is supported.
+     */
     private static void checkSupport(DurationField field, String name) {
         if (!field.isSupported()) {
             throw new UnsupportedOperationException
@@ -83,6 +97,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         }
     }
 
+    /**
+     * Checks whether the field is precise.
+     */
     private static void checkPrecise(DurationField field, String name) {
         if (!field.isPrecise()) {
             throw new UnsupportedOperationException
@@ -106,164 +123,101 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     private int iMillis;
 
     /**
-     * Copies another duration to this one.
+     * Creates a zero length duration of the specified type.
      *
-     * @param duration duration to copy
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
-     */
-    public AbstractDuration(ReadableDuration duration) {
-        super();
-        // Only call a private method
-        setDuration(iType = duration.getDurationType(), duration);
-    }
-
-    /**
-     * Copies another duration to this one.
-     *
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
-     */
-    public AbstractDuration(Object duration) {
-        super();
-        if (duration instanceof ReadableDuration) {
-            // Only call a private method
-            ReadableDuration rd = (ReadableDuration) duration;
-            setDuration(iType = rd.getDurationType(), rd);
-        } else {
-            DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-            DurationType type = converter.getDurationType(duration);
-            if (type.isPrecise() && converter.isPrecise(duration)) {
-                // Only call a private method
-                setTotalMillis(iType = type, converter.getDurationMillis(duration));
-            } else if (this instanceof ReadWritableDuration) {
-                iType = type;
-                converter.setInto((ReadWritableDuration) this, duration);
-            } else {
-                // Only call a private method
-                setDuration(iType = type, new MutableDuration(type, duration));
-            }
-        }
-    }
-
-    /**
-     * Creates a zero length duration.
-     *
-     * @param type determines which set of fields this duration supports
-     * @throws IllegalArgumentException if type is null
+     * @param type  which set of fields this duration supports, null means millis type
      */
     public AbstractDuration(DurationType type) {
         super();
+        type = (type == null ? DurationType.getMillisType() : type);
+        iType = type;
         // Only call a private method
-        setTotalMillis(iType = type, 0);
+        setTotalMillis(type, 0L);
     }
 
     /**
-     * Copies another duration to this one.
+     * Creates a new duration based on another using the {@link ConverterManager}.
      *
-     * @param type use a different DurationType
-     * @param duration duration to copy
-     * @throws IllegalArgumentException if type or duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param duration  duration to convert
+     * @param type  which set of fields this duration supports, null means use type from object
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractDuration(DurationType type, ReadableDuration duration) {
+    public AbstractDuration(Object duration, DurationType type) {
         super();
-        // Only call a private method
-        setDuration(iType = type, duration);
-    }
-
-    /**
-     * Copies another duration to this one.
-     *
-     * @param type use a different DurationType
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if type or duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
-     */
-    public AbstractDuration(DurationType type, Object duration) {
-        super();
-        if (duration instanceof ReadableDuration) {
+        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+        type = (type == null ? converter.getDurationType(duration) : type);
+        iType = type;
+        if (type.isPrecise() && converter.isPrecise(duration)) {
             // Only call a private method
-            setDuration(iType = type, (ReadableDuration) duration);
+            setTotalMillis(type, converter.getDurationMillis(duration));
+        } else if (this instanceof ReadWritableDuration) {
+            converter.setInto((ReadWritableDuration) this, duration);
         } else {
-            DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-            if (type.isPrecise() && converter.isPrecise(duration)) {
-                // Only call a private method
-                setTotalMillis(iType = type, converter.getDurationMillis(duration));
-            } else if (this instanceof ReadWritableDuration) {
-                iType = type;
-                converter.setInto((ReadWritableDuration) this, duration);
-            } else {
-                // Only call a private method
-                setDuration(iType = type, new MutableDuration(type, duration));
-            }
+            // Only call a private method
+            setDuration(type, new MutableDuration(duration, type));
         }
     }
 
     /**
-     * Create a duration from a set of field values.
+     * Creates a duration from a set of field values.
      *
-     * @param type determines which set of fields this duration supports
-     * @param years amount of years in this duration, which must be zero if
-     * unsupported.
-     * @param months amount of months in this duration, which must be zero if
-     * unsupported.
-     * @param weeks amount of weeks in this duration, which must be zero if
-     * unsupported.
-     * @param days amount of days in this duration, which must be zero if
-     * unsupported.
-     * @param hours amount of hours in this duration, which must be zero if
-     * unsupported.
-     * @param minutes amount of minutes in this duration, which must be zero if
-     * unsupported.
-     * @param seconds amount of seconds in this duration, which must be zero if
-     * unsupported.
-     * @param millis amount of milliseconds in this duration, which must be
-     * zero if unsupported.
-     * @throws IllegalArgumentException if type is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param years  amount of years in this duration, which must be zero if unsupported
+     * @param months  amount of months in this duration, which must be zero if unsupported
+     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
+     * @param days  amount of days in this duration, which must be zero if unsupported
+     * @param hours  amount of hours in this duration, which must be zero if unsupported
+     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
+     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @param type  which set of fields this duration supports, null means AllType
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractDuration(DurationType type,
-                            int years, int months, int weeks, int days,
-                            int hours, int minutes, int seconds, int millis) {
+    public AbstractDuration(int years, int months, int weeks, int days,
+                            int hours, int minutes, int seconds, int millis,
+                            DurationType type) {
         super();
+        type = (type == null ? DurationType.getAllType() : type);
+        iType = type;
         // Only call a private method
-        setDuration(iType = type, years, months, weeks, days, hours, minutes, seconds, millis);
+        setDuration(type, years, months, weeks, days, hours, minutes, seconds, millis);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param type determines which set of fields this duration supports
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
-     * @throws IllegalArgumentException if type is null
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param type  which set of fields this duration supports, null means AllType
      */
-    public AbstractDuration(DurationType type, long startInstant, long endInstant) {
+    public AbstractDuration(long startInstant, long endInstant, DurationType type) {
         super();
+        type = (type == null ? DurationType.getAllType() : type);
+        iType = type;
         // Only call a private method
-        setTotalMillis(iType = type, startInstant, endInstant);
+        setTotalMillis(type, startInstant, endInstant);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param type determines which set of fields this duration supports
-     * @param startInstant interval start
-     * @param endInstant interval end
-     * @throws IllegalArgumentException if type is null
+     * @param startInstant  interval start, null means now
+     * @param endInstant  interval end, null means now
+     * @param type  which set of fields this duration supports, null means AllType
      */
-    public AbstractDuration(DurationType type,
-                            ReadableInstant startInstant, ReadableInstant  endInstant) {
+    public AbstractDuration(
+            ReadableInstant startInstant, ReadableInstant  endInstant, DurationType type) {
         super();
-        // Only call a private method
-        setTotalMillis(iType = type, startInstant.getMillis(), endInstant.getMillis());
+        type = (type == null ? DurationType.getAllType() : type);
+        if (startInstant == null && endInstant == null) {
+            iType = type;
+        } else {
+            long start = (startInstant == null ? DateTimeUtils.currentTimeMillis() : startInstant.getMillis());
+            long end = (endInstant == null ? DateTimeUtils.currentTimeMillis() : endInstant.getMillis());
+            iType = type;
+            // Only call a private method
+            setTotalMillis(type, start, end);
+        }
     }
 
     /**
@@ -271,17 +225,17 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * fields are imprecise, an UnsupportedOperationException is thrown. The
      * exception to this is when the specified duration is zero.
      *
-     * @param type determines which set of fields this duration supports
      * @param duration  the duration, in milliseconds
-     * @throws IllegalArgumentException if type is null
-     * @throws UnsupportedOperationException if any fields are imprecise
+     * @param type  which set of fields this duration supports, null means MillisType
      */
-    public AbstractDuration(DurationType type, long duration) {
+    public AbstractDuration(long duration, DurationType type) {
         super();
-        // Only call a private method
-        setTotalMillis(iType = type, duration);
+        type = (type == null ? DurationType.getMillisType() : type);
+        iType = type;
+        setTotalMillis(type, duration); // Only call a private method
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns the object which defines which fields this duration supports.
      */
@@ -630,9 +584,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @throws IllegalStateException if either duration is imprecise
      */
     public int compareTo(Object obj) {
+        // Comparable contract means we cannot handle null or other types gracefully
         ReadableDuration thisDuration = (ReadableDuration) this;
         ReadableDuration otherDuration = (ReadableDuration) obj;
-
+        
         long thisMillis = thisDuration.getTotalMillis();
         long otherMillis = otherDuration.getTotalMillis();
         
@@ -650,14 +605,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Is the length of this duration equal to the duration passed in.
      * Both durations must be precise.
      *
-     * @param duration  another duration to compare to
+     * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
-     * @throws IllegalArgumentException if the duration is null
      * @throws IllegalStateException if either duration is imprecise
      */
     public boolean isEqual(ReadableDuration duration) {
         if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
+            duration = Duration.ZERO;
         }
         return compareTo(duration) == 0;
     }
@@ -666,14 +620,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Is the length of this duration longer than the duration passed in.
      * Both durations must be precise.
      *
-     * @param duration  another duration to compare to
+     * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
-     * @throws IllegalArgumentException if the duration is null
      * @throws IllegalStateException if either duration is imprecise
      */
     public boolean isLongerThan(ReadableDuration duration) {
         if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
+            duration = Duration.ZERO;
         }
         return compareTo(duration) > 0;
     }
@@ -682,14 +635,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Is the length of this duration shorter than the duration passed in.
      * Both durations must be precise.
      *
-     * @param duration  another duration to compare to
+     * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
-     * @throws IllegalArgumentException if the duration is null
      * @throws IllegalStateException if either duration is imprecise
      */
     public boolean isShorterThan(ReadableDuration duration) {
         if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
+            duration = Duration.ZERO;
         }
         return compareTo(duration) < 0;
     }
@@ -768,9 +720,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param duration  the duration to set
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void setDuration(ReadableDuration duration) {
         setDuration(iType, duration);
@@ -788,6 +739,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
                     duration.getWeeks(), duration.getDays(),
                     duration.getHours(), duration.getMinutes(),
                     duration.getSeconds(), duration.getMillis());
+        if (type.equals(duration.getDurationType()) && duration.isPrecise()) {
+            iTotalMillis = duration.getTotalMillis();
+            iTotalMillisState = 2;
+        }
     }
 
     /**
@@ -797,24 +752,15 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * empty implementation that is protected and final. This also ensures that
      * all lower subclasses are also immutable.
      * 
-     * @param years amount of years in this duration, which must be zero if
-     * unsupported.
-     * @param months amount of months in this duration, which must be zero if
-     * unsupported.
-     * @param weeks amount of weeks in this duration, which must be zero if
-     * unsupported.
-     * @param days amount of days in this duration, which must be zero if
-     * unsupported.
-     * @param hours amount of hours in this duration, which must be zero if
-     * unsupported.
-     * @param minutes amount of minutes in this duration, which must be zero if
-     * unsupported.
-     * @param seconds amount of seconds in this duration, which must be zero if
-     * unsupported.
-     * @param millis amount of milliseconds in this duration, which must be
-     * zero if unsupported.
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param years  amount of years in this duration, which must be zero if unsupported
+     * @param months  amount of months in this duration, which must be zero if unsupported
+     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
+     * @param days  amount of days in this duration, which must be zero if unsupported
+     * @param hours  amount of hours in this duration, which must be zero if unsupported
+     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
+     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void setDuration(int years, int months, int weeks, int days,
                                int hours, int minutes, int seconds, int millis) {
@@ -832,28 +778,28 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         }
 
         if (years != 0) {
-            checkSupport(type.years(), "years");
+            checkArgument(type.years(), "years");
         }
         if (months != 0) {
-            checkSupport(type.months(), "months");
+            checkArgument(type.months(), "months");
         }
         if (weeks != 0) {
-            checkSupport(type.weeks(), "weeks");
+            checkArgument(type.weeks(), "weeks");
         }
         if (days != 0) {
-            checkSupport(type.days(), "days");
+            checkArgument(type.days(), "days");
         }
         if (hours != 0) {
-            checkSupport(type.hours(), "hours");
+            checkArgument(type.hours(), "hours");
         }
         if (minutes != 0) {
-            checkSupport(type.minutes(), "minutes");
+            checkArgument(type.minutes(), "minutes");
         }
         if (seconds != 0) {
-            checkSupport(type.seconds(), "seconds");
+            checkArgument(type.seconds(), "seconds");
         }
         if (millis != 0) {
-            checkSupport(type.millis(), "millis");
+            checkArgument(type.millis(), "millis");
         }
 
         iYears = years;
@@ -875,8 +821,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * empty implementation that is protected and final. This also ensures that
      * all lower subclasses are also immutable.
      * 
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @throws IllegalArgumentException if the type is null
      */
     protected void setTotalMillis(long startInstant, long endInstant) {
         setTotalMillis(iType, startInstant, endInstant);
@@ -885,77 +832,72 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     /**
      * This method is private to prevent subclasses from overriding.
      *
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @throws IllegalArgumentException if the type is null
      */
     private void setTotalMillis(DurationType type, long startInstant, long endInstant) {
         if (type == null) {
             throw new IllegalArgumentException("The type must not be null");
         }
-
-        iTotalMillis = endInstant - startInstant;
-
-        boolean isPrecise = true;
-
+        
+        long baseTotalMillis = (endInstant - startInstant);
+        int years = 0, months = 0, weeks = 0, days = 0;
+        int hours = 0, minutes = 0, seconds = 0, millis = 0;
         DurationField field;
-
-        if (!(field = type.years()).isSupported()) {
-            iYears = 0;
-        } else if ((iYears = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iYears);
+        field = type.years();
+        if (field.isSupported()) {
+            years = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, years);
         }
-
-        if (!(field = type.months()).isSupported()) {
-            iMonths = 0;
-        } else if ((iMonths = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iMonths);
+        field = type.months();
+        if (field.isSupported()) {
+            months = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, months);
         }
-    
-        if (!(field = type.weeks()).isSupported()) {
-            iWeeks = 0;
-        } else if ((iWeeks = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iWeeks);
+        field = type.weeks();
+        if (field.isSupported()) {
+            weeks = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, weeks);
         }
-
-        if (!(field = type.days()).isSupported()) {
-            iDays = 0;
-        } else if ((iDays = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iDays);
+        field = type.days();
+        if (field.isSupported()) {
+            days = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, days);
         }
-
-        if (!(field = type.hours()).isSupported()) {
-            iHours = 0;
-        } else if ((iHours = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iHours);
+        field = type.hours();
+        if (field.isSupported()) {
+            hours = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, hours);
         }
-        
-        if (!(field = type.minutes()).isSupported()) {
-            iMinutes = 0;
-        } else if ((iMinutes = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iMinutes);
+        field = type.minutes();
+        if (field.isSupported()) {
+            minutes = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, minutes);
+        }
+        field = type.seconds();
+        if (field.isSupported()) {
+            seconds = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, seconds);
+        }
+        field = type.millis();
+        if (field.isSupported()) {
+            millis = field.getDifference(endInstant, startInstant);
+            startInstant = field.add(startInstant, millis);
         }
         
-        if (!(field = type.seconds()).isSupported()) {
-            iSeconds = 0;
-        } else if ((iSeconds = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iSeconds);
-        }
-
-        if (!(field = type.millis()).isSupported()) {
-            iMillis = 0;
-        } else if ((iMillis = field.getDifference(endInstant, startInstant)) != 0) {
-            isPrecise &= field.isPrecise();
-            startInstant = field.add(startInstant, iMillis);
-        }
-
-        iTotalMillisState = isPrecise ? 2 : 1;
+        // (end - start) is excess to be discarded
+        iTotalMillis = baseTotalMillis - (endInstant - startInstant);
+        iTotalMillisState = 2;
+        
+        iYears = years;
+        iMonths = months;
+        iWeeks = weeks;
+        iDays = days;
+        iHours = hours;
+        iMinutes = minutes;
+        iSeconds = seconds;
+        iMillis = millis;
     }
 
     /**
@@ -968,7 +910,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param duration  the duration, in milliseconds
-     * @throws UnsupportedOperationException if any fields are imprecise
+     * @throws IllegalArgumentException if the type is null
      */
     protected void setTotalMillis(long duration) {
         setTotalMillis(iType, duration);
@@ -978,13 +920,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * This method is private to prevent subclasses from overriding.
      *
      * @param duration  the duration, in milliseconds
-     * @throws UnsupportedOperationException if any fields are imprecise
+     * @throws IllegalArgumentException if the type is null
      */
     private void setTotalMillis(DurationType type, final long duration) {
         if (type == null) {
             throw new IllegalArgumentException("The type must not be null");
         }
-
+        
         if (duration == 0) {
             iTotalMillis = duration;
             iTotalMillisState = 2;
@@ -1000,79 +942,57 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
 
             return;
         }
-
+        
         long startInstant = 0;
-
-        int years, months, weeks, days, hours, minutes, seconds, millis;
+        int years = 0, months = 0, weeks = 0, days = 0;
+        int hours = 0, minutes = 0, seconds = 0, millis = 0;
         DurationField field;
-
-        if (!(field = type.years()).isSupported()) {
-            years = 0;
-        } else {
-            checkPrecise(field, "years");
+        
+        field = type.years();
+        if (field.isSupported() && field.isPrecise()) {
             years = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, years);
         }
-
-        if (!(field = type.months()).isSupported()) {
-            months = 0;
-        } else {
-            checkPrecise(field, "months");
+        field = type.months();
+        if (field.isSupported() && field.isPrecise()) {
             months = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, months);
         }
-
-        if (!(field = type.weeks()).isSupported()) {
-            weeks = 0;
-        } else {
-            checkPrecise(field, "weeks");
+        field = type.weeks();
+        if (field.isSupported() && field.isPrecise()) {
             weeks = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, weeks);
         }
-
-        if (!(field = type.days()).isSupported()) {
-            days = 0;
-        } else {
-            checkPrecise(field, "days");
+        field = type.days();
+        if (field.isSupported() && field.isPrecise()) {
             days = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, days);
         }
-
-        if (!(field = type.hours()).isSupported()) {
-            hours = 0;
-        } else {
-            checkPrecise(field, "hours");
+        field = type.hours();
+        if (field.isSupported() && field.isPrecise()) {
             hours = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, hours);
         }
-
-        if (!(field = type.minutes()).isSupported()) {
-            minutes = 0;
-        } else {
-            checkPrecise(field, "minutes");
+        field = type.minutes();
+        if (field.isSupported() && field.isPrecise()) {
             minutes = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, minutes);
         }
-
-        if (!(field = type.seconds()).isSupported()) {
-            seconds = 0;
-        } else {
-            checkPrecise(field, "seconds");
+        field = type.seconds();
+        if (field.isSupported() && field.isPrecise()) {
             seconds = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, seconds);
         }
-
-        if (!(field = type.millis()).isSupported()) {
-            millis = 0;
-        } else {
-            checkPrecise(field, "millis");
+        field = type.millis();
+        if (field.isSupported() && field.isPrecise()) {
             millis = field.getDifference(duration, startInstant);
             startInstant = field.add(startInstant, millis);
         }
-
-        iTotalMillis = duration;
+        
+        // (end - start) is excess to be discarded
+        iTotalMillis = duration - (duration - startInstant);
         iTotalMillisState = 2;
-
+        
         iYears = years;
         iMonths = months;
         iWeeks = weeks;
@@ -1082,7 +1002,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         iSeconds = seconds;
         iMillis = millis;
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Adds a millisecond duration to this one. As a side-effect, all field

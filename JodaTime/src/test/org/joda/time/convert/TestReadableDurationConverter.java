@@ -120,26 +120,26 @@ public class TestReadableDurationConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetDurationMillis_Object() throws Exception {
-        assertEquals(123L, ReadableDurationConverter.INSTANCE.getDurationMillis(new Duration(DurationType.getMillisType(), 123L)));
+        assertEquals(123L, ReadableDurationConverter.INSTANCE.getDurationMillis(new Duration(123L)));
         try {
-            ReadableDurationConverter.INSTANCE.getDurationMillis(new Duration(DurationType.getYearMonthType(), 1, 2, 0, 1, 0, 0, 0, 0));
+            ReadableDurationConverter.INSTANCE.getDurationMillis(new Duration(1, 2, 0, 1, 0, 0, 0, 0));
             fail();
         } catch (IllegalStateException ex) {}
     }
 
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getMillisType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(DurationType.getMillisType(), 123L)));
-        assertEquals(DurationType.getYearMonthType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(DurationType.getYearMonthType(), 1, 2, 0, 1, 0, 0, 0, 0)));
+        assertEquals(DurationType.getMillisType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L)));
+        assertEquals(DurationType.getAllType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(1, 2, 0, 1, 0, 0, 0, 0)));
     }
 
     public void testIsPrecise_Object() throws Exception {
-        assertEquals(true, ReadableDurationConverter.INSTANCE.isPrecise(new Duration(DurationType.getMillisType(), 123L)));
-        assertEquals(false, ReadableDurationConverter.INSTANCE.isPrecise(new Duration(DurationType.getYearMonthType(), 1, 2, 0, 1, 0, 0, 0, 0)));
+        assertEquals(true, ReadableDurationConverter.INSTANCE.isPrecise(new Duration(123L)));
+        assertEquals(false, ReadableDurationConverter.INSTANCE.isPrecise(new Duration(1, 2, 0, 1, 0, 0, 0, 0)));
     }
 
     public void testSetInto_Object() throws Exception {
         MutableDuration m = new MutableDuration(DurationType.getYearMonthType());
-        ReadableDurationConverter.INSTANCE.setInto(m, new Duration(DurationType.getYearMonthType(), 1, 2, 0, 3, 0, 0, 0, 0));
+        ReadableDurationConverter.INSTANCE.setInto(m, new Duration(1, 2, 0, 3, 0, 0, 0, 0));
         assertEquals(1, m.getYears());
         assertEquals(2, m.getMonths());
         assertEquals(0, m.getWeeks());

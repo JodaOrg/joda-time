@@ -84,13 +84,14 @@ public class ISODurationFormat {
     }
 
     /**
-     * PyYmMwWdDThHmMsS
+     * The standard ISO format - PyYmMwWdDThHmMsS.
+     * Milliseconds are not output.
      */
     public DurationFormatter standard() {
         if (iStandard == null) {
             iStandard = new DurationFormatterBuilder()
                 .appendLiteral("P")
-                .printZeroIfSupported()
+                .printZeroRarely()
                 .appendYears()
                 .appendSuffix("Y")
                 .appendMonths()

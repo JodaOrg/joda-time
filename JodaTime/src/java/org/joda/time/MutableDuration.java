@@ -55,9 +55,6 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.convert.DurationConverter;
-import org.joda.time.convert.ConverterManager;
-
 /**
  * Standard mutable duration implementation.
  * <p>
@@ -75,134 +72,169 @@ public class MutableDuration extends AbstractDuration
     static final long serialVersionUID = 3436451121567212165L;
 
     /**
-     * Copies another duration to this one.
-     *
-     * @param duration duration to copy
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * Creates a zero length millisecond duration using MillisType.
+     * MillisType using ISOChronology in UTC is a precise duration type.
      */
-    public MutableDuration(ReadableDuration duration) {
-        super(duration);
-    }
-
-    /**
-     * Copies another duration to this one.
-     *
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
-     */
-    public MutableDuration(Object duration) {
-        super(duration);
+    public MutableDuration() {
+        super((DurationType) null);
     }
 
     /**
      * Creates a zero length duration.
      *
-     * @param type determines which set of fields this duration supports
-     * @throws IllegalArgumentException if type is null
+     * @param type  which set of fields this duration supports, null means MillisType
      */
     public MutableDuration(DurationType type) {
         super(type);
     }
 
     /**
-     * Copies another duration to this one.
+     * Creates a duration from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param type use a different DurationType
-     * @param duration duration to copy
-     * @throws IllegalArgumentException if type or duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param duration  duration to convert
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(DurationType type, ReadableDuration duration) {
-        super(type, duration);
+    public MutableDuration(Object duration) {
+        super(duration, null);
     }
 
     /**
-     * Copies another duration to this one.
+     * Creates a duration from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param type use a different DurationType
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if type or duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param duration  duration to convert
+     * @param type  which set of fields this duration supports, null means use converter
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(DurationType type, Object duration) {
-        super(type, duration);
+    public MutableDuration(Object duration, DurationType type) {
+        super(duration, type);
+    }
+
+    /**
+     * Create a duration from a set of field values using DayHourType.
+     * DayHourType using ISOChronology in UTC is a precise duration type.
+     *
+     * @param days  amount of days in this duration
+     * @param hours  amount of hours in this duration
+     * @param minutes  amount of minutes in this duration
+     * @param seconds  amount of seconds in this duration
+     * @param millis  amount of milliseconds in this duration
+     */
+    public MutableDuration(int days, int hours, int minutes, int seconds, int millis) {
+        super(0, 0, 0, days, hours, minutes, seconds, millis, DurationType.getDayHourType());
+    }
+
+    /**
+     * Create a duration from a set of field values using AllType.
+     * AllType using ISOChronology in UTC is an imprecise duration type
+     * unless the year, month and week fields are zero.
+     *
+     * @param years  amount of years in this duration, which must be zero if unsupported
+     * @param months  amount of months in this duration, which must be zero if unsupported
+     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
+     * @param days  amount of days in this duration, which must be zero if unsupported
+     * @param hours  amount of hours in this duration, which must be zero if unsupported
+     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
+     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     */
+    public MutableDuration(int years, int months, int weeks, int days,
+                    int hours, int minutes, int seconds, int millis) {
+        super(years, months, weeks, days, hours, minutes, seconds, millis, null);
     }
 
     /**
      * Create a duration from a set of field values.
      *
-     * @param type determines which set of fields this duration supports
-     * @param years amount of years in this duration, which must be zero if
-     * unsupported.
-     * @param months amount of months in this duration, which must be zero if
-     * unsupported.
-     * @param weeks amount of weeks in this duration, which must be zero if
-     * unsupported.
-     * @param days amount of days in this duration, which must be zero if
-     * unsupported.
-     * @param hours amount of hours in this duration, which must be zero if
-     * unsupported.
-     * @param minutes amount of minutes in this duration, which must be zero if
-     * unsupported.
-     * @param seconds amount of seconds in this duration, which must be zero if
-     * unsupported.
-     * @param millis amount of milliseconds in this duration, which must be
-     * zero if unsupported.
-     * @throws IllegalArgumentException if type is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param years  amount of years in this duration, which must be zero if unsupported
+     * @param months  amount of months in this duration, which must be zero if unsupported
+     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
+     * @param days  amount of days in this duration, which must be zero if unsupported
+     * @param hours  amount of hours in this duration, which must be zero if unsupported
+     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
+     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @param type  which set of fields this duration supports, null means AllType
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(DurationType type,
-                           int years, int months, int weeks, int days,
-                           int hours, int minutes, int seconds, int millis) {
-        super(type, years, months, weeks, days, hours, minutes, seconds, millis);
+    public MutableDuration(int years, int months, int weeks, int days,
+                    int hours, int minutes, int seconds, int millis, DurationType type) {
+        super(years, months, weeks, days, hours, minutes, seconds, millis, type);
+    }
+
+    /**
+     * Creates a duration from the given interval endpoints using AllType.
+     * AllType using ISOChronology in UTC is an imprecise duration type
+     * unless the year, month and week fields are zero.
+     *
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     */
+    public MutableDuration(long startInstant, long endInstant) {
+        super(startInstant, endInstant, null);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param type determines which set of fields this duration supports
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
-     * @throws IllegalArgumentException if type is null
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param type  which set of fields this duration supports, null means AllType
      */
-    public MutableDuration(DurationType type, long startInstant, long endInstant) {
-        super(type, startInstant, endInstant);
+    public MutableDuration(long startInstant, long endInstant, DurationType type) {
+        super(startInstant, endInstant, type);
+    }
+
+    /**
+     * Creates a duration from the given interval endpoints using AllType.
+     * AllType using ISOChronology in UTC is an imprecise duration type
+     * unless the year, month and week fields are zero.
+     *
+     * @param startInstant  interval start, null means now
+     * @param endInstant  interval end, null means now
+     */
+    public MutableDuration(ReadableInstant startInstant, ReadableInstant endInstant) {
+        super(startInstant, endInstant, null);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param type determines which set of fields this duration supports
-     * @param startInstant interval start
-     * @param endInstant interval end
-     * @throws IllegalArgumentException if type is null
+     * @param startInstant  interval start, null means now
+     * @param endInstant  interval end, null means now
+     * @param type  which set of fields this duration supports, null means AllType
      */
-    public MutableDuration(DurationType type,
-                           ReadableInstant startInstant, ReadableInstant endInstant) {
-        super(type, startInstant, endInstant);
+    public MutableDuration(
+            ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+        super(startInstant, endInstant, type);
     }
 
     /**
-     * Creates a duration from the given millisecond duration. If any supported
-     * fields are imprecise, an UnsupportedOperationException is thrown. The
-     * exception to this is when the specified duration is zero.
+     * Creates a duration from the given millisecond duration using MillisType.
+     * MillisType using ISOChronology in UTC is a precise duration type.
      *
-     * @param type determines which set of fields this duration supports
      * @param duration  the duration, in milliseconds
-     * @throws IllegalArgumentException if type or duration is null
+     */
+    public MutableDuration(long duration) {
+        super(duration, null);
+    }
+
+    /**
+     * Creates a duration from the given millisecond duration.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this duration supports
      * @throws UnsupportedOperationException if any fields are imprecise
      */
-    public MutableDuration(DurationType type, long duration) {
-        super(type, duration);
+    public MutableDuration(long duration, DurationType type) {
+        super(duration, type);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets all the fields in one go from another ReadableDuration.
      * 
@@ -218,22 +250,14 @@ public class MutableDuration extends AbstractDuration
     /**
      * Sets all the fields in one go.
      * 
-     * @param years amount of years in this duration, which must be zero if
-     * unsupported.
-     * @param months amount of months in this duration, which must be zero if
-     * unsupported.
-     * @param weeks amount of weeks in this duration, which must be zero if
-     * unsupported.
-     * @param days amount of days in this duration, which must be zero if
-     * unsupported.
-     * @param hours amount of hours in this duration, which must be zero if
-     * unsupported.
-     * @param minutes amount of minutes in this duration, which must be zero if
-     * unsupported.
-     * @param seconds amount of seconds in this duration, which must be zero if
-     * unsupported.
-     * @param millis amount of milliseconds in this duration, which must be
-     * zero if unsupported.
+     * @param years  amount of years in this duration, which must be zero if unsupported
+     * @param months  amount of months in this duration, which must be zero if unsupported
+     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
+     * @param days  amount of days in this duration, which must be zero if unsupported
+     * @param hours  amount of hours in this duration, which must be zero if unsupported
+     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
+     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */

@@ -313,12 +313,12 @@ public abstract class AbstractInterval implements ReadableInterval {
         Duration duration = iDuration;
         if (duration == null) {
             if (type.isPrecise()) {
-                duration = new Duration(type, getEndMillis() - getStartMillis());
+                duration = new Duration(getEndMillis() - getStartMillis(), type);
                 if (type.equals(DurationType.getAverageYearMonthType())) {
                     iDuration = duration;
                 }
             } else {
-                duration = new Duration(type, getStartInstant(), getEndInstant());
+                duration = new Duration(getStartInstant(), getEndInstant(), type);
             }
         }
         return duration;

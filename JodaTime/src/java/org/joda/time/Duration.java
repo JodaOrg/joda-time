@@ -60,6 +60,13 @@ import java.io.Serializable;
  * <p>
  * A duration can be divided into a number of fields, such as hours and seconds.
  * The way in which that divide occurs is controlled by the DurationType class.
+ * Commonly use types are MillisType, which assigns all values to the millis field,
+ * and AllType, which spreads values across all fields.
+ * <p>
+ * A duration has a concept of being <i>precise</i>.
+ * A precise duration is a fixed number of milliseconds long.
+ * Whether a particular duration instance is precise depends on the constructor
+ * used and the duration type specified.
  * <p>
  * Duration is thread-safe and immutable, provided that the DurationType is
  * as well. All standard DurationType classes supplied are thread-safe and
@@ -72,225 +79,254 @@ import java.io.Serializable;
  */
 public class Duration extends AbstractDuration implements ReadableDuration, Serializable {
 
-    static final long serialVersionUID = 741052353876488155L;
+    /** Constant representing zero millisecond duration */
+    public static final Duration ZERO = new Duration();
+
+    /** Serialization version */
+    private static final long serialVersionUID = 741052353876488155L;
 
     /**
-     * Copies another duration to this one.
-     *
-     * @param duration duration to copy
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * Creates a zero length millisecond duration using MillisType.
+     * This constructor creates a precise duration because
+     * MillisType in ISOChronology UTC is precise.
      */
-    public Duration(ReadableDuration duration) {
-        super(duration);
-    }
-
-    /**
-     * Copies another duration to this one.
-     *
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
-     */
-    public Duration(Object duration) {
-        super(duration);
+    public Duration() {
+        super((DurationType) null);
     }
 
     /**
      * Creates a zero length duration.
+     * This constructor creates a precise duration.
      *
-     * @param type determines which set of fields this duration supports
-     * @throws IllegalArgumentException if type is null
+     * @param type  which set of fields this duration supports, null means millis type
      */
     public Duration(DurationType type) {
         super(type);
     }
 
     /**
-     * Copies another duration to this one.
+     * Creates a duration from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param type use a different DurationType
-     * @param duration duration to copy
-     * @throws IllegalArgumentException if type or duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param duration  duration to convert
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public Duration(DurationType type, ReadableDuration duration) {
-        super(type, duration);
+    public Duration(Object duration) {
+        super(duration, null);
     }
 
     /**
-     * Copies another duration to this one.
+     * Creates a duration from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param type use a different DurationType
-     * @param duration duration to convert
-     * @throws IllegalArgumentException if type or duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param duration  duration to convert
+     * @param type  which set of fields this duration supports, null means use converter
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public Duration(DurationType type, Object duration) {
-        super(type, duration);
+    public Duration(Object duration, DurationType type) {
+        super(duration, type);
+    }
+
+    /**
+     * Create a duration from a set of field values using DayHourType.
+     * This constructor creates a precise duration because
+     * DayHourType in ISOChronology UTC is precise.
+     *
+     * @param days  amount of days in this duration
+     * @param hours  amount of hours in this duration
+     * @param minutes  amount of minutes in this duration
+     * @param seconds  amount of seconds in this duration
+     * @param millis  amount of milliseconds in this duration
+     */
+    public Duration(int days, int hours, int minutes, int seconds, int millis) {
+        super(0, 0, 0, days, hours, minutes, seconds, millis, DurationType.getDayHourType());
+    }
+
+    /**
+     * Create a duration from a set of field values using AllType.
+     * AllType using ISOChronology in UTC is an imprecise duration type
+     * unless the year, month and week fields are zero.
+     *
+     * @param years  amount of years in this duration
+     * @param months  amount of months in this duration
+     * @param weeks  amount of weeks in this duration
+     * @param days  amount of days in this duration
+     * @param hours  amount of hours in this duration
+     * @param minutes  amount of minutes in this duration
+     * @param seconds  amount of seconds in this duration
+     * @param millis  amount of milliseconds in this duration
+     */
+    public Duration(int years, int months, int weeks, int days,
+                    int hours, int minutes, int seconds, int millis) {
+        super(years, months, weeks, days, hours, minutes, seconds, millis, null);
     }
 
     /**
      * Create a duration from a set of field values.
      *
-     * @param type determines which set of fields this duration supports
-     * @param years amount of years in this duration, which must be zero if
-     * unsupported.
-     * @param months amount of months in this duration, which must be zero if
-     * unsupported.
-     * @param weeks amount of weeks in this duration, which must be zero if
-     * unsupported.
-     * @param days amount of days in this duration, which must be zero if
-     * unsupported.
-     * @param hours amount of hours in this duration, which must be zero if
-     * unsupported.
-     * @param minutes amount of minutes in this duration, which must be zero if
-     * unsupported.
-     * @param seconds amount of seconds in this duration, which must be zero if
-     * unsupported.
-     * @param millis amount of milliseconds in this duration, which must be
-     * zero if unsupported.
-     * @throws IllegalArgumentException if type is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param years  amount of years in this duration, which must be zero if unsupported
+     * @param months  amount of months in this duration, which must be zero if unsupported
+     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
+     * @param days  amount of days in this duration, which must be zero if unsupported
+     * @param hours  amount of hours in this duration, which must be zero if unsupported
+     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
+     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @param type  which set of fields this duration supports, null means AllType
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public Duration(DurationType type,
-                    int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis) {
-        super(type, years, months, weeks, days, hours, minutes, seconds, millis);
+    public Duration(int years, int months, int weeks, int days,
+                    int hours, int minutes, int seconds, int millis, DurationType type) {
+        super(years, months, weeks, days, hours, minutes, seconds, millis, type);
+    }
+
+    /**
+     * Creates a duration from the given interval endpoints using AllType.
+     * This constructor creates a precise duration.
+     *
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     */
+    public Duration(long startInstant, long endInstant) {
+        super(startInstant, endInstant, null);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
+     * This constructor creates a precise duration.
      *
-     * @param type determines which set of fields this duration supports
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
-     * @throws IllegalArgumentException if type is null
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param type  which set of fields this duration supports, null means AllType
      */
-    public Duration(DurationType type, long startInstant, long endInstant) {
-        super(type, startInstant, endInstant);
+    public Duration(long startInstant, long endInstant, DurationType type) {
+        super(startInstant, endInstant, type);
+    }
+
+    /**
+     * Creates a duration from the given interval endpoints using AllType.
+     * This constructor creates a precise duration.
+     *
+     * @param startInstant  interval start, null means now
+     * @param endInstant  interval end, null means now
+     */
+    public Duration(ReadableInstant startInstant, ReadableInstant endInstant) {
+        super(startInstant, endInstant, null);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
+     * This constructor creates a precise duration.
      *
-     * @param type determines which set of fields this duration supports
-     * @param startInstant interval start
-     * @param endInstant interval end
-     * @throws IllegalArgumentException if type is null
+     * @param startInstant  interval start, null means now
+     * @param endInstant  interval end, null means now
+     * @param type  which set of fields this duration supports, null means AllType
      */
-    public Duration(DurationType type,
-                    ReadableInstant startInstant, ReadableInstant endInstant) {
-        super(type, startInstant, endInstant);
+    public Duration(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+        super(startInstant, endInstant, type);
     }
 
     /**
-     * Creates a duration from the given millisecond duration. If any supported
-     * fields are imprecise, an UnsupportedOperationException is thrown. The
-     * exception to this is when the specified duration is zero.
+     * Creates a duration from the given millisecond duration using MillisType.
+     * This constructor creates a precise duration because
+     * MillisType in ISOChronology UTC is precise.
      *
-     * @param type determines which set of fields this duration supports
      * @param duration  the duration, in milliseconds
-     * @throws IllegalArgumentException if type is null
+     */
+    public Duration(long duration) {
+        super(duration, null);
+    }
+
+    /**
+     * Creates a duration from the given millisecond duration.
+     * This constructor creates a precise duration.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this duration supports
      * @throws UnsupportedOperationException if any fields are imprecise
      */
-    public Duration(DurationType type, long duration) {
-        super(type, duration);
+    public Duration(long duration, DurationType type) {
+        super(duration, type);
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setDuration(ReadableDuration duration) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setDuration(int years, int months, int weeks, int days,
                                      int hours, int minutes, int seconds, int millis) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setTotalMillis(long startInstant, long endInstant) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setTotalMillis(long duration) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void normalize() {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setYears(int years) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setMonths(int months) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setWeeks(int weeks) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setDays(int days) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setHours(int hours) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setMinutes(int minutes) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setSeconds(int seconds) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setMillis(int millis) {
     }

@@ -164,11 +164,7 @@ class StringConverter extends AbstractConverter
      * @throws ClassCastException if the object is invalid
      */
     public DurationType getDurationType(Object object) {
-        String str = (String) object;
-        if (str.indexOf('W') >= 0) {
-            return DurationType.getYearWeekType();
-        }
-        return DurationType.getYearMonthType();
+        return DurationType.getAllType();
     }
 
     /**

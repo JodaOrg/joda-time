@@ -321,8 +321,8 @@ public class TestStringConverter extends TestCase {
     }
 
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getYearMonthType(), StringConverter.INSTANCE.getDurationType("P2Y6M9D"));
-        assertEquals(DurationType.getYearWeekType(), StringConverter.INSTANCE.getDurationType("P2Y6W4D"));
+        assertEquals(DurationType.getAllType(), StringConverter.INSTANCE.getDurationType("P2Y6M9D"));
+        assertEquals(DurationType.getAllType(), StringConverter.INSTANCE.getDurationType("P2Y6W4D"));
     }
 
     public void testIsPrecise_Object() throws Exception {
@@ -350,7 +350,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
         
-        m = new MutableDuration(DurationType.getYearWeekType(), 1, 0, 1, 1, 1, 1, 1, 1);
+        m = new MutableDuration(1, 0, 1, 1, 1, 1, 1, 1, DurationType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3D");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());

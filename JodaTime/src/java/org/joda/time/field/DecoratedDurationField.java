@@ -56,13 +56,13 @@ package org.joda.time.field;
 import org.joda.time.DurationField;
 
 /**
- * <code>DecoratedDurationField</code> extends {@link AbstractDurationField},
+ * <code>DecoratedDurationField</code> extends {@link BaseDurationField},
  * implementing only the minimum required set of methods. These implemented
  * methods delegate to a wrapped field.
  * <p>
  * This design allows new DurationField types to be defined that piggyback on
  * top of another, inheriting all the safe method implementations from
- * AbstractDurationField. Should any method require pure delegation to the
+ * BaseDurationField. Should any method require pure delegation to the
  * wrapped field, simply override and use the provided getWrappedField method.
  * <p>
  * DecoratedDurationField is thread-safe and immutable, and its subclasses must

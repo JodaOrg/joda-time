@@ -252,8 +252,12 @@ public final class GJChronology extends AssembledChronology {
                  GregorianChronology.getInstance(zone, minDaysInFirstWeek),
                  cutoverInstant);
         } else {
-            chrono = getInstance(DateTimeZone.UTC, gregorianCutover, minDaysInFirstWeek);
-            chrono = new GJChronology(ZonedChronology.getInstance(chrono, zone));
+            chrono = getInstance(DateTimeZone.UTC, cutoverInstant, minDaysInFirstWeek);
+            chrono = new GJChronology
+                (ZonedChronology.getInstance(chrono, zone),
+                 chrono.iJulianChronology,
+                 chrono.iGregorianChronology,
+                 chrono.iCutoverInstant);
         }
 
         chronos.add(chrono);
@@ -303,8 +307,11 @@ public final class GJChronology extends AssembledChronology {
     /**
      * Called when applying a time zone.
      */
-    private GJChronology(Chronology base) {
-        super(base, null);
+    private GJChronology(Chronology base,
+                         JulianChronology julian,
+                         GregorianChronology gregorian,
+                         Instant cutoverInstant) {
+        super(base, new Object[] {julian, gregorian, cutoverInstant});
     }
 
     /**
@@ -434,11 +441,7 @@ public final class GJChronology extends AssembledChronology {
      * @return the cutover instant
      */
     public Instant getGregorianCutover() {
-        Instant cutover = iCutoverInstant;
-        if (cutover == null) {
-            iCutoverInstant = cutover = new Instant(iCutoverMillis);
-        }
-        return cutover;
+        return iCutoverInstant;
     }
 
     public final int getMinimumDaysInFirstWeek() {
@@ -477,10 +480,6 @@ public final class GJChronology extends AssembledChronology {
     }
 
     protected void assemble(Fields fields) {
-        if (getBase() != null) {
-            return;
-        }
-
         Object[] params = (Object[])getParam();
 
         JulianChronology julian = (JulianChronology)params[0];
@@ -488,13 +487,17 @@ public final class GJChronology extends AssembledChronology {
         Instant cutoverInstant = (Instant)params[2];
         iCutoverMillis = cutoverInstant.getMillis();
 
-        if (julian.getMinimumDaysInFirstWeek() != gregorian.getMinimumDaysInFirstWeek()) {
-            throw new IllegalArgumentException();
-        }
-
         iJulianChronology = julian;
         iGregorianChronology = gregorian;
         iCutoverInstant = cutoverInstant;
+
+        if (getBase() != null) {
+            return;
+        }
+
+        if (julian.getMinimumDaysInFirstWeek() != gregorian.getMinimumDaysInFirstWeek()) {
+            throw new IllegalArgumentException();
+        }
 
         // Compute difference between the chronologies at the cutover instant
         iGapDuration = iCutoverMillis - julianToGregorianByYear(iCutoverMillis);

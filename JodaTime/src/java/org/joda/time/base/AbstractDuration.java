@@ -89,7 +89,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * 
      * @return a Duration created using the millisecond duration from this instance
      */
-    public final Duration toDuration() {
+    public Duration toDuration() {
         if (this instanceof Duration) {
             return (Duration) this;
         }
@@ -123,7 +123,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * 
      * @return a Period created using the millisecond duration from this instance
      */
-    public final Period toPeriod() {
+    public Period toPeriod() {
         return new Period(getMillis());
     }
 
@@ -145,7 +145,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @param type  the period type determining how to split the duration into fields, null means All type
      * @return a Period created using the millisecond duration from this instance
      */
-    public final Period toPeriod(PeriodType type) {
+    public Period toPeriod(PeriodType type) {
         return new Period(getMillis(), type);
     }
 
@@ -158,7 +158,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the given object is not supported
      */
-    public final int compareTo(Object obj) {
+    public int compareTo(Object obj) {
         // Comparable contract means we cannot handle null or other types gracefully
         ReadableDuration thisDuration = (ReadableDuration) this;
         ReadableDuration otherDuration = (ReadableDuration) obj;
@@ -182,7 +182,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
      */
-    public final boolean isEqual(ReadableDuration duration) {
+    public boolean isEqual(ReadableDuration duration) {
         if (duration == null) {
             duration = Duration.ZERO;
         }
@@ -195,7 +195,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
      */
-    public final boolean isLongerThan(ReadableDuration duration) {
+    public boolean isLongerThan(ReadableDuration duration) {
         if (duration == null) {
             duration = Duration.ZERO;
         }
@@ -208,7 +208,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
      */
-    public final boolean isShorterThan(ReadableDuration duration) {
+    public boolean isShorterThan(ReadableDuration duration) {
         if (duration == null) {
             duration = Duration.ZERO;
         }
@@ -223,7 +223,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @param duration  a readable duration to check against
      * @return true if the length of the duration is equal
      */
-    public final boolean equals(Object duration) {
+    public boolean equals(Object duration) {
         if (this == duration) {
             return true;
         }
@@ -235,12 +235,12 @@ public abstract class AbstractDuration implements ReadableDuration {
     }
 
     /**
-     * Gets a hash code for the duration that is compatable with the 
+     * Gets a hash code for the duration that is compatible with the 
      * equals method.
      *
      * @return a hash code
      */
-    public final int hashCode() {
+    public int hashCode() {
         long len = getMillis();
         return (int) (len ^ (len >>> 32));
     }
@@ -257,7 +257,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      *
      * @return the value as an ISO8601 string
      */
-    public final String toString() {
+    public String toString() {
         return ISOPeriodFormat.getInstance().standard().print(toPeriod());
     }
 

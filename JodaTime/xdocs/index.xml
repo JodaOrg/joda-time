@@ -35,6 +35,8 @@ public boolean isBirthdayInLeapYear(<b>YearMonthDay</b> dateOfBirth) {
   return dateOfBirth.year().isLeap();
 }
 </source>
+Version 1.0 was released on 2005-02-22 -
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367">Download now</a>
 </p>
 </section>
 

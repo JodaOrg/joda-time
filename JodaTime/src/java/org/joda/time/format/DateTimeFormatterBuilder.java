@@ -1096,8 +1096,8 @@ public class DateTimeFormatterBuilder {
 
             int value;
             if (length >= 9) {
-                // Since value may exceed max, use stock parser which checks
-                // for this.
+                // Since value may exceed integer limits, use stock parser
+                // which checks for this.
                 value = Integer.parseInt
                     (text.substring(position, position += length));
             } else {
@@ -1762,7 +1762,7 @@ public class DateTimeFormatterBuilder {
                 }
 
                 if (expectSeparators) {
-                    if (text.charAt(position) != '.') {
+                    if (text.charAt(position) != '.' && text.charAt(position) != ',') {
                         break parse;
                     }
                     limit--;

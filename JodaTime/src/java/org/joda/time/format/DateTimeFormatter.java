@@ -427,7 +427,8 @@ public class DateTimeFormatter {
      * Parses a datetime from the given text, at the given position, saving the
      * result into the fields of the given ReadWritableInstant. If the parse
      * succeeds, the return value is the new text position. Note that the parse
-     * may succeed without fully reading the text.
+     * may succeed without fully reading the text and in this case those fields
+     * that were read will be set.
      * <p>
      * Only those fields present in the string will be changed in the specified
      * instant. All other fields will remain unaltered. Thus if the string only
@@ -463,18 +464,14 @@ public class DateTimeFormatter {
         chrono = selectChronology(chrono);
         
         DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono, iLocale);
-        int newPos = iParser.parseInto(bucket, text, 0);
-        if (newPos >= 0) {
-            if (newPos >= text.length()) {
-                instant.setMillis(bucket.computeMillis());
-                if (iOffsetParsed && bucket.getZone() == null) {
-                    int parsedOffset = bucket.getOffset();
-                    DateTimeZone parsedZone = DateTimeZone.getInstanceFixedMillis(parsedOffset);
-                    chrono = chrono.withZone(parsedZone);
-                }
-                instant.setChronology(chrono);
-            }
+        int newPos = iParser.parseInto(bucket, text, position);
+        instant.setMillis(bucket.computeMillis());
+        if (iOffsetParsed && bucket.getZone() == null) {
+            int parsedOffset = bucket.getOffset();
+            DateTimeZone parsedZone = DateTimeZone.getInstanceFixedMillis(parsedOffset);
+            chrono = chrono.withZone(parsedZone);
         }
+        instant.setChronology(chrono);
         return newPos;
     }
 

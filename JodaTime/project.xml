@@ -115,11 +115,6 @@
   </contributors>
 
   <dependencies>
-    <dependency>
-      <id>junit</id>
-      <groupId>junit</groupId>
-      <version>3.8.1</version>
-    </dependency>
   </dependencies>
 
   <build>

@@ -56,10 +56,16 @@
       <id>broneill</id>
       <email>broneill@users.sourceforge.net</email>
       <organization></organization>
+      <roles>
+        <role>Senior Developer</role>
+      </roles>
     </developer>
   </developers>
   
   <contributors>
+    <contributor>
+      <name>Guy Allard</name>
+    </contributor>
   </contributors>
 
   <dependencies>

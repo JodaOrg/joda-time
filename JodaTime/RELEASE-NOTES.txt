@@ -12,6 +12,8 @@ We sincerely apologise for this, and hope that now our tests are in place we sho
 not face similar issues again.
 Once we declare a 1.0 final release, we will support backwards compatability as fully as possible.
 
+We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+
 Key changes
 -----------
 

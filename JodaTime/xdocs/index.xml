@@ -86,6 +86,9 @@ Various documentation is available:
 is the current latest release.
 This release is a stable release that has extensive testing suites.
 As a result of these testing suites, the main API has been firmed up and is not intended to change beyond now.
+</p>
+<p>
+We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
 If there is no negative feedback to 0.98, then 1.0 should follow swiftly.
 When the final 1.0 release is made, our intention is to support the release as would be expected.
 </p>

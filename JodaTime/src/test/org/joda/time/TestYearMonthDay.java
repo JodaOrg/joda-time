@@ -458,6 +458,7 @@ public class TestYearMonthDay extends TestCase {
         assertSame(ISOChronology.getInstance().year(), fields[0]);
         assertSame(ISOChronology.getInstance().monthOfYear(), fields[1]);
         assertSame(ISOChronology.getInstance().dayOfMonth(), fields[2]);
+        assertNotSame(test.getFields(), test.getFields());
     }
 
     public void testGetValue() {
@@ -479,6 +480,7 @@ public class TestYearMonthDay extends TestCase {
         assertEquals(1970, values[0]);
         assertEquals(6, values[1]);
         assertEquals(9, values[2]);
+        assertNotSame(test.getValues(), test.getValues());
     }
 
     public void testIsSupported() {

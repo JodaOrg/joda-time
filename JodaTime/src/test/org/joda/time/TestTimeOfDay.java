@@ -644,6 +644,7 @@ public class TestTimeOfDay extends TestCase {
         assertSame(ISOChronology.getInstance().minuteOfHour(), fields[1]);
         assertSame(ISOChronology.getInstance().secondOfMinute(), fields[2]);
         assertSame(ISOChronology.getInstance().millisOfSecond(), fields[3]);
+        assertNotSame(test.getFields(), test.getFields());
     }
 
     public void testGetValue() {
@@ -667,6 +668,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(20, values[1]);
         assertEquals(30, values[2]);
         assertEquals(40, values[3]);
+        assertNotSame(test.getValues(), test.getValues());
     }
 
     public void testIsSupported() {

@@ -9,6 +9,28 @@ There have been a number of alpha/beta releases however.
 
 We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
 
+Incompatible changes since 0.98
+-------------------------------
+- ReadablePartial/YearMonthDay/TimeOfDay
+  - removed methods toDateTime(), toDateTime(DateTimeZone zone), as their meaning was confused.
+  On YearMonthDay, use toDateTimeAtCurrentTime() or toDateTimeAtMidnight().
+  On TimeOfDay, use toDateTimeToday().
+
+- DateTime/DateMidnight/MutableDateTime
+  - removed getReadableInstant() from the property classes
+  On DateTime.Property, use getDateTime().
+  On DateMidnight.Property, use getDateMidnight().
+  On MutableDateTime.Property, use getMutableDateTime().
+
+- ReadableInstant
+  - added method isSupported(DateTimeFieldType field)
+  Implemented in DateTime/DateMidnight/MutableDateTime 
+
+- YearMonthDay/TimeOfDay
+  - removed getReadablePartial() from the property classes
+  On YearMonthDay.Property, use getYearMonthDay().
+  On TimeOfDay.Property, use getTimeOfDay().
+
 
 Bug fixes since 0.98
 --------------------
@@ -32,18 +54,34 @@ Bug fixes since 0.98
 
 - Avoid NPE in property(DateTimeFieldType) methods
 
-New features since 0.98
+
+Enhancements since 0.98
 -----------------------
 
-- Added support to create periods from a duration and an end instant
+- YearMonthDay/TimeOfDay
+  - add toString variants that take a pattern
 
-- Periods can be converted to durations by end instant too
+- YearMonthDay/TimeOfDay
+  - add withField(), withFieldAdded(), withPeriodAdded(), plus() and minus()
 
-- Durations can be converted to periods by end instant too
+- DateTimeField
+  - Add methods getAsText(int, Locale) and getAsShortText(int, Locale) for simple access to text values
 
-- Durations can be converted to intervals by end instant too
+- Period
+  - Added support to create periods from a duration and an end instant
 
-- Restored formatting interfaces to provide same functionality as version 0.95
+- Period
+  - Periods can be converted to durations by end instant too
+
+- Duration
+  - Durations can be converted to periods by end instant too
+
+- Duration
+  - Durations can be converted to intervals by end instant too
+
+- Formatting package
+  - Restored formatting interfaces to provide same functionality as version 0.95
+
 
 Feedback
 --------

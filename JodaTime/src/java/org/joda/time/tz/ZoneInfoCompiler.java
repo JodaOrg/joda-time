@@ -102,7 +102,14 @@ public class ZoneInfoCompiler {
     static final DateTimeOfYear START_OF_YEAR = new DateTimeOfYear();
 
     /**
-     * Usage: java ZoneInfoCompiler [-d outputDirectory] sourceFile ...
+     * Launches the ZoneInfoCompiler tool.
+     *
+     * <pre>
+     * Usage: java org.joda.time.tz.ZoneInfoCompiler &lt;options&gt; &lt;source files&gt;");
+     * where possible options include:");
+     *   -src &lt;directory&gt;    Specify where to read source files");
+     *   -dst &lt;directory&gt;    Specify where to write generated files");
+     * </pre>
      */
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -110,18 +117,36 @@ public class ZoneInfoCompiler {
             return;
         }
 
-        String[] sources = args;
-        String outputDir = null;
+        File inputDir = null;
+        File outputDir = null;
 
-        if ("-d".equals(args[0])) {
-            if (args.length < 3) {
+        int i;
+        for (i=0; i<args.length; i++) {
+            try {
+                if ("-src".equals(args[i])) {
+                    inputDir = new File(args[++i]);
+                } else if ("-dst".equals(args[i])) {
+                    outputDir = new File(args[++i]);
+                } else if ("-?".equals(args[i])) {
+                    printUsage();
+                    return;
+                } else {
+                    break;
+                }
+            } catch (IndexOutOfBoundsException e) {
                 printUsage();
                 return;
             }
-            outputDir = args[1];
-            String[] newSources = new String[args.length - 2];
-            System.arraycopy(args, 2, newSources, 0, newSources.length);
-            sources = newSources;
+        }
+
+        if (i >= args.length) {
+            printUsage();
+            return;
+        }
+
+        File[] sources = new File[args.length - i];
+        for (int j=0; i<args.length; i++,j++) {
+            sources[j] = inputDir == null ? new File(args[i]) : new File(inputDir, args[i]);
         }
 
         ZoneInfoCompiler zic = new ZoneInfoCompiler();
@@ -129,8 +154,10 @@ public class ZoneInfoCompiler {
     }
 
     private static void printUsage() {
-        System.out.println
-            ("Usage: java ZoneInfoCompiler [-d outputDirectory] sourceFile ...");
+        System.out.println("Usage: java org.joda.time.tz.ZoneInfoCompiler <options> <source files>");
+        System.out.println("where possible options include:");
+        System.out.println("  -src <directory>    Specify where to read source files");
+        System.out.println("  -dst <directory>    Specify where to write generated files");
     }
 
     /**
@@ -367,9 +394,9 @@ public class ZoneInfoCompiler {
      * Returns a map of ids to DateTimeZones.
      *
      * @param outputDir optional directory to write compiled data files to
-     * @param sources optional list of source file paths to parse
+     * @param sources optional list of source files to parse
      */
-    public Map compile(String outputDir, String[] sources) throws IOException {
+    public Map compile(File outputDir, File[] sources) throws IOException {
         if (sources != null) {
             for (int i=0; i<sources.length; i++) {
                 BufferedReader in = new BufferedReader(new FileReader(sources[i]));
@@ -378,13 +405,11 @@ public class ZoneInfoCompiler {
             }
         }
 
-        File dir = null;
         if (outputDir != null) {
-            dir = new File(outputDir);
-            if (!dir.exists()) {
+            if (!outputDir.exists()) {
                 throw new IOException("Destination directory doesn't exist: " + outputDir);
             }
-            if (!dir.isDirectory()) {
+            if (!outputDir.isDirectory()) {
                 throw new IOException("Destination is not a directory: " + outputDir);
             }
         }
@@ -399,9 +424,9 @@ public class ZoneInfoCompiler {
             DateTimeZone tz = original;
             if (test(tz.getID(), tz)) {
                 map.put(tz.getID(), tz);
-                if (dir != null) {
+                if (outputDir != null) {
                     System.out.println("Writing " + tz.getID());
-                    File file = new File(dir, tz.getID());
+                    File file = new File(outputDir, tz.getID());
                     if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();
                     }
@@ -438,9 +463,9 @@ public class ZoneInfoCompiler {
             }
         }
 
-        if (dir != null) {
+        if (outputDir != null) {
             System.out.println("Writing ZoneInfoMap");
-            File file = new File(dir, "ZoneInfoMap");
+            File file = new File(outputDir, "ZoneInfoMap");
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }

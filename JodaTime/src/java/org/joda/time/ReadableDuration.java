@@ -58,6 +58,9 @@ package org.joda.time;
  * <p>
  * The implementation of this interface may be mutable or immutable. This
  * interface only gives access to retrieve data, never to change it.
+ * <p>
+ * Methods that are passed a duration as a parameter will treat <code>null</code>
+ * as a zero length duration.
  *
  * @see ReadableInterval
  * @see ReadablePeriod

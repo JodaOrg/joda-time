@@ -120,7 +120,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().era(), test.era().getField());
         assertEquals("era", test.era().getName());
         assertEquals("Property[era]", test.era().toString());
-        assertSame(test, test.era().getInstant());
+        assertSame(test, test.era().getReadableInstant());
         assertSame(test, test.era().getDateTime());
         assertEquals(1, test.era().get());
         assertEquals("AD", test.era().getAsText());
@@ -141,7 +141,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().yearOfEra(), test.yearOfEra().getField());
         assertEquals("yearOfEra", test.yearOfEra().getName());
         assertEquals("Property[yearOfEra]", test.yearOfEra().toString());
-        assertSame(test, test.yearOfEra().getInstant());
+        assertSame(test, test.yearOfEra().getReadableInstant());
         assertSame(test, test.yearOfEra().getDateTime());
         assertEquals(1972, test.yearOfEra().get());
         assertEquals("1972", test.yearOfEra().getAsText());
@@ -160,7 +160,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().centuryOfEra(), test.centuryOfEra().getField());
         assertEquals("centuryOfEra", test.centuryOfEra().getName());
         assertEquals("Property[centuryOfEra]", test.centuryOfEra().toString());
-        assertSame(test, test.centuryOfEra().getInstant());
+        assertSame(test, test.centuryOfEra().getReadableInstant());
         assertSame(test, test.centuryOfEra().getDateTime());
         assertEquals(19, test.centuryOfEra().get());
         assertEquals("19", test.centuryOfEra().getAsText());
@@ -179,7 +179,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().yearOfCentury(), test.yearOfCentury().getField());
         assertEquals("yearOfCentury", test.yearOfCentury().getName());
         assertEquals("Property[yearOfCentury]", test.yearOfCentury().toString());
-        assertSame(test, test.yearOfCentury().getInstant());
+        assertSame(test, test.yearOfCentury().getReadableInstant());
         assertSame(test, test.yearOfCentury().getDateTime());
         assertEquals(72, test.yearOfCentury().get());
         assertEquals("72", test.yearOfCentury().getAsText());
@@ -198,7 +198,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().year(), test.year().getField());
         assertEquals("year", test.year().getName());
         assertEquals("Property[year]", test.year().toString());
-        assertSame(test, test.year().getInstant());
+        assertSame(test, test.year().getReadableInstant());
         assertSame(test, test.year().getDateTime());
         assertEquals(1972, test.year().get());
         assertEquals("1972", test.year().getAsText());
@@ -296,7 +296,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
         assertEquals("monthOfYear", test.monthOfYear().getName());
         assertEquals("Property[monthOfYear]", test.monthOfYear().toString());
-        assertSame(test, test.monthOfYear().getInstant());
+        assertSame(test, test.monthOfYear().getReadableInstant());
         assertSame(test, test.monthOfYear().getDateTime());
         assertEquals(6, test.monthOfYear().get());
         assertEquals("June", test.monthOfYear().getAsText());
@@ -447,7 +447,7 @@ public class TestDateTime_Properties extends TestCase {
         assertSame(test.getChronology().dayOfMonth(), test.dayOfMonth().getField());
         assertEquals("dayOfMonth", test.dayOfMonth().getName());
         assertEquals("Property[dayOfMonth]", test.dayOfMonth().toString());
-        assertSame(test, test.dayOfMonth().getInstant());
+        assertSame(test, test.dayOfMonth().getReadableInstant());
         assertSame(test, test.dayOfMonth().getDateTime());
         assertEquals(9, test.dayOfMonth().get());
         assertEquals("9", test.dayOfMonth().getAsText());

@@ -115,7 +115,7 @@ public class ReadWritableInstantFieldProperty extends AbstractReadableInstantFie
      * 
      * @return the instant
      */
-    public ReadableInstant getInstant() {
+    public ReadableInstant getReadableInstant() {
         return iInstant;
     }
 

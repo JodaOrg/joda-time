@@ -124,7 +124,7 @@ public class DateTimeFieldProperty extends AbstractReadableInstantFieldProperty 
      * 
      * @return the instant
      */
-    public ReadableInstant getInstant() {
+    public ReadableInstant getReadableInstant() {
         return iInstant;
     }
 

@@ -107,7 +107,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * 
      * @return the instant
      */
-    public abstract ReadableInstant getInstant();
+    public abstract ReadableInstant getReadableInstant();
 
     //-----------------------------------------------------------------------
     /**
@@ -117,7 +117,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#get
      */
     public int get() {
-        return getField().get(getInstant().getMillis());
+        return getField().get(getReadableInstant().getMillis());
     }
 
     /**
@@ -128,7 +128,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#getAsText
      */
     public String getAsText(Locale locale) {
-        return getField().getAsText(getInstant().getMillis(), locale);
+        return getField().getAsText(getReadableInstant().getMillis(), locale);
     }
 
     /**
@@ -149,7 +149,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#getAsShortText
      */
     public String getAsShortText(Locale locale) {
-        return getField().getAsShortText(getInstant().getMillis(), locale);
+        return getField().getAsShortText(getReadableInstant().getMillis(), locale);
     }
 
     /**
@@ -177,7 +177,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        return getField().getDifference(getInstant().getMillis(), instant.getMillis());
+        return getField().getDifference(getReadableInstant().getMillis(), instant.getMillis());
     }
 
     /**
@@ -194,7 +194,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        return getField().getDifferenceAsLong(getInstant().getMillis(), instant.getMillis());
+        return getField().getDifferenceAsLong(getReadableInstant().getMillis(), instant.getMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -225,7 +225,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#isLeap
      */
     public boolean isLeap() {
-        return getField().isLeap(getInstant().getMillis());
+        return getField().isLeap(getReadableInstant().getMillis());
     }
 
     /**
@@ -235,7 +235,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#getLeapAmount
      */
     public int getLeapAmount() {
-        return getField().getLeapAmount(getInstant().getMillis());
+        return getField().getLeapAmount(getReadableInstant().getMillis());
     }
 
     /**
@@ -264,7 +264,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#getMinimumValue
      */
     public int getMinimumValue() {
-        return getField().getMinimumValue(getInstant().getMillis());
+        return getField().getMinimumValue(getReadableInstant().getMillis());
     }
 
     /**
@@ -284,7 +284,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#getMaximumValue
      */
     public int getMaximumValue() {
-        return getField().getMaximumValue(getInstant().getMillis());
+        return getField().getMaximumValue(getReadableInstant().getMillis());
     }
 
     /**
@@ -317,7 +317,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @return remainder duration, in milliseconds
      */
     public long remainder() {
-        return getField().remainder(getInstant().getMillis());
+        return getField().remainder(getReadableInstant().getMillis());
     }
 
     //-----------------------------------------------------------------------

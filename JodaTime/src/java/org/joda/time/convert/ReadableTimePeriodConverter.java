@@ -64,7 +64,8 @@ import org.joda.time.ReadableTimePeriod;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class ReadableTimePeriodConverter extends AbstractConverter implements TimePeriodConverter {
+class ReadableTimePeriodConverter extends AbstractConverter
+        implements TimePeriodConverter, DurationConverter {
 
     /**
      * Singleton instance.
@@ -76,6 +77,20 @@ class ReadableTimePeriodConverter extends AbstractConverter implements TimePerio
      */
     protected ReadableTimePeriodConverter() {
         super();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Extracts the millis from an object of this convertor's type.
+     * 
+     * @param object  the object to convert, must not be null
+     * @return the millisecond value
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
+     * @throws IllegalArgumentException if the object is invalid
+     */
+    public long getDurationMillis(Object object) {
+        return ((ReadableTimePeriod) object).toDurationMillis();
     }
 
     //-----------------------------------------------------------------------
@@ -104,7 +119,15 @@ class ReadableTimePeriodConverter extends AbstractConverter implements TimePerio
      * @throws ClassCastException if the object is an invalid type
      */
     public DurationType getDurationType(Object object, boolean precise) {
-        return DurationType.getPreciseAllType();
+        ReadableTimePeriod period = (ReadableTimePeriod) object;
+        if (precise) {
+            if (period.getDurationType().isPrecise()) {
+                return period.getDurationType();
+            } else {
+                return DurationType.getPreciseAllType();
+            }
+        }
+        return period.getDurationType();
     }
 
     //-----------------------------------------------------------------------

@@ -53,6 +53,8 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.DurationType;
+import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.ReadableDuration;
 
 /**
@@ -62,7 +64,8 @@ import org.joda.time.ReadableDuration;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class ReadableDurationConverter extends AbstractConverter implements DurationConverter {
+class ReadableDurationConverter extends AbstractConverter
+        implements DurationConverter, TimePeriodConverter {
 
     /**
      * Singleton instance.
@@ -88,6 +91,35 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      */
     public long getDurationMillis(Object object) {
         return ((ReadableDuration) object).getMillis();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritableDuration.
+     *
+     * @param duration duration to get modified
+     * @param object  the object to convert, must not be null
+     * @return the millisecond duration
+     * @throws NullPointerException if the duration or object is null
+     * @throws ClassCastException if the object is an invalid type
+     * @throws IllegalArgumentException if the object is invalid
+     */
+    public void setInto(ReadWritableTimePeriod duration, Object object) {
+        duration.setTimePeriod((ReadableDuration) object);
+    }
+
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @param precise  true if a precise type is required
+     * @return the duration type from the readable duration
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
+     */
+    public DurationType getDurationType(Object object, boolean precise) {
+        return DurationType.getPreciseAllType();
     }
 
     //-----------------------------------------------------------------------

@@ -72,12 +72,12 @@ final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
 
     private static final long serialVersionUID = -1587436826395135328L;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJWeekOfWeekyearDateTimeField(AbstractGJChronology chronology, DurationField weeks) {
+    GJWeekOfWeekyearDateTimeField(BaseGJChronology chronology, DurationField weeks) {
         super("weekOfWeekyear", weeks);
         iChronology = chronology;
     }

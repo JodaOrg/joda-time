@@ -55,14 +55,14 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.AbstractChronology;
+import org.joda.time.chrono.BaseChronology;
 
 /**
  * A basic mock testing class for an unknown calendar.
  *
  * @author Stephen Colebourne
  */
-class MockBadChronology extends AbstractChronology {
+class MockBadChronology extends BaseChronology {
     
     MockBadChronology() {
         super();

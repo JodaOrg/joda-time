@@ -74,12 +74,12 @@ final class GJEraDateTimeField extends BaseDateTimeField {
     /** Serialization version */
     private static final long serialVersionUID = 4240986525305515528L;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJEraDateTimeField(AbstractGJChronology chronology) {
+    GJEraDateTimeField(BaseGJChronology chronology) {
         super("era");
         iChronology = chronology;
     }

@@ -57,7 +57,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
-import org.joda.time.chrono.AbstractChronology;
+import org.joda.time.chrono.BaseChronology;
 
 /**
  * A reference Gregorian/Julian chronology implementation, intended for testing
@@ -82,7 +82,7 @@ import org.joda.time.chrono.AbstractChronology;
  *
  * @author Brian S O'Neill
  */
-abstract class TestGJChronology extends AbstractChronology {
+abstract class TestGJChronology extends BaseChronology {
     static final long MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
 
     /**

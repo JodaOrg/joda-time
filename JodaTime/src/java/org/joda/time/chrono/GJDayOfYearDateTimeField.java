@@ -70,12 +70,12 @@ final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
 
     private static final long serialVersionUID = -6821236822336841037L;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJDayOfYearDateTimeField(AbstractGJChronology chronology, DurationField days) {
+    GJDayOfYearDateTimeField(BaseGJChronology chronology, DurationField days) {
         super("dayOfYear", days);
         iChronology = chronology;
     }

@@ -66,12 +66,12 @@ final class CopticMonthOfYearDateTimeField extends PreciseDurationDateTimeField 
 
     private static final long serialVersionUID = 7741038885247700323L;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    CopticMonthOfYearDateTimeField(AbstractGJChronology chronology, DurationField months) {
+    CopticMonthOfYearDateTimeField(BaseGJChronology chronology, DurationField months) {
         super("monthOfYear", months);
         iChronology = chronology;
     }

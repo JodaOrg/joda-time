@@ -77,12 +77,12 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     private static final int MIN = DateTimeConstants.JANUARY;
     private static final int MAX = DateTimeConstants.DECEMBER;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJMonthOfYearDateTimeField(AbstractGJChronology chronology) {
+    GJMonthOfYearDateTimeField(BaseGJChronology chronology) {
         super("monthOfYear", "months", chronology.getAverageMillisPerMonth());
         iChronology = chronology;
     }

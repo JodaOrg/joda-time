@@ -82,7 +82,7 @@ import org.joda.time.field.PreciseDurationField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class CopticChronology extends AbstractGJChronology {
+public final class CopticChronology extends BaseGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -5972804258688333942L;

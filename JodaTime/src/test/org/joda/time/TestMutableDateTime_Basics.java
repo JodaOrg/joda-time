@@ -67,7 +67,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInstant;
-import org.joda.time.chrono.AbstractChronology;
+import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -264,7 +264,7 @@ public class TestMutableDateTime_Basics extends TestCase {
         }
     }
 
-    class MockEqualsChronology extends AbstractChronology {
+    class MockEqualsChronology extends BaseChronology {
         public boolean equals(Object obj) {
             return obj instanceof MockEqualsChronology;
         }

@@ -85,7 +85,7 @@ import org.joda.time.field.FieldUtils;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class JulianChronology extends AbstractGJChronology {
+public final class JulianChronology extends BaseGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -8731039522547897247L;
@@ -299,10 +299,10 @@ public final class JulianChronology extends AbstractGJChronology {
     static class NoYearZeroField extends DelegatedDateTimeField {
         private static final long serialVersionUID = -8869148464118507846L;
 
-        final AbstractGJChronology iChronology;
+        final BaseGJChronology iChronology;
         private transient int iMinYear;
 
-        NoYearZeroField(AbstractGJChronology chronology, DateTimeField field) {
+        NoYearZeroField(BaseGJChronology chronology, DateTimeField field) {
             super(field);
             iChronology = chronology;
             int min = super.getMinimumValue();
@@ -340,7 +340,7 @@ public final class JulianChronology extends AbstractGJChronology {
     static class NoWeekyearZeroField extends NoYearZeroField {
         private static final long serialVersionUID = -5013429014495501104L;
 
-        NoWeekyearZeroField(AbstractGJChronology chronology, DateTimeField field) {
+        NoWeekyearZeroField(BaseGJChronology chronology, DateTimeField field) {
             super(chronology, field);
         }
         

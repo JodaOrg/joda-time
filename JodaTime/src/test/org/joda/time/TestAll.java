@@ -72,6 +72,8 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
+        suite.addTest(TestChronology.suite());
+        
         suite.addTest(TestInstant_Constructors.suite());
         suite.addTest(TestInstant_Basics.suite());
         

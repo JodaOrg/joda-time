@@ -53,6 +53,9 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * Chronology provides access to the individual date time fields for a
  * chronological calendar system. Various chronologies are supported by
@@ -76,15 +79,112 @@ package org.joda.time;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public interface Chronology {
-    
+public abstract class Chronology {
+
+    /**
+     * Gets an instance of the ISOChronology in the default zone.
+     * <p>
+     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
+     * This chronology is the default, and is suitable for all normal datetime processing.
+     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
+     * as it applies the modern Gregorian calendar rules before that date.
+     *
+     * @return the ISO chronology
+     */
+    public static Chronology getISO() {
+        return ISOChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the ISOChronology in the UTC zone.
+     * <p>
+     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
+     * This chronology is the default, and is suitable for all normal datetime processing.
+     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
+     * as it applies the modern Gregorian calendar rules before that date.
+     *
+     * @return the ISO chronology
+     */
+    public static Chronology getISOUTC() {
+        return ISOChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the ISOChronology in the specified zone.
+     * <p>
+     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
+     * This chronology is the default, and is suitable for all normal datetime processing.
+     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
+     * as it applies the modern Gregorian calendar rules before that date.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the ISO chronology
+     */
+    public static Chronology getISO(DateTimeZone zone) {
+        return ISOChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets an instance of the GJChronology in the default zone.
+     * <p>
+     * {@link GJChronology} defines all fields using standard meanings.
+     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
+     * The Gregorian calendar system is used after October 15, 1582, while the
+     * Julian calendar system is used before.
+     * <p>
+     * When dealing solely with dates in the modern era, from 1600 onwards,
+     * we recommend using ISOChronology, which is the default.
+     *
+     * @return the GJ chronology
+     */
+    public static Chronology getGJ() {
+        return GJChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the GJChronology in the UTC zone.
+     * <p>
+     * {@link GJChronology} defines all fields using standard meanings.
+     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
+     * The Gregorian calendar system is used after October 15, 1582, while the
+     * Julian calendar system is used before.
+     * <p>
+     * When dealing solely with dates in the modern era, from 1600 onwards,
+     * we recommend using ISOChronology, which is the default.
+     *
+     * @return the GJ chronology
+     */
+    public static Chronology getGJUTC() {
+        return GJChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the GJChronology in the specified zone.
+     * <p>
+     * {@link GJChronology} defines all fields using standard meanings.
+     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
+     * The Gregorian calendar system is used after October 15, 1582, while the
+     * Julian calendar system is used before.
+     * <p>
+     * When dealing solely with dates in the modern era, from 1600 onwards,
+     * we recommend using ISOChronology, which is the default.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the GJ chronology
+     */
+    public static Chronology getGJ(DateTimeZone zone) {
+        return GJChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Returns the DateTimeZone that this Chronology operates in, or null if
      * unspecified.
      *
      * @return DateTimeZone null if unspecified
      */
-    DateTimeZone getZone();
+    public abstract DateTimeZone getZone();
 
     /**
      * Returns an instance of this Chronology that operates in the UTC time
@@ -93,7 +193,7 @@ public interface Chronology {
      *
      * @return a version of this chronology that ignores time zones
      */
-    Chronology withUTC();
+    public abstract Chronology withUTC();
     
     /**
      * Returns an instance of this Chronology that operates in any time zone.
@@ -102,7 +202,7 @@ public interface Chronology {
      * @param zone to use, or default if null
      * @see org.joda.time.chrono.ZonedChronology
      */
-    Chronology withZone(DateTimeZone zone);
+    public abstract Chronology withZone(DateTimeZone zone);
 
     /**
      * Returns a datetime millisecond instant, formed from the given year,
@@ -119,7 +219,7 @@ public interface Chronology {
      * @param millisOfDay millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay)
+    public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay)
         throws IllegalArgumentException;
 
     /**
@@ -141,7 +241,7 @@ public interface Chronology {
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+    public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                            int hourOfDay, int minuteOfHour,
                            int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException;
@@ -163,7 +263,7 @@ public interface Chronology {
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    long getDateTimeMillis(long instant,
+    public abstract long getDateTimeMillis(long instant,
                            int hourOfDay, int minuteOfHour,
                            int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException;
@@ -175,7 +275,7 @@ public interface Chronology {
      * @param values  the values to validate, not null, match fields in partial
      * @throws IllegalArgumentException if the instant is invalid
      */
-    void validate(ReadablePartial instant, int[] values);
+    public abstract void validate(ReadablePartial instant, int[] values);
 
     // Millis
     //-----------------------------------------------------------------------
@@ -184,21 +284,21 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField millis();
+    public abstract DurationField millis();
 
     /**
      * Get the millis of second field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField millisOfSecond();
+    public abstract DateTimeField millisOfSecond();
 
     /**
      * Get the millis of day field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField millisOfDay();
+    public abstract DateTimeField millisOfDay();
 
     // Second
     //-----------------------------------------------------------------------
@@ -207,21 +307,21 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField seconds();
+    public abstract DurationField seconds();
 
     /**
      * Get the second of minute field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField secondOfMinute();
+    public abstract DateTimeField secondOfMinute();
 
     /**
      * Get the second of day field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField secondOfDay();
+    public abstract DateTimeField secondOfDay();
 
     // Minute
     //-----------------------------------------------------------------------
@@ -230,21 +330,21 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField minutes();
+    public abstract DurationField minutes();
 
     /**
      * Get the minute of hour field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField minuteOfHour();
+    public abstract DateTimeField minuteOfHour();
 
     /**
      * Get the minute of day field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField minuteOfDay();
+    public abstract DateTimeField minuteOfDay();
 
     // Hour
     //-----------------------------------------------------------------------
@@ -253,42 +353,42 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField hours();
+    public abstract DurationField hours();
 
     /**
      * Get the hour of day (0-23) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField hourOfDay();
+    public abstract DateTimeField hourOfDay();
 
     /**
      * Get the hour of day (offset to 1-24) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField clockhourOfDay();
+    public abstract DateTimeField clockhourOfDay();
 
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField hourOfHalfday();
+    public abstract DateTimeField hourOfHalfday();
 
     /**
      * Get the hour of am/pm (offset to 1-12) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField clockhourOfHalfday();
+    public abstract DateTimeField clockhourOfHalfday();
 
     /**
      * Get the AM(0) PM(1) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField halfdayOfDay();
+    public abstract DateTimeField halfdayOfDay();
 
     // Day
     //-----------------------------------------------------------------------
@@ -297,7 +397,7 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField days();
+    public abstract DurationField days();
 
     /**
      * Get the day of week field for this chronology.
@@ -307,21 +407,21 @@ public interface Chronology {
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField dayOfWeek();
+    public abstract DateTimeField dayOfWeek();
 
     /**
      * Get the day of month field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField dayOfMonth();
+    public abstract DateTimeField dayOfMonth();
 
     /**
      * Get the day of year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField dayOfYear();
+    public abstract DateTimeField dayOfYear();
 
     // Week
     //-----------------------------------------------------------------------
@@ -330,28 +430,28 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField weeks();
+    public abstract DurationField weeks();
 
     /**
      * Get the week of a week based year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField weekOfWeekyear();
+    public abstract DateTimeField weekOfWeekyear();
 
     /**
      * Get the weekyears duration field for this chronology.
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField weekyears();
+    public abstract DurationField weekyears();
 
     /**
      * Get the year of a week based year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField weekyear();
+    public abstract DateTimeField weekyear();
 
     // Month
     //-----------------------------------------------------------------------
@@ -360,14 +460,14 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField months();
+    public abstract DurationField months();
 
     /**
      * Get the month of year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField monthOfYear();
+    public abstract DateTimeField monthOfYear();
 
     // Year
     //-----------------------------------------------------------------------
@@ -376,62 +476,62 @@ public interface Chronology {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField years();
+    public abstract DurationField years();
 
     /**
      * Get the year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField year();
+    public abstract DateTimeField year();
 
     /**
      * Get the year of era field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField yearOfEra();
+    public abstract DateTimeField yearOfEra();
 
     /**
      * Get the year of century field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField yearOfCentury();
+    public abstract DateTimeField yearOfCentury();
 
     /**
      * Get the centuries duration field for this chronology.
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField centuries();
+    public abstract DurationField centuries();
 
     /**
      * Get the century of era field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField centuryOfEra();
+    public abstract DateTimeField centuryOfEra();
 
     /**
      * Get the eras duration field for this chronology.
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    DurationField eras();
+    public abstract DurationField eras();
 
     /**
      * Get the era field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    DateTimeField era();
+    public abstract DateTimeField era();
 
     /**
      * Gets a debugging toString.
      * 
      * @return a debugging string
      */
-    String toString();
+    public abstract String toString();
 
 }

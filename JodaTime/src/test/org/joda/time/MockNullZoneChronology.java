@@ -53,7 +53,7 @@
  */
 package org.joda.time;
 
-import org.joda.time.chrono.AbstractChronology;
+import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -61,7 +61,7 @@ import org.joda.time.chrono.ISOChronology;
  * 
  * @author Stephen Colebourne
  */
-class MockNullZoneChronology extends AbstractChronology {
+class MockNullZoneChronology extends BaseChronology {
 
     public DateTimeZone getZone() {
         return null;

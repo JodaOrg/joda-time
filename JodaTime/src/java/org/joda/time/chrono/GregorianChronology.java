@@ -80,7 +80,7 @@ import org.joda.time.DateTimeZone;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class GregorianChronology extends AbstractGJChronology {
+public final class GregorianChronology extends BaseGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -861407383323710522L;

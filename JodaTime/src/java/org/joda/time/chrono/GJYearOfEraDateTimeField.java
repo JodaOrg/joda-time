@@ -67,12 +67,12 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
 
     private static final long serialVersionUID = -5961050944769862059L;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    GJYearOfEraDateTimeField(DateTimeField yearField, AbstractGJChronology chronology) {
+    GJYearOfEraDateTimeField(DateTimeField yearField, BaseGJChronology chronology) {
         super(yearField, "yearOfEra");
         iChronology = chronology;
     }

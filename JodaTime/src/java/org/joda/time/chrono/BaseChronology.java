@@ -73,15 +73,17 @@ import org.joda.time.field.UnsupportedDurationField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class AbstractChronology implements Chronology, Serializable {
-    
+public abstract class BaseChronology
+        extends Chronology
+        implements Serializable {
+
     /** Serialization version. */
     private static final long serialVersionUID = -7310865996721419676L;
 
     /**
      * Restricted constructor.
      */
-    protected AbstractChronology() {
+    protected BaseChronology() {
         super();
     }
 

@@ -82,7 +82,7 @@ import org.joda.time.field.RemainderDateTimeField;
  * @author Guy Allard
  * @since 1.0
  */
-public abstract class AbstractGJChronology extends AssembledChronology {
+public abstract class BaseGJChronology extends AssembledChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 8283225332206808863L;
@@ -194,7 +194,7 @@ public abstract class AbstractGJChronology extends AssembledChronology {
 
     private final int iMinDaysInFirstWeek;
 
-    AbstractGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BaseGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param);
 
         if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7) {

@@ -72,12 +72,12 @@ final class GJYearDateTimeField extends ImpreciseDateTimeField {
 
     private static final long FEB_29 = (31L + 29 - 1) * DateTimeConstants.MILLIS_PER_DAY;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJYearDateTimeField(AbstractGJChronology chronology) {
+    GJYearDateTimeField(BaseGJChronology chronology) {
         super("year", "years", chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }

@@ -67,12 +67,12 @@ final class CopticYearDateTimeField extends ImpreciseDateTimeField {
 
     private static final long serialVersionUID = 8990199361773280783L;
 
-    private final AbstractGJChronology iChronology;
+    private final BaseGJChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    CopticYearDateTimeField(AbstractGJChronology chronology) {
+    CopticYearDateTimeField(BaseGJChronology chronology) {
         super("year", "years", chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
@@ -130,7 +130,7 @@ final class CopticYearDateTimeField extends ImpreciseDateTimeField {
         FieldUtils.verifyValueBounds
             (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
 
-		AbstractGJChronology chrono = iChronology;
+		BaseGJChronology chrono = iChronology;
 
         int thisYear = chrono.getYear(instant);
         int dayOfYear = chrono.getDayOfYear(instant, thisYear);

@@ -70,6 +70,7 @@ import org.joda.time.ReadablePartial;
  * 
  * @author Brian S O'Neill
  * @author Stephen Colebourne
+ * @author Fredrik Borgh
  * @since 1.0
  */
 public class DateTimeFormatter {
@@ -86,6 +87,8 @@ public class DateTimeFormatter {
     private final Chronology iChrono;
     /** The zone to use as an override. */
     private final DateTimeZone iZone;
+    /* The pivot year to use for two-digit year parsing. */
+    private final Integer iPivotYear;
 
     /**
      * Creates a new formatter, however you will normally use the factory
@@ -103,6 +106,7 @@ public class DateTimeFormatter {
         iOffsetParsed = false;
         iChrono = null;
         iZone = null;
+        iPivotYear = null;
     }
 
     /**
@@ -111,7 +115,8 @@ public class DateTimeFormatter {
     private DateTimeFormatter(
             DateTimePrinter printer, DateTimeParser parser,
             Locale locale, boolean offsetParsed,
-            Chronology chrono, DateTimeZone zone) {
+            Chronology chrono, DateTimeZone zone,
+            Integer pivotYear) {
         super();
         iPrinter = printer;
         iParser = parser;
@@ -119,6 +124,7 @@ public class DateTimeFormatter {
         iOffsetParsed = offsetParsed;
         iChrono = chrono;
         iZone = zone;
+        iPivotYear = pivotYear;
     }
 
     //-----------------------------------------------------------------------
@@ -173,7 +179,8 @@ public class DateTimeFormatter {
         if (locale == getLocale() || (locale != null && locale.equals(getLocale()))) {
             return this;
         }
-        return new DateTimeFormatter(iPrinter, iParser, locale, iOffsetParsed, iChrono, iZone);
+        return new DateTimeFormatter(iPrinter, iParser, locale,
+                iOffsetParsed, iChrono, iZone, iPivotYear);
     }
 
     /**
@@ -204,7 +211,8 @@ public class DateTimeFormatter {
         if (iOffsetParsed == true) {
             return this;
         }
-        return new DateTimeFormatter(iPrinter, iParser, iLocale, true, iChrono, null);
+        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+                true, iChrono, null, iPivotYear);
     }
 
     /**
@@ -238,7 +246,8 @@ public class DateTimeFormatter {
         if (iChrono == chrono) {
             return this;
         }
-        return new DateTimeFormatter(iPrinter, iParser, iLocale, iOffsetParsed, chrono, iZone);
+        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+                iOffsetParsed, chrono, iZone, iPivotYear);
     }
 
     /**
@@ -271,7 +280,8 @@ public class DateTimeFormatter {
         if (iZone == zone) {
             return this;
         }
-        return new DateTimeFormatter(iPrinter, iParser, iLocale, false, iChrono, zone);
+        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+                false, iChrono, zone, iPivotYear);
     }
 
     /**
@@ -281,6 +291,54 @@ public class DateTimeFormatter {
      */
     public DateTimeZone getZone() {
         return iZone;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new formatter that will use the specified pivot year for two
+     * digit year parsing in preference to that stored in the parser.
+     * <p>
+     * This setting is useful for changing the pivot year of formats built
+     * using a pattern - {@link DateTimeFormat#forPattern(String)}.
+     * <p>
+     * When parsing, this pivot year is used. Null means no-override.
+     * There is no effect when printing.
+     * <p>
+     * The pivot year enables a two digit year to be converted to a four
+     * digit year. The pivot represents the year in the middle of the
+     * supported range of years. Thus the full range of years that will
+     * be built is <code>(pivot - 50) .. (pivot + 49)</code>.
+     *
+     * <pre>
+     * pivot   supported range   00 is   20 is   40 is   60 is   80 is
+     * ---------------------------------------------------------------
+     * 1950      1900..1999      1900    1920    1940    1960    1980
+     * 1975      1925..2024      2000    2020    1940    1960    1980
+     * 2000      1950..2049      2000    2020    2040    1960    1980
+     * 2025      1975..2074      2000    2020    2040    2060    1980
+     * 2050      2000..2099      2000    2020    2040    2060    2080
+     * </pre>
+     *
+     * @param pivotYear  the pivot year to use as an override when parsing
+     * @return the new formatter
+     * @since 1.1
+     */
+    public DateTimeFormatter withPivotYear(Integer pivotYear) {
+        if (iPivotYear == pivotYear || (iPivotYear != null && iPivotYear.equals(pivotYear))) {
+            return this;
+        }
+        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+                iOffsetParsed, iChrono, iZone, pivotYear);
+    }
+
+    /**
+     * Gets the pivot year to use as an override.
+     *
+     * @return the pivot year to use as an override
+     * @since 1.1
+     */
+    public Integer getPivotYear() {
+      return iPivotYear;
     }
 
     //-----------------------------------------------------------------------
@@ -498,7 +556,7 @@ public class DateTimeFormatter {
         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
         chrono = selectChronology(chrono);
         
-        DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono, iLocale);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono, iLocale, iPivotYear);
         int newPos = iParser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis());
         if (iOffsetParsed && bucket.getZone() == null) {
@@ -526,7 +584,7 @@ public class DateTimeFormatter {
         checkParser();
         
         Chronology chrono = selectChronology(iChrono);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -559,7 +617,7 @@ public class DateTimeFormatter {
         checkParser();
         
         Chronology chrono = selectChronology(null);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -598,7 +656,7 @@ public class DateTimeFormatter {
         checkParser();
         
         Chronology chrono = selectChronology(null);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {

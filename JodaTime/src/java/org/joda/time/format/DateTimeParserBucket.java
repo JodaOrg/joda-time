@@ -46,6 +46,7 @@ import org.joda.time.DateTimeZone;
  * DateTimeParserBucket is mutable and not thread-safe.
  *
  * @author Brian S O'Neill
+ * @author Fredrik Borgh
  * @since 1.0
  */
 public class DateTimeParserBucket {
@@ -59,27 +60,43 @@ public class DateTimeParserBucket {
     private int iOffset;
     /** The locale to use for parsing. */
     private Locale iLocale;
-    
-    SavedField[] iSavedFields = new SavedField[8];
-    int iSavedFieldsCount;
-    boolean iSavedFieldsShared;
+    /** Used for parsing two-digit years. */
+    private Integer iPivotYear;
+
+    private SavedField[] iSavedFields = new SavedField[8];
+    private int iSavedFieldsCount;
+    private boolean iSavedFieldsShared;
     
     private Object iSavedState;
-    
+
     /**
      * Constucts a bucket.
      * 
-     * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
+     * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
      * @param chrono  the chronology to use
      * @param locale  the locale to use
      */
     public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale) {
+        this(instantLocal, chrono, locale, null);
+    }
+
+    /**
+     * Constucts a bucket, with the option of specifying the pivot year for
+     * two-digit year parsing.
+     *
+     * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
+     * @param chrono  the chronology to use
+     * @param locale  the locale to use
+     * @param pivotYear  the pivot year to use when parsing two-digit years
+     */
+    public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale, Integer pivotYear) {
         super();
         chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
         iChrono = chrono.withUTC();
         iLocale = (locale == null ? Locale.getDefault() : locale);
         setZone(chrono.getZone());
+        iPivotYear = pivotYear;
     }
 
     //-----------------------------------------------------------------------
@@ -138,6 +155,32 @@ public class DateTimeParserBucket {
         iSavedState = null;
         iOffset = offset;
         iZone = null;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns the pivot year used for parsing two-digit years.
+     * <p>
+     * If null is returned, this indicates default behaviour
+     *
+     * @return Integer value of the pivot year, null if not set
+     * @since 1.1
+     */
+    public Integer getPivotYear() {
+        return iPivotYear;
+    }
+
+    /**
+     * Sets the pivot year to use when parsing two digit years.
+     * <p>
+     * If the value is set to null, this will indicate that default
+     * behaviour should be used.
+     *
+     * @param pivotYear  the pivot year to use
+     * @since 1.1
+     */
+    public void setPivotYear(Integer pivotYear) {
+        iPivotYear = pivotYear;
     }
 
     //-----------------------------------------------------------------------

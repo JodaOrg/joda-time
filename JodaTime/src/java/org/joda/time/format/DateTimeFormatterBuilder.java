@@ -57,6 +57,7 @@ import org.joda.time.field.PreciseDateTimeField;
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
+ * @author Fredrik Borgh
  * @since 1.0
  * @see DateTimeFormat
  * @see ISODateTimeFormat
@@ -1289,7 +1290,9 @@ public class DateTimeFormatterBuilder {
     static class TwoDigitYear
             implements DateTimePrinter, DateTimeParser {
 
+        /** The field to print/parse. */
         private final DateTimeFieldType iType;
+        /** The pivot year. */
         private final int iPivot;
 
         TwoDigitYear(DateTimeFieldType type, int pivot) {
@@ -1303,6 +1306,12 @@ public class DateTimeFormatterBuilder {
         }
 
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            int pivot = iPivot;
+            // If the bucket pivot year is non-null, use that when parsing
+            if (bucket.getPivotYear() != null) {
+                pivot = bucket.getPivotYear().intValue();
+            }
+
             int limit = Math.min(2, text.length() - position);
             if (limit < 2) {
                 return ~position;
@@ -1320,7 +1329,7 @@ public class DateTimeFormatterBuilder {
             }
             year = ((year << 3) + (year << 1)) + c - '0';
 
-            int low = iPivot - 50;
+            int low = pivot - 50;
 
             int t;
             if (low >= 0) {

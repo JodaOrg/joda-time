@@ -30,6 +30,7 @@ import org.joda.time.DateTimeZone;
  * This class is a Junit unit test for DateTime Formating.
  *
  * @author Stephen Colebourne
+ * @author Fredrik Borgh
  */
 public class TestDateTimeFormat extends TestCase {
 
@@ -147,6 +148,15 @@ public class TestDateTimeFormat extends TestCase {
         
         expect = new DateTime(2021, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
+
+        /* Added tests for pivot year setting */
+        f = f.withPivotYear(new Integer(2050));
+        expect = new DateTime(2000, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("00"));
+
+        expect = new DateTime(2099, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("99"));
+
     }
 
     //-----------------------------------------------------------------------
@@ -184,6 +194,14 @@ public class TestDateTimeFormat extends TestCase {
         
         expect = new DateTime(2021, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
+
+        /* Added tests for pivot year setting */
+        f = f.withPivotYear(new Integer(2050));
+        expect = new DateTime(2000, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("00"));
+
+        expect = new DateTime(2099, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("99"));
     }
 
     public void testFormat_year_long() {
@@ -235,6 +253,14 @@ public class TestDateTimeFormat extends TestCase {
         
         expect = new DateTime(2021, 1, 4, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
+
+        /* Added tests for pivot year setting */
+        f = f.withPivotYear(new Integer(2050));
+        expect = new DateTime(2000, 1, 3, 0, 0, 0, 0, DateTimeZone.UTC);
+        assertEquals(expect, f.parseDateTime("00"));
+
+        expect = new DateTime(2098, 12, 29, 0, 0, 0, 0, DateTimeZone.UTC);
+        assertEquals(expect, f.parseDateTime("99"));
     }
 
     //-----------------------------------------------------------------------

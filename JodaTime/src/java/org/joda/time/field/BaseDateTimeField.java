@@ -523,7 +523,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * If the specified locale is null, the default locale is used.
      * <p>
      * This implementation uses {@link #convertText(String, Locale)} and
-     * {@link #set(PartialInstant, int, int[], int)}.
+     * {@link #set(ReadablePartial, int, int[], int)}.
      *
      * @param instant  the partial instant
      * @param fieldIndex  the index of this field in the instant
@@ -645,7 +645,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * Get the minimum value for this field using the partial instant and
      * the specified values.
      * <p>
-     * This implementation returns the same as {@link #getMinimumValue(PartialInstant)}.
+     * This implementation returns the same as {@link #getMinimumValue(ReadablePartial)}.
      * 
      * @param instant  the partial instant to query
      * @param values  the values to use
@@ -691,7 +691,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * Get the maximum value for this field using the partial instant and
      * the specified values.
      * <p>
-     * This implementation returns the same as {@link #getMaximumValue(PartialInstant)}.
+     * This implementation returns the same as {@link #getMaximumValue(ReadablePartial)}.
      * 
      * @param instant  the partial instant to query
      * @param values  the values to use

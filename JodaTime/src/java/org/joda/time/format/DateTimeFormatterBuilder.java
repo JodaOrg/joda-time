@@ -141,14 +141,20 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder(Chronology chrono, Locale locale) {
         if (chrono == null) {
-            chrono = ISOChronology.getInstance();
+            if (DateTimeZone.getDefault() == null) {
+                // See DateTimeZone's static initializer for details on this
+                // special case.
+                iChrono = iChronoUTC = null;
+            } else {
+                iChrono = iChronoUTC = ISOChronology.getInstance();
+            }
+        } else {
+            iChrono = chrono;
+            iChronoUTC = chrono.withUTC();
         }
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        iChrono = chrono;
-        iChronoUTC = chrono.withUTC();
-        DateTimeZone zone = chrono.getZone();
         iLocale = locale;
         iElementPairs = new ArrayList();
     }

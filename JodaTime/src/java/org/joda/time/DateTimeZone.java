@@ -139,6 +139,17 @@ public abstract class DateTimeZone implements Serializable {
         setProvider0(null);
         setNameProvider0(null);
 
+        // Because of the cyclic initializer dependencies between many of the
+        // main classes, and because cOffsetFormatter is built from those main
+        // classes, a user time zone with an explicit offset fails. Rather than
+        // duplicate all the code used by DateTimeFormatterBuilder's offset
+        // formatter, DateTimeFormatterBuilder's constructor tests if
+        // DateTimeZone.getDefault() is null, in which case it allows the
+        // chronology to be null. This breaks the dependency cycle and allows
+        // cOffsetFormatter to be defined. In order for this inelegant solution
+        // to work propery, cDefault must be left as null until after an
+        // attempt has been made to set the user time zone.
+
         try {
             try {
                 cDefault = getInstance(System.getProperty("user.timezone"));
@@ -400,7 +411,7 @@ public abstract class DateTimeZone implements Serializable {
 
     private static synchronized DateTimeFormatter offsetFormatter() {
         if (cOffsetFormatter == null) {
-            cOffsetFormatter = new DateTimeFormatterBuilder(UTC)
+            cOffsetFormatter = new DateTimeFormatterBuilder((Chronology)null, null)
                 .appendTimeZoneOffset(null, true, 2, 4)
                 .toFormatter();
         }

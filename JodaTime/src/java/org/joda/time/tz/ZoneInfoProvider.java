@@ -38,26 +38,14 @@ import org.joda.time.DateTimeZone;
  * @since 1.0
  */
 public class ZoneInfoProvider implements Provider {
-    private static Map loadZoneInfoMap(InputStream in) throws IOException {
-        Map map = new TreeMap(String.CASE_INSENSITIVE_ORDER);
-        DataInputStream din = new DataInputStream(in);
-        try {
-            ZoneInfoCompiler.readZoneInfoMap(din, map);
-        } finally {
-            try {
-                din.close();
-            } catch (IOException e) {
-            }
-        }
-        map.put("UTC", new SoftReference(DateTimeZone.UTC));
-        return map;
-    }
 
+    /** The directory where the files are held. */
     private final File iFileDir;
+    /** The resource path. */
     private final String iResourcePath;
+    /** The class loader to use. */
     private final ClassLoader iLoader;
-
-    // Maps ids to strings or SoftReferences to DateTimeZones.
+    /** Maps ids to strings or SoftReferences to DateTimeZones. */
     private final Map iZoneInfoMap;
 
     /**
@@ -135,10 +123,14 @@ public class ZoneInfoProvider implements Provider {
         iZoneInfoMap = loadZoneInfoMap(openResource("ZoneInfoMap"));
     }
 
+    //-----------------------------------------------------------------------
     /**
      * If an error is thrown while loading zone data, uncaughtException is
      * called to log the error and null is returned for this and all future
      * requests.
+     * 
+     * @param id  the id to load
+     * @return the loaded zone
      */
     public synchronized DateTimeZone getZone(String id) {
         if (id == null) {
@@ -168,19 +160,32 @@ public class ZoneInfoProvider implements Provider {
         return getZone((String)obj);
     }
 
+    /**
+     * Gets a list of all the available zone ids.
+     * 
+     * @return the zone ids
+     */
     public synchronized Set getAvailableIDs() {
         return Collections.unmodifiableSet(iZoneInfoMap.keySet());
     }
 
     /**
-     * Called if an exception is thrown from getZone while loading zone
-     * data.
+     * Called if an exception is thrown from getZone while loading zone data.
+     * 
+     * @param ex  the exception
      */
-    protected void uncaughtException(Exception e) {
+    protected void uncaughtException(Exception ex) {
         Thread t = Thread.currentThread();
-        t.getThreadGroup().uncaughtException(t, e);
+        t.getThreadGroup().uncaughtException(t, ex);
     }
 
+    /**
+     * Opens a resource from file or classpath.
+     * 
+     * @param name  the name to open
+     * @return the input stream
+     * @throws IOException if an error occurs
+     */
     private InputStream openResource(String name) throws IOException {
         InputStream in;
         if (iFileDir != null) {
@@ -193,17 +198,23 @@ public class ZoneInfoProvider implements Provider {
                 in = ClassLoader.getSystemResourceAsStream(path);
             }
             if (in == null) {
-                StringBuffer buf = new StringBuffer(40);
-                buf.append("Resource not found: \"");
-                buf.append(path);
-                buf.append("\" ClassLoader: ");
-                buf.append(iLoader != null ? iLoader.toString() : "system");
+                StringBuffer buf = new StringBuffer(40)
+                    .append("Resource not found: \"")
+                    .append(path)
+                    .append("\" ClassLoader: ")
+                    .append(iLoader != null ? iLoader.toString() : "system");
                 throw new IOException(buf.toString());
             }
         }
         return in;
     }
 
+    /**
+     * Loads the time zone data for one id.
+     * 
+     * @param id  the id to load
+     * @return the zone
+     */
     private DateTimeZone loadZoneData(String id) {
         InputStream in = null;
         try {
@@ -224,4 +235,52 @@ public class ZoneInfoProvider implements Provider {
             }
         }
     }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Loads the zone info map.
+     * 
+     * @param in  the input stream
+     * @return the map
+     */
+    private static Map loadZoneInfoMap(InputStream in) throws IOException {
+        Map map = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+        DataInputStream din = new DataInputStream(in);
+        try {
+            readZoneInfoMap(din, map);
+        } finally {
+            try {
+                din.close();
+            } catch (IOException e) {
+            }
+        }
+        map.put("UTC", new SoftReference(DateTimeZone.UTC));
+        return map;
+    }
+
+    /**
+     * Reads the zone info map from file.
+     * 
+     * @param din  the input stream
+     * @param zimap  gets filled with string id to string id mappings
+     */
+    private static void readZoneInfoMap(DataInputStream din, Map zimap) throws IOException {
+        // Read the string pool.
+        int size = din.readUnsignedShort();
+        String[] pool = new String[size];
+        for (int i=0; i<size; i++) {
+            pool[i] = din.readUTF().intern();
+        }
+
+        // Read the mappings.
+        size = din.readUnsignedShort();
+        for (int i=0; i<size; i++) {
+            try {
+                zimap.put(pool[din.readUnsignedShort()], pool[din.readUnsignedShort()]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new IOException("Corrupt zone info map");
+            }
+        }
+    }
+
 }

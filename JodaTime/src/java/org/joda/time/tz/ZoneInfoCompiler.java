@@ -16,7 +16,6 @@
 package org.joda.time.tz;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -186,28 +185,6 @@ public class ZoneInfoCompiler {
             dout.writeShort(((Short)idToIndex.get(id)).shortValue());
             id = ((DateTimeZone)entry.getValue()).getID();
             dout.writeShort(((Short)idToIndex.get(id)).shortValue());
-        }
-    }
-
-    /**
-     * @param zimap gets filled with string id to string id mappings
-     */
-    static void readZoneInfoMap(DataInputStream din, Map zimap) throws IOException {
-        // Read the string pool.
-        int size = din.readUnsignedShort();
-        String[] pool = new String[size];
-        for (int i=0; i<size; i++) {
-            pool[i] = din.readUTF().intern();
-        }
-
-        // Read the mappings.
-        size = din.readUnsignedShort();
-        for (int i=0; i<size; i++) {
-            try {
-                zimap.put(pool[din.readUnsignedShort()], pool[din.readUnsignedShort()]);
-            } catch (ArrayIndexOutOfBoundsException e) {
-                throw new IOException("Corrupt zone info map");
-            }
         }
     }
 

@@ -151,6 +151,7 @@ public class TestLongConverter extends TestCase {
         assertEquals(123L, LongConverter.INSTANCE.getDurationMillis(new Long(123L)));
     }
 
+    //-----------------------------------------------------------------------
     public void testGetDurationType_Object() throws Exception {
         assertEquals(DurationType.getAllType(),
             LongConverter.INSTANCE.getDurationType(new Long(123L), false));
@@ -158,14 +159,10 @@ public class TestLongConverter extends TestCase {
             LongConverter.INSTANCE.getDurationType(new Long(123L), true));
     }
 
-    public void testIsPrecise_Object() throws Exception {
-        assertEquals(true, LongConverter.INSTANCE.isPrecise(new Long(123L)));
-    }
-
     public void testSetInto_Object() throws Exception {
         MutableTimePeriod m = new MutableTimePeriod(DurationType.getMillisType());
         LongConverter.INSTANCE.setInto(m, new Long(123L));
-        assertEquals(123L, m.getTotalMillis());
+        assertEquals(123L, m.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------

@@ -61,10 +61,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
-import org.joda.time.TimePeriod;
+import org.joda.time.Duration;
 import org.joda.time.DurationType;
-import org.joda.time.MillisDuration;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadableDuration;
 import org.joda.time.chrono.ISOChronology;
@@ -121,41 +121,31 @@ public class TestReadableDurationConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetDurationMillis_Object() throws Exception {
-        assertEquals(123L, ReadableDurationConverter.INSTANCE.getDurationMillis(new TimePeriod(123L)));
-        try {
-            ReadableDurationConverter.INSTANCE.getDurationMillis(new TimePeriod(1, 2, 0, 1, 0, 0, 0, 0));
-            fail();
-        } catch (IllegalStateException ex) {}
+        assertEquals(123L, ReadableDurationConverter.INSTANCE.getDurationMillis(new Duration(123L)));
     }
 
+    //-----------------------------------------------------------------------
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getMillisType(),
-            ReadableDurationConverter.INSTANCE.getDurationType(
-                new TimePeriod(123L, DurationType.getMillisType()), false));
-        assertEquals(DurationType.getAllType(),
-            ReadableDurationConverter.INSTANCE.getDurationType(
-                new TimePeriod(1, 2, 0, 1, 0, 0, 0, 0), false));
         assertEquals(DurationType.getPreciseAllType(),
-            ReadableDurationConverter.INSTANCE.getDurationType(
-                new MillisDuration(1, 2, 0, 1, 0, 0, 0, 0), true));
-    }
-
-    public void testIsPrecise_Object() throws Exception {
-        assertEquals(true, ReadableDurationConverter.INSTANCE.isPrecise(new TimePeriod(123L)));
-        assertEquals(false, ReadableDurationConverter.INSTANCE.isPrecise(new TimePeriod(1, 2, 0, 1, 0, 0, 0, 0)));
+            ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L), false));
+        assertEquals(DurationType.getPreciseAllType(),
+            ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L), true));
     }
 
     public void testSetInto_Object() throws Exception {
         MutableTimePeriod m = new MutableTimePeriod(DurationType.getYearMonthType());
-        ReadableDurationConverter.INSTANCE.setInto(m, new TimePeriod(1, 2, 0, 3, 0, 0, 0, 0));
-        assertEquals(1, m.getYears());
-        assertEquals(2, m.getMonths());
+        ReadableDurationConverter.INSTANCE.setInto(m, new Duration(
+            3L * DateTimeConstants.MILLIS_PER_DAY +
+            4L * DateTimeConstants.MILLIS_PER_MINUTE + 5L
+        ));
+        assertEquals(0, m.getYears());
+        assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());
         assertEquals(3, m.getDays());
         assertEquals(0, m.getHours());
-        assertEquals(0, m.getMinutes());
+        assertEquals(4, m.getMinutes());
         assertEquals(0, m.getSeconds());
-        assertEquals(0, m.getMillis());
+        assertEquals(5, m.getMillis());
     }
 
     //-----------------------------------------------------------------------

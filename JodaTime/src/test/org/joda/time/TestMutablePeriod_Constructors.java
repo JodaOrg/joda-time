@@ -64,7 +64,7 @@ import junit.framework.TestSuite;
  *
  * @author Stephen Colebourne
  */
-public class TestMutableDuration_Constructors extends TestCase {
+public class TestMutablePeriod_Constructors extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -105,10 +105,10 @@ public class TestMutableDuration_Constructors extends TestCase {
     }
 
     public static TestSuite suite() {
-        return new TestSuite(TestMutableDuration_Constructors.class);
+        return new TestSuite(TestMutablePeriod_Constructors.class);
     }
 
-    public TestMutableDuration_Constructors(String name) {
+    public TestMutablePeriod_Constructors(String name) {
         super(name);
     }
 
@@ -148,8 +148,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(0, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -168,8 +167,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(0, test.toDurationMillis());
     }
 
     public void testConstructor_DurationType2() throws Throwable {
@@ -184,51 +182,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testConstructor_DurationType_boolean1() throws Throwable {
-        MutableTimePeriod test = new MutableTimePeriod(null, true);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(0L, test.getTotalMillis());
-        assertEquals(true, test.isTotalMillisBased());
-    }
-
-    public void testConstructor_DurationType_boolean2() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MutableTimePeriod test = new MutableTimePeriod(null, false);
-        assertEquals(DurationType.getAllType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(0L, test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
-    }
-
-    public void testConstructor_DurationType_boolean3() throws Throwable {
-        try {
-            new MutableTimePeriod(DurationType.getAllType(), true);
-            fail();
-        } catch (IllegalArgumentException ex) {}
+        assertEquals(0, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -248,8 +202,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(length, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -269,8 +222,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(length, test.toDurationMillis());
     }
 
     public void testConstructor_long_DurationType2() throws Throwable {
@@ -289,7 +241,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(length, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
+        assertEquals(length, test.toDurationMillis());
     }
 
     public void testConstructor_long_DurationType3() throws Throwable {
@@ -308,7 +260,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
+        assertEquals(length, test.toDurationMillis());
     }
 
     public void testConstructor_long_DurationType4() throws Throwable {
@@ -327,7 +279,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(7, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length - 8, test.getTotalMillis());
+        assertEquals(length - 8, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -348,8 +300,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(true, test.isPrecise());
         assertEquals(
             5 * DateTimeConstants.MILLIS_PER_HOUR + 6 * DateTimeConstants.MILLIS_PER_MINUTE +
-            7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+            7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -369,10 +320,9 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
         assertEquals(false, test.isPrecise());
         try {
-            test.getTotalMillis();
+            test.toDurationMillis();
             fail();
         } catch (IllegalStateException ex) {}
-        assertEquals(false, test.isTotalMillisBased());
     }
 
     //-----------------------------------------------------------------------
@@ -392,10 +342,9 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(8, test.getMillis());
         assertEquals(false, test.isPrecise());
         try {
-            test.getTotalMillis();
+            test.toDurationMillis();
             fail();
         } catch (IllegalStateException ex) {}
-        assertEquals(false, test.isTotalMillisBased());
     }
 
     public void testConstructor_8int__DurationType2() throws Throwable {
@@ -412,7 +361,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(true, test.isPrecise());
         assertEquals(
             5 * DateTimeConstants.MILLIS_PER_HOUR + 6 * DateTimeConstants.MILLIS_PER_MINUTE +
-            7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.getTotalMillis());
+            7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.toDurationMillis());
     }
 
     public void testConstructor_8int__DurationType3() throws Throwable {
@@ -437,8 +386,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_long_long2() throws Throwable {
@@ -455,7 +403,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -473,8 +421,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_long_long_DurationType2() throws Throwable {
@@ -491,7 +438,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_long_long_DurationType3() throws Throwable {
@@ -508,7 +455,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis() - 1, test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis() - 1, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -526,8 +473,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI2() throws Throwable {
@@ -544,7 +490,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI3() throws Throwable {
@@ -561,7 +507,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.getTotalMillis());
+        assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI4() throws Throwable {
@@ -578,7 +524,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0L, test.getTotalMillis());
+        assertEquals(0L, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -596,8 +542,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
-        assertEquals(false, test.isTotalMillisBased());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI_DurationType2() throws Throwable {
@@ -614,7 +559,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI_DurationType3() throws Throwable {
@@ -631,7 +576,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis() - 1, test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis() - 1, test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI_DurationType4() throws Throwable {
@@ -648,7 +593,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.getTotalMillis());
+        assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.toDurationMillis());
     }
 
     public void testConstructor_RI_RI_DurationType5() throws Throwable {
@@ -665,7 +610,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0L, test.getTotalMillis());
+        assertEquals(0L, test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -685,10 +630,9 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
         assertEquals(false, test.isPrecise());
         try {
-            test.getTotalMillis();
+            test.toDurationMillis();
             fail();
         } catch (IllegalStateException ex) {}
-        assertEquals(false, test.isTotalMillisBased());
     }
 
     public void testConstructor_Object2() throws Throwable {
@@ -703,7 +647,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
+        assertEquals(0, test.toDurationMillis());
     }
 
     public void testConstructor_Object3() throws Throwable {
@@ -719,7 +663,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
         assertEquals(true, test.isPrecise());
         assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
-            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
+            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.toDurationMillis());
     }
 
     public void testConstructor_Object4() throws Throwable {
@@ -737,7 +681,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(1, test.getSeconds());
         assertEquals(1, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -757,10 +701,9 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
         assertEquals(false, test.isPrecise());
         try {
-            test.getTotalMillis();
+            test.toDurationMillis();
             fail();
         } catch (IllegalStateException ex) {}
-        assertEquals(false, test.isTotalMillisBased());
     }
 
     public void testConstructor_Object_DurationType2() throws Throwable {
@@ -775,7 +718,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
+        assertEquals(0, test.toDurationMillis());
     }
 
     public void testConstructor_Object_DurationType3() throws Throwable {
@@ -791,7 +734,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
         assertEquals(true, test.isPrecise());
         assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
-            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
+            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.toDurationMillis());
     }
 
     public void testConstructor_Object_DurationType4() throws Throwable {
@@ -807,7 +750,7 @@ public class TestMutableDuration_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
         assertEquals(true, test.isPrecise());
         assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
-            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
+            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.toDurationMillis());
     }
 
 }

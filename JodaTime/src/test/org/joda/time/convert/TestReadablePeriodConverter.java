@@ -63,19 +63,18 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationType;
-import org.joda.time.Interval;
 import org.joda.time.MutableTimePeriod;
-import org.joda.time.MutableInterval;
-import org.joda.time.ReadableInterval;
+import org.joda.time.ReadableTimePeriod;
+import org.joda.time.TimePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
 /**
- * This class is a JUnit test for ReadableIntervalConverter.
+ * This class is a Junit unit test for ReadableTimePeriodConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestReadableIntervalConverter extends TestCase {
+public class TestReadablePeriodConverter extends TestCase {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
@@ -90,16 +89,16 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     public static TestSuite suite() {
-        return new TestSuite(TestReadableIntervalConverter.class);
+        return new TestSuite(TestReadablePeriodConverter.class);
     }
 
-    public TestReadableIntervalConverter(String name) {
+    public TestReadablePeriodConverter(String name) {
         super(name);
     }
 
     //-----------------------------------------------------------------------
     public void testSingleton() throws Exception {
-        Class cls = ReadableIntervalConverter.class;
+        Class cls = ReadableTimePeriodConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
         assertEquals(false, Modifier.isPrivate(cls.getModifiers()));
@@ -116,50 +115,42 @@ public class TestReadableIntervalConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {
-        assertEquals(ReadableInterval.class, ReadableIntervalConverter.INSTANCE.getSupportedType());
+        assertEquals(ReadableTimePeriod.class, ReadableTimePeriodConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
-    public void testGetDurationMillis_Object() throws Exception {
-        Interval i = new Interval(100L, 223L);
-        assertEquals(123L, ReadableIntervalConverter.INSTANCE.getDurationMillis(i));
+    public void testGetTimePeriodMillis_Object() throws Exception {
+        assertEquals(123L, ReadableTimePeriodConverter.INSTANCE.getDurationMillis(new TimePeriod(123L)));
     }
 
     //-----------------------------------------------------------------------
     public void testGetDurationType_Object() throws Exception {
-        Interval i = new Interval(100L, 223L);
         assertEquals(DurationType.getAllType(),
-            ReadableIntervalConverter.INSTANCE.getDurationType(i, false));
+            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L), false));
         assertEquals(DurationType.getPreciseAllType(),
-            ReadableIntervalConverter.INSTANCE.getDurationType(i, true));
+            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L), true));
+        assertEquals(DurationType.getPreciseAllType(),
+            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L, DurationType.getAllType()), true));
+        assertEquals(DurationType.getPreciseYearDayType(),
+            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L, DurationType.getPreciseYearDayType()), true));
     }
 
     public void testSetInto_Object() throws Exception {
-        Interval i = new Interval(100L, 223L);
-        MutableTimePeriod m = new MutableTimePeriod(DurationType.getMillisType());
-        ReadableIntervalConverter.INSTANCE.setInto(m, i);
+        MutableTimePeriod m = new MutableTimePeriod(DurationType.getYearMonthType());
+        ReadableTimePeriodConverter.INSTANCE.setInto(m, new TimePeriod(0, 0, 0, 3, 0, 4, 0, 5));
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());
-        assertEquals(0, m.getDays());
+        assertEquals(3, m.getDays());
         assertEquals(0, m.getHours());
-        assertEquals(0, m.getMinutes());
+        assertEquals(4, m.getMinutes());
         assertEquals(0, m.getSeconds());
-        assertEquals(123, m.getMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testSetIntoInterval_Object() throws Exception {
-        Interval i = new Interval(0L, 123L);
-        MutableInterval m = new MutableInterval(-1000L, 1000L);
-        ReadableIntervalConverter.INSTANCE.setInto(m, i);
-        assertEquals(0L, m.getStartMillis());
-        assertEquals(123L, m.getEndMillis());
+        assertEquals(5, m.getMillis());
     }
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("Converter[org.joda.time.ReadableInterval]", ReadableIntervalConverter.INSTANCE.toString());
+        assertEquals("Converter[org.joda.time.ReadableTimePeriod]", ReadableTimePeriodConverter.INSTANCE.toString());
     }
 
 }

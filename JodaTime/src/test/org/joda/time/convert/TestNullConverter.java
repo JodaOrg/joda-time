@@ -168,6 +168,7 @@ public class TestNullConverter extends TestCase {
         assertEquals(0L, NullConverter.INSTANCE.getDurationMillis(null));
     }
 
+    //-----------------------------------------------------------------------
     public void testGetDurationType_Object() throws Exception {
         assertEquals(DurationType.getAllType(),
             NullConverter.INSTANCE.getDurationType(null, false));
@@ -175,14 +176,10 @@ public class TestNullConverter extends TestCase {
             NullConverter.INSTANCE.getDurationType(null, true));
     }
 
-    public void testIsPrecise_Object() throws Exception {
-        assertEquals(true, NullConverter.INSTANCE.isPrecise(null));
-    }
-
     public void testSetInto_Object() throws Exception {
         MutableTimePeriod m = new MutableTimePeriod(DurationType.getMillisType());
         NullConverter.INSTANCE.setInto(m, null);
-        assertEquals(0L, m.getTotalMillis());
+        assertEquals(0L, m.toDurationMillis());
     }
 
     //-----------------------------------------------------------------------

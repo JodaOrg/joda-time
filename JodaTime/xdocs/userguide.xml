@@ -68,6 +68,7 @@ more advanced topics.
     <li><a href="#changing_calendars">Changing Calendars</a></li>
   </ul>
 </li>
+<!---
 <li><a href="#intervals_durations_periods">Usage: Intervals, Durations and Periods</a>
   <ul>
     <li><a href="#interval_ex">Interval Examples</a></li>
@@ -75,6 +76,7 @@ more advanced topics.
     <li><a href="#period_ex">Period Examples</a></li>
   </ul>
 </li>
+-->
 <li><a href="#serialization">Serialization and Formats</a>
 <ul>
     <li><a href="#formatters">Formatters: DateTimeFormatter</a></li>
@@ -101,8 +103,9 @@ The major building blocks of joda time are introduced below. These are the conce
 of <em>instant</em>, <em>interval</em>, <em>duration</em>, <em>period</em> and
 <em>chronology</em> and <em>timezones</em>. We then say a few words about the role
 of interfaces in the library design, which is a little different than the norm. We
-end with a few words on package structure. Usage examples are delayed until the
-following sections of the guide.
+end with a few words on package structure. Usage examples for instant are delayed until the
+following sections of the guide. Examples for interval, duration and period may be
+found in the appropriate section in the "Key Concepts" part of the documentation.
 </p>
 
 <a name="instants"/>
@@ -688,6 +691,7 @@ Buddhist chronology.
 </section>
 </section>
 
+<!---
 <a name="#intervals_durations_periods"/>
 <section name="Usage: Intervals, Durations and Periods">
 
@@ -747,6 +751,7 @@ DateTime calc = start.plus(period);
 </p>
 </section>
 </section>
+-->
 
 <a name="serialization"/>
 <section name="Serialization and Formats">

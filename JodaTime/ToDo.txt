@@ -4,7 +4,7 @@ JodaTime ToDo list
 for 1.0
 -------
 
-Review Formatter code changes
+Nothing left to do for 1.0
 
 
 Ideas longer term

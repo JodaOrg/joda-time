@@ -33,7 +33,7 @@ This avoids any ambiguity across national boundaries.
 </p>
 
 <p>
-Additional calendar systems supported are Gregorian, Julian, GregorianJulian (GJ) and Buddhist.
+Additional calendar systems supported are Gregorian, Julian, GregorianJulian (GJ), Buddhist and Coptic.
 The design is flexible and pluggable, so adding additional calendar systems should be easy. 
 </p>
 
@@ -80,6 +80,7 @@ Various documentation is available:
 <ul>
 <li>The javadoc for the <a href="api-0.95/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
+<li>A <a href="faq.html">FAQ</a> list</li>
 <li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime">CVS repository</a></li>
 </ul>
 

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Joda FAQ</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Frequently Asked Questions">
+<p>
+Some common questions about Joda-Time are answered here.
+<ul>
+<li><a href="#iso">What is ISO8601?</a></li>
+<li><a href="#internalstorage">How are times calculated internally?</a></li>
+<li><a href="#long">Why limit to the number of milliseconds in a long?</a></li>
+<li><a href="#range">What date range is supported?</a></li>
+<li><a href="#submilli">What about sub-millisecond accuracy?</a></li>
+<li><a href="#joda">What is with the name 'joda'?</a></li>
+</ul>
+Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Suggest another FAQ</a>
+</p>
+
+
+<a name="iso" />
+<subsection name="What is ISO8601?">
+<p>
+Historically, every country has found their own solution to measuring time.
+This has often been political and religious.
+To simplify the problem, especially in the realm of computer data transfer, the ISO8601 standard was founded.
+</p>
+<p>
+The ISO standard defines a framework for passing dates and times between computer systems in a standard way.
+The standard uses the proleptic Gregorian calendar.
+This makes it fully compatible with the calendar system used in most of the world after 1582.
+The standard warns that it may only be used to represent dates before 1582 'by mutual agreement'.
+</p>
+<p>
+The standard defines twelve months January to December numbered 1 to 12 and
+seven days Monday to Sunday, numbered 1 to 7.
+In addition it defines the first week of the year as the first week to have most of its days in the new year.
+This can result in the first week of a year starting in the previous year and the last week ending in the following year.
+</p>
+<p>
+The key point about ISO8601 is that it is a framework for dates not an absolute single definition.
+The most common form is YYYY-MM-DDTHH:MM:SS.SSSZ, in other words year-month-day letter 'T' hour:minute:second and fractions.
+</p>
+</subsection>
+
+
+<a name="internalstorage" />
+<subsection name="How are times calculated internally?">
+<p>
+All time values are calculated using a single long value representing milliseconds.
+The epoch of the definition is 1970-01-01T00:00:00.
+This is the same as the JDK time definition and usage.
+</p>
+</subsection>
+
+
+<a name="long" />
+<subsection name="Why limit to the number of milliseconds in a long?">
+<p>
+There are three main reasons for using a single long value to store the time.
+<ol>
+<li>Compatibility - being compatible with the JDK makes conversion simpler</li>
+<li>Performance - a primitive value enables fast calculations,
+whereas alternatives generally involve lots of expensive object creation</li>
+<li>Big enough - the range provided by a millisecond based solution is big enough for most needs</li>
+</ol>
+</p>
+</subsection>
+
+
+<a name="range" />
+<subsection name="What date range is supported?">
+<p>
+The range supported is -292,269,054 to 292,277,023.
+In other words, roughly +/- 290 million years to millisecond precision.
+</p>
+<p>
+If you want a date outside this range, ask yourself if you really want millisecond precision.
+In reality, dates this far in the past or future should only be stored as years - 
+anything else is meaningless.
+</p>
+</subsection>
+
+
+<a name="submilli" />
+<subsection name="What about sub-millisecond accuracy?">
+<p>
+Joda-Time does not support accuracy of times below millisecond.
+Physics defines time scales down to 5E-44 secs.
+The only way to accurately record these sorts of times is using the BigInteger class.
+This would severely compromise the performance of the whole API for a very limited use.
+</p>
+</subsection>
+
+
+<a name="joda" />
+<subsection name="What is with the name 'joda'?">
+<p>
+'Joda' is a short, four letter name, begining with 'j' whose domain name was free.
+It is not an acronym.
+</p>
+</subsection>
+
+
+</section>
+</body>
+</document>

@@ -56,79 +56,93 @@ package org.joda.time;
 import java.io.Serializable;
 
 /**
- * An immutable duration that defines and adds durations based on individual field values.
+ * A precise immutable duration that defines and adds durations based on milliseconds.
  * <p>
- * A duration can be divided into a number of fields, such as hours and seconds.
- * The way in which that divide occurs is controlled by the DurationType class.
+ * A precise duration is one that is defined primarily by a fixed number of milliseconds.
+ * The fields, such as hours and seconds, are provided for convenience.
+ * The {@link ReadableDuration#isTotalMillisBased} method will always return true.
  * <p>
- * <code>Duration</code> can uses any duration type to split the milliseconds into fields.
- * The {@link DurationType#getAllType() All} type is used by default.
- * <code>All</code> uses the ISO chronology and divide the duration into years, months,
- * weeks, days, hours, minutes, seconds and milliseconds as best it can.
+ * <code>MillisDuration</code> uses any precise duration type to split the milliseconds
+ * into fields.
+ * The {@link DurationType#getPreciseAllType() PreciseAll} type is used by default.
+ * <code>PreciseAll</code> uses the ISO chronology and fixes
+ * days at 24 hours, weeks at 7 days, months at 30 days and years at 365 days.
  * <p>
- * This class performs calculations using the individual fields.
- * The {@link ReadableDuration#isTotalMillisBased} method will always return false.
- * The total milliseconds may be calculated so long as the value of all imprecise
- * fields in the duration type are set to zero.
+ * When a precise duration is added to an instant the millisecond value of the instant
+ * is added. The field values are not used. If the addition to the instant crosses a
+ * daylight savings boundary the effect may be unexpected.
  * <p>
- * When this duration is added to an instant, the effect is of adding each field in turn.
- * As a result, this duration takes into account daylight savings time.
- * Adding a duration of 1 day to the day before daylight savings starts will only add
- * 23 hours rather than 24 to ensure that the time remains the same.
- * If this is not the behaviour you want, then see {@link MillisDuration}.
+ * For example, consider a <code>MillisDuration</code> of 1 day.
+ * This actually represents <code>24 * 60 * 60 * 1000</code> milliseconds.
+ * When you add this to a <code>DateTime</code> just before daylight savings changes
+ * the result will be to add the milliseconds. Thus the result will be one hour
+ * different on the following day.
+ * <pre>
+ * MillisDuration dur = new MillisDuration(0, 0, 0, 1, 0, 0, 0, 0); // 1 'day'
+ * DateTime dt = new DateTime(2004, 3, 27, 12, 0, 0, 0); // before DST
+ * DateTime result = new DateTime(dur.addTo(dt, 1)); // after DST
+ * // result:  2004-03-27T12:00:00 -> 2004-03-28T13:00:00 
+ * // note: result time is 13:00, as 1 day is always 24 hours in MillisDuration
+ * </pre>
+ * If this behaviour is not what you want then you should use {@link Duration}.
  * <p>
- * Duration is thread-safe and immutable, provided that the DurationType is as well.
+ * MillisDuration is thread-safe and immutable, provided that the DurationType is as well.
  * All standard DurationType classes supplied are thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
+ * @see Duration
  * @see MutableDuration
  */
-public class Duration
+public class MillisDuration
         extends AbstractDuration
         implements ReadableDuration, Serializable {
 
     /** Constant representing zero millisecond duration */
-    public static final Duration ZERO = new Duration(0L);
+    public static final MillisDuration ZERO = new MillisDuration(0L);
 
     /** Serialization version */
-    private static final long serialVersionUID = 741052353876488155L;
+    private static final long serialVersionUID = 5727916780257544L;
 
     /**
-     * Creates a duration from the given millisecond duration using AllType.
+     * Creates a duration from the given millisecond duration using PreciseAllType.
+     * <p>
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param duration  the duration, in milliseconds
      */
-    public Duration(long duration) {
-        super(duration, null, false);
+    public MillisDuration(long duration) {
+        super(duration, null, true);
     }
 
     /**
      * Creates a duration from the given millisecond duration.
+     * <p>
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this duration supports
+     * @param type  which set of fields this duration supports, null means PreciseAllType
+     * @throws IllegalArgumentException if the duration type is not precise
      */
-    public Duration(long duration, DurationType type) {
-        super(duration, type, false);
+    public MillisDuration(long duration, DurationType type) {
+        super(duration, type, true);
     }
 
     /**
-     * Create a duration from a set of field values using AllType.
-     * This constructor creates a precise duration.
+     * Create a duration from a set of field values using PreciseAllType.
      *
      * @param hours  amount of hours in this duration
      * @param minutes  amount of minutes in this duration
      * @param seconds  amount of seconds in this duration
      * @param millis  amount of milliseconds in this duration
      */
-    public Duration(int hours, int minutes, int seconds, int millis) {
-        super(0, 0, 0, 0, hours, minutes, seconds, millis, null, false);
+    public MillisDuration(int hours, int minutes, int seconds, int millis) {
+        super(0, 0, 0, 0, hours, minutes, seconds, millis, null, true);
     }
 
     /**
-     * Create a duration from a set of field values using AllType.
+     * Create a duration from a set of field values using PreciseAllType.
      *
      * @param years  amount of years in this duration
      * @param months  amount of months in this duration
@@ -138,10 +152,11 @@ public class Duration
      * @param minutes  amount of minutes in this duration
      * @param seconds  amount of seconds in this duration
      * @param millis  amount of milliseconds in this duration
+     * @throws ArithmeticException if the total millis is too large for a <code>long</code>
      */
-    public Duration(int years, int months, int weeks, int days,
+    public MillisDuration(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, null, false);
+        super(years, months, weeks, days, hours, minutes, seconds, millis, null, true);
     }
 
     /**
@@ -155,83 +170,104 @@ public class Duration
      * @param minutes  amount of minutes in this duration, which must be zero if unsupported
      * @param seconds  amount of seconds in this duration, which must be zero if unsupported
      * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this duration supports, null means PreciseAllType
+     * @throws IllegalArgumentException if the duration type is not precise
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     * @throws ArithmeticException if the total millis is too large for a <code>long</code>
      */
-    public Duration(int years, int months, int weeks, int days,
+    public MillisDuration(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis, DurationType type) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, type, false);
+        super(years, months, weeks, days, hours, minutes, seconds, millis, type, true);
     }
 
     /**
-     * Creates a duration from the given interval endpoints using AllType.
-     * This constructor creates a precise duration.
+     * Creates a duration from the given interval endpoints using PreciseAllType.
+     * <p>
+     * This constructor is a convenience for the single <code>long</code> constructor.
+     * The start and end instant play non role in determining the field values.
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    public Duration(long startInstant, long endInstant) {
-        super(startInstant, endInstant, null, false);
+    public MillisDuration(long startInstant, long endInstant) {
+        super(startInstant, endInstant, null, true);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
-     * This constructor creates a precise duration.
+     * <p>
+     * This constructor is a convenience for the single <code>long</code> constructor.
+     * The start and end instant play non role in determining the field values.
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this duration supports, null means PreciseAllType
+     * @throws IllegalArgumentException if the duration type is not precise
      */
-    public Duration(long startInstant, long endInstant, DurationType type) {
-        super(startInstant, endInstant, type, false);
+    public MillisDuration(long startInstant, long endInstant, DurationType type) {
+        super(startInstant, endInstant, type, true);
     }
 
     /**
-     * Creates a duration from the given interval endpoints using AllType.
-     * This constructor creates a precise duration.
+     * Creates a duration from the given interval endpoints using PreciseAllType.
+     * <p>
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
      */
-    public Duration(ReadableInstant startInstant, ReadableInstant endInstant) {
-        super(startInstant, endInstant, null, false);
+    public MillisDuration(ReadableInstant startInstant, ReadableInstant endInstant) {
+        super(startInstant, endInstant, null, true);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
-     * This constructor creates a precise duration.
+     * <p>
+     * This constructor is a convenience for the single <code>long</code> constructor.
+     * The start and end instant play non role in determining the field values.
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this duration supports, null means PreciseAllType
+     * @throws IllegalArgumentException if the duration type is not precise
      */
-    public Duration(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
-        super(startInstant, endInstant, type, false);
+    public MillisDuration(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+        super(startInstant, endInstant, type, true);
     }
 
     /**
      * Creates a duration from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * <p>
+     * This constructor is a convenience for the single <code>long</code> constructor.
+     * The start and end instant play non role in determining the field values.
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param duration  duration to convert
      * @throws IllegalArgumentException if duration is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public Duration(Object duration) {
-        super(duration, null, false);
+    public MillisDuration(Object duration) {
+        super(duration, null, true);
     }
 
     /**
      * Creates a duration from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * <p>
+     * The duration created using this constructor will always have normalized fields.
      *
      * @param duration  duration to convert
      * @param type  which set of fields this duration supports, null means use converter
      * @throws IllegalArgumentException if duration is invalid
+     * @throws IllegalArgumentException if the duration type is not precise
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public Duration(Object duration, DurationType type) {
-        super(duration, type, false);
+    public MillisDuration(Object duration, DurationType type) {
+        super(duration, type, true);
     }
 
     //-----------------------------------------------------------------------
@@ -245,58 +281,29 @@ public class Duration
      */
     protected final DurationType checkDurationType(DurationType type) {
         if (type == null) {
-            return DurationType.getAllType();
+            return DurationType.getPreciseAllType();
+        }
+        if (type.isPrecise() == false) {
+            throw new IllegalArgumentException("The duration type must be precise: " + type);
         }
         return type;
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new Duration instance with the same total milliseconds but
-     * different DurationType.
+     * Creates a new MillisDuration instance with the same total milliseconds but
+     * different DurationType, which must be precise.
      * 
-     * @param type  the duration type to use, null means AllType
+     * @param type  the duration type to use, null means PreciseAllType
      * @return the new duration instance
-     * @throws IllegalStateException if this duration is imprecise
+     * @throws IllegalArgumentException if the duration type is not precise
      */
-    public Duration withDurationTypeUsingTotalMillis(DurationType type) {
-        if (type == null) {
-            type = DurationType.getAllType();
-        }
+    public MillisDuration withDurationType(DurationType type) {
+        type = checkDurationType(type);
         if (type.equals(getDurationType())) {
             return this;
         }
-        return new Duration(getTotalMillis(), type);
-    }
-
-    /**
-     * Creates a new Duration instance with the same field values but
-     * different DurationType.
-     * 
-     * @param type  the duration type to use, null means AllType
-     * @return the new duration instance
-     * @throws IllegalArgumentException if the new duration won't accept all of the current fields
-     */
-    public Duration withDurationTypeUsingFields(DurationType type) {
-        if (type == null) {
-            type = DurationType.getAllType();
-        }
-        if (type.equals(getDurationType())) {
-            return this;
-        }
-        return new Duration(getYears(), getMonths(), getWeeks(), getDays(),
-                    getHours(), getMinutes(), getSeconds(), getMillis(), type);
-    }
-
-    /**
-     * Creates a new Duration instance with the same total milliseconds but
-     * all the fields normalized to be within their standard ranges.
-     * 
-     * @return the new duration instance
-     * @throws IllegalStateException if this duration is imprecise
-     */
-    public Duration withFieldsNormalized() {
-        return new Duration(getTotalMillis(), getDurationType());
+        return new MillisDuration(getTotalMillis(), type);
     }
 
     //-----------------------------------------------------------------------

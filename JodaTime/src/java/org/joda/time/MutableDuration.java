@@ -66,74 +66,78 @@ import java.io.Serializable;
  * @since 1.0
  * @see Duration
  */
-public class MutableDuration extends AbstractDuration
-    implements ReadWritableDuration, Cloneable, Serializable {
+public class MutableDuration
+        extends AbstractDuration
+        implements ReadWritableDuration, Cloneable, Serializable {
 
-    static final long serialVersionUID = 3436451121567212165L;
+    /** Serialization version */
+    private static final long serialVersionUID = 3436451121567212165L;
 
     /**
-     * Creates a zero length millisecond duration using MillisType.
-     * This constructor creates a precise duration because
-     * MillisType in ISOChronology UTC is precise.
+     * Creates a zero-length duration using AllType.
      */
     public MutableDuration() {
-        super((DurationType) null);
+        super(0L, null, false);
     }
 
     /**
-     * Creates a zero length duration.
-     * This constructor creates a precise duration.
+     * Creates a zero-length duration using the specified duration type.
      *
-     * @param type  which set of fields this duration supports, null means millis type
+     * @param type  which set of fields this duration supports
      */
     public MutableDuration(DurationType type) {
-        super(type);
+        super(0L, type, false);
     }
 
     /**
-     * Creates a duration from the specified object using the
-     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * Creates a zero-length duration using the specified duration type.
+     * <p>
+     * This constructor enables the created object to be based on total miliseconds
+     * rather than the more normal fields. A total millisecond based duration
+     * performs all calculations using the total millis and is always precise.
      *
-     * @param duration  duration to convert
-     * @throws IllegalArgumentException if duration is invalid
-     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     * @param type  which set of fields this duration supports
+     * @param totalMillisBased  true if duration treats the total millis as the master field
+     * @throws IllegalArgumentException if the duration type is imprecise and totalMillisBased is true
      */
-    public MutableDuration(Object duration) {
-        super(duration, null);
+    public MutableDuration(DurationType type, boolean totalMillisBased) {
+        super(0L, type, totalMillisBased);
     }
 
     /**
-     * Creates a duration from the specified object using the
-     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * Creates a duration from the given millisecond duration using AllType.
      *
-     * @param duration  duration to convert
-     * @param type  which set of fields this duration supports, null means use converter
-     * @throws IllegalArgumentException if duration is invalid
-     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     * @param duration  the duration, in milliseconds
      */
-    public MutableDuration(Object duration, DurationType type) {
-        super(duration, type);
+    public MutableDuration(long duration) {
+        super(duration, null, false);
     }
 
     /**
-     * Create a duration from a set of field values using DayHourType.
-     * This constructor creates a precise duration because
-     * DayHourType in ISOChronology UTC is precise.
+     * Creates a duration from the given millisecond duration.
      *
-     * @param days  amount of days in this duration
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this duration supports
+     */
+    public MutableDuration(long duration, DurationType type) {
+        super(duration, type, false);
+    }
+
+    /**
+     * Create a duration from a set of field values using AllType.
+     * This constructor creates a precise duration.
+     *
      * @param hours  amount of hours in this duration
      * @param minutes  amount of minutes in this duration
      * @param seconds  amount of seconds in this duration
      * @param millis  amount of milliseconds in this duration
      */
-    public MutableDuration(int days, int hours, int minutes, int seconds, int millis) {
-        super(0, 0, 0, days, hours, minutes, seconds, millis, DurationType.getDayHourType());
+    public MutableDuration(int hours, int minutes, int seconds, int millis) {
+        super(0, 0, 0, 0, hours, minutes, seconds, millis, null, false);
     }
 
     /**
      * Create a duration from a set of field values using AllType.
-     * AllType using ISOChronology in UTC is an imprecise duration type
-     * unless the year, month and week fields are zero.
      *
      * @param years  amount of years in this duration
      * @param months  amount of months in this duration
@@ -146,7 +150,7 @@ public class MutableDuration extends AbstractDuration
      */
     public MutableDuration(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, null);
+        super(years, months, weeks, days, hours, minutes, seconds, millis, null, false);
     }
 
     /**
@@ -161,11 +165,11 @@ public class MutableDuration extends AbstractDuration
      * @param seconds  amount of seconds in this duration, which must be zero if unsupported
      * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
      * @param type  which set of fields this duration supports, null means AllType
-     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public MutableDuration(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis, DurationType type) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, type);
+        super(years, months, weeks, days, hours, minutes, seconds, millis, type, false);
     }
 
     /**
@@ -176,7 +180,7 @@ public class MutableDuration extends AbstractDuration
      * @param endInstant  interval end, in milliseconds
      */
     public MutableDuration(long startInstant, long endInstant) {
-        super(startInstant, endInstant, null);
+        super(startInstant, endInstant, null, false);
     }
 
     /**
@@ -188,7 +192,7 @@ public class MutableDuration extends AbstractDuration
      * @param type  which set of fields this duration supports, null means AllType
      */
     public MutableDuration(long startInstant, long endInstant, DurationType type) {
-        super(startInstant, endInstant, type);
+        super(startInstant, endInstant, type, false);
     }
 
     /**
@@ -199,7 +203,7 @@ public class MutableDuration extends AbstractDuration
      * @param endInstant  interval end, null means now
      */
     public MutableDuration(ReadableInstant startInstant, ReadableInstant endInstant) {
-        super(startInstant, endInstant, null);
+        super(startInstant, endInstant, null, false);
     }
 
     /**
@@ -211,30 +215,52 @@ public class MutableDuration extends AbstractDuration
      * @param type  which set of fields this duration supports, null means AllType
      */
     public MutableDuration(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
-        super(startInstant, endInstant, type);
+        super(startInstant, endInstant, type, false);
     }
 
     /**
-     * Creates a duration from the given millisecond duration using MillisType.
-     * This constructor creates a precise duration because
-     * MillisType in ISOChronology UTC is precise.
+     * Creates a duration from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  the duration, in milliseconds
+     * @param duration  duration to convert
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(long duration) {
-        super(duration, null);
+    public MutableDuration(Object duration) {
+        super(duration, null, false);
     }
 
     /**
-     * Creates a duration from the given millisecond duration.
-     * This constructor creates a precise duration.
+     * Creates a duration from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this duration supports
-     * @throws UnsupportedOperationException if any fields are imprecise
+     * @param duration  duration to convert
+     * @param type  which set of fields this duration supports, null means use converter
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(long duration, DurationType type) {
-        super(duration, type);
+    public MutableDuration(Object duration, DurationType type) {
+        super(duration, type, false);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Validates a duration type, converting nulls to a default value and
+     * checking the type is suitable for this instance.
+     * 
+     * @param type  the type to check, may be null
+     * @return the validated type to use, not null
+     * @throws IllegalArgumentException if the duration type is not precise
+     */
+    protected DurationType checkDurationType(DurationType type) {
+        if (type == null) {
+            if (isTotalMillisBased()) {
+                return DurationType.getPreciseAllType();
+            } else {
+                return DurationType.getAllType();
+            }
+        }
+        return type;
     }
 
     //-----------------------------------------------------------------------

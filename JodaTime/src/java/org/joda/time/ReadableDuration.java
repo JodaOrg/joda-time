@@ -80,6 +80,24 @@ public interface ReadableDuration extends Comparable {
     DurationType getDurationType();
 
     /**
+     * Is this duration based on a millisecond duration and thus performs
+     * all calculations using the total millisecond value.
+     * <p>
+     * Durations operate either using the total milliseconds as the master and the
+     * field values as derived, or vice versa. This method returns true if the
+     * total millis field is the master. The effect is to control how the duration
+     * manages addition over the daylight savings boundary.
+     * <p>
+     * If true, {@link #isPrecise()} will always return true, {@link #getTotalMillis()}
+     * and {@link #compareTo(Object)} methods will never throw an exception and the
+     * add methods will add using the total milliseconds value.
+     * See {@link MillisDuration} for details.
+     *
+     * @return true if the duration is based on total milliseconds
+     */
+    boolean isTotalMillisBased();
+
+    /**
      * Gets the total length of this duration in milliseconds, 
      * failing if the duration is imprecise.
      *
@@ -217,7 +235,7 @@ public interface ReadableDuration extends Comparable {
     int getMillis();
 
     /**
-     * Get this object as an immutable Duration. This can be useful if you
+     * Gets this object as an immutable Duration. This can be useful if you
      * don't trust the implementation of the interface to be well-behaved, or
      * to get a guaranteed immutable object.
      * 

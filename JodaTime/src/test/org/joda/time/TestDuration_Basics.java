@@ -147,8 +147,15 @@ public class TestDuration_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetDurationType() {
-        Duration test = new Duration();
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
+        Duration test = new Duration(0L);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+    }
+
+    public void testGetIsTotalMillisBased() {
+        Duration test = new Duration(123L);
+        assertEquals(false, test.isTotalMillisBased());
+        test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
+        assertEquals(false, test.isTotalMillisBased());
     }
 
     public void testGetTotalMillis() {
@@ -164,10 +171,9 @@ public class TestDuration_Basics extends TestCase {
     }
 
     public void testGetMethods() {
-        Duration test = new Duration();
+        Duration test = new Duration(0L);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
-        assertEquals(0, test.getDays());
         assertEquals(0, test.getWeeks());
         assertEquals(0, test.getDays());
         assertEquals(0, test.getHours());
@@ -202,7 +208,10 @@ public class TestDuration_Basics extends TestCase {
     
     class MockDuration extends AbstractDuration {
         public MockDuration(long value) {
-            super(value, null);
+            super(value, null, false);
+        }
+        protected DurationType checkDurationType(DurationType type) {
+            return DurationType.getAllType();
         }
     }
 
@@ -561,40 +570,109 @@ public class TestDuration_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testConstant() {
         assertEquals(0L, Duration.ZERO.getTotalMillis());
-        assertEquals(DurationType.getMillisType(), Duration.ZERO.getDurationType());
+        assertEquals(DurationType.getAllType(), Duration.ZERO.getDurationType());
     }
 
     //-----------------------------------------------------------------------
-    public void testWithDurationType1() {
+    public void testWithDurationTypeUsingTotalMillis1() {
         Duration test = new Duration(123L);
-        Duration result = test.withDurationType(DurationType.getMillisType());
+        Duration result = test.withDurationTypeUsingTotalMillis(DurationType.getAllType());
         assertSame(test, result);
     }
 
-    public void testWithDurationType2() {
+    public void testWithDurationTypeUsingTotalMillis2() {
         Duration test = new Duration(3123L);
-        Duration result = test.withDurationType(DurationType.getDayHourType());
+        Duration result = test.withDurationTypeUsingTotalMillis(DurationType.getDayHourType());
         assertEquals(3, result.getSeconds());
         assertEquals(123, result.getMillis());
         assertEquals(3123L, result.getTotalMillis());
         assertEquals(DurationType.getDayHourType(), result.getDurationType());
     }
 
-    public void testWithDurationType3() {
+    public void testWithDurationTypeUsingTotalMillis3() {
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType());
         try {
-            test.withDurationType(DurationType.getDayHourType());
+            test.withDurationTypeUsingTotalMillis(DurationType.getDayHourType());
             fail();
         } catch (IllegalStateException ex) {}
     }
 
-    public void testWithDurationType4() {
+    public void testWithDurationTypeUsingTotalMillis4() {
         Duration test = new Duration(3123L);
-        Duration result = test.withDurationType(null);
+        Duration result = test.withDurationTypeUsingTotalMillis(null);
         assertEquals(3, result.getSeconds());
         assertEquals(123, result.getMillis());
         assertEquals(3123L, result.getTotalMillis());
         assertEquals(DurationType.getAllType(), result.getDurationType());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationTypeUsingFields1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationTypeUsingFields(DurationType.getAllType());
+        assertSame(test, result);
+    }
+
+    public void testWithDurationTypeUsingFields2() {
+        Duration test = new Duration(3123L);
+        Duration result = test.withDurationTypeUsingFields(DurationType.getDayHourType());
+        assertEquals(3, result.getSeconds());
+        assertEquals(123, result.getMillis());
+        assertEquals(3123L, result.getTotalMillis());
+        assertEquals(DurationType.getDayHourType(), result.getDurationType());
+    }
+
+    public void testWithDurationTypeUsingFields3() {
+        Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType());
+        try {
+            test.withDurationTypeUsingFields(DurationType.getDayHourType());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithDurationTypeUsingFields4() {
+        Duration test = new Duration(3123L);
+        Duration result = test.withDurationTypeUsingFields(null);
+        assertEquals(3, result.getSeconds());
+        assertEquals(123, result.getMillis());
+        assertEquals(3123L, result.getTotalMillis());
+        assertEquals(DurationType.getAllType(), result.getDurationType());
+    }
+
+    public void testWithDurationTypeUsingFields5() {
+        Duration test = new Duration(1, 2, 0, 4, 5, 6, 7, 8, DurationType.getAllType());
+        Duration result = test.withDurationTypeUsingFields(DurationType.getYearMonthType());
+        assertEquals(DurationType.getYearMonthType(), result.getDurationType());
+        assertEquals(1, result.getYears());
+        assertEquals(2, result.getMonths());
+        assertEquals(0, result.getWeeks());
+        assertEquals(4, result.getDays());
+        assertEquals(5, result.getHours());
+        assertEquals(6, result.getMinutes());
+        assertEquals(7, result.getSeconds());
+        assertEquals(8, result.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithFieldsNormalized1() {
+        Duration test = new Duration(1, 2, 3, 4, 5, 6, 61, 8, DurationType.getPreciseAllType());
+        Duration result = test.withFieldsNormalized();
+        assertEquals(1, result.getYears());
+        assertEquals(2, result.getMonths());
+        assertEquals(3, result.getWeeks());
+        assertEquals(4, result.getDays());
+        assertEquals(5, result.getHours());
+        assertEquals(7, result.getMinutes());
+        assertEquals(1, result.getSeconds());
+        assertEquals(8, result.getMillis());
+    }
+
+    public void testWithFieldsNormalized2() {
+        Duration test = new Duration(1, 2, 3, 4, 5, 6, 61, 8, DurationType.getAllType());
+        try {
+            test.withFieldsNormalized();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
     //-----------------------------------------------------------------------

@@ -119,13 +119,13 @@ class NullConverter extends AbstractConverter implements InstantConverter, Durat
     }
 
     /**
-     * Returns the millis duration type.
+     * Returns null to allow the caller to determine the best type.
      *
      * @param object  the object to examine
-     * @return the millis duration type
+     * @return null
      */
     public DurationType getDurationType(Object object) {
-        return DurationType.getMillisType();
+        return null;
     }
 
     //-----------------------------------------------------------------------

@@ -77,78 +77,52 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
 
     /** Serialization version */
     private static final long serialVersionUID = -2110953284060001145L;
-
-    /**
-     * Checks whether the field is supported.
-     */
-    private static void checkArgument(DurationField field, String name) {
-        if (!field.isSupported()) {
-            throw new IllegalArgumentException
-                ("Duration does not support field \"" + name + '"');
-        }
-    }
-
-    /**
-     * Checks whether the field is supported.
-     */
-    private static void checkSupport(DurationField field, String name) {
-        if (!field.isSupported()) {
-            throw new UnsupportedOperationException
-                ("Duration does not support field \"" + name + '"');
-        }
-    }
+    /** Millis cache is currently unknown */
+    private static final int STATE_UNKNOWN = 0;
+    /** Millis cache is not calculable */
+    private static final int STATE_NOT_CALCULABLE = 1;
+    /** Millis cache has been calculated and is valid */
+    private static final int STATE_CALCULATED = 2;
+    /** Total millis is the master field, fields always accurate */
+    private static final int STATE_TOTAL_MILLIS_MASTER = -1;
 
     /** The duration type that allocates the duration to fields */
     private final DurationType iType;
+    /** The object state */
+    private int iState;
     /** The total milliseconds, if known */
     private long iTotalMillis;
-    /** The milliseoond status, 0=unknown, 1=imprecise, 2=precise */
-    private int iTotalMillisState;
-
+    /** Value for years */
     private int iYears;
+    /** Value for months */
     private int iMonths;
+    /** Value for weeks */
     private int iWeeks;
+    /** Value for days */
     private int iDays;
+    /** Value for hours */
     private int iHours;
+    /** Value for minutes */
     private int iMinutes;
+    /** Value for seconds */
     private int iSeconds;
+    /** Value for millis */
     private int iMillis;
 
     /**
-     * Creates a zero length duration of the specified type.
+     * Creates a duration from the given millisecond duration.
      *
-     * @param type  which set of fields this duration supports, null means millis type
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this duration supports
+     * @param totalMillisMaster  true if the total millis is master, false if the fields are
+     * @throws IllegalArgumentException if duration type is invalid
      */
-    public AbstractDuration(DurationType type) {
+    public AbstractDuration(long duration, DurationType type, boolean totalMillisMaster) {
         super();
-        type = (type == null ? DurationType.getMillisType() : type);
+        type = init(type, totalMillisMaster);
         iType = type;
         // Only call a private method
-        setTotalMillis(type, 0L);
-    }
-
-    /**
-     * Creates a new duration based on another using the {@link ConverterManager}.
-     *
-     * @param duration  duration to convert
-     * @param type  which set of fields this duration supports, null means use type from object
-     * @throws IllegalArgumentException if duration is invalid
-     * @throws IllegalArgumentException if an unsupported field's value is non-zero
-     */
-    public AbstractDuration(Object duration, DurationType type) {
-        super();
-        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-        type = (type == null ? converter.getDurationType(duration) : type);
-        iType = type;
-        if (type.isPrecise() && converter.isPrecise(duration)) {
-            // Only call a private method
-            setTotalMillis(type, converter.getDurationMillis(duration));
-        } else if (this instanceof ReadWritableDuration) {
-            converter.setInto((ReadWritableDuration) this, duration);
-        } else {
-            // Only call a private method
-            setDuration(type, new MutableDuration(duration, type));
-        }
+        setTotalMillis(type, duration);
     }
 
     /**
@@ -162,14 +136,16 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @param minutes  amount of minutes in this duration, which must be zero if unsupported
      * @param seconds  amount of seconds in this duration, which must be zero if unsupported
      * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this duration supports
+     * @param totalMillisMaster  true if the total millis is master, false if the fields are
+     * @throws IllegalArgumentException if duration type is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public AbstractDuration(int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis,
-                            DurationType type) {
+                            DurationType type, boolean totalMillisMaster) {
         super();
-        type = (type == null ? DurationType.getAllType() : type);
+        type = init(type, totalMillisMaster);
         iType = type;
         // Only call a private method
         setDuration(type, years, months, weeks, days, hours, minutes, seconds, millis);
@@ -180,11 +156,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this duration supports
+     * @param totalMillisMaster  true if the total millis is master, false if the fields are
+     * @throws IllegalArgumentException if duration type is invalid
      */
-    public AbstractDuration(long startInstant, long endInstant, DurationType type) {
+    public AbstractDuration(long startInstant, long endInstant, DurationType type, boolean totalMillisMaster) {
         super();
-        type = (type == null ? DurationType.getAllType() : type);
+        type = init(type, totalMillisMaster);
         iType = type;
         // Only call a private method
         setTotalMillis(type, startInstant, endInstant);
@@ -195,12 +173,14 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this duration supports
+     * @param totalMillisMaster  true if the total millis is master, false if the fields are
+     * @throws IllegalArgumentException if duration type is invalid
      */
     public AbstractDuration(
-            ReadableInstant startInstant, ReadableInstant  endInstant, DurationType type) {
+            ReadableInstant startInstant, ReadableInstant  endInstant, DurationType type, boolean totalMillisMaster) {
         super();
-        type = (type == null ? DurationType.getAllType() : type);
+        type = init(type, totalMillisMaster);
         if (startInstant == null && endInstant == null) {
             iType = type;
         } else {
@@ -213,19 +193,64 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     }
 
     /**
-     * Creates a duration from the given millisecond duration. If any supported
-     * fields are imprecise, an UnsupportedOperationException is thrown. The
-     * exception to this is when the specified duration is zero.
+     * Creates a new duration based on another using the {@link ConverterManager}.
      *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this duration supports, null means MillisType
+     * @param duration  duration to convert
+     * @param type  which set of fields this duration supports, null means use type from object
+     * @param totalMillisMaster  true if the total millis is master, false if the fields are
+     * @throws IllegalArgumentException if duration is invalid
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractDuration(long duration, DurationType type) {
+    public AbstractDuration(Object duration, DurationType type, boolean totalMillisMaster) {
         super();
-        type = (type == null ? DurationType.getMillisType() : type);
+        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+        type = (type == null ? converter.getDurationType(duration) : type);
+        type = init(type, totalMillisMaster);
         iType = type;
-        setTotalMillis(type, duration); // Only call a private method
+        if (type.isPrecise() && converter.isPrecise(duration)) {
+            // Only call a private method
+            setTotalMillis(type, converter.getDurationMillis(duration));
+        } else if (this instanceof ReadWritableDuration) {
+            converter.setInto((ReadWritableDuration) this, duration);
+        } else {
+            // Only call a private method
+            setDuration(type, new MutableDuration(duration, type));
+        }
     }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Validates a duration type, converting nulls to a default value and
+     * checking the type is suitable for this instance.
+     * 
+     * @param type  the type to check
+     * @param totalMillisMaster  true if total millis should be master
+     * @return the duration type, not null
+     * @throws IllegalArgumentException if the duration type is invalid
+     */
+    private DurationType init(DurationType type, boolean totalMillisMaster) {
+        if (totalMillisMaster) {
+            iState = STATE_TOTAL_MILLIS_MASTER;
+        }
+        type = checkDurationType(type);
+        if (type == null) {
+            throw new IllegalArgumentException("The duration type must not be null");
+        }
+        if (totalMillisMaster && type.isPrecise() == false) {
+            throw new IllegalArgumentException("The duration type must be precise: " + type);
+        }
+        return type;
+    }
+
+    /**
+     * Validates a duration type, converting nulls to a default value and
+     * checking the type is suitable for this instance.
+     * 
+     * @param type  the type to check, may be null
+     * @return the validated type to use, not null
+     * @throws IllegalArgumentException if the duration type is invalid
+     */
+    protected abstract DurationType checkDurationType(DurationType type);
 
     //-----------------------------------------------------------------------
     /**
@@ -236,18 +261,41 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     }
 
     /**
+     * Is this duration based on a millisecond duration and thus performs
+     * all calculations using the total millisecond value.
+     * <p>
+     * Durations operate either using the total milliseconds as the master and the
+     * field values as derived, or vice versa. This method returns true if the
+     * total millis field is the master.
+     * <p>
+     * If true, {@link #isPrecise()} will always return true, {@link #getTotalMillis()}
+     * and {@link #compareTo(Object)} methods will never throw an exception and the
+     * add methods will add using the total milliseconds value.
+     * See {@link MillisDuration} for details.
+     *
+     * @return true if the duration is based on total milliseconds
+     */
+    public final boolean isTotalMillisBased() {
+        return (iState == STATE_TOTAL_MILLIS_MASTER);
+    }
+
+    /**
      * Gets the total length of this duration in milliseconds, 
      * failing if the duration is imprecise.
      *
      * @return the total length of the duration in milliseconds.
      * @throws IllegalStateException if the duration is imprecise
+     * @throws ArithmeticException if the millis exceeds the capacity of the duration
      */
     public final long getTotalMillis() {
-        int state = iTotalMillisState;
-        if (state == 0) {
+        int state = iState;
+        if (state == STATE_TOTAL_MILLIS_MASTER) {
+            return iTotalMillis;
+        }
+        if (state == STATE_UNKNOWN) {
             state = updateTotalMillis();
         }
-        if (state != 2) {
+        if (state != STATE_CALCULATED) {
             throw new IllegalStateException("Duration is imprecise");
         }
         return iTotalMillis;
@@ -266,91 +314,14 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @return true if the duration is precise
      */
     public final boolean isPrecise() {
-        int state = iTotalMillisState;
-        if (state == 0) {
+        int state = iState;
+        if (state == STATE_TOTAL_MILLIS_MASTER) {
+            return true;
+        }
+        if (state == STATE_UNKNOWN) {
             state = updateTotalMillis();
         }
-        return state == 2;
-    }
-
-    /**
-     * Walks through the field values, determining total millis and whether
-     * this duration is precise.
-     *
-     * @return new state
-     */
-    private int updateTotalMillis() {
-        final DurationType type = iType;
-
-        boolean isPrecise = true;
-        long totalMillis = 0;
-
-        DurationField field;
-        int value; // used to lock fields against threading issues
-        value = iYears;
-        if (value != 0) {
-            field = type.years();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iMonths;
-        if (value != 0) {
-            field = type.months();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iWeeks;
-        if (value != 0) {
-            field = type.weeks();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iDays;
-        if (value != 0) {
-            field = type.days();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iHours;
-        if (value != 0) {
-            field = type.hours();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iMinutes;
-        if (value != 0) {
-            field = type.minutes();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iSeconds;
-        if (value != 0) {
-            field = type.seconds();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-        value = iMillis;
-        if (value != 0) {
-            field = type.millis();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis += field.getMillis(value);
-            }
-        }
-
-        if (isPrecise) {
-            iTotalMillis = totalMillis;
-            return iTotalMillisState = 2;
-        } else {
-            iTotalMillis = totalMillis;
-            return iTotalMillisState = 1;
-        }
+        return (state == STATE_CALCULATED);
     }
 
     //-----------------------------------------------------------------------
@@ -734,6 +705,27 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         return ISODurationFormat.getInstance().standard().print(this);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Checks whether the field is supported.
+     */
+    private static void checkArgument(DurationField field, String name) {
+        if (!field.isSupported()) {
+            throw new IllegalArgumentException
+                ("Duration does not support field \"" + name + '"');
+        }
+    }
+
+    /**
+     * Checks whether the field is supported.
+     */
+    private static void checkSupport(DurationField field, String name) {
+        if (!field.isSupported()) {
+            throw new UnsupportedOperationException
+                ("Duration does not support field \"" + name + '"');
+        }
+    }
+
     /**
      * Sets all the fields in one go from another ReadableDuration.
      * <p>
@@ -756,14 +748,21 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * This method is private to prevent subclasses from overriding.
      */
     private void setDuration(DurationType type, ReadableDuration duration) {
-        setDuration(type,
-                    duration.getYears(), duration.getMonths(),
-                    duration.getWeeks(), duration.getDays(),
-                    duration.getHours(), duration.getMinutes(),
-                    duration.getSeconds(), duration.getMillis());
-        if (type.equals(duration.getDurationType()) && duration.isPrecise()) {
-            iTotalMillis = duration.getTotalMillis();
-            iTotalMillisState = 2;
+        if (iState == STATE_TOTAL_MILLIS_MASTER) {
+            if (duration.isPrecise() == false) {
+                throw new IllegalArgumentException("The duration to copy from must be precise");
+            }
+            setTotalMillis(type, duration.getTotalMillis());
+        } else {
+            setDuration(type,
+                        duration.getYears(), duration.getMonths(),
+                        duration.getWeeks(), duration.getDays(),
+                        duration.getHours(), duration.getMinutes(),
+                        duration.getSeconds(), duration.getMillis());
+            if (type.equals(duration.getDurationType()) && duration.isPrecise()) {
+                iTotalMillis = duration.getTotalMillis();
+                iState = STATE_CALCULATED;
+            }
         }
     }
 
@@ -820,6 +819,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             checkArgument(type.millis(), "millis");
         }
         
+        if (iState == STATE_TOTAL_MILLIS_MASTER) {
+            updateTotalMillis(years, months, weeks, days, hours, minutes, seconds, millis);
+        } else {
+            iState = STATE_UNKNOWN;
+        }
         // assign fields in one block to reduce threading issues
         iYears = years;
         iMonths = months;
@@ -829,8 +833,6 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         iMinutes = minutes;
         iSeconds = seconds;
         iMillis = millis;
-
-        iTotalMillisState = 0;
     }
 
     /**
@@ -855,6 +857,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      */
     private void setTotalMillis(DurationType type, long startInstant, long endInstant) {
         long baseTotalMillis = (endInstant - startInstant);
+        if (iState == STATE_TOTAL_MILLIS_MASTER) {
+            setTotalMillis(type, baseTotalMillis);
+            return;
+        }
         int years = 0, months = 0, weeks = 0, days = 0;
         int hours = 0, minutes = 0, seconds = 0, millis = 0;
         DurationField field;
@@ -910,7 +916,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         iMillis = millis;
         // (end - start) is excess to be discarded
         iTotalMillis = baseTotalMillis - (endInstant - startInstant);
-        iTotalMillisState = 2;
+        iState = STATE_CALCULATED;
     }
 
     /**
@@ -936,7 +942,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     private void setTotalMillis(DurationType type, long duration) {
         if (duration == 0) {
             iTotalMillis = duration;
-            iTotalMillisState = 2;
+            if (iState != STATE_TOTAL_MILLIS_MASTER) {
+                iState = STATE_CALCULATED;
+            }
 
             iYears = 0;
             iMonths = 0;
@@ -1007,7 +1015,95 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         iMillis = millis;
         // (end - start) is excess to be discarded
         iTotalMillis = duration - (duration - startInstant);
-        iTotalMillisState = 2;
+        if (iState != STATE_TOTAL_MILLIS_MASTER) {
+            iState = STATE_CALCULATED;
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Walks through the field values, determining total millis and whether
+     * this duration is precise.
+     *
+     * @return new state
+     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     */
+    private int updateTotalMillis() {
+        return updateTotalMillis(iYears, iMonths, iWeeks, iDays, iHours, iMinutes, iSeconds, iMillis);
+    }
+
+    /**
+     * Walks through the field values, determining total millis and whether
+     * this duration is precise.
+     *
+     * @return new state
+     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     */
+    private int updateTotalMillis(int years, int months, int weeks, int days,
+                                  int hours, int minutes, int seconds, int millis) {
+        final DurationType type = iType;
+
+        boolean isPrecise = true;
+        long totalMillis = 0;
+
+        DurationField field;
+        if (years != 0) {
+            field = type.years();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(years));
+            }
+        }
+        if (months != 0) {
+            field = type.months();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(months));
+            }
+        }
+        if (weeks != 0) {
+            field = type.weeks();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(weeks));
+            }
+        }
+        if (days != 0) {
+            field = type.days();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(days));
+            }
+        }
+        if (hours != 0) {
+            field = type.hours();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(hours));
+            }
+        }
+        if (minutes != 0) {
+            field = type.minutes();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(minutes));
+            }
+        }
+        if (seconds != 0) {
+            field = type.seconds();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(seconds));
+            }
+        }
+        if (millis != 0) {
+            field = type.millis();
+            if (isPrecise &= field.isPrecise()) {
+                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(millis));
+            }
+        }
+        
+        iTotalMillis = totalMillis;
+        if (iState == STATE_TOTAL_MILLIS_MASTER) {
+            return STATE_TOTAL_MILLIS_MASTER;
+        } else if (isPrecise) {
+            return iState = STATE_CALCULATED;
+        } else {
+            return iState = STATE_NOT_CALCULABLE;
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -1017,9 +1113,10 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * 
      * @param duration  the duration, in milliseconds
      * @throws IllegalStateException if the duration is imprecise
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void add(long duration) {
-        setTotalMillis(getTotalMillis() + duration);
+        setTotalMillis(FieldUtils.safeAdd(getTotalMillis(), duration));
     }
     
     /**
@@ -1036,10 +1133,6 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     
     /**
      * Normalizes all the field values in this duration.
-     * <p>
-     * Subclasses that wish to be immutable should override this method with an
-     * empty implementation that is protected and final. This also ensures that
-     * all lower subclasses are also immutable.
      *
      * @throws IllegalStateException if this duration is imprecise
      */
@@ -1063,8 +1156,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             if (years != 0) {
                 checkSupport(iType.years(), "years");
             }
-            iYears = years;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(years, iMonths, iWeeks, iDays, iHours, iMinutes, iSeconds, iMillis);
+                iYears = years;
+            } else {
+                iYears = years;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1072,10 +1170,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified years to the number of years in the duration.
      * 
      * @param years  the number of years
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addYears(int years) {
-        setYears(getYears() + years);
+        setYears(FieldUtils.safeAdd(getYears(), years));
     }
 
     //-----------------------------------------------------------------------
@@ -1087,15 +1186,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setMonths(int months) {
         if (months != iMonths) {
             if (months != 0) {
                 checkSupport(iType.months(), "months");
             }
-            iMonths = months;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, months, iWeeks, iDays, iHours, iMinutes, iSeconds, iMillis);
+                iMonths = months;
+            } else {
+                iMonths = months;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1103,10 +1207,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified months to the number of months in the duration.
      * 
      * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addMonths(int months) {
-        setMonths(getMonths() + months);
+        setMonths(FieldUtils.safeAdd(getMonths(), months));
     }
 
     //-----------------------------------------------------------------------
@@ -1118,15 +1223,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setWeeks(int weeks) {
         if (weeks != iWeeks) {
             if (weeks != 0) {
                 checkSupport(iType.weeks(), "weeks");
             }
-            iWeeks = weeks;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, iMonths, weeks, iDays, iHours, iMinutes, iSeconds, iMillis);
+                iWeeks = weeks;
+            } else {
+                iWeeks = weeks;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1134,10 +1244,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified weeks to the number of weeks in the duration.
      * 
      * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addWeeks(int weeks) {
-        setWeeks(getWeeks() + weeks);
+        setWeeks(FieldUtils.safeAdd(getWeeks(), weeks));
     }
 
     //-----------------------------------------------------------------------
@@ -1149,15 +1260,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setDays(int days) {
         if (days != iDays) {
             if (days != 0) {
                 checkSupport(iType.days(), "days");
             }
-            iDays = days;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, iMonths, iWeeks, days, iHours, iMinutes, iSeconds, iMillis);
+                iDays = days;
+            } else {
+                iDays = days;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1165,10 +1281,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified days to the number of days in the duration.
      * 
      * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addDays(int days) {
-        setDays(getDays() + days);
+        setDays(FieldUtils.safeAdd(getDays(), days));
     }
 
     //-----------------------------------------------------------------------
@@ -1180,15 +1297,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setHours(int hours) {
         if (hours != iHours) {
             if (hours != 0) {
                 checkSupport(iType.hours(), "hours");
             }
-            iHours = hours;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, iMonths, iWeeks, iDays, hours, iMinutes, iSeconds, iMillis);
+                iHours = hours;
+            } else {
+                iHours = hours;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1196,10 +1318,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified hours to the number of hours in the duration.
      * 
      * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addHours(int hours) {
-        setHours(getHours() + hours);
+        setHours(FieldUtils.safeAdd(getHours(), hours));
     }
 
     //-----------------------------------------------------------------------
@@ -1211,15 +1334,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setMinutes(int minutes) {
         if (minutes != iMinutes) {
             if (minutes != 0) {
                 checkSupport(iType.minutes(), "minutes");
             }
-            iMinutes = minutes;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, iMonths, iWeeks, iDays, iHours, minutes, iSeconds, iMillis);
+                iMinutes = minutes;
+            } else {
+                iMinutes = minutes;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1227,10 +1355,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified minutes to the number of minutes in the duration.
      * 
      * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addMinutes(int minutes) {
-        setMinutes(getMinutes() + minutes);
+        setMinutes(FieldUtils.safeAdd(getMinutes(), minutes));
     }
 
     //-----------------------------------------------------------------------
@@ -1242,15 +1371,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setSeconds(int seconds) {
         if (seconds != iSeconds) {
             if (seconds != 0) {
                 checkSupport(iType.seconds(), "seconds");
             }
-            iSeconds = seconds;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, iMonths, iWeeks, iDays, iHours, iMinutes, seconds, iMillis);
+                iSeconds = seconds;
+            } else {
+                iSeconds = seconds;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1258,10 +1392,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified seconds to the number of seconds in the duration.
      * 
      * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addSeconds(int seconds) {
-        setSeconds(getSeconds() + seconds);
+        setSeconds(FieldUtils.safeAdd(getSeconds(), seconds));
     }
 
     //-----------------------------------------------------------------------
@@ -1273,15 +1408,20 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
      */
     protected void setMillis(int millis) {
         if (millis != iMillis) {
             if (millis != 0) {
                 checkSupport(iType.millis(), "millis");
             }
-            iMillis = millis;
-            iTotalMillisState = 0;
+            if (iState == STATE_TOTAL_MILLIS_MASTER) {
+                updateTotalMillis(iYears, iMonths, iWeeks, iDays, iHours, iMinutes, iSeconds, millis);
+                iMillis = millis;
+            } else {
+                iMillis = millis;
+                iState = STATE_UNKNOWN;
+            }
         }
     }
 
@@ -1289,10 +1429,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * Adds the specified millis to the number of millis in the duration.
      * 
      * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws UnsupportedOperationException if field is not supported
+     * @throws ArithmeticException if the addition exceeds the capacity of the duration
      */
     protected void addMillis(int millis) {
-        setMillis(getMillis() + millis);
+        setMillis(FieldUtils.safeAdd(getMillis(), millis));
     }
 
 }

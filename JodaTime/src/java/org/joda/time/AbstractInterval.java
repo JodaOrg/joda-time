@@ -319,7 +319,7 @@ public abstract class AbstractInterval implements ReadableInterval {
                 duration = new Duration(getStartInstant(), getEndInstant(), type);
             }
         } else {
-            duration = duration.withDurationType(type);
+            duration = duration.withDurationTypeUsingTotalMillis(type);
         }
         return duration;
     }

@@ -148,7 +148,14 @@ public class TestMutableDuration_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetDurationType() {
         MutableDuration test = new MutableDuration();
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+    }
+
+    public void testGetIsTotalMillisBased() {
+        MutableDuration test = new MutableDuration(123L);
+        assertEquals(false, test.isTotalMillisBased());
+        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        assertEquals(false, test.isTotalMillisBased());
     }
 
     public void testGetTotalMillis() {
@@ -202,7 +209,10 @@ public class TestMutableDuration_Basics extends TestCase {
     
     class MockMutableDuration extends AbstractDuration {
         public MockMutableDuration(long value) {
-            super(value, null);
+            super(value, null, false);
+        }
+        protected DurationType checkDurationType(DurationType type) {
+            return DurationType.getAllType();
         }
     }
 

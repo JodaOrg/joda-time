@@ -394,7 +394,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_8ints2() {
-        MutableDuration test = new MutableDuration(100L);
+        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
         try {
             test.setDuration(11, 12, 13, 14, 15, 16, 17, 18);
             fail();
@@ -411,7 +411,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_8ints3() {
-        MutableDuration test = new MutableDuration(100L);
+        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
         test.setDuration(0, 0, 0, 0, 0, 0, 0, 18);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -454,7 +454,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_RD2() {
-        MutableDuration test = new MutableDuration(100L);
+        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
         try {
             test.setDuration(new MutableDuration(11, 12, 13, 14, 15, 16, 17, 18));
             fail();
@@ -471,7 +471,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_RD3() {
-        MutableDuration test = new MutableDuration(100L);
+        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
         test.setDuration(new MutableDuration(0, 0, 0, 0, 0, 0, 0, 18));
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -1015,12 +1015,15 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testNormalize2() {
-        MutableDuration test = new MutableDuration(1, 14, 0, 34, 29, 66, 67, 1008, DurationType.getPreciseYearMonthType());
+        MutableDuration test = new MutableDuration(1, 14, 0, 36, 29, 66, 67, 1008, DurationType.getPreciseYearMonthType());
+        //   365 + 14*30 + 6 days
+        // extra year created from 12 months of 30 days plus 5 extra days
+        // 2*365 +  2*30 + 1 day
         test.normalize();
         assertEquals(2, test.getYears());
         assertEquals(3, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(5, test.getDays());
+        assertEquals(2, test.getDays());
         assertEquals(6, test.getHours());
         assertEquals(7, test.getMinutes());
         assertEquals(8, test.getSeconds());

@@ -136,79 +136,67 @@ public class TestDuration_Constructors extends TestCase {
     /**
      * Test constructor ()
      */
-    public void testConstructor1() throws Throwable {
-        Duration test = new Duration();
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Test constructor (DurationType)
-     */
-    public void testConstructor_DurationType1() throws Throwable {
-        Duration test = new Duration(DurationType.getYearMonthType());
-        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-    }
-
-    public void testConstructor_DurationType2() throws Throwable {
-        Duration test = new Duration((DurationType) null);
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Test constructor (Object)
-     */
-    public void testConstructor_Object1() throws Throwable {
-        Duration test = new Duration("P1Y2M3D");
+    public void testZERO() throws Throwable {
+        Duration test = Duration.ZERO;
         assertEquals(DurationType.getAllType(), test.getDurationType());
-        assertEquals(1, test.getYears());
-        assertEquals(2, test.getMonths());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(3, test.getDays());
+        assertEquals(0, test.getDays());
         assertEquals(0, test.getHours());
         assertEquals(0, test.getMinutes());
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
-        assertEquals(false, test.isPrecise());
-        try {
-            test.getTotalMillis();
-            fail();
-        } catch (IllegalStateException ex) {}
+        assertEquals(true, test.isPrecise());
+        assertEquals(0, test.getTotalMillis());
     }
 
-    public void testConstructor_Object2() throws Throwable {
-        Duration test = new Duration((Object) null);
+    //-----------------------------------------------------------------------
+    public void testConstructor_long1() throws Throwable {
+        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
+                5 * DateTimeConstants.MILLIS_PER_HOUR +
+                6 * DateTimeConstants.MILLIS_PER_MINUTE +
+                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        Duration test = new Duration(length);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(length, test.getTotalMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_long_DurationType1() throws Throwable {
+        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
+                5 * DateTimeConstants.MILLIS_PER_HOUR +
+                6 * DateTimeConstants.MILLIS_PER_MINUTE +
+                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        Duration test = new Duration(length, null);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(length, test.getTotalMillis());
+    }
+
+    public void testConstructor_long_DurationType2() throws Throwable {
+        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
+                5 * DateTimeConstants.MILLIS_PER_HOUR +
+                6 * DateTimeConstants.MILLIS_PER_MINUTE +
+                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        Duration test = new Duration(length, DurationType.getMillisType());
         assertEquals(DurationType.getMillisType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -217,120 +205,17 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(0, test.getHours());
         assertEquals(0, test.getMinutes());
         assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
+        assertEquals(length, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
+        assertEquals(length, test.getTotalMillis());
     }
 
-    public void testConstructor_Object3() throws Throwable {
-        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()));
-        assertEquals(DurationType.getDayHourType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(1, test.getHours());
-        assertEquals(2, test.getMinutes());
-        assertEquals(3, test.getSeconds());
-        assertEquals(4, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
-            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
-    }
-
-    public void testConstructor_Object4() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration base = new Duration(dt1, dt2);  // AllType and precise
-        Duration test = new Duration(base);
-        assertEquals(DurationType.getAllType(), test.getDurationType());
-        assertEquals(1, test.getYears());
-        assertEquals(1, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(1, test.getDays());
-        assertEquals(1, test.getHours());
-        assertEquals(1, test.getMinutes());
-        assertEquals(1, test.getSeconds());
-        assertEquals(1, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Test constructor (Object)
-     */
-    public void testConstructor_Object_DurationType1() throws Throwable {
-        Duration test = new Duration("P1Y2M3D", DurationType.getYearMonthType());
-        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
-        assertEquals(1, test.getYears());
-        assertEquals(2, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(3, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(false, test.isPrecise());
-        try {
-            test.getTotalMillis();
-            fail();
-        } catch (IllegalStateException ex) {}
-    }
-
-    public void testConstructor_Object_DurationType2() throws Throwable {
-        Duration test = new Duration((Object) null, DurationType.getYearMonthType());
-        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(0, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(0, test.getTotalMillis());
-    }
-
-    public void testConstructor_Object_DurationType3() throws Throwable {
-        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), DurationType.getYearMonthType());
-        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(1, test.getHours());
-        assertEquals(2, test.getMinutes());
-        assertEquals(3, test.getSeconds());
-        assertEquals(4, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
-            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
-    }
-
-    public void testConstructor_Object_DurationType4() throws Throwable {
-        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), null);
-        assertEquals(DurationType.getDayHourType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(1, test.getHours());
-        assertEquals(2, test.getMinutes());
-        assertEquals(3, test.getSeconds());
-        assertEquals(4, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
-            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Test constructor (5ints)
-     */
-    public void testConstructor_5int1() throws Throwable {
-        Duration test = new Duration(4, 5, 6, 7, 8);
+    public void testConstructor_long_DurationType3() throws Throwable {
+        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
+                5 * DateTimeConstants.MILLIS_PER_HOUR +
+                6 * DateTimeConstants.MILLIS_PER_MINUTE +
+                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        Duration test = new Duration(length, DurationType.getDayHourType());
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -341,7 +226,45 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(4 * DateTimeConstants.MILLIS_PER_DAY +
+        assertEquals(length, test.getTotalMillis());
+    }
+
+    public void testConstructor_long_DurationType4() throws Throwable {
+        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
+                5 * DateTimeConstants.MILLIS_PER_HOUR +
+                6 * DateTimeConstants.MILLIS_PER_MINUTE +
+                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        Duration test = new Duration(length, DurationType.getAllType().withMillisRemoved());
+        assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(0, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(length - 8, test.getTotalMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Test constructor (4ints)
+     */
+    public void testConstructor_4int1() throws Throwable {
+        Duration test = new Duration(5, 6, 7, 8);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(
             5 * DateTimeConstants.MILLIS_PER_HOUR + 6 * DateTimeConstants.MILLIS_PER_MINUTE +
             7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.getTotalMillis());
     }
@@ -674,100 +597,143 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testConstructor_long1() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length);
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
+    /**
+     * Test constructor (Object)
+     */
+    public void testConstructor_Object1() throws Throwable {
+        Duration test = new Duration("P1Y2M3D");
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
+        assertEquals(3, test.getDays());
         assertEquals(0, test.getHours());
         assertEquals(0, test.getMinutes());
         assertEquals(0, test.getSeconds());
-        assertEquals(length, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
+        assertEquals(0, test.getMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.getTotalMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
     }
 
-    //-----------------------------------------------------------------------
-    public void testConstructor_long_DurationType1() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, null);
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(length, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
-    }
-
-    public void testConstructor_long_DurationType2() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, DurationType.getMillisType());
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(length, test.getMillis());
-        assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
-    }
-
-    public void testConstructor_long_DurationType3() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, DurationType.getAllType());
+    public void testConstructor_Object2() throws Throwable {
+        Duration test = new Duration((Object) null);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(4, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
-        assertEquals(8, test.getMillis());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length, test.getTotalMillis());
+        assertEquals(0, test.getTotalMillis());
     }
 
-    public void testConstructor_long_DurationType4() throws Throwable {
-        long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
-                5 * DateTimeConstants.MILLIS_PER_HOUR +
-                6 * DateTimeConstants.MILLIS_PER_MINUTE +
-                7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, DurationType.getAllType().withMillisRemoved());
-        assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
+    public void testConstructor_Object3() throws Throwable {
+        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()));
+        assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
-        assertEquals(4, test.getDays());
-        assertEquals(5, test.getHours());
-        assertEquals(6, test.getMinutes());
-        assertEquals(7, test.getSeconds());
+        assertEquals(0, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(2, test.getMinutes());
+        assertEquals(3, test.getSeconds());
+        assertEquals(4, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
+            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
+    }
+
+    public void testConstructor_Object4() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        Duration base = new Duration(dt1, dt2);  // AllType and precise
+        Duration test = new Duration(base);
+        assertEquals(DurationType.getAllType(), test.getDurationType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Test constructor (Object)
+     */
+    public void testConstructor_Object_DurationType1() throws Throwable {
+        Duration test = new Duration("P1Y2M3D", DurationType.getYearMonthType());
+        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(3, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+        assertEquals(false, test.isPrecise());
+        try {
+            test.getTotalMillis();
+            fail();
+        } catch (IllegalStateException ex) {}
+    }
+
+    public void testConstructor_Object_DurationType2() throws Throwable {
+        Duration test = new Duration((Object) null, DurationType.getYearMonthType());
+        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
         assertEquals(true, test.isPrecise());
-        assertEquals(length - 8, test.getTotalMillis());
+        assertEquals(0, test.getTotalMillis());
+    }
+
+    public void testConstructor_Object_DurationType3() throws Throwable {
+        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), DurationType.getYearMonthType());
+        assertEquals(DurationType.getYearMonthType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(2, test.getMinutes());
+        assertEquals(3, test.getSeconds());
+        assertEquals(4, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
+            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
+    }
+
+    public void testConstructor_Object_DurationType4() throws Throwable {
+        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), null);
+        assertEquals(DurationType.getDayHourType(), test.getDurationType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(2, test.getMinutes());
+        assertEquals(3, test.getSeconds());
+        assertEquals(4, test.getMillis());
+        assertEquals(true, test.isPrecise());
+        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + 2 * DateTimeConstants.MILLIS_PER_MINUTE +
+            3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
     }
 
 }

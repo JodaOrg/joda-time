@@ -169,7 +169,7 @@ public class TestNullConverter extends TestCase {
     }
 
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getMillisType(), NullConverter.INSTANCE.getDurationType(null));
+        assertEquals(null, NullConverter.INSTANCE.getDurationType(null));
     }
 
     public void testIsPrecise_Object() throws Exception {

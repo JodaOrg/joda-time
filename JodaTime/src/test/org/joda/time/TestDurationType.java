@@ -491,6 +491,60 @@ public class TestDurationType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testPreciseDayHourType() throws Exception {
+        DurationType type = DurationType.getPreciseDayHourType();
+        assertEquals(false, type.years().isSupported());
+        assertEquals(false, type.months().isSupported());
+        assertEquals(false, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(true, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == DurationType.getPreciseDayHourType());
+        assertEquals(false, type.equals(DurationType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == DurationType.getPreciseDayHourType().hashCode());
+        assertEquals(false, type.hashCode() == DurationType.getAllType().hashCode());
+        assertEquals("PreciseDayHourType", type.getName());
+        assertEquals("DurationType[PreciseDayHourType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPreciseYearDayType() throws Exception {
+        DurationType type = DurationType.getPreciseYearDayType();
+        assertEquals(true, type.years().isSupported());
+        assertEquals(false, type.months().isSupported());
+        assertEquals(false, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(true, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == DurationType.getPreciseYearDayType());
+        assertEquals(false, type.equals(DurationType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == DurationType.getPreciseYearDayType().hashCode());
+        assertEquals(false, type.hashCode() == DurationType.getAllType().hashCode());
+        assertEquals("PreciseYearDayType", type.getName());
+        assertEquals("DurationType[PreciseYearDayType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+    }
+
+    //-----------------------------------------------------------------------
     public void testPreciseYearWeekType() throws Exception {
         DurationType type = DurationType.getPreciseYearWeekType();
         assertEquals(true, type.years().isSupported());

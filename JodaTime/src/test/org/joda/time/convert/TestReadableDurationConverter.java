@@ -128,7 +128,7 @@ public class TestReadableDurationConverter extends TestCase {
     }
 
     public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getMillisType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L)));
+        assertEquals(DurationType.getMillisType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L, DurationType.getMillisType())));
         assertEquals(DurationType.getAllType(), ReadableDurationConverter.INSTANCE.getDurationType(new Duration(1, 2, 0, 1, 0, 0, 0, 0)));
     }
 

@@ -22,9 +22,9 @@ This document outlines what you really need to know to use the API.
 <section name="Chronology">
 
 <p>
-The Joda-Time design is based around the <a href="apidocs\org\joda\time\Chronology.html">Chronology</a>.
+The Joda-Time design is based around the <a href="apidocs/org/joda/time/Chronology.html">Chronology</a>.
 This is the calculation engine that defines the complex rules for a calendar system.
-It uses a number of <a href="apidocs\org\joda\time\DateTimeField.html">fields</a>
+It uses a number of <a href="apidocs/org/joda/time/DateTimeField.html">fields</a>
 to split the time, stored in milliseconds, into a recognisable fields like 'day of week'.
 </p>
 <p>
@@ -52,7 +52,7 @@ or if you need a specific chronology like BuddhistChronology.
 
 <p>
 Joda-Time defines a number of new interfaces.
-The most important is <a href="apidocs\org\joda\time\ReadableInstant.html">ReadableInstant</a>.
+The most important is <a href="apidocs/org/joda/time/ReadableInstant.html">ReadableInstant</a>.
 This defines an instant in time that can be read.
 Other interfaces are defined for datetimes and durations.
 </p>
@@ -67,13 +67,13 @@ The design principle is the same as the Java Collections Framework (List/Map/Set
 <section name="DateTime">
 
 <p>
-The main date instance used is <a href="apidocs\org\joda\time\DateTime.html">DateTime</a>.
+The main date instance used is <a href="apidocs/org/joda/time/DateTime.html">DateTime</a>.
 This holds the millisecond time of the date and the chronology used to calculate the fields.
 DateTime is immutable, and once created the values do not change.
 Thus, this class can safely be passed around and used in multiple threads without synchronization.
 </p>
 <p>
-A companion class to DateTime is <a href="apidocs\org\joda\time\MutableDateTime.html">MutableDateTime</a>.
+A companion class to DateTime is <a href="apidocs/org/joda/time/MutableDateTime.html">MutableDateTime</a>.
 This class is mutable, and has a full set of set and add methods.
 When calculating a date, or making changes, this is the best class to use.
 </p>
@@ -91,7 +91,7 @@ Interoperability is also made simple via the <code>toDate()</code>, <code>toCale
 The main API of DateTime has been kept small, limited to just get methods for each field.
 There is much more power available however through the use of <i>properties</i>.
 In addition to the <code>getDayOfYear()</code> method you will find <code>dayOfYear()</code>.
-This returns a <a href="apidocs\org\joda\time\DateTimeFieldProperty.html">property</a> with considerable functionality.
+This returns a <a href="apidocs/org/joda/time/DateTimeFieldProperty.html">property</a> with considerable functionality.
 </p>
 <p>
 The property has methods to:

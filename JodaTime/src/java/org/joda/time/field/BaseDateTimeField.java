@@ -278,6 +278,9 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
     public int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+        if (valueToAdd == 0) {
+            return values;
+        }
         // there are more efficient algorithms than this (especially for time only fields)
         // trouble is when dealing with days and months, so we use this technique of
         // adding/removing one from the larger field at a time
@@ -288,7 +291,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
             long proposed = values[fieldIndex] + valueToAdd;
             if (proposed <= max) {
                 values[fieldIndex] = (int) proposed;
-                return values;
+                break;
             }
             if (nextField == null) {
                 if (fieldIndex == 0) {
@@ -308,7 +311,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
             long proposed = values[fieldIndex] + valueToAdd;
             if (proposed >= min) {
                 values[fieldIndex] = (int) proposed;
-                return values;
+                break;
             }
             if (nextField == null) {
                 if (fieldIndex == 0) {
@@ -323,7 +326,8 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
             values = nextField.add(instant, fieldIndex - 1, values, -1);
             values[fieldIndex] = getMaximumValue(instant, values);
         }
-        return values;
+        
+        return set(instant, fieldIndex, values, values[fieldIndex]);  // adjusts smaller fields
     }
 
     /**
@@ -388,7 +392,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
         int current = values[fieldIndex];
         int wrapped = FieldUtils.getWrappedValue
             (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
-        return set(instant, fieldIndex, values, wrapped);
+        return set(instant, fieldIndex, values, wrapped);  // adjusts smaller fields
     }
 
     //-----------------------------------------------------------------------
@@ -475,8 +479,21 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @throws IllegalArgumentException if the value is invalid
      */
     public int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue) {
-        FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(instant), getMaximumValue(instant));
+        FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(instant, values), getMaximumValue(instant, values));
         values[fieldIndex] = newValue;
+        
+        // may need to adjust smaller fields
+        if (fieldIndex < instant.getFieldSize()) {
+            for (int i = fieldIndex + 1; i < instant.getFieldSize(); i++) {
+                DateTimeField field = instant.getField(i);
+                if (values[i] > field.getMaximumValue(instant, values)) {
+                    values[i] = field.getMaximumValue(instant, values);
+                }
+                if (values[i] < field.getMinimumValue(instant, values)) {
+                    values[i] = field.getMinimumValue(instant, values);
+                }
+            }
+        }
         return values;
     }
 

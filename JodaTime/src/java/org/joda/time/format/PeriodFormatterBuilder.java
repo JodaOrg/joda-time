@@ -600,7 +600,7 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Append a separator, which is output only if fields are printed after the separator.
+     * Append a separator, which is output only if fields are printed before the separator.
      * <p>
      * For example, <code>builder.appendDays().appendSeparator(",").appendHours()</code>
      * will only output the comma if the days fields is output.

@@ -80,10 +80,21 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
     /** A desriptive name for the field */
     private final String iName;
 
+    /**
+     * Constructor.
+     * 
+     * @param field  the field being decorated
+     */
     protected DelegatedDateTimeField(DateTimeField field) {
         this(field, null);
     }
 
+    /**
+     * Constructor.
+     * 
+     * @param field  the field being decorated
+     * @param name  the name of the field
+     */
     protected DelegatedDateTimeField(DateTimeField field, String name) {
         super();
         if (field == null) {

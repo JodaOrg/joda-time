@@ -82,7 +82,10 @@ public abstract class DecoratedDateTimeField extends AbstractDateTimeField {
     private final DateTimeField iField;
 
     /**
-     * @param name allow name to be overridden
+     * Constructor.
+     * 
+     * @param field  the field being decorated
+     * @param name  allow name to be overridden
      */
     protected DecoratedDateTimeField(DateTimeField field, String name) {
         super(name);

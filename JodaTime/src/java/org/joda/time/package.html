@@ -161,11 +161,11 @@ and providing a means to resolve to a millisecond value on demand.
 <p>
 Since a partial does not represent a specific point in time, it must be
 <i>resolved</i> to create a full instant. For example, a <code>TimeOfDay</code>
-might represent 12:30. To convert to a <code>DateTime</code> requires the
-specification of a date, and is performed using the <code>resolve</code>
-methods of <code>ReadablePartial</code>. For example,
+might represent 12:30. To convert to a <code>DateTime</code> you must specify
+the missing date fields via one of the <code>toDateTime</code> methods.
+For example,
 <pre>
-    <code>new TimeOfDay("12:30").resolveDateTime(new DateTime("2004-06-07T06:00"));</code>
+    <code>new TimeOfDay("12:30").toDateTime(new DateTime("2004-06-07T06:00"));</code>
 </pre>
 equals
 <pre>

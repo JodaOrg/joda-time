@@ -311,9 +311,13 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(false, test2.isEqual(new MockInstant()));
         assertEquals(true, test1.isEqual(new MockInstant()));
         
-        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC + 1).isEqual(null));
-        assertEquals(true, new DateMidnight(TEST_TIME_NOW_UTC).isEqual(null));
-        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC - 1).isEqual(null));
+        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC + DateTimeConstants.MILLIS_PER_DAY, DateTimeZone.UTC).isEqual(null));
+        assertEquals(true, new DateMidnight(TEST_TIME_NOW_UTC, DateTimeZone.UTC).isEqual(null));
+        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC - DateTimeConstants.MILLIS_PER_DAY, DateTimeZone.UTC).isEqual(null));
+        
+        assertEquals(false, new DateMidnight(2004, 6, 9).isEqual(new DateTime(2004, 6, 8, 23, 59, 59, 999)));
+        assertEquals(true, new DateMidnight(2004, 6, 9).isEqual(new DateTime(2004, 6, 9, 0, 0, 0, 0)));
+        assertEquals(false, new DateMidnight(2004, 6, 9).isEqual(new DateTime(2004, 6, 9, 0, 0, 0, 1)));
     }
     
     public void testIsBefore() {
@@ -336,9 +340,13 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(false, test2.isBefore(new MockInstant()));
         assertEquals(false, test1.isBefore(new MockInstant()));
         
-        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC + 1).isBefore(null));
-        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC).isBefore(null));
-        assertEquals(true, new DateMidnight(TEST_TIME_NOW_UTC - 1).isBefore(null));
+        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC + DateTimeConstants.MILLIS_PER_DAY, DateTimeZone.UTC).isBefore(null));
+        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC, DateTimeZone.UTC).isBefore(null));
+        assertEquals(true, new DateMidnight(TEST_TIME_NOW_UTC - DateTimeConstants.MILLIS_PER_DAY, DateTimeZone.UTC).isBefore(null));
+        
+        assertEquals(false, new DateMidnight(2004, 6, 9).isBefore(new DateTime(2004, 6, 8, 23, 59, 59, 999)));
+        assertEquals(false, new DateMidnight(2004, 6, 9).isBefore(new DateTime(2004, 6, 9, 0, 0, 0, 0)));
+        assertEquals(true, new DateMidnight(2004, 6, 9).isBefore(new DateTime(2004, 6, 9, 0, 0, 0, 1)));
     }
     
     public void testIsAfter() {
@@ -361,9 +369,13 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(true, test2.isAfter(new MockInstant()));
         assertEquals(false, test1.isAfter(new MockInstant()));
         
-        assertEquals(true, new DateMidnight(TEST_TIME_NOW_UTC + 1).isAfter(null));
-        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC).isAfter(null));
-        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC - 1).isAfter(null));
+        assertEquals(true, new DateMidnight(TEST_TIME_NOW_UTC + DateTimeConstants.MILLIS_PER_DAY, DateTimeZone.UTC).isAfter(null));
+        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC, DateTimeZone.UTC).isAfter(null));
+        assertEquals(false, new DateMidnight(TEST_TIME_NOW_UTC - DateTimeConstants.MILLIS_PER_DAY, DateTimeZone.UTC).isAfter(null));
+        
+        assertEquals(true, new DateMidnight(2004, 6, 9).isAfter(new DateTime(2004, 6, 8, 23, 59, 59, 999)));
+        assertEquals(false, new DateMidnight(2004, 6, 9).isAfter(new DateTime(2004, 6, 9, 0, 0, 0, 0)));
+        assertEquals(false, new DateMidnight(2004, 6, 9).isAfter(new DateTime(2004, 6, 9, 0, 0, 0, 1)));
     }
     
     //-----------------------------------------------------------------------

@@ -247,6 +247,7 @@ public class Interval
      *
      * @param startInstant  the start instant for the new interval
      * @return an interval with the end from this interval and the specified start
+     * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public final Interval withStartMillis(long startInstant) {
         if (startInstant == getStartMillis()) {
@@ -260,6 +261,7 @@ public class Interval
      *
      * @param start  the start instant for the new interval, null means now
      * @return an interval with the end from this interval and the specified start
+     * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public final Interval withStartInstant(ReadableInstant start) {
         long startMillis = DateTimeUtils.getInstantMillis(start);
@@ -271,6 +273,7 @@ public class Interval
      *
      * @param endInstant  the end instant for the new interval
      * @return an interval with the start from this interval and the specified end
+     * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public final Interval withEndMillis(long endInstant) {
         if (endInstant == getEndMillis()) {
@@ -284,6 +287,7 @@ public class Interval
      *
      * @param end  the end instant for the new interval, null means now
      * @return an interval with the start from this interval and the specified end
+     * @throws IllegalArgumentException if the resulting interval has end before start
      */
     public final Interval withEndInstant(ReadableInstant end) {
         long endMillis = DateTimeUtils.getInstantMillis(end);

@@ -495,4 +495,82 @@ public class TestInterval_Basics extends TestCase {
         assertEquals("2004-06-09T07:08:09.010/2005-08-13T12:14:16.018", test.toString());
     }
 
+    //-----------------------------------------------------------------------
+    public void testWithStartMillis_long1() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withStartMillis(TEST_TIME1 - 1);
+        assertEquals(TEST_TIME1 - 1, result.getStartMillis());
+        assertEquals(TEST_TIME2, result.getEndMillis());
+    }
+
+    public void testWithStartMillis_long2() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        try {
+            test.withStartMillis(TEST_TIME2 + 1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithStartInstant_RI1() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withStartInstant(new Instant(TEST_TIME1 - 1));
+        assertEquals(TEST_TIME1 - 1, result.getStartMillis());
+        assertEquals(TEST_TIME2, result.getEndMillis());
+    }
+
+    public void testWithStartInstant_RI2() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        try {
+            test.withStartInstant(new Instant(TEST_TIME2 + 1));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithStartInstant_RI3() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withStartInstant(null);
+        assertEquals(TEST_TIME_NOW, result.getStartMillis());
+        assertEquals(TEST_TIME2, result.getEndMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithEndMillis_long1() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withEndMillis(TEST_TIME2 - 1);
+        assertEquals(TEST_TIME1, result.getStartMillis());
+        assertEquals(TEST_TIME2 - 1, result.getEndMillis());
+    }
+
+    public void testWithEndMillis_long2() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        try {
+            test.withEndMillis(TEST_TIME1 - 1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithEndInstant_RI1() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withEndInstant(new Instant(TEST_TIME2 - 1));
+        assertEquals(TEST_TIME1, result.getStartMillis());
+        assertEquals(TEST_TIME2 - 1, result.getEndMillis());
+    }
+
+    public void testWithEndInstant_RI2() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        try {
+            test.withEndInstant(new Instant(TEST_TIME1 - 1));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithEndInstant_RI3() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withEndInstant(null);
+        assertEquals(TEST_TIME1, result.getStartMillis());
+        assertEquals(TEST_TIME_NOW, result.getEndMillis());
+    }
+
 }

@@ -438,4 +438,60 @@ public class TestDuration_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_RD1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(8000L));
+        assertEquals(8123L, result.getMillis());
+    }
+
+    public void testWithDurationAdded_RD2() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(0L));
+        assertSame(test, result);
+    }
+
+    public void testWithDurationAdded_RD3() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_RD_int1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(8000L), 1);
+        assertEquals(8123L, result.getMillis());
+    }
+
+    public void testWithDurationAdded_RD_int2() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(8000L), 2);
+        assertEquals(16123L, result.getMillis());
+    }
+
+    public void testWithDurationAdded_RD_int3() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(8000L), -1);
+        assertEquals((123L - 8000L), result.getMillis());
+    }
+
+    public void testWithDurationAdded_RD_int4() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(0L), 1);
+        assertSame(test, result);
+    }
+
+    public void testWithDurationAdded_RD_int5() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(new Duration(8000L), 0);
+        assertSame(test, result);
+    }
+
+    public void testWithDurationAdded_RD_int6() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(null, 0);
+        assertSame(test, result);
+    }
+
 }

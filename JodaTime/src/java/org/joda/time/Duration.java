@@ -202,7 +202,10 @@ public class Duration
      * @return the new duration instance
      */
     public final Duration withDurationAdded(ReadableDuration durationToAdd) {
-        return withDurationAdded(durationToAdd, 1);
+        if (durationToAdd == null) {
+            return this;
+        }
+        return withDurationAdded(durationToAdd.getMillis(), 1);
     }
 
     /**
@@ -218,9 +221,7 @@ public class Duration
         if (durationToAdd == null || scalar == 0) {
             return this;
         }
-        long add = FieldUtils.safeMultiply(durationToAdd.getMillis(), scalar);
-        long duration = FieldUtils.safeAdd(getMillis(), add);
-        return new Duration(duration);
+        return withDurationAdded(durationToAdd.getMillis(), scalar);
     }
 
 }

@@ -5,7 +5,7 @@
   <id>joda-time</id>
   <name>Joda time</name>
   <groupId>joda-time</groupId>
-  <currentVersion>0.5</currentVersion>
+  <currentVersion>0.91</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
@@ -16,12 +16,12 @@
   <logo>http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2</logo>
 
   <description>
-    Utility classes that aid integration between time and objects.
+    Date and time library to replace JDK date handling.
   </description>
-  <shortDescription>Joda primitive type utilities</shortDescription>
+  <shortDescription>Joda time</shortDescription>
   <url>http://joda-time.sourceforge.net</url>
   
-  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&group_id=97367&func=browse</issueTrackingUrl>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
   
   <siteAddress>shell.sourceforge.net</siteAddress>
   <siteDirectory>/home/groups/j/jo/joda-time/htdocs/</siteDirectory>

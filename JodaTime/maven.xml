@@ -1,4 +1,35 @@
 <project default="java:jar"
-  xmlns:j="jelly:core">
+  xmlns:j="jelly:core"
+  xmlns:ant="jelly:ant">
 
+  <postGoal name="java:compile">
+    <ant:mkdir dir="${maven.build.dest}/org/joda/time/tz/data" />
+    <ant:java classname="org.joda.time.tz.ZoneInfoCompiler"
+          fork="true"
+          dir="${pom.build.sourceDirectory}/org/joda/time/tz/src"
+          failonerror="true">
+      <classpath path="${maven.build.dest}" />
+      <!-- Override default provider since data directory doesn't exist yet -->
+      <sysproperty key="org.joda.time.DateTimeZone.Provider"
+                   value="org.joda.time.DateTimeZone$UTCProvider" />
+      <!-- Specify destination directory for compiled data files -->
+      <arg line="-d ${maven.build.dest}/org/joda/time/tz/data" />
+      <!-- Specify all the data files to compile -->
+      <arg value="africa" />
+      <arg value="antarctica" />
+      <arg value="asia" />
+      <arg value="australasia" />
+      <arg value="europe" />
+      <arg value="northamerica" />
+      <arg value="southamerica" />
+      <arg value="pacificnew" />
+      <arg value="etcetera" />
+      <arg value="backward" />
+      <arg value="systemv" />
+      <arg value="solar87" />
+      <arg value="solar88" />
+      <arg value="solar89" />
+    </ant:java>
+  </postGoal>
+  
 </project>

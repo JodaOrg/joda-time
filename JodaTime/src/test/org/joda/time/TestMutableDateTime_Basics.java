@@ -227,6 +227,23 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals(false, test1.hashCode() == test3.hashCode());
         assertEquals(false, test2.hashCode() == test3.hashCode());
         
+        DateTime test4 = new DateTime(TEST_TIME2);
+        assertEquals(true, test4.equals(test3));
+        assertEquals(true, test3.equals(test4));
+        assertEquals(false, test4.equals(test1));
+        assertEquals(false, test1.equals(test4));
+        assertEquals(true, test3.hashCode() == test4.hashCode());
+        assertEquals(false, test1.hashCode() == test4.hashCode());
+        
+        MutableDateTime test5 = new MutableDateTime(TEST_TIME2);
+        test5.setRounding(ISOChronology.getInstance().millisOfSecond());
+        assertEquals(true, test5.equals(test3));
+        assertEquals(true, test5.equals(test4));
+        assertEquals(true, test3.equals(test5));
+        assertEquals(true, test4.equals(test5));
+        assertEquals(true, test3.hashCode() == test5.hashCode());
+        assertEquals(true, test4.hashCode() == test5.hashCode());
+        
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInstant()));
         assertEquals(false, test1.equals(new MutableDateTime(TEST_TIME1, GregorianChronology.getInstance())));
@@ -616,6 +633,118 @@ public class TestMutableDateTime_Basics extends TestCase {
         result = test.toGregorianCalendar();
         assertEquals(test.getMillis(), result.getTime().getTime());
         assertEquals(TimeZone.getTimeZone("Europe/Paris"), result.getTimeZone());
+    }
+
+    public void testClone() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime result = (MutableDateTime) test.clone();
+        assertEquals(true, test.equals(result));
+        assertEquals(true, test != result);
+    }
+
+    public void testCopy() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime result = test.copy();
+        assertEquals(true, test.equals(result));
+        assertEquals(true, test != result);
+    }
+
+    public void testRounding1() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        test.setRounding(ISOChronology.getInstance().hourOfDay());
+        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
+        assertEquals(MutableDateTime.ROUND_FLOOR, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+    }
+
+    public void testRounding2() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_CEILING);
+        assertEquals("2002-06-09T06:00:00.000+01:00", test.toString());
+        assertEquals(MutableDateTime.ROUND_CEILING, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+    }
+
+    public void testRounding3() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_CEILING);
+        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
+        assertEquals(MutableDateTime.ROUND_HALF_CEILING, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+        
+        test = new MutableDateTime(2002, 6, 9, 5, 30, 0, 0);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_CEILING);
+        assertEquals("2002-06-09T06:00:00.000+01:00", test.toString());
+    }
+
+    public void testRounding4() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_FLOOR);
+        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
+        assertEquals(MutableDateTime.ROUND_HALF_FLOOR, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+        
+        test = new MutableDateTime(2002, 6, 9, 5, 30, 0, 0);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_FLOOR);
+        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
+    }
+
+    public void testRounding5() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_EVEN);
+        assertEquals("2002-06-09T05:00:00.000+01:00", test.toString());
+        assertEquals(MutableDateTime.ROUND_HALF_EVEN, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+        
+        test = new MutableDateTime(2002, 6, 9, 5, 30, 0, 0);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_EVEN);
+        assertEquals("2002-06-09T06:00:00.000+01:00", test.toString());
+        
+        test = new MutableDateTime(2002, 6, 9, 4, 30, 0, 0);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_HALF_EVEN);
+        assertEquals("2002-06-09T04:00:00.000+01:00", test.toString());
+    }
+
+    public void testRounding6() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_NONE);
+        assertEquals("2002-06-09T05:06:07.008+01:00", test.toString());
+        assertEquals(MutableDateTime.ROUND_NONE, test.getRoundingMode());
+        assertEquals(null, test.getRoundingField());
+    }
+
+    public void testRounding7() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        try {
+            test.setRounding(ISOChronology.getInstance().hourOfDay(), -1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testRounding8() {
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);
+        assertEquals(MutableDateTime.ROUND_NONE, test.getRoundingMode());
+        assertEquals(null, test.getRoundingField());
+        
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_CEILING);
+        assertEquals(MutableDateTime.ROUND_CEILING, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+        
+        test.setRounding(ISOChronology.getInstance().hourOfDay(), MutableDateTime.ROUND_NONE);
+        assertEquals(MutableDateTime.ROUND_NONE, test.getRoundingMode());
+        assertEquals(null, test.getRoundingField());
+        
+        test.setRounding(null, -1);
+        assertEquals(MutableDateTime.ROUND_NONE, test.getRoundingMode());
+        assertEquals(null, test.getRoundingField());
+        
+        test.setRounding(ISOChronology.getInstance().hourOfDay());
+        assertEquals(MutableDateTime.ROUND_FLOOR, test.getRoundingMode());
+        assertEquals(ISOChronology.getInstance().hourOfDay(), test.getRoundingField());
+        
+        test.setRounding(null);
+        assertEquals(MutableDateTime.ROUND_NONE, test.getRoundingMode());
+        assertEquals(null, test.getRoundingField());
     }
 
 }

@@ -83,6 +83,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestMutableDateTime_Basics.suite());
         suite.addTest(TestMutableDateTime_Sets.suite());
         suite.addTest(TestMutableDateTime_Adds.suite());
+        suite.addTest(TestMutableDateTime_Properties.suite());
         
         suite.addTest(TestDateMidnight_Constructors.suite());
         suite.addTest(TestDateMidnight_Basics.suite());

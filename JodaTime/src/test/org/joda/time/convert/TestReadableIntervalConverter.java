@@ -153,8 +153,8 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     public void testSetIntoInterval_Object1() throws Exception {
-        Interval i = new Interval(0L, 123L);
-        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getCoptic());
+        Interval i = new Interval(0L, 123L, Chronology.getCoptic());
+        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
         ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
@@ -162,8 +162,8 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     public void testSetIntoInterval_Object2() throws Exception {
-        Interval i = new Interval(0L, 123L);
-        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        Interval i = new Interval(0L, 123L, Chronology.getCoptic());
+        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
         ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getGJ());
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());

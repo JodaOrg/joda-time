@@ -379,24 +379,11 @@ public class TestInterval_Basics extends TestCase {
         assertSame(test, result);
     }
 
-    public void testToInterval2() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.toInterval();
-        assertEquals(test, result);
-    }
-
     //-----------------------------------------------------------------------
     public void testToMutableInterval1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         MutableInterval result = test.toMutableInterval();
         assertEquals(test, result);
-    }
-
-    public void testToMutableInterval2() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        MutableInterval result = test.toMutableInterval();
-        assertEquals(test, result);
-        assertNotSame(test, result);
     }
 
     //-----------------------------------------------------------------------

@@ -145,7 +145,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetMillis() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME1, test.getStartMillis());
         assertEquals(TEST_TIME1, test.getStartInstant().getMillis());
         assertEquals(TEST_TIME2, test.getEndMillis());
@@ -155,14 +155,14 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testGetDuration() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
     }
 
     public void testEqualsHashCode() {
-        Interval test1 = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval test2 = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test1 = new MutableInterval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test2 = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(true, test1.equals(test2));
         assertEquals(true, test2.equals(test1));
         assertEquals(true, test1.equals(test1));
@@ -171,7 +171,7 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test1.hashCode() == test1.hashCode());
         assertEquals(true, test2.hashCode() == test2.hashCode());
         
-        Interval test3 = new Interval(TEST_TIME_NOW, TEST_TIME2);
+        MutableInterval test3 = new MutableInterval(TEST_TIME_NOW, TEST_TIME2);
         assertEquals(false, test1.equals(test3));
         assertEquals(false, test2.equals(test3));
         assertEquals(false, test3.equals(test1));
@@ -209,7 +209,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testContains_long() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(true, test.contains(TEST_TIME1));
         assertEquals(false, test.contains(TEST_TIME1 - 1));
         assertEquals(true, test.contains(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2));
@@ -218,7 +218,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testContainsNow() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME1);
         assertEquals(true, test.containsNow());
@@ -233,7 +233,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testContains_RI() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(true, test.contains(new Instant(TEST_TIME1)));
         assertEquals(false, test.contains(new Instant(TEST_TIME1 - 1)));
         assertEquals(true, test.contains(new Instant(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2)));
@@ -244,7 +244,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testContains_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME2)));
         assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
@@ -272,7 +272,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testOverlaps_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME2)));
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
@@ -298,7 +298,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testIsBefore_long() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(false, test.isBefore(TEST_TIME1 - 1));
         assertEquals(false, test.isBefore(TEST_TIME1));
@@ -310,7 +310,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testIsBeforeNow() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME2 - 1);
         assertEquals(false, test.isBeforeNow());
@@ -321,7 +321,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testIsBefore_RI() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(false, test.isBefore(new Instant(TEST_TIME1 - 1)));
         assertEquals(false, test.isBefore(new Instant(TEST_TIME1)));
@@ -336,7 +336,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testIsAfter_long() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(true, test.isAfter(TEST_TIME1 - 1));
         assertEquals(false, test.isAfter(TEST_TIME1));
@@ -348,7 +348,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testIsAfterNow() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 - 1);
         assertEquals(true, test.isAfterNow());
@@ -359,7 +359,7 @@ public class TestMutableInterval_Basics extends TestCase {
     }
 
     public void testIsAfter_RI() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(true, test.isAfter(new Instant(TEST_TIME1 - 1)));
         assertEquals(false, test.isAfter(new Instant(TEST_TIME1)));
@@ -374,12 +374,6 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToInterval1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.toInterval();
-        assertSame(test, result);
-    }
-
-    public void testToInterval2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         Interval result = test.toInterval();
         assertEquals(test, result);
@@ -387,12 +381,6 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToMutableInterval1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        MutableInterval result = test.toMutableInterval();
-        assertEquals(test, result);
-    }
-
-    public void testToMutableInterval2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         MutableInterval result = test.toMutableInterval();
         assertEquals(test, result);
@@ -403,7 +391,7 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testToPeriod() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        MutableInterval test = new MutableInterval(dt1, dt2);
         
         Period result = test.toPeriod();
         assertEquals(PeriodType.getAllType(), result.getPeriodType());
@@ -421,7 +409,7 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testToPeriod_PeriodType1() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        MutableInterval test = new MutableInterval(dt1, dt2);
         
         Period result = test.toPeriod(null);
         assertEquals(PeriodType.getAllType(), result.getPeriodType());
@@ -438,7 +426,7 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testToPeriod_PeriodType2() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        MutableInterval test = new MutableInterval(dt1, dt2);
         
         Period result = test.toPeriod(PeriodType.getYearWeekType());
         assertEquals(PeriodType.getYearWeekType(), result.getPeriodType());
@@ -455,7 +443,7 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testToPeriod_PeriodType3() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 6, 9, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        MutableInterval test = new MutableInterval(dt1, dt2);
         
         Period result = test.toPeriod(PeriodType.getYearWeekType());
         assertEquals(PeriodType.getYearWeekType(), result.getPeriodType());
@@ -471,7 +459,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSerialization() throws Exception {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -481,7 +469,7 @@ public class TestMutableInterval_Basics extends TestCase {
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);
-        Interval result = (Interval) ois.readObject();
+        MutableInterval result = (MutableInterval) ois.readObject();
         ois.close();
         
         assertEquals(test, result);
@@ -491,7 +479,7 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testToString() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, DateTimeZone.UTC);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.UTC);
-        Interval test = new Interval(dt1, dt2);
+        MutableInterval test = new MutableInterval(dt1, dt2);
         assertEquals("2004-06-09T07:08:09.010/2005-08-13T12:14:16.018", test.toString());
     }
 

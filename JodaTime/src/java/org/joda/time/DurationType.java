@@ -86,13 +86,23 @@ import org.joda.time.chrono.ISOChronology;
 public abstract class DurationType implements Serializable {
     static final long serialVersionUID = 2274324892792009998L;
 
-    // TODO: Many caching opportunities
+    private static final DurationType MILLIS_TYPE;
+    private static final DurationType AVERAGE_YEAR_MONTH_TYPE;
+    private static final DurationType PRECISE_YEAR_MONTH_TYPE;
+
+    static {
+        MILLIS_TYPE = new MillisType();
+        AVERAGE_YEAR_MONTH_TYPE = new AverageYearMonthType(ISOChronology.getInstanceUTC());
+        PRECISE_YEAR_MONTH_TYPE = new PreciseYearMonthType(ISOChronology.getInstanceUTC());
+    }
+
+    // TODO: Many more caching opportunities
 
     /**
      * Returns a DurationType of only a milliseconds field.
      */
     public static DurationType getMillisType() {
-        return new MillisType();
+        return MILLIS_TYPE;
     }
 
     /**
@@ -234,7 +244,7 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getAverageYearMonthType() {
-        return new AverageYearMonthType(ISOChronology.getInstanceUTC());
+        return AVERAGE_YEAR_MONTH_TYPE;
     }
 
     /**
@@ -283,7 +293,7 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getPreciseYearMonthType() {
-        return new PreciseYearMonthType(ISOChronology.getInstanceUTC());
+        return PRECISE_YEAR_MONTH_TYPE;
     }
 
     /**

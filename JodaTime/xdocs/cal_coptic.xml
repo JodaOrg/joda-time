@@ -13,7 +13,7 @@
 
 <p>
 The Coptic calendar system implemented in Joda-time is as follows.
-Years are defined as per the <a href="cal_julian.html">Julian</a> calendar system,
+Leap years are defined as per the <a href="cal_julian.html">Julian</a> calendar system,
 that is once every four years.
 The year is broken down into 12 months, each of exactly 30 days in length.
 An extra period at the end of the year is either 5 or 6 days in length (depending on whether it is a leap year).

@@ -80,6 +80,8 @@ public class TestAll extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         
+        suite.addTest(TestBaseDateTimeField.suite());
+        
         suite.addTest(TestMillisDurationField.suite());
         suite.addTest(TestPreciseDurationField.suite());
         suite.addTest(TestScaledDurationField.suite());

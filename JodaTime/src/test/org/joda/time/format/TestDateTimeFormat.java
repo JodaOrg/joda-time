@@ -558,4 +558,10 @@ public class TestDateTimeFormat extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testFormat_samples() {
+        DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd HH.mm.ss");
+        assertEquals("2004-06-09 10.20.30", f.print(dt));
+    }
+
 }

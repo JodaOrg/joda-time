@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -1006,12 +1006,12 @@ public final class DateTime
         }
         
         /**
-         * Gets the instant being used.
+         * Gets the milliseconds of the datetime that this property is linked to.
          * 
-         * @return the instant
+         * @return the milliseconds
          */
-        public ReadableInstant getReadableInstant() {
-            return iInstant;
+        protected long getMillis() {
+            return iInstant.getMillis();
         }
         
         /**

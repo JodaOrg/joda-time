@@ -95,6 +95,12 @@ public final class YearMonthDay
 
     /** Serialization version */
     private static final long serialVersionUID = 797544782896179L;
+    /** The singleton set of field types */
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[] {
+        DateTimeFieldType.year(),
+        DateTimeFieldType.monthOfYear(),
+        DateTimeFieldType.dayOfMonth(),
+    };
 
     /** The index of the year field in the field array */
     public static final int YEAR = 0;
@@ -242,7 +248,7 @@ public final class YearMonthDay
      * 
      * @return the field count
      */
-    public int getFieldSize() {
+    public int size() {
         return 3;
     }
 
@@ -266,6 +272,28 @@ public final class YearMonthDay
             default:
                 throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
+    }
+
+    /**
+     * Gets the field type at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public DateTimeFieldType getFieldType(int index) {
+        return FIELD_TYPES[index];
+    }
+
+    /**
+     * Gets an array of the field type of each of the fields that this partial supports.
+     * <p>
+     * The fields are returned largest to smallest, Year, Month, Day
+     *
+     * @return the array of field types (cloned), largest to smallest
+     */
+    public DateTimeFieldType[] getFieldTypes() {
+        return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
 
     //-----------------------------------------------------------------------

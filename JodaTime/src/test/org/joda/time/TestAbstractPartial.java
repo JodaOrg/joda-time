@@ -166,7 +166,7 @@ public class TestAbstractPartial extends TestCase {
             }
         }
 
-        public int getFieldSize() {
+        public int size() {
             return 2;
         }
         

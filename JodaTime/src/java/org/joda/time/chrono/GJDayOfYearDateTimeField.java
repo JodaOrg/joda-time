@@ -53,7 +53,6 @@
  */
 package org.joda.time.chrono;
 
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
@@ -108,18 +107,18 @@ final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYear(year);
     }
 
-    public int getMaximumValue(ReadablePartial instant) {
-        if (instant.isSupported(iChronology.year())) {
-            int year = instant.get(iChronology.year());
+    public int getMaximumValue(ReadablePartial partial) {
+        if (partial.isSupported(DateTimeFieldType.year())) {
+            int year = partial.get(DateTimeFieldType.year());
             return iChronology.getDaysInYear(year);
         }
         return 366;
     }
 
-    public int getMaximumValue(ReadablePartial instant, int[] values) {
-        DateTimeField[] fields = instant.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] == iChronology.year()) {
+    public int getMaximumValue(ReadablePartial partial, int[] values) {
+        int size = partial.size();
+        for (int i = 0; i < size; i++) {
+            if (partial.getFieldType(i) == DateTimeFieldType.year()) {
                 int year = values[i];
                 return iChronology.getDaysInYear(year);
             }

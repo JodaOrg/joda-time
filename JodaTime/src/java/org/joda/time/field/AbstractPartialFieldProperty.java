@@ -55,7 +55,10 @@ package org.joda.time.field;
 
 import java.util.Locale;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationField;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
@@ -87,6 +90,15 @@ public abstract class AbstractPartialFieldProperty {
      * @return the field
      */
     public abstract DateTimeField getField();
+
+    /**
+     * Gets the field type being used.
+     * 
+     * @return the field type
+     */
+    public DateTimeFieldType getFieldType() {
+        return getField().getType();
+    }
 
     /**
      * Gets the name of the field.
@@ -243,20 +255,23 @@ public abstract class AbstractPartialFieldProperty {
     /**
      * Compare this field to the same field on another instant.
      * <p>
-     * The {@link #get()} method is used to obtain the value to compare for
-     * this instant and the {@link ReadableInstant#get(DateTimeField)} method
-     * is used for the specified instant.
+     * The comparison is based on the value of the same field type, irrespective
+     * of any difference in chronology. Thus, if this property represents the
+     * hourOfDay field, then the hourOfDay field of the other instant will be queried
+     * whether in the same chronology or not.
      * 
      * @param instant  the instant to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws IllegalArgumentException if the instant is null
+     * @throws IllegalArgumentException if the instant is null or the instant
+     *  doesn't support the field of this property
      */
     public int compareTo(ReadableInstant instant) {
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
         int thisValue = get();
-        int otherValue = instant.get(getField());
+        Chronology chrono = DateTimeUtils.getChronology(instant.getChronology());
+        int otherValue = chrono.getField(getFieldType()).get(instant.getMillis());
         if (thisValue < otherValue) {
             return -1;
         } else if (thisValue > otherValue) {
@@ -269,22 +284,23 @@ public abstract class AbstractPartialFieldProperty {
     /**
      * Compare this field to the same field on another partial instant.
      * <p>
-     * The {@link #get()} method is used to obtain the value to compare for
-     * this instant and the {@link ReadablePartial#get(DateTimeField)} method
-     * is used for the specified instant.
+     * The comparison is based on the value of the same field type, irrespective
+     * of any difference in chronology. Thus, if this property represents the
+     * hourOfDay field, then the hourOfDay field of the other partial will be queried
+     * whether in the same chronology or not.
      * 
-     * @param instant  the instant to compare to
+     * @param partial  the partial to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws IllegalArgumentException if the instant is null
      * @throws IllegalArgumentException if the field of this property cannot be queried
      *  on the specified instant
      */
-    public int compareTo(ReadablePartial instant) {
-        if (instant == null) {
+    public int compareTo(ReadablePartial partial) {
+        if (partial == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
         int thisValue = get();
-        int otherValue = instant.get(getField());
+        int otherValue = partial.get(getFieldType());
         if (thisValue < otherValue) {
             return -1;
         } else if (thisValue > otherValue) {

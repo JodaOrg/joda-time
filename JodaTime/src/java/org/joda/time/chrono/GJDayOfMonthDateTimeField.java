@@ -53,7 +53,6 @@
  */
 package org.joda.time.chrono;
 
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
@@ -109,11 +108,11 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYearMonth(thisYear, thisMonth);
     }
 
-    public int getMaximumValue(ReadablePartial instant) {
-        if (instant.isSupported(iChronology.monthOfYear())) {
-            int month = instant.get(iChronology.monthOfYear());
-            if (instant.isSupported(iChronology.year())) {
-                int year = instant.get(iChronology.year());
+    public int getMaximumValue(ReadablePartial partial) {
+        if (partial.isSupported(DateTimeFieldType.monthOfYear())) {
+            int month = partial.get(DateTimeFieldType.monthOfYear());
+            if (partial.isSupported(DateTimeFieldType.year())) {
+                int year = partial.get(DateTimeFieldType.year());
                 return iChronology.getDaysInYearMonth(year, month);
             }
             return iChronology.getDaysInMonthMax(month);
@@ -121,13 +120,13 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         return 31;
     }
 
-    public int getMaximumValue(ReadablePartial instant, int[] values) {
-        DateTimeField[] fields = instant.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] == iChronology.monthOfYear()) {
+    public int getMaximumValue(ReadablePartial partial, int[] values) {
+        int size = partial.size();
+        for (int i = 0; i < size; i++) {
+            if (partial.getFieldType(i) == DateTimeFieldType.monthOfYear()) {
                 int month = values[i];
-                for (int j = 0; j < fields.length; j++) {
-                    if (fields[j] == iChronology.year()) {
+                for (int j = 0; j < size; j++) {
+                    if (partial.getFieldType(j) == DateTimeFieldType.year()) {
                         int year = values[j];
                         return iChronology.getDaysInYearMonth(year, month);
                     }

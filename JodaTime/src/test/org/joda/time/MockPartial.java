@@ -73,8 +73,11 @@ public class MockPartial implements ReadablePartial {
     public Chronology getChronology() {
         return ISOChronology.getInstance();
     }
-    public int getFieldSize() {
+    public int size() {
         return getFields().length;
+    }
+    public DateTimeFieldType getFieldType(int index) {
+        return getFields()[index].getType();
     }
     public DateTimeField getField(int index) {
         return getFields()[index];
@@ -82,10 +85,10 @@ public class MockPartial implements ReadablePartial {
     public int getValue(int index) {
         return getValues()[index];
     }
-    public int get(DateTimeField field) {
+    public int get(DateTimeFieldType field) {
         return 0;
     }
-    public boolean isSupported(DateTimeField field) {
+    public boolean isSupported(DateTimeFieldType field) {
         return false;
     }
     public long resolve(long baseMillis, DateTimeZone tz) {

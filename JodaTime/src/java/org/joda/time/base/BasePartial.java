@@ -239,7 +239,7 @@ public abstract class BasePartial
      * @param chrono  the chronology to use
      */
     protected int[] initValues(long instant, Chronology chrono) {
-        int[] values = new int[getFieldSize()];
+        int[] values = new int[size()];
         for (int i = 0; i < values.length; i++) {
             values[i] = getField(i, chrono).get(instant);
         }

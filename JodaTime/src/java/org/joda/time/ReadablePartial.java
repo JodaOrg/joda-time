@@ -56,13 +56,14 @@ package org.joda.time;
 /**
  * Defines an partial time that does not support every datetime field.
  * <p>
- * A <code>ReadablePartial</code> supports a set of fields which be be a
- * subset of those on the chronology.
- * A <code>ReadablePartial</code> cannot be compared to a <code>ReadableInstant</code>.
+ * A <code>ReadablePartial</code> supports a subset of those fields on the chronology.
+ * It cannot be compared to a <code>ReadableInstant</code>, as it does not fully
+ * specify an instant in time. The time it does specify is a local time, and does
+ * not include a time zone.
  * <p>
  * A <code>ReadablePartial</code> can be converted to a <code>ReadableInstant</code>
  * using one of the <code>resolve</code> methods. These work by providing a full base
- * instant that can be used to 'fill in the gaps'.
+ * instant that can be used to 'fill in the gaps' and specify a time zone.
  *
  * @author Stephen Colebourne
  */
@@ -73,7 +74,16 @@ public interface ReadablePartial {
      *
      * @return the number of fields supported
      */
-    int getFieldSize();
+    int size();
+
+    /**
+     * Gets the field type at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    DateTimeFieldType getFieldType(int index);
 
     /**
      * Gets the field at the specified index.
@@ -85,15 +95,6 @@ public interface ReadablePartial {
     DateTimeField getField(int index);
 
     /**
-     * Gets an array of the fields that this partial supports.
-     * <p>
-     * The fields are returned largest to smallest, for example Hour, Minute, Second.
-     *
-     * @return the fields supported in an array that may be altered, largest to smallest
-     */
-    DateTimeField[] getFields();
-
-    /**
      * Gets the value at the specified index.
      *
      * @param index  the index to retrieve
@@ -101,16 +102,6 @@ public interface ReadablePartial {
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     int getValue(int index);
-
-    /**
-     * Gets an array of the value of each of the fields that this partial supports.
-     * <p>
-     * The fields are returned largest to smallest, for example Hour, Minute, Second.
-     * Each value corresponds to the same array index as <code>getFields()</code>
-     *
-     * @return the current values of each field in an array that may be altered, largest to smallest
-     */
-    int[] getValues();
 
     /**
      * Gets the chronology of the partial which is never null.
@@ -123,23 +114,23 @@ public interface ReadablePartial {
     Chronology getChronology();
 
     /**
-     * Get the value of one of the fields of a datetime.
+     * Gets the value of one of the fields.
      * <p>
-     * The field specified must be one of those that is supported by the partial.
+     * The field type specified must be one of those that is supported by the partial.
      *
-     * @param field  a DateTimeField instance that is supported by this partial
+     * @param field  a DateTimeFieldType instance that is supported by this partial
      * @return the value of that field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    int get(DateTimeField field);
+    int get(DateTimeFieldType field);
 
     /**
-     * Checks whether the field specified is supported by this partial.
+     * Checks whether the field type specified is supported by this partial.
      *
      * @param field  the field to check, may be null which returns false
      * @return true if the field is supported
      */
-    boolean isSupported(DateTimeField field);
+    boolean isSupported(DateTimeFieldType field);
 
     /**
      * Resolves this partial against another complete millisecond instant to
@@ -188,7 +179,7 @@ public interface ReadablePartial {
      * on the supported fields, chronology and values.
      * <p>
      * Two instances of ReadablePartial are equal if they have the same
-     * chronology, same fields in same order and same values.
+     * chronology, same field types (in same order) and same values.
      *
      * @param partial  the object to compare to
      * @return true if equal
@@ -204,7 +195,7 @@ public interface ReadablePartial {
      *  int total = 157;
      *  for (int i = 0; i < fields.length; i++) {
      *      total = 23 * total + values[i];
-     *      total = 23 * total + fields[i].hashCode();
+     *      total = 23 * total + fieldTypes[i].hashCode();
      *  }
      *  total += chronology.hashCode();
      *  return total;

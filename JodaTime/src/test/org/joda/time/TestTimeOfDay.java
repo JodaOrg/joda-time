@@ -595,32 +595,47 @@ public class TestTimeOfDay extends TestCase {
     //-----------------------------------------------------------------------
     public void testGet() {
         TimeOfDay test = new TimeOfDay();
-        assertEquals(10, test.get(ISOChronology.getInstance().hourOfDay()));
-        assertEquals(20, test.get(ISOChronology.getInstance().minuteOfHour()));
-        assertEquals(30, test.get(ISOChronology.getInstance().secondOfMinute()));
-        assertEquals(40, test.get(ISOChronology.getInstance().millisOfSecond()));
+        assertEquals(10, test.get(DateTimeFieldType.hourOfDay()));
+        assertEquals(20, test.get(DateTimeFieldType.minuteOfHour()));
+        assertEquals(30, test.get(DateTimeFieldType.secondOfMinute()));
+        assertEquals(40, test.get(DateTimeFieldType.millisOfSecond()));
         try {
             test.get(null);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.get(ISOChronology.getInstance().dayOfMonth());
+            test.get(DateTimeFieldType.dayOfMonth());
             fail();
         } catch (IllegalArgumentException ex) {}
-        try {
-            test.get(ISOChronology.getInstance(PARIS).hourOfDay());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        // TODO: Should this fail or suceed - by succeeding it exposes out implementation
-//        try {
-//            test.get(JulianChronology.getInstance().hourOfDay());
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
     }
 
-    public void testGetFieldSize() {
+    public void testSize() {
         TimeOfDay test = new TimeOfDay();
-        assertEquals(4, test.getFieldSize());
+        assertEquals(4, test.size());
+    }
+
+    public void testGetFieldType() {
+        TimeOfDay test = new TimeOfDay();
+        assertSame(DateTimeFieldType.hourOfDay(), test.getFieldType(0));
+        assertSame(DateTimeFieldType.minuteOfHour(), test.getFieldType(1));
+        assertSame(DateTimeFieldType.secondOfMinute(), test.getFieldType(2));
+        assertSame(DateTimeFieldType.millisOfSecond(), test.getFieldType(3));
+        try {
+            test.getFieldType(-1);
+        } catch (IndexOutOfBoundsException ex) {}
+        try {
+            test.getFieldType(5);
+        } catch (IndexOutOfBoundsException ex) {}
+    }
+
+    public void testGetFieldTypes() {
+        TimeOfDay test = new TimeOfDay();
+        DateTimeFieldType[] fields = test.getFieldTypes();
+        assertSame(DateTimeFieldType.hourOfDay(), fields[0]);
+        assertSame(DateTimeFieldType.minuteOfHour(), fields[1]);
+        assertSame(DateTimeFieldType.secondOfMinute(), fields[2]);
+        assertSame(DateTimeFieldType.millisOfSecond(), fields[3]);
+        assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
     public void testGetField() {
@@ -673,12 +688,11 @@ public class TestTimeOfDay extends TestCase {
 
     public void testIsSupported() {
         TimeOfDay test = new TimeOfDay();
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().hourOfDay()));
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().minuteOfHour()));
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().secondOfMinute()));
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().millisOfSecond()));
-        assertEquals(false, test.isSupported(ISOChronology.getInstance().dayOfMonth()));
-        assertEquals(false, test.isSupported(ISOChronology.getInstance(PARIS).hourOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.hourOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.minuteOfHour()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.secondOfMinute()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.millisOfSecond()));
+        assertEquals(false, test.isSupported(DateTimeFieldType.dayOfMonth()));
     }
 
     public void testEqualsHashCode() {

@@ -207,33 +207,37 @@ public abstract class BaseChronology
      * This implementation uses {@link DateTimeField#getMinimumValue(ReadablePartial, int[])}
      * and {@link DateTimeField#getMaximumValue(ReadablePartial, int[])}.
      *
-     * @param instant  the partial instant to validate
+     * @param partial  the partial instant to validate
      * @param values  the values to validate, not null
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public void validate(ReadablePartial instant, int[] values) {
-        DateTimeField[] fields = instant.getFields();
+    public void validate(ReadablePartial partial, int[] values) {
         // check values in standard range, catching really stupid cases like -1
         // this means that the second check will not hit trouble
-        for (int i = 0; i < fields.length; i++) {
-            if (values[i] < fields[i].getMinimumValue()) {
-                throw new IllegalArgumentException("Value " + values[i] +
-                        " for " + fields[i].getName() + " is less than minimum");
+        int size = partial.size();
+        for (int i = 0; i < size; i++) {
+            int value = values[i];
+            DateTimeField field = partial.getField(i);
+            if (value < field.getMinimumValue()) {
+                throw new IllegalArgumentException("Value " + value +
+                        " for " + field.getName() + " is less than minimum");
             }
-            if (values[i] > fields[i].getMaximumValue()) {
-                throw new IllegalArgumentException("Value " + values[i] +
-                        " for " + fields[i].getName() + " is greater than maximum");
+            if (value > field.getMaximumValue()) {
+                throw new IllegalArgumentException("Value " + value +
+                        " for " + field.getName() + " is greater than maximum");
             }
         }
-        // check values in specific range, catching really cases like 30th Feb
-        for (int i = 0; i < fields.length; i++) {
-            if (values[i] < fields[i].getMinimumValue(instant, values)) {
-                throw new IllegalArgumentException("Value " + values[i] +
-                        " for " + fields[i].getName() + " is less than minimum");
+        // check values in specific range, catching really odd cases like 30th Feb
+        for (int i = 0; i < size; i++) {
+            int value = values[i];
+            DateTimeField field = partial.getField(i);
+            if (value < field.getMinimumValue(partial, values)) {
+                throw new IllegalArgumentException("Value " + value +
+                        " for " + field.getName() + " is less than minimum");
             }
-            if (values[i] > fields[i].getMaximumValue(instant, values)) {
-                throw new IllegalArgumentException("Value " + values[i] +
-                        " for " + fields[i].getName() + " is greater than maximum");
+            if (value > field.getMaximumValue(partial, values)) {
+                throw new IllegalArgumentException("Value " + value +
+                        " for " + field.getName() + " is greater than maximum");
             }
         }
     }

@@ -56,6 +56,7 @@ package org.joda.time.base;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadWritableInstant;
@@ -103,6 +104,32 @@ public abstract class AbstractPartial implements ReadablePartial {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the field type at the specifed index.
+     * 
+     * @param index  the index
+     * @return the field type
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public DateTimeFieldType getFieldType(int index) {
+        return getField(index, getChronology()).getType();
+    }
+
+    /**
+     * Gets an array of the field types that this partial supports.
+     * <p>
+     * The fields are returned largest to smallest, for example Hour, Minute, Second.
+     *
+     * @return the fields supported in an array that may be altered, largest to smallest
+     */
+    public DateTimeFieldType[] getFieldTypes() {
+        DateTimeFieldType[] result = new DateTimeFieldType[size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getFieldType(i);
+        }
+        return result;
+    }
+
+    /**
      * Gets the field at the specifed index.
      * 
      * @param index  the index
@@ -121,7 +148,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @return the fields supported in an array that may be altered, largest to smallest
      */
     public DateTimeField[] getFields() {
-        DateTimeField[] result = new DateTimeField[getFieldSize()];
+        DateTimeField[] result = new DateTimeField[size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = getField(i);
         }
@@ -137,7 +164,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @return the current values of each field in an array that may be altered, largest to smallest
      */
     public int[] getValues() {
-        int[] result = new int[getFieldSize()];
+        int[] result = new int[size()];
         for (int i = 0; i < result.length; i++) {
             result[i] = getValue(i);
         }
@@ -150,28 +177,28 @@ public abstract class AbstractPartial implements ReadablePartial {
      * <p>
      * The field specified must be one of those that is supported by the partial.
      *
-     * @param field  a DateTimeField instance that is supported by this partial
+     * @param type  a DateTimeFieldType instance that is supported by this partial
      * @return the value of that field
      * @throws IllegalArgumentException if the field is null or not supported
      */
-    public int get(DateTimeField field) {
-        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
-            if (getField(i) == field) {
+    public int get(DateTimeFieldType type) {
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getFieldType(i) == type) {
                 return getValue(i);
             }
         }
-        throw new IllegalArgumentException("Field '" + field + "' is not supported");
+        throw new IllegalArgumentException("Field '" + type + "' is not supported");
     }
 
     /**
      * Checks whether the field specified is supported by this partial.
      *
-     * @param field  the field to check, may be null which returns false
+     * @param type  the type to check, may be null which returns false
      * @return true if the field is supported
      */
-    public boolean isSupported(DateTimeField field) {
-        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
-            if (getField(i) == field) {
+    public boolean isSupported(DateTimeFieldType type) {
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getFieldType(i) == type) {
                 return true;
             }
         }
@@ -244,7 +271,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      */
     protected long resolve(long baseInstant, Chronology chrono) {
         long millis = baseInstant;
-        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+        for (int i = 0, isize = size(); i < isize; i++) {
             millis = getField(i, chrono).set(millis, getValue(i));
         }
         return millis;
@@ -253,7 +280,7 @@ public abstract class AbstractPartial implements ReadablePartial {
     //-----------------------------------------------------------------------
     /**
      * Compares this ReadablePartial with another returning true if the chronology,
-     * fields and values are equal.
+     * field types and values are equal.
      *
      * @param partial  an object to check against
      * @return true if fields and values are equal
@@ -263,11 +290,11 @@ public abstract class AbstractPartial implements ReadablePartial {
             return false;
         }
         ReadablePartial other = (ReadablePartial) partial;
-        if (getFieldSize() != other.getFieldSize()) {
+        if (size() != other.size()) {
             return false;
         }
-        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
-            if (getValue(i) != other.getValue(i) || getField(i) != other.getField(i)) {
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getValue(i) != other.getValue(i) || getFieldType(i) != other.getFieldType(i)) {
                 return false;
             }
         }
@@ -282,9 +309,9 @@ public abstract class AbstractPartial implements ReadablePartial {
      */
     public int hashCode() {
         int total = 157;
-        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+        for (int i = 0, isize = size(); i < isize; i++) {
             total = 23 * total + getValue(i);
-            total = 23 * total + getField(i).hashCode();
+            total = 23 * total + getFieldType(i).hashCode();
         }
         total += getChronology().hashCode();
         return total;

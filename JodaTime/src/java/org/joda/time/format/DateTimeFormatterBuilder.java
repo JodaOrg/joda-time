@@ -1215,9 +1215,9 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePartial partial) {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 try {
-                    FormatUtils.appendUnpaddedInteger(buf, partial.get(iField));
+                    FormatUtils.appendUnpaddedInteger(buf, partial.get(iField.getType()));
                 } catch (RuntimeException e) {
                     buf.append('\ufffd');
                 }
@@ -1227,9 +1227,9 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePartial partial) throws IOException {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 try {
-                    FormatUtils.writeUnpaddedInteger(out, partial.get(iField));
+                    FormatUtils.writeUnpaddedInteger(out, partial.get(iField.getType()));
                 } catch (RuntimeException e) {
                     out.write('\ufffd');
                 }
@@ -1273,9 +1273,9 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePartial partial) {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 try {
-                    FormatUtils.appendPaddedInteger(buf, partial.get(iField), iMinPrintedDigits);
+                    FormatUtils.appendPaddedInteger(buf, partial.get(iField.getType()), iMinPrintedDigits);
                 } catch (RuntimeException e) {
                     appendUnknownString(buf, iMinPrintedDigits);
                 }
@@ -1285,9 +1285,9 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePartial partial) throws IOException {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 try {
-                    FormatUtils.writePaddedInteger(out, partial.get(iField), iMinPrintedDigits);
+                    FormatUtils.writePaddedInteger(out, partial.get(iField.getType()), iMinPrintedDigits);
                 } catch (RuntimeException e) {
                     printUnknownString(out, iMinPrintedDigits);
                 }
@@ -1405,9 +1405,9 @@ public class DateTimeFormatterBuilder {
         }
 
         private int getTwoDigitYear(ReadablePartial partial) {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 try {
-                    int year = partial.get(iField);
+                    int year = partial.get(iField.getType());
                     if (year < 0) {
                         year = -year;
                     }
@@ -1488,7 +1488,7 @@ public class DateTimeFormatterBuilder {
         }
 
         public final String print(ReadablePartial partial) {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 if (iShort) {
                     return iField.getAsShortText(partial, iLocale);
                 } else {
@@ -1605,7 +1605,7 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePartial partial) {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 long millis = partial.resolve(0L, DateTimeZone.UTC);
                 try {
                     printTo(buf, null, millis);
@@ -1618,7 +1618,7 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePartial partial) throws IOException {
-            if (partial.isSupported(iField)) {
+            if (partial.isSupported(iField.getType())) {
                 long millis = partial.resolve(0L, DateTimeZone.UTC);
                 printTo(null, out, millis);
             } else {

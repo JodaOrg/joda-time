@@ -412,31 +412,44 @@ public class TestYearMonthDay extends TestCase {
     //-----------------------------------------------------------------------
     public void testGet() {
         YearMonthDay test = new YearMonthDay();
-        assertEquals(1970, test.get(ISOChronology.getInstance().year()));
-        assertEquals(6, test.get(ISOChronology.getInstance().monthOfYear()));
-        assertEquals(9, test.get(ISOChronology.getInstance().dayOfMonth()));
+        assertEquals(1970, test.get(DateTimeFieldType.year()));
+        assertEquals(6, test.get(DateTimeFieldType.monthOfYear()));
+        assertEquals(9, test.get(DateTimeFieldType.dayOfMonth()));
         try {
             test.get(null);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.get(ISOChronology.getInstance().hourOfDay());
+            test.get(DateTimeFieldType.hourOfDay());
             fail();
         } catch (IllegalArgumentException ex) {}
-        try {
-            test.get(ISOChronology.getInstance(PARIS).year());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        // TODO: Should this fail or suceed - by succeeding it exposes out implementation
-//        try {
-//            test.get(GregorianChronology.getInstance().year());
-//            fail();
-//        } catch (IllegalArgumentException ex) {}
     }
 
-    public void testGetFieldSize() {
+    public void testSize() {
         YearMonthDay test = new YearMonthDay();
-        assertEquals(3, test.getFieldSize());
+        assertEquals(3, test.size());
+    }
+
+    public void testGetFieldType() {
+        YearMonthDay test = new YearMonthDay();
+        assertSame(DateTimeFieldType.year(), test.getFieldType(0));
+        assertSame(DateTimeFieldType.monthOfYear(), test.getFieldType(1));
+        assertSame(DateTimeFieldType.dayOfMonth(), test.getFieldType(2));
+        try {
+            test.getFieldType(-1);
+        } catch (IndexOutOfBoundsException ex) {}
+        try {
+            test.getFieldType(3);
+        } catch (IndexOutOfBoundsException ex) {}
+    }
+
+    public void testGetFieldTypes() {
+        YearMonthDay test = new YearMonthDay();
+        DateTimeFieldType[] fields = test.getFieldTypes();
+        assertSame(DateTimeFieldType.year(), fields[0]);
+        assertSame(DateTimeFieldType.monthOfYear(), fields[1]);
+        assertSame(DateTimeFieldType.dayOfMonth(), fields[2]);
+        assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
     public void testGetField() {
@@ -485,11 +498,10 @@ public class TestYearMonthDay extends TestCase {
 
     public void testIsSupported() {
         YearMonthDay test = new YearMonthDay();
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().year()));
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().monthOfYear()));
-        assertEquals(true, test.isSupported(ISOChronology.getInstance().dayOfMonth()));
-        assertEquals(false, test.isSupported(ISOChronology.getInstance().hourOfDay()));
-        assertEquals(false, test.isSupported(ISOChronology.getInstance(PARIS).year()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.year()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.monthOfYear()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.dayOfMonth()));
+        assertEquals(false, test.isSupported(DateTimeFieldType.hourOfDay()));
     }
 
     public void testEqualsHashCode() {

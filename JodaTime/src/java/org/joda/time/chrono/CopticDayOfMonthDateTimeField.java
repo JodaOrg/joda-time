@@ -53,7 +53,6 @@
  */
 package org.joda.time.chrono;
 
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.ReadablePartial;
@@ -102,14 +101,16 @@ final class CopticDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 		return iChronology.isLeapYear(iChronology.getYear(instant)) ? 6 : 5;
     }
 
-    public int getMaximumValue(ReadablePartial instant) {
-        if (instant.isSupported(iChronology.monthOfYear())) {
-            int month = instant.get(iChronology.monthOfYear());
+    public int getMaximumValue(ReadablePartial partial) {
+        if (partial.isSupported(DateTimeFieldType.monthOfYear())) {
+            // find month
+            int month = partial.get(DateTimeFieldType.monthOfYear());
             if (month <= 12) {
                 return 30;
             }
-            if (instant.isSupported(iChronology.year())) {
-                int year = instant.get(iChronology.year());
+            // 13th month, so check year
+            if (partial.isSupported(DateTimeFieldType.year())) {
+                int year = partial.get(DateTimeFieldType.year());
                 return iChronology.isLeapYear(year) ? 6 : 5;
             }
             return 6;
@@ -117,16 +118,18 @@ final class CopticDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         return 30;
     }
 
-    public int getMaximumValue(ReadablePartial instant, int[] values) {
-        DateTimeField[] fields = instant.getFields();
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] == iChronology.monthOfYear()) {
+    public int getMaximumValue(ReadablePartial partial, int[] values) {
+        int size = partial.size();
+        for (int i = 0; i < size; i++) {
+            // find month
+            if (partial.getFieldType(i) == DateTimeFieldType.monthOfYear()) {
                 int month = values[i];
                 if (month <= 12) {
                     return 30;
                 }
-                for (int j = 0; j < fields.length; j++) {
-                    if (fields[j] == iChronology.year()) {
+                // 13th month, so check year
+                for (int j = 0; j < size; j++) {
+                    if (partial.getFieldType(j) == DateTimeFieldType.year()) {
                         int year = values[j];
                         return iChronology.isLeapYear(year) ? 6 : 5;
                     }

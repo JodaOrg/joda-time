@@ -96,6 +96,13 @@ public final class TimeOfDay
 
     /** Serialization version */
     private static final long serialVersionUID = 3633353405803318660L;
+    /** The singleton set of field types */
+    private static final DateTimeFieldType[] FIELD_TYPES = new DateTimeFieldType[] {
+        DateTimeFieldType.hourOfDay(),
+        DateTimeFieldType.minuteOfHour(),
+        DateTimeFieldType.secondOfMinute(),
+        DateTimeFieldType.millisOfSecond(),
+    };
 
     /** The index of the hourOfDay field in the field array */
     public static final int HOUR_OF_DAY = 0;
@@ -310,7 +317,7 @@ public final class TimeOfDay
      * 
      * @return the field count
      */
-    public int getFieldSize() {
+    public int size() {
         return 4;
     }
 
@@ -336,6 +343,28 @@ public final class TimeOfDay
             default:
                 throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
+    }
+
+    /**
+     * Gets the field type at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public DateTimeFieldType getFieldType(int index) {
+        return FIELD_TYPES[index];
+    }
+
+    /**
+     * Gets an array of the field type of each of the fields that this partial supports.
+     * <p>
+     * The fields are returned largest to smallest, Hour, Minute, Second, Millis.
+     *
+     * @return the array of field types (cloned), largest to smallest
+     */
+    public DateTimeFieldType[] getFieldTypes() {
+        return (DateTimeFieldType[]) FIELD_TYPES.clone();
     }
 
     //-----------------------------------------------------------------------

@@ -170,7 +170,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the text value of the field
      */
     public final String getAsText(ReadablePartial partial, Locale locale) {
-        return getAsText(partial, partial.get(this), locale);
+        return getAsText(partial, partial.get(getType()), locale);
     }
 
     /**
@@ -244,7 +244,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * @return the text value of the field
      */
     public final String getAsShortText(ReadablePartial partial, Locale locale) {
-        return getAsShortText(partial, partial.get(this), locale);
+        return getAsShortText(partial, partial.get(getType()), locale);
     }
 
     /**
@@ -525,26 +525,26 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * the month is set to February, the day would be invalid. Instead, the day
      * would be changed to the closest value - the 28th/29th February as appropriate.
      * 
-     * @param instant  the partial instant
+     * @param partial  the partial instant
      * @param fieldIndex  the index of this field in the instant
      * @param values  the values to update
      * @param newValue  the value to set, in the units of the field
      * @return the updated values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
-        FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(instant, values), getMaximumValue(instant, values));
+    public int[] set(ReadablePartial partial, int fieldIndex, int[] values, int newValue) {
+        FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(partial, values), getMaximumValue(partial, values));
         values[fieldIndex] = newValue;
         
         // may need to adjust smaller fields
-        if (fieldIndex < instant.getFieldSize()) {
-            for (int i = fieldIndex + 1; i < instant.getFieldSize(); i++) {
-                DateTimeField field = instant.getField(i);
-                if (values[i] > field.getMaximumValue(instant, values)) {
-                    values[i] = field.getMaximumValue(instant, values);
+        if (fieldIndex < partial.size()) {
+            for (int i = fieldIndex + 1; i < partial.size(); i++) {
+                DateTimeField field = partial.getField(i);
+                if (values[i] > field.getMaximumValue(partial, values)) {
+                    values[i] = field.getMaximumValue(partial, values);
                 }
-                if (values[i] < field.getMinimumValue(instant, values)) {
-                    values[i] = field.getMinimumValue(instant, values);
+                if (values[i] < field.getMinimumValue(partial, values)) {
+                    values[i] = field.getMinimumValue(partial, values);
                 }
             }
         }

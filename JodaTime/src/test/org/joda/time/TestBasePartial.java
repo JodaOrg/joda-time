@@ -156,7 +156,7 @@ public class TestBasePartial extends TestCase {
             }
         }
 
-        public int getFieldSize() {
+        public int size() {
             return 2;
         }
         

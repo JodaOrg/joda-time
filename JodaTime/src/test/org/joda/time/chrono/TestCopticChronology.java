@@ -59,7 +59,10 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 
@@ -73,6 +76,9 @@ public class TestCopticChronology extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
+    private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
+    private static final Chronology JULIAN_UTC = Chronology.getJulianUTC();
+    private static final Chronology ISO_UTC = Chronology.getISOUTC();
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -273,6 +279,132 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstance().secondOfMinute().isSupported());
         assertEquals(true, CopticChronology.getInstance().millisOfDay().isSupported());
         assertEquals(true, CopticChronology.getInstance().millisOfSecond().isSupported());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEpoch() {
+        DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, COPTIC_UTC);
+        assertEquals(new DateTime(284, 8, 29, 0, 0, 0, 0, JULIAN_UTC), epoch.withChronology(JULIAN_UTC));
+    }
+
+    public void testEra() {
+        assertEquals(1, CopticChronology.AM);
+        try {
+            new DateTime(-1, 13, 5, 0, 0, 0, 0, COPTIC_UTC);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Tests era, year, monthOfYear, dayOfMonth and dayOfWeek.
+     */
+    public void testCalendar() {
+        System.out.println("\nTestCopticChronology.testCalendar");
+        DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, COPTIC_UTC);
+        long oneDay = DateTimeConstants.MILLIS_PER_DAY;
+        long millis = epoch.getMillis();
+        long end = new DateTime(3000, 1, 1, 0, 0, 0, 0, ISO_UTC).getMillis();
+        DateTimeField dayOfWeek = COPTIC_UTC.dayOfWeek();
+        DateTimeField dayOfYear = COPTIC_UTC.dayOfYear();
+        DateTimeField dayOfMonth = COPTIC_UTC.dayOfMonth();
+        DateTimeField monthOfYear = COPTIC_UTC.monthOfYear();
+        DateTimeField year = COPTIC_UTC.year();
+        DateTimeField era = COPTIC_UTC.era();
+        int expectedDOW = 5;
+        int expectedDOY = 1;
+        int expectedDay = 1;
+        int expectedMonth = 1;
+        int expectedYear = 1;
+        while (millis < end) {
+            int dowValue = dayOfWeek.get(millis);
+            int doyValue = dayOfYear.get(millis);
+            int dayValue = dayOfMonth.get(millis);
+            int monthValue = monthOfYear.get(millis);
+            int yearValue = year.get(millis);
+            int eraValue = era.get(millis);
+            int monthLen = dayOfMonth.getMaximumValue(millis);
+            if (monthValue < 1 || monthValue > 13) {
+                fail("Bad month: " + millis);
+            }
+            
+            // test era
+            assertEquals(1, era.get(millis));
+            assertEquals("AM", era.getAsText(millis));
+            assertEquals("AM", era.getAsShortText(millis));
+            
+            // test date
+            assertEquals(expectedYear, yearValue);
+            assertEquals(expectedMonth, monthValue);
+            assertEquals(expectedDay, dayValue);
+            assertEquals(expectedDOW, dowValue);
+            assertEquals(expectedDOY, doyValue);
+            
+            // test leap year
+            assertEquals(yearValue % 4 == 3, year.isLeap(millis));
+            
+            // test month length
+            if (monthValue == 13) {
+                assertEquals(yearValue % 4 == 3, monthOfYear.isLeap(millis));
+                if (yearValue % 4 == 3) {
+                    assertEquals(6, monthLen);
+                } else {
+                    assertEquals(5, monthLen);
+                }
+            } else {
+                assertEquals(30, monthLen);
+            }
+            
+            // recalculate date
+            expectedDOW = (((expectedDOW + 1) - 1) % 7) + 1;
+            expectedDay++;
+            expectedDOY++;
+            if (expectedDay == 31 && expectedMonth < 13) {
+                expectedDay = 1;
+                expectedMonth++;
+            } else if (expectedMonth == 13) {
+                if (expectedYear % 4 == 3 && expectedDay == 7) {
+                    expectedDay = 1;
+                    expectedMonth = 1;
+                    expectedYear++;
+                    expectedDOY = 1;
+                } else if (expectedYear % 4 != 3 && expectedDay == 6) {
+                    expectedDay = 1;
+                    expectedMonth = 1;
+                    expectedYear++;
+                    expectedDOY = 1;
+                }
+            }
+            millis += oneDay;
+        }
+    }
+
+    public void testSampleDate() {
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, ISO_UTC).withChronology(COPTIC_UTC);
+        assertEquals(CopticChronology.AM, dt.getEra());
+        assertEquals(18, dt.getCenturyOfEra());  // TODO confirm
+        assertEquals(20, dt.getYearOfCentury());
+        assertEquals(1720, dt.getYear());
+        assertEquals(10, dt.getMonthOfYear());
+        assertEquals(2, dt.getDayOfMonth());
+        assertEquals(DateTimeConstants.WEDNESDAY, dt.getDayOfWeek());
+        assertEquals(9 * 30 + 2, dt.getDayOfYear());
+        assertEquals(0, dt.getHourOfDay());
+        assertEquals(0, dt.getMinuteOfHour());
+        assertEquals(0, dt.getSecondOfMinute());
+        assertEquals(0, dt.getMillisOfSecond());
+    }
+
+    public void testSampleDateWithZone() {
+        DateTime dt = new DateTime(2004, 6, 9, 12, 0, 0, 0, PARIS).withChronology(COPTIC_UTC);
+        assertEquals(CopticChronology.AM, dt.getEra());
+        assertEquals(1720, dt.getYear());
+        assertEquals(10, dt.getMonthOfYear());
+        assertEquals(2, dt.getDayOfMonth());
+        assertEquals(10, dt.getHourOfDay());  // PARIS is UTC+2 in summer (12-2=10)
+        assertEquals(0, dt.getMinuteOfHour());
+        assertEquals(0, dt.getSecondOfMinute());
+        assertEquals(0, dt.getMillisOfSecond());
     }
 
 }

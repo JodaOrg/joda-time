@@ -21,6 +21,7 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#submilli">What about sub-millisecond accuracy?</a></li>
 <li><a href="#performance">How well does it perform?</a></li>
 <li><a href="#threading">Does it support multi-threading?</a></li>
+<li><a href="#leapseconds">Are leap seconds supported?</a></li>
 <li><a href="#joda">What is with the name 'joda'?</a></li>
 </ul>
 Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Suggest another FAQ</a>
@@ -142,6 +143,18 @@ The most common multi-threading mistake made by Java programmers is in the use
 of SimpleDateFormat. Calling its format method on a shared instance by
 concurrent threads can produce bizarre results. All of Joda-Time's formatting
 classes are thread-safe and immutable.
+</p>
+</subsection>
+
+
+<a name="leapseconds" />
+<subsection name="Are leap seconds supported?">
+<p>
+Joda-time does not support leap seconds. Leap seconds can be supported by
+     writing a new, specialized chronology, or by making a few enhancements to the
+existing ZonedChronology class. In either case, future versions of Joda-time
+will not enable leap seconds by default. Most applications have no need for it,
+and it might have additional performance costs.
 </p>
 </subsection>
 

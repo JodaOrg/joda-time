@@ -216,6 +216,7 @@
                 package="false"
                 version="true"
                     use="yes"
+              splitindex="yes"
                doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
                  bottom="Copyright (c) 2001-2004 - Joda.org">

@@ -76,6 +76,7 @@ public class TestMutableInterval_Basics extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
+    private static final Chronology COPTIC_PARIS = Chronology.getCoptic(PARIS);
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -186,16 +187,25 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(false, test1.hashCode() == test3.hashCode());
         assertEquals(false, test2.hashCode() == test3.hashCode());
         
-        MutableInterval test4 = new MutableInterval(TEST_TIME1, TEST_TIME2);
-        assertEquals(true, test1.equals(test4));
-        assertEquals(true, test2.equals(test4));
-        assertEquals(false, test3.equals(test4));
-        assertEquals(true, test4.equals(test1));
-        assertEquals(true, test4.equals(test2));
-        assertEquals(false, test4.equals(test3));
-        assertEquals(true, test1.hashCode() == test4.hashCode());
-        assertEquals(true, test2.hashCode() == test4.hashCode());
-        assertEquals(false, test3.hashCode() == test4.hashCode());
+        MutableInterval test4 = new MutableInterval(TEST_TIME1, TEST_TIME2, Chronology.getGJ());
+        assertEquals(true, test4.equals(test4));
+        assertEquals(false, test1.equals(test4));
+        assertEquals(false, test2.equals(test4));
+        assertEquals(false, test4.equals(test1));
+        assertEquals(false, test4.equals(test2));
+        assertEquals(false, test1.hashCode() == test4.hashCode());
+        assertEquals(false, test2.hashCode() == test4.hashCode());
+        
+        MutableInterval test5 = new MutableInterval(TEST_TIME1, TEST_TIME2);
+        assertEquals(true, test1.equals(test5));
+        assertEquals(true, test2.equals(test5));
+        assertEquals(false, test3.equals(test5));
+        assertEquals(true, test5.equals(test1));
+        assertEquals(true, test5.equals(test2));
+        assertEquals(false, test5.equals(test3));
+        assertEquals(true, test1.hashCode() == test5.hashCode());
+        assertEquals(true, test2.hashCode() == test5.hashCode());
+        assertEquals(false, test3.hashCode() == test5.hashCode());
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInterval()));
@@ -406,14 +416,14 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToInterval1() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval result = test.toInterval();
         assertEquals(test, result);
     }
 
     //-----------------------------------------------------------------------
     public void testToMutableInterval1() {
-        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         MutableInterval result = test.toMutableInterval();
         assertEquals(test, result);
         assertNotSame(test, result);
@@ -421,72 +431,34 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToPeriod() {
-        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
-        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        MutableInterval test = new MutableInterval(dt1, dt2);
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
+        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
+        MutableInterval base = new MutableInterval(dt1, dt2);
         
-        Period result = test.toPeriod();
-        assertEquals(PeriodType.standard(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(2, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(4, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period test = base.toPeriod();
+        Period expected = new Period(dt1, dt2, PeriodType.standard());
+        assertEquals(expected, test);
     }
 
     //-----------------------------------------------------------------------
     public void testToPeriod_PeriodType1() {
-        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
-        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        MutableInterval test = new MutableInterval(dt1, dt2);
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
+        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
+        MutableInterval base = new MutableInterval(dt1, dt2);
         
-        Period result = test.toPeriod(null);
-        assertEquals(PeriodType.standard(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(2, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(4, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period test = base.toPeriod(null);
+        Period expected = new Period(dt1, dt2, PeriodType.standard());
+        assertEquals(expected, test);
     }
 
     public void testToPeriod_PeriodType2() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        MutableInterval test = new MutableInterval(dt1, dt2);
+        MutableInterval base = new MutableInterval(dt1, dt2);
         
-        Period result = test.toPeriod(PeriodType.yearWeekDayTime());
-        assertEquals(PeriodType.yearWeekDayTime(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(0, result.getMonths());
-        assertEquals(9, result.getWeeks());
-        assertEquals(2, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
-    }
-
-    public void testToPeriod_PeriodType3() {
-        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
-        DateTime dt2 = new DateTime(2005, 6, 9, 12, 14, 16, 18);
-        MutableInterval test = new MutableInterval(dt1, dt2);
-        
-        Period result = test.toPeriod(PeriodType.yearWeekDayTime());
-        assertEquals(PeriodType.yearWeekDayTime(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(0, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(0, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period test = base.toPeriod(PeriodType.yearWeekDayTime());
+        Period expected = new Period(dt1, dt2, PeriodType.yearWeekDayTime());
+        assertEquals(expected, test);
     }
 
     //-----------------------------------------------------------------------
@@ -517,13 +489,13 @@ public class TestMutableInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testCopy() {
-        MutableInterval test = new MutableInterval(123L, 456L);
+        MutableInterval test = new MutableInterval(123L, 456L, COPTIC_PARIS);
         MutableInterval cloned = test.copy();
         assertEquals(test, cloned);
         assertNotSame(test, cloned);
     }
     public void testClone() {
-        MutableInterval test = new MutableInterval(123L, 456L);
+        MutableInterval test = new MutableInterval(123L, 456L, COPTIC_PARIS);
         MutableInterval cloned = (MutableInterval) test.clone();
         assertEquals(test, cloned);
         assertNotSame(test, cloned);

@@ -76,6 +76,7 @@ public class TestInterval_Basics extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
+    private static final Chronology COPTIC_PARIS = Chronology.getCoptic(PARIS);
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -186,7 +187,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test1.hashCode() == test3.hashCode());
         assertEquals(false, test2.hashCode() == test3.hashCode());
         
-        Interval test4 = new Interval(TEST_TIME1, TEST_TIME1, Chronology.getGJ());
+        Interval test4 = new Interval(TEST_TIME1, TEST_TIME2, Chronology.getGJ());
         assertEquals(true, test4.equals(test4));
         assertEquals(false, test1.equals(test4));
         assertEquals(false, test2.equals(test4));
@@ -415,91 +416,53 @@ public class TestInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToInterval1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval result = test.toInterval();
         assertSame(test, result);
     }
 
     //-----------------------------------------------------------------------
     public void testToMutableInterval1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         MutableInterval result = test.toMutableInterval();
         assertEquals(test, result);
     }
 
     //-----------------------------------------------------------------------
     public void testToPeriod() {
-        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
-        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
+        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
+        Interval base = new Interval(dt1, dt2);
         
-        Period result = test.toPeriod();
-        assertEquals(PeriodType.standard(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(2, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(4, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period test = base.toPeriod();
+        Period expected = new Period(dt1, dt2, PeriodType.standard());
+        assertEquals(expected, test);
     }
 
     //-----------------------------------------------------------------------
     public void testToPeriod_PeriodType1() {
-        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
-        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
+        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
+        Interval base = new Interval(dt1, dt2);
         
-        Period result = test.toPeriod(null);
-        assertEquals(PeriodType.standard(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(2, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(4, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period test = base.toPeriod(null);
+        Period expected = new Period(dt1, dt2, PeriodType.standard());
+        assertEquals(expected, test);
     }
 
     public void testToPeriod_PeriodType2() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
+        Interval base = new Interval(dt1, dt2);
         
-        Period result = test.toPeriod(PeriodType.yearWeekDayTime());
-        assertEquals(PeriodType.yearWeekDayTime(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(0, result.getMonths());
-        assertEquals(9, result.getWeeks());
-        assertEquals(2, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
-    }
-
-    public void testToPeriod_PeriodType3() {
-        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
-        DateTime dt2 = new DateTime(2005, 6, 9, 12, 14, 16, 18);
-        Interval test = new Interval(dt1, dt2);
-        
-        Period result = test.toPeriod(PeriodType.yearWeekDayTime());
-        assertEquals(PeriodType.yearWeekDayTime(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(0, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(0, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period test = base.toPeriod(PeriodType.yearWeekDayTime());
+        Period expected = new Period(dt1, dt2, PeriodType.yearWeekDayTime());
+        assertEquals(expected, test);
     }
 
     //-----------------------------------------------------------------------
     public void testSerialization() throws Exception {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -524,18 +487,10 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testAlways() {
-        Interval test = Interval.ALWAYS;
-        assertEquals(Long.MIN_VALUE, test.getStartMillis());
-        assertEquals(Long.MAX_VALUE, test.getEndMillis());
-    }
-
-    //-----------------------------------------------------------------------
     public void testWithStartMillis_long1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withStartMillis(TEST_TIME1 - 1);
-        assertEquals(TEST_TIME1 - 1, result.getStartMillis());
-        assertEquals(TEST_TIME2, result.getEndMillis());
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withStartMillis(TEST_TIME1 - 1);
+        assertEquals(new Interval(TEST_TIME1 - 1, TEST_TIME2, COPTIC_PARIS), test);
     }
 
     public void testWithStartMillis_long2() {
@@ -547,17 +502,16 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testWithStartMillis_long3() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withStartMillis(TEST_TIME1);
-        assertSame(test, result);
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withStartMillis(TEST_TIME1);
+        assertSame(base, test);
     }
 
     //-----------------------------------------------------------------------
     public void testWithStartInstant_RI1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withStart(new Instant(TEST_TIME1 - 1));
-        assertEquals(TEST_TIME1 - 1, result.getStartMillis());
-        assertEquals(TEST_TIME2, result.getEndMillis());
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withStart(new Instant(TEST_TIME1 - 1));
+        assertEquals(new Interval(TEST_TIME1 - 1, TEST_TIME2, COPTIC_PARIS), test);
     }
 
     public void testWithStartInstant_RI2() {
@@ -569,18 +523,16 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testWithStartInstant_RI3() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withStart(null);
-        assertEquals(TEST_TIME_NOW, result.getStartMillis());
-        assertEquals(TEST_TIME2, result.getEndMillis());
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withStart(null);
+        assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS), test);
     }
 
     //-----------------------------------------------------------------------
     public void testWithEndMillis_long1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withEndMillis(TEST_TIME2 - 1);
-        assertEquals(TEST_TIME1, result.getStartMillis());
-        assertEquals(TEST_TIME2 - 1, result.getEndMillis());
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withEndMillis(TEST_TIME2 - 1);
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME2 - 1, COPTIC_PARIS), test);
     }
 
     public void testWithEndMillis_long2() {
@@ -592,17 +544,16 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testWithEndMillis_long3() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withEndMillis(TEST_TIME2);
-        assertSame(test, result);
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withEndMillis(TEST_TIME2);
+        assertSame(base, test);
     }
 
     //-----------------------------------------------------------------------
     public void testWithEndInstant_RI1() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withEnd(new Instant(TEST_TIME2 - 1));
-        assertEquals(TEST_TIME1, result.getStartMillis());
-        assertEquals(TEST_TIME2 - 1, result.getEndMillis());
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withEnd(new Instant(TEST_TIME2 - 1));
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME2 - 1, COPTIC_PARIS), test);
     }
 
     public void testWithEndInstant_RI2() {
@@ -614,10 +565,111 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testWithEndInstant_RI3() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        Interval result = test.withEnd(null);
-        assertEquals(TEST_TIME1, result.getStartMillis());
-        assertEquals(TEST_TIME_NOW, result.getEndMillis());
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withEnd(null);
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME_NOW, COPTIC_PARIS), test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationAfterStart1() throws Throwable {
+        Duration dur = new Duration(TEST_TIME2 - TEST_TIME_NOW);
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
+        Interval test = base.withDurationAfterStart(dur);
+        
+        assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS), test);
+    }
+
+    public void testWithDurationAfterStart2() throws Throwable {
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withDurationAfterStart(null);
+        
+        assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS), test);
+    }
+
+    public void testWithDurationAfterStart3() throws Throwable {
+        Duration dur = new Duration(-1);
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
+        try {
+            base.withDurationAfterStart(dur);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationBeforeEnd1() throws Throwable {
+        Duration dur = new Duration(TEST_TIME_NOW - TEST_TIME1);
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
+        Interval test = base.withDurationBeforeEnd(dur);
+        
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME_NOW, COPTIC_PARIS), test);
+    }
+
+    public void testWithDurationBeforeEnd2() throws Throwable {
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withDurationBeforeEnd(null);
+        
+        assertEquals(new Interval(TEST_TIME2, TEST_TIME2, COPTIC_PARIS), test);
+    }
+
+    public void testWithDurationBeforeEnd3() throws Throwable {
+        Duration dur = new Duration(-1);
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
+        try {
+            base.withDurationBeforeEnd(dur);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithPeriodAfterStart1() throws Throwable {
+        DateTime dt = new DateTime(TEST_TIME_NOW, COPTIC_PARIS);
+        Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
+        
+        Interval base = new Interval(dt, dt);
+        Interval test = base.withPeriodAfterStart(dur);
+        assertEquals(new Interval(dt, dur), test);
+    }
+
+    public void testWithPeriodAfterStart2() throws Throwable {
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withPeriodAfterStart(null);
+        
+        assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS), test);
+    }
+
+    public void testWithPeriodAfterStart3() throws Throwable {
+        Period per = new Period(0, 0, 0, 0, 0, 0, 0, -1);
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
+        try {
+            base.withPeriodAfterStart(per);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithPeriodBeforeEnd1() throws Throwable {
+        DateTime dt = new DateTime(TEST_TIME_NOW, COPTIC_PARIS);
+        Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
+        
+        Interval base = new Interval(dt, dt);
+        Interval test = base.withPeriodBeforeEnd(dur);
+        assertEquals(new Interval(dur, dt), test);
+    }
+
+    public void testWithPeriodBeforeEnd2() throws Throwable {
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withPeriodBeforeEnd(null);
+        
+        assertEquals(new Interval(TEST_TIME2, TEST_TIME2, COPTIC_PARIS), test);
+    }
+
+    public void testWithPeriodBeforeEnd3() throws Throwable {
+        Period per = new Period(0, 0, 0, 0, 0, 0, 0, -1);
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
+        try {
+            base.withPeriodBeforeEnd(per);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
 }

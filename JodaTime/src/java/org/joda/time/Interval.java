@@ -85,9 +85,6 @@ public final class Interval
         extends BaseInterval
         implements ReadableInterval, Serializable {
 
-    /** An interval over all time, as represented by milliseconds. */
-    public static final Interval ALWAYS = new Interval(Long.MIN_VALUE, Long.MAX_VALUE);
-
     /** Serialization version */
     private static final long serialVersionUID = 4922451897541386752L;
 
@@ -240,7 +237,7 @@ public final class Interval
         if (startInstant == getStartMillis()) {
             return this;
         }
-        return new Interval(startInstant, getEndMillis());
+        return new Interval(startInstant, getEndMillis(), getChronology());
     }
 
     /**
@@ -266,7 +263,7 @@ public final class Interval
         if (endInstant == getEndMillis()) {
             return this;
         }
-        return new Interval(getStartMillis(), endInstant);
+        return new Interval(getStartMillis(), endInstant, getChronology());
     }
 
     /**
@@ -294,9 +291,10 @@ public final class Interval
         if (durationMillis == toDurationMillis()) {
             return this;
         }
+        Chronology chrono = getChronology();
         long startMillis = getStartMillis();
-        long endMillis = getChronology().add(startMillis, durationMillis, 1);
-        return new Interval(startMillis, endMillis);
+        long endMillis = chrono.add(startMillis, durationMillis, 1);
+        return new Interval(startMillis, endMillis, chrono);
     }
 
     /**
@@ -311,9 +309,10 @@ public final class Interval
         if (durationMillis == toDurationMillis()) {
             return this;
         }
+        Chronology chrono = getChronology();
         long endMillis = getEndMillis();
-        long startMillis = getChronology().add(endMillis, durationMillis, -1);
-        return new Interval(startMillis, endMillis);
+        long startMillis = chrono.add(endMillis, durationMillis, -1);
+        return new Interval(startMillis, endMillis, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -326,11 +325,12 @@ public final class Interval
      */
     public Interval withPeriodAfterStart(ReadablePeriod period) {
         if (period == null) {
-            return this;
+            return withDurationAfterStart(null);
         }
+        Chronology chrono = getChronology();
         long startMillis = getStartMillis();
-        long endMillis = getChronology().add(period, startMillis, 1);
-        return new Interval(startMillis, endMillis);
+        long endMillis = chrono.add(period, startMillis, 1);
+        return new Interval(startMillis, endMillis, chrono);
     }
 
     /**
@@ -342,11 +342,12 @@ public final class Interval
      */
     public Interval withPeriodBeforeEnd(ReadablePeriod period) {
         if (period == null) {
-            return this;
+            return withDurationBeforeEnd(null);
         }
+        Chronology chrono = getChronology();
         long endMillis = getEndMillis();
-        long startMillis = getChronology().add(period, endMillis, -1);
-        return new Interval(startMillis, endMillis);
+        long startMillis = chrono.add(period, endMillis, -1);
+        return new Interval(startMillis, endMillis, chrono);
     }
 
 }

@@ -320,7 +320,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return the interval as an Interval object
      */
     public Interval toInterval() {
-        return new Interval(getStartMillis(), getEndMillis());
+        return new Interval(getStartMillis(), getEndMillis(), getChronology());
     }
 
     /**
@@ -331,7 +331,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return the time interval as a MutableInterval object
      */
     public MutableInterval toMutableInterval() {
-        return new MutableInterval(getStartMillis(), getEndMillis());
+        return new MutableInterval(getStartMillis(), getEndMillis(), getChronology());
     }
 
     //-----------------------------------------------------------------------
@@ -375,7 +375,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return a time period derived from the interval
      */
     public Period toPeriod() {
-        return new Period(getStartMillis(), getEndMillis());
+        return new Period(getStartMillis(), getEndMillis(), getChronology());
     }
 
     /**
@@ -389,7 +389,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return a time period derived from the interval
      */
     public Period toPeriod(PeriodType type) {
-        return new Period(getStartMillis(), getEndMillis(), type);
+        return new Period(getStartMillis(), getEndMillis(), type, getChronology());
     }
 
     //-----------------------------------------------------------------------

@@ -58,6 +58,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
+import java.lang.ref.Reference;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -84,9 +86,9 @@ import org.joda.time.tz.ZoneInfoProvider;
  * Time (GMT).  This is similar, but not precisely identical, to Universal 
  * Coordinated Time, or UTC. This library only uses the term UTC.
  * <p>
- * Using this system, Pacific Time, USA is expressed as UTC-08:00, or UTC-07:00
- * in the summer. The offset -08:00 indicates that Pacific Time is obtained 
- * from UTC by adding -08:00, that is, by subtracting 8 hours.
+ * Using this system, America/Los_Angeles is expressed as UTC-08:00, or UTC-07:00
+ * in the summer. The offset -08:00 indicates that America/Los_Angeles time is
+ * obtained from UTC by adding -08:00, that is, by subtracting 8 hours.
  * <p>
  * The offset differs in the summer because of daylight saving time, or DST.
  * The folowing definitions of time are generally used:
@@ -130,9 +132,10 @@ public abstract class DateTimeZone implements Serializable {
 
     private static DateTimeFormatter cOffsetFormatter;
 
-    /**
-     * Cache of old zone IDs to new zone IDs
-     */
+    /** Cache that maps fixed offset strings to softly referenced DateTimeZones */
+    private static Map iFixedOffsetCache;
+
+    /** Cache of old zone IDs to new zone IDs */
     private static Map cZoneIdConversion;
 
     static {
@@ -224,7 +227,7 @@ public abstract class DateTimeZone implements Serializable {
                 return DateTimeZone.UTC;
             } else {
                 id = offsetFormatter().print(0, UTC, offset);
-                return new FixedDateTimeZone(id, null, offset, offset);
+                return fixedOffsetZone(id, offset);
             }
         }
         throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
@@ -274,7 +277,7 @@ public abstract class DateTimeZone implements Serializable {
                     return DateTimeZone.UTC;
                 } else {
                     convId = offsetFormatter().print(0, UTC, offset);
-                    return new FixedDateTimeZone(convId, null, offset, offset);
+                    return fixedOffsetZone(convId, offset);
                 }
             }
         }
@@ -282,28 +285,22 @@ public abstract class DateTimeZone implements Serializable {
         throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
     }
 
-    /**
-     * Gets the available IDs according to the given millisecond time
-     * zone offset.
-     * <p>
-     * For example, "America/Phoenix" and "America/Denver"
-     * both have GMT-07:00, but differ in daylight saving behavior.
-     * 
-     * @param rawOffset  the given millisecond time zone GMT offset
-     * @return an unmodifiable Set of String IDs
-     */
-    /*
-    public static Set getAvailableIDs(int rawOffset) {
-        String[] ids = TimeZone.getAvailableIDs(rawOffset);
-        Set set = new HashSet();
-        for (int i = 0; i < ids.length; i++) {
-            if (cZones.containsKey(ids[i])) {
-                set.add(ids[i]);
+    private static synchronized DateTimeZone fixedOffsetZone(String id, int offset) {
+        if (iFixedOffsetCache == null) {
+            iFixedOffsetCache = new HashMap();
+        }
+        DateTimeZone zone;
+        Reference ref = (Reference) iFixedOffsetCache.get(id);
+        if (ref != null) {
+            zone = (DateTimeZone) ref.get();
+            if (zone != null) {
+                return zone;
             }
         }
-        return Collections.unmodifiableSet(set);
+        zone = new FixedDateTimeZone(id, null, offset, offset);
+        iFixedOffsetCache.put(id, new SoftReference(zone));
+        return zone;
     }
-    */
 
     /**
      * Gets all the available IDs supported.

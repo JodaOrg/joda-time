@@ -61,6 +61,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.field.PreciseDurationField;
 
 /**
@@ -225,6 +226,33 @@ public final class CopticChronology extends AbstractGJChronology {
             return this;
         }
         return getInstance(zone);
+    }
+
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        Chronology base;
+        if ((base = getBase()) != null) {
+            return base.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
+        }
+
+        FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 13);
+
+        int dayLimit = (monthOfYear != 13) ? 30 : (isLeapYear(year) ? 6 : 5);
+        FieldUtils.verifyValueBounds("dayOfMonth", dayOfMonth, 1, dayLimit);
+
+        long instant = getYearMillis(year);
+
+        if (monthOfYear > 1) {
+            instant += (monthOfYear - 1) * 30L * DateTimeConstants.MILLIS_PER_DAY;
+        }
+
+        if (dayOfMonth != 1) {
+            instant += (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
+        }
+
+        return instant;
     }
 
     boolean isLeapYear(int year) {

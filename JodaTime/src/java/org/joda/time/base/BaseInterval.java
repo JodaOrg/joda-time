@@ -81,7 +81,7 @@ import org.joda.time.field.FieldUtils;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public class BaseInterval
+public abstract class BaseInterval
         extends AbstractInterval
         implements ReadableInterval, Serializable {
 
@@ -100,7 +100,7 @@ public class BaseInterval
      * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
-    public BaseInterval(long startInstant, long endInstant) {
+    protected BaseInterval(long startInstant, long endInstant) {
         super();
         checkInterval(startInstant, endInstant);
         iStartMillis = startInstant;
@@ -114,7 +114,7 @@ public class BaseInterval
      * @param end  end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
-    public BaseInterval(ReadableInstant start, ReadableInstant end) {
+    protected BaseInterval(ReadableInstant start, ReadableInstant end) {
         super();
         if (start == null && end == null) {
             iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
@@ -133,7 +133,7 @@ public class BaseInterval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public BaseInterval(ReadableInstant start, ReadableDuration duration) {
+    protected BaseInterval(ReadableInstant start, ReadableDuration duration) {
         super();
         iStartMillis = DateTimeUtils.getInstantMillis(start);
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
@@ -149,7 +149,7 @@ public class BaseInterval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public BaseInterval(ReadableDuration duration, ReadableInstant end) {
+    protected BaseInterval(ReadableDuration duration, ReadableInstant end) {
         super();
         iEndMillis = DateTimeUtils.getInstantMillis(end);
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
@@ -168,7 +168,7 @@ public class BaseInterval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public BaseInterval(ReadableInstant start, ReadablePeriod period) {
+    protected BaseInterval(ReadableInstant start, ReadablePeriod period) {
         super();
         iStartMillis = DateTimeUtils.getInstantMillis(start);
         if (period == null) {
@@ -191,7 +191,7 @@ public class BaseInterval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public BaseInterval(ReadablePeriod period, ReadableInstant end) {
+    protected BaseInterval(ReadablePeriod period, ReadableInstant end) {
         super();
         iEndMillis = DateTimeUtils.getInstantMillis(end);
         if (period == null) {
@@ -209,7 +209,7 @@ public class BaseInterval
      * @param interval  the time interval to copy
      * @throws IllegalArgumentException if the interval is null or invalid
      */
-    public BaseInterval(Object interval) {
+    protected BaseInterval(Object interval) {
         super();
         IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
         if (this instanceof ReadWritableInterval) {

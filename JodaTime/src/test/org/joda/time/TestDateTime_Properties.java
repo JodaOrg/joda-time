@@ -64,10 +64,6 @@ import junit.framework.TestSuite;
  * @author Stephen Colebourne
  */
 public class TestDateTime_Properties extends TestCase {
-//    // Summer time:
-//    // 1968-02-18 to 1971-10-31 - +01:00 all year round!
-//    // 1972  UK  Mar 19 - Oct 29
-//    // 1973  UK  Mar 18 - Oct 28
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -212,6 +208,25 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(test.getChronology().centuries(), test.yearOfCentury().getRangeDurationField());
         assertEquals(2, test.yearOfCentury().getMaximumTextLength(null));
         assertEquals(2, test.yearOfCentury().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetWeekyear() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        assertSame(test.getChronology().weekyear(), test.weekyear().getField());
+        assertEquals("weekyear", test.weekyear().getName());
+        assertEquals("Property[weekyear]", test.weekyear().toString());
+        assertSame(test, test.weekyear().getReadableInstant());
+        assertSame(test, test.weekyear().getDateTime());
+        assertEquals(2004, test.weekyear().get());
+        assertEquals("2004", test.weekyear().getAsText());
+        assertEquals("2004", test.weekyear().getAsText(Locale.FRENCH));
+        assertEquals("2004", test.weekyear().getAsShortText());
+        assertEquals("2004", test.weekyear().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().weekyears(), test.weekyear().getDurationField());
+        assertEquals(null, test.weekyear().getRangeDurationField());
+        assertEquals(9, test.weekyear().getMaximumTextLength(null));
+        assertEquals(9, test.weekyear().getMaximumShortTextLength(null));
     }
 
     //-----------------------------------------------------------------------
@@ -1023,6 +1038,139 @@ public class TestDateTime_Properties extends TestCase {
             test1.dayOfWeek().compareTo((ReadableInstant) null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetHourOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().hourOfDay(), test.hourOfDay().getField());
+        assertEquals("hourOfDay", test.hourOfDay().getName());
+        assertEquals("Property[hourOfDay]", test.hourOfDay().toString());
+        assertSame(test, test.hourOfDay().getReadableInstant());
+        assertSame(test, test.hourOfDay().getDateTime());
+        assertEquals(13, test.hourOfDay().get());
+        assertEquals("13", test.hourOfDay().getAsText());
+        assertEquals("13", test.hourOfDay().getAsText(Locale.FRENCH));
+        assertEquals("13", test.hourOfDay().getAsShortText());
+        assertEquals("13", test.hourOfDay().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().hours(), test.hourOfDay().getDurationField());
+        assertEquals(test.getChronology().days(), test.hourOfDay().getRangeDurationField());
+        assertEquals(2, test.hourOfDay().getMaximumTextLength(null));
+        assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetMinuteOfHour() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().minuteOfHour(), test.minuteOfHour().getField());
+        assertEquals("minuteOfHour", test.minuteOfHour().getName());
+        assertEquals("Property[minuteOfHour]", test.minuteOfHour().toString());
+        assertSame(test, test.minuteOfHour().getReadableInstant());
+        assertSame(test, test.minuteOfHour().getDateTime());
+        assertEquals(23, test.minuteOfHour().get());
+        assertEquals("23", test.minuteOfHour().getAsText());
+        assertEquals("23", test.minuteOfHour().getAsText(Locale.FRENCH));
+        assertEquals("23", test.minuteOfHour().getAsShortText());
+        assertEquals("23", test.minuteOfHour().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().minutes(), test.minuteOfHour().getDurationField());
+        assertEquals(test.getChronology().hours(), test.minuteOfHour().getRangeDurationField());
+        assertEquals(2, test.minuteOfHour().getMaximumTextLength(null));
+        assertEquals(2, test.minuteOfHour().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetMinuteOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().minuteOfDay(), test.minuteOfDay().getField());
+        assertEquals("minuteOfDay", test.minuteOfDay().getName());
+        assertEquals("Property[minuteOfDay]", test.minuteOfDay().toString());
+        assertSame(test, test.minuteOfDay().getReadableInstant());
+        assertSame(test, test.minuteOfDay().getDateTime());
+        assertEquals(803, test.minuteOfDay().get());
+        assertEquals("803", test.minuteOfDay().getAsText());
+        assertEquals("803", test.minuteOfDay().getAsText(Locale.FRENCH));
+        assertEquals("803", test.minuteOfDay().getAsShortText());
+        assertEquals("803", test.minuteOfDay().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().minutes(), test.minuteOfDay().getDurationField());
+        assertEquals(test.getChronology().days(), test.minuteOfDay().getRangeDurationField());
+        assertEquals(4, test.minuteOfDay().getMaximumTextLength(null));
+        assertEquals(4, test.minuteOfDay().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetSecondOfMinute() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().secondOfMinute(), test.secondOfMinute().getField());
+        assertEquals("secondOfMinute", test.secondOfMinute().getName());
+        assertEquals("Property[secondOfMinute]", test.secondOfMinute().toString());
+        assertSame(test, test.secondOfMinute().getReadableInstant());
+        assertSame(test, test.secondOfMinute().getDateTime());
+        assertEquals(43, test.secondOfMinute().get());
+        assertEquals("43", test.secondOfMinute().getAsText());
+        assertEquals("43", test.secondOfMinute().getAsText(Locale.FRENCH));
+        assertEquals("43", test.secondOfMinute().getAsShortText());
+        assertEquals("43", test.secondOfMinute().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().seconds(), test.secondOfMinute().getDurationField());
+        assertEquals(test.getChronology().minutes(), test.secondOfMinute().getRangeDurationField());
+        assertEquals(2, test.secondOfMinute().getMaximumTextLength(null));
+        assertEquals(2, test.secondOfMinute().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetSecondOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().secondOfDay(), test.secondOfDay().getField());
+        assertEquals("secondOfDay", test.secondOfDay().getName());
+        assertEquals("Property[secondOfDay]", test.secondOfDay().toString());
+        assertSame(test, test.secondOfDay().getReadableInstant());
+        assertSame(test, test.secondOfDay().getDateTime());
+        assertEquals(48223, test.secondOfDay().get());
+        assertEquals("48223", test.secondOfDay().getAsText());
+        assertEquals("48223", test.secondOfDay().getAsText(Locale.FRENCH));
+        assertEquals("48223", test.secondOfDay().getAsShortText());
+        assertEquals("48223", test.secondOfDay().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().seconds(), test.secondOfDay().getDurationField());
+        assertEquals(test.getChronology().days(), test.secondOfDay().getRangeDurationField());
+        assertEquals(5, test.secondOfDay().getMaximumTextLength(null));
+        assertEquals(5, test.secondOfDay().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetMillisOfSecond() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().millisOfSecond(), test.millisOfSecond().getField());
+        assertEquals("millisOfSecond", test.millisOfSecond().getName());
+        assertEquals("Property[millisOfSecond]", test.millisOfSecond().toString());
+        assertSame(test, test.millisOfSecond().getReadableInstant());
+        assertSame(test, test.millisOfSecond().getDateTime());
+        assertEquals(53, test.millisOfSecond().get());
+        assertEquals("53", test.millisOfSecond().getAsText());
+        assertEquals("53", test.millisOfSecond().getAsText(Locale.FRENCH));
+        assertEquals("53", test.millisOfSecond().getAsShortText());
+        assertEquals("53", test.millisOfSecond().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().millis(), test.millisOfSecond().getDurationField());
+        assertEquals(test.getChronology().seconds(), test.millisOfSecond().getRangeDurationField());
+        assertEquals(3, test.millisOfSecond().getMaximumTextLength(null));
+        assertEquals(3, test.millisOfSecond().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyGetMillisOfDay() {
+        DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+        assertSame(test.getChronology().millisOfDay(), test.millisOfDay().getField());
+        assertEquals("millisOfDay", test.millisOfDay().getName());
+        assertEquals("Property[millisOfDay]", test.millisOfDay().toString());
+        assertSame(test, test.millisOfDay().getReadableInstant());
+        assertSame(test, test.millisOfDay().getDateTime());
+        assertEquals(48223053, test.millisOfDay().get());
+        assertEquals("48223053", test.millisOfDay().getAsText());
+        assertEquals("48223053", test.millisOfDay().getAsText(Locale.FRENCH));
+        assertEquals("48223053", test.millisOfDay().getAsShortText());
+        assertEquals("48223053", test.millisOfDay().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().millis(), test.millisOfDay().getDurationField());
+        assertEquals(test.getChronology().days(), test.millisOfDay().getRangeDurationField());
+        assertEquals(8, test.millisOfDay().getMaximumTextLength(null));
+        assertEquals(8, test.millisOfDay().getMaximumShortTextLength(null));
     }
 
 }

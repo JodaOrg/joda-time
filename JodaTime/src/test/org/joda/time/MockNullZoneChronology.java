@@ -53,47 +53,30 @@
  */
 package org.joda.time;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.chrono.AbstractChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
- * Entry point for all tests in this package.
- * 
- * @version $Revision$ $Date$
+ * Mock class for unit testing.
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
+class MockNullZoneChronology extends AbstractChronology {
 
-    public TestAll(String testName) {
-        super(testName);
+    public DateTimeZone getZone() {
+        return null;
     }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestInstant_Constructors.suite());
-        suite.addTest(TestInstant_Basics.suite());
-        
-        suite.addTest(TestDateTime_Constructors.suite());
-        suite.addTest(TestDateTime_Basics.suite());
-        suite.addTest(TestDateTime_Properties.suite());
-        
-        suite.addTest(TestDateMidnight_Constructors.suite());
-        suite.addTest(TestDateMidnight_Basics.suite());
-        suite.addTest(TestDateMidnight_Properties.suite());
-        
-        suite.addTest(TestDateTimeComparator.suite());
-        suite.addTest(TestDateTimeConstants.suite());
-//        suite.addTest(TestParseISO.suite());
-        return suite;
+    public Chronology withUTC() {
+        return this;
     }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
+    public Chronology withZone(DateTimeZone zone) {
+        return this;
+    }
+    public DateTimeField dayOfMonth() {  // for DateMidnight test
+        return ISOChronology.getInstance().dayOfMonth();
+    }
+    public String toString() {
+        return "";
     }
 
 }

@@ -657,6 +657,18 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(TEST_TIME1_PARIS, test.getMillis());
         assertEquals(TEST_TIME1_LONDON, result.getMillis());
         assertEquals(GregorianChronology.getInstance(), result.getChronology());
+        
+        test = new DateMidnight(TEST_TIME1_UTC);
+        result = test.withZoneRetainFields(LONDON);
+        assertSame(test, result);
+        
+        test = new DateMidnight(TEST_TIME1_UTC);
+        result = test.withZoneRetainFields(null);
+        assertSame(test, result);
+        
+        test = new DateMidnight(TEST_TIME1_UTC, new MockNullZoneChronology());
+        result = test.withZoneRetainFields(LONDON);
+        assertSame(test, result);
     }
     
     public void testImmutable() {

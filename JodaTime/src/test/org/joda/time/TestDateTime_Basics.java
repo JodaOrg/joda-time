@@ -66,6 +66,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.AbstractChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -223,6 +224,8 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInstant()));
         assertEquals(false, test1.equals(new DateTime(TEST_TIME1, GregorianChronology.getInstance())));
+        assertEquals(true, new DateTime(TEST_TIME1, new MockEqualsChronology()).equals(new DateTime(TEST_TIME1, new MockEqualsChronology())));
+        assertEquals(false, new DateTime(TEST_TIME1, new MockEqualsChronology()).equals(new DateTime(TEST_TIME1, ISOChronology.getInstance())));
     }
     
     class MockInstant extends AbstractInstant {
@@ -234,6 +237,24 @@ public class TestDateTime_Basics extends TestCase {
         }
         public Chronology getChronology() {
             return ISOChronology.getInstance();
+        }
+    }
+
+    class MockEqualsChronology extends AbstractChronology {
+        public boolean equals(Object obj) {
+            return obj instanceof MockEqualsChronology;
+        }
+        public DateTimeZone getZone() {
+            return null;
+        }
+        public Chronology withUTC() {
+            return this;
+        }
+        public Chronology withZone(DateTimeZone zone) {
+            return this;
+        }
+        public String toString() {
+            return "";
         }
     }
 
@@ -629,10 +650,22 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(test.getMillis() - DateTimeConstants.MILLIS_PER_HOUR, result.getMillis());
         assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
         
+        test = new DateTime(TEST_TIME1);
+        result = test.withZoneRetainFields(LONDON);
+        assertSame(test, result);
+        
+        test = new DateTime(TEST_TIME1);
+        result = test.withZoneRetainFields(null);
+        assertSame(test, result);
+        
         test = new DateTime(TEST_TIME1, GregorianChronology.getInstance(PARIS));
         result = test.withZoneRetainFields(null);
         assertEquals(test.getMillis() + DateTimeConstants.MILLIS_PER_HOUR, result.getMillis());
         assertEquals(GregorianChronology.getInstance(), result.getChronology());
+        
+        test = new DateTime(TEST_TIME1, new MockNullZoneChronology());
+        result = test.withZoneRetainFields(LONDON);
+        assertSame(test, result);
     }
     
     public void testImmutable() {

@@ -181,7 +181,7 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
         return iUnitMillis;
     }
 
-    private final class LinkedDurationField extends AbstractDurationField {
+    private final class LinkedDurationField extends BaseDurationField {
         static final long serialVersionUID = -203813474600094134L;
 
         LinkedDurationField(String name) {

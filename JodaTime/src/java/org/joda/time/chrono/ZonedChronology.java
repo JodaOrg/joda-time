@@ -62,7 +62,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.field.BaseDateTimeField;
-import org.joda.time.field.AbstractDurationField;
+import org.joda.time.field.BaseDurationField;
 
 /**
  * Wraps another Chronology to add support for time zones.
@@ -281,7 +281,7 @@ public final class ZonedChronology extends AssembledChronology {
      * fields, can nullify or reverse an add when crossing a transition.
      */
 
-    static class ZonedDurationField extends AbstractDurationField {
+    static class ZonedDurationField extends BaseDurationField {
         static final long serialVersionUID = -485345310999208286L;
 
         final DurationField iField;

@@ -62,7 +62,7 @@ package org.joda.time.field;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class PreciseDurationField extends AbstractDurationField {
+public class PreciseDurationField extends BaseDurationField {
     
     static final long serialVersionUID = -8346152187724495365L;
 

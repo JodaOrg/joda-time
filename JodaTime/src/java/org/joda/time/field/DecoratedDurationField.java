@@ -71,7 +71,7 @@ import org.joda.time.DurationField;
  * @author Brian S O'Neill
  * @see DelegatedDurationField
  */
-public class DecoratedDurationField extends AbstractDurationField {
+public class DecoratedDurationField extends BaseDurationField {
 
     static final long serialVersionUID = 8019982251647420015L;
 

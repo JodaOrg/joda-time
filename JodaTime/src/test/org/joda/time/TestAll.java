@@ -103,6 +103,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateTimeConstants.suite());
         suite.addTest(TestDateTimeUtils.suite());
         suite.addTest(TestDateTimeZone.suite());
+        suite.addTest(TestDurationType.suite());
 //        suite.addTest(TestParseISO.suite());
         return suite;
     }

@@ -73,41 +73,54 @@ import org.joda.time.chrono.ISOChronology;
  * <li>YearMonth - the duration is expressed using all fields except weeks
  * <li>YearWeek - the duration is expressed using all fields except months
  * <li>AverageYearMonth - as YearMonth, but years and months have fixed average lengths
- * <li>PreciseYearMonth - as YearMonth, but years are fixed at 365 days,
+ * <li>PreciseAll - as All, but years are fixed at 365 days
+ *  and months are fixed at 30 days
+ * <li>PreciseYearMonth - as YearMonth, but years are fixed at 365 days
  *  and months are fixed at 30 days
  * <li>PreciseYearWeek - as YearWeek, but years are fixed at 365 days
  * </ul>
  *
  * <p>
- * DurationType is thread-safe and immutable, and all subclasses must be as
- * well.
+ * DurationType is thread-safe and immutable, and all subclasses must be as well.
  *
  * @author Brian S O'Neill
+ * @author Stephen Colebourne
+ * @since 1.0
  */
 public abstract class DurationType implements Serializable {
-    static final long serialVersionUID = 2274324892792009998L;
+    private static final long serialVersionUID = 2274324892792009998L;
 
     private static final DurationType MILLIS_TYPE;
+    private static final DurationType DAY_HOUR_TYPE;
+    private static final DurationType ALL_TYPE;
+    private static final DurationType YEAR_MONTH_TYPE;
+    private static final DurationType YEAR_WEEK_TYPE;
     private static final DurationType AVERAGE_YEAR_MONTH_TYPE;
+    private static final DurationType PRECISE_ALL_TYPE;
     private static final DurationType PRECISE_YEAR_MONTH_TYPE;
+    private static final DurationType PRECISE_YEAR_WEEK_TYPE;
 
     static {
         MILLIS_TYPE = new MillisType();
+        DAY_HOUR_TYPE = new DayHourType(ISOChronology.getInstanceUTC());
+        ALL_TYPE = new AllType(ISOChronology.getInstanceUTC());
+        YEAR_MONTH_TYPE = new YearMonthType(ISOChronology.getInstanceUTC());
+        YEAR_WEEK_TYPE = new YearWeekType(ISOChronology.getInstanceUTC());
         AVERAGE_YEAR_MONTH_TYPE = new AverageYearMonthType(ISOChronology.getInstanceUTC());
+        PRECISE_ALL_TYPE = new PreciseAllType(ISOChronology.getInstanceUTC());
         PRECISE_YEAR_MONTH_TYPE = new PreciseYearMonthType(ISOChronology.getInstanceUTC());
+        PRECISE_YEAR_WEEK_TYPE = new PreciseYearWeekType(ISOChronology.getInstanceUTC());
     }
 
-    // TODO: Many more caching opportunities
-
     /**
-     * Returns a DurationType of only a milliseconds field.
+     * Returns a DurationType of only a milliseconds field using the ISOChronology.
      */
     public static DurationType getMillisType() {
         return MILLIS_TYPE;
     }
 
     /**
-     * Returns a DurationType of:
+     * Returns a DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>days
@@ -118,7 +131,7 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getDayHourType() {
-        return getDayHourType(null);
+        return DAY_HOUR_TYPE;
     }
 
     /**
@@ -139,14 +152,14 @@ public abstract class DurationType implements Serializable {
      * @param chrono Chronology to use for calculations.
      */
     public static DurationType getDayHourType(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstanceUTC();
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getDayHourType();
         }
         return new DayHourType(chrono);
     }
 
     /**
-     * Returns a DurationType of:
+     * Returns a DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>years
@@ -160,7 +173,7 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getAllType() {
-        return getAllType(null);
+        return ALL_TYPE;
     }
 
     /**
@@ -184,14 +197,14 @@ public abstract class DurationType implements Serializable {
      * @param chrono Chronology to use for calculations.
      */
     public static DurationType getAllType(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstanceUTC();
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getAllType();
         }
         return new AllType(chrono);
     }
 
     /**
-     * Returns a DurationType of:
+     * Returns a DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>years
@@ -204,7 +217,7 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getYearMonthType() {
-        return getYearMonthType(null);
+        return YEAR_MONTH_TYPE;
     }
 
     /**
@@ -227,14 +240,14 @@ public abstract class DurationType implements Serializable {
      * @param chrono Chronology to use for calculations.
      */
     public static DurationType getYearMonthType(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstanceUTC();
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getYearMonthType();
         }
         return new YearMonthType(chrono);
     }
 
     /**
-     * Returns a DurationType of:
+     * Returns a DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>years (weekyears)
@@ -247,7 +260,7 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getYearWeekType() {
-        return getYearWeekType(null);
+        return YEAR_WEEK_TYPE;
     }
 
     /**
@@ -270,14 +283,14 @@ public abstract class DurationType implements Serializable {
      * @param chrono Chronology to use for calculations.
      */
     public static DurationType getYearWeekType(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstanceUTC();
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getYearWeekType();
         }
         return new YearWeekType(chrono);
     }
 
     /**
-     * Returns a precise DurationType of:
+     * Returns a precise DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>years (fixed at 365.2425 days)
@@ -294,7 +307,7 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a precise DurationType of:
+     * Returns a DurationType, normally precise, of:
      *
      * <ul>
      * <li>years (fixed to chronology's average year)
@@ -311,22 +324,34 @@ public abstract class DurationType implements Serializable {
      * be UTC or have fixed offsets.
      *
      * @param chrono Chronology to use for calculations.
-     * @throws IllegalArgumentException if chronology produces an imprecise duration type
      */
     public static DurationType getAverageYearMonthType(Chronology chrono) {
         if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
             return getAverageYearMonthType();
         }
-        DurationType type = new AverageYearMonthType(chrono);
-        if (!type.isPrecise()) {
-            throw new IllegalArgumentException
-                ("Chronology produced an imprecise duration type");
-        }
-        return type;
+        return new AverageYearMonthType(chrono);
     }
 
     /**
-     * Returns a precise DurationType of:
+     * Returns a precise DurationType using the ISOChronology of:
+     *
+     * <ul>
+     * <li>years (fixed at 365 days)
+     * <li>months (fixed at 30 days)
+     * <li>weeks
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     */
+    public static DurationType getPreciseAllType() {
+        return PRECISE_ALL_TYPE;
+    }
+
+    /**
+     * Returns a precise DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>years (fixed at 365 days)
@@ -343,7 +368,7 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a precise DurationType of:
+     * Returns a precise DurationType using the ISOChronology of:
      *
      * <ul>
      * <li>years (fixed at 365 days)
@@ -356,9 +381,10 @@ public abstract class DurationType implements Serializable {
      * </ul>
      */
     public static DurationType getPreciseYearWeekType() {
-        return new PreciseYearWeekType(ISOChronology.getInstanceUTC());
+        return PRECISE_YEAR_WEEK_TYPE;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Constructor.
      */
@@ -382,7 +408,7 @@ public abstract class DurationType implements Serializable {
     /**
      * Returns a DurationType that uses the given chronology.
      * 
-     * @param chrono  the new chronology
+     * @param chrono  the new chronology, null means ISOChronology in UTC
      * @return a new duration type with the specified chronology
      */
     public abstract DurationType withChronology(Chronology chrono);
@@ -394,6 +420,7 @@ public abstract class DurationType implements Serializable {
      */
     public abstract boolean isPrecise();
 
+    //-----------------------------------------------------------------------
     /**
      * Returns a DurationField representing years.
      *
@@ -466,9 +493,11 @@ public abstract class DurationType implements Serializable {
         return UnsupportedDurationField.getInstance("millis");
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Returns a version of this DurationType instance that does not support
-     * years.
+     * Returns a version of this DurationType instance that does not support years.
+     * 
+     * @return a new duration type that supports the original set of fields except years
      */
     public DurationType withYearsRemoved() {
         if (!years().isSupported()) {
@@ -478,8 +507,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * months.
+     * Returns a version of this DurationType instance that does not support months.
+     * 
+     * @return a new duration type that supports the original set of fields except months
      */
     public DurationType withMonthsRemoved() {
         if (!months().isSupported()) {
@@ -489,8 +519,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * weeks.
+     * Returns a version of this DurationType instance that does not support weeks.
+     * 
+     * @return a new duration type that supports the original set of fields except weeks
      */
     public DurationType withWeeksRemoved() {
         if (!weeks().isSupported()) {
@@ -500,8 +531,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * days.
+     * Returns a version of this DurationType instance that does not support days.
+     * 
+     * @return a new duration type that supports the original set of fields except days
      */
     public DurationType withDaysRemoved() {
         if (!days().isSupported()) {
@@ -511,8 +543,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * hours.
+     * Returns a version of this DurationType instance that does not support hours.
+     * 
+     * @return a new duration type that supports the original set of fields except hours
      */
     public DurationType withHoursRemoved() {
         if (!hours().isSupported()) {
@@ -522,8 +555,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * minutes.
+     * Returns a version of this DurationType instance that does not support minutes.
+     * 
+     * @return a new duration type that supports the original set of fields except minutes
      */
     public DurationType withMinutesRemoved() {
         if (!minutes().isSupported()) {
@@ -533,8 +567,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * seconds.
+     * Returns a version of this DurationType instance that does not support seconds.
+     * 
+     * @return a new duration type that supports the original set of fields except seconds
      */
     public DurationType withSecondsRemoved() {
         if (!seconds().isSupported()) {
@@ -544,8 +579,9 @@ public abstract class DurationType implements Serializable {
     }
 
     /**
-     * Returns a version of this DurationType instance that does not support
-     * milliseconds.
+     * Returns a version of this DurationType instance that does not support milliseconds.
+     * 
+     * @return a new duration type that supports the original set of fields except milliseconds
      */
     public DurationType withMillisRemoved() {
         if (!millis().isSupported()) {
@@ -554,6 +590,15 @@ public abstract class DurationType implements Serializable {
         return MaskedType.mask(this, 1 << 7);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Compares this type to another object.
+     * To be equal, the object must be a DurationType with the same chronology
+     * and same supported fields.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     */
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -580,6 +625,11 @@ public abstract class DurationType implements Serializable {
             && millis().equals(other.millis());
     }
 
+    /**
+     * Returns a hashcode based on the chronology and supported fields.
+     * 
+     * @return a suitable hashcode
+     */
     public int hashCode() {
         int hash = 0;
         Chronology chrono = getChronology();
@@ -605,7 +655,7 @@ public abstract class DurationType implements Serializable {
 
     //-----------------------------------------------------------------------
     private static final class MillisType extends DurationType {
-        static final long serialVersionUID = -4314867016852780422L;
+        private static final long serialVersionUID = -4314867016852780422L;
 
         public MillisType() {
         }
@@ -636,7 +686,7 @@ public abstract class DurationType implements Serializable {
     }
 
     private static class DayHourType extends DurationType {
-        static final long serialVersionUID = 1115025839896760481L;
+        private static final long serialVersionUID = 1115025839896760481L;
 
         protected final Chronology iChronology;
 
@@ -652,7 +702,7 @@ public abstract class DurationType implements Serializable {
             if (chrono == iChronology) {
                 return this;
             }
-            return new DayHourType(iChronology);
+            return DurationType.getDayHourType(chrono);
         }
 
         public boolean isPrecise() {
@@ -693,7 +743,7 @@ public abstract class DurationType implements Serializable {
     }
 
     private static final class AllType extends DayHourType {
-        static final long serialVersionUID = -1336767257680877683L;
+        private static final long serialVersionUID = -359769822629866L;
 
         public AllType(Chronology chrono) {
             super(chrono);
@@ -703,7 +753,7 @@ public abstract class DurationType implements Serializable {
             if (chrono == iChronology) {
                 return this;
             }
-            return new AllType(iChronology);
+            return DurationType.getAllType(chrono);
         }
 
         public boolean isPrecise() {
@@ -735,7 +785,7 @@ public abstract class DurationType implements Serializable {
     }
 
     private static final class YearMonthType extends DayHourType {
-        static final long serialVersionUID = -1336767257680877683L;
+        private static final long serialVersionUID = -1336767257680877683L;
 
         public YearMonthType(Chronology chrono) {
             super(chrono);
@@ -745,7 +795,7 @@ public abstract class DurationType implements Serializable {
             if (chrono == iChronology) {
                 return this;
             }
-            return new YearMonthType(iChronology);
+            return DurationType.getYearMonthType(chrono);
         }
 
         public boolean isPrecise() {
@@ -772,7 +822,7 @@ public abstract class DurationType implements Serializable {
     }
 
     private static final class YearWeekType extends DayHourType {
-        static final long serialVersionUID = 1347170237843447098L;
+        private static final long serialVersionUID = 1347170237843447098L;
 
         public YearWeekType(Chronology chrono) {
             super(chrono);
@@ -782,7 +832,7 @@ public abstract class DurationType implements Serializable {
             if (chrono == iChronology) {
                 return this;
             }
-            return new YearWeekType(iChronology);
+            return DurationType.getYearWeekType(chrono);
         }
 
         public boolean isPrecise() {
@@ -809,7 +859,7 @@ public abstract class DurationType implements Serializable {
     }
 
     private static final class AverageYearMonthType extends DayHourType {
-        static final long serialVersionUID = -1629017135050918461L;
+        private static final long serialVersionUID = -1629017135050918461L;
 
         private final DurationField iYears;
         private final DurationField iMonths;
@@ -824,7 +874,7 @@ public abstract class DurationType implements Serializable {
             if (chrono == iChronology) {
                 return this;
             }
-            return getAverageYearMonthType(chrono);
+            return DurationType.getAverageYearMonthType(chrono);
         }
 
         public DurationField years() {
@@ -844,8 +894,52 @@ public abstract class DurationType implements Serializable {
         }
     }
 
+    private static final class PreciseAllType extends DayHourType {
+        private static final long serialVersionUID = 43967269280186L;
+
+        private final DurationField iYears;
+        private final DurationField iMonths;
+        
+        public PreciseAllType(Chronology chrono) {
+            super(chrono);
+            iYears = new ScaledDurationField(chrono.days(), "PreciseYears", 365);
+            iMonths = new ScaledDurationField(chrono.days(), "PreciseMonths", 30);
+        }
+
+        public DurationType withChronology(Chronology chrono) {
+            return this;
+        }
+
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && months().isPrecise()
+                && weeks().isPrecise()
+                && super.isPrecise();
+        }
+
+        public DurationField years() {
+            return iYears;
+        }
+
+        public DurationField months() {
+            return iMonths;
+        }
+
+        public DurationField weeks() {
+            return iChronology.weeks();
+        }
+
+        private Object readResolve() {
+            return getPreciseAllType();
+        }
+        
+        public String getName() {
+            return "PreciseAllType";
+        }
+    }
+
     private static final class PreciseYearMonthType extends DayHourType {
-        static final long serialVersionUID = 1203161678926193794L;
+        private static final long serialVersionUID = 1203161678926193794L;
 
         private final DurationField iYears;
         private final DurationField iMonths;
@@ -884,7 +978,7 @@ public abstract class DurationType implements Serializable {
     }
 
     private static final class PreciseYearWeekType extends DayHourType {
-        static final long serialVersionUID = -2040324323318740267L;
+        private static final long serialVersionUID = -2040324323318740267L;
 
         private final DurationField iYears;
         
@@ -921,15 +1015,12 @@ public abstract class DurationType implements Serializable {
     }
 
     private static final class MaskedType extends DurationType {
-        static final long serialVersionUID = 940106774669244586L;
+        private static final long serialVersionUID = 940106774669244586L;
 
         public static DurationType mask(DurationType type, int mask) {
             if (type instanceof MaskedType) {
                 MaskedType masked = (MaskedType)type;
-                if ((mask |= masked.iMask) == masked.iMask) {
-                    // No additional fields removed, so return original.
-                    return masked;
-                }
+                mask |= masked.iMask;
                 type = masked.iType;
             }
             return new MaskedType(type, mask);
@@ -955,7 +1046,7 @@ public abstract class DurationType implements Serializable {
             if (chrono == getChronology()) {
                 return this;
             }
-            return mask(iType.withChronology(chrono), iMask);
+            return MaskedType.mask(iType.withChronology(chrono), iMask);
         }
 
         public boolean isPrecise() {
@@ -1027,7 +1118,32 @@ public abstract class DurationType implements Serializable {
         
         public String getName() {
             String name = iType.getName();
-            return "Masked[" + (name == null ? "" : name) + "]";
+            String maskStr = "";
+            if ((iMask & (1 << 0)) != 0) {
+                maskStr += "Years";
+            }
+            if ((iMask & (1 << 1)) != 0) {
+                maskStr += "Months";
+            }
+            if ((iMask & (1 << 2)) != 0) {
+                maskStr += "Weeks";
+            }
+            if ((iMask & (1 << 3)) != 0) {
+                maskStr += "Days";
+            }
+            if ((iMask & (1 << 4)) != 0) {
+                maskStr += "Hours";
+            }
+            if ((iMask & (1 << 5)) != 0) {
+                maskStr += "Minutes";
+            }
+            if ((iMask & (1 << 6)) != 0) {
+                maskStr += "Seconds";
+            }
+            if ((iMask & (1 << 7)) != 0) {
+                maskStr += "Millis";
+            }
+            return "Masked" + maskStr + "[" + (name == null ? "" : name) + "]";
         }
     }
 

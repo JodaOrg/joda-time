@@ -21,7 +21,7 @@ DateHMS
 
 DurationProperty on DateTime, Period and related
 
-Factories for DateTime clases?
+Factories for DateTime classes?
  Is a locale dependent one needed at least?
 
 More chronologies:

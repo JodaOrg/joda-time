@@ -57,14 +57,14 @@ import java.io.Serializable;
 import org.joda.time.DurationField;
 
 /**
- * AbstractDurationField provides the common behaviour for DurationField
+ * BaseDurationField provides the common behaviour for DurationField
  * implementations.
  * <p>
  * This class should generally not be used directly by API users. The
  * DurationField interface should be used when different kinds of DurationField
  * objects are to be referenced.
  * <p>
- * AbstractDurationField is thread-safe and immutable, and its subclasses must
+ * BaseDurationField is thread-safe and immutable, and its subclasses must
  * be as well.
  *
  * @author Brian S O'Neill

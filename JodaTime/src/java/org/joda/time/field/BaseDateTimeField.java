@@ -65,7 +65,7 @@ import org.joda.time.partial.ReadablePartial;
  * implementations. 
  * <p>
  * This class should generally not be used directly by API users. The
- * DateTimeField interface should be used when different kinds of DateTimeField
+ * DateTimeField class should be used when different kinds of DateTimeField
  * objects are to be referenced.
  * <p>
  * BaseDateTimeField is thread-safe and immutable, and its subclasses must

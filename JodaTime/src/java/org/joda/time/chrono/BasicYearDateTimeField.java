@@ -15,32 +15,33 @@
  */
 package org.joda.time.chrono;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
- * Provides time calculations for the year component of time.
+ * A year field suitable for many calendars.
  *
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-final class GJYearDateTimeField extends ImpreciseDateTimeField {
+class BasicYearDateTimeField extends ImpreciseDateTimeField {
 
-    private static final long serialVersionUID = -679076949530018869L;
+    /** Serialization version. */
+    private static final long serialVersionUID = -98628754872287L;
 
-    private static final long FEB_29 = (31L + 29 - 1) * DateTimeConstants.MILLIS_PER_DAY;
-
-    private final BaseGJChronology iChronology;
+    /** The underlying basic chronology. */
+    protected final BaseGJChronology iChronology;
 
     /**
-     * Restricted constructor
+     * Restricted constructor.
+     * 
+     * @param chronology  the chronology this field belogs to
      */
-    GJYearDateTimeField(BaseGJChronology chronology) {
+    BasicYearDateTimeField(BaseGJChronology chronology) {
         super(DateTimeFieldType.year(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
@@ -49,30 +50,16 @@ final class GJYearDateTimeField extends ImpreciseDateTimeField {
         return false;
     }
 
-    /**
-     * Get the Year component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
-     * @return the year extracted from the input.
-     */
     public int get(long instant) {
         return iChronology.getYear(instant);
     }
 
-    /**
-     * Add the specified year to the specified time instant.
-     * The amount added may be negative.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
     public long add(long instant, int years) {
         if (years == 0) {
             return instant;
         }
         int thisYear = get(instant);
-        int newYear = thisYear + years;
+        int newYear = FieldUtils.safeAdd(thisYear, years);
         return set(instant, newYear);
     }
 
@@ -80,14 +67,6 @@ final class GJYearDateTimeField extends ImpreciseDateTimeField {
         return add(instant, FieldUtils.safeToInt(years));
     }
 
-    /**
-     * Add to the Year component of the specified time instant
-     * wrapping around within that component if necessary.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
     public long addWrapField(long instant, int years) {
         if (years == 0) {
             return instant;
@@ -99,48 +78,17 @@ final class GJYearDateTimeField extends ImpreciseDateTimeField {
         return set(instant, wrappedYear);
     }
 
-    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        if (minuendInstant < subtrahendInstant) {
-            return -getDifference(subtrahendInstant, minuendInstant);
-        }
-
-        int minuendYear = get(minuendInstant);
-        int subtrahendYear = get(subtrahendInstant);
-
-        // Inlined remainder method to avoid duplicate calls to get.
-        long minuendRem = minuendInstant - iChronology.getYearMillis(minuendYear);
-        long subtrahendRem = subtrahendInstant - iChronology.getYearMillis(subtrahendYear);
-
-        // Balance leap year differences on remainders.
-        if (subtrahendRem >= FEB_29) {
-            if (iChronology.isLeapYear(subtrahendYear)) {
-                if (!iChronology.isLeapYear(minuendYear)) {
-                    subtrahendRem -= DateTimeConstants.MILLIS_PER_DAY;
-                }
-            } else if (minuendRem >= FEB_29 && iChronology.isLeapYear(minuendYear)) {
-                minuendRem -= DateTimeConstants.MILLIS_PER_DAY;
-            }
-        }
-
-        int difference = minuendYear - subtrahendYear;
-        if (minuendRem < subtrahendRem) {
-            difference--;
-        }
-        return difference;
-    }
-
-    /**
-     * Set the Year component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param year  the year (-292269055,292278994) to update the time to.
-     * @return the updated time instant.
-     * @throws IllegalArgumentException  if year is invalid.
-     */
     public long set(long instant, int year) {
         FieldUtils.verifyValueBounds
             (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
         return iChronology.setYear(instant, year);
+    }
+
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        if (minuendInstant < subtrahendInstant) {
+            return -iChronology.getYearDifference(subtrahendInstant, minuendInstant);
+        }
+        return iChronology.getYearDifference(minuendInstant, subtrahendInstant);
     }
 
     public DurationField getRangeDurationField() {

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,6 @@ package org.joda.time.field;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
@@ -353,8 +352,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
             throw new IllegalArgumentException("The instant must not be null");
         }
         int thisValue = get();
-        Chronology chrono = DateTimeUtils.getChronology(instant.getChronology());
-        int otherValue = getFieldType().getField(chrono).get(instant.getMillis());
+        int otherValue = instant.get(getFieldType());
         if (thisValue < otherValue) {
             return -1;
         } else if (thisValue > otherValue) {

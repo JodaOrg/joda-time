@@ -69,7 +69,7 @@ import org.joda.time.convert.InstantConverter;
  * data in array and <code>Chronology</code> fields.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadablePeriod} interface should be used when different 
+ * The {@link org.joda.time.ReadablePeriod} interface should be used when different 
  * kinds of partial objects are to be referenced.
  * <p>
  * BasePartial subclasses may be mutable and not thread-safe.

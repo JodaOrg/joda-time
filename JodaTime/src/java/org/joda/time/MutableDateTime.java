@@ -60,7 +60,7 @@ import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.InstantConverter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.property.MutableDateTimeFieldProperty;
+import org.joda.time.property.ReadWritableInstantFieldProperty;
 
 /**
  * MutableDateTime is the standard implementation of a modifiable datetime class.
@@ -915,8 +915,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the era property
      */
-    public MutableDateTimeFieldProperty era() {
-        return new MutableDateTimeFieldProperty(this, getChronology().era());
+    public ReadWritableInstantFieldProperty era() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().era());
     }
 
     /**
@@ -924,8 +924,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public MutableDateTimeFieldProperty centuryOfEra() {
-        return new MutableDateTimeFieldProperty(this, getChronology().centuryOfEra());
+    public ReadWritableInstantFieldProperty centuryOfEra() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().centuryOfEra());
     }
 
     /**
@@ -933,8 +933,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public MutableDateTimeFieldProperty yearOfCentury() {
-        return new MutableDateTimeFieldProperty(this, getChronology().yearOfCentury());
+    public ReadWritableInstantFieldProperty yearOfCentury() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().yearOfCentury());
     }
 
     /**
@@ -942,8 +942,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the year of era property
      */
-    public MutableDateTimeFieldProperty yearOfEra() {
-        return new MutableDateTimeFieldProperty(this, getChronology().yearOfEra());
+    public ReadWritableInstantFieldProperty yearOfEra() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().yearOfEra());
     }
 
     /**
@@ -951,8 +951,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the year property
      */
-    public MutableDateTimeFieldProperty year() {
-        return new MutableDateTimeFieldProperty(this, getChronology().year());
+    public ReadWritableInstantFieldProperty year() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().year());
     }
 
     /**
@@ -960,8 +960,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the year of a week based year property
      */
-    public MutableDateTimeFieldProperty weekyear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().weekyear());
+    public ReadWritableInstantFieldProperty weekyear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().weekyear());
     }
 
     /**
@@ -969,8 +969,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the month of year property
      */
-    public MutableDateTimeFieldProperty monthOfYear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().monthOfYear());
+    public ReadWritableInstantFieldProperty monthOfYear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().monthOfYear());
     }
 
     /**
@@ -978,8 +978,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the week of a week based year property
      */
-    public MutableDateTimeFieldProperty weekOfWeekyear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().weekOfWeekyear());
+    public ReadWritableInstantFieldProperty weekOfWeekyear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().weekOfWeekyear());
     }
 
     /**
@@ -987,8 +987,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the day of year property
      */
-    public MutableDateTimeFieldProperty dayOfYear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfYear());
+    public ReadWritableInstantFieldProperty dayOfYear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfYear());
     }
 
     /**
@@ -998,8 +998,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the day of month property
      */
-    public MutableDateTimeFieldProperty dayOfMonth() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfMonth());
+    public ReadWritableInstantFieldProperty dayOfMonth() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfMonth());
     }
 
     /**
@@ -1009,8 +1009,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the day of week property
      */
-    public MutableDateTimeFieldProperty dayOfWeek() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfWeek());
+    public ReadWritableInstantFieldProperty dayOfWeek() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfWeek());
     }
 
     // Time properties
@@ -1020,8 +1020,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the hour of day property
      */
-    public MutableDateTimeFieldProperty hourOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().hourOfDay());
+    public ReadWritableInstantFieldProperty hourOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().hourOfDay());
     }
 
     /**
@@ -1029,8 +1029,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the minute of day property
      */
-    public MutableDateTimeFieldProperty minuteOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().minuteOfDay());
+    public ReadWritableInstantFieldProperty minuteOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().minuteOfDay());
     }
 
     /**
@@ -1038,8 +1038,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the minute of hour property
      */
-    public MutableDateTimeFieldProperty minuteOfHour() {
-        return new MutableDateTimeFieldProperty(this, getChronology().minuteOfHour());
+    public ReadWritableInstantFieldProperty minuteOfHour() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().minuteOfHour());
     }
 
     /**
@@ -1047,8 +1047,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the second of day property
      */
-    public MutableDateTimeFieldProperty secondOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().secondOfDay());
+    public ReadWritableInstantFieldProperty secondOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().secondOfDay());
     }
 
     /**
@@ -1056,8 +1056,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the second of minute property
      */
-    public MutableDateTimeFieldProperty secondOfMinute() {
-        return new MutableDateTimeFieldProperty(this, getChronology().secondOfMinute());
+    public ReadWritableInstantFieldProperty secondOfMinute() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().secondOfMinute());
     }
 
     /**
@@ -1065,8 +1065,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the millis of day property
      */
-    public MutableDateTimeFieldProperty millisOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().millisOfDay());
+    public ReadWritableInstantFieldProperty millisOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().millisOfDay());
     }
 
     /**
@@ -1074,8 +1074,8 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @return the millis of second property
      */
-    public MutableDateTimeFieldProperty millisOfSecond() {
-        return new MutableDateTimeFieldProperty(this, getChronology().millisOfSecond());
+    public ReadWritableInstantFieldProperty millisOfSecond() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().millisOfSecond());
     }
 
     // Misc

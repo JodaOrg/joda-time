@@ -59,7 +59,7 @@ import org.joda.time.chrono.iso.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.property.MutableDateTimeFieldProperty;
+import org.joda.time.property.ReadWritableInstantFieldProperty;
 
 /**
  * MutableTimeOnly is the basic implementation of a modifiable time only class.
@@ -734,8 +734,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the hour of day property
      */
-    public final MutableDateTimeFieldProperty hourOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().hourOfDay());
+    public final ReadWritableInstantFieldProperty hourOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().hourOfDay());
     }
 
     /**
@@ -743,8 +743,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the clockhour of day property
      */
-    public final MutableDateTimeFieldProperty clockhourOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().clockhourOfDay());
+    public final ReadWritableInstantFieldProperty clockhourOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().clockhourOfDay());
     }
 
     /**
@@ -752,8 +752,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the hour of halfday property
      */
-    public final MutableDateTimeFieldProperty hourOfHalfday() {
-        return new MutableDateTimeFieldProperty(this, getChronology().hourOfHalfday());
+    public final ReadWritableInstantFieldProperty hourOfHalfday() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().hourOfHalfday());
     }
 
     /**
@@ -761,8 +761,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the clockhour of halfday property
      */
-    public final MutableDateTimeFieldProperty clockhourOfHalfday() {
-        return new MutableDateTimeFieldProperty(this, getChronology().clockhourOfHalfday());
+    public final ReadWritableInstantFieldProperty clockhourOfHalfday() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().clockhourOfHalfday());
     }
 
     /**
@@ -770,8 +770,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the halfday of day property
      */
-    public final MutableDateTimeFieldProperty halfdayOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().halfdayOfDay());
+    public final ReadWritableInstantFieldProperty halfdayOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().halfdayOfDay());
     }
 
     /**
@@ -779,8 +779,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the minute of day property
      */
-    public final MutableDateTimeFieldProperty minuteOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().minuteOfDay());
+    public final ReadWritableInstantFieldProperty minuteOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().minuteOfDay());
     }
 
     /**
@@ -788,8 +788,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the minute of hour property
      */
-    public final MutableDateTimeFieldProperty minuteOfHour() {
-        return new MutableDateTimeFieldProperty(this, getChronology().minuteOfHour());
+    public final ReadWritableInstantFieldProperty minuteOfHour() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().minuteOfHour());
     }
 
     /**
@@ -797,8 +797,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the second of day property
      */
-    public final MutableDateTimeFieldProperty secondOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().secondOfDay());
+    public final ReadWritableInstantFieldProperty secondOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().secondOfDay());
     }
 
     /**
@@ -806,8 +806,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the second of minute property
      */
-    public final MutableDateTimeFieldProperty secondOfMinute() {
-        return new MutableDateTimeFieldProperty(this, getChronology().secondOfMinute());
+    public final ReadWritableInstantFieldProperty secondOfMinute() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().secondOfMinute());
     }
 
     /**
@@ -815,8 +815,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the millis of day property
      */
-    public final MutableDateTimeFieldProperty millisOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().millisOfDay());
+    public final ReadWritableInstantFieldProperty millisOfDay() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().millisOfDay());
     }
 
     /**
@@ -824,8 +824,8 @@ public class MutableTimeOnly extends AbstractPartialInstant
      * 
      * @return the millis of second property
      */
-    public final MutableDateTimeFieldProperty millisOfSecond() {
-        return new MutableDateTimeFieldProperty(this, getChronology().millisOfSecond());
+    public final ReadWritableInstantFieldProperty millisOfSecond() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().millisOfSecond());
     }
 
     // Misc

@@ -59,7 +59,7 @@ import org.joda.time.chrono.iso.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.property.MutableDateTimeFieldProperty;
+import org.joda.time.property.ReadWritableInstantFieldProperty;
 
 /**
  * MutableDateOnly is the basic implementation of a modifiable date only class.
@@ -701,8 +701,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the day of week property
      */
-    public final MutableDateTimeFieldProperty dayOfWeek() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfWeek());
+    public final ReadWritableInstantFieldProperty dayOfWeek() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfWeek());
     }
 
     /**
@@ -710,8 +710,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the day of month property
      */
-    public final MutableDateTimeFieldProperty dayOfMonth() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfMonth());
+    public final ReadWritableInstantFieldProperty dayOfMonth() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfMonth());
     }
 
     /**
@@ -719,8 +719,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the day of year property
      */
-    public final MutableDateTimeFieldProperty dayOfYear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfYear());
+    public final ReadWritableInstantFieldProperty dayOfYear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfYear());
     }
 
     /**
@@ -728,8 +728,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the week of a week based year property
      */
-    public final MutableDateTimeFieldProperty weekOfWeekyear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().weekOfWeekyear());
+    public final ReadWritableInstantFieldProperty weekOfWeekyear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().weekOfWeekyear());
     }
 
     /**
@@ -737,8 +737,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the year of a week based year property
      */
-    public final MutableDateTimeFieldProperty weekyear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().weekyear());
+    public final ReadWritableInstantFieldProperty weekyear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().weekyear());
     }
 
     /**
@@ -746,8 +746,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the month of year property
      */
-    public final MutableDateTimeFieldProperty monthOfYear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().monthOfYear());
+    public final ReadWritableInstantFieldProperty monthOfYear() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().monthOfYear());
     }
 
     /**
@@ -755,8 +755,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the year property
      */
-    public final MutableDateTimeFieldProperty year() {
-        return new MutableDateTimeFieldProperty(this, getChronology().year());
+    public final ReadWritableInstantFieldProperty year() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().year());
     }
 
     /**
@@ -764,8 +764,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the year of era property
      */
-    public final MutableDateTimeFieldProperty yearOfEra() {
-        return new MutableDateTimeFieldProperty(this, getChronology().yearOfEra());
+    public final ReadWritableInstantFieldProperty yearOfEra() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().yearOfEra());
     }
 
     /**
@@ -773,8 +773,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the year of era property
      */
-    public final MutableDateTimeFieldProperty yearOfCentury() {
-        return new MutableDateTimeFieldProperty(this, getChronology().yearOfCentury());
+    public final ReadWritableInstantFieldProperty yearOfCentury() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().yearOfCentury());
     }
 
     /**
@@ -782,8 +782,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the year of era property
      */
-    public final MutableDateTimeFieldProperty centuryOfEra() {
-        return new MutableDateTimeFieldProperty(this, getChronology().centuryOfEra());
+    public final ReadWritableInstantFieldProperty centuryOfEra() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().centuryOfEra());
     }
 
     /**
@@ -791,8 +791,8 @@ public class MutableDateOnly extends AbstractPartialInstant
      * 
      * @return the era property
      */
-    public final MutableDateTimeFieldProperty era() {
-        return new MutableDateTimeFieldProperty(this, getChronology().era());
+    public final ReadWritableInstantFieldProperty era() {
+        return new ReadWritableInstantFieldProperty(this, getChronology().era());
     }
 
     // Misc

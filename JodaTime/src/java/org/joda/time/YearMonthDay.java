@@ -460,6 +460,24 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
+     * Deprecated, use toDateAtCurrentTime.
+     * 
+     * @deprecated use toDateAtCurrentTime
+     */
+    public DateTime toDateTime() {
+        return toDateTimeAtCurrentTime(null);
+    }
+
+    /**
+     * Deprecated, use toDateAtCurrentTime.
+     * 
+     * @deprecated use toDateAtCurrentTime
+     */
+    public DateTime toDateTime(DateTimeZone zone) {
+        return toDateTimeAtCurrentTime(zone);
+    }
+
+    /**
      * Converts this partial to a full datetime using the default time zone
      * setting the date fields from this instance and the time fields from
      * the current time.

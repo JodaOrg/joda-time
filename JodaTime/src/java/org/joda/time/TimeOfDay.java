@@ -546,6 +546,24 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
+     * Deprecated, use toDateTimeToday.
+     * 
+     * @deprecated use toDateTimeToday
+     */
+    public DateTime toDateTime() {
+        return toDateTimeToday(null);
+    }
+
+    /**
+     * Deprecated, use toDateTimeToday.
+     * 
+     * @deprecated use toDateTimeToday
+     */
+    public DateTime toDateTime(DateTimeZone zone) {
+        return toDateTimeToday(zone);
+    }
+
+    /**
      * Converts this partial to a full datetime using the default time zone
      * setting the time fields from this instance and the date fields from
      * the current time.

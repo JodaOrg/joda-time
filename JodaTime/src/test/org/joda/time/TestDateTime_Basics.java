@@ -807,13 +807,6 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testWithDurationAdded_long() {
-        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
-        DateTime result = test.withDurationAdded(123456789L);
-        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
-        assertEquals(expected, result);
-    }
-    
     public void testWithDurationAdded_long_int() {
         DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
         DateTime result = test.withDurationAdded(123456789L, 1);
@@ -833,16 +826,6 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
-    public void testWithDurationAdded_RD() {
-        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
-        DateTime result = test.withDurationAdded(new Duration(123456789L));
-        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
-        assertEquals(expected, result);
-        
-        result = test.withDurationAdded(null);
-        assertSame(test, result);
-    }
-    
     public void testWithDurationAdded_RD_int() {
         DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
         DateTime result = test.withDurationAdded(new Duration(123456789L), 1);
@@ -865,16 +848,6 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
-    public void testWithPeriodAdded_RP() {
-        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
-        DateTime result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8));
-        DateTime expected = new DateTime(2003, 7, 28, 6, 8, 10, 12, BuddhistChronology.getInstance());
-        assertEquals(expected, result);
-        
-        result = test.withPeriodAdded(null);
-        assertSame(test, result);
-    }
-    
     public void testWithDurationAdded_RP_int() {
         DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
         DateTime result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 1);
@@ -894,6 +867,62 @@ public class TestDateTime_Basics extends TestCase {
         result = test.withPeriodAdded(new Period(1, 2, 0, 1, 1, 2, 3, 4), -1);
         expected = new DateTime(2001, 3, 2, 0, 0, 0, 0, BuddhistChronology.getInstance());
         assertEquals(expected, result);
+    }
+
+    //-----------------------------------------------------------------------    
+    public void testPlus_long() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.plus(123456789L);
+        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    public void testPlus_RD() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.plus(new Duration(123456789L));
+        DateTime expected = new DateTime(TEST_TIME1 + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadableDuration) null);
+        assertSame(test, result);
+    }
+    
+    public void testPlus_RP() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
+        DateTime expected = new DateTime(2003, 7, 28, 6, 8, 10, 12, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+    
+    //-----------------------------------------------------------------------    
+    public void testMinus_long() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.minus(123456789L);
+        DateTime expected = new DateTime(TEST_TIME1 - 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    public void testMinus_RD() {
+        DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
+        DateTime result = test.minus(new Duration(123456789L));
+        DateTime expected = new DateTime(TEST_TIME1 - 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadableDuration) null);
+        assertSame(test, result);
+    }
+    
+    public void testMinus_RP() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
+        DateTime expected = new DateTime(2001, 3, 26, 0, 1, 2, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
     }
     
 }

@@ -53,8 +53,6 @@
  */
 package org.joda.time.base;
 
-import java.io.Serializable;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
@@ -81,8 +79,7 @@ import org.joda.time.format.ISOPeriodFormat;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public abstract class AbstractPeriod
-        implements ReadablePeriod, Serializable {
+public abstract class AbstractPeriod implements ReadablePeriod {
 
     /**
      * Constructor.

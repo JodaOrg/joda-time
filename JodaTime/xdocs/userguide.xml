@@ -93,7 +93,7 @@ Interoperability is also made simple via the <code>toDate()</code>, <code>toCale
 The main API of DateTime has been kept small, limited to just get methods for each <a href="field.html">field</a>.
 There is much more power available however through the use of <i>properties</i>.
 In addition to the <code>getDayOfYear()</code> method you will find <code>dayOfYear()</code>.
-This returns a <a href="apidocs/org/joda/time/DateTimeField.Property.html">property</a> with considerable functionality.
+This returns a <a href="apidocs/org/joda/time/DateTime.Property.html">property</a> with considerable functionality.
 </p>
 <p>
 The property has methods to:

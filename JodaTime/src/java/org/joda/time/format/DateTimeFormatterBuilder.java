@@ -1047,7 +1047,7 @@ public class DateTimeFormatterBuilder {
             return 1;
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             if (position >= text.length()) {
                 return ~position;
             }
@@ -1120,7 +1120,7 @@ public class DateTimeFormatterBuilder {
             return iValue.length();
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(ParseBucket bucket, String text, int position) {
             if (text.regionMatches(true, position, iValue, 0, iValue.length())) {
                 return position + iValue.length();
             }
@@ -1148,7 +1148,7 @@ public class DateTimeFormatterBuilder {
             return iMaxParsedDigits;
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             int limit = Math.min(iMaxParsedDigits, text.length() - position);
 
             boolean negative = false;
@@ -1422,7 +1422,7 @@ public class DateTimeFormatterBuilder {
             return 2;
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             int limit = Math.min(2, text.length() - position);
             if (limit < 2) {
                 return ~position;
@@ -1612,7 +1612,7 @@ public class DateTimeFormatterBuilder {
             return estimatePrintedLength();
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             int limit = text.length();
             int i = position;
             for (; i<limit; i++) {
@@ -1828,7 +1828,7 @@ public class DateTimeFormatterBuilder {
             return iMaxDigits;
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             DateTimeField field = iFieldType.getField(bucket.getChronology());
             
             int limit = Math.min(iMaxDigits, text.length() - position);
@@ -2168,7 +2168,7 @@ public class DateTimeFormatterBuilder {
             return estimatePrintedLength();
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             int limit = text.length() - position;
 
             zeroOffset:
@@ -2539,7 +2539,7 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             BaseDateTimeFormatter[] elements = iParsers;
             if (elements == null) {
                 throw new UnsupportedOperationException();
@@ -2624,7 +2624,7 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        protected int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        protected int parseInto(ParseBucket bucket, String text, int position) {
             BaseDateTimeFormatter[] parsers = iParsers;
             int length = parsers.length;
 

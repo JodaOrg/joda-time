@@ -70,7 +70,7 @@ The design principle is the same as the Java Collections Framework (List/Map/Set
 The main date instance used is <a href="apidocs\org\joda\time\DateTime.html">DateTime</a>.
 This holds the millisecond time of the date and the chronology used to calculate the fields.
 DateTime is immutable, and once created the values do not change.
-Thus, this class can safely be passed around and used in multiple threads without serialization.
+Thus, this class can safely be passed around and used in multiple threads without synchronization.
 </p>
 <p>
 A companion class to DateTime is <a href="apidocs\org\joda\time\MutableDateTime.html">MutableDateTime</a>.

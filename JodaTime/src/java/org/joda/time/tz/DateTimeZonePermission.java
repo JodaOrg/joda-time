@@ -68,6 +68,9 @@ package org.joda.time.tz;
  * @author Brian S O'Neill
  */
 public class DateTimeZonePermission extends java.security.BasicPermission {
+
+    static final long serialVersionUID = 3496753502571108448L;
+
     public DateTimeZonePermission(String name) {
         super(name);
     }

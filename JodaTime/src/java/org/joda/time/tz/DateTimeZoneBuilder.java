@@ -1151,6 +1151,8 @@ public class DateTimeZoneBuilder {
     }
 
     private static final class DSTZone extends DateTimeZone {
+        static final long serialVersionUID = 6941492635554961361L;
+
         static DSTZone readFrom(DataInput in, String id) throws IOException {
             return new DSTZone(id, (int)readMillis(in), 
                                Recurrence.readFrom(in), Recurrence.readFrom(in));
@@ -1289,6 +1291,8 @@ public class DateTimeZoneBuilder {
     }
 
     private static final class PrecalculatedZone extends DateTimeZone {
+        static final long serialVersionUID = 7811976468055766265L;
+
         static PrecalculatedZone readFrom(DataInput in, String id) throws IOException {
             // Read string pool.
             int poolSize = in.readUnsignedShort();

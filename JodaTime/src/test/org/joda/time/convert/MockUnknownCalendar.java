@@ -100,5 +100,8 @@ class MockUnknownCalendar extends Calendar {
     public int getLeastMaximum(int field) {
         return 0;
     }
+    public int compareTo(Object arg0) {
+        return 0;
+    }
     
 }

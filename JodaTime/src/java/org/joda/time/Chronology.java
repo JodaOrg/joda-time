@@ -511,12 +511,31 @@ public abstract class Chronology {
     /**
      * Validates whether the values are valid for the fields of a partial instant.
      *
-     * @param instant  the partial instant to validate
+     * @param partial  the partial instant to validate
      * @param values  the values to validate, not null, match fields in partial
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public abstract void validate(ReadablePartial instant, int[] values);
+    public abstract void validate(ReadablePartial partial, int[] values);
 
+    /**
+     * Gets the values of a partial from an instant.
+     *
+     * @param partial  the partial instant to use
+     * @param instant  the instant to query
+     * @return the values of this partial extracted from the instant
+     */
+    public abstract int[] get(ReadablePartial partial, long instant);
+
+    /**
+     * Sets the partial into the instant.
+     *
+     * @param partial  the partial instant to use
+     * @param instant  the instant to update
+     * @return the updated instant
+     */
+    public abstract long set(ReadablePartial partial, long instant);
+
+    //-----------------------------------------------------------------------
     /**
      * Adds the period to the instant, specifying the number of times to add.
      *

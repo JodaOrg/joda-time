@@ -143,7 +143,7 @@ public abstract class BasePartial
         super();
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iValues = initValues(instant, chronology);
+        iValues = chronology.get(this, instant);
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class BasePartial
         Chronology chronology = converter.getChronology(instant);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iValues = initValues(millis, chronology);
+        iValues = chronology.get(this, millis);
     }
 
     /**
@@ -189,7 +189,7 @@ public abstract class BasePartial
         chronology = converter.getChronology(instant, chronology);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iValues = initValues(millis, chronology);
+        iValues = chronology.get(this, millis);
     }
 
     /**
@@ -224,22 +224,6 @@ public abstract class BasePartial
         super();
         iChronology = other.iChronology;
         iValues = values;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Initialize the array of values.
-     * The field and value arrays must match.
-     * 
-     * @param instant  the instant to use
-     * @param chrono  the chronology to use
-     */
-    protected int[] initValues(long instant, Chronology chrono) {
-        int[] values = new int[size()];
-        for (int i = 0; i < values.length; i++) {
-            values[i] = getField(i, chrono).get(instant);
-        }
-        return values;
     }
 
     //-----------------------------------------------------------------------

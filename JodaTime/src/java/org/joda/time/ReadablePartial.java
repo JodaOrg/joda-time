@@ -54,7 +54,8 @@
 package org.joda.time;
 
 /**
- * Defines an partial time that does not support every datetime field.
+ * Defines a partial time that does not support every datetime field, and is
+ * thus a local time.
  * <p>
  * A <code>ReadablePartial</code> supports a subset of those fields on the chronology.
  * It cannot be compared to a <code>ReadableInstant</code>, as it does not fully

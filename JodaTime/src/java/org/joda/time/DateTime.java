@@ -495,6 +495,7 @@ public final class DateTime
         return withMillis(instant);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this datetime with the partial set of fields replacing those
      * from this instance.
@@ -539,20 +540,30 @@ public final class DateTime
         return withMillis(instant);
     }
 
-    //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Gets a copy of this datetime with the value of the specified field increased.
      * <p>
-     * If the addition is zero, then <code>this</code> is returned.
+     * If the addition is zero or the field is null, then <code>this</code> is returned.
+     * <p>
+     * An alternative to this method is to use the properties, for example:
+     * <pre>
+     * DateTime added = dt.hourOfDay().addToCopy(6);
+     * </pre>
      * 
-     * @param durationToAdd  the duration to add to this one
-     * @return a copy of this datetime with the duration added
+     * @param fieldType  the field type to add to, null ignored
+     * @param amount  the amount to add
+     * @return a copy of this datetime with the field updated
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public DateTime withDurationAdded(long durationToAdd) {
-        return withDurationAdded(durationToAdd, 1);
+    public DateTime withFieldAdded(DurationFieldType fieldType, int amount) {
+        if (fieldType == null || amount == 0) {
+            return this;
+        }
+        long instant = fieldType.getField(getChronology()).add(getMillis(), amount);
+        return withMillis(instant);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this datetime with the specified duration added.
      * <p>
@@ -578,22 +589,6 @@ public final class DateTime
      * If the addition is zero, then <code>this</code> is returned.
      * 
      * @param durationToAdd  the duration to add to this one, null means zero
-     * @return a copy of this datetime with the duration added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
-     */
-    public DateTime withDurationAdded(ReadableDuration durationToAdd) {
-        if (durationToAdd == null) {
-            return this;
-        }
-        return withDurationAdded(durationToAdd.getMillis(), 1);
-    }
-
-    /**
-     * Gets a copy of this datetime with the specified duration added.
-     * <p>
-     * If the addition is zero, then <code>this</code> is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
@@ -603,48 +598,6 @@ public final class DateTime
             return this;
         }
         return withDurationAdded(durationToAdd.getMillis(), scalar);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets a copy of this datetime with the value of the specified field increased.
-     * <p>
-     * If the addition is zero or the field is null, then <code>this</code> is returned.
-     * <p>
-     * An alternative to this method is to use the properties, for example:
-     * <pre>
-     * DateTime added = dt.hourOfDay().addToCopy(6);
-     * </pre>
-     * 
-     * @param fieldType  the field type to add to, null ignored
-     * @param amount  the amount to add
-     * @return a copy of this datetime with the field updated
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
-     */
-    public DateTime withFieldAdded(DurationFieldType fieldType, int amount) {
-        if (fieldType == null || amount == 0) {
-            return this;
-        }
-        long instant = fieldType.getField(getChronology()).add(getMillis(), amount);
-        return withMillis(instant);
-    }
-
-    /**
-     * Gets a copy of this datetime with the specified period added.
-     * <p>
-     * If the addition is zero, then <code>this</code> is returned.
-     * <p>
-     * To add or subtract on a single field use the properties, for example:
-     * <pre>
-     * DateTime added = dt.hourOfDay().addToCopy(6);
-     * </pre>
-     * 
-     * @param periodToAdd  the duration to add to this one, null means zero
-     * @return a copy of this datetime with the period added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
-     */
-    public DateTime withPeriodAdded(ReadablePeriod periodToAdd) {
-        return withPeriodAdded(periodToAdd, 1);
     }
 
     /**
@@ -668,6 +621,98 @@ public final class DateTime
         }
         long instant = getChronology().add(getMillis(), period, scalar);
         return withMillis(instant);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this datetime with the specified duration added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param duration  the duration to add to this one
+     * @return a copy of this datetime with the duration added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime plus(long duration) {
+        return withDurationAdded(duration, 1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified duration added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @return a copy of this datetime with the duration added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime plus(ReadableDuration duration) {
+        return withDurationAdded(duration, 1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified period added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * <p>
+     * The following two lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.hourOfDay().addToCopy(6);
+     * DateTime added = dt.plus(Period.hours(6));
+     * </pre>
+     * 
+     * @param period  the duration to add to this one, null means zero
+     * @return a copy of this datetime with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime plus(ReadablePeriod period) {
+        return withPeriodAdded(period, 1);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this datetime with the specified duration take away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param duration  the duration to reduce this instant by
+     * @return a copy of this datetime with the duration taken away
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime minus(long duration) {
+        return withDurationAdded(duration, -1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified duration take away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param duration  the duration to reduce this instant by
+     * @return a copy of this datetime with the duration taken away
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime minus(ReadableDuration durationToAdd) {
+        return withDurationAdded(durationToAdd, -1);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified period take away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * <p>
+     * The following two lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.hourOfDay().addToCopy(-6);
+     * DateTime added = dt.minus(Period.hours(6));
+     * </pre>
+     * 
+     * @param period  the period to reduce this instant by
+     * @return a copy of this datetime with the period taken away
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime minus(ReadablePeriod period) {
+        return withPeriodAdded(period, -1);
     }
 
     // Date properties

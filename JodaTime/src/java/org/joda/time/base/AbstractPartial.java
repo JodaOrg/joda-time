@@ -220,7 +220,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      */
     public long resolve(long baseInstant, DateTimeZone zone) {
         Chronology chrono = getChronology().withZone(zone);
-        return resolve(baseInstant, chrono);
+        return chrono.set(this, baseInstant);
     }
 
     /**
@@ -238,7 +238,7 @@ public abstract class AbstractPartial implements ReadablePartial {
     public DateTime resolveDateTime(ReadableInstant baseInstant) {
         Chronology chrono = DateTimeUtils.getInstantChronology(baseInstant);
         long instantMillis = DateTimeUtils.getInstantMillis(baseInstant);
-        long resolved = resolve(instantMillis, chrono);
+        long resolved = chrono.set(this, instantMillis);
         return new DateTime(resolved, chrono);
     }
 
@@ -257,24 +257,9 @@ public abstract class AbstractPartial implements ReadablePartial {
         if (baseInstant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        Chronology chrono = baseInstant.getChronology();
-        long resolved = resolve(baseInstant.getMillis(), chrono);
+        Chronology chrono = DateTimeUtils.getInstantChronology(baseInstant);
+        long resolved = chrono.set(this, baseInstant.getMillis());
         baseInstant.setMillis(resolved);
-    }
-
-    /**
-     * Resolve this partial into the base millis using the specified chronology.
-     * 
-     * @param baseInstant  the base millisecond instant
-     * @param chrono  the chronology
-     * @return the new resolved millis
-     */
-    protected long resolve(long baseInstant, Chronology chrono) {
-        long millis = baseInstant;
-        for (int i = 0, isize = size(); i < isize; i++) {
-            millis = getField(i, chrono).set(millis, getValue(i));
-        }
-        return millis;
     }
 
     //-----------------------------------------------------------------------

@@ -156,7 +156,7 @@ public final class DateTimeConstants {
     public static final int MINUTES_PER_HOUR = 60;
     /** Seconds in one hour (ISO) */
     public static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
-    /** Milliseconds in one hour (60) (ISO) */
+    /** Milliseconds in one hour (ISO) */
     public static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * MINUTES_PER_HOUR;
 
     /** Hours in a typical day (24) (ISO). Due to time zone offset changes, the

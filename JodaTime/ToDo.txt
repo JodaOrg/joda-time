@@ -16,9 +16,9 @@ Consistency:
  eg. withXxx() vs toXxx() vs asXxx vs toCopyXxx()
  
  Chronology: withUTC(), withDateTimeZone()
- AbstractInstant: toCopy()
+ DurationType: withChronology()
+ ReadableInstant: withChronology(), withDateTimeZone()
  DateTimeProperty: addToCopy(), setCopy(), ...
- DurationSupport: withChronology()
  
 
 Ideas longer term

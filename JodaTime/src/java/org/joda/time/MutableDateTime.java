@@ -103,10 +103,26 @@ import org.joda.time.property.ReadWritableInstantFieldProperty;
  */
 public class MutableDateTime extends AbstractDateTime
         implements ReadWritableDateTime, Cloneable, Serializable {
-    
-    static final long serialVersionUID = 2852608688135209575L;
 
+    /** Serialization version */
+    private static final long serialVersionUID = 2852608688135209575L;
+
+    /** Rounding is disabled */
+    public static final int ROUND_NONE = 0;
+    /** Rounding mode as described by {@link DateTimeField#roundFloor} */
+    public static final int ROUND_FLOOR = 1;
+    /** Rounding mode as described by {@link DateTimeField#roundCeiling} */
+    public static final int ROUND_CEILING = 2;
+    /** Rounding mode as described by {@link DateTimeField#roundHalfFloor} */
+    public static final int ROUND_HALF_FLOOR = 3;
+    /** Rounding mode as described by {@link DateTimeField#roundHalfCeiling} */
+    public static final int ROUND_HALF_CEILING = 4;
+    /** Rounding mode as described by {@link DateTimeField#roundHalfEven} */
+    public static final int ROUND_HALF_EVEN = 5;
+
+    /** The field to round on */
     private DateTimeField iRoundingField;
+    /** The mode of rounding */
     private int iRoundingMode;
 
     // Constructors
@@ -315,33 +331,63 @@ public class MutableDateTime extends AbstractDateTime
               hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
     
+    /**
+     * Gets the field used for rounding this instant, returning null if rounding
+     * is not enabled.
+     * 
+     * @param the rounding field
+     */
     public DateTimeField getRoundingField() {
         return iRoundingField;
     }
 
+    /**
+     * Gets the rounding mode for this instant, returning ROUND_NONE if rounding
+     * is not enabled.
+     * 
+     * @return the rounding mode constant
+     */
     public int getRoundingMode() {
         return iRoundingMode;
     }
 
-    public void setRoundingField(DateTimeField field) {
-        iRoundingField = field;
-        if (field != null) {
-            if (iRoundingMode == ROUND_NONE) {
-                iRoundingMode = ROUND_FLOOR;
-            }
-            setMillis(getMillis());
-        }
+    /**
+     * Sets the status of rounding to use the specified field and ROUND_FLOOR mode.
+     * A null field will disable rounding.
+     * Once set, the instant is then rounded using the new field and mode.
+     * <p>
+     * Enabling rounding will cause all subsequent calls to {@link #setMillis(long)}
+     * to be rounded. This can be used to control the precision of the instant,
+     * for example by setting a rounding field of minuteOfDay, the seconds and
+     * milliseconds will always be zero.
+     *
+     * @param field rounding field or null to disable
+     */
+    public void setRounding(DateTimeField field) {
+        setRounding(field, MutableDateTime.ROUND_FLOOR);
     }
 
-    public void setRoundingField(DateTimeField field, int mode) {
-        if (mode < ROUND_NONE || mode > ROUND_HALF_EVEN) {
+    /**
+     * Sets the status of rounding to use the specified field and mode.
+     * A null field or mode of ROUND_NONE will disable rounding.
+     * Once set, the instant is then rounded using the new field and mode.
+     * <p>
+     * Enabling rounding will cause all subsequent calls to {@link #setMillis(long)}
+     * to be rounded. This can be used to control the precision of the instant,
+     * for example by setting a rounding field of minuteOfDay, the seconds and
+     * milliseconds will always be zero.
+     *
+     * @param field  rounding field or null to disable
+     * @param mode  rounding mode or ROUND_NONE to disable
+     * @throws IllegalArgumentException if mode is unknown, no exception if field is null
+     */
+    public void setRounding(DateTimeField field, int mode) {
+        if (field != null && (mode < ROUND_NONE || mode > ROUND_HALF_EVEN)) {
             throw new IllegalArgumentException("Illegal rounding mode: " + mode);
         }
-        iRoundingField = field;
-        iRoundingMode = mode;
-        if (field != null && mode != ROUND_NONE) {
-            setMillis(getMillis());
-        }
+        iRoundingField = (mode == ROUND_NONE ? null : field);
+        iRoundingMode = (field == null ? ROUND_NONE : mode);
+        setMillis(getMillis());
     }
 
     // Millis
@@ -1154,41 +1200,6 @@ public class MutableDateTime extends AbstractDateTime
 
     // Basics
     //-----------------------------------------------------------------------
-    /**
-     * Compares this object with the specified object for equality based on the
-     * millisecond instant, the Chronology, and known rounding behavior.
-     * <p>
-     * All ReadableInstant instances are accepted.
-     * <p>
-     * See {@link #isEqual(ReadableInstant)} for an equals method that
-     * ignores the Chronology and rounding behavior.
-     *
-     * @param readableInstant  a readable instant to check against
-     * @return true if millisecond, Chronology, and known rounding behavior are
-     * equal, false if not or the instant is null or of an incorrect type
-     */
-    public boolean equals(Object readableInstant) {
-        if (this == readableInstant) {
-            return true;
-        }
-        if (super.equals(readableInstant)) {
-            if (readableInstant instanceof ReadWritableInstant) {
-                ReadWritableInstant other = (ReadWritableInstant) readableInstant;
-                if (getRoundingMode() == other.getRoundingMode()) {
-                    DateTimeField field = getRoundingField();
-                    if (field == other.getRoundingField() ||
-                        field != null && field.equals(other.getRoundingField())) {
-                        
-                        return true;
-                    }
-                }
-            } else {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Clone this object.
      *

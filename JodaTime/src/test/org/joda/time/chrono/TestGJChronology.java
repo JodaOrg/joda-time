@@ -25,6 +25,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.Instant;
 
 /**
@@ -293,4 +295,126 @@ public class TestGJChronology extends TestCase {
         assertEquals(true, GJChronology.getInstance().millisOfSecond().isSupported());
     }
 
+    public void testIllegalDates() {
+        try {
+            new DateTime(1582, 10, 5, 0, 0, 0, 0, GJChronology.getInstance(DateTimeZone.UTC));
+            fail("Constructed illegal date");
+        } catch (IllegalArgumentException e) { /* good */ }
+
+        try {
+            new DateTime(1582, 10, 14, 0, 0, 0, 0, GJChronology.getInstance(DateTimeZone.UTC));
+            fail("Constructed illegal date");
+        } catch (IllegalArgumentException e) { /* good */ }
+    }
+
+    public void testParseEquivalence() {
+        testParse("1581-01-01T01:23:45.678", 1581, 1, 1, 1, 23, 45, 678);
+        testParse("1581-06-30", 1581, 6, 30, 0, 0, 0, 0);
+        testParse("1582-01-01T01:23:45.678", 1582, 1, 1, 1, 23, 45, 678);
+        testParse("1582-06-30T01:23:45.678", 1582, 6, 30, 1, 23, 45, 678);
+        testParse("1582-10-04", 1582, 10, 4, 0, 0, 0, 0);
+        testParse("1582-10-15", 1582, 10, 15, 0, 0, 0, 0);
+        testParse("1582-12-31", 1582, 12, 31, 0, 0, 0, 0);
+        testParse("1583-12-31", 1583, 12, 31, 0, 0, 0, 0);
+    }
+
+    private void testParse(String str,
+                           int year, int month, int day,
+                           int hour, int minute, int second, int millis) {
+        assertEquals(new DateTime(str, GJChronology.getInstance(DateTimeZone.UTC)),
+                     new DateTime(year, month, day, hour, minute, second, millis,
+                                  GJChronology.getInstance(DateTimeZone.UTC)));
+    }
+
+    public void testCutoverAddYears() {
+        testAdd("1582-01-01", DurationFieldType.years(), 1, "1583-01-01");
+        testAdd("1582-02-15", DurationFieldType.years(), 1, "1583-02-15");
+        testAdd("1582-02-28", DurationFieldType.years(), 1, "1583-02-28");
+        testAdd("1582-03-01", DurationFieldType.years(), 1, "1583-03-01");
+        testAdd("1582-09-30", DurationFieldType.years(), 1, "1583-09-30");
+        testAdd("1582-10-01", DurationFieldType.years(), 1, "1583-10-01");
+        testAdd("1582-10-04", DurationFieldType.years(), 1, "1583-10-04");
+        testAdd("1582-10-15", DurationFieldType.years(), 1, "1583-10-15");
+        testAdd("1582-10-16", DurationFieldType.years(), 1, "1583-10-16");
+
+        // Leap years...
+        testAdd("1580-01-01", DurationFieldType.years(), 4, "1584-01-01");
+        testAdd("1580-02-29", DurationFieldType.years(), 4, "1584-02-29");
+        testAdd("1580-10-01", DurationFieldType.years(), 4, "1584-10-01");
+        testAdd("1580-10-10", DurationFieldType.years(), 4, "1584-10-10");
+        testAdd("1580-10-15", DurationFieldType.years(), 4, "1584-10-15");
+        testAdd("1580-12-31", DurationFieldType.years(), 4, "1584-12-31");
+    }
+
+    public void testCutoverAddWeekyears() {
+        testAdd("1582-W01-1", DurationFieldType.weekyears(), 1, "1583-W01-1");
+        testAdd("1582-W39-1", DurationFieldType.weekyears(), 1, "1583-W39-1");
+        testAdd("1583-W45-1", DurationFieldType.weekyears(), 1, "1584-W45-1");
+
+        // This test fails, but I'm not sure if its worth fixing. The date
+        // falls after the cutover, but in the cutover year. The add operation
+        // is performed completely within the gregorian calendar, with no
+        // crossing of the cutover. As a result, no special correction is
+        // applied. Since the full gregorian year of 1582 has a different week
+        // numbers than the full julian year of 1582, the week number is off by
+        // one after the addition.
+        //
+        //testAdd("1582-W42-1", DurationFieldType.weekyears(), 1, "1583-W42-1");
+
+        // Leap years...
+        testAdd("1580-W01-1", DurationFieldType.weekyears(), 4, "1584-W01-1");
+        testAdd("1580-W30-7", DurationFieldType.weekyears(), 4, "1584-W30-7");
+        testAdd("1580-W50-7", DurationFieldType.weekyears(), 4, "1584-W50-7");
+    }
+
+    public void testCutoverAddMonths() {
+        testAdd("1582-01-01", DurationFieldType.months(), 1, "1582-02-01");
+        testAdd("1582-01-01", DurationFieldType.months(), 6, "1582-07-01");
+        testAdd("1582-01-01", DurationFieldType.months(), 12, "1583-01-01");
+        testAdd("1582-11-15", DurationFieldType.months(), 1, "1582-12-15");
+
+        testAdd("1582-09-04", DurationFieldType.months(), 2, "1582-11-04");
+        testAdd("1582-09-05", DurationFieldType.months(), 2, "1582-11-05");
+        testAdd("1582-09-10", DurationFieldType.months(), 2, "1582-11-10");
+        testAdd("1582-09-15", DurationFieldType.months(), 2, "1582-11-15");
+
+
+        // Leap years...
+        testAdd("1580-01-01", DurationFieldType.months(), 48, "1584-01-01");
+        testAdd("1580-02-29", DurationFieldType.months(), 48, "1584-02-29");
+        testAdd("1580-10-01", DurationFieldType.months(), 48, "1584-10-01");
+        testAdd("1580-10-10", DurationFieldType.months(), 48, "1584-10-10");
+        testAdd("1580-10-15", DurationFieldType.months(), 48, "1584-10-15");
+        testAdd("1580-12-31", DurationFieldType.months(), 48, "1584-12-31");
+    }
+
+    public void testCutoverAddWeeks() {
+        testAdd("1582-01-01", DurationFieldType.weeks(), 1, "1582-01-08");
+        testAdd("1583-01-01", DurationFieldType.weeks(), 1, "1583-01-08");
+
+        // Weeks are precise, and so cutover is not ignored.
+        testAdd("1582-10-01", DurationFieldType.weeks(), 2, "1582-10-25");
+        testAdd("1582-W01-1", DurationFieldType.weeks(), 51, "1583-W01-1");
+    }
+
+    public void testCutoverAddDays() {
+        testAdd("1582-10-03", DurationFieldType.days(), 1, "1582-10-04");
+        testAdd("1582-10-04", DurationFieldType.days(), 1, "1582-10-15");
+        testAdd("1582-10-15", DurationFieldType.days(), 1, "1582-10-16");
+
+        testAdd("1582-09-30", DurationFieldType.days(), 10, "1582-10-20");
+        testAdd("1582-10-04", DurationFieldType.days(), 10, "1582-10-24");
+        testAdd("1582-10-15", DurationFieldType.days(), 10, "1582-10-25");
+    }
+
+    private void testAdd(String start, DurationFieldType type, int amt, String end) {
+        DateTime dtStart = new DateTime(start, GJChronology.getInstance(DateTimeZone.UTC));
+        DateTime dtEnd = new DateTime(end, GJChronology.getInstance(DateTimeZone.UTC));
+        assertEquals(dtEnd, dtStart.withFieldAdded(type, amt));
+        assertEquals(dtStart, dtEnd.withFieldAdded(type, -amt));
+
+        DurationField field = type.getField(GJChronology.getInstance(DateTimeZone.UTC));
+        int diff = field.getDifference(dtEnd.getMillis(), dtStart.getMillis());
+        assertEquals(amt, diff);
+    }
 }

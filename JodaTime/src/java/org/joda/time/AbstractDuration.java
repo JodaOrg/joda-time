@@ -152,7 +152,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             setDuration(iType = type, (ReadableDuration) duration);
         } else {
             DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-            if (converter.isPrecise(duration)) {
+            if (type.isPrecise() && converter.isPrecise(duration)) {
                 // Only call a private method
                 setTotalMillis(iType = type, converter.getDurationMillis(duration));
             } else {

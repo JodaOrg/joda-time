@@ -116,6 +116,14 @@ public interface ReadableInterval {
      */
     Duration getDuration();
 
+    /** 
+     * Gets the duration of this time interval.
+     *
+     * @param type the requested type of the duration
+     * @return the duration of the time interval
+     */
+    Duration getDuration(DurationType type);
+
     //-----------------------------------------------------------------------
     /**
      * Does this time interval contain the specified millisecond instant.

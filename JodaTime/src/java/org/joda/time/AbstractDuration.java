@@ -97,20 +97,11 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         }
     }
 
-    /**
-     * Checks whether the field is precise.
-     */
-    private static void checkPrecise(DurationField field, String name) {
-        if (!field.isPrecise()) {
-            throw new UnsupportedOperationException
-                ("The field \"" + name + "\" is imprecise");
-        }
-    }
-
+    /** The duration type that allocates the duration to fields */
     private final DurationType iType;
-
+    /** The total milliseconds, if known */
     private long iTotalMillis;
-    // 0=unknown, 1=imprecise, 2=precise
+    /** The milliseoond status, 0=unknown, 1=imprecise, 2=precise */
     private int iTotalMillisState;
 
     private int iYears;
@@ -724,21 +715,21 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * empty implementation that is protected and final. This also ensures that
      * all lower subclasses are also immutable.
      * 
-     * @param duration  the duration to set
-     * @throws IllegalArgumentException if duration is invalid
+     * @param duration  the duration to set, null means zero length duration
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void setDuration(ReadableDuration duration) {
-        setDuration(iType, duration);
+        if (duration == null) {
+            setTotalMillis(iType, 0L);
+        } else {
+            setDuration(iType, duration);
+        }
     }
 
     /**
      * This method is private to prevent subclasses from overriding.
      */
     private void setDuration(DurationType type, ReadableDuration duration) {
-        if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
-        }
         setDuration(type,
                     duration.getYears(), duration.getMonths(),
                     duration.getWeeks(), duration.getDays(),
@@ -778,10 +769,6 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     private void setDuration(DurationType type,
                              int years, int months, int weeks, int days,
                              int hours, int minutes, int seconds, int millis) {
-        if (type == null) {
-            throw new IllegalArgumentException("The type must not be null");
-        }
-
         if (years != 0) {
             checkArgument(type.years(), "years");
         }
@@ -828,7 +815,6 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @throws IllegalArgumentException if the type is null
      */
     protected void setTotalMillis(long startInstant, long endInstant) {
         setTotalMillis(iType, startInstant, endInstant);
@@ -839,13 +825,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @throws IllegalArgumentException if the type is null
      */
     private void setTotalMillis(DurationType type, long startInstant, long endInstant) {
-        if (type == null) {
-            throw new IllegalArgumentException("The type must not be null");
-        }
-        
         long baseTotalMillis = (endInstant - startInstant);
         int years = 0, months = 0, weeks = 0, days = 0;
         int hours = 0, minutes = 0, seconds = 0, millis = 0;
@@ -915,7 +896,6 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * all lower subclasses are also immutable.
      * 
      * @param duration  the duration, in milliseconds
-     * @throws IllegalArgumentException if the type is null
      */
     protected void setTotalMillis(long duration) {
         setTotalMillis(iType, duration);
@@ -925,13 +905,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * This method is private to prevent subclasses from overriding.
      *
      * @param duration  the duration, in milliseconds
-     * @throws IllegalArgumentException if the type is null
      */
-    private void setTotalMillis(DurationType type, final long duration) {
-        if (type == null) {
-            throw new IllegalArgumentException("The type must not be null");
-        }
-        
+    private void setTotalMillis(DurationType type, long duration) {
         if (duration == 0) {
             iTotalMillis = duration;
             iTotalMillisState = 2;
@@ -1023,15 +998,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     /**
      * Adds a duration to this one.
      * 
-     * @param duration  the duration to add
-     * @throws IllegalArgumentException if the duration is null
+     * @param duration  the duration to add, mulls means add nothing
      * @throws IllegalStateException if the duration is imprecise
      */
     protected void add(ReadableDuration duration) {
-        if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
+        if (duration != null) {
+            add(duration.getTotalMillis());
         }
-        add(duration.getTotalMillis());
     }
     
     /**

@@ -241,10 +241,8 @@ public class MutableDuration extends AbstractDuration
     /**
      * Sets all the fields in one go from another ReadableDuration.
      * 
-     * @param duration  the duration to set
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param duration  the duration to set, null means zero length duration
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void setDuration(ReadableDuration duration) {
         super.setDuration(duration);
@@ -261,8 +259,7 @@ public class MutableDuration extends AbstractDuration
      * @param minutes  amount of minutes in this duration, which must be zero if unsupported
      * @param seconds  amount of seconds in this duration, which must be zero if unsupported
      * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void setDuration(int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis) {
@@ -273,20 +270,18 @@ public class MutableDuration extends AbstractDuration
     /**
      * Sets all the fields in one go from a millisecond interval.
      * 
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
      */
     public void setTotalMillis(long startInstant, long endInstant) {
         super.setTotalMillis(startInstant, endInstant);
     }
 
     /**
-     * Sets all the fields in one go from a millisecond duration. If any
-     * supported fields are imprecise, an UnsupportedOperationException is
-     * thrown. The exception to this is when the specified duration is zero.
+     * Sets all the fields in one go from a millisecond duration.
+     * Only fields that are supported and precise will be set.
      * 
      * @param duration  the duration, in milliseconds
-     * @throws UnsupportedOperationException if any fields are imprecise
      */
     public void setTotalMillis(long duration) {
         super.setTotalMillis(duration);
@@ -306,8 +301,7 @@ public class MutableDuration extends AbstractDuration
     /**
      * Adds a duration to this one.
      * 
-     * @param duration  the duration to add
-     * @throws IllegalArgumentException if the duration is null
+     * @param duration  the duration to add, mulls means add nothing
      * @throws IllegalStateException if the duration is imprecise
      */
     public void add(ReadableDuration duration) {

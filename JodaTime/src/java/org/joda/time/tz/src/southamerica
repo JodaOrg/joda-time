@@ -1,4 +1,4 @@
-# @(#)southamerica	7.55
+# @(#)southamerica	7.57
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -942,9 +942,16 @@ Rule	Para	1998	2001	-	Mar	Sun>=1	0:00	0	-
 # A decree was issued in Paraguay (no. 16350) on 2002-02-26 that changed the
 # dst method to be from the first Sunday in September to the first Sunday in
 # April.
-Rule	Para	2002	max	-	Apr	Sun>=1	0:00	0	-
-Rule	Para	2002	max	-	Sep	Sun>=1	0:00	1:00	S
-
+Rule	Para	2002	2004	-	Apr	Sun>=1	0:00	0	-
+Rule	Para	2002	2003	-	Sep	Sun>=1	0:00	1:00	S
+#
+# From Jesper Norgaard Welen (2005-01-02):
+# There are several sources that claim that Paraguay made
+# a timezone rule change in autumn 2004.
+# From Steffen Thorsen (2005-01-05):
+# Decree 1,867 (2004-03-05) <http://www.labor.com.py/noticias.asp?id=27>
+Rule	Para	2004	max	-	Oct	Sun>=15	0:00	1:00	S
+Rule	Para	2005	max	-	Mar	Sun>=8	0:00	0	-
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Asuncion	-3:50:40 -	LMT	1890

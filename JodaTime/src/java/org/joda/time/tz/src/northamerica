@@ -1,4 +1,4 @@
-# @(#)northamerica	7.70
+# @(#)northamerica	7.71
 # also includes Central America and the Caribbean
 
 # This data is by no means authoritative; if you think you know better,
@@ -208,6 +208,13 @@ Rule	US	1987	max	-	Apr	Sun>=1	2:00	1:00	D
 # Pennsylvania, Rhode Island, South Carolina, eastern Tennessee,
 # Vermont, Virginia, West Virginia
 
+# From Dave Cantor (2004-11-02):
+# Early this summer I had the occasion to visit the Mount Washington
+# Observatory weather station atop (of course!) Mount Washington [, NH]....
+# One of the staff members said that the station was on Eastern Standard Time
+# and didn't change their clocks for Daylight Saving ... so that their
+# reports will always have times which are 5 hours behind UTC.
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule	NYC	1920	only	-	Mar	lastSun	2:00	1:00	D
 Rule	NYC	1920	only	-	Oct	lastSun	2:00	0	S
@@ -355,10 +362,26 @@ Zone America/Adak	 12:13:21 -	LMT	1867 Oct 18
 			-11:00	US	B%sT	1983 Oct 30 2:00
 			-10:00	US	AH%sT	1983 Nov 30
 			-10:00	US	HA%sT
+# The following switches don't quite make our 1970 cutoff.
+#
 # Shanks writes that part of southwest Alaska (e.g. Aniak)
 # switched from -11:00 to -10:00 on 1968-09-22 at 02:00,
 # and another part (e.g. Akiak) made the same switch five weeks later.
-# These switches don't quite make our 1970 cutoff.
+#
+# From David Flater (2004-11-09):
+# In e-mail, 2004-11-02, Ray Hudson, historian/liaison to the Unalaska
+# Historic Preservation Commission, provided this information, which
+# suggests that Unalaska deviated from statutory time from early 1967
+# possibly until 1983:
+#
+#  Minutes of the Unalaska City Council Meeting, January 10, 1967:
+#  "Except for St. Paul and Akutan, Unalaska is the only important
+#  location not on Alaska Standard Time.  The following resolution was
+#  made by William Robinson and seconded by Henry Swanson:  Be it
+#  resolved that the City of Unalaska hereby goes to Alaska Standard
+#  Time as of midnight Friday, January 13, 1967 (1 A.M. Saturday,
+#  January 14, Alaska Standard Time.)  This resolution was passed with
+#  three votes for and one against."
 
 # Hawaii
 #

@@ -164,8 +164,13 @@ public class TestPreciseDateTimeField extends TestCase {
         assertEquals(true, field.isSupported());
     }
 
+    public void test_getRange() {
+        PreciseDateTimeField field = new MockPreciseDateTimeField();
+        assertEquals(60, field.getRange());
+    }
+
     public void test_get() {
-        BaseDateTimeField field = new MockPreciseDateTimeField();
+        PreciseDateTimeField field = new MockPreciseDateTimeField();
         assertEquals(0, field.get(0));
         assertEquals(1, field.get(60));
         assertEquals(2, field.get(123));

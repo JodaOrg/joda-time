@@ -135,6 +135,11 @@ public class TestPreciseDurationDateTimeField extends TestCase {
         assertEquals(true, field.isSupported());
     }
 
+    public void test_isLenient() {
+        BaseDateTimeField field = new MockPreciseDurationDateTimeField();
+        assertEquals(false, field.isLenient());
+    }
+
     public void test_get() {
         BaseDateTimeField field = new MockPreciseDurationDateTimeField();
         assertEquals(0, field.get(0));

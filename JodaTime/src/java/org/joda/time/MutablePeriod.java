@@ -381,6 +381,13 @@ public class MutablePeriod
 
     //-----------------------------------------------------------------------
     /**
+     * Clears the period, setting all values back to zero.
+     */
+    public void clear() {
+        super.setValues(new int[size()]);
+    }
+
+    /**
      * Sets the value of one of the fields by index.
      *
      * @param index  the field index

@@ -140,6 +140,17 @@ public class TestMutablePeriod_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testClear() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.clear();
+        assertEquals(new MutablePeriod(), test);
+        
+        test = new MutablePeriod(1, 2, 0, 4, 5, 6, 7, 8, PeriodType.yearMonthDayTime());
+        test.clear();
+        assertEquals(new MutablePeriod(PeriodType.yearMonthDayTime()), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testAddYears() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addYears(10);

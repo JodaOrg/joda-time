@@ -66,6 +66,11 @@ package org.joda.time;
 public interface ReadWritablePeriod extends ReadablePeriod {
 
     /**
+     * Clears the period, setting all values back to zero.
+     */
+    void clear();
+
+    /**
      * Sets the value of one of the fields by index.
      *
      * @param index  the field index

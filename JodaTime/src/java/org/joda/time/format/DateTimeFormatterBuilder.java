@@ -1637,7 +1637,21 @@ public class DateTimeFormatterBuilder {
         }
 
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            int limit = text.length() - position;
+
+            zeroOffset:
             if (iZeroOffsetText != null) {
+                if (iZeroOffsetText.length() == 0) {
+                    // Peek ahead, looking for sign character.
+                    if (limit > 0) {
+                        char c = text.charAt(position);
+                        if (c == '-' || c == '+') {
+                            break zeroOffset;
+                        }
+                    }
+                    bucket.setOffset(0);
+                    return position;
+                }
                 if (text.regionMatches(true, position, iZeroOffsetText, 0,
                                        iZeroOffsetText.length())) {
                     bucket.setOffset(0);
@@ -1647,7 +1661,6 @@ public class DateTimeFormatterBuilder {
 
             // Format to expect is sign character followed by at least one digit.
 
-            int limit = text.length() - position;
             if (limit <= 1) {
                 return ~position;
             }

@@ -112,8 +112,8 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected BasePeriod(int years, int months, int weeks, int days,
-                            int hours, int minutes, int seconds, int millis,
-                            PeriodType type) {
+                         int hours, int minutes, int seconds, int millis,
+                         PeriodType type) {
         super();
         type = checkPeriodType(type);
         iType = type;
@@ -175,6 +175,24 @@ public abstract class BasePeriod
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
         long endMillis = FieldUtils.safeAdd(startMillis, durationMillis);
         Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
+        iType = type;
+        iValues = chrono.get(this, startMillis, endMillis);
+    }
+
+    /**
+     * Creates a period from the given duration and end point.
+     *
+     * @param duration  the duration of the interval, null means zero-length
+     * @param endInstant  the interval end, null means now
+     * @param type  which set of fields this period supports, null means standard
+     */
+    protected BasePeriod(ReadableDuration duration, ReadableInstant endInstant, PeriodType type) {
+        super();
+        type = checkPeriodType(type);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        long endMillis = DateTimeUtils.getInstantMillis(endInstant);
+        long startMillis = FieldUtils.safeSubtract(endMillis, durationMillis);
+        Chronology chrono = DateTimeUtils.getInstantChronology(endInstant);
         iType = type;
         iValues = chrono.get(this, startMillis, endMillis);
     }

@@ -192,7 +192,8 @@ public abstract class BaseDuration
      * However, ISO UTC also has precise days and weeks.
      * <p>
      * For more control over the conversion process, you must pair the duration with
-     * an instant, see {@link #toPeriodFrom(ReadableInstant)}.
+     * an instant, see {@link #toPeriodFrom(ReadableInstant)} and
+     * {@link #toPeriodTo(ReadableInstant)}
      * 
      * @param chrono  the chronology to use, null means ISO default
      * @return a Period created using the millisecond duration from this instance
@@ -211,7 +212,8 @@ public abstract class BaseDuration
      * However, ISO UTC also has precise days and weeks.
      * <p>
      * For more control over the conversion process, you must pair the duration with
-     * an instant, see {@link #toPeriodFrom(ReadableInstant, PeriodType)}.
+     * an instant, see {@link #toPeriodFrom(ReadableInstant, PeriodType)} and
+     * {@link #toPeriodTo(ReadableInstant, PeriodType)}
      * 
      * @param type  the period type to use, null means standard
      * @param chrono  the chronology to use, null means ISO default
@@ -253,13 +255,56 @@ public abstract class BaseDuration
     }
 
     /**
+     * Converts this duration to a Period instance by subtracting the duration
+     * from an end instant to obtain an interval using the standard period
+     * type.
+     * <p>
+     * This conversion will determine the fields of a period accurately.
+     * The results are based on the instant millis, the chronology of the instant,
+     * the standard period type and the length of this duration.
+     * 
+     * @param endInstant  the instant to calculate the period to, null means now
+     * @return a Period created using the millisecond duration from this instance
+     */
+    public Period toPeriodTo(ReadableInstant endInstant) {
+        return new Period(this, endInstant);
+    }
+
+    /**
+     * Converts this duration to a Period instance by subtracting the duration
+     * from an end instant to obtain an interval using the standard period
+     * type.
+     * <p>
+     * This conversion will determine the fields of a period accurately.
+     * The results are based on the instant millis, the chronology of the instant,
+     * the period type and the length of this duration.
+     * 
+     * @param endInstant  the instant to calculate the period to, null means now
+     * @param type  the period type determining how to split the duration into fields, null means All type
+     * @return a Period created using the millisecond duration from this instance
+     */
+    public Period toPeriodTo(ReadableInstant endInstant, PeriodType type) {
+        return new Period(this, endInstant, type);
+    }
+
+    /**
      * Converts this duration to an Interval starting at the specified instant.
      * 
-     * @param startInstant  the instant to start the instant from, null means now
+     * @param startInstant  the instant to start the interval at, null means now
      * @return an Interval starting at the specified instant
      */
     public Interval toIntervalFrom(ReadableInstant startInstant) {
         return new Interval(startInstant, this);
+    }
+
+    /**
+     * Converts this duration to an Interval ending at the specified instant.
+     * 
+     * @param endInstant  the instant to end the interval at, null means now
+     * @return an Interval ending at the specified instant
+     */
+    public Interval toIntervalTo(ReadableInstant endInstant) {
+        return new Interval(this, endInstant);
     }
 
 }

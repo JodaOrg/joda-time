@@ -243,7 +243,7 @@
 
 <!-- ====================================================================== -->
 
-  <target name="dist" depends="compile,jar,javadoc"
+  <target name="dist" depends="compile,jar,test.jar,javadoc"
           description="Create binary distribution">
     <delete     dir="${build.dist.fullname}"/>
     <mkdir      dir="${build.dist.fullname}"/>
@@ -293,21 +293,40 @@
           description="Run all unit test cases">
   </target>
 
-
-  <target name="test.time" depends="compile.tests">
+  <target name="test.time" depends="compile.tests,compile.zoneinfo">
     <echo message="Running time tests ..."/>
     <junit printsummary="yes" haltonfailure="yes">
+      <formatter type="plain" usefile="false" />
       <classpath>
+        <pathelement location="${build.classes}"/>
+        <pathelement location="${build.tests}"/>
+        <pathelement location="${build.tz}"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+
+      <batchtest fork="yes">
+        <fileset dir="${test.home}">
+          <include name="**/TestAll.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <target name="test.jar" depends="compile.tests,jar">
+    <echo message="Running time tests from jar ..."/>
+    <junit printsummary="yes" haltonfailure="yes">
+      <formatter type="plain" usefile="false" />
+      <classpath>
+        <pathelement location="${build.fullname}.jar"/>
         <pathelement location="${build.tests}"/>
         <pathelement path="${java.class.path}"/>
       </classpath>
 
-<!--      <batchtest fork="yes">
-        <fileset dir="${src.tests}">
-          <include name="**/*Test*.java"/>
-          <exclude name="**/AllTests.java"/>
+      <batchtest fork="yes">
+        <fileset dir="${test.home}">
+          <include name="**/TestAll.java"/>
         </fileset>
-      </batchtest>-->
+      </batchtest>
     </junit>
   </target>
 

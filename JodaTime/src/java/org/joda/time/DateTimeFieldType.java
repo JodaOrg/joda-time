@@ -54,172 +54,128 @@
 package org.joda.time;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Identifies a field, such as year or minuteOfHour, in a chronology-neutral way.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
-public class DateTimeFieldType implements Serializable {
+public abstract class DateTimeFieldType implements Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = -42615285973990L;
 
-    /** The cache of name to type used to ensure singletons. */
-    private static Map cCache = new HashMap();
-    /** The era field. */
-    private static final DateTimeFieldType ERA = new DateTimeFieldType(
-        "era", DurationFieldType.eras(), null);
-    /** The yearOfEra field. */
-    private static final DateTimeFieldType YEAR_OF_ERA = new DateTimeFieldType(
-        "yearOfEra", DurationFieldType.years(), DurationFieldType.eras());
-    /** The centuryOfEra field. */
-    private static final DateTimeFieldType CENTURY_OF_ERA = new DateTimeFieldType(
-        "centuryOfEra", DurationFieldType.centuries(), DurationFieldType.eras());
-    /** The yearOfCentury field. */
-    private static final DateTimeFieldType YEAR_OF_CENTURY = new DateTimeFieldType(
-        "yearOfCentury", DurationFieldType.years(), DurationFieldType.centuries());
-    /** The year field. */
-    private static final DateTimeFieldType YEAR = new DateTimeFieldType(
-        "year", DurationFieldType.years(), null);
-    /** The dayOfYear field. */
-    private static final DateTimeFieldType DAY_OF_YEAR = new DateTimeFieldType(
-        "dayOfYear", DurationFieldType.days(), DurationFieldType.years());
-    /** The monthOfYear field. */
-    private static final DateTimeFieldType MONTH_OF_YEAR = new DateTimeFieldType(
-        "monthOfYear", DurationFieldType.months(), DurationFieldType.years());
-    /** The dayOfMonth field. */
-    private static final DateTimeFieldType DAY_OF_MONTH = new DateTimeFieldType(
-        "dayOfMonth", DurationFieldType.days(), DurationFieldType.months());
-    /** The weekyearOfCentury field. */
-    private static final DateTimeFieldType WEEKYEAR_OF_CENTURY = new DateTimeFieldType(
-        "weekyearOfCentury", DurationFieldType.weekyears(), DurationFieldType.centuries());
-    /** The weekyear field. */
-    private static final DateTimeFieldType WEEKYEAR = new DateTimeFieldType(
-        "weekyear", DurationFieldType.weekyears(), null);
-    /** The weekOfWeekyear field. */
-    private static final DateTimeFieldType WEEK_OF_WEEKYEAR = new DateTimeFieldType(
-        "weekOfWeekyear", DurationFieldType.weeks(), DurationFieldType.weekyears());
-    /** The dayOfWeek field. */
-    private static final DateTimeFieldType DAY_OF_WEEK = new DateTimeFieldType(
-        "dayOfWeek", DurationFieldType.days(), DurationFieldType.weeks());
+    // Ordinals for standard field types.
+    static final byte
+        ERA = 1,
+        YEAR_OF_ERA = 2,
+        CENTURY_OF_ERA = 3,
+        YEAR_OF_CENTURY = 4,
+        YEAR = 5,
+        DAY_OF_YEAR = 6,
+        MONTH_OF_YEAR = 7,
+        DAY_OF_MONTH = 8,
+        WEEKYEAR_OF_CENTURY = 9,
+        WEEKYEAR = 10,
+        WEEK_OF_WEEKYEAR = 11,
+        DAY_OF_WEEK = 12,
+        HALFDAY_OF_DAY = 13,
+        HOUR_OF_HALFDAY = 14,
+        CLOCKHOUR_OF_HALFDAY = 15,
+        CLOCKHOUR_OF_DAY = 16,
+        HOUR_OF_DAY = 17,
+        MINUTE_OF_DAY = 18,
+        MINUTE_OF_HOUR = 19,
+        SECOND_OF_DAY = 20,
+        SECOND_OF_MINUTE = 21,
+        MILLIS_OF_DAY = 22,
+        MILLIS_OF_SECOND = 23;
 
-    /** The halfday field. */
-    private static final DateTimeFieldType HALFDAY_OF_DAY = new DateTimeFieldType(
-        "halfdayOfDay", DurationFieldType.halfdays(), DurationFieldType.days());
-    /** The hourOfHalfday field. */
-    private static final DateTimeFieldType HOUR_OF_HALFDAY = new DateTimeFieldType(
-        "hourOfHalfday", DurationFieldType.hours(), DurationFieldType.halfdays());
-    /** The clockhourOfHalfday field. */
-    private static final DateTimeFieldType CLOCKHOUR_OF_HALFDAY = new DateTimeFieldType(
-        "clockhourOfHalfday", DurationFieldType.hours(), DurationFieldType.halfdays());
-    /** The clockhourOfDay field. */
-    private static final DateTimeFieldType CLOCKHOUR_OF_DAY = new DateTimeFieldType(
-        "clockhourOfDay", DurationFieldType.hours(), DurationFieldType.days());
-    /** The hourOfDay field. */
-    private static final DateTimeFieldType HOUR_OF_DAY = new DateTimeFieldType(
-        "hourOfDay", DurationFieldType.hours(), DurationFieldType.days());
-    /** The minuteOfDay field. */
-    private static final DateTimeFieldType MINUTE_OF_DAY = new DateTimeFieldType(
-        "minuteOfDay", DurationFieldType.minutes(), DurationFieldType.days());
-    /** The minuteOfHour field. */
-    private static final DateTimeFieldType MINUTE_OF_HOUR = new DateTimeFieldType(
-        "minuteOfHour", DurationFieldType.minutes(), DurationFieldType.hours());
-    /** The secondOfDay field. */
-    private static final DateTimeFieldType SECOND_OF_DAY = new DateTimeFieldType(
-        "secondOfDay", DurationFieldType.seconds(), DurationFieldType.days());
-    /** The secondOfMinute field. */
-    private static final DateTimeFieldType SECOND_OF_MINUTE = new DateTimeFieldType(
-        "secondOfMinute", DurationFieldType.seconds(), DurationFieldType.minutes());
-    /** The millisOfDay field. */
-    private static final DateTimeFieldType MILLIS_OF_DAY = new DateTimeFieldType(
-        "millisOfDay", DurationFieldType.millis(), DurationFieldType.days());
-    /** The millisOfSecond field. */
-    private static final DateTimeFieldType MILLIS_OF_SECOND = new DateTimeFieldType(
-        "millisOfSecond", DurationFieldType.millis(), DurationFieldType.seconds());
+    /** The era field type. */
+    private static final DateTimeFieldType ERA_TYPE = new StandardDateTimeFieldType(
+        "era", ERA, DurationFieldType.eras(), null);
+    /** The yearOfEra field type. */
+    private static final DateTimeFieldType YEAR_OF_ERA_TYPE = new StandardDateTimeFieldType(
+        "yearOfEra", YEAR_OF_ERA, DurationFieldType.years(), DurationFieldType.eras());
+    /** The centuryOfEra field type. */
+    private static final DateTimeFieldType CENTURY_OF_ERA_TYPE = new StandardDateTimeFieldType(
+        "centuryOfEra", CENTURY_OF_ERA, DurationFieldType.centuries(), DurationFieldType.eras());
+    /** The yearOfCentury field type. */
+    private static final DateTimeFieldType YEAR_OF_CENTURY_TYPE = new StandardDateTimeFieldType(
+        "yearOfCentury", YEAR_OF_CENTURY, DurationFieldType.years(), DurationFieldType.centuries());
+    /** The year field type. */
+    private static final DateTimeFieldType YEAR_TYPE = new StandardDateTimeFieldType(
+        "year", YEAR, DurationFieldType.years(), null);
+    /** The dayOfYear field type. */
+    private static final DateTimeFieldType DAY_OF_YEAR_TYPE = new StandardDateTimeFieldType(
+        "dayOfYear", DAY_OF_YEAR, DurationFieldType.days(), DurationFieldType.years());
+    /** The monthOfYear field type. */
+    private static final DateTimeFieldType MONTH_OF_YEAR_TYPE = new StandardDateTimeFieldType(
+        "monthOfYear", MONTH_OF_YEAR, DurationFieldType.months(), DurationFieldType.years());
+    /** The dayOfMonth field type. */
+    private static final DateTimeFieldType DAY_OF_MONTH_TYPE = new StandardDateTimeFieldType(
+        "dayOfMonth", DAY_OF_MONTH, DurationFieldType.days(), DurationFieldType.months());
+    /** The weekyearOfCentury field type. */
+    private static final DateTimeFieldType WEEKYEAR_OF_CENTURY_TYPE = new StandardDateTimeFieldType(
+        "weekyearOfCentury", WEEKYEAR_OF_CENTURY, DurationFieldType.weekyears(), DurationFieldType.centuries());
+    /** The weekyear field type. */
+    private static final DateTimeFieldType WEEKYEAR_TYPE = new StandardDateTimeFieldType(
+        "weekyear", WEEKYEAR, DurationFieldType.weekyears(), null);
+    /** The weekOfWeekyear field type. */
+    private static final DateTimeFieldType WEEK_OF_WEEKYEAR_TYPE = new StandardDateTimeFieldType(
+        "weekOfWeekyear", WEEK_OF_WEEKYEAR, DurationFieldType.weeks(), DurationFieldType.weekyears());
+    /** The dayOfWeek field type. */
+    private static final DateTimeFieldType DAY_OF_WEEK_TYPE = new StandardDateTimeFieldType(
+        "dayOfWeek", DAY_OF_WEEK, DurationFieldType.days(), DurationFieldType.weeks());
+
+    /** The halfday field type. */
+    private static final DateTimeFieldType HALFDAY_OF_DAY_TYPE = new StandardDateTimeFieldType(
+        "halfdayOfDay", HALFDAY_OF_DAY, DurationFieldType.halfdays(), DurationFieldType.days());
+    /** The hourOfHalfday field type. */
+    private static final DateTimeFieldType HOUR_OF_HALFDAY_TYPE = new StandardDateTimeFieldType(
+        "hourOfHalfday", HOUR_OF_HALFDAY, DurationFieldType.hours(), DurationFieldType.halfdays());
+    /** The clockhourOfHalfday field type. */
+    private static final DateTimeFieldType CLOCKHOUR_OF_HALFDAY_TYPE = new StandardDateTimeFieldType(
+        "clockhourOfHalfday", CLOCKHOUR_OF_HALFDAY, DurationFieldType.hours(), DurationFieldType.halfdays());
+    /** The clockhourOfDay field type. */
+    private static final DateTimeFieldType CLOCKHOUR_OF_DAY_TYPE = new StandardDateTimeFieldType(
+        "clockhourOfDay", CLOCKHOUR_OF_DAY, DurationFieldType.hours(), DurationFieldType.days());
+    /** The hourOfDay field type. */
+    private static final DateTimeFieldType HOUR_OF_DAY_TYPE = new StandardDateTimeFieldType(
+        "hourOfDay", HOUR_OF_DAY, DurationFieldType.hours(), DurationFieldType.days());
+    /** The minuteOfDay field type. */
+    private static final DateTimeFieldType MINUTE_OF_DAY_TYPE = new StandardDateTimeFieldType(
+        "minuteOfDay", MINUTE_OF_DAY, DurationFieldType.minutes(), DurationFieldType.days());
+    /** The minuteOfHour field type. */
+    private static final DateTimeFieldType MINUTE_OF_HOUR_TYPE = new StandardDateTimeFieldType(
+        "minuteOfHour", MINUTE_OF_HOUR, DurationFieldType.minutes(), DurationFieldType.hours());
+    /** The secondOfDay field type. */
+    private static final DateTimeFieldType SECOND_OF_DAY_TYPE = new StandardDateTimeFieldType(
+        "secondOfDay", SECOND_OF_DAY, DurationFieldType.seconds(), DurationFieldType.days());
+    /** The secondOfMinute field type. */
+    private static final DateTimeFieldType SECOND_OF_MINUTE_TYPE = new StandardDateTimeFieldType(
+        "secondOfMinute", SECOND_OF_MINUTE, DurationFieldType.seconds(), DurationFieldType.minutes());
+    /** The millisOfDay field type. */
+    private static final DateTimeFieldType MILLIS_OF_DAY_TYPE = new StandardDateTimeFieldType(
+        "millisOfDay", MILLIS_OF_DAY, DurationFieldType.millis(), DurationFieldType.days());
+    /** The millisOfSecond field type. */
+    private static final DateTimeFieldType MILLIS_OF_SECOND_TYPE = new StandardDateTimeFieldType(
+        "millisOfSecond", MILLIS_OF_SECOND, DurationFieldType.millis(), DurationFieldType.seconds());
 
     /** The name of the field. */
     private final String iName;
-    /** The name of the field. */
-    private transient final DurationFieldType iUnitType;
-    /** The name of the field. */
-    private transient final DurationFieldType iRangeType;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Factory method to obtain a DateTimeFieldType by name ensuring each
-     * type is a singleton.
-     * <p>
-     * If the name is not found, an error is thrown.
-     * 
-     * @param name  the name to retrieve
-     * @return the singleton type
-     */
-    public static synchronized DateTimeFieldType getInstance(String name) {
-        DateTimeFieldType type = (DateTimeFieldType) cCache.get(name);
-        if (type == null) {
-            throw new IllegalArgumentException("The field '" + name + "' is unknown");
-        }
-        return type;
-    }
-
-    /**
-     * Factory method to define a DateTimeFieldType by name ensuring each
-     * type is a singleton.
-     * <p>
-     * This method checks to see if the name is previously defined, in which
-     * case it returns the previously defined type object.
-     * If the name is not found, a new type is created.
-     * <p>
-     * It is intended that this method is called once in your program startup
-     * and then you use the <code>getInstance</code> method. This could be
-     * achieved by subclassing this class.
-     * 
-     * @param name  the name to define, such as 'hourOfMonth'
-     * @param unitType  the unit type, such as 'hours'
-     * @param rangeType  the range type, such as 'months'
-     * @return the singleton type
-     */
-    public static synchronized DateTimeFieldType define(
-            String name, DurationFieldType unitType, DurationFieldType rangeType) {
-        
-        DateTimeFieldType type = (DateTimeFieldType) cCache.get(name);
-        if (type == null) {
-            return new DateTimeFieldType(name, unitType, rangeType);
-        }
-        return type;
-    }
 
     //-----------------------------------------------------------------------
     /**
      * Constructor.
      * 
      * @param name  the name to use
-     * @param unitType  the unit type, such as 'hours'
-     * @param rangeType  the range type, such as 'months'
      */
-    private DateTimeFieldType(
-                String name, DurationFieldType unitType, DurationFieldType rangeType) {
-        
+    protected DateTimeFieldType(String name) {
         super();
         iName = name;
-        iUnitType = unitType;
-        iRangeType = rangeType;
-        cCache.put(name, this);
-    }
-
-    /**
-     * Ensure a singleton is returned.
-     * <p>
-     * Note that types must be defined before deserialization.
-     * 
-     * @return the singleton type
-     */
-    private Object readResolve() {
-        return getInstance(iName);
     }
 
     //-----------------------------------------------------------------------
@@ -229,7 +185,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType millisOfSecond() {
-        return MILLIS_OF_SECOND;
+        return MILLIS_OF_SECOND_TYPE;
     }
 
     /**
@@ -238,7 +194,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType millisOfDay() {
-        return MILLIS_OF_DAY;
+        return MILLIS_OF_DAY_TYPE;
     }
 
     /**
@@ -247,7 +203,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType secondOfMinute() {
-        return SECOND_OF_MINUTE;
+        return SECOND_OF_MINUTE_TYPE;
     }
 
     /**
@@ -256,7 +212,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType secondOfDay() {
-        return SECOND_OF_DAY;
+        return SECOND_OF_DAY_TYPE;
     }
 
     /**
@@ -265,7 +221,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType minuteOfHour() {
-        return MINUTE_OF_HOUR;
+        return MINUTE_OF_HOUR_TYPE;
     }
 
     /**
@@ -274,7 +230,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType minuteOfDay() {
-        return MINUTE_OF_DAY;
+        return MINUTE_OF_DAY_TYPE;
     }
 
     /**
@@ -283,7 +239,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType hourOfDay() {
-        return HOUR_OF_DAY;
+        return HOUR_OF_DAY_TYPE;
     }
 
     /**
@@ -292,7 +248,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType clockhourOfDay() {
-        return CLOCKHOUR_OF_DAY;
+        return CLOCKHOUR_OF_DAY_TYPE;
     }
 
     /**
@@ -301,7 +257,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType hourOfHalfday() {
-        return HOUR_OF_HALFDAY;
+        return HOUR_OF_HALFDAY_TYPE;
     }
 
     /**
@@ -310,7 +266,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType clockhourOfHalfday() {
-        return CLOCKHOUR_OF_HALFDAY;
+        return CLOCKHOUR_OF_HALFDAY_TYPE;
     }
 
     /**
@@ -319,7 +275,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType halfdayOfDay() {
-        return HALFDAY_OF_DAY;
+        return HALFDAY_OF_DAY_TYPE;
     }
 
     //-----------------------------------------------------------------------
@@ -329,7 +285,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType dayOfWeek() {
-        return DAY_OF_WEEK;
+        return DAY_OF_WEEK_TYPE;
     }
 
     /**
@@ -338,7 +294,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType dayOfMonth() {
-        return DAY_OF_MONTH;
+        return DAY_OF_MONTH_TYPE;
     }
 
     /**
@@ -347,7 +303,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType dayOfYear() {
-        return DAY_OF_YEAR;
+        return DAY_OF_YEAR_TYPE;
     }
 
     /**
@@ -356,7 +312,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType weekOfWeekyear() {
-        return WEEK_OF_WEEKYEAR;
+        return WEEK_OF_WEEKYEAR_TYPE;
     }
 
     /**
@@ -365,7 +321,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType weekyear() {
-        return WEEKYEAR;
+        return WEEKYEAR_TYPE;
     }
 
     /**
@@ -374,7 +330,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType weekyearOfCentury() {
-        return WEEKYEAR_OF_CENTURY;
+        return WEEKYEAR_OF_CENTURY_TYPE;
     }
 
     /**
@@ -383,7 +339,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType monthOfYear() {
-        return MONTH_OF_YEAR;
+        return MONTH_OF_YEAR_TYPE;
     }
 
     /**
@@ -392,7 +348,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType year() {
-        return YEAR;
+        return YEAR_TYPE;
     }
 
     /**
@@ -401,7 +357,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType yearOfEra() {
-        return YEAR_OF_ERA;
+        return YEAR_OF_ERA_TYPE;
     }
 
     /**
@@ -410,7 +366,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType yearOfCentury() {
-        return YEAR_OF_CENTURY;
+        return YEAR_OF_CENTURY_TYPE;
     }
 
     /**
@@ -419,7 +375,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType centuryOfEra() {
-        return CENTURY_OF_ERA;
+        return CENTURY_OF_ERA_TYPE;
     }
 
     /**
@@ -428,7 +384,7 @@ public class DateTimeFieldType implements Serializable {
      * @return the DateTimeFieldType constant
      */
     public static DateTimeFieldType era() {
-        return ERA;
+        return ERA_TYPE;
     }
 
     //-----------------------------------------------------------------------
@@ -451,18 +407,23 @@ public class DateTimeFieldType implements Serializable {
      * 
      * @return duration unit of the field, never null
      */
-    public DurationFieldType getDurationType() {
-        return iUnitType;
-    }
+    public abstract DurationFieldType getDurationType();
 
     /**
      * Get the duration range of the field.
      * 
      * @return duration range of the field, null if unbounded
      */
-    public DurationFieldType getRangeDurationType() {
-        return iRangeType;
-    }
+    public abstract DurationFieldType getRangeDurationType();
+
+    /**
+     * Select a suitable field for this type from the given Chronology.
+     *
+     * @param chronology Chronology to select a field from, null means
+     * ISOChronology in default zone
+     * @return a suitable field
+     */
+    public abstract DateTimeField getField(Chronology chronology);
 
     /**
      * Get a suitable debug string.
@@ -471,6 +432,156 @@ public class DateTimeFieldType implements Serializable {
      */
     public String toString() {
         return getName();
+    }
+
+    private static class StandardDateTimeFieldType extends DateTimeFieldType {
+        /** Serialization version */
+        private static final long serialVersionUID = -9937958251642L;
+
+        /** The ordinal of the standard field type, for switch statements */
+        private final byte iOrdinal;
+
+        /** The unit duration of the field. */
+        private transient final DurationFieldType iUnitType;
+        /** The range duration of the field. */
+        private transient final DurationFieldType iRangeType;
+
+        /**
+         * Constructor.
+         * 
+         * @param name  the name to use
+         */
+        StandardDateTimeFieldType(String name, byte ordinal,
+                                  DurationFieldType unitType, DurationFieldType rangeType) {
+            super(name);
+            iOrdinal = ordinal;
+            iUnitType = unitType;
+            iRangeType = rangeType;
+        }
+
+        public DurationFieldType getDurationType() {
+            return iUnitType;
+        }
+
+        public DurationFieldType getRangeDurationType() {
+            return iRangeType;
+        }
+
+        public DateTimeField getField(Chronology chronology) {
+            chronology = DateTimeUtils.getChronology(chronology);
+
+            switch (iOrdinal) {
+            case ERA:
+                return chronology.era();
+            case YEAR_OF_ERA:
+                return chronology.yearOfEra();
+            case CENTURY_OF_ERA:
+                return chronology.centuryOfEra();
+            case YEAR_OF_CENTURY:
+                return chronology.yearOfCentury();
+            case YEAR:
+                return chronology.year();
+            case DAY_OF_YEAR:
+                return chronology.dayOfYear();
+            case MONTH_OF_YEAR:
+                return chronology.monthOfYear();
+            case DAY_OF_MONTH:
+                return chronology.dayOfMonth();
+                // TODO: Add to Chronology
+                //case WEEKYEAR_OF_CENTURY:
+                //return chronology.weekyearOfCentury();
+            case WEEKYEAR:
+                return chronology.weekyear();
+            case WEEK_OF_WEEKYEAR:
+                return chronology.weekOfWeekyear();
+            case DAY_OF_WEEK:
+                return chronology.dayOfWeek();
+            case HALFDAY_OF_DAY:
+                return chronology.halfdayOfDay();
+            case HOUR_OF_HALFDAY:
+                return chronology.hourOfHalfday();
+            case CLOCKHOUR_OF_HALFDAY:
+                return chronology.clockhourOfHalfday();
+            case CLOCKHOUR_OF_DAY:
+                return chronology.clockhourOfDay();
+            case HOUR_OF_DAY:
+                return chronology.hourOfDay();
+            case MINUTE_OF_DAY:
+                return chronology.minuteOfDay();
+            case MINUTE_OF_HOUR:
+                return chronology.minuteOfHour();
+            case SECOND_OF_DAY:
+                return chronology.secondOfDay();
+            case SECOND_OF_MINUTE:
+                return chronology.secondOfMinute();
+            case MILLIS_OF_DAY:
+                return chronology.millisOfDay();
+            case MILLIS_OF_SECOND:
+                return chronology.millisOfSecond();
+            default:
+                // Shouldn't happen.
+                throw new IllegalStateException();
+            }
+        }
+
+        /**
+         * Ensure a singleton is returned.
+         * 
+         * @return the singleton type
+         */
+        private Object readResolve() {
+            switch (iOrdinal) {
+            case ERA:
+                return ERA_TYPE;
+            case YEAR_OF_ERA:
+                return YEAR_OF_ERA_TYPE;
+            case CENTURY_OF_ERA:
+                return CENTURY_OF_ERA_TYPE;
+            case YEAR_OF_CENTURY:
+                return YEAR_OF_CENTURY_TYPE;
+            case YEAR:
+                return YEAR_TYPE;
+            case DAY_OF_YEAR:
+                return DAY_OF_YEAR_TYPE;
+            case MONTH_OF_YEAR:
+                return MONTH_OF_YEAR_TYPE;
+            case DAY_OF_MONTH:
+                return DAY_OF_MONTH_TYPE;
+            case WEEKYEAR_OF_CENTURY:
+                return WEEKYEAR_OF_CENTURY_TYPE;
+            case WEEKYEAR:
+                return WEEKYEAR_TYPE;
+            case WEEK_OF_WEEKYEAR:
+                return WEEK_OF_WEEKYEAR_TYPE;
+            case DAY_OF_WEEK:
+                return DAY_OF_WEEK_TYPE;
+            case HALFDAY_OF_DAY:
+                return HALFDAY_OF_DAY_TYPE;
+            case HOUR_OF_HALFDAY:
+                return HOUR_OF_HALFDAY_TYPE;
+            case CLOCKHOUR_OF_HALFDAY:
+                return CLOCKHOUR_OF_HALFDAY_TYPE;
+            case CLOCKHOUR_OF_DAY:
+                return CLOCKHOUR_OF_DAY_TYPE;
+            case HOUR_OF_DAY:
+                return HOUR_OF_DAY_TYPE;
+            case MINUTE_OF_DAY:
+                return MINUTE_OF_DAY_TYPE;
+            case MINUTE_OF_HOUR:
+                return MINUTE_OF_HOUR_TYPE;
+            case SECOND_OF_DAY:
+                return SECOND_OF_DAY_TYPE;
+            case SECOND_OF_MINUTE:
+                return SECOND_OF_MINUTE_TYPE;
+            case MILLIS_OF_DAY:
+                return MILLIS_OF_DAY_TYPE;
+            case MILLIS_OF_SECOND:
+                return MILLIS_OF_SECOND_TYPE;
+            default:
+                // Shouldn't happen.
+                return this;
+            }
+        }
     }
 
 }

@@ -96,10 +96,13 @@ public abstract class AbstractDateTime
      *
      * @param type  a field type, usually obtained from DateTimeFieldType
      * @return the value of that field
-     * @throws IllegalArgumentException if the field is null
+     * @throws IllegalArgumentException if the field type is null
      */
     public int get(DateTimeFieldType type) {
-        return getChronology().getField(type).get(getMillis());
+        if (type == null) {
+            throw new IllegalArgumentException("The DateTimeFieldType must not be null");
+        }
+        return type.getField(getChronology()).get(getMillis());
     }
 
     //-----------------------------------------------------------------------

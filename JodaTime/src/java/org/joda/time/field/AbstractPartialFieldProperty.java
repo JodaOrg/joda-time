@@ -271,7 +271,7 @@ public abstract class AbstractPartialFieldProperty {
         }
         int thisValue = get();
         Chronology chrono = DateTimeUtils.getChronology(instant.getChronology());
-        int otherValue = chrono.getField(getFieldType()).get(instant.getMillis());
+        int otherValue = getFieldType().getField(chrono).get(instant.getMillis());
         if (thisValue < otherValue) {
             return -1;
         } else if (thisValue > otherValue) {

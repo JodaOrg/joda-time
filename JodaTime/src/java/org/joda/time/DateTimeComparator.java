@@ -218,13 +218,13 @@ public class DateTimeComparator implements Comparator, Serializable {
         Chronology rhsChrono = conv.getChronology(rhsObj);
 
         if (iLowerLimit != null) {
-            lhsMillis = lhsChrono.getField(iLowerLimit).roundFloor(lhsMillis);
-            rhsMillis = rhsChrono.getField(iLowerLimit).roundFloor(rhsMillis);
+            lhsMillis = iLowerLimit.getField(lhsChrono).roundFloor(lhsMillis);
+            rhsMillis = iLowerLimit.getField(rhsChrono).roundFloor(rhsMillis);
         }
 
         if (iUpperLimit != null) {
-            lhsMillis = lhsChrono.getField(iUpperLimit).remainder(lhsMillis);
-            rhsMillis = rhsChrono.getField(iUpperLimit).remainder(rhsMillis);
+            lhsMillis = iUpperLimit.getField(lhsChrono).remainder(lhsMillis);
+            rhsMillis = iUpperLimit.getField(rhsChrono).remainder(rhsMillis);
         }
 
         if (lhsMillis < rhsMillis) {

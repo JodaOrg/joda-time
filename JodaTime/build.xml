@@ -250,7 +250,7 @@
              splitindex="yes"
                doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
-                 bottom="Copyright (c) 2001-2004 - Joda.org"
+                 bottom="Copyright (c) 2001-2005 - Joda.org"
                Overview="${source.home}/org/joda/time/overview.html">
       <classpath refid="compile.classpath"/>
       <group title="User Packages" packages="org.joda.time:org.joda.time.format">
@@ -267,6 +267,8 @@
     <mkdir      dir="${build.classes}/META-INF"/>
     <copy      file="LICENSE.txt"
              tofile="${build.classes}/META-INF/LICENSE.txt"/>
+    <copy      file="NOTICE.txt"
+             tofile="${build.classes}/META-INF/NOTICE.txt"/>
     <jar    jarfile="${build.fullname}.jar"
             basedir="${build.classes}"
            manifest="${build.conf}/MANIFEST.MF"/>
@@ -281,6 +283,7 @@
     
 	<!-- binary -->
     <copy      file="LICENSE.txt" todir="${build.dist.fullname}"/>
+    <copy      file="NOTICE.txt" todir="${build.dist.fullname}"/>
     <copy      file="RELEASE-NOTES.txt" todir="${build.dist.fullname}"/>
     <copy      file="${build.fullname}.jar"
               todir="${build.dist.fullname}"/>

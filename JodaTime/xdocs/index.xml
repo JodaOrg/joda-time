@@ -74,8 +74,8 @@ is extremely detailed and covers most of the API.</li>
 <li><b>Maturity</b>. The library has been under active development since 2002.
 Although it continues to be improved with the addition of new features and
 bug-fixes, it is a mature and reliable code base.</li>
-<li><b>Open Source</b>. Joda-Time is licenced under the <a href="license.html">Joda licence</a>,
-which is an Apache/BSD cloned licence and is relatively unrestricted.</li>
+<li><b>Open Source</b>. Joda-Time is licenced under the business friendly
+<a href="license.html">Apache License Version 2.0</a>.</li>
 </ul>
 </p>
 </section>

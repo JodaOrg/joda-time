@@ -1,99 +1,25 @@
-Joda-Time version 0.98
-----------------------
+Joda-Time version 1.0
+---------------------
 
-This release has been subject to a considerable testing effort.
-The testing highlighted some key flaws in the design of the 0.95 release.
-As a result, various classes and methods have been changed to meet the tougher testing
-and design regime.
-The net result is a much better, more accurate and feature complete release.
+Joda-Time is a date and time handling library that seeks to replace the JDK Date and Calendar classes.
 
-The short term damage, however, is that 0.98 is not backwards compatible with 0.95.
-We sincerely apologise for this, and hope that now our tests are in place we should
-not face similar issues again.
-Once we declare a 1.0 final release, we will support backwards compatability as fully as possible.
+This is the first full release of Joda-Time.
+There have been a number of alpha/beta releases however.
 
 We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
 
-Key changes
------------
 
-Instants that did not fully represent a point in time and had to be resolved have been deleted.
-In their place is the new ReadablePartial interface, thus:
-  DateOnly - deleted - use DateMidnight (an instant) or YearMonthDay (a partial)
-  TimeOnly - deleted - use TimeOfDay (a partial)
-Partials represent a set of fields in local time (no time zone).
-A partial can be converted to a full instant by specifying the missing fields and a zone.
+Bug fixes since 0.98
+--------------------
 
-Durations previously held details of both millisecond only and field based durations.
-These have been split into two classes.
-  ReadableDuration/Duration - holds a millisecond length of time
-  ReadablePeriod/Period/MutablePeriod - holds a duration as a number of years, months,
-      weeks, days, hours, minutes, seconds and milliseconds
-These two representations can have very different effects when adding larger periods of time.
-Specific cases include adding over daylight savings boundaries, and adding months.
+- Parsing periods of the form PT... - fixed bug that prevented parsing
 
-Chronology implementations were previously obtained directly.
-Now you should use the factory methods on Chronology:
-  CopticChronology.getInstance(DateTimeZone.UTC) --> Chronology.getCoptic(DateTimeZone.UTC))
-
-DateTimeFieldType and DurationFieldType concepts added.
-Certain method signatures on instants changed as a result.
-This was done to clarify by API design what can and can't be done,
-  DateTime.get(SomeChronology.secondOfMinute()) --> DateTime.get(DateTimeFieldType.secondOfMinute())
-
-All methods referring to DateTimeZone have been renamed to refer to Zone:
-  DateTime.getDateTimeZone() --> DateTime.getZone()
-
-Instants now have a chronology - fixed as ISO in the UTC zone.
-Thus, a ReadableInstant will never return a null chronology or zone from the getters.
-
-Intervals now represent the gap between two DateTimes and thus have a chronology.
-This was necessary to accurately create the period and duration of an interval.
-
-All immutable classes are now final.
-This includes Instant, DateTime, DateMidnight, Interval, Period, Duration, YearMonthDay and TimeOfDay
-
-The security permission class has been moved to the main package.
-
-Null handling has been unified across the whole library.
-  A null instant or partial represents the current time.
-  A null duration or period represents a zero length duration or period.
-  A null interval represents a zero length interval from now to now.
-
-There have also been numerous other changes to the more private API.
-The aim has been to identify certain packages as 'public' (main and format), and
-all other packages as 'private' implementation detail (base, chrono, convert, field, tz).
-If you have implemented your own versions of these classes then you will have changes to make.
-Please contact the mailing list if you run into difficulties.
+- Interval/MutableInterval isAfter(ReadableInterval) - fixed bug when intervals abutted
 
 
-New features
-------------
+New features since 0.98
+-----------------------
 
-Many bugs fixed.
-Overall API consistency much higher.
-Website documentation increased.
-
-New maths operations on instants to add durations and periods
-(plus/minus/withDurationAdded/withPeriodAdded)
-
-New update methods on instants to set the date or time in one (withDate/withTime).
-
-New methods to convert between each of the five main types of object.
-For example, you can convert a YearMonthDay to an Interval over that day by specifying a time zone.
-
-Lots more ISO date formatting options.
-
-New abstract and base implementations of all the main interfaces.
-This should greatly simplify the task of implementing your own unusual date class.
-The final modifiers have also been removed in many places.
-
-
-Still under review for 1.0
---------------------------
-
-The format package is still under final review for 1.0.
-The 0.98 release is being done in according to the Release Early mantra.
 
 
 Feedback

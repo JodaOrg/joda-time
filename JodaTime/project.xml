@@ -5,14 +5,14 @@
   <id>joda-time</id>
   <name>Joda time</name>
   <groupId>joda-time</groupId>
-  <currentVersion>0.95</currentVersion>
+  <currentVersion>0.96</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
     <logo>/images/joda.png</logo>
   </organization>
   <inceptionYear>2002</inceptionYear>
-  <package>org.joda.time.*</package>
+  <package>org.joda.time</package>
   <logo>/images/jodatime.png</logo>
 
   <description>

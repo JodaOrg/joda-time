@@ -195,7 +195,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
-    public void testGetField() {
+    public void testGet() {
         TimeOfDay test = new TimeOfDay();
         assertEquals(10, test.get(ISOChronology.getInstance().hourOfDay()));
         assertEquals(20, test.get(ISOChronology.getInstance().minuteOfHour()));
@@ -220,13 +220,55 @@ public class TestTimeOfDay extends TestCase {
 //        } catch (IllegalArgumentException ex) {}
     }
 
-    public void testGetSupportedFields() {
+    public void testGetFieldSize() {
         TimeOfDay test = new TimeOfDay();
-        DateTimeField[] fields = test.getSupportedFields();
+        assertEquals(4, test.getFieldSize());
+    }
+
+    public void testGetField() {
+        TimeOfDay test = new TimeOfDay();
+        assertSame(ISOChronology.getInstance().hourOfDay(), test.getField(0));
+        assertSame(ISOChronology.getInstance().minuteOfHour(), test.getField(1));
+        assertSame(ISOChronology.getInstance().secondOfMinute(), test.getField(2));
+        assertSame(ISOChronology.getInstance().millisOfSecond(), test.getField(3));
+        try {
+            test.getField(-1);
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.getField(5);
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testGetFields() {
+        TimeOfDay test = new TimeOfDay();
+        DateTimeField[] fields = test.getFields();
         assertSame(ISOChronology.getInstance().hourOfDay(), fields[0]);
         assertSame(ISOChronology.getInstance().minuteOfHour(), fields[1]);
         assertSame(ISOChronology.getInstance().secondOfMinute(), fields[2]);
         assertSame(ISOChronology.getInstance().millisOfSecond(), fields[3]);
+    }
+
+    public void testGetValue() {
+        TimeOfDay test = new TimeOfDay();
+        assertEquals(10, test.getValue(0));
+        assertEquals(20, test.getValue(1));
+        assertEquals(30, test.getValue(2));
+        assertEquals(40, test.getValue(3));
+        try {
+            test.getValue(-1);
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.getValue(5);
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testGetValues() {
+        TimeOfDay test = new TimeOfDay();
+        int[] values = test.getValues();
+        assertEquals(10, values[0]);
+        assertEquals(20, values[1]);
+        assertEquals(30, values[2]);
+        assertEquals(40, values[3]);
     }
 
     public void testIsSupported() {
@@ -310,6 +352,15 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(test.getChronology().days(), test.hourOfDay().getRangeDurationField());
         assertEquals(2, test.hourOfDay().getMaximumTextLength(null));
         assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
+    }
+
+    public void testPropertySet() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay set = test.hourOfDay().setCopy(12);
+        assertEquals(12, set.getHourOfDay());
+        assertEquals(20, set.getMinuteOfHour());
+        assertEquals(30, set.getSecondOfMinute());
+        assertEquals(40, set.getMillisOfSecond());
     }
 
 }

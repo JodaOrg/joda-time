@@ -243,6 +243,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    public int[] set(PartialInstant instant, int fieldIndex, int value) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
     public long set(long instant, String text, Locale locale) {
         throw unsupported();
     }

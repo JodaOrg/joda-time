@@ -331,8 +331,13 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
     /**
      * Sets a value in the milliseconds supplied.
      * <p>
-     * The value of this field will be set. If the value is invalid, an
-     * exception if thrown. Other fields are always unaffected.
+     * The value of this field will be set.
+     * If the value is invalid, an exception if thrown.
+     * <p>
+     * If setting this field would make other fields invalid, then those fields
+     * may be changed. For example if the current date is the 31st January, and
+     * the month is set to February, the day would be invalid. Instead, the day
+     * would be changed to the closest value - the 28th/29th February as appropriate.
      * 
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
      * @param value  the value to set, in the units of the field
@@ -340,6 +345,30 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @throws IllegalArgumentException if the value is invalid
      */
     public abstract long set(long instant, int value);
+
+    /**
+     * Sets a value using the specified partial instant.
+     * <p>
+     * The value of this field (specified by the index) will be set.
+     * If the value is invalid, an exception if thrown.
+     * <p>
+     * If setting this field would make other fields invalid, then those fields
+     * may be changed. For example if the current date is the 31st January, and
+     * the month is set to February, the day would be invalid. Instead, the day
+     * would be changed to the closest value - the 28th/29th February as appropriate.
+     * 
+     * @param instant  the partial instant
+     * @param fieldIndex  the index of this field in the instant
+     * @param value  the value to set, in the units of the field
+     * @return the updated milliseconds
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public int[] set(PartialInstant instant, int fieldIndex, int value) {
+        FieldUtils.verifyValueBounds(this, value, getMinimumValue(), getMaximumValue());
+        int[] array = instant.getValues();
+        array[fieldIndex] = value;
+        return array;
+    }
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text

@@ -71,13 +71,48 @@ import org.joda.time.ReadableInstant;
 public interface PartialInstant {
 
     /**
+     * Gets the number of fields that this instant supports.
+     *
+     * @return the number of fields supported
+     */
+    int getFieldSize();
+
+    /**
+     * Gets the field at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    DateTimeField getField(int index);
+
+    /**
      * Gets an array of the fields that this partial instant supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      *
-     * @return the fields supported, largest to smallest
+     * @return the fields supported (cloned), largest to smallest
      */
-    DateTimeField[] getSupportedFields();
+    DateTimeField[] getFields();
+
+    /**
+     * Gets the value at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the value of the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    int getValue(int index);
+
+    /**
+     * Gets an array of the value of each of the fields that this partial instant supports.
+     * <p>
+     * The fields are returned largest to smallest, for example Hour, Minute, Second.
+     * Each value corresponds to the same array index as <code>getFields()</code>
+     *
+     * @return the current values of each field (cloned), largest to smallest
+     */
+    int[] getValues();
 
     /**
      * Gets the chronology of the partial which is never null.

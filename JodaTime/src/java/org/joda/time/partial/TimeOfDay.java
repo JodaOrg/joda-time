@@ -101,13 +101,13 @@ public final class TimeOfDay implements PartialInstant, Serializable {
     private static final long serialVersionUID = 3633353405803318660L;
 
     /** The index of the hourOfDay field in the field array */
-    private static final int HOUR_OF_DAY = 0;
+    public static final int HOUR_OF_DAY = 0;
     /** The index of the minuteOfHour field in the field array */
-    private static final int MINUTE_OF_HOUR = 1;
+    public static final int MINUTE_OF_HOUR = 1;
     /** The index of the secondOfMinute field in the field array */
-    private static final int SECOND_OF_MINUTE = 2;
+    public static final int SECOND_OF_MINUTE = 2;
     /** The index of the millisOfSecond field in the field array */
-    private static final int MILLIS_OF_SECOND = 3;
+    public static final int MILLIS_OF_SECOND = 3;
 
     /** The chronology in use */
     private final Chronology iChronology;
@@ -293,12 +293,22 @@ public final class TimeOfDay implements PartialInstant, Serializable {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the number of fields in TimeOfDay.
+     * 
+     * @return the field count
+     */
+    public int getFieldSize() {
+        return 4;
+    }
+
+    /**
      * Gets the field at the specifed index.
      * 
      * @param index  the index
      * @return the field
+     * @throws IndexOutOfBoundsException if the index is invalid
      */
-    DateTimeField getField(int index) {
+    public DateTimeField getField(int index) {
         switch (index) {
             case HOUR_OF_DAY:
                 return iChronology.hourOfDay();
@@ -309,35 +319,51 @@ public final class TimeOfDay implements PartialInstant, Serializable {
             case MILLIS_OF_SECOND:
                 return iChronology.millisOfSecond();
             default:
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException(Integer.toString(index));
         }
     }
-    
+
     /**
      * Gets the value of the field at the specifed index.
      * 
      * @param index  the index
      * @return the value
+     * @throws IndexOutOfBoundsException if the index is invalid
      */
-    int getValue(int index) {
+    public int getValue(int index) {
+        if (index < 0 || index > 4) {
+            throw new IllegalArgumentException(Integer.toString(index));
+        }
         return iValues[index];
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Gets an array of the fields that this partial instant supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      *
-     * @return the fields supported, largest to smallest
+     * @return the fields supported (cloned), largest to smallest
      */
-    public DateTimeField[] getSupportedFields() {
+    public DateTimeField[] getFields() {
         return new DateTimeField[] {
             iChronology.hourOfDay(),
             iChronology.minuteOfHour(),
             iChronology.secondOfMinute(),
             iChronology.millisOfSecond(),
         };
+    }
+
+    /**
+     * Gets an array of the value of each of the fields that this partial instant supports.
+     * <p>
+     * The fields are returned largest to smallest, for example Hour, Minute, Second.
+     * Each value corresponds to the same array index as <code>getFields()</code>
+     *
+     * @return the current values of each field (cloned), largest to smallest
+     */
+    public int[] getValues() {
+        return (int[]) iValues.clone();
     }
 
     /**
@@ -645,21 +671,21 @@ public final class TimeOfDay implements PartialInstant, Serializable {
 //            return new TimeOfDay(getInstant(), newValues);
 //        }
 //
-//        //-----------------------------------------------------------------------
-//        /**
-//         * Sets this field in a copy of the TimeOfDay.
-//         * <p>
-//         * The TimeOfDay attached to this property is unchanged by this call.
-//         * 
-//         * @param value  the value to set the field in the copy to
-//         * @return a copy of the TimeOfDay with the field value changed
-//         * @throws IllegalArgumentException if the value isn't valid
-//         */
-//        public TimeOfDay setCopy(int value) {
-//            int[] newValues = getField().set(getInstant(), value);
-//            return new TimeOfDay(getInstant(), newValues);
-//        }
-//    
+        //-----------------------------------------------------------------------
+        /**
+         * Sets this field in a copy of the TimeOfDay.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         * 
+         * @param value  the value to set the field in the copy to
+         * @return a copy of the TimeOfDay with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public TimeOfDay setCopy(int value) {
+            int[] newValues = getField().set(iInstant, iFieldIndex, value);
+            return new TimeOfDay(iInstant, newValues);
+        }
+
 //        /**
 //         * Sets this field in a copy of the TimeOfDay to a parsed text value.
 //         * <p>

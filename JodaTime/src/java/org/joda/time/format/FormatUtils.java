@@ -354,7 +354,7 @@ public class FormatUtils {
     }
 
     static String createErrorMessage(final String text, final int errorPos) {
-        int sampleLen = errorPos + 20;
+        int sampleLen = errorPos + 32;
         String sampleText;
         if (text.length() <= sampleLen + 3) {
             sampleText = text;

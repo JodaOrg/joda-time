@@ -7,3 +7,4 @@ velocity.log
 maven.log
 jcoverage.ser
 build
+junit*.properties

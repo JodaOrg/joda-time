@@ -118,6 +118,23 @@ public abstract class AbstractInstant implements ReadableInstant {
         return field.get(getMillis());
     }
 
+    /**
+     * Gets a copy of this instant with a different time zone.
+     * <p>
+     * The returned object will be a new instance of the same implementation
+     * type. Only the time zone of the chronology will change, the millis are
+     * kept. Immutable subclasses may return <code>this</code> if appropriate.
+     *
+     * @param newDateTimeZone  the new time zone
+     * @return a copy of this instant with a different time zone
+     */
+    public ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone) {
+        Chronology newChronology = getChronology();
+        newChronology = newChronology == null ? ISOChronology.getInstance(newDateTimeZone)
+            : newChronology.withDateTimeZone(newDateTimeZone);
+        return withChronology(newChronology);
+    }
+
     // Conversion
     //-----------------------------------------------------------------------
     /**

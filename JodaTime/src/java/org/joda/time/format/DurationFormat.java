@@ -117,7 +117,6 @@ public class DurationFormat {
             .appendSeparator(", ", " and ")
             .appendMillis()
             .appendSuffix(" millisecond", " milliseconds")
-            .setAlternate("0 milliseconds")
             .toFormatter();
     }
 

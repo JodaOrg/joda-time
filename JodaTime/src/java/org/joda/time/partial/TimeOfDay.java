@@ -53,12 +53,14 @@
  */
 package org.joda.time.partial;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
@@ -67,6 +69,9 @@ import org.joda.time.convert.InstantConverter;
 /**
  * TimeOfDay is an immutable partial instant supporting the hour, minute, second
  * and millisecond fields.
+ * <p>
+ * Calculations on TimeOfDay are performed using a {@link Chronology}.
+ * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
  * Each individual field can be queried in two ways:
  * <ul>
@@ -90,7 +95,10 @@ import org.joda.time.convert.InstantConverter;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class TimeOfDay implements PartialInstant {
+public final class TimeOfDay implements PartialInstant, Serializable {
+
+    /** Serialization version */
+    private static final long serialVersionUID = 3633353405803318660L;
 
     /** The index of the hourOfDay field in the field array */
     private static final int HOUR_OF_DAY = 0;
@@ -101,21 +109,20 @@ public final class TimeOfDay implements PartialInstant {
     /** The index of the millisOfSecond field in the field array */
     private static final int MILLIS_OF_SECOND = 3;
 
-    // TODO: Is chronology needed here?
     /** The chronology in use */
     private final Chronology iChronology;
-    /** The fields supported by this partial instant */
-    private final DateTimeField[] iFields;
     /** The values of each field in this partial instant */
     private final int[] iValues;
-
-    // TODO serialize
 
     // Constructors
     //-----------------------------------------------------------------------
     /**
      * Constructs a TimeOfDay with the current time, using ISOChronology in
      * the default zone to extract the fields.
+     * <p>
+     * The constructor uses the default time zone, resulting in the local time
+     * being initialised. Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
      */
     public TimeOfDay() {
         this(DateTimeUtils.currentTimeMillis(), null);
@@ -124,6 +131,10 @@ public final class TimeOfDay implements PartialInstant {
     /**
      * Constructs a TimeOfDay with the current time, using the specified chronology
      * and zone to extract the fields.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
      *
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
@@ -134,6 +145,10 @@ public final class TimeOfDay implements PartialInstant {
     /**
      * Constructs a TimeOfDay extracting the partial fields from the specified
      * milliseconds using the ISOChronology in the default zone.
+     * <p>
+     * The constructor uses the default time zone, resulting in the local time
+     * being initialised. Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
@@ -144,6 +159,10 @@ public final class TimeOfDay implements PartialInstant {
     /**
      * Constructs a TimeOfDay extracting the partial fields from the specified
      * milliseconds using the chronology provided.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology  the chronology, null means ISOChronology in the default zone
@@ -153,9 +172,8 @@ public final class TimeOfDay implements PartialInstant {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        iChronology = chronology;
-        iFields = initFields(chronology);
-        iValues = initValues(instant);
+        iValues = initValues(instant, chronology);
+        iChronology = chronology.withUTC();
     }
 
     /**
@@ -175,9 +193,8 @@ public final class TimeOfDay implements PartialInstant {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        iChronology = chronology;
-        iFields = initFields(chronology);
-        iValues = initValues(converter.getInstantMillis(instant));
+        iValues = initValues(converter.getInstantMillis(instant), chronology);
+        iChronology = chronology.withUTC();
     }
 
     /**
@@ -187,6 +204,10 @@ public final class TimeOfDay implements PartialInstant {
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
      *
      * @param instant  the datetime object, must not be null
      * @param chronology  the chronology, null means ISOChronology
@@ -199,14 +220,17 @@ public final class TimeOfDay implements PartialInstant {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        iChronology = chronology;
-        iFields = initFields(chronology);
-        iValues = initValues(converter.getInstantMillis(instant, chronology));
+        iValues = initValues(converter.getInstantMillis(instant, chronology), chronology);
+        iChronology = chronology.withUTC();
     }
 
     /**
      * Constructs a TimeOfDay with specified time field values using
      * <code>ISOChronology</code> in the default zone.
+     * <p>
+     * The constructor uses the no time zone initialising the fields as provided.
+     * Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
      *
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
@@ -219,7 +243,10 @@ public final class TimeOfDay implements PartialInstant {
 
     /**
      * Constructs a TimeOfDay with specified time field values and chronology.
-     * 
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
      *
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
@@ -233,10 +260,9 @@ public final class TimeOfDay implements PartialInstant {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        iChronology = chronology;
-        iFields = initFields(chronology);
         // TODO: Validate
         iValues = new int[] {hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond};
+        iChronology = chronology.withUTC();
     }
 
     /**
@@ -248,35 +274,21 @@ public final class TimeOfDay implements PartialInstant {
     TimeOfDay(TimeOfDay partial, int[] values) {
         super();
         iChronology = partial.iChronology;
-        iFields = partial.iFields;
         iValues = values;
-    }
-
-    /**
-     * Initialize the array of fields.
-     * 
-     * @param chrono  the chronology to use
-     */
-    private DateTimeField[] initFields(Chronology chrono) {
-        return new DateTimeField[] {
-            chrono.hourOfDay(),
-            chrono.minuteOfHour(),
-            chrono.secondOfMinute(),
-            chrono.millisOfSecond(),
-        };
     }
 
     /**
      * Initialize the array of values.
      * 
      * @param instant  the instant to use
+     * @param chrono  the chronology to use
      */
-    private int[] initValues(long instant) {
+    private int[] initValues(long instant, Chronology chrono) {
         return new int[] {
-            iFields[0].get(instant),
-            iFields[1].get(instant),
-            iFields[2].get(instant),
-            iFields[3].get(instant),
+            chrono.hourOfDay().get(instant),
+            chrono.minuteOfHour().get(instant),
+            chrono.secondOfMinute().get(instant),
+            chrono.millisOfSecond().get(instant),
         };
     }
 
@@ -288,7 +300,18 @@ public final class TimeOfDay implements PartialInstant {
      * @return the field
      */
     protected DateTimeField getField(int index) {
-        return iFields[index];
+        switch (index) {
+            case HOUR_OF_DAY:
+                return iChronology.hourOfDay();
+            case MINUTE_OF_HOUR:
+                return iChronology.minuteOfHour();
+            case SECOND_OF_MINUTE:
+                return iChronology.secondOfMinute();
+            case MILLIS_OF_SECOND:
+                return iChronology.millisOfSecond();
+            default:
+                throw new IllegalArgumentException();
+        }
     }
     
     /**
@@ -310,7 +333,12 @@ public final class TimeOfDay implements PartialInstant {
      * @return the fields supported, largest to smallest
      */
     public DateTimeField[] getSupportedFields() {
-        return (DateTimeField[]) iFields.clone();
+        return new DateTimeField[] {
+            iChronology.hourOfDay(),
+            iChronology.minuteOfHour(),
+            iChronology.secondOfMinute(),
+            iChronology.millisOfSecond(),
+        };
     }
 
     /**
@@ -335,10 +363,17 @@ public final class TimeOfDay implements PartialInstant {
      * @throws IllegalArgumentException if the field is null or not supported
      */
     public int get(DateTimeField field) {
-        for (int i = 0; i < iFields.length; i++) {
-            if (iFields[i] == field) {
-                return iValues[i];
-            }
+        if (iChronology.hourOfDay() == field) {
+            return getValue(HOUR_OF_DAY);
+        }
+        if (iChronology.minuteOfHour() == field) {
+            return getValue(MINUTE_OF_HOUR);
+        }
+        if (iChronology.secondOfMinute() == field) {
+            return getValue(SECOND_OF_MINUTE);
+        }
+        if (iChronology.millisOfSecond() == field) {
+            return getValue(MILLIS_OF_SECOND);
         }
         throw new IllegalArgumentException("Field '" + field + "' is not supported by TimeOfDay");
     }
@@ -350,12 +385,11 @@ public final class TimeOfDay implements PartialInstant {
      * @return true if the field is supported
      */
     public boolean isSupported(DateTimeField field) {
-        for (int i = 0; i < iFields.length; i++) {
-            if (iFields[i] == field) {
-                return true;
-            }
-        }
-        return false;
+        return 
+            iChronology.hourOfDay() == field ||
+            iChronology.minuteOfHour() == field ||
+            iChronology.secondOfMinute() == field ||
+            iChronology.millisOfSecond() == field;
     }
 
     //-----------------------------------------------------------------------
@@ -369,11 +403,13 @@ public final class TimeOfDay implements PartialInstant {
      * @param baseMillis  source of missing fields
      * @return the combined instant in milliseconds
      */
-    public long resolve(long baseMillis) {
+    public long resolve(long baseMillis, DateTimeZone zone) {
+        Chronology chrono = iChronology.withZone(zone);
         long millis = baseMillis;
-        for (int i = 0; i < iFields.length; i++) {
-            millis = iFields[i].set(millis, iValues[i]);
-        }
+        millis = chrono.hourOfDay().set(millis, getValue(HOUR_OF_DAY));
+        millis = chrono.minuteOfHour().set(millis, getValue(MINUTE_OF_HOUR));
+        millis = chrono.secondOfMinute().set(millis, getValue(SECOND_OF_MINUTE));
+        millis = chrono.millisOfSecond().set(millis, getValue(MILLIS_OF_SECOND));
         return millis;
     }
 
@@ -489,7 +525,7 @@ public final class TimeOfDay implements PartialInstant {
         }
         TimeOfDay other = (TimeOfDay) timeOfDay;
         return Arrays.equals(iValues, other.iValues) &&
-               Arrays.equals(iFields, other.iFields);
+               iChronology == other.iChronology;
     }
 
     /**
@@ -502,8 +538,8 @@ public final class TimeOfDay implements PartialInstant {
         int total = 157;
         for (int i = 0; i < iValues.length; i++) {
             total = 23 * total + getValue(i);
-            total += getField(i).hashCode();
         }
+        total += iChronology.hashCode();
         return total;
     }
 

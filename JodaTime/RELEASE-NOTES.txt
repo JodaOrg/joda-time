@@ -24,6 +24,10 @@ Bug fixes since 0.98
 
 - Default time zone based on offset was being interpreted as UTC
 
+- Fixed NullPointerException in DateTimeFormat
+
+- DateTimeFormat would use date style for time style
+
 New features since 0.98
 -----------------------
 

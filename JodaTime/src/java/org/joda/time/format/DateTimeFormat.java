@@ -568,7 +568,7 @@ public class DateTimeFormat {
 
     private String getDateTimePattern(final char dateStyle, final char timeStyle) {
         int idateStyle = selectStyle(dateStyle);
-        int itimeStyle = selectStyle(dateStyle);
+        int itimeStyle = selectStyle(timeStyle);
         try {
             return ((SimpleDateFormat)DateFormat.getDateTimeInstance
                     (idateStyle, itimeStyle, iLocale)).toPattern();

@@ -53,6 +53,10 @@
  */
 package org.joda.time;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -193,7 +197,13 @@ public class TestInterval_Basics extends TestCase {
     
     class MockInterval extends AbstractInterval {
         public MockInterval() {
-            super(TEST_TIME1, TEST_TIME2);
+            super();
+        }
+        public long getStartMillis() {
+            return TEST_TIME1;
+        }
+        public long getEndMillis() {
+            return TEST_TIME2;
         }
     }
 
@@ -457,6 +467,24 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(6, result.getMinutes());
         assertEquals(7, result.getSeconds());
         assertEquals(8, result.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSerialization() throws Exception {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(test);
+        byte[] bytes = baos.toByteArray();
+        oos.close();
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        Interval result = (Interval) ois.readObject();
+        ois.close();
+        
+        assertEquals(test, result);
     }
 
     //-----------------------------------------------------------------------

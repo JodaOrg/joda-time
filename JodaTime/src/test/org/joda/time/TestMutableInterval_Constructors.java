@@ -190,8 +190,6 @@ public class TestMutableInterval_Constructors extends TestCase {
         MutableInterval test = new MutableInterval(dt1, dt2);
         assertEquals(dt1.getMillis(), test.getStartMillis());
         assertEquals(dt2.getMillis(), test.getEndMillis());
-        assertSame(dt1, test.getStartInstant());
-        assertSame(dt2, test.getEndInstant());
     }
 
     public void testConstructor_RI_RI3() throws Throwable {
@@ -254,7 +252,6 @@ public class TestMutableInterval_Constructors extends TestCase {
         MutableInterval test = new MutableInterval(dt, dur);
         assertEquals(dt.getMillis(), test.getStartMillis());
         assertEquals(result, test.getEndMillis());
-        assertSame(dt, test.getStartInstant());
     }
 
     public void testConstructor_RI_RP3() throws Throwable {
@@ -268,7 +265,6 @@ public class TestMutableInterval_Constructors extends TestCase {
         MutableInterval test = new MutableInterval(dt, dur);
         assertEquals(dt.getMillis(), test.getStartMillis());
         assertEquals(result, test.getEndMillis());
-        assertSame(dt, test.getStartInstant());
     }
 
     public void testConstructor_RI_RP4() throws Throwable {
@@ -340,7 +336,6 @@ public class TestMutableInterval_Constructors extends TestCase {
         MutableInterval test = new MutableInterval(dur, dt);
         assertEquals(result, test.getStartMillis());
         assertEquals(dt.getMillis(), test.getEndMillis());
-        assertSame(dt, test.getEndInstant());
     }
 
     public void testConstructor_RP_RI3() throws Throwable {
@@ -354,7 +349,6 @@ public class TestMutableInterval_Constructors extends TestCase {
         MutableInterval test = new MutableInterval(dur, dt);
         assertEquals(result, test.getStartMillis());
         assertEquals(dt.getMillis(), test.getEndMillis());
-        assertSame(dt, test.getEndInstant());
     }
 
     public void testConstructor_RP_RI4() throws Throwable {
@@ -511,32 +505,20 @@ public class TestMutableInterval_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MutableInterval base = new MutableInterval(dt1, dt2);
-        Duration dur = base.getDuration();
-        Instant start = base.getStartInstant();
-        Instant end = base.getEndInstant();
         
         MutableInterval test = new MutableInterval(base);
         assertEquals(dt1.getMillis(), test.getStartMillis());
         assertEquals(dt2.getMillis(), test.getEndMillis());
-        assertSame(dur, test.getDuration());
-        assertSame(start, test.getStartInstant());
-        assertSame(end, test.getEndInstant());
     }
 
     public void testConstructor_Object3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         Interval base = new Interval(dt1, dt2);
-        Duration dur = base.getDuration();
-        Instant start = base.getStartInstant();
-        Instant end = base.getEndInstant();
         
         MutableInterval test = new MutableInterval(base);
         assertEquals(dt1.getMillis(), test.getStartMillis());
         assertEquals(dt2.getMillis(), test.getEndMillis());
-        assertSame(dur, test.getDuration());
-        assertSame(start, test.getStartInstant());
-        assertSame(end, test.getEndInstant());
     }
 
     public void testConstructor_Object4() throws Throwable {
@@ -587,15 +569,9 @@ public class TestMutableInterval_Constructors extends TestCase {
         try {
             ConverterManager.getInstance().addIntervalConverter(conv);
             Interval base = new Interval(-1000L, 1000L);
-            Duration dur = base.getDuration();
-            Instant start = base.getStartInstant();
-            Instant end = base.getEndInstant();
             MutableInterval test = new MutableInterval(base);
             assertEquals(1234L, test.getStartMillis());
             assertEquals(5678L, test.getEndMillis());
-            assertNotSame(dur, test.getDuration());
-            assertNotSame(start, test.getStartInstant());
-            assertNotSame(end, test.getEndInstant());
         } finally {
             ConverterManager.getInstance().addIntervalConverter(oldConv);
         }

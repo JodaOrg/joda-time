@@ -222,9 +222,9 @@
                  bottom="Copyright (c) 2001-2004 - Joda.org"
                Overview="${source.home}/org/joda/time/overview.html">
       <classpath refid="compile.classpath"/>
-      <group title="User Packages" packages="org.joda.time:org.joda.time.chrono:org.joda.time.format">
+      <group title="User Packages" packages="org.joda.time:org.joda.time.format">
       </group>
-      <group title="Implementation Packages" packages="org.joda.time.base:org.joda.time.convert:org.joda.time.field:org.joda.time.tz">
+      <group title="Implementation Packages" packages="org.joda.time.chrono:org.joda.time.base:org.joda.time.convert:org.joda.time.field:org.joda.time.tz">
       </group>
     </javadoc>
   </target>

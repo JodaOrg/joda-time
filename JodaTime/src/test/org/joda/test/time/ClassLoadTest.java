@@ -60,8 +60,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
 
 /**
- * This class is a Junit unit test base class for
- * Instant implementations.
+ * This class displays what the ClassLoader is up to.
+ * Run using JVM -verbose:class.
  *
  * @author Stephen Colebourne
  */

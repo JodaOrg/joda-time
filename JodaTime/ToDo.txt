@@ -5,11 +5,9 @@ JodaTime ToDo list
 -----
 
 Fix bugs identified by tests
-- Chronology lost in serialization
+- Formatting/parsing
 
 Fix TODOs in code
-
-Fix period parsing
 
 
 

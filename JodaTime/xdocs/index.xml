@@ -87,8 +87,9 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 0.9</a>
-is the current latest release. It is reasonably stable, although some APIs will change for 1.0.
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212&amp;release_id=217327">Release 0.95</a>
+is the current latest release.
+It is reasonably stable, and we hope that the main APIs are now stable for 1.0.
 </p>
 </section>
 

@@ -335,8 +335,10 @@ public class DateTimeFormatterBuilder {
         }
         int length = parsers.length;
         if (length == 1) {
-            // If the last element is null, an exception is still thrown.
-            return append(printer, parsers[0]);
+            if (parsers[0] == null) {
+                throw new IllegalArgumentException("No parser supplied");
+            }
+            return append0(printer, parsers[0]);
         }
 
         DateTimeParser[] copyOfParsers = new DateTimeParser[length];
@@ -1999,69 +2001,61 @@ public class DateTimeFormatterBuilder {
             return iParsedLengthEstimate;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+        public int parseInto(final DateTimeParserBucket bucket, final String text, final int position) {
             DateTimeParser[] parsers = iParsers;
             int length = parsers.length;
 
-            Object state = bucket.saveState();
-            
-            int bestInvalidPos = position;
-            int bestInvalidParser = 0;
+            final Object originalState = bucket.saveState();
+            boolean isOptional = false;
+
             int bestValidPos = position;
-            int bestValidParser = 0;
+            Object bestValidState = null;
+
+            int bestInvalidPos = position;
 
             for (int i=0; i<length; i++) {
-                if (i != 0) {
-                    bucket.undoChanges(state);
-                }
-
                 DateTimeParser parser = parsers[i];
                 if (parser == null) {
                     // The empty parser wins only if nothing is better.
-                    if (bestValidPos > position) {
-                        break;
+                    if (bestValidPos <= position) {
+                        return position;
                     }
-                    return position;
+                    isOptional = true;
+                    break;
                 }
-
                 int parsePos = parser.parseInto(bucket, text, position);
                 if (parsePos >= position) {
-                    if (parsePos >= text.length()) {
-                        return parsePos;
-                    }
                     if (parsePos > bestValidPos) {
+                        if (parsePos >= text.length() ||
+                            (i + 1) >= length || parsers[i + 1] == null) {
+
+                            // Completely parsed text or no more parsers to
+                            // check. Skip the rest.
+                            return parsePos;
+                        }
                         bestValidPos = parsePos;
-                        bestValidParser = i;
+                        bestValidState = bucket.saveState();
                     }
                 } else {
-                    parsePos = ~parsePos;
-                    if (parsePos > bestInvalidPos) {
-                        bestInvalidPos = parsePos;
-                        bestInvalidParser = i;
+                    bucket.undoChanges(originalState);
+                    if (parsePos < 0) {
+                        parsePos = ~parsePos;
+                        if (parsePos > bestInvalidPos) {
+                            bestInvalidPos = parsePos;
+                        }
                     }
                 }
             }
 
-            if (bestValidPos > position) {
-                if (bestValidParser == length - 1) {
-                    // The best valid parser was the last one, so the bucket is
-                    // already in the best state.
-                    return bestValidPos;
+            if (bestValidPos > position || (bestValidPos == position && isOptional)) {
+                // Restore the state to the best valid parse.
+                if (bestValidState != null) {
+                    bucket.undoChanges(bestValidState);
                 }
-                bucket.undoChanges(state);
-                // Call best valid parser again to restore bucket state.
-                return parsers[bestValidParser].parseInto(bucket, text, position);
+                return bestValidPos;
             }
 
-            if (bestInvalidParser == length - 1) {
-                // The best invalid parser was the last one, so the bucket is
-                // already in the best state.
-                return ~bestInvalidPos;
-            }
-
-            bucket.undoChanges(state);
-            // Call best invalid parser again to restore bucket state.
-            return parsers[bestInvalidParser].parseInto(bucket, text, position);
+            return ~bestInvalidPos;
         }
     }
 }

@@ -72,8 +72,8 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(new MainTest(200, 0, 1345435247779935L));
-        suite.addTest(new MainTest(200, 1, 1345435247779935L));
+        suite.addTest(new MainTest(500, 0, 1345435247779935L));
+        suite.addTest(new MainTest(500, 1, 1345435247779935L));
         return suite;
     }
 

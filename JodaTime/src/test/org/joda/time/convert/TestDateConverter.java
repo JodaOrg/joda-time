@@ -56,22 +56,22 @@ package org.joda.time.convert;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Date;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
 /**
- * This class is a Junit unit test for LongConverter.
+ * This class is a Junit unit test for DateConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestLongConverter extends TestCase {
+public class TestDateConverter extends TestCase {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
@@ -86,16 +86,16 @@ public class TestLongConverter extends TestCase {
     }
 
     public static TestSuite suite() {
-        return new TestSuite(TestLongConverter.class);
+        return new TestSuite(TestDateConverter.class);
     }
 
-    public TestLongConverter(String name) {
+    public TestDateConverter(String name) {
         super(name);
     }
 
     //-----------------------------------------------------------------------
     public void testSingleton() throws Exception {
-        Class cls = LongConverter.class;
+        Class cls = DateConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
         assertEquals(false, Modifier.isPrivate(cls.getModifiers()));
@@ -112,55 +112,42 @@ public class TestLongConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {
-        assertEquals(Long.class, LongConverter.INSTANCE.getSupportedType());
+        assertEquals(Date.class, DateConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_Object() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L)));
+        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L)));
     }
 
     public void testGetInstantMillis_Object_Zone() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), PARIS));
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), (DateTimeZone) null));
+        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), PARIS));
+        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), (DateTimeZone) null));
     }
 
     public void testGetInstantMillis_Object_Chronology() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), JULIAN));
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), (Chronology) null));
+        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), JULIAN));
+        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
     public void testGetChronology_Object() throws Exception {
-        assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L)));
+        assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L)));
     }
 
     public void testGetChronology_Object_Zone() throws Exception {
-        assertEquals(ISO_PARIS, LongConverter.INSTANCE.getChronology(new Long(123L), PARIS));
-        assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (DateTimeZone) null));
+        assertEquals(ISO_PARIS, DateConverter.INSTANCE.getChronology(new Date(123L), PARIS));
+        assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L), (DateTimeZone) null));
     }
 
     public void testGetChronology_Object_Chronology() throws Exception {
-        assertEquals(JULIAN, LongConverter.INSTANCE.getChronology(new Long(123L), JULIAN));
-        assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (Chronology) null));
-    }
-
-    //-----------------------------------------------------------------------
-    public void testGetDurationMillis_Object() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getDurationMillis(new Long(123L)));
-    }
-
-    public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getMillisType(), LongConverter.INSTANCE.getDurationType(new Long(123L)));
-    }
-
-    public void testIsPrecise_Object() throws Exception {
-        assertEquals(true, LongConverter.INSTANCE.isPrecise(new Long(123L)));
+        assertEquals(JULIAN, DateConverter.INSTANCE.getChronology(new Date(123L), JULIAN));
+        assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("Converter[java.lang.Long]", LongConverter.INSTANCE.toString());
+        assertEquals("Converter[java.util.Date]", DateConverter.INSTANCE.toString());
     }
 
 }

@@ -53,40 +53,52 @@
  */
 package org.joda.time.convert;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
- * Entry point for all tests in this package.
- * 
- * @version $Revision$ $Date$
- * 
+ * A basic mock testing class for an unknown calendar.
+ *
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
-
-    public TestAll(String testName) {
-        super(testName);
+public class MockUnknownCalendar extends Calendar {
+    
+    private long millis;
+    private TimeZone zone;
+    
+    MockUnknownCalendar(long millis) {
+        this.millis = millis;
+    }
+    MockUnknownCalendar(TimeZone zone) {
+        this.zone = zone;
+    }
+    
+    public long getTimeInMillis() {
+        return millis;
+    }
+    public TimeZone getTimeZone() {
+        return zone;
     }
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestCalendarConverter.suite());
-        suite.addTest(TestDateConverter.suite());
-        suite.addTest(TestLongConverter.suite());
-        suite.addTest(TestNullConverter.suite());
-        suite.addTest(TestReadableInstantConverter.suite());
-        
-        suite.addTest(TestReadableDurationConverter.suite());
-        return suite;
+    protected void computeTime() {
     }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
+    protected void computeFields() {
     }
-
+    public void add(int field, int amount) {
+    }
+    public void roll(int field, boolean up) {
+    }
+    public int getMinimum(int field) {
+        return 0;
+    }
+    public int getMaximum(int field) {
+        return 0;
+    }
+    public int getGreatestMinimum(int field) {
+        return 0;
+    }
+    public int getLeastMaximum(int field) {
+        return 0;
+    }
+    
 }

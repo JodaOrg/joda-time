@@ -262,7 +262,7 @@ There are two implementations of the <code>ReadablePeriod</code> interface,
 <a name="chronology"/>
 <section name="Chronology">
 <p>
-As should be obvious by now, the Joda-Time design is based around the
+The Joda-Time design is based around the
 <em>Chronology</em>. It is a calculation engine that supports the complex
 rules for a calendar system. It encapsulates the field objects, which are used
 on demand to split the absolute time instant into recognisable calendar
@@ -361,7 +361,7 @@ A method on the interface can obtain the concrete class for use within the metho
 <a name="package_structure"/>
 <section name="Package Structure">
 <p>
-The package structure is degned to separate the methods in the public API
+The package structure is designed to separate the methods in the public API
 from the private API.
 The public packages are the root package (under <code>org.joda.time</code>) and
 the <code>format</code> package.
@@ -398,7 +398,7 @@ standard.
 <code>DateTime</code> also provides
 <a href="apidocs/org/joda/time/DateTime.html#constructor_summary">other
 constructors</a> to create a specific date and time using a variety of standard
-fields. The also permit the use of any calendar and timezone.
+fields. This also permits the use of any calendar and timezone.
 </p>
 </section>
 
@@ -419,7 +419,7 @@ can be performed as follows
     Date jdkDate = dt.toDate();
     // modifications to jdkDate
     ...
-    dt = new DateTime (jdkDate);
+    dt = new DateTime(jdkDate);
 </source>
 </p>
 <p>
@@ -428,7 +428,7 @@ Similarly, for JDK <code>Calendar</code>:
     Calendar jdkCal = dt.toCalendar(Locale.CHINESE);
     // modifications to jdkCal
     ...
-    dt = new DateTime (jdkCal);
+    dt = new DateTime(jdkCal);
 </source>
 </p>
 <p>
@@ -437,7 +437,7 @@ and JDK <code>GregorianCalendar</code>:
     GregorianCalendar jdkGC = dt.toGregorianCalendar();
     // modifications to jdkGC
     ...
-    dt = new DateTime (jdkGC);
+    dt = new DateTime(jdkGC);
 </source>
 </p>
 </section>
@@ -472,8 +472,8 @@ where <code>iDoW</code> can take the values (from class
 
 <a name="accessing_fields"/>
 <section name="Accessing Fields">
-<p>This is fine for simple usage, but more flexibility can be achieved via the
-property/field mechanism. This is done via the property <code>pDoW</code>
+<p>The direct methods are fine for simple usage, but more flexibility can be achieved via the
+property/field mechanism. The day of week property is obtained by
 <source>
     DateTime.Property pDoW = dt.dayOfWeek();
 </source>
@@ -549,9 +549,9 @@ As you would expect, all the methods we showed above in the day-of-week example
 can be applied to any of these properties. For example, to extract the standard
 month, day and year fields from a datetime, we can write
 <source>
-    int m = dt.monthOfYear().getText();
-    int d = dt.dayOfMonth().getMaximumValue();
-    int y = dt.yearOfEra().isLeap();
+    String month = dt.monthOfYear().getText();
+    int maxDay = dt.dayOfMonth().getMaximumValue();
+    boolean leapYear = dt.yearOfEra().isLeap();
 </source>
 </p>
 </section>
@@ -642,7 +642,7 @@ calculations. For instance, if you want to get the local time in London at this
 very moment, you would do the following
 <source>
     // get current moment in default time zone
-    DateTime dt = new DateTime ();
+    DateTime dt = new DateTime();
     // translate to London local time
     DateTime dtLondon = dt.withZone(DateTimeZone.getInstance("Europe/London"));
 </source>
@@ -656,7 +656,7 @@ millisecond) corresponding to the moment when London has the same local time as
 exists in the default time zone <em>now</em>. This is done as follows
 <source>
     // get current moment in default time zone
-    DateTime dt = new DateTime ();
+    DateTime dt = new DateTime();
     // find the moment when London will have / had the same time
     dtLondonSameTime = dt.withZoneRetainFields(DateTimeZone.getInstance("Europe/London"));
 </source>
@@ -676,7 +676,7 @@ allows you to change the calendar for a given moment in time. Thus if you want t
 get the datetime for the current time, but in the Buddhist Calendar, you would do
 <source>
     // get current moment in default time zone
-    DateTime dt = new DateTime ();
+    DateTime dt = new DateTime();
     dt.getYear();  // returns 2004
     // change to Buddhist chronology
     DateTime dtBuddhist = dt.withChronology(Chronology.getBuddhist());
@@ -783,7 +783,7 @@ such an object <code>fmt</code>, input is performed as follows
     String strInputDateTime;
     // string is populated with a date time string in some fashion
     ...
-    dt = fmt.parseDateTime(strInputDateTime);
+    DateTime dt = fmt.parseDateTime(strInputDateTime);
 </source>
 Thus a <code>DateTime</code> object is returned from the parse method of the
 formatter. Similarly, output is performed as
@@ -847,7 +847,7 @@ recognize dates of the form "22-Jan-65", you could do the following:
             .appendTwoDigitYear(1956)
             .toFormatter();
 </source>
-Each <code>append..</code> method appends a new field to be parsed/printed to the
+Each append method appends a new field to be parsed/printed to the
 calling builder and returns a new builder. The final <code>toFormatter</code> method
 creates the actual formatter that will be used to print/parse.
 </p>
@@ -878,6 +878,7 @@ This allows the current time to be changed, which can be very useful for testing
     // offset the real time
     DateTimeUtils.setCurrentMillisOffset(millis);
 </source>
+Note that changing the current time this way does not affect the system clock.
 </p>
 </section>
 

@@ -72,9 +72,14 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
+        suite.addTest(TestDateTime_Constructors.suite());
+        suite.addTest(TestDateTime_Basics.suite());
+        suite.addTest(TestDateTime_Properties.suite());
         suite.addTest(TestDateTimeComparator.suite());
         suite.addTest(TestDateTimeConstants.suite());
-        suite.addTest(TestParseISO.suite());
+        suite.addTest(TestInstant_Constructors.suite());
+        suite.addTest(TestInstant_Basics.suite());
+//        suite.addTest(TestParseISO.suite());
         return suite;
     }
 

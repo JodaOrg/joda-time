@@ -58,7 +58,7 @@ import org.joda.time.DateTimeField;
 /**
  * General utilities that don't fit elsewhere.
  * <p>
- * Utils is thread-safe and immutable.
+ * FieldUtils is thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @since 1.0

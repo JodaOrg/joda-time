@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -410,7 +410,7 @@ public final class YearMonthDay
      * Converts this object to an Interval representing the whole day
      * in the default time zone.
      *
-     * @return the DateMidnight instance in the default zone
+     * @return a interval over the day
      */
     public Interval toInterval() {
         return toInterval(null);
@@ -420,7 +420,7 @@ public final class YearMonthDay
      * Converts this object to an Interval representing the whole day.
      *
      * @param zone  the zone to get the Interval in, null means default
-     * @return the DateMidnight instance
+     * @return a interval over the day
      */
     public Interval toInterval(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);

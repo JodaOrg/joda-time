@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -609,6 +609,9 @@ public final class DateMidnight
      * @throws IllegalArgumentException if the field is null or unsupported
      */
     public Property property(DateTimeFieldType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("The DateTimeFieldType must not be null");
+        }
         DateTimeField field = type.getField(getChronology());
         if (field.isSupported() == false) {
             throw new IllegalArgumentException("Field '" + type + "' is not supported");
@@ -632,7 +635,7 @@ public final class DateMidnight
      * The interval starts at midnight 00:00 and ends at 00:00 the following day,
      * (which is not included in the interval, as intervals are half-open).
      * 
-     * @return a YearMonthDay using the same millis and chronology
+     * @return an interval over the day
      */
     public Interval toInterval() {
         Chronology chrono = getChronology();

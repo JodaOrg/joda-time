@@ -58,6 +58,7 @@ import java.io.Serializable;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.InstantConverter;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.ReadWritableInstantFieldProperty;
 
@@ -401,38 +402,43 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Add an amount of time to the datetime.
-     * 
-     * @param duration  duration to add.
-     */
-    public void add(final ReadableDuration duration) {
-        duration.addInto(this, 1);
-    }
-
-    /**
-     * Add an amount of time to the datetime.
-     * 
-     * @param duration  duration to add.
-     * @param scalar  direction and amount to add, which may be negative
-     */
-    public void add(final ReadableDuration duration, final int scalar) {
-        duration.addInto(this, scalar);
-    }
-
-    /**
-     * Add an amount of time to the datetime.
+     * Adds an amount of time to this instant.
+     * <p>
+     * If the resulting value is too large for the implementation,
+     * an exception is thrown.
      * <p>
      * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableDuration, and Long.
-     * 
+     * include ReadableDuration, String and Long.
+     *
      * @param duration  an object representing a duration
+     * @throws IllegalArgumentException if the duration is invalid
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
     public void add(final Object duration) {
+        add(duration, 1);
+    }
+
+    /**
+     * Adds an amount of time to this instant specifying how many times to add.
+     * <p>
+     * If the resulting value is too large for the implementation,
+     * an exception is thrown.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableDuration, String and Long.
+     *
+     * @param duration  duration to add.
+     * @param scalar  direction and amount to add, which may be negative
+     * @throws IllegalArgumentException if the duration is invalid
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
+     */
+    public void add(final Object duration, final int scalar) {
         if (duration instanceof ReadableDuration) {
-            add((ReadableDuration) duration, 1);
+            ReadableDuration d = (ReadableDuration) duration;
+            d.addInto(this, scalar);
         } else {
             DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-            add(converter.getDurationMillis(duration));
+            add(FieldUtils.safeMultiply(converter.getDurationMillis(duration), scalar));
         }
     }
 
@@ -485,8 +491,8 @@ public class MutableDateTime extends AbstractDateTime
     // Field based
     //-----------------------------------------------------------------------
     /**
-     * Set a value in the specified field.
-     * This could be used to set a field using a different Chronology.
+     * Sets the value of the specified field.
+     * It is permitted to use a field from another Chronology.
      * For example:
      * <pre>
      * MutableDateTime dt = new MutableDateTime();
@@ -506,13 +512,15 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Add a value to the specified field.
-     * This could be used to set a field using a different Chronology.
+     * Adds to the value to the specified field.
+     * It is permitted to use a field from another Chronology.
      * For example:
      * <pre>
      * MutableDateTime dt = new MutableDateTime();
      * dt.add(GJChronology.getInstance().year(), 2);
      * </pre>
+     * Where possible the {@link #add(DurationField, int)} is a better choice as
+     * it is more explicit about what is being added.
      * 
      * @param field  the DateTimeField to use
      * @param value the value
@@ -527,8 +535,29 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
+     * Adds the to the datetime the amount represented by the duration multiplied by the value.
+     * It is permitted to use a field from another Chronology.
+     * For example:
+     * <pre>
+     * MutableDateTime dt = new MutableDateTime();
+     * dt.add(GJChronology.getInstance().years(), 2);
+     * </pre>
+     * 
+     * @param field  the DurationField to use
+     * @param value the value
+     * @throws IllegalArgumentException if the field is null
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void add(final DurationField field, final int value) {
+        if (field == null) {
+            throw new IllegalArgumentException("The DurationField must not be null");
+        }
+        setMillis(field.add(getMillis(), value));
+    }
+
+    /**
      * Add a value to the specified field, wrapping within that field.
-     * This could be used to set a field using a different Chronology.
+     * It is permitted to use a field from another Chronology.
      * For example:
      * <pre>
      * MutableDateTime dt = new MutableDateTime();

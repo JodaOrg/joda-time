@@ -73,6 +73,7 @@ public class TestAll extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(TestDateTimeComparator.suite());
+        suite.addTest(TestDateTimeConstants.suite());
         suite.addTest(TestParseISO.suite());
         return suite;
     }

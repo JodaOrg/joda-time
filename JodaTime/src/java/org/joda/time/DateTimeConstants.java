@@ -64,7 +64,7 @@ package org.joda.time;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class DateTimeConstants {
+public class DateTimeConstants {
 
     // These are ints not enumerations as they represent genuine int values
     /** Constant (1) representing January, the first month (ISO) */

@@ -215,6 +215,7 @@ public abstract class AbstractPartialFieldProperty {
         return getField().getMaximumValue(getPartialInstant());
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets the maximum text length for the field.
      * 

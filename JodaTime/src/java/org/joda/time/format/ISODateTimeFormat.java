@@ -15,9 +15,12 @@
  */
 package org.joda.time.format;
 
-
 /**
- * ISODateTimeFormat provides factory methods for the ISO8601 standard.
+ * Factory that creates instances of DateTimeFormatter for the ISO8601 standard.
+ * <p>
+ * Datetime formatting is performed by the {@link DateTimeFormatter} class.
+ * Three classes provide factory methods to create formatters, and this is one.
+ * The others are {@link DateTimeFormat} and {@link DateTimeFormatterBuilder}.
  * <p>
  * ISO8601 is the international standard for data interchange. It defines a
  * framework, rather than an absolute standard. As a result this provider has a

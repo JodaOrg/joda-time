@@ -463,6 +463,7 @@ public abstract class DateTimeField {
      * For example, a leap year would return true, a non leap year would return
      * false.
      * 
+     * @param instant  the instant to check for leap status
      * @return true if the field is 'leap'
      */
     public abstract boolean isLeap(long instant);
@@ -472,12 +473,17 @@ public abstract class DateTimeField {
      * <p>
      * For example, a leap year would return one, a non leap year would return
      * zero.
+     * 
+     * @param instant  the instant to check for leap status
+     * @return the amount, in units of the leap duration field, that the field is leap
      */
     public abstract int getLeapAmount(long instant);
 
     /**
      * If this field were to leap, then it would be in units described by the
      * returned duration. If this field doesn't ever leap, null is returned.
+     * 
+     * @return the leap duration field if field can be leap, null if it can't
      */
     public abstract DurationField getLeapDurationField();
 

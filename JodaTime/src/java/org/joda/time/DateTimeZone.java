@@ -127,12 +127,15 @@ public abstract class DateTimeZone implements Serializable {
     /** The time zone for Universal Coordinated Time */
     public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
 
+    /** The instance that is providing time zones. */
     private static Provider cProvider;
+    /** The instance that is providing time zone names. */
     private static NameProvider cNameProvider;
+    /** The set of ID strings. */
     private static Set cAvailableIDs;
-
+    /** The default time zone. */
     private static DateTimeZone cDefault;
-
+    /** A formatter for printing and parsing zones. */
     private static DateTimeFormatter cOffsetFormatter;
 
     /** Cache that maps fixed offset strings to softly referenced DateTimeZones */
@@ -159,12 +162,14 @@ public abstract class DateTimeZone implements Serializable {
         try {
             try {
                 cDefault = getInstance(System.getProperty("user.timezone"));
-            } catch (RuntimeException ignored) {
+            } catch (RuntimeException ex) {
+                // ignored
             }
             if (cDefault == null) {
                 cDefault = getInstance(java.util.TimeZone.getDefault());
             }
-        } catch (IllegalArgumentException ignored) {
+        } catch (IllegalArgumentException ex) {
+            // ignored
         }
 
         if (cDefault == null) {
@@ -186,6 +191,7 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @param zone  the default datetime zone object, must not be null
      * @throws IllegalArgumentException if the zone is null
+     * @throws SecurityException if the application has insufficient security rights
      */
     public static void setDefault(DateTimeZone zone) throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
@@ -326,7 +332,7 @@ public abstract class DateTimeZone implements Serializable {
             convId = zone.getDisplayName();
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
-                int offset = -(int)offsetFormatter().parseMillis(convId);
+                int offset = -(int) offsetFormatter().parseMillis(convId);
                 if (offset == 0L) {
                     return DateTimeZone.UTC;
                 } else {
@@ -339,6 +345,13 @@ public abstract class DateTimeZone implements Serializable {
         throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
     }
 
+    /**
+     * Gets the zone using a fixed offset amount.
+     * 
+     * @param id  the zone id
+     * @param offset  the offset in millis
+     * @return the zone
+     */
     private static synchronized DateTimeZone fixedOffsetZone(String id, int offset) {
         if (iFixedOffsetCache == null) {
             iFixedOffsetCache = new HashMap();
@@ -438,14 +451,14 @@ public abstract class DateTimeZone implements Serializable {
                 System.getProperty("org.joda.time.DateTimeZone.Provider");
             if (providerClass != null) {
                 try {
-                    provider = (Provider)Class.forName(providerClass).newInstance();
-                }
-                catch (Exception ex) {
+                    provider = (Provider) Class.forName(providerClass).newInstance();
+                } catch (Exception ex) {
                     Thread thread = Thread.currentThread();
                     thread.getThreadGroup().uncaughtException(thread, ex);
                 }
             }
         } catch (SecurityException ex) {
+            // ignored
         }
 
         if (provider == null) {
@@ -622,7 +635,7 @@ public abstract class DateTimeZone implements Serializable {
 
         int hours = offset / DateTimeConstants.MILLIS_PER_HOUR;
         FormatUtils.appendPaddedInteger(buf, hours, 2);
-        offset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
+        offset -= hours * (int) DateTimeConstants.MILLIS_PER_HOUR;
 
         int minutes = offset / DateTimeConstants.MILLIS_PER_MINUTE;
         buf.append(':');
@@ -706,6 +719,7 @@ public abstract class DateTimeZone implements Serializable {
      * string in the format <code>[+-]hh:mm</code>.
      * 
      * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param locale  the locale to get the name for
      * @return the human-readable short name in the specified locale
      */
     public String getShortName(long instant, Locale locale) {
@@ -745,6 +759,7 @@ public abstract class DateTimeZone implements Serializable {
      * string in the format <code>[+-]hh:mm</code>.
      * 
      * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param locale  the locale to get the name for
      * @return the human-readable long name in the specified locale
      */
     public String getName(long instant, Locale locale) {
@@ -889,6 +904,7 @@ public abstract class DateTimeZone implements Serializable {
 
     /**
      * Gets the datetime zone as a string, which is simply its ID.
+     * @return the id of the zone
      */
     public String toString() {
         return getID();
@@ -898,6 +914,7 @@ public abstract class DateTimeZone implements Serializable {
      * By default, when DateTimeZones are serialized, only a "stub" object
      * referring to the id is written out. When the stub is read in, it
      * replaces itself with a DateTimeZone object.
+     * @return a stub object to go in the stream
      */
     protected Object writeReplace() throws ObjectStreamException {
         return new Stub(iID);
@@ -907,10 +924,15 @@ public abstract class DateTimeZone implements Serializable {
      * Used to serialize DateTimeZones by id.
      */
     private static final class Stub implements Serializable {
+        /** Serialization lock. */
         private static final long serialVersionUID = -6471952376487863581L;
-
+        /** The ID of the zone. */
         private transient String iID;
 
+        /**
+         * Constructor.
+         * @param id  the id of the zone
+         */
         Stub(String id) {
             iID = id;
         }
@@ -923,7 +945,7 @@ public abstract class DateTimeZone implements Serializable {
             iID = in.readUTF();
         }
 
-        protected Object readResolve() throws ObjectStreamException {
+        private Object readResolve() throws ObjectStreamException {
             return getInstance(iID);
         }
     }

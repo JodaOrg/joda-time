@@ -239,6 +239,8 @@ public class DateTimeComparator implements Comparator, Serializable {
     //-----------------------------------------------------------------------
     /**
      * Support serialization singletons.
+     * 
+     * @return the resolved singleton instance
      */
     private Object readResolve() {
         return getInstance(iLowerLimit, iUpperLimit);

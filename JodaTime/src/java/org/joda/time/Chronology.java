@@ -457,9 +457,9 @@ public abstract class Chronology {
      * @param dayOfMonth day of month to use
      * @param millisOfDay millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if the values are invalid
      */
-    public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay)
-        throws IllegalArgumentException;
+    public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay);
 
     /**
      * Returns a datetime millisecond instant, formed from the given year,
@@ -479,11 +479,11 @@ public abstract class Chronology {
      * @param secondOfMinute second to use
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if the values are invalid
      */
     public abstract long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                            int hourOfDay, int minuteOfHour,
-                           int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException;
+                           int secondOfMinute, int millisOfSecond);
 
     /**
      * Returns a datetime millisecond instant, from from the given instant,
@@ -501,11 +501,11 @@ public abstract class Chronology {
      * @param secondOfMinute second to use
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if the values are invalid
      */
     public abstract long getDateTimeMillis(long instant,
                            int hourOfDay, int minuteOfHour,
-                           int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException;
+                           int secondOfMinute, int millisOfSecond);
 
     //-----------------------------------------------------------------------
     /**

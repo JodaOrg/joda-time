@@ -96,6 +96,8 @@ public class DateTimeUtils {
      * <p>
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, {@link System#currentTimeMillis()} is used.
+     * 
+     * @throws SecurityException if the application does not have sufficient security rights
      */
     public static final void setCurrentMillisSystem() throws SecurityException {
         checkPermission();
@@ -109,6 +111,7 @@ public class DateTimeUtils {
      * Whenever the current time is queried, the same millisecond time will be returned.
      * 
      * @param fixedMillis  the fixed millisecond time to use
+     * @throws SecurityException if the application does not have sufficient security rights
      */
     public static final void setCurrentMillisFixed(long fixedMillis) throws SecurityException {
         checkPermission();
@@ -123,6 +126,7 @@ public class DateTimeUtils {
      * and then offset by adding the millisecond value specified here.
      * 
      * @param offsetMillis  the fixed millisecond time to use
+     * @throws SecurityException if the application does not have sufficient security rights
      */
     public static final void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
         checkPermission();
@@ -299,7 +303,11 @@ public class DateTimeUtils {
     /**
      * Base class defining a millisecond provider.
      */
-    static abstract class MillisProvider {
+    abstract static class MillisProvider {
+        /**
+         * Gets the current time.
+         * @return the current time in millis
+         */
         abstract long getMillis();
     }
 
@@ -307,6 +315,10 @@ public class DateTimeUtils {
      * System millis provider.
      */
     static class SystemMillisProvider extends MillisProvider {
+        /**
+         * Gets the current time.
+         * @return the current time in millis
+         */
         long getMillis() {
             return System.currentTimeMillis();
         }
@@ -316,10 +328,21 @@ public class DateTimeUtils {
      * Fixed millisecond provider.
      */
     static class FixedMillisProvider extends MillisProvider {
+        /** The fixed millis value. */
         private final long iMillis;
+        
+        /**
+         * Constructor.
+         * @param offsetMillis  the millis offset
+         */
         FixedMillisProvider(long fixedMillis) {
             iMillis = fixedMillis;
         }
+        
+        /**
+         * Gets the current time.
+         * @return the current time in millis
+         */
         long getMillis() {
             return iMillis;
         }
@@ -329,10 +352,21 @@ public class DateTimeUtils {
      * Offset from system millis provider.
      */
     static class OffsetMillisProvider extends MillisProvider {
+        /** The millis offset. */
         private final long iMillis;
+        
+        /**
+         * Constructor.
+         * @param offsetMillis  the millis offset
+         */
         OffsetMillisProvider(long offsetMillis) {
             iMillis = offsetMillis;
         }
+        
+        /**
+         * Gets the current time.
+         * @return the current time in millis
+         */
         long getMillis() {
             return System.currentTimeMillis() + iMillis;
         }

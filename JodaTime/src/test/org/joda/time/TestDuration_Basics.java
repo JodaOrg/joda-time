@@ -60,8 +60,6 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.joda.time.chrono.ISOChronology;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -146,33 +144,17 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetPeriodType() {
-        TimePeriod test = new TimePeriod(0L);
-        assertEquals(PeriodType.getAllType(), test.getPeriodType());
-    }
-
-    public void testGetIsPrecise() {
-        TimePeriod test = new TimePeriod(123L);
-        assertEquals(true, test.isPrecise());
-        test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        assertEquals(false, test.isPrecise());
-    }
-
-    public void testGetMethods() {
-        TimePeriod test = new TimePeriod(0L);
-        assertEquals(0, test.getYears());
-        assertEquals(0, test.getMonths());
-        assertEquals(0, test.getWeeks());
-        assertEquals(0, test.getDays());
-        assertEquals(0, test.getHours());
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
+    public void testGetMillis() {
+        Duration test = new Duration(0L);
         assertEquals(0, test.getMillis());
+        
+        test = new Duration(1234567890L);
+        assertEquals(1234567890L, test.getMillis());
     }
 
     public void testEqualsHashCode() {
-        TimePeriod test1 = new TimePeriod(123L);
-        TimePeriod test2 = new TimePeriod(123L);
+        Duration test1 = new Duration(123L);
+        Duration test2 = new Duration(123L);
         assertEquals(true, test1.equals(test2));
         assertEquals(true, test2.equals(test1));
         assertEquals(true, test1.equals(test1));
@@ -181,7 +163,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(true, test1.hashCode() == test1.hashCode());
         assertEquals(true, test2.hashCode() == test2.hashCode());
         
-        TimePeriod test3 = new TimePeriod(321L);
+        Duration test3 = new Duration(321L);
         assertEquals(false, test1.equals(test3));
         assertEquals(false, test2.equals(test3));
         assertEquals(false, test3.equals(test1));
@@ -191,34 +173,25 @@ public class TestDuration_Basics extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockDuration(123L)));
-        assertEquals(false, test1.equals(new TimePeriod(123L, PeriodType.getDayHourType())));
     }
     
-    class MockDuration extends AbstractPeriod {
+    class MockDuration extends AbstractDuration {
         public MockDuration(long value) {
-            super(value, null);
-        }
-        protected PeriodType checkPeriodType(PeriodType type) {
-            return PeriodType.getAllType();
+            super(value);
         }
     }
 
     public void testCompareTo() {
-        TimePeriod test1 = new TimePeriod(123L);
-        TimePeriod test1a = new TimePeriod(123L);
+        Duration test1 = new Duration(123L);
+        Duration test1a = new Duration(123L);
         assertEquals(0, test1.compareTo(test1a));
         assertEquals(0, test1a.compareTo(test1));
         assertEquals(0, test1.compareTo(test1));
         assertEquals(0, test1a.compareTo(test1a));
         
-        TimePeriod test2 = new TimePeriod(321L);
+        Duration test2 = new Duration(321L);
         assertEquals(-1, test1.compareTo(test2));
         assertEquals(+1, test2.compareTo(test1));
-        
-        TimePeriod test3 = new TimePeriod(321L, PeriodType.getAllType());
-        assertEquals(-1, test1.compareTo(test3));
-        assertEquals(+1, test3.compareTo(test1));
-        assertEquals(0, test3.compareTo(test2));
         
         assertEquals(+1, test2.compareTo(new MockDuration(123L)));
         assertEquals(0, test1.compareTo(new MockDuration(123L)));
@@ -231,84 +204,65 @@ public class TestDuration_Basics extends TestCase {
             test1.compareTo(new Long(123L));
             fail();
         } catch (ClassCastException ex) {}
-        try {
-            test1.compareTo(new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8));
-            fail();
-        } catch (IllegalStateException ex) {}
     }
 
     public void testIsEqual() {
-        TimePeriod test1 = new TimePeriod(123L);
-        TimePeriod test1a = new TimePeriod(123L);
+        Duration test1 = new Duration(123L);
+        Duration test1a = new Duration(123L);
         assertEquals(true, test1.isEqual(test1a));
         assertEquals(true, test1a.isEqual(test1));
         assertEquals(true, test1.isEqual(test1));
         assertEquals(true, test1a.isEqual(test1a));
         
-        TimePeriod test2 = new TimePeriod(321L);
+        Duration test2 = new Duration(321L);
         assertEquals(false, test1.isEqual(test2));
         assertEquals(false, test2.isEqual(test1));
-        
-        TimePeriod test3 = new TimePeriod(321L, PeriodType.getAllType());
-        assertEquals(false, test1.isEqual(test3));
-        assertEquals(false, test3.isEqual(test1));
-        assertEquals(true, test3.isEqual(test2));
         
         assertEquals(false, test2.isEqual(new MockDuration(123L)));
         assertEquals(true, test1.isEqual(new MockDuration(123L)));
         assertEquals(false, test1.isEqual(null));
-        assertEquals(true, new TimePeriod(0L).isEqual(null));
+        assertEquals(true, new Duration(0L).isEqual(null));
     }
     
     public void testIsBefore() {
-        TimePeriod test1 = new TimePeriod(123L);
-        TimePeriod test1a = new TimePeriod(123L);
+        Duration test1 = new Duration(123L);
+        Duration test1a = new Duration(123L);
         assertEquals(false, test1.isShorterThan(test1a));
         assertEquals(false, test1a.isShorterThan(test1));
         assertEquals(false, test1.isShorterThan(test1));
         assertEquals(false, test1a.isShorterThan(test1a));
         
-        TimePeriod test2 = new TimePeriod(321L);
+        Duration test2 = new Duration(321L);
         assertEquals(true, test1.isShorterThan(test2));
         assertEquals(false, test2.isShorterThan(test1));
-        
-        TimePeriod test3 = new TimePeriod(321L, PeriodType.getAllType());
-        assertEquals(true, test1.isShorterThan(test3));
-        assertEquals(false, test3.isShorterThan(test1));
-        assertEquals(false, test3.isShorterThan(test2));
         
         assertEquals(false, test2.isShorterThan(new MockDuration(123L)));
         assertEquals(false, test1.isShorterThan(new MockDuration(123L)));
         assertEquals(false, test1.isShorterThan(null));
-        assertEquals(false, new TimePeriod(0L).isShorterThan(null));
+        assertEquals(false, new Duration(0L).isShorterThan(null));
     }
     
     public void testIsAfter() {
-        TimePeriod test1 = new TimePeriod(123L);
-        TimePeriod test1a = new TimePeriod(123L);
+        Duration test1 = new Duration(123L);
+        Duration test1a = new Duration(123L);
         assertEquals(false, test1.isLongerThan(test1a));
         assertEquals(false, test1a.isLongerThan(test1));
         assertEquals(false, test1.isLongerThan(test1));
         assertEquals(false, test1a.isLongerThan(test1a));
         
-        TimePeriod test2 = new TimePeriod(321L);
+        Duration test2 = new Duration(321L);
         assertEquals(false, test1.isLongerThan(test2));
         assertEquals(true, test2.isLongerThan(test1));
-        
-        TimePeriod test3 = new TimePeriod(321L, PeriodType.getAllType());
-        assertEquals(false, test1.isLongerThan(test3));
-        assertEquals(true, test3.isLongerThan(test1));
-        assertEquals(false, test3.isLongerThan(test2));
         
         assertEquals(true, test2.isLongerThan(new MockDuration(123L)));
         assertEquals(false, test1.isLongerThan(new MockDuration(123L)));
         assertEquals(true, test1.isLongerThan(null));
-        assertEquals(false, new TimePeriod(0L).isLongerThan(null));
+        assertEquals(false, new Duration(0L).isLongerThan(null));
     }
     
     //-----------------------------------------------------------------------
     public void testSerialization() throws Exception {
-        TimePeriod test = new TimePeriod(123L);
+        Duration test = new Duration(123L);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -318,462 +272,135 @@ public class TestDuration_Basics extends TestCase {
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
         ObjectInputStream ois = new ObjectInputStream(bais);
-        TimePeriod result = (TimePeriod) ois.readObject();
+        Duration result = (Duration) ois.readObject();
         ois.close();
         
         assertEquals(test, result);
     }
 
     //-----------------------------------------------------------------------
-    public void testAddTo1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 1);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, -2);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo3() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        long added = test.addTo(TEST_TIME_NOW, -2);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo4() {
-        long expected = TEST_TIME_NOW;
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 0);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo5() {
-        long expected = TEST_TIME_NOW + 100L;
-        TimePeriod test = new TimePeriod(100L);
-        long added = test.addTo(TEST_TIME_NOW, 1);
-        assertEquals(expected, added);
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddToWithChronology1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 1, ISOChronology.getInstance());
-        assertEquals(expected, added);
-    }
-    
-    public void testAddToWithChronology2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        long added = test.addTo(TEST_TIME_NOW, -2, ISOChronology.getInstance());  // local specified so use it
-        assertEquals(expected, added);
-    }
-    
-    public void testAddToWithChronology3() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        long added = test.addTo(TEST_TIME_NOW, -2, null);  // no chrono specified so drop back to duration (UTC)
-        assertEquals(expected, added);
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddToRI1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(new Instant(), 1);  // Instant has no time zone, uses duration's zone (local)
-        assertEquals(expected, added.getMillis());
-    }
-    
-    public void testAddToRI2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        Instant added = test.addTo(new Instant(), -2);  // Instant has no time zone, uses duration's zone (UTC)
-        assertEquals(expected, added.getMillis());
-    }
-    
-    public void testAddToRI3() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        Instant added = test.addTo(new DateTime(), -2);  // DateTime has local time zone
-        assertEquals(expected, added.getMillis());
-    }
-    
-    public void testAddToRI4() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        Instant added = test.addTo(null, -2);  // null has no time zone, uses duration's zone (UTC)
-        assertEquals(expected, added.getMillis());
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddIntoRWI1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        MutableDateTime mdt = new MutableDateTime();
-        test.addInto(mdt, 1);
-        assertEquals(expected, mdt.getMillis());
-    }
-    
-    public void testAddIntoRWI2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        MutableDateTime mdt = new MutableDateTime();
-        test.addInto(mdt, -2);  // MutableDateTime has a chronology, use it
-        assertEquals(expected, mdt.getMillis());
-    }
-    
-    public void testAddIntoRWI3() {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        try {
-            test.addInto(null, 1);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
-    
-    //-----------------------------------------------------------------------
     public void testToString() {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        long length = (365 + 2 * 30 + 3 * 7 + 4) * DateTimeConstants.MILLIS_PER_DAY +
+            5 * DateTimeConstants.MILLIS_PER_HOUR +
+            6 * DateTimeConstants.MILLIS_PER_MINUTE +
+            7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        Duration test = new Duration(length);
         assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString());
         
-        test = new TimePeriod(0, 0, 0, 0, 0, 0, 0, 0);
+        test = new Duration(0L);
         assertEquals("PT0S", test.toString());
         
-        test = new TimePeriod(12345L);
+        test = new Duration(12345L);
         assertEquals("PT12.345S", test.toString());
     }
 
     //-----------------------------------------------------------------------
-    public void testToTimePeriod() {
-        TimePeriod test = new TimePeriod(123L);
-        TimePeriod result = test.toTimePeriod();
+    public void testToDuration() {
+        Duration test = new Duration(123L);
+        Duration result = test.toDuration();
         assertSame(test, result);
     }
 
-    public void testToMutableTimePeriod() {
-        TimePeriod test = new TimePeriod(123L);
-        MutablePeriod result = test.toMutableTimePeriod();
-        assertEquals(test, result);
-    }
-
     //-----------------------------------------------------------------------
-    public void testToDurationMillis() {
-        TimePeriod test = new TimePeriod(123L);
-        assertEquals(123L, test.toDurationMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testWithPeriodTypeUsingTotalMillis1() {
-        TimePeriod test = new TimePeriod(123L);
-        TimePeriod result = test.withPeriodTypeUsingTotalMillis(PeriodType.getAllType());
-        assertSame(test, result);
-    }
-
-    public void testWithPeriodTypeUsingTotalMillis2() {
-        TimePeriod test = new TimePeriod(3123L);
-        TimePeriod result = test.withPeriodTypeUsingTotalMillis(PeriodType.getDayHourType());
-        assertEquals(3, result.getSeconds());
-        assertEquals(123, result.getMillis());
-        assertEquals(3123L, result.getTotalMillis());
-        assertEquals(PeriodType.getDayHourType(), result.getPeriodType());
-    }
-
-    public void testWithPeriodTypeUsingTotalMillis3() {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType());
-        try {
-            test.withPeriodTypeUsingTotalMillis(PeriodType.getDayHourType());
-            fail();
-        } catch (IllegalStateException ex) {}
-    }
-
-    public void testWithPeriodTypeUsingTotalMillis4() {
-        TimePeriod test = new TimePeriod(3123L);
-        TimePeriod result = test.withPeriodTypeUsingTotalMillis(null);
-        assertEquals(3, result.getSeconds());
-        assertEquals(123, result.getMillis());
-        assertEquals(3123L, result.getTotalMillis());
+    public void testToPeriod1() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        Period result = test.toPeriod();
         assertEquals(PeriodType.getAllType(), result.getPeriodType());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testWithPeriodTypeUsingFields1() {
-        TimePeriod test = new TimePeriod(123L);
-        TimePeriod result = test.withPeriodTypeUsingFields(PeriodType.getAllType());
-        assertSame(test, result);
-    }
-
-    public void testWithPeriodTypeUsingFields2() {
-        TimePeriod test = new TimePeriod(3123L);
-        TimePeriod result = test.withPeriodTypeUsingFields(PeriodType.getDayHourType());
-        assertEquals(3, result.getSeconds());
-        assertEquals(123, result.getMillis());
-        assertEquals(3123L, result.getTotalMillis());
-        assertEquals(PeriodType.getDayHourType(), result.getPeriodType());
-    }
-
-    public void testWithPeriodTypeUsingFields3() {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType());
-        try {
-            test.withPeriodTypeUsingFields(PeriodType.getDayHourType());
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
-
-    public void testWithPeriodTypeUsingFields4() {
-        TimePeriod test = new TimePeriod(3123L);
-        TimePeriod result = test.withPeriodTypeUsingFields(null);
-        assertEquals(3, result.getSeconds());
-        assertEquals(123, result.getMillis());
-        assertEquals(3123L, result.getTotalMillis());
-        assertEquals(PeriodType.getAllType(), result.getPeriodType());
-    }
-
-    public void testWithPeriodTypeUsingFields5() {
-        TimePeriod test = new TimePeriod(1, 2, 0, 4, 5, 6, 7, 8, PeriodType.getAllType());
-        TimePeriod result = test.withPeriodTypeUsingFields(PeriodType.getYearMonthType());
-        assertEquals(PeriodType.getYearMonthType(), result.getPeriodType());
-        assertEquals(1, result.getYears());
-        assertEquals(2, result.getMonths());
+        // only time fields are precise in AllType
+        assertEquals(0, result.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
+        assertEquals(0, result.getMonths());
         assertEquals(0, result.getWeeks());
-        assertEquals(4, result.getDays());
-        assertEquals(5, result.getHours());
+        assertEquals(0, result.getDays());
+        assertEquals((450 * 24) + 5, result.getHours());
         assertEquals(6, result.getMinutes());
         assertEquals(7, result.getSeconds());
         assertEquals(8, result.getMillis());
+        assertEquals(true, result.isPrecise());
+        assertEquals(length, result.toDurationMillis());
     }
 
-    //-----------------------------------------------------------------------
-    public void testWithFieldsNormalized1() {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 61, 8, PeriodType.getPreciseAllType());
-        TimePeriod result = test.withFieldsNormalized();
+    public void testToPeriod_PeriodType1() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        Period result = test.toPeriod(null);
+        assertEquals(PeriodType.getAllType(), result.getPeriodType());
+        // only time fields are precise in AllType
+        assertEquals(0, result.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
+        assertEquals(0, result.getMonths());
+        assertEquals(0, result.getWeeks());
+        assertEquals(0, result.getDays());
+        assertEquals((450 * 24) + 5, result.getHours());
+        assertEquals(6, result.getMinutes());
+        assertEquals(7, result.getSeconds());
+        assertEquals(8, result.getMillis());
+        assertEquals(true, result.isPrecise());
+        assertEquals(length, result.toDurationMillis());
+    }
+
+    public void testToPeriod_PeriodType2() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        Period result = test.toPeriod(PeriodType.getPreciseAllType());
+        assertEquals(PeriodType.getPreciseAllType(), result.getPeriodType());
+        // only time fields are precise in AllType
         assertEquals(1, result.getYears());
         assertEquals(2, result.getMonths());
         assertEquals(3, result.getWeeks());
         assertEquals(4, result.getDays());
         assertEquals(5, result.getHours());
-        assertEquals(7, result.getMinutes());
-        assertEquals(1, result.getSeconds());
+        assertEquals(6, result.getMinutes());
+        assertEquals(7, result.getSeconds());
         assertEquals(8, result.getMillis());
+        assertEquals(true, result.isPrecise());
+        assertEquals(length, result.toDurationMillis());
     }
 
-    public void testWithFieldsNormalized2() {
-        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 61, 8, PeriodType.getAllType());
-        try {
-            test.withFieldsNormalized();
-            fail();
-        } catch (IllegalStateException ex) {}
+    //-----------------------------------------------------------------------
+    public void testWithMillis1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withMillis(123L);
+        assertSame(test, result);
+    }
+
+    public void testWithMillis2() {
+        Duration test = new Duration(123L);
+        Duration result = test.withMillis(1234567890L);
+        assertEquals(1234567890L, result.getMillis());
     }
 
     //-----------------------------------------------------------------------
     public void testImmutable() {
         MockChangeDuration test = new MockChangeDuration(111L);
         test.testSetDuration_RD();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetDuration_ints();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetTotalMillis_1();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetTotalMillis_2();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetYears();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetMonths();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetWeeks();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetDays();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetHours();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetMinutes();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetSeconds();
-        assertEquals(111L, test.getTotalMillis());
+        assertEquals(111L, test.getMillis());
         
         test = new MockChangeDuration(111L);
         test.testSetMillis();
-        assertEquals(111L, test.getTotalMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testNormalize();
-        assertEquals(111L, test.getTotalMillis());
+        assertEquals(111L, test.getMillis());
     }
     
-    static class MockChangeDuration extends TimePeriod {
+    static class MockChangeDuration extends Duration {
         MockChangeDuration(long duration) {
             super(duration);
         }
         public void testSetDuration_RD() {
             setDuration(null);
         }
-        public void testSetDuration_ints() {
-            setDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        }
-        public void testSetTotalMillis_1() {
-            setTotalMillis(123L);
-        }
-        public void testSetTotalMillis_2() {
-            setTotalMillis(123L, 321L);
-        }
-        public void testSetYears() {
-            setYears(1);
-        }
-        public void testSetMonths() {
-            setMonths(1);
-        }
-        public void testSetWeeks() {
-            setWeeks(1);
-        }
-        public void testSetDays() {
-            setDays(1);
-        }
-        public void testSetHours() {
-            setHours(1);
-        }
-        public void testSetMinutes() {
-            setMinutes(1);
-        }
-        public void testSetSeconds() {
-            setSeconds(1);
-        }
         public void testSetMillis() {
-            setMillis(1);
-        }
-        public void testNormalize() {
-            super.normalize();
+            setMillis(0L);
         }
     }
 

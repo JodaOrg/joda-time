@@ -582,6 +582,9 @@ public abstract class AbstractPeriod
      * Gets the value as a String in the ISO8601 duration format.
      * <p>
      * For example, "P6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
+     * <p>
+     * For more control over the output, see
+     * {@link org.joda.time.format.PeriodFormatterBuilder PeriodFormatterBuilder}.
      *
      * @return the value as an ISO8601 string
      */

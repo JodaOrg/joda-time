@@ -80,9 +80,8 @@ public abstract class AbstractInterval implements ReadableInterval {
     /** The end of the period */
     private long iEndMillis;
 
-    /** The duration, which may be lazily set */
-    private Duration iDuration;
-
+    /** Cache the duration */
+    private transient Duration iDuration;
     /** Cache the start instant */
     private transient Instant iStartInstant;
     /** Cache the end instant */
@@ -91,7 +90,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Constructs a time interval as a copy of another.
      * 
-     * @param interval the time interval to convert
+     * @param interval  the time interval to convert
      * @throws IllegalArgumentException if the interval is null or invalid
      */
     public AbstractInterval(Object interval) {

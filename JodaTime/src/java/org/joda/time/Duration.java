@@ -125,14 +125,14 @@ public class Duration
     /**
      * Creates a new Duration instance with a different milisecond length.
      * 
-     * @param length  the new length
+     * @param duration  the new length of the duration
      * @return the new duration instance
      */
-    public Duration withMillis(long length) {
-        if (length == getMillis()) {
+    public Duration withMillis(long duration) {
+        if (duration == getMillis()) {
             return this;
         }
-        return new Duration(length);
+        return new Duration(duration);
     }
 
     //-----------------------------------------------------------------------

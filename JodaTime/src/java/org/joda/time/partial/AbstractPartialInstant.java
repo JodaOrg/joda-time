@@ -197,6 +197,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     public AbstractPartialInstant(Object instant, Chronology chronology) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        chronology = converter.getChronology(instant, chronology);
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }

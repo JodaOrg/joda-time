@@ -335,7 +335,7 @@ public class MutableDateTime extends AbstractDateTime
      * Gets the field used for rounding this instant, returning null if rounding
      * is not enabled.
      * 
-     * @param the rounding field
+     * @return the rounding field
      */
     public DateTimeField getRoundingField() {
         return iRoundingField;

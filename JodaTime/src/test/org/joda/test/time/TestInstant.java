@@ -60,6 +60,7 @@ import java.util.Date;
 
 import junit.framework.TestSuite;
 
+import org.joda.test.time.*;
 import org.joda.time.AbstractInstant;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DateTime;

@@ -51,48 +51,50 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
+
+import org.joda.time.DurationField;
 
 /**
  * 
  * @author Brian S O'Neill
  */
-class TestJulianMonthOfYearField extends TestGJMonthOfYearField {
-    public TestJulianMonthOfYearField(TestJulianChronology chrono) {
-        super(chrono);
+class TestGJDayOfYearField extends TestGJDateTimeField {
+    public TestGJDayOfYearField(TestGJChronology chrono) {
+        super("dayOfYear", "days", chrono.MILLIS_PER_DAY, chrono);
     }
 
     public int get(long millis) {
-        return iChronology.gjFromMillis(millis)[1];
+        int year = iChronology.gjYearFromMillis(millis);
+        return (int)(iChronology.fixedFromMillis(millis)
+                     - iChronology.fixedFromGJ(year, 1, 1)) + 1;
+    }
+
+    public long set(long millis, int value) {
+        return add(millis, (long) value - get(millis));
     }
 
     public long add(long millis, long value) {
-        int year = iChronology.year().get(millis);
-        int newYear = year + (int)iChronology.div(value, 12);
-        if (year < 0) {
-            if (newYear >= 0) {
-                newYear++;
-            }
-        } else {
-            if (newYear <= 0) {
-                newYear--;
-            }
-        }
-        int newMonth = get(millis) + (int)iChronology.mod(value, 12);
-        if (newMonth > 12) {
-            if (newYear == -1) {
-                newYear = 1;
-            } else {
-                newYear++;
-            }
-            newMonth -= 12;
-        }
-        int newDay = iChronology.dayOfMonth().get(millis);
-        millis = iChronology.getTimeOnlyMillis(millis) 
-            + iChronology.millisFromGJ(newYear, newMonth, newDay);
-        while (get(millis) != newMonth) {
-            millis = iChronology.dayOfYear().add(millis, -1);
-        }
-        return millis;
+        return millis + value * iChronology.MILLIS_PER_DAY;
+    }
+
+    public DurationField getRangeDurationField() {
+        return iChronology.years();
+    }
+
+    public int getMinimumValue() {
+        return 1;
+    }
+
+    public int getMaximumValue() {
+        return 366;
+    }
+
+    public int getMaximumValue(long millis) {
+        return iChronology.year().isLeap(millis) ? 366 : 365;
+    }
+
+    public long roundFloor(long millis) {
+        return iChronology.getDateOnlyMillis(millis);
     }
 }

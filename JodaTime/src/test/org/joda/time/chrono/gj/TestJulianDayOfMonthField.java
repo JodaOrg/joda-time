@@ -51,42 +51,18 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time;
-
-import org.joda.time.AbstractDateTime;
-import org.joda.time.AbstractInstant;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadableDateTime;
+package org.joda.time.chrono.gj;
 
 /**
- * This class displays what the ClassLoader is up to.
- * Run using JVM -verbose:class.
- *
- * @author Stephen Colebourne
+ * 
+ * @author Brian S O'Neill
  */
-public class ClassLoadTest {
-
-    // run using JVM -verbose:class
-    public static void main(String[] args) {
-        System.out.println("-----------------------------------------------");
-        System.out.println("-----------AbstractInstant---------------------");
-        Class cls = AbstractInstant.class;
-        System.out.println("-----------ReadableDateTime--------------------");
-        cls = ReadableDateTime.class;
-        System.out.println("-----------AbstractDateTime--------------------");
-        cls = AbstractDateTime.class;
-        System.out.println("-----------DateTime----------------------------");
-        cls = DateTime.class;
-        System.out.println("-----------DateTimeZone------------------------");
-        cls = DateTimeZone.class;
-        System.out.println("-----------new DateTime()----------------------");
-        DateTime dt = new DateTime();
-        System.out.println("-----------new DateTime(ReadableInstant)-------");
-        dt = new DateTime(dt);
-        System.out.println("-----------new DateTime(Long)------------------");
-        dt = new DateTime(new Long(0));
-        System.out.println("-----------------------------------------------");
+class TestJulianDayOfMonthField extends TestGJDayOfMonthField {
+    public TestJulianDayOfMonthField(TestJulianChronology chrono) {
+        super(chrono);
     }
-    
+
+    public long getRangeMillis() {
+        return iChronology.millisPerMonth();
+    }
 }

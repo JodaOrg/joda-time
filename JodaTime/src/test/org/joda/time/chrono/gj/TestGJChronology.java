@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;

@@ -51,50 +51,46 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
 
-import org.joda.time.DurationField;
+import org.joda.time.field.FieldUtils;
 
 /**
  * 
  * @author Brian S O'Neill
  */
-class TestGJDayOfYearField extends TestGJDateTimeField {
-    public TestGJDayOfYearField(TestGJChronology chrono) {
-        super("dayOfYear", "days", chrono.MILLIS_PER_DAY, chrono);
+class TestJulianYearField extends TestGJYearField {
+    public TestJulianYearField(TestJulianChronology chrono) {
+        super(chrono);
     }
 
-    public int get(long millis) {
-        int year = iChronology.gjYearFromMillis(millis);
-        return (int)(iChronology.fixedFromMillis(millis)
-                     - iChronology.fixedFromGJ(year, 1, 1)) + 1;
-    }
-
-    public long set(long millis, int value) {
-        return add(millis, (long) value - get(millis));
+    public long addWrapped(long millis, int value) {
+        int year = get(millis);
+        int wrapped = FieldUtils.getWrappedValue
+            (year, value, getMinimumValue(), getMaximumValue());
+        return add(millis, (long) wrapped - year);
     }
 
     public long add(long millis, long value) {
-        return millis + value * iChronology.MILLIS_PER_DAY;
-    }
-
-    public DurationField getRangeDurationField() {
-        return iChronology.years();
+        int year = get(millis);
+        int newYear = year + FieldUtils.safeToInt(value);
+        if (year < 0) {
+            if (newYear >= 0) {
+                newYear++;
+            }
+        } else {
+            if (newYear <= 0) {
+                newYear--;
+            }
+        }
+        return set(millis, newYear);
     }
 
     public int getMinimumValue() {
-        return 1;
+        return -100000000;
     }
 
     public int getMaximumValue() {
-        return 366;
-    }
-
-    public int getMaximumValue(long millis) {
-        return iChronology.year().isLeap(millis) ? 366 : 365;
-    }
-
-    public long roundFloor(long millis) {
-        return iChronology.getDateOnlyMillis(millis);
+        return 100000000;
     }
 }

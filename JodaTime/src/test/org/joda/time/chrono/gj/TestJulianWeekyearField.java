@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
 
 import org.joda.time.field.FieldUtils;
 
@@ -59,31 +59,31 @@ import org.joda.time.field.FieldUtils;
  * 
  * @author Brian S O'Neill
  */
-class TestJulianYearField extends TestGJYearField {
-    public TestJulianYearField(TestJulianChronology chrono) {
+class TestJulianWeekyearField extends TestGJWeekyearField {
+    public TestJulianWeekyearField(TestJulianChronology chrono) {
         super(chrono);
     }
 
     public long addWrapped(long millis, int value) {
-        int year = get(millis);
+        int weekyear = get(millis);
         int wrapped = FieldUtils.getWrappedValue
-            (year, value, getMinimumValue(), getMaximumValue());
-        return add(millis, (long) wrapped - year);
+            (weekyear, value, getMinimumValue(), getMaximumValue());
+        return add(millis, (long) wrapped - weekyear);
     }
 
     public long add(long millis, long value) {
-        int year = get(millis);
-        int newYear = year + FieldUtils.safeToInt(value);
-        if (year < 0) {
-            if (newYear >= 0) {
-                newYear++;
+        int weekyear = get(millis);
+        int newWeekyear = weekyear + FieldUtils.safeToInt(value);
+        if (weekyear < 0) {
+            if (newWeekyear >= 0) {
+                newWeekyear++;
             }
         } else {
-            if (newYear <= 0) {
-                newYear--;
+            if (newWeekyear <= 0) {
+                newWeekyear--;
             }
         }
-        return set(millis, newYear);
+        return set(millis, newWeekyear);
     }
 
     public int getMinimumValue() {

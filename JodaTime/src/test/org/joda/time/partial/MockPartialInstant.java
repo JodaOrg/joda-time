@@ -51,46 +51,52 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.partial;
 
-import org.joda.time.field.FieldUtils;
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeZone;
+import org.joda.time.ReadableInstant;
+import org.joda.time.chrono.ISOChronology;
 
 /**
- * 
- * @author Brian S O'Neill
+ * A basic mock testing class for a PartialInstant that doesn't extend AbstractPartialInstant.
+ *
+ * @author Stephen Colebourne
  */
-class TestJulianWeekyearField extends TestGJWeekyearField {
-    public TestJulianWeekyearField(TestJulianChronology chrono) {
-        super(chrono);
+public class MockPartialInstant implements PartialInstant {
+    
+    public static final PartialInstant EMPTY_INSTANCE = new MockPartialInstant();
+    
+    public Chronology getChronology() {
+        return ISOChronology.getInstance();
     }
-
-    public long addWrapped(long millis, int value) {
-        int weekyear = get(millis);
-        int wrapped = FieldUtils.getWrappedValue
-            (weekyear, value, getMinimumValue(), getMaximumValue());
-        return add(millis, (long) wrapped - weekyear);
+    public int getFieldSize() {
+        return 0;
     }
-
-    public long add(long millis, long value) {
-        int weekyear = get(millis);
-        int newWeekyear = weekyear + FieldUtils.safeToInt(value);
-        if (weekyear < 0) {
-            if (newWeekyear >= 0) {
-                newWeekyear++;
-            }
-        } else {
-            if (newWeekyear <= 0) {
-                newWeekyear--;
-            }
-        }
-        return set(millis, newWeekyear);
+    public DateTimeField getField(int index) {
+        return null;
     }
-
-    public int getMinimumValue() {
-        return -100000000;
+    public int getValue(int index) {
+        return 0;
     }
-
-    public int getMaximumValue() {
-        return 100000000;
+    public int get(DateTimeField field) {
+        return 0;
+    }
+    public boolean isSupported(DateTimeField field) {
+        return false;
+    }
+    public long resolve(long baseMillis, DateTimeZone tz) {
+        return 0L;
+    }
+    public DateTime resolveDateTime(ReadableInstant base) {
+        return null;
+    }
+    public DateTimeField[] getFields() {
+        return new DateTimeField[0];
+    }
+    public int[] getValues() {
+        return new int[0];
     }
 }

@@ -51,11 +51,12 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time;
+package org.joda.time;
 
 import junit.framework.Assert;
 import junit.framework.TestSuite;
 
+import org.joda.test.time.*;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeParser;

@@ -51,14 +51,15 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
 
 import java.util.Random;
+
+import junit.framework.TestCase;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -84,7 +85,7 @@ import org.joda.time.chrono.JulianChronology;
  *
  * @author Brian S O'Neill
  */
-public class Test {
+public class MainTest extends TestCase {
     public static final int GREGORIAN_MODE = 0;
     public static final int JULIAN_MODE = 1;
 
@@ -122,17 +123,44 @@ public class Test {
             }
         }
 
-        test(iterations, mode, seed);
+        new MainTest(iterations, mode, seed).testChronology();
     }
+
+    //-----------------------------------------------------------------------
+    private final int iIterations;
+    private final int iMode;
+    private final long iSeed;
+    private final Chronology iTest;
+    private final Chronology iActual;
 
     /**
      * @param iterations number of test iterations to perform
-     * @param mode GREGORIAN_MODE or JULIAN_MODE
+     * @param mode GREGORIAN_MODE or JULIAN_MODE,0=Gregorian, 1=Julian
      * @param seed seed for random number generator
      */
-    public static void test(final int iterations, int mode, long seed) {
-        String modeStr;
+    public MainTest(int iterations, int mode, long seed) {
+        super("testChronology");
+        iIterations = iterations;
+        iMode = mode;
+        iSeed = seed;
         if (mode == GREGORIAN_MODE) {
+            iTest = new TestGregorianChronology();
+            iActual = GregorianChronology.getInstanceUTC();
+        } else {
+            iTest = new TestJulianChronology();
+            iActual = JulianChronology.getInstanceUTC();
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Main junit test
+     */
+    public void testChronology() {
+        int iterations = iIterations;
+        long seed = iSeed;
+        String modeStr;
+        if (iMode == GREGORIAN_MODE) {
             modeStr = "Gregorian";
         } else {
             modeStr = "Julian";
@@ -140,7 +168,6 @@ public class Test {
 
         System.out.println("Testing " + modeStr + " chronology over " + iterations + " iterations");
 
-        Test t = new Test(mode);
         Random rnd = new Random(seed);
         long updateMillis = System.currentTimeMillis() + UPDATE_INTERVAL;
 
@@ -160,58 +187,21 @@ public class Test {
             long millis2 = millis + rnd.nextLong() % _1000_YEARS - _500_YEARS;
 
             try {
-                t.testFields(millis, value, millis2);
+                testFields(millis, value, millis2);
             } catch (RuntimeException e) {
                 System.out.println("Failure index: " + i);
                 System.out.println("Test millis: " + millis);
                 System.out.println("Test value: " + value);
                 System.out.println("Test millis2: " + millis2);
-                throw e;
+                fail(e.getMessage());
             }
         }
 
         System.out.println("100% complete (i=" + iterations + ")");
     }
 
-    private static long randomMillis(Random rnd) {
-        long millis = rnd.nextLong();
-        if (millis >= 0) {
-            millis = millis % MAX_MILLIS;
-        } else {
-            millis = millis % -MIN_MILLIS;
-        }
-        return millis;
-    }
-
-    private static void dump(Chronology chrono, long millis) {
-        System.out.println("year:           " + chrono.year().get(millis));
-        System.out.println("monthOfYear:    " + chrono.monthOfYear().get(millis));
-        System.out.println("dayOfMonth:     " + chrono.dayOfMonth().get(millis));
-        System.out.println("weekyear:       " + chrono.weekyear().get(millis));
-        System.out.println("weekOfWeekyear: " + chrono.weekOfWeekyear().get(millis));
-        System.out.println("dayOfWeek:      " + chrono.dayOfWeek().get(millis));
-        System.out.println("dayOfYear:      " + chrono.dayOfYear().get(millis));
-    }
-
-    private final int iMode;
-    private final Chronology iTest;
-    private final Chronology iActual;
-
-    /**
-     * @param mode 0=Gregorian, 1=Julian
-     */
-    public Test(int mode) {
-        iMode = mode;
-        if (mode == GREGORIAN_MODE) {
-            iTest = new TestGregorianChronology();
-            iActual = GregorianChronology.getInstanceUTC();
-        } else {
-            iTest = new TestJulianChronology();
-            iActual = JulianChronology.getInstanceUTC();
-        }
-    }
-
-    public void testFields(long millis, int value, long millis2) {
+    //-----------------------------------------------------------------------
+    private void testFields(long millis, int value, long millis2) {
         testField(iTest.year(), iActual.year(), millis, value, millis2);
         testField(iTest.monthOfYear(), iActual.monthOfYear(), millis, value, millis2);
         testField(iTest.dayOfMonth(), iActual.dayOfMonth(), millis, value, millis2);
@@ -467,4 +457,26 @@ public class Test {
             chrono.weekyear().get(millis) + "-W" + chrono.weekOfWeekyear().get(millis) +
             "-" + chrono.dayOfWeek().get(millis);
     }
+
+    //-----------------------------------------------------------------------
+    private static long randomMillis(Random rnd) {
+        long millis = rnd.nextLong();
+        if (millis >= 0) {
+            millis = millis % MAX_MILLIS;
+        } else {
+            millis = millis % -MIN_MILLIS;
+        }
+        return millis;
+    }
+
+    private static void dump(Chronology chrono, long millis) {
+        System.out.println("year:           " + chrono.year().get(millis));
+        System.out.println("monthOfYear:    " + chrono.monthOfYear().get(millis));
+        System.out.println("dayOfMonth:     " + chrono.dayOfMonth().get(millis));
+        System.out.println("weekyear:       " + chrono.weekyear().get(millis));
+        System.out.println("weekOfWeekyear: " + chrono.weekOfWeekyear().get(millis));
+        System.out.println("dayOfWeek:      " + chrono.dayOfWeek().get(millis));
+        System.out.println("dayOfYear:      " + chrono.dayOfYear().get(millis));
+    }
+
 }

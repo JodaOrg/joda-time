@@ -51,18 +51,56 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
+
+import org.joda.time.DurationField;
 
 /**
  * 
  * @author Brian S O'Neill
  */
-class TestJulianDayOfMonthField extends TestGJDayOfMonthField {
-    public TestJulianDayOfMonthField(TestJulianChronology chrono) {
-        super(chrono);
+class TestGJWeekOfWeekyearField extends TestGJDateTimeField {
+    public TestGJWeekOfWeekyearField(TestGJChronology chrono) {
+        super("weekOfWeekyear", "weeks",
+              (long)(chrono.MILLIS_PER_DAY * 7), chrono);
     }
 
-    public long getRangeMillis() {
-        return iChronology.millisPerMonth();
+    public int get(long millis) {
+        return iChronology.isoFromMillis(millis)[1];
+    }
+
+    public long set(long millis, int value) {
+        int[] wwd = iChronology.isoFromMillis(millis);
+        return iChronology.getTimeOnlyMillis(millis)
+            + iChronology.millisFromISO(wwd[0], value, wwd[2]);
+    }
+
+    public long add(long millis, long value) {
+        return iChronology.dayOfYear().add(millis, value * 7);
+    }
+
+    public DurationField getRangeDurationField() {
+        return iChronology.weeks();
+    }
+
+    public int getMinimumValue() {
+        return 1;
+    }
+
+    public int getMaximumValue() {
+        return 53;
+    }
+
+    public int getMaximumValue(long millis) {
+        // Move millis to end of weekyear.
+        millis = iChronology.weekyear().roundFloor(millis);
+        millis = iChronology.weekyear().add(millis, 1);
+        millis = iChronology.dayOfYear().add(millis, -1);
+        return get(millis);
+    }
+
+    public long roundFloor(long millis) {
+        int[] wwd = iChronology.isoFromMillis(millis);
+        return iChronology.millisFromISO(wwd[0], wwd[1], 1);
     }
 }

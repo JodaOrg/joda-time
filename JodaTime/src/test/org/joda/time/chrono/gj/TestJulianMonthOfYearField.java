@@ -51,31 +51,48 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
-
-import org.joda.time.field.ImpreciseDateTimeField;
+package org.joda.time.chrono.gj;
 
 /**
  * 
  * @author Brian S O'Neill
  */
-abstract class TestGJDateTimeField extends ImpreciseDateTimeField {
-    protected final TestGJChronology iChronology;
-
-    public TestGJDateTimeField(String name, String duratioName,
-                               long unitMillis, TestGJChronology chrono) {
-        super(name, duratioName, unitMillis);
-        iChronology = chrono;
+class TestJulianMonthOfYearField extends TestGJMonthOfYearField {
+    public TestJulianMonthOfYearField(TestJulianChronology chrono) {
+        super(chrono);
     }
 
-    public boolean isLenient() {
-        return false;
+    public int get(long millis) {
+        return iChronology.gjFromMillis(millis)[1];
     }
 
-    public long add(long instant, int value) {
-        return add(instant, (long)value);
+    public long add(long millis, long value) {
+        int year = iChronology.year().get(millis);
+        int newYear = year + (int)iChronology.div(value, 12);
+        if (year < 0) {
+            if (newYear >= 0) {
+                newYear++;
+            }
+        } else {
+            if (newYear <= 0) {
+                newYear--;
+            }
+        }
+        int newMonth = get(millis) + (int)iChronology.mod(value, 12);
+        if (newMonth > 12) {
+            if (newYear == -1) {
+                newYear = 1;
+            } else {
+                newYear++;
+            }
+            newMonth -= 12;
+        }
+        int newDay = iChronology.dayOfMonth().get(millis);
+        millis = iChronology.getTimeOnlyMillis(millis) 
+            + iChronology.millisFromGJ(newYear, newMonth, newDay);
+        while (get(millis) != newMonth) {
+            millis = iChronology.dayOfYear().add(millis, -1);
+        }
+        return millis;
     }
-
-    public abstract long add(long instant, long value);
-
 }

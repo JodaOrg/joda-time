@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time ;
+package org.joda.test.time;
 //
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

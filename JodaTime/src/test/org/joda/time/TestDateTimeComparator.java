@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time;
+package org.joda.time;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -62,6 +62,7 @@ import java.util.List;
 
 import junit.framework.TestSuite;
 
+import org.joda.test.time.*;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;

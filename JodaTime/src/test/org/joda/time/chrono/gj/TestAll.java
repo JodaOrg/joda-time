@@ -51,54 +51,37 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
 
-import org.joda.time.DurationField;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
+ * Entry point for all tests in this package.
  * 
- * @author Brian S O'Neill
+ * @version $Revision$ $Date$
+ * 
+ * @author Stephen Colebourne
  */
-class TestGJDayOfMonthField extends TestGJDateTimeField {
-    public TestGJDayOfMonthField(TestGJChronology chrono) {
-        super("dayOfMonth", "days", chrono.MILLIS_PER_DAY, chrono);
+public class TestAll extends TestCase {
+
+    public TestAll(String testName) {
+        super(testName);
     }
 
-    public int get(long millis) {
-        return iChronology.gjFromMillis(millis)[2];
+    public static Test suite() {
+        TestSuite suite = new TestSuite();
+        suite.addTest(new MainTest(200, 0, 1345435247779935L));
+        suite.addTest(new MainTest(200, 1, 1345435247779935L));
+        return suite;
     }
 
-    public long set(long millis, int value) {
-        int[] ymd = iChronology.gjFromMillis(millis);
-        return iChronology.getTimeOnlyMillis(millis)
-            + iChronology.millisFromGJ(ymd[0], ymd[1], value);
+    public static void main(String args[]) {
+        String[] testCaseName = {
+            TestAll.class.getName()
+        };
+        junit.textui.TestRunner.main(testCaseName);
     }
 
-    public long add(long millis, long value) {
-        return millis + value * iChronology.MILLIS_PER_DAY;
-    }
-
-    public DurationField getRangeDurationField() {
-        return iChronology.months();
-    }
-
-    public int getMinimumValue() {
-        return 1;
-    }
-
-    public int getMaximumValue() {
-        return 31;
-    }
-
-    public int getMaximumValue(long millis) {
-        int[] lengths = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-        if (iChronology.year().isLeap(millis)) {
-            lengths[2] = 29;
-        }
-        return lengths[iChronology.monthOfYear().get(millis)];
-    }
-
-    public long roundFloor(long millis) {
-        return iChronology.getDateOnlyMillis(millis);
-    }
 }

@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time.chrono.gj;
 
 import org.joda.time.DurationField;
 
@@ -59,28 +59,60 @@ import org.joda.time.DurationField;
  * 
  * @author Brian S O'Neill
  */
-class TestGJWeekOfWeekyearField extends TestGJDateTimeField {
-    public TestGJWeekOfWeekyearField(TestGJChronology chrono) {
-        super("weekOfWeekyear", "weeks",
-              (long)(chrono.MILLIS_PER_DAY * 7), chrono);
+class TestGJMonthOfYearField extends TestGJDateTimeField {
+    public TestGJMonthOfYearField(TestGJChronology chrono) {
+        super("monthOfYear", "months", chrono.millisPerMonth(), chrono);
     }
 
     public int get(long millis) {
-        return iChronology.isoFromMillis(millis)[1];
+        return iChronology.gjFromMillis(millis)[1];
     }
 
     public long set(long millis, int value) {
-        int[] wwd = iChronology.isoFromMillis(millis);
-        return iChronology.getTimeOnlyMillis(millis)
-            + iChronology.millisFromISO(wwd[0], value, wwd[2]);
+        long timeOnlyMillis = iChronology.getTimeOnlyMillis(millis);
+        int[] ymd = iChronology.gjFromMillis(millis);
+        // First set to start of month...
+        millis = iChronology.millisFromGJ(ymd[0], value, 1);
+        // ...and use dayOfMonth field to check range.
+        int maxDay = iChronology.dayOfMonth().getMaximumValue(millis);
+        if (ymd[2] > maxDay) {
+            ymd[2] = maxDay;
+        }
+        return timeOnlyMillis + iChronology.millisFromGJ(ymd[0], value, ymd[2]);
     }
 
     public long add(long millis, long value) {
-        return iChronology.dayOfYear().add(millis, value * 7);
+        int newYear = iChronology.year().get(millis)
+            + (int)iChronology.div(value, 12);
+        int newMonth = get(millis) + (int)iChronology.mod(value, 12);
+        if (newMonth > 12) {
+            newYear++;
+            newMonth -= 12;
+        }
+        int newDay = iChronology.dayOfMonth().get(millis);
+        millis = iChronology.getTimeOnlyMillis(millis) 
+            + iChronology.millisFromGJ(newYear, newMonth, newDay);
+        while (get(millis) != newMonth) {
+            millis = iChronology.dayOfYear().add(millis, -1);
+        }
+        return millis;
+    }
+
+    public boolean isLeap(long millis) {
+        int[] ymd = iChronology.gjFromMillis(millis);
+        return ymd[1] == 2 && iChronology.isLeapYear(ymd[0]);
+    }
+
+    public int getLeapAmount(long millis) {
+        return isLeap(millis) ? 1 : 0;
+    }
+
+    public DurationField getLeapDurationField() {
+        return iChronology.days();
     }
 
     public DurationField getRangeDurationField() {
-        return iChronology.weeks();
+        return iChronology.years();
     }
 
     public int getMinimumValue() {
@@ -88,19 +120,11 @@ class TestGJWeekOfWeekyearField extends TestGJDateTimeField {
     }
 
     public int getMaximumValue() {
-        return 53;
-    }
-
-    public int getMaximumValue(long millis) {
-        // Move millis to end of weekyear.
-        millis = iChronology.weekyear().roundFloor(millis);
-        millis = iChronology.weekyear().add(millis, 1);
-        millis = iChronology.dayOfYear().add(millis, -1);
-        return get(millis);
+        return 12;
     }
 
     public long roundFloor(long millis) {
-        int[] wwd = iChronology.isoFromMillis(millis);
-        return iChronology.millisFromISO(wwd[0], wwd[1], 1);
+        int[] ymd = iChronology.gjFromMillis(millis);
+        return iChronology.millisFromGJ(ymd[0], ymd[1], 1);
     }
 }

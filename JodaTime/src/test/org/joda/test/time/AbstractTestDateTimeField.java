@@ -477,19 +477,19 @@ public abstract class AbstractTestDateTimeField extends TestCase {
         for (int i = 0; i < var.length; i++) {
             long millis = var[i];
             long sum = field.add(millis, 1);
-            assertEquals(var, i, 1, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, 1, field.getDifference(sum, millis));
             sum = field.add(millis, -1);
-            assertEquals(var, i, -1, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, -1, field.getDifference(sum, millis));
             sum = field.add(millis, 0);
-            assertEquals(var, i, 0, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, 0, field.getDifference(sum, millis));
             sum = field.add(millis, 2);
-            assertEquals(var, i, 2, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, 2, field.getDifference(sum, millis));
             sum = field.add(millis, 8);
-            assertEquals(var, i, 8, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, 8, field.getDifference(sum, millis));
             sum = field.add(millis, 9);
-            assertEquals(var, i, 9, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, 9, field.getDifference(sum, millis));
             sum = field.add(millis, -13);
-            assertEquals(var, i, -13, (int)field.getDifference(sum, millis));
+            assertEquals(var, i, -13, field.getDifference(sum, millis));
         }
     }
 

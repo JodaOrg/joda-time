@@ -51,66 +51,37 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.test.time.chrono.gj;
+package org.joda.time;
 
-import org.joda.time.DurationField;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
+ * Entry point for all tests in this package.
  * 
- * @author Brian S O'Neill
+ * @version $Revision$ $Date$
+ * 
+ * @author Stephen Colebourne
  */
-class TestGJWeekyearField extends TestGJDateTimeField {
-    public TestGJWeekyearField(TestGJChronology chrono) {
-        super("weekyear", "weekyears", chrono.millisPerYear(), chrono);
+public class TestAll extends TestCase {
+
+    public TestAll(String testName) {
+        super(testName);
     }
 
-    public int get(long millis) {
-        return iChronology.isoFromMillis(millis)[0];
+    public static Test suite() {
+        TestSuite suite = new TestSuite();
+        suite.addTest(TestDateTimeComparator.suite());
+        suite.addTest(TestParseISO.suite());
+        return suite;
     }
 
-    public long set(long millis, int value) {
-        int[] wwd = iChronology.isoFromMillis(millis);
-        millis = iChronology.getTimeOnlyMillis(millis)
-            + iChronology.millisFromISO(value, wwd[1], wwd[2]);
-        if (wwd[1] == 53) {
-            int[] wwd2 = iChronology.isoFromMillis(millis);
-            if (wwd2[0] != value) {
-                // Set year doesn't have 53 weeks, so back off a week.
-                millis = iChronology.dayOfYear().add(millis, -7);
-            }
-        }
-        return millis;
+    public static void main(String args[]) {
+        String[] testCaseName = {
+            TestAll.class.getName()
+        };
+        junit.textui.TestRunner.main(testCaseName);
     }
 
-    public long add(long millis, long value) {
-        return set(millis, (int)(get(millis) + value));
-    }
-
-    public boolean isLeap(long millis) {
-        return iChronology.weekOfWeekyear().getMaximumValue(millis) > 52;
-    }
-
-    public int getLeapAmount(long millis) {
-        return iChronology.weekOfWeekyear().getMaximumValue(millis) - 52;
-    } 
-
-    public DurationField getLeapDurationField() {
-        return iChronology.weeks();
-    }
-
-    public DurationField getRangeDurationField() {
-        return null;
-    }
-
-    public int getMinimumValue() {
-        return -100000000;
-    }
-
-    public int getMaximumValue() {
-        return 100000000;
-    }
-
-    public long roundFloor(long millis) {
-        return iChronology.millisFromISO(get(millis), 1, 1);
-    }
 }

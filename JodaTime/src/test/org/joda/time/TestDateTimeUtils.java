@@ -317,6 +317,18 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetZone_Zone() {
+        assertEquals(PARIS, DateTimeUtils.getZone(PARIS));
+        assertEquals(LONDON, DateTimeUtils.getZone(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetPeriodType_PeriodType() {
+        assertEquals(PeriodType.getDayHourType(), DateTimeUtils.getPeriodType(PeriodType.getDayHourType()));
+        assertEquals(PeriodType.getAllType(), DateTimeUtils.getPeriodType(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testGetDurationMillis_RI() {
         Duration dur = new Duration(123L);
         assertEquals(123L, DateTimeUtils.getDurationMillis(dur));

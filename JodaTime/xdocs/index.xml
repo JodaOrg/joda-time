@@ -23,14 +23,28 @@ duration, format and parsing.
 <p>
 As a flavour of Joda-Time, here's some example code:
 <source>
-DateTime dt = new DateTime();
+public boolean isRentalOverdue(<b>DateTime</b> datetimeRented) {
+  <b>Period</b> rentalPeriod = Period.days(2);
+  return datetimeRented.plus(rentalPeriod).isBeforeNow()
+}
+public boolean isJoinedInLastThreeMonths(<b>DateTime</b> datetimeJoined) {
+  <b>Interval</b> last3Months = new Interval(Period.months(3), new DateTime());
+  return last3Months.contains(datetimeJoined);
+}
+public boolean isBirthdayInLeapYear(<b>YearMonthDay</b> dateOfBirth) {
+  return dateOfBirth.year().isLeap();
+}
+<!--
+<b>DateTime</b> dt = new DateTime();
 int year = dt.getYear();
 String monthText = dt.monthOfYear().getAsText();
 boolean leap = dt.year().isLeap();
-Period oneMonthSixDays = new Period().withMonths(1).withDays(6);
+<b>Period</b> oneMonthSixDays = new Period().withMonths(1).withDays(6);
 DateTime laterDate = dt.plus(oneMonthSixDays);
-String dateAsISO8601Format = dt.toString();
-</source>
+<b>Interval</b> interval = new Interval(dt, laterDate);
+<b>YearMonthDay</b> time = new YearMonthDay(2005, 2, 14);
+<b>TimeOfDay</b> time = new TimeOfDay(12, 30);
+--></source>
 </p>
 </section>
 

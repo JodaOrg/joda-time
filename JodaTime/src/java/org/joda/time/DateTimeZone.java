@@ -143,10 +143,12 @@ public abstract class DateTimeZone implements Serializable {
         try {
             try {
                 cDefault = getInstance(System.getProperty("user.timezone"));
-            } catch (RuntimeException e) {
+            } catch (RuntimeException ignored) {
             }
-            cDefault = getInstance(java.util.TimeZone.getDefault());
-        } catch (IllegalArgumentException e) {
+            if (cDefault == null) {
+                cDefault = getInstance(java.util.TimeZone.getDefault());
+            }
+        } catch (IllegalArgumentException ignored) {
         }
 
         if (cDefault == null) {

@@ -312,7 +312,8 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return true if millisecond and chronology are equal, false if
      *  not or the instant is null or of an incorrect type
      */
-    public boolean equals(Object readableInstant) {
+    public final boolean equals(Object readableInstant) {
+        // must be final to fulfil ReadableInstant contract
         if (this == readableInstant) {
             return true;
         }
@@ -336,7 +337,8 @@ public abstract class AbstractInstant implements ReadableInstant {
      *
      * @return a suitable hash code
      */
-    public int hashCode() {
+    public final int hashCode() {
+        // must be final to fulfil ReadableInstant contract
         return
             ((int) (getMillis() ^ (getMillis() >>> 32))) +
             (getChronology() == null ? 0 : getChronology().hashCode());

@@ -137,6 +137,10 @@ final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getWeeksInYear(thisYear);
     }
 
+    protected int getMaximumValueForSet(long instant, int value) {
+        return value > 52 ? getMaximumValue(instant) : 52;
+    }
+
     /**
      * Serialization singleton
      */

@@ -107,6 +107,10 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYearMonth(thisYear, thisMonth);
     }
 
+    protected int getMaximumValueForSet(long instant, int value) {
+        return value > 28 ? getMaximumValue(instant) : 28;
+    }
+
     /**
      * Serialization singleton
      */

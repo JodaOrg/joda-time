@@ -108,6 +108,10 @@ final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getDaysInYear(thisYear);
     }
 
+    protected int getMaximumValueForSet(long instant, int value) {
+        return value > 365 ? getMaximumValue(instant) : 365;
+    }
+
     /**
      * Serialization singleton
      */

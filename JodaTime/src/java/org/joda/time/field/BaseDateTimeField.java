@@ -601,7 +601,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Sets a value in the milliseconds supplied from a human-readable, text value.
      * If the specified locale is null, the default locale is used.
      * <p>
-     * This implementation uses {@link #convertText(String, Locale)} and
+     * This implementation uses <code>convertText(String, Locale)</code> and
      * {@link #set(long, int)}.
      * <p>
      * Note: subclasses that override this method should also override
@@ -638,7 +638,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Sets a value in the milliseconds supplied from a human-readable, text value.
      * If the specified locale is null, the default locale is used.
      * <p>
-     * This implementation uses {@link #convertText(String, Locale)} and
+     * This implementation uses <code>convertText(String, Locale)</code> and
      * {@link #set(ReadablePartial, int, int[], int)}.
      *
      * @param instant  the partial instant

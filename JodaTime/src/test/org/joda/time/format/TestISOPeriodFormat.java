@@ -145,4 +145,76 @@ public class TestISOPeriodFormat extends TestCase {
         assertEquals("PT5H6M7.008S", ISOPeriodFormat.getInstance().standard().print(TIME_PERIOD));
     }
 
+    //-----------------------------------------------------------------------
+    public void testFormatAlternate() {
+        Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
+        assertEquals("P00010204T050607.008", ISOPeriodFormat.getInstance().alternate().print(p));
+        p = new Period(1, 2, 3, 4, 5, 6 ,7, 0);
+        assertEquals("P00010204T050607", ISOPeriodFormat.getInstance().alternate().print(p));
+        
+        p = new Period(0);
+        assertEquals("P00000000T000000", ISOPeriodFormat.getInstance().alternate().print(p));
+        p = new Period(0, PeriodType.getAllType().withMillisRemoved().withSecondsRemoved());
+        assertEquals("P00000000T000000", ISOPeriodFormat.getInstance().alternate().print(p));
+        
+        assertEquals("P00010004T050607.008", ISOPeriodFormat.getInstance().alternate().print(YEAR_DAY_PERIOD));
+        assertEquals("P00000000T000000", ISOPeriodFormat.getInstance().alternate().print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("P00010204T000000", ISOPeriodFormat.getInstance().alternate().print(DATE_PERIOD));
+        assertEquals("P00000000T050607.008", ISOPeriodFormat.getInstance().alternate().print(TIME_PERIOD));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatAlternateExtended() {
+        Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
+        assertEquals("P0001-02-04T05:06:07.008", ISOPeriodFormat.getInstance().alternateExtended().print(p));
+        p = new Period(1, 2, 3, 4, 5, 6 ,7, 0);
+        assertEquals("P0001-02-04T05:06:07", ISOPeriodFormat.getInstance().alternateExtended().print(p));
+        
+        p = new Period(0);
+        assertEquals("P0000-00-00T00:00:00", ISOPeriodFormat.getInstance().alternateExtended().print(p));
+        p = new Period(0, PeriodType.getAllType().withMillisRemoved().withSecondsRemoved());
+        assertEquals("P0000-00-00T00:00:00", ISOPeriodFormat.getInstance().alternateExtended().print(p));
+        
+        assertEquals("P0001-00-04T05:06:07.008", ISOPeriodFormat.getInstance().alternateExtended().print(YEAR_DAY_PERIOD));
+        assertEquals("P0000-00-00T00:00:00", ISOPeriodFormat.getInstance().alternateExtended().print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("P0001-02-04T00:00:00", ISOPeriodFormat.getInstance().alternateExtended().print(DATE_PERIOD));
+        assertEquals("P0000-00-00T05:06:07.008", ISOPeriodFormat.getInstance().alternateExtended().print(TIME_PERIOD));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatAlternateWithWeeks() {
+        Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
+        assertEquals("P0001W0304T050607.008", ISOPeriodFormat.getInstance().alternateWithWeeks().print(p));
+        p = new Period(1, 2, 3, 4, 5, 6 ,7, 0);
+        assertEquals("P0001W0304T050607", ISOPeriodFormat.getInstance().alternateWithWeeks().print(p));
+        
+        p = new Period(0);
+        assertEquals("P0000W0000T000000", ISOPeriodFormat.getInstance().alternateWithWeeks().print(p));
+        p = new Period(0, PeriodType.getAllType().withMillisRemoved().withSecondsRemoved());
+        assertEquals("P0000W0000T000000", ISOPeriodFormat.getInstance().alternateWithWeeks().print(p));
+        
+        assertEquals("P0001W0004T050607.008", ISOPeriodFormat.getInstance().alternateWithWeeks().print(YEAR_DAY_PERIOD));
+        assertEquals("P0000W0000T000000", ISOPeriodFormat.getInstance().alternateWithWeeks().print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("P0001W0304T000000", ISOPeriodFormat.getInstance().alternateWithWeeks().print(DATE_PERIOD));
+        assertEquals("P0000W0000T050607.008", ISOPeriodFormat.getInstance().alternateWithWeeks().print(TIME_PERIOD));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatAlternateExtendedWithWeeks() {
+        Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
+        assertEquals("P0001-W03-04T05:06:07.008", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(p));
+        p = new Period(1, 2, 3, 4, 5, 6 ,7, 0);
+        assertEquals("P0001-W03-04T05:06:07", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(p));
+        
+        p = new Period(0);
+        assertEquals("P0000-W00-00T00:00:00", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(p));
+        p = new Period(0, PeriodType.getAllType().withMillisRemoved().withSecondsRemoved());
+        assertEquals("P0000-W00-00T00:00:00", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(p));
+        
+        assertEquals("P0001-W00-04T05:06:07.008", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(YEAR_DAY_PERIOD));
+        assertEquals("P0000-W00-00T00:00:00", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("P0001-W03-04T00:00:00", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(DATE_PERIOD));
+        assertEquals("P0000-W00-00T05:06:07.008", ISOPeriodFormat.getInstance().alternateExtendedWithWeeks().print(TIME_PERIOD));
+    }
+
 }

@@ -59,7 +59,7 @@ import org.joda.time.ReadableInstant;
 import org.joda.time.ReadWritableInstant;
 
 /**
- * ReadWritabelInstantFieldProperty binds a ReadWritableInstant to a
+ * ReadWritableInstantFieldProperty binds a ReadWritableInstant to a
  * DateTimeField allowing powerful datetime functionality to be easily
  * accessed.
  * <p>

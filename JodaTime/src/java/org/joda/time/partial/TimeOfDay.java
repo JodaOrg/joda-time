@@ -216,7 +216,6 @@ public final class TimeOfDay implements PartialInstant, Serializable {
     public TimeOfDay(Object instant, Chronology chronology) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology original = converter.getChronology(instant, chronology);
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
@@ -299,7 +298,7 @@ public final class TimeOfDay implements PartialInstant, Serializable {
      * @param index  the index
      * @return the field
      */
-    protected DateTimeField getField(int index) {
+    DateTimeField getField(int index) {
         switch (index) {
             case HOUR_OF_DAY:
                 return iChronology.hourOfDay();
@@ -320,7 +319,7 @@ public final class TimeOfDay implements PartialInstant, Serializable {
      * @param index  the index
      * @return the value
      */
-    protected int getValue(int index) {
+    int getValue(int index) {
         return iValues[index];
     }
     
@@ -401,6 +400,7 @@ public final class TimeOfDay implements PartialInstant, Serializable {
      * will be the date from the specified base plus the time from this instant.
      *
      * @param baseMillis  source of missing fields
+     * @param zone  the zone to use, null means default
      * @return the combined instant in milliseconds
      */
     public long resolve(long baseMillis, DateTimeZone zone) {

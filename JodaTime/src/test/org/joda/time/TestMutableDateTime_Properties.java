@@ -139,6 +139,7 @@ public class TestMutableDateTime_Properties extends TestCase {
         assertEquals("era", test.era().getName());
         assertEquals("Property[era]", test.era().toString());
         assertSame(test, test.era().getReadableInstant());
+        assertSame(test, test.era().getMutableDateTime());
         assertEquals(1, test.era().get());
         assertEquals("AD", test.era().getAsText());
         assertEquals("ap. J.-C.", test.era().getAsText(Locale.FRENCH));

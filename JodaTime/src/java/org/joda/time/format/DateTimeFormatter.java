@@ -449,7 +449,7 @@ public class DateTimeFormatter {
     /**
      * Checks whether printing is supported.
      * 
-     * @throws IllegalArgumentException if parsing not supported
+     * @throws UnsupportedOperationException if printing is not supported
      */
     private void checkPrinter() {
         if (iPrinter == null) {
@@ -673,7 +673,7 @@ public class DateTimeFormatter {
     /**
      * Checks whether parsing is supported.
      * 
-     * @throws IllegalArgumentException if parsing not supported
+     * @throws UnsupportedOperationException if parsing is not supported
      */
     private void checkParser() {
         if (iParser == null) {

@@ -121,6 +121,49 @@ public interface ReadableInstant extends Comparable {
 
     //-----------------------------------------------------------------------
     /**
+     * Compares this object with the specified object for ascending
+     * millisecond instant order. This ordering is inconsistent with
+     * equals, as it ignores the Chronology.
+     * <p>
+     * All ReadableInstant instances are accepted.
+     *
+     * @param readableInstant  a readable instant to check against
+     * @return negative value if this is less, 0 if equal, or positive value if greater
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object type is not supported
+     */
+    int compareTo(Object readableInstant);
+
+    //-----------------------------------------------------------------------
+    /**
+     * Is this instant equal to the instant passed in
+     * comparing solely by millisecond.
+     *
+     * @param instant  an instant to check against, null means now
+     * @return true if the instant is equal to the instant passed in
+     */
+    boolean isEqual(ReadableInstant instant);
+
+    /**
+     * Is this instant after the instant passed in
+     * comparing solely by millisecond.
+     *
+     * @param instant  an instant to check against, null means now
+     * @return true if the instant is after the instant passed in
+     */
+    boolean isAfter(ReadableInstant instant);
+
+    /**
+     * Is this instant before the instant passed in
+     * comparing solely by millisecond.
+     *
+     * @param instant  an instant to check against, null means now
+     * @return true if the instant is before the instant passed in
+     */
+    boolean isBefore(ReadableInstant instant);
+
+    //-----------------------------------------------------------------------
+    /**
      * Compares this object with the specified object for equality based
      * on the millisecond instant and the Chronology. All ReadableInstant
      * instances are accepted.
@@ -148,49 +191,6 @@ public interface ReadableInstant extends Comparable {
      * @return a hash code as defined above
      */
     int hashCode();
-
-    //-----------------------------------------------------------------------
-    /**
-     * Compares this object with the specified object for ascending
-     * millisecond instant order. This ordering is inconsistent with
-     * equals, as it ignores the Chronology.
-     * <p>
-     * All ReadableInstant instances are accepted.
-     *
-     * @param readableInstant  a readable instant to check against
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object type is not supported
-     */
-    int compareTo(Object readableInstant);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Is this instant after the instant passed in
-     * comparing solely by millisecond.
-     *
-     * @param instant  an instant to check against, null means now
-     * @return true if the instant is after the instant passed in
-     */
-    boolean isAfter(ReadableInstant instant);
-
-    /**
-     * Is this instant before the instant passed in
-     * comparing solely by millisecond.
-     *
-     * @param instant  an instant to check against, null means now
-     * @return true if the instant is before the instant passed in
-     */
-    boolean isBefore(ReadableInstant instant);
-
-    /**
-     * Is this instant equal to the instant passed in
-     * comparing solely by millisecond.
-     *
-     * @param instant  an instant to check against, null means now
-     * @return true if the instant is equal to the instant passed in
-     */
-    boolean isEqual(ReadableInstant instant);
 
     //-----------------------------------------------------------------------
     /**

@@ -650,6 +650,71 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
+     * Sets this interval to be the same as another.
+     * <p>
+     * Subclasses that wish to be immutable should override this method with an
+     * empty implementation that is protected and final. This also ensures that
+     * all lower subclasses are also immutable.
+     *
+     * @param interval  the interval to copy
+     */
+    protected void setInterval(ReadableInterval interval) {
+        if (interval instanceof AbstractInterval) {
+            AbstractInterval other = (AbstractInterval) interval;
+            iStartMillis = other.iStartMillis;
+            iStartInstant = other.iStartInstant;
+            iEndMillis = other.iEndMillis;
+            iEndInstant = other.iEndInstant;
+            iDuration = other.iDuration;
+        } else {
+            iStartMillis = interval.getStartMillis();
+            iEndMillis = interval.getEndMillis();
+        }
+    }
+
+    /**
+     * Sets this interval from two millisecond instants.
+     * <p>
+     * Subclasses that wish to be immutable should override this method with an
+     * empty implementation that is protected and final. This also ensures that
+     * all lower subclasses are also immutable.
+     *
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     */
+    protected void setInterval(long startInstant, long endInstant) {
+        if (startInstant != iStartMillis || endInstant != iEndMillis) {
+            iStartMillis = startInstant;
+            iStartInstant = null;
+            iEndMillis = endInstant;
+            iEndInstant = null;
+            iDuration = null;
+        }
+    }
+
+    /**
+     * Sets this interval from two instants.
+     *
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     */
+    protected void setInterval(ReadableInstant startInstant, ReadableInstant endInstant) {
+        if (startInstant == null && endInstant == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            setInterval(now, now);
+        } else if (startInstant == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            setInterval(now, endInstant.getMillis());
+        } else if (startInstant == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            setInterval(startInstant.getMillis(), now);
+        } else {
+            setInterval(startInstant.getMillis(), endInstant.getMillis());
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Sets the start of this time interval.
      * <p>
      * Subclasses that wish to be immutable should override this method with an

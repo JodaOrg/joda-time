@@ -178,6 +178,36 @@ public final class MutableInterval
 
     //-----------------------------------------------------------------------
     /**
+     * Sets this interval to be the same as another.
+     *
+     * @param interval  the interval to copy
+     */
+    public void setInterval(ReadableInterval interval) {
+        super.setInterval(interval);
+    }
+
+    /**
+     * Sets this interval from two millisecond instants.
+     *
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     */
+    public void setInterval(long startInstant, long endInstant) {
+        super.setInterval(startInstant, endInstant);
+    }
+
+    /**
+     * Sets this interval from two instants.
+     *
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     */
+    public void setInterval(ReadableInstant startInstant, ReadableInstant endInstant) {
+        super.setInterval(startInstant, endInstant);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Sets the start of this time interval.
      *
      * @param millisInstant  the start of the time interval,

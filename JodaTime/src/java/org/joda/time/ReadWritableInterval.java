@@ -63,6 +63,30 @@ package org.joda.time;
 public interface ReadWritableInterval extends ReadableInterval {
 
     /**
+     * Sets this interval to be the same as another.
+     *
+     * @param interval  the interval to copy
+     */
+    void setInterval(ReadableInterval interval);
+
+    /**
+     * Sets this interval from two millisecond instants.
+     *
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     */
+    void setInterval(long startInstant, long endInstant);
+
+    /**
+     * Sets this interval from two instants.
+     *
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     */
+    void setInterval(ReadableInstant startInstant, ReadableInstant endInstant);
+
+    //-----------------------------------------------------------------------
+    /**
      * Sets the start of this time interval.
      *
      * @param millisInstant  the start of the time interval,
@@ -77,6 +101,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      */
     void setStartInstant(ReadableInstant instant);
 
+    //-----------------------------------------------------------------------
     /** 
      * Sets the end of this time interval.
      *
@@ -92,6 +117,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      */
     void setEndInstant(ReadableInstant instant);
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the duration of this time interval, preserving the start instant.
      *
@@ -107,6 +133,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      */
     void setDurationBeforeEnd(long millisDuration);
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the duration of this time interval, preserving the start instant.
      *
@@ -123,6 +150,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      */
     void setDurationBeforeEnd(ReadableDuration duration);
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the period of this time interval, preserving the start instant.
      *

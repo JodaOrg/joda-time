@@ -170,6 +170,18 @@ public class Interval
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
+    public void setInterval(ReadableInterval interval) {
+    }
+
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
+     */
+    public void setInterval(long startInstant, long endInstant) {
+    }
+
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
+     */
     protected final void setStartMillis(long millisInstant) {
     }
 

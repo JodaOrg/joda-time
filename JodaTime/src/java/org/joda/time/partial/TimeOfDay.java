@@ -58,6 +58,7 @@ import java.util.Locale;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * TimeOfDay is an immutable partial supporting the hour, minute, second
@@ -405,6 +406,16 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
      */
     public Property millisOfSecond() {
         return new Property(this, MILLIS_OF_SECOND);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Output the time in the ISO8601 format THH:mm:ss.SSS.
+     * 
+     * @return ISO8601 formatted string
+     */
+    public String toString() {
+        return ISODateTimeFormat.getInstanceUTC().tTime().print(this);
     }
 
     //-----------------------------------------------------------------------

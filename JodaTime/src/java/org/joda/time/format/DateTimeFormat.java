@@ -69,6 +69,7 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.field.RemainderDateTimeField;
+import org.joda.time.partial.ReadablePartial;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -704,6 +705,14 @@ public class DateTimeFormat {
             mPrinter.printTo(out, instant, zone, instantLocal);
         }
 
+        public void printTo(StringBuffer buf, ReadablePartial instant) {
+            mPrinter.printTo(buf, instant);
+        }
+
+        public void printTo(Writer out, ReadablePartial instant) throws IOException {
+            mPrinter.printTo(out, instant);
+        }
+
         public String print(final ReadableInstant instant) {
             return mPrinter.print(instant);
         }
@@ -718,6 +727,10 @@ public class DateTimeFormat {
 
         public String print(final long instant, final DateTimeZone zone, final long instantLocal) {
             return mPrinter.print(instant, zone, instantLocal);
+        }
+
+        public String print(ReadablePartial partial) {
+            return mPrinter.print(partial);
         }
 
         public int estimateParsedLength() {
@@ -816,6 +829,14 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
+        public void printTo(StringBuffer buf, ReadablePartial instant) {
+            throw unsupported();
+        }
+
+        public void printTo(Writer out, ReadablePartial instant) throws IOException {
+            throw unsupported();
+        }
+
         public String print(final ReadableInstant instant) {
             throw unsupported();
         }
@@ -829,6 +850,10 @@ public class DateTimeFormat {
         }
 
         public String print(final long instant, final DateTimeZone zone, final long instantLocal) {
+            throw unsupported();
+        }
+
+        public String print(ReadablePartial partial) {
             throw unsupported();
         }
 

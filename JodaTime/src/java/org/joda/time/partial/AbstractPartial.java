@@ -482,14 +482,4 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
         return total;
     }
 
-    /**
-     * Output the time in an ISO8601 format.
-     * 
-     * @return ISO8601 formatted string
-     */
-    public String toString() {
-        // TODO
-        return "";
-    }
-
 }

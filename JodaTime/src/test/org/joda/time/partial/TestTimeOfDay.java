@@ -803,7 +803,8 @@ public class TestTimeOfDay extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        // TODO
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        assertEquals("T10:20:30.040", test.toString());
     }
 
     //-----------------------------------------------------------------------

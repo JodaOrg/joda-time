@@ -62,6 +62,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Abstract base class for implementing {@link DateTimePrinter}s,
@@ -190,12 +191,20 @@ public abstract class AbstractDateTimeFormatter {
     }
 
     public String print(final long instant, final DateTimeZone zone, final long instantLocal) {
-        DateTimePrinter p = (DateTimePrinter)this;
+        DateTimePrinter p = (DateTimePrinter) this;
         StringBuffer buf = new StringBuffer(p.estimatePrintedLength());
         p.printTo(buf, instant, zone, instantLocal);
         return buf.toString();
     }
 
+    public String print(ReadablePartial partial) {
+        DateTimePrinter p = (DateTimePrinter) this;
+        StringBuffer buf = new StringBuffer(p.estimatePrintedLength());
+        p.printTo(buf, partial);
+        return buf.toString();
+    }
+
+    //-----------------------------------------------------------------------
     public int parseInto(final ReadWritableInstant instant, final String text, final int position) {
         DateTimeParser p = (DateTimeParser)this;
 

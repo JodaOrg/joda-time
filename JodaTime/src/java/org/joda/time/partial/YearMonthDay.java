@@ -58,6 +58,7 @@ import java.util.Locale;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * YearMonthDay is an immutable partial supporting the year, monthOfYear
@@ -317,6 +318,16 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
      */
     public Property dayOfMonth() {
         return new Property(this, DAY_OF_MONTH);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Output the time in the ISO8601 format YYYY-MM-DD.
+     * 
+     * @return ISO8601 formatted string
+     */
+    public String toString() {
+        return ISODateTimeFormat.getInstanceUTC().yearMonthDay().print(this);
     }
 
     //-----------------------------------------------------------------------

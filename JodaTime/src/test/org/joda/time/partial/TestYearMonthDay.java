@@ -601,7 +601,8 @@ public class TestYearMonthDay extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        // TODO
+        YearMonthDay test = new YearMonthDay(1972, 6, 9);
+        assertEquals("1972-06-09", test.toString());
     }
 
     //-----------------------------------------------------------------------

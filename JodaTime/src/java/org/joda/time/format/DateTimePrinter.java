@@ -59,6 +59,7 @@ import java.io.Writer;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Defines an interface for creating textual representations of datetimes.
@@ -172,6 +173,23 @@ public interface DateTimePrinter {
 
     //-----------------------------------------------------------------------
     /**
+     * Prints a ReadablePartial.
+     *
+     * @param buf  formatted partial is appended to this buffer
+     * @param partial  partial to format
+     */
+    void printTo(StringBuffer buf, ReadablePartial partial);
+
+    /**
+     * Prints a ReadablePartial.
+     *
+     * @param out  formatted partial is written out
+     * @param partial  partial to format
+     */
+    void printTo(Writer out, ReadablePartial partial) throws IOException;
+
+    //-----------------------------------------------------------------------
+    /**
      * Prints a ReadableInstant to a new String, attempting to use the
      * DateTimeZone supplied by the instant.
      *
@@ -210,4 +228,12 @@ public interface DateTimePrinter {
      */
     String print(long instant, DateTimeZone zone, long instantLocal);
     
+    /**
+     * Prints a ReadablePartial to a new String.
+     *
+     * @param partial  partial to format
+     * @return the printed result
+     */
+    String print(ReadablePartial partial);
+
 }

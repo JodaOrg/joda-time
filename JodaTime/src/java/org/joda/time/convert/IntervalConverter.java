@@ -53,68 +53,24 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.DurationType;
-import org.joda.time.ReadableInterval;
-import org.joda.time.ReadWritableDuration;
 import org.joda.time.ReadWritableInterval;
 
 /**
- * Converts intervals into durations of any requested duration type.
+ * IntervalConverter defines how an object is converted to an interval.
  *
  * @author Brian S O'Neill
  * @since 1.0
  */
-class ReadableIntervalConverter implements IntervalConverter, DurationConverter {
+public interface IntervalConverter extends Converter {
 
     /**
-     * Singleton instance.
-     */
-    static final ReadableIntervalConverter INSTANCE = new ReadableIntervalConverter();
-    
-    /**
-     * Restricted constructor.
-     */
-    protected ReadableIntervalConverter() {
-        super();
-    }
-
-    /**
-     * Returns true always.
-     */
-    public boolean isPrecise(Object object) {
-        return true;
-    }
-
-    public long getDurationMillis(Object object) {
-        return (((ReadableInterval) object)).getDurationMillis();
-    }
-
-    public void setInto(ReadWritableDuration duration, Object object) {
-        ReadableInterval interval = (ReadableInterval) object;
-        duration.setTotalMillis(interval.getStartMillis(), interval.getEndMillis());
-    }
-
-    /**
-     * Selects a suitable duration type for the given object.
+     * Extracts interval endpoint values from an object of this converter's
+     * type, and sets them into the given ReadWritableInterval.
      *
-     * @param object  the object to examine, must not be null
-     * @return the duration type, never null
+     * @param interval interval to get modified
+     * @param object  the object to convert, must not be null
      * @throws ClassCastException if the object is invalid
      */
-    public DurationType getDurationType(Object object) {
-        return ((ReadableInterval) object).getDuration().getDurationType();
-    }
+    void setInto(ReadWritableInterval interval, Object object);
 
-    public void setInto(ReadWritableInterval writableInterval, Object object) {
-        ReadableInterval interval = (ReadableInterval) object;
-        writableInterval.setStartMillis(interval.getStartMillis());
-        writableInterval.setEndMillis(interval.getEndMillis());
-    }
-
-    /**
-     * Returns ReadableInterval.class.
-     */
-    public Class getSupportedType() {
-        return ReadableInterval.class;
-    }
 }

@@ -62,7 +62,8 @@ import java.util.List;
  * <p>
  * This class enables additional conversion classes to be added via
  * {@link #addInstantConverter(InstantConverter)}, which may replace an
- * existing converter. Similar methods exist for duration converters.
+ * existing converter. Similar methods exist for duration and interval
+ * converters.
  * <p>
  * This class is threadsafe, so adding/removing converters can be done at any
  * time. Updating the set of convertors is relatively expensive, and so should
@@ -85,6 +86,12 @@ import java.util.List;
  * <li>Long
  * </ul>
  *
+ * The default interval converters are:
+ * <ul>
+ * <li>ReadableInterval
+ * <li>String
+ * </ul>
+ *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
@@ -105,6 +112,7 @@ public final class ConverterManager {
     
     private ConverterSet iInstantConverters;
     private ConverterSet iDurationConverters;
+    private ConverterSet iIntervalConverters;
     
     /**
      * Restricted constructor.
@@ -126,6 +134,11 @@ public final class ConverterManager {
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
             LongConverter.INSTANCE,
+        });
+
+        iIntervalConverters = new ConverterSet(new Converter[] {
+            ReadableIntervalConverter.INSTANCE,
+            StringConverter.INSTANCE,
         });
     }
     
@@ -295,12 +308,95 @@ public final class ConverterManager {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the best converter for the object specified.
+     * 
+     * @param object  the object to convert
+     * @return the converter to use
+     * @throws IllegalArgumentException if no suitable converter
+     * @throws IllegalStateException if multiple converters match the type
+     * equally well
+     */
+    public IntervalConverter getIntervalConverter(Object object) {
+        IntervalConverter converter =
+            (IntervalConverter)iIntervalConverters.select(object == null ? null : object.getClass());
+        if (converter != null) {
+            return converter;
+        }
+        throw new IllegalArgumentException("No interval converter found for type: " +
+            (object == null ? "null" : object.getClass().getName()));
+    }
+    
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of the list of converters.
+     * 
+     * @return the converters, a copy of the real data, never null
+     */
+    public IntervalConverter[] getIntervalConverters() {
+        ConverterSet set = iIntervalConverters;
+        IntervalConverter[] converters = new IntervalConverter[set.size()];
+        set.copyInto(converters);
+        return converters;
+    }
+    
+    /**
+     * Adds a converter to the set of converters. If a matching converter is
+     * already in the set, the given converter replaces it. If the converter is
+     * exactly the same as one already in the set, no changes are made.
+     * <p>
+     * The order in which converters are added is not relevent. The best
+     * converter is selected by examining the object hierarchy.
+     * 
+     * @param converter  the converter to add, null ignored
+     * @return replaced converter, or null
+     */
+    public IntervalConverter addIntervalConverter(IntervalConverter converter) {
+        if (converter == null) {
+            return null;
+        }
+        IntervalConverter[] removed = new IntervalConverter[1];
+        iIntervalConverters = iIntervalConverters.add(converter, removed);
+        return removed[0];
+    }
+    
+    /**
+     * Removes a converter from the set of converters. If the converter was
+     * not in the set, no changes are made.
+     * 
+     * @param converter  the converter to remove, null ignored
+     * @return replaced converter, or null
+     */
+    public IntervalConverter removeIntervalConverter(IntervalConverter converter) {
+        if (converter == null) {
+            return null;
+        }
+        IntervalConverter[] removed = new IntervalConverter[1];
+        iIntervalConverters = iIntervalConverters.remove(converter, removed);
+        return removed[0];
+    }
+    
+    /**
+     * Removes a converter from the set of converters, by index.
+     * 
+     * @param index  the index to remove
+     * @return replaced converter, or null
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public IntervalConverter removeIntervalConverter(int index) {
+        IntervalConverter[] removed = new IntervalConverter[1];
+        iIntervalConverters = iIntervalConverters.remove(index, removed);
+        return removed[0];
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets a debug representation of the object
      */
     public String toString() {
         return "ConverterManager[" +
             iInstantConverters.size() + " instant converters," +
-            iDurationConverters.size() + " duration converters]";
+            iDurationConverters.size() + " duration converters," +
+            iIntervalConverters.size() + " interval converters]";
     }
 
 }

@@ -55,7 +55,12 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationType;
+import org.joda.time.MutableDuration;
+import org.joda.time.ReadableDuration;
+import org.joda.time.ReadableInstant;
 import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadWritableInterval;
 import org.joda.time.chrono.iso.ISOChronology;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.DurationParser;
@@ -69,7 +74,8 @@ import org.joda.time.format.ISODurationFormat;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class StringConverter extends AbstractConverter implements InstantConverter, DurationConverter {
+class StringConverter extends AbstractConverter
+    implements InstantConverter, DurationConverter, IntervalConverter {
     
     /**
      * Singleton instance.
@@ -151,6 +157,71 @@ class StringConverter extends AbstractConverter implements InstantConverter, Dur
         }
     }
 
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @return the duration type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    public DurationType getDurationType(Object object) {
+        String str = (String) object;
+        if (str.indexOf('W') >= 0) {
+            return DurationType.getYearWeekType();
+        }
+        return DurationType.getYearMonthType();
+    }
+
+    public void setInto(ReadWritableInterval writableInterval, Object object) {
+        String str = (String) object;
+
+        int separator = str.indexOf('/');
+        if (separator < 0) {
+            throw new IllegalArgumentException("Format requires a '/' separator: " + str);
+        }
+
+        String leftStr = str.substring(0, separator);
+        if (leftStr.length() <= 0) {
+            throw new IllegalArgumentException();
+        }
+        String rightStr = str.substring(separator + 1);
+        if (rightStr.length() <= 0) {
+            throw new IllegalArgumentException();
+        }
+
+        long startInstant;
+        ReadableDuration duration;
+
+        char c = leftStr.charAt(0);
+        if (c == 'P' || c == 'p') {
+            startInstant = 0;
+            duration = ISODurationFormat.getInstance().standard()
+                .parseDuration(getDurationType(leftStr), leftStr);
+        } else {
+            startInstant = ISODateTimeFormat.getInstanceUTC().dateTimeParser().parseMillis(leftStr);
+            duration = null;
+        }
+
+        c = rightStr.charAt(0);
+        if (c == 'P' || c == 'p') {
+            if (duration != null) {
+                throw new IllegalArgumentException("Interval composed of two durations: " + str);
+            }
+            duration = ISODurationFormat.getInstance().standard()
+                .parseDuration(getDurationType(rightStr), rightStr);
+            writableInterval.setStartMillis(startInstant);
+            writableInterval.setDurationAfterStart(duration);
+        } else {
+            long endInstant = ISODateTimeFormat.getInstanceUTC().dateTimeParser().parseMillis(rightStr);
+            writableInterval.setEndMillis(endInstant);
+            if (duration == null) {
+                writableInterval.setStartMillis(startInstant);
+            } else {
+                writableInterval.setDurationBeforeEnd(duration);
+            }
+        }
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns String.class.
@@ -160,5 +231,5 @@ class StringConverter extends AbstractConverter implements InstantConverter, Dur
     public Class getSupportedType() {
         return String.class;
     }
-    
+
 }

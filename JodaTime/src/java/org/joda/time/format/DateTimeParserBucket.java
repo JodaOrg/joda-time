@@ -171,10 +171,10 @@ public class DateTimeParserBucket {
 
     /**
      * Saves the state of this bucket, returning it in an opaque object. Call
-     * undoChanges to undo any changes that were made since the state was
+     * restoreState to undo any changes that were made since the state was
      * saved. Calls to saveState may be nested.
      *
-     * @return opaque saved state, which may be passed to undoChanges
+     * @return opaque saved state, which may be passed to restoreState
      */
     public Object saveState() {
         if (iSavedState == null) {
@@ -184,19 +184,16 @@ public class DateTimeParserBucket {
     }
 
     /**
-     * Undos any changes that were made to this bucket since the given state
-     * was saved. Once the changes have been undone, they are lost. Any states
-     * that were saved after saving the previous state are also lost.
-     * <p>
-     * The state object passed into this method is not lost, and it can be used
-     * later to revert to that state again.
+     * Restores the state of this bucket from a previously saved state. The
+     * state object passed into this method is not consumed, and it can be used
+     * later to restore to that state again.
      *
      * @param savedState opaque saved state, returned from saveState
-     * @return true state object is valid and changes were undone
+     * @return true state object is valid and state restored
      */
-    public boolean undoChanges(Object savedState) {
+    public boolean restoreState(Object savedState) {
         if (savedState instanceof SavedState) {
-            if (((SavedState)savedState).revertState(this)) {
+            if (((SavedState)savedState).restoreState(this)) {
                 iSavedState = savedState;
                 return true;
             }
@@ -214,6 +211,10 @@ public class DateTimeParserBucket {
     public long computeMillis() {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
+        if (iSavedFieldsShared) {
+            iSavedFields = savedFields = (SavedField[])iSavedFields.clone();
+            iSavedFieldsShared = false;
+        }
         sort(savedFields, count);
 
         long millis = iMillis;
@@ -338,7 +339,7 @@ public class DateTimeParserBucket {
             this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
         }
 
-        boolean revertState(DateTimeParserBucket enclosing) {
+        boolean restoreState(DateTimeParserBucket enclosing) {
             if (enclosing != DateTimeParserBucket.this) {
                 return false;
             }

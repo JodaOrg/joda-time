@@ -1265,7 +1265,7 @@ public class DateTimeFormatterBuilder {
         private final int iMinDigits;
         private final int iMaxDigits;
 
-        private final long iScaler;
+        private final long iScalar;
 
         private transient DateTimeField iParseField;
 
@@ -1282,30 +1282,30 @@ public class DateTimeFormatterBuilder {
 
             iMinDigits = minDigits;
 
-            long scaler;
+            long scalar;
             while (true) {
                 switch (maxDigits) {
-                default: scaler = 1L; break;
-                case 1:  scaler = 10L; break;
-                case 2:  scaler = 100L; break;
-                case 3:  scaler = 1000L; break;
-                case 4:  scaler = 10000L; break;
-                case 5:  scaler = 100000L; break;
-                case 6:  scaler = 1000000L; break;
-                case 7:  scaler = 10000000L; break;
-                case 8:  scaler = 100000000L; break;
-                case 9:  scaler = 1000000000L; break;
-                case 10: scaler = 10000000000L; break;
-                case 11: scaler = 100000000000L; break;
-                case 12: scaler = 1000000000000L; break;
-                case 13: scaler = 10000000000000L; break;
-                case 14: scaler = 100000000000000L; break;
-                case 15: scaler = 1000000000000000L; break;
-                case 16: scaler = 10000000000000000L; break;
-                case 17: scaler = 100000000000000000L; break;
-                case 18: scaler = 1000000000000000000L; break;
+                default: scalar = 1L; break;
+                case 1:  scalar = 10L; break;
+                case 2:  scalar = 100L; break;
+                case 3:  scalar = 1000L; break;
+                case 4:  scalar = 10000L; break;
+                case 5:  scalar = 100000L; break;
+                case 6:  scalar = 1000000L; break;
+                case 7:  scalar = 10000000L; break;
+                case 8:  scalar = 100000000L; break;
+                case 9:  scalar = 1000000000L; break;
+                case 10: scalar = 10000000000L; break;
+                case 11: scalar = 100000000000L; break;
+                case 12: scalar = 1000000000000L; break;
+                case 13: scalar = 10000000000000L; break;
+                case 14: scalar = 100000000000000L; break;
+                case 15: scalar = 1000000000000000L; break;
+                case 16: scalar = 10000000000000000L; break;
+                case 17: scalar = 100000000000000000L; break;
+                case 18: scalar = 1000000000000000000L; break;
                 }
-                if (((iRangeMillis * scaler) / scaler) == iRangeMillis) {
+                if (((iRangeMillis * scalar) / scalar) == iRangeMillis) {
                     break;
                 }
                 // Overflowed: scale down.
@@ -1313,7 +1313,7 @@ public class DateTimeFormatterBuilder {
             }
 
             iMaxDigits = maxDigits;
-            iScaler = scaler;
+            iScalar = scalar;
         }
 
         public int estimatePrintedLength() {
@@ -1369,7 +1369,7 @@ public class DateTimeFormatterBuilder {
             }
 
             String str;
-            long scaled = fraction * iScaler / iRangeMillis;
+            long scaled = fraction * iScalar / iRangeMillis;
             if ((scaled & 0x7fffffff) == scaled) {
                 str = Integer.toString((int)scaled);
             } else {
@@ -1427,7 +1427,7 @@ public class DateTimeFormatterBuilder {
             int limit = Math.min(iMaxDigits, text.length() - position);
 
             long value = 0;
-            long n = iRangeMillis;
+            long n = iRangeMillis * 10;
             int length = 0;
             while (length < limit) {
                 char c = text.charAt(position + length);
@@ -1435,11 +1435,12 @@ public class DateTimeFormatterBuilder {
                     break;
                 }
                 length++;
-                if (c != '0') {
-                    value += (c - '0') * n / 10;
-                }
-                n /= 10;
+                long nn = n / 10;
+                value += (c - '0') * nn;
+                n = nn;
             }
+
+            value /= 10;
 
             if (length == 0) {
                 return ~position;

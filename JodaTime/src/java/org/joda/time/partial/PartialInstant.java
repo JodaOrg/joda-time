@@ -56,6 +56,7 @@ package org.joda.time.partial;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 
 /**
@@ -108,16 +109,17 @@ public interface PartialInstant {
     boolean isSupported(DateTimeField field);
 
     /**
-     * Resolves this partial against another complete instant to create a new
-     * full instant specifying values as milliseconds since 1970-01-01T00:00:00Z.
+     * Resolves this partial against another complete millisecond instant to
+     * create a new full instant specifying the time zone to resolve with.
      * <p>
      * For example, if this partial represents a time, then the result of this method
-     * will be the date from the specified base plus the time from this instant.
+     * will be the datetime from the specified base plus the time from this instant
+     * set using the time zone specified.
      *
      * @param baseMillis  source of missing fields
      * @return the combined instant in milliseconds
      */
-    long resolve(long baseMillis);
+    long resolve(long baseMillis, DateTimeZone zone);
 
     /**
      * Resolves this partial against another complete instant to create a new
@@ -132,27 +134,26 @@ public interface PartialInstant {
      */
     DateTime resolveDateTime(ReadableInstant base);
 
-//    /**
-//     * Compares this object with the specified object for equality based
-//     * on the millisecond instant, the Chronology, and the limiting fields.
-//     * <p>
-//     * To compare two instants for absolute time (ie. UTC milliseconds ignoring
-//     * the chronology), use {@link #isEqual(ReadableInstant)} or
-//     * {@link #compareTo(Object)}.
-//     *
-//     * @param readableInstant  a readable instant to check against
-//     * @return true if millisecond and chronology are equal, false if
-//     *  not or the instant is null or of an incorrect type
-//     */
-//    boolean equals(Object readableInstant);
-//
-//    /**
-//     * Gets a hash code for the instant that is compatable with the 
-//     * equals method.
-//     *
-//     * @return a suitable hash code
-//     */
-//    int hashCode();
+    //-----------------------------------------------------------------------
+    /**
+     * Compares this partial with the specified object for equality based
+     * on the implementation class, supported fields, chronology and values.
+     * <p>
+     * Instances of PartialInstant are not generally comparable to one another
+     * as the comparison is based on the implementation class.
+     *
+     * @param object  the object to compare to
+     * @return true if equal
+     */
+    boolean equals(Object object);
+
+    /**
+     * Gets a hash code for the instant that is compatible with the 
+     * equals method.
+     *
+     * @return a suitable hash code
+     */
+    int hashCode();
 
     //-----------------------------------------------------------------------
     /**

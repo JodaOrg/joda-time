@@ -195,24 +195,6 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a AbstractPartial with specified time field values and chronology.
-     * <p>
-     * The constructor uses the time zone of the chronology specified.
-     * Once the constructor is complete, all further calculations are performed
-     * without reference to a timezone (by switching to UTC).
-     *
-     * @param values  the new set of values
-     * @param chronology  the chronology, null means ISOChronology in the default zone
-     */
-    protected BasePartial(int[] values, Chronology chronology) {
-        super();
-        chronology = DateTimeUtils.getChronology(chronology);
-        iChronology = chronology.withUTC();
-        chronology.validate(this, values);
-        iValues = (int[]) values.clone();
-    }
-
-    /**
      * Private constructor to be used by subclasses only which performs no validation.
      * <p>
      * Data is assigned (not cloned) to the new instance.

@@ -53,6 +53,8 @@
  */
 package org.joda.test.time.partial;
 
+import java.util.Locale;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -266,7 +268,7 @@ public class TestTimeOfDay extends TestCase {
         DateTime dt = new DateTime(0L);
         assertEquals("1970-01-01T00:00:00.000Z", dt.toString());
         
-        DateTime result = new DateTime(test.resolve(dt.getMillis()));
+        DateTime result = new DateTime(test.resolve(dt.getMillis(), DateTimeZone.UTC));
         assertEquals(10, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
@@ -291,6 +293,23 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
         assertEquals("1970-01-01T00:00:00.000Z", dt.toString());
         assertEquals("1970-01-01T10:20:30.040Z", result.toString());
+    }
+
+    public void testProperty() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        assertSame(test.getChronology().hourOfDay(), test.hourOfDay().getField());
+        assertEquals("hourOfDay", test.hourOfDay().getName());
+        assertSame(test, test.hourOfDay().getPartialInstant());
+        assertSame(test, test.hourOfDay().getTimeOfDay());
+        assertEquals(10, test.hourOfDay().get());
+        assertEquals("10", test.hourOfDay().getAsText());
+        assertEquals("10", test.hourOfDay().getAsText(Locale.FRENCH));
+        assertEquals("10", test.hourOfDay().getAsShortText());
+        assertEquals("10", test.hourOfDay().getAsShortText(Locale.FRENCH));
+        assertEquals(test.getChronology().hours(), test.hourOfDay().getDurationField());
+        assertEquals(test.getChronology().days(), test.hourOfDay().getRangeDurationField());
+        assertEquals(2, test.hourOfDay().getMaximumTextLength(null));
+        assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
     }
 
 }

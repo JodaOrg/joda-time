@@ -81,7 +81,7 @@ import org.joda.time.chrono.JulianChronology;
  * <p>
  * The mode can be either 'g' for proleptic gregorian (the default) or 'j' for
  * proleptic julian. To override the default random number generator seed, pass
- * in a thrid argument which accepts a long signed integer.
+ * in a third argument which accepts a long signed integer.
  *
  * @author Brian S O'Neill
  */

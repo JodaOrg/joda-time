@@ -55,7 +55,7 @@ package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Wraps another field such that zero values are replaced with one more than
@@ -102,7 +102,7 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().addWrapped(instant, value);
     }
 
-    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         return getWrappedField().addInField(instant, fieldIndex, values, valueToAdd);
     }
 
@@ -158,7 +158,7 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the minimum value of 1
      */
-    public int getMinimumValue(PartialInstant instant) {
+    public int getMinimumValue(ReadablePartial instant) {
         return 1;
     }
 
@@ -167,7 +167,7 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the minimum value of 1
      */
-    public int getMinimumValue(PartialInstant instant, int[] values) {
+    public int getMinimumValue(ReadablePartial instant, int[] values) {
         return 1;
     }
 
@@ -197,7 +197,7 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the maximum value
      */
-    public int getMaximumValue(PartialInstant instant) {
+    public int getMaximumValue(ReadablePartial instant) {
         return getWrappedField().getMaximumValue(instant) + 1;
     }
 
@@ -207,7 +207,7 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      * 
      * @return the maximum value
      */
-    public int getMaximumValue(PartialInstant instant, int[] values) {
+    public int getMaximumValue(ReadablePartial instant, int[] values) {
         return getWrappedField().getMaximumValue(instant, values) + 1;
     }
 

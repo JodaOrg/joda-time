@@ -60,7 +60,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 
 /**
- * YearMonthDay is an immutable partial instant supporting the year, monthOfYear
+ * YearMonthDay is an immutable partial supporting the year, monthOfYear
  * and dayOfMonth fields.
  * <p>
  * Calculations on YearMonthDay are performed using a {@link Chronology}.
@@ -88,7 +88,7 @@ import org.joda.time.DateTimeField;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class YearMonthDay extends AbstractPartialInstant implements PartialInstant, Serializable {
+public final class YearMonthDay extends AbstractPartial implements ReadablePartial, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 797544782896179L;
@@ -325,21 +325,21 @@ public final class YearMonthDay extends AbstractPartialInstant implements Partia
      */
     public static class Property extends AbstractPartialFieldProperty {
 
-        /** The instant */
-        private final YearMonthDay iInstant;
+        /** The partial */
+        private final YearMonthDay iYearMonthDay;
         /** The field index */
         private final int iFieldIndex;
 
         /**
          * Constructs a property.
          * 
-         * @param instant  the partial instant
+         * @param partial  the partial instance
          * @param field  the field
-         * @param fieldIndex  the index in the instant
+         * @param fieldIndex  the index in the partial
          */
-        Property(YearMonthDay instant, int fieldIndex) {
+        Property(YearMonthDay partial, int fieldIndex) {
             super();
-            iInstant = instant;
+            iYearMonthDay = partial;
             iFieldIndex = fieldIndex;
         }
 
@@ -349,34 +349,34 @@ public final class YearMonthDay extends AbstractPartialInstant implements Partia
          * @return the field
          */
         public DateTimeField getField() {
-            return iInstant.getField(iFieldIndex);
+            return iYearMonthDay.getField(iFieldIndex);
         }
 
         /**
-         * Gets the instant that this property belongs to.
+         * Gets the partial that this property belongs to.
          * 
-         * @return the partial instant
+         * @return the partial
          */
-        public PartialInstant getPartialInstant() {
-            return iInstant;
+        public ReadablePartial getReadablePartial() {
+            return iYearMonthDay;
         }
 
         /**
-         * Gets the instant that this property belongs to.
+         * Gets the partial that this property belongs to.
          * 
-         * @return the partial instant
+         * @return the partial
          */
         public YearMonthDay getYearMonthDay() {
-            return iInstant;
+            return iYearMonthDay;
         }
 
         /**
-         * Gets the value of the field that the partial instant is set to.
+         * Gets the value of this field.
          * 
          * @return the field value
          */
         public int get() {
-            return iInstant.getValue(iFieldIndex);
+            return iYearMonthDay.getValue(iFieldIndex);
         }
 
         //-----------------------------------------------------------------------
@@ -398,9 +398,9 @@ public final class YearMonthDay extends AbstractPartialInstant implements Partia
          * @throws IllegalArgumentException if the value isn't valid
          */
         public YearMonthDay addCopy(int valueToAdd) {
-            int[] newValues = iInstant.getValues();
-            getField().add(iInstant, iFieldIndex, newValues, valueToAdd);
-            return new YearMonthDay(iInstant, newValues);
+            int[] newValues = iYearMonthDay.getValues();
+            newValues = getField().add(iYearMonthDay, iFieldIndex, newValues, valueToAdd);
+            return new YearMonthDay(iYearMonthDay, newValues);
         }
 
         /**
@@ -422,9 +422,9 @@ public final class YearMonthDay extends AbstractPartialInstant implements Partia
          * @throws IllegalArgumentException if the value isn't valid
          */
         public YearMonthDay addInFieldCopy(int valueToAdd) {
-            int[] newValues = iInstant.getValues();
-            getField().addInField(iInstant, iFieldIndex, newValues, valueToAdd);
-            return new YearMonthDay(iInstant, newValues);
+            int[] newValues = iYearMonthDay.getValues();
+            newValues = getField().addInField(iYearMonthDay, iFieldIndex, newValues, valueToAdd);
+            return new YearMonthDay(iYearMonthDay, newValues);
         }
 
         //-----------------------------------------------------------------------
@@ -439,9 +439,9 @@ public final class YearMonthDay extends AbstractPartialInstant implements Partia
          * @throws IllegalArgumentException if the value isn't valid
          */
         public YearMonthDay setCopy(int value) {
-            int[] newValues = iInstant.getValues();
-            getField().set(iInstant, iFieldIndex, newValues, value);
-            return new YearMonthDay(iInstant, newValues);
+            int[] newValues = iYearMonthDay.getValues();
+            newValues = getField().set(iYearMonthDay, iFieldIndex, newValues, value);
+            return new YearMonthDay(iYearMonthDay, newValues);
         }
 
         /**
@@ -456,9 +456,9 @@ public final class YearMonthDay extends AbstractPartialInstant implements Partia
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public YearMonthDay setCopy(String text, Locale locale) {
-            int[] newValues = iInstant.getValues();
-            getField().set(iInstant, iFieldIndex, newValues, text, locale);
-            return new YearMonthDay(iInstant, newValues);
+            int[] newValues = iYearMonthDay.getValues();
+            newValues = getField().set(iYearMonthDay, iFieldIndex, newValues, text, locale);
+            return new YearMonthDay(iYearMonthDay, newValues);
         }
 
         /**

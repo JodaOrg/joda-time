@@ -57,7 +57,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Provides time calculations for the week of a week based year component of time.
@@ -127,7 +127,7 @@ final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
         return iChronology.getWeeksInYear(weekyear);
     }
 
-    public int getMaximumValue(PartialInstant instant) {
+    public int getMaximumValue(ReadablePartial instant) {
         if (instant.isSupported(iChronology.weekyear())) {
             int weekyear = instant.get(iChronology.weekyear());
             return iChronology.getWeeksInYear(weekyear);
@@ -135,7 +135,7 @@ final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
         return 53;
     }
 
-    public int getMaximumValue(PartialInstant instant, int[] values) {
+    public int getMaximumValue(ReadablePartial instant, int[] values) {
         DateTimeField[] fields = instant.getFields();
         for (int i = 0; i < fields.length; i++) {
             if (fields[i] == iChronology.weekyear()) {

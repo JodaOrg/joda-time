@@ -58,7 +58,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * A placeholder implementation to use when a datetime field is not supported.
@@ -162,7 +162,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public String getAsText(PartialInstant partial, int fieldValue, Locale locale) {
+    public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
         throw unsupported();
     }
 
@@ -180,7 +180,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public String getAsShortText(PartialInstant partial, int fieldValue, Locale locale) {
+    public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
         throw unsupported();
     }
 
@@ -207,7 +207,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         throw unsupported();
     }
 
@@ -225,7 +225,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         throw unsupported();
     }
 
@@ -261,7 +261,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue) {
+    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
         throw unsupported();
     }
 
@@ -279,7 +279,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int[] set(PartialInstant instant, int fieldIndex, int[] values, String text, Locale locale) {
+    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
         throw unsupported();
     }
 
@@ -352,7 +352,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int getMinimumValue(PartialInstant instant) {
+    public int getMinimumValue(ReadablePartial instant) {
         throw unsupported();
     }
 
@@ -361,7 +361,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int getMinimumValue(PartialInstant instant, int[] values) {
+    public int getMinimumValue(ReadablePartial instant, int[] values) {
         throw unsupported();
     }
 
@@ -388,7 +388,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int getMaximumValue(PartialInstant instant) {
+    public int getMaximumValue(ReadablePartial instant) {
         throw unsupported();
     }
 
@@ -397,7 +397,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
-    public int getMaximumValue(PartialInstant instant, int[] values) {
+    public int getMaximumValue(ReadablePartial instant, int[] values) {
         throw unsupported();
     }
 

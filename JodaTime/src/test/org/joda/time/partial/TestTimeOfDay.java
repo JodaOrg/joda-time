@@ -700,10 +700,10 @@ public class TestTimeOfDay extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInstant()));
-        assertEquals(false, test1.equals(MockPartialInstant.EMPTY_INSTANCE));
+        assertEquals(false, test1.equals(MockPartial.EMPTY_INSTANCE));
     }
     
-    class MockInstant extends MockPartialInstant {
+    class MockInstant extends MockPartial {
         public DateTimeField[] getFields() {
             return new DateTimeField[] {
                 ISOChronology.getInstance().hourOfDay(),
@@ -812,7 +812,7 @@ public class TestTimeOfDay extends TestCase {
         assertSame(test.getChronology().hourOfDay(), test.hourOfDay().getField());
         assertEquals("hourOfDay", test.hourOfDay().getName());
         assertEquals("Property[hourOfDay]", test.hourOfDay().toString());
-        assertSame(test, test.hourOfDay().getPartialInstant());
+        assertSame(test, test.hourOfDay().getReadablePartial());
         assertSame(test, test.hourOfDay().getTimeOfDay());
         assertEquals(10, test.hourOfDay().get());
         assertEquals("10", test.hourOfDay().getAsText());
@@ -907,7 +907,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(true, test2.hourOfDay().compareTo(test1) > 0);
         assertEquals(true, test1.hourOfDay().compareTo(test1) == 0);
         try {
-            test1.hourOfDay().compareTo((PartialInstant) null);
+            test1.hourOfDay().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -928,7 +928,7 @@ public class TestTimeOfDay extends TestCase {
         assertSame(test.getChronology().minuteOfHour(), test.minuteOfHour().getField());
         assertEquals("minuteOfHour", test.minuteOfHour().getName());
         assertEquals("Property[minuteOfHour]", test.minuteOfHour().toString());
-        assertSame(test, test.minuteOfHour().getPartialInstant());
+        assertSame(test, test.minuteOfHour().getReadablePartial());
         assertSame(test, test.minuteOfHour().getTimeOfDay());
         assertEquals(20, test.minuteOfHour().get());
         assertEquals("20", test.minuteOfHour().getAsText());
@@ -1038,7 +1038,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(true, test2.minuteOfHour().compareTo(test1) > 0);
         assertEquals(true, test1.minuteOfHour().compareTo(test1) == 0);
         try {
-            test1.minuteOfHour().compareTo((PartialInstant) null);
+            test1.minuteOfHour().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -1059,7 +1059,7 @@ public class TestTimeOfDay extends TestCase {
         assertSame(test.getChronology().secondOfMinute(), test.secondOfMinute().getField());
         assertEquals("secondOfMinute", test.secondOfMinute().getName());
         assertEquals("Property[secondOfMinute]", test.secondOfMinute().toString());
-        assertSame(test, test.secondOfMinute().getPartialInstant());
+        assertSame(test, test.secondOfMinute().getReadablePartial());
         assertSame(test, test.secondOfMinute().getTimeOfDay());
         assertEquals(30, test.secondOfMinute().get());
         assertEquals("30", test.secondOfMinute().getAsText());
@@ -1166,7 +1166,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(true, test2.secondOfMinute().compareTo(test1) > 0);
         assertEquals(true, test1.secondOfMinute().compareTo(test1) == 0);
         try {
-            test1.secondOfMinute().compareTo((PartialInstant) null);
+            test1.secondOfMinute().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -1187,7 +1187,7 @@ public class TestTimeOfDay extends TestCase {
         assertSame(test.getChronology().millisOfSecond(), test.millisOfSecond().getField());
         assertEquals("millisOfSecond", test.millisOfSecond().getName());
         assertEquals("Property[millisOfSecond]", test.millisOfSecond().toString());
-        assertSame(test, test.millisOfSecond().getPartialInstant());
+        assertSame(test, test.millisOfSecond().getReadablePartial());
         assertSame(test, test.millisOfSecond().getTimeOfDay());
         assertEquals(40, test.millisOfSecond().get());
         assertEquals("40", test.millisOfSecond().getAsText());
@@ -1291,7 +1291,7 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(true, test2.millisOfSecond().compareTo(test1) > 0);
         assertEquals(true, test1.millisOfSecond().compareTo(test1) == 0);
         try {
-            test1.millisOfSecond().compareTo((PartialInstant) null);
+            test1.millisOfSecond().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         

@@ -57,6 +57,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
 
@@ -65,9 +66,9 @@ import org.joda.time.chrono.ISOChronology;
  *
  * @author Stephen Colebourne
  */
-public class MockPartialInstant implements PartialInstant {
+public class MockPartial implements ReadablePartial {
     
-    public static final PartialInstant EMPTY_INSTANCE = new MockPartialInstant();
+    public static final ReadablePartial EMPTY_INSTANCE = new MockPartial();
     
     public Chronology getChronology() {
         return ISOChronology.getInstance();
@@ -92,6 +93,8 @@ public class MockPartialInstant implements PartialInstant {
     }
     public DateTime resolveDateTime(ReadableInstant base) {
         return null;
+    }
+    public void resolveInto(ReadWritableInstant base) {
     }
     public DateTimeField[] getFields() {
         return new DateTimeField[0];

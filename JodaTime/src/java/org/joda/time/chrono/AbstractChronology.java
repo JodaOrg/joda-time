@@ -61,7 +61,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * AbstractChronology provides a skeleton implementation for chronology
@@ -281,7 +281,7 @@ public abstract class AbstractChronology implements Chronology, Serializable {
      * @param instant  the partial instant to validate
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public void validate(PartialInstant instant) {
+    public void validate(ReadablePartial instant) {
         DateTimeField[] fields = instant.getFields();
         int[] values = instant.getValues();
         for (int i = 0; i < fields.length; i++) {

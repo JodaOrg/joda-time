@@ -55,7 +55,7 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Defines the calculation engine for date and time fields.
@@ -138,7 +138,7 @@ public abstract class DateTimeField {
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public abstract String getAsText(PartialInstant partial, int fieldValue, Locale locale);
+    public abstract String getAsText(ReadablePartial partial, int fieldValue, Locale locale);
 
     /**
      * Get the human-readable, text value of this field from a partial instant.
@@ -148,7 +148,7 @@ public abstract class DateTimeField {
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsText(PartialInstant partial, Locale locale) {
+    public String getAsText(ReadablePartial partial, Locale locale) {
         return getAsText(partial, partial.get(this), locale);
     }
 
@@ -182,7 +182,7 @@ public abstract class DateTimeField {
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public abstract String getAsShortText(PartialInstant partial, int fieldValue, Locale locale);
+    public abstract String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale);
 
     /**
      * Get the human-readable, short text value of this field from a partial instant.
@@ -192,7 +192,7 @@ public abstract class DateTimeField {
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsShortText(PartialInstant partial, Locale locale) {
+    public String getAsShortText(ReadablePartial partial, Locale locale) {
         return getAsShortText(partial, partial.get(this), locale);
     }
 
@@ -258,7 +258,7 @@ public abstract class DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
-    public abstract int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd);
+    public abstract int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd);
 
     /**
      * Adds a value (which may be negative) to the millis value,
@@ -307,7 +307,7 @@ public abstract class DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public abstract int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd);
+    public abstract int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd);
 
     /**
      * Computes the difference between two instants, as measured in the units
@@ -387,7 +387,7 @@ public abstract class DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public abstract int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue);
+    public abstract int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue);
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text value.
@@ -423,7 +423,7 @@ public abstract class DateTimeField {
      * @return the passed in values
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public abstract int[] set(PartialInstant instant, int fieldIndex, int[] values, String text, Locale locale);
+    public abstract int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale);
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text value.
@@ -507,7 +507,7 @@ public abstract class DateTimeField {
      * @param instant  the partial instant to query
      * @return the minimum value for this field, in the units of the field
      */
-    public abstract int getMinimumValue(PartialInstant instant);
+    public abstract int getMinimumValue(ReadablePartial instant);
 
     /**
      * Get the minimum value for this field using the partial instant and
@@ -517,7 +517,7 @@ public abstract class DateTimeField {
      * @param values  the values to use
      * @return the minimum value for this field, in the units of the field
      */
-    public abstract int getMinimumValue(PartialInstant instant, int[] values);
+    public abstract int getMinimumValue(ReadablePartial instant, int[] values);
 
     /**
      * Get the maximum allowable value for this field.
@@ -541,7 +541,7 @@ public abstract class DateTimeField {
      * @param instant  the partial instant to query
      * @return the maximum value for this field, in the units of the field
      */
-    public abstract int getMaximumValue(PartialInstant instant);
+    public abstract int getMaximumValue(ReadablePartial instant);
 
     /**
      * Get the maximum value for this field using the partial instant and
@@ -551,7 +551,7 @@ public abstract class DateTimeField {
      * @param values  the values to use
      * @return the maximum value for this field, in the units of the field
      */
-    public abstract int getMaximumValue(PartialInstant instant, int[] values);
+    public abstract int getMaximumValue(ReadablePartial instant, int[] values);
 
     /**
      * Get the maximum text value for this field.

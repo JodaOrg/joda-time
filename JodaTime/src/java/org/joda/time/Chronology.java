@@ -53,7 +53,7 @@
  */
 package org.joda.time;
 
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Chronology provides access to the individual date time fields for a
@@ -239,7 +239,7 @@ public interface Chronology {
      * @param instant  the partial instant to validate
      * @throws IllegalArgumentException if the instant is invalid
      */
-    void validate(PartialInstant instant);
+    void validate(ReadablePartial instant);
 
     // Millis
     //-----------------------------------------------------------------------

@@ -60,7 +60,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 
 /**
- * TimeOfDay is an immutable partial instant supporting the hour, minute, second
+ * TimeOfDay is an immutable partial supporting the hour, minute, second
  * and millisecond fields.
  * <p>
  * Calculations on TimeOfDay are performed using a {@link Chronology}.
@@ -89,7 +89,7 @@ import org.joda.time.DateTimeField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class TimeOfDay extends AbstractPartialInstant implements PartialInstant, Serializable {
+public final class TimeOfDay extends AbstractPartial implements ReadablePartial, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 3633353405803318660L;
@@ -413,21 +413,21 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
      */
     public static class Property extends AbstractPartialFieldProperty {
 
-        /** The instant */
-        private final TimeOfDay iInstant;
+        /** The partial */
+        private final TimeOfDay iTimeOfDay;
         /** The field index */
         private final int iFieldIndex;
 
         /**
          * Constructs a property.
          * 
-         * @param instant  the partial instant
+         * @param partial  the partial instance
          * @param field  the field
-         * @param fieldIndex  the index in the instant
+         * @param fieldIndex  the index in the partial
          */
-        Property(TimeOfDay instant, int fieldIndex) {
+        Property(TimeOfDay partial, int fieldIndex) {
             super();
-            iInstant = instant;
+            iTimeOfDay = partial;
             iFieldIndex = fieldIndex;
         }
 
@@ -437,34 +437,34 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * @return the field
          */
         public DateTimeField getField() {
-            return iInstant.getField(iFieldIndex);
+            return iTimeOfDay.getField(iFieldIndex);
         }
 
         /**
-         * Gets the instant that this property belongs to.
+         * Gets the partial that this property belongs to.
          * 
-         * @return the partial instant
+         * @return the partial
          */
-        public PartialInstant getPartialInstant() {
-            return iInstant;
+        public ReadablePartial getReadablePartial() {
+            return iTimeOfDay;
         }
 
         /**
-         * Gets the instant that this property belongs to.
+         * Gets the partial that this property belongs to.
          * 
-         * @return the partial instant
+         * @return the partial
          */
         public TimeOfDay getTimeOfDay() {
-            return iInstant;
+            return iTimeOfDay;
         }
 
         /**
-         * Gets the value of the field that the partial instant is set to.
+         * Gets the value of this field.
          * 
          * @return the field value
          */
         public int get() {
-            return iInstant.getValue(iFieldIndex);
+            return iTimeOfDay.getValue(iFieldIndex);
         }
 
         //-----------------------------------------------------------------------
@@ -486,9 +486,9 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * @throws IllegalArgumentException if the value isn't valid
          */
         public TimeOfDay addCopy(int valueToAdd) {
-            int[] newValues = iInstant.getValues();
-            getField().add(iInstant, iFieldIndex, newValues, valueToAdd);
-            return new TimeOfDay(iInstant, newValues);
+            int[] newValues = iTimeOfDay.getValues();
+            newValues = getField().add(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
+            return new TimeOfDay(iTimeOfDay, newValues);
         }
 
         /**
@@ -510,9 +510,9 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * @throws IllegalArgumentException if the value isn't valid
          */
         public TimeOfDay addInFieldCopy(int valueToAdd) {
-            int[] newValues = iInstant.getValues();
-            getField().addInField(iInstant, iFieldIndex, newValues, valueToAdd);
-            return new TimeOfDay(iInstant, newValues);
+            int[] newValues = iTimeOfDay.getValues();
+            newValues = getField().addInField(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
+            return new TimeOfDay(iTimeOfDay, newValues);
         }
 
         //-----------------------------------------------------------------------
@@ -527,9 +527,9 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * @throws IllegalArgumentException if the value isn't valid
          */
         public TimeOfDay setCopy(int value) {
-            int[] newValues = iInstant.getValues();
-            getField().set(iInstant, iFieldIndex, newValues, value);
-            return new TimeOfDay(iInstant, newValues);
+            int[] newValues = iTimeOfDay.getValues();
+            newValues = getField().set(iTimeOfDay, iFieldIndex, newValues, value);
+            return new TimeOfDay(iTimeOfDay, newValues);
         }
 
         /**
@@ -544,9 +544,9 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public TimeOfDay setCopy(String text, Locale locale) {
-            int[] newValues = iInstant.getValues();
-            getField().set(iInstant, iFieldIndex, newValues, text, locale);
-            return new TimeOfDay(iInstant, newValues);
+            int[] newValues = iTimeOfDay.getValues();
+            newValues = getField().set(iTimeOfDay, iFieldIndex, newValues, text, locale);
+            return new TimeOfDay(iTimeOfDay, newValues);
         }
 
         /**
@@ -562,61 +562,6 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
         public TimeOfDay setCopy(String text) {
             return setCopy(text, null);
         }
-
-// TODO
-//        //-----------------------------------------------------------------------
-//        /**
-//         * Rounds to the lowest whole unit of this field on a copy of this TimeOfDay.
-//         *
-//         * @return a copy of the TimeOfDay with the field value changed
-//         */
-//        public TimeOfDay roundFloorCopy() {
-//            TimeOfDay instant = iInstant;
-//            return (TimeOfDay) instant.withMillis(iField.roundFloor(instant.getMillis()));
-//        }
-//
-//        /**
-//         * Rounds to the highest whole unit of this field on a copy of this TimeOfDay.
-//         *
-//         * @return a copy of the TimeOfDay with the field value changed
-//         */
-//        public TimeOfDay roundCeilingCopy() {
-//            TimeOfDay instant = iInstant;
-//            return (TimeOfDay) instant.withMillis(iField.roundCeiling(instant.getMillis()));
-//        }
-//
-//        /**
-//         * Rounds to the nearest whole unit of this field on a copy of this TimeOfDay,
-//         * favoring the floor if halfway.
-//         *
-//         * @return a copy of the TimeOfDay with the field value changed
-//         */
-//        public TimeOfDay roundHalfFloorCopy() {
-//            TimeOfDay instant = iInstant;
-//            return (TimeOfDay) instant.withMillis(iField.roundHalfFloor(instant.getMillis()));
-//        }
-//
-//        /**
-//         * Rounds to the nearest whole unit of this field on a copy of this TimeOfDay,
-//         * favoring the ceiling if halfway.
-//         *
-//         * @return a copy of the TimeOfDay with the field value changed
-//         */
-//        public TimeOfDay roundHalfCeilingCopy() {
-//            TimeOfDay instant = iInstant;
-//            return (TimeOfDay) instant.withMillis(iField.roundHalfCeiling(instant.getMillis()));
-//        }
-//
-//        /**
-//         * Rounds to the nearest whole unit of this field on a copy of this TimeOfDay.
-//         * If halfway, the ceiling is favored over the floor only if it makes this field's value even.
-//         *
-//         * @return a copy of the TimeOfDay with the field value changed
-//         */
-//        public TimeOfDay roundHalfEvenCopy() {
-//            TimeOfDay instant = iInstant;
-//            return (TimeOfDay) instant.withMillis(iField.roundHalfEven(instant.getMillis()));
-//        }
     }
 
 }

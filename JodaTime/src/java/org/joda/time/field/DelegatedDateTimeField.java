@@ -57,7 +57,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * <code>DelegatedDateTimeField</code> delegates each method call to the
@@ -137,11 +137,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getAsText(instant);
     }
 
-    public String getAsText(PartialInstant partial, int fieldValue, Locale locale) {
+    public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
         return iField.getAsText(partial, fieldValue, locale);
     }
 
-    public String getAsText(PartialInstant partial, Locale locale) {
+    public String getAsText(ReadablePartial partial, Locale locale) {
         return iField.getAsText(partial, locale);
     }
 
@@ -153,11 +153,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getAsShortText(instant);
     }
 
-    public String getAsShortText(PartialInstant partial, int fieldValue, Locale locale) {
+    public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
         return iField.getAsShortText(partial, fieldValue, locale);
     }
 
-    public String getAsShortText(PartialInstant partial, Locale locale) {
+    public String getAsShortText(ReadablePartial partial, Locale locale) {
         return iField.getAsShortText(partial, locale);
     }
 
@@ -169,7 +169,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.add(instant, value);
     }
 
-    public int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         return iField.add(instant, fieldIndex, values, valueToAdd);
     }
 
@@ -177,7 +177,7 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.addWrapped(instant, value);
     }
 
-    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         return iField.addInField(instant, fieldIndex, values, valueToAdd);
     }
 
@@ -201,11 +201,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.set(instant, text);
     }
 
-    public int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue) {
+    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
         return iField.set(instant, fieldIndex, values, newValue);
     }
 
-    public int[] set(PartialInstant instant, int fieldIndex, int[] values, String text, Locale locale) {
+    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
         return iField.set(instant, fieldIndex, values, text, locale);
     }
 
@@ -237,11 +237,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getMinimumValue(instant);
     }
 
-    public int getMinimumValue(PartialInstant instant) {
+    public int getMinimumValue(ReadablePartial instant) {
         return iField.getMinimumValue(instant);
     }
 
-    public int getMinimumValue(PartialInstant instant, int[] values) {
+    public int getMinimumValue(ReadablePartial instant, int[] values) {
         return iField.getMinimumValue(instant, values);
     }
 
@@ -253,11 +253,11 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.getMaximumValue(instant);
     }
 
-    public int getMaximumValue(PartialInstant instant) {
+    public int getMaximumValue(ReadablePartial instant) {
         return iField.getMaximumValue(instant);
     }
 
-    public int getMaximumValue(PartialInstant instant, int[] values) {
+    public int getMaximumValue(ReadablePartial instant, int[] values) {
         return iField.getMaximumValue(instant, values);
     }
 

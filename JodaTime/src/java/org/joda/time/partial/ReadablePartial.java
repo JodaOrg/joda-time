@@ -57,21 +57,26 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 
 /**
- * Defines an instant that does not support every datetime field.
+ * Defines an partial time that does not support every datetime field.
  * <p>
- * A PartialInstant supports a set of fields and cannot be compared to a
- * full complete instant. Methods are provided to resolve the partial instant
- * into a full instant by 'filling in the gaps'.
+ * A <code>ReadablePartial</code> supports a set of fields which be be a
+ * subset of those on the chronology.
+ * A <code>ReadablePartial</code> cannot be compared to a <code>ReadableInstant</code>.
+ * <p>
+ * A <code>ReadablePartial</code> can be converted to a <code>ReadableInstant</code>
+ * using one of the <code>resolve</code> methods. These work by providing a full base
+ * instant that can be used to 'fill in the gaps'.
  *
  * @author Stephen Colebourne
  */
-public interface PartialInstant {
+public interface ReadablePartial {
 
     /**
-     * Gets the number of fields that this instant supports.
+     * Gets the number of fields that this partial supports.
      *
      * @return the number of fields supported
      */
@@ -87,7 +92,7 @@ public interface PartialInstant {
     DateTimeField getField(int index);
 
     /**
-     * Gets an array of the fields that this partial instant supports.
+     * Gets an array of the fields that this partial supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      *
@@ -105,7 +110,7 @@ public interface PartialInstant {
     int getValue(int index);
 
     /**
-     * Gets an array of the value of each of the fields that this partial instant supports.
+     * Gets an array of the value of each of the fields that this partial supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      * Each value corresponds to the same array index as <code>getFields()</code>
@@ -127,7 +132,7 @@ public interface PartialInstant {
     /**
      * Get the value of one of the fields of a datetime.
      * <p>
-     * The field specified must be one of those that is supported by the partial instant.
+     * The field specified must be one of those that is supported by the partial.
      *
      * @param field  a DateTimeField instance that is supported by this partial
      * @return the value of that field
@@ -136,7 +141,7 @@ public interface PartialInstant {
     int get(DateTimeField field);
 
     /**
-     * Checks whether the field specified is supported by this partial instant.
+     * Checks whether the field specified is supported by this partial.
      *
      * @param field  the field to check, may be null which returns false
      * @return true if the field is supported
@@ -147,44 +152,70 @@ public interface PartialInstant {
      * Resolves this partial against another complete millisecond instant to
      * create a new full instant specifying the time zone to resolve with.
      * <p>
-     * For example, if this partial represents a time, then the result of this method
-     * will be the datetime from the specified base plus the time from this instant
-     * set using the time zone specified.
+     * For example, if this partial represents a time, then the result of this
+     * method will be the datetime from the specified base instant plus the
+     * time from this partial set using the time zone specified.
      *
-     * @param baseMillis  source of missing fields
+     * @param baseInstant  source of missing fields
+     * @param zone  the time zone to use, null means default
      * @return the combined instant in milliseconds
      */
-    long resolve(long baseMillis, DateTimeZone zone);
+    long resolve(long baseInstant, DateTimeZone zone);
 
     /**
      * Resolves this partial against another complete instant to create a new
      * full instant. The combination is performed using the chronology of the
      * specified instant.
      * <p>
-     * For example, if this partial represents a time, then the result of this method
-     * will be the date from the specified base plus the time from this instant.
+     * For example, if this partial represents a time, then the result of this
+     * method will be the datetime from the specified base instant plus the
+     * time from this partial.
      *
-     * @param base  the instant that provides the missing fields, null means now
+     * @param baseInstant  the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
-    DateTime resolveDateTime(ReadableInstant base);
+    DateTime resolveDateTime(ReadableInstant baseInstant);
+
+    /**
+     * Resolves this partial into another complete instant setting the relevant
+     * fields on the writable instant. The combination is performed using the
+     * chronology of the specified instant.
+     * <p>
+     * For example, if this partial represents a time, then the input writable
+     * instant will be updated with the time from this partial.
+     *
+     * @param baseInstant  the instant to set into, must not be null
+     * @throws IllegalArgumentException if the base instant is null
+     */
+    void resolveInto(ReadWritableInstant baseInstant);
 
     //-----------------------------------------------------------------------
     /**
      * Compares this partial with the specified object for equality based
-     * on the implementation class, supported fields, chronology and values.
+     * on the supported fields, chronology and values.
      * <p>
-     * Instances of PartialInstant are not generally comparable to one another
-     * as the comparison is based on the implementation class.
+     * Two instances of ReadablePartial are equal if they have the same
+     * chronology, same fields in same order and same values.
      *
-     * @param object  the object to compare to
+     * @param partial  the object to compare to
      * @return true if equal
      */
-    boolean equals(Object object);
+    boolean equals(Object partial);
 
     /**
-     * Gets a hash code for the instant that is compatible with the 
+     * Gets a hash code for the partial that is compatible with the 
      * equals method.
+     * <p>
+     * The formula used must be:
+     * <pre>
+     *  int total = 157;
+     *  for (int i = 0; i < fields.length; i++) {
+     *      total = 23 * total + values[i];
+     *      total = 23 * total + fields[i].hashCode();
+     *  }
+     *  total += chronology.hashCode();
+     *  return total;
+     * </pre>
      *
      * @return a suitable hash code
      */

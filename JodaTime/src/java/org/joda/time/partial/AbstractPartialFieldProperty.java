@@ -61,7 +61,7 @@ import org.joda.time.ReadableInstant;
 
 /**
  * AbstractPartialFieldProperty is a base class for binding a
- * PartialInstant to a DateTimeField.
+ * ReadablePartial to a DateTimeField.
  * <p>
  * It allows the date and time manipulation code to be field based yet
  * still easy to use.
@@ -101,7 +101,7 @@ public abstract class AbstractPartialFieldProperty {
      * 
      * @return the partial instant
      */
-    public abstract PartialInstant getPartialInstant();
+    public abstract ReadablePartial getReadablePartial();
 
     //-----------------------------------------------------------------------
     /**
@@ -119,7 +119,7 @@ public abstract class AbstractPartialFieldProperty {
      * @see DateTimeField#getAsText
      */
     public String getAsText(Locale locale) {
-        return getField().getAsText(getPartialInstant(), get(), locale);
+        return getField().getAsText(getReadablePartial(), get(), locale);
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractPartialFieldProperty {
      * @see DateTimeField#getAsShortText
      */
     public String getAsShortText(Locale locale) {
-        return getField().getAsShortText(getPartialInstant(), get(), locale);
+        return getField().getAsShortText(getReadablePartial(), get(), locale);
     }
 
     /**
@@ -192,7 +192,7 @@ public abstract class AbstractPartialFieldProperty {
      * @see DateTimeField#getMinimumValue
      */
     public int getMinimumValue() {
-        return getField().getMinimumValue(getPartialInstant());
+        return getField().getMinimumValue(getReadablePartial());
     }
 
     /**
@@ -212,7 +212,7 @@ public abstract class AbstractPartialFieldProperty {
      * @see DateTimeField#getMaximumValue
      */
     public int getMaximumValue() {
-        return getField().getMaximumValue(getPartialInstant());
+        return getField().getMaximumValue(getReadablePartial());
     }
 
     //-----------------------------------------------------------------------
@@ -269,7 +269,7 @@ public abstract class AbstractPartialFieldProperty {
      * Compare this field to the same field on another partial instant.
      * <p>
      * The {@link #get()} method is used to obtain the value to compare for
-     * this instant and the {@link PartialInstant#get(DateTimeField)} method
+     * this instant and the {@link ReadablePartial#get(DateTimeField)} method
      * is used for the specified instant.
      * 
      * @param instant  the instant to compare to
@@ -278,7 +278,7 @@ public abstract class AbstractPartialFieldProperty {
      * @throws IllegalArgumentException if the field of this property cannot be queried
      *  on the specified instant
      */
-    public int compareTo(PartialInstant instant) {
+    public int compareTo(ReadablePartial instant) {
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }

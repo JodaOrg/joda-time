@@ -56,7 +56,7 @@ package org.joda.time.chrono;
 import org.joda.time.DateTimeField;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * Provides time calculations for the year of era component of time.
@@ -97,7 +97,7 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().addWrapped(instant, years);
     }
 
-    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int years) {
+    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int years) {
         return getWrappedField().addInField(instant, fieldIndex, values, years);
     }
 

@@ -70,45 +70,45 @@ import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
 
 /**
- * AbstractPartialInstant provides a standard base implementation of most methods
- * in the PartialInstant interface.
+ * AbstractPartial provides a standard base implementation of most methods
+ * in the ReadablePartial interface.
  * <p>
  * Calculations on are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
- * AbstractPartialInstant allows subclasses may be mutable and not thread-safe.
+ * AbstractPartial allows subclasses may be mutable and not thread-safe.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
-public abstract class AbstractPartialInstant implements PartialInstant, Serializable {
+public abstract class AbstractPartial implements ReadablePartial, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 2353678632973660L;
 
     /** The chronology in use */
     protected Chronology iChronology;
-    /** The values of each field in this partial instant */
+    /** The values of each field in this partial */
     protected int[] iValues;
-    /** The values of each field in this partial instant */
+    /** The values of each field in this partial */
     protected transient DateTimeField[] iFields;
 
     // Constructors
     //-----------------------------------------------------------------------
     /**
-     * Constructs a AbstractPartialInstant with the current time, using ISOChronology in
+     * Constructs a AbstractPartial with the current time, using ISOChronology in
      * the default zone to extract the fields.
      * <p>
      * The constructor uses the default time zone, resulting in the local time
      * being initialised. Once the constructor is complete, all further calculations
      * are performed without reference to a timezone (by switching to UTC).
      */
-    public AbstractPartialInstant() {
+    public AbstractPartial() {
         this(DateTimeUtils.currentTimeMillis(), null);
     }
 
     /**
-     * Constructs a AbstractPartialInstant with the current time, using the specified chronology
+     * Constructs a AbstractPartial with the current time, using the specified chronology
      * and zone to extract the fields.
      * <p>
      * The constructor uses the time zone of the chronology specified.
@@ -117,12 +117,12 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      *
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public AbstractPartialInstant(Chronology chronology) {
+    public AbstractPartial(Chronology chronology) {
         this(DateTimeUtils.currentTimeMillis(), chronology);
     }
 
     /**
-     * Constructs a AbstractPartialInstant extracting the partial fields from the specified
+     * Constructs a AbstractPartial extracting the partial fields from the specified
      * milliseconds using the ISOChronology in the default zone.
      * <p>
      * The constructor uses the default time zone, resulting in the local time
@@ -131,12 +131,12 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
-    public AbstractPartialInstant(long instant) {
+    public AbstractPartial(long instant) {
         this(instant, null);
     }
 
     /**
-     * Constructs a AbstractPartialInstant extracting the partial fields from the specified
+     * Constructs a AbstractPartial extracting the partial fields from the specified
      * milliseconds using the chronology provided.
      * <p>
      * The constructor uses the time zone of the chronology specified.
@@ -146,7 +146,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public AbstractPartialInstant(long instant, Chronology chronology) {
+    public AbstractPartial(long instant, Chronology chronology) {
         super();
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
@@ -157,7 +157,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     }
 
     /**
-     * Constructs a AbstractPartialInstant from an Object that represents a time.
+     * Constructs a AbstractPartial from an Object that represents a time.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
@@ -166,20 +166,21 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      * @param instant  the datetime object, must not be null
      * @throws IllegalArgumentException if the date is null
      */
-    public AbstractPartialInstant(Object instant) {
+    public AbstractPartial(Object instant) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        long millis = converter.getInstantMillis(instant);
         Chronology chronology = converter.getChronology(instant);
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
         iChronology = chronology.withUTC();
         iFields = initFields(iChronology);
-        iValues = initValues(converter.getInstantMillis(instant), chronology);
+        iValues = initValues(millis, chronology);
     }
 
     /**
-     * Constructs a AbstractPartialInstant from an Object that represents a time, using the
+     * Constructs a AbstractPartial from an Object that represents a time, using the
      * specified chronology.
      * <p>
      * The recognised object types are defined in
@@ -194,20 +195,21 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      * @param chronology  the chronology, null means ISOChronology
      * @throws IllegalArgumentException if the date is null
      */
-    public AbstractPartialInstant(Object instant, Chronology chronology) {
+    public AbstractPartial(Object instant, Chronology chronology) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        long millis = converter.getInstantMillis(instant, chronology);
         chronology = converter.getChronology(instant, chronology);
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
         iChronology = chronology.withUTC();
         iFields = initFields(iChronology);
-        iValues = initValues(converter.getInstantMillis(instant, chronology), chronology);
+        iValues = initValues(millis, chronology);
     }
 
     /**
-     * Constructs a AbstractPartialInstant with specified time field values and chronology.
+     * Constructs a AbstractPartial with specified time field values and chronology.
      * <p>
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed
@@ -216,7 +218,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      * @param values  the new set of values
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public AbstractPartialInstant(int[] values, Chronology chronology) {
+    public AbstractPartial(int[] values, Chronology chronology) {
         super();
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
@@ -257,7 +259,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the number of fields in this instant.
+     * Gets the number of fields in this partial.
      * 
      * @return the field count
      */
@@ -295,7 +297,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
 
     //-----------------------------------------------------------------------
     /**
-     * Gets an array of the fields that this partial instant supports.
+     * Gets an array of the fields that this partial supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      *
@@ -306,7 +308,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     }
 
     /**
-     * Gets an array of the value of each of the fields that this partial instant supports.
+     * Gets an array of the value of each of the fields that this partial supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      * Each value corresponds to the same array index as <code>getFields()</code>
@@ -333,7 +335,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     /**
      * Get the value of one of the fields of a datetime.
      * <p>
-     * The field specified must be one of those that is supported by the partial instant.
+     * The field specified must be one of those that is supported by the partial.
      *
      * @param field  a DateTimeField instance that is supported by this partial
      * @return the value of that field
@@ -349,7 +351,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     }
 
     /**
-     * Checks whether the field specified is supported by this partial instant.
+     * Checks whether the field specified is supported by this partial.
      *
      * @param field  the field to check, may be null which returns false
      * @return true if the field is supported
@@ -365,39 +367,20 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
 
     //-----------------------------------------------------------------------
     /**
-     * Resolves this partial against another complete instant to create a new
-     * full instant specifying values as milliseconds since 1970-01-01T00:00:00Z.
+     * Resolves this partial against another complete millisecond instant to
+     * create a new full instant specifying the time zone to resolve with.
      * <p>
-     * For example, if this partial represents a time, then the result of this method
-     * will be the date from the specified base plus the time from this instant.
+     * For example, if this partial represents a time, then the result of this
+     * method will be the datetime from the specified base instant plus the
+     * time from this partial set using the time zone specified.
      *
-     * @param baseMillis  source of missing fields
-     * @param zone  the zone to use, null means default
+     * @param baseInstant  source of missing fields
+     * @param zone  the time zone to use, null means default
      * @return the combined instant in milliseconds
      */
-    public long resolve(long baseMillis, DateTimeZone zone) {
+    public long resolve(long baseInstant, DateTimeZone zone) {
         Chronology chrono = iChronology.withZone(zone);
-        return resolve(baseMillis, chrono);
-    }
-
-    /**
-     * Resolves this partial into another complete instant setting the relevant fields
-     * on the writable instant. The combination is performed using the chronology of the
-     * specified instant.
-     * <p>
-     * For example, if this partial represents a time, then the input writable instant
-     * will be updated with the time from this instant.
-     *
-     * @param base  the instant to set into, must not be null
-     * @throws IllegalArgumentException if the base instant is null
-     */
-    public void resolveInto(ReadWritableInstant base) {
-        if (base == null) {
-            throw new IllegalArgumentException("The instant must not be null");
-        }
-        Chronology chrono = base.getChronology();
-        long resolved = resolve(base.getMillis(), chrono);
-        base.setMillis(resolved);
+        return resolve(baseInstant, chrono);
     }
 
     /**
@@ -405,34 +388,55 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      * full instant. The combination is performed using the chronology of the
      * specified instant.
      * <p>
-     * For example, if this partial represents a time, then the result of this method
-     * will be the date from the specified base plus the time from this instant.
+     * For example, if this partial represents a time, then the result of this
+     * method will be the datetime from the specified base instant plus the
+     * time from this partial.
      *
-     * @param base  the instant that provides the missing fields, null means now
+     * @param baseInstant  the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
-    public DateTime resolveDateTime(ReadableInstant base) {
+    public DateTime resolveDateTime(ReadableInstant baseInstant) {
         long resolved;
         Chronology chrono;
-        if (base == null) {
+        if (baseInstant == null) {
             chrono = ISOChronology.getInstance();
             resolved = resolve(DateTimeUtils.currentTimeMillis(), chrono);
         } else {
-            chrono = base.getChronology();
-            resolved = resolve(base.getMillis(), chrono);
+            chrono = baseInstant.getChronology();
+            resolved = resolve(baseInstant.getMillis(), chrono);
         }
         return new DateTime(resolved, chrono);
     }
 
     /**
-     * Resolve this partial instant into the base millis using the specified chronology.
+     * Resolves this partial into another complete instant setting the relevant
+     * fields on the writable instant. The combination is performed using the
+     * chronology of the specified instant.
+     * <p>
+     * For example, if this partial represents a time, then the input writable
+     * instant will be updated with the time from this partial.
+     *
+     * @param baseInstant  the instant to set into, must not be null
+     * @throws IllegalArgumentException if the base instant is null
+     */
+    public void resolveInto(ReadWritableInstant baseInstant) {
+        if (baseInstant == null) {
+            throw new IllegalArgumentException("The instant must not be null");
+        }
+        Chronology chrono = baseInstant.getChronology();
+        long resolved = resolve(baseInstant.getMillis(), chrono);
+        baseInstant.setMillis(resolved);
+    }
+
+    /**
+     * Resolve this partial into the base millis using the specified chronology.
      * 
-     * @param baseMillis  the base millis
+     * @param baseInstant  the base millisecond instant
      * @param chrono  the chronology
      * @return the new resolved millis
      */
-    protected long resolve(long baseMillis, Chronology chrono) {
-        long millis = baseMillis;
+    protected long resolve(long baseInstant, Chronology chrono) {
+        long millis = baseInstant;
         for (int i = 0; i < iFields.length; i++) {
             millis = iFields[i].set(millis, iValues[i]);
         }
@@ -441,20 +445,20 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
 
     //-----------------------------------------------------------------------
     /**
-     * Compares this PartialInstant with another returning true if the chronology,
+     * Compares this ReadablePartial with another returning true if the chronology,
      * fields and values are equal.
      *
-     * @param instant  an object to check against
+     * @param partial  an object to check against
      * @return true if fields and values are equal
      */
-    public boolean equals(Object instant) {
-        if (instant instanceof AbstractPartialInstant) {
-            AbstractPartialInstant other = (AbstractPartialInstant) instant;
+    public boolean equals(Object partial) {
+        if (partial instanceof AbstractPartial) {
+            AbstractPartial other = (AbstractPartial) partial;
             return Arrays.equals(iValues, other.iValues) &&
                    Arrays.equals(iFields, other.iFields) &&
                    iChronology == other.iChronology;
-        } else if (instant instanceof PartialInstant) {
-            PartialInstant other = (PartialInstant) instant;
+        } else if (partial instanceof ReadablePartial) {
+            ReadablePartial other = (ReadablePartial) partial;
             return Arrays.equals(iValues, other.getValues()) &&
                    Arrays.equals(iFields, other.getFields()) &&
                    iChronology == other.getChronology();
@@ -463,7 +467,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     }
 
     /**
-     * Gets a hash code for the PartialInstant that is compatible with the 
+     * Gets a hash code for the ReadablePartial that is compatible with the 
      * equals method.
      *
      * @return a suitable hash code

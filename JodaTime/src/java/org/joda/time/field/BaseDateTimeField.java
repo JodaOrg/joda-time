@@ -58,7 +58,7 @@ import java.util.Locale;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.PartialInstant;
+import org.joda.time.partial.ReadablePartial;
 
 /**
  * BaseDateTimeField provides the common behaviour for DateTimeField
@@ -142,7 +142,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsText(PartialInstant partial, int fieldValue, Locale locale) {
+    public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
         return getAsText(fieldValue, locale);
     }
 
@@ -189,7 +189,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsShortText(PartialInstant partial, int fieldValue, Locale locale) {
+    public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
         return getAsShortText(fieldValue, locale);
     }
 
@@ -277,7 +277,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
      */
-    public int[] add(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         if (valueToAdd == 0) {
             return values;
         }
@@ -388,7 +388,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @return the passed in values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+    public int[] addInField(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         int current = values[fieldIndex];
         int wrapped = FieldUtils.getWrappedValue
             (current, valueToAdd, getMinimumValue(instant), getMaximumValue(instant));
@@ -478,7 +478,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @return the updated values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue) {
+    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, int newValue) {
         FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(instant, values), getMaximumValue(instant, values));
         values[fieldIndex] = newValue;
         
@@ -533,7 +533,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @return the passed in values
      * @throws IllegalArgumentException if the text value is invalid
      */
-    public int[] set(PartialInstant instant, int fieldIndex, int[] values, String text, Locale locale) {
+    public int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale) {
         int value = convertText(text, locale);
         return set(instant, fieldIndex, values, value);
     }
@@ -637,7 +637,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param instant  the partial instant to query
      * @return the minimum value for this field, in the units of the field
      */
-    public int getMinimumValue(PartialInstant instant) {
+    public int getMinimumValue(ReadablePartial instant) {
         return getMinimumValue();
     }
 
@@ -651,7 +651,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param values  the values to use
      * @return the minimum value for this field, in the units of the field
      */
-    public int getMinimumValue(PartialInstant instant, int[] values) {
+    public int getMinimumValue(ReadablePartial instant, int[] values) {
         return getMinimumValue(instant);
     }
 
@@ -683,7 +683,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param instant  the partial instant to query
      * @return the maximum value for this field, in the units of the field
      */
-    public int getMaximumValue(PartialInstant instant) {
+    public int getMaximumValue(ReadablePartial instant) {
         return getMaximumValue();
     }
 
@@ -697,7 +697,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * @param values  the values to use
      * @return the maximum value for this field, in the units of the field
      */
-    public int getMaximumValue(PartialInstant instant, int[] values) {
+    public int getMaximumValue(ReadablePartial instant, int[] values) {
         return getMaximumValue(instant);
     }
 

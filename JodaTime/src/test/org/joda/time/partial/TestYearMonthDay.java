@@ -511,10 +511,10 @@ public class TestYearMonthDay extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInstant()));
-        assertEquals(false, test1.equals(MockPartialInstant.EMPTY_INSTANCE));
+        assertEquals(false, test1.equals(MockPartial.EMPTY_INSTANCE));
     }
     
-    class MockInstant extends MockPartialInstant {
+    class MockInstant extends MockPartial {
         public DateTimeField[] getFields() {
             return new DateTimeField[] {
                 ISOChronology.getInstance().year(),
@@ -610,7 +610,7 @@ public class TestYearMonthDay extends TestCase {
         assertSame(test.getChronology().year(), test.year().getField());
         assertEquals("year", test.year().getName());
         assertEquals("Property[year]", test.year().toString());
-        assertSame(test, test.year().getPartialInstant());
+        assertSame(test, test.year().getReadablePartial());
         assertSame(test, test.year().getYearMonthDay());
         assertEquals(1972, test.year().get());
         assertEquals("1972", test.year().getAsText());
@@ -699,7 +699,7 @@ public class TestYearMonthDay extends TestCase {
         assertEquals(true, test2.year().compareTo(test1) > 0);
         assertEquals(true, test1.year().compareTo(test1) == 0);
         try {
-            test1.year().compareTo((PartialInstant) null);
+            test1.year().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -720,7 +720,7 @@ public class TestYearMonthDay extends TestCase {
         assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
         assertEquals("monthOfYear", test.monthOfYear().getName());
         assertEquals("Property[monthOfYear]", test.monthOfYear().toString());
-        assertSame(test, test.monthOfYear().getPartialInstant());
+        assertSame(test, test.monthOfYear().getReadablePartial());
         assertSame(test, test.monthOfYear().getYearMonthDay());
         assertEquals(6, test.monthOfYear().get());
         assertEquals("June", test.monthOfYear().getAsText());
@@ -843,7 +843,7 @@ public class TestYearMonthDay extends TestCase {
         assertEquals(true, test2.monthOfYear().compareTo(test1) > 0);
         assertEquals(true, test1.monthOfYear().compareTo(test1) == 0);
         try {
-            test1.monthOfYear().compareTo((PartialInstant) null);
+            test1.monthOfYear().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -864,7 +864,7 @@ public class TestYearMonthDay extends TestCase {
         assertSame(test.getChronology().dayOfMonth(), test.dayOfMonth().getField());
         assertEquals("dayOfMonth", test.dayOfMonth().getName());
         assertEquals("Property[dayOfMonth]", test.dayOfMonth().toString());
-        assertSame(test, test.dayOfMonth().getPartialInstant());
+        assertSame(test, test.dayOfMonth().getReadablePartial());
         assertSame(test, test.dayOfMonth().getYearMonthDay());
         assertEquals(9, test.dayOfMonth().get());
         assertEquals("9", test.dayOfMonth().getAsText());
@@ -984,7 +984,7 @@ public class TestYearMonthDay extends TestCase {
         assertEquals(true, test2.dayOfMonth().compareTo(test1) > 0);
         assertEquals(true, test1.dayOfMonth().compareTo(test1) == 0);
         try {
-            test1.dayOfMonth().compareTo((PartialInstant) null);
+            test1.dayOfMonth().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         

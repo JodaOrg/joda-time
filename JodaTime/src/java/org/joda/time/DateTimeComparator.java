@@ -56,7 +56,6 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 
 /**
@@ -150,9 +149,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a comparator over all date fields
      */
     public static DateTimeComparator getDateOnlyInstance(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstance();
-        }
+        chrono = DateTimeUtils.getChronology(chrono);
         return getInstance(chrono.dayOfYear(), null);
     }
 
@@ -164,9 +161,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a comparator over all time fields
      */
     public static DateTimeComparator getTimeOnlyInstance(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstance();
-        }
+        chrono = DateTimeUtils.getChronology(chrono);
         return getInstance(null, chrono.dayOfYear());
     }
 

@@ -402,10 +402,31 @@ public final class Period
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this period supports, null means AllType
+     * @param type  which set of fields this period supports, null means standard
      */
     public Period(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
+    }
+
+    /**
+     * Creates a period from the given start point and the duration.
+     *
+     * @param startInstant  the interval start, null means now
+     * @param duration  the duration of the interval, null means zero-length
+     */
+    public Period(ReadableInstant startInstant, ReadableDuration duration) {
+        super(startInstant, duration, null);
+    }
+
+    /**
+     * Creates a period from the given start point and the duration.
+     *
+     * @param startInstant  the interval start, null means now
+     * @param duration  the duration of the interval, null means zero-length
+     * @param type  which set of fields this period supports, null means standard
+     */
+    public Period(ReadableInstant startInstant, ReadableDuration duration, PeriodType type) {
+        super(startInstant, duration, type);
     }
 
     /**

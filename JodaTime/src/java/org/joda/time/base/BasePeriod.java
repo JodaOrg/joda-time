@@ -63,6 +63,7 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePeriod;
 import org.joda.time.convert.ConverterManager;
@@ -157,6 +158,24 @@ public abstract class BasePeriod
             iType = type;
             setPeriodInternal(start, end, chrono); // internal method
         }
+    }
+
+    /**
+     * Creates a period from the given start point and duration.
+     *
+     * @param startInstant  the interval start, null means now
+     * @param duration  the duration of the interval, null means zero-length
+     * @param type  which set of fields this period supports, null means standard
+     */
+    protected BasePeriod(ReadableInstant startInstant, ReadableDuration duration, PeriodType type) {
+        super();
+        type = checkPeriodType(type);
+        long startMillis = DateTimeUtils.getInstantMillis(startInstant);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        long endMillis = FieldUtils.safeAdd(startMillis, durationMillis);
+        Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
+        iType = type;
+        setPeriodInternal(startMillis, endMillis, chrono); // internal method
     }
 
     /**

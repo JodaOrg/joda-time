@@ -97,8 +97,36 @@ public class PeriodFormatterBuilder {
         clear();
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Converts to a PeriodPrinter that prints using all the appended elements.
+     * Constructs a PeriodFormatter using all the appended elements.
+     * <p>
+     * This is the main method used by applications at the end of the build
+     * process to create a usable formatter.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
+     * <p>
+     * The returned formatter may not support both printing and parsing.
+     * The methods {@link PeriodFormatter#isPrinter()} and
+     * {@link PeriodFormatter#isParser()} will help you determine the state
+     * of the formatter.
+     * 
+     * @return the newly created formatter
+     */
+    public PeriodFormatter toFormatter() {
+        PeriodFormatter formatter = toFormatter(iElementPairs);
+        iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
+        return formatter;
+    }
+
+    /**
+     * Internal method to create a PeriodPrinter instance using all the
+     * appended elements.
+     * <p>
+     * Most applications will not use this method.
+     * If you want a printer in an application, call {@link #toFormatter()}
+     * and just use the printing API.
+     * <p>
      * Subsequent changes to this builder do not affect the returned printer.
      * 
      * @return the newly created printer
@@ -108,25 +136,19 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Converts to a PeriodParser that parses using all the appended elements.
+     * Internal method to create a PeriodParser instance using all the
+     * appended elements.
+     * <p>
+     * Most applications will not use this method.
+     * If you want a printer in an application, call {@link #toFormatter()}
+     * and just use the printing API.
+     * <p>
      * Subsequent changes to this builder do not affect the returned parser.
      * 
      * @return the newly created parser
      */
     public PeriodParser toParser() {
         return toFormatter().getParser();
-    }
-
-    /**
-     * Converts to a PeriodFormatter that formats using all the appended elements.
-     * Subsequent changes to this builder do not affect the returned formatter.
-     * 
-     * @return the newly created formatter
-     */
-    public PeriodFormatter toFormatter() {
-        PeriodFormatter formatter = toFormatter(iElementPairs);
-        iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
-        return formatter;
     }
 
     private static PeriodFormatter toFormatter(List elementPairs) {
@@ -141,6 +163,7 @@ public class PeriodFormatterBuilder {
         return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Clears out all the appended elements, allowing this builder to be reused.
      */

@@ -79,39 +79,10 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts to a DateTimePrinter that can only print, using all the
-     * appended elements.
+     * Constructs a DateTimeFormatter using all the appended elements.
      * <p>
-     * Subsequent changes to this builder do not affect the returned formatter.
-     *
-     * @throws UnsupportedOperationException if printing is not supported
-     */
-    public DateTimePrinter toPrinter() {
-        Object f = getFormatter();
-        if (isPrinter(f)) {
-            return (DateTimePrinter) f;
-        }
-        throw new UnsupportedOperationException("Printing is not supported");
-    }
-
-    /**
-     * Converts to a DateTimeFormatter that can only parse, using all the
-     * appended elements.
-     * <p>
-     * Subsequent changes to this builder do not affect the returned formatter.
-     *
-     * @throws UnsupportedOperationException if parsing is not supported
-     */
-    public DateTimeParser toParser() {
-        Object f = getFormatter();
-        if (isParser(f)) {
-            return (DateTimeParser) f;
-        }
-        throw new UnsupportedOperationException("Parsing is not supported");
-    }
-
-    /**
-     * Converts to a DateTimeFormatter that using all the appended elements.
+     * This is the main method used by applications at the end of the build
+     * process to create a usable formatter.
      * <p>
      * Subsequent changes to this builder do not affect the returned formatter.
      * <p>
@@ -138,7 +109,57 @@ public class DateTimeFormatterBuilder {
         throw new UnsupportedOperationException("Both printing and parsing not supported");
     }
 
+    /**
+     * Internal method to create a DateTimePrinter instance using all the
+     * appended elements.
+     * <p>
+     * Most applications will not use this method.
+     * If you want a printer in an application, call {@link #toFormatter()}
+     * and just use the printing API.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned printer.
+     *
+     * @throws UnsupportedOperationException if printing is not supported
+     */
+    public DateTimePrinter toPrinter() {
+        Object f = getFormatter();
+        if (isPrinter(f)) {
+            return (DateTimePrinter) f;
+        }
+        throw new UnsupportedOperationException("Printing is not supported");
+    }
+
+    /**
+     * Internal method to create a DateTimeParser instance using all the
+     * appended elements.
+     * <p>
+     * Most applications will not use this method.
+     * If you want a parser in an application, call {@link #toFormatter()}
+     * and just use the parsing API.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned parser.
+     *
+     * @throws UnsupportedOperationException if parsing is not supported
+     */
+    public DateTimeParser toParser() {
+        Object f = getFormatter();
+        if (isParser(f)) {
+            return (DateTimeParser) f;
+        }
+        throw new UnsupportedOperationException("Parsing is not supported");
+    }
+
     //-----------------------------------------------------------------------
+    /**
+     * Returns true if toFormatter can be called without throwing an
+     * UnsupportedOperationException.
+     * 
+     * @return true if a formatter can be built
+     */
+    public boolean canBuildFormatter() {
+        return isFormatter(getFormatter());
+    }
+
     /**
      * Returns true if toPrinter can be called without throwing an
      * UnsupportedOperationException.
@@ -157,16 +178,6 @@ public class DateTimeFormatterBuilder {
      */
     public boolean canBuildParser() {
         return isParser(getFormatter());
-    }
-
-    /**
-     * Returns true if toFormatter can be called without throwing an
-     * UnsupportedOperationException.
-     * 
-     * @return true if a formatter can be built
-     */
-    public boolean canBuildFormatter() {
-        return isFormatter(getFormatter());
     }
 
     //-----------------------------------------------------------------------

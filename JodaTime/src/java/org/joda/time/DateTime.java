@@ -78,8 +78,10 @@ import org.joda.time.property.DateTimeFieldProperty;
  * <li>numeric value
  * <li>text value
  * <li>short text value
- * <li>maximum value
- * <li>minimum value
+ * <li>maximum/minimum values
+ * <li>add/subtract
+ * <li>set
+ * <li>rounding
  * </ul>
  *
  * <p>

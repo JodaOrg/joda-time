@@ -245,9 +245,11 @@ public abstract class AbstractGJChronology extends AssembledChronology {
             return base.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
         }
 
+        FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 12);
+
         boolean isLeap = isLeapYear(year);
 
-        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 12);
         FieldUtils.verifyValueBounds("dayOfMonth", dayOfMonth, 1,
                                 (isLeap ? MAX_DAYS_PER_MONTH_ARRAY : MIN_DAYS_PER_MONTH_ARRAY)
                                 [monthOfYear - 1]);

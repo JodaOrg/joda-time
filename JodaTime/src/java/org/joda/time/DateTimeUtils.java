@@ -72,7 +72,8 @@ public final class DateTimeUtils {
     /**
      * Restrictive constructor
      */
-    protected DateTimeUtils() {
+    private DateTimeUtils() {
+        super();
     }
 
     //-----------------------------------------------------------------------
@@ -126,6 +127,11 @@ public final class DateTimeUtils {
         cMillisProvider = new OffsetMillisProvider(offsetMillis);
     }
 
+    /**
+     * Checks whether the provider may be changed using permission 'CurrentTime.setProvider'.
+     * 
+     * @throws SecurityException if the provider may not be changed
+     */
     private static void checkPermission() throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {

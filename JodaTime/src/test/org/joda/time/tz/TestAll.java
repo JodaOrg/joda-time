@@ -73,6 +73,7 @@ public class TestAll extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(TestUTCProvider.suite());
+        suite.addTest(TestBuilder.suite());
         return suite;
     }
 

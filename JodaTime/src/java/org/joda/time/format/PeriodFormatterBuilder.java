@@ -155,14 +155,9 @@ public class PeriodFormatterBuilder {
 
     private static PeriodFormatter toFormatter(List formatters) {
         int size = formatters.size();
-        if (size >= 2 && formatters.get(1) instanceof Separator) {
-            PeriodFormatter before = (PeriodFormatter) formatters.get(0);
-            if (size == 2) {
-                // Separator at the end would never format anything.
-                return before;
-            }
-            return ((Separator) formatters.get(1)).finish
-                (before, toFormatter(formatters.subList(2, size)));
+        if (size >= 1 && formatters.get(0) instanceof Separator) {
+            Separator sep = (Separator) formatters.get(0);
+            return sep.finish(toFormatter(formatters.subList(1, size)));
         }
         return createComposite(formatters);
     }
@@ -207,8 +202,8 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Instructs the printer to emit specific text, and the parser to expect
-     * it. The parser is case-insensitive.
+     * Instructs the printer to emit specific text, and the parser to expect it.
+     * The parser is case-insensitive.
      *
      * @return this PeriodFormatterBuilder
      * @throws IllegalArgumentException if text is null
@@ -525,48 +520,105 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * During printing, separators are only printed if fields are printed
-     * following the latest one.
+     * Append a separator, which is output if fields are printed both before
+     * and after the separator.
+     * <p>
+     * For example, <code>builder.appendDays().appendSeparator(",").appendHours()</code>
+     * will only output the comma if both the days and hours fields are output.
+     * <p>
+     * The text will be parsed case-insensitively.
      * <p>
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
+     * @param text  the text to use as a separator
      * @return this PeriodFormatterBuilder
+     * @throws IllegalStateException if this separator follows a previous one
      */
     public PeriodFormatterBuilder appendSeparator(String text) {
-        return appendSeparator(text, text);
+        return appendSeparator(text, text, true, true);
     }
 
     /**
-     * During printing, separators are only printed if fields are printed
-     * following the latest one.
+     * Append a separator, which is output only if fields are printed after the separator.
      * <p>
-     * During parsing, either text parameter is accepted, and is
-     * case-insensitive.
+     * For example, <code>builder.appendDays().appendSeparator(",").appendHours()</code>
+     * will only output the comma if the hours fields is output.
+     * <p>
+     * The text will be parsed case-insensitively.
      * <p>
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @param finalText alternate used if this is the final separator
-     * printed
+     * @param text  the text to use as a separator
      * @return this PeriodFormatterBuilder
+     * @throws IllegalStateException if this separator follows a previous one
      */
-    public PeriodFormatterBuilder appendSeparator(String text,
-                                                    String finalText) {
+    public PeriodFormatterBuilder appendSeparatorIfFieldsAfter(String text) {
+        return appendSeparator(text, text, false, true);
+    }
+
+    /**
+     * Append a separator, which is output only if fields are printed after the separator.
+     * <p>
+     * For example, <code>builder.appendDays().appendSeparator(",").appendHours()</code>
+     * will only output the comma if the days fields is output.
+     * <p>
+     * The text will be parsed case-insensitively.
+     * <p>
+     * Note: appending a separator discontinues any further work on the latest
+     * appended field.
+     *
+     * @param text  the text to use as a separator
+     * @return this PeriodFormatterBuilder
+     * @throws IllegalStateException if this separator follows a previous one
+     */
+    public PeriodFormatterBuilder appendSeparatorIfFieldsBefore(String text) {
+        return appendSeparator(text, text, true, false);
+    }
+
+    /**
+     * Append a separator, which is output if fields are printed both before
+     * and after the separator.
+     * <p>
+     * This method changes the separator depending on whether it is the last separator
+     * to be output.
+     * <p>
+     * For example, <code>builder.appendDays().appendSeparator(",", "&").appendHours().appendSeparator(",", "&").appendMinutes()</code>
+     * will output '1,2&3' if all three fields are output, '1&2' if two fields are output
+     * and '1' if just one field is output.
+     * <p>
+     * The text will be parsed case-insensitively.
+     * <p>
+     * Note: appending a separator discontinues any further work on the latest
+     * appended field.
+     *
+     * @param text  the text to use as a separator
+     * @param finalText  the text used used if this is the final separator to be printed
+     * @return this PeriodFormatterBuilder
+     * @throws IllegalStateException if this separator follows a previous one
+     */
+    public PeriodFormatterBuilder appendSeparator(String text, String finalText) {
+        return appendSeparator(text, finalText, true, true);
+    }
+
+    private PeriodFormatterBuilder appendSeparator(String text, String finalText, boolean useBefore, boolean useAfter) {
         if (text == null || finalText == null) {
             throw new IllegalArgumentException();
         }
 
         clearPrefix();
-
+        
+        // optimise zero formatter case
         List formatters = iFormatters;
-
         if (formatters.size() == 0) {
-            // Separator at the beginning would never print anything.
+            if (useAfter && useBefore == false) {
+                formatters.add(new Separator(text, finalText, Literal.EMPTY, useBefore, useAfter));
+            }
             return this;
         }
-
-        // Create a composite over all the fields between separators.
+        
+        // find the last separator added
         int i;
         Separator lastSeparator = null;
         for (i=formatters.size(); --i>=0; ) {
@@ -576,19 +628,16 @@ public class PeriodFormatterBuilder {
                 break;
             }
         }
-
+        
+        // merge formatters
         if (lastSeparator != null && formatters.size() == 0) {
-            // Merge two adjacent separators together.
-            iFormatters.set(i, lastSeparator.merge(text, finalText));
+            throw new IllegalStateException("Cannot have two adjacent separators");
         } else {
             PeriodFormatter composite = createComposite(formatters);
             formatters.clear();
-            formatters.add(composite);
-            
-            // The separator will be finished later.
-            formatters.add(new Separator(text, finalText));
+            formatters.add(new Separator(text, finalText, composite, useBefore, useAfter));
         }
-            
+        
         return this;
     }
 
@@ -636,10 +685,13 @@ public class PeriodFormatterBuilder {
     }
 
     private static PeriodFormatter createComposite(List formatters) {
-        if (formatters.size() == 1) {
-            return (PeriodFormatter)formatters.get(0);
-        } else {
-            return new Composite(formatters);
+        switch (formatters.size()) {
+            case 0:
+                return Literal.EMPTY;
+            case 1:
+                return (PeriodFormatter) formatters.get(0);
+            default:
+                return new Composite(formatters);
         }
     }
 
@@ -1229,6 +1281,7 @@ public class PeriodFormatterBuilder {
     private static final class Literal extends AbstractPeriodFormatter
         implements PeriodFormatter
     {
+        static final Literal EMPTY = new Literal("");
         private final String iText;
 
         Literal(String text) {
@@ -1271,19 +1324,18 @@ public class PeriodFormatterBuilder {
         private final String iText;
         private final String iFinalText;
 
-        private final PeriodFormatter iBefore;
-        private final PeriodFormatter iAfter;
+        private final boolean iUseBefore;
+        private final boolean iUseAfter;
 
-        Separator(String text, String finalText) {
-            this(text, finalText, null, null);
-        }
+        private PeriodFormatter iBefore;
+        private PeriodFormatter iAfter;
 
-        Separator(String text, String finalText,
-                  PeriodFormatter before, PeriodFormatter after) {
+        Separator(String text, String finalText, PeriodFormatter before, boolean useBefore, boolean useAfter) {
             iText = text;
             iFinalText = finalText;
             iBefore = before;
-            iAfter = after;
+            iUseBefore = useBefore;
+            iUseAfter = useAfter;
         }
 
         public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
@@ -1295,48 +1347,71 @@ public class PeriodFormatterBuilder {
         }
 
         public int calculatePrintedLength(ReadablePeriod period) {
-            int sum = iBefore.calculatePrintedLength(period)
-                + iAfter.calculatePrintedLength(period);
-
-            if (iBefore.countFieldsToPrint(period, 1) > 0) {
-                int afterCount = iAfter.countFieldsToPrint(period, 2);
-                if (afterCount > 0) {
-                    sum += (afterCount > 1 ? iText : iFinalText).length();
+            PeriodPrinter before = iBefore;
+            PeriodPrinter after = iAfter;
+            
+            int sum = before.calculatePrintedLength(period)
+                    + after.calculatePrintedLength(period);
+            
+            if (iUseBefore) {
+                if (before.countFieldsToPrint(period, 1) > 0) {
+                    if (iUseAfter) {
+                        int afterCount = after.countFieldsToPrint(period, 2);
+                        if (afterCount > 0) {
+                            sum += (afterCount > 1 ? iText : iFinalText).length();
+                        }
+                    } else {
+                        sum += iText.length();
+                    }
                 }
+            } else if (iUseAfter && after.countFieldsToPrint(period, 1) > 0) {
+                sum += iText.length();
             }
-
+            
             return sum;
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period) {
             PeriodPrinter before = iBefore;
             PeriodPrinter after = iAfter;
-
+            
             before.printTo(buf, period);
-
-            if (before.countFieldsToPrint(period, 1) > 0) {
-                int afterCount = after.countFieldsToPrint(period, 2);
-                if (afterCount > 0) {
-                    buf.append(afterCount > 1 ? iText : iFinalText);
+            if (iUseBefore) {
+                if (before.countFieldsToPrint(period, 1) > 0) {
+                    if (iUseAfter) {
+                        int afterCount = after.countFieldsToPrint(period, 2);
+                        if (afterCount > 0) {
+                            buf.append(afterCount > 1 ? iText : iFinalText);
+                        }
+                    } else {
+                        buf.append(iText);
+                    }
                 }
+            } else if (iUseAfter && after.countFieldsToPrint(period, 1) > 0) {
+                buf.append(iText);
             }
-
             after.printTo(buf, period);
         }
 
         public void printTo(Writer out, ReadablePeriod period) throws IOException {
             PeriodPrinter before = iBefore;
             PeriodPrinter after = iAfter;
-
+            
             before.printTo(out, period);
-
-            if (before.countFieldsToPrint(period, 1) > 0) {
-                int afterCount = after.countFieldsToPrint(period, 2);
-                if (afterCount > 0) {
-                    out.write(afterCount > 1 ? iText : iFinalText);
+            if (iUseBefore) {
+                if (before.countFieldsToPrint(period, 1) > 0) {
+                    if (iUseAfter) {
+                        int afterCount = after.countFieldsToPrint(period, 2);
+                        if (afterCount > 0) {
+                            out.write(afterCount > 1 ? iText : iFinalText);
+                        }
+                    } else {
+                        out.write(iText);
+                    }
                 }
+            } else if (iUseAfter && after.countFieldsToPrint(period, 1) > 0) {
+                out.write(iText);
             }
-
             after.printTo(out, period);
         }
 
@@ -1345,11 +1420,9 @@ public class PeriodFormatterBuilder {
             final int oldPos = position;
 
             position = iBefore.parseInto(period, periodStr, position);
-
             if (position < 0) {
                 return position;
             }
-
             if (position > oldPos) {
                 // Since position advanced, this separator is
                 // allowed. Optionally parse it.
@@ -1360,16 +1433,13 @@ public class PeriodFormatterBuilder {
                     position += iFinalText.length();
                 }
             }
-
-            return iAfter.parseInto(period, periodStr, position);
+            position = iAfter.parseInto(period, periodStr, position);
+            return position;
         }
 
-        Separator merge(String text, String finalText) {
-            return new Separator(iText + text, iFinalText + finalText, iBefore, iAfter);
-        }
-
-        Separator finish(PeriodFormatter before, PeriodFormatter after) {
-            return new Separator(iText, iFinalText, before, after);
+        Separator finish(PeriodFormatter after) {
+            iAfter = after;
+            return this;
         }
     }
 

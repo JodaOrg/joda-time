@@ -355,7 +355,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
 
     //-----------------------------------------------------------------------
     /**
-     * Adds this duration to the given instant, returning a new value.
+     * Adds this duration to the given instant using the chronology of the duration
+     * which typically ignores time zones.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
@@ -371,7 +372,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     }
 
     /**
-     * Adds this duration to the given instant, returning a new value.
+     * Adds this duration to the given instant using a specific chronology.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
@@ -452,7 +453,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     }
 
     /**
-     * Adds this duration to the given instant, returning a new Instant.
+     * Adds this duration to the given instant using the chronology of the specified
+     * instant (if present), returning a new Instant.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
@@ -466,11 +468,12 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         if (instant == null) {
             return new Instant(addTo(DateTimeUtils.currentTimeMillis(), scalar));
         }
-        return new Instant(addTo(instant.getMillis(), scalar));
+        return new Instant(addTo(instant.getMillis(), scalar, instant.getChronology()));
     }
 
     /**
-     * Adds this duration into the given mutable instant.
+     * Adds this duration into the given mutable instant using the chronology of
+     * the specified mutable instant (if present).
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
@@ -484,7 +487,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         if (instant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        instant.setMillis(addTo(instant.getMillis(), scalar));
+        instant.setMillis(addTo(instant.getMillis(), scalar, instant.getChronology()));
     }
 
     //-----------------------------------------------------------------------

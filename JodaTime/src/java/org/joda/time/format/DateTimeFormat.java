@@ -166,8 +166,8 @@ public class DateTimeFormat {
     private static Map cInstanceCache = new HashMap(7);
 
     /**
-     * Gets an instance of a formatter that works using the ISOChronology in UTC
-     * in the default locale.
+     * Gets a formatter provider that works using ISOChronology with UTC in the
+     * default locale.
      * 
      * @return a format provider
      */
@@ -176,8 +176,8 @@ public class DateTimeFormat {
     }
 
     /**
-     * Gets an instance of a formatter that works using the ISOChronology in the
-     * default time zone and the default locale.
+     * Gets a formatter provider that works using ISOChronology with the default
+     * time zone and the default locale.
      * 
      * @return a format provider
      */
@@ -186,7 +186,7 @@ public class DateTimeFormat {
     }
 
     /**
-     * Gets an instance of a formatter that works using the ISOChronology in the
+     * Gets a formatter provider that works using ISOChronology with the
      * specified time zone and the default locale.
      * 
      * @param zone  the time zone to use, null for default zone
@@ -197,7 +197,7 @@ public class DateTimeFormat {
     }
 
     /**
-     * Gets an instance of a formatter that works using the ISOChronology in the
+     * Gets a formatter provider that works using ISOChronology with the
      * specified time zone and locale.
      * 
      * @param zone  the time zone to use, null for default zone
@@ -209,8 +209,8 @@ public class DateTimeFormat {
     }
 
     /**
-     * Gets an instance of a formatter that works using the specified chronology
-     * in the default locale.
+     * Gets a formatter provider that works using the specified chronology and
+     * the default locale.
      * 
      * @param chrono  the chronology to use, null means ISOChronology in the default time zone
      * @return a format provider
@@ -220,8 +220,8 @@ public class DateTimeFormat {
     }
 
     /**
-     * Gets an instance of a formatter that works using the specified chronology
-     * and locale.
+     * Gets a formatter provider that works using the specified chronology and
+     * locale.
      * 
      * @param chrono  the chronology to use, null means ISOChronology in the default time zone
      * @param locale  the Locale to use, null for default locale

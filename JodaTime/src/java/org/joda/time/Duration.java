@@ -1,8 +1,8 @@
-/* 
+/*
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-03 Stephen Colebourne.
+ * Copyright (c) 2001-2004 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

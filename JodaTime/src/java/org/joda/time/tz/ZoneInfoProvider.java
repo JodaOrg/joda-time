@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-03 Stephen Colebourne.
+ * Copyright (c) 2001-2004 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ *    notice, this list of conditions and the following disclaimer. 
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
@@ -18,7 +18,7 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution,
- *    if any, must include the following acknowledgment:
+ *    if any, must include the following acknowledgment:  
  *       "This product includes software developed by the
  *        Joda project (http://www.joda.org/)."
  *    Alternately, this acknowledgment may appear in the software itself,
@@ -47,11 +47,10 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Joda project and was originally
+ * individuals on behalf of the Joda project and was originally 
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-
 package org.joda.time.tz;
 
 import java.io.DataInputStream;

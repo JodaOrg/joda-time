@@ -61,6 +61,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.MillisDurationField;
@@ -145,17 +146,17 @@ public abstract class BaseGJChronology extends AssembledChronology {
 
         cMillisField = MillisDurationField.INSTANCE;
         cSecondsField = new PreciseDurationField
-            ("seconds", DateTimeConstants.MILLIS_PER_SECOND);
+            (DurationFieldType.seconds(), DateTimeConstants.MILLIS_PER_SECOND);
         cMinutesField = new PreciseDurationField
-            ("minutes", DateTimeConstants.MILLIS_PER_MINUTE);
+            (DurationFieldType.minutes(), DateTimeConstants.MILLIS_PER_MINUTE);
         cHoursField = new PreciseDurationField
-            ("hours", DateTimeConstants.MILLIS_PER_HOUR);
+            (DurationFieldType.hours(), DateTimeConstants.MILLIS_PER_HOUR);
         cHalfdaysField = new PreciseDurationField
-            ("halfdays", DateTimeConstants.MILLIS_PER_DAY / 2);
+            (DurationFieldType.halfdays(), DateTimeConstants.MILLIS_PER_DAY / 2);
         cDaysField = new PreciseDurationField
-            ("days", DateTimeConstants.MILLIS_PER_DAY);
+            (DurationFieldType.days(), DateTimeConstants.MILLIS_PER_DAY);
         cWeeksField = new PreciseDurationField
-            ("weeks", DateTimeConstants.MILLIS_PER_WEEK);
+            (DurationFieldType.weeks(), DateTimeConstants.MILLIS_PER_WEEK);
 
         cMillisOfSecondField = new PreciseDateTimeField
             (DateTimeFieldType.millisOfSecond(), cMillisField, cSecondsField);
@@ -341,7 +342,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
         DateTimeField field = new OffsetDateTimeField(
             fields.yearOfEra, 99);
         fields.centuryOfEra = new DividedDateTimeField(
-            field, DateTimeFieldType.centuryOfEra(), "centuries", 100);
+            field, DateTimeFieldType.centuryOfEra(), 100);
         
         field = new RemainderDateTimeField(
             (DividedDateTimeField) fields.centuryOfEra);

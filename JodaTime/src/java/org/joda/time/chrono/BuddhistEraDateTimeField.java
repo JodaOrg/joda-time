@@ -58,9 +58,10 @@ import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.field.BaseDateTimeField;
-import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.field.UnsupportedDurationField;
 
 /**
  * Provides time calculations for the buddhist era component of time.
@@ -152,7 +153,7 @@ final class BuddhistEraDateTimeField extends BaseDateTimeField {
     }
 
     public DurationField getDurationField() {
-        return UnsupportedDurationField.getInstance("eras");
+        return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
 
     public DurationField getRangeDurationField() {

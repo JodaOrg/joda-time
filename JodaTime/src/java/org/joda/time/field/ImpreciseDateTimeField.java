@@ -55,6 +55,7 @@ package org.joda.time.field;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * Abstract datetime field class that defines its own DurationField, which
@@ -85,13 +86,12 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
      * Constructor.
      * 
      * @param type  the field type
-     * @param durationName  short, descriptive name, like "months".
      * @param unitMillis  the average duration unit milliseconds
      */
-    public ImpreciseDateTimeField(DateTimeFieldType type, String durationName, long unitMillis) {
+    public ImpreciseDateTimeField(DateTimeFieldType type, long unitMillis) {
         super(type);
         iUnitMillis = unitMillis;
-        iDurationField = new LinkedDurationField(durationName);
+        iDurationField = new LinkedDurationField(type.getDurationType());
     }
 
     public abstract int get(long instant);
@@ -185,8 +185,8 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
     private final class LinkedDurationField extends BaseDurationField {
         private static final long serialVersionUID = -203813474600094134L;
 
-        LinkedDurationField(String name) {
-            super(name);
+        LinkedDurationField(DurationFieldType type) {
+            super(type);
         }
     
         public boolean isPrecise() {

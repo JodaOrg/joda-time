@@ -78,10 +78,11 @@ public abstract class DateTimeField {
     public abstract DateTimeFieldType getType();
 
     /**
-     * Get the name of the field, intended for debugging purposes only. By
-     * convention, names follow a pattern of "dddOfRrr", where "ddd" represents
-     * the (singular) duration field name and "Rrr" represents the (singular)
-     * range duration field name. If the range field is not applicable, then
+     * Get the name of the field.
+     * <p>
+     * By convention, names follow a pattern of "dddOfRrr", where "ddd" represents
+     * the (singular) duration unit field name and "Rrr" represents the (singular)
+     * duration range field name. If the range field is not applicable, then
      * the name of the field is simply the (singular) duration field name.
      * 
      * @return field name

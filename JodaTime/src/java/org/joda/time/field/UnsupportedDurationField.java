@@ -56,6 +56,7 @@ package org.joda.time.field;
 import java.io.Serializable;
 import java.util.HashMap;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * A placeholder implementation to use when a duration field is not supported.
@@ -77,42 +78,46 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * Names should be plural, such as 'years' or 'hours'.
      * The returned instance is cached.
      * 
-     * @param name  the name to obtain
+     * @param type  the type to obtain
      * @return the instance
      */
-    public static synchronized UnsupportedDurationField getInstance(String name) {
+    public static synchronized UnsupportedDurationField getInstance(DurationFieldType type) {
         UnsupportedDurationField field;
         if (cCache == null) {
             cCache = new HashMap(7);
             field = null;
         } else {
-            field = (UnsupportedDurationField)cCache.get(name);
+            field = (UnsupportedDurationField) cCache.get(type);
         }
         if (field == null) {
-            field = new UnsupportedDurationField(name);
-            cCache.put(name, field);
+            field = new UnsupportedDurationField(type);
+            cCache.put(type, field);
         }
         return field;
     }
 
     /** The name of the field */
-    private final String iName;
+    private final DurationFieldType iType;
 
     /**
      * Constructor.
      * 
-     * @param name  the name to use
+     * @param type  the type to use
      */
-    private UnsupportedDurationField(String name) {
-        iName = name;
+    private UnsupportedDurationField(DurationFieldType type) {
+        iType = type;
     }
 
     //-----------------------------------------------------------------------
     // Design note: Simple Accessors return a suitable value, but methods
     // intended to perform calculations throw an UnsupportedOperationException.
 
+    public final DurationFieldType getType() {
+        return iType;
+    }
+
     public String getName() {
-        return iName;
+        return iType.getName();
     }
 
     /**
@@ -294,18 +299,18 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      * @return debug string
      */
     public String toString() {
-        return "UnsupportedDurationField";
+        return "UnsupportedDurationField[" + getName() + ']';
     }
 
     /**
      * Ensure proper singleton serialization
      */
     private Object readResolve() {
-        return getInstance(iName);
+        return getInstance(iType);
     }
 
     private UnsupportedOperationException unsupported() {
-        return new UnsupportedOperationException(iName + " field is unsupported");
+        return new UnsupportedOperationException(iType + " field is unsupported");
     }
 
 }

@@ -63,9 +63,8 @@ import org.joda.time.field.ImpreciseDateTimeField;
 abstract class TestGJDateTimeField extends ImpreciseDateTimeField {
     protected final TestGJChronology iChronology;
 
-    public TestGJDateTimeField(DateTimeFieldType type, String duratioName,
-                               long unitMillis, TestGJChronology chrono) {
-        super(type, duratioName, unitMillis);
+    public TestGJDateTimeField(DateTimeFieldType type, long unitMillis, TestGJChronology chrono) {
+        super(type, unitMillis);
         iChronology = chrono;
     }
 

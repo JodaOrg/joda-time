@@ -290,15 +290,15 @@ public class DateTimeFormat {
                     switch (c) {
                     case 'x':
                         field = new RemainderDateTimeField
-                            (chronoUTC.weekyear(), DateTimeFieldType.weekyearOfCentury(), "centuries", 100);
+                            (chronoUTC.weekyear(), DateTimeFieldType.weekyearOfCentury(), 100);
                         break;
                     case 'y': default:
                         field = new RemainderDateTimeField
-                            (chronoUTC.year(), DateTimeFieldType.yearOfCentury(), "centuries", 100);
+                            (chronoUTC.year(), DateTimeFieldType.yearOfCentury(), 100);
                         break;
                     case 'Y':
                         field = new RemainderDateTimeField
-                            (chronoUTC.yearOfEra(), DateTimeFieldType.yearOfCentury(), "centuries", 100);
+                            (chronoUTC.yearOfEra(), DateTimeFieldType.yearOfCentury(), 100);
                         break;
                     }
                     builder.appendDecimal(field, 2, 2);

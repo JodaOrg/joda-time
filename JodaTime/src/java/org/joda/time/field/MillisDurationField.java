@@ -54,7 +54,9 @@
 package org.joda.time.field;
 
 import java.io.Serializable;
+
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * Duration field class representing a field with a fixed unit length of one
@@ -80,6 +82,10 @@ public final class MillisDurationField extends DurationField implements Serializ
     }
     
     //------------------------------------------------------------------------
+    public DurationFieldType getType() {
+        return DurationFieldType.millis();
+    }
+
     public String getName() {
         return "millis";
     }

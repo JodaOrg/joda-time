@@ -62,7 +62,7 @@ import org.joda.time.DurationField;
  */
 class TestGJWeekyearField extends TestGJDateTimeField {
     public TestGJWeekyearField(TestGJChronology chrono) {
-        super(DateTimeFieldType.weekyear(), "weekyears", chrono.millisPerYear(), chrono);
+        super(DateTimeFieldType.weekyear(), chrono.millisPerYear(), chrono);
     }
 
     public int get(long millis) {

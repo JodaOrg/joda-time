@@ -62,7 +62,7 @@ import org.joda.time.DurationField;
  */
 class TestGJYearField extends TestGJDateTimeField {
     public TestGJYearField(TestGJChronology chrono) {
-        super(DateTimeFieldType.year(), "years", chrono.millisPerYear(), chrono);
+        super(DateTimeFieldType.year(), chrono.millisPerYear(), chrono);
     }
 
     public int get(long millis) {

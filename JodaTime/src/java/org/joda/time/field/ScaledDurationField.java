@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * Scales a DurationField such that it's unit millis becomes larger in
@@ -75,12 +76,12 @@ public class ScaledDurationField extends DecoratedDurationField {
      * Constructor
      * 
      * @param field  the field to wrap, like "year()".
-     * @param name  short, descriptive name, like "centuries".
+     * @param type  the type this field will actually use
      * @param scalar  scalar, such as 100 years in a century
      * @throws IllegalArgumentException if scalar is zero or one.
      */
-    public ScaledDurationField(DurationField field, String name, int scalar) {
-        super(field, name);
+    public ScaledDurationField(DurationField field, DurationFieldType type, int scalar) {
+        super(field, type);
         if (scalar == 0 || scalar == 1) {
             throw new IllegalArgumentException("The scalar must not be 0 or 1");
         }

@@ -68,8 +68,16 @@ package org.joda.time;
 public abstract class DurationField implements Comparable {
 
     /**
-     * Get the name of the field, intended for debugging purposes only. By
-     * convention, names are plural.
+     * Get the type of the field.
+     * 
+     * @return field type
+     */
+    public abstract DurationFieldType getType();
+
+    /**
+     * Get the name of the field.
+     * <p>
+     * By convention, names are plural.
      * 
      * @return field name
      */

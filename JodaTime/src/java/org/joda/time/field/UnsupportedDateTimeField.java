@@ -81,7 +81,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * Names should be of standard format, such as 'monthOfYear' or 'hourOfDay'.
      * The returned instance is cached.
      * 
-     * @param name  the name to obtain
+     * @param type  the type to obtain
      * @return the instance
      * @throws IllegalArgumentException if durationField is null
      */

@@ -79,7 +79,7 @@ final class GJYearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     GJYearDateTimeField(BaseGJChronology chronology) {
-        super(DateTimeFieldType.year(), "years", chronology.getAverageMillisPerYear());
+        super(DateTimeFieldType.year(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
 

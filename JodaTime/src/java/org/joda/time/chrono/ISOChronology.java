@@ -207,7 +207,7 @@ public final class ISOChronology extends AssembledChronology {
         if (getBase().getZone() == DateTimeZone.UTC) {
             // Use zero based century and year of century.
             fields.centuryOfEra = new DividedDateTimeField(
-                ISOYearOfEraDateTimeField.INSTANCE, DateTimeFieldType.centuryOfEra(), "centuries", 100);
+                ISOYearOfEraDateTimeField.INSTANCE, DateTimeFieldType.centuryOfEra(), 100);
             fields.yearOfCentury = new RemainderDateTimeField(
                 (DividedDateTimeField) fields.centuryOfEra, DateTimeFieldType.yearOfCentury());
 

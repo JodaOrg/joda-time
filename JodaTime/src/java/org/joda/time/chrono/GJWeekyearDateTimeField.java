@@ -81,7 +81,7 @@ final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     GJWeekyearDateTimeField(BaseGJChronology chronology) {
-        super(DateTimeFieldType.weekyear(), "weekyears", chronology.getAverageMillisPerYear());
+        super(DateTimeFieldType.weekyear(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
 

@@ -1029,7 +1029,7 @@ public final class GJChronology extends AssembledChronology {
         private final ImpreciseCutoverField iField;
 
         LinkedDurationField(DurationField durationField, ImpreciseCutoverField dateTimeField) {
-            super(durationField, durationField.getName());
+            super(durationField, durationField.getType());
             iField = dateTimeField;
         }
 

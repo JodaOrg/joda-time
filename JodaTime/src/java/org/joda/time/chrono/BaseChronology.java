@@ -60,6 +60,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
@@ -298,6 +299,47 @@ public abstract class BaseChronology
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Get the field from the type.
+     * <p>
+     * This method obtains the <code>DurationField</code> for the <code>DurationFieldType</code>.
+     * It is essentially a generic way of calling one of the field methods.
+     *
+     * @param type  a field type, usually obtained from DurationFieldType
+     * @return the chronology field
+     * @throws IllegalArgumentException if the field is null
+     */
+    public DurationField getField(DurationFieldType type) {
+        if (type == DurationFieldType.millis()) {
+            return millis();
+        } else if (type == DurationFieldType.seconds()) {
+            return seconds();
+        } else if (type == DurationFieldType.minutes()) {
+            return minutes();
+        } else if (type == DurationFieldType.hours()) {
+            return hours();
+        } else if (type == DurationFieldType.halfdays()) {
+            return halfdays();
+        } else if (type == DurationFieldType.days()) {
+            return days();
+        } else if (type == DurationFieldType.weeks()) {
+            return weeks();
+        } else if (type == DurationFieldType.weekyears()) {
+            return weekyears();
+        } else if (type == DurationFieldType.months()) {
+            return months();
+        } else if (type == DurationFieldType.years()) {
+            return years();
+        } else if (type == DurationFieldType.centuries()) {
+            return centuries();
+        } else if (type == DurationFieldType.eras()) {
+            return eras();
+        } else {
+            throw new IllegalArgumentException("Unrecognised field: " + type);
+        }
+    }
+
     // Millis
     //-----------------------------------------------------------------------
     /**
@@ -306,7 +348,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField millis() {
-        return UnsupportedDurationField.getInstance("millis");
+        return UnsupportedDurationField.getInstance(DurationFieldType.millis());
     }
 
     /**
@@ -335,7 +377,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField seconds() {
-        return UnsupportedDurationField.getInstance("seconds");
+        return UnsupportedDurationField.getInstance(DurationFieldType.seconds());
     }
 
     /**
@@ -364,7 +406,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField minutes() {
-        return UnsupportedDurationField.getInstance("minutes");
+        return UnsupportedDurationField.getInstance(DurationFieldType.minutes());
     }
 
     /**
@@ -393,7 +435,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField hours() {
-        return UnsupportedDurationField.getInstance("hours");
+        return UnsupportedDurationField.getInstance(DurationFieldType.hours());
     }
 
     /**
@@ -412,6 +454,15 @@ public abstract class BaseChronology
      */
     public DateTimeField clockhourOfDay() {
         return UnsupportedDateTimeField.getInstance(DateTimeFieldType.clockhourOfDay(), hours());
+    }
+
+    /**
+     * Get the halfdays duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField halfdays() {
+        return UnsupportedDurationField.getInstance(DurationFieldType.halfdays());
     }
 
     /**
@@ -438,8 +489,7 @@ public abstract class BaseChronology
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField halfdayOfDay() {
-        return UnsupportedDateTimeField.getInstance
-            (DateTimeFieldType.halfdayOfDay(), UnsupportedDurationField.getInstance("halfdays"));
+        return UnsupportedDateTimeField.getInstance(DateTimeFieldType.halfdayOfDay(), halfdays());
     }
 
     // Day
@@ -450,7 +500,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField days() {
-        return UnsupportedDurationField.getInstance("days");
+        return UnsupportedDurationField.getInstance(DurationFieldType.days());
     }
 
     /**
@@ -492,7 +542,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weeks() {
-        return UnsupportedDurationField.getInstance("weeks");
+        return UnsupportedDurationField.getInstance(DurationFieldType.weeks());
     }
 
     /**
@@ -510,7 +560,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weekyears() {
-        return UnsupportedDurationField.getInstance("weekyears");
+        return UnsupportedDurationField.getInstance(DurationFieldType.weekyears());
     }
 
     /**
@@ -530,7 +580,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField months() {
-        return UnsupportedDurationField.getInstance("months");
+        return UnsupportedDurationField.getInstance(DurationFieldType.months());
     }
 
     /**
@@ -550,7 +600,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField years() {
-        return UnsupportedDurationField.getInstance("years");
+        return UnsupportedDurationField.getInstance(DurationFieldType.years());
     }
 
     /**
@@ -586,7 +636,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField centuries() {
-        return UnsupportedDurationField.getInstance("centuries");
+        return UnsupportedDurationField.getInstance(DurationFieldType.centuries());
     }
 
     /**
@@ -604,7 +654,7 @@ public abstract class BaseChronology
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField eras() {
-        return UnsupportedDurationField.getInstance("eras");
+        return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
 
     /**

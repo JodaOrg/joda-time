@@ -55,6 +55,7 @@ package org.joda.time.field;
 
 import java.io.Serializable;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * BaseDurationField provides the common behaviour for DurationField
@@ -76,18 +77,22 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     private static final long serialVersionUID = -2554245107589433218L;
 
     /** A desriptive name for the field. */
-    private final String iName;
+    private final DurationFieldType iType;
 
-    protected BaseDurationField(String name) {
+    protected BaseDurationField(DurationFieldType type) {
         super();
-        if (name == null) {
-            throw new IllegalArgumentException("The name must not be null");
+        if (type == null) {
+            throw new IllegalArgumentException("The type must not be null");
         }
-        iName = name;
+        iType = type;
+    }
+
+    public final DurationFieldType getType() {
+        return iType;
     }
 
     public final String getName() {
-        return iName;
+        return iType.getName();
     }
 
     /**

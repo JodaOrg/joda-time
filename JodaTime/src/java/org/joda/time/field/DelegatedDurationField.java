@@ -55,6 +55,7 @@ package org.joda.time.field;
 
 import java.io.Serializable;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * <code>DelegatedDurationField</code> delegates each method call to the
@@ -73,24 +74,34 @@ public class DelegatedDurationField extends DurationField implements Serializabl
 
     /** The DurationField being wrapped */
     private final DurationField iField;
-    /** A desriptive name for the field */
-    private final String iName;
+    /** The field type */
+    private final DurationFieldType iType;
 
+    /**
+     * Constructor.
+     * 
+     * @param field  the base field
+     */
     protected DelegatedDurationField(DurationField field) {
         this(field, null);
     }
 
     /**
-     * @param name allow name to be overridden
+     * Constructor.
+     * 
+     * @param field  the base field
+     * @param type  the field type to use
      */
-    protected DelegatedDurationField(DurationField field, String name) {
+    protected DelegatedDurationField(DurationField field, DurationFieldType type) {
+        super();
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");
         }
         iField = field;
-        iName = name;
+        iType = (type == null ? field.getType() : type);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets the wrapped duration field.
      * 
@@ -100,8 +111,12 @@ public class DelegatedDurationField extends DurationField implements Serializabl
         return iField;
     }
 
+    public DurationFieldType getType() {
+        return iType;
+    }
+
     public String getName() {
-        return (iName == null) ? iField.getName() : iName;
+        return iType.getName();
     }
 
     /**
@@ -172,8 +187,8 @@ public class DelegatedDurationField extends DurationField implements Serializabl
     }
 
     public String toString() {
-        return (iName == null) ? iField.toString() :
-            ("DurationField[" + iName + ']');
+        return (iType == null) ? iField.toString() :
+            ("DurationField[" + iType + ']');
     }
 
 }

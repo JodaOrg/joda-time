@@ -54,6 +54,7 @@
 package org.joda.time.field;
 
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 
 /**
  * <code>DecoratedDurationField</code> extends {@link BaseDurationField},
@@ -79,10 +80,13 @@ public class DecoratedDurationField extends BaseDurationField {
     private final DurationField iField;
 
     /**
-     * @param name allow name to be overridden
+     * Constructor.
+     * 
+     * @param field  the base field
+     * @param type  the type to actually use
      */
-    public DecoratedDurationField(DurationField field, String name) {
-        super(name);
+    public DecoratedDurationField(DurationField field, DurationFieldType type) {
+        super(type);
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");
         }
@@ -92,6 +96,7 @@ public class DecoratedDurationField extends BaseDurationField {
         iField = field;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets the wrapped duration field.
      * 

@@ -220,7 +220,7 @@ public final class BuddhistChronology extends AssembledChronology {
             
             field = new OffsetDateTimeField(fields.yearOfEra, 99);
             fields.centuryOfEra = new DividedDateTimeField(
-                field, DateTimeFieldType.centuryOfEra(), "centuries", 100);
+                field, DateTimeFieldType.centuryOfEra(), 100);
             
             field = new RemainderDateTimeField(
                 (DividedDateTimeField) fields.centuryOfEra);

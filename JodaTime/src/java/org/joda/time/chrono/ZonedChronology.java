@@ -275,7 +275,7 @@ public final class ZonedChronology extends AssembledChronology {
         final DateTimeZone iZone;
 
         ZonedDurationField(DurationField field, DateTimeZone zone) {
-            super(field.getName());
+            super(field.getType());
             if (!field.isSupported()) {
                 throw new IllegalArgumentException();
             }

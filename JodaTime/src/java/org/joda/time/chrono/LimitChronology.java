@@ -379,7 +379,7 @@ public final class LimitChronology extends AssembledChronology {
         private static final long serialVersionUID = 8049297699408782284L;
 
         LimitDurationField(DurationField field) {
-            super(field, field.getName());
+            super(field, field.getType());
         }
 
         public int getValue(long duration, long instant) {

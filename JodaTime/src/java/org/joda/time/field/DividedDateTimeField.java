@@ -86,12 +86,11 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
      * 
      * @param field  the field to wrap, like "year()".
      * @param type  the field type this field will actually use
-     * @param durationName  short, descriptive name, like "centuries".
      * @param divisor  divisor, such as 100 years in a century
      * @throws IllegalArgumentException if divisor is less than two
      */
     public DividedDateTimeField(DateTimeField field,
-                                DateTimeFieldType type, String durationName, int divisor) {
+                                DateTimeFieldType type, int divisor) {
         super(field, type);
                 
         if (divisor < 2) {
@@ -102,7 +101,8 @@ public class DividedDateTimeField extends DecoratedDateTimeField {
         if (unitField == null) {
             iDurationField = null;
         } else {
-            iDurationField = new ScaledDurationField(unitField, durationName, divisor);
+            iDurationField = new ScaledDurationField(
+                unitField, type.getDurationType(), divisor);
         }
 
         iDivisor = divisor;

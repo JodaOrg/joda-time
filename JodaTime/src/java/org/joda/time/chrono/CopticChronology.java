@@ -61,6 +61,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.PreciseDurationField;
 
@@ -109,7 +110,7 @@ public final class CopticChronology extends BaseGJChronology {
 
     static {
         cMonthsField =  new PreciseDurationField
-            ("months", 30L * DateTimeConstants.MILLIS_PER_DAY);
+            (DurationFieldType.months(), 30L * DateTimeConstants.MILLIS_PER_DAY);
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
     }
 

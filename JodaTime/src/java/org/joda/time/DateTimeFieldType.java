@@ -451,7 +451,7 @@ public class DateTimeFieldType implements Serializable {
      * 
      * @return duration unit of the field, never null
      */
-    public DurationFieldType getUnitDurationType() {
+    public DurationFieldType getDurationType() {
         return iUnitType;
     }
 

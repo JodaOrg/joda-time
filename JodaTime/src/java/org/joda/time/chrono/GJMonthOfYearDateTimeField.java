@@ -84,7 +84,7 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     GJMonthOfYearDateTimeField(BaseGJChronology chronology) {
-        super(DateTimeFieldType.monthOfYear(), "months", chronology.getAverageMillisPerMonth());
+        super(DateTimeFieldType.monthOfYear(), chronology.getAverageMillisPerMonth());
         iChronology = chronology;
     }
 

@@ -53,6 +53,8 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.DurationFieldType;
+
 /**
  * Duration field class representing a field with a fixed unit length.
  * <p>
@@ -72,11 +74,11 @@ public class PreciseDurationField extends BaseDurationField {
     /**
      * Constructor.
      * 
-     * @param name  the name of the field, like "seconds"
+     * @param type  the field type
      * @param unitMillis  the unit milliseconds
      */    
-    public PreciseDurationField(String name, long unitMillis) {
-        super(name);
+    public PreciseDurationField(DurationFieldType type, long unitMillis) {
+        super(type);
         iUnitMillis = unitMillis;
     }
     

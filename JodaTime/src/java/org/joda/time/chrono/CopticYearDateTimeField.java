@@ -73,7 +73,7 @@ final class CopticYearDateTimeField extends ImpreciseDateTimeField {
      * Restricted constructor
      */
     CopticYearDateTimeField(BaseGJChronology chronology) {
-        super(DateTimeFieldType.year(), "years", chronology.getAverageMillisPerYear());
+        super(DateTimeFieldType.year(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }
 

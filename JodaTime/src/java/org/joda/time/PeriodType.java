@@ -568,7 +568,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField years() {
-        return UnsupportedDurationField.getInstance("years");
+        return UnsupportedDurationField.getInstance(DurationFieldType.years());
     }
 
     /**
@@ -577,7 +577,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField months() {
-        return UnsupportedDurationField.getInstance("months");
+        return UnsupportedDurationField.getInstance(DurationFieldType.months());
     }
 
     /**
@@ -586,7 +586,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weeks() {
-        return UnsupportedDurationField.getInstance("weeks");
+        return UnsupportedDurationField.getInstance(DurationFieldType.weeks());
     }
 
     /**
@@ -595,7 +595,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField days() {
-        return UnsupportedDurationField.getInstance("days");
+        return UnsupportedDurationField.getInstance(DurationFieldType.days());
     }
 
     /**
@@ -604,7 +604,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField hours() {
-        return UnsupportedDurationField.getInstance("hours");
+        return UnsupportedDurationField.getInstance(DurationFieldType.hours());
     }
 
     /**
@@ -613,7 +613,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField minutes() {
-        return UnsupportedDurationField.getInstance("minutes");
+        return UnsupportedDurationField.getInstance(DurationFieldType.minutes());
     }
 
     /**
@@ -622,7 +622,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField seconds() {
-        return UnsupportedDurationField.getInstance("seconds");
+        return UnsupportedDurationField.getInstance(DurationFieldType.seconds());
     }
 
     /**
@@ -631,7 +631,7 @@ public abstract class PeriodType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField millis() {
-        return UnsupportedDurationField.getInstance("millis");
+        return UnsupportedDurationField.getInstance(DurationFieldType.millis());
     }
 
     //-----------------------------------------------------------------------
@@ -1089,7 +1089,7 @@ public abstract class PeriodType implements Serializable {
         
         PreciseYearDayType(Chronology chrono) {
             super(chrono);
-            iYears = new ScaledDurationField(chrono.days(), "PreciseYears", 365);
+            iYears = new ScaledDurationField(chrono.days(), DurationFieldType.years(), 365);
             // rely on days/weeks to be precise because only ISO UTC used
         }
 
@@ -1151,7 +1151,7 @@ public abstract class PeriodType implements Serializable {
         
         PreciseYearMonthType(Chronology chrono) {
             super(chrono);
-            iMonths = new ScaledDurationField(chrono.days(), "PreciseMonths", 30);
+            iMonths = new ScaledDurationField(chrono.days(), DurationFieldType.months(), 30);
         }
 
         public PeriodType withChronology(Chronology chrono) {
@@ -1254,56 +1254,56 @@ public abstract class PeriodType implements Serializable {
 
         public DurationField years() {
             if ((iMask & (1 << 0)) != 0) {
-                return UnsupportedDurationField.getInstance("years");
+                return UnsupportedDurationField.getInstance(DurationFieldType.years());
             }
             return iType.years();
         }
 
         public DurationField months() {
             if ((iMask & (1 << 1)) != 0) {
-                return UnsupportedDurationField.getInstance("months");
+                return UnsupportedDurationField.getInstance(DurationFieldType.months());
             }
             return iType.months();
         }
 
         public DurationField weeks() {
             if ((iMask & (1 << 2)) != 0) {
-                return UnsupportedDurationField.getInstance("weeks");
+                return UnsupportedDurationField.getInstance(DurationFieldType.weeks());
             }
             return iType.weeks();
         }
 
         public DurationField days() {
             if ((iMask & (1 << 3)) != 0) {
-                return UnsupportedDurationField.getInstance("days");
+                return UnsupportedDurationField.getInstance(DurationFieldType.days());
             }
             return iType.days();
         }
 
         public DurationField hours() {
             if ((iMask & (1 << 4)) != 0) {
-                return UnsupportedDurationField.getInstance("hours");
+                return UnsupportedDurationField.getInstance(DurationFieldType.hours());
             }
             return iType.hours();
         }
 
         public DurationField minutes() {
             if ((iMask & (1 << 5)) != 0) {
-                return UnsupportedDurationField.getInstance("minutes");
+                return UnsupportedDurationField.getInstance(DurationFieldType.minutes());
             }
             return iType.minutes();
         }
 
         public DurationField seconds() {
             if ((iMask & (1 << 6)) != 0) {
-                return UnsupportedDurationField.getInstance("seconds");
+                return UnsupportedDurationField.getInstance(DurationFieldType.seconds());
             }
             return iType.seconds();
         }
 
         public DurationField millis() {
             if ((iMask & (1 << 7)) != 0) {
-                return UnsupportedDurationField.getInstance("millis");
+                return UnsupportedDurationField.getInstance(DurationFieldType.millis());
             }
             return iType.millis();
         }

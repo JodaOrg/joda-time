@@ -53,9 +53,6 @@
  */
 package org.joda.time;
 
-// Import for @link support
-import org.joda.time.convert.ConverterManager;
-
 /**
  * Defines an instant in time that can be queried and modified using datetime fields.
  * <p>
@@ -279,7 +276,8 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * Set the date from an object representing an instant.
      * The time part of this object will be unaffected.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant, time part ignored
@@ -312,7 +310,8 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * Set the date from an object representing an instant.
      * The date part of this object will be unaffected.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant, date part ignored
@@ -346,7 +345,8 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * Set the date and time from an object representing an instant.
      * This method is a synonym for {@link #setMillis(Object)}.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant

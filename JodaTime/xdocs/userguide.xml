@@ -34,6 +34,7 @@ The current chronologies supplied are:
 <li>ISOChronology - Implements the ISO8601 standard, which is compatible with Gregorian in modern times.</li>
 <li>GJChronology - The Gregorian/Julian calendar system, for historical use.</li>
 <li>BuddhistChronology - Offset from Gregorian/Julian by 543 years.</li>
+<li>CopticChronology - Offset from Gregorian/Julian by 284 years.</li>
 </ul>
 <p>
 It is hoped that other chronologies will be added over time.
@@ -68,7 +69,7 @@ The design principle is the same as the Java Collections Framework (List/Map/Set
 
 <p>
 The main date instance used is <a href="apidocs/org/joda/time/DateTime.html">DateTime</a>.
-This holds the millisecond time of the date and the chronology used to calculate the fields.
+This holds the millisecond time of the date and the chronology used to calculate the <a href="field.html">fields</a>.
 DateTime is immutable, and once created the values do not change.
 Thus, this class can safely be passed around and used in multiple threads without synchronization.
 </p>
@@ -88,7 +89,7 @@ Interoperability is also made simple via the <code>toDate()</code>, <code>toCale
 <section name="Properties">
 
 <p>
-The main API of DateTime has been kept small, limited to just get methods for each field.
+The main API of DateTime has been kept small, limited to just get methods for each <a href="field.html">field</a>.
 There is much more power available however through the use of <i>properties</i>.
 In addition to the <code>getDayOfYear()</code> method you will find <code>dayOfYear()</code>.
 This returns a <a href="apidocs/org/joda/time/property/DateTimeFieldProperty.html">property</a> with considerable functionality.

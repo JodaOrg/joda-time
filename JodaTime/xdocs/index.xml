@@ -75,13 +75,14 @@ which is an Apache/BSD cloned licence.
 
 <section name="Documentation">
 <p>
-The JavaDoc API documents are available online for the
-<a href="api-0.9/index.html">current release</a> and the
-<a href="apidocs/index.html">latest CVS</a>.
+Various documentation is available:
 </p>
-<p>
-The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time">CVS repository</a> can be browsed.
-</p>
+<ul>
+<li>The javadoc for the <a href="apidocs-release/index.html">current release</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
+<li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime">CVS repository</a></li>
+</ul>
+
 </section>
 
 <section name="Releases">

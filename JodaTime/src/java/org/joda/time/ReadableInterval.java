@@ -131,26 +131,6 @@ public interface ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Does this time interval contain the specified millisecond instant.
-     * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param millisInstant  the instant to compare to,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     * @return true if this time interval contains the millisecond
-     */
-    boolean contains(long millisInstant);
-    
-    /**
-     * Does this time interval contain the current instant.
-     * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @return true if this time interval contains the current instant
-     */
-    boolean containsNow();
-    
-    /**
      * Does this time interval contain the specified instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
@@ -185,24 +165,14 @@ public interface ReadableInterval {
     
     //-----------------------------------------------------------------------
     /**
-     * Is this time interval before the specified millisecond instant.
+     * Is this time interval after the specified instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param millisInstant  the instant to compare to,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     * @return true if this time interval is before the instant
+     * @param instant  the instant to compare to, null means now
+     * @return true if this time interval is after the instant
      */
-    boolean isBefore(long millisInstant);
-    
-    /**
-     * Is this time interval before the current instant.
-     * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @return true if this time interval is before the current instant
-     */
-    boolean isBeforeNow();
+    boolean isAfter(ReadableInstant instant);
     
     /**
      * Is this time interval before the specified instant.
@@ -213,36 +183,6 @@ public interface ReadableInterval {
      * @return true if this time interval is before the instant
      */
     boolean isBefore(ReadableInstant instant);
-    
-    /**
-     * Is this time interval after the specified millisecond instant.
-     * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param millisInstant  the instant to compare to,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     * @return true if this time interval is after the instant
-     */
-    boolean isAfter(long millisInstant);
-    
-    /**
-     * Is this time interval after the current instant.
-     * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @return true if this time interval is after the current instant
-     */
-    boolean isAfterNow();
-    
-    /**
-     * Is this time interval after the specified instant.
-     * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
-     * 
-     * @param instant  the instant to compare to, null means now
-     * @return true if this time interval is after the instant
-     */
-    boolean isAfter(ReadableInstant instant);
     
     //-----------------------------------------------------------------------
     /**

@@ -77,7 +77,7 @@ import org.joda.time.ReadWritableDuration;
  *     .appendYears()
  *     .appendSuffix(" year", " years")
  *     .appendSeparator(" and ")
- *     .printZeroNever()
+ *     .printZeroRarely()
  *     .appendMonths()
  *     .appendSuffix(" month", " months")
  *     .toFormatter();
@@ -90,24 +90,28 @@ import org.joda.time.ReadWritableDuration;
  * @author Brian S O'Neill
  */
 public class DurationFormatterBuilder {
-    private static final int PRINT_ZERO_NEVER = 0;
-    private static final int PRINT_ZERO_MAYBE = 1;
-    private static final int PRINT_ZERO_ALWAYS = 2;
+    private static final int PRINT_ZERO_RARELY = 1;
+    private static final int PRINT_ZERO_IF_SUPPORTED = 2;
+    private static final int PRINT_ZERO_ALWAYS = 3;
 
-    private String iAlternate;
+    private boolean iFavorFirstFieldForZero;
 
-    private int iMinPrintedDigits = 1;
+    private int iMinPrintedDigits;
     private int iPrintZeroSetting;
-    private int iMaxParsedDigits = 10;
+    private int iMaxParsedDigits;
     private boolean iRejectSignedValues;
 
     private DurationFieldAffix iPrefix;
 
-    // List of separate DurationFormatters.
+    // List of DurationFormatters used to build a final formatter.
     private List iFormatters;
 
+    // List of DurationFormatters used to build an alternate formatter. The
+    // alternate is chosen if no other fields are printed.
+    private List iAlternateFormatters;
+
     public DurationFormatterBuilder() {
-       iFormatters = new ArrayList();
+        clear();
     }
 
     /**
@@ -135,8 +139,17 @@ public class DurationFormatterBuilder {
      */
     public DurationFormatter toFormatter() {
         DurationFormatter formatter = toFormatter(iFormatters);
-        if (iAlternate != null) {
-            formatter = new AlternateSelector(formatter, iAlternate);
+        List altFormatters = iAlternateFormatters;
+        if (altFormatters.size() > 0) {
+            // Alternate is needed only if field formatters were
+            // appended. Literals may have been appended as well.
+            for (int i=altFormatters.size(); --i>=0; ) {
+                if (altFormatters.get(i) instanceof FieldFormatter) {
+                    formatter = new AlternateSelector
+                        (formatter, altFormatters, iFavorFirstFieldForZero);
+                    break;
+                }
+            }
         }
         return formatter;
     }
@@ -160,13 +173,22 @@ public class DurationFormatterBuilder {
      * reused.
      */
     public void clear() {
-        iAlternate = null;
+        iFavorFirstFieldForZero = false;
         iMinPrintedDigits = 1;
-        iPrintZeroSetting = PRINT_ZERO_NEVER;
+        iPrintZeroSetting = PRINT_ZERO_RARELY;
         iMaxParsedDigits = 10;
         iRejectSignedValues = false;
         iPrefix = null;
-        iFormatters.clear();
+        if (iFormatters == null) {
+            iFormatters = new ArrayList();
+        } else {
+            iFormatters.clear();
+        }
+        if (iAlternateFormatters == null) {
+            iAlternateFormatters = new ArrayList();
+        } else {
+            iAlternateFormatters.clear();
+        }
     }
 
     /**
@@ -198,7 +220,9 @@ public class DurationFormatterBuilder {
             throw new IllegalArgumentException("Literal must not be null");
         }
         clearPrefix();
-        iFormatters.add(new Literal(text));
+        Literal literal = new Literal(text);
+        iFormatters.add(literal);
+        iAlternateFormatters.add(literal);
         return this;
     }
 
@@ -236,13 +260,18 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Never print zero values for the next and following appended fields. This
-     * is the default setting.
+     * Never print zero values for the next and following appended fields,
+     * unless no fields would be printed. If no fields are printed, the printer
+     * forces at most one "printZeroRarely" field to print a zero.
+     * <p>
+     * This field setting is the default.
      *
      * @return this DurationFormatterBuilder
+     * @see #favorLastFieldForZero()
+     * @see #favorFirstFieldForZero()
      */
-    public DurationFormatterBuilder printZeroNever() {
-        iPrintZeroSetting = PRINT_ZERO_NEVER;
+    public DurationFormatterBuilder printZeroRarely() {
+        iPrintZeroSetting = PRINT_ZERO_RARELY;
         return this;
     }
 
@@ -252,8 +281,8 @@ public class DurationFormatterBuilder {
      *
      * @return this DurationFormatterBuilder
      */
-    public DurationFormatterBuilder printZeroMaybe() {
-        iPrintZeroSetting = PRINT_ZERO_MAYBE;
+    public DurationFormatterBuilder printZeroIfSupported() {
+        iPrintZeroSetting = PRINT_ZERO_IF_SUPPORTED;
         return this;
     }
 
@@ -404,9 +433,14 @@ public class DurationFormatterBuilder {
     }
 
     private void appendField(int type) {
-        iFormatters.add(new FieldFormatter(iMinPrintedDigits, iPrintZeroSetting,
-                                           iMaxParsedDigits, iRejectSignedValues,
-                                           type, iPrefix, null));
+        FieldFormatter field = new FieldFormatter
+            (iMinPrintedDigits, iPrintZeroSetting,
+             iMaxParsedDigits, iRejectSignedValues,
+             type, iPrefix, null);
+        iFormatters.add(field);
+        if (iPrintZeroSetting == PRINT_ZERO_RARELY) {
+            iAlternateFormatters.add(field);
+        }
         iPrefix = null;
     }
 
@@ -457,16 +491,26 @@ public class DurationFormatterBuilder {
      * @see #appendPrefix
      */
     private DurationFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
-        Object f = null;
+        final Object originalField;
         if (iFormatters.size() > 0) {
-            f = iFormatters.get(iFormatters.size() - 1);
+            originalField = iFormatters.get(iFormatters.size() - 1);
+        } else {
+            originalField = null;
         }
-        if (!(f instanceof FieldFormatter)) {
+
+        if (originalField == null || !(originalField instanceof FieldFormatter)) {
             throw new IllegalStateException("No field to apply suffix to");
         }
+
         clearPrefix();
-        f = new FieldFormatter((FieldFormatter) f, suffix);
-        iFormatters.set(iFormatters.size() - 1, f);
+        Object newField = new FieldFormatter((FieldFormatter) originalField, suffix);
+        iFormatters.set(iFormatters.size() - 1, newField);
+
+        int index = iAlternateFormatters.lastIndexOf(originalField);
+        if (index >= 0) {
+            iAlternateFormatters.set(index, newField);
+        }
+
         return this;
     }
 
@@ -539,17 +583,38 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Supply alternate text to print, when no fields are emitted. During
-     * parsing, the alternate text is compared against first. If the alternate
-     * text matches (ignoring case), the parser finishes without attempting to
-     * parse any specific fields.
+     * If the printer doesn't print any field values, it forces a
+     * "printZeroRarely" field to print. This setting controls which field is
+     * selected.
+     * <p>
+     * It starts from the last appended field, and moves towards the first,
+     * stopping until it finds a field that is supported by the duration being
+     * printed. If no supported fields are found, then no fields are printed.
+     * <p>
+     * This setting is the default.
      *
      * @return this DurationFormatterBuilder
+     * @see #printZeroRarely()
      */
-    // TODO: Drop support for alternate. Instead, show least significant field
-    // that is supported.
-    public DurationFormatterBuilder setAlternate(String text) {
-        iAlternate = text;
+    public DurationFormatterBuilder favorLastFieldForZero() {
+        iFavorFirstFieldForZero = false;
+        return this;
+    }
+
+    /**
+     * If the printer doesn't print any field values, it forces a
+     * "printZeroRarely" field to print. This setting controls which field is
+     * selected.
+     * <p>
+     * It starts from the first appended field, and moves towards the last,
+     * stopping until it finds a field that is supported by the duration being
+     * printed. If no supported fields are found, then no fields are printed.
+     *
+     * @return this DurationFormatterBuilder
+     * @see #printZeroRarely()
+     */
+    public DurationFormatterBuilder favorFirstFieldForZero() {
+        iFavorFirstFieldForZero = true;
         return this;
     }
 
@@ -778,6 +843,16 @@ public class DurationFormatterBuilder {
                 suffix = new CompositeAffix(field.iSuffix, suffix);
             }
             iSuffix = suffix;
+        }
+
+        FieldFormatter(FieldFormatter field, int printZeroSetting) {
+            iMinPrintedDigits = field.iMinPrintedDigits;
+            iPrintZeroSetting = printZeroSetting;
+            iMaxParsedDigits = field.iMaxParsedDigits;
+            iRejectSignedValues = field.iRejectSignedValues;
+            iFieldType = field.iFieldType;
+            iPrefix = field.iPrefix;
+            iSuffix = field.iSuffix;
         }
 
         public int countFieldsToPrint(ReadableDuration duration) {
@@ -1045,7 +1120,7 @@ public class DurationFormatterBuilder {
                 break;
             }
 
-            if (value == 0 && iPrintZeroSetting == PRINT_ZERO_NEVER) {
+            if (value == 0 && iPrintZeroSetting == PRINT_ZERO_RARELY) {
                 return -1;
             }
 
@@ -1104,6 +1179,10 @@ public class DurationFormatterBuilder {
                 duration.setMillis(value);
                 break;
             }
+        }
+
+        int getPrintZeroSetting() {
+            return iPrintZeroSetting;
         }
     }
 
@@ -1312,50 +1391,122 @@ public class DurationFormatterBuilder {
     private static final class AlternateSelector extends AbstractDurationFormatter
         implements DurationFormatter
     {
-        private final DurationFormatter iFormatter;
-        private final String iAlternate;
+        private final DurationFormatter iPrimaryFormatter;
+        private final DurationPrinter[] iAlternatePrinters;
+        private final boolean iFavorFirstFieldForZero;
 
-        AlternateSelector(DurationFormatter formatter, String alternate) {
-            iFormatter = formatter;
-            iAlternate = alternate;
+        AlternateSelector(DurationFormatter primaryFormatter,
+                          List alternatePrinters,
+                          boolean favorFirstFieldForZero) {
+            iPrimaryFormatter = primaryFormatter;
+            iAlternatePrinters = (DurationPrinter[])alternatePrinters.toArray
+                (new DurationPrinter[alternatePrinters.size()]);
+            iFavorFirstFieldForZero = favorFirstFieldForZero;
         }
 
         public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
-            return iFormatter.countFieldsToPrint(duration, stopAt);
+            int count = iPrimaryFormatter.countFieldsToPrint(duration, stopAt);
+            if (count < 1 && stopAt >= 1) {
+                if (chooseFieldToPrint(duration) != null) {
+                    return 1;
+                }
+            }
+            return count;
         }
 
         public int calculatePrintedLength(ReadableDuration duration) {
-            if (iFormatter.countFieldsToPrint(duration, 1) > 0) {
-                return iFormatter.calculatePrintedLength(duration);
-            } else {
-                return iAlternate.length();
+            if (iPrimaryFormatter.countFieldsToPrint(duration, 1) > 0) {
+                return iPrimaryFormatter.calculatePrintedLength(duration);
             }
+
+            Object chosenOne = chooseFieldToPrint(duration);
+
+            int sum = 0;
+            DurationPrinter[] printers = iAlternatePrinters;
+            for (int i=printers.length; --i>=0; ) {
+                DurationPrinter dp = printers[i];
+                if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
+                    sum += dp.calculatePrintedLength(duration);
+                }
+            }
+            return sum;
         }
 
         public void printTo(StringBuffer buf, ReadableDuration duration) {
-            if (iFormatter.countFieldsToPrint(duration, 1) > 0) {
-                iFormatter.printTo(buf, duration);
-            } else {
-                buf.append(iAlternate);
+            if (iPrimaryFormatter.countFieldsToPrint(duration, 1) > 0) {
+                iPrimaryFormatter.printTo(buf, duration);
+                return;
+            }
+
+            Object chosenOne = chooseFieldToPrint(duration);
+            
+            DurationPrinter[] printers = iAlternatePrinters;
+            int len = printers.length;
+            for (int i=0; i<len; i++) {
+                DurationPrinter dp = printers[i];
+                if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
+                    dp.printTo(buf, duration);
+                }
             }
         }
 
         public void printTo(Writer out, ReadableDuration duration) throws IOException {
-            if (iFormatter.countFieldsToPrint(duration, 1) > 0) {
-                iFormatter.printTo(out, duration);
-            } else {
-                out.write(iAlternate);
+            if (iPrimaryFormatter.countFieldsToPrint(duration, 1) > 0) {
+                iPrimaryFormatter.printTo(out, duration);
+                return;
+            }
+            
+            Object chosenOne = chooseFieldToPrint(duration);
+
+            DurationPrinter[] printers = iAlternatePrinters;
+            int len = printers.length;
+            for (int i=0; i<len; i++) {
+                DurationPrinter dp = printers[i];
+                if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
+                    dp.printTo(out, duration);
+                }
             }
         }
 
         public int parseInto(ReadWritableDuration duration,
                              String durationStr, int position) {
-            String alt = iAlternate;
-            int altLength = alt.length();
-            if (durationStr.regionMatches(true, position, alt, 0, altLength)) {
-                return position + altLength;
+            return iPrimaryFormatter.parseInto(duration, durationStr, position);
+        }
+
+        private FieldFormatter chooseFieldToPrint(ReadableDuration duration) {
+            DurationType type = duration.getDurationType();
+            DurationPrinter[] printers = iAlternatePrinters;
+            if (iFavorFirstFieldForZero) {
+                int len = printers.length;
+                for (int i=0; i<len; i++) {
+                    DurationPrinter dp = printers[i];
+                    if (dp instanceof FieldFormatter) {
+                        FieldFormatter ff = (FieldFormatter) dp;
+                        if (ff.isSupported(type)) {
+                            if (ff.getPrintZeroSetting() == PRINT_ZERO_RARELY) {
+                                ff = new FieldFormatter(ff, PRINT_ZERO_IF_SUPPORTED);
+                                printers[i] = ff;
+                            }
+                            return ff;
+                        }
+                    }
+                }
+            } else {
+                for (int i=printers.length; --i>=0; ) {
+                    DurationPrinter dp = printers[i];
+                    if (dp instanceof FieldFormatter) {
+                        FieldFormatter ff = (FieldFormatter) dp;
+                        if (ff.isSupported(type)) {
+                            if (ff.getPrintZeroSetting() == PRINT_ZERO_RARELY) {
+                                ff = new FieldFormatter(ff, PRINT_ZERO_IF_SUPPORTED);
+                                printers[i] = ff;
+                            }
+                            return ff;
+                        }
+                    }
+                }
             }
-            return iFormatter.parseInto(duration, durationStr, position);
+            return null;
         }
     }
 

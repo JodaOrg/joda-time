@@ -122,18 +122,6 @@ public interface PartialInstant extends ReadableInstant {
     DateTimeField getUpperLimit();
 
     /**
-     * Returns true if the given instant is a PartialDateTime that supports the
-     * same exact set of fields. Implementations may simply do the following:
-     * <pre>
-     *     return instant instanceof &lt;this class&gt;;
-     * </pre>
-     *
-     * @param instant  the instant to compare to
-     * @return true if instant is same type as this
-     */
-    boolean isMatchingType(ReadableInstant instant);
-
-    /**
      * Returns the given instant, except with lower and upper limits
      * applied. Field values are reset below the lower limit and at or above
      * the upper limit.

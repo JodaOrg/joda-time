@@ -301,17 +301,6 @@ public abstract class AbstractPartialInstant extends AbstractInstant
     public abstract DateTimeField getUpperLimit();
 
     /**
-     * Returns true if the given instant is a PartialDateTime that supports the
-     * same exact set of fields. Implementations may simply do the following:
-     * <pre>
-     *     return instant instanceof &lt;this class&gt;;
-     * </pre>
-     *
-     * @return true if instant is same type as this
-     */
-    public abstract boolean isMatchingType(ReadableInstant instant);
-
-    /**
      * Returns the given instant, except with lower and upper limits
      * applied. Field values are reset below the lower limit and at or above
      * the upper limit.
@@ -362,11 +351,30 @@ public abstract class AbstractPartialInstant extends AbstractInstant
      *  not or the instant is null or of an incorrect type
      */
     public boolean equals(Object readableInstant) {
-        return super.equals(readableInstant) && isMatchingType((ReadableInstant) readableInstant);
+        if (this == readableInstant) {
+            return true;
+        }
+        return super.equals(readableInstant) && isMatchingType(readableInstant);
     }
 
     private static boolean equals(Object a, Object b) {
         return (a == b) || (a != null && a.equals(b));
+    }
+
+    /**
+     * Returns true if the given instant is a PartialInstant that supports the
+     * same exact set of fields.
+     *
+     * @param instant  the instant to compare to
+     * @return true if instant is same type as this
+     */
+    private boolean isMatchingType(Object instant) {
+        if (instant instanceof PartialInstant) {
+            PartialInstant partial = (PartialInstant)instant;
+            return equals(getLowerLimit(), partial.getLowerLimit())
+                && equals(getUpperLimit(), partial.getUpperLimit());
+        }
+        return false;
     }
 
     /**

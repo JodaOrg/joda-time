@@ -5,6 +5,7 @@
  <properties>
   <title>Joda FAQ</title>
   <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+  <author email="broneill@users.sourceforge.net">Brian S O'Neill</author>
  </properties>
 
  <body>
@@ -18,6 +19,8 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#long">Why limit to the number of milliseconds in a long?</a></li>
 <li><a href="#range">What date range is supported?</a></li>
 <li><a href="#submilli">What about sub-millisecond accuracy?</a></li>
+<li><a href="#performance">How well does it perform?</a></li>
+<li><a href="#threading">Does it support multi-threading?</a></li>
 <li><a href="#joda">What is with the name 'joda'?</a></li>
 </ul>
 Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Suggest another FAQ</a>
@@ -99,10 +102,54 @@ This would severely compromise the performance of the whole API for a very limit
 </subsection>
 
 
+<a name="performance" />
+<subsection name="How well does it perform?">
+<p>
+Joda-Time is      designed for performance. Compared to java.util.Calendar,
+java.text.SimpleDateFormat, and java.util.TimeZone, nearly all equivalent
+operations in Java-Time are faster. The significant exceptions are operations
+to get or set an individual field.
+</p>
+<p>
+Calling "get" on java.util.Calendar is very fast because it doesn't do any
+work. Calendar calculates all fields in advance, even if many of those fields
+you won't need. Calendar's set method is fast because it defers calculations
+until later. Calling Calendar.get after calling Calendar.set forces all the
+field values to be re-calculated. Calling Joda's DateTime.get method after
+calling DateTime.set only performs the minimum amount of calculations, and the
+pair is faster than Calendar.
+</p>
+<p>
+Joda-Time also allocates very few temporary objects during operations, and
+performs almost no thread synchronization. In systems that are heavily
+multi-threaded or use a lot of memory, Calendar, SimpleDateFormat, and TimeZone
+can become bottlenecks. When the Joda-Time classes are used instead, the
+bottlenecks go away.
+</p>
+</subsection>
+
+
+<a name="threading" />
+<subsection name="Does it support multi-threading?">
+<p>
+Every public class in Joda-Time is documented as being thread-safe or not.
+Joda-Time makes heavy use of the immutability design pattern, and all immutable
+classes in Joda-Time are thread-safe. Many mutable classes whose instances are
+not likely to be shared are not thread-safe, and are documented as such.
+</p>
+<p>
+The most common multi-threading mistake made by Java programmers is in the use
+of SimpleDateFormat. Calling its format method on a shared instance by
+concurrent threads can produce bizarre results. All of Joda-Time's formatting
+classes are thread-safe and immutable.
+</p>
+</subsection>
+
+
 <a name="joda" />
 <subsection name="What is with the name 'joda'?">
 <p>
-'Joda' is a short, four letter name, begining with 'j' whose domain name was free.
+'Joda' is a short, four letter name, beginning with 'j' whose domain name was free.
 It is not an acronym.
 </p>
 </subsection>

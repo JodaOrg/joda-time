@@ -329,7 +329,25 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(true, test2.year().compareTo(test1) > 0);
         assertEquals(true, test1.year().compareTo(test1) == 0);
         try {
-            test1.year().compareTo(null);
+            test1.year().compareTo((ReadableInstant) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testPropertyCompareToYear2() {
+        DateTime test1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        YearMonthDay test2 = new YearMonthDay(2004, 6, 9);
+        YearMonthDay test3 = new YearMonthDay(2005, 6, 9);
+        assertEquals(true, test1.year().compareTo(test1) == 0);
+        assertEquals(true, test2.year().compareTo(test2) == 0);
+        assertEquals(true, test3.year().compareTo(test3) == 0);
+        
+        assertEquals(true, test1.year().compareTo(test2) == 0);
+        assertEquals(true, test2.year().compareTo(test1) == 0);
+        assertEquals(true, test1.year().compareTo(test3) < 0);
+        assertEquals(true, test3.year().compareTo(test1) > 0);
+        try {
+            test1.year().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

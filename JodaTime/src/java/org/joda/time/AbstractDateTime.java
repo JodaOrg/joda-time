@@ -105,9 +105,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * using <code>ISOChronology</code> in the default time zone.
      */
     protected AbstractDateTime() {
-        super();
-        iChronology = ISOChronology.getInstance();
-        iMillis = DateTimeUtils.currentTimeMillis();
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
     }
 
     /**
@@ -119,9 +117,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param zone  the time zone, null means default zone
      */
     protected AbstractDateTime(final DateTimeZone zone) {
-        super();
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = DateTimeUtils.currentTimeMillis();
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
     }
 
     /**
@@ -134,9 +130,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     protected AbstractDateTime(final Chronology chronology) {
-        super();
-        iChronology = selectChronology(chronology);
-        iMillis = DateTimeUtils.currentTimeMillis();
+        this(DateTimeUtils.currentTimeMillis(), chronology);
     }
 
     //-----------------------------------------------------------------------
@@ -147,9 +141,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
     protected AbstractDateTime(final long instant) {
-        super();
-        iChronology = ISOChronology.getInstance();
-        iMillis = instant;
+        this(instant, ISOChronology.getInstance());
     }
 
     /**
@@ -162,9 +154,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param zone  the time zone, null means default zone
      */
     protected AbstractDateTime(final long instant, final DateTimeZone zone) {
-        super();
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = instant;
+        this(instant, ISOChronology.getInstance(zone));
     }
 
     /**
@@ -180,7 +170,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime(final long instant, final Chronology chronology) {
         super();
         iChronology = selectChronology(chronology);
-        iMillis = instant;
+        iMillis = round(instant, iChronology);
     }
 
     //-----------------------------------------------------------------------
@@ -200,7 +190,7 @@ public abstract class AbstractDateTime extends AbstractInstant
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         iChronology = selectChronology(converter.getChronology(instant));
-        iMillis = converter.getInstantMillis(instant);
+        iMillis = round(converter.getInstantMillis(instant), iChronology);
     }
 
     /**
@@ -221,7 +211,7 @@ public abstract class AbstractDateTime extends AbstractInstant
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         iChronology = selectChronology(converter.getChronology(instant, zone));
-        iMillis = converter.getInstantMillis(instant, zone);
+        iMillis = round(converter.getInstantMillis(instant, zone), iChronology);
     }
 
     /**
@@ -241,7 +231,7 @@ public abstract class AbstractDateTime extends AbstractInstant
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         iChronology = selectChronology(converter.getChronology(instant, chronology));
-        iMillis = converter.getInstantMillis(instant, chronology);
+        iMillis = round(converter.getInstantMillis(instant, chronology), iChronology);
     }
 
     //-----------------------------------------------------------------------
@@ -265,10 +255,8 @@ public abstract class AbstractDateTime extends AbstractInstant
             final int minuteOfHour,
             final int secondOfMinute,
             final int millisOfSecond) {
-        super();
-        iChronology = ISOChronology.getInstance();
-        iMillis = iChronology.getDateTimeMillis(
-            year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        this(year, monthOfYear, dayOfMonth, hourOfDay,
+            minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstance());
     }
 
     /**
@@ -295,10 +283,8 @@ public abstract class AbstractDateTime extends AbstractInstant
             final int secondOfMinute,
             final int millisOfSecond,
             final DateTimeZone zone) {
-        super();
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = iChronology.getDateTimeMillis(
-            year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        this(year, monthOfYear, dayOfMonth, hourOfDay,
+            minuteOfHour, secondOfMinute, millisOfSecond, ISOChronology.getInstance(zone));
     }
 
     /**
@@ -328,8 +314,22 @@ public abstract class AbstractDateTime extends AbstractInstant
             final Chronology chronology) {
         super();
         iChronology = selectChronology(chronology);
-        iMillis = iChronology.getDateTimeMillis(
-            year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        long instant = iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth,
+            hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        iMillis = round(instant, iChronology);
+    }
+
+    /**
+     * Rounds the specified instant as required by the subclass.
+     * This method must not access instance variables.
+     * <p>
+     * This implementation performs no rounding and returns the instant.
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
+     * @param chronology  the chronology to use, not null
+     */
+    protected long round(long instant, Chronology chronology) {
+        return instant;
     }
 
     // Accessors

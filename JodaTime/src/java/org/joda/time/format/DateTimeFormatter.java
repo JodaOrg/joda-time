@@ -199,7 +199,6 @@ public class DateTimeFormatter {
      * Calling this method sets the override zone to null.
      * Calling the override zone method sets this flag off.
      * 
-     * @param locale  the locale to use
      * @return the new formatter
      */
     public DateTimeFormatter withOffsetParsed() {
@@ -229,11 +228,11 @@ public class DateTimeFormatter {
      * <p>
      * When parsing, this chronology will be set on the parsed datetime.
      * <p>
-     * A null zone means of no-override.
+     * A null chronology means of no-override.
      * If both an override chronology and an override zone are set, the
      * override zone will take precedence over the zone in the chronology.
      * 
-     * @param zone  the zone to use as an override
+     * @param chrono  the chronology to use as an override
      * @return the new formatter
      */
     public DateTimeFormatter withChronology(Chronology chrono) {

@@ -138,7 +138,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @see DateTimeField#getAsText
      */
     public final String getAsText() {
-        return getField().getAsText(getInstant().getMillis(), null);
+        return getAsText(null);
     }
 
     /**

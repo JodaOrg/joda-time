@@ -569,7 +569,7 @@ public class MutablePeriod
      */
     public void add(DurationFieldType field, int value) {
         if (value != 0) {
-            set(field, FieldUtils.safeAdd(get(field), value));
+            super.addField(field, value);
         }
     }
 
@@ -583,7 +583,7 @@ public class MutablePeriod
      */
     public void add(ReadablePeriod period) {
         if (period != null) {
-            addPeriod(period);
+            super.addPeriod(period);
         }
     }
 
@@ -645,12 +645,32 @@ public class MutablePeriod
     /**
      * Adds a millisecond duration to this one by dividing the duration into
      * fields and calling {@link #add(ReadablePeriod)}.
+     * <p>
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be stored in the largest
+     * available precise field.
      * 
      * @param duration  the duration, in milliseconds
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(long duration) {
         add(new Period(duration, getPeriodType()));
+    }
+
+    /**
+     * Adds a millisecond duration to this one by dividing the duration into
+     * fields and calling {@link #add(ReadablePeriod)}.
+     * <p>
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be stored in the largest
+     * available precise field.
+     * 
+     * @param duration  the duration, in milliseconds
+     * @param chrono  the chronology to use, null means ISO default
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    public void add(long duration, Chronology chrono) {
+        add(new Period(duration, getPeriodType(), chrono));
     }
 
     //-----------------------------------------------------------------------

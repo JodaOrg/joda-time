@@ -60,19 +60,24 @@
 </head>
 <body>
 <p>
-Provides field property support for datetimes.
+Implementation package providing abstract and standard property classes.
 </p>
 <p>
-Generally, classes in this package need not be explicitly imported. Property
-objects are intended to have a single use, and they don't need to be referenced
-by a variable. Here is an example using DateTimeFieldProperty:
+This package contains abstract and standard implementations of property classes.
+Most applications will ignore this package.
+</p>
+<p>
+A property binds the datetime class, such as DateTime or TimeOfDay, to a DateTimeField.
+Property objects are typically short and single use object.
+For example:
 <pre>
 DateTime dt = new DateTime(1972, 12, 3, 0, 0, 0, 0);
 int year = dt.year().get();
 String monthStr = dt.month().getAsText();
 </pre>
 The calls to <code>year()</code> and <code>month()</code> return a
-DateTimeFieldProperty instance which is only used to call <code>get()</code>
-and <code>getAsText()</code>, respectively.
+DateTimeField.Property (subclass of AbstractReadableInstantFieldProperty).
+This property instance is only used to call <code>get()</code>
+and <code>getAsText()</code>, respectively and the object is then garbage collected.
 </body>
 </html>

@@ -5,7 +5,7 @@
   <id>joda-time</id>
   <name>Joda time</name>
   <groupId>joda-time</groupId>
-  <currentVersion>0.96</currentVersion>
+  <currentVersion>1.0</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
@@ -13,6 +13,16 @@
   </organization>
   <inceptionYear>2002</inceptionYear>
   <package>org.joda.time</package>
+  <packageGroups>
+    <packageGroup>
+      <title>User Packages</title>
+      <packages>org.joda.time:org.joda.time.format</packages>
+    </packageGroup>
+    <packageGroup>
+      <title>Implementation Packages</title>
+      <packages>org.joda.time.chrono:org.joda.time.base:org.joda.time.convert:org.joda.time.field:org.joda.time.tz</packages>
+    </packageGroup>
+  </packageGroups>  
   <logo>/images/jodatime.png</logo>
 
   <description>
@@ -107,7 +117,7 @@
      <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
      <report>maven-checkstyle-plugin</report>
-     <!-- <report>maven-clover-plugin</report> -->
+     <report>maven-clover-plugin</report>
      <!-- <report>maven-jcoverage-plugin</report> -->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>

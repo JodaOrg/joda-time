@@ -64,7 +64,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.BasePeriod;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Duration.
@@ -212,230 +211,230 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(test, result);
     }
 
-    //-----------------------------------------------------------------------
-    public void testAddTo1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 1);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, -2);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo3() {
-        long expected = TEST_TIME_NOW;
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 0);
-        assertEquals(expected, added);
-    }
-    
-    public void testAddTo4() {
-        long expected = TEST_TIME_NOW + 100L;
-        Period test = new Period(100L);
-        long added = test.addTo(TEST_TIME_NOW, 1);
-        assertEquals(expected, added);
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddToWithChronology1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        long added = test.addTo(TEST_TIME_NOW, 1, ISOChronology.getInstance());
-        assertEquals(expected, added);
-    }
-    
-    public void testAddToWithChronology2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        long added = test.addTo(TEST_TIME_NOW, -2, ISOChronology.getInstanceUTC());  // local specified so use it
-        assertEquals(expected, added);
-    }
-    
-    public void testAddToWithChronology3() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        long added = test.addTo(TEST_TIME_NOW, -2, null);  // no chrono specified so use default
-        assertEquals(expected, added);
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddToRI1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        DateTime added = test.addTo(new Instant(), 1);  // Instant has no time zone, use default
-        assertEquals(expected, added.getMillis());
-        assertEquals(ISOChronology.getInstance(), added.getChronology());
-    }
-    
-    public void testAddToRI2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        DateTime added = test.addTo(new Instant(), -2);  // Instant has no time zone, use default
-        assertEquals(expected, added.getMillis());
-        assertEquals(ISOChronology.getInstance(), added.getChronology());
-    }
-    
-    public void testAddToRI3() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
-        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
-        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
-        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
-        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
-        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
-        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
-        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        DateTime added = test.addTo(new DateTime(ISOChronology.getInstanceUTC()), -2);  // DateTime has UTC time zone
-        assertEquals(expected, added.getMillis());
-        assertEquals(ISOChronology.getInstanceUTC(), added.getChronology());
-    }
-    
-    public void testAddToRI4() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance(PARIS).years().add(expected, -2);
-        expected = ISOChronology.getInstance(PARIS).months().add(expected, -4);
-        expected = ISOChronology.getInstance(PARIS).weeks().add(expected, -6);
-        expected = ISOChronology.getInstance(PARIS).days().add(expected, -8);
-        expected = ISOChronology.getInstance(PARIS).hours().add(expected, -10);
-        expected = ISOChronology.getInstance(PARIS).minutes().add(expected, -12);
-        expected = ISOChronology.getInstance(PARIS).seconds().add(expected, -14);
-        expected = ISOChronology.getInstance(PARIS).millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        DateTime added = test.addTo(new DateTime(PARIS), -2);  // DateTime has PARIS time zone
-        assertEquals(expected, added.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), added.getChronology());
-    }
-    
-    public void testAddToRI5() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        DateTime added = test.addTo(null, -2);  // null has no time zone, use default
-        assertEquals(expected, added.getMillis());
-        assertEquals(ISOChronology.getInstance(), added.getChronology());
-    }
-    
-    //-----------------------------------------------------------------------
-    public void testAddIntoRWI1() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        MutableDateTime mdt = new MutableDateTime();
-        test.addInto(mdt, 1);
-        assertEquals(expected, mdt.getMillis());
-    }
-    
-    public void testAddIntoRWI2() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
-        
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
-        MutableDateTime mdt = new MutableDateTime();
-        test.addInto(mdt, -2);  // MutableDateTime has a chronology, use it
-        assertEquals(expected, mdt.getMillis());
-    }
-    
-    public void testAddIntoRWI3() {
-        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        try {
-            test.addInto(null, 1);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-    }
+//    //-----------------------------------------------------------------------
+//    public void testAddTo1() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, 1);
+//        expected = ISOChronology.getInstance().months().add(expected, 2);
+//        expected = ISOChronology.getInstance().weeks().add(expected, 3);
+//        expected = ISOChronology.getInstance().days().add(expected, 4);
+//        expected = ISOChronology.getInstance().hours().add(expected, 5);
+//        expected = ISOChronology.getInstance().minutes().add(expected, 6);
+//        expected = ISOChronology.getInstance().seconds().add(expected, 7);
+//        expected = ISOChronology.getInstance().millis().add(expected, 8);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        long added = test.addTo(TEST_TIME_NOW, 1);
+//        assertEquals(expected, added);
+//    }
+//    
+//    public void testAddTo2() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, -2);
+//        expected = ISOChronology.getInstance().months().add(expected, -4);
+//        expected = ISOChronology.getInstance().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstance().days().add(expected, -8);
+//        expected = ISOChronology.getInstance().hours().add(expected, -10);
+//        expected = ISOChronology.getInstance().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstance().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstance().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        long added = test.addTo(TEST_TIME_NOW, -2);
+//        assertEquals(expected, added);
+//    }
+//    
+//    public void testAddTo3() {
+//        long expected = TEST_TIME_NOW;
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        long added = test.addTo(TEST_TIME_NOW, 0);
+//        assertEquals(expected, added);
+//    }
+//    
+//    public void testAddTo4() {
+//        long expected = TEST_TIME_NOW + 100L;
+//        Period test = new Period(100L);
+//        long added = test.addTo(TEST_TIME_NOW, 1);
+//        assertEquals(expected, added);
+//    }
+//    
+//    //-----------------------------------------------------------------------
+//    public void testAddToWithChronology1() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, 1);
+//        expected = ISOChronology.getInstance().months().add(expected, 2);
+//        expected = ISOChronology.getInstance().weeks().add(expected, 3);
+//        expected = ISOChronology.getInstance().days().add(expected, 4);
+//        expected = ISOChronology.getInstance().hours().add(expected, 5);
+//        expected = ISOChronology.getInstance().minutes().add(expected, 6);
+//        expected = ISOChronology.getInstance().seconds().add(expected, 7);
+//        expected = ISOChronology.getInstance().millis().add(expected, 8);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        long added = test.addTo(TEST_TIME_NOW, 1, ISOChronology.getInstance());
+//        assertEquals(expected, added);
+//    }
+//    
+//    public void testAddToWithChronology2() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
+//        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
+//        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
+//        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
+//        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        long added = test.addTo(TEST_TIME_NOW, -2, ISOChronology.getInstanceUTC());  // local specified so use it
+//        assertEquals(expected, added);
+//    }
+//    
+//    public void testAddToWithChronology3() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, -2);
+//        expected = ISOChronology.getInstance().months().add(expected, -4);
+//        expected = ISOChronology.getInstance().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstance().days().add(expected, -8);
+//        expected = ISOChronology.getInstance().hours().add(expected, -10);
+//        expected = ISOChronology.getInstance().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstance().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstance().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        long added = test.addTo(TEST_TIME_NOW, -2, null);  // no chrono specified so use default
+//        assertEquals(expected, added);
+//    }
+//    
+//    //-----------------------------------------------------------------------
+//    public void testAddToRI1() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, 1);
+//        expected = ISOChronology.getInstance().months().add(expected, 2);
+//        expected = ISOChronology.getInstance().weeks().add(expected, 3);
+//        expected = ISOChronology.getInstance().days().add(expected, 4);
+//        expected = ISOChronology.getInstance().hours().add(expected, 5);
+//        expected = ISOChronology.getInstance().minutes().add(expected, 6);
+//        expected = ISOChronology.getInstance().seconds().add(expected, 7);
+//        expected = ISOChronology.getInstance().millis().add(expected, 8);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        DateTime added = test.addTo(new Instant(), 1);  // Instant has no time zone, use default
+//        assertEquals(expected, added.getMillis());
+//        assertEquals(ISOChronology.getInstance(), added.getChronology());
+//    }
+//    
+//    public void testAddToRI2() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, -2);
+//        expected = ISOChronology.getInstance().months().add(expected, -4);
+//        expected = ISOChronology.getInstance().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstance().days().add(expected, -8);
+//        expected = ISOChronology.getInstance().hours().add(expected, -10);
+//        expected = ISOChronology.getInstance().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstance().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstance().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        DateTime added = test.addTo(new Instant(), -2);  // Instant has no time zone, use default
+//        assertEquals(expected, added.getMillis());
+//        assertEquals(ISOChronology.getInstance(), added.getChronology());
+//    }
+//    
+//    public void testAddToRI3() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
+//        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
+//        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
+//        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
+//        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        DateTime added = test.addTo(new DateTime(ISOChronology.getInstanceUTC()), -2);  // DateTime has UTC time zone
+//        assertEquals(expected, added.getMillis());
+//        assertEquals(ISOChronology.getInstanceUTC(), added.getChronology());
+//    }
+//    
+//    public void testAddToRI4() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance(PARIS).years().add(expected, -2);
+//        expected = ISOChronology.getInstance(PARIS).months().add(expected, -4);
+//        expected = ISOChronology.getInstance(PARIS).weeks().add(expected, -6);
+//        expected = ISOChronology.getInstance(PARIS).days().add(expected, -8);
+//        expected = ISOChronology.getInstance(PARIS).hours().add(expected, -10);
+//        expected = ISOChronology.getInstance(PARIS).minutes().add(expected, -12);
+//        expected = ISOChronology.getInstance(PARIS).seconds().add(expected, -14);
+//        expected = ISOChronology.getInstance(PARIS).millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        DateTime added = test.addTo(new DateTime(PARIS), -2);  // DateTime has PARIS time zone
+//        assertEquals(expected, added.getMillis());
+//        assertEquals(ISOChronology.getInstance(PARIS), added.getChronology());
+//    }
+//    
+//    public void testAddToRI5() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, -2);
+//        expected = ISOChronology.getInstance().months().add(expected, -4);
+//        expected = ISOChronology.getInstance().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstance().days().add(expected, -8);
+//        expected = ISOChronology.getInstance().hours().add(expected, -10);
+//        expected = ISOChronology.getInstance().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstance().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstance().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        DateTime added = test.addTo(null, -2);  // null has no time zone, use default
+//        assertEquals(expected, added.getMillis());
+//        assertEquals(ISOChronology.getInstance(), added.getChronology());
+//    }
+//    
+//    //-----------------------------------------------------------------------
+//    public void testAddIntoRWI1() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, 1);
+//        expected = ISOChronology.getInstance().months().add(expected, 2);
+//        expected = ISOChronology.getInstance().weeks().add(expected, 3);
+//        expected = ISOChronology.getInstance().days().add(expected, 4);
+//        expected = ISOChronology.getInstance().hours().add(expected, 5);
+//        expected = ISOChronology.getInstance().minutes().add(expected, 6);
+//        expected = ISOChronology.getInstance().seconds().add(expected, 7);
+//        expected = ISOChronology.getInstance().millis().add(expected, 8);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        MutableDateTime mdt = new MutableDateTime();
+//        test.addInto(mdt, 1);
+//        assertEquals(expected, mdt.getMillis());
+//    }
+//    
+//    public void testAddIntoRWI2() {
+//        long expected = TEST_TIME_NOW;
+//        expected = ISOChronology.getInstance().years().add(expected, -2);
+//        expected = ISOChronology.getInstance().months().add(expected, -4);
+//        expected = ISOChronology.getInstance().weeks().add(expected, -6);
+//        expected = ISOChronology.getInstance().days().add(expected, -8);
+//        expected = ISOChronology.getInstance().hours().add(expected, -10);
+//        expected = ISOChronology.getInstance().minutes().add(expected, -12);
+//        expected = ISOChronology.getInstance().seconds().add(expected, -14);
+//        expected = ISOChronology.getInstance().millis().add(expected, -16);
+//        
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
+//        MutableDateTime mdt = new MutableDateTime();
+//        test.addInto(mdt, -2);  // MutableDateTime has a chronology, use it
+//        assertEquals(expected, mdt.getMillis());
+//    }
+//    
+//    public void testAddIntoRWI3() {
+//        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+//        try {
+//            test.addInto(null, 1);
+//            fail();
+//        } catch (IllegalArgumentException ex) {}
+//    }
     
     //-----------------------------------------------------------------------
     public void testToString() {
@@ -463,10 +462,10 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDurationMillisFrom() {
-        Period test = new Period(123L);
-        assertEquals(123L, test.toDurationMillisFrom(0L, null));
-    }
+//    public void testToDurationMillisFrom() {
+//        Period test = new Period(123L);
+//        assertEquals(123L, test.toDurationMillisFrom(0L, null));
+//    }
 
     public void testToDuration() {
         Period test = new Period(123L);
@@ -516,6 +515,97 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(6, result.getMinutes());
         assertEquals(7, result.getSeconds());
         assertEquals(8, result.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPeriodStatics() {
+        Period test;
+        test = Period.years(1);
+        assertEquals(test, new Period(1, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.months(1);
+        assertEquals(test, new Period(0, 1, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.weeks(1);
+        assertEquals(test, new Period(0, 0, 1, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.days(1);
+        assertEquals(test, new Period(0, 0, 0, 1, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.hours(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 1, 0, 0, 0, PeriodType.standard()));
+        test = Period.minutes(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 1, 0, 0, PeriodType.standard()));
+        test = Period.seconds(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 1, 0, PeriodType.standard()));
+        test = Period.millis(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 0, 1, PeriodType.standard()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWith() {
+        Period test;
+        test = Period.years(5).withYears(1);
+        assertEquals(test, new Period(1, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.months(5).withMonths(1);
+        assertEquals(test, new Period(0, 1, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.weeks(5).withWeeks(1);
+        assertEquals(test, new Period(0, 0, 1, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.days(5).withDays(1);
+        assertEquals(test, new Period(0, 0, 0, 1, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.hours(5).withHours(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 1, 0, 0, 0, PeriodType.standard()));
+        test = Period.minutes(5).withMinutes(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 1, 0, 0, PeriodType.standard()));
+        test = Period.seconds(5).withSeconds(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 1, 0, PeriodType.standard()));
+        test = Period.millis(5).withMillis(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 0, 1, PeriodType.standard()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPlus() {
+        Period test;
+        test = Period.years(1).plusYears(1);
+        assertEquals(test, new Period(2, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.months(1).plusMonths(1);
+        assertEquals(test, new Period(0, 2, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.weeks(1).plusWeeks(1);
+        assertEquals(test, new Period(0, 0, 2, 0, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.days(1).plusDays(1);
+        assertEquals(test, new Period(0, 0, 0, 2, 0, 0, 0, 0, PeriodType.standard()));
+        test = Period.hours(1).plusHours(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 2, 0, 0, 0, PeriodType.standard()));
+        test = Period.minutes(1).plusMinutes(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 2, 0, 0, PeriodType.standard()));
+        test = Period.seconds(1).plusSeconds(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 2, 0, PeriodType.standard()));
+        test = Period.millis(1).plusMillis(1);
+        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 0, 2, PeriodType.standard()));
+    }
+
+    public void testPlusZero() {
+        Period test, result;
+        test = Period.years(1);
+        result = test.plusYears(0);
+        assertSame(test, result);
+        test = Period.months(1);
+        result = test.plusMonths(0);
+        assertSame(test, result);
+        test = Period.weeks(1);
+        result = test.plusWeeks(0);
+        assertSame(test, result);
+        test = Period.days(1);
+        result = test.plusDays(0);
+        assertSame(test, result);
+        test = Period.hours(1);
+        result = test.plusHours(0);
+        assertSame(test, result);
+        test = Period.minutes(1);
+        result = test.plusMinutes(0);
+        assertSame(test, result);
+        test = Period.seconds(1);
+        result = test.plusSeconds(0);
+        assertSame(test, result);
+        test = Period.millis(1);
+        result = test.plusMillis(0);
+        assertSame(test, result);
     }
 
 }

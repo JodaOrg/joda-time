@@ -53,17 +53,10 @@
  */
 package org.joda.time.base;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.Duration;
 import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
-import org.joda.time.ReadWritableInstant;
-import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePeriod;
-import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 
 /**
@@ -160,87 +153,6 @@ public abstract class AbstractPeriod implements ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Adds this period to the given instant, returning a new value.
-     * <p>
-     * The addition uses ISOChronology in the default zone.
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the millisecond instant to add the period to
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @return milliseconds value plus this period times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    public long addTo(long instant, int scalar) {
-        return addTo(instant, scalar, null);
-    }
-
-    /**
-     * Adds this period to the given instant, returning a new value.
-     * <p>
-     * The addition uses the chronology specified, or ISOChronology
-     * in the default zone if it is null.
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the millisecond instant to add the period to
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @param chrono  the chronology to use, null means ISO in the default zone
-     * @return milliseconds value plus this period times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    public long addTo(long instant, int scalar, Chronology chrono) {
-        if (scalar != 0) {
-            chrono = DateTimeUtils.getChronology(chrono);
-            for (int i = 0, isize = size(); i < isize; i++) {
-                long value = getValue(i); // use long to allow for multiplication (fits OK)
-                if (value != 0) {
-                    instant = getFieldType(i).getField(chrono).add(instant, value * scalar);
-                }
-            }
-        }
-        return instant;
-    }
-
-    /**
-     * Adds this period to the given instant using the chronology of the specified
-     * instant (if present), returning a new DateTime.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the instant to add the period to, null means now
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @return datetime with the original value plus this period times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    public DateTime addTo(ReadableInstant instant, int scalar) {
-        long instantMillis = DateTimeUtils.getInstantMillis(instant);
-        Chronology chrono = DateTimeUtils.getInstantChronology(instant, null);
-        return new DateTime(addTo(instantMillis, scalar, chrono), chrono);
-    }
-
-    /**
-     * Adds this period into the given mutable instant using the chronology of
-     * the specified mutable instant (if present).
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the instant to update with the added period, must not be null
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @throws IllegalArgumentException if the instant is null
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    public void addInto(ReadWritableInstant instant, int scalar) {
-        if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
-        }
-        instant.setMillis(addTo(instant.getMillis(), scalar, instant.getChronology()));
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Get this period as an immutable <code>Period</code> object.
      * 
      * @return a Period using the same field set and values
@@ -258,41 +170,6 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      */
     public MutablePeriod toMutablePeriod() {
         return new MutablePeriod(this);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the total millisecond duration of this period relative to a start
-     * instant and chronology.
-     * <p>
-     * This method adds the period to the specifed instant.
-     * The difference between the start instant and the result of the add is the duration
-     *
-     * @param startInstant  the instant to add the period to, thus obtaining the duration
-     * @param chrono  the chronology to use
-     * @return the total length of the period in milliseconds relative to the start instant
-     * @throws ArithmeticException if the millis exceeds the capacity of the duration
-     */
-    public long toDurationMillisFrom(long startInstant, Chronology chrono) {
-        long endInstant = addTo(startInstant, 1, chrono);
-        return FieldUtils.safeAdd(endInstant, -startInstant);
-    }
-
-    /**
-     * Gets the total millisecond duration of this period relative to a start
-     * instant and chronology.
-     * <p>
-     * This method adds the period to the specifed instant.
-     * The difference between the start instant and the result of the add is the duration
-     *
-     * @param startInstant  the instant to add the period to, thus obtaining the duration
-     * @return the total length of the period in milliseconds relative to the start instant
-     * @throws ArithmeticException if the millis exceeds the capacity of the duration
-     */
-    public Duration toDurationFrom(ReadableInstant startInstant) {
-        long millis = DateTimeUtils.getInstantMillis(startInstant);
-        Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
-        return new Duration(toDurationMillisFrom(millis, chrono));
     }
 
     //-----------------------------------------------------------------------

@@ -500,7 +500,7 @@ public class MutableDateTime
      */
     public void add(ReadablePeriod period, int scalar) {
         if (period != null) {
-            setMillis(period.addTo(getMillis(), scalar, getChronology()));  // set via this class not super
+            setMillis(getChronology().add(getMillis(), period, scalar));  // set via this class not super
         }
     }
 

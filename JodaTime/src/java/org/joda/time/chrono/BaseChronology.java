@@ -62,6 +62,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.ReadablePartial;
+import org.joda.time.ReadablePeriod;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 
@@ -201,6 +202,7 @@ public abstract class BaseChronology
         return millisOfSecond().set(instant, millisOfSecond);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Validates whether the fields stored in a partial instant are valid.
      * <p>
@@ -240,6 +242,26 @@ public abstract class BaseChronology
                         " for " + field.getName() + " is greater than maximum");
             }
         }
+    }
+
+    /**
+     * Adds the period to the instant, specifying the number of times to add.
+     *
+     * @param instant  the instant to add to
+     * @param period  the period to add, null means add nothing
+     * @param scalar  the number of times to add
+     * @return the updated instant
+     */
+    public long add(long instant, ReadablePeriod period, int scalar) {
+        if (scalar != 0 && period != null) {
+            for (int i = 0, isize = period.size(); i < isize; i++) {
+                long value = period.getValue(i); // use long to allow for multiplication (fits OK)
+                if (value != 0) {
+                    instant = period.getFieldType(i).getField(this).add(instant, value * scalar);
+                }
+            }
+        }
+        return instant;
     }
 
     // Millis

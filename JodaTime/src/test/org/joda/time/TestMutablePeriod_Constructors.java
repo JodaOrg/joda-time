@@ -429,7 +429,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
      */
     public void testConstructor_4int1() throws Throwable {
         MutablePeriod test = new MutablePeriod(5, 6, 7, 8);
-        assertEquals(PeriodType.time(), test.getPeriodType());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());

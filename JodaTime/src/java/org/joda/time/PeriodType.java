@@ -56,6 +56,8 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Arrays;
 
+import org.joda.time.field.FieldUtils;
+
 /**
  * Controls a period implementation by specifying which duration fields are to be used.
  * <p>
@@ -81,6 +83,15 @@ public class PeriodType implements Serializable {
     /** Serialization version */
     private static final long serialVersionUID = 2274324892792009998L;
 
+    static int YEAR_INDEX = 0;
+    static int MONTH_INDEX = 1;
+    static int WEEK_INDEX = 2;
+    static int DAY_INDEX = 3;
+    static int HOUR_INDEX = 4;
+    static int MINUTE_INDEX = 5;
+    static int SECOND_INDEX = 6;
+    static int MILLI_INDEX = 7;
+    
     private static PeriodType cStandard;
     private static PeriodType cYMDTime;
     private static PeriodType cYWDTime;
@@ -513,92 +524,51 @@ public class PeriodType implements Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the years field part of the period.
+     * Gets the indexed field part of the period.
      * 
      * @param period  the period to query
-     * @return the number of years in the period, zero if unsupported
+     * @param index  the index to use
+     * @return the value of the field, zero if unsupported
      */
-    public int getYears(ReadablePeriod period) {
-        int index = iIndices[0];
-        return (index == -1 ? 0 : period.getValue(index));
+    int getIndexedField(ReadablePeriod period, int index) {
+        int realIndex = iIndices[index];
+        return (realIndex == -1 ? 0 : period.getValue(realIndex));
     }
 
     /**
-     * Gets the months field part of the period.
+     * Sets the indexed field part of the period.
      * 
      * @param period  the period to query
-     * @return the number of months in the period, zero if unsupported
+     * @param index  the index to use
+     * @param values  the array to populate
+     * @param newValue  the value to set
+     * @throws UnsupportedOperationException if not supported
      */
-    public int getMonths(ReadablePeriod period) {
-        int index = iIndices[1];
-        return (index == -1 ? 0 : period.getValue(index));
+    boolean setIndexedField(ReadablePeriod period, int index, int[] values, int newValue) {
+        int realIndex = iIndices[index];
+        if (realIndex == -1) {
+            throw new UnsupportedOperationException("Field is not supported");
+        }
+        values[realIndex] = newValue;
+        return true;
     }
 
     /**
-     * Gets the weeks field part of the period.
+     * Adds to the indexed field part of the period.
      * 
      * @param period  the period to query
-     * @return the number of weeks in the period, zero if unsupported
+     * @param index  the index to use
+     * @param values  the array to populate
+     * @param valueToAdd  the value to add
+     * @throws UnsupportedOperationException if not supported
      */
-    public int getWeeks(ReadablePeriod period) {
-        int index = iIndices[2];
-        return (index == -1 ? 0 : period.getValue(index));
-    }
-
-    /**
-     * Gets the days field part of the period.
-     * 
-     * @param period  the period to query
-     * @return the number of days in the period, zero if unsupported
-     */
-    public int getDays(ReadablePeriod period) {
-        int index = iIndices[3];
-        return (index == -1 ? 0 : period.getValue(index));
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the hours field part of the period.
-     * 
-     * @param period  the period to query
-     * @return the number of hours in the period, zero if unsupported
-     */
-    public int getHours(ReadablePeriod period) {
-        int index = iIndices[4];
-        return (index == -1 ? 0 : period.getValue(index));
-    }
-
-    /**
-     * Gets the minutes field part of the period.
-     * 
-     * @param period  the period to query
-     * @return the number of minutes in the period, zero if unsupported
-     */
-    public int getMinutes(ReadablePeriod period) {
-        int index = iIndices[5];
-        return (index == -1 ? 0 : period.getValue(index));
-    }
-
-    /**
-     * Gets the seconds field part of the period.
-     * 
-     * @param period  the period to query
-     * @return the number of seconds in the period, zero if unsupported
-     */
-    public int getSeconds(ReadablePeriod period) {
-        int index = iIndices[6];
-        return (index == -1 ? 0 : period.getValue(index));
-    }
-
-    /**
-     * Gets the millis field part of the period.
-     * 
-     * @param period  the period to query
-     * @return the number of millis in the period, zero if unsupported
-     */
-    public int getMillis(ReadablePeriod period) {
-        int index = iIndices[7];
-        return (index == -1 ? 0 : period.getValue(index));
+    boolean addIndexedField(ReadablePeriod period, int index, int[] values, int valueToAdd) {
+        int realIndex = iIndices[index];
+        if (realIndex == -1) {
+            throw new UnsupportedOperationException("Field is not supported");
+        }
+        values[realIndex] = FieldUtils.safeAdd(values[realIndex], valueToAdd);
+        return true;
     }
 
     //-----------------------------------------------------------------------

@@ -174,8 +174,8 @@ public abstract class BaseInterval
         if (period == null) {
             iEndMillis = iStartMillis;
         } else {
-            Chronology chrono = DateTimeUtils.getInstantChronology(start, null);
-            iEndMillis = period.addTo(iStartMillis, 1, chrono);
+            Chronology chrono = DateTimeUtils.getInstantChronology(start);
+            iEndMillis = chrono.add(iStartMillis, period, 1);
         }
         checkInterval(iStartMillis, iEndMillis);
     }
@@ -197,8 +197,8 @@ public abstract class BaseInterval
         if (period == null) {
             iStartMillis = iEndMillis;
         } else {
-            Chronology chrono = DateTimeUtils.getInstantChronology(end, null);
-            iStartMillis = period.addTo(iEndMillis, -1, chrono);
+            Chronology chrono = DateTimeUtils.getInstantChronology(end);
+            iStartMillis = chrono.add(iEndMillis, period, -1);
         }
         checkInterval(iStartMillis, iEndMillis);
     }

@@ -133,6 +133,20 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testConstructor1() throws Throwable {
+        Period test = new Period();
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_long1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
@@ -382,7 +396,7 @@ public class TestPeriod_Constructors extends TestCase {
      */
     public void testConstructor_4int1() throws Throwable {
         Period test = new Period(5, 6, 7, 8);
-        assertEquals(PeriodType.time(), test.getPeriodType());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());

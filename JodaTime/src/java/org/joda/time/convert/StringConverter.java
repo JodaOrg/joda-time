@@ -264,11 +264,11 @@ class StringConverter extends AbstractConverter
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
             period = periodParser.parsePeriod(getPeriodType(rightStr), rightStr);
-            endInstant = period.addTo(startInstant, 1);
+            endInstant = ISOChronology.getInstance().add(startInstant, period, 1); // TODO
         } else {
             endInstant = dateTimeParser.parseMillis(rightStr);
             if (period != null) {
-                startInstant = period.addTo(endInstant, -1);
+                startInstant = ISOChronology.getInstance().add(endInstant, period, -1); // TODO
             }
         }
         

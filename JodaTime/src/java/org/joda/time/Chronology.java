@@ -507,6 +507,7 @@ public abstract class Chronology {
                            int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException;
 
+    //-----------------------------------------------------------------------
     /**
      * Validates whether the values are valid for the fields of a partial instant.
      *
@@ -515,6 +516,16 @@ public abstract class Chronology {
      * @throws IllegalArgumentException if the instant is invalid
      */
     public abstract void validate(ReadablePartial instant, int[] values);
+
+    /**
+     * Adds the period to the instant, specifying the number of times to add.
+     *
+     * @param instant  the instant to add to
+     * @param period  the period to add, null means add nothing
+     * @param scalar  the number of times to add
+     * @return the updated instant
+     */
+    public abstract long add(long instant, ReadablePeriod period, int scalar);
 
     // Millis
     //-----------------------------------------------------------------------

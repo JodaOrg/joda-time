@@ -84,8 +84,120 @@ public final class Period
     /** Serialization version */
     private static final long serialVersionUID = 741052353876488155L;
 
+    //-----------------------------------------------------------------------
     /**
-     * Create a period from a set of field values using the time set of fields.
+     * Create a period with a specified number of years.
+     * The standard period type is used.
+     *
+     * @param years  the amount of years in this period
+     * @return the period
+     */
+    public static Period years(int years) {
+        return new Period(new int[] {years}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of months.
+     * The standard period type is used.
+     *
+     * @param months  the amount of months in this period
+     * @return the period
+     */
+    public static Period months(int months) {
+        return new Period(new int[] {months}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of weeks.
+     * The standard period type is used.
+     *
+     * @param weeks  the amount of weeks in this period
+     * @return the period
+     */
+    public static Period weeks(int weeks) {
+        return new Period(new int[] {weeks}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of days.
+     * The standard period type is used.
+     *
+     * @param days  the amount of days in this period
+     * @return the period
+     */
+    public static Period days(int days) {
+        return new Period(new int[] {days}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of hours.
+     * The standard period type is used.
+     *
+     * @param hours  the amount of hours in this period
+     * @return the period
+     */
+    public static Period hours(int hours) {
+        return new Period(new int[] {hours}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of minutes.
+     * The standard period type is used.
+     *
+     * @param minutes  the amount of minutes in this period
+     * @return the period
+     */
+    public static Period minutes(int minutes) {
+        return new Period(new int[] {minutes}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of seconds.
+     * The standard period type is used.
+     *
+     * @param seconds  the amount of seconds in this period
+     * @return the period
+     */
+    public static Period seconds(int seconds) {
+        return new Period(new int[] {seconds}, PeriodType.standard());
+    }
+
+    /**
+     * Create a period with a specified number of millis.
+     * The standard period type is used.
+     *
+     * @param millis  the amount of millis in this period
+     * @return the period
+     */
+    public static Period millis(int millis) {
+        return new Period(new int[] {millis}, PeriodType.standard());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a new empty period with the standard set of fields.
+     * <p>
+     * One way to initialise a period is as follows:
+     * <pre>
+     * Period = new Period().withYears(6).withMonths(3).withSeconds(23);
+     * </pre>
+     * Bear in mind that this creates four period instances in total, three of
+     * which are immediately discarded.
+     * The alterative is more efficient, but less readable:
+     * <pre>
+     * Period = new Period(6, 3, 0, 0, 0, 0, 23, 0);
+     * </pre>
+     * The following is also slightly less wasteful:
+     * <pre>
+     * Period = Period.years(6).withMonths(3).withSeconds(23);
+     * </pre>
+     */
+    public Period() {
+        super(0L, null, null);
+    }
+
+    /**
+     * Create a period from a set of field values using the standard set of fields.
      *
      * @param hours  amount of hours in this period
      * @param minutes  amount of minutes in this period
@@ -93,7 +205,7 @@ public final class Period
      * @param millis  amount of milliseconds in this period
      */
     public Period(int hours, int minutes, int seconds, int millis) {
-        super(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.time());
+        super(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.standard());
     }
 
     /**
@@ -115,6 +227,10 @@ public final class Period
 
     /**
      * Create a period from a set of field values.
+     * <p>
+     * There is usually little need to use this constructor.
+     * The period type is used primarily to define how to split an interval into a period.
+     * As this constructor already is split, the period type does no real work.
      *
      * @param years  amount of years in this period, which must be zero if unsupported
      * @param months  amount of months in this period, which must be zero if unsupported
@@ -153,7 +269,7 @@ public final class Period
      * <ul>
      * <li>convert the duration to an {@link Interval}, and from there obtain the period
      * <li>specify a period type that contains precise definitions of the day and larger
-     * fields, such as the UTC or precise types.
+     * fields, such as UTC
      * </ul>
      *
      * @param duration  the duration, in milliseconds
@@ -344,6 +460,16 @@ public final class Period
         super(period, type, chrono);
     }
 
+    /**
+     * Constructor used when we trust ourselves.
+     *
+     * @param values  the values to use, not null, not cloned
+     * @param type  which set of fields this period supports, not null
+     */
+    private Period(int[] values, PeriodType type) {
+        super(values, type);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Get this period as an immutable <code>Period</code> object
@@ -362,7 +488,7 @@ public final class Period
      * @return the number of years in the period, zero if unsupported
      */
     public int getYears() {
-        return getPeriodType().getYears(this);
+        return getPeriodType().getIndexedField(this, PeriodType.YEAR_INDEX);
     }
 
     /**
@@ -371,7 +497,7 @@ public final class Period
      * @return the number of months in the period, zero if unsupported
      */
     public int getMonths() {
-        return getPeriodType().getMonths(this);
+        return getPeriodType().getIndexedField(this, PeriodType.MONTH_INDEX);
     }
 
     /**
@@ -380,7 +506,7 @@ public final class Period
      * @return the number of weeks in the period, zero if unsupported
      */
     public int getWeeks() {
-        return getPeriodType().getWeeks(this);
+        return getPeriodType().getIndexedField(this, PeriodType.WEEK_INDEX);
     }
 
     /**
@@ -389,7 +515,7 @@ public final class Period
      * @return the number of days in the period, zero if unsupported
      */
     public int getDays() {
-        return getPeriodType().getDays(this);
+        return getPeriodType().getIndexedField(this, PeriodType.DAY_INDEX);
     }
 
     //-----------------------------------------------------------------------
@@ -399,7 +525,7 @@ public final class Period
      * @return the number of hours in the period, zero if unsupported
      */
     public int getHours() {
-        return getPeriodType().getHours(this);
+        return getPeriodType().getIndexedField(this, PeriodType.HOUR_INDEX);
     }
 
     /**
@@ -408,7 +534,7 @@ public final class Period
      * @return the number of minutes in the period, zero if unsupported
      */
     public int getMinutes() {
-        return getPeriodType().getMinutes(this);
+        return getPeriodType().getIndexedField(this, PeriodType.MINUTE_INDEX);
     }
 
     /**
@@ -417,7 +543,7 @@ public final class Period
      * @return the number of seconds in the period, zero if unsupported
      */
     public int getSeconds() {
-        return getPeriodType().getSeconds(this);
+        return getPeriodType().getIndexedField(this, PeriodType.SECOND_INDEX);
     }
 
     /**
@@ -426,7 +552,7 @@ public final class Period
      * @return the number of millis in the period, zero if unsupported
      */
     public int getMillis() {
-        return getPeriodType().getMillis(this);
+        return getPeriodType().getIndexedField(this, PeriodType.MILLI_INDEX);
     }
 
     //-----------------------------------------------------------------------
@@ -444,6 +570,272 @@ public final class Period
             return this;
         }
         return new Period(this, type);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new period with the specified number of years.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param years  the amount of years to add, may be negative
+     * @return the new period with the increased years
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withYears(int years) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.YEAR_INDEX, values, years);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of months.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param months  the amount of months to add, may be negative
+     * @return the new period with the increased months
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withMonths(int months) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.MONTH_INDEX, values, months);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of weeks.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param weeks  the amount of weeks to add, may be negative
+     * @return the new period with the increased weeks
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withWeeks(int weeks) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.WEEK_INDEX, values, weeks);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of days.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param days  the amount of days to add, may be negative
+     * @return the new period with the increased days
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withDays(int days) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.DAY_INDEX, values, days);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of hours.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param hours  the amount of hours to add, may be negative
+     * @return the new period with the increased hours
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withHours(int hours) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.HOUR_INDEX, values, hours);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of minutes.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param minutes  the amount of minutes to add, may be negative
+     * @return the new period with the increased minutes
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withMinutes(int minutes) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.MINUTE_INDEX, values, minutes);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of seconds.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param seconds  the amount of seconds to add, may be negative
+     * @return the new period with the increased seconds
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withSeconds(int seconds) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.SECOND_INDEX, values, seconds);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period with the specified number of millis.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param millis  the amount of millis to add, may be negative
+     * @return the new period with the increased millis
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period withMillis(int millis) {
+        int[] values = getValues();  // cloned
+        getPeriodType().setIndexedField(this, PeriodType.MILLI_INDEX, values, millis);
+        return new Period(values, getPeriodType());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new period with the specified number of years added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param years  the amount of years to add, may be negative
+     * @return the new period with the increased years
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusYears(int years) {
+        if (years == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, years);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of months added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param months  the amount of months to add, may be negative
+     * @return the new period plus the increased months
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusMonths(int months) {
+        if (months == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, months);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of weeks added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param weeks  the amount of weeks to add, may be negative
+     * @return the new period plus the increased weeks
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusWeeks(int weeks) {
+        if (weeks == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, weeks);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of days added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param days  the amount of days to add, may be negative
+     * @return the new period plus the increased days
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusDays(int days) {
+        if (days == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, days);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of hours added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param hours  the amount of hours to add, may be negative
+     * @return the new period plus the increased hours
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusHours(int hours) {
+        if (hours == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, hours);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of minutes added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param minutes  the amount of minutes to add, may be negative
+     * @return the new period plus the increased minutes
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusMinutes(int minutes) {
+        if (minutes == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, minutes);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of seconds added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param seconds  the amount of seconds to add, may be negative
+     * @return the new period plus the increased seconds
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusSeconds(int seconds) {
+        if (seconds == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, seconds);
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new period plus the specified number of millis added.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param millis  the amount of millis to add, may be negative
+     * @return the new period plus the increased millis
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period plusMillis(int millis) {
+        if (millis == 0) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, millis);
+        return new Period(values, getPeriodType());
     }
 
 }

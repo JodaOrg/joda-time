@@ -57,6 +57,7 @@ import java.io.Serializable;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.Duration;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
@@ -95,24 +96,6 @@ public abstract class BasePeriod
     private int[] iValues;
 
     //-----------------------------------------------------------------------
-    /**
-     * Creates a period from the given millisecond duration.
-     * <p>
-     * The millisecond duration will be split to fields using a UTC version of
-     * the period type.
-     *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this period supports, null means standard
-     * @param chrono  the chronology to use, null means ISO default
-     * @throws IllegalArgumentException if period type is invalid
-     */
-    protected BasePeriod(long duration, PeriodType type, Chronology chrono) {
-        super();
-        type = checkPeriodType(type);
-        iType = type;
-        setPeriodInternal(duration, chrono); // internal method
-    }
-
     /**
      * Creates a period from a set of field values.
      *
@@ -177,6 +160,25 @@ public abstract class BasePeriod
     }
 
     /**
+     * Creates a period from the given millisecond duration, which is only really
+     * suitable for durations less than one day.
+     * <p>
+     * Only fields that are precise will be used.
+     * Thus the largest precise field may have a large value.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     * @param chrono  the chronology to use, null means ISO default
+     * @throws IllegalArgumentException if period type is invalid
+     */
+    protected BasePeriod(long duration, PeriodType type, Chronology chrono) {
+        super();
+        type = checkPeriodType(type);
+        iType = type;
+        setPeriodInternal(duration, chrono); // internal method
+    }
+
+    /**
      * Creates a new period based on another using the {@link ConverterManager}.
      *
      * @param period  the period to convert
@@ -198,6 +200,19 @@ public abstract class BasePeriod
         } else {
             setPeriodInternal(new MutablePeriod(period, type, chrono));
         }
+    }
+
+    /**
+     * Constructor used when we trust ourselves.
+     * Do not expose publically.
+     *
+     * @param values  the values to use, not null, not cloned
+     * @param type  which set of fields this period supports, not null
+     */
+    protected BasePeriod(int[] values, PeriodType type) {
+        super();
+        iType = type;
+        iValues = values;
     }
 
     //-----------------------------------------------------------------------
@@ -253,6 +268,24 @@ public abstract class BasePeriod
      */
     public int getValue(int index) {
         return iValues[index];
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the total millisecond duration of this period relative to a start instant.
+     * <p>
+     * This method adds the period to the specifed instant.
+     * The difference between the start instant and the result of the add is the duration
+     *
+     * @param startInstant  the instant to add the period to, thus obtaining the duration
+     * @return the total length of the period as a duration relative to the start instant
+     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     */
+    public Duration toDurationFrom(ReadableInstant startInstant) {
+        long startMillis = DateTimeUtils.getInstantMillis(startInstant);
+        Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
+        long endMillis = chrono.add(startMillis, this, 1);
+        return new Duration(startMillis, endMillis);
     }
 
     //-----------------------------------------------------------------------

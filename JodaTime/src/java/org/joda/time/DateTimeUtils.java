@@ -182,29 +182,6 @@ public class DateTimeUtils {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the chronology from the specified instant object handling null.
-     * <p>
-     * If the instant object is <code>null</code>, or the instant's chronology is
-     * <code>null</code>, <code>nullChrono</code> will be returned.
-     * Otherwise, the chronology from the object is returned.
-     * 
-     * @param instant  the instant to examine, null means returns use nullChrono
-     * @param nullChrono  the chronology to use in the case of finding null
-     * @return the chronology
-     */
-    public static final Chronology getInstantChronology(ReadableInstant instant, Chronology nullChrono) {
-        if (instant == null) {
-            return nullChrono;
-        }
-        Chronology chrono = instant.getChronology();
-        if (chrono == null) {
-            return nullChrono;
-        }
-        return chrono;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Gets the chronology handling null.
      * <p>
      * If the chronology is <code>null</code>, {@link ISOChronology#getInstance()}

@@ -71,7 +71,7 @@ package org.joda.time;
  * Thus, the time period is always added field by field to the datetime.
  * <p>
  * Periods are independent of chronology, and can only be treated as durations
- * when paired with a time.
+ * when paired with a time via an interval.
  *
  * @see ReadableDuration
  * @see ReadableInterval
@@ -131,50 +131,6 @@ public interface ReadablePeriod {
      * @return true if the field is supported
      */
     boolean isSupported(DurationFieldType field);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Adds this period to the given instant, returning a new value.
-     * <p>
-     * The addition uses the chronology specified, or ISOChronology
-     * in the default zone if it is null.
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the millisecond instant to add the period to
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @param chrono  the chronology to use, null means ISO in the default zone
-     * @return milliseconds value plus this period times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    long addTo(long instant, int scalar, Chronology chrono);
-
-    /**
-     * Adds this period to the given instant, returning a new DateTime.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the instant to add the period to
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @return datetime with the original value plus this period times scalar
-     * @throws IllegalArgumentException if the instant is null
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    DateTime addTo(ReadableInstant instant, int scalar);
-
-    /**
-     * Adds this period into the given mutable instant.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the instant to update with the added period
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @throws IllegalArgumentException if the instant is null
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    void addInto(ReadWritableInstant instant, int scalar);
 
     //-----------------------------------------------------------------------
     /**

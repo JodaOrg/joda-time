@@ -62,12 +62,11 @@ import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.ISOChronology;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -295,19 +294,6 @@ public class TestDateTimeUtils extends TestCase {
         assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(i));
         
         assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(null));
-    }
-
-    public void testGetInstantChronology_RI_long() {
-        DateTime dt = new DateTime(123L, BuddhistChronology.getInstance());
-        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getInstantChronology(dt, CopticChronology.getInstance()));
-        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getInstantChronology(dt, null));
-        
-        Instant i = new Instant(123L);
-        assertEquals(CopticChronology.getInstance(), DateTimeUtils.getInstantChronology(i, CopticChronology.getInstance()));
-        assertEquals(null, DateTimeUtils.getInstantChronology(i, null));
-        
-        assertEquals(CopticChronology.getInstance(), DateTimeUtils.getInstantChronology(null, CopticChronology.getInstance()));
-        assertEquals(null, DateTimeUtils.getInstantChronology(null, null));
     }
 
     //-----------------------------------------------------------------------

@@ -353,7 +353,7 @@ public class MutableInterval
             setEndMillis(getStartMillis());
         } else {
             chrono = DateTimeUtils.getChronology(chrono);
-            setEndMillis(period.addTo(getStartMillis(), 1, chrono));
+            setEndMillis(chrono.add(getStartMillis(), period, 1));
         }
     }
 
@@ -382,7 +382,7 @@ public class MutableInterval
             setStartMillis(getEndMillis());
         } else {
             chrono = DateTimeUtils.getChronology(chrono);
-            setStartMillis(period.addTo(getEndMillis(), -1, chrono));
+            setStartMillis(chrono.add(getEndMillis(), period, -1));
         }
     }
 

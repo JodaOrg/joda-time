@@ -657,16 +657,16 @@ public final class DateTime
      * DateTime added = dt.hourOfDay().addToCopy(6);
      * </pre>
      * 
-     * @param periodToAdd  the period to add to this one, null means zero
+     * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
-    public DateTime withPeriodAdded(ReadablePeriod periodToAdd, int scalar) {
-        if (periodToAdd == null || scalar == 0) {
+    public DateTime withPeriodAdded(ReadablePeriod period, int scalar) {
+        if (period == null || scalar == 0) {
             return this;
         }
-        long instant = periodToAdd.addTo(getMillis(), scalar, getChronology());
+        long instant = getChronology().add(getMillis(), period, scalar);
         return withMillis(instant);
     }
 

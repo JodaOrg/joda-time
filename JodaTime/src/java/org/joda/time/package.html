@@ -81,29 +81,33 @@ The main API concepts are defined by interfaces:
 </p>
 <ul>
 <li><code>ReadableInstant</code> - an instant in time
-<li><code>ReadableDateTime</code> - an instant in time with field accessors
-<li><code>ReadableDuration</code> - a duration broken down into fields
+<li><code>ReadableDateTime</code> - an instant in time with field accessors such as dayOfWeek
+<li><code>ReadablePartial</code> - a definition for local times that are not defined to the millisecond, such as the time of day
+<li><code>ReadableDuration</code> - a duration defined in milliseconds
+<li><code>ReadablePeriod</code> - a time period defined in fields such as hours and minutes
 <li><code>ReadableInterval</code> - a period of time between two instants
 </ul>
 <ul>
 <li><code>ReadWritableInstant</code> - an instant that can be modified
 <li><code>ReadWritableDateTime</code> - a datetime that can be modified
-<li><code>ReadWritableDuration</code> - a duration that can be modified
+<li><code>ReadWritablePeriod</code> - a time period that can be modified
 <li><code>ReadWritableInterval</code> - an interval that can be modified
 </ul>
 <p>
-These define the public interface to dates, times, and durations. As with
-<code>java.util.Date</code> and <code>Calendar</code>, the design is
-millisecond based with an epoch of 1970-01-01. This should enable easy
-conversions.
+These define the public interface to dates, times, periods, intervals and durations.
+As with <code>java.util.Date</code> and <code>Calendar</code>, the design is
+millisecond based with an epoch of 1970-01-01.
+This should enable easy conversions.
 </p>
 
 <h4>Implementations</h4>
 <p>
 The basic implementation of the <code>ReadableInstant</code> interface is
 <code>Instant</code>. This is a simple immutable class that stores the
-millisecond value and integrates with Java Date and Calendar. If you are
-dealing with an instant in time but do not know, or do not want to specify,
+millisecond value and integrates with Java Date and Calendar.
+The class follows the definition of the millisecond instant fully, thus
+it references the ISO-8601 calendar system and UTC time zone.
+If you are dealing with an instant in time but do not know, or do not want to specify,
 which calendar system it refers to, then you should use this class.
 </p>
 <p>
@@ -114,48 +118,36 @@ allow integration with the Java Date and Calendar classes.
 </p>
 <p>
 Like <code>Instant</code>, <code>DateTime</code> is <i>immutable</i>, and it
-can be used safely in a multi-threaded environment. Most of the methods in
-<code>DateTime</code> are final, but the class itself is not. Subclasses of
-<code>DateTime</code> can actually be mutable, but they cannot alter the values
-returned by the standard <code>DateTime</code> or superclass methods.
-</p>
-<p>
-To be fully immutable <code>DateTime</code> would have to be final, but that
-prevents subclasses from adding convenient access methods. Choosing this design
-allows the flexibility of convenience, but at the risk of someone writing
-potentially mutable subclasses. (Note that the internal data values cannot be
-modified, so the "danger" posed is small.)
+can be used safely in a multi-threaded environment. 
+In order to be fully immutable, key clases are declared as final.
+Abstract superclasses are provided should you need to define your own implementations.
 </p>
 <p>
 The concrete implementations of the <code>ReadWritable...</code> interfaces are
-named the same as their immutable counterparts, but with a "Mutable"
-prefix. For example, <code>MutableDateTime</code> implements
+named the same as their immutable counterparts, but with a "Mutable" prefix.
+For example, <code>MutableDateTime</code> implements
 <code>ReadWritableDateTime</code>, making datetime editing easy.
+Note that it is possible to use the immutable DateTime for modifying datetimes,
+however each modification method returns a new instance of DateTime.
 </p>
 
-<h4>User defined APIs</h4>
+<h4>Interface usage</h4>
 <p>
-User defined methods should generally accept instants and durations specified
-by one of the interfaces. This allows the method to accept more types, and it
-clearly states what operations it requires. A method that declares an input
-parameter of type <code>ReadWritableDateTime</code> is declaring that the
-object will get updated.
+The interfaces in Joda-Time are not designed to operate in the same way as those
+in the Java Collections Framework (List/Map/Set etc).
+The Joda-Time interfaces represent a core subset of the functionality available
+via the actual classes.
+Thus, much of the work of an application will probably use methods on the class, not
+on the interface.
+Your application must determine whether it should define dates in terms of the
+interfaces, or in terms of the classes.
 </p>
 <p>
-The interfaces that define read operations, like <code>ReadableDateTime</code>,
-only limit the allowed set of operations, but they do <i>not</i> guarantee that
-the object is immutable. Care must be taken when saving a parameter of this
-type. Calling a conversion method like <code>toDateTime</code> beforehand
-guarantees immutability of the saved object, but does not add any significant
-overhead if the object was already a <code>DateTime</code>.
-</p>
-<p>
-User defined methods that return instants or durations should generally declare
-a concrete return type, like <code>DateTime</code>. Again, the interfaces only
-define permitted operations. Since <code>DateTime</code> is guaranteed
-immutable, callers of the method know that the returned object can be safely
-shared and accessed by multiple threads.
-</p>
+The interfaces provide simple methods to access an instance of the immutable class,
+which is implemented either via typecast or object creation.
+Thus, if you hold a reference to a ReadableInstant, and you call the method
+<code>toDateTime()</code>, the same instance will be returned (typecast) if it
+already was a DateTime.
 
 <h4>Chronologies and Fields</h4>
 <p>
@@ -170,14 +162,24 @@ value.
 The datetime and duration fields that together represent a calendar system are
 grouped into a <code>Chronology</code>. The chronology represents all the
 information to convert from a millisecond value to human understandable fields
-in a specific calendar system. Chronologies are provided for ISO and
-Gregorian/Julian (GJ). (ISO is in fact a special case of GJ).
+in a specific calendar system. Chronologies are provided for ISO,
+Gregorian/Julian (GJ), Coptic and Buddhist.
+More implementations are sought from the community.
 </p>
 <p>
-This design results in a low overhead on the date and time classes. The Java
-<code>Calendar</code> class performs poorly because it has many internal fields that are
-constantly kept in sync. This design only calculates fields when required,
-resulting in lightweight and simple date time classes.
+The chronology and field classes are singletons.
+This design results in a low overhead on the date and time classes.
+The Java <code>Calendar</code> class performs poorly because it has many internal
+fields that are constantly kept in sync.
+This design only calculates fields when required, resulting in lightweight and
+simple date time classes.
+</p>
+<p>
+When reviewing the library for the first time, it is easy to mistake the number
+of classes with complexity.
+The library is in fact clearly divided between user packages and implementation packages
+in the javadoc.
+Most users will should not need to be concerned with the back-end implementation.
 </p>
 
 <h4>Partials</h4>
@@ -214,7 +216,7 @@ equals
 Formatting is provided by the <code>format</code> subpackage. Comprehensive
 support is provided for outputting dates and times in multiple formats. A
 pattern similar to Java <code>SimpleDateFormat</code> can be used, but a more
-advanced programmatic technique is available.
+advanced programmatic technique is available via the builder classes.
 </p>
 
 </body>

@@ -23,6 +23,8 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#performance">How well does it perform?</a></li>
 <li><a href="#threading">Does it support multi-threading?</a></li>
 <li><a href="#leapseconds">Are leap seconds supported?</a></li>
+<li><a href="#tznumberclasses">There are lots of classes, do I need to learn them all?</a></li>
+<li><a href="#tzreimplement">Why reimplement TimeZone?</a></li>
 <li><a href="#joda">What is with the name 'joda'?</a></li>
 </ul>
 Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Suggest another FAQ</a>
@@ -182,6 +184,33 @@ writing a new, specialized chronology, or by making a few enhancements to the
 existing ZonedChronology class. In either case, future versions of Joda-time
 will not enable leap seconds by default. Most applications have no need for it,
 and it might have additional performance costs.
+</p>
+</subsection>
+
+
+<a name="tznumberclasses" />
+<subsection name="There are lots of classes, do I need to learn them all?">
+<p>
+No, you only need to learn a small subset of the classes in the API.
+The javadoc clearly indicates which packages contain user classes, and which contain
+implementation classes.
+In addition, there are a large number of package scoped classes, which are hidden
+in the javadoc view anyway.
+Most applications will not need to directly import, extend or implement classes in
+the implementation packages.
+Basically, the API consists of the main package, plus the formatting package.
+</p>
+</subsection>
+
+
+<a name="tzreimplement" />
+<subsection name="Why reimplement TimeZone?">
+<p>
+The JDK TimeZone class varies in the support it can provide from one JDK release to another.
+The rules for determining Daylights Savings Time also change frequently.
+The Joda solution uses the international standard format for time zone rule data,
+and allows it to be updated independently of the timing of JDK releases.
+With perhaps 8 releases of the time zone rules per year this can be quite significant.
 </p>
 </subsection>
 

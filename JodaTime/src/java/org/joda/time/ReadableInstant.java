@@ -234,14 +234,14 @@ public interface ReadableInstant extends Comparable {
     boolean equals(Object readableInstant);
 
     /**
-     * Gets a hash code for the instant that is compatable with the 
+     * Gets a hash code for the instant that is compatible with the 
      * equals method.
      * <p>
      * The formula used must be as follows:
-     * <pre>int result = 317;
-     * result = 59 * result + ((int) (getMillis() ^ (getMillis() >>> 32)));
-     * result = 59 * result + (getChronology() == null ? 0 : getChronology().hashCode());
-     * return result;</pre>
+     * <pre>
+     * ((int) (getMillis() ^ (getMillis() >>> 32))) +
+     * (getChronology() == null ? 0 : getChronology().hashCode())
+     * </pre>
      *
      * @return a hash code as defined above
      */

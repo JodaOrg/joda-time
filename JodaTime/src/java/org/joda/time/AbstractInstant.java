@@ -582,17 +582,14 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Gets a hash code for the instant that is compatable with the 
-     * equals method.
+     * Gets a hash code for the instant as defined in <code>ReadableInstant</code>.
      *
      * @return a suitable hash code
      */
     public int hashCode() {
-        // following rules in [Bloch02]
-        int result = 317;
-        result = 59 * result + ((int) (getMillis() ^ (getMillis() >>> 32)));
-        result = 59 * result + (getChronology() == null ? 0 : getChronology().hashCode());
-        return result;
+        return
+            ((int) (getMillis() ^ (getMillis() >>> 32))) +
+            (getChronology() == null ? 0 : getChronology().hashCode());
     }
 
     /**

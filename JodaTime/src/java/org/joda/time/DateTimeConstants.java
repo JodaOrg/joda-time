@@ -154,7 +154,7 @@ public final class DateTimeConstants {
 
     /** Minutes in one hour (ISO) */
     public static final int MINUTES_PER_HOUR = 60;
-    /** Milliseconds in one hour (ISO) */
+    /** Seconds in one hour (ISO) */
     public static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
     /** Minutes in one hour (60) (ISO) */
     public static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * MINUTES_PER_HOUR;

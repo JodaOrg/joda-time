@@ -1,7 +1,8 @@
 Joda-Time version 1.0
 ---------------------
 
-Joda-Time is a date and time handling library that seeks to replace the JDK Date and Calendar classes.
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
 
 This is the first full release of Joda-Time.
 There have been a number of alpha/beta releases however.
@@ -12,15 +13,19 @@ We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs
 Bug fixes since 0.98
 --------------------
 
-- Parsing periods of the form PT... - fixed bug that prevented parsing
-
 - Interval/MutableInterval isAfter(ReadableInterval) - fixed bug when intervals abutted
 
+- Parsing periods of the form PT... - fixed bug that prevented parsing
+
+- Period parsing now more strict - 'T' character required to separate date and
+  time in ISO periods
+
+- Fixed parsing of fractional seconds in Periods
 
 New features since 0.98
 -----------------------
 
-
+- Added support to create Periods from a duration and end instant
 
 Feedback
 --------

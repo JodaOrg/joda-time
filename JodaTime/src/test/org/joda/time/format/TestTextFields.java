@@ -86,7 +86,7 @@ public class TestTextFields extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testMonthNames_monthStart() {
-        DateTimePrinter printer = DateTimeFormat.getInstance().forPattern("MMMM");
+        DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
             for (int month=1; month<=12; month++) {
                 DateTime dt = new DateTime(2004, month, 1, 1, 20, 30, 40, ZONES[i]);
@@ -97,7 +97,7 @@ public class TestTextFields extends TestCase {
     }
 
     public void testMonthNames_monthMiddle() {
-        DateTimePrinter printer = DateTimeFormat.getInstance().forPattern("MMMM");
+        DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
             for (int month=1; month<=12; month++) {
                 DateTime dt = new DateTime(2004, month, 15, 12, 20, 30, 40, ZONES[i]);
@@ -108,7 +108,7 @@ public class TestTextFields extends TestCase {
     }
 
     public void testMonthNames_monthEnd() {
-        DateTimePrinter printer = DateTimeFormat.getInstance().forPattern("MMMM");
+        DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
             Chronology chrono = Chronology.getISO(ZONES[i]);
             for (int month=1; month<=12; month++) {
@@ -122,7 +122,7 @@ public class TestTextFields extends TestCase {
     }
 
     public void testWeekdayNames() {
-        DateTimePrinter printer = DateTimeFormat.getInstance().forPattern("EEEE");
+        DateTimeFormatter printer = DateTimeFormat.forPattern("EEEE");
         for (int i=0; i<ZONES.length; i++) {
             MutableDateTime mdt = new MutableDateTime(2004, 1, 1, 1, 20, 30, 40, ZONES[i]);
             for (int day=1; day<=366; day++) {
@@ -135,7 +135,7 @@ public class TestTextFields extends TestCase {
     }
 
     public void testHalfdayNames() {
-        DateTimePrinter printer = DateTimeFormat.getInstance().forPattern("a");
+        DateTimeFormatter printer = DateTimeFormat.forPattern("a");
         for (int i=0; i<ZONES.length; i++) {
             Chronology chrono = Chronology.getISO(ZONES[i]);
             MutableDateTime mdt = new MutableDateTime(2004, 5, 30, 0, 20, 30, 40, chrono);

@@ -24,14 +24,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationFieldType;
-import org.joda.time.MutableDateTime;
-import org.joda.time.ReadWritableInstant;
-import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.RemainderDateTimeField;
 
@@ -126,38 +122,238 @@ import org.joda.time.field.RemainderDateTimeField;
  */
 public class DateTimeFormat {
 
-    /**
-     * Cache that maps Chronology instances to maps that map
-     * Locales to DateTimeFormat instances.
-     */
-    private static Map cInstanceCache = new HashMap(7);
+    /** Style constant for FULL. */
+    static final int FULL = 0;  // DateFormat.FULL
+    /** Style constant for LONG. */
+    static final int LONG = 1;  // DateFormat.LONG
+    /** Style constant for MEDIUM. */
+    static final int MEDIUM = 2;  // DateFormat.MEDIUM
+    /** Style constant for SHORT. */
+    static final int SHORT = 3;  // DateFormat.SHORT
+    /** Style constant for NONE. */
+    static final int NONE = 4;
+
+    /** Type constant for DATE only. */
+    static final int DATE = 0;
+    /** Type constant for TIME only. */
+    static final int TIME = 1;
+    /** Type constant for DATETIME. */
+    static final int DATETIME = 2;
+
+    /** Maps patterns to formatters, patterns don't vary by locale. */
+    private static final Map cPatternedCache = new HashMap(7);
+    /** Maps patterns to formatters, patterns don't vary by locale. */
+    private static final DateTimeFormatter[] cStyleCache = new DateTimeFormatter[25];
 
     //-----------------------------------------------------------------------
     /**
-     * Gets an instance of the formatter provider that works with the default locale.
-     * 
-     * @return a format provider
+     * Factory to create a formatter from a pattern string.
+     * The pattern string is encoded as per SimpleDateFormat.
+     *
+     * @param pattern  pattern specification
+     * @return the formatter
+     * @throws IllegalArgumentException if the pattern is invalid
      */
-    public static DateTimeFormat getInstance() {
-        return getInstance(Locale.getDefault());
+    public static DateTimeFormatter forPattern(String pattern) {
+        return createFormatterForPattern(pattern);
     }
 
     /**
-     * Gets an instance of the formatter provider that works with the given locale.
-     * 
-     * @param locale  the Locale to use, null for default locale
-     * @return a format provider
+     * Factory to create a format from a two character style pattern.
+     * <p>
+     * The first character is the date style, and the second character is the
+     * time style. Specify a character of 'S' for short style, 'M' for medium,
+     * 'L' for long, and 'F' for full.
+     * A date or time may be ommitted by specifying a style character '-'.
+     * <p>
+     * The returned formatter will dynamically adjust to the locale that
+     * the print/parse takes place in. Thus you just call
+     * {@link DateTimeFormatter#withLocale(Locale)} and the Short/Medium/Long/Full
+     * style for that locale will be output.
+     *
+     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
+     * @return the formatter
+     * @throws IllegalArgumentException if the style is invalid
      */
-    public synchronized static DateTimeFormat getInstance(Locale locale) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-        DateTimeFormat dtf = (DateTimeFormat) cInstanceCache.get(locale);
-        if (dtf == null) {
-            dtf = new DateTimeFormat(locale);
-            cInstanceCache.put(locale, dtf);
-        }
-        return dtf;
+    public static DateTimeFormatter forStyle(String style) {
+        return createFormatterForStyle(style);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a format that outputs a short date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter shortDate() {
+        return createFormatterForStyleIndex(SHORT, NONE);
+    }
+
+    /**
+     * Creates a format that outputs a medium date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter mediumDate() {
+        return createFormatterForStyleIndex(MEDIUM, NONE);
+    }
+
+    /**
+     * Creates a format that outputs a long date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter longDate() {
+        return createFormatterForStyleIndex(LONG, NONE);
+    }
+
+    /**
+     * Creates a format that outputs a full date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter fullDate() {
+        return createFormatterForStyleIndex(FULL, NONE);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a format that outputs a short time format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter shortTime() {
+        return createFormatterForStyleIndex(NONE, SHORT);
+    }
+
+    /**
+     * Creates a format that outputs a medium time format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter mediumTime() {
+        return createFormatterForStyleIndex(NONE, MEDIUM);
+    }
+
+    /**
+     * Creates a format that outputs a long time format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter longTime() {
+        return createFormatterForStyleIndex(NONE, LONG);
+    }
+
+    /**
+     * Creates a format that outputs a full time format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter fullTime() {
+        return createFormatterForStyleIndex(NONE, FULL);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a format that outputs a short datetime format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter shortDateTime() {
+        return createFormatterForStyleIndex(SHORT, SHORT);
+    }
+
+    /**
+     * Creates a format that outputs a medium datetime format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter mediumDateTime() {
+        return createFormatterForStyleIndex(MEDIUM, MEDIUM);
+    }
+
+    /**
+     * Creates a format that outputs a long datetime format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter longDateTime() {
+        return createFormatterForStyleIndex(LONG, LONG);
+    }
+
+    /**
+     * Creates a format that outputs a full datetime format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter fullDateTime() {
+        return createFormatterForStyleIndex(FULL, FULL);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses the given pattern and appends the rules to the given
+     * DateTimeFormatterBuilder.
+     *
+     * @param pattern  pattern specification
+     * @throws IllegalArgumentException if the pattern is invalid
+     */
+    static void appendPatternTo(DateTimeFormatterBuilder builder, String pattern) {
+        parsePatternTo(builder, pattern);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Deprecated, methods on DateTimeFormat are now static.
+     * 
+     * @deprecated remove this call as the methods are now static
+     */
+    public static DateTimeFormat getInstance() {
+        return new DateTimeFormat();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructor.
+     */
+    private DateTimeFormat() {
+        super();
     }
 
     //-----------------------------------------------------------------------
@@ -169,7 +365,7 @@ public class DateTimeFormat {
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #forPattern
      */
-    public static void appendPatternTo(DateTimeFormatterBuilder builder, String pattern) {
+    private static void parsePatternTo(DateTimeFormatterBuilder builder, String pattern) {
         int length = pattern.length();
         int[] indexRef = new int[1];
 
@@ -325,7 +521,15 @@ public class DateTimeFormat {
         }
     }
 
-    private static String parseToken(final String pattern, final int[] indexRef) {
+    /**
+     * Parses an individual token.
+     * 
+     * @param pattern  the pattern string
+     * @param indexRef  a single element array, where the input is the start
+     *  location and the output is the location after parsing the token
+     * @return the parsed token
+     */
+    private static String parseToken(String pattern, int[] indexRef) {
         StringBuffer buf = new StringBuffer();
 
         int i = indexRef[0];
@@ -377,8 +581,13 @@ public class DateTimeFormat {
         return buf.toString();
     }
 
-    // Returns true if token should be parsed as a numeric field.
-    private static boolean isNumericToken(final String token) {
+    /**
+     * Returns true if token should be parsed as a numeric field.
+     * 
+     * @param token  the token to parse
+     * @return true if numeric field
+     */
+    private static boolean isNumericToken(String token) {
         int tokenLen = token.length();
         if (tokenLen > 0) {
             char c = token.charAt(0);
@@ -413,26 +622,6 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
-    /** The locale to use */
-    private final Locale iLocale;
-
-    /** Maps patterns to formatters */
-    private transient Map iPatternedCache = new HashMap(7);
-
-    /** Maps styles to formatters */
-    private transient Map iStyledCache = new HashMap(7);
-
-    /**
-     * Constructor.
-     * 
-     * @param locale  the locale to use, must not be null
-     */
-    private DateTimeFormat(final Locale locale) {
-        super();
-        iLocale = locale;
-    }
-
-    //-----------------------------------------------------------------------
     /**
      * Select a format from a custom pattern.
      *
@@ -440,31 +629,21 @@ public class DateTimeFormat {
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #appendPatternTo
      */
-    public synchronized DateTimeFormatter forPattern(final String pattern) {
-        DateTimeFormatter formatter = (DateTimeFormatter) iPatternedCache.get(pattern);
-        if (formatter != null) {
-            return formatter;
-        }
-
+    private static DateTimeFormatter createFormatterForPattern(String pattern) {
         if (pattern == null) {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
+        DateTimeFormatter formatter = null;
+        synchronized (cPatternedCache) {
+            formatter = (DateTimeFormatter) cPatternedCache.get(pattern);
+            if (formatter == null) {
+                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+                parsePatternTo(builder, pattern);
+                formatter = builder.toFormatter();
 
-        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder(iLocale);
-        appendPatternTo(builder, pattern);
-
-        if (builder.canBuildFormatter()) {
-            formatter = builder.toFormatter();
-        } else if (builder.canBuildPrinter()) {
-            formatter = new FPrinter(builder.toPrinter());
-        } else if (builder.canBuildParser()) {
-            // I don't expect this case to ever occur.
-            formatter = new FParser(builder.toParser());
-        } else {
-            throw new UnsupportedOperationException("Pattern unsupported: " + pattern);
+                cPatternedCache.put(pattern, formatter);
+            }
         }
-
-        iPatternedCache.put(pattern, formatter);
         return formatter;
     }
 
@@ -477,83 +656,66 @@ public class DateTimeFormat {
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid
      */
-    public synchronized DateTimeFormatter forStyle(final String style) {
-        DateTimeFormatter formatter = (DateTimeFormatter)iStyledCache.get(style);
-        if (formatter == null) {
-            formatter = forPattern(getPatternForStyle(style));
-            iStyledCache.put(style, formatter);
-        }
-        return formatter;
-    }
-
-    /**
-     * Returns a pattern specification from a two character style. The first
-     * character is the date style, and the second character is the time
-     * style. Specify a character of 'S' for short style, 'M' for medium, 'L'
-     * for long, and 'F' for full. A date or time may be ommitted by specifying
-     * a style character '-'.
-     *
-     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
-     * @throws IllegalArgumentException if the style is invalid
-     */
-    public String getPatternForStyle(final String style) {
+    private static DateTimeFormatter createFormatterForStyle(String style) {
         if (style == null || style.length() != 2) {
             throw new IllegalArgumentException("Invalid style specification: " + style);
         }
-
-        if (style.charAt(1) == '-') {
-            // date only
-            return getDatePattern(style.charAt(0));
-        } else if (style.charAt(0) == '-') {
-            // time only
-            return getTimePattern(style.charAt(1));
-        } else {
-            // datetime
-            return getDateTimePattern(style.charAt(0), style.charAt(1));
+        int dateStyle = selectStyle(style.charAt(0));
+        int timeStyle = selectStyle(style.charAt(1));
+        if (dateStyle == NONE && timeStyle == NONE) {
+            throw new IllegalArgumentException("Style '--' is invalid");
         }
+        return createFormatterForStyleIndex(dateStyle, timeStyle);
     }
 
-    private String getDatePattern(final char style) {
-        int istyle = selectStyle(style);
-        try {
-            return ((SimpleDateFormat)DateFormat.getDateInstance(istyle, iLocale)).toPattern();
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException("No date pattern for locale: " + iLocale);
+    /**
+     * Gets the formatter for the specified style.
+     * 
+     * @param dateStyle  the date style
+     * @param timeStyle  the time style
+     * @return the formatter
+     */
+    private static DateTimeFormatter createFormatterForStyleIndex(int dateStyle, int timeStyle) {
+        int index = dateStyle * 5 + timeStyle;
+        DateTimeFormatter f = null;
+        synchronized (cStyleCache) {
+            f = cStyleCache[index];
+            if (f == null) {
+                int type = DATETIME;
+                if (dateStyle == NONE) {
+                    type = TIME;
+                } else if (timeStyle == NONE) {
+                    type = DATE;
+                }
+                LengthLocaleFormatter llf = new LengthLocaleFormatter(
+                        dateStyle, timeStyle, type);
+                f = new DateTimeFormatter(llf, llf);
+                cStyleCache[index] = f;
+            }
         }
+        return f;
     }
 
-    private String getTimePattern(final char style) {
-        int istyle = selectStyle(style);
-        try {
-            return ((SimpleDateFormat)DateFormat.getTimeInstance(istyle, iLocale)).toPattern();
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException("No time pattern for locale: " + iLocale);
-        }
-    }
-
-    private String getDateTimePattern(final char dateStyle, final char timeStyle) {
-        int idateStyle = selectStyle(dateStyle);
-        int itimeStyle = selectStyle(timeStyle);
-        try {
-            return ((SimpleDateFormat)DateFormat.getDateTimeInstance
-                    (idateStyle, itimeStyle, iLocale)).toPattern();
-        } catch (ClassCastException e) {
-            throw new IllegalArgumentException("No datetime pattern for locale: " + iLocale);
-        }
-    }
-
-    private int selectStyle(final char c) {
-        switch (c) {
+    /**
+     * Gets the JDK style code from the Joda code.
+     * 
+     * @param ch  the Joda style code
+     * @return the JDK style code
+     */
+    private static int selectStyle(char ch) {
+        switch (ch) {
         case 'S':
-            return DateFormat.SHORT;
+            return SHORT;
         case 'M':
-            return DateFormat.MEDIUM;
+            return MEDIUM;
         case 'L':
-            return DateFormat.LONG;
+            return LONG;
         case 'F':
-            return DateFormat.FULL;
+            return FULL;
+        case '-':
+            return NONE;
         default:
-            throw new IllegalArgumentException("Invalid style character: " + c);
+            throw new IllegalArgumentException("Invalid style character: " + ch);
         }
     }
 
@@ -595,300 +757,92 @@ public class DateTimeFormat {
         }
     }
 
-    /**
-     * A fake formatter that can only print.
-     */
-    static class FPrinter implements DateTimeFormatter {
-        private final DateTimePrinter iPrinter;
-
-        FPrinter(DateTimePrinter printer) {
-            super();
-            iPrinter = printer;
-        }
-
-        public int estimatePrintedLength() {
-            return iPrinter.estimatePrintedLength();
-        }
-
-        public void printTo(StringBuffer buf, ReadableInstant instant) {
-            iPrinter.printTo(buf, instant);
-        }
-
-        public void printTo(Writer out, ReadableInstant instant) throws IOException {
-            iPrinter.printTo(out, instant);
-        }
-
-        public void printTo(StringBuffer buf, long instant) {
-            iPrinter.printTo(buf, instant);
-        }
-
-        public void printTo(Writer out, long instant) throws IOException {
-            iPrinter.printTo(out, instant);
-        }
-
-        public void printTo(StringBuffer buf, long instant, DateTimeZone zone) {
-            iPrinter.printTo(buf, instant, zone);
-        }
-
-        public void printTo(Writer out, long instant, DateTimeZone zone)
-            throws IOException {
-            iPrinter.printTo(out, instant, zone);
-        }
-
-        public void printTo(StringBuffer buf, long instant, Chronology chrono) {
-            iPrinter.printTo(buf, instant, chrono);
-        }
-
-        public void printTo(Writer out, long instant, Chronology chrono) throws IOException {
-            iPrinter.printTo(out, instant, chrono);
-        }
-
-        public void printTo(StringBuffer buf, long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            iPrinter.printTo(buf, instant, chrono, displayOffset, displayZone);
-        }
-
-        public void printTo(Writer out, long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
-            iPrinter.printTo(out, instant, chrono, displayOffset, displayZone);
-        }
-
-        public void printTo(StringBuffer buf, ReadablePartial instant) {
-            iPrinter.printTo(buf, instant);
-        }
-
-        public void printTo(Writer out, ReadablePartial instant) throws IOException {
-            iPrinter.printTo(out, instant);
-        }
-
-        public String print(ReadableInstant instant) {
-            return iPrinter.print(instant);
-        }
-
-        public String print(long instant) {
-            return iPrinter.print(instant);
-        }
-
-        public String print(long instant, DateTimeZone zone) {
-            return iPrinter.print(instant, zone);
-        }
-
-        public String print(long instant, Chronology chrono) {
-            return iPrinter.print(instant, chrono);
-        }
-
-        public String print(long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            return iPrinter.print(instant, chrono, displayOffset, displayZone);
-        }
-
-        public String print(ReadablePartial partial) {
-            return iPrinter.print(partial);
-        }
-
-        public int estimateParsedLength() {
-            return 0;
-        }
-
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            throw unsupported();
-        }
-
-        public int parseInto(ReadWritableInstant instant, String text, int position) {
-            throw unsupported();
-        }
-
-        public long parseMillis(String text) {
-            throw unsupported();
-        }
-
-        public long parseMillis(String text, Chronology chrono) {
-            throw unsupported();
-        }
-
-        public long parseMillis(String text, long instantLocal) {
-            throw unsupported();
-        }
-
-        public long parseMillis(String text, long instant, Chronology chrono) {
-            throw unsupported();
-        }
-
-        public DateTime parseDateTime(String text) {
-            throw unsupported();
-        }
-
-        public DateTime parseDateTime(String text, Chronology chrono) {
-            throw unsupported();
-        }
-
-        public DateTime parseDateTime(String text, ReadableInstant instant) {
-            throw unsupported();
-        }
-
-        public MutableDateTime parseMutableDateTime(String text) {
-            throw unsupported();
-        }
-
-        public MutableDateTime parseMutableDateTime(String text, Chronology chrono) {
-            throw unsupported();
-        }
-
-        public MutableDateTime parseMutableDateTime(String text,
-                                                    ReadableInstant instant) {
-            throw unsupported();
-        }
-
-        private UnsupportedOperationException unsupported() {
-            return new UnsupportedOperationException("Parsing not supported");
-        }
-    }
-
     //-----------------------------------------------------------------------
-    /**
-     * A fake formatter that can only parse.
-     */
-    static class FParser implements DateTimeFormatter {
-        private final DateTimeParser iParser;
+    static class LengthLocaleFormatter
+            implements DateTimePrinter, DateTimeParser {
 
-        FParser(DateTimeParser parser) {
+        private static final Map cCache = new HashMap();  // manual sync
+        
+        private final int iDateStyle;
+        private final int iTimeStyle;
+        private final int iType;
+
+        LengthLocaleFormatter(int dateStyle, int timeStyle, int type) {
             super();
-            iParser = parser;
+            iDateStyle = dateStyle;
+            iTimeStyle = timeStyle;
+            iType = type;
         }
 
         public int estimatePrintedLength() {
-            return 0;
+            return 40;  // guess
         }
 
-        public void printTo(StringBuffer buf, ReadableInstant instant) {
-            throw unsupported();
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
+            DateTimePrinter p = getFormatter(locale).getPrinter();
+            p.printTo(buf, instant, chrono, displayOffset, displayZone, locale);
         }
 
-        public void printTo(Writer out, ReadableInstant instant) throws IOException {
-            throw unsupported();
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            DateTimePrinter p = getFormatter(locale).getPrinter();
+            p.printTo(out, instant, chrono, displayOffset, displayZone, locale);
         }
 
-        public void printTo(StringBuffer buf, long instant) {
-            throw unsupported();
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
+            DateTimePrinter p = getFormatter(locale).getPrinter();
+            p.printTo(buf, partial, locale);
         }
 
-        public void printTo(Writer out, long instant) throws IOException {
-            throw unsupported();
-        }
-
-        public void printTo(StringBuffer buf, long instant, DateTimeZone zone) {
-            throw unsupported();
-        }
-
-        public void printTo(Writer out, long instant, DateTimeZone zone) {
-            throw unsupported();
-        }
-
-        public void printTo(StringBuffer buf, long instant, Chronology chrono) {
-            throw unsupported();
-        }
-
-        public void printTo(Writer out, long instant, Chronology chrono) throws IOException {
-            throw unsupported();
-        }
-
-        public void printTo(StringBuffer buf, long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            throw unsupported();
-        }
-
-        public void printTo(Writer out, long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
-            throw unsupported();
-        }
-
-        public void printTo(StringBuffer buf, ReadablePartial instant) {
-            throw unsupported();
-        }
-
-        public void printTo(Writer out, ReadablePartial instant) throws IOException {
-            throw unsupported();
-        }
-
-        public String print(ReadableInstant instant) {
-            throw unsupported();
-        }
-
-        public String print(long instant) {
-            throw unsupported();
-        }
-
-        public String print(long instant, DateTimeZone zone) {
-            throw unsupported();
-        }
-
-        public String print(long instant, Chronology chrono) {
-            throw unsupported();
-        }
-
-        public String print(long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            throw unsupported();
-        }
-
-        public String print(ReadablePartial partial) {
-            throw unsupported();
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            DateTimePrinter p = getFormatter(locale).getPrinter();
+            p.printTo(out, partial, locale);
         }
 
         public int estimateParsedLength() {
-            return iParser.estimateParsedLength();
+            return 40;  // guess
         }
 
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            return iParser.parseInto(bucket, text, position);
+            DateTimeParser p = getFormatter(bucket.getLocale()).getParser();
+            return p.parseInto(bucket, text, position);
         }
 
-        public int parseInto(ReadWritableInstant instant, String text, int position) {
-            return iParser.parseInto(instant, text, position);
+        private DateTimeFormatter getFormatter(Locale locale) {
+            String key = Integer.toString(iType + iDateStyle << 4 + iTimeStyle << 8) + locale.toString();
+            DateTimeFormatter f = null;
+            synchronized (cCache) {
+                f = (DateTimeFormatter) cCache.get(key);
+                if (f == null) {
+                    String pattern = getPattern(locale);
+                    f = DateTimeFormat.forPattern(pattern);
+                    cCache.put(key, f);
+                }
+            }
+            return f;
         }
 
-        public long parseMillis(String text) {
-            return iParser.parseMillis(text);
-        }
-
-        public long parseMillis(String text, Chronology chrono) {
-            return iParser.parseMillis(text, chrono);
-        }
-
-        public long parseMillis(String text, long instant) {
-            return iParser.parseMillis(text, instant);
-        }
-
-        public long parseMillis(String text, long instant, Chronology chrono) {
-            return iParser.parseMillis(text, instant, chrono);
-        }
-
-        public DateTime parseDateTime(String text) {
-            return iParser.parseDateTime(text);
-        }
-
-        public DateTime parseDateTime(String text, Chronology chrono) {
-            return iParser.parseDateTime(text, chrono);
-        }
-
-        public DateTime parseDateTime(String text, ReadableInstant instant) {
-            return iParser.parseDateTime(text, instant);
-        }
-
-        public MutableDateTime parseMutableDateTime(String text) {
-            return iParser.parseMutableDateTime(text);
-        }
-
-        public MutableDateTime parseMutableDateTime(String text, Chronology chrono) {
-            return iParser.parseMutableDateTime(text, chrono);
-        }
-
-        public MutableDateTime parseMutableDateTime(String text, ReadableInstant instant) {
-            return iParser.parseMutableDateTime(text, instant);
-        }
-
-        private UnsupportedOperationException unsupported() {
-            return new UnsupportedOperationException("Printing not supported");
+        private String getPattern(Locale locale) {
+            DateFormat f = null;
+            switch (iType) {
+                case DATE:
+                    f = DateFormat.getDateInstance(iDateStyle, locale);
+                    break;
+                case TIME:
+                    f = DateFormat.getTimeInstance(iTimeStyle, locale);
+                    break;
+                case DATETIME:
+                    f = DateFormat.getDateTimeInstance(iDateStyle, iTimeStyle, locale);
+                    break;
+            }
+            if (f instanceof SimpleDateFormat == false) {
+                throw new IllegalArgumentException("No datetime pattern for locale: " + locale);
+            }
+            return ((SimpleDateFormat) f).toPattern();
         }
     }
+
 }

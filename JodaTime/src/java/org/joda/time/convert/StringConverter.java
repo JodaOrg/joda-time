@@ -21,7 +21,7 @@ import org.joda.time.Period;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
@@ -61,8 +61,8 @@ class StringConverter extends AbstractConverter
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         String str = (String) object;
-        DateTimeParser p = ISODateTimeFormat.getInstance().dateTimeParser();
-        return p.parseMillis(str, chrono);
+        DateTimeFormatter p = ISODateTimeFormat.dateTimeParser();
+        return p.withChronology(chrono).parseMillis(str);
     }
 
     //-----------------------------------------------------------------------
@@ -168,7 +168,8 @@ class StringConverter extends AbstractConverter
             throw new IllegalArgumentException("Format invalid: " + str);
         }
 
-        DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
+        DateTimeFormatter dateTimeParser = ISODateTimeFormat.dateTimeParser();
+        dateTimeParser = dateTimeParser.withChronology(chrono);
         PeriodFormatter periodParser = ISOPeriodFormat.getInstance().standard();
         long startInstant = 0, endInstant = 0;
         Period period = null;
@@ -179,7 +180,7 @@ class StringConverter extends AbstractConverter
         if (c == 'P' || c == 'p') {
             period = periodParser.parsePeriod(getPeriodType(leftStr), leftStr);
         } else {
-            DateTime start = dateTimeParser.parseDateTime(leftStr, chrono);
+            DateTime start = dateTimeParser.parseDateTime(leftStr);
             startInstant = start.getMillis();
             parsedChrono = start.getChronology();
         }
@@ -194,7 +195,7 @@ class StringConverter extends AbstractConverter
             chrono = (chrono != null ? chrono : parsedChrono);
             endInstant = chrono.add(period, startInstant, 1);
         } else {
-            DateTime end = dateTimeParser.parseDateTime(rightStr, chrono);
+            DateTime end = dateTimeParser.parseDateTime(rightStr);
             endInstant = end.getMillis();
             parsedChrono = (parsedChrono != null ? parsedChrono : end.getChronology());
             chrono = (chrono != null ? chrono : parsedChrono);

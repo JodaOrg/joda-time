@@ -255,7 +255,7 @@ public abstract class BasePartial
         if (pattern == null) {
             return toString();
         }
-        return DateTimeFormat.getInstance().forPattern(pattern).print(this);
+        return DateTimeFormat.forPattern(pattern).print(this);
     }
 
     /**
@@ -269,7 +269,7 @@ public abstract class BasePartial
         if (pattern == null) {
             return toString();
         }
-        return DateTimeFormat.getInstance(locale).forPattern(pattern).print(this);
+        return DateTimeFormat.forPattern(pattern).withLocale(locale).print(this);
     }
 
 }

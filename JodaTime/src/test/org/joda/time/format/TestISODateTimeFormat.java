@@ -85,77 +85,77 @@ public class TestISODateTimeFormat extends TestCase {
     //-----------------------------------------------------------------------
     public void testFormat_date() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09", ISODateTimeFormat.getInstance().date().print(dt));
+        assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09", ISODateTimeFormat.getInstance().date().print(dt));
+        assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09", ISODateTimeFormat.getInstance().date().print(dt));
+        assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
     }
 
     public void testFormat_time() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10:20:30.040Z", ISODateTimeFormat.getInstance().time().print(dt));
+        assertEquals("10:20:30.040Z", ISODateTimeFormat.time().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11:20:30.040+01:00", ISODateTimeFormat.getInstance().time().print(dt));
+        assertEquals("11:20:30.040+01:00", ISODateTimeFormat.time().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12:20:30.040+02:00", ISODateTimeFormat.getInstance().time().print(dt));
+        assertEquals("12:20:30.040+02:00", ISODateTimeFormat.time().print(dt));
     }
 
     public void testFormat_timeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10:20:30Z", ISODateTimeFormat.getInstance().timeNoMillis().print(dt));
+        assertEquals("10:20:30Z", ISODateTimeFormat.timeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11:20:30+01:00", ISODateTimeFormat.getInstance().timeNoMillis().print(dt));
+        assertEquals("11:20:30+01:00", ISODateTimeFormat.timeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12:20:30+02:00", ISODateTimeFormat.getInstance().timeNoMillis().print(dt));
+        assertEquals("12:20:30+02:00", ISODateTimeFormat.timeNoMillis().print(dt));
     }
 
     public void testFormat_tTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("T10:20:30.040Z", ISODateTimeFormat.getInstance().tTime().print(dt));
+        assertEquals("T10:20:30.040Z", ISODateTimeFormat.tTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("T11:20:30.040+01:00", ISODateTimeFormat.getInstance().tTime().print(dt));
+        assertEquals("T11:20:30.040+01:00", ISODateTimeFormat.tTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("T12:20:30.040+02:00", ISODateTimeFormat.getInstance().tTime().print(dt));
+        assertEquals("T12:20:30.040+02:00", ISODateTimeFormat.tTime().print(dt));
     }
 
     public void testFormat_tTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("T10:20:30Z", ISODateTimeFormat.getInstance().tTimeNoMillis().print(dt));
+        assertEquals("T10:20:30Z", ISODateTimeFormat.tTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("T11:20:30+01:00", ISODateTimeFormat.getInstance().tTimeNoMillis().print(dt));
+        assertEquals("T11:20:30+01:00", ISODateTimeFormat.tTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("T12:20:30+02:00", ISODateTimeFormat.getInstance().tTimeNoMillis().print(dt));
+        assertEquals("T12:20:30+02:00", ISODateTimeFormat.tTimeNoMillis().print(dt));
     }
 
     public void testFormat_dateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.getInstance().dateTime().print(dt));
+        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.dateTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11:20:30.040+01:00", ISODateTimeFormat.getInstance().dateTime().print(dt));
+        assertEquals("2004-06-09T11:20:30.040+01:00", ISODateTimeFormat.dateTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12:20:30.040+02:00", ISODateTimeFormat.getInstance().dateTime().print(dt));
+        assertEquals("2004-06-09T12:20:30.040+02:00", ISODateTimeFormat.dateTime().print(dt));
         
 //        dt = dt.withZone(LONDON);
 //        assertEquals("2004-06-09T11:20:30.040+01:00", ISODateTimeFormat.getInstance(PARIS).dateTime().print(dt));
 //        
 //        dt = dt.withZone(LONDON);
-//        assertEquals("2004-06-09T12:20:30.040+02:00", ISODateTimeFormat.getInstance().dateTime().print(dt.getMillis(), PARIS));
+//        assertEquals("2004-06-09T12:20:30.040+02:00", ISODateTimeFormat.dateTime().print(dt.getMillis(), PARIS));
 //        
 //        dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, Chronology.getCoptic());
-//        assertEquals("2288-02-19T10:20:30.040Z", ISODateTimeFormat.getInstance().dateTime().print(dt));
+//        assertEquals("2288-02-19T10:20:30.040Z", ISODateTimeFormat.dateTime().print(dt));
 //        
 //        dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, Chronology.getCoptic());
 //        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.getInstance(Chronology.getCoptic()).dateTime().print(dt));
@@ -163,336 +163,336 @@ public class TestISODateTimeFormat extends TestCase {
 
     public void testFormat_dateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10:20:30Z", ISODateTimeFormat.getInstance().dateTimeNoMillis().print(dt));
+        assertEquals("2004-06-09T10:20:30Z", ISODateTimeFormat.dateTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11:20:30+01:00", ISODateTimeFormat.getInstance().dateTimeNoMillis().print(dt));
+        assertEquals("2004-06-09T11:20:30+01:00", ISODateTimeFormat.dateTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12:20:30+02:00", ISODateTimeFormat.getInstance().dateTimeNoMillis().print(dt));
+        assertEquals("2004-06-09T12:20:30+02:00", ISODateTimeFormat.dateTimeNoMillis().print(dt));
     }
 
     public void testFormat_weekDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-W24-3", ISODateTimeFormat.getInstance().weekDate().print(dt));
+        assertEquals("2004-W24-3", ISODateTimeFormat.weekDate().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-W24-3", ISODateTimeFormat.getInstance().weekDate().print(dt));
+        assertEquals("2004-W24-3", ISODateTimeFormat.weekDate().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-W24-3", ISODateTimeFormat.getInstance().weekDate().print(dt));
+        assertEquals("2004-W24-3", ISODateTimeFormat.weekDate().print(dt));
     }
 
     public void testFormat_weekDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-W24-3T10:20:30.040Z", ISODateTimeFormat.getInstance().weekDateTime().print(dt));
+        assertEquals("2004-W24-3T10:20:30.040Z", ISODateTimeFormat.weekDateTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-W24-3T11:20:30.040+01:00", ISODateTimeFormat.getInstance().weekDateTime().print(dt));
+        assertEquals("2004-W24-3T11:20:30.040+01:00", ISODateTimeFormat.weekDateTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-W24-3T12:20:30.040+02:00", ISODateTimeFormat.getInstance().weekDateTime().print(dt));
+        assertEquals("2004-W24-3T12:20:30.040+02:00", ISODateTimeFormat.weekDateTime().print(dt));
     }
 
     public void testFormat_weekDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-W24-3T10:20:30Z", ISODateTimeFormat.getInstance().weekDateTimeNoMillis().print(dt));
+        assertEquals("2004-W24-3T10:20:30Z", ISODateTimeFormat.weekDateTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-W24-3T11:20:30+01:00", ISODateTimeFormat.getInstance().weekDateTimeNoMillis().print(dt));
+        assertEquals("2004-W24-3T11:20:30+01:00", ISODateTimeFormat.weekDateTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-W24-3T12:20:30+02:00", ISODateTimeFormat.getInstance().weekDateTimeNoMillis().print(dt));
+        assertEquals("2004-W24-3T12:20:30+02:00", ISODateTimeFormat.weekDateTimeNoMillis().print(dt));
     }
 
     //-----------------------------------------------------------------------
     public void testFormat_basicDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("20040609", ISODateTimeFormat.getInstance().basicDate().print(dt));
+        assertEquals("20040609", ISODateTimeFormat.basicDate().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("20040609", ISODateTimeFormat.getInstance().basicDate().print(dt));
+        assertEquals("20040609", ISODateTimeFormat.basicDate().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("20040609", ISODateTimeFormat.getInstance().basicDate().print(dt));
+        assertEquals("20040609", ISODateTimeFormat.basicDate().print(dt));
     }
 
     public void testFormat_basicTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("102030.040Z", ISODateTimeFormat.getInstance().basicTime().print(dt));
+        assertEquals("102030.040Z", ISODateTimeFormat.basicTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("112030.040+0100", ISODateTimeFormat.getInstance().basicTime().print(dt));
+        assertEquals("112030.040+0100", ISODateTimeFormat.basicTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("122030.040+0200", ISODateTimeFormat.getInstance().basicTime().print(dt));
+        assertEquals("122030.040+0200", ISODateTimeFormat.basicTime().print(dt));
     }
 
     public void testFormat_basicTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("102030Z", ISODateTimeFormat.getInstance().basicTimeNoMillis().print(dt));
+        assertEquals("102030Z", ISODateTimeFormat.basicTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("112030+0100", ISODateTimeFormat.getInstance().basicTimeNoMillis().print(dt));
+        assertEquals("112030+0100", ISODateTimeFormat.basicTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("122030+0200", ISODateTimeFormat.getInstance().basicTimeNoMillis().print(dt));
+        assertEquals("122030+0200", ISODateTimeFormat.basicTimeNoMillis().print(dt));
     }
 
     public void testFormat_basicTTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("T102030.040Z", ISODateTimeFormat.getInstance().basicTTime().print(dt));
+        assertEquals("T102030.040Z", ISODateTimeFormat.basicTTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("T112030.040+0100", ISODateTimeFormat.getInstance().basicTTime().print(dt));
+        assertEquals("T112030.040+0100", ISODateTimeFormat.basicTTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("T122030.040+0200", ISODateTimeFormat.getInstance().basicTTime().print(dt));
+        assertEquals("T122030.040+0200", ISODateTimeFormat.basicTTime().print(dt));
     }
 
     public void testFormat_basicTTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("T102030Z", ISODateTimeFormat.getInstance().basicTTimeNoMillis().print(dt));
+        assertEquals("T102030Z", ISODateTimeFormat.basicTTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("T112030+0100", ISODateTimeFormat.getInstance().basicTTimeNoMillis().print(dt));
+        assertEquals("T112030+0100", ISODateTimeFormat.basicTTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("T122030+0200", ISODateTimeFormat.getInstance().basicTTimeNoMillis().print(dt));
+        assertEquals("T122030+0200", ISODateTimeFormat.basicTTimeNoMillis().print(dt));
     }
 
     public void testFormat_basicDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("20040609T102030.040Z", ISODateTimeFormat.getInstance().basicDateTime().print(dt));
+        assertEquals("20040609T102030.040Z", ISODateTimeFormat.basicDateTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("20040609T112030.040+0100", ISODateTimeFormat.getInstance().basicDateTime().print(dt));
+        assertEquals("20040609T112030.040+0100", ISODateTimeFormat.basicDateTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("20040609T122030.040+0200", ISODateTimeFormat.getInstance().basicDateTime().print(dt));
+        assertEquals("20040609T122030.040+0200", ISODateTimeFormat.basicDateTime().print(dt));
     }
 
     public void testFormat_basicDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("20040609T102030Z", ISODateTimeFormat.getInstance().basicDateTimeNoMillis().print(dt));
+        assertEquals("20040609T102030Z", ISODateTimeFormat.basicDateTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("20040609T112030+0100", ISODateTimeFormat.getInstance().basicDateTimeNoMillis().print(dt));
+        assertEquals("20040609T112030+0100", ISODateTimeFormat.basicDateTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("20040609T122030+0200", ISODateTimeFormat.getInstance().basicDateTimeNoMillis().print(dt));
+        assertEquals("20040609T122030+0200", ISODateTimeFormat.basicDateTimeNoMillis().print(dt));
     }
 
     public void testFormat_basicWeekDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004W243", ISODateTimeFormat.getInstance().basicWeekDate().print(dt));
+        assertEquals("2004W243", ISODateTimeFormat.basicWeekDate().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004W243", ISODateTimeFormat.getInstance().basicWeekDate().print(dt));
+        assertEquals("2004W243", ISODateTimeFormat.basicWeekDate().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004W243", ISODateTimeFormat.getInstance().basicWeekDate().print(dt));
+        assertEquals("2004W243", ISODateTimeFormat.basicWeekDate().print(dt));
     }
 
     public void testFormat_basicWeekDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004W243T102030.040Z", ISODateTimeFormat.getInstance().basicWeekDateTime().print(dt));
+        assertEquals("2004W243T102030.040Z", ISODateTimeFormat.basicWeekDateTime().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004W243T112030.040+0100", ISODateTimeFormat.getInstance().basicWeekDateTime().print(dt));
+        assertEquals("2004W243T112030.040+0100", ISODateTimeFormat.basicWeekDateTime().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004W243T122030.040+0200", ISODateTimeFormat.getInstance().basicWeekDateTime().print(dt));
+        assertEquals("2004W243T122030.040+0200", ISODateTimeFormat.basicWeekDateTime().print(dt));
     }
 
     public void testFormat_basicWeekDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004W243T102030Z", ISODateTimeFormat.getInstance().basicWeekDateTimeNoMillis().print(dt));
+        assertEquals("2004W243T102030Z", ISODateTimeFormat.basicWeekDateTimeNoMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004W243T112030+0100", ISODateTimeFormat.getInstance().basicWeekDateTimeNoMillis().print(dt));
+        assertEquals("2004W243T112030+0100", ISODateTimeFormat.basicWeekDateTimeNoMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004W243T122030+0200", ISODateTimeFormat.getInstance().basicWeekDateTimeNoMillis().print(dt));
+        assertEquals("2004W243T122030+0200", ISODateTimeFormat.basicWeekDateTimeNoMillis().print(dt));
     }
 
     //-----------------------------------------------------------------------
     public void testFormat_year() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004", ISODateTimeFormat.getInstance().year().print(dt));
+        assertEquals("2004", ISODateTimeFormat.year().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004", ISODateTimeFormat.getInstance().year().print(dt));
+        assertEquals("2004", ISODateTimeFormat.year().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004", ISODateTimeFormat.getInstance().year().print(dt));
+        assertEquals("2004", ISODateTimeFormat.year().print(dt));
     }
 
     public void testFormat_yearMonth() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06", ISODateTimeFormat.getInstance().yearMonth().print(dt));
+        assertEquals("2004-06", ISODateTimeFormat.yearMonth().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06", ISODateTimeFormat.getInstance().yearMonth().print(dt));
+        assertEquals("2004-06", ISODateTimeFormat.yearMonth().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06", ISODateTimeFormat.getInstance().yearMonth().print(dt));
+        assertEquals("2004-06", ISODateTimeFormat.yearMonth().print(dt));
     }
 
     public void testFormat_yearMonthDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09", ISODateTimeFormat.getInstance().yearMonthDay().print(dt));
+        assertEquals("2004-06-09", ISODateTimeFormat.yearMonthDay().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09", ISODateTimeFormat.getInstance().yearMonthDay().print(dt));
+        assertEquals("2004-06-09", ISODateTimeFormat.yearMonthDay().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09", ISODateTimeFormat.getInstance().yearMonthDay().print(dt));
+        assertEquals("2004-06-09", ISODateTimeFormat.yearMonthDay().print(dt));
     }
 
     public void testFormat_weekyear() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004", ISODateTimeFormat.getInstance().weekyear().print(dt));
+        assertEquals("2004", ISODateTimeFormat.weekyear().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004", ISODateTimeFormat.getInstance().weekyear().print(dt));
+        assertEquals("2004", ISODateTimeFormat.weekyear().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004", ISODateTimeFormat.getInstance().weekyear().print(dt));
+        assertEquals("2004", ISODateTimeFormat.weekyear().print(dt));
     }
 
     public void testFormat_weekyearWeek() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-W24", ISODateTimeFormat.getInstance().weekyearWeek().print(dt));
+        assertEquals("2004-W24", ISODateTimeFormat.weekyearWeek().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-W24", ISODateTimeFormat.getInstance().weekyearWeek().print(dt));
+        assertEquals("2004-W24", ISODateTimeFormat.weekyearWeek().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-W24", ISODateTimeFormat.getInstance().weekyearWeek().print(dt));
+        assertEquals("2004-W24", ISODateTimeFormat.weekyearWeek().print(dt));
     }
 
     public void testFormat_weekyearWeekDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-W24-3", ISODateTimeFormat.getInstance().weekyearWeekDay().print(dt));
+        assertEquals("2004-W24-3", ISODateTimeFormat.weekyearWeekDay().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-W24-3", ISODateTimeFormat.getInstance().weekyearWeekDay().print(dt));
+        assertEquals("2004-W24-3", ISODateTimeFormat.weekyearWeekDay().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-W24-3", ISODateTimeFormat.getInstance().weekyearWeekDay().print(dt));
+        assertEquals("2004-W24-3", ISODateTimeFormat.weekyearWeekDay().print(dt));
     }
 
     //-----------------------------------------------------------------------
     public void testFormat_hour() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10", ISODateTimeFormat.getInstance().hour().print(dt));
+        assertEquals("10", ISODateTimeFormat.hour().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11", ISODateTimeFormat.getInstance().hour().print(dt));
+        assertEquals("11", ISODateTimeFormat.hour().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12", ISODateTimeFormat.getInstance().hour().print(dt));
+        assertEquals("12", ISODateTimeFormat.hour().print(dt));
     }
 
     public void testFormat_hourMinute() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10:20", ISODateTimeFormat.getInstance().hourMinute().print(dt));
+        assertEquals("10:20", ISODateTimeFormat.hourMinute().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11:20", ISODateTimeFormat.getInstance().hourMinute().print(dt));
+        assertEquals("11:20", ISODateTimeFormat.hourMinute().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12:20", ISODateTimeFormat.getInstance().hourMinute().print(dt));
+        assertEquals("12:20", ISODateTimeFormat.hourMinute().print(dt));
     }
 
     public void testFormat_hourMinuteSecond() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10:20:30", ISODateTimeFormat.getInstance().hourMinuteSecond().print(dt));
+        assertEquals("10:20:30", ISODateTimeFormat.hourMinuteSecond().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11:20:30", ISODateTimeFormat.getInstance().hourMinuteSecond().print(dt));
+        assertEquals("11:20:30", ISODateTimeFormat.hourMinuteSecond().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12:20:30", ISODateTimeFormat.getInstance().hourMinuteSecond().print(dt));
+        assertEquals("12:20:30", ISODateTimeFormat.hourMinuteSecond().print(dt));
     }
 
     public void testFormat_hourMinuteSecondMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10:20:30.040", ISODateTimeFormat.getInstance().hourMinuteSecondMillis().print(dt));
+        assertEquals("10:20:30.040", ISODateTimeFormat.hourMinuteSecondMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11:20:30.040", ISODateTimeFormat.getInstance().hourMinuteSecondMillis().print(dt));
+        assertEquals("11:20:30.040", ISODateTimeFormat.hourMinuteSecondMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12:20:30.040", ISODateTimeFormat.getInstance().hourMinuteSecondMillis().print(dt));
+        assertEquals("12:20:30.040", ISODateTimeFormat.hourMinuteSecondMillis().print(dt));
     }
 
     public void testFormat_hourMinuteSecondFraction() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("10:20:30.040", ISODateTimeFormat.getInstance().hourMinuteSecondFraction().print(dt));
+        assertEquals("10:20:30.040", ISODateTimeFormat.hourMinuteSecondFraction().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("11:20:30.040", ISODateTimeFormat.getInstance().hourMinuteSecondFraction().print(dt));
+        assertEquals("11:20:30.040", ISODateTimeFormat.hourMinuteSecondFraction().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("12:20:30.040", ISODateTimeFormat.getInstance().hourMinuteSecondFraction().print(dt));
+        assertEquals("12:20:30.040", ISODateTimeFormat.hourMinuteSecondFraction().print(dt));
     }
 
     //-----------------------------------------------------------------------
     public void testFormat_dateHour() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10", ISODateTimeFormat.getInstance().dateHour().print(dt));
+        assertEquals("2004-06-09T10", ISODateTimeFormat.dateHour().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11", ISODateTimeFormat.getInstance().dateHour().print(dt));
+        assertEquals("2004-06-09T11", ISODateTimeFormat.dateHour().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12", ISODateTimeFormat.getInstance().dateHour().print(dt));
+        assertEquals("2004-06-09T12", ISODateTimeFormat.dateHour().print(dt));
     }
 
     public void testFormat_dateHourMinute() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10:20", ISODateTimeFormat.getInstance().dateHourMinute().print(dt));
+        assertEquals("2004-06-09T10:20", ISODateTimeFormat.dateHourMinute().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11:20", ISODateTimeFormat.getInstance().dateHourMinute().print(dt));
+        assertEquals("2004-06-09T11:20", ISODateTimeFormat.dateHourMinute().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12:20", ISODateTimeFormat.getInstance().dateHourMinute().print(dt));
+        assertEquals("2004-06-09T12:20", ISODateTimeFormat.dateHourMinute().print(dt));
     }
 
     public void testFormat_dateHourMinuteSecond() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10:20:30", ISODateTimeFormat.getInstance().dateHourMinuteSecond().print(dt));
+        assertEquals("2004-06-09T10:20:30", ISODateTimeFormat.dateHourMinuteSecond().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11:20:30", ISODateTimeFormat.getInstance().dateHourMinuteSecond().print(dt));
+        assertEquals("2004-06-09T11:20:30", ISODateTimeFormat.dateHourMinuteSecond().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12:20:30", ISODateTimeFormat.getInstance().dateHourMinuteSecond().print(dt));
+        assertEquals("2004-06-09T12:20:30", ISODateTimeFormat.dateHourMinuteSecond().print(dt));
     }
 
     public void testFormat_dateHourMinuteSecondMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10:20:30.040", ISODateTimeFormat.getInstance().dateHourMinuteSecondMillis().print(dt));
+        assertEquals("2004-06-09T10:20:30.040", ISODateTimeFormat.dateHourMinuteSecondMillis().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11:20:30.040", ISODateTimeFormat.getInstance().dateHourMinuteSecondMillis().print(dt));
+        assertEquals("2004-06-09T11:20:30.040", ISODateTimeFormat.dateHourMinuteSecondMillis().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12:20:30.040", ISODateTimeFormat.getInstance().dateHourMinuteSecondMillis().print(dt));
+        assertEquals("2004-06-09T12:20:30.040", ISODateTimeFormat.dateHourMinuteSecondMillis().print(dt));
     }
 
     public void testFormat_dateHourMinuteSecondFraction() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
-        assertEquals("2004-06-09T10:20:30.040", ISODateTimeFormat.getInstance().dateHourMinuteSecondFraction().print(dt));
+        assertEquals("2004-06-09T10:20:30.040", ISODateTimeFormat.dateHourMinuteSecondFraction().print(dt));
         
         dt = dt.withZone(LONDON);
-        assertEquals("2004-06-09T11:20:30.040", ISODateTimeFormat.getInstance().dateHourMinuteSecondFraction().print(dt));
+        assertEquals("2004-06-09T11:20:30.040", ISODateTimeFormat.dateHourMinuteSecondFraction().print(dt));
         
         dt = dt.withZone(PARIS);
-        assertEquals("2004-06-09T12:20:30.040", ISODateTimeFormat.getInstance().dateHourMinuteSecondFraction().print(dt));
+        assertEquals("2004-06-09T12:20:30.040", ISODateTimeFormat.dateHourMinuteSecondFraction().print(dt));
     }
 
 }

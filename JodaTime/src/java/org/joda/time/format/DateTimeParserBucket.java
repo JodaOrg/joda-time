@@ -50,12 +50,15 @@ import org.joda.time.DateTimeZone;
  */
 public class DateTimeParserBucket {
 
+    /** The chronology to use for parsing. */
     private final Chronology iChrono;
     private final long iMillis;
     
     // TimeZone to switch to in computeMillis. If null, use offset.
-    DateTimeZone iZone;
-    int iOffset;
+    private DateTimeZone iZone;
+    private int iOffset;
+    /** The locale to use for parsing. */
+    private Locale iLocale;
     
     SavedField[] iSavedFields = new SavedField[8];
     int iSavedFieldsCount;
@@ -68,15 +71,17 @@ public class DateTimeParserBucket {
      * 
      * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
      * @param chrono  the chronology to use
+     * @param locale  the locale to use
      */
-    public DateTimeParserBucket(long instantLocal, Chronology chrono) {
+    public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale) {
         super();
         chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
         iChrono = chrono.withUTC();
+        iLocale = (locale == null ? Locale.getDefault() : locale);
         setZone(chrono.getZone());
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Gets the chronology of the bucket, which will be a local (UTC) chronology.
@@ -84,7 +89,17 @@ public class DateTimeParserBucket {
     public Chronology getChronology() {
         return iChrono;
     }
-    
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns the locale to be used during parsing.
+     * 
+     * @return the locale to use
+     */
+    public Locale getLocale() {
+        return iLocale;
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns the time zone used by computeMillis, or null if an offset is
@@ -108,8 +123,8 @@ public class DateTimeParserBucket {
     
     //-----------------------------------------------------------------------
     /**
-     * Returns the time zone offset used by computeMillis, unless
-     * getZone doesn't return null.
+     * Returns the time zone offset in milliseconds used by computeMillis,
+     * unless getZone doesn't return null.
      */
     public int getOffset() {
         return iOffset;

@@ -63,87 +63,77 @@ import org.joda.time.field.PreciseDateTimeField;
  */
 public class DateTimeFormatterBuilder {
 
-    /** The locale the builder uses. */
-    private final Locale iLocale;
-
-    // Array contents alternate between printers and parsers.
+    /** Array of printers and parsers (alternating). */
     private ArrayList iElementPairs;
+    /** Cache of the last returned formatter. */
     private Object iFormatter;
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a DateTimeFormatterBuilder for the default locale.
+     * Creates a DateTimeFormatterBuilder.
      */
     public DateTimeFormatterBuilder() {
-        this(Locale.getDefault());
-    }
-
-    /**
-     * Creates a DateTimeFormatterBuilder for the specified locale.
-     * 
-     * @param locale Locale to use, or null for default
-     */
-    public DateTimeFormatterBuilder(Locale locale) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-        iLocale = locale;
+        super();
         iElementPairs = new ArrayList();
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Returns the locale being used by the formatter builder, never null.
-     */
-    public Locale getLocale() {
-        return iLocale;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Converts to a DateTimePrinter that prints using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * printer.
+     * Converts to a DateTimePrinter that can only print, using all the
+     * appended elements.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
      *
-     * @throws UnsupportedOperationException if any formatter element doesn't support
-     * printing
+     * @throws UnsupportedOperationException if printing is not supported
      */
-    public DateTimePrinter toPrinter() throws UnsupportedOperationException {
+    public DateTimePrinter toPrinter() {
         Object f = getFormatter();
         if (isPrinter(f)) {
-            return (DateTimePrinter)f;
+            return (DateTimePrinter) f;
         }
-        throw new UnsupportedOperationException("Printing not supported");
+        throw new UnsupportedOperationException("Printing is not supported");
     }
 
     /**
-     * Converts to a DateTimeParser that parses using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * parser.
+     * Converts to a DateTimeFormatter that can only parse, using all the
+     * appended elements.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
      *
-     * @throws UnsupportedOperationException if any formatter element doesn't support
-     * parsing
+     * @throws UnsupportedOperationException if parsing is not supported
      */
-    public DateTimeParser toParser() throws UnsupportedOperationException {
+    public DateTimeParser toParser() {
         Object f = getFormatter();
         if (isParser(f)) {
-            return (DateTimeParser)f;
+            return (DateTimeParser) f;
         }
-        throw new UnsupportedOperationException("Parsing not supported");
+        throw new UnsupportedOperationException("Parsing is not supported");
     }
 
     /**
-     * Converts to a DateTimeFormatter that prints and parses using all the
-     * appended elements. Subsequent changes to this builder do not affect the
-     * returned formatter.
+     * Converts to a DateTimeFormatter that using all the appended elements.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
+     * <p>
+     * The returned formatter may not support both printing and parsing.
+     * The methods {@link DateTimeFormatter#isPrinter()} and
+     * {@link DateTimeFormatter#isParser()} will help you determine the state
+     * of the formatter.
      *
-     * @throws UnsupportedOperationException if any formatter element doesn't support
-     * both printing and parsing
+     * @throws UnsupportedOperationException if neither printing nor parsing is supported
      */
-    public DateTimeFormatter toFormatter() throws UnsupportedOperationException {
+    public DateTimeFormatter toFormatter() {
         Object f = getFormatter();
-        if (isFormatter(f)) {
-            return (DateTimeFormatter)f;
+        DateTimePrinter printer = null;
+        if (isPrinter(f)) {
+            printer = (DateTimePrinter) f;
+        }
+        DateTimeParser parser = null;
+        if (isParser(f)) {
+            parser = (DateTimeParser) f;
+        }
+        if (printer != null || parser != null) {
+            return new DateTimeFormatter(printer, parser);
         }
         throw new UnsupportedOperationException("Both printing and parsing not supported");
     }
@@ -152,6 +142,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Returns true if toPrinter can be called without throwing an
      * UnsupportedOperationException.
+     * 
+     * @return true if a printer can be built
      */
     public boolean canBuildPrinter() {
         return isPrinter(getFormatter());
@@ -160,6 +152,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Returns true if toParser can be called without throwing an
      * UnsupportedOperationException.
+     * 
+     * @return true if a parser can be built
      */
     public boolean canBuildParser() {
         return isParser(getFormatter());
@@ -168,6 +162,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Returns true if toFormatter can be called without throwing an
      * UnsupportedOperationException.
+     * 
+     * @return true if a formatter can be built
      */
     public boolean canBuildFormatter() {
         return isFormatter(getFormatter());
@@ -195,7 +191,7 @@ public class DateTimeFormatterBuilder {
         if (formatter == null) {
             throw new IllegalArgumentException("No formatter supplied");
         }
-        return append0(formatter);
+        return append0(formatter.getPrinter(), formatter.getParser());
     }
 
     /**
@@ -291,9 +287,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendOptional(DateTimeParser parser) {
         checkParser(parser);
-        DateTimeFormatter[] parsers = new DateTimeFormatter[] {
-            (DateTimeFormatter) parser, null
-        };
+        DateTimeParser[] parsers = new DateTimeParser[] {parser, null};
         return append0(null, new MatchingParser(parsers));
     }
 
@@ -438,7 +432,7 @@ public class DateTimeFormatterBuilder {
         if (fieldType == null) {
             throw new IllegalArgumentException("Field type must not be null");
         }
-        return append0(new TextField(fieldType, iLocale, false));
+        return append0(new TextField(fieldType, false));
     }
 
     /**
@@ -453,7 +447,7 @@ public class DateTimeFormatterBuilder {
         if (fieldType == null) {
             throw new IllegalArgumentException("Field type must not be null");
         }
-        return append0(new TextField(fieldType, iLocale, true));
+        return append0(new TextField(fieldType, true));
     }
 
     /**
@@ -821,7 +815,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneName() {
-        return append0(new TimeZonePrinter( iLocale, false), null);
+        return append0(new TimeZonePrinter(false), null);
     }
 
     /**
@@ -832,7 +826,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName() {
-        return append0(new TimeZonePrinter( iLocale, true), null);
+        return append0(new TimeZonePrinter(true), null);
     }
 
     /**
@@ -852,10 +846,11 @@ public class DateTimeFormatterBuilder {
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetText, boolean showSeparators,
             int minFields, int maxFields) {
-        return append0(new TimeZoneOffsetFormatter
+        return append0(new TimeZoneOffset
                        (zeroOffsetText, showSeparators, minFields, maxFields));
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Calls upon {@link DateTimeFormat} to parse the pattern and append the
      * results into this builder.
@@ -869,6 +864,7 @@ public class DateTimeFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
     private Object getFormatter() {
         Object f = iFormatter;
 
@@ -920,7 +916,7 @@ public class DateTimeFormatterBuilder {
         if (f instanceof DateTimeFormatter) {
             if (f instanceof Composite) {
                 return ((Composite)f).isPrinter()
-                    && ((Composite)f).isParser();
+                    || ((Composite)f).isParser();
             }
             return true;
         }
@@ -941,8 +937,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class CharacterLiteral
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final char iValue;
 
@@ -955,33 +950,24 @@ public class DateTimeFormatterBuilder {
             return 1;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             buf.append(iValue);
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             out.write(iValue);
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             buf.append(iValue);
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             out.write(iValue);
-        }
-
-        public String print(long instant, Chronology chrono,
-                               int displayOffset, DateTimeZone displayZone) {
-            return String.valueOf(iValue);
-        }
-
-        public String print(ReadablePartial partial) {
-            return String.valueOf(iValue);
         }
 
         public int estimateParsedLength() {
@@ -1014,8 +1000,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class StringLiteral
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final String iValue;
 
@@ -1028,33 +1013,24 @@ public class DateTimeFormatterBuilder {
             return iValue.length();
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             buf.append(iValue);
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             out.write(iValue);
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             buf.append(iValue);
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             out.write(iValue);
-        }
-
-        public String print(long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            return iValue;
-        }
-
-        public String print(ReadablePartial partial) {
-            return iValue;
         }
 
         public int estimateParsedLength() {
@@ -1071,8 +1047,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static abstract class NumberFormatter
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
         protected final DateTimeFieldType iFieldType;
         protected final int iMaxParsedDigits;
         protected final boolean iSigned;
@@ -1157,9 +1132,9 @@ public class DateTimeFormatterBuilder {
             return iMaxParsedDigits;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             try {
                 DateTimeField field = iFieldType.getField(chrono);
                 FormatUtils.appendUnpaddedInteger(buf, field.get(instant));
@@ -1168,9 +1143,9 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             try {
                 DateTimeField field = iFieldType.getField(chrono);
                 FormatUtils.writeUnpaddedInteger(out, field.get(instant));
@@ -1179,7 +1154,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             if (partial.isSupported(iFieldType)) {
                 try {
                     FormatUtils.appendUnpaddedInteger(buf, partial.get(iFieldType));
@@ -1191,7 +1166,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             if (partial.isSupported(iFieldType)) {
                 try {
                     FormatUtils.writeUnpaddedInteger(out, partial.get(iFieldType));
@@ -1220,9 +1195,9 @@ public class DateTimeFormatterBuilder {
             return iMaxParsedDigits;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             try {
                 DateTimeField field = iFieldType.getField(chrono);
                 FormatUtils.appendPaddedInteger(buf, field.get(instant), iMinPrintedDigits);
@@ -1231,9 +1206,9 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             try {
                 DateTimeField field = iFieldType.getField(chrono);
                 FormatUtils.writePaddedInteger(out, field.get(instant), iMinPrintedDigits);
@@ -1242,7 +1217,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             if (partial.isSupported(iFieldType)) {
                 try {
                     FormatUtils.appendPaddedInteger(buf, partial.get(iFieldType), iMinPrintedDigits);
@@ -1254,7 +1229,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             if (partial.isSupported(iFieldType)) {
                 try {
                     FormatUtils.writePaddedInteger(out, partial.get(iFieldType), iMinPrintedDigits);
@@ -1269,8 +1244,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TwoDigitYear
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final int iPivot;
 
@@ -1320,9 +1294,9 @@ public class DateTimeFormatterBuilder {
             return 2;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             int year = getTwoDigitYear(instant, chrono);
             if (year < 0) {
                 buf.append('\ufffd');
@@ -1332,9 +1306,9 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             int year = getTwoDigitYear(instant, chrono);
             if (year < 0) {
                 out.write('\ufffd');
@@ -1356,7 +1330,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             int year = getTwoDigitYear(partial);
             if (year < 0) {
                 buf.append('\ufffd');
@@ -1366,7 +1340,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             int year = getTwoDigitYear(partial);
             if (year < 0) {
                 out.write('\ufffd');
@@ -1392,17 +1366,14 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TextField
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final DateTimeFieldType iFieldType;
-        private final Locale iLocale;
         private final boolean iShort;
 
-        TextField(DateTimeFieldType fieldType, Locale locale, boolean isShort) {
+        TextField(DateTimeFieldType fieldType, boolean isShort) {
             super();
             iFieldType = fieldType;
-            iLocale = locale;
             iShort = isShort;
         }
 
@@ -1410,59 +1381,58 @@ public class DateTimeFormatterBuilder {
             return iShort ? 6 : 20;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             try {
-                buf.append(print(instant, chrono, displayOffset, displayZone));
+                buf.append(print(instant, chrono, locale));
             } catch (RuntimeException e) {
                 buf.append('\ufffd');
             }
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             try {
-                out.write(print(instant, chrono, displayOffset, displayZone));
+                out.write(print(instant, chrono, locale));
             } catch (RuntimeException e) {
                 out.write('\ufffd');
             }
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             try {
-                buf.append(print(partial));
+                buf.append(print(partial, locale));
             } catch (RuntimeException e) {
                 buf.append('\ufffd');
             }
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             try {
-                out.write(print(partial));
+                out.write(print(partial, locale));
             } catch (RuntimeException e) {
                 out.write('\ufffd');
             }
         }
 
-        public String print(long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        private String print(long instant, Chronology chrono, Locale locale) {
             DateTimeField field = iFieldType.getField(chrono);
             if (iShort) {
-                return field.getAsShortText(instant, iLocale);
+                return field.getAsShortText(instant, locale);
             } else {
-                return field.getAsText(instant, iLocale);
+                return field.getAsText(instant, locale);
             }
         }
 
-        public String print(ReadablePartial partial) {
+        private String print(ReadablePartial partial, Locale locale) {
             if (partial.isSupported(iFieldType)) {
                 DateTimeField field = iFieldType.getField(partial.getChronology());
                 if (iShort) {
-                    return field.getAsShortText(partial, iLocale);
+                    return field.getAsShortText(partial, locale);
                 } else {
-                    return field.getAsText(partial, iLocale);
+                    return field.getAsText(partial, locale);
                 }
             } else {
                 return "\ufffd";
@@ -1491,7 +1461,8 @@ public class DateTimeFormatterBuilder {
                 return ~position;
             }
 
-            bucket.saveField(iFieldType, text.substring(position, i), iLocale);
+            Locale locale = bucket.getLocale();
+            bucket.saveField(iFieldType, text.substring(position, i), locale);
 
             return i;
         }
@@ -1499,8 +1470,7 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class Fraction
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final DateTimeFieldType iFieldType;
         protected int iMinDigits;
@@ -1521,9 +1491,9 @@ public class DateTimeFormatterBuilder {
             return iMaxDigits;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             try {
                 printTo(buf, null, instant, chrono);
             } catch (IOException e) {
@@ -1531,13 +1501,13 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             printTo(null, out, instant, chrono);
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             if (partial.isSupported(iFieldType)) {
                 long millis = partial.getChronology().set(partial, 0L);
                 try {
@@ -1550,7 +1520,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             if (partial.isSupported(iFieldType)) {
                 long millis = partial.getChronology().set(partial, 0L);
                 printTo(null, out, millis, partial.getChronology());
@@ -1724,16 +1694,15 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static class TimeZoneOffsetFormatter
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+    static class TimeZoneOffset
+            implements DateTimePrinter, DateTimeParser {
 
         private final String iZeroOffsetText;
         private final boolean iShowSeparators;
         private final int iMinFields;
         private final int iMaxFields;
 
-        TimeZoneOffsetFormatter(String zeroOffsetText,
+        TimeZoneOffset(String zeroOffsetText,
                                 boolean showSeparators,
                                 int minFields, int maxFields)
         {
@@ -1762,9 +1731,9 @@ public class DateTimeFormatterBuilder {
             return est;
         }
         
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             if (displayZone == null) {
                 return;  // no zone
             }
@@ -1821,9 +1790,9 @@ public class DateTimeFormatterBuilder {
             FormatUtils.appendPaddedInteger(buf, displayOffset, 3);
         }
         
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             if (displayZone == null) {
                 return;  // no zone
             }
@@ -1880,11 +1849,11 @@ public class DateTimeFormatterBuilder {
             FormatUtils.writePaddedInteger(out, displayOffset, 3);
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             // no zone info
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
         }
 
@@ -2084,15 +2053,12 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TimeZonePrinter
-            extends BaseDateTimeFormatter
             implements DateTimePrinter {
 
-        private final Locale iLocale;
         private final boolean iShortFormat;
 
-        TimeZonePrinter(Locale locale, boolean shortFormat) {
+        TimeZonePrinter(boolean shortFormat) {
             super();
-            iLocale = locale;
             iShortFormat = shortFormat;
         }
 
@@ -2100,43 +2066,41 @@ public class DateTimeFormatterBuilder {
             return iShortFormat ? 4 : 20;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            buf.append(print(instant, chrono, displayOffset, displayZone));
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
+            buf.append(print(instant, displayZone, locale));
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
-            out.write(print(instant, chrono, displayOffset, displayZone));
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            out.write(print(instant, displayZone, locale));
         }
 
-        public String print(long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        private String print(long instant, DateTimeZone displayZone, Locale locale) {
             if (displayZone == null) {
                 return "";  // no zone
             }
             if (iShortFormat) {
-                return displayZone.getShortName(instant, this.iLocale);
+                return displayZone.getShortName(instant, locale);
             } else {
-                return displayZone.getName(instant, this.iLocale);
+                return displayZone.getName(instant, locale);
             }
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             // no zone info
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
         }
     }
 
     //-----------------------------------------------------------------------
     static class Composite
-            extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final DateTimePrinter[] iPrinters;
         private final DateTimeParser[] iParsers;
@@ -2183,7 +2147,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        private Composite(Composite base, DateTimeFormatter[] printers) {
+        private Composite(Composite base, DateTimePrinter[] printers) {
             iPrinters = printers;
             iParsers = base.iParsers;
             iPrintedLengthEstimate = base.iPrintedLengthEstimate;
@@ -2194,9 +2158,9 @@ public class DateTimeFormatterBuilder {
             return iPrintedLengthEstimate;
         }
 
-        public void printTo(StringBuffer buf,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
             DateTimePrinter[] elements = iPrinters;
             if (elements == null) {
                 throw new UnsupportedOperationException();
@@ -2204,13 +2168,13 @@ public class DateTimeFormatterBuilder {
 
             int len = elements.length;
             for (int i = 0; i < len; i++) {
-                elements[i].printTo(buf, instant, chrono, displayOffset, displayZone);
+                elements[i].printTo(buf, instant, chrono, displayOffset, displayZone, locale);
             }
         }
 
-        public void printTo(Writer out,
-                            long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) throws IOException {
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
             DateTimePrinter[] elements = iPrinters;
             if (elements == null) {
                 throw new UnsupportedOperationException();
@@ -2218,11 +2182,11 @@ public class DateTimeFormatterBuilder {
 
             int len = elements.length;
             for (int i = 0; i < len; i++) {
-                elements[i].printTo(out, instant, chrono, displayOffset, displayZone);
+                elements[i].printTo(out, instant, chrono, displayOffset, displayZone, locale);
             }
         }
 
-        public void printTo(StringBuffer buf, ReadablePartial partial) {
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
             DateTimePrinter[] elements = iPrinters;
             if (elements == null) {
                 throw new UnsupportedOperationException();
@@ -2230,11 +2194,11 @@ public class DateTimeFormatterBuilder {
 
             int len = elements.length;
             for (int i=0; i<len; i++) {
-                elements[i].printTo(buf, partial);
+                elements[i].printTo(buf, partial, locale);
             }
         }
 
-        public void printTo(Writer out, ReadablePartial partial) throws IOException {
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             DateTimePrinter[] elements = iPrinters;
             if (elements == null) {
                 throw new UnsupportedOperationException();
@@ -2242,7 +2206,7 @@ public class DateTimeFormatterBuilder {
 
             int len = elements.length;
             for (int i=0; i<len; i++) {
-                elements[i].printTo(out, partial);
+                elements[i].printTo(out, partial, locale);
             }
         }
 
@@ -2309,7 +2273,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class MatchingParser
-            extends BaseDateTimeFormatter
             implements DateTimeParser {
 
         private final DateTimeParser[] iParsers;
@@ -2392,4 +2355,5 @@ public class DateTimeFormatterBuilder {
             return ~bestInvalidPos;
         }
     }
+
 }

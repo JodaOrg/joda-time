@@ -634,7 +634,7 @@ public final class YearMonthDay
      * @return ISO8601 formatted string
      */
     public String toString() {
-        return ISODateTimeFormat.getInstance().yearMonthDay().print(this);
+        return ISODateTimeFormat.yearMonthDay().print(this);
     }
 
     //-----------------------------------------------------------------------

@@ -631,7 +631,7 @@ public abstract class DateTimeZone implements Serializable {
             };
         }
 
-        return -(int) offsetFormatter().parseMillis(str, chrono);
+        return -(int) offsetFormatter().withChronology(chrono).parseMillis(str);
     }
 
     /**

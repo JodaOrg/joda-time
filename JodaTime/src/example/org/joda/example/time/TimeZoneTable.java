@@ -138,7 +138,7 @@ public class TimeZoneTable {
             while (iZone.getOffset(millis) != iZone.getStandardOffset(millis)) {
                 millis = iZone.nextTransition(millis);
             }
-            return cOffsetFormatter.print(millis, iZone);
+            return cOffsetFormatter.withZone(iZone).print(millis);
         }
 
         public int compareTo(Object obj) {

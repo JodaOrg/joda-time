@@ -19,7 +19,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -319,7 +319,7 @@ public class TestParseISO extends TestCase {
             }
             assertEquals(msg + "\nZone: ", z, dt.getZone());
         }
-        protected void parse(DateTimeParser p) {
+        protected void parse(DateTimeFormatter p) {
             int result = p.parseInto(dt, extended, 0);
             assertTrue("\nSpec:   " + spec + "\nParsed: " + extended + "\nTo:     "
                 + dt + "\nParse failed at: " + ~result,
@@ -343,7 +343,7 @@ public class TestParseISO extends TestCase {
         }            
         protected void run() {
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
-            parse(ISODateTimeFormat.getInstance().dateTimeParser());
+            parse(ISODateTimeFormat.dateTimeParser());
             super.assertDate();
         }
     }
@@ -363,11 +363,11 @@ public class TestParseISO extends TestCase {
         }
         protected void run() {
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
-            parse(ISODateTimeFormat.getInstance().dateParser());
+            parse(ISODateTimeFormat.dateParser());
             super.assertDate();
         
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
-            parse(ISODateTimeFormat.getInstance().dateTimeParser());
+            parse(ISODateTimeFormat.dateTimeParser());
             super.assertDate();
         }
     }
@@ -387,16 +387,16 @@ public class TestParseISO extends TestCase {
         }
         protected void run() {
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
-            parse(ISODateTimeFormat.getInstance().timeParser());
+            parse(ISODateTimeFormat.timeParser());
             super.assertDate();
             
             extended = "T" + extended;
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
-            parse(ISODateTimeFormat.getInstance().timeParser());
+            parse(ISODateTimeFormat.timeParser());
             super.assertDate();
             
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
-            parse(ISODateTimeFormat.getInstance().dateTimeParser());
+            parse(ISODateTimeFormat.dateTimeParser());
             super.assertDate();
         }
     }

@@ -27,7 +27,7 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.DecoratedDurationField;
-import org.joda.time.format.DateTimePrinter;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -317,14 +317,14 @@ public final class LimitChronology extends AssembledChronology {
             }
             buf.append(" instant is ");
 
-            DateTimePrinter p = ISODateTimeFormat.getInstance().dateTime();
-
+            DateTimeFormatter p = ISODateTimeFormat.dateTime();
+            p = p.withChronology(getBase());
             if (iIsLow) {
                 buf.append("below the supported minimum of ");
-                p.printTo(buf, getLowerLimit().getMillis(), getBase());
+                p.printTo(buf, getLowerLimit().getMillis());
             } else {
                 buf.append("above the supported maximum of ");
-                p.printTo(buf, getUpperLimit().getMillis(), getBase());
+                p.printTo(buf, getUpperLimit().getMillis());
             }
             
             buf.append(" (");

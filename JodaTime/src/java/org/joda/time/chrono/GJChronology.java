@@ -29,7 +29,7 @@ import org.joda.time.Instant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.DecoratedDurationField;
-import org.joda.time.format.DateTimePrinter;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -406,13 +406,13 @@ public final class GJChronology extends AssembledChronology {
         
         if (iCutoverMillis != DEFAULT_CUTOVER.getMillis()) {
             sb.append(",cutover=");
-            DateTimePrinter printer;
+            DateTimeFormatter printer;
             if (withUTC().dayOfYear().remainder(iCutoverMillis) == 0) {
-                printer = ISODateTimeFormat.getInstance().date();
+                printer = ISODateTimeFormat.date();
             } else {
-                printer = ISODateTimeFormat.getInstance().dateTime();
+                printer = ISODateTimeFormat.dateTime();
             }
-            printer.printTo(sb, iCutoverMillis, withUTC());
+            printer.withChronology(withUTC()).printTo(sb, iCutoverMillis);
         }
         
         if (getMinimumDaysInFirstWeek() != 4) {

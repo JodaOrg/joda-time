@@ -495,8 +495,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
-    public final ReadableInstant addTo(ReadableInstant instant, int scalar) {
-        return instant.withMillis(addTo(instant.getMillis(), scalar));
+    public final Instant addTo(ReadableInstant instant, int scalar) {
+        return new Instant(addTo(instant.getMillis(), scalar));
     }
 
     /**

@@ -75,7 +75,8 @@ import org.joda.time.format.ISODateTimeFormat;
 public final class Instant extends AbstractInstant
         implements ReadableInstant, Serializable {
 
-    static final long serialVersionUID = 3299096530934209741L;
+    /** Serialization lock */
+	private static final long serialVersionUID = 3299096530934209741L;
 
     /** The millis from 1970-01-01T00:00:00Z */
     private final long iMillis;
@@ -126,50 +127,17 @@ public final class Instant extends AbstractInstant
         iMillis = converter.getInstantMillis(instant);
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instant with different millis, as an Instant.
+     * Gets a copy of this instant with different millis.
      * <p>
-     * The returned object will be either be a new Instant or
-     * <code>this</code>.
+     * The returned object will be either be a new Instant or <code>this</code>.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant withMillis(long newMillis) {
+    public Instant withMillis(long newMillis) {
         return newMillis == iMillis ? this : new Instant(newMillis);
-    }
-    
-    /**
-     * Since Instant does not support chronologies, this method always returns
-     * <code>this</code>.
-     *
-     * @param newChronology  ignored
-     * @return this
-     */
-    public ReadableInstant withChronology(Chronology newChronology) {
-        return this;
-    }
-    
-    /**
-     * Since Instant does not support time zones, this method always returns
-     * <code>this</code>.
-     *
-     * @param newDateTimeZone  ignored
-     * @return this
-     */
-    public ReadableInstant withZone(DateTimeZone newDateTimeZone) {
-        return this;
-    }
-
-    /**
-     * Since Instant does not support time zones, this method always returns
-     * <code>this</code>.
-     *
-     * @param newDateTimeZone  ignored
-     * @return this
-     */
-    public ReadableInstant withZoneRetainFields(DateTimeZone newDateTimeZone) {
-        return this;
     }
 
     // Accessors
@@ -179,7 +147,7 @@ public final class Instant extends AbstractInstant
      * 
      * @return the number of milliseconds since 1970-01-01T00:00:00Z
      */
-    public final long getMillis() {
+    public long getMillis() {
         return iMillis;
     }
 
@@ -189,7 +157,7 @@ public final class Instant extends AbstractInstant
      * @param base ignored
      * @return the number of milliseconds since 1970-01-01T00:00:00Z
      */
-    public final long getMillis(ReadableInstant base) {
+    public long getMillis(ReadableInstant base) {
         return iMillis;
     }
 
@@ -200,7 +168,7 @@ public final class Instant extends AbstractInstant
      * @param zone ignored
      * @return the number of milliseconds since 1970-01-01T00:00:00Z
      */
-    public final long getMillis(ReadableInstant base, DateTimeZone zone) {
+    public long getMillis(ReadableInstant base, DateTimeZone zone) {
         return iMillis;
     }
 
@@ -214,7 +182,7 @@ public final class Instant extends AbstractInstant
      * 
      * @return null
      */
-    public final Chronology getChronology() {
+    public Chronology getChronology() {
         return null;
     }
 
@@ -228,7 +196,7 @@ public final class Instant extends AbstractInstant
      * 
      * @return ISO8601 date formatted string
      */
-    public final String toString() {
+    public String toString() {
         return ISODateTimeFormat.getInstanceUTC().dateTime().print(this);
     }
 

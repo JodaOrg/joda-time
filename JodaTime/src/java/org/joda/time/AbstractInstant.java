@@ -85,6 +85,8 @@ public abstract class AbstractInstant implements ReadableInstant {
         super();
     }
 
+    // Accessors
+    //-----------------------------------------------------------------------
     /**
      * Gets the time zone of the datetime from the chronology, or null if there
      * isn't any chronology.
@@ -96,8 +98,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         return (chrono != null ? chrono.getZone() : null);
     }
 
-    // Accessors
-    //-----------------------------------------------------------------------
     /**
      * Get the value of the specified field.
      * <p>
@@ -105,7 +105,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * For example:
      * <pre>
      * Instant dt = new Instant();
-     * int gjYear = dt.get(ISOChronology.getInstance().year());
+     * int gjYear = dt.get(GJChronology.getInstance().year());
      * </pre>
      * 
      * @param field  the DateTimeField subclass to use
@@ -117,76 +117,6 @@ public abstract class AbstractInstant implements ReadableInstant {
             throw new IllegalArgumentException("The DateTimeField must not be null");
         }
         return field.get(getMillis());
-    }
-
-    /**
-     * Gets a copy of this instant with a different time zone, preserving the
-     * millisecond instant.
-     * <p>
-     * This method is useful for finding the local time in another timezone.
-     * For example, if this instant holds 12:30 in Europe/London, the result
-     * from this method with Europe/Paris would be 13:30.
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * This method changes alters the time zone, and does not change the
-     * millisecond instant, with the effect that the field values usually change.
-     * Immutable implementations may return <code>this</code> if appropriate.
-     *
-     * @param newDateTimeZone  the new time zone
-     * @return a copy of this instant with a different time zone
-     * @see #withZoneRetainFields
-     */
-    public ReadableInstant withZone(DateTimeZone newDateTimeZone) {
-        final Chronology originalChrono = getChronology();
-        if (originalChrono == null) {
-            // Without an original chronology, no new time zone can be
-            // set. Call withMillis to allow subclass to decide if a clone
-            // should be made or not.
-            return withMillis(getMillis());
-        }
-        return withChronology(originalChrono.withZone(newDateTimeZone));
-    }
-
-    /**
-     * Gets a copy of this instant with a different time zone, preserving the
-     * field values.
-     * <p>
-     * This method is useful for finding the millisecond time in another timezone.
-     * For example, if this instant holds 12:30 in Europe/London (ie. 12:30Z),
-     * the result from this method with Europe/Paris would be 12:30 (ie. 11:30Z).
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * This method changes alters the time zone and the millisecond instant to keep
-     * the field values the same.
-     * Immutable implementations may return <code>this</code> if appropriate.
-     *
-     * @param newDateTimeZone  the new time zone
-     * @return a copy of this instant with a different time zone
-     * @see #withZone
-     */
-    public ReadableInstant withZoneRetainFields(DateTimeZone newDateTimeZone) {
-        final long originalMillis = getMillis();
-        final Chronology originalChrono = getChronology();
-        final DateTimeZone originalZone;
-        if (originalChrono == null || (originalZone = originalChrono.getZone()) == null) {
-            // Without an original chronology or time zone, no new time zone
-            // can be set. Call withMillis to allow subclass to decide if a
-            // clone should be made or not.
-            return withMillis(originalMillis);
-        }
-
-        ReadableInstant newInstant = withChronology(originalChrono.withZone(newDateTimeZone));
-        newDateTimeZone = newInstant.getZone();
-
-        if (newDateTimeZone == null || newDateTimeZone == originalZone) {
-            // New time zone didn't stick or didn't change. Skip millis adjustment.
-            return newInstant;
-        }
-
-        long newMillis = originalMillis + originalZone.getOffset(originalMillis);
-        newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
-
-        return newInstant.withMillis(newMillis);
     }
 
     // Conversion

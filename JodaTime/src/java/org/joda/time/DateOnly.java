@@ -56,8 +56,6 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.chrono.ISOChronology;
-// Import for @link support
-import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.DateOnlyFieldProperty;
 
@@ -86,9 +84,8 @@ import org.joda.time.property.DateOnlyFieldProperty;
  * <li>minimum value
  * </ul>
  * <p>
- * DateOnly is thread-safe and immutable, provided that the Chronology is as
- * well. All standard Chronology classes supplied are thread-safe and
- * immutable.
+ * DateOnly is thread-safe and immutable, provided that the Chronology is as well.
+ * All standard Chronology classes supplied are thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
@@ -99,7 +96,8 @@ import org.joda.time.property.DateOnlyFieldProperty;
  */
 public class DateOnly extends AbstractPartialInstant implements Serializable {
 
-    static final long serialVersionUID = -5796551185494585279L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -5796551185494585279L;
 
     // Constructors
     //-----------------------------------------------------------------------
@@ -153,7 +151,8 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
     /**
      * Constructs an instance from an Object that represents a date.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -167,7 +166,8 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      * Constructs an instance from an Object that represents a date, using the
      * specified chronology.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -219,37 +219,40 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
               chronology);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this instant with different millis.
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the millis will change, the chronology is kept.
+     * Time fields will be removed from the specified millis.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant withMillis(long newMillis) {
+    public final DateOnly withMillis(long newMillis) {
         newMillis = resetUnsupportedFields(newMillis);
-        return newMillis == getMillis() ? this : new DateOnly(newMillis, getChronology());
+        return (newMillis == getMillis() ? this : new DateOnly(newMillis, getChronology()));
     }
-    
+
     /**
      * Gets a copy of this instant with a different chronology.
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the chronology will change, the millis are kept.
+     * The chronology will be converted to a UTC zone.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
      */
-    public ReadableInstant withChronology(Chronology newChronology) {
-        newChronology = newChronology == null ? ISOChronology.getInstanceUTC()
-            : newChronology.withUTC();
-        return newChronology == getChronology() ? this : new DateOnly(getMillis(), newChronology);
+    public final DateOnly withChronology(Chronology newChronology) {
+        newChronology = newChronology == null ? ISOChronology.getInstanceUTC() : newChronology.withUTC();
+        return (newChronology == getChronology() ? this : new DateOnly(getMillis(), newChronology));
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns the lower limiting field, dayOfYear.
      *
@@ -501,5 +504,5 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      */
     protected final void setChronology(Chronology chronology) {
     }
-    
+
 }

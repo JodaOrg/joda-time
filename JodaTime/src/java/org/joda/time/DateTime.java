@@ -55,8 +55,6 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-// Import for @link support
-import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.DateTimeFieldProperty;
 
@@ -85,9 +83,8 @@ import org.joda.time.property.DateTimeFieldProperty;
  * </ul>
  *
  * <p>
- * DateTime is thread-safe and immutable, provided that the Chronology is as
- * well. All standard Chronology classes supplied are thread-safe and
- * immutable.
+ * DateTime is thread-safe and immutable, provided that the Chronology is as well.
+ * All standard Chronology classes supplied are thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @author Kandarp Shah
@@ -100,7 +97,8 @@ import org.joda.time.property.DateTimeFieldProperty;
 public class DateTime extends AbstractDateTime
         implements ReadableDateTime, Serializable {
     
-    static final long serialVersionUID = -5171125899451703815L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -5171125899451703815L;
 
     // Constructors
     //-----------------------------------------------------------------------
@@ -182,7 +180,8 @@ public class DateTime extends AbstractDateTime
      * If the object contains no chronology, <code>ISOChronology</code>
      * in the default time zone is used.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -199,7 +198,8 @@ public class DateTime extends AbstractDateTime
      * If the object contains no chronology, <code>ISOChronology</code> is used.
      * If the specified time zone is null, the default zone is used.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -216,7 +216,8 @@ public class DateTime extends AbstractDateTime
      * <p>
      * If the chronology is null, ISOChronology in the default time zone is used.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -319,10 +320,10 @@ public class DateTime extends AbstractDateTime
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant withMillis(long newMillis) {
-        return newMillis == getMillis() ? this : new DateTime(newMillis, getChronology());
+    public final DateTime withMillis(long newMillis) {
+        return (newMillis == getMillis() ? this : new DateTime(newMillis, getChronology()));
     }
-    
+
     /**
      * Gets a copy of this instant with a different chronology.
      * <p>
@@ -333,10 +334,73 @@ public class DateTime extends AbstractDateTime
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
      */
-    public ReadableInstant withChronology(Chronology newChronology) {
-        return newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology);
+    public final DateTime withChronology(Chronology newChronology) {
+        return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
     }
-    
+
+    /**
+     * Gets a copy of this instant with a different time zone, preserving the
+     * millisecond instant.
+     * <p>
+     * This method is useful for finding the local time in another timezone.
+     * For example, if this instant holds 12:30 in Europe/London, the result
+     * from this method with Europe/Paris would be 13:30.
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * This method changes alters the time zone, and does not change the
+     * millisecond instant, with the effect that the field values usually change.
+     * Immutable implementations may return <code>this</code> if appropriate.
+     *
+     * @param newDateTimeZone  the new time zone
+     * @return a copy of this instant with a different time zone
+     * @see #withZoneRetainFields
+     */
+    public final DateTime withZone(DateTimeZone newDateTimeZone) {
+        return withChronology(getChronology().withZone(newDateTimeZone));
+    }
+
+    /**
+     * Gets a copy of this instant with a different time zone, preserving the
+     * field values.
+     * <p>
+     * This method is useful for finding the millisecond time in another timezone.
+     * For example, if this instant holds 12:30 in Europe/London (ie. 12:30Z),
+     * the result from this method with Europe/Paris would be 12:30 (ie. 11:30Z).
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * This method changes alters the time zone and the millisecond instant to keep
+     * the field values the same.
+     * Immutable implementations may return <code>this</code> if appropriate.
+     *
+     * @param newDateTimeZone  the new time zone
+     * @return a copy of this instant with a different time zone
+     * @see #withZone
+     */
+    public final DateTime withZoneRetainFields(DateTimeZone newDateTimeZone) {
+        final long originalMillis = getMillis();
+        final Chronology originalChrono = getChronology();
+        final DateTimeZone originalZone;
+        if (originalChrono == null || (originalZone = originalChrono.getZone()) == null) {
+            // Without an original chronology or time zone, no new time zone
+            // can be set. Call withMillis to allow subclass to decide if a
+            // clone should be made or not.
+            return withMillis(originalMillis);
+        }
+
+        DateTime newInstant = withChronology(originalChrono.withZone(newDateTimeZone));
+        newDateTimeZone = newInstant.getZone();
+
+        if (newDateTimeZone == null || newDateTimeZone == originalZone) {
+            // New time zone didn't stick or didn't change. Skip millis adjustment.
+            return newInstant;
+        }
+
+        long newMillis = originalMillis + originalZone.getOffset(originalMillis);
+        newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
+
+        return newInstant.withMillis(newMillis);
+    }
+
     // Date properties
     //-----------------------------------------------------------------------
     /**

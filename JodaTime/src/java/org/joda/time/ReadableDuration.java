@@ -144,7 +144,7 @@ public interface ReadableDuration extends Comparable {
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
-    ReadableInstant addTo(ReadableInstant instant, int scalar);
+    Instant addTo(ReadableInstant instant, int scalar);
 
     /**
      * Adds this duration into the given mutable instant.

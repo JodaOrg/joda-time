@@ -56,8 +56,6 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.chrono.ISOChronology;
-// Import for @link support
-import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.TimeOnlyFieldProperty;
 
@@ -99,7 +97,8 @@ import org.joda.time.property.TimeOnlyFieldProperty;
  */
 public class TimeOnly extends AbstractPartialInstant implements Serializable {
 
-    static final long serialVersionUID = -8414446947366046476L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -8414446947366046476L;
 
     // Constructors
     //-----------------------------------------------------------------------
@@ -153,7 +152,8 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
     /**
      * Constructs an instance from an Object that represents a time.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -167,7 +167,8 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
      * Constructs an instance from an Object that represents a time, using the
      * specified chronology.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
@@ -228,14 +229,15 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the millis will change, the chronology is kept.
+     * Date fields will be removed from the millis.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant withMillis(long newMillis) {
+    public final TimeOnly withMillis(long newMillis) {
         newMillis = resetUnsupportedFields(newMillis);
-        return newMillis == getMillis() ? this : new TimeOnly(newMillis, getChronology());
+        return (newMillis == getMillis() ? this : new TimeOnly(newMillis, getChronology()));
     }
     
     /**
@@ -243,15 +245,15 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the chronology will change, the millis are kept.
+     * The chronology will be converted to a UTC zone.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
      */
-    public ReadableInstant withChronology(Chronology newChronology) {
-        newChronology = newChronology == null ? ISOChronology.getInstanceUTC()
-            : newChronology.withUTC();
-        return newChronology == getChronology() ? this : new TimeOnly(getMillis(), newChronology);
+    public final TimeOnly withChronology(Chronology newChronology) {
+        newChronology = newChronology == null ? ISOChronology.getInstanceUTC() : newChronology.withUTC();
+        return (newChronology == getChronology() ? this : new TimeOnly(getMillis(), newChronology));
     }
 
     /**

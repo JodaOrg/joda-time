@@ -193,7 +193,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_Object1() throws Throwable {
-        Duration test = new Duration("P72.345S");
+        Duration test = new Duration("PT72.345S");
         assertEquals(72345, test.getMillis());
     }
 

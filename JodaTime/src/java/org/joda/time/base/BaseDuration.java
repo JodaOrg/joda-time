@@ -155,7 +155,7 @@ public class BaseDuration
      * 
      * @param duration  the new length of the duration
      */
-    public void setMillis(long duration) {
+    protected void setMillis(long duration) {
         iMillis = duration;
     }
 

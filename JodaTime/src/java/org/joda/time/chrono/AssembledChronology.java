@@ -146,45 +146,6 @@ public abstract class AssembledChronology extends AbstractChronology {
         return null;
     }
 
-    public long getDateOnlyMillis(long instant) {
-        Chronology base;
-        if ((base = iBase) != null) {
-            return base.getDateOnlyMillis(instant);
-        }
-        return super.getDateOnlyMillis(instant);
-    }
-
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = iBase) != null && (iBaseFlags & 4) == 4) {
-            // Only call specialized implementation if applicable fields are the same.
-            return base.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
-        }
-        return super.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
-    }
-
-    public long getTimeOnlyMillis(long instant) {
-        Chronology base;
-        if ((base = iBase) != null) {
-            return base.getTimeOnlyMillis(instant);
-        }
-        return super.getTimeOnlyMillis(instant);
-    }
-
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = iBase) != null && (iBaseFlags & 1) == 1) {
-            // Only call specialized implementation if applicable fields are the same.
-            return base.getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        }
-        return super.getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-    }
-
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
@@ -195,21 +156,6 @@ public abstract class AssembledChronology extends AbstractChronology {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
         }
         return super.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
-    }
-
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = iBase) != null && (iBaseFlags & 1) == 1) {
-            // Only call specialized implementation if applicable fields are the same.
-            return base.getDateTimeMillis
-                (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        }
-        return super.getDateTimeMillis
-            (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
@@ -225,6 +171,21 @@ public abstract class AssembledChronology extends AbstractChronology {
         }
         return super.getDateTimeMillis(year, monthOfYear, dayOfMonth,
                                        hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        Chronology base;
+        if ((base = iBase) != null && (iBaseFlags & 1) == 1) {
+            // Only call specialized implementation if applicable fields are the same.
+            return base.getDateTimeMillis
+                (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        }
+        return super.getDateTimeMillis
+            (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public final DurationField millis() {

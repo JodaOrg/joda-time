@@ -358,31 +358,6 @@ public final class GJChronology extends AssembledChronology {
         return getInstance(zone, iCutoverInstant, getMinimumDaysInFirstWeek());
     }
 
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
-        }
-
-        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
-    }
-
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        }
-
-        // Time fields are same for Julian and Gregorian.
-        return iGregorianChronology.getTimeOnlyMillis
-            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-    }
-
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
@@ -407,21 +382,6 @@ public final class GJChronology extends AssembledChronology {
         return instant;
     }
 
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getDateTimeMillis
-                (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        }
-
-        return getDateOnlyMillis(instant)
-            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-    }
-
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int hourOfDay, int minuteOfHour,
                                   int secondOfMinute, int millisOfSecond)
@@ -434,8 +394,21 @@ public final class GJChronology extends AssembledChronology {
                  hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         }
 
-        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0)
-            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        // Assume date is Gregorian.
+        long instant = iGregorianChronology.getDateTimeMillis
+            (year, monthOfYear, dayOfMonth,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        if (instant < iCutoverMillis) {
+            // Maybe it's Julian.
+            instant = iJulianChronology.getDateTimeMillis
+                (year, monthOfYear, dayOfMonth,
+                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+            if (instant >= iCutoverMillis) {
+                // Okay, it's in the illegal cutover gap.
+                throw new IllegalArgumentException("Specified date does not exist");
+            }
+        }
+        return instant;
     }
 
     /**
@@ -467,7 +440,7 @@ public final class GJChronology extends AssembledChronology {
         sb.append("cutover=");
         ISODateTimeFormat format = ISODateTimeFormat.getInstance(withUTC());
         DateTimePrinter printer;
-        if (withUTC().getTimeOnlyMillis(iCutoverMillis) == 0) {
+        if (withUTC().dayOfYear().remainder(iCutoverMillis) == 0) {
             printer = format.date();
         } else {
             printer = format.dateTime();

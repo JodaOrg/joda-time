@@ -207,55 +207,11 @@ public final class LimitChronology extends AssembledChronology {
         return chrono;
     }
 
-    public long getDateOnlyMillis(long instant) {
-        checkLimits(instant, null);
-        instant = getBase().getDateOnlyMillis(instant);
-        checkLimits(instant, "resulting");
-        return instant;
-    }
-
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        long instant = getBase().getDateOnlyMillis(year, monthOfYear, dayOfMonth);
-        checkLimits(instant, "resulting");
-        return instant;
-    }
-
-    public long getTimeOnlyMillis(long instant) {
-        checkLimits(instant, null);
-        instant = getBase().getTimeOnlyMillis(instant);
-        checkLimits(instant, "resulting");
-        return instant;
-    }
-
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        long instant = getBase().getTimeOnlyMillis
-            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        checkLimits(instant, "resulting");
-        return instant;
-    }
-
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
         long instant = getBase().getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
-        checkLimits(instant, "resulting");
-        return instant;
-    }
-
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        checkLimits(instant, null);
-        instant = getBase().getDateTimeMillis
-            (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         checkLimits(instant, "resulting");
         return instant;
     }
@@ -268,6 +224,18 @@ public final class LimitChronology extends AssembledChronology {
         long instant = getBase().getDateTimeMillis
             (year, monthOfYear, dayOfMonth,
              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        checkLimits(instant, "resulting");
+        return instant;
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        checkLimits(instant, null);
+        instant = getBase().getDateTimeMillis
+            (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         checkLimits(instant, "resulting");
         return instant;
     }

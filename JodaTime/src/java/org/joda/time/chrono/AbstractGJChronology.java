@@ -238,58 +238,6 @@ public abstract class AbstractGJChronology extends AssembledChronology {
         return DateTimeZone.UTC;
     }
 
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
-        }
-
-        FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 12);
-
-        boolean isLeap = isLeapYear(year);
-
-        FieldUtils.verifyValueBounds("dayOfMonth", dayOfMonth, 1,
-                                (isLeap ? MAX_DAYS_PER_MONTH_ARRAY : MIN_DAYS_PER_MONTH_ARRAY)
-                                [monthOfYear - 1]);
-
-        long instant = getYearMillis(year);
-
-        if (monthOfYear > 1) {
-            instant += 
-                (isLeap ? MAX_TOTAL_MILLIS_BY_MONTH_ARRAY : MIN_TOTAL_MILLIS_BY_MONTH_ARRAY)
-                [monthOfYear - 2];
-        }
-
-        if (dayOfMonth != 1) {
-            instant += (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
-        }
-
-        return instant;
-    }
-
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        }
-
-        FieldUtils.verifyValueBounds("hourOfDay", hourOfDay, 0, 23);
-        FieldUtils.verifyValueBounds("minuteOfHour", minuteOfHour, 0, 59);
-        FieldUtils.verifyValueBounds("secondOfMinute", secondOfMinute, 0, 59);
-        FieldUtils.verifyValueBounds("millisOfSecond", millisOfSecond, 0, 999);
-
-        return hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
-            + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
-            + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
-            + millisOfSecond;
-    }
-
     public final long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                         int millisOfDay)
         throws IllegalArgumentException
@@ -298,22 +246,9 @@ public abstract class AbstractGJChronology extends AssembledChronology {
         if ((base = getBase()) != null) {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
         }
-        FieldUtils.verifyValueBounds("millisOfDay", millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY);
-        return getDateOnlyMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
-    }
 
-    public final long getDateTimeMillis(long instant,
-                                        int hourOfDay, int minuteOfHour,
-                                        int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getDateTimeMillis
-                (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
-        }
-        return getDateOnlyMillis(instant)
-            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        FieldUtils.verifyValueBounds("millisOfDay", millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY);
+        return getDateMidnightMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
     }
 
     public final long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
@@ -326,8 +261,17 @@ public abstract class AbstractGJChronology extends AssembledChronology {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth,
                                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         }
-        return getDateOnlyMillis(year, monthOfYear, dayOfMonth)
-            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+
+        FieldUtils.verifyValueBounds("hourOfDay", hourOfDay, 0, 23);
+        FieldUtils.verifyValueBounds("minuteOfHour", minuteOfHour, 0, 59);
+        FieldUtils.verifyValueBounds("secondOfMinute", secondOfMinute, 0, 59);
+        FieldUtils.verifyValueBounds("millisOfSecond", millisOfSecond, 0, 999);
+
+        return getDateMidnightMillis(year, monthOfYear, dayOfMonth)
+            + hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
+            + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
+            + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
+            + millisOfSecond;
     }
 
     public final int getMinimumDaysInFirstWeek() {
@@ -806,6 +750,33 @@ public abstract class AbstractGJChronology extends AssembledChronology {
             return (DateTimeConstants.MILLIS_PER_DAY - 1)
                 + (int) ((instant + 1) % DateTimeConstants.MILLIS_PER_DAY);
         }
+    }
+
+    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 12);
+
+        boolean isLeap = isLeapYear(year);
+
+        FieldUtils.verifyValueBounds("dayOfMonth", dayOfMonth, 1,
+                                     (isLeap ? MAX_DAYS_PER_MONTH_ARRAY : MIN_DAYS_PER_MONTH_ARRAY)
+                                     [monthOfYear - 1]);
+
+        long instant = getYearMillis(year);
+
+        if (monthOfYear > 1) {
+            instant += 
+                (isLeap ? MAX_TOTAL_MILLIS_BY_MONTH_ARRAY : MIN_TOTAL_MILLIS_BY_MONTH_ARRAY)
+                [monthOfYear - 2];
+        }
+
+        if (dayOfMonth != 1) {
+            instant += (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
+        }
+
+        return instant;
     }
 
     abstract boolean isLeapYear(int year);

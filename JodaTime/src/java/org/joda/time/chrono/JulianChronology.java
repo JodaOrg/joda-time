@@ -227,10 +227,10 @@ public final class JulianChronology extends AbstractGJChronology {
         return getInstance(zone);
     }
 
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
-        return super.getDateOnlyMillis(adjustYearForSet(year), monthOfYear, dayOfMonth);
+        return super.getDateMidnightMillis(adjustYearForSet(year), monthOfYear, dayOfMonth);
     }
 
     boolean isLeapYear(int year) {

@@ -111,82 +111,6 @@ public abstract class AbstractChronology implements Chronology, Serializable {
     public abstract Chronology withZone(DateTimeZone zone);
 
     /**
-     * Returns a date-only millisecond instant, by clearing the time fields
-     * from the given instant.
-     * <p>
-     * The default implementation simply returns
-     * <code>dayOfYear().roundFloor(instant)</code>.
-     * 
-     * @param instant the milliseconds from 1970-01-01T00:00:00Z
-     * @return millisecond instant from 1970-01-01T00:00:00Z with the time part
-     * cleared
-     */
-    public long getDateOnlyMillis(long instant) {
-        return dayOfYear().roundFloor(instant);
-    }
-
-    /**
-     * Returns a date-only millisecond instant, formed from the given year,
-     * month, and day values. The set of given values must refer to a valid
-     * date, or else an IllegalArgumentException is thrown.
-     * <p>
-     * The default implementation simply returns
-     * <code>getDateTimeMillis(year, monthOfYear, dayOfMonth, 0)</code>.
-     *
-     * @param year year to use
-     * @param monthOfYear month to use
-     * @param dayOfMonth day of month to use
-     * @return millisecond instant from 1970-01-01T00:00:00Z without any time
-     * part
-     */
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
-    }
-
-    /**
-     * Returns a time-only millisecond instant, by clearing the date fields
-     * from the given instant.
-     * <p>
-     * The default implementation simply returns
-     * <code>dayOfYear().remainder(instant)</code>.
-     * 
-     * @param instant the milliseconds from 1970-01-01T00:00:00Z
-     * @return millisecond instant from 1970-01-01T00:00:00Z with the date part
-     * cleared
-     */
-    public long getTimeOnlyMillis(long instant) {
-        return dayOfYear().remainder(instant);
-    }
-
-    /**
-     * Returns a time-only millisecond instant, formed from the given hour,
-     * minute, second, and millisecond values. The set of given values must
-     * refer to a valid time, or else an IllegalArgumentException is thrown.
-     * <p>
-     * The default implementation calls upon separate DateTimeFields to
-     * determine the result. Subclasses are encouraged to provide a more
-     * efficient implementation.
-     *
-     * @param hourOfDay hour to use
-     * @param minuteOfHour minute to use
-     * @param secondOfMinute second to use
-     * @param millisOfSecond millisecond to use
-     * @return millisecond instant from 1970-01-01T00:00:00Z without any date
-     * part
-     */
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        long instant = hourOfDay().set(0, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
-
-    /**
      * Returns a datetime millisecond instant, formed from the given year,
      * month, day, and millisecond values. The set of given values must refer
      * to a valid datetime, or else an IllegalArgumentException is thrown.
@@ -209,34 +133,6 @@ public abstract class AbstractChronology implements Chronology, Serializable {
         instant = monthOfYear().set(instant, monthOfYear);
         instant = dayOfMonth().set(instant, dayOfMonth);
         return millisOfDay().set(instant, millisOfDay);
-    }
-
-    /**
-     * Returns a datetime millisecond instant, from from the given instant,
-     * hour, minute, second, and millisecond values. The set of given values
-     * must refer to a valid datetime, or else an IllegalArgumentException is
-     * thrown.
-     * <p>
-     * The default implementation calls upon separate DateTimeFields to
-     * determine the result. Subclasses are encouraged to provide a more
-     * efficient implementation.
-     *
-     * @param instant instant to start from
-     * @param hourOfDay hour to use
-     * @param minuteOfHour minute to use
-     * @param secondOfMinute second to use
-     * @param millisOfSecond millisecond to use
-     * @return millisecond instant from 1970-01-01T00:00:00Z
-     */
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        instant = hourOfDay().set(instant, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
     }
 
     /**
@@ -266,6 +162,34 @@ public abstract class AbstractChronology implements Chronology, Serializable {
         long instant = year().set(0, year);
         instant = monthOfYear().set(instant, monthOfYear);
         instant = dayOfMonth().set(instant, dayOfMonth);
+        instant = hourOfDay().set(instant, hourOfDay);
+        instant = minuteOfHour().set(instant, minuteOfHour);
+        instant = secondOfMinute().set(instant, secondOfMinute);
+        return millisOfSecond().set(instant, millisOfSecond);
+    }
+
+    /**
+     * Returns a datetime millisecond instant, from from the given instant,
+     * hour, minute, second, and millisecond values. The set of given values
+     * must refer to a valid datetime, or else an IllegalArgumentException is
+     * thrown.
+     * <p>
+     * The default implementation calls upon separate DateTimeFields to
+     * determine the result. Subclasses are encouraged to provide a more
+     * efficient implementation.
+     *
+     * @param instant instant to start from
+     * @param hourOfDay hour to use
+     * @param minuteOfHour minute to use
+     * @param secondOfMinute second to use
+     * @param millisOfSecond millisecond to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z
+     */
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
         instant = hourOfDay().set(instant, hourOfDay);
         instant = minuteOfHour().set(instant, minuteOfHour);
         instant = secondOfMinute().set(instant, secondOfMinute);

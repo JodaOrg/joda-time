@@ -105,69 +105,6 @@ public interface Chronology {
     Chronology withZone(DateTimeZone zone);
 
     /**
-     * Returns a date-only millisecond instant, by clearing the time fields
-     * from the given instant.
-     * <p>
-     * The default implementation simply returns
-     * <code>dayOfYear().roundFloor(instant)</code>.
-     * 
-     * @param instant the milliseconds from 1970-01-01T00:00:00Z
-     * @return millisecond instant from 1970-01-01T00:00:00Z with the time part
-     * cleared
-     */
-    long getDateOnlyMillis(long instant);
-
-    /**
-     * Returns a date-only millisecond instant, formed from the given year,
-     * month, and day values. The set of given values must refer to a valid
-     * date, or else an IllegalArgumentException is thrown.
-     * <p>
-     * The default implementation simply returns
-     * <code>getDateTimeMillis(year, monthOfYear, dayOfMonth, 0)</code>.
-     *
-     * @param year year to use
-     * @param monthOfYear month to use
-     * @param dayOfMonth day of month to use
-     * @return millisecond instant from 1970-01-01T00:00:00Z without any time
-     * part
-     */
-    long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException;
-
-    /**
-     * Returns a time-only millisecond instant, by clearing the date fields
-     * from the given instant.
-     * <p>
-     * The default implementation simply returns
-     * <code>dayOfYear().remainder(instant)</code>.
-     * 
-     * @param instant the milliseconds from 1970-01-01T00:00:00Z
-     * @return millisecond instant from 1970-01-01T00:00:00Z with the date part
-     * cleared
-     */
-    long getTimeOnlyMillis(long instant);
-
-    /**
-     * Returns a time-only millisecond instant, formed from the given hour,
-     * minute, second, and millisecond values. The set of given values must
-     * refer to a valid time, or else an IllegalArgumentException is thrown.
-     * <p>
-     * The default implementation calls upon separate DateTimeFields to
-     * determine the result. Subclasses are encouraged to provide a more
-     * efficient implementation.
-     *
-     * @param hourOfDay hour to use
-     * @param minuteOfHour minute to use
-     * @param secondOfMinute second to use
-     * @param millisOfSecond millisecond to use
-     * @return millisecond instant from 1970-01-01T00:00:00Z without any date
-     * part
-     */
-    long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                           int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException;
-
-    /**
      * Returns a datetime millisecond instant, formed from the given year,
      * month, day, and millisecond values. The set of given values must refer
      * to a valid datetime, or else an IllegalArgumentException is thrown.
@@ -183,28 +120,6 @@ public interface Chronology {
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
     long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay)
-        throws IllegalArgumentException;
-
-    /**
-     * Returns a datetime millisecond instant, from from the given instant,
-     * hour, minute, second, and millisecond values. The set of given values
-     * must refer to a valid datetime, or else an IllegalArgumentException is
-     * thrown.
-     * <p>
-     * The default implementation calls upon separate DateTimeFields to
-     * determine the result. Subclasses are encouraged to provide a more
-     * efficient implementation.
-     *
-     * @param instant instant to start from
-     * @param hourOfDay hour to use
-     * @param minuteOfHour minute to use
-     * @param secondOfMinute second to use
-     * @param millisOfSecond millisecond to use
-     * @return millisecond instant from 1970-01-01T00:00:00Z
-     */
-    long getDateTimeMillis(long instant,
-                           int hourOfDay, int minuteOfHour,
-                           int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException;
 
     /**
@@ -227,6 +142,28 @@ public interface Chronology {
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
     long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                           int hourOfDay, int minuteOfHour,
+                           int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException;
+
+    /**
+     * Returns a datetime millisecond instant, from from the given instant,
+     * hour, minute, second, and millisecond values. The set of given values
+     * must refer to a valid datetime, or else an IllegalArgumentException is
+     * thrown.
+     * <p>
+     * The default implementation calls upon separate DateTimeFields to
+     * determine the result. Subclasses are encouraged to provide a more
+     * efficient implementation.
+     *
+     * @param instant instant to start from
+     * @param hourOfDay hour to use
+     * @param minuteOfHour minute to use
+     * @param secondOfMinute second to use
+     * @param millisOfSecond millisecond to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z
+     */
+    long getDateTimeMillis(long instant,
                            int hourOfDay, int minuteOfHour,
                            int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException;

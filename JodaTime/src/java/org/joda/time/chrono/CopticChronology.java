@@ -230,14 +230,9 @@ public final class CopticChronology extends AbstractGJChronology {
         return getInstance(zone);
     }
 
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
-        Chronology base;
-        if ((base = getBase()) != null) {
-            return base.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
-        }
-
         FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
         FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 13);
 

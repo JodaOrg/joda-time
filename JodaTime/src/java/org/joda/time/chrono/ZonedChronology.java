@@ -137,37 +137,12 @@ public final class ZonedChronology extends AssembledChronology {
         return new ZonedChronology(getBase(), zone);
     }
 
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        return localToUTC(getBase().getDateOnlyMillis
-                          (year, monthOfYear, dayOfMonth));
-    }
-
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        return localToUTC(getBase().getTimeOnlyMillis
-                          (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
-    }
-
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
                                   int millisOfDay)
         throws IllegalArgumentException
     {
         return localToUTC(getBase().getDateTimeMillis
                           (year, monthOfYear, dayOfMonth, millisOfDay));
-    }
-
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        return localToUTC(getBase().getDateTimeMillis
-                          (instant + getZone().getOffset(instant),
-                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
     }
 
     public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
@@ -180,8 +155,19 @@ public final class ZonedChronology extends AssembledChronology {
                            hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
     }
 
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return localToUTC(getBase().getDateTimeMillis
+                          (instant + getZone().getOffset(instant),
+                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
+    }
+
     /**
      * @param instant instant from 1970-01-01T00:00:00 local time
+     * @return instant from 1970-01-01T00:00:00Z
      */
     private long localToUTC(long instant) {
         DateTimeZone zone = getZone();

@@ -55,6 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.InstantConverter;
@@ -192,7 +193,7 @@ public class MutableDateTime extends AbstractDateTime
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public MutableDateTime(Object instant) {
         super(instant);
@@ -210,7 +211,7 @@ public class MutableDateTime extends AbstractDateTime
      *
      * @param instant  the datetime object, must not be null
      * @param zone  the time zone, null means default time zone
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public MutableDateTime(Object instant, DateTimeZone zone) {
         super(instant, zone);
@@ -227,7 +228,7 @@ public class MutableDateTime extends AbstractDateTime
      *
      * @param instant  the datetime object, must not be null
      * @param chronology  the chronology, null means ISOChronology in default zone
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public MutableDateTime(Object instant, Chronology chronology) {
         super(instant, chronology);
@@ -383,7 +384,7 @@ public class MutableDateTime extends AbstractDateTime
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant
-     * @throws IllegalArgumentException if the object is null or invalid
+     * @throws IllegalArgumentException if the object is invalid
      * @see #setDateTime(Object)
      */
     public void setMillis(Object instant) {
@@ -829,8 +830,7 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the value is invalid
      */
     public void setDate(final long instant) {
-        Chronology c = getChronology();
-        setMillis(c.getDateOnlyMillis(instant) + c.getTimeOnlyMillis(getMillis()));
+        setMillis(getChronology().millisOfDay().set(instant, getMillisOfDay()));
     }
 
     /**
@@ -841,9 +841,10 @@ public class MutableDateTime extends AbstractDateTime
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant, time part ignored
-     * @throws IllegalArgumentException if the object is null or invalid
+     * @throws IllegalArgumentException if the object is invalid
      */
     public void setDate(final Object instant) {
+        // TODO: Does time zone need to be considered? See setTime(Object)
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         setDate(converter.getInstantMillis(instant));
     }
@@ -862,9 +863,8 @@ public class MutableDateTime extends AbstractDateTime
             final int monthOfYear,
             final int dayOfMonth) {
         Chronology c = getChronology();
-        long instant = c.getDateTimeMillis(
-            year, monthOfYear, dayOfMonth, 0, 0, 0, 0);
-        setDate(instant);
+        long instantMidnight = c.getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
+        setDate(instantMidnight);
     }
 
     //-----------------------------------------------------------------------
@@ -876,8 +876,8 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the value is invalid
      */
     public void setTime(final long millis) {
-        Chronology c = getChronology();
-        setMillis(c.getDateOnlyMillis(getMillis()) + c.getTimeOnlyMillis(millis));
+        int millisOfDay = ISOChronology.getInstanceUTC().millisOfDay().get(millis);
+        setMillis(getChronology().millisOfDay().set(getMillis(), millisOfDay));
     }
 
     /**
@@ -888,11 +888,16 @@ public class MutableDateTime extends AbstractDateTime
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant, date part ignored
-     * @throws IllegalArgumentException if the object is null or invalid
+     * @throws IllegalArgumentException if the object is invalid
      */
     public void setTime(final Object instant) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        setTime(converter.getInstantMillis(instant));
+        long millis = converter.getInstantMillis(instant);
+        DateTimeZone zone = converter.getChronology(instant).getZone();
+        if (zone != null) {
+            millis = zone.getMillisKeepLocal(DateTimeZone.UTC, millis);
+        }
+        setTime(millis);
     }
 
     /**
@@ -912,7 +917,7 @@ public class MutableDateTime extends AbstractDateTime
             final int millisOfSecond) {
         long instant = getChronology().getDateTimeMillis(
             getMillis(), hour, minuteOfHour, secondOfMinute, millisOfSecond);
-        setTime(instant);
+        setMillis(instant);
     }
 
     //-----------------------------------------------------------------------
@@ -935,7 +940,7 @@ public class MutableDateTime extends AbstractDateTime
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  an object representing an instant
-     * @throws IllegalArgumentException if the object is null or invalid
+     * @throws IllegalArgumentException if the object is invalid
      */
     public void setDateTime(final Object instant) {
         setMillis(instant);

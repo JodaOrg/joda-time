@@ -107,7 +107,7 @@ public interface ReadableDuration extends Comparable {
      * Adds this duration to the given instant, returning a new value.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scaler of minus one.
+     * in a scalar of minus one.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
      * duration to
@@ -121,7 +121,7 @@ public interface ReadableDuration extends Comparable {
      * Adds this duration to the given instant, returning a new value.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scaler of minus one.
+     * in a scalar of minus one.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
      * duration to
@@ -136,7 +136,7 @@ public interface ReadableDuration extends Comparable {
      * Adds this duration to the given instant, returning a new Instant.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scaler of minus one.
+     * in a scalar of minus one.
      *
      * @param instant  the instant to add the duration to
      * @param scalar  the number of times to add the duration, negative to subtract
@@ -150,7 +150,7 @@ public interface ReadableDuration extends Comparable {
      * Adds this duration into the given mutable instant.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scaler of minus one.
+     * in a scalar of minus one.
      *
      * @param instant  the instant to update with the added duration
      * @param scalar  the number of times to add the duration, negative to subtract

@@ -63,25 +63,28 @@ package org.joda.time;
 public interface ReadWritableInterval extends ReadableInterval {
 
     /**
-     * Sets this interval to be the same as another.
-     *
-     * @param interval  the interval to copy
-     */
-    void setInterval(ReadableInterval interval);
-
-    /**
      * Sets this interval from two millisecond instants.
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
+     * @throws IllegalArgumentException if the end is before the start
      */
     void setInterval(long startInstant, long endInstant);
+
+    /**
+     * Sets this interval to be the same as another.
+     *
+     * @param interval  the interval to copy
+     * @throws IllegalArgumentException if the end is before the start
+     */
+    void setInterval(ReadableInterval interval);
 
     /**
      * Sets this interval from two instants.
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
+     * @throws IllegalArgumentException if the end is before the start
      */
     void setInterval(ReadableInstant startInstant, ReadableInstant endInstant);
 
@@ -91,6 +94,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      *
      * @param millisInstant  the start of the time interval,
      *  millisecond instant from 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if the end is before the start
      */
     void setStartMillis(long millisInstant);
 
@@ -98,6 +102,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the start of this time interval as an Instant.
      *
      * @param instant  the start of the time interval
+     * @throws IllegalArgumentException if the end is before the start
      */
     void setStartInstant(ReadableInstant instant);
 
@@ -107,6 +112,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      *
      * @param millisInstant  the end of the time interval,
      *  millisecond instant from 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if the end is before the start
      */
     void setEndMillis(long millisInstant);
 
@@ -114,6 +120,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the end of this time interval as an Instant.
      *
      * @param instant  the end of the time interval
+     * @throws IllegalArgumentException if the end is before the start
      */
     void setEndInstant(ReadableInstant instant);
 
@@ -122,6 +129,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the duration of this time interval, preserving the start instant.
      *
      * @param millisDuration  new duration for interval
+     * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     void setDurationAfterStart(long millisDuration);
@@ -130,6 +138,8 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the duration of this time interval, preserving the end instant.
      *
      * @param millisDuration  new duration for interval
+     * @throws IllegalArgumentException if the end is before the start
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     void setDurationBeforeEnd(long millisDuration);
 
@@ -138,6 +148,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the duration of this time interval, preserving the start instant.
      *
      * @param duration  new duration for interval
+     * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     void setDurationAfterStart(ReadableDuration duration);
@@ -146,6 +157,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the duration of this time interval, preserving the end instant.
      *
      * @param duration  new duration for interval
+     * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     void setDurationBeforeEnd(ReadableDuration duration);
@@ -155,6 +167,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the period of this time interval, preserving the start instant.
      *
      * @param period  new period for interval, null means zero length
+     * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     void setPeriodAfterStart(ReadablePeriod period);
@@ -163,6 +176,7 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the period of this time interval, preserving the end instant.
      *
      * @param period  new period for interval, null means zero length
+     * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     void setPeriodBeforeEnd(ReadablePeriod period);

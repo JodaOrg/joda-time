@@ -94,6 +94,7 @@ public class TestAll extends TestCase {
         
         suite.addTest(TestDateTimeComparator.suite());
         suite.addTest(TestDateTimeConstants.suite());
+        suite.addTest(TestDateTimeUtils.suite());
         suite.addTest(TestDateTimeZone.suite());
 //        suite.addTest(TestParseISO.suite());
         return suite;

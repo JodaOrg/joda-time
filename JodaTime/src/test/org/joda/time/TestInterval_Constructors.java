@@ -601,22 +601,16 @@ public class TestInterval_Constructors extends TestCase {
         public boolean overlaps(ReadableInterval interval) {
             return false;
         }
-        public boolean isBefore(long millisInstant) {
-            return false;
-        }
-        public boolean isBeforeNow() {
-            return false;
-        }
         public boolean isBefore(ReadableInstant instant) {
             return false;
         }
-        public boolean isAfter(long millisInstant) {
-            return false;
-        }
-        public boolean isAfterNow() {
+        public boolean isBefore(ReadableInterval interval) {
             return false;
         }
         public boolean isAfter(ReadableInstant instant) {
+            return false;
+        }
+        public boolean isAfter(ReadableInterval interval) {
             return false;
         }
         public Interval toInterval() {

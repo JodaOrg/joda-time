@@ -85,6 +85,9 @@ public final class Interval
         extends BaseInterval
         implements ReadableInterval, Serializable {
 
+    /** An interval over all time, as represented by milliseconds. */
+    public static final Interval ALWAYS = new Interval(Long.MIN_VALUE, Long.MAX_VALUE);
+
     /** Serialization version */
     private static final long serialVersionUID = 4922451897541386752L;
 

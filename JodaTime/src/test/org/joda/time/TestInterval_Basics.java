@@ -272,10 +272,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test.contains(new Interval(TEST_TIME2 - 1, TEST_TIME2 + 1)));
         assertEquals(false, test.contains(new Interval(TEST_TIME1 - 2, TEST_TIME1 - 1)));
         
-        try {
-            test.contains((ReadableInterval) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
+        assertEquals(true, test.contains((ReadableInterval) null));
     }
 
     public void testOverlaps_RInterval() {
@@ -297,10 +294,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
         
-        try {
-            test.overlaps((ReadableInterval) null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
+        assertEquals(true, test.overlaps((ReadableInterval) null));
     }
 
     //-----------------------------------------------------------------------
@@ -338,7 +332,21 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, test.isBefore(new Instant(TEST_TIME2)));
         assertEquals(true, test.isBefore(new Instant(TEST_TIME2 + 1)));
         
-        assertEquals(false, test.isBefore(null));
+        assertEquals(false, test.isBefore((ReadableInstant) null));
+    }
+
+    public void testIsBefore_RInterval() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
+        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1)));
+        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
+        
+        assertEquals(false, test.isBefore(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
+        assertEquals(true, test.isBefore(new Interval(TEST_TIME2, Long.MAX_VALUE)));
+        assertEquals(true, test.isBefore(new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
+        
+        assertEquals(false, test.isBefore((ReadableInterval) null));
     }
 
     //-----------------------------------------------------------------------
@@ -376,7 +384,21 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test.isAfter(new Instant(TEST_TIME2)));
         assertEquals(false, test.isAfter(new Instant(TEST_TIME2 + 1)));
         
-        assertEquals(false, test.isAfter(null));
+        assertEquals(false, test.isAfter((ReadableInstant) null));
+    }
+
+    public void testIsAfter_RInterval() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
+        assertEquals(false, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1)));
+        assertEquals(false, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
+        
+        assertEquals(false, test.isAfter(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
+        assertEquals(false, test.isAfter(new Interval(TEST_TIME2, Long.MAX_VALUE)));
+        assertEquals(false, test.isAfter(new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
+        
+        assertEquals(false, test.isAfter((ReadableInterval) null));
     }
 
     //-----------------------------------------------------------------------
@@ -487,6 +509,13 @@ public class TestInterval_Basics extends TestCase {
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.UTC);
         Interval test = new Interval(dt1, dt2);
         assertEquals("2004-06-09T07:08:09.010/2005-08-13T12:14:16.018", test.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAlways() {
+        Interval test = Interval.ALWAYS;
+        assertEquals(Long.MIN_VALUE, test.getStartMillis());
+        assertEquals(Long.MAX_VALUE, test.getEndMillis());
     }
 
     //-----------------------------------------------------------------------

@@ -187,7 +187,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public boolean contains(ReadableInstant instant) {
         if (instant == null) {
-            return contains(DateTimeUtils.currentTimeMillis());
+            return containsNow();
         }
         return contains(instant.getMillis());
     }
@@ -197,13 +197,12 @@ public abstract class AbstractInterval implements ReadableInterval {
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param interval  the time interval to compare to
+     * @param interval  the time interval to compare to, null means now
      * @return true if this time interval contains the time interval
-     * @throws IllegalArgumentException if the interval is null
      */
     public boolean contains(ReadableInterval interval) {
         if (interval == null) {
-            throw new IllegalArgumentException("The time interval must not be null");
+            return containsNow();
         }
         long otherStart = interval.getStartMillis();
         long otherEnd = interval.getEndMillis();
@@ -218,13 +217,12 @@ public abstract class AbstractInterval implements ReadableInterval {
      * The intervals overlap if at least some of the time interval is in common.
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param interval  the time interval to compare to
+     * @param interval  the time interval to compare to, null means now
      * @return true if the time intervals overlap
-     * @throws IllegalArgumentException if the interval is null
      */
     public boolean overlaps(ReadableInterval interval) {
         if (interval == null) {
-            throw new IllegalArgumentException("The time interval must not be null");
+            return containsNow();
         }
         long otherStart = interval.getStartMillis();
         long otherEnd = interval.getEndMillis();
@@ -268,11 +266,27 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public boolean isBefore(ReadableInstant instant) {
         if (instant == null) {
-            return isBefore(DateTimeUtils.currentTimeMillis());
+            return isBeforeNow();
         }
         return isBefore(instant.getMillis());
     }
 
+    /**
+     * Is this time interval entirely before the specified instant.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @param instant  the instant to compare to, null means now
+     * @return true if this time interval is before the interval specified
+     */
+    public boolean isBefore(ReadableInterval interval) {
+        if (interval == null) {
+            return isBeforeNow();
+        }
+        return isBefore(interval.getStartMillis());
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Is this time interval after the specified millisecond instant.
      * <p>
@@ -307,9 +321,24 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public boolean isAfter(ReadableInstant instant) {
         if (instant == null) {
-            return isAfter(DateTimeUtils.currentTimeMillis());
+            return isAfterNow();
         }
         return isAfter(instant.getMillis());
+    }
+
+    /**
+     * Is this time interval entirely after the specified interval.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @param instant  the instant to compare to, null means now
+     * @return true if this time interval is after the interval specified
+     */
+    public boolean isAfter(ReadableInterval interval) {
+        if (interval == null) {
+            return isAfterNow();
+        }
+        return isAfter(interval.getEndMillis());
     }
 
     //-----------------------------------------------------------------------

@@ -69,6 +69,9 @@ package org.joda.time;
  * An interval can also be converted to a {@link ReadablePeriod}.
  * This represents the difference between the start and end points in terms of fields
  * such as years and days.
+ * <p>
+ * Methods that are passed an interval as a parameter will treat <code>null</code>
+ * as a zero length interval at the current instant in time.
  *
  * @author Sean Geoghegan
  * @author Brian S O'Neill
@@ -145,9 +148,8 @@ public interface ReadableInterval {
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param interval  the time interval to compare to
+     * @param interval  the time interval to compare to, null means now
      * @return true if this time interval contains the time interval
-     * @throws IllegalArgumentException if the interval is null
      */
     boolean contains(ReadableInterval interval);
     
@@ -157,9 +159,8 @@ public interface ReadableInterval {
      * The intervals overlap if at least some of the time interval is in common.
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param interval  the time interval to compare to
+     * @param interval  the time interval to compare to, null means now
      * @return true if the time intervals overlap
-     * @throws IllegalArgumentException if the interval is null
      */
     boolean overlaps(ReadableInterval interval);
     
@@ -175,6 +176,16 @@ public interface ReadableInterval {
     boolean isAfter(ReadableInstant instant);
     
     /**
+     * Is this time interval entirely after the specified interval.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @param interval  the interval to compare to, null means now
+     * @return true if this time interval is after the interval specified
+     */
+    boolean isAfter(ReadableInterval interval);
+    
+    /**
      * Is this time interval before the specified instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
@@ -183,6 +194,16 @@ public interface ReadableInterval {
      * @return true if this time interval is before the instant
      */
     boolean isBefore(ReadableInstant instant);
+    
+    /**
+     * Is this time interval entirely before the specified interval.
+     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * 
+     * @param interval  the interval to compare to, null means now
+     * @return true if this time interval is before the interval specified
+     */
+    boolean isBefore(ReadableInterval interval);
     
     //-----------------------------------------------------------------------
     /**

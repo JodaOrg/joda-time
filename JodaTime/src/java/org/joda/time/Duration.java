@@ -193,4 +193,34 @@ public class Duration
         return new Duration(duration);
     }
 
+    /**
+     * Adds to this duration returning a new Duration instance.
+     * <p>
+     * If the addition is zero, this instance is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @return the new duration instance
+     */
+    public final Duration withDurationAdded(ReadableDuration durationToAdd) {
+        return withDurationAdded(durationToAdd, 1);
+    }
+
+    /**
+     * Adds to this duration returning a new Duration instance.
+     * <p>
+     * If the addition is zero, this instance is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return the new duration instance
+     */
+    public final Duration withDurationAdded(ReadableDuration durationToAdd, int scalar) {
+        if (durationToAdd == null || scalar == 0) {
+            return this;
+        }
+        long add = FieldUtils.safeMultiply(durationToAdd.getMillis(), scalar);
+        long duration = FieldUtils.safeAdd(getMillis(), add);
+        return new Duration(duration);
+    }
+
 }

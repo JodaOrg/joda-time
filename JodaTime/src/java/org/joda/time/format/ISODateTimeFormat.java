@@ -212,7 +212,7 @@ public class ISODateTimeFormat {
      * std-date-element  = yyyy ['-' MM ['-' dd]]
      * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
-     * offset            = 'Z' | (('+' | '-') HH ':' mm)
+     * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
      */
     public DateTimeParser dateParser() {
@@ -275,7 +275,7 @@ public class ISODateTimeFormat {
      * minute-element = ':' mm [second-element] | [fraction]
      * second-element = ':' ss [fraction]
      * fraction       = ('.' | ',') digit+
-     * offset         = 'Z' | (('+' | '-') HH ':' mm)
+     * offset         = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
      */
     public DateTimeParser timeParser() {
@@ -369,7 +369,7 @@ public class ISODateTimeFormat {
      * minute-element    = ':' mm [second-element] | [fraction]
      * second-element    = ':' ss [fraction]
      * fraction          = ('.' | ',') digit+
-     * offset            = 'Z' | (('+' | '-') HH ':' mm)
+     * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
      */
     public DateTimeParser dateTimeParser() {
@@ -845,7 +845,7 @@ public class ISODateTimeFormat {
     private DateTimeFormatter offsetElement() {
         if (ze == null) {
             ze = new DateTimeFormatterBuilder(iChrono)
-                .appendTimeZoneOffset("Z", true, 2, 2)
+                .appendTimeZoneOffset("Z", true, 2, 4)
                 .toFormatter();
         }
         return ze;

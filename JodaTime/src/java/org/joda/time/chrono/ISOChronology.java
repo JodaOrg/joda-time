@@ -66,9 +66,9 @@ import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
- * ISOChronology provides access to the individual date time fields 
- * for the ISO8601 defined chronological calendar system. When ISO 
- * does not define a field, but it can be determined (such as AM/PM)
+ * Implements a chronology that follows the rules of the ISO8601 standard,
+ * which is compatible with Gregorian for all modern dates.
+ * When ISO does not define a field, but it can be determined (such as AM/PM)
  * it is included.
  * <p>
  * With the exception of century related fields, ISOChronology is exactly the
@@ -85,7 +85,8 @@ import org.joda.time.field.RemainderDateTimeField;
  */
 public final class ISOChronology extends AssembledChronology {
     
-    static final long serialVersionUID = -6212696554273812441L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -6212696554273812441L;
 
     /** Singleton instance of a UTC ISOChronology */
     private static final ISOChronology INSTANCE_UTC =

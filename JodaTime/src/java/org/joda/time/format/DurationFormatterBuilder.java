@@ -61,10 +61,32 @@ import java.util.List;
 import org.joda.time.DurationField;
 import org.joda.time.DurationType;
 import org.joda.time.ReadableDuration;
+import org.joda.time.ReadWritableDuration;
 
 /**
- * 
+ * DurationFormatterBuilder is used for constructing {@link DurationFormatter}s.
+ * DurationFormatters are built by appending specific fields and separators.
  *
+ * <p>
+ * For example, a formatter that prints years and months, like "15 years and 8 months",
+ * can be constructed as follows:
+ * <p>
+ * <pre>
+ * DurationFormatter yearsAndMonths = new DurationFormatterBuilder()
+ *     .printZeroAlways()
+ *     .appendYears()
+ *     .appendSuffix(" year", " years")
+ *     .appendSeparator(" and ")
+ *     .printZeroNever()
+ *     .appendMonths()
+ *     .appendSuffix(" month", " months")
+ *     .toFormatter();
+ * </pre>
+ * <p>
+ * DurationFormatterBuilder itself is mutable and not thread-safe, but the
+ * formatters that it builds are thread-safe and immutable.
+ *
+ * @see DurationFormat
  * @author Brian S O'Neill
  */
 public class DurationFormatterBuilder {
@@ -72,8 +94,12 @@ public class DurationFormatterBuilder {
     private static final int PRINT_ZERO_MAYBE = 1;
     private static final int PRINT_ZERO_ALWAYS = 2;
 
+    private String iAlternate;
+
     private int iMinPrintedDigits = 1;
     private int iPrintZeroSetting;
+    private int iMaxParsedDigits = 10;
+    private boolean iRejectSignedValues;
 
     private DurationFieldAffix iPrefix;
 
@@ -90,71 +116,55 @@ public class DurationFormatterBuilder {
      * printer.
      */
     public DurationPrinter toPrinter() {
-        return toPrinter(iFormatters);
+        return toFormatter();
     }
 
     /**
-     * Converts to a DurationPrinter that prints using all the appended
+     * Converts to a DurationParser that parses using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
-     * printer.
-     *
-     * @param alternate alternate text to print when printer emits no fields
+     * parser.
      */
-    public DurationPrinter toPrinter(String alternate) {
-        DurationPrinter printer = toPrinter();
-        if (alternate != null) {
-            return new AlternateSelector(printer, new Literal(alternate));
-        }
-        return printer;
+    public DurationParser toParser() {
+        return toFormatter();
     }
 
     /**
-     * Converts to a DurationPrinter that prints using all the appended
+     * Converts to a DurationFormatter that formats using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
-     * printer.
-     *
-     * @param alternate alternate printer to use when printer emits no fields
+     * formatter.
      */
-    public DurationPrinter toPrinter(DurationPrinter alternate) {
-        DurationPrinter printer = toPrinter();
-        if (alternate != null) {
-            return new AlternateSelector(printer, alternate);
+    public DurationFormatter toFormatter() {
+        DurationFormatter formatter = toFormatter(iFormatters);
+        if (iAlternate != null) {
+            formatter = new AlternateSelector(formatter, iAlternate);
         }
-        return printer;
+        return formatter;
     }
 
-    private static DurationPrinter toPrinter(List formatters) {
+    private static DurationFormatter toFormatter(List formatters) {
         int size = formatters.size();
         if (size >= 2 && formatters.get(1) instanceof Separator) {
-            DurationPrinter before = (DurationPrinter) formatters.get(0);
+            DurationFormatter before = (DurationFormatter) formatters.get(0);
             if (size == 2) {
-                // Separator at the end would never print anything.
+                // Separator at the end would never format anything.
                 return before;
             }
             return ((Separator) formatters.get(1)).finish
-                (before, toPrinter(formatters.subList(2, size)));
+                (before, toFormatter(formatters.subList(2, size)));
         }
         return createComposite(formatters);
     }
-
-    /**
-     * Depending on what rules are applied, a parser may not be buildable due
-     * to ambiguities that may arise during parsing.
-     */
-    /*
-    public boolean canBuildParser() {
-        // TODO
-        return true;
-    }
-    */
 
     /**
      * Clears out all the appended elements, allowing this builder to be
      * reused.
      */
     public void clear() {
+        iAlternate = null;
         iMinPrintedDigits = 1;
         iPrintZeroSetting = PRINT_ZERO_NEVER;
+        iMaxParsedDigits = 10;
+        iRejectSignedValues = false;
         iPrefix = null;
         iFormatters.clear();
     }
@@ -162,6 +172,8 @@ public class DurationFormatterBuilder {
     /**
      * Appends just a printer. With no matching parser, a parser cannot be
      * built from this DurationFormatterBuilder.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder append(DurationPrinter printer)
         throws IllegalArgumentException
@@ -178,6 +190,7 @@ public class DurationFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect
      * it. The parser is case-insensitive.
      *
+     * @return this DurationFormatterBuilder
      * @throws IllegalArgumentException if text is null
      */
     public DurationFormatterBuilder appendLiteral(String text) {
@@ -193,6 +206,8 @@ public class DurationFormatterBuilder {
      * Set the minimum digits printed for the next and following appended
      * fields. By default, the minimum digits printed is one. If the field value
      * is zero, it is not printed unless a printZero rule is applied.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder minimumPrintedDigits(int minDigits) {
         iMinPrintedDigits = minDigits;
@@ -202,23 +217,29 @@ public class DurationFormatterBuilder {
     /**
      * Set the maximum digits parsed for the next and following appended
      * fields. By default, the maximum digits parsed is ten.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder maximumParsedDigits(int maxDigits) {
-        // TODO
+        iMaxParsedDigits = maxDigits;
         return this;
     }
 
     /**
      * Reject signed values when parsing the next and following appended fields.
+     *
+     * @return this DurationFormatterBuilder
      */
-    public DurationFormatterBuilder rejectSignedValues() {
-        // TODO
+    public DurationFormatterBuilder rejectSignedValues(boolean v) {
+        iRejectSignedValues = v;
         return this;
     }
 
     /**
      * Never print zero values for the next and following appended fields. This
      * is the default setting.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder printZeroNever() {
         iPrintZeroSetting = PRINT_ZERO_NEVER;
@@ -228,6 +249,8 @@ public class DurationFormatterBuilder {
     /**
      * Print zero values for the next and following appened fields only if the
      * duration supports it.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder printZeroMaybe() {
         iPrintZeroSetting = PRINT_ZERO_MAYBE;
@@ -236,7 +259,10 @@ public class DurationFormatterBuilder {
 
     /**
      * Always print zero values for the next and following appended fields,
-     * even if the duration doesn't support it.
+     * even if the duration doesn't support it. The parser requires values for
+     * fields that always print zero.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder printZeroAlways() {
         iPrintZeroSetting = PRINT_ZERO_ALWAYS;
@@ -248,6 +274,7 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the prefix.
      *
      * @param text text to print before field only if field is printed
+     * @return this DurationFormatterBuilder
      * @see #appendSuffix
      */
     public DurationFormatterBuilder appendPrefix(String text) {
@@ -266,6 +293,7 @@ public class DurationFormatterBuilder {
      *
      * @param singularText text to print if field value is one
      * @param pluralText text to print if field value is not one
+     * @return this DurationFormatterBuilder
      * @see #appendSuffix
      */
     public DurationFormatterBuilder appendPrefix(String singularText,
@@ -281,9 +309,10 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the prefix.
      *
      * @param prefix custom prefix
+     * @return this DurationFormatterBuilder
      * @see #appendSuffix
      */
-    public DurationFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
+    private DurationFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException();
         }
@@ -296,6 +325,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric years field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendYears() {
         appendField(1);
@@ -304,6 +335,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric years field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendMonths() {
         appendField(2);
@@ -312,6 +345,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric weeks field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendWeeks() {
         appendField(3);
@@ -320,6 +355,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric days field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendDays() {
         appendField(4);
@@ -328,6 +365,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric hours field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendHours() {
         appendField(5);
@@ -336,6 +375,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric minutes field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendMinutes() {
         appendField(6);
@@ -344,6 +385,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric seconds field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendSeconds() {
         appendField(7);
@@ -352,6 +395,8 @@ public class DurationFormatterBuilder {
 
     /**
      * Instruct the printer to emit a numeric millis field, if supported.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendMillis() {
         appendField(8);
@@ -360,6 +405,7 @@ public class DurationFormatterBuilder {
 
     private void appendField(int type) {
         iFormatters.add(new FieldFormatter(iMinPrintedDigits, iPrintZeroSetting,
+                                           iMaxParsedDigits, iRejectSignedValues,
                                            type, iPrefix, null));
         iPrefix = null;
     }
@@ -369,6 +415,7 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the suffix.
      *
      * @param text text to print after field only if field is printed
+     * @return this DurationFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
@@ -388,6 +435,7 @@ public class DurationFormatterBuilder {
      *
      * @param singularText text to print if field value is one
      * @param pluralText text to print if field value is not one
+     * @return this DurationFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
@@ -404,10 +452,11 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the suffix.
      *
      * @param suffix custom suffix
+     * @return this DurationFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    public DurationFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
+    private DurationFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
         Object f = null;
         if (iFormatters.size() > 0) {
             f = iFormatters.get(iFormatters.size() - 1);
@@ -427,6 +476,8 @@ public class DurationFormatterBuilder {
      * <p>
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
+     *
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendSeparator(String text) {
         return appendSeparator(text, text);
@@ -444,6 +495,7 @@ public class DurationFormatterBuilder {
      *
      * @param finalText alternate used if this is the final separator
      * printed
+     * @return this DurationFormatterBuilder
      */
     public DurationFormatterBuilder appendSeparator(String text,
                                                     String finalText) {
@@ -475,7 +527,7 @@ public class DurationFormatterBuilder {
             // Merge two adjacent separators together.
             iFormatters.set(i, lastSeparator.merge(text, finalText));
         } else {
-            DurationPrinter composite = createComposite(formatters);
+            DurationFormatter composite = createComposite(formatters);
             formatters.clear();
             formatters.add(composite);
             
@@ -486,6 +538,21 @@ public class DurationFormatterBuilder {
         return this;
     }
 
+    /**
+     * Supply alternate text to print, when no fields are emitted. During
+     * parsing, the alternate text is compared against first. If the alternate
+     * text matches (ignoring case), the parser finishes without attempting to
+     * parse any specific fields.
+     *
+     * @return this DurationFormatterBuilder
+     */
+    // TODO: Drop support for alternate. Instead, show least significant field
+    // that is supported.
+    public DurationFormatterBuilder setAlternate(String text) {
+        iAlternate = text;
+        return this;
+    }
+
     private void clearPrefix() throws IllegalStateException {
         if (iPrefix != null) {
             throw new IllegalStateException("Prefix not followed by field");
@@ -493,12 +560,33 @@ public class DurationFormatterBuilder {
         iPrefix = null;
     }
 
-    private static DurationPrinter createComposite(List formatters) {
+    private static DurationFormatter createComposite(List formatters) {
         if (formatters.size() == 1) {
-            return (DurationPrinter)formatters.get(0);
+            return (DurationFormatter)formatters.get(0);
         } else {
             return new Composite(formatters);
         }
+    }
+
+    /**
+     * Defines a formatted field's prefix or suffix text.
+     */
+    private static interface DurationFieldAffix {
+        int calculatePrintedLength(int value);
+        
+        void printTo(StringBuffer buf, int value);
+        
+        void printTo(Writer out, int value) throws IOException;
+        
+        /**
+         * @return new position after parsing affix, or ~position of failure
+         */
+        int parse(String durationStr, int position);
+
+        /**
+         * @return position where affix starts, or original ~position if not found
+         */
+        int scan(String durationStr, int position);
     }
 
     private static final class SingularAffix implements DurationFieldAffix {
@@ -518,6 +606,27 @@ public class DurationFormatterBuilder {
 
         public void printTo(Writer out, int value) throws IOException {
             out.write(iText);
+        }
+
+        public int parse(String durationStr, int position) {
+            String text = iText;
+            int textLength = text.length();
+            if (durationStr.regionMatches(true, position, text, 0, textLength)) {
+                return position + textLength;
+            }
+            return ~position;
+        }
+
+        public int scan(String durationStr, final int position) {
+            String text = iText;
+            int textLength = text.length();
+            int sourceLength = durationStr.length();
+            for (int pos = position; pos < sourceLength; pos++) {
+                if (durationStr.regionMatches(true, pos, text, 0, textLength)) {
+                    return pos;
+                }
+            }
+            return ~position;
         }
     }
 
@@ -540,6 +649,55 @@ public class DurationFormatterBuilder {
 
         public void printTo(Writer out, int value) throws IOException {
             out.write(value == 1 ? iSingularText : iPluralText);
+        }
+
+        public int parse(String durationStr, int position) {
+            String text1 = iPluralText;
+            String text2 = iSingularText; 
+
+            if (text1.length() < text2.length()) {
+                // Swap in order to match longer one first.
+                String temp = text1;
+                text1 = text2;
+                text2 = temp;
+            }
+
+            if (durationStr.regionMatches
+                (true, position, text1, 0, text1.length())) {
+                return position + text1.length();
+            }
+            if (durationStr.regionMatches
+                (true, position, text2, 0, text2.length())) {
+                return position + text2.length();
+            }
+
+            return ~position;
+        }
+
+        public int scan(String durationStr, final int position) {
+            String text1 = iPluralText;
+            String text2 = iSingularText; 
+
+            if (text1.length() < text2.length()) {
+                // Swap in order to match longer one first.
+                String temp = text1;
+                text1 = text2;
+                text2 = temp;
+            }
+
+            int textLength1 = text1.length();
+            int textLength2 = text2.length();
+
+            int sourceLength = durationStr.length();
+            for (int pos = position; pos < sourceLength; pos++) {
+                if (durationStr.regionMatches(true, pos, text1, 0, textLength1)) {
+                    return pos;
+                }
+                if (durationStr.regionMatches(true, pos, text2, 0, textLength2)) {
+                    return pos;
+                }
+            }
+            return ~position;
         }
     }
 
@@ -566,13 +724,31 @@ public class DurationFormatterBuilder {
             iLeft.printTo(out, value);
             iRight.printTo(out, value);
         }
+
+        public int parse(String durationStr, int position) {
+            position = iLeft.parse(durationStr, position);
+            if (position >= 0) {
+                position = iRight.parse(durationStr, position);
+            }
+            return position;
+        }
+
+        public int scan(String durationStr, final int position) {
+            int pos = iLeft.scan(durationStr, position);
+            if (pos >= 0) {
+                return iRight.scan(durationStr, pos);
+            }
+            return ~position;
+        }
     }
 
     private static final class FieldFormatter extends AbstractDurationFormatter
-        implements DurationPrinter
+        implements DurationFormatter
     {
         private final int iMinPrintedDigits;
         private final int iPrintZeroSetting;
+        private final int iMaxParsedDigits;
+        private final boolean iRejectSignedValues;
 
         private final int iFieldType;
 
@@ -580,9 +756,12 @@ public class DurationFormatterBuilder {
         private final DurationFieldAffix iSuffix;
 
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
+                       int maxParsedDigits, boolean rejectSignedValues,
                        int fieldType, DurationFieldAffix prefix, DurationFieldAffix suffix) {
             iMinPrintedDigits = minPrintedDigits;
             iPrintZeroSetting = printZeroSetting;
+            iMaxParsedDigits = maxParsedDigits;
+            iRejectSignedValues = rejectSignedValues;
             iFieldType = fieldType;
             iPrefix = prefix;
             iSuffix = suffix;
@@ -591,6 +770,8 @@ public class DurationFormatterBuilder {
         FieldFormatter(FieldFormatter field, DurationFieldAffix suffix) {
             iMinPrintedDigits = field.iMinPrintedDigits;
             iPrintZeroSetting = field.iPrintZeroSetting;
+            iMaxParsedDigits = field.iMaxParsedDigits;
+            iRejectSignedValues = field.iRejectSignedValues;
             iFieldType = field.iFieldType;
             iPrefix = field.iPrefix;
             if (field.iSuffix != null) {
@@ -680,6 +861,123 @@ public class DurationFormatterBuilder {
             }
         }
 
+        public int parseInto(ReadWritableDuration duration,
+                             String text, int position) {
+
+            boolean mustParse = (iPrintZeroSetting == PRINT_ZERO_ALWAYS);
+
+            // Shortcut test.
+            if (position >= text.length()) {
+                return mustParse ? ~position : position;
+            }
+
+            if (iPrefix != null) {
+                position = iPrefix.parse(text, position);
+                if (position >= 0) {
+                    // If prefix is found, then the parse must finish.
+                    mustParse = true;
+                } else {
+                    // Prefix not found, so bail.
+                    if (!mustParse) {
+                        // It's okay because parsing of this field is not
+                        // required. Don't return an error. Fields down the
+                        // chain can continue on, trying to parse.
+                        return ~position;
+                    }
+                    return position;
+                }
+            }
+
+            int suffixPos = -1;
+            if (iSuffix != null && !mustParse) {
+                // Pre-scan the suffix, to help determine if this field must be
+                // parsed.
+                suffixPos = iSuffix.scan(text, position);
+                if (suffixPos >= 0) {
+                    // If suffix is found, then parse must finish.
+                    mustParse = true;
+                } else {
+                    // Suffix not found, so bail.
+                    if (!mustParse) {
+                        // It's okay because parsing of this field is not
+                        // required. Don't return an error. Fields down the
+                        // chain can continue on, trying to parse.
+                        return ~suffixPos;
+                    }
+                    return suffixPos;
+                }
+            }
+
+            if (!mustParse && !isSupported(duration.getDurationType())) {
+                // If parsing is not required and the field is not supported,
+                // exit gracefully so that another parser can continue on.
+                return position;
+            }
+
+            int limit;
+            if (suffixPos > 0) {
+                limit = Math.min(iMaxParsedDigits, suffixPos - position);
+            } else {
+                limit = Math.min(iMaxParsedDigits, text.length() - position);
+            }
+
+            boolean negative = false;
+            int length = 0;
+            while (length < limit) {
+                char c = text.charAt(position + length);
+                if (length == 0 && (c == '-' || c == '+') && !iRejectSignedValues) {
+                    negative = c == '-';
+                    if (negative) {
+                        length++;
+                    } else {
+                        // Skip the '+' for parseInt to succeed.
+                        position++;
+                    }
+                    // Expand the limit to disregard the sign character.
+                    limit = Math.min(limit + 1, text.length() - position);
+                    continue;
+                }
+                if (c < '0' || c > '9') {
+                    break;
+                }
+                length++;
+            }
+
+            if (length == 0) {
+                return ~position;
+            }
+
+            int value;
+            if (length == 3 && negative) {
+                value = -FormatUtils.parseTwoDigits(text, position + 1);
+            } else if (length == 2) {
+                if (negative) {
+                    value = text.charAt(position + 1) - '0';
+                    value = -value;
+                } else {
+                    value = FormatUtils.parseTwoDigits(text, position);
+                }
+            } else if (length == 1 && !negative) {
+                value = text.charAt(position) - '0';
+            } else {
+                String sub = text.substring(position, position + length);
+                try {
+                    value = Integer.parseInt(sub);
+                } catch (NumberFormatException e) {
+                    return ~position;
+                }
+            }
+
+            setFieldValue(duration, value);
+            position += length;
+
+            if (position >= 0 && iSuffix != null) {
+                position = iSuffix.parse(text, position);
+            }
+
+            return position;
+        }
+
         /**
          * @return negative value if nothing to print, otherwise lower 32 bits
          * is signed int value.
@@ -753,10 +1051,64 @@ public class DurationFormatterBuilder {
 
             return value & 0xffffffffL;
         }
+
+        boolean isSupported(DurationType type) {
+            switch (iFieldType) {
+            default:
+                return false;
+            case 1:
+                return type.years().isSupported();
+            case 2:
+                return type.months().isSupported();
+            case 3:
+                return type.weeks().isSupported();
+            case 4:
+                return type.days().isSupported();
+            case 5:
+                return type.hours().isSupported();
+            case 6:
+                return type.minutes().isSupported();
+            case 7:
+                return type.seconds().isSupported();
+            case 8:
+                return type.millis().isSupported();
+            }
+        }
+
+        void setFieldValue(ReadWritableDuration duration, int value) {
+            switch (iFieldType) {
+            default:
+                break;
+            case 1:
+                duration.setYears(value);
+                break;
+            case 2:
+                duration.setMonths(value);
+                break;
+            case 3:
+                duration.setWeeks(value);
+                break;
+            case 4:
+                duration.setDays(value);
+                break;
+            case 5:
+                duration.setHours(value);
+                break;
+            case 6:
+                duration.setMinutes(value);
+                break;
+            case 7:
+                duration.setSeconds(value);
+                break;
+            case 8:
+                duration.setMillis(value);
+                break;
+            }
+        }
     }
 
     private static final class Literal extends AbstractDurationFormatter
-        implements DurationPrinter
+        implements DurationFormatter
     {
         private final String iText;
 
@@ -779,23 +1131,31 @@ public class DurationFormatterBuilder {
         public void printTo(Writer out, ReadableDuration duration) throws IOException {
             out.write(iText);
         }
+
+        public int parseInto(ReadWritableDuration duration,
+                             String durationStr, int position) {
+            if (durationStr.regionMatches(true, position, iText, 0, iText.length())) {
+                return position + iText.length();
+            }
+            return ~position;
+        }
     }
 
     private static final class Separator extends AbstractDurationFormatter
-        implements DurationPrinter
+        implements DurationFormatter
     {
         private final String iText;
         private final String iFinalText;
 
-        private final DurationPrinter iBefore;
-        private final DurationPrinter iAfter;
+        private final DurationFormatter iBefore;
+        private final DurationFormatter iAfter;
 
         Separator(String text, String finalText) {
             this(text, finalText, null, null);
         }
 
         Separator(String text, String finalText,
-                  DurationPrinter before, DurationPrinter after) {
+                  DurationFormatter before, DurationFormatter after) {
             iText = text;
             iFinalText = finalText;
             iBefore = before;
@@ -856,23 +1216,47 @@ public class DurationFormatterBuilder {
             after.printTo(out, duration);
         }
 
+        public int parseInto(ReadWritableDuration duration,
+                             String durationStr, int position) {
+            final int oldPos = position;
+
+            position = iBefore.parseInto(duration, durationStr, position);
+
+            if (position < 0) {
+                return position;
+            }
+
+            if (position > oldPos) {
+                // Since position advanced, this separator is
+                // allowed. Optionally parse it.
+                if (durationStr.regionMatches(true, position, iText, 0, iText.length())) {
+                    position += iText.length();
+                } else if (iText != iFinalText && durationStr.regionMatches
+                           (true, position, iFinalText, 0, iFinalText.length())) {
+                    position += iFinalText.length();
+                }
+            }
+
+            return iAfter.parseInto(duration, durationStr, position);
+        }
+
         Separator merge(String text, String finalText) {
             return new Separator(iText + text, iFinalText + finalText, iBefore, iAfter);
         }
 
-        Separator finish(DurationPrinter before, DurationPrinter after) {
+        Separator finish(DurationFormatter before, DurationFormatter after) {
             return new Separator(iText, iFinalText, before, after);
         }
     }
 
     private static final class Composite extends AbstractDurationFormatter
-        implements DurationPrinter
+        implements DurationFormatter
     {
-        private final DurationPrinter[] iFormatters;
+        private final DurationFormatter[] iFormatters;
 
         Composite(List formatters) {
-            iFormatters = (DurationPrinter[])formatters.toArray
-                (new DurationPrinter[formatters.size()]);
+            iFormatters = (DurationFormatter[])formatters.toArray
+                (new DurationFormatter[formatters.size()]);
         }
 
         public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
@@ -908,49 +1292,70 @@ public class DurationFormatterBuilder {
                 printers[i].printTo(out, duration);
             }
         }
+
+        public int parseInto(ReadWritableDuration duration,
+                             String durationStr, int position) {
+            DurationParser[] parsers = iFormatters;
+
+            if (parsers == null) {
+                throw new UnsupportedOperationException();
+            }
+
+            int len = parsers.length;
+            for (int i=0; i<len && position >= 0; i++) {
+                position = parsers[i].parseInto(duration, durationStr, position);
+            }
+            return position;
+        }
     }
 
     private static final class AlternateSelector extends AbstractDurationFormatter
-        implements DurationPrinter
+        implements DurationFormatter
     {
-        private final DurationPrinter iPrimary;
-        private final DurationPrinter iAlternate;
+        private final DurationFormatter iFormatter;
+        private final String iAlternate;
 
-        AlternateSelector(DurationPrinter primary, DurationPrinter alternate) {
-            iPrimary = primary;
+        AlternateSelector(DurationFormatter formatter, String alternate) {
+            iFormatter = formatter;
             iAlternate = alternate;
         }
 
         public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
-            int count = iPrimary.countFieldsToPrint(duration, stopAt);
-            if (count <= 0) {
-                count = iAlternate.countFieldsToPrint(duration, stopAt);
-            }
-            return count;
+            return iFormatter.countFieldsToPrint(duration, stopAt);
         }
 
         public int calculatePrintedLength(ReadableDuration duration) {
-            if (iPrimary.countFieldsToPrint(duration, 1) > 0) {
-                return iPrimary.calculatePrintedLength(duration);
+            if (iFormatter.countFieldsToPrint(duration, 1) > 0) {
+                return iFormatter.calculatePrintedLength(duration);
             } else {
-                return iAlternate.calculatePrintedLength(duration);
+                return iAlternate.length();
             }
         }
 
         public void printTo(StringBuffer buf, ReadableDuration duration) {
-            if (iPrimary.countFieldsToPrint(duration, 1) > 0) {
-                iPrimary.printTo(buf, duration);
+            if (iFormatter.countFieldsToPrint(duration, 1) > 0) {
+                iFormatter.printTo(buf, duration);
             } else {
-                iAlternate.printTo(buf, duration);
+                buf.append(iAlternate);
             }
         }
 
         public void printTo(Writer out, ReadableDuration duration) throws IOException {
-            if (iPrimary.countFieldsToPrint(duration, 1) > 0) {
-                iPrimary.printTo(out, duration);
+            if (iFormatter.countFieldsToPrint(duration, 1) > 0) {
+                iFormatter.printTo(out, duration);
             } else {
-                iAlternate.printTo(out, duration);
+                out.write(iAlternate);
             }
+        }
+
+        public int parseInto(ReadWritableDuration duration,
+                             String durationStr, int position) {
+            String alt = iAlternate;
+            int altLength = alt.length();
+            if (durationStr.regionMatches(true, position, alt, 0, altLength)) {
+                return position + altLength;
+            }
+            return iFormatter.parseInto(duration, durationStr, position);
         }
     }
 

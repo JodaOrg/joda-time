@@ -360,6 +360,13 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(expected, added);
     }
     
+    public void testAddTo3() {
+        long expected = TEST_TIME_NOW;
+        Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
+        long added = test.addTo(TEST_TIME_NOW, 0);
+        assertEquals(expected, added);
+    }
+    
     //-----------------------------------------------------------------------
     public void testAddToWithChronology1() {
         long expected = TEST_TIME_NOW;

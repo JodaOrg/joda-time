@@ -83,7 +83,6 @@ public final class Instant
     /** The millis from 1970-01-01T00:00:00Z */
     private final long iMillis;
 
-    // Constructors
     //-----------------------------------------------------------------------
     /**
      * Constructs an instance set to the current system millisecond time.
@@ -120,6 +119,16 @@ public final class Instant
 
     //-----------------------------------------------------------------------
     /**
+     * Get this object as an Instant by returning <code>this</code>.
+     * 
+     * @return <code>this</code>
+     */
+    public Instant toInstant() {
+        return this;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets a copy of this instant with different millis.
      * <p>
      * The returned object will be either be a new Instant or <code>this</code>.
@@ -131,7 +140,6 @@ public final class Instant
         return (newMillis == iMillis ? this : new Instant(newMillis));
     }
 
-    // Accessors
     //-----------------------------------------------------------------------
     /**
      * Gets the milliseconds of the instant.
@@ -156,7 +164,6 @@ public final class Instant
         return null;
     }
 
-    // Output
     //-----------------------------------------------------------------------
     /**
      * Output the date time in ISO8601 format using the UTC time zone.

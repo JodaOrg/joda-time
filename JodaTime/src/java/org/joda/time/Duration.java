@@ -126,6 +126,17 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
+     * Get this duration as an immutable <code>Duration</code> object
+     * by returning <code>this</code>.
+     * 
+     * @return <code>this</code>
+     */
+    public Duration toDuration() {
+        return this;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Creates a new Duration instance with a different milisecond length.
      * 
      * @param duration  the new length of the duration

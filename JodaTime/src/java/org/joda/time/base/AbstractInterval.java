@@ -315,15 +315,10 @@ public abstract class AbstractInterval implements ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Get this interval as an immutable <code>Interval</code> object.
-     * <p>
-     * This will either typecast this instance, or create a new <code>Interval</code>.
      *
      * @return the interval as an Interval object
      */
     public Interval toInterval() {
-        if (this instanceof Interval) {
-            return (Interval) this;
-        }
         return new Interval(getStartMillis(), getEndMillis());
     }
 

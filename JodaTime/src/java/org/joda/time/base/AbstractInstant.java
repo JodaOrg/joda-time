@@ -98,7 +98,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         super();
     }
 
-    // Accessors
     //-----------------------------------------------------------------------
     /**
      * Gets the time zone of the datetime from the chronology, or null if there
@@ -132,7 +131,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         return field.get(getMillis());
     }
 
-    // Conversion
     //-----------------------------------------------------------------------
     /**
      * Get this object as an Instant.
@@ -140,10 +138,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return an Instant using the same millis
      */
     public Instant toInstant() {
-        if (this instanceof Instant) {
-            return (Instant) this;
-        }
-        return new Instant(this);
+        return new Instant(getMillis());
     }
 
     /**
@@ -152,10 +147,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a DateTime using the same millis
      */
     public DateTime toDateTime() {
-        if (this instanceof DateTime) {
-            return (DateTime) this;
-        }
-        return new DateTime(this);
+        return new DateTime(getMillis());
     }
 
     /**
@@ -165,11 +157,9 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a DateTime using the same millis
      */
     public DateTime toDateTime(DateTimeZone zone) {
-        zone = DateTimeUtils.getZone(zone);
-        if (this instanceof DateTime && getZone() == zone) {
-            return (DateTime) this;
-        }
-        return new DateTime(this, zone);
+        Chronology chrono = DateTimeUtils.getChronology(getChronology());
+        chrono = chrono.withZone(zone);
+        return new DateTime(getMillis(), chrono);
     }
 
     /**
@@ -179,11 +169,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a DateTime using the same millis
      */
     public DateTime toDateTime(Chronology chronology) {
-        chronology = DateTimeUtils.getChronology(chronology);
-        if (this instanceof DateTime && getChronology() == chronology) {
-            return (DateTime) this;
-        }
-        return new DateTime(this, chronology);
+        return new DateTime(getMillis(), chronology);
     }
 
     /**
@@ -228,7 +214,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a MutableDateTime using the same millis
      */
     public MutableDateTime toMutableDateTime() {
-        return new MutableDateTime(this);
+        return new MutableDateTime(getMillis());
     }
 
     /**
@@ -238,7 +224,9 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a MutableDateTime using the same millis
      */
     public MutableDateTime toMutableDateTime(DateTimeZone zone) {
-        return new MutableDateTime(this, zone);
+        Chronology chrono = DateTimeUtils.getChronology(getChronology());
+        chrono = chrono.withZone(zone);
+        return new MutableDateTime(getMillis(), chrono);
     }
 
     /**
@@ -248,9 +236,10 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a MutableDateTime using the same millis
      */
     public MutableDateTime toMutableDateTime(Chronology chronology) {
-        return new MutableDateTime(this, chronology);
+        return new MutableDateTime(getMillis(), chronology);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Get the date time as a <code>java.util.Date</code>.
      * 
@@ -300,7 +289,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         return cal;
     }
 
-    // Basics
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
@@ -482,7 +470,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         return isEqual(instantMillis);
     }
 
-    // Output    
     //-----------------------------------------------------------------------
     /**
      * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).

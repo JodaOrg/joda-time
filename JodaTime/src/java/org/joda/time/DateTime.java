@@ -313,6 +313,44 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Get this object as a DateTime by returning <code>this</code>.
+     * 
+     * @return <code>this</code>
+     */
+    public DateTime toDateTime() {
+        return this;
+    }
+
+    /**
+     * Get this object as a DateTime, returning <code>this</code> if possible.
+     * 
+     * @param zone time zone to apply, or default if null
+     * @return a DateTime using the same millis
+     */
+    public DateTime toDateTime(DateTimeZone zone) {
+        zone = DateTimeUtils.getZone(zone);
+        if (getZone() == zone) {
+            return this;
+        }
+        return super.toDateTime(zone);
+    }
+
+    /**
+     * Get this object as a DateTime, returning <code>this</code> if possible.
+     * 
+     * @param chronology chronology to apply, or ISOChronology if null
+     * @return a DateTime using the same millis
+     */
+    public DateTime toDateTime(Chronology chronology) {
+        chronology = DateTimeUtils.getChronology(chronology);
+        if (getChronology() == chronology) {
+            return this;
+        }
+        return super.toDateTime(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets a copy of this datetime with different millis.
      * <p>
      * The returned object will be a new instance of the same implementation type.

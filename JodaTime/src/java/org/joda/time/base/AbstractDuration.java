@@ -84,15 +84,10 @@ public abstract class AbstractDuration implements ReadableDuration {
     //-----------------------------------------------------------------------
     /**
      * Get this duration as an immutable <code>Duration</code> object.
-     * <p>
-     * This will either typecast this instance, or create a new <code>Duration</code>.
      * 
      * @return a Duration created using the millisecond duration from this instance
      */
     public Duration toDuration() {
-        if (this instanceof Duration) {
-            return (Duration) this;
-        }
         return new Duration(getMillis());
     }
 

@@ -176,6 +176,17 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
+     * Get this interval as an immutable <code>Interval</code> object
+     * by returning <code>this</code>.
+     *
+     * @return <code>this</code>
+     */
+    public Interval toInterval() {
+        return this;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Creates a new interval with the specified start millisecond instant.
      *
      * @param startInstant  the start instant for the new interval

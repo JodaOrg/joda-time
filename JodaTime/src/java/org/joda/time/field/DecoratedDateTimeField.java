@@ -73,9 +73,10 @@ import org.joda.time.DurationField;
  * @since 1.0
  * @see DelegatedDateTimeField
  */
-public class DecoratedDateTimeField extends AbstractDateTimeField {
+public abstract class DecoratedDateTimeField extends AbstractDateTimeField {
 
-    static final long serialVersionUID = 203115783733757597L;
+    /** Serialization version */
+    private static final long serialVersionUID = 203115783733757597L;
 
     /** The DateTimeField being wrapped */
     private final DateTimeField iField;
@@ -83,7 +84,7 @@ public class DecoratedDateTimeField extends AbstractDateTimeField {
     /**
      * @param name allow name to be overridden
      */
-    public DecoratedDateTimeField(DateTimeField field, String name) {
+    protected DecoratedDateTimeField(DateTimeField field, String name) {
         super(name);
         if (field == null) {
             throw new IllegalArgumentException("The field must not be null");

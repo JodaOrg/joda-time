@@ -128,6 +128,20 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
+     * Checks if the field type specified is supported by this instant and chronology.
+     * This can be used to avoid exceptions in {@link #get(DateTimeFieldType)}.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @return true if the field type is supported
+     */
+    public boolean isSupported(DateTimeFieldType type) {
+        if (type == null) {
+            return false;
+        }
+        return type.getField(getChronology()).isSupported();
+    }
+
+    /**
      * Get the value of one of the fields of a datetime.
      * <p>
      * This could be used to get a field using a different Chronology.

@@ -105,6 +105,14 @@ public interface ReadableInstant extends Comparable {
      */
     int get(DateTimeFieldType type);
 
+    /**
+     * Checks whether the field type specified is supported by this implementation.
+     *
+     * @param field  the field type to check, may be null which returns false
+     * @return true if the field is supported
+     */
+    boolean isSupported(DateTimeFieldType field);
+
     //-----------------------------------------------------------------------
     /**
      * Get the value as a simple immutable <code>Instant</code> object.

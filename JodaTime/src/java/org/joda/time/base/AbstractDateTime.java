@@ -290,12 +290,7 @@ public abstract class AbstractDateTime
             locale = Locale.getDefault();
         }
         DateTimeZone zone = getZone();
-        Calendar cal;
-        if (zone == null) {
-            cal = Calendar.getInstance(locale);
-        } else {
-            cal = Calendar.getInstance(zone.toTimeZone(), locale);
-        }
+        Calendar cal = Calendar.getInstance(zone.toTimeZone(), locale);
         cal.setTime(toDate());
         return cal;
     }
@@ -307,12 +302,7 @@ public abstract class AbstractDateTime
      */
     public GregorianCalendar toGregorianCalendar() {
         DateTimeZone zone = getZone();
-        GregorianCalendar cal;
-        if (zone == null) {
-            cal = new GregorianCalendar();
-        } else {
-            cal = new GregorianCalendar(zone.toTimeZone());
-        }
+        GregorianCalendar cal = new GregorianCalendar(zone.toTimeZone());
         cal.setTime(toDate());
         return cal;
     }

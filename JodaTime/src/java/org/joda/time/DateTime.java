@@ -736,12 +736,30 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Get this object as a DateMidnight using the same millis and chronology.
+     * Converts this object to a DateMidnight using the same millis and chronology.
      * 
      * @return a DateMidnight using the same millis and chronology
      */
     public DateMidnight toDateMidnight() {
         return new DateMidnight(getMillis(), getChronology());
+    }
+
+    /**
+     * Converts this object to a YearMonthDay using the same millis and chronology.
+     * 
+     * @return a YearMonthDay using the same millis and chronology
+     */
+    public YearMonthDay toYearMonthDay() {
+        return new YearMonthDay(getMillis(), getChronology());
+    }
+
+    /**
+     * Converts this object to a TimeOfDay using the same millis and chronology.
+     * 
+     * @return a TimeOfDay using the same millis and chronology
+     */
+    public TimeOfDay toTimeOfDay() {
+        return new TimeOfDay(getMillis(), getChronology());
     }
 
     // Date properties

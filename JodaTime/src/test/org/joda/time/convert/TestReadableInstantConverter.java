@@ -64,6 +64,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
+import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
@@ -141,6 +142,13 @@ public class TestReadableInstantConverter extends TestCase {
     public void testGetChronology_Object() throws Exception {
         assertEquals(ISO.withUTC(), ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L)));
         assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L)));
+        
+        MutableDateTime mdt = new MutableDateTime() {
+            public Chronology getChronology() {
+                return null; // bad
+            }
+        };
+        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(mdt));
     }
 
     public void testGetChronology_Object_Zone() throws Exception {
@@ -152,6 +160,13 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), (DateTimeZone) null));
         
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L, new MockBadChronology()), PARIS));
+        
+        MutableDateTime mdt = new MutableDateTime() {
+            public Chronology getChronology() {
+                return null; // bad
+            }
+        };
+        assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(mdt, PARIS));
     }
 
     public void testGetChronology_Object_Chronology() throws Exception {

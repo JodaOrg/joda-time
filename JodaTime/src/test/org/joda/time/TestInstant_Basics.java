@@ -515,6 +515,84 @@ public class TestInstant_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_long_int() {
+        Instant test = new Instant(TEST_TIME1);
+        Instant result = test.withDurationAdded(123456789L, 1);
+        Instant expected = new Instant(TEST_TIME1 + 123456789L);
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(123456789L, 0);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(123456789L, 2);
+        expected = new Instant(TEST_TIME1 + (2L * 123456789L));
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(123456789L, -3);
+        expected = new Instant(TEST_TIME1 - (3L * 123456789L));
+        assertEquals(expected, result);
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_RD_int() {
+        Instant test = new Instant(TEST_TIME1);
+        Instant result = test.withDurationAdded(new Duration(123456789L), 1);
+        Instant expected = new Instant(TEST_TIME1 + 123456789L);
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(null, 1);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), 0);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), 2);
+        expected = new Instant(TEST_TIME1 + (2L * 123456789L));
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), -3);
+        expected = new Instant(TEST_TIME1 - (3L * 123456789L));
+        assertEquals(expected, result);
+    }
+    
+    //-----------------------------------------------------------------------    
+    public void testPlus_long() {
+        Instant test = new Instant(TEST_TIME1);
+        Instant result = test.plus(123456789L);
+        Instant expected = new Instant(TEST_TIME1 + 123456789L);
+        assertEquals(expected, result);
+    }
+    
+    public void testPlus_RD() {
+        Instant test = new Instant(TEST_TIME1);
+        Instant result = test.plus(new Duration(123456789L));
+        Instant expected = new Instant(TEST_TIME1 + 123456789L);
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadableDuration) null);
+        assertSame(test, result);
+    }
+    
+    //-----------------------------------------------------------------------    
+    public void testMinus_long() {
+        Instant test = new Instant(TEST_TIME1);
+        Instant result = test.minus(123456789L);
+        Instant expected = new Instant(TEST_TIME1 - 123456789L);
+        assertEquals(expected, result);
+    }
+    
+    public void testMinus_RD() {
+        Instant test = new Instant(TEST_TIME1);
+        Instant result = test.minus(new Duration(123456789L));
+        Instant expected = new Instant(TEST_TIME1 - 123456789L);
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadableDuration) null);
+        assertSame(test, result);
+    }
+    
+    //-----------------------------------------------------------------------
     public void testImmutable() {
         assertTrue(Modifier.isFinal(Instant.class.getModifiers()));
     }

@@ -78,19 +78,19 @@ public interface ReadableInstant extends Comparable {
     long getMillis();
 
     /**
-     * Gets the chronology of the instant, null if not applicable.
+     * Gets the chronology of the instant.
      * <p>
      * The {@link Chronology} provides conversion from the millisecond
      * value to meaningful fields in a particular calendar system.
      * 
-     * @return the Chronology, null if not applicable
+     * @return the Chronology, never null
      */
     Chronology getChronology();
 
     /**
-     * Gets the time zone of the instant, null if not applicable.
+     * Gets the time zone of the instant from the chronology.
      * 
-     * @return the DateTimeZone, null if not applicable
+     * @return the DateTimeZone that the instant is using, never null
      */
     DateTimeZone getZone();
 
@@ -185,7 +185,7 @@ public interface ReadableInstant extends Comparable {
      * The formula used must be as follows:
      * <pre>
      * ((int) (getMillis() ^ (getMillis() >>> 32))) +
-     * (getChronology() == null ? 0 : getChronology().hashCode())
+     * (getChronology().hashCode())
      * </pre>
      *
      * @return a hash code as defined above

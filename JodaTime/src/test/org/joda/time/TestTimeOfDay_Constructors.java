@@ -134,6 +134,43 @@ public class TestTimeOfDay_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     /**
+     * Test factory (long)
+     */
+    public void testFactoryMillisOfDay_long1() throws Throwable {
+        TimeOfDay test = TimeOfDay.fromMillisOfDay(TEST_TIME1);
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(1, test.getHourOfDay());
+        assertEquals(2, test.getMinuteOfHour());
+        assertEquals(3, test.getSecondOfMinute());
+        assertEquals(4, test.getMillisOfSecond());
+    }
+
+    /**
+     * Test factory (long, Chronology)
+     */
+    public void testFactoryMillisOfDay_long1_Chronology() throws Throwable {
+        TimeOfDay test = TimeOfDay.fromMillisOfDay(TEST_TIME1, JulianChronology.getInstance());
+        assertEquals(JulianChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(1, test.getHourOfDay());
+        assertEquals(2, test.getMinuteOfHour());
+        assertEquals(3, test.getSecondOfMinute());
+        assertEquals(4, test.getMillisOfSecond());
+    }
+
+    /**
+     * Test factory (long, Chronology=null)
+     */
+    public void testFactoryMillisOfDay_long_nullChronology() throws Throwable {
+        TimeOfDay test = TimeOfDay.fromMillisOfDay(TEST_TIME1, null);
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
+        assertEquals(1, test.getHourOfDay());
+        assertEquals(2, test.getMinuteOfHour());
+        assertEquals(3, test.getSecondOfMinute());
+        assertEquals(4, test.getMillisOfSecond());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Test constructor ()
      */
     public void testConstructor() throws Throwable {

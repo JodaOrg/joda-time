@@ -71,6 +71,7 @@ import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.UnsupportedDateTimeField;
 
 /**
  * This class is a Junit unit test for DateTime.
@@ -661,6 +662,25 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToDateMidnight() {
+        DateTime base = new DateTime(TEST_TIME1, Chronology.getCoptic());
+        DateMidnight test = base.toDateMidnight();
+        assertEquals(new DateMidnight(base, Chronology.getCoptic()), test);
+    }
+
+    public void testToYearMonthDay() {
+        DateTime base = new DateTime(TEST_TIME1, Chronology.getCoptic());
+        YearMonthDay test = base.toYearMonthDay();
+        assertEquals(new YearMonthDay(TEST_TIME1, Chronology.getCoptic()), test);
+    }
+
+    public void testToTimeOfDay() {
+        DateTime base = new DateTime(TEST_TIME1, Chronology.getCoptic());
+        TimeOfDay test = base.toTimeOfDay();
+        assertEquals(new TimeOfDay(TEST_TIME1, Chronology.getCoptic()), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testWithMillis_long() {
         DateTime test = new DateTime(TEST_TIME1);
         DateTime result = test.withMillis(TEST_TIME2);
@@ -924,5 +944,29 @@ public class TestDateTime_Basics extends TestCase {
         result = test.minus((ReadablePeriod) null);
         assertSame(test, result);
     }
-    
+
+    //-----------------------------------------------------------------------
+    public void testProperty() {
+        DateTime test = new DateTime();
+        assertEquals(test.year(), test.property(DateTimeFieldType.year()));
+        assertEquals(test.dayOfWeek(), test.property(DateTimeFieldType.dayOfWeek()));
+        assertEquals(test.secondOfMinute(), test.property(DateTimeFieldType.secondOfMinute()));
+        assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
+        DateTimeFieldType bad = new DateTimeFieldType("bad") {
+            public DurationFieldType getDurationType() {
+                return DurationFieldType.weeks();
+            }
+            public DurationFieldType getRangeDurationType() {
+                return null;
+            }
+            public DateTimeField getField(Chronology chronology) {
+                return UnsupportedDateTimeField.getInstance(this, null);
+            }
+        };
+        try {
+            test.property(bad);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
 }

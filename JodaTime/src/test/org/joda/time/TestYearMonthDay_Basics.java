@@ -438,6 +438,38 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToInterval() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
+        Interval test = base.toInterval();
+        check(base, 2005, 6, 9);
+        DateTime start = base.toDateTime(TimeOfDay.MIDNIGHT);
+        DateTime end = start.plus(Period.days(1));
+        Interval expected = new Interval(start, end);
+        assertEquals(expected, test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToInterval_Zone() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
+        Interval test = base.toInterval(TOKYO);
+        check(base, 2005, 6, 9);
+        DateTime start = base.toDateTime(TimeOfDay.MIDNIGHT, TOKYO);
+        DateTime end = start.plus(Period.days(1));
+        Interval expected = new Interval(start, end);
+        assertEquals(expected, test);
+    }
+
+    public void testToInterval_nullZone() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
+        Interval test = base.toInterval(null);
+        check(base, 2005, 6, 9);
+        DateTime start = base.toDateTime(TimeOfDay.MIDNIGHT, LONDON);
+        DateTime end = start.plus(Period.days(1));
+        Interval expected = new Interval(start, end);
+        assertEquals(expected, test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testProperty() {
         YearMonthDay test = new YearMonthDay(2005, 6, 9);
         assertEquals(test.year(), test.property(DateTimeFieldType.year()));

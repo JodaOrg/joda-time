@@ -97,14 +97,12 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the time zone of the datetime from the chronology, or null if there
-     * isn't any chronology.
+     * Gets the time zone of the instant from the chronology.
      * 
-     * @return the DateTimeZone that the datetime is using
+     * @return the DateTimeZone that the instant is using, never null
      */
     public DateTimeZone getZone() {
-        Chronology chrono = getChronology();
-        return (chrono != null ? chrono.getZone() : null);
+        return getChronology().getZone();
     }
 
     /**
@@ -276,7 +274,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         // must be to fulfil ReadableInstant contract
         return
             ((int) (getMillis() ^ (getMillis() >>> 32))) +
-            (getChronology() == null ? 0 : getChronology().hashCode());
+            (getChronology().hashCode());
     }
 
     /**

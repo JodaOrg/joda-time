@@ -308,6 +308,31 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetIntervalChronology_RInterval() {
+        Interval dt = new Interval(123L, 456L, Chronology.getBuddhist());
+        assertEquals(Chronology.getBuddhist(), DateTimeUtils.getIntervalChronology(dt));
+        
+        assertEquals(Chronology.getISO(), DateTimeUtils.getIntervalChronology(null));
+        
+        MutableInterval ai = new MutableInterval() {
+            public Chronology getChronology() {
+                return null; // testing for this
+            }
+        };
+        assertEquals(Chronology.getISO(), DateTimeUtils.getIntervalChronology(ai));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetIntervalChronology_RI_RI() {
+        DateTime dt1 = new DateTime(123L, Chronology.getBuddhist());
+        DateTime dt2 = new DateTime(123L, Chronology.getCoptic());
+        assertEquals(Chronology.getBuddhist(), DateTimeUtils.getIntervalChronology(dt1, dt2));
+        assertEquals(Chronology.getBuddhist(), DateTimeUtils.getIntervalChronology(dt1, null));
+        assertEquals(Chronology.getCoptic(), DateTimeUtils.getIntervalChronology(null, dt2));
+        assertEquals(Chronology.getISO(), DateTimeUtils.getIntervalChronology(null, null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testGetChronology_Chronology() {
         assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getChronology(BuddhistChronology.getInstance()));
         assertEquals(ISOChronology.getInstance(), DateTimeUtils.getChronology(null));

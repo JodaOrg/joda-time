@@ -487,6 +487,19 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testWithChronology1() {
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withChronology(Chronology.getBuddhist());
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME2, Chronology.getBuddhist()), test);
+    }
+
+    public void testWithChronology2() {
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withChronology(null);
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME2, Chronology.getISO()), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testWithStartMillis_long1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withStartMillis(TEST_TIME1 - 1);
@@ -595,6 +608,13 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testWithDurationAfterStart4() throws Throwable {
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withDurationAfterStart(base.toDuration());
+        
+        assertSame(base, test);
+    }
+
     //-----------------------------------------------------------------------
     public void testWithDurationBeforeEnd1() throws Throwable {
         Duration dur = new Duration(TEST_TIME_NOW - TEST_TIME1);
@@ -618,6 +638,13 @@ public class TestInterval_Basics extends TestCase {
             base.withDurationBeforeEnd(dur);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithDurationBeforeEnd4() throws Throwable {
+        Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withDurationBeforeEnd(base.toDuration());
+        
+        assertSame(base, test);
     }
 
     //-----------------------------------------------------------------------

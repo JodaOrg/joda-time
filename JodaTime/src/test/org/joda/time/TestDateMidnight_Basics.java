@@ -67,8 +67,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInstant;
+import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.UnsupportedDateTimeField;
 
 /**
  * This class is a Junit unit test for DateMidnight.
@@ -625,6 +627,20 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToYearMonthDay() {
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, Chronology.getCoptic());
+        YearMonthDay test = base.toYearMonthDay();
+        assertEquals(new YearMonthDay(TEST_TIME1_UTC, Chronology.getCoptic()), test);
+    }
+
+    public void testToInterval() {
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, Chronology.getCoptic());
+        Interval test = base.toInterval();
+        DateMidnight end = base.plus(Period.days(1));
+        assertEquals(new Interval(base, end), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testWithMillis_long() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
         DateMidnight result = test.withMillis(TEST_TIME2_UTC);
@@ -690,5 +706,190 @@ public class TestDateMidnight_Basics extends TestCase {
         result = test.withZoneRetainFields(LONDON);
         assertSame(test, result);
     }
+
+    //-----------------------------------------------------------------------
+    public void testWithFields_RPartial() {
+        DateMidnight test = new DateMidnight(2004, 5, 6);
+        DateMidnight result = test.withFields(new YearMonthDay(2003, 4, 5));
+        DateMidnight expected = new DateMidnight(2003, 4, 5);
+        assertEquals(expected, result);
+        
+        test = new DateMidnight(TEST_TIME1_UTC);
+        result = test.withFields(null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithField1() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight result = test.withField(DateTimeFieldType.year(), 2006);
+        
+        assertEquals(new DateMidnight(2004, 6, 9), test);
+        assertEquals(new DateMidnight(2006, 6, 9), result);
+    }
+
+    public void testWithField2() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight result = test.withField(null, 6);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithFieldAdded1() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight result = test.withFieldAdded(DurationFieldType.years(), 6);
+        
+        assertEquals(new DateMidnight(2004, 6, 9), test);
+        assertEquals(new DateMidnight(2010, 6, 9), result);
+    }
+
+    public void testWithFieldAdded2() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight result = test.withFieldAdded(null, 6);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_long_int() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight result = test.withDurationAdded(123456789L, 1);
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(123456789L, 0);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(123456789L, 2);
+        expected = new DateMidnight(test.getMillis() + (2L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(123456789L, -3);
+        expected = new DateMidnight(test.getMillis() - (3L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
     
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_RD_int() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight result = test.withDurationAdded(new Duration(123456789L), 1);
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(null, 1);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), 0);
+        assertSame(test, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), 2);
+        expected = new DateMidnight(test.getMillis() + (2L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withDurationAdded(new Duration(123456789L), -3);
+        expected = new DateMidnight(test.getMillis() - (3L * 123456789L), BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationAdded_RP_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 1);
+        DateMidnight expected = new DateMidnight(2003, 7, 28, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withPeriodAdded(null, 1);
+        assertSame(test, result);
+        
+        result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 0);
+        assertSame(test, result);
+        
+        result = test.withPeriodAdded(new Period(1, 2, 0, 4, 5, 6, 7, 8), 3);
+        expected = new DateMidnight(2005, 11, 15, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.withPeriodAdded(new Period(1, 2, 0, 1, 1, 2, 3, 4), -1);
+        expected = new DateMidnight(2001, 3, 1, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    //-----------------------------------------------------------------------    
+    public void testPlus_long() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight result = test.plus(123456789L);
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+    
+    public void testPlus_RD() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight result = test.plus(new Duration(123456789L));
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadableDuration) null);
+        assertSame(test, result);
+    }
+
+    public void testPlus_RP() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
+        DateMidnight expected = new DateMidnight(2003, 7, 28, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------    
+    public void testMinus_long() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight result = test.minus(123456789L);
+        DateMidnight expected = new DateMidnight(test.getMillis() - 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testMinus_RD() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight result = test.minus(new Duration(123456789L));
+        DateMidnight expected = new DateMidnight(test.getMillis() - 123456789L, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadableDuration) null);
+        assertSame(test, result);
+    }
+
+    public void testMinus_RP() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
+        DateMidnight expected = new DateMidnight(2001, 3, 25, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testProperty() {
+        DateMidnight test = new DateMidnight();
+        assertEquals(test.year(), test.property(DateTimeFieldType.year()));
+        assertEquals(test.dayOfWeek(), test.property(DateTimeFieldType.dayOfWeek()));
+        assertEquals(test.weekOfWeekyear(), test.property(DateTimeFieldType.weekOfWeekyear()));
+        assertEquals(test.property(DateTimeFieldType.millisOfSecond()), test.property(DateTimeFieldType.millisOfSecond()));
+        DateTimeFieldType bad = new DateTimeFieldType("bad") {
+            public DurationFieldType getDurationType() {
+                return DurationFieldType.weeks();
+            }
+            public DurationFieldType getRangeDurationType() {
+                return null;
+            }
+            public DateTimeField getField(Chronology chronology) {
+                return UnsupportedDateTimeField.getInstance(this, null);
+            }
+        };
+        try {
+            test.property(bad);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
 }

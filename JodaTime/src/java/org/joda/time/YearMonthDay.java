@@ -362,6 +362,7 @@ public final class YearMonthDay
         return new DateMidnight(getYear(), getMonthOfYear(), getDayOfMonth(), chrono);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Converts this object to a DateTime using a TimeOfDay to fill in the
      * missing fields and using the default time zone.
@@ -399,6 +400,29 @@ public final class YearMonthDay
             instant = chrono.set(time, instant);
         }
         return new DateTime(instant, chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this object to an Interval representing the whole day
+     * in the default time zone.
+     *
+     * @return the DateMidnight instance in the default zone
+     */
+    public Interval toInterval() {
+        return toInterval(null);
+    }
+
+    /**
+     * Converts this object to an Interval representing the whole day.
+     *
+     * @param zone  the zone to get the Interval in, null means default
+     * @return the DateMidnight instance
+     */
+    public Interval toInterval(DateTimeZone zone) {
+        zone = DateTimeUtils.getZone(zone);
+        DateMidnight start = toDateMidnight(zone);
+        return new Interval(start, start.plus(Period.days(1)));
     }
 
     //-----------------------------------------------------------------------

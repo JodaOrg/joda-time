@@ -603,6 +603,28 @@ public final class DateMidnight
         return new Property(this, field);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this object to a YearMonthDay using the same millis and chronology.
+     * 
+     * @return a YearMonthDay using the same millis and chronology
+     */
+    public YearMonthDay toYearMonthDay() {
+        return new YearMonthDay(getMillis(), getChronology());
+    }
+
+    /**
+     * Converts this object to an Interval encompassing the whole of this day.
+     * <p>
+     * The interval starts at midnight 00:00 and ends at 00:00 the following day,
+     * (which is not included in the interval, as intervals are half-open).
+     * 
+     * @return a YearMonthDay using the same millis and chronology
+     */
+    public Interval toInterval() {
+        return new Interval(this, Period.days(1));
+    }
+
     // Date properties
     //-----------------------------------------------------------------------
     /**

@@ -58,9 +58,6 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.MockZeroNullIntegerConverter;
-
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
@@ -230,22 +227,6 @@ public class TestYearMonthDay_Constructors extends TestCase {
     }
 
     /**
-     * Test constructor (Object=null)
-     */
-    public void testConstructor_badconverterObject() throws Throwable {
-        try {
-            ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            YearMonthDay test = new YearMonthDay(new Integer(0));
-            assertEquals(ISO_UTC, test.getChronology());
-            assertEquals(1970, test.getYear());
-            assertEquals(1, test.getMonthOfYear());
-            assertEquals(1, test.getDayOfMonth());
-        } finally {
-            ConverterManager.getInstance().removeInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-        }
-    }
-
-    /**
      * Test constructor (Object, Chronology)
      */
     public void testConstructor_Object_Chronology() throws Throwable {
@@ -289,22 +270,6 @@ public class TestYearMonthDay_Constructors extends TestCase {
         assertEquals(1970, test.getYear());
         assertEquals(6, test.getMonthOfYear());
         assertEquals(9, test.getDayOfMonth());
-    }
-
-    /**
-     * Test constructor (Object=null)
-     */
-    public void testConstructor_badconverterObject_Chronology() throws Throwable {
-        try {
-            ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            YearMonthDay test = new YearMonthDay(new Integer(0), GREGORIAN_PARIS);
-            assertEquals(ISO_UTC, test.getChronology());
-            assertEquals(1970, test.getYear());
-            assertEquals(1, test.getMonthOfYear());
-            assertEquals(1, test.getDayOfMonth());
-        } finally {
-            ConverterManager.getInstance().removeInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-        }
     }
 
     //-----------------------------------------------------------------------

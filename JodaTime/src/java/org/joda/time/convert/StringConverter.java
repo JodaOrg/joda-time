@@ -68,14 +68,15 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodParser;
 
 /**
- * StringConverter converts a String to milliseconds in the ISOChronology.
+ * StringConverter converts from a String to an instant, partial,
+ * duration, period or interval..
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
 class StringConverter extends AbstractConverter
-        implements InstantConverter, DurationConverter, PeriodConverter, IntervalConverter {
+        implements InstantConverter, PartialConverter, DurationConverter, PeriodConverter, IntervalConverter {
 
     /**
      * Singleton instance.

@@ -62,7 +62,7 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.InstantConverter;
+import org.joda.time.convert.PartialConverter;
 
 /**
  * BasePartial is an abstract implementation of ReadablePartial that stores
@@ -149,26 +149,6 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a partial from an Object that represents a time.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  the datetime object, must not be null
-     * @throws IllegalArgumentException if the date is null
-     */
-    protected BasePartial(Object instant) {
-        super();
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        long millis = converter.getInstantMillis(instant);
-        Chronology chronology = converter.getChronology(instant);
-        chronology = DateTimeUtils.getChronology(chronology);
-        iChronology = chronology.withUTC();
-        iValues = chronology.get(this, millis);
-    }
-
-    /**
      * Constructs a partial from an Object that represents a time, using the
      * specified chronology.
      * <p>
@@ -180,18 +160,17 @@ public abstract class BasePartial
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
      *
-     * @param instant  the datetime object, must not be null
-     * @param chronology  the chronology, null means ISOChronology
-     * @throws IllegalArgumentException if the date is null
+     * @param instant  the datetime object, null means use converter
+     * @param chronology  the chronology, null means use converter
+     * @throws IllegalArgumentException if the date is invalid
      */
     protected BasePartial(Object instant, Chronology chronology) {
         super();
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        long millis = converter.getInstantMillis(instant, chronology);
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         chronology = converter.getChronology(instant, chronology);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iValues = chronology.get(this, millis);
+        iValues = converter.getPartialValues(this, instant, chronology);
     }
 
     /**
@@ -205,6 +184,7 @@ public abstract class BasePartial
      *
      * @param values  the new set of values
      * @param chronology  the chronology, null means ISOChronology in the default zone
+     * @throws IllegalArgumentException if the values are invalid
      */
     protected BasePartial(int[] values, Chronology chronology) {
         super();

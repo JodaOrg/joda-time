@@ -65,19 +65,21 @@ import org.joda.time.chrono.JulianChronology;
 import org.joda.time.chrono.ISOChronology;
 
 /**
- * CalendarConverter converts a java util Calendar to milliseconds in the
- * chronology that best matches the calendar.
+ * CalendarConverter converts a java util Calendar to an instant or partial.
+ * The Calendar is converted to milliseconds and the chronology that best
+ * matches the calendar.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
-final class CalendarConverter extends AbstractConverter implements InstantConverter {
-    
+final class CalendarConverter extends AbstractConverter
+        implements InstantConverter, PartialConverter {
+
     /**
      * Singleton instance.
      */
     static final CalendarConverter INSTANCE = new CalendarConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -95,7 +97,7 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
     public long getInstantMillis(Object object) {
         return ((Calendar) object).getTime().getTime();
     }
-    
+
     /**
      * Gets the chronology, which is the GJChronology if a GregorianCalendar is used,
      * BuddhistChronology if a BuddhistCalendar is used or ISOChronology otherwise.
@@ -115,7 +117,7 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
         }
         return getChronology(cal, zone);
     }
-    
+
     /**
      * Gets the chronology, which is the GJChronology if a GregorianCalendar is used,
      * BuddhistChronology if a BuddhistCalendar is used or ISOChronology otherwise.
@@ -142,7 +144,7 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
             return ISOChronology.getInstance(zone);
         }
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Returns Calendar.class.
@@ -152,5 +154,5 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
     public Class getSupportedType() {
         return Calendar.class;
     }
-    
+
 }

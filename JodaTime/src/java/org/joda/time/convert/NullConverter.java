@@ -60,14 +60,16 @@ import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
 
 /**
- * NullConverter converts null to milliseconds (now) in the ISOChronology.
+ * NullConverter converts null to an instant, partial, duration, period
+ * or interval. Null means now for instant/partial, zero for duration/period
+ * and from now to now for interval.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
 class NullConverter extends AbstractConverter
-        implements InstantConverter, DurationConverter, PeriodConverter, IntervalConverter {
+        implements InstantConverter, PartialConverter, DurationConverter, PeriodConverter, IntervalConverter {
     
     /**
      * Singleton instance.

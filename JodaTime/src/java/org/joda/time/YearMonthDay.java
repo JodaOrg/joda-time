@@ -172,12 +172,14 @@ public final class YearMonthDay
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * <p>
+     * The chronology used will be derived from the object, defaulting to ISO.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonthDay(Object instant) {
-        super(instant);
+        super(instant, null);
     }
 
     /**
@@ -191,13 +193,14 @@ public final class YearMonthDay
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
+     * The specified chronology overrides that of the object.
      *
      * @param instant  the datetime object, null means now
-     * @param chronology  the chronology, null means ISOChronology
+     * @param chronology  the chronology, null means ISO default
      * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonthDay(Object instant, Chronology chronology) {
-        super(instant, chronology);
+        super(instant, DateTimeUtils.getChronology(chronology));
     }
 
     /**

@@ -77,6 +77,17 @@ import org.joda.time.JodaTimePermission;
  * <li>null (now)
  * </ul>
  * 
+ * The default partial converters are:
+ * <ul>
+ * <li>ReadablePartial
+ * <li>ReadableInstant
+ * <li>String
+ * <li>Calendar
+ * <li>Date
+ * <li>Long (milliseconds)
+ * <li>null (now)
+ * </ul>
+ * 
  * The default duration converters are:
  * <ul>
  * <li>ReadableDuration
@@ -120,6 +131,7 @@ public final class ConverterManager {
     }
     
     private ConverterSet iInstantConverters;
+    private ConverterSet iPartialConverters;
     private ConverterSet iDurationConverters;
     private ConverterSet iPeriodConverters;
     private ConverterSet iIntervalConverters;
@@ -131,6 +143,15 @@ public final class ConverterManager {
         super();
 
         iInstantConverters = new ConverterSet(new Converter[] {
+            ReadableInstantConverter.INSTANCE,
+            StringConverter.INSTANCE,
+            CalendarConverter.INSTANCE,
+            DateConverter.INSTANCE,
+            LongConverter.INSTANCE,
+            NullConverter.INSTANCE,
+        });
+
+        iPartialConverters = new ConverterSet(new Converter[] {
             ReadableInstantConverter.INSTANCE,
             StringConverter.INSTANCE,
             CalendarConverter.INSTANCE,
@@ -259,6 +280,93 @@ public final class ConverterManager {
      * @throws IllegalStateException if multiple converters match the type
      * equally well
      */
+    public PartialConverter getPartialConverter(Object object) {
+        PartialConverter converter =
+            (PartialConverter)iPartialConverters.select(object == null ? null : object.getClass());
+        if (converter != null) {
+            return converter;
+        }
+        throw new IllegalArgumentException("No partial converter found for type: " +
+            (object == null ? "null" : object.getClass().getName()));
+    }
+    
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of the set of converters.
+     * 
+     * @return the converters, a copy of the real data, never null
+     */
+    public PartialConverter[] getPartialConverters() {
+        ConverterSet set = iPartialConverters;
+        PartialConverter[] converters = new PartialConverter[set.size()];
+        set.copyInto(converters);
+        return converters;
+    }
+    
+    /**
+     * Adds a converter to the set of converters. If a matching converter is
+     * already in the set, the given converter replaces it. If the converter is
+     * exactly the same as one already in the set, no changes are made.
+     * <p>
+     * The order in which converters are added is not relevent. The best
+     * converter is selected by examining the object hierarchy.
+     * 
+     * @param converter  the converter to add, null ignored
+     * @return replaced converter, or null
+     */
+    public PartialConverter addPartialConverter(PartialConverter converter)
+            throws SecurityException {
+        
+        checkAlterPartialConverters();
+        if (converter == null) {
+            return null;
+        }
+        PartialConverter[] removed = new PartialConverter[1];
+        iPartialConverters = iPartialConverters.add(converter, removed);
+        return removed[0];
+    }
+    
+    /**
+     * Removes a converter from the set of converters. If the converter was
+     * not in the set, no changes are made.
+     * 
+     * @param converter  the converter to remove, null ignored
+     * @return replaced converter, or null
+     */
+    public PartialConverter removePartialConverter(PartialConverter converter)
+            throws SecurityException {
+        
+        checkAlterPartialConverters();
+        if (converter == null) {
+            return null;
+        }
+        PartialConverter[] removed = new PartialConverter[1];
+        iPartialConverters = iPartialConverters.remove(converter, removed);
+        return removed[0];
+    }
+    
+    /**
+     * Checks whether the user has permission 'ConverterManager.alterPartialConverters'.
+     * 
+     * @throws SecurityException if the user does not have the permission
+     */
+    private void checkAlterPartialConverters() throws SecurityException {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPartialConverters"));
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the best converter for the object specified.
+     * 
+     * @param object  the object to convert
+     * @return the converter to use
+     * @throws IllegalArgumentException if no suitable converter
+     * @throws IllegalStateException if multiple converters match the type
+     * equally well
+     */
     public DurationConverter getDurationConverter(Object object) {
         DurationConverter converter =
             (DurationConverter)iDurationConverters.select(object == null ? null : object.getClass());
@@ -325,7 +433,7 @@ public final class ConverterManager {
     }
     
     /**
-     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
+     * Checks whether the user has permission 'ConverterManager.alterDurationConverters'.
      * 
      * @throws SecurityException if the user does not have the permission
      */
@@ -412,7 +520,7 @@ public final class ConverterManager {
     }
     
     /**
-     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
+     * Checks whether the user has permission 'ConverterManager.alterPeriodConverters'.
      * 
      * @throws SecurityException if the user does not have the permission
      */
@@ -499,7 +607,7 @@ public final class ConverterManager {
     }
     
     /**
-     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
+     * Checks whether the user has permission 'ConverterManager.alterIntervalConverters'.
      * 
      * @throws SecurityException if the user does not have the permission
      */
@@ -517,6 +625,7 @@ public final class ConverterManager {
     public String toString() {
         return "ConverterManager[" +
             iInstantConverters.size() + " instant," +
+            iPartialConverters.size() + " partial," +
             iDurationConverters.size() + " duration," +
             iPeriodConverters.size() + " period," +
             iIntervalConverters.size() + " interval]";

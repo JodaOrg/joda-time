@@ -60,8 +60,6 @@ import junit.framework.TestSuite;
 
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.MockZeroNullIntegerConverter;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
@@ -293,23 +291,6 @@ public class TestTimeOfDay_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
-    /**
-     * Test constructor (Object=null)
-     */
-    public void testConstructor_badconverterObject() throws Throwable {
-        try {
-            ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            TimeOfDay test = new TimeOfDay(new Integer(0));
-            assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
-            assertEquals(0 + OFFSET, test.getHourOfDay());
-            assertEquals(0, test.getMinuteOfHour());
-            assertEquals(0, test.getSecondOfMinute());
-            assertEquals(0, test.getMillisOfSecond());
-        } finally {
-            ConverterManager.getInstance().removeInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-        }
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Test constructor (Object, Chronology)
@@ -359,23 +340,6 @@ public class TestTimeOfDay_Constructors extends TestCase {
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
-    }
-
-    /**
-     * Test constructor (Object=null)
-     */
-    public void testConstructor_badconverterObject_Chronology() throws Throwable {
-        try {
-            ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-            TimeOfDay test = new TimeOfDay(new Integer(0), JulianChronology.getInstance());
-            assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
-            assertEquals(0 + OFFSET, test.getHourOfDay());
-            assertEquals(0, test.getMinuteOfHour());
-            assertEquals(0, test.getSecondOfMinute());
-            assertEquals(0, test.getMillisOfSecond());
-        } finally {
-            ConverterManager.getInstance().removeInstantConverter(MockZeroNullIntegerConverter.INSTANCE);
-        }
     }
 
     //-----------------------------------------------------------------------

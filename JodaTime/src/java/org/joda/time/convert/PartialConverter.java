@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.
+ * Copyright (c) 2001-2004 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ *    notice, this list of conditions and the following disclaimer. 
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
@@ -18,7 +18,7 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution,
- *    if any, must include the following acknowledgment:
+ *    if any, must include the following acknowledgment:  
  *       "This product includes software developed by the
  *        Joda project (http://www.joda.org/)."
  *    Alternately, this acknowledgment may appear in the software itself,
@@ -47,52 +47,50 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Joda project and was originally
+ * individuals on behalf of the Joda project and was originally 
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.convert;
 
-import java.security.BasicPermission;
+import org.joda.time.Chronology;
+import org.joda.time.ReadablePartial;
 
 /**
- * JodaTimePermission is used for securing global method calls in the Joda-Time
- * library. Since this class extends BasicPermission, asterisks may be used to
- * denote wildcard permissions. The following permissions are supported:
- *
- * <pre>
- * DateTimeZone
- *   .setDefault                 Allows a default DateTimeZone to be set
- *   .setProvider                Allows the DateTimeZone instance provider to be set
- *   .setNameProvider            Allows the DateTimeZone name provider to be set
- *
- * ConverterManager
- *   .alterInstantConverters     Allows an instant converter to be added or removed
- *   .alterPartialConverters     Allows a partial converter to be added or removed
- *   .alterDurationConverters    Allows a duration converter to be added or removed
- *   .alterPeriodConverters      Allows a period converter to be added or removed
- *   .alterIntervalConverters    Allows an interval converter to be added or removed
- *
- * CurrentTime.setProvider       Allows the current time provider to be set
- * </pre>
+ * PartialConverter defines how an object is converted to a ReadablePartial.
  * <p>
- * JodaTimePermission is thread-safe and immutable.
+ * The two methods in this interface must be called in order, as the
+ * <code>getPartialValues</code> method relies on the result of the
+ * <code>getChronology</code> method being passed in.
  *
- * @author Brian S O'Neill
+ * @author Stephen Colebourne
  * @since 1.0
  */
-public class JodaTimePermission extends BasicPermission {
-    
-    /** Serialization version */
-    private static final long serialVersionUID = 1408944367355875472L;
+public interface PartialConverter extends Converter {
 
     /**
-     * Constructs a new permission object.
+     * Extracts the chronology from an object of this converter's type
+     * where the chronology is specified.
      * 
-     * @param name  the permission name
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, null usually means ISO
+     * @return the chronology, not converted to UTC/local time zone, must be non-null valid
+     * @throws ClassCastException if the object is invalid
      */
-    public JodaTimePermission(String name) {
-        super(name);
-    }
+    Chronology getChronology(Object object, Chronology chrono);
+
+    /**
+     * Extracts the values of the partial from an object of this converter's type.
+     * The chrono parameter is a hint to the converter, should it require a
+     * chronology to aid in conversion.
+     * 
+     * @param fieldSource  a partial that provides access to the fields.
+     *  This partial may be incomplete and only getFieldType(int) should be used
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     * @return the array of field values that match the fieldSource, must be non-null valid
+     * @throws ClassCastException if the object is invalid
+     */
+    int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono);
 
 }

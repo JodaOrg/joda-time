@@ -789,7 +789,7 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("ConverterManager[6 instant,5 duration,5 period,3 interval]", ConverterManager.getInstance().toString());
+        assertEquals("ConverterManager[6 instant,6 partial,5 duration,5 period,3 interval]", ConverterManager.getInstance().toString());
     }
 
 }

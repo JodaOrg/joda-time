@@ -56,12 +56,14 @@ package org.joda.time.convert;
 import java.util.Date;
 
 /**
- * DateConverter converts a java util Date to milliseconds in the ISOChronology.
+ * DateConverter converts a java util Date to an instant or partial.
+ * The Date is converted to milliseconds in the ISO chronology.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
-final class DateConverter extends AbstractConverter implements InstantConverter {
+final class DateConverter extends AbstractConverter
+        implements InstantConverter, PartialConverter {
     
     /**
      * Singleton instance.

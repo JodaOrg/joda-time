@@ -67,7 +67,7 @@ public interface InstantConverter extends Converter {
     /**
      * Extracts the millis from an object of this converter's type.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
      * @return the millisecond instant
      * @throws ClassCastException if the object is invalid
      */
@@ -78,7 +78,7 @@ public interface InstantConverter extends Converter {
      * parameter is a hint to the converter, should it require a time zone to
      * aid in conversion.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
      * @param zone  the zone to use, null means default zone
      * @return the millisecond instant
      * @throws ClassCastException if the object is invalid
@@ -90,8 +90,8 @@ public interface InstantConverter extends Converter {
      * parameter is a hint to the converter, should it require a chronology to
      * aid in conversion.
      * 
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, null means ISOChronology
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, null usually means ISO
      * @return the millisecond instant
      * @throws ClassCastException if the object is invalid
      */
@@ -101,7 +101,7 @@ public interface InstantConverter extends Converter {
     /**
      * Extracts the chronology from an object of this converter's type.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
      * @return the chronology, never null
      * @throws ClassCastException if the object is invalid
      */
@@ -111,7 +111,7 @@ public interface InstantConverter extends Converter {
      * Extracts the chronology from an object of this converter's type
      * where the time zone is specified.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
      * @param zone  the specified zone to use, null means default zone
      * @return the chronology, never null
      * @throws ClassCastException if the object is invalid
@@ -122,8 +122,8 @@ public interface InstantConverter extends Converter {
      * Extracts the chronology from an object of this converter's type
      * where the chronology is specified.
      * 
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, null means ISOChronology
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, null usually means ISO
      * @return the chronology, never null
      * @throws ClassCastException if the object is invalid
      */

@@ -54,13 +54,15 @@
 package org.joda.time.convert;
 
 /**
- * LongConverter converts a Long to milliseconds in the ISOChronology.
+ * LongConverter converts a Long to an instant, partial or duration.
+ * The Long value represents milliseconds in the ISO chronology.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-class LongConverter extends AbstractConverter implements InstantConverter, DurationConverter {
+class LongConverter extends AbstractConverter
+        implements InstantConverter, PartialConverter, DurationConverter {
     
     /**
      * Singleton instance.
@@ -109,5 +111,5 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
     public Class getSupportedType() {
         return Long.class;
     }
-    
+
 }

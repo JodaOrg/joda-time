@@ -64,8 +64,9 @@ import org.joda.time.chrono.ISOChronology;
  * @author Stephen Colebourne
  * @since 1.0
  */
-class ReadableInstantConverter extends AbstractConverter implements InstantConverter {
-    
+class ReadableInstantConverter extends AbstractConverter
+        implements InstantConverter, PartialConverter {
+
     /**
      * Singleton instance.
      */
@@ -130,7 +131,7 @@ class ReadableInstantConverter extends AbstractConverter implements InstantConve
         }
         return chrono;
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Returns ReadableInstant.class.
@@ -140,5 +141,5 @@ class ReadableInstantConverter extends AbstractConverter implements InstantConve
     public Class getSupportedType() {
         return ReadableInstant.class;
     }
-    
+
 }

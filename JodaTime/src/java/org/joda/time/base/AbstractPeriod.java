@@ -51,10 +51,24 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.base;
 
 import java.io.Serializable;
 
+import org.joda.time.Chronology;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.Duration;
+import org.joda.time.DurationField;
+import org.joda.time.Instant;
+import org.joda.time.MutablePeriod;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.ReadWritableInstant;
+import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadableDuration;
+import org.joda.time.ReadableInstant;
+import org.joda.time.ReadableInterval;
+import org.joda.time.ReadablePeriod;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PeriodConverter;
 import org.joda.time.field.FieldUtils;

@@ -56,6 +56,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.joda.time.base.*;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.AbstractPartialFieldProperty;
 

@@ -55,6 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.base.*;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.field.FieldUtils;

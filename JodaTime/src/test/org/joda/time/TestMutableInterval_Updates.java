@@ -59,6 +59,8 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.base.AbstractInterval;
+
 /**
  * This class is a Junit unit test for Instant.
  *

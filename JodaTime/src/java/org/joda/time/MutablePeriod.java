@@ -55,6 +55,8 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.base.*;
+
 /**
  * Standard mutable time period implementation.
  * <p>

@@ -55,6 +55,8 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.base.*;
+
 /**
  * An immutable time period specifying a set of duration field values.
  * <p>

@@ -51,8 +51,17 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.base;
 
+import org.joda.time.DateTimeUtils;
+import org.joda.time.Duration;
+import org.joda.time.Instant;
+import org.joda.time.Interval;
+import org.joda.time.MutableInterval;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.ReadableInstant;
+import org.joda.time.ReadableInterval;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimePrinter;

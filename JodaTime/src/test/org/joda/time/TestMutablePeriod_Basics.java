@@ -60,10 +60,11 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.joda.time.chrono.ISOChronology;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.joda.time.base.AbstractPeriod;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for MutableDuration.

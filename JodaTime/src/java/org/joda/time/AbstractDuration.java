@@ -285,51 +285,58 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         long totalMillis = 0;
 
         DurationField field;
-        int value;
-
-        if ((value = iYears) != 0) {
+        int value; // used to lock fields against threading issues
+        value = iYears;
+        if (value != 0) {
             field = type.years();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iMonths) != 0) {
+        value = iMonths;
+        if (value != 0) {
             field = type.months();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iWeeks) != 0) {
+        value = iWeeks;
+        if (value != 0) {
             field = type.weeks();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iDays) != 0) {
+        value = iDays;
+        if (value != 0) {
             field = type.days();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iHours) != 0) {
+        value = iHours;
+        if (value != 0) {
             field = type.hours();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iMinutes) != 0) {
+        value = iMinutes;
+        if (value != 0) {
             field = type.minutes();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iSeconds) != 0) {
+        value = iSeconds;
+        if (value != 0) {
             field = type.seconds();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
             }
         }
-        if ((value = iMillis) != 0) {
+        value = iMillis;
+        if (value != 0) {
             field = type.millis();
             if (isPrecise &= field.isPrecise()) {
                 totalMillis += field.getMillis(value);
@@ -385,46 +392,61 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             type = type.withChronology(chrono);
         }
 
-        int value;
-
-        if ((value = scaleValue(iYears, scalar)) != 0) {
+        long value; // used to lock fields against threading issues
+        value = scaleValue(iYears, scalar);
+        if (value != 0) {
             instant = type.years().add(instant, value);
         }
-        if ((value = scaleValue(iMonths, scalar)) != 0) {
+        value = scaleValue(iMonths, scalar);
+        if (value != 0) {
             instant = type.months().add(instant, value);
         }
-        if ((value = scaleValue(iWeeks, scalar)) != 0) {
+        value = scaleValue(iWeeks, scalar);
+        if (value != 0) {
             instant = type.weeks().add(instant, value);
         }
-        if ((value = scaleValue(iDays, scalar)) != 0) {
+        value = scaleValue(iDays, scalar);
+        if (value != 0) {
             instant = type.days().add(instant, value);
         }
-        if ((value = scaleValue(iHours, scalar)) != 0) {
+        value = scaleValue(iHours, scalar);
+        if (value != 0) {
             instant = type.hours().add(instant, value);
         }
-        if ((value = scaleValue(iMinutes, scalar)) != 0) {
+        value = scaleValue(iMinutes, scalar);
+        if (value != 0) {
             instant = type.minutes().add(instant, value);
         }
-        if ((value = scaleValue(iSeconds, scalar)) != 0) {
+        value = scaleValue(iSeconds, scalar);
+        if (value != 0) {
             instant = type.seconds().add(instant, value);
         }
-        if ((value = scaleValue(iMillis, scalar)) != 0) {
+        value = scaleValue(iMillis, scalar);
+        if (value != 0) {
             instant = type.millis().add(instant, value);
         }
 
         return instant;
     }
 
-    private static int scaleValue(int value, int scalar) {
+    /**
+     * Convert the scalar to a multiple efficiently.
+     * 
+     * @param value  the value
+     * @param scalar  the scalar
+     * @return the converted value
+     */
+    private static long scaleValue(int value, int scalar) {
+        long val = value;  // use long to avoid truncation
         switch (scalar) {
         case -1:
-            return -value;
+            return -val;
         case 0:
             return 0;
         case 1:
-            return value;
+            return val;
         default:
-            return value * scalar;
+            return val * scalar;
         }
     }
 
@@ -793,7 +815,8 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         if (millis != 0) {
             checkArgument(type.millis(), "millis");
         }
-
+        
+        // assign fields in one block to reduce threading issues
         iYears = years;
         iMonths = months;
         iWeeks = weeks;
@@ -872,10 +895,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             startInstant = field.add(startInstant, millis);
         }
         
-        // (end - start) is excess to be discarded
-        iTotalMillis = baseTotalMillis - (endInstant - startInstant);
-        iTotalMillisState = 2;
-        
+        // assign fields in one block to reduce threading issues
         iYears = years;
         iMonths = months;
         iWeeks = weeks;
@@ -884,6 +904,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         iMinutes = minutes;
         iSeconds = seconds;
         iMillis = millis;
+        // (end - start) is excess to be discarded
+        iTotalMillis = baseTotalMillis - (endInstant - startInstant);
+        iTotalMillisState = 2;
     }
 
     /**
@@ -969,10 +992,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
             startInstant = field.add(startInstant, millis);
         }
         
-        // (end - start) is excess to be discarded
-        iTotalMillis = duration - (duration - startInstant);
-        iTotalMillisState = 2;
-        
+        // assign fields in one block to reduce threading issues
         iYears = years;
         iMonths = months;
         iWeeks = weeks;
@@ -981,6 +1001,9 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
         iMinutes = minutes;
         iSeconds = seconds;
         iMillis = millis;
+        // (end - start) is excess to be discarded
+        iTotalMillis = duration - (duration - startInstant);
+        iTotalMillisState = 2;
     }
 
     //-----------------------------------------------------------------------

@@ -696,7 +696,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(false, zone5.equals(zone1));
         assertEquals(false, zone5.equals(zone2));
         assertEquals(false, zone5.equals(zone3));
-        assertEquals(false, zone5.equals(zone5));
+        assertEquals(false, zone5.equals(zone4));
         assertEquals(false, zone1.hashCode() == zone5.hashCode());
         assertEquals(true, zone5.hashCode() == zone5.hashCode());
     }

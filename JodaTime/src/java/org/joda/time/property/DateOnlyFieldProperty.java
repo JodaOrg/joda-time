@@ -54,10 +54,9 @@
 package org.joda.time.property;
 
 import java.util.Locale;
+
 import org.joda.time.DateOnly;
 import org.joda.time.DateTimeField;
-// Import for @link support
-import org.joda.time.MutableDateOnly;
 import org.joda.time.ReadableInstant;
 
 /**
@@ -80,7 +79,7 @@ import org.joda.time.ReadableInstant;
  * DateOnly date20 = date.year().addToCopy(20);
  * </pre>
  * Serious modification of dates (ie. more than just changing one or two fields)
- * should use the {@link MutableDateOnly} class.
+ * should use the {@link org.joda.time.MutableDateOnly MutableDateOnly} class.
  * <p>
  * DateOnlyFieldPropery itself is thread-safe and immutable, as well as the
  * DateOnly being operated on.
@@ -128,11 +127,11 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
     }
 
     /**
-     * Gets the instant being used.
+     * Gets the date being used.
      * 
-     * @return the instant
+     * @return the date
      */
-    public DateOnly getDateTime() {
+    public DateOnly getDateOnly() {
         return iInstant;
     }
 

@@ -54,11 +54,10 @@
 package org.joda.time.property;
 
 import java.util.Locale;
-import org.joda.time.TimeOnly;
+
 import org.joda.time.DateTimeField;
-// Import for @link support
-import org.joda.time.MutableTimeOnly;
 import org.joda.time.ReadableInstant;
+import org.joda.time.TimeOnly;
 
 /**
  * TimeOnlyFieldProperty binds a TimeOnly to a DateTimeField allowing powerful
@@ -80,7 +79,7 @@ import org.joda.time.ReadableInstant;
  * TimeOnly time20 = time.minuteOfHour().addToCopy(20);
  * </pre>
  * Serious modification of times (ie. more than just changing one or two fields)
- * should use the {@link MutableTimeOnly} class.
+ * should use the {@link org.joda.time.MutableTimeOnly MutableTimeOnly} class.
  * <p>
  * TimeOnlyFieldPropery itself is thread-safe and immutable, as well as the
  * TimeOnly being operated on.
@@ -128,11 +127,11 @@ public class TimeOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
     }
 
     /**
-     * Gets the instant being used.
+     * Gets the time being used.
      * 
-     * @return the instant
+     * @return the time
      */
-    public TimeOnly getDateTime() {
+    public TimeOnly getTimeOnly() {
         return iInstant;
     }
 

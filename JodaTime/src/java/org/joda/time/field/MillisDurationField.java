@@ -64,9 +64,9 @@ import org.joda.time.DurationField;
  *
  * @author Brian S O'Neill
  */
-public final class MillisDurationField implements DurationField, Serializable {
+public final class MillisDurationField extends DurationField implements Serializable {
 
-    /** Serialization version. */
+    /** Serialization lock. */
     private static final long serialVersionUID = 2656707858124633367L;
 
     /** Singleton instance. */

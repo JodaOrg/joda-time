@@ -70,11 +70,12 @@ import org.joda.time.DurationField;
  * @author Brian S O'Neill
  * @see DecoratedDurationField
  */
-public abstract class AbstractDurationField implements DurationField, Serializable {
+public abstract class AbstractDurationField extends DurationField implements Serializable {
 
-    static final long serialVersionUID = -2554245107589433218L;
+    /** Serialization lock. */
+    private static final long serialVersionUID = -2554245107589433218L;
 
-    /** A desriptive name for the field */
+    /** A desriptive name for the field. */
     private final String iName;
 
     protected AbstractDurationField(String name) {

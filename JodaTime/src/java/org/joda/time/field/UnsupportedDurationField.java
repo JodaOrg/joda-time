@@ -64,9 +64,10 @@ import org.joda.time.DurationField;
  *
  * @author Brian S O'Neill
  */
-public final class UnsupportedDurationField implements DurationField, Serializable {
+public final class UnsupportedDurationField extends DurationField implements Serializable {
 
-    static final long serialVersionUID = -6390301302770925357L;
+    /** Serialization lock. */
+    private static final long serialVersionUID = -6390301302770925357L;
 
     /**
      * Instance with the name "unsupported".
@@ -248,6 +249,28 @@ public final class UnsupportedDurationField implements DurationField, Serializab
     }
 
     //------------------------------------------------------------------------
+    /**
+     * Compares this duration field to another.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     */
+    public boolean equals(Object obj) {
+        if (obj instanceof UnsupportedDurationField) {
+            return (((UnsupportedDurationField) obj).getName().equals(getName()));
+        }
+        return false;
+    }
+
+    /**
+     * Gets a suitable hashcode.
+     * 
+     * @return the hashcode
+     */
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
     /**
      * Get a suitable debug string.
      * 

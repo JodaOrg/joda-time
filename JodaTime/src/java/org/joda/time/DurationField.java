@@ -65,7 +65,7 @@ package org.joda.time;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public interface DurationField extends Comparable {
+public abstract class DurationField implements Comparable {
 
     /**
      * Get the name of the field, intended for debugging purposes only. By
@@ -73,14 +73,14 @@ public interface DurationField extends Comparable {
      * 
      * @return field name
      */
-    String getName();
+    public abstract String getName();
 
     /**
      * Returns true if this field is supported.
      * 
      * @return true if this field is supported
      */
-    boolean isSupported();
+    public abstract boolean isSupported();
 
     /**
      * Is this field precise. A precise field can calculate its value from
@@ -90,7 +90,7 @@ public interface DurationField extends Comparable {
      * @return true if precise
      * @see #getUnitMillis()
      */
-    boolean isPrecise();
+    public abstract boolean isPrecise();
     
     /**
      * Returns the amount of milliseconds per unit value of this field. For
@@ -103,7 +103,7 @@ public interface DurationField extends Comparable {
      * @return the unit size of this field, in milliseconds
      * @see #isPrecise()
      */
-    long getUnitMillis();
+    public abstract long getUnitMillis();
 
     //------------------------------------------------------------------------
     /**
@@ -115,7 +115,7 @@ public interface DurationField extends Comparable {
      * negative
      * @throws ArithmeticException if the value is too large for an int
      */
-    int getValue(long duration);
+    public abstract int getValue(long duration);
 
     /**
      * Get the value of this field from the milliseconds, which is approximate
@@ -125,7 +125,7 @@ public interface DurationField extends Comparable {
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
-    long getValueAsLong(long duration);
+    public abstract long getValueAsLong(long duration);
 
     /**
      * Get the value of this field from the milliseconds relative to an
@@ -141,7 +141,7 @@ public interface DurationField extends Comparable {
      * negative
      * @throws ArithmeticException if the value is too large for an int
      */
-    int getValue(long duration, long instant);
+    public abstract int getValue(long duration, long instant);
 
     /**
      * Get the value of this field from the milliseconds relative to an
@@ -156,7 +156,7 @@ public interface DurationField extends Comparable {
      * @return the value of the field, in the units of the field, which may be
      * negative
      */
-    long getValueAsLong(long duration, long instant);
+    public abstract long getValueAsLong(long duration, long instant);
 
     //------------------------------------------------------------------------
     /**
@@ -167,7 +167,7 @@ public interface DurationField extends Comparable {
      * @return the milliseconds that the field represents, which may be
      * negative
      */
-    long getMillis(int value);
+    public abstract long getMillis(int value);
 
     /**
      * Get the millisecond duration of this field from its value, which is
@@ -177,7 +177,7 @@ public interface DurationField extends Comparable {
      * @return the milliseconds that the field represents, which may be
      * negative
      */
-    long getMillis(long value);
+    public abstract long getMillis(long value);
 
     /**
      * Get the millisecond duration of this field from its value relative to an
@@ -192,7 +192,7 @@ public interface DurationField extends Comparable {
      * @return the millisecond duration that the field represents, which may be
      * negative
      */
-    long getMillis(int value, long instant);
+    public abstract long getMillis(int value, long instant);
 
     /**
      * Get the millisecond duration of this field from its value relative to an
@@ -207,7 +207,7 @@ public interface DurationField extends Comparable {
      * @return the millisecond duration that the field represents, which may be
      * negative
      */
-    long getMillis(long value, long instant);
+    public abstract long getMillis(long value, long instant);
 
     /**
      * Adds a duration value (which may be negative) to the instant.
@@ -216,7 +216,7 @@ public interface DurationField extends Comparable {
      * @param value  the value to add, in the units of the field
      * @return the updated milliseconds
      */
-    long add(long instant, int value);
+    public abstract long add(long instant, int value);
 
     /**
      * Adds a duration value (which may be negative) to the instant.
@@ -225,7 +225,7 @@ public interface DurationField extends Comparable {
      * @param value  the value to add, in the units of the field
      * @return the updated milliseconds
      */
-    long add(long instant, long value);
+    public abstract long add(long instant, long value);
 
     /**
      * Computes the difference between two instants, as measured in the units
@@ -246,7 +246,7 @@ public interface DurationField extends Comparable {
      * subtract off the minuend
      * @return the difference in the units of this field
      */
-    int getDifference(long minuendInstant, long subtrahendInstant);
+    public abstract int getDifference(long minuendInstant, long subtrahendInstant);
 
     /**
      * Computes the difference between two instants, as measured in the units
@@ -267,7 +267,7 @@ public interface DurationField extends Comparable {
      * subtract off the minuend
      * @return the difference in the units of this field
      */
-    long getDifferenceAsLong(long minuendInstant, long subtrahendInstant);
+    public abstract long getDifferenceAsLong(long minuendInstant, long subtrahendInstant);
 
     /**
      * Compares this duration field with another duration field for ascending
@@ -279,7 +279,7 @@ public interface DurationField extends Comparable {
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */
-    int compareTo(Object durationField);
+    public abstract int compareTo(Object durationField);
 
     /**
      * Returns a localized unit name of this field, using the given value as an
@@ -313,6 +313,6 @@ public interface DurationField extends Comparable {
      * 
      * @return debug string
      */
-    String toString();
+    public abstract String toString();
     
 }

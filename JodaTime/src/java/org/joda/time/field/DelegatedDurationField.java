@@ -66,9 +66,10 @@ import org.joda.time.DurationField;
  * @author Brian S O'Neill
  * @see DecoratedDurationField
  */
-public class DelegatedDurationField implements DurationField, Serializable {
+public class DelegatedDurationField extends DurationField implements Serializable {
 
-    static final long serialVersionUID = -5576443481242007829L;
+    /** Serialization lock. */
+    private static final long serialVersionUID = -5576443481242007829L;
 
     /** The DurationField being wrapped */
     private final DurationField iField;

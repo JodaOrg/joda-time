@@ -367,6 +367,13 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(expected, added);
     }
     
+    public void testAddTo4() {
+        long expected = TEST_TIME_NOW + 100L;
+        Duration test = new Duration(100L);
+        long added = test.addTo(TEST_TIME_NOW, 1);
+        assertEquals(expected, added);
+    }
+    
     //-----------------------------------------------------------------------
     public void testAddToWithChronology1() {
         long expected = TEST_TIME_NOW;

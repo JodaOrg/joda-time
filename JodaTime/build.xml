@@ -216,10 +216,11 @@
                 package="false"
                 version="true"
                     use="yes"
-              splitindex="yes"
+             splitindex="yes"
                doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
-                 bottom="Copyright (c) 2001-2004 - Joda.org">
+                 bottom="Copyright (c) 2001-2004 - Joda.org"
+               Overview="${source.home}/org/joda/time/overview.html">
       <classpath refid="compile.classpath"/>
     </javadoc>
   </target>

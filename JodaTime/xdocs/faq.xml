@@ -14,6 +14,7 @@
 <p>
 Some common questions about Joda-Time are answered here.
 <ul>
+<li><a href="#datediff">How do I calculate the difference between two dates?</a></li>
 <li><a href="#iso">What is ISO8601?</a></li>
 <li><a href="#default">Why is ISO8601 the default?</a></li>
 <li><a href="#internalstorage">How are times calculated internally?</a></li>
@@ -30,6 +31,26 @@ Some common questions about Joda-Time are answered here.
 Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Suggest another FAQ</a>
 </p>
 
+
+<a name="datediff" />
+<subsection name="How do I calculate the difference between two dates?">
+<p>
+The easiest way to calculate the difference between two dates is to create a new
+<a href="apidocs/org/joda/time/Period.html">Period</a>. By default this will break down
+the period into years, months, weeks, days, etc. If you just want the difference in
+days, specify a different <a href="apidocs/org/joda/time/PeriodType.html">PeriodType</a>,
+like PeriodType.days().
+<source>
+      DateTime start = ...
+      DateTime end = ...
+      Period p = new Period(start, end, PeriodType.days());
+      int days = p.getDays();
+</source>
+</p>
+<p>
+For more info, consult the <a href="key_period.html">period guide</a>.
+</p>
+</subsection>
 
 <a name="iso" />
 <subsection name="What is ISO8601?">

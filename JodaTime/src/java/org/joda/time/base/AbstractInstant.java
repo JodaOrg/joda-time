@@ -151,7 +151,16 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get this object as a DateTime.
+     * Get this object as a DateTime using ISOChronology in the default zone.
+     * 
+     * @return a DateTime using the same millis with ISOChronology in the default zone.
+     */
+    public DateTime toDateTimeISO() {
+        return new DateTime(getMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Get this object as a DateTime using the same chronology but a different zone.
      * 
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
@@ -172,37 +181,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         return new DateTime(getMillis(), chronology);
     }
 
-    /**
-     * Get this object as a trusted ISO immutable DateTime. The purpose of
-     * this method is to guarantee that an externally received DateTime
-     * object does not have any backdoors that allow it to be modified.
-     * <p>
-     * If this object is already a DateTime, whose chronology is
-     * {@link ISOChronology ISO}, and the time zone came from the default
-     * {@link org.joda.time.tz.Provider provider}, then this object is cast to
-     * a DateTime and returned. Otherwise, a new trusted DateTime is returned.
-     * 
-     * @return a trusted ISO DateTime using the same millis
-     * @throws IllegalArgumentException if the time zone is not trusted, and
-     * no matching trusted time zone can be found.
-     */
-    public DateTime toTrustedISODateTime() {
-        DateTimeZone zone = getZone();
-        if (zone == null) {
-            return new DateTime(this, (Chronology)null);
-        }
-
-        DateTimeZone trusted = DateTimeZone.getInstance(zone.getID());
-        
-        if (zone == trusted &&
-            getClass() == DateTime.class &&
-            getChronology().getClass() == ISOChronology.class) {
-            return (DateTime) this;
-        }
-        
-        return new DateTime(this, ISOChronology.getInstance(trusted));
-    }
-
     // NOTE: Although the toMutableDateTime methods could check to see if this
     // is already a MutableDateTime and return this casted, it makes it too
     // easy to mistakenly modify ReadableDateTime input parameters. Always
@@ -218,7 +196,16 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get this object as a MutableDateTime.
+     * Get this object as a MutableDateTime using ISOChronology in the default zone.
+     * 
+     * @return a MutableDateTime using the same millis with ISOChronology in the default zone.
+     */
+    public MutableDateTime toMutableDateTimeISO() {
+        return new MutableDateTime(getMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Get this object as a MutableDateTime using the same chronology but a different zone.
      * 
      * @param zone time zone to apply, or default if null
      * @return a MutableDateTime using the same millis

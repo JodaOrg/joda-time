@@ -426,6 +426,15 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(LONDON, result.getZone());
     }
 
+    public void testToDateTimeISO() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+        DateTime result = test.toDateTimeISO();
+        assertSame(DateTime.class, result.getClass());
+        assertSame(ISOChronology.class, result.getChronology().getClass());
+        assertEquals(test.getMillis(), result.getMillis());
+        assertEquals(ISOChronology.getInstance(), result.getChronology());
+    }
+
     public void testToDateTime_DateTimeZone() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
         DateTime result = test.toDateTime(LONDON);
@@ -478,65 +487,18 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
-    public void testToTrustedISODateMidnight() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
-        DateTime result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
-
-//        test = new MockUntrustedDateMidnight(TEST_TIME1_UTC);
-//        result = test.toTrustedISODateTime();
-//        assertSame(DateTime.class, result.getClass());
-//        assertSame(ISOChronology.class, result.getChronology().getClass());
-//        assertEquals(test.getMillis(), result.getMillis());
-//        assertEquals(ISOChronology.getInstance(), result.getChronology());
-
-        test = new DateMidnight(TEST_TIME1_UTC, new MockUntrustedZone("Europe/Paris"));
-        result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
-    }
-
-//    static class MockUntrustedDateMidnight extends DateMidnight {
-//        MockUntrustedDateMidnight(long millis) {
-//            super(millis);
-//        }
-//    }
-
-    static class MockUntrustedZone extends DateTimeZone {
-        MockUntrustedZone(String id) {
-            super(id);
-        }
-        public String getNameKey(long instant) {
-            return null;
-        }
-        public int getOffset(long instant) {
-            return 60 * 60 * 1000;
-        }
-        public int getStandardOffset(long instant) {
-            return 60 * 60 * 1000;
-        }
-        public boolean isFixed() {
-            return true;
-        }
-        public long nextTransition(long instant) {
-            return 0;
-        }
-        public long previousTransition(long instant) {
-            return 0;
-        }
-        public boolean equals(Object object) {
-            return false;
-        }
-    }
-
     public void testToMutableDateTime() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
         MutableDateTime result = test.toMutableDateTime();
+        assertEquals(test.getMillis(), result.getMillis());
+        assertEquals(ISOChronology.getInstance(), result.getChronology());
+    }
+
+    public void testToMutableDateTimeISO() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+        MutableDateTime result = test.toMutableDateTimeISO();
+        assertSame(MutableDateTime.class, result.getClass());
+        assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }

@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.time.base.BaseDateTime;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
@@ -319,6 +320,19 @@ public final class DateTime
      */
     public DateTime toDateTime() {
         return this;
+    }
+
+    /**
+     * Get this object as a DateTime using ISOChronology in the default zone,
+     * returning <code>this</code> if possible.
+     * 
+     * @return a DateTime using the same millis
+     */
+    public DateTime toDateTimeISO() {
+        if (getChronology() == ISOChronology.getInstance()) {
+            return this;
+        }
+        return super.toDateTimeISO();
     }
 
     /**

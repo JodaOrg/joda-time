@@ -407,6 +407,15 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(TEST_TIME1, result.getMillis());
     }
 
+    public void testToDateTimeISO() {
+        Instant test = new Instant(TEST_TIME1);
+        DateTime result = test.toDateTimeISO();
+        assertSame(DateTime.class, result.getClass());
+        assertSame(ISOChronology.class, result.getChronology().getClass());
+        assertEquals(test.getMillis(), result.getMillis());
+        assertEquals(ISOChronology.getInstance(), result.getChronology());
+    }
+
     public void testToDateTime_DateTimeZone() {
         Instant test = new Instant(TEST_TIME1);
         DateTime result = test.toDateTime(LONDON);
@@ -440,18 +449,18 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
-    public void testToTrustedISODateTime() {
+    public void testToMutableDateTime() {
         Instant test = new Instant(TEST_TIME1);
-        DateTime result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
+        MutableDateTime result = test.toMutableDateTime();
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
-    public void testToMutableDateTime() {
+    public void testToMutableDateTimeISO() {
         Instant test = new Instant(TEST_TIME1);
-        MutableDateTime result = test.toMutableDateTime();
+        MutableDateTime result = test.toMutableDateTimeISO();
+        assertSame(MutableDateTime.class, result.getClass());
+        assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }

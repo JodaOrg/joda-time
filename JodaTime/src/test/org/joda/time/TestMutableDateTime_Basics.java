@@ -443,6 +443,15 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals(test.getChronology(), result.getChronology());
     }
 
+    public void testToDateTimeISO() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        DateTime result = test.toDateTimeISO();
+        assertSame(DateTime.class, result.getClass());
+        assertSame(ISOChronology.class, result.getChronology().getClass());
+        assertEquals(test.getMillis(), result.getMillis());
+        assertEquals(ISOChronology.getInstance(), result.getChronology());
+    }
+
     public void testToDateTime_DateTimeZone() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime(LONDON);
@@ -494,68 +503,22 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
-    public void testToTrustedISOMutableDateTime() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        DateTime result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
-
-        test = new MockUntrustedMutableDateTime(TEST_TIME1);
-        result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
-
-        test = new MutableDateTime(TEST_TIME1, new MockUntrustedZone("Europe/Paris"));
-        result = test.toTrustedISODateTime();
-        assertSame(DateTime.class, result.getClass());
-        assertSame(ISOChronology.class, result.getChronology().getClass());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
-    }
-
-    static class MockUntrustedMutableDateTime extends MutableDateTime {
-        MockUntrustedMutableDateTime(long millis) {
-            super(millis);
-        }
-    }
-
-    static class MockUntrustedZone extends DateTimeZone {
-        MockUntrustedZone(String id) {
-            super(id);
-        }
-        public String getNameKey(long instant) {
-            return null;
-        }
-        public int getOffset(long instant) {
-            return 60 * 60 * 1000;
-        }
-        public int getStandardOffset(long instant) {
-            return 60 * 60 * 1000;
-        }
-        public boolean isFixed() {
-            return true;
-        }
-        public long nextTransition(long instant) {
-            return 0;
-        }
-        public long previousTransition(long instant) {
-            return 0;
-        }
-        public boolean equals(Object object) {
-            return false;
-        }
-    }
-
     public void testToMutableDateTime() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         MutableDateTime result = test.toMutableDateTime();
         assertTrue(test != result);
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(ISOChronology.getInstance(), result.getChronology());
+    }
+
+    public void testToMutableDateTimeISO() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime result = test.toMutableDateTimeISO();
+        assertSame(MutableDateTime.class, result.getClass());
+        assertSame(ISOChronology.class, result.getChronology().getClass());
+        assertEquals(test.getMillis(), result.getMillis());
+        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertNotSame(test, result);
     }
 
     public void testToMutableDateTime_DateTimeZone() {

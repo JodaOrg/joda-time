@@ -341,7 +341,7 @@ public class TestDateTimeUtils extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetZone_Zone() {
         assertEquals(PARIS, DateTimeUtils.getZone(PARIS));
-        assertEquals(LONDON, DateTimeUtils.getZone(null));
+        assertEquals(DateTimeZone.getDefault(), DateTimeUtils.getZone(null));
     }
 
     //-----------------------------------------------------------------------

@@ -79,9 +79,9 @@ public class TestReadableIntervalConverter extends TestCase {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final Chronology ISO = ISOChronology.getInstance();
-    private static final Chronology JULIAN = JulianChronology.getInstance();
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    private static Chronology JULIAN;
+    private static Chronology ISO;
     
     private DateTimeZone zone = null;
 
@@ -95,6 +95,11 @@ public class TestReadableIntervalConverter extends TestCase {
 
     public TestReadableIntervalConverter(String name) {
         super(name);
+    }
+
+    protected void setUp() throws Exception {
+        JULIAN = JulianChronology.getInstance();
+        ISO = ISOChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------

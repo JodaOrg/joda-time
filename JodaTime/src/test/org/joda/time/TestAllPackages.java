@@ -53,6 +53,8 @@
  */
 package org.joda.time;
 
+import java.util.TimeZone;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -83,6 +85,10 @@ public class TestAllPackages extends TestCase {
     }
 
     public static void main(String args[]) {
+        // setup a time zone other than one tester is in
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+        
+        // run tests
         String[] testCaseName = {
             TestAllPackages.class.getName()
         };

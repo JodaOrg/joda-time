@@ -86,11 +86,11 @@ public class TestStringConverter extends TestCase {
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
-    private static final Chronology ISO = ISOChronology.getInstance();
-    private static final Chronology JULIAN = JulianChronology.getInstance();
     private static final Chronology ISO_EIGHT = ISOChronology.getInstance(EIGHT);
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
+    private static Chronology ISO;
+    private static Chronology JULIAN;
     
     private DateTimeZone zone = null;
     private Locale locale = null;
@@ -112,6 +112,9 @@ public class TestStringConverter extends TestCase {
         locale = Locale.getDefault();
         DateTimeZone.setDefault(LONDON);
         Locale.setDefault(Locale.UK);
+        
+        JULIAN = JulianChronology.getInstance();
+        ISO = ISOChronology.getInstance();
     }
 
     protected void tearDown() throws Exception {

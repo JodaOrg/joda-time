@@ -57,6 +57,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -88,11 +90,14 @@ public class TestNullConverter extends TestCase {
             
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
-    private static final Chronology ISO = ISOChronology.getInstance();
-    private static final Chronology JULIAN = JulianChronology.getInstance();
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    private static Chronology ISO;
+    private static Chronology JULIAN;
     
     private DateTimeZone zone = null;
+    private DateTimeZone originalDateTimeZone = null;
+    private TimeZone originalTimeZone = null;
+    private Locale originalLocale = null;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -108,10 +113,25 @@ public class TestNullConverter extends TestCase {
 
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
+        originalDateTimeZone = DateTimeZone.getDefault();
+        originalTimeZone = TimeZone.getDefault();
+        originalLocale = Locale.getDefault();
+        DateTimeZone.setDefault(DateTimeZone.getInstance("Europe/London"));
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        Locale.setDefault(Locale.UK);
+        
+        ISO = ISOChronology.getInstance();
+        JULIAN = JulianChronology.getInstance();
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
+        DateTimeZone.setDefault(originalDateTimeZone);
+        TimeZone.setDefault(originalTimeZone);
+        Locale.setDefault(originalLocale);
+        originalDateTimeZone = null;
+        originalTimeZone = null;
+        originalLocale = null;
     }
 
     //-----------------------------------------------------------------------

@@ -28,6 +28,8 @@ Bug fixes since 0.98
 
 - DateTimeFormat would use date style for time style
 
+- DateTimeFormatterBuilder was using wrong time zone for text fields
+
 New features since 0.98
 -----------------------
 

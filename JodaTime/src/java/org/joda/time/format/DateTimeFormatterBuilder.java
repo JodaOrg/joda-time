@@ -1506,7 +1506,7 @@ public class DateTimeFormatterBuilder {
 
         protected String print(long instantLocal, Chronology chronoLocal,
                                long instant, Chronology chrono) {
-            DateTimeField field = iFieldType.getField(chrono);
+            DateTimeField field = iFieldType.getField(chronoLocal);
             if (iShort) {
                 return field.getAsShortText(instantLocal, iLocale);
             } else {

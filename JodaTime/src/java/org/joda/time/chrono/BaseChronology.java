@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
@@ -233,6 +234,67 @@ public abstract class BaseChronology
                 throw new IllegalArgumentException("Value " + values[i] +
                         " for " + fields[i].getName() + " is greater than maximum");
             }
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get the field from the type.
+     * <p>
+     * This method obtains the <code>DateTimeField</code> for the <code>DateTimeFieldType</code>.
+     * It is essentially a generic way of calling one of the field methods.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @return the chronology field
+     * @throws IllegalArgumentException if the field is null
+     */
+    public DateTimeField getField(DateTimeFieldType type) {
+        if (type == DateTimeFieldType.millisOfSecond()) {
+            return millisOfSecond();
+        } else if (type == DateTimeFieldType.millisOfDay()) {
+            return millisOfDay();
+        } else if (type == DateTimeFieldType.secondOfMinute()) {
+            return secondOfMinute();
+        } else if (type == DateTimeFieldType.secondOfDay()) {
+            return secondOfDay();
+        } else if (type == DateTimeFieldType.minuteOfHour()) {
+            return minuteOfHour();
+        } else if (type == DateTimeFieldType.minuteOfDay()) {
+            return minuteOfDay();
+        } else if (type == DateTimeFieldType.hourOfDay()) {
+            return hourOfDay();
+        } else if (type == DateTimeFieldType.hourOfHalfday()) {
+            return hourOfHalfday();
+        } else if (type == DateTimeFieldType.clockhourOfDay()) {
+            return clockhourOfDay();
+        } else if (type == DateTimeFieldType.halfdayOfDay()) {
+            return halfdayOfDay();
+        } else if (type == DateTimeFieldType.clockhourOfHalfday()) {
+            return clockhourOfHalfday();
+        } else if (type == DateTimeFieldType.dayOfWeek()) {
+            return dayOfWeek();
+        } else if (type == DateTimeFieldType.dayOfMonth()) {
+            return dayOfMonth();
+        } else if (type == DateTimeFieldType.dayOfYear()) {
+            return dayOfYear();
+        } else if (type == DateTimeFieldType.weekOfWeekyear()) {
+            return weekOfWeekyear();
+        } else if (type == DateTimeFieldType.weekyear()) {
+            return weekyear();
+        } else if (type == DateTimeFieldType.monthOfYear()) {
+            return monthOfYear();
+        } else if (type == DateTimeFieldType.year()) {
+            return year();
+        } else if (type == DateTimeFieldType.yearOfEra()) {
+            return yearOfEra();
+        } else if (type == DateTimeFieldType.yearOfCentury()) {
+            return yearOfCentury();
+        } else if (type == DateTimeFieldType.centuryOfEra()) {
+            return centuryOfEra();
+        } else if (type == DateTimeFieldType.era()) {
+            return era();
+        } else {
+            throw new IllegalArgumentException("Unrecognised field: " + type);
         }
     }
 

@@ -72,6 +72,18 @@ import java.util.Locale;
 public interface ReadableDateTime extends ReadableInstant {
 
     /**
+     * Get the value of one of the fields of a datetime.
+     * <p>
+     * This method uses the chronology of the datetime to obtain the value.
+     * It is essentially a generic way of calling one of the get methods.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @return the value of that field
+     * @throws IllegalArgumentException if the field is null
+     */
+    int get(DateTimeFieldType type);
+
+    /**
      * Get the day of week field value.
      * <p>
      * The values for the day of week are defined in {@link DateTimeConstants}.

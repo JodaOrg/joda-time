@@ -516,6 +516,19 @@ public abstract class Chronology {
      */
     public abstract void validate(ReadablePartial instant, int[] values);
 
+    //-----------------------------------------------------------------------
+    /**
+     * Get the field from the type.
+     * <p>
+     * This method obtains the <code>DateTimeField</code> for the <code>DateTimeFieldType</code>.
+     * It is essentially a generic way of calling one of the field methods.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @return the chronology field
+     * @throws IllegalArgumentException if the field is null
+     */
+    public abstract DateTimeField getField(DateTimeFieldType type);
+
     // Millis
     //-----------------------------------------------------------------------
     /**

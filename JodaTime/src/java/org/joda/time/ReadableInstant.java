@@ -95,13 +95,13 @@ public interface ReadableInstant extends Comparable {
     DateTimeZone getZone();
 
     /**
-     * Get the value of one of the fields of a datetime.
+     * Gets a value of the specified field, which is obtained from a Chronology.
      * <p>
-     * DateTimeField instances are generally obtained from a {@link Chronology} subclass.
-     * However, an application can create its own DateTimeField to manipulate the
-     * date time millis in new ways.
+     * Field instances are generally obtained from a {@link Chronology}.
+     * However, an application can create its own fields to manipulate the
+     * datetime millis in new ways.
      *
-     * @param field  a DateTimeField instance, usually obtained from a Chronology
+     * @param field  a field, usually obtained from a Chronology
      * @return the value of that field for the millis set in the implementation
      * @throws IllegalArgumentException if the field is null
      */

@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.InstantConverter;
 
 /**
  * DateTimeComparator provides comparators to compare one date with another.
@@ -88,12 +89,16 @@ public class DateTimeComparator implements Comparator, Serializable {
     private static final long serialVersionUID = -6097339773320178364L;
 
     /** Singleton instance */
-    private static final DateTimeComparator INSTANCE = new DateTimeComparator(null, null);
+    private static final DateTimeComparator ALL_INSTANCE = new DateTimeComparator(null, null);
+    /** Singleton instance */
+    private static final DateTimeComparator DATE_INSTANCE = new DateTimeComparator(DateTimeFieldType.dayOfYear(), null);
+    /** Singleton instance */
+    private static final DateTimeComparator TIME_INSTANCE = new DateTimeComparator(null, DateTimeFieldType.dayOfYear());
 
     /** The lower limit of fields to compare, null if no limit */
-    private final DateTimeField iLowerLimit;
+    private final DateTimeFieldType iLowerLimit;
     /** The upper limit of fields to compare, null if no limit */
-    private final DateTimeField iUpperLimit;
+    private final DateTimeFieldType iUpperLimit;
 
     //-----------------------------------------------------------------------
     /**
@@ -102,7 +107,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a comparator over all fields
      */
     public static DateTimeComparator getInstance() {
-        return INSTANCE;
+        return ALL_INSTANCE;
     }
 
     /**
@@ -112,7 +117,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
      * @return a comparator over all fields above the lower limit
      */
-    public static DateTimeComparator getInstance(DateTimeField lowerLimit) {
+    public static DateTimeComparator getInstance(DateTimeFieldType lowerLimit) {
         return getInstance(lowerLimit, null);
     }
 
@@ -126,17 +131,16 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @param lowerLimit  inclusive lower limit for fields to be compared, null means no limit
      * @param upperLimit  exclusive upper limit for fields to be compared, null means no limit
      * @return a comparator over all fields between the limits
-     * @throws IllegalArgumentException if the lower limit is greater than the upper
      */
-    public static DateTimeComparator getInstance(DateTimeField lowerLimit, DateTimeField upperLimit) {
+    public static DateTimeComparator getInstance(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
         if (lowerLimit == null && upperLimit == null) {
-            return INSTANCE;
+            return ALL_INSTANCE;
         }
-        if (lowerLimit != null && upperLimit != null) {
-            if (lowerLimit.getDurationField().getUnitMillis() > upperLimit.getDurationField().getUnitMillis()) {
-                throw new IllegalArgumentException("Lower limit greater than upper: " +
-                    lowerLimit.getName() + " > " + upperLimit.getName());
-            }
+        if (lowerLimit == DateTimeFieldType.dayOfYear() && upperLimit == null) {
+            return DATE_INSTANCE;
+        }
+        if (lowerLimit == null && upperLimit == DateTimeFieldType.dayOfYear()) {
+            return TIME_INSTANCE;
         }
         return new DateTimeComparator(lowerLimit, upperLimit);
     }
@@ -145,24 +149,20 @@ public class DateTimeComparator implements Comparator, Serializable {
      * Returns a comparator that only considers date fields.
      * Time of day is ignored.
      * 
-     * @param chrono  the chronology to use
      * @return a comparator over all date fields
      */
-    public static DateTimeComparator getDateOnlyInstance(Chronology chrono) {
-        chrono = DateTimeUtils.getChronology(chrono);
-        return getInstance(chrono.dayOfYear(), null);
+    public static DateTimeComparator getDateOnlyInstance() {
+        return DATE_INSTANCE;
     }
 
     /**
      * Returns a comparator that only considers time fields.
      * Date is ignored.
      * 
-     * @param chrono  the chronology to use
      * @return a comparator over all time fields
      */
-    public static DateTimeComparator getTimeOnlyInstance(Chronology chrono) {
-        chrono = DateTimeUtils.getChronology(chrono);
-        return getInstance(null, chrono.dayOfYear());
+    public static DateTimeComparator getTimeOnlyInstance() {
+        return TIME_INSTANCE;
     }
 
     /**
@@ -171,7 +171,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @param lowerLimit  the lower field limit, null means no limit
      * @param upperLimit  the upper field limit, null means no limit
      */
-    protected DateTimeComparator(DateTimeField lowerLimit, DateTimeField upperLimit) {
+    protected DateTimeComparator(DateTimeFieldType lowerLimit, DateTimeFieldType upperLimit) {
         super();
         iLowerLimit = lowerLimit;
         iUpperLimit = upperLimit;
@@ -179,20 +179,20 @@ public class DateTimeComparator implements Comparator, Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the field that represents the lower limit of comparison.
+     * Gets the field type that represents the lower limit of comparison.
      * 
-     * @return the field, null if no upper limit
+     * @return the field type, null if no upper limit
      */
-    public DateTimeField getLowerLimit() {
+    public DateTimeFieldType getLowerLimit() {
         return iLowerLimit;
     }
 
     /**
-     * Gets the field that represents the upper limit of comparison.
+     * Gets the field type that represents the upper limit of comparison.
      * 
-     * @return the field, null if no upper limit
+     * @return the field type, null if no upper limit
      */
-    public DateTimeField getUpperLimit() {
+    public DateTimeFieldType getUpperLimit() {
         return iUpperLimit;
     }
 
@@ -209,17 +209,22 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @throws IllegalArgumentException if either argument is not supported
      */
     public int compare(Object lhsObj, Object rhsObj) {
-        long lhsMillis = getMillisFromObject(lhsObj);
-        long rhsMillis = getMillisFromObject(rhsObj);
+        InstantConverter conv = ConverterManager.getInstance().getInstantConverter(lhsObj);
+        long lhsMillis = conv.getInstantMillis(lhsObj);
+        Chronology lhsChrono = conv.getChronology(lhsObj);
+        
+        conv = ConverterManager.getInstance().getInstantConverter(rhsObj);
+        long rhsMillis = conv.getInstantMillis(rhsObj);
+        Chronology rhsChrono = conv.getChronology(rhsObj);
 
         if (iLowerLimit != null) {
-            lhsMillis = iLowerLimit.roundFloor(lhsMillis);
-            rhsMillis = iLowerLimit.roundFloor(rhsMillis);
+            lhsMillis = lhsChrono.getField(iLowerLimit).roundFloor(lhsMillis);
+            rhsMillis = rhsChrono.getField(iLowerLimit).roundFloor(rhsMillis);
         }
 
         if (iUpperLimit != null) {
-            lhsMillis = iUpperLimit.remainder(lhsMillis);
-            rhsMillis = iUpperLimit.remainder(rhsMillis);
+            lhsMillis = lhsChrono.getField(iUpperLimit).remainder(lhsMillis);
+            rhsMillis = rhsChrono.getField(iUpperLimit).remainder(rhsMillis);
         }
 
         if (lhsMillis < rhsMillis) {
@@ -229,16 +234,6 @@ public class DateTimeComparator implements Comparator, Serializable {
         } else {
             return 0;
         }
-    }
-
-    /**
-     * Gets the millisecond value from an object using the converter system.
-     * 
-     * @param obj  the object to convert
-     * @return millis since the epoch
-     */
-    private static long getMillisFromObject(Object obj) {
-        return ConverterManager.getInstance().getInstantConverter(obj).getInstantMillis(obj);
     }
 
     //-----------------------------------------------------------------------

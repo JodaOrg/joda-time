@@ -55,6 +55,7 @@ package org.joda.time.base;
 
 import java.util.Locale;
 
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -84,6 +85,21 @@ public abstract class AbstractDateTime
      */
     protected AbstractDateTime() {
         super();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get the value of one of the fields of a datetime.
+     * <p>
+     * This method uses the chronology of the datetime to obtain the value.
+     * It is essentially a generic way of calling one of the get methods.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType
+     * @return the value of that field
+     * @throws IllegalArgumentException if the field is null
+     */
+    public int get(DateTimeFieldType type) {
+        return getChronology().getField(type).get(getMillis());
     }
 
     //-----------------------------------------------------------------------

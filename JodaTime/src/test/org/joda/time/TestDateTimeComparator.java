@@ -174,20 +174,21 @@ public class TestDateTimeComparator extends TestCase {
 
         // super.setUp();
         // Obtain comparator's
-        cMillis = DateTimeComparator.getInstance(null, chrono.secondOfMinute());
-        cSecond = DateTimeComparator.getInstance(chrono.secondOfMinute(), chrono.minuteOfHour());
-        cMinute = DateTimeComparator.getInstance(chrono.minuteOfHour(), chrono.hourOfDay());
-        cHour = DateTimeComparator.getInstance(chrono.hourOfDay(), chrono.dayOfYear());
-        cDayOfWeek = DateTimeComparator.getInstance(chrono.dayOfWeek(), chrono.weekOfWeekyear());
-        cDayOfMonth = DateTimeComparator.getInstance(chrono.dayOfMonth(), chrono.monthOfYear());
-        cDayOfYear = DateTimeComparator.getInstance(chrono.dayOfYear(), chrono.year());
-        cWeekOfWeekyear = DateTimeComparator.getInstance(chrono.weekOfWeekyear(), chrono.weekyear());
-        cWeekyear = DateTimeComparator.getInstance(chrono.weekyear());
-        cMonth = DateTimeComparator.getInstance(chrono.monthOfYear(), chrono.year());
-        cYear = DateTimeComparator.getInstance(chrono.year());
-        cDate = DateTimeComparator.getDateOnlyInstance(chrono);
-        cTime = DateTimeComparator.getTimeOnlyInstance(chrono);
+        cMillis = DateTimeComparator.getInstance(null, DateTimeFieldType.secondOfMinute());
+        cSecond = DateTimeComparator.getInstance(DateTimeFieldType.secondOfMinute(), DateTimeFieldType.minuteOfHour());
+        cMinute = DateTimeComparator.getInstance(DateTimeFieldType.minuteOfHour(), DateTimeFieldType.hourOfDay());
+        cHour = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
+        cDayOfWeek = DateTimeComparator.getInstance(DateTimeFieldType.dayOfWeek(), DateTimeFieldType.weekOfWeekyear());
+        cDayOfMonth = DateTimeComparator.getInstance(DateTimeFieldType.dayOfMonth(), DateTimeFieldType.monthOfYear());
+        cDayOfYear = DateTimeComparator.getInstance(DateTimeFieldType.dayOfYear(), DateTimeFieldType.year());
+        cWeekOfWeekyear = DateTimeComparator.getInstance(DateTimeFieldType.weekOfWeekyear(), DateTimeFieldType.weekyear());
+        cWeekyear = DateTimeComparator.getInstance(DateTimeFieldType.weekyear());
+        cMonth = DateTimeComparator.getInstance(DateTimeFieldType.monthOfYear(), DateTimeFieldType.year());
+        cYear = DateTimeComparator.getInstance(DateTimeFieldType.year());
+        cDate = DateTimeComparator.getDateOnlyInstance();
+        cTime = DateTimeComparator.getTimeOnlyInstance();
     }
+
     /**
      * Junit <code>tearDown()</code> method.
      */
@@ -227,28 +228,24 @@ public class TestDateTimeComparator extends TestCase {
         assertEquals("DateTimeComparator[]", c.toString());
     }        
     public void testStaticGetDateOnlyInstance() {
-        DateTimeComparator c = DateTimeComparator.getDateOnlyInstance(ISO);
-        assertEquals(ISO.dayOfYear(), c.getLowerLimit());
+        DateTimeComparator c = DateTimeComparator.getDateOnlyInstance();
+        assertEquals(DateTimeFieldType.dayOfYear(), c.getLowerLimit());
         assertEquals(null, c.getUpperLimit());
         assertEquals("DateTimeComparator[dayOfYear-]", c.toString());
         
-        c = DateTimeComparator.getDateOnlyInstance(null);
-        assertEquals(ISO.dayOfYear(), c.getLowerLimit());
-        assertEquals(null, c.getUpperLimit());
+        assertSame(DateTimeComparator.getDateOnlyInstance(), DateTimeComparator.getDateOnlyInstance());
     }
     public void testStaticGetTimeOnlyInstance() {
-        DateTimeComparator c = DateTimeComparator.getTimeOnlyInstance(ISO);
+        DateTimeComparator c = DateTimeComparator.getTimeOnlyInstance();
         assertEquals(null, c.getLowerLimit());
-        assertEquals(ISO.dayOfYear(), c.getUpperLimit());
+        assertEquals(DateTimeFieldType.dayOfYear(), c.getUpperLimit());
         assertEquals("DateTimeComparator[-dayOfYear]", c.toString());
         
-        c = DateTimeComparator.getTimeOnlyInstance(null);
-        assertEquals(null, c.getLowerLimit());
-        assertEquals(ISO.dayOfYear(), c.getUpperLimit());
+        assertSame(DateTimeComparator.getTimeOnlyInstance(), DateTimeComparator.getTimeOnlyInstance());
     }
     public void testStaticGetInstanceLower() {
-        DateTimeComparator c = DateTimeComparator.getInstance(ISO.hourOfDay());
-        assertEquals(ISO.hourOfDay(), c.getLowerLimit());
+        DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay());
+        assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
         assertEquals(null, c.getUpperLimit());
         assertEquals("DateTimeComparator[hourOfDay-]", c.toString());
         
@@ -256,23 +253,24 @@ public class TestDateTimeComparator extends TestCase {
         assertSame(DateTimeComparator.getInstance(), c);
     }
     public void testStaticGetInstanceLowerUpper() {
-        DateTimeComparator c = DateTimeComparator.getInstance(ISO.hourOfDay(), ISO.dayOfYear());
-        assertEquals(ISO.hourOfDay(), c.getLowerLimit());
-        assertEquals(ISO.dayOfYear(), c.getUpperLimit());
+        DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
+        assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
+        assertEquals(DateTimeFieldType.dayOfYear(), c.getUpperLimit());
         assertEquals("DateTimeComparator[hourOfDay-dayOfYear]", c.toString());
         
-        c = DateTimeComparator.getInstance(ISO.hourOfDay(), ISO.hourOfDay());
-        assertEquals(ISO.hourOfDay(), c.getLowerLimit());
-        assertEquals(ISO.hourOfDay(), c.getUpperLimit());
+        c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.hourOfDay());
+        assertEquals(DateTimeFieldType.hourOfDay(), c.getLowerLimit());
+        assertEquals(DateTimeFieldType.hourOfDay(), c.getUpperLimit());
         assertEquals("DateTimeComparator[hourOfDay]", c.toString());
         
         c = DateTimeComparator.getInstance(null, null);
         assertSame(DateTimeComparator.getInstance(), c);
         
-        try {
-            DateTimeComparator.getInstance(ISO.dayOfYear(), ISO.hourOfDay());
-            fail();
-        } catch (IllegalArgumentException ex) {}
+        c = DateTimeComparator.getInstance(DateTimeFieldType.dayOfYear(), null);
+        assertSame(DateTimeComparator.getDateOnlyInstance(), c);
+        
+        c = DateTimeComparator.getInstance(null, DateTimeFieldType.dayOfYear());
+        assertSame(DateTimeComparator.getTimeOnlyInstance(), c);
     }
     
     //-----------------------------------------------------------------------
@@ -282,14 +280,14 @@ public class TestDateTimeComparator extends TestCase {
         assertEquals(false, c1.equals(null));
         assertEquals(true, c1.hashCode() == c1.hashCode());
         
-        DateTimeComparator c2 = DateTimeComparator.getTimeOnlyInstance(ISOChronology.getInstance());
+        DateTimeComparator c2 = DateTimeComparator.getTimeOnlyInstance();
         assertEquals(true, c2.equals(c2));
         assertEquals(false, c2.equals(c1));
         assertEquals(false, c1.equals(c2));
         assertEquals(false, c2.equals(null));
         assertEquals(false, c1.hashCode() == c2.hashCode());
         
-        DateTimeComparator c3 = DateTimeComparator.getTimeOnlyInstance(ISOChronology.getInstance());
+        DateTimeComparator c3 = DateTimeComparator.getTimeOnlyInstance();
         assertEquals(true, c3.equals(c3));
         assertEquals(false, c3.equals(c1));
         assertEquals(true, c3.equals(c2));
@@ -298,7 +296,7 @@ public class TestDateTimeComparator extends TestCase {
         assertEquals(false, c1.hashCode() == c3.hashCode());
         assertEquals(true, c2.hashCode() == c3.hashCode());
         
-        DateTimeComparator c4 = DateTimeComparator.getDateOnlyInstance(ISOChronology.getInstance());
+        DateTimeComparator c4 = DateTimeComparator.getDateOnlyInstance();
         assertEquals(false, c4.hashCode() == c3.hashCode());
     }
     
@@ -306,7 +304,7 @@ public class TestDateTimeComparator extends TestCase {
     public void testSerialization1() throws Exception {
         DateTimeField f = ISO.dayOfYear();
         f.toString();
-        DateTimeComparator c = DateTimeComparator.getInstance(ISO.hourOfDay(), ISO.dayOfYear());
+        DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);

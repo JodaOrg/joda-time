@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,12 +63,12 @@ import org.joda.time.ReadablePartial;
  * it's maximum. This is particularly useful for implementing an clockhourOfDay
  * field, where the midnight value of 0 is replaced with 24.
  * <p>
- * NonZeroDateTimeField is thread-safe and immutable.
+ * ZeroIsMaxDateTimeField is thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class NonZeroDateTimeField extends DecoratedDateTimeField {
+public final class ZeroIsMaxDateTimeField extends DecoratedDateTimeField {
 
     private static final long serialVersionUID = 961749798233026866L;
 
@@ -79,7 +79,7 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
      * @param type  the field type this field will actually use
      * @throws IllegalArgumentException if wrapped field's minimum value is not zero
      */
-    public NonZeroDateTimeField(DateTimeField field, DateTimeFieldType type) {
+    public ZeroIsMaxDateTimeField(DateTimeField field, DateTimeFieldType type) {
         super(field, type);
         if (field.getMinimumValue() != 0) {
             throw new IllegalArgumentException("Wrapped field's minumum value must be zero");

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.
+ * Copyright (c) 2001-2005 Stephen Colebourne.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.MillisDurationField;
-import org.joda.time.field.NonZeroDateTimeField;
+import org.joda.time.field.ZeroIsMaxDateTimeField;
 import org.joda.time.field.OffsetDateTimeField;
 import org.joda.time.field.PreciseDateTimeField;
 import org.joda.time.field.PreciseDurationField;
@@ -182,10 +182,10 @@ public abstract class BaseGJChronology extends AssembledChronology {
         cHourOfHalfdayField = new PreciseDateTimeField
             (DateTimeFieldType.hourOfHalfday(), cHoursField, cHalfdaysField);
 
-        cClockhourOfDayField = new NonZeroDateTimeField
+        cClockhourOfDayField = new ZeroIsMaxDateTimeField
             (cHourOfDayField, DateTimeFieldType.clockhourOfDay());
 
-        cClockhourOfHalfdayField = new NonZeroDateTimeField
+        cClockhourOfHalfdayField = new ZeroIsMaxDateTimeField
             (cHourOfHalfdayField, DateTimeFieldType.clockhourOfHalfday());
 
         cHalfdayOfDayField = new HalfdayField();

@@ -57,6 +57,19 @@ import java.io.Serializable;
 
 /**
  * Identifies a field, such as year or minuteOfHour, in a chronology-neutral way.
+ * <p>
+ * A field type defines the type of the field, such as hourOfDay.
+ * If does not directly enable any calculations, however it does provide a
+ * {@link #getField(Chronology)} method that returns the actual calculation engine
+ * for a particular chronology.
+ * It also provides access to the related {@link DurationFieldType}s.
+ * <p>
+ * Instances of <code>DateTimeFieldType</code> are singletons.
+ * They can be compared using <code>==</code>.
+ * <p>
+ * If required, you can create your own field, for example a quarterOfYear.
+ * You must create a subclass of <code>DateTimeFieldType</code> that defines the field type.
+ * This class returns the actual calculation engine from {@link #getField(Chronology)}.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill

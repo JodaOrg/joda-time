@@ -88,6 +88,8 @@ public class ISOPeriodFormat {
      * Milliseconds are not output.
      * Note that the ISO8601 standard actually indicates weeks should not
      * be shown if any other field is present and vice versa.
+     * 
+     * @return the formatter
      */
     public PeriodFormatter standard() {
         if (iStandard == null) {
@@ -114,7 +116,12 @@ public class ISOPeriodFormat {
     }
 
     /**
-     * PyyyymmddThhmmss
+     * The alternate ISO format, PyyyymmddThhmmss, which excludes weeks.
+     * <p>
+     * Even if weeks are present in the period, they are not output.
+     * Fractional seconds (milliseconds) will appear if required.
+     * 
+     * @return the formatter
      */
     public PeriodFormatter alternate() {
         if (iAlternate == null) {
@@ -136,7 +143,12 @@ public class ISOPeriodFormat {
     }
 
     /**
-     * Pyyyy-mm-ddThh:mm:ss
+     * The alternate ISO format, Pyyyy-mm-ddThh:mm:ss, which excludes weeks.
+     * <p>
+     * Even if weeks are present in the period, they are not output.
+     * Fractional seconds (milliseconds) will appear if required.
+     * 
+     * @return the formatter
      */
     public PeriodFormatter alternateExtended() {
         if (iAlternateExtended == null) {
@@ -162,7 +174,12 @@ public class ISOPeriodFormat {
     }
 
     /**
-     * PyyyyWwwddThhmmss
+     * The alternate ISO format, PyyyyWwwddThhmmss, which excludes months.
+     * <p>
+     * Even if months are present in the period, they are not output.
+     * Fractional seconds (milliseconds) will appear if required.
+     * 
+     * @return the formatter
      */
     public PeriodFormatter alternateWithWeeks() {
         if (iAlternateWithWeeks == null) {
@@ -185,7 +202,12 @@ public class ISOPeriodFormat {
     }
 
     /**
-     * Pyyyy-Www-ddThh:mm:ss
+     * The alternate ISO format, Pyyyy-Www-ddThh:mm:ss, which excludes months.
+     * <p>
+     * Even if months are present in the period, they are not output.
+     * Fractional seconds (milliseconds) will appear if required.
+     * 
+     * @return the formatter
      */
     public PeriodFormatter alternateExtendedWithWeeks() {
         if (iAlternateExtendedWihWeeks == null) {

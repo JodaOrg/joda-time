@@ -56,7 +56,19 @@ package org.joda.time;
 import java.io.Serializable;
 
 /**
- * Identifies a field, such as year or minutes, in a chronology-neutral way.
+ * Identifies a duration field, such as years or minutes, in a chronology-neutral way.
+ * <p>
+ * A duration field type defines the type of the field, such as hours.
+ * If does not directly enable any calculations, however it does provide a
+ * {@link #getField(Chronology)} method that returns the actual calculation engine
+ * for a particular chronology.
+ * <p>
+ * Instances of <code>DurationFieldType</code> are singletons.
+ * They can be compared using <code>==</code>.
+ * <p>
+ * If required, you can create your own field, for example a quarters.
+ * You must create a subclass of <code>DurationFieldType</code> that defines the field type.
+ * This class returns the actual calculation engine from {@link #getField(Chronology)}.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill

@@ -74,8 +74,8 @@ public class TestPeriodFormatterBuilder extends TestCase {
     
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-    private static final Period EMPTY_YEAR_DAY_PERIOD = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.getYearDayType());
-    private static final Period YEAR_DAY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.getYearDayType());
+    private static final Period YEAR_DAY_PERIOD = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.getYearDayType());
+    private static final Period EMPTY_YEAR_DAY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.getYearDayType());
     private static final Period TIME_PERIOD = new Period(0, 0, 0, 0, 5, 6, 7, 8);
     private static final Period DATE_PERIOD = new Period(1, 2, 3, 4, 0, 0, 0, 0);
 
@@ -419,13 +419,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(7, f.calculatePrintedLength(PERIOD));
         assertEquals(4, f.countFieldsToPrint(PERIOD));
         
-        assertEquals("---0", f.print(YEAR_DAY_PERIOD));
-        assertEquals(4, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(1, f.countFieldsToPrint(YEAR_DAY_PERIOD));
+        assertEquals("---0", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(4, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(1, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
         
-        assertEquals("1---4", f.print(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(5, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(2, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("---0", f.print(EMPTY_PERIOD));
         assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
@@ -444,13 +444,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(7, f.calculatePrintedLength(PERIOD));
         assertEquals(4, f.countFieldsToPrint(PERIOD));
         
-        assertEquals("---0", f.print(YEAR_DAY_PERIOD));
-        assertEquals(4, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(1, f.countFieldsToPrint(YEAR_DAY_PERIOD));
+        assertEquals("---0", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(4, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(1, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
         
-        assertEquals("1---4", f.print(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(5, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(2, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("---0", f.print(EMPTY_PERIOD));
         assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
@@ -469,13 +469,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(7, f.calculatePrintedLength(PERIOD));
         assertEquals(4, f.countFieldsToPrint(PERIOD));
         
-        assertEquals("0---", f.print(YEAR_DAY_PERIOD));
-        assertEquals(4, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(1, f.countFieldsToPrint(YEAR_DAY_PERIOD));
+        assertEquals("0---", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(4, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(1, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
         
-        assertEquals("1---4", f.print(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(5, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(2, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("0---", f.print(EMPTY_PERIOD));
         assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
@@ -494,13 +494,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(7, f.calculatePrintedLength(PERIOD));
         assertEquals(4, f.countFieldsToPrint(PERIOD));
         
-        assertEquals("---0", f.print(YEAR_DAY_PERIOD));
-        assertEquals(4, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(1, f.countFieldsToPrint(YEAR_DAY_PERIOD));
+        assertEquals("---0", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(4, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(1, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
         
-        assertEquals("1---4", f.print(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(5, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(2, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("---0", f.print(EMPTY_PERIOD));
         assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
@@ -519,13 +519,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(7, f.calculatePrintedLength(PERIOD));
         assertEquals(4, f.countFieldsToPrint(PERIOD));
         
-        assertEquals("0---0", f.print(YEAR_DAY_PERIOD));
-        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
-        
-        assertEquals("1---4", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("0---0", f.print(EMPTY_YEAR_DAY_PERIOD));
         assertEquals(5, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
         assertEquals(2, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        
+        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("0-0-0-0", f.print(EMPTY_PERIOD));
         assertEquals(7, f.calculatePrintedLength(EMPTY_PERIOD));
@@ -544,13 +544,13 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(7, f.calculatePrintedLength(PERIOD));
         assertEquals(4, f.countFieldsToPrint(PERIOD));
         
-        assertEquals("0-0-0-0", f.print(YEAR_DAY_PERIOD));
-        assertEquals(7, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(4, f.countFieldsToPrint(YEAR_DAY_PERIOD));
-        
-        assertEquals("1-0-0-4", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals("0-0-0-0", f.print(EMPTY_YEAR_DAY_PERIOD));
         assertEquals(7, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
         assertEquals(4, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        
+        assertEquals("1-0-0-4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(7, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(4, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("0-0-0-0", f.print(EMPTY_PERIOD));
         assertEquals(7, f.calculatePrintedLength(EMPTY_PERIOD));

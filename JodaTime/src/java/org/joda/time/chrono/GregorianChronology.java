@@ -65,6 +65,19 @@ import org.joda.time.field.OffsetDateTimeField;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
+ * Implements a pure proleptic Gregorian calendar system, which defines every
+ * fourth year as leap, unless the year is divisible by 100 and not by 400.
+ * This improves upon the Julian calendar leap year rule.
+ * <p>
+ * Although the Gregorian calendar did not exist before 1582 CE, this
+ * chronology assumes it did, thus it is proleptic. This implementation also
+ * fixes the start of the year at January 1, and defines the year zero.
+ * <p>
+ * GregorianChronology is thread-safe and immutable.
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Wikipedia</a>
+ * @see JulianChronology
+ * @see GJChronology
  * 
  * @author Guy Allard
  * @author Stephen Colebourne

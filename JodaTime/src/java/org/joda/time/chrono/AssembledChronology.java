@@ -453,6 +453,9 @@ public abstract class AssembledChronology extends AbstractChronology {
         setFields();
     }
 
+    /**
+     * A container of fields used for assembling a chronology.
+     */
     public static final class Fields {
         public DurationField millis;
         public DurationField seconds;

@@ -70,7 +70,12 @@ import org.joda.time.field.PreciseDurationField;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
- *
+ * Base class for implementing chronologies based on Gregorian/Julian formulas.
+ * Most of the utility methods required by subclasses are package-private,
+ * reflecting the intention that they be defined in the same package.
+ * <p>
+ * AbstractGJChronology is thread-safe and immutable, and all subclasses must
+ * be as well.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill

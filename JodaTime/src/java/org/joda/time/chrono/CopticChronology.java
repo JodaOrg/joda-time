@@ -64,7 +64,19 @@ import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationField;
 
 /**
- * 
+ * Implements a Coptic calendar system, which defines every fourth year as
+ * leap, much like the Julian calendar. The year is broken down into 12 months,
+ * each 30 days in length. An extra period at the end of the year is either 5
+ * or 6 days in length. In this implementation, it is considered a 13th month.
+ * <p>
+ * Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
+ * Coptic years do not begin at the same time as Julian years. This chronology
+ * is not proleptic, as it does not allow dates before the first Coptic year.
+ * <p>
+ * CopticChronology is thread-safe and immutable.
+ *
+ * @see <a href="http://en.wikipedia.org/wiki/Coptic_calendar">Wikipedia</a>
+ * @see JulianChronology
  *
  * @author Brian S O'Neill
  */

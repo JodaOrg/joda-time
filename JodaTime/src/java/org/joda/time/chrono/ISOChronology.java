@@ -71,6 +71,12 @@ import org.joda.time.field.RemainderDateTimeField;
  * does not define a field, but it can be determined (such as AM/PM)
  * it is included.
  * <p>
+ * With the exception of century related fields, ISOChronology is exactly the
+ * same as {@link GregorianChronology}. In this chronology, centuries and year
+ * of century are zero based. For CE years, the century is determined by
+ * dropping the last two digits of the year. The year of century is the value
+ * of the last two digits.
+ * <p>
  * ISOChronology is thread-safe and immutable.
  *
  * @author Stephen Colebourne

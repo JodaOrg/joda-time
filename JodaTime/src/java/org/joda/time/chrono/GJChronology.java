@@ -81,11 +81,11 @@ import org.joda.time.format.ISODateTimeFormat;
  * Gregorian calendar was first instituted, October 15, 1582.
  * <p>
  * Before this date, this chronology uses the proleptic Julian calendar
- * (proleptic means extending indefinitely). The Julian calendar has leap 
- * years every four years, whereas the Gregorian has special rules for 100 
- * and 400 years. A meaningful result will thus be obtained for all input 
- * values. However before March 1, 4 CE, Julian leap years were irregular,
- * and before 45 BCE there was no Julian calendar.
+ * (proleptic means extending indefinitely). The Julian calendar has leap years
+ * every four years, whereas the Gregorian has special rules for 100 and 400
+ * years. A meaningful result will thus be obtained for all input values.
+ * However before 8 CE, Julian leap years were irregular, and before 45 BCE
+ * there was no Julian calendar.
  * <p>
  * This chronology differs from {@link java.util.GregorianCalendar
  * java.util.GregorianCalendar} in that years in BCE are returned
@@ -95,7 +95,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * The Julian calendar does not have a year zero, and so year -1 is followed by
  * year 1. If the Gregorian cutover date is specified at or before year -1
  * (Julian), year zero is defined. In other words, the proleptic Gregorian
- * chronology implemented by this class has a year zero.
+ * chronology used by this class has a year zero.
  * <p>
  * To create a pure proleptic Julian chronology, use {@link JulianChronology},
  * and to create a pure proleptic Gregorian chronology, use

@@ -65,9 +65,6 @@ import org.joda.time.ReadablePartial;
  * Defines an interface for creating textual representations of datetimes.
  * <p>
  * Instances of this interface are provided by the various builder classes.
- * <p>
- * Note: This interface represents a view onto {@link BaseDateTimeFormatter}.
- * All implementations must extend <code>BaseDateTimeFormatter</code>.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
@@ -77,6 +74,14 @@ import org.joda.time.ReadablePartial;
  * @since 1.0
  */
 public interface DateTimePrinter {
+
+    /**
+     * Returns the expected maximum number of characters produced. The actual
+     * amount should rarely exceed this estimate.
+     * 
+     * @return the estimated length
+     */
+    int estimatePrintedLength();
 
     /**
      * Prints a ReadableInstant, using the chronology supplied by the instant.
@@ -157,6 +162,35 @@ public interface DateTimePrinter {
 
     //-----------------------------------------------------------------------
     /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * using the given Chronology.
+     *
+     * @param buf  formatted instant is appended to this buffer
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param chrono  the chronology to use, null means ISO default
+     * @param displayOffset  if a time zone offset is printed, force it to use
+     * this millisecond value
+     * @param displayZone  if a time zone is printed, force it to use this one
+     */
+    void printTo(StringBuffer buf, long instant, Chronology chrono,
+                 int displayOffset, DateTimeZone displayZone);
+
+    /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * using the given Chronology.
+     *
+     * @param out  formatted instant is written out
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param chrono  the chronology to use, null means ISO default
+     * @param displayOffset  if a time zone offset is printed, force it to use
+     * this millisecond value
+     * @param displayZone  if a time zone is printed, force it to use this one
+     */
+    void printTo(Writer out, long instant, Chronology chrono,
+                 int displayOffset, DateTimeZone displayZone) throws IOException;
+
+    //-----------------------------------------------------------------------
+    /**
      * Prints a ReadablePartial.
      *
      * @param buf  formatted partial is appended to this buffer
@@ -209,6 +243,19 @@ public interface DateTimePrinter {
      * @return the printed result
      */
     String print(long instant, Chronology chrono);
+
+    /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * using the given chronology.
+     *
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param chrono  the chronoogy to use
+     * @param displayOffset  if a time zone offset is printed, force it to use
+     * this millisecond value
+     * @param displayZone  if a time zone is printed, force it to use this one
+     * @return the printed result
+     */
+    String print(long instant, Chronology chrono, int displayOffset, DateTimeZone displayZone);
 
     /**
      * Prints a ReadablePartial to a new String.

@@ -634,76 +634,99 @@ public class DateTimeFormat {
      * A fake formatter that can only print.
      */
     static class FPrinter implements DateTimeFormatter {
-        private final DateTimePrinter mPrinter;
+        private final DateTimePrinter iPrinter;
 
         FPrinter(DateTimePrinter printer) {
             super();
-            mPrinter = printer;
+            iPrinter = printer;
+        }
+
+        public int estimatePrintedLength() {
+            return iPrinter.estimatePrintedLength();
         }
 
         public void printTo(StringBuffer buf, ReadableInstant instant) {
-            mPrinter.printTo(buf, instant);
+            iPrinter.printTo(buf, instant);
         }
 
         public void printTo(Writer out, ReadableInstant instant) throws IOException {
-            mPrinter.printTo(out, instant);
+            iPrinter.printTo(out, instant);
         }
 
         public void printTo(StringBuffer buf, long instant) {
-            mPrinter.printTo(buf, instant);
+            iPrinter.printTo(buf, instant);
         }
 
         public void printTo(Writer out, long instant) throws IOException {
-            mPrinter.printTo(out, instant);
+            iPrinter.printTo(out, instant);
         }
 
         public void printTo(StringBuffer buf, long instant, DateTimeZone zone) {
-            mPrinter.printTo(buf, instant, zone);
+            iPrinter.printTo(buf, instant, zone);
         }
 
         public void printTo(Writer out, long instant, DateTimeZone zone)
             throws IOException {
-            mPrinter.printTo(out, instant, zone);
+            iPrinter.printTo(out, instant, zone);
         }
 
         public void printTo(StringBuffer buf, long instant, Chronology chrono) {
-            mPrinter.printTo(buf, instant, chrono);
+            iPrinter.printTo(buf, instant, chrono);
         }
 
         public void printTo(Writer out, long instant, Chronology chrono) throws IOException {
-            mPrinter.printTo(out, instant, chrono);
+            iPrinter.printTo(out, instant, chrono);
+        }
+
+        public void printTo(StringBuffer buf, long instant, Chronology chrono,
+                            int displayOffset, DateTimeZone displayZone) {
+            iPrinter.printTo(buf, instant, chrono, displayOffset, displayZone);
+        }
+
+        public void printTo(Writer out, long instant, Chronology chrono,
+                            int displayOffset, DateTimeZone displayZone) throws IOException {
+            iPrinter.printTo(out, instant, chrono, displayOffset, displayZone);
         }
 
         public void printTo(StringBuffer buf, ReadablePartial instant) {
-            mPrinter.printTo(buf, instant);
+            iPrinter.printTo(buf, instant);
         }
 
         public void printTo(Writer out, ReadablePartial instant) throws IOException {
-            mPrinter.printTo(out, instant);
+            iPrinter.printTo(out, instant);
         }
 
         public String print(ReadableInstant instant) {
-            return mPrinter.print(instant);
+            return iPrinter.print(instant);
         }
 
         public String print(long instant) {
-            return mPrinter.print(instant);
+            return iPrinter.print(instant);
         }
 
         public String print(long instant, DateTimeZone zone) {
-            return mPrinter.print(instant, zone);
+            return iPrinter.print(instant, zone);
         }
 
         public String print(long instant, Chronology chrono) {
-            return mPrinter.print(instant, chrono);
+            return iPrinter.print(instant, chrono);
+        }
+
+        public String print(long instant, Chronology chrono,
+                            int displayOffset, DateTimeZone displayZone) {
+            return iPrinter.print(instant, chrono, displayOffset, displayZone);
         }
 
         public String print(ReadablePartial partial) {
-            return mPrinter.print(partial);
+            return iPrinter.print(partial);
         }
 
         public int estimateParsedLength() {
             return 0;
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            throw unsupported();
         }
 
         public int parseInto(ReadWritableInstant instant, String text, int position) {
@@ -761,11 +784,15 @@ public class DateTimeFormat {
      * A fake formatter that can only parse.
      */
     static class FParser implements DateTimeFormatter {
-        private final DateTimeParser mParser;
+        private final DateTimeParser iParser;
 
         FParser(DateTimeParser parser) {
             super();
-            mParser = parser;
+            iParser = parser;
+        }
+
+        public int estimatePrintedLength() {
+            return 0;
         }
 
         public void printTo(StringBuffer buf, ReadableInstant instant) {
@@ -800,6 +827,16 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
+        public void printTo(StringBuffer buf, long instant, Chronology chrono,
+                            int displayOffset, DateTimeZone displayZone) {
+            throw unsupported();
+        }
+
+        public void printTo(Writer out, long instant, Chronology chrono,
+                            int displayOffset, DateTimeZone displayZone) throws IOException {
+            throw unsupported();
+        }
+
         public void printTo(StringBuffer buf, ReadablePartial instant) {
             throw unsupported();
         }
@@ -824,52 +861,65 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
+        public String print(long instant, Chronology chrono,
+                            int displayOffset, DateTimeZone displayZone) {
+            throw unsupported();
+        }
+
         public String print(ReadablePartial partial) {
             throw unsupported();
         }
 
+        public int estimateParsedLength() {
+            return iParser.estimateParsedLength();
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            return iParser.parseInto(bucket, text, position);
+        }
+
         public int parseInto(ReadWritableInstant instant, String text, int position) {
-            return mParser.parseInto(instant, text, position);
+            return iParser.parseInto(instant, text, position);
         }
 
         public long parseMillis(String text) {
-            return mParser.parseMillis(text);
+            return iParser.parseMillis(text);
         }
 
         public long parseMillis(String text, Chronology chrono) {
-            return mParser.parseMillis(text, chrono);
+            return iParser.parseMillis(text, chrono);
         }
 
         public long parseMillis(String text, long instant) {
-            return mParser.parseMillis(text, instant);
+            return iParser.parseMillis(text, instant);
         }
 
         public long parseMillis(String text, long instant, Chronology chrono) {
-            return mParser.parseMillis(text, instant, chrono);
+            return iParser.parseMillis(text, instant, chrono);
         }
 
         public DateTime parseDateTime(String text) {
-            return mParser.parseDateTime(text);
+            return iParser.parseDateTime(text);
         }
 
         public DateTime parseDateTime(String text, Chronology chrono) {
-            return mParser.parseDateTime(text, chrono);
+            return iParser.parseDateTime(text, chrono);
         }
 
         public DateTime parseDateTime(String text, ReadableInstant instant) {
-            return mParser.parseDateTime(text, instant);
+            return iParser.parseDateTime(text, instant);
         }
 
         public MutableDateTime parseMutableDateTime(String text) {
-            return mParser.parseMutableDateTime(text);
+            return iParser.parseMutableDateTime(text);
         }
 
         public MutableDateTime parseMutableDateTime(String text, Chronology chrono) {
-            return mParser.parseMutableDateTime(text, chrono);
+            return iParser.parseMutableDateTime(text, chrono);
         }
 
         public MutableDateTime parseMutableDateTime(String text, ReadableInstant instant) {
-            return mParser.parseMutableDateTime(text, instant);
+            return iParser.parseMutableDateTime(text, instant);
         }
 
         private UnsupportedOperationException unsupported() {

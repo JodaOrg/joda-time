@@ -121,24 +121,71 @@ public class DateTimeFormat {
      */
     private static Map cInstanceCache = new HashMap(7);
 
+    /** Maps patterns to formatters, static as patterns don't vary by locale. */
+    private static Map cPatternedCache = new HashMap(7);
+
+    /** Maps styles to formatters, instance as styles vary by locale */
+    private Map iStyledCache = new HashMap(7);
+
+    /** The locale to use */
+    private final Locale iLocale;
+
     //-----------------------------------------------------------------------
     /**
-     * Gets an instance of the formatter provider that works with the default locale.
-     * 
-     * @return a format provider
+     * Factory to create a formatter from a pattern string.
+     * The pattern string is encoded as per SimpleDateFormat.
+     *
+     * @param pattern  pattern specification
+     * @throws IllegalArgumentException if the pattern is invalid
+     * @see #appendPatternTo
      */
-    public static DateTimeFormat getInstance() {
-        return getInstance(Locale.getDefault());
+    public static DateTimeFormatter forPattern(String pattern) {
+        return getInstance(null).createFormatterForPattern(pattern);
     }
 
+    /**
+     * Factory to create a format from a two character style pattern.
+     * <p>
+     * The first character is the date style, and the second character is the
+     * time style. Specify a character of 'S' for short style, 'M' for medium,
+     * 'L' for long, and 'F' for full.
+     * A date or time may be ommitted by specifying a style character '-'.
+     *
+     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
+     * @throws IllegalArgumentException if the style is invalid
+     */
+    public static DateTimeFormatter forStyle(String style) {
+        return getInstance(null).createFormatterForStyle(style);
+    }
+
+    /**
+     * Factory to create a format from a two character style pattern using
+     * the appropriate datetime format for the specified locale.
+     * <p>
+     * The first character is the date style, and the second character is the
+     * time style. Specify a character of 'S' for short style, 'M' for medium,
+     * 'L' for long, and 'F' for full.
+     * A date or time may be ommitted by specifying a style character '-'.
+     * <p>
+     * The returned formatter will be set to use the specified locale.
+     * This is equivalent to a call to {@link DateTimeFormatter#withLocale(Locale)}.
+     *
+     * @param style  two characters from the set {"S", "M", "L", "F", "-"}
+     * @param locale  the locale to use
+     * @throws IllegalArgumentException if the style is invalid
+     */
+    public static DateTimeFormatter forStyle(String style, Locale locale) {
+        return getInstance(locale).createFormatterForStyle(style);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets an instance of the formatter provider that works with the given locale.
      * 
      * @param locale  the Locale to use, null for default locale
      * @return a format provider
      */
-    public synchronized static DateTimeFormat getInstance(Locale locale) {
-        // TODO
+    private synchronized static DateTimeFormat getInstance(Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -403,21 +450,12 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
-    /** The locale to use */
-    private final Locale iLocale;
-
-    /** Maps patterns to formatters */
-    private transient Map iPatternedCache = new HashMap(7);
-
-    /** Maps styles to formatters */
-    private transient Map iStyledCache = new HashMap(7);
-
     /**
      * Constructor.
      * 
      * @param locale  the locale to use, must not be null
      */
-    private DateTimeFormat(final Locale locale) {
+    protected DateTimeFormat(final Locale locale) {
         super();
         iLocale = locale;
     }
@@ -430,22 +468,24 @@ public class DateTimeFormat {
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #appendPatternTo
      */
-    public synchronized DateTimeFormatter forPattern(final String pattern) {
-        DateTimeFormatter formatter = (DateTimeFormatter) iPatternedCache.get(pattern);
-        if (formatter != null) {
+    protected DateTimeFormatter createFormatterForPattern(final String pattern) {
+        synchronized (cPatternedCache) {
+            DateTimeFormatter formatter = (DateTimeFormatter) cPatternedCache.get(pattern);
+            if (formatter != null) {
+                return formatter;
+            }
+
+            if (pattern == null) {
+                throw new IllegalArgumentException("Invalid pattern specification");
+            }
+
+            DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+            appendPatternTo(builder, pattern);
+            formatter = builder.toFormatter();
+
+            cPatternedCache.put(pattern, formatter);
             return formatter;
         }
-
-        if (pattern == null) {
-            throw new IllegalArgumentException("Invalid pattern specification");
-        }
-
-        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder(iLocale);
-        appendPatternTo(builder, pattern);
-        formatter = builder.toFormatter();
-
-        iPatternedCache.put(pattern, formatter);
-        return formatter;
     }
 
     /**
@@ -457,15 +497,17 @@ public class DateTimeFormat {
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid
      */
-    public synchronized DateTimeFormatter forStyle(final String style) {
+    protected synchronized DateTimeFormatter createFormatterForStyle(String style) {
         DateTimeFormatter formatter = (DateTimeFormatter)iStyledCache.get(style);
         if (formatter == null) {
-            formatter = forPattern(getPatternForStyle(style));
+            String pattern = getPatternForStyle(style);
+            formatter = forPattern(pattern).withLocale(iLocale);
             iStyledCache.put(style, formatter);
         }
         return formatter;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns a pattern specification from a two character style. The first
      * character is the date style, and the second character is the time
@@ -476,11 +518,10 @@ public class DateTimeFormat {
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @throws IllegalArgumentException if the style is invalid
      */
-    public String getPatternForStyle(final String style) {
+    protected String getPatternForStyle(String style) {
         if (style == null || style.length() != 2) {
             throw new IllegalArgumentException("Invalid style specification: " + style);
         }
-
         if (style.charAt(1) == '-') {
             // date only
             return getDatePattern(style.charAt(0));
@@ -493,37 +534,68 @@ public class DateTimeFormat {
         }
     }
 
-    private String getDatePattern(final char style) {
-        int istyle = selectStyle(style);
+    /**
+     * Gets the pattern to use from the JDK SimpleDateFormat class.
+     * 
+     * @param style  the Joda style code
+     * @return the pattern
+     * @throws IllegalArgumentException if there is no pattern
+     */
+    protected String getDatePattern(char style) {
+        int jdkStyle = selectStyle(style);
         try {
-            return ((SimpleDateFormat)DateFormat.getDateInstance(istyle, iLocale)).toPattern();
-        } catch (ClassCastException e) {
+            DateFormat jdkFormat = DateFormat.getDateInstance(jdkStyle, iLocale);
+            return ((SimpleDateFormat) jdkFormat).toPattern();
+        } catch (ClassCastException ex) {
             throw new IllegalArgumentException("No date pattern for locale: " + iLocale);
         }
     }
 
-    private String getTimePattern(final char style) {
-        int istyle = selectStyle(style);
+    /**
+     * Gets the pattern to use from the JDK SimpleDateFormat class.
+     * 
+     * @param style  the Joda style code
+     * @return the pattern
+     * @throws IllegalArgumentException if there is no pattern
+     */
+    protected String getTimePattern(char style) {
+        int jdkStyle = selectStyle(style);
         try {
-            return ((SimpleDateFormat)DateFormat.getTimeInstance(istyle, iLocale)).toPattern();
-        } catch (ClassCastException e) {
+            DateFormat jdkFormat = DateFormat.getTimeInstance(jdkStyle, iLocale);
+            return ((SimpleDateFormat) jdkFormat).toPattern();
+        } catch (ClassCastException ex) {
             throw new IllegalArgumentException("No time pattern for locale: " + iLocale);
         }
     }
 
-    private String getDateTimePattern(final char dateStyle, final char timeStyle) {
-        int idateStyle = selectStyle(dateStyle);
-        int itimeStyle = selectStyle(timeStyle);
+    /**
+     * Gets the pattern to use from the JDK SimpleDateFormat class.
+     * 
+     * @param dateStyle  the Joda style code
+     * @param timeStyle  the Joda style code
+     * @return the pattern
+     * @throws IllegalArgumentException if there is no pattern
+     */
+    protected String getDateTimePattern(char dateStyle, char timeStyle) {
+        int jdkDateStyle = selectStyle(dateStyle);
+        int jdkTimeStyle = selectStyle(timeStyle);
         try {
-            return ((SimpleDateFormat)DateFormat.getDateTimeInstance
-                    (idateStyle, itimeStyle, iLocale)).toPattern();
-        } catch (ClassCastException e) {
+            DateFormat jdkFormat = DateFormat.getDateTimeInstance(
+                    jdkDateStyle, jdkTimeStyle, iLocale);
+            return ((SimpleDateFormat) jdkFormat).toPattern();
+        } catch (ClassCastException ex) {
             throw new IllegalArgumentException("No datetime pattern for locale: " + iLocale);
         }
     }
 
-    private int selectStyle(final char c) {
-        switch (c) {
+    /**
+     * Gets the JDK style code from the Joda code.
+     * 
+     * @param ch  the Joda style code
+     * @return the JDK style code
+     */
+    protected int selectStyle(char ch) {
+        switch (ch) {
         case 'S':
             return DateFormat.SHORT;
         case 'M':
@@ -533,7 +605,7 @@ public class DateTimeFormat {
         case 'F':
             return DateFormat.FULL;
         default:
-            throw new IllegalArgumentException("Invalid style character: " + c);
+            throw new IllegalArgumentException("Invalid style character: " + ch);
         }
     }
 

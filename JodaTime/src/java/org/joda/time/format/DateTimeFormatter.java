@@ -302,6 +302,9 @@ public class DateTimeFormatter {
     //-----------------------------------------------------------------------
     /**
      * Prints a ReadablePartial.
+     * <p>
+     * Neither the override chronology nor the override zone are used
+     * by this method.
      *
      * @param buf  formatted partial is appended to this buffer
      * @param partial  partial to format
@@ -312,23 +315,25 @@ public class DateTimeFormatter {
             throw new IllegalArgumentException("The partial must not be null");
         }
         
-        Chronology chrono = partial.getChronology();
-        if (iChrono != null) {
-            chrono = iChrono.withUTC();
-        }
-        iPrinter.printTo(buf, partial); // TODO force chrono
+        iPrinter.printTo(buf, partial, iLocale);
     }
 
     /**
      * Prints a ReadablePartial.
+     * <p>
+     * Neither the override chronology nor the override zone are used
+     * by this method.
      *
      * @param out  formatted partial is written out
      * @param partial  partial to format
      */
     public void printTo(Writer out, ReadablePartial partial) throws IOException {
         checkPrinter();
+        if (partial == null) {
+            throw new IllegalArgumentException("The partial must not be null");
+        }
         
-        // TODO
+        iPrinter.printTo(out, partial, iLocale);
     }
 
     //-----------------------------------------------------------------------
@@ -395,7 +400,7 @@ public class DateTimeFormatter {
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
         int offset = zone.getOffset(instant);
-        iPrinter.printTo(buf, instant + offset, chrono.withUTC(), offset, zone);
+        iPrinter.printTo(buf, instant + offset, chrono.withUTC(), offset, zone, iLocale);
     }
 
     private void printTo(Writer buf, long instant, Chronology chrono) throws IOException {
@@ -410,7 +415,7 @@ public class DateTimeFormatter {
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
         int offset = zone.getOffset(instant);
-        iPrinter.printTo(buf, instant + offset, chrono.withUTC(), offset, zone);
+        iPrinter.printTo(buf, instant + offset, chrono.withUTC(), offset, zone, iLocale);
     }
 
     /**
@@ -457,7 +462,7 @@ public class DateTimeFormatter {
         Chronology chrono = instant.getChronology();
         long instantLocal = millis + chrono.getZone().getOffset(millis);
 
-        DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono, iLocale);
         int resultPos = iParser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis());
         return resultPos;
@@ -483,7 +488,7 @@ public class DateTimeFormatter {
             chrono = chrono.withZone(iZone);
         }
         
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -514,7 +519,7 @@ public class DateTimeFormatter {
             chrono = chrono.withZone(iZone);
         }
         
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {

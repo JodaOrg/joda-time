@@ -16,7 +16,15 @@
 package org.joda.time.format;
 
 /**
- * Defines an interface for parsing textual representations of datetimes.
+ * Internal interface for parsing textual representations of datetimes.
+ * <p>
+ * Application users will rarely use this class directly. Instead, you
+ * will use one of the factory classes to create a {@link DateTimeFormatter}.
+ * <p>
+ * The factory classes are:<br />
+ * - {@link DateTimeFormatterBuilder}<br />
+ * - {@link DateTimeFormat}<br />
+ * - {@link ISODateTimeFormat}<br />
  *
  * @author Brian S O'Neill
  * @see DateTimeFormatter
@@ -27,8 +35,8 @@ package org.joda.time.format;
 public interface DateTimeParser {
 
     /**
-     * Returns the expected maximum number of characters consumed. The actual
-     * amount should rarely exceed this estimate.
+     * Returns the expected maximum number of characters consumed.
+     * The actual amount should rarely exceed this estimate.
      * 
      * @return the estimated length
      */
@@ -44,8 +52,8 @@ public interface DateTimeParser {
      * where the parse failed, apply the one's complement operator (~) on the
      * return value.
      *
-     * @param bucket  field are saved into this
-     * @param text  the text to parse
+     * @param bucket  field are saved into this, not null
+     * @param text  the text to parse, not null
      * @param position  position to start parsing from
      * @return new position, negative value means parse failed -
      *  apply complement operator (~) to get position of failure

@@ -248,13 +248,12 @@ public final class CopticChronology extends AbstractGJChronology {
 
     int getMinYear() {
         // The lowest year that can be fully supported.
-        return 1;
+        return -292269337;
     }
 
     int getMaxYear() {
         // The highest year that can be fully supported.
-        // TODO
-        return 292272992;
+        return 292271022;
     }
 
     long getAverageMillisPerYear() {
@@ -272,6 +271,10 @@ public final class CopticChronology extends AbstractGJChronology {
     protected void assemble(Fields fields) {
         if (getBase() == null) {
             super.assemble(fields);
+
+            fields.year = new CopticYearDateTimeField(this);
+            fields.years = fields.year.getDurationField();
+
             // Coptic, like Julian, has no year zero.
             fields.year = new JulianChronology.NoYearZeroField(this, fields.year);
             fields.weekyear = new JulianChronology.NoWeekyearZeroField(this, fields.weekyear);

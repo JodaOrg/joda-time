@@ -269,6 +269,11 @@ public class TestDateTimeComparator extends BulkTest {
         assertEquals(ISO.dayOfYear(), c.getUpperLimit());
         assertEquals("DateTimeComparator[hourOfDay-dayOfYear]", c.toString());
         
+        c = DateTimeComparator.getInstance(ISO.hourOfDay(), ISO.hourOfDay());
+        assertEquals(ISO.hourOfDay(), c.getLowerLimit());
+        assertEquals(ISO.hourOfDay(), c.getUpperLimit());
+        assertEquals("DateTimeComparator[hourOfDay]", c.toString());
+        
         c = DateTimeComparator.getInstance(null, null);
         assertSame(DateTimeComparator.getInstance(), c);
         
@@ -300,6 +305,9 @@ public class TestDateTimeComparator extends BulkTest {
         assertEquals(true, c2.equals(c3));
         assertEquals(false, c1.hashCode() == c3.hashCode());
         assertEquals(true, c2.hashCode() == c3.hashCode());
+        
+        DateTimeComparator c4 = DateTimeComparator.getDateOnlyInstance(ISOChronology.getInstance());
+        assertEquals(false, c4.hashCode() == c3.hashCode());
     }
     
     //-----------------------------------------------------------------------

@@ -1,6 +1,22 @@
 JodaTime ToDo list
 ==================
 
+0.96
+----
+Remove old partial code
+Rounded dates
+
+DayOfWeek partial (new)
+MonthOfYear partial (new)
+
+TimePeriod.toDurationByFields()
+
+...
+
+Tests
+
+
+
 1.0
 ---
 

@@ -186,6 +186,20 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(expect, f.parseDateTime("21"));
     }
 
+    public void testFormat_year_long() {
+        DateTime dt = new DateTime(278004, 6, 9, 10, 20, 30, 40, UTC);
+        DateTimeFormatter f = DateTimeFormat.forPattern("yyyy");
+        assertEquals(dt.toString(), "278004", f.print(dt));
+        
+        // for coverage
+        f = DateTimeFormat.forPattern("yyyyMMdd");
+        assertEquals(dt.toString(), "2780040609", f.print(dt));
+        
+        // for coverage
+        f = DateTimeFormat.forPattern("yyyyddMM");
+        assertEquals(dt.toString(), "2780040906", f.print(dt));
+    }
+
     //-----------------------------------------------------------------------
     public void testFormat_weekyear() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);

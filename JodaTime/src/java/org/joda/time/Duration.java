@@ -150,19 +150,8 @@ public final class Duration
     }
 
     /**
-     * Adds to this duration returning a new Duration instance.
-     * <p>
-     * If the addition is zero, this instance is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one
-     * @return the new duration instance
-     */
-    public Duration withDurationAdded(long durationToAdd) {
-        return withDurationAdded(durationToAdd, 1);
-    }
-
-    /**
-     * Adds to this duration returning a new Duration instance.
+     * Returns a new duration with this length plus that specified multiplied by the scalar.
+     * This instance is immutable and is not altered.
      * <p>
      * If the addition is zero, this instance is returned.
      * 
@@ -180,22 +169,8 @@ public final class Duration
     }
 
     /**
-     * Adds to this duration returning a new Duration instance.
-     * <p>
-     * If the addition is zero, this instance is returned.
-     * 
-     * @param durationToAdd  the duration to add to this one, null means zero
-     * @return the new duration instance
-     */
-    public Duration withDurationAdded(ReadableDuration durationToAdd) {
-        if (durationToAdd == null) {
-            return this;
-        }
-        return withDurationAdded(durationToAdd.getMillis(), 1);
-    }
-
-    /**
-     * Adds to this duration returning a new Duration instance.
+     * Returns a new duration with this length plus that specified multiplied by the scalar.
+     * This instance is immutable and is not altered.
      * <p>
      * If the addition is zero, this instance is returned.
      * 
@@ -208,6 +183,65 @@ public final class Duration
             return this;
         }
         return withDurationAdded(durationToAdd.getMillis(), scalar);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new duration with this length plus that specified.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the addition is zero, this instance is returned.
+     * 
+     * @param amount  the duration to add to this one
+     * @return the new duration instance
+     */
+    public Duration plus(long amount) {
+        return withDurationAdded(amount, 1);
+    }
+
+    /**
+     * Returns a new duration with this length plus that specified.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the amount is zero, this instance is returned.
+     * 
+     * @param amount  the duration to add to this one, null means zero
+     * @return the new duration instance
+     */
+    public Duration plus(ReadableDuration amount) {
+        if (amount == null) {
+            return this;
+        }
+        return withDurationAdded(amount.getMillis(), 1);
+    }
+
+    /**
+     * Returns a new duration with this length minus that specified.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the addition is zero, this instance is returned.
+     * 
+     * @param amount  the duration to take away from this one
+     * @return the new duration instance
+     */
+    public Duration minus(long amount) {
+        return withDurationAdded(amount, -1);
+    }
+
+    /**
+     * Returns a new duration with this length minus that specified.
+     * This instance is immutable and is not altered.
+     * <p>
+     * If the amount is zero, this instance is returned.
+     * 
+     * @param amount  the duration to take away from this one, null means zero
+     * @return the new duration instance
+     */
+    public Duration minus(ReadableDuration amount) {
+        if (amount == null) {
+            return this;
+        }
+        return withDurationAdded(amount.getMillis(), -1);
     }
 
 }

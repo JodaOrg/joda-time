@@ -320,7 +320,7 @@ public class TestDuration_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
-    public void testToPeriod1() {
+    public void testToPeriod() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
@@ -328,59 +328,87 @@ public class TestDuration_Basics extends TestCase {
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
         Duration test = new Duration(length);
         Period result = test.toPeriod();
-        assertEquals(PeriodType.standard(), result.getPeriodType());
-        // only time fields are precise in AllType
-        assertEquals(0, result.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
-        assertEquals(0, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(0, result.getDays());
-        assertEquals((450 * 24) + 5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        assertEquals(new Period(test), result);
+        assertEquals(new Period(test.getMillis()), result);
     }
 
-    public void testToPeriod_PeriodType1() {
+    //-----------------------------------------------------------------------
+    public void testToPeriod_PeriodType() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
         Duration test = new Duration(length);
-        Period result = test.toPeriod(null);
-        assertEquals(PeriodType.standard(), result.getPeriodType());
-        // only time fields are precise in AllType
-        assertEquals(0, result.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
-        assertEquals(0, result.getMonths());
-        assertEquals(0, result.getWeeks());
-        assertEquals(0, result.getDays());
-        assertEquals((450 * 24) + 5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
+        Period result = test.toPeriod(PeriodType.standard().withMillisRemoved());
+        assertEquals(new Period(test, PeriodType.standard().withMillisRemoved()), result);
+        assertEquals(new Period(test.getMillis(), PeriodType.standard().withMillisRemoved()), result);
     }
 
-//    public void testToPeriod_PeriodType2() {
-//        long length =
-//            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
-//            5L * DateTimeConstants.MILLIS_PER_HOUR +
-//            6L * DateTimeConstants.MILLIS_PER_MINUTE +
-//            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-//        Duration test = new Duration(length);
-//        Period result = test.toPeriod(PeriodType.getPreciseAllType());
-//        assertEquals(PeriodType.getPreciseAllType(), result.getPeriodType());
-//        // only time fields are precise in AllType
-//        assertEquals(1, result.getYears());
-//        assertEquals(2, result.getMonths());
-//        assertEquals(3, result.getWeeks());
-//        assertEquals(4, result.getDays());
-//        assertEquals(5, result.getHours());
-//        assertEquals(6, result.getMinutes());
-//        assertEquals(7, result.getSeconds());
-//        assertEquals(8, result.getMillis());
-//        assertEquals(true, result.isPrecise());
-//        assertEquals(length, result.toDurationMillis());
-//    }
+    //-----------------------------------------------------------------------
+    public void testToPeriod_Chronology() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        Period result = test.toPeriod(Chronology.getISOUTC());
+        assertEquals(new Period(test, Chronology.getISOUTC()), result);
+        assertEquals(new Period(test.getMillis(), Chronology.getISOUTC()), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToPeriod_PeriodType_Chronology() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        Period result = test.toPeriod(PeriodType.standard().withMillisRemoved(), Chronology.getISOUTC());
+        assertEquals(new Period(test, PeriodType.standard().withMillisRemoved(), Chronology.getISOUTC()), result);
+        assertEquals(new Period(test.getMillis(), PeriodType.standard().withMillisRemoved(), Chronology.getISOUTC()), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToPeriodFrom() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Period result = test.toPeriodFrom(dt);
+        assertEquals(new Period(dt, test), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToPeriodFrom_PeriodType() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Period result = test.toPeriodFrom(dt, PeriodType.standard().withMillisRemoved());
+        assertEquals(new Period(dt, test, PeriodType.standard().withMillisRemoved()), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToIntervalFrom() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Interval result = test.toIntervalFrom(dt);
+        assertEquals(new Interval(dt, test), result);
+    }
 
     //-----------------------------------------------------------------------
     public void testWithMillis1() {
@@ -393,19 +421,6 @@ public class TestDuration_Basics extends TestCase {
         Duration test = new Duration(123L);
         Duration result = test.withMillis(1234567890L);
         assertEquals(1234567890L, result.getMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    public void testWithDurationAdded_long1() {
-        Duration test = new Duration(123L);
-        Duration result = test.withDurationAdded(8000L);
-        assertEquals(8123L, result.getMillis());
-    }
-
-    public void testWithDurationAdded_long2() {
-        Duration test = new Duration(123L);
-        Duration result = test.withDurationAdded(0L);
-        assertSame(test, result);
     }
 
     //-----------------------------------------------------------------------
@@ -440,21 +455,28 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testWithDurationAdded_RD1() {
+    public void testPlus_long1() {
         Duration test = new Duration(123L);
-        Duration result = test.withDurationAdded(new Duration(8000L));
+        Duration result = test.plus(8000L);
         assertEquals(8123L, result.getMillis());
     }
 
-    public void testWithDurationAdded_RD2() {
+    public void testPlus_long2() {
         Duration test = new Duration(123L);
-        Duration result = test.withDurationAdded(new Duration(0L));
+        Duration result = test.plus(0L);
         assertSame(test, result);
     }
 
-    public void testWithDurationAdded_RD3() {
+    //-----------------------------------------------------------------------
+    public void testMinus_long1() {
         Duration test = new Duration(123L);
-        Duration result = test.withDurationAdded(null);
+        Duration result = test.minus(8000L);
+        assertEquals(123L - 8000L, result.getMillis());
+    }
+
+    public void testMinus_long2() {
+        Duration test = new Duration(123L);
+        Duration result = test.minus(0L);
         assertSame(test, result);
     }
 
@@ -492,6 +514,44 @@ public class TestDuration_Basics extends TestCase {
     public void testWithDurationAdded_RD_int6() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(null, 0);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPlus_RD1() {
+        Duration test = new Duration(123L);
+        Duration result = test.plus(new Duration(8000L));
+        assertEquals(8123L, result.getMillis());
+    }
+
+    public void testPlus_RD2() {
+        Duration test = new Duration(123L);
+        Duration result = test.plus(new Duration(0L));
+        assertSame(test, result);
+    }
+
+    public void testPlus_RD3() {
+        Duration test = new Duration(123L);
+        Duration result = test.plus(null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMinus_RD1() {
+        Duration test = new Duration(123L);
+        Duration result = test.minus(new Duration(8000L));
+        assertEquals(123L - 8000L, result.getMillis());
+    }
+
+    public void testMinus_RD2() {
+        Duration test = new Duration(123L);
+        Duration result = test.minus(new Duration(0L));
+        assertSame(test, result);
+    }
+
+    public void testMinus_RD3() {
+        Duration test = new Duration(123L);
+        Duration result = test.minus(null);
         assertSame(test, result);
     }
 

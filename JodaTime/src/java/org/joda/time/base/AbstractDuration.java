@@ -55,7 +55,6 @@ package org.joda.time.base;
 
 import org.joda.time.Duration;
 import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.joda.time.ReadableDuration;
 import org.joda.time.format.FormatUtils;
 
@@ -93,56 +92,28 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this duration to a Period instance using the All type.
+     * Converts this duration to a Period instance using the standard period type
+     * and the ISO chronology.
      * <p>
-     * Only precise fields in the period type will be used.
-     * For AllType, this is the time fields only.
+     * Only precise fields in the period type will be used. Thus, only the hour,
+     * minute, second and millisecond fields on the period will be used.
      * The year, month, week and day fields will not be populated.
-     * The period constructed will always be precise.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly.
-     * <p>
      * If the duration is larger than one day then all the remaining duration will
-     * be stored in the largest available precise field, hours in this case.
+     * be stored in the largest available field, hours in this case.
      * <p>
      * For example, a duration effectively equal to (365 + 60 + 5) days will be
      * converted to ((365 + 60 + 5) * 24) hours by this constructor.
      * <p>
-     * For more control over the conversion process, you have two options:
-     * <ul>
-     * <li>convert the duration to an {@link org.joda.time.Interval}, and from
-     * there obtain the period
-     * <li>specify a period type that contains precise definitions of the day
-     * and larger fields, such as the UTC or precise types.
-     * </ul>
+     * For more control over the conversion process, you must pair the duration with
+     * an instant, see {@link Period#Period(ReadableInstant,ReadableDuration)}.
      * 
      * @return a Period created using the millisecond duration from this instance
      */
     public Period toPeriod() {
         return new Period(getMillis());
-    }
-
-    /**
-     * Converts this duration to a Period instance specifying a period type
-     * to control how the duration is split into fields.
-     * <p>
-     * Only precise fields in the period type will be used.
-     * Imprecise fields will not be populated.
-     * The period constructed will always be precise.
-     * <p>
-     * If the duration is small then this method will perform
-     * as you might expect and split the fields evenly.
-     * <p>
-     * If the duration is large then all the remaining duration will
-     * be stored in the largest available precise field.
-     * For details as to which fields are precise, review the period type javadoc.
-     * 
-     * @param type  the period type determining how to split the duration into fields, null means All type
-     * @return a Period created using the millisecond duration from this instance
-     */
-    public Period toPeriod(PeriodType type) {
-        return new Period(getMillis(), type);
     }
 
     //-----------------------------------------------------------------------

@@ -151,7 +151,7 @@
       <classpath path="${build.classes}" />
       <!-- Override default provider since data directory doesn't exist yet -->
       <sysproperty key="org.joda.time.DateTimeZone.Provider"
-                   value="org.joda.time.DateTimeZone$UTCProvider" />
+                   value="org.joda.time.tz.UTCProvider" />
       <!-- Specify destination directory for compiled data files -->
       <arg line="-d ../../../../../../../${build.classes}/org/joda/time/tz/data" />
       <!-- Specify all the data files to compile -->

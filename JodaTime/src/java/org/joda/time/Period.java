@@ -62,6 +62,8 @@ import org.joda.time.base.BasePeriod;
  * <p>
  * A time period is divided into a number of fields, such as hours and seconds.
  * Which fields are supported is defined by the PeriodType class.
+ * The default is the standard period type, which supports years, months, weeks, days,
+ * hours, minutes, seconds and millis.
  * <p>
  * When this time period is added to an instant, the effect is of adding each field in turn.
  * As a result, this takes into account daylight savings time.
@@ -629,6 +631,24 @@ public final class Period
     }
 
     /**
+     * Creates a new Period instance with the valueToAdd added to the specified field.
+     * 
+     * @param field  the field to set, null ignored
+     * @param value  the value to add
+     * @return the new period instance
+     * @throws IllegalArgumentException if the field type is unsupported
+     */
+    public Period withFieldAdded(DurationFieldType field, int valueToAdd) {
+        if (valueToAdd == 0 || field == null) {
+            return this;
+        }
+        int[] newValues = getValues();  // cloned
+        super.addFieldInto(newValues, field, valueToAdd);
+        return new Period(newValues, getPeriodType());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Returns a new period with the specified number of years.
      * <p>
      * This period instance is immutable and unaffected by this method call.
@@ -749,23 +769,6 @@ public final class Period
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Creates a new Period instance with the valueToAdd added to the specified field.
-     * 
-     * @param field  the field to set, null ignored
-     * @param value  the value to add
-     * @return the new period instance
-     * @throws IllegalArgumentException if the field type is unsupported
-     */
-    public Period plusField(DurationFieldType field, int valueToAdd) {
-        if (valueToAdd == 0 || field == null) {
-            return this;
-        }
-        int[] newValues = getValues();  // cloned
-        super.addFieldInto(newValues, field, valueToAdd);
-        return new Period(newValues, getPeriodType());
-    }
-
     /**
      * Returns a new period with the specified number of years added.
      * <p>
@@ -908,6 +911,111 @@ public final class Period
         int[] values = getValues();  // cloned
         getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, millis);
         return new Period(values, getPeriodType());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new period with the specified number of years taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param years  the amount of years to take away, may be negative
+     * @return the new period with the increased years
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusYears(int years) {
+        return plusYears(-years);
+    }
+
+    /**
+     * Returns a new period minus the specified number of months taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param months  the amount of months to take away, may be negative
+     * @return the new period minus the increased months
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusMonths(int months) {
+        return plusMonths(-months);
+    }
+
+    /**
+     * Returns a new period minus the specified number of weeks taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param weeks  the amount of weeks to take away, may be negative
+     * @return the new period minus the increased weeks
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusWeeks(int weeks) {
+        return plusWeeks(-weeks);
+    }
+
+    /**
+     * Returns a new period minus the specified number of days taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param days  the amount of days to take away, may be negative
+     * @return the new period minus the increased days
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusDays(int days) {
+        return plusDays(-days);
+    }
+
+    /**
+     * Returns a new period minus the specified number of hours taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param hours  the amount of hours to take away, may be negative
+     * @return the new period minus the increased hours
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusHours(int hours) {
+        return plusHours(-hours);
+    }
+
+    /**
+     * Returns a new period minus the specified number of minutes taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param minutes  the amount of minutes to take away, may be negative
+     * @return the new period minus the increased minutes
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusMinutes(int minutes) {
+        return plusMinutes(-minutes);
+    }
+
+    /**
+     * Returns a new period minus the specified number of seconds taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param seconds  the amount of seconds to take away, may be negative
+     * @return the new period minus the increased seconds
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusSeconds(int seconds) {
+        return plusSeconds(-seconds);
+    }
+
+    /**
+     * Returns a new period minus the specified number of millis taken away.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param millis  the amount of millis to take away, may be negative
+     * @return the new period minus the increased millis
+     * @throws UnsupportedOperationException if the field is not supported
+     */
+    public Period minusMillis(int millis) {
+        return plusMillis(-millis);
     }
 
 }

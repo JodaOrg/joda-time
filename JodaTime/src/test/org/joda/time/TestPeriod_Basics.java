@@ -549,6 +549,36 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testWithField1() {
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period result = test.withField(DurationFieldType.years(), 6);
+        
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 8), test);
+        assertEquals(new Period(6, 2, 3, 4, 5, 6, 7, 8), result);
+    }
+
+    public void testWithField2() {
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period result = test.withField(null, 6);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithFieldAdded1() {
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period result = test.withFieldAdded(DurationFieldType.years(), 6);
+        
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 8), test);
+        assertEquals(new Period(7, 2, 3, 4, 5, 6, 7, 8), result);
+    }
+
+    public void testWithFieldAdded2() {
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period result = test.withFieldAdded(null, 6);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testPeriodStatics() {
         Period test;
         test = Period.years(1);
@@ -588,27 +618,39 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 1, 0, PeriodType.standard()));
         test = Period.millis(5).withMillis(1);
         assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 0, 1, PeriodType.standard()));
+        
+        test = new Period(0L, PeriodType.millis());
+        try {
+            test.withYears(1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
     public void testPlus() {
         Period test;
         test = Period.years(1).plusYears(1);
-        assertEquals(test, new Period(2, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        assertEquals(new Period(2, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()), test);
         test = Period.months(1).plusMonths(1);
-        assertEquals(test, new Period(0, 2, 0, 0, 0, 0, 0, 0, PeriodType.standard()));
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0, PeriodType.standard()), test);
         test = Period.weeks(1).plusWeeks(1);
-        assertEquals(test, new Period(0, 0, 2, 0, 0, 0, 0, 0, PeriodType.standard()));
+        assertEquals(new Period(0, 0, 2, 0, 0, 0, 0, 0, PeriodType.standard()), test);
         test = Period.days(1).plusDays(1);
-        assertEquals(test, new Period(0, 0, 0, 2, 0, 0, 0, 0, PeriodType.standard()));
+        assertEquals(new Period(0, 0, 0, 2, 0, 0, 0, 0, PeriodType.standard()), test);
         test = Period.hours(1).plusHours(1);
-        assertEquals(test, new Period(0, 0, 0, 0, 2, 0, 0, 0, PeriodType.standard()));
+        assertEquals(new Period(0, 0, 0, 0, 2, 0, 0, 0, PeriodType.standard()), test);
         test = Period.minutes(1).plusMinutes(1);
-        assertEquals(test, new Period(0, 0, 0, 0, 0, 2, 0, 0, PeriodType.standard()));
+        assertEquals(new Period(0, 0, 0, 0, 0, 2, 0, 0, PeriodType.standard()), test);
         test = Period.seconds(1).plusSeconds(1);
-        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 2, 0, PeriodType.standard()));
+        assertEquals(new Period(0, 0, 0, 0, 0, 0, 2, 0, PeriodType.standard()), test);
         test = Period.millis(1).plusMillis(1);
-        assertEquals(test, new Period(0, 0, 0, 0, 0, 0, 0, 2, PeriodType.standard()));
+        assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 2, PeriodType.standard()), test);
+        
+        test = new Period(0L, PeriodType.millis());
+        try {
+            test.plusYears(1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testPlusZero() {
@@ -637,6 +679,32 @@ public class TestPeriod_Basics extends TestCase {
         test = Period.millis(1);
         result = test.plusMillis(0);
         assertSame(test, result);
+    }
+
+    public void testMinus() {
+        Period test;
+        test = Period.years(3).minusYears(1);
+        assertEquals(new Period(2, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()), test);
+        test = Period.months(3).minusMonths(1);
+        assertEquals(new Period(0, 2, 0, 0, 0, 0, 0, 0, PeriodType.standard()), test);
+        test = Period.weeks(3).minusWeeks(1);
+        assertEquals(new Period(0, 0, 2, 0, 0, 0, 0, 0, PeriodType.standard()), test);
+        test = Period.days(3).minusDays(1);
+        assertEquals(new Period(0, 0, 0, 2, 0, 0, 0, 0, PeriodType.standard()), test);
+        test = Period.hours(3).minusHours(1);
+        assertEquals(new Period(0, 0, 0, 0, 2, 0, 0, 0, PeriodType.standard()), test);
+        test = Period.minutes(3).minusMinutes(1);
+        assertEquals(new Period(0, 0, 0, 0, 0, 2, 0, 0, PeriodType.standard()), test);
+        test = Period.seconds(3).minusSeconds(1);
+        assertEquals(new Period(0, 0, 0, 0, 0, 0, 2, 0, PeriodType.standard()), test);
+        test = Period.millis(3).minusMillis(1);
+        assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 2, PeriodType.standard()), test);
+        
+        test = new Period(0L, PeriodType.millis());
+        try {
+            test.minusYears(1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
 }

@@ -59,34 +59,31 @@ import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
-import org.joda.time.ReadableInstant;
-import org.joda.time.ReadableLocal;
-import org.joda.time.ReadablePartial;
+import org.joda.time.ReadableMoment;
 
 /**
- * AbstractReadableLocalFieldProperty is a base class for binding a
- * ReadableLocal to a DateTimeField.
+ * AbstractMillisFieldProperty is a base class for binding any millisecond
+ * based datetime instance to a DateTimeField.
  * <p>
  * It allows the date and time manipulation code to be field based yet
  * still easy to use.
  * <p>
- * AbstractReadableLocalFieldProperty itself is thread-safe and immutable,
- * but the ReadableLocal being operated on may be mutable and not
- * thread-safe.
+ * AbstractMillisFieldProperty itself is thread-safe and immutable, but the
+ * instance being operated on may be mutable and not thread-safe.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class AbstractMillisReadableLocalFieldProperty implements Serializable {
+public abstract class AbstractMillisFieldProperty implements Serializable {
 
     /** Serialization version. */
-    private static final long serialVersionUID = 21587156716982L;
+    private static final long serialVersionUID = 3528763819L;
 
     /**
      * Constructor.
      */
-    public AbstractMillisReadableLocalFieldProperty() {
+    public AbstractMillisFieldProperty() {
         super();
     }
 
@@ -117,11 +114,11 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
     }
 
     /**
-     * Gets the local being used.
+     * Gets the milliseconds of the datetime that this property is linked to.
      * 
-     * @return the local
+     * @return the milliseconds
      */
-    protected abstract ReadableLocal getReadableLocal();
+    protected abstract long getMillis();
 
     //-----------------------------------------------------------------------
     /**
@@ -131,7 +128,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#get
      */
     public int get() {
-        return getField().get(getReadableLocal().getAmount());
+        return getField().get(getMillis());
     }
 
     /**
@@ -142,7 +139,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#getAsText
      */
     public String getAsText(Locale locale) {
-        return getField().getAsText(getReadableLocal().getAmount(), locale);
+        return getField().getAsText(getMillis(), locale);
     }
 
     /**
@@ -163,7 +160,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#getAsShortText
      */
     public String getAsShortText(Locale locale) {
-        return getField().getAsShortText(getReadableLocal().getAmount(), locale);
+        return getField().getAsShortText(getMillis(), locale);
     }
 
     /**
@@ -204,7 +201,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#isLeap
      */
     public boolean isLeap() {
-        return getField().isLeap(getReadableLocal().getAmount());
+        return getField().isLeap(getMillis());
     }
 
     /**
@@ -214,7 +211,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#getLeapAmount
      */
     public int getLeapAmount() {
-        return getField().getLeapAmount(getReadableLocal().getAmount());
+        return getField().getLeapAmount(getMillis());
     }
 
     /**
@@ -243,7 +240,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#getMinimumValue
      */
     public int getMinimumValue() {
-        return getField().getMinimumValue(getReadableLocal().getAmount());
+        return getField().getMinimumValue(getMillis());
     }
 
     /**
@@ -263,7 +260,7 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @see DateTimeField#getMaximumValue
      */
     public int getMaximumValue() {
-        return getField().getMaximumValue(getReadableLocal().getAmount());
+        return getField().getMaximumValue(getMillis());
     }
 
     /**
@@ -296,85 +293,29 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
      * @return remainder duration, in milliseconds
      */
     public long remainder() {
-        return getField().remainder(getReadableLocal().getAmount());
+        return getField().remainder(getMillis());
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Compare this field to the same field on another instant.
+     * Compare this field to the same field on another moment.
      * <p>
      * The comparison is based on the value of the same field type, irrespective
      * of any difference in chronology. Thus, if this property represents the
      * hourOfDay field, then the hourOfDay field of the other instant will be queried
      * whether in the same chronology or not.
      * 
-     * @param instant  the instant to compare to
+     * @param moment  the moment to compare to
      * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws IllegalArgumentException if the instant is null
+     * @throws IllegalArgumentException if the moment is null
+     * @throws IllegalArgumentException if the moment doesn't support this field
      */
-    public int compareTo(ReadableInstant instant) {
-        if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+    public int compareTo(ReadableMoment moment) {
+        if (moment == null) {
+            throw new IllegalArgumentException("The moment must not be null");
         }
         int thisValue = get();
-        int otherValue = instant.get(getFieldType());
-        if (thisValue < otherValue) {
-            return -1;
-        } else if (thisValue > otherValue) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Compare this field to the same field on another local.
-     * <p>
-     * The comparison is based on the value of the same field type, irrespective
-     * of any difference in chronology. Thus, if this property represents the
-     * hourOfDay field, then the hourOfDay field of the other instant will be queried
-     * whether in the same chronology or not.
-     * 
-     * @param instant  the instant to compare to
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws IllegalArgumentException if the local is null
-     * @throws IllegalArgumentException if the other local does not support this field
-     */
-    public int compareTo(ReadableLocal local) {
-        if (local == null) {
-            throw new IllegalArgumentException("The local must not be null");
-        }
-        int thisValue = get();
-        int otherValue = local.get(getFieldType());
-        if (thisValue < otherValue) {
-            return -1;
-        } else if (thisValue > otherValue) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Compare this field to the same field on another partial instant.
-     * <p>
-     * The comparison is based on the value of the same field type, irrespective
-     * of any difference in chronology. Thus, if this property represents the
-     * hourOfDay field, then the hourOfDay field of the other partial will be queried
-     * whether in the same chronology or not.
-     * 
-     * @param partial  the partial to compare to
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws IllegalArgumentException if the instant is null
-     * @throws IllegalArgumentException if the field of this property cannot be queried
-     *  on the specified instant
-     */
-    public int compareTo(ReadablePartial partial) {
-        if (partial == null) {
-            throw new IllegalArgumentException("The instant must not be null");
-        }
-        int thisValue = get();
-        int otherValue = partial.get(getFieldType());
+        int otherValue = moment.get(getFieldType());
         if (thisValue < otherValue) {
             return -1;
         } else if (thisValue > otherValue) {
@@ -395,15 +336,23 @@ public abstract class AbstractMillisReadableLocalFieldProperty implements Serial
         if (this == object) {
             return true;
         }
-        if (object instanceof AbstractMillisReadableLocalFieldProperty) {
-            AbstractMillisReadableLocalFieldProperty other = (AbstractMillisReadableLocalFieldProperty) object;
+        if (object instanceof AbstractMillisFieldProperty) {
+            AbstractMillisFieldProperty other = (AbstractMillisFieldProperty) object;
             if (get() == other.get() &&
-                getFieldType() == other.getFieldType() &&
-                getReadableLocal().getChronology() == other.getReadableLocal().getChronology()) {
+                getField().equals(other.getField())) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Returns a hashcode compatible with the equals method.
+     * 
+     * @return the hashcode
+     */
+    public int hashCode() {
+        return get() * 17 + getField().hashCode();
     }
 
     //-----------------------------------------------------------------------

@@ -538,7 +538,7 @@ public final class YearMonthDay
          * 
          * @return the partial
          */
-        public ReadablePartial getReadablePartial() {
+        protected ReadablePartial getReadablePartial() {
             return iYearMonthDay;
         }
 

@@ -59,7 +59,7 @@ import java.util.Locale;
 import org.joda.time.base.AbstractLocal;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
-import org.joda.time.field.AbstractMillisReadableLocalFieldProperty;
+import org.joda.time.field.AbstractMillisFieldProperty;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -1085,7 +1085,7 @@ public final class LocalTime
      * @author Brian S O'Neill
      * @since 1.0
      */
-    public static final class Property extends AbstractMillisReadableLocalFieldProperty {
+    public static final class Property extends AbstractMillisFieldProperty {
         
         /** Serialization version */
         private static final long serialVersionUID = -12591766889L;
@@ -1118,12 +1118,12 @@ public final class LocalTime
         }
 
         /**
-         * Gets the local being used.
+         * Gets the milliseconds of the local time that this property is linked to.
          * 
-         * @return the local
+         * @return the milliseconds
          */
-        protected ReadableLocal getReadableLocal() {
-            return iTime;
+        protected long getMillis() {
+            return iTime.getAmount();
         }
 
         /**

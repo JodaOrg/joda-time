@@ -581,7 +581,7 @@ public final class TimeOfDay
          * 
          * @return the partial
          */
-        public ReadablePartial getReadablePartial() {
+        protected ReadablePartial getReadablePartial() {
             return iTimeOfDay;
         }
 

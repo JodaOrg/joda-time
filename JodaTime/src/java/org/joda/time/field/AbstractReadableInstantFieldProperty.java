@@ -53,15 +53,9 @@
  */
 package org.joda.time.field;
 
-import java.io.Serializable;
-import java.util.Locale;
-
 import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
-import org.joda.time.DurationField;
 import org.joda.time.ReadableInstant;
-import org.joda.time.ReadablePartial;
 
 /**
  * AbstractReadableInstantFieldProperty is a base class for binding a
@@ -78,8 +72,9 @@ import org.joda.time.ReadablePartial;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class AbstractReadableInstantFieldProperty implements Serializable {
-    
+public abstract class AbstractReadableInstantFieldProperty
+        extends AbstractMillisFieldProperty {
+
     /** Serialization version. */
     private static final long serialVersionUID = 1971226328211649661L;
 
@@ -88,92 +83,6 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      */
     public AbstractReadableInstantFieldProperty() {
         super();
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the field being used.
-     * 
-     * @return the field
-     */
-    public abstract DateTimeField getField();
-
-    /**
-     * Gets the field type being used.
-     * 
-     * @return the field type
-     */
-    public DateTimeFieldType getFieldType() {
-        return getField().getType();
-    }
-
-    /**
-     * Gets the name of the field.
-     * 
-     * @return the field name
-     */
-    public String getName() {
-        return getField().getName();
-    }
-
-    /**
-     * Gets the instant being used.
-     * 
-     * @return the instant
-     */
-    public abstract ReadableInstant getReadableInstant();
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets a value from the instant.
-     * 
-     * @return the current value
-     * @see DateTimeField#get
-     */
-    public int get() {
-        return getField().get(getReadableInstant().getMillis());
-    }
-
-    /**
-     * Gets a text value from the instant.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
-     * @return the current text value
-     * @see DateTimeField#getAsText
-     */
-    public String getAsText(Locale locale) {
-        return getField().getAsText(getReadableInstant().getMillis(), locale);
-    }
-
-    /**
-     * Gets a text value from the instant.
-     * 
-     * @return the current text value
-     * @see DateTimeField#getAsText
-     */
-    public final String getAsText() {
-        return getAsText(null);
-    }
-
-    /**
-     * Gets a short text value from the instant.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
-     * @return the current text value
-     * @see DateTimeField#getAsShortText
-     */
-    public String getAsShortText(Locale locale) {
-        return getField().getAsShortText(getReadableInstant().getMillis(), locale);
-    }
-
-    /**
-     * Gets a short text value from the instant.
-     * 
-     * @return the current text value
-     * @see DateTimeField#getAsShortText
-     */
-    public final String getAsShortText() {
-        return getAsShortText(null);
     }
 
     //-----------------------------------------------------------------------
@@ -189,9 +98,9 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      */
     public int getDifference(ReadableInstant instant) {
         if (instant == null) {
-            return getField().getDifference(getReadableInstant().getMillis(), DateTimeUtils.currentTimeMillis());
+            return getField().getDifference(getMillis(), DateTimeUtils.currentTimeMillis());
         }
-        return getField().getDifference(getReadableInstant().getMillis(), instant.getMillis());
+        return getField().getDifference(getMillis(), instant.getMillis());
     }
 
     /**
@@ -206,221 +115,9 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      */
     public long getDifferenceAsLong(ReadableInstant instant) {
         if (instant == null) {
-            return getField().getDifferenceAsLong(getReadableInstant().getMillis(), DateTimeUtils.currentTimeMillis());
+            return getField().getDifferenceAsLong(getMillis(), DateTimeUtils.currentTimeMillis());
         }
-        return getField().getDifferenceAsLong(getReadableInstant().getMillis(), instant.getMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Returns the duration per unit value of this field. For example, if this
-     * field represents "hour of day", then the duration is an hour.
-     *
-     * @return the duration of this field, or UnsupportedDurationField
-     */
-    public DurationField getDurationField() {
-        return getField().getDurationField();
-    }
-
-    /**
-     * Returns the range duration of this field. For example, if this field
-     * represents "hour of day", then the range duration is a day.
-     *
-     * @return the range duration of this field, or null if field has no range
-     */
-    public DurationField getRangeDurationField() {
-        return getField().getRangeDurationField();
-    }
-
-    /**
-     * Gets whether this field is leap.
-     * 
-     * @return true if a leap field
-     * @see DateTimeField#isLeap
-     */
-    public boolean isLeap() {
-        return getField().isLeap(getReadableInstant().getMillis());
-    }
-
-    /**
-     * Gets the amount by which this field is leap.
-     * 
-     * @return the amount by which the field is leap
-     * @see DateTimeField#getLeapAmount
-     */
-    public int getLeapAmount() {
-        return getField().getLeapAmount(getReadableInstant().getMillis());
-    }
-
-    /**
-     * If this field were to leap, then it would be in units described by the
-     * returned duration. If this field doesn't ever leap, null is returned.
-     */
-    public DurationField getLeapDurationField() {
-        return getField().getLeapDurationField();
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the minimum value for the field ignoring the current time.
-     * 
-     * @return the minimum value
-     * @see DateTimeField#getMinimumValue
-     */
-    public int getMinimumValueOverall() {
-        return getField().getMinimumValue();
-    }
-
-    /**
-     * Gets the minimum value for the field.
-     * 
-     * @return the minimum value
-     * @see DateTimeField#getMinimumValue
-     */
-    public int getMinimumValue() {
-        return getField().getMinimumValue(getReadableInstant().getMillis());
-    }
-
-    /**
-     * Gets the maximum value for the field ignoring the current time.
-     * 
-     * @return the maximum value
-     * @see DateTimeField#getMaximumValue
-     */
-    public int getMaximumValueOverall() {
-        return getField().getMaximumValue();
-    }
-
-    /**
-     * Gets the maximum value for the field.
-     * 
-     * @return the maximum value
-     * @see DateTimeField#getMaximumValue
-     */
-    public int getMaximumValue() {
-        return getField().getMaximumValue(getReadableInstant().getMillis());
-    }
-
-    /**
-     * Gets the maximum text length for the field.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
-     * @return the maximum length
-     * @see DateTimeField#getMaximumTextLength
-     */
-    public int getMaximumTextLength(Locale locale) {
-        return getField().getMaximumTextLength(locale);
-    }
-
-    /**
-     * Gets the maximum short text length for the field.
-     * 
-     * @param locale  optional locale to use for selecting a text symbol
-     * @return the maximum length
-     * @see DateTimeField#getMaximumShortTextLength
-     */
-    public int getMaximumShortTextLength(Locale locale) {
-        return getField().getMaximumShortTextLength(locale);
-    }
-
-
-    /**
-     * Returns the fractional duration milliseconds of this field.
-     *
-     * @see DateTimeField#remainder
-     * @return remainder duration, in milliseconds
-     */
-    public long remainder() {
-        return getField().remainder(getReadableInstant().getMillis());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Compare this field to the same field on another instant.
-     * <p>
-     * The comparison is based on the value of the same field type, irrespective
-     * of any difference in chronology. Thus, if this property represents the
-     * hourOfDay field, then the hourOfDay field of the other instant will be queried
-     * whether in the same chronology or not.
-     * 
-     * @param instant  the instant to compare to
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws IllegalArgumentException if the instant is null
-     */
-    public int compareTo(ReadableInstant instant) {
-        if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
-        }
-        int thisValue = get();
-        int otherValue = instant.get(getFieldType());
-        if (thisValue < otherValue) {
-            return -1;
-        } else if (thisValue > otherValue) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Compare this field to the same field on another partial instant.
-     * <p>
-     * The comparison is based on the value of the same field type, irrespective
-     * of any difference in chronology. Thus, if this property represents the
-     * hourOfDay field, then the hourOfDay field of the other partial will be queried
-     * whether in the same chronology or not.
-     * 
-     * @param partial  the partial to compare to
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws IllegalArgumentException if the instant is null
-     * @throws IllegalArgumentException if the field of this property cannot be queried
-     *  on the specified instant
-     */
-    public int compareTo(ReadablePartial partial) {
-        if (partial == null) {
-            throw new IllegalArgumentException("The instant must not be null");
-        }
-        int thisValue = get();
-        int otherValue = partial.get(getFieldType());
-        if (thisValue < otherValue) {
-            return -1;
-        } else if (thisValue > otherValue) {
-            return 1;
-        } else {
-            return 0;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Compares this property to another.
-     * 
-     * @param object  the object to compare to
-     * @return true if equal
-     */
-    public boolean equals(Object object) {
-        if (this == object) {
-            return true;
-        }
-        if (object instanceof AbstractReadableInstantFieldProperty) {
-            AbstractReadableInstantFieldProperty other = (AbstractReadableInstantFieldProperty) object;
-            if (get() == other.get() &&
-                getFieldType() == other.getFieldType() &&
-                getReadableInstant().getChronology() == other.getReadableInstant().getChronology()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Output a debugging string.
-     * 
-     * @return debugging string
-     */
-    public String toString() {
-        return "Property[" + getName() + "]";
+        return getField().getDifferenceAsLong(getMillis(), instant.getMillis());
     }
 
 }

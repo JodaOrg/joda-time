@@ -807,12 +807,12 @@ public final class DateMidnight
         }
 
         /**
-         * Gets the instant being used.
+         * Gets the milliseconds of the datetime that this property is linked to.
          * 
-         * @return the instant
+         * @return the milliseconds
          */
-        public ReadableInstant getReadableInstant() {
-            return iInstant;
+        protected long getMillis() {
+            return iInstant.getMillis();
         }
 
         /**

@@ -328,6 +328,27 @@ public class MutablePeriod
     }
 
     /**
+     * Creates a period from the given duration and end point.
+     *
+     * @param duration  the duration of the interval, null means zero-length
+     * @param endInstant  the interval end, null means now
+     */
+    public MutablePeriod(ReadableDuration duration, ReadableInstant endInstant) {
+        super(duration, endInstant, null);
+    }
+
+    /**
+     * Creates a period from the given duration and end point.
+     *
+     * @param duration  the duration of the interval, null means zero-length
+     * @param endInstant  the interval end, null means now
+     * @param type  which set of fields this period supports, null means standard
+     */
+    public MutablePeriod(ReadableDuration duration, ReadableInstant endInstant, PeriodType type) {
+        super(duration, endInstant, type);
+    }
+
+    /**
      * Creates a period from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *

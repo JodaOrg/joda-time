@@ -273,6 +273,11 @@ public abstract class DurationType implements Serializable {
     public abstract DurationType withChronology(Chronology chrono);
 
     /**
+     * Returns true if every supported field in this type is precise.
+     */
+    public abstract boolean isPrecise();
+
+    /**
      * Returns a DurationField representing years.
      *
      * @return DurationField or UnsupportedDurationField if unsupported
@@ -479,6 +484,10 @@ public abstract class DurationType implements Serializable {
     private static final class MillisType extends DurationType {
         static final long serialVersionUID = -4314867016852780422L;
 
+        public boolean isPrecise() {
+            return true;
+        }
+
         public final DurationField millis() {
             return MillisDurationField.INSTANCE;
         }
@@ -514,6 +523,14 @@ public abstract class DurationType implements Serializable {
                 return this;
             }
             return new DayHourType(iChronology);
+        }
+
+        public boolean isPrecise() {
+            return days().isPrecise()
+                && hours().isPrecise()
+                && minutes().isPrecise()
+                && seconds().isPrecise()
+                && minutes().isPrecise();
         }
 
         public final DurationField days() {
@@ -555,6 +572,12 @@ public abstract class DurationType implements Serializable {
             return new YearMonthType(iChronology);
         }
 
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && months().isPrecise()
+                && super.isPrecise();
+        }
+
         public DurationField years() {
             return iChronology.years();
         }
@@ -585,6 +608,12 @@ public abstract class DurationType implements Serializable {
             return new ISOYearMonthType(iChronology);
         }
 
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && months().isPrecise()
+                && super.isPrecise();
+        }
+
         public DurationField years() {
             return iChronology.years();
         }
@@ -610,6 +639,12 @@ public abstract class DurationType implements Serializable {
                 return this;
             }
             return new YearWeekType(iChronology);
+        }
+
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && weeks().isPrecise()
+                && super.isPrecise();
         }
 
         public DurationField years() {
@@ -661,6 +696,17 @@ public abstract class DurationType implements Serializable {
                 return this;
             }
             return mask(iType.withChronology(chrono), iMask);
+        }
+
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && months().isPrecise()
+                && weeks().isPrecise()
+                && days().isPrecise()
+                && hours().isPrecise()
+                && minutes().isPrecise()
+                && seconds().isPrecise()
+                && minutes().isPrecise();
         }
 
         public DurationField years() {

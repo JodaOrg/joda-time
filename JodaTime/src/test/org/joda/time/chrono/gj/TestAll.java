@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -72,8 +72,8 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(new MainTest(500, 0, 1345435247779935L));
-        suite.addTest(new MainTest(500, 1, 1345435247779935L));
+        suite.addTest(new MainTest(1000, 0, 1345435247779935L));
+        suite.addTest(new MainTest(1000, 1, 1345435247779935L));
         return suite;
     }
 

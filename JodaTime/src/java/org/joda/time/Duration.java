@@ -252,6 +252,25 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
 
     //-----------------------------------------------------------------------
     /**
+     * Creates a new Duration instance with the same total milliseconds but
+     * different DurationType.
+     * 
+     * @param type  the duration type to use, null means AllType
+     * @return the new duration instance
+     * @throws IllegalStateException if this duration is imprecise
+     */
+    public Duration withDurationType(DurationType type) {
+        if (type == null) {
+            type = DurationType.getAllType();
+        }
+        if (type.equals(getDurationType())) {
+            return this;
+        }
+        return new Duration(getTotalMillis(), type);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setDuration(ReadableDuration duration) {

@@ -57,6 +57,7 @@ import java.io.Serializable;
 
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.ConverterManager;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODurationFormat;
 
 /**
@@ -384,14 +385,14 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      */
     public final long addTo(long instant, int scalar, Chronology chrono) {
         if (isPrecise()) {
-            return instant += getTotalMillis() * scalar;
+            return FieldUtils.safeAdd(instant, getTotalMillis() * scalar);
         }
-
+        
         DurationType type = iType;
         if (chrono != null) {
             type = type.withChronology(chrono);
         }
-
+        
         long value; // used to lock fields against threading issues
         value = scaleValue(iYears, scalar);
         if (value != 0) {

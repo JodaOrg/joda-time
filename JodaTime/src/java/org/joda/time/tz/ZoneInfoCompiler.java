@@ -105,10 +105,10 @@ public class ZoneInfoCompiler {
      * Launches the ZoneInfoCompiler tool.
      *
      * <pre>
-     * Usage: java org.joda.time.tz.ZoneInfoCompiler &lt;options&gt; &lt;source files&gt;");
-     * where possible options include:");
-     *   -src &lt;directory&gt;    Specify where to read source files");
-     *   -dst &lt;directory&gt;    Specify where to write generated files");
+     * Usage: java org.joda.time.tz.ZoneInfoCompiler &lt;options&gt; &lt;source files&gt;
+     * where possible options include:
+     *   -src &lt;directory&gt;    Specify where to read source files
+     *   -dst &lt;directory&gt;    Specify where to write generated files
      * </pre>
      */
     public static void main(String[] args) throws Exception {

@@ -213,7 +213,19 @@ public class TestMutableDateTime_Adds extends TestCase {
 
     public void testAdd_DurationFieldType_int2() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.add((DurationFieldType) null, 2010); // has no effect
+        try {
+            test.add((DurationFieldType) null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+
+    public void testAdd_DurationFieldType_int3() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        try {
+            test.add((DurationFieldType) null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
         assertEquals(TEST_TIME1, test.getMillis());
     }
 

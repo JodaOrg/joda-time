@@ -623,8 +623,24 @@ public class TestPeriod_Basics extends TestCase {
 
     public void testWithField2() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        Period result = test.withField(null, 6);
-        assertSame(test, result);
+        try {
+            test.withField(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithField3() {
+        Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
+        try {
+            test.withField(DurationFieldType.years(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithField4() {
+        Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
+        Period result = test.withField(DurationFieldType.years(), 0);
+        assertEquals(test, result);
     }
 
     //-----------------------------------------------------------------------
@@ -638,8 +654,24 @@ public class TestPeriod_Basics extends TestCase {
 
     public void testWithFieldAdded2() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        Period result = test.withFieldAdded(null, 6);
-        assertSame(test, result);
+        try {
+            test.withFieldAdded(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded3() {
+        Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
+        try {
+            test.withFieldAdded(DurationFieldType.years(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded4() {
+        Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
+        Period result = test.withFieldAdded(DurationFieldType.years(), 0);
+        assertEquals(test, result);
     }
 
     //-----------------------------------------------------------------------

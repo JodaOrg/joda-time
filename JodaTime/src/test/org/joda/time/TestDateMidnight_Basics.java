@@ -730,8 +730,10 @@ public class TestDateMidnight_Basics extends TestCase {
 
     public void testWithField2() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
-        DateMidnight result = test.withField(null, 6);
-        assertSame(test, result);
+        try {
+            test.withField(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -745,7 +747,23 @@ public class TestDateMidnight_Basics extends TestCase {
 
     public void testWithFieldAdded2() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
-        DateMidnight result = test.withFieldAdded(null, 6);
+        try {
+            test.withFieldAdded(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded3() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        try {
+            test.withFieldAdded(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded4() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight result = test.withFieldAdded(DurationFieldType.years(), 0);
         assertSame(test, result);
     }
 

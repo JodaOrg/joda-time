@@ -807,8 +807,10 @@ public class TestDateTime_Basics extends TestCase {
 
     public void testWithField2() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime result = test.withField(null, 6);
-        assertSame(test, result);
+        try {
+            test.withField(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -822,7 +824,23 @@ public class TestDateTime_Basics extends TestCase {
 
     public void testWithFieldAdded2() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime result = test.withFieldAdded(null, 6);
+        try {
+            test.withFieldAdded(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded3() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        try {
+            test.withFieldAdded(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded4() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime result = test.withFieldAdded(DurationFieldType.years(), 0);
         assertSame(test, result);
     }
 

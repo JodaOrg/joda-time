@@ -227,19 +227,22 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSet_DateTimeField_int1() {
+    public void testSet_DateTimeFieldType_int1() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         test.set(DateTimeFieldType.year(), 2010);
         assertEquals(2010, test.getYear());
     }
 
-    public void testSet_DateTimeField_int2() {
+    public void testSet_DateTimeFieldType_int2() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.set(null, 2010); // has no effect
+        try {
+            test.set(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
         assertEquals(TEST_TIME1, test.getMillis());
     }
 
-    public void testSet_DateTimeField_int3() {
+    public void testSet_DateTimeFieldType_int3() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         try {
             test.set(DateTimeFieldType.monthOfYear(), 13);

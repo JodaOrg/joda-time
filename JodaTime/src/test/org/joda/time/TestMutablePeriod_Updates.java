@@ -418,6 +418,38 @@ public class TestMutablePeriod_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testSet_Field() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.set(DurationFieldType.years(), 10);
+        assertEquals(10, test.getYears());
+        
+        test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        try {
+            test.set(null, 10);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAdd_Field() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.add(DurationFieldType.years(), 10);
+        assertEquals(11, test.getYears());
+        
+        test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        try {
+            test.add(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        
+        test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        try {
+            test.add(null, 10);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testSetPeriod_8ints1() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setPeriod(11, 12, 13, 14, 15, 16, 17, 18);
@@ -704,6 +736,51 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(1, test.getHours());
         assertEquals(1, test.getMinutes());
         assertEquals(1, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSetPeriod_RI_RI1() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
+        DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
+        test.setPeriod(dt1, dt2);
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(1, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    public void testSetPeriod_RI_RI2() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
+        DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
+        test.setPeriod(dt2, dt1);
+        assertEquals(-1, test.getYears());
+        assertEquals(-1, test.getMonths());
+        assertEquals(-1, test.getWeeks());
+        assertEquals(-1, test.getDays());
+        assertEquals(-1, test.getHours());
+        assertEquals(-1, test.getMinutes());
+        assertEquals(-1, test.getSeconds());
+        assertEquals(-1, test.getMillis());
+    }
+
+    public void testSetPeriod_RI_RI3() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
+        test.setPeriod(dt1, dt1);
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
     }
 
@@ -1063,39 +1140,7 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(108, test.getMillis());
     }
 
-//    public void testAdd_long3() {
-//        MutablePeriod test = new MutablePeriod(100L, PeriodType.getPreciseYearMonthType());
-//        long ms =
-//            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
-//            5L * DateTimeConstants.MILLIS_PER_HOUR +
-//            6L * DateTimeConstants.MILLIS_PER_MINUTE +
-//            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-//        test.add(ms);
-//        assertEquals(1, test.getYears());
-//        assertEquals(2, test.getMonths());
-//        assertEquals(0, test.getWeeks());  // checks that YearMonth type is used in conversion
-//        assertEquals(25, test.getDays());
-//        assertEquals(5, test.getHours());
-//        assertEquals(6, test.getMinutes());
-//        assertEquals(7, test.getSeconds());
-//        assertEquals(108, test.getMillis());
-//    }
-//
-//    public void testAdd_long4() {
-//        MutablePeriod test = new MutablePeriod(100L, PeriodType.getPreciseYearMonthType());
-//        long ms =0L;
-//        test.add(ms);
-//        assertEquals(0, test.getYears());
-//        assertEquals(0, test.getMonths());
-//        assertEquals(0, test.getWeeks());
-//        assertEquals(0, test.getDays());
-//        assertEquals(0, test.getHours());
-//        assertEquals(0, test.getMinutes());
-//        assertEquals(0, test.getSeconds());
-//        assertEquals(100, test.getMillis());
-//    }
-
-    public void testAdd_long5() {
+    public void testAdd_long3() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.add(2100L);
         assertEquals(1, test.getYears());
@@ -1105,6 +1150,58 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(5, test.getHours());
         assertEquals(6, test.getMinutes());
         assertEquals(9, test.getSeconds());
+        assertEquals(108, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAdd_long_Chronology1() {
+        MutablePeriod test = new MutablePeriod(100L);
+        test.add(100L, Chronology.getISO());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(200, test.getMillis());
+    }
+
+    public void testAdd_long_Chronology2() {
+        MutablePeriod test = new MutablePeriod(100L, PeriodType.standard());
+        long ms =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        test.add(ms, Chronology.getISO());
+        // only time fields are precise
+        assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450 days
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals((450 * 24) + 5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(108, test.getMillis());
+    }
+
+    public void testAdd_long_Chronology3() {
+        MutablePeriod test = new MutablePeriod(100L, PeriodType.standard());
+        long ms =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        test.add(ms, Chronology.getISOUTC());
+        // UTC, so weeks and day also precise
+        assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450 days
+        assertEquals(0, test.getMonths());
+        assertEquals(64, test.getWeeks());
+        assertEquals(2, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
         assertEquals(108, test.getMillis());
     }
 
@@ -1140,46 +1237,18 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(108, test.getMillis());
     }
 
-//    public void testAdd_RD3() {
-//        MutablePeriod test = new MutablePeriod(100L, PeriodType.getPreciseYearMonthType());
-//        long ms =0L;
-//        test.add(new Duration(ms));
-//        assertEquals(0, test.getYears());
-//        assertEquals(0, test.getMonths());
-//        assertEquals(0, test.getWeeks());
-//        assertEquals(0, test.getDays());
-//        assertEquals(0, test.getHours());
-//        assertEquals(0, test.getMinutes());
-//        assertEquals(0, test.getSeconds());
-//        assertEquals(100, test.getMillis());
-//        assertEquals(100L, test.toDurationMillis());
-//    }
-//
-//    public void testAdd_RD4() {
-//        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-//        test.add(new Duration(2100L));
-//        assertEquals(1, test.getYears());
-//        assertEquals(2, test.getMonths());
-//        assertEquals(3, test.getWeeks());
-//        assertEquals(4, test.getDays());
-//        assertEquals(5, test.getHours());
-//        assertEquals(6, test.getMinutes());
-//        assertEquals(9, test.getSeconds());
-//        assertEquals(108, test.getMillis());
-//    }
-//
-//    public void testAdd_RD5() {
-//        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
-//        test.add((ReadableDuration) null);
-//        assertEquals(1, test.getYears());
-//        assertEquals(2, test.getMonths());
-//        assertEquals(3, test.getWeeks());
-//        assertEquals(4, test.getDays());
-//        assertEquals(5, test.getHours());
-//        assertEquals(6, test.getMinutes());
-//        assertEquals(7, test.getSeconds());
-//        assertEquals(8, test.getMillis());
-//    }
+    public void testAdd_RD3() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.add((ReadableDuration) null);
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+    }
 
     //-----------------------------------------------------------------------
     public void testAdd_RP1() {
@@ -1239,6 +1308,19 @@ public class TestMutablePeriod_Updates extends TestCase {
     }
 
     public void testAdd_RP5() {
+        MutablePeriod test = new MutablePeriod(1, 2, 0, 4, 5, 6, 7, 8, PeriodType.yearMonthDayTime());
+        test.add(new Period(1, 2, 0, 4, 5, 6, 7, 8));  // can set weeks as zero
+        assertEquals(2, test.getYears());
+        assertEquals(4, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(8, test.getDays());
+        assertEquals(10, test.getHours());
+        assertEquals(12, test.getMinutes());
+        assertEquals(14, test.getSeconds());
+        assertEquals(16, test.getMillis());
+    }
+
+    public void testAdd_RP6() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.add((ReadablePeriod) null);
         assertEquals(1, test.getYears());
@@ -1311,6 +1393,75 @@ public class TestMutablePeriod_Updates extends TestCase {
     public void testAdd_RInterval5() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.add((ReadableInterval) null);
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMergePeriod_RP1() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.mergePeriod(new MutablePeriod(0, 0, 0, 14, 15, 16, 17, 18, PeriodType.dayTime()));
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(14, test.getDays());
+        assertEquals(15, test.getHours());
+        assertEquals(16, test.getMinutes());
+        assertEquals(17, test.getSeconds());
+        assertEquals(18, test.getMillis());
+    }
+
+    public void testMergePeriod_RP2() {
+        MutablePeriod test = new MutablePeriod(100L, PeriodType.millis());
+        try {
+            test.mergePeriod(new MutablePeriod(11, 12, 13, 14, 15, 16, 17, 18));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(100, test.getMillis());
+    }
+
+    public void testMergePeriod_RP3() {
+        MutablePeriod test = new MutablePeriod(100L, PeriodType.millis());
+        test.mergePeriod(new MutablePeriod(0, 0, 0, 0, 0, 0, 0, 18));
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(18, test.getMillis());
+    }
+
+    public void testMergePeriod_RP4() {
+        MutablePeriod test = new MutablePeriod(0, 0, 0, 0, 5, 6, 7, 8);
+        test.mergePeriod(new MutablePeriod(11, 12, 13, 14, 15, 16, 17, 18));
+        assertEquals(11, test.getYears());
+        assertEquals(12, test.getMonths());
+        assertEquals(13, test.getWeeks());
+        assertEquals(14, test.getDays());
+        assertEquals(15, test.getHours());
+        assertEquals(16, test.getMinutes());
+        assertEquals(17, test.getSeconds());
+        assertEquals(18, test.getMillis());
+    }
+
+    public void testMergePeriod_RP5() {
+        MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.mergePeriod((ReadablePeriod) null);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
         assertEquals(3, test.getWeeks());

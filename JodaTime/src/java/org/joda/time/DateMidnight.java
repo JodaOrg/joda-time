@@ -407,14 +407,14 @@ public final class DateMidnight
      * DateTime updated = dt.property(DateTimeFieldType.dayOfMonth()).setCopy(6);
      * </pre>
      *
-     * @param fieldType  the field type to set, null ignored
+     * @param fieldType  the field type to set, not null
      * @param value  the value to set
      * @return a copy of this datetime with the field set
-     * @throws IllegalArgumentException if the value is invalid
+     * @throws IllegalArgumentException if the value is null or invalid
      */
     public DateMidnight withField(DateTimeFieldType fieldType, int value) {
         if (fieldType == null) {
-            return this;
+            throw new IllegalArgumentException("Field must not be null");
         }
         long instant = fieldType.getField(getChronology()).set(getMillis(), value);
         return withMillis(instant);
@@ -431,13 +431,17 @@ public final class DateMidnight
      * DateTime added = dt.property(DateTimeFieldType.dayOfMonth()).addToCopy(6);
      * </pre>
      * 
-     * @param fieldType  the field type to add to, null ignored
+     * @param fieldType  the field type to add to, not null
      * @param amount  the amount to add
      * @return a copy of this datetime with the field updated
+     * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
     public DateMidnight withFieldAdded(DurationFieldType fieldType, int amount) {
-        if (fieldType == null || amount == 0) {
+        if (fieldType == null) {
+            throw new IllegalArgumentException("Field must not be null");
+        }
+        if (amount == 0) {
             return this;
         }
         long instant = fieldType.getField(getChronology()).add(getMillis(), amount);

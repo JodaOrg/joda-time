@@ -574,27 +574,30 @@ public class MutableDateTime
     /**
      * Sets the value of one of the fields of the instant, such as hourOfDay.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType, null ignored
+     * @param type  a field type, usually obtained from DateTimeFieldType, not null
      * @param value  the value to set the field to
-     * @throws IllegalArgumentException if the value is invalid
+     * @throws IllegalArgumentException if the value is null or invalid
      */
     public void set(DateTimeFieldType type, int value) {
-        if (type != null) {
-            setMillis(type.getField(getChronology()).set(getMillis(), value));
+        if (type == null) {
+            throw new IllegalArgumentException("Field must not be null");
         }
+        setMillis(type.getField(getChronology()).set(getMillis(), value));
     }
 
     /**
      * Adds to the instant specifying the duration and multiple to add.
      *
-     * @param type  a field type, usually obtained from DateTimeFieldType, null ignored
+     * @param type  a field type, usually obtained from DateTimeFieldType, not null
      * @param amount  the amount to add of this duration
+     * @throws IllegalArgumentException if the value is null or invalid
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
     public void add(DurationFieldType type, int amount) {
-        if (type != null) {
-            setMillis(type.getField(getChronology()).add(getMillis(), amount));
+        if (type == null) {
+            throw new IllegalArgumentException("Field must not be null");
         }
+        setMillis(type.getField(getChronology()).add(getMillis(), amount));
     }
 
     //-----------------------------------------------------------------------

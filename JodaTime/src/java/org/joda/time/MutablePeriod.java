@@ -396,7 +396,7 @@ public class MutablePeriod
      * <p>
      * The field type specified must be one of those that is supported by the period.
      *
-     * @param field  a DurationFieldType instance that is supported by this period
+     * @param field  a DurationFieldType instance that is supported by this period, not null
      * @param value  the new value for the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
@@ -563,14 +563,12 @@ public class MutablePeriod
      * <p>
      * The field type specified must be one of those that is supported by the period.
      *
-     * @param field  a DurationFieldType instance that is supported by this period
+     * @param field  a DurationFieldType instance that is supported by this period, not null
      * @param value  the value to add to the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
     public void add(DurationFieldType field, int value) {
-        if (value != 0) {
-            super.addField(field, value);
-        }
+        super.addField(field, value);
     }
 
     /**
@@ -582,9 +580,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadablePeriod period) {
-        if (period != null) {
-            super.addPeriod(period);
-        }
+        super.addPeriod(period);
     }
 
     /**
@@ -671,6 +667,19 @@ public class MutablePeriod
      */
     public void add(long duration, Chronology chrono) {
         add(new Period(duration, getPeriodType(), chrono));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Merges all the fields from the specified period into this one.
+     * <p>
+     * Fields that are not present in the specified period are left unaltered.
+     * 
+     * @param period  the period to set, null ignored
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     */
+    public void mergePeriod(ReadablePeriod period) {
+        super.mergePeriod(period);
     }
 
     //-----------------------------------------------------------------------
@@ -766,9 +775,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addYears(int years) {
-        if (years != 0) {
-            setYears(FieldUtils.safeAdd(getYears(), years));
-        }
+        super.addField(DurationFieldType.years(), years);
     }
 
     //-----------------------------------------------------------------------
@@ -790,9 +797,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMonths(int months) {
-        if (months != 0) {
-            setMonths(FieldUtils.safeAdd(getMonths(), months));
-        }
+        super.addField(DurationFieldType.months(), months);
     }
 
     //-----------------------------------------------------------------------
@@ -814,9 +819,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addWeeks(int weeks) {
-        if (weeks != 0) {
-            setWeeks(FieldUtils.safeAdd(getWeeks(), weeks));
-        }
+        super.addField(DurationFieldType.weeks(), weeks);
     }
 
     //-----------------------------------------------------------------------
@@ -838,9 +841,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addDays(int days) {
-        if (days != 0) {
-            setDays(FieldUtils.safeAdd(getDays(), days));
-        }
+        super.addField(DurationFieldType.days(), days);
     }
 
     //-----------------------------------------------------------------------
@@ -862,9 +863,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addHours(int hours) {
-        if (hours != 0) {
-            setHours(FieldUtils.safeAdd(getHours(), hours));
-        }
+        super.addField(DurationFieldType.hours(), hours);
     }
 
     //-----------------------------------------------------------------------
@@ -886,9 +885,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMinutes(int minutes) {
-        if (minutes != 0) {
-            setMinutes(FieldUtils.safeAdd(getMinutes(), minutes));
-        }
+        super.addField(DurationFieldType.minutes(), minutes);
     }
 
     //-----------------------------------------------------------------------
@@ -910,9 +907,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addSeconds(int seconds) {
-        if (seconds != 0) {
-            setSeconds(FieldUtils.safeAdd(getSeconds(), seconds));
-        }
+        super.addField(DurationFieldType.seconds(), seconds);
     }
 
     //-----------------------------------------------------------------------
@@ -934,9 +929,7 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMillis(int millis) {
-        if (millis != 0) {
-            setMillis(FieldUtils.safeAdd(getMillis(), millis));
-        }
+        super.addField(DurationFieldType.millis(), millis);
     }
 
     // Misc

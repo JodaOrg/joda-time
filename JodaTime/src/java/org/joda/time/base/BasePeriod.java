@@ -399,7 +399,7 @@ public abstract class BasePeriod
      * 
      * @param field  the field to set
      * @param value  the value to set
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is is null or not supported.
      */
     protected void setField(DurationFieldType field, int value) {
         setFieldInto(iValues, field, value);
@@ -411,14 +411,14 @@ public abstract class BasePeriod
      * @param values  the array of values to update
      * @param field  the field to set
      * @param value  the value to set
-     * @throws IllegalArgumentException if field is not supported.
+     * @throws IllegalArgumentException if field is null or not supported.
      */
     protected void setFieldInto(int[] values, DurationFieldType field, int value) {
         int index = indexOf(field);
         if (index == -1) {
-            if (value != 0) {
+            if (value != 0 || field == null) {
                 throw new IllegalArgumentException(
-                    "Period does not support field '" + field.getName() + "'");
+                    "Period does not support field '" + field + "'");
             }
         } else {
             values[index] = value;
@@ -430,7 +430,7 @@ public abstract class BasePeriod
      * 
      * @param field  the field to set
      * @param value  the value to set
-     * @throws IllegalArgumentException if field is not supported.
+     * @throws IllegalArgumentException if field is is null or not supported.
      */
     protected void addField(DurationFieldType field, int value) {
         addFieldInto(iValues, field, value);
@@ -442,14 +442,14 @@ public abstract class BasePeriod
      * @param values  the array of values to update
      * @param field  the field to set
      * @param value  the value to set
-     * @throws IllegalArgumentException if field is not supported.
+     * @throws IllegalArgumentException if field is is null or not supported.
      */
     protected void addFieldInto(int[] values, DurationFieldType field, int value) {
         int index = indexOf(field);
         if (index == -1) {
-            if (value != 0) {
+            if (value != 0 || field == null) {
                 throw new IllegalArgumentException(
-                    "Period does not support field '" + field.getName() + "'");
+                    "Period does not support field '" + field + "'");
             }
         } else {
             values[index] = FieldUtils.safeAdd(values[index], value);
@@ -463,7 +463,9 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void mergePeriod(ReadablePeriod period) {
-        iValues = mergePeriodInto(getValues(), period);
+        if (period != null) {
+            iValues = mergePeriodInto(getValues(), period);
+        }
     }
 
     /**
@@ -490,7 +492,9 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void addPeriod(ReadablePeriod period) {
-        iValues = addPeriodInto(getValues(), period);
+        if (period != null) {
+            iValues = addPeriodInto(getValues(), period);
+        }
     }
 
     /**
@@ -505,14 +509,14 @@ public abstract class BasePeriod
          for (int i = 0, isize = period.size(); i < isize; i++) {
              DurationFieldType type = period.getFieldType(i);
              int value = period.getValue(i);
-             int index = indexOf(type);
-             if (index == -1) {
-                 if (value != 0) {
+             if (value != 0) {
+                 int index = indexOf(type);
+                 if (index == -1) {
                      throw new IllegalArgumentException(
                          "Period does not support field '" + type.getName() + "'");
+                 } else {
+                     values[index] = FieldUtils.safeAdd(getValue(index), value);
                  }
-             } else {
-                 values[index] = FieldUtils.safeAdd(getValue(index), value);
              }
          }
          return values;

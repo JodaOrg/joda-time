@@ -622,14 +622,14 @@ public final class Period
      * <p>
      * This period instance is immutable and unaffected by this method call.
      * 
-     * @param field  the field to set, null ignored
+     * @param field  the field to set, not null
      * @param value  the value to set to
      * @return the new period instance
-     * @throws IllegalArgumentException if the field type is unsupported
+     * @throws IllegalArgumentException if the field type is null or unsupported
      */
     public Period withField(DurationFieldType field, int value) {
         if (field == null) {
-            return this;
+            throw new IllegalArgumentException("Field must not be null");
         }
         int[] newValues = getValues();  // cloned
         super.setFieldInto(newValues, field, value);
@@ -641,13 +641,16 @@ public final class Period
      * <p>
      * This period instance is immutable and unaffected by this method call.
      * 
-     * @param field  the field to set, null ignored
+     * @param field  the field to set, not null
      * @param value  the value to add
      * @return the new period instance
-     * @throws IllegalArgumentException if the field type is unsupported
+     * @throws IllegalArgumentException if the field type is null or unsupported
      */
     public Period withFieldAdded(DurationFieldType field, int valueToAdd) {
-        if (valueToAdd == 0 || field == null) {
+        if (field == null) {
+            throw new IllegalArgumentException("Field must not be null");
+        }
+        if (valueToAdd == 0) {
             return this;
         }
         int[] newValues = getValues();  // cloned

@@ -337,7 +337,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField years() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("years");
     }
 
     /**
@@ -346,7 +346,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField months() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("months");
     }
 
     /**
@@ -355,7 +355,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField weeks() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("weeks");
     }
 
     /**
@@ -364,7 +364,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField days() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("days");
     }
 
     /**
@@ -373,7 +373,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField hours() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("hours");
     }
 
     /**
@@ -382,7 +382,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField minutes() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("minutes");
     }
 
     /**
@@ -391,7 +391,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField seconds() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("seconds");
     }
 
     /**
@@ -400,7 +400,7 @@ public abstract class DurationType implements Serializable {
      * @return DurationField or UnsupportedDurationField if unsupported
      */
     public DurationField millis() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("millis");
     }
 
     /**
@@ -829,56 +829,56 @@ public abstract class DurationType implements Serializable {
 
         public DurationField years() {
             if ((iMask & (1 << 0)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("years");
             }
             return iType.years();
         }
 
         public DurationField months() {
             if ((iMask & (1 << 1)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("months");
             }
             return iType.months();
         }
 
         public DurationField weeks() {
             if ((iMask & (1 << 2)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("weeks");
             }
             return iType.weeks();
         }
 
         public DurationField days() {
             if ((iMask & (1 << 3)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("days");
             }
             return iType.days();
         }
 
         public DurationField hours() {
             if ((iMask & (1 << 4)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("hours");
             }
             return iType.hours();
         }
 
         public DurationField minutes() {
             if ((iMask & (1 << 5)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("minutes");
             }
             return iType.minutes();
         }
 
         public DurationField seconds() {
             if ((iMask & (1 << 6)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("seconds");
             }
             return iType.seconds();
         }
 
         public DurationField millis() {
             if ((iMask & (1 << 7)) != 0) {
-                return UnsupportedDurationField.INSTANCE;
+                return UnsupportedDurationField.getInstance("millis");
             }
             return iType.millis();
         }

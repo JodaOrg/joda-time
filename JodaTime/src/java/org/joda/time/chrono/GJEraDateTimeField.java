@@ -161,7 +161,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
     }
 
     public DurationField getDurationField() {
-        return UnsupportedDurationField.INSTANCE;
+        return UnsupportedDurationField.getInstance("eras");
     }
 
     public DurationField getRangeDurationField() {

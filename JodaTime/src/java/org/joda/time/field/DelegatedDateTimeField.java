@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -184,6 +184,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
 
     public int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
         return iField.add(instant, fieldIndex, values, valueToAdd);
+    }
+
+    public int[] addWrapPartial(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd) {
+        return iField.addWrapPartial(instant, fieldIndex, values, valueToAdd);
     }
 
     public long addWrapField(long instant, int value) {

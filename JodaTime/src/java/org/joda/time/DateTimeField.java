@@ -279,6 +279,35 @@ public abstract class DateTimeField {
     public abstract int[] add(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd);
 
     /**
+     * Adds a value (which may be negative) to the partial instant,
+     * wrapping the whole partial if the maximum size of the partial is reached.
+     * <p>
+     * The value will be added to this field, overflowing into larger fields
+     * if necessary. Smaller fields should be unaffected, except where the
+     * result would be an invalid value for a smaller field. In this case the
+     * smaller field is adjusted to be in range.
+     * <p>
+     * Partial instants only contain some fields. This may result in a maximum
+     * possible value, such as TimeOfDay normally being limited to 23:59:59:999.
+     * If ths limit is reached by the addition, this method will wrap back to
+     * 00:00:00.000. In fact, you would generally only use this method for
+     * classes that have a limitation such as this.
+     * <p>
+     * For example, in the ISO chronology:<br>
+     * 10:20:30 add 20 minutes is 10:40:30<br>
+     * 10:20:30 add 45 minutes is 11:05:30<br>
+     * 10:20:30 add 16 hours is 02:20:30<br>
+     * 
+     * @param instant  the partial instant
+     * @param fieldIndex  the index of this field in the partial
+     * @param values  the values of the partial instant which should be updated
+     * @param valueToAdd  the value to add, in the units of the field
+     * @return the passed in values
+     * @throws IllegalArgumentException if the value is invalid or the maximum instant is reached
+     */
+    public abstract int[] addWrapPartial(ReadablePartial instant, int fieldIndex, int[] values, int valueToAdd);
+
+    /**
      * Adds a value (which may be negative) to the millis value,
      * wrapping within this field.
      * <p>

@@ -53,6 +53,8 @@
  */
 package org.joda.time.partial;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -225,6 +227,16 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Recreates the state of this object after deserialization.
+     * 
+     * @param in  the input stream
+     */
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        iFields = initFields(iChronology);
+    }
+
     /**
      * Initialize the array of fields.
      * The field and value arrays must match.

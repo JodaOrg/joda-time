@@ -246,8 +246,7 @@ class StringConverter extends AbstractConverter
         if (writableInterval == null) {
             return new long[] {startInstant, endInstant};
         } else {
-            writableInterval.setStartMillis(startInstant);
-            writableInterval.setEndMillis(endInstant);
+            writableInterval.setInterval(startInstant, endInstant);
             return null;
         }
     }

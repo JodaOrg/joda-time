@@ -121,8 +121,7 @@ class ReadableIntervalConverter extends AbstractConverter
      */
     public void setInto(ReadWritableInterval writableInterval, Object object) {
         ReadableInterval interval = (ReadableInterval) object;
-        writableInterval.setStartMillis(interval.getStartMillis());
-        writableInterval.setEndMillis(interval.getEndMillis());
+        writableInterval.setInterval(interval);
     }
 
     //-----------------------------------------------------------------------

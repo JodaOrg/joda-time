@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import org.joda.time.DateTimeField;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * This field is not publicy exposed by ISOChronology, but rather it is used to
@@ -96,6 +97,10 @@ class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
 
     public long addWrapped(long instant, int years) {
         return getWrappedField().addWrapped(instant, years);
+    }
+
+    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int years) {
+        return getWrappedField().addInField(instant, fieldIndex, values, years);
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {

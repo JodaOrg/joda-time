@@ -74,13 +74,12 @@ import org.joda.time.DateTimeField;
  * The second technique also provides access to other useful methods on the
  * field:
  * <ul>
- * <li>numeric value
- * <li>text value
- * <li>short text value
- * <li>maximum/minimum values
- * <li>add/subtract
- * <li>set
- * <li>rounding
+ * <li>numeric value - <code>hourOfDay().get()</code>
+ * <li>text value - <code>hourOfDay().getAsText()</code>
+ * <li>short text value - <code>hourOfDay().getAsShortText()</code>
+ * <li>maximum/minimum values - <code>hourOfDay().getMaximumValue()</code>
+ * <li>add/subtract - <code>hourOfDay().addToCopy()</code>
+ * <li>set - <code>hourOfDay().setCopy()</code>
  * </ul>
  * <p>
  * TimeOfDay is thread-safe and immutable, provided that the Chronology is as well.
@@ -474,6 +473,7 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
 //         * Adds to this field in a copy of this TimeOfDay.
 //         * <p>
 //         * The TimeOnly attached to this property is unchanged by this call.
+//        * Instead, a new instance is returned.
 //         * 
 //         * @param value  the value to add to the field in the copy
 //         * @return a copy of the TimeOnly with the field value changed
@@ -484,27 +484,38 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
 //            return new TimeOfDay(getInstant(), newValues);
 //        }
 //
-//        /**
-//         * Adds to this field, possibly wrapped, in a copy of this TimeOfDay.
-//         * A wrapped operation only changes this field.
-//         * Thus 12:59:00 addWrapped one minute goes to 12:00:00.
-//         * <p>
-//         * The TimeOfDay attached to this property is unchanged by this call.
-//         * 
-//         * @param value  the value to add to the field in the copy
-//         * @return a copy of the TimeOfDay with the field value changed
-//         * @throws IllegalArgumentException if the value isn't valid
-//         */
-//        public TimeOfDay addWrappedToCopy(int value) {
-//            int[] newValues = getField().addWrapped(getInstant(), value);
-//            return new TimeOfDay(getInstant(), newValues);
-//        }
-//
+        /**
+         * Adds to the value of this field in a copy of this TimeOfDay wrapping
+         * within this field if the maximum value is reached.
+         * <p>
+         * The value will be added to this field. If the value is too large to be
+         * added solely to this field then it wraps. Larger fields are always
+         * unaffected. Smaller fields should be unaffected, except where the
+         * result would be an invalid value for a smaller field. In this case the
+         * smaller field is adjusted to be in range.
+         * <p>
+         * For example,
+         * <code>12:59:37</code> addInField one minute returns <code>12:00:37</code>.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         * Instead, a new instance is returned.
+         * 
+         * @param valueToAdd  the value to add to the field in the copy
+         * @return a copy of the TimeOfDay with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public TimeOfDay addInFieldCopy(int valueToAdd) {
+            int[] newValues = iInstant.getValues();
+            getField().addInField(iInstant, iFieldIndex, newValues, valueToAdd);
+            return new TimeOfDay(iInstant, newValues);
+        }
+
         //-----------------------------------------------------------------------
         /**
          * Sets this field in a copy of the TimeOfDay.
          * <p>
          * The TimeOfDay attached to this property is unchanged by this call.
+         * Instead, a new instance is returned.
          * 
          * @param value  the value to set the field in the copy to
          * @return a copy of the TimeOfDay with the field value changed
@@ -520,6 +531,7 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * Sets this field in a copy of the TimeOfDay to a parsed text value.
          * <p>
          * The TimeOfDay attached to this property is unchanged by this call.
+         * Instead, a new instance is returned.
          * 
          * @param text  the text value to set
          * @param locale  optional locale to use for selecting a text symbol
@@ -536,6 +548,7 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
          * Sets this field in a copy of the TimeOfDay to a parsed text value.
          * <p>
          * The TimeOfDay attached to this property is unchanged by this call.
+         * Instead, a new instance is returned.
          * 
          * @param text  the text value to set
          * @return a copy of the TimeOfDay with the field value changed

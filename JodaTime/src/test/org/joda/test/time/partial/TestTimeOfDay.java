@@ -567,6 +567,20 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(23, test.hourOfDay().getMaximumValueOverall());
     }
 
+    public void testPropertyAddInField() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay updated = test.hourOfDay().addInFieldCopy(9);
+        assertEquals(19, updated.getHourOfDay());
+        assertEquals(20, updated.getMinuteOfHour());
+        assertEquals(30, updated.getSecondOfMinute());
+        assertEquals(40, updated.getMillisOfSecond());
+        updated = updated.hourOfDay().addInFieldCopy(9);
+        assertEquals(4, updated.getHourOfDay());
+        assertEquals(20, updated.getMinuteOfHour());
+        assertEquals(30, updated.getSecondOfMinute());
+        assertEquals(40, updated.getMillisOfSecond());
+    }
+
     public void testPropertySet() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay set = test.hourOfDay().setCopy(12);

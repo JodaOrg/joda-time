@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import org.joda.time.DateTimeField;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * Provides time calculations for the year of era component of time.
@@ -76,12 +77,6 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
         iChronology = chronology;
     }
 
-    /**
-     * Get the year of era component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
-     * @return the year of era extracted from the input.
-     */
     public int get(long instant) {
         int year = getWrappedField().get(instant);
         if (year <= 0) {
@@ -90,14 +85,6 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
         return year;
     }
 
-    /**
-     * Add the specified year to the specified time instant.
-     * The amount added may be negative.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
     public long add(long instant, int years) {
         return getWrappedField().add(instant, years);
     }
@@ -106,16 +93,12 @@ final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().add(instant, years);
     }
 
-    /**
-     * Add to the year component of the specified time instant
-     * wrapping around within that component if necessary.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
     public long addWrapped(long instant, int years) {
         return getWrappedField().addWrapped(instant, years);
+    }
+
+    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int years) {
+        return getWrappedField().addInField(instant, fieldIndex, values, years);
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {

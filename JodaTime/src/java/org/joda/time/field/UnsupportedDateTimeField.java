@@ -212,6 +212,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     }
 
     /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
+    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+        throw unsupported();
+    }
+
+    /**
      * Delegates to the duration field.
      *
      * @throws UnsupportedOperationException if the duration is unsupported

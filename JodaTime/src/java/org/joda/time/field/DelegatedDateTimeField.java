@@ -173,6 +173,10 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.addWrapped(instant, value);
     }
 
+    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+        return iField.addInField(instant, fieldIndex, values, valueToAdd);
+    }
+
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return iField.getDifference(minuendInstant, subtrahendInstant);
     }

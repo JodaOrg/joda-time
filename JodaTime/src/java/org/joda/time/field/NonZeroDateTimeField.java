@@ -102,6 +102,10 @@ public final class NonZeroDateTimeField extends DecoratedDateTimeField {
         return getWrappedField().addWrapped(instant, value);
     }
 
+    public int[] addInField(PartialInstant instant, int fieldIndex, int[] values, int valueToAdd) {
+        return getWrappedField().addInField(instant, fieldIndex, values, valueToAdd);
+    }
+
     public int getDifference(long minuendInstant, long subtrahendInstant) {
         return getWrappedField().getDifference(minuendInstant, subtrahendInstant);
     }

@@ -167,7 +167,8 @@ public interface ReadWritableInstant extends ReadableInstant {
      * If the resulting value is too large for the implementation,
      * an exception is thrown.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableDuration, String and Long.
      *
      * @param duration  an object representing a duration

@@ -29,17 +29,23 @@ The Julian calendar defines a leap year as being once every four years.
 The Gregorian calendar adds two extra rules to state that years divisible by 100 are not leap, but those divisible by 400 are.
 </p>
 
+</section>
+
+<section name="Using GregorianJulian in Joda-time">
 <p>
-Within Joda-Time this calendar system can be used by obtaining an instance of
-<a href="apidocs/org/joda/time/chrono/GJChronology.html">GJChronology</a>.
+Within Joda-Time the GregorianJulian calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/GJChronology.html">GJChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/Chronology.html#getGJ()">Chronology.getGJ()</a>.
 This is then passed into the constructors of the main date and time classes.
 </p>
 <source>
 // setup date object for the Battle of Hastings in 1066
-Chronology chrono = GJChronology.getInstance();
+Chronology chrono = Chronology.getGJ();
 DateTime dt = new DateTime(1066, 10, 14, 10, 0, 0, 0, chrono);
 </source>
 
 </section>
+
 </body>
 </document>

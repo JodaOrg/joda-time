@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Gregorian calendar system</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Gregorian calendar system">
+
+<p>
+The Gregorian calendar system is calendar system used by most of the modern business world.
+It was first introduced on 1582-10-15 replacing the <a href="cal_julian.html">Julian</a> calendar.
+Gregorian rules define a leap year as once every four years, expect every 100, but including every 400.
+</p>
+
+<p>
+The Gregorian chronology in Joda-time is equivalent to the ISO chronology, and uses
+Gregorian rules for all time. Thus it is not historically accurate before 1583.
+This also means that the Gregorian chronology does not correspond to the java class
+<code>GregorianCalendar</code>. See <a href="cal_gj.html">GregorianJulian</a> for a
+suitable replacement.
+</p>
+
+</section>
+
+<section name="Using Gregorian in Joda-time">
+<p>
+Within Joda-Time the Gregorian calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/GregorianChronology.html">GregorianChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/Chronology.html#getGregorian()">Chronology.getGregorian()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on Christmas 2004
+Chronology chrono = Chronology.getGregorian();
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, chrono);
+</source>
+
+</section>
+
+</body>
+</document>

@@ -28,7 +28,8 @@ However some <a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.IS
 The ISO8601 standard is based on the <i>proleptic Gregorian calendar</i>.
 This makes it fully compatible with the calendar system used in most countries today.
 The <i>proleptic</i> means that the Gregorian rules for leap years are applied for all time,
-thus the ISO8601 standard gives different results for dates before the year 1583.
+thus the ISO8601 standard gives different results for dates before the year 1583 when
+the historic cutover from the Julian calendar occurred.
 </p>
 
 <p>
@@ -89,7 +90,33 @@ The weekyear field is defined to refer to the year that owns the week, which may
 </p>
 </subsection>
 
+</section>
+
+<section name="Using ISO8601 in Joda-time">
+<p>
+Within Joda-Time the ISO8601 calendar system is the default. As such, all methods
+that take a chronology as a parameter will use the ISO chronology if null is passed in.
+There is almost always a version of the method without the chronology parameter, and this
+will default to ISO chronology.
+</p>
+The actual chronology class is
+<a href="apidocs/org/joda/time/chrono/ISOChronology.html">ISOChronology</a>.
+This is normally created if required using the factory method
+<a href="apidocs/org/joda/time/Chronology.html#getISO()">Chronology.getISO()</a>.
+</p>
+<source>
+// setup date object for midday on Christmas 2004 (default time zone)
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0);
+
+// or specify the chronology explicitly
+Chronology chrono = Chronology.getISO();
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, chrono);
+
+// or use the default null handling behaviour
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, (Chronology) null);
+</source>
 
 </section>
+
 </body>
 </document>

@@ -15,6 +15,7 @@
 Some common questions about Joda-Time are answered here.
 <ul>
 <li><a href="#iso">What is ISO8601?</a></li>
+<li><a href="#default">Why is ISO8601 the default?</a></li>
 <li><a href="#internalstorage">How are times calculated internally?</a></li>
 <li><a href="#long">Why limit to the number of milliseconds in a long?</a></li>
 <li><a href="#range">What date range is supported?</a></li>
@@ -33,7 +34,8 @@ Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Sugg
 <p>
 Historically, every country has found their own solution to measuring time.
 This has often been political and religious.
-To simplify the problem, especially in the realm of computer data transfer, the ISO8601 standard was founded.
+To simplify the problem, especially in the realm of computer data transfer, the
+<a href="cal_iso.html">ISO8601</a> standard was founded.
 </p>
 <p>
 The ISO standard defines a framework for passing dates and times between computer systems in a standard way.
@@ -54,12 +56,37 @@ The most common form is YYYY-MM-DDTHH:MM:SS.SSSZ, in other words year-month-day 
 </subsection>
 
 
+<a name="default" />
+<subsection name="Why is ISO8601 the default?">
+<p>
+Dates and times can be a localization nightmare (or should that be localisation...).
+Often political, geographic and religious factors have come into play.
+We wanted to avoid these factors if possible.
+</p>
+<p>
+The ISO8601 standard is a good choice because it is a standard designed for computer
+data transfer and developed by a standards body. It is also a good choice because it
+is compatible with the calendar system used by most businesses worldwide today.
+Finally, it is a good choice as it forces API users to think about the decision they
+make if they require non-ISO or historically accurate calendar systems.
+</p>
+</subsection>
+
+
 <a name="internalstorage" />
 <subsection name="How are times calculated internally?">
 <p>
-All time values are calculated using a single long value representing milliseconds.
-The epoch of the definition is 1970-01-01T00:00:00.
-This is the same as the JDK time definition and usage.
+The main time interface is <a href="apidocs/org/joda/time/ReadableInstant.html">ReadableInstant</a>.
+All classes that implement this interface, such as <code>DateTime</code>,
+store time as a single long value representing milliseconds.
+The epoch of the definition is 1970-01-01T00:00:00Z, which is the same as the JDK time definition and usage.
+Querying a field, such as year or hour, will calculate the value from the millisecond instant.
+</p>
+<p>
+A secondary time interface is  <a href="apidocs/org/joda/time/ReadablePartial.html">ReadablePartial</a>.
+All classes that implement this interface, such as <code>YearMonthDay</code> and <code>TimeOfDay</code>,
+store time as a one int value for each field.
+Thus, there is no additional calculation to return the field values.
 </p>
 </subsection>
 
@@ -106,7 +133,7 @@ This would severely compromise the performance of the whole API for a very limit
 <a name="performance" />
 <subsection name="How well does it perform?">
 <p>
-Joda-Time is      designed for performance. Compared to java.util.Calendar,
+Joda-Time is designed for performance. Compared to java.util.Calendar,
 java.text.SimpleDateFormat, and java.util.TimeZone, nearly all equivalent
 operations in Joda-Time are faster. The significant exceptions are operations
 to get or set an individual field.
@@ -151,7 +178,7 @@ classes are thread-safe and immutable.
 <subsection name="Are leap seconds supported?">
 <p>
 Joda-time does not support leap seconds. Leap seconds can be supported by
-     writing a new, specialized chronology, or by making a few enhancements to the
+writing a new, specialized chronology, or by making a few enhancements to the
 existing ZonedChronology class. In either case, future versions of Joda-time
 will not enable leap seconds by default. Most applications have no need for it,
 and it might have additional performance costs.

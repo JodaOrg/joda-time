@@ -53,43 +53,61 @@
  */
 package org.joda.time.tz;
 
-import java.util.Collections;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.Set;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.joda.time.DateTimeZone;
 
 /**
- * Simple time zone provider that supports only UTC.
- * <p>
- * UTCProvider is thread-safe and immutable.
+ * This class is a JUnit test for UTCProvider.
  *
- * @author Brian S O'Neill
- * @since 1.0
+ * @author Stephen Colebourne
  */
-public final class UTCProvider implements Provider {
+public class TestUTCProvider extends TestCase {
 
-    /**
-     * Constructor.
-     */
-    public UTCProvider() {
-        super();
+    private DateTimeZone zone = null;
+
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(suite());
     }
 
-    /**
-     * Returns {@link DateTimeZone#UTC UTC} for <code>"UTC"</code>, null
-     * otherwise.
-     */
-    public DateTimeZone getZone(String id) {
-        if ("UTC".equalsIgnoreCase(id)) {
-            return DateTimeZone.UTC;
-        }
-        return null;
+    public static TestSuite suite() {
+        return new TestSuite(TestUTCProvider.class);
     }
 
-    /**
-     * Returns a singleton collection containing only <code>"UTC"</code>.
-     */    
-    public Set getAvailableIDs() {
-        return Collections.singleton("UTC");
+    public TestUTCProvider(String name) {
+        super(name);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testClass() throws Exception {
+        Class cls = UTCProvider.class;
+        assertEquals(true, Modifier.isPublic(cls.getModifiers()));
+        
+        Constructor con = cls.getDeclaredConstructor(null);
+        assertEquals(1, cls.getDeclaredConstructors().length);
+        assertEquals(true, Modifier.isPublic(con.getModifiers()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetAvailableIDs() throws Exception {
+        Provider p = new UTCProvider();
+        Set set = p.getAvailableIDs();
+        assertEquals(1, set.size());
+        assertEquals("UTC", set.iterator().next());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetZone_String() throws Exception {
+        Provider p = new UTCProvider();
+        assertSame(DateTimeZone.UTC, p.getZone("UTC"));
+        assertEquals(null, p.getZone(null));
+        assertEquals(null, p.getZone("Europe/London"));
+        assertEquals(null, p.getZone("Blah"));
     }
 
 }

@@ -53,43 +53,34 @@
  */
 package org.joda.time.tz;
 
-import java.util.Collections;
-import java.util.Set;
-import org.joda.time.DateTimeZone;
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 /**
- * Simple time zone provider that supports only UTC.
- * <p>
- * UTCProvider is thread-safe and immutable.
- *
- * @author Brian S O'Neill
- * @since 1.0
+ * Entry point for all tests in this package.
+ * 
+ * @version $Revision$ $Date$
+ * 
+ * @author Stephen Colebourne
  */
-public final class UTCProvider implements Provider {
+public class TestAll extends TestCase {
 
-    /**
-     * Constructor.
-     */
-    public UTCProvider() {
-        super();
+    public TestAll(String testName) {
+        super(testName);
     }
 
-    /**
-     * Returns {@link DateTimeZone#UTC UTC} for <code>"UTC"</code>, null
-     * otherwise.
-     */
-    public DateTimeZone getZone(String id) {
-        if ("UTC".equalsIgnoreCase(id)) {
-            return DateTimeZone.UTC;
-        }
-        return null;
+    public static Test suite() {
+        TestSuite suite = new TestSuite();
+        suite.addTest(TestUTCProvider.suite());
+        return suite;
     }
 
-    /**
-     * Returns a singleton collection containing only <code>"UTC"</code>.
-     */    
-    public Set getAvailableIDs() {
-        return Collections.singleton("UTC");
+    public static void main(String args[]) {
+        String[] testCaseName = {
+            TestAll.class.getName()
+        };
+        junit.textui.TestRunner.main(testCaseName);
     }
 
 }

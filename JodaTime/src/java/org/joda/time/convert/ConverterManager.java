@@ -131,6 +131,7 @@ public final class ConverterManager {
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
             LongConverter.INSTANCE,
+            NullConverter.INSTANCE,
         });
 
         iIntervalConverters = new ConverterSet(new Converter[] {

@@ -54,6 +54,8 @@
 package org.joda.time.convert;
 
 import org.joda.time.DateTimeUtils;
+import org.joda.time.DurationType;
+import org.joda.time.ReadWritableDuration;
 
 /**
  * NullConverter converts null to milliseconds (now) in the ISOChronology.
@@ -62,7 +64,7 @@ import org.joda.time.DateTimeUtils;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class NullConverter extends AbstractConverter implements InstantConverter {
+class NullConverter extends AbstractConverter implements InstantConverter, DurationConverter {
     
     /**
      * Singleton instance.
@@ -89,6 +91,45 @@ class NullConverter extends AbstractConverter implements InstantConverter {
     
     //-----------------------------------------------------------------------
     /**
+     * Returns true always.
+     */
+    public boolean isPrecise(Object object) {
+        return true;
+    }
+
+    /**
+     * Gets the millisecond duration, which is zero.
+     * 
+     * @param object  the object to convert
+     * @return the millisecond duration
+     */
+    public long getDurationMillis(Object object) {
+        return 0L;
+    }
+
+    /**
+     * Sets the given ReadWritableDuration to zero milliseconds.
+     *
+     * @param duration duration to get modified
+     * @param object  the object to convert
+     * @throws NullPointerException if the duration is null
+     */
+    public void setInto(ReadWritableDuration duration, Object object) {
+        duration.setTotalMillis(0L);
+    }
+
+    /**
+     * Returns the millis duration type.
+     *
+     * @param object  the object to examine
+     * @return the millis duration type
+     */
+    public DurationType getDurationType(Object object) {
+        return DurationType.getMillisType();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Returns null.
      * 
      * @return null
@@ -96,5 +137,5 @@ class NullConverter extends AbstractConverter implements InstantConverter {
     public Class getSupportedType() {
         return null;
     }
-    
+
 }

@@ -144,9 +144,6 @@
           optimize="${compile.optimize}">
       <classpath refid="compile.classpath"/>
     </javac>
-    <copy    todir="${build.classes}" filtering="on">
-      <fileset dir="${source.home}" excludes="**/*.java"/>
-    </copy>
   </target>
 
 <!-- ====================================================================== -->
@@ -159,14 +156,13 @@
     <mkdir dir="${build.tz}" />
     <java classname="org.joda.time.tz.ZoneInfoCompiler"
           fork="true"
-          dir="${source.tz}"
           failonerror="true">
       <classpath path="${build.classes}" />
       <!-- Override default provider since data directory doesn't exist yet -->
       <sysproperty key="org.joda.time.DateTimeZone.Provider"
                    value="org.joda.time.tz.UTCProvider" />
-      <!-- Specify destination directory for compiled data files -->
-      <arg line="-d ../../../../../../../${build.tz}" />
+      <!-- Specify source and destination directories -->
+      <arg line="-src ${source.tz} -dst ${build.tz}" />
       <!-- Specify all the data files to compile -->
       <arg value="africa" />
       <arg value="antarctica" />

@@ -320,13 +320,13 @@ public final class GJChronology extends AssembledChronology {
      * Serialization singleton
      */
     private Object readResolve() {
-        return getInstance(getDateTimeZone(), iCutoverInstant, getMinimumDaysInFirstWeek());
+        return getInstance(getZone(), iCutoverInstant, getMinimumDaysInFirstWeek());
     }
 
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         Chronology base;
         if ((base = getBase()) != null) {
-            return base.getDateTimeZone();
+            return base.getZone();
         }
         return DateTimeZone.UTC;
     }
@@ -339,7 +339,7 @@ public final class GJChronology extends AssembledChronology {
      * @return the chronology in UTC
      */
     public Chronology withUTC() {
-        return withDateTimeZone(DateTimeZone.UTC);
+        return withZone(DateTimeZone.UTC);
     }
 
     /**
@@ -348,11 +348,11 @@ public final class GJChronology extends AssembledChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
         return getInstance(zone, iCutoverInstant, getMinimumDaysInFirstWeek());
@@ -461,7 +461,7 @@ public final class GJChronology extends AssembledChronology {
         StringBuffer sb = new StringBuffer(60);
         sb.append("GJCutoverChronology");
         sb.append('[');
-        sb.append(getDateTimeZone().getID());
+        sb.append(getZone().getID());
         sb.append(", ");
 
         sb.append("cutover=");

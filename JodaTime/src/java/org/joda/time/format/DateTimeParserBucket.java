@@ -103,7 +103,7 @@ public class DateTimeParserBucket {
      * Returns the time zone used by computeMillis, or null if an offset is
      * used instead.
      */
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         return iZone;
     }
 
@@ -113,7 +113,7 @@ public class DateTimeParserBucket {
      *
      * @param zone the date time zone to operate in, or null if UTC
      */
-    public void setDateTimeZone(DateTimeZone zone) {
+    public void setZone(DateTimeZone zone) {
         iSavedState = null;
         iZone = zone == DateTimeZone.UTC ? null : zone;
         iOffset = 0;
@@ -121,7 +121,7 @@ public class DateTimeParserBucket {
 
     /**
      * Returns the time zone offset used by computeMillis, unless
-     * getDateTimeZone doesn't return null.
+     * getZone doesn't return null.
      */
     public int getOffset() {
         return iOffset;

@@ -177,7 +177,7 @@ public class ZoneInfoProvider implements Provider {
      * called to log the error and null is returned for this and all future
      * requests.
      */
-    public synchronized DateTimeZone getDateTimeZone(String id) {
+    public synchronized DateTimeZone getZone(String id) {
         if (id == null) {
             return null;
         }
@@ -202,7 +202,7 @@ public class ZoneInfoProvider implements Provider {
         }
 
         // If this point is reached, mapping must link to another.
-        return getDateTimeZone((String)obj);
+        return getZone((String)obj);
     }
 
     public synchronized Set getAvailableIDs() {
@@ -210,7 +210,7 @@ public class ZoneInfoProvider implements Provider {
     }
 
     /**
-     * Called if an exception is thrown from getDateTimeZone while loading zone
+     * Called if an exception is thrown from getZone while loading zone
      * data.
      */
     protected void uncaughtException(Exception e) {

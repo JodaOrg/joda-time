@@ -158,7 +158,7 @@ public final class BuddhistChronology extends AssembledChronology {
      * Serialization singleton
      */
     private Object readResolve() {
-        return getInstance(getBase().getDateTimeZone());
+        return getInstance(getBase().getZone());
     }
 
     // Conversion
@@ -178,11 +178,11 @@ public final class BuddhistChronology extends AssembledChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
         return getInstance(zone);
@@ -197,7 +197,7 @@ public final class BuddhistChronology extends AssembledChronology {
      */
     public String toString() {
         String str = "BuddhistChronology";
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         if (zone != null) {
             str = str + '[' + zone.getID() + ']';
         }

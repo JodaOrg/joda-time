@@ -134,7 +134,7 @@ public final class ISOChronology extends AssembledChronology {
         }
         int index = System.identityHashCode(zone) & (FAST_CACHE_SIZE - 1);
         ISOChronology chrono = cFastCache[index];
-        if (chrono != null && chrono.getDateTimeZone() == zone) {
+        if (chrono != null && chrono.getZone() == zone) {
             return chrono;
         }
         synchronized (cCache) {
@@ -175,11 +175,11 @@ public final class ISOChronology extends AssembledChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
         return getInstance(zone);
@@ -194,7 +194,7 @@ public final class ISOChronology extends AssembledChronology {
      */
     public String toString() {
         String str = "ISOChronology";
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         if (zone != null) {
             str = str + '[' + zone.getID() + ']';
         }
@@ -202,7 +202,7 @@ public final class ISOChronology extends AssembledChronology {
     }
 
     protected void assemble(Fields fields) {
-        if (getBase().getDateTimeZone() == DateTimeZone.UTC) {
+        if (getBase().getZone() == DateTimeZone.UTC) {
             // Use zero based century and year of century.
             fields.centuryOfEra = new DividedDateTimeField
                 (ISOYearOfEraDateTimeField.INSTANCE, "centuryOfEra", "centuries", 100);
@@ -218,7 +218,7 @@ public final class ISOChronology extends AssembledChronology {
      * serialized size, and deserialized instances come from the cache.
      */
     private Object writeReplace() {
-        return new Stub(getDateTimeZone());
+        return new Stub(getZone());
     }
 
     private static final class Stub implements Serializable {

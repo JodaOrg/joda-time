@@ -69,7 +69,7 @@ public final class UTCProvider implements Provider {
      * Returns {@link DateTimeZone#UTC UTC} for <code>"UTC"</code>, null
      * otherwise.
      */
-    public DateTimeZone getDateTimeZone(String id) {
+    public DateTimeZone getZone(String id) {
         if ("UTC".equalsIgnoreCase(id)) {
             return DateTimeZone.UTC;
         }

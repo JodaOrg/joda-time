@@ -115,12 +115,12 @@ public abstract class AbstractDateTimeFormatter {
      * Returns the DateTimeZone from the formatter's Chronology, defaulting to
      * UTC if the Chronology or its DateTimeZone is null.
      */
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         Chronology chrono = getChronology();
         if (chrono == null) {
             return DateTimeZone.UTC;
         }
-        DateTimeZone zone = chrono.getDateTimeZone();
+        DateTimeZone zone = chrono.getZone();
         return zone == null ? DateTimeZone.UTC : zone;
     }
 
@@ -128,7 +128,7 @@ public abstract class AbstractDateTimeFormatter {
         long millisUTC = instant.getMillis();
         Chronology chrono;
         if ((chrono = instant.getChronology()) != null) {
-            printTo(buf, millisUTC, chrono.getDateTimeZone());
+            printTo(buf, millisUTC, chrono.getZone());
         } else {
             ((DateTimePrinter)this).printTo(buf, millisUTC, null);
         }
@@ -138,7 +138,7 @@ public abstract class AbstractDateTimeFormatter {
         long millisUTC = instant.getMillis();
         Chronology chrono;
         if ((chrono = instant.getChronology()) != null) {
-            printTo(out, millisUTC, chrono.getDateTimeZone());
+            printTo(out, millisUTC, chrono.getZone());
         } else {
             ((DateTimePrinter)this).printTo(out, millisUTC, null);
         }
@@ -154,7 +154,7 @@ public abstract class AbstractDateTimeFormatter {
 
     public void printTo(final StringBuffer buf, final long instant, DateTimeZone zone) {
         if (zone == null) {
-            zone = getDateTimeZone();
+            zone = getZone();
         }
         ((DateTimePrinter) this).printTo
             (buf, instant, zone, instant + zone.getOffset(instant));
@@ -162,7 +162,7 @@ public abstract class AbstractDateTimeFormatter {
 
     public void printTo(final Writer out, final long instant, DateTimeZone zone) throws IOException {
         if (zone == null) {
-            zone = getDateTimeZone();
+            zone = getZone();
         }
         ((DateTimePrinter) this).printTo
             (out, instant, zone, instant + zone.getOffset(instant));
@@ -172,7 +172,7 @@ public abstract class AbstractDateTimeFormatter {
         long millisUTC = instant.getMillis();
         Chronology chrono;
         if ((chrono = instant.getChronology()) != null) {
-            return print(millisUTC, chrono.getDateTimeZone());
+            return print(millisUTC, chrono.getZone());
         } else {
             return print(millisUTC, null);
         }
@@ -184,7 +184,7 @@ public abstract class AbstractDateTimeFormatter {
 
     public String print(final long instant, DateTimeZone zone) {
         if (zone == null) {
-            zone = getDateTimeZone();
+            zone = getZone();
         }
         return print(instant, zone, instant + zone.getOffset(instant));
     }
@@ -202,7 +202,7 @@ public abstract class AbstractDateTimeFormatter {
         long millis = instant.getMillis();
         Chronology chrono = instant.getChronology();
         if (chrono != null) {
-            DateTimeZone zone = chrono.getDateTimeZone();
+            DateTimeZone zone = chrono.getZone();
             if (zone != null) {
                 // Move millis to local time.
                 millis += zone.getOffset(millis);
@@ -257,7 +257,7 @@ public abstract class AbstractDateTimeFormatter {
             instantLocal = 0;
         } else {
             instantLocal = instant.getMillis();
-            DateTimeZone zone = instant.getDateTimeZone();
+            DateTimeZone zone = instant.getZone();
             if (zone != null) {
                 instantLocal += zone.getOffset(instantLocal);
             }
@@ -269,9 +269,9 @@ public abstract class AbstractDateTimeFormatter {
         DateTimeParserBucket bucket = new DateTimeParserBucket(millis);
         Chronology chrono = getChronology();
         if (chrono != null) {
-            DateTimeZone zone = chrono.getDateTimeZone();
+            DateTimeZone zone = chrono.getZone();
             if (zone != null) {
-                bucket.setDateTimeZone(zone);
+                bucket.setZone(zone);
             }
         }
         return bucket;

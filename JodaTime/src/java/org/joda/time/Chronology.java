@@ -84,7 +84,7 @@ public interface Chronology {
      *
      * @return DateTimeZone null if unspecified
      */
-    DateTimeZone getDateTimeZone();
+    DateTimeZone getZone();
 
     /**
      * Returns an instance of this Chronology that operates in the UTC time
@@ -102,7 +102,7 @@ public interface Chronology {
      * @param zone to use, or default if null
      * @see org.joda.time.chrono.ZonedChronology
      */
-    Chronology withDateTimeZone(DateTimeZone zone);
+    Chronology withZone(DateTimeZone zone);
 
     /**
      * Returns a date-only millisecond instant, by clearing the time fields

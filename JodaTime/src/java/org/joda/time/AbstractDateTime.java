@@ -636,14 +636,14 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param zone  the time zone to use, null means default zone
      * @see #moveDateTimeZone
      */
-    protected void setDateTimeZone(DateTimeZone zone) {
+    protected void setZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (iChronology.getDateTimeZone() != zone) {
+        if (iChronology.getZone() != zone) {
             // Don't set iChronology directly, as it may provide a backdoor to
             // immutable subclasses.
-            setChronology(iChronology.withDateTimeZone(zone));
+            setChronology(iChronology.withZone(zone));
         }
     }
 
@@ -653,20 +653,20 @@ public abstract class AbstractDateTime extends AbstractInstant
      * relative to the new time zone.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #setDateTimeZone
+     * @see #setZone
      */
     protected void moveDateTimeZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        DateTimeZone currentZone = iChronology.getDateTimeZone();
+        DateTimeZone currentZone = iChronology.getZone();
         if (currentZone != zone) {
             long millis = iMillis;
             millis += currentZone.getOffset(millis);
             millis -= zone.getOffsetFromLocal(millis);
             // Don't set iChronology and iMillis directly, as it may provide a
             // backdoor to immutable subclasses.
-            setChronology(iChronology.withDateTimeZone(zone));
+            setChronology(iChronology.withZone(zone));
             setMillis(millis);
         }
     }

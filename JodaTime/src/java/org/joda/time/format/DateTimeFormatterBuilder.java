@@ -148,7 +148,7 @@ public class DateTimeFormatterBuilder {
         }
         iChrono = chrono;
         iChronoUTC = chrono.withUTC();
-        DateTimeZone zone = chrono.getDateTimeZone();
+        DateTimeZone zone = chrono.getZone();
         iLocale = locale;
         iElementPairs = new ArrayList();
     }
@@ -1826,7 +1826,7 @@ public class DateTimeFormatterBuilder {
         public void printTo(StringBuffer buf, long instant,
                             DateTimeZone zone, long instantLocal) {
             if (zone == null) {
-                zone = getDateTimeZone();
+                zone = getZone();
             }
             if (iShortFormat) {
                 buf.append(zone.getShortName(instant, this.iLocale));
@@ -1838,7 +1838,7 @@ public class DateTimeFormatterBuilder {
         public void printTo(Writer out, long instant,
                             DateTimeZone zone, long instantLocal) throws IOException {
             if (zone == null) {
-                zone = getDateTimeZone();
+                zone = getZone();
             }
             if (iShortFormat) {
                 out.write(zone.getShortName(instant, this.iLocale));
@@ -1849,7 +1849,7 @@ public class DateTimeFormatterBuilder {
 
         public String print(long instant, DateTimeZone zone, long instantLocal) {
             if (zone == null) {
-                zone = getDateTimeZone();
+                zone = getZone();
             }
             if (iShortFormat) {
                 return zone.getShortName(instant, this.iLocale);

@@ -157,7 +157,7 @@ public final class Instant extends AbstractInstant
      * @param newDateTimeZone  ignored
      * @return this
      */
-    public ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone) {
+    public ReadableInstant withZone(DateTimeZone newDateTimeZone) {
         return this;
     }
 
@@ -168,7 +168,7 @@ public final class Instant extends AbstractInstant
      * @param newDateTimeZone  ignored
      * @return this
      */
-    public ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone) {
+    public ReadableInstant withZoneRetainFields(DateTimeZone newDateTimeZone) {
         return this;
     }
 

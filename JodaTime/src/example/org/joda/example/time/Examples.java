@@ -85,7 +85,7 @@ public class Examples {
         System.out.println("Millisecond time:      in.getMillis():           " + in.getMillis());
         System.out.println("ISO string version:    in.toString():            " + in.toString());
         System.out.println("No chronology:         in.getChronology():       " + in.getChronology());
-        System.out.println("No time zone:          in.getDateTimeZone():     " + in.getDateTimeZone());
+        System.out.println("No time zone:          in.getDateTimeZone():     " + in.getZone());
         System.out.println("");
         System.out.println("Convert to DateTime:   in.toDateTime():          " + in.toDateTime());
         System.out.println("Convert to trusted:    in.toTrustedISODateTime():" + in.toTrustedISODateTime());
@@ -105,8 +105,8 @@ public class Examples {
         System.out.println("Compare millisecond:   in.isBefore(in2):         " + in.isBefore(in2));
         System.out.println("");
         System.out.println("Change chrono IGNORED: in.withChronology(...):   " + in.withChronology(null));
-        System.out.println("Change zone IGNORED:   in.withDateTimeZone(...): " + in.withDateTimeZone(null));
-        System.out.println("Change zone IGNORED:   in.withDateTimeZoneMoved(...):" + in.withDateTimeZoneMoved(null));
+        System.out.println("Change zone IGNORED:   in.withZone(...):         " + in.withZone(null));
+        System.out.println("Change zone IGNORED:   in.withZoneRetainFields(...):" + in.withZoneRetainFields(null));
         System.out.println("Change millis:         in.withMillis(0):         " + in.withMillis(0L));
     }
 }

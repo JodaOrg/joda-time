@@ -91,7 +91,7 @@ public abstract class AbstractChronology implements Chronology, Serializable {
      *
      * @return DateTimeZone null if unspecified
      */
-    public abstract DateTimeZone getDateTimeZone();
+    public abstract DateTimeZone getZone();
 
     /**
      * Returns an instance of this Chronology that operates in the UTC time
@@ -109,7 +109,7 @@ public abstract class AbstractChronology implements Chronology, Serializable {
      * @param zone to use, or default if null
      * @see org.joda.time.chrono.ZonedChronology
      */
-    public abstract Chronology withDateTimeZone(DateTimeZone zone);
+    public abstract Chronology withZone(DateTimeZone zone);
 
     /**
      * Returns a date-only millisecond instant, by clearing the time fields

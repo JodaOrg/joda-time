@@ -99,7 +99,7 @@ public final class LenientChronology extends AssembledChronology {
 
     public Chronology withUTC() {
         if (iWithUTC == null) {
-            if (getDateTimeZone() == DateTimeZone.UTC) {
+            if (getZone() == DateTimeZone.UTC) {
                 iWithUTC = this;
             } else {
                 iWithUTC = LenientChronology.getInstance(getBase().withUTC());
@@ -108,17 +108,17 @@ public final class LenientChronology extends AssembledChronology {
         return iWithUTC;
     }
 
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
         if (zone == DateTimeZone.UTC) {
             return withUTC();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
-        return LenientChronology.getInstance(getBase().withDateTimeZone(zone));
+        return LenientChronology.getInstance(getBase().withZone(zone));
     }
 
     protected void assemble(Fields fields) {

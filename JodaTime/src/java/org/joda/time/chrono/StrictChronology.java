@@ -99,7 +99,7 @@ public final class StrictChronology extends AssembledChronology {
 
     public Chronology withUTC() {
         if (iWithUTC == null) {
-            if (getDateTimeZone() == DateTimeZone.UTC) {
+            if (getZone() == DateTimeZone.UTC) {
                 iWithUTC = this;
             } else {
                 iWithUTC = StrictChronology.getInstance(getBase().withUTC());
@@ -108,17 +108,17 @@ public final class StrictChronology extends AssembledChronology {
         return iWithUTC;
     }
 
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
         if (zone == DateTimeZone.UTC) {
             return withUTC();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
-        return StrictChronology.getInstance(getBase().withDateTimeZone(zone));
+        return StrictChronology.getInstance(getBase().withZone(zone));
     }
 
     protected void assemble(Fields fields) {

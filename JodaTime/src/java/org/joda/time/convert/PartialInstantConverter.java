@@ -117,7 +117,7 @@ class PartialInstantConverter extends ReadableInstantConverter {
         if (chrono == null) {
             zone = DateTimeZone.getDefault();
         } else {
-            zone = chrono.getDateTimeZone();
+            zone = chrono.getZone();
         }
         if (zone != null) {
             millis -= zone.getOffsetFromLocal(millis);
@@ -140,7 +140,7 @@ class PartialInstantConverter extends ReadableInstantConverter {
         if (chrono == null) {
             return ISOChronology.getInstance();
         }
-        return chrono.withDateTimeZone(DateTimeZone.getDefault());
+        return chrono.withZone(DateTimeZone.getDefault());
     }
     
     //-----------------------------------------------------------------------

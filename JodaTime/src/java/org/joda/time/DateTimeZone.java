@@ -204,7 +204,7 @@ public abstract class DateTimeZone implements Serializable {
         if (id.equals("UTC")) {
             return DateTimeZone.UTC;
         }
-        DateTimeZone zone = cProvider.getDateTimeZone(id);
+        DateTimeZone zone = cProvider.getZone(id);
         if (zone != null) {
             return zone;
         }
@@ -241,8 +241,8 @@ public abstract class DateTimeZone implements Serializable {
         DateTimeZone dtz;
         // Convert from old alias before consulting provider since they may differ.
         String convId = getConvertedId(id);
-        if (convId == null || (dtz = cProvider.getDateTimeZone(convId)) == null) {
-            dtz = cProvider.getDateTimeZone(id);
+        if (convId == null || (dtz = cProvider.getZone(convId)) == null) {
+            dtz = cProvider.getZone(id);
         }
         if (dtz != null) {
             return dtz;
@@ -325,7 +325,7 @@ public abstract class DateTimeZone implements Serializable {
         if (!ids.contains("UTC")) {
             throw new IllegalArgumentException("The provider doesn't support UTC");
         }
-        if (!UTC.equals(provider.getDateTimeZone("UTC"))) {
+        if (!UTC.equals(provider.getZone("UTC"))) {
             throw new IllegalArgumentException("Invalid UTC zone provided");
         }
         cProvider = provider;

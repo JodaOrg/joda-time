@@ -108,9 +108,9 @@ public interface ReadWritableInstant extends ReadableInstant {
      * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #setDateTimeZoneRetainFields
+     * @see #setZoneRetainFields
      */
-    void setDateTimeZone(DateTimeZone zone);
+    void setZone(DateTimeZone zone);
 
     /**
      * Sets the time zone of the datetime, changing the chronology and millisecond.
@@ -121,9 +121,9 @@ public interface ReadWritableInstant extends ReadableInstant {
      * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #setDateTimeZone
+     * @see #setZone
      */
-    void setDateTimeZoneRetainFields(DateTimeZone zone);
+    void setZoneRetainFields(DateTimeZone zone);
 
     //-----------------------------------------------------------------------
     /**

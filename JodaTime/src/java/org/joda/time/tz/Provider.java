@@ -68,7 +68,7 @@ public interface Provider {
      *
      * @return null if not found
      */
-    DateTimeZone getDateTimeZone(String id);
+    DateTimeZone getZone(String id);
 
     /**
      * Returns an unmodifiable set of ids. All providers must at least

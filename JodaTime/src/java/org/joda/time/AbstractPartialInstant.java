@@ -87,7 +87,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
      */
     private static long toLocalTime(long instant, Chronology original, Chronology chronoUTC) {
         if (original != chronoUTC) {
-            DateTimeZone zone = original.getDateTimeZone();
+            DateTimeZone zone = original.getZone();
             if (zone != null) {
                 instant += zone.getOffset(instant);
             }
@@ -107,7 +107,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
             if (utc != null) {
                 return utc;
             }
-            DateTimeZone zone = chronology.getDateTimeZone();
+            DateTimeZone zone = chronology.getZone();
             if (zone == null || zone == DateTimeZone.UTC) {
                 return chronology;
             }
@@ -232,7 +232,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
         if (base == null || isMatchingType(base)) {
             return getMillis();
         }
-        return getMillis(base, base.getDateTimeZone());
+        return getMillis(base, base.getZone());
     }
 
     /**
@@ -253,7 +253,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
         long millis = getMillis();
         long baseMillis = base.getMillis();
 
-        DateTimeZone baseZone = base.getDateTimeZone();
+        DateTimeZone baseZone = base.getZone();
         if (baseZone != null) {
             // Strip zone from base such that sum can be performed.
             baseMillis += baseZone.getOffset(baseMillis);

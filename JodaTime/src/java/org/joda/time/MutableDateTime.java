@@ -437,10 +437,10 @@ public class MutableDateTime extends AbstractDateTime
      * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #setDateTimeZoneRetainFields
+     * @see #setZoneRetainFields
      */
-    public void setDateTimeZone(DateTimeZone zone) {
-        super.setDateTimeZone(zone);
+    public void setZone(DateTimeZone zone) {
+        super.setZone(zone);
     }
 
     /**
@@ -452,9 +452,9 @@ public class MutableDateTime extends AbstractDateTime
      * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #setDateTimeZone
+     * @see #setZone
      */
-    public void setDateTimeZoneRetainFields(DateTimeZone zone) {
+    public void setZoneRetainFields(DateTimeZone zone) {
         super.moveDateTimeZone(zone);
     }
 

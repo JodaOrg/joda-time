@@ -116,7 +116,7 @@ public final class ZonedChronology extends AssembledChronology {
         super(base, zone);
     }
 
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         return (DateTimeZone)getParam();
     }
 
@@ -124,7 +124,7 @@ public final class ZonedChronology extends AssembledChronology {
         return getBase();
     }
 
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
@@ -166,7 +166,7 @@ public final class ZonedChronology extends AssembledChronology {
         throws IllegalArgumentException
     {
         return localToUTC(getBase().getDateTimeMillis
-                          (instant + getDateTimeZone().getOffset(instant),
+                          (instant + getZone().getOffset(instant),
                            hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
     }
 
@@ -184,7 +184,7 @@ public final class ZonedChronology extends AssembledChronology {
      * @param instant instant from 1970-01-01T00:00:00 local time
      */
     private long localToUTC(long instant) {
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         int offset = zone.getOffsetFromLocal(instant);
         instant -= offset;
         if (offset != zone.getOffset(instant)) {
@@ -248,7 +248,7 @@ public final class ZonedChronology extends AssembledChronology {
         if (converted.containsKey(field)) {
             return (DurationField)converted.get(field);
         }
-        ZonedDurationField zonedField = new ZonedDurationField(field, getDateTimeZone());
+        ZonedDurationField zonedField = new ZonedDurationField(field, getZone());
         converted.put(field, zonedField);
         return zonedField;
     }
@@ -261,7 +261,7 @@ public final class ZonedChronology extends AssembledChronology {
             return (DateTimeField)converted.get(field);
         }
         ZonedDateTimeField zonedField =
-            new ZonedDateTimeField(field, getDateTimeZone(),
+            new ZonedDateTimeField(field, getZone(),
                                    convertField(field.getDurationField(), converted),
                                    convertField(field.getRangeDurationField(), converted),
                                    convertField(field.getLeapDurationField(), converted));
@@ -270,7 +270,7 @@ public final class ZonedChronology extends AssembledChronology {
     }
 
     public String toString() {
-        return "ZonedChronology[" + getBase() + ", " + getDateTimeZone().getID() + ']';
+        return "ZonedChronology[" + getBase() + ", " + getZone().getID() + ']';
     }
 
     /*

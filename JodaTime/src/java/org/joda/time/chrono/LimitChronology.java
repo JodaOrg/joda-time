@@ -90,7 +90,7 @@ public final class LimitChronology extends AssembledChronology {
 
     /**
      * Wraps another chronology, with datetime limits. When withUTC or
-     * withDateTimeZone is called, the returned LimitChronology instance has
+     * withZone is called, the returned LimitChronology instance has
      * the same limits, except they are time zone adjusted.
      *
      * @param base  base chronology to wrap
@@ -125,7 +125,7 @@ public final class LimitChronology extends AssembledChronology {
 
     /**
      * Wraps another chronology, with datetime limits. When withUTC or
-     * withDateTimeZone is called, the returned LimitChronology instance has
+     * withZone is called, the returned LimitChronology instance has
      * the same limits, except they are time zone adjusted.
      *
      * @param lowerLimit  inclusive lower limit, or null if none
@@ -163,7 +163,7 @@ public final class LimitChronology extends AssembledChronology {
      * adjusted to the new time zone.
      */
     public Chronology withUTC() {
-        return withDateTimeZone(DateTimeZone.UTC);
+        return withZone(DateTimeZone.UTC);
     }
 
     /**
@@ -171,11 +171,11 @@ public final class LimitChronology extends AssembledChronology {
      * this is returned. Otherwise, a new instance is returned, with the limits
      * adjusted to the new time zone.
      */
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
 
@@ -186,19 +186,19 @@ public final class LimitChronology extends AssembledChronology {
         DateTime lowerLimit = iLowerLimit;
         if (lowerLimit != null) {
             MutableDateTime mdt = lowerLimit.toMutableDateTime();
-            mdt.setDateTimeZoneRetainFields(zone);
+            mdt.setZoneRetainFields(zone);
             lowerLimit = mdt.toDateTime();
         }
 
         DateTime upperLimit = iUpperLimit;
         if (upperLimit != null) {
             MutableDateTime mdt = upperLimit.toMutableDateTime();
-            mdt.setDateTimeZoneRetainFields(zone);
+            mdt.setZoneRetainFields(zone);
             upperLimit = mdt.toDateTime();
         }
         
         LimitChronology chrono = getInstance
-            (getBase().withDateTimeZone(zone), lowerLimit, upperLimit);
+            (getBase().withZone(zone), lowerLimit, upperLimit);
 
         if (zone == DateTimeZone.UTC) {
             iWithUTC = chrono;

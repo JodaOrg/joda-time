@@ -124,7 +124,7 @@ public interface ReadableInstant extends Comparable {
      * 
      * @return the DateTimeZone, null if not applicable
      */
-    DateTimeZone getDateTimeZone();
+    DateTimeZone getZone();
 
     /**
      * Get the value of one of the fields of a datetime.
@@ -182,9 +182,9 @@ public interface ReadableInstant extends Comparable {
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
-     * @see #withDateTimeZoneRetainFields
+     * @see #withZoneRetainFields
      */
-    ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone);
+    ReadableInstant withZone(DateTimeZone newDateTimeZone);
 
     /**
      * Gets a copy of this instant with a different time zone, preserving the
@@ -201,9 +201,9 @@ public interface ReadableInstant extends Comparable {
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
-     * @see #withDateTimeZone
+     * @see #withZone
      */
-    ReadableInstant withDateTimeZoneRetainFields(DateTimeZone newDateTimeZone);
+    ReadableInstant withZoneRetainFields(DateTimeZone newDateTimeZone);
 
     //-----------------------------------------------------------------------
     /**

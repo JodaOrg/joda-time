@@ -138,10 +138,10 @@ public abstract class AssembledChronology extends AbstractChronology {
         setFields();
     }
 
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         Chronology base;
         if ((base = iBase) != null) {
-            return base.getDateTimeZone();
+            return base.getZone();
         }
         return null;
     }

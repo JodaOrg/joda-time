@@ -182,7 +182,7 @@ public final class GregorianChronology extends AbstractGJChronology {
      * Serialization singleton
      */
     private Object readResolve() {
-        return getInstance(getBase().getDateTimeZone());
+        return getInstance(getBase().getZone());
     }
 
     // Conversion
@@ -202,11 +202,11 @@ public final class GregorianChronology extends AbstractGJChronology {
      * @param zone  the zone to get the chronology in, null is default
      * @return the chronology
      */
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (zone == getDateTimeZone()) {
+        if (zone == getZone()) {
             return this;
         }
         return getInstance(zone);

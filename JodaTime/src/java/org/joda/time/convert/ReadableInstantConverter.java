@@ -121,9 +121,9 @@ class ReadableInstantConverter extends AbstractConverter implements InstantConve
         if (chrono == null) {
             return ISOChronology.getInstance(zone);
         }
-        DateTimeZone chronoZone = chrono.getDateTimeZone();
+        DateTimeZone chronoZone = chrono.getZone();
         if (chronoZone != zone) {
-            chrono = chrono.withDateTimeZone(zone);
+            chrono = chrono.withZone(zone);
             if (chrono == null) {
                 return ISOChronology.getInstance(zone);
             }

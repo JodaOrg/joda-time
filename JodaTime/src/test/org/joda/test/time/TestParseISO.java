@@ -356,7 +356,7 @@ public class TestParseISO extends BulkTest {
                 str = (zone < 0 ? "-" : "+") + str;
                 z = DateTimeZone.getInstance(str);
             }
-            assertEquals(msg + "\nZone: ", z, dt.getDateTimeZone());
+            assertEquals(msg + "\nZone: ", z, dt.getZone());
         }
         protected void parse(DateTimeParser p) {
             int result = p.parseInto(dt, extended, 0);

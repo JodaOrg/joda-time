@@ -129,7 +129,7 @@ abstract class TestGJChronology extends AbstractChronology {
         iEpochMillis = fixedFromGJ(epochYear, epochMonth, epochDay) * MILLIS_PER_DAY;
     }
 
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         return null;
     }
 
@@ -140,7 +140,7 @@ abstract class TestGJChronology extends AbstractChronology {
     /**
      * Unsupported.
      */
-    public Chronology withDateTimeZone(DateTimeZone zone) {
+    public Chronology withZone(DateTimeZone zone) {
         throw new UnsupportedOperationException();
     }
 

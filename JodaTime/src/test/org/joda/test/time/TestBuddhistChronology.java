@@ -123,13 +123,13 @@ public class TestBuddhistChronology extends BulkTest {
         DateTimeZone zone = DateTimeZone.getDefault();
         assertNotNull(BuddhistChronology.getInstance());
         assertTrue(BuddhistChronology.getInstance() instanceof BuddhistChronology);
-        assertSame(zone, BuddhistChronology.getInstance().getDateTimeZone());
+        assertSame(zone, BuddhistChronology.getInstance().getZone());
     }
     public void testGetInstanceZone() throws Exception {
         DateTimeZone zone = DateTimeZone.getInstance("+01:00");
         assertNotNull(BuddhistChronology.getInstance(zone));
         assertTrue(BuddhistChronology.getInstance(zone) instanceof BuddhistChronology);
-        assertSame(zone, BuddhistChronology.getInstance(zone).getDateTimeZone());
+        assertSame(zone, BuddhistChronology.getInstance(zone).getZone());
     }
     public void testGetInstanceZoneUTC() throws Exception {
         assertSame(BuddhistChronology.getInstanceUTC(), BuddhistChronology.getInstance(DateTimeZone.UTC));

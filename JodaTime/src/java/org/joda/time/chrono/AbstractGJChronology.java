@@ -230,10 +230,10 @@ public abstract class AbstractGJChronology extends AssembledChronology {
         iYearInfoCacheMask = cacheSize - 1;
     }
 
-    public DateTimeZone getDateTimeZone() {
+    public DateTimeZone getZone() {
         Chronology base;
         if ((base = getBase()) != null) {
-            return base.getDateTimeZone();
+            return base.getZone();
         }
         return DateTimeZone.UTC;
     }
@@ -350,7 +350,7 @@ public abstract class AbstractGJChronology extends AssembledChronology {
         }
         sb.append(name);
         sb.append('[');
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         if (zone != null) {
             sb.append(zone.getID());
             sb.append(", ");

@@ -91,9 +91,9 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return the DateTimeZone that the datetime is using
      */
-    public final DateTimeZone getDateTimeZone() {
+    public final DateTimeZone getZone() {
         Chronology chrono = getChronology();
-        return (chrono != null ? chrono.getDateTimeZone() : null);
+        return (chrono != null ? chrono.getZone() : null);
     }
 
     // Accessors
@@ -134,9 +134,9 @@ public abstract class AbstractInstant implements ReadableInstant {
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
-     * @see #withDateTimeZoneRetainFields
+     * @see #withZoneRetainFields
      */
-    public ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone) {
+    public ReadableInstant withZone(DateTimeZone newDateTimeZone) {
         final Chronology originalChrono = getChronology();
         if (originalChrono == null) {
             // Without an original chronology, no new time zone can be
@@ -144,7 +144,7 @@ public abstract class AbstractInstant implements ReadableInstant {
             // should be made or not.
             return withMillis(getMillis());
         }
-        return withChronology(originalChrono.withDateTimeZone(newDateTimeZone));
+        return withChronology(originalChrono.withZone(newDateTimeZone));
     }
 
     /**
@@ -162,21 +162,21 @@ public abstract class AbstractInstant implements ReadableInstant {
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
-     * @see #withDateTimeZone
+     * @see #withZone
      */
-    public ReadableInstant withDateTimeZoneRetainFields(DateTimeZone newDateTimeZone) {
+    public ReadableInstant withZoneRetainFields(DateTimeZone newDateTimeZone) {
         final long originalMillis = getMillis();
         final Chronology originalChrono = getChronology();
         final DateTimeZone originalZone;
-        if (originalChrono == null || (originalZone = originalChrono.getDateTimeZone()) == null) {
+        if (originalChrono == null || (originalZone = originalChrono.getZone()) == null) {
             // Without an original chronology or time zone, no new time zone
             // can be set. Call withMillis to allow subclass to decide if a
             // clone should be made or not.
             return withMillis(originalMillis);
         }
 
-        ReadableInstant newInstant = withChronology(originalChrono.withDateTimeZone(newDateTimeZone));
-        newDateTimeZone = newInstant.getDateTimeZone();
+        ReadableInstant newInstant = withChronology(originalChrono.withZone(newDateTimeZone));
+        newDateTimeZone = newInstant.getZone();
 
         if (newDateTimeZone == null || newDateTimeZone == originalZone) {
             // New time zone didn't stick or didn't change. Skip millis adjustment.
@@ -236,7 +236,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        if (this instanceof DateTime && getDateTimeZone() == zone) {
+        if (this instanceof DateTime && getZone() == zone) {
             return (DateTime) this;
         }
         return new DateTime(this, zone);
@@ -269,11 +269,11 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (base == null) {
             return new DateTime(this);
         }
-        DateTimeZone zone = base.getDateTimeZone();
+        DateTimeZone zone = base.getZone();
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        return new DateTime(getMillis(base), getChronology().withDateTimeZone(zone));
+        return new DateTime(getMillis(base), getChronology().withZone(zone));
     }
 
     /**
@@ -291,7 +291,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        return new DateTime(getMillis(base, zone), getChronology().withDateTimeZone(zone));
+        return new DateTime(getMillis(base, zone), getChronology().withZone(zone));
     }
 
     /**
@@ -309,7 +309,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        return new DateTime(getMillis(base, chronology.getDateTimeZone()), chronology);
+        return new DateTime(getMillis(base, chronology.getZone()), chronology);
     }
 
     /**
@@ -327,7 +327,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * no matching trusted time zone can be found.
      */
     public final DateTime toTrustedISODateTime() {
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         if (zone == null) {
             return new DateTime(this, (Chronology)null);
         }
@@ -393,11 +393,11 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (base == null) {
             return new MutableDateTime(this);
         }
-        DateTimeZone zone = base.getDateTimeZone();
+        DateTimeZone zone = base.getZone();
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        return new MutableDateTime(getMillis(base), getChronology().withDateTimeZone(zone));
+        return new MutableDateTime(getMillis(base), getChronology().withZone(zone));
     }
 
     /**
@@ -415,7 +415,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        return new MutableDateTime(getMillis(base, zone), getChronology().withDateTimeZone(zone));
+        return new MutableDateTime(getMillis(base, zone), getChronology().withZone(zone));
     }
 
     /**
@@ -433,7 +433,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        return new MutableDateTime(getMillis(base, chronology.getDateTimeZone()), chronology);
+        return new MutableDateTime(getMillis(base, chronology.getZone()), chronology);
     }
 
     /**
@@ -519,7 +519,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         Calendar cal;
         if (zone == null) {
             cal = Calendar.getInstance(locale);
@@ -536,7 +536,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a GregorianCalendar initialised with this datetime
      */
     public final GregorianCalendar toGregorianCalendar() {
-        DateTimeZone zone = getDateTimeZone();
+        DateTimeZone zone = getZone();
         GregorianCalendar cal;
         if (zone == null) {
             cal = new GregorianCalendar();

@@ -61,7 +61,7 @@ import org.joda.time.DurationField;
  * implementations.
  * <p>
  * This class should generally not be used directly by API users. The
- * DurationField interface should be used when different kinds of DurationField
+ * DurationField class should be used when different kinds of DurationField
  * objects are to be referenced.
  * <p>
  * BaseDurationField is thread-safe and immutable, and its subclasses must

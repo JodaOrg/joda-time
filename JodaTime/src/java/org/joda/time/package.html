@@ -7,7 +7,7 @@
    Joda Software License, Version 1.0
   
   
-   Copyright (c) 2001-03 Stephen Colebourne.
+   Copyright (c) 2001-2004 Stephen Colebourne.
    All rights reserved.
   
    Redistribution and use in source and binary forms, with or without
@@ -163,9 +163,10 @@ shared and accessed by multiple threads.
 
 <h4>Chronologies and Fields</h4>
 <p>
-In order to enable the package to be easily extended, each field of the
+In order to enable the package to be easily extended, each 
+<a href="field.html">field</a> of the
 datetime, such as the month, is calculated by an implementation of
-<code>DateTimeField</code>. Likewise, duration fields are calculated by
+<code>DateTimeField</code>). Likewise, duration fields are calculated by
 specialized <code>DurationField</code> instances. If desired, users can write
 their own implementations to retrieve an unusual field from the millisecond
 value.

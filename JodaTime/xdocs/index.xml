@@ -20,8 +20,8 @@ is used by XML. The Gregorian, Julian, Buddhist and Coptic systems are also
 included, and we welcome further additions. Supporting classes include time zone,
 duration, format and parsing.
 </p>
-<subsection name="Quick example">
 <p>
+As a flavour of Joda-Time, here's some example code:
 <source>
 DateTime dt = new DateTime();
 int year = dt.getYear();
@@ -32,7 +32,6 @@ DateTime laterDate = dt.plus(oneMonthSixDays);
 String dateAsISO8601Format = dt.toString();
 </source>
 </p>
-</subsection>
 </section>
 
 

@@ -342,15 +342,15 @@ public class FormatUtils {
     }
 
     /**
-     * Calculates the number of decimal digits for the given value, ignoring
-     * sign.
+     * Calculates the number of decimal digits for the given value,
+     * including the sign.
      */
-    public static int calculateDigitCount(int value) {
+    public static int calculateDigitCount(long value) {
         if (value < 0) {
-            if (value != Integer.MIN_VALUE) {
-                value = -value;
+            if (value != Long.MIN_VALUE) {
+                return calculateDigitCount(-value) + 1;
             } else {
-                return 10;
+                return 20;
             }
         }
         return 

@@ -129,8 +129,16 @@ public class TestISOPeriodFormat extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testFormatStandard() {
-        assertEquals("P1Y2M3W4DT5H6M7.008S", ISOPeriodFormat.getInstance().standard().print(PERIOD));
-        assertEquals("PT0S", ISOPeriodFormat.getInstance().standard().print(EMPTY_PERIOD));
+        Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
+        assertEquals("P1Y2M3W4DT5H6M7.008S", ISOPeriodFormat.getInstance().standard().print(p));
+        p = new Period(1, 2, 3, 4, 5, 6 ,7, 0);
+        assertEquals("P1Y2M3W4DT5H6M7S", ISOPeriodFormat.getInstance().standard().print(p));
+        
+        p = new Period(0);
+        assertEquals("PT0S", ISOPeriodFormat.getInstance().standard().print(p));
+        p = new Period(0, PeriodType.getAllType().withMillisRemoved().withSecondsRemoved());
+        assertEquals("PT0M", ISOPeriodFormat.getInstance().standard().print(p));
+        
         assertEquals("P1Y4DT5H6M7.008S", ISOPeriodFormat.getInstance().standard().print(YEAR_DAY_PERIOD));
         assertEquals("PT0S", ISOPeriodFormat.getInstance().standard().print(EMPTY_YEAR_DAY_PERIOD));
         assertEquals("P1Y2M3W4D", ISOPeriodFormat.getInstance().standard().print(DATE_PERIOD));

@@ -107,7 +107,7 @@ public class ISOPeriodFormat {
                 .appendSuffix("H")
                 .appendMinutes()
                 .appendSuffix("M")
-                .appendSeconds()
+                .appendSecondsWithOptionalMillis()
                 .appendSuffix("S")
                 .toFormatter();
         }
@@ -130,7 +130,7 @@ public class ISOPeriodFormat {
                 .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendMinutes()
-                .appendSeconds()
+                .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
         return iAlternate;
@@ -156,7 +156,7 @@ public class ISOPeriodFormat {
                 .appendSeparator(":")
                 .appendMinutes()
                 .appendSeparator(":")
-                .appendSeconds()
+                .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
         return iAlternateExtended;
@@ -179,7 +179,7 @@ public class ISOPeriodFormat {
                 .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendMinutes()
-                .appendSeconds()
+                .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
         return iAlternateWithWeeks;
@@ -206,7 +206,7 @@ public class ISOPeriodFormat {
                 .appendSeparator(":")
                 .appendMinutes()
                 .appendSeparator(":")
-                .appendSeconds()
+                .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
         return iAlternateExtendedWihWeeks;

@@ -181,6 +181,92 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.countFieldsToPrint(PERIOD));
     }
 
+    public void testFormatSecondsWithMillis() {
+        PeriodFormatter f = builder.appendSecondsWithMillis().toFormatter();
+        Period p = new Period(0, 0, 0, 0, 0, 0, 7, 0);
+        assertEquals("7.000", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 1);
+        assertEquals("7.001", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 999);
+        assertEquals("7.999", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 1000);
+        assertEquals("8.000", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 1001);
+        assertEquals("8.001", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, -1);
+        assertEquals("6.999", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, -7, 1);
+        assertEquals("-6.999", f.print(p));
+        assertEquals(6, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, -7, -1);
+        assertEquals("-7.001", f.print(p));
+        assertEquals(6, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+    }
+
+    public void testFormatSecondsWithOptionalMillis() {
+        PeriodFormatter f = builder.appendSecondsWithOptionalMillis().toFormatter();
+        Period p = new Period(0, 0, 0, 0, 0, 0, 7, 0);
+        assertEquals("7", f.print(p));
+        assertEquals(1, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 1);
+        assertEquals("7.001", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 999);
+        assertEquals("7.999", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 1000);
+        assertEquals("8", f.print(p));
+        assertEquals(1, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, 1001);
+        assertEquals("8.001", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, 7, -1);
+        assertEquals("6.999", f.print(p));
+        assertEquals(5, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, -7, 1);
+        assertEquals("-6.999", f.print(p));
+        assertEquals(6, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+        
+        p = new Period(0, 0, 0, 0, 0, 0, -7, -1);
+        assertEquals("-7.001", f.print(p));
+        assertEquals(6, f.calculatePrintedLength(p));
+        assertEquals(1, f.countFieldsToPrint(p));
+    }
+
     public void testFormatMillis() {
         PeriodFormatter f = builder.appendMillis().toFormatter();
         assertEquals("8", f.print(PERIOD));

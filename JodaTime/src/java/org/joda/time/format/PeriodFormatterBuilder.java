@@ -58,6 +58,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTimeConstants;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
@@ -412,6 +413,30 @@ public class PeriodFormatterBuilder {
      */
     public PeriodFormatterBuilder appendSeconds() {
         appendField(7);
+        return this;
+    }
+
+    /**
+     * Instruct the printer to emit a combined seconds and millis field, if supported.
+     * The millis will overflow into the seconds if necessary.
+     * The millis are always output.
+     *
+     * @return this PeriodFormatterBuilder
+     */
+    public PeriodFormatterBuilder appendSecondsWithMillis() {
+        appendField(9);
+        return this;
+    }
+
+    /**
+     * Instruct the printer to emit a combined seconds and millis field, if supported.
+     * The millis will overflow into the seconds if necessary.
+     * The millis are only output if non-zero.
+     *
+     * @return this PeriodFormatterBuilder
+     */
+    public PeriodFormatterBuilder appendSecondsWithOptionalMillis() {
+        appendField(10);
         return this;
     }
 
@@ -937,7 +962,7 @@ public class PeriodFormatterBuilder {
         }
 
         public int countFieldsToPrint(ReadablePeriod period) {
-            if (iPrintZeroSetting == PRINT_ZERO_ALWAYS || getFieldValue(period) >= 0) {
+            if (iPrintZeroSetting == PRINT_ZERO_ALWAYS || getFieldValue(period) != Long.MAX_VALUE) {
                 return 1;
             }
             return 0;
@@ -949,18 +974,19 @@ public class PeriodFormatterBuilder {
 
         public int calculatePrintedLength(ReadablePeriod period) {
             long valueLong = getFieldValue(period);
-            if (valueLong < 0) {
+            if (valueLong == Long.MAX_VALUE) {
                 return 0;
             }
 
-            int value = (int)valueLong;
-
-            int sum = Math.max
-                (FormatUtils.calculateDigitCount(value), iMinPrintedDigits);
-            if (value < 0) {
-                // Account for sign character
-                sum++;
+            int sum = Math.max(FormatUtils.calculateDigitCount(valueLong), iMinPrintedDigits);
+            if (iFieldType >= 9) {
+                sum++; // decimal point
+                if (iFieldType == 10 && (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND) == 0) {
+                    sum -= 4; // remove three digits and decimal point
+                }
+                valueLong = valueLong / DateTimeConstants.MILLIS_PER_SECOND;
             }
+            int value = (int) valueLong;
 
             PeriodFieldAffix affix;
             if ((affix = iPrefix) != null) {
@@ -975,10 +1001,13 @@ public class PeriodFormatterBuilder {
         
         public void printTo(StringBuffer buf, ReadablePeriod period) {
             long valueLong = getFieldValue(period);
-            if (valueLong < 0) {
+            if (valueLong == Long.MAX_VALUE) {
                 return;
             }
-            int value = (int)valueLong;
+            int value = (int) valueLong;
+            if (iFieldType >= 9) {
+                value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
+            }
 
             PeriodFieldAffix affix;
             if ((affix = iPrefix) != null) {
@@ -990,6 +1019,13 @@ public class PeriodFormatterBuilder {
             } else {
                 FormatUtils.appendPaddedInteger(buf, value, minDigits);
             }
+            if (iFieldType >= 9) {
+                int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
+                if (iFieldType == 9 || dp > 0) {
+                    buf.append('.');
+                    FormatUtils.appendPaddedInteger(buf, dp, 3);
+                }
+            }
             if ((affix = iSuffix) != null) {
                 affix.printTo(buf, value);
             }
@@ -997,10 +1033,13 @@ public class PeriodFormatterBuilder {
 
         public void printTo(Writer out, ReadablePeriod period) throws IOException {
             long valueLong = getFieldValue(period);
-            if (valueLong < 0) {
+            if (valueLong == Long.MAX_VALUE) {
                 return;
             }
-            int value = (int)valueLong;
+            int value = (int) valueLong;
+            if (iFieldType >= 9) {
+                value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
+            }
 
             PeriodFieldAffix affix;
             if ((affix = iPrefix) != null) {
@@ -1011,6 +1050,13 @@ public class PeriodFormatterBuilder {
                 FormatUtils.writeUnpaddedInteger(out, value);
             } else {
                 FormatUtils.writePaddedInteger(out, value, minDigits);
+            }
+            if (iFieldType >= 9) {
+                int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
+                if (iFieldType == 9 || dp > 0) {
+                    out.write('.');
+                    FormatUtils.writePaddedInteger(out, dp, 3);
+                }
             }
             if ((affix = iSuffix) != null) {
                 affix.printTo(out, value);
@@ -1142,8 +1188,7 @@ public class PeriodFormatterBuilder {
         }
 
         /**
-         * @return negative value if nothing to print, otherwise lower 32 bits
-         * is signed int value.
+         * @return Long.MAX_VALUE if nothing to print, otherwise value
          */
         long getFieldValue(ReadablePeriod period) {
             PeriodType type;
@@ -1157,62 +1202,69 @@ public class PeriodFormatterBuilder {
 
             switch (iFieldType) {
             default:
-                return -1;
+                return Long.MAX_VALUE;
             case 1:
                 if (type != null && type.years().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getYears();
                 break;
             case 2:
                 if (type != null && type.months().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getMonths();
                 break;
             case 3:
                 if (type != null && type.weeks().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getWeeks();
                 break;
             case 4:
                 if (type != null && type.days().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getDays();
                 break;
             case 5:
                 if (type != null && type.hours().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getHours();
                 break;
             case 6:
                 if (type != null && type.minutes().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getMinutes();
                 break;
             case 7:
                 if (type != null && type.seconds().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getSeconds();
                 break;
             case 8:
                 if (type != null && type.millis().isSupported() == false) {
-                    return -1;
+                    return Long.MAX_VALUE;
                 }
                 value = period.getMillis();
+                break;
+            case 9: // drop through
+            case 10:
+                if (type != null && type.seconds().isSupported() == false && type.millis().isSupported() == false) {
+                    return Long.MAX_VALUE;
+                }
+                value = period.getSeconds() * DateTimeConstants.MILLIS_PER_SECOND + period.getMillis();
                 break;
             }
 
             if (value == 0 && iPrintZeroSetting == PRINT_ZERO_RARELY) {
-                return -1;
+                return Long.MAX_VALUE;
             }
 
-            return value & 0xffffffffL;
+            return value;
         }
 
         boolean isSupported(PeriodType type) {
@@ -1235,6 +1287,9 @@ public class PeriodFormatterBuilder {
                 return type.seconds().isSupported();
             case 8:
                 return type.millis().isSupported();
+            case 9: // drop through
+            case 10:
+                return type.seconds().isSupported() ||  type.millis().isSupported();
             }
         }
 

@@ -72,7 +72,7 @@ import org.joda.time.JodaTimePermission;
  * <li>ReadableInstant
  * <li>String
  * <li>Calendar
- * <li>Date
+ * <li>Date (includes sql package subclasses)
  * <li>Long (milliseconds)
  * <li>null (now)
  * </ul>
@@ -83,7 +83,7 @@ import org.joda.time.JodaTimePermission;
  * <li>ReadableInstant
  * <li>String
  * <li>Calendar
- * <li>Date
+ * <li>Date (includes sql package subclasses)
  * <li>Long (milliseconds)
  * <li>null (now)
  * </ul>

@@ -53,7 +53,6 @@
  */
 package org.joda.time.chrono.gj;
 
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DurationField;
 import org.joda.time.chrono.PreciseDurationDateTimeField;
 import org.joda.time.chrono.Utils;

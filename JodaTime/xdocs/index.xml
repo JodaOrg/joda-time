@@ -85,8 +85,8 @@ Various documentation is available:
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 0.98</a>
 is the current latest release.
 This release is a stable release that has extensive testing suites.
-As a result of these testing suites, the main API has been firmed up and should not change between 0.98 and 1.0.
-There is a small amount of work still to do in the format package, which may change the API.
+As a result of these testing suites, the main API has been firmed up and is not intended to change beyond now.
+If there is no negative feedback to 0.98, then 1.0 should follow swiftly.
 When the final 1.0 release is made, our intention is to support the release as would be expected.
 </p>
 </section>

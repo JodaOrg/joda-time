@@ -65,7 +65,6 @@ import java.util.Set;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
-import org.joda.time.tz.DateTimeZonePermission;
 import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.FixedDateTimeZone;
 import org.joda.time.tz.NameProvider;
@@ -174,7 +173,7 @@ public abstract class DateTimeZone implements Serializable {
     public static void setDefault(DateTimeZone zone) throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new DateTimeZonePermission("setDefault"));
+            sm.checkPermission(new JodaTimePermission("DateTimeZone.setDefault"));
         }
         if (zone == null) {
             throw new IllegalArgumentException("The datetime zone must not be null");
@@ -305,7 +304,7 @@ public abstract class DateTimeZone implements Serializable {
     public static void setProvider(Provider provider) throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new DateTimeZonePermission("setProvider"));
+            sm.checkPermission(new JodaTimePermission("DateTimeZone.setProvider"));
         }
         setProvider0(provider);
     }
@@ -342,7 +341,7 @@ public abstract class DateTimeZone implements Serializable {
     public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
         SecurityManager sm = System.getSecurityManager();
         if (sm != null) {
-            sm.checkPermission(new DateTimeZonePermission("setNameProvider"));
+            sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));
         }
         setNameProvider0(nameProvider);
     }

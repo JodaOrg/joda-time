@@ -198,21 +198,21 @@ public class TestMillisDurationField extends TestCase {
 
     //-----------------------------------------------------------------------
     public void test_getDifference_long_int() {
-        assertEquals(567, MillisDurationField.INSTANCE.getDifference(567L, 0));
-        assertEquals(567 - 1234, MillisDurationField.INSTANCE.getDifference(567L, 1234));
-        assertEquals(567 + 1234, MillisDurationField.INSTANCE.getDifference(567L, -1234));
+        assertEquals(567, MillisDurationField.INSTANCE.getDifference(567L, 0L));
+        assertEquals(567 - 1234, MillisDurationField.INSTANCE.getDifference(567L, 1234L));
+        assertEquals(567 + 1234, MillisDurationField.INSTANCE.getDifference(567L, -1234L));
         try {
-            MillisDurationField.INSTANCE.getDifference(Long.MAX_VALUE, 1);
+            MillisDurationField.INSTANCE.getDifference(Long.MAX_VALUE, 1L);
             fail();
         } catch (ArithmeticException ex) {}
     }
 
     public void test_getDifferenceAsLong_long_long() {
-        assertEquals(567L, MillisDurationField.INSTANCE.getDifference(567L, 0L));
-        assertEquals(567L - 1234L, MillisDurationField.INSTANCE.getDifference(567L, 1234L));
-        assertEquals(567L + 1234L, MillisDurationField.INSTANCE.getDifference(567L, -1234L));
+        assertEquals(567L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 0L));
+        assertEquals(567L - 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 1234L));
+        assertEquals(567L + 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, -1234L));
         try {
-            MillisDurationField.INSTANCE.getDifference(Long.MAX_VALUE, 1L);
+            MillisDurationField.INSTANCE.getDifferenceAsLong(Long.MAX_VALUE, 1L);
             fail();
         } catch (ArithmeticException ex) {}
     }

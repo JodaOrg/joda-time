@@ -57,6 +57,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -161,6 +162,69 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.getMinutes());
         assertEquals(0, test.getSeconds());
         assertEquals(0, test.getMillis());
+    }
+
+    public void testValueIndexMethods() {
+        Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
+        assertEquals(6, test.size());
+        assertEquals(1, test.getValue(0));
+        assertEquals(4, test.getValue(1));
+        assertEquals(5, test.getValue(2));
+        assertEquals(6, test.getValue(3));
+        assertEquals(7, test.getValue(4));
+        assertEquals(8, test.getValue(5));
+        assertEquals(true, Arrays.equals(new int[] {1, 4, 5, 6, 7, 8}, test.getValues()));
+    }
+
+    public void testTypeIndexMethods() {
+        Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
+        assertEquals(6, test.size());
+        assertEquals(DurationFieldType.years(), test.getFieldType(0));
+        assertEquals(DurationFieldType.days(), test.getFieldType(1));
+        assertEquals(DurationFieldType.hours(), test.getFieldType(2));
+        assertEquals(DurationFieldType.minutes(), test.getFieldType(3));
+        assertEquals(DurationFieldType.seconds(), test.getFieldType(4));
+        assertEquals(DurationFieldType.millis(), test.getFieldType(5));
+        assertEquals(true, Arrays.equals(new DurationFieldType[] {
+            DurationFieldType.years(), DurationFieldType.days(), DurationFieldType.hours(),
+            DurationFieldType.minutes(), DurationFieldType.seconds(), DurationFieldType.millis()},
+            test.getFieldTypes()));
+    }
+
+    public void testIsSupported() {
+        Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
+        assertEquals(true, test.isSupported(DurationFieldType.years()));
+        assertEquals(false, test.isSupported(DurationFieldType.months()));
+        assertEquals(false, test.isSupported(DurationFieldType.weeks()));
+        assertEquals(true, test.isSupported(DurationFieldType.days()));
+        assertEquals(true, test.isSupported(DurationFieldType.hours()));
+        assertEquals(true, test.isSupported(DurationFieldType.minutes()));
+        assertEquals(true, test.isSupported(DurationFieldType.seconds()));
+        assertEquals(true, test.isSupported(DurationFieldType.millis()));
+    }        
+
+    public void testIndexOf() {
+        Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
+        assertEquals(0, test.indexOf(DurationFieldType.years()));
+        assertEquals(-1, test.indexOf(DurationFieldType.months()));
+        assertEquals(-1, test.indexOf(DurationFieldType.weeks()));
+        assertEquals(1, test.indexOf(DurationFieldType.days()));
+        assertEquals(2, test.indexOf(DurationFieldType.hours()));
+        assertEquals(3, test.indexOf(DurationFieldType.minutes()));
+        assertEquals(4, test.indexOf(DurationFieldType.seconds()));
+        assertEquals(5, test.indexOf(DurationFieldType.millis()));
+    }
+
+    public void testGet() {
+        Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
+        assertEquals(1, test.get(DurationFieldType.years()));
+        assertEquals(0, test.get(DurationFieldType.months()));
+        assertEquals(0, test.get(DurationFieldType.weeks()));
+        assertEquals(4, test.get(DurationFieldType.days()));
+        assertEquals(5, test.get(DurationFieldType.hours()));
+        assertEquals(6, test.get(DurationFieldType.minutes()));
+        assertEquals(7, test.get(DurationFieldType.seconds()));
+        assertEquals(8, test.get(DurationFieldType.millis()));
     }
 
     public void testEqualsHashCode() {

@@ -777,6 +777,36 @@ public class TestDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+    public void testWithField1() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime result = test.withField(DateTimeFieldType.year(), 2006);
+        
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0), test);
+        assertEquals(new DateTime(2006, 6, 9, 0, 0, 0, 0), result);
+    }
+
+    public void testWithField2() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime result = test.withField(null, 6);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithFieldAdded1() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime result = test.withFieldAdded(DurationFieldType.years(), 6);
+        
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0), test);
+        assertEquals(new DateTime(2010, 6, 9, 0, 0, 0, 0), result);
+    }
+
+    public void testWithFieldAdded2() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime result = test.withFieldAdded(null, 6);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testWithDurationAdded_long() {
         DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
         DateTime result = test.withDurationAdded(123456789L);

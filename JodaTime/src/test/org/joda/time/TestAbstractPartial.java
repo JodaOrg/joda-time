@@ -146,6 +146,29 @@ public class TestAbstractPartial extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+    public void testGetFieldType() throws Throwable {
+        MockPartial mock = new MockPartial();
+        assertEquals(DateTimeFieldType.year(), mock.getFieldType(0));
+        assertEquals(DateTimeFieldType.monthOfYear(), mock.getFieldType(1));
+        
+        try {
+            mock.getFieldType(-1);
+            fail();
+        } catch (IndexOutOfBoundsException ex) {}
+        try {
+            mock.getFieldType(2);
+            fail();
+        } catch (IndexOutOfBoundsException ex) {}
+    }
+
+    public void testGetFieldTypes() throws Throwable {
+        MockPartial mock = new MockPartial();
+        DateTimeFieldType[] vals = mock.getFieldTypes();
+        assertEquals(2, vals.length);
+        assertEquals(DateTimeFieldType.year(), vals[0]);
+        assertEquals(DateTimeFieldType.monthOfYear(), vals[1]);
+    }
+
     //-----------------------------------------------------------------------
     static class MockPartial extends AbstractPartial {
         

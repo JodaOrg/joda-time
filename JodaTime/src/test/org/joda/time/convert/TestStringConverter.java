@@ -426,6 +426,10 @@ public class TestStringConverter extends TestCase {
             StringConverter.INSTANCE.setInto(m, "PT0SXY", null);
             fail();
         } catch (IllegalArgumentException ex) {}
+        try {
+            StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48SX", null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

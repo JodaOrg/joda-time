@@ -572,6 +572,68 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testConstructor_long_long_Chronology1() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic());
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, Chronology.getCoptic());
+        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), Chronology.getCoptic());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    public void testConstructor_long_long_Chronology2() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), (Chronology) null);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_long_long_PeriodType_Chronology1() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic());
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, Chronology.getCoptic());
+        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, Chronology.getCoptic());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    public void testConstructor_long_long_PeriodType_Chronology2() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, null);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);

@@ -668,6 +668,19 @@ public class TestConverterManager extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testGetIntervalConverterRemovedNull() {
+        try {
+            ConverterManager.getInstance().removeIntervalConverter(NullConverter.INSTANCE);
+            try {
+                ConverterManager.getInstance().getIntervalConverter(null);
+                fail();
+            } catch (IllegalArgumentException ex) {}
+        } finally {
+            ConverterManager.getInstance().addIntervalConverter(NullConverter.INSTANCE);
+        }
+        assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
+    }
+
     //-----------------------------------------------------------------------
     public void testGetIntervalConverters() {
         IntervalConverter[] array = ConverterManager.getInstance().getIntervalConverters();

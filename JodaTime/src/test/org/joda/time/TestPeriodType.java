@@ -692,6 +692,14 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testEquals() throws Exception {
+        PeriodType type = PeriodType.dayTime().withMillisRemoved();
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type.equals(PeriodType.dayTime().withMillisRemoved()));
+        assertEquals(false, type.equals(null));
+        assertEquals(false, type.equals(""));
+    }
+
     public void testHashCode() throws Exception {
         PeriodType type = PeriodType.dayTime().withMillisRemoved();
         assertEquals(type.hashCode(), type.hashCode());

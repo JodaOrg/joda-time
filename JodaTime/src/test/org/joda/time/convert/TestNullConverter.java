@@ -64,6 +64,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.MutableInterval;
 import org.joda.time.MutablePeriod;
 import org.joda.time.PeriodType;
 import org.joda.time.chrono.ISOChronology;
@@ -183,6 +184,22 @@ public class TestNullConverter extends TestCase {
     //-----------------------------------------------------------------------
     public void testIsReadableInterval_Object_Chronology() throws Exception {
         assertEquals(false, NullConverter.INSTANCE.isReadableInterval(null, null));
+    }
+
+    public void testSetInto_Object_Chronology1() throws Exception {
+        MutableInterval m = new MutableInterval(1000L, 2000L, Chronology.getGJ());
+        NullConverter.INSTANCE.setInto(m, null, null);
+        assertEquals(TEST_TIME_NOW, m.getStartMillis());
+        assertEquals(TEST_TIME_NOW, m.getEndMillis());
+        assertEquals(Chronology.getISO(), m.getChronology());
+    }
+
+    public void testSetInto_Object_Chronology2() throws Exception {
+        MutableInterval m = new MutableInterval(1000L, 2000L, Chronology.getGJ());
+        NullConverter.INSTANCE.setInto(m, null, Chronology.getCoptic());
+        assertEquals(TEST_TIME_NOW, m.getStartMillis());
+        assertEquals(TEST_TIME_NOW, m.getEndMillis());
+        assertEquals(Chronology.getCoptic(), m.getChronology());
     }
 
     //-----------------------------------------------------------------------

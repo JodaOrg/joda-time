@@ -147,7 +147,7 @@ public class ISODateTimeFormat {
         we,  // weekyear element (xxxx)
         wwe, // weekOfWeekyear element (-ww)
         dwe, // dayOfWeek element (-ee)
-        dye, // dayOfYear element (-ooo)
+        dye, // dayOfYear element (-DDD)
         hde, // hourOfDay element (HH)
         mhe, // minuteOfHour element (:mm)
         sme, // secondOfMinute element (:ss)
@@ -210,7 +210,7 @@ public class ISODateTimeFormat {
      * date              = date-element ['T' offset]
      * date-element      = std-date-element | ord-date-element | week-date-element
      * std-date-element  = yyyy ['-' MM ['-' dd]]
-     * ord-date-element  = yyyy ['-' ddd]
+     * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
      * offset            = 'Z' | (('+' | '-') HH ':' mm)
      * </pre>
@@ -235,7 +235,7 @@ public class ISODateTimeFormat {
      * <pre>
      * date-element      = std-date-element | ord-date-element | week-date-element
      * std-date-element  = yyyy ['-' MM ['-' dd]]
-     * ord-date-element  = yyyy ['-' ddd]
+     * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
      */
@@ -363,7 +363,7 @@ public class ISODateTimeFormat {
      * time              = 'T' time-element [offset]
      * date-element      = std-date-element | ord-date-element | week-date-element
      * std-date-element  = yyyy ['-' MM ['-' dd]]
-     * ord-date-element  = yyyy ['-' ddd]
+     * ord-date-element  = yyyy ['-' DDD]
      * week-date-element = xxxx '-W' ww ['-' e]
      * time-element      = HH [minute-element] | [fraction]
      * minute-element    = ':' mm [second-element] | [fraction]

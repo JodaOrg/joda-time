@@ -223,34 +223,6 @@ public class MutableDateOnly extends AbstractPartialInstant
     }
 
     /**
-     * Gets a copy of this instant with different millis.
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the millis will change, the chronology is kept.
-     *
-     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
-     * @return a copy of this instant with different millis
-     */
-    public ReadableInstant withMillis(long newMillis) {
-        return new MutableDateOnly(newMillis, getChronology());
-    }
-    
-    /**
-     * Gets a copy of this instant with a different chronology.
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the chronology will change, the millis are kept.
-     *
-     * @param newChronology  the new chronology
-     * @return a copy of this instant with a different chronology
-     */
-    public ReadableInstant withChronology(Chronology newChronology) {
-        newChronology = newChronology == null ? ISOChronology.getInstanceUTC()
-            : newChronology.withUTC();
-        return new MutableDateOnly(getMillis(), newChronology);
-    }
-
-    /**
      * Returns the lower limiting field, dayOfYear.
      *
      * @return dayOfYear field

@@ -227,36 +227,6 @@ public class MutableTimeOnly extends AbstractPartialInstant
     }
 
     /**
-     * Gets a copy of this instant with different millis.
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the millis will change, the chronology is kept.
-     * Immutable subclasses may return <code>this</code> if appropriate.
-     *
-     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
-     * @return a copy of this instant with different millis
-     */
-    public ReadableInstant withMillis(long newMillis) {
-        return new MutableTimeOnly(newMillis, getChronology());
-    }
-    
-    /**
-     * Gets a copy of this instant with a different chronology.
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the chronology will change, the millis are kept.
-     * Immutable subclasses may return <code>this</code> if appropriate.
-     *
-     * @param newChronology  the new chronology
-     * @return a copy of this instant with a different chronology
-     */
-    public ReadableInstant withChronology(Chronology newChronology) {
-        newChronology = newChronology == null ? ISOChronology.getInstanceUTC()
-            : newChronology.withUTC();
-        return new MutableTimeOnly(getMillis(), newChronology);
-    }
-
-    /**
      * Returns the lower limiting field, null.
      *
      * @return null.

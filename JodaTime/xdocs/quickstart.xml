@@ -52,7 +52,7 @@ to access the datetime <a href="field.html">fields</a>. For example, to access
 the month you can use:
 <source>
   DateTime dt = new DateTime();
-  int month = dt.getMonthofYear();
+  int month = dt.getMonthOfYear();
 </source>
 </p>
 
@@ -62,16 +62,16 @@ methods for each field. These provide access to the full wealth of Joda-Time
 functionality. For example, to access details about a month or year:
 <source>
   DateTime dt = new DateTime();
-  String monthName = dt.monthofYear().getAsText();
-  String frenchShortName = dt.monthofYear().getAsShortText(Locale.FRENCH);
+  String monthName = dt.monthOfYear().getAsText();
+  String frenchShortName = dt.monthOfYear().getAsShortText(Locale.FRENCH);
   boolean isLeapYear = dt.year().isLeap();
 </source>
 These property fields also allow you to get an updated copy with a field set,
 added to or rounded.
 <source>
   DateTime dt = new DateTime();
-  DateTime tenthOfMonth = dt.monthofYear().setCopy(10);
-  DateTime twoDaysLater = dt.monthofYear().addToCopy(2);
+  DateTime tenthOfMonth = dt.monthOfYear().setCopy(10);
+  DateTime twoDaysLater = dt.monthOfYear().addToCopy(2);
 </source>
 In these examples, the original datetime is unaltered, because it is immutable.
 </p>
@@ -141,7 +141,7 @@ savings cutover.
   DateTime plusDuration = dt.plus(new Duration(24L*60L*60L*1000L));
 </source>
 Adding a period will add 23 hours in this case, not 24 because of the daylight
-savings change, thus the time of the result will stil be midday.
+savings change, thus the time of the result will still be midday.
 Adding a duration will add 24 hours no matter what, thus the time of the result
 will change to 13:00.
 </p>

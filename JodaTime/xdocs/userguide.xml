@@ -31,7 +31,7 @@ to split the time, stored in milliseconds, into a recognisable fields like 'day 
 The current chronologies supplied are:
 </p>
 <ul>
-<li>ISOChronology - Implements the ISO8601 standard, which is compatable with Gregorian in modern times.</li>
+<li>ISOChronology - Implements the ISO8601 standard, which is compatible with Gregorian in modern times.</li>
 <li>GJChronology - The Gregorian/Julian calendar system, for historical use.</li>
 <li>BuddhistChronology - Offset from Gregorian/Julian by 543 years.</li>
 </ul>

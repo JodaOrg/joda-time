@@ -29,7 +29,7 @@ The Joda Dates project seeks to provide an implementation of dates and times for
 The 'default' calendar system implemented will be the ISO8601 standard.
 This specifies a framework for date and time independent of locale.
 Thus, in the standard, the first day of the week is Monday, and this has the index 1.
-This avoids any ambiguity accross national boundaries.
+This avoids any ambiguity across national boundaries.
 </p>
 
 <p>

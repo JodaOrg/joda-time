@@ -80,6 +80,8 @@ import org.joda.time.chrono.JulianChronology;
 public class TestStringConverter extends TestCase {
 
     private static final DateTimeZone ONE_HOUR = DateTimeZone.getInstance(1);
+    private static final DateTimeZone SIX = DateTimeZone.getInstance(6);
+    private static final DateTimeZone SEVEN = DateTimeZone.getInstance(7);
     private static final DateTimeZone EIGHT = DateTimeZone.getInstance(8);
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
@@ -517,25 +519,41 @@ public class TestStringConverter extends TestCase {
     public void testSetIntoInterval_Object_Chronology4() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2004-06-09T+06:00/P1Y2M", null);
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getStart());
-        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getEnd());
-        assertEquals(Chronology.getISO(DateTimeZone.getInstance(6)), m.getChronology());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, SIX).withChronology(null), m.getStart());
+        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0, SIX).withChronology(null), m.getEnd());
+        assertEquals(Chronology.getISO(), m.getChronology());
     }
 
     public void testSetIntoInterval_Object_Chronology5() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "P1Y2M/2004-06-09T+06:00", null);
-        assertEquals(new DateTime(2003, 4, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getStart());
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getEnd());
-        assertEquals(Chronology.getISO(DateTimeZone.getInstance(6)), m.getChronology());
+        assertEquals(new DateTime(2003, 4, 9, 0, 0, 0, 0, SIX).withChronology(null), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, SIX).withChronology(null), m.getEnd());
+        assertEquals(Chronology.getISO(), m.getChronology());
     }
 
     public void testSetIntoInterval_Object_Chronology6() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2003-08-09T+06:00/2004-06-09T+07:00", null);
-        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getStart());
-        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, DateTimeZone.getInstance(6)), m.getEnd());
-        assertEquals(Chronology.getISO(DateTimeZone.getInstance(6)), m.getChronology());
+        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0, SIX).withChronology(null), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, SEVEN).withChronology(null), m.getEnd());
+        assertEquals(Chronology.getISO(), m.getChronology());
+    }
+
+    public void testSetIntoInterval_Object_Chronology7() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "2003-08-09/2004-06-09", Chronology.getBuddhist());
+        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0, Chronology.getBuddhist()), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getBuddhist()), m.getEnd());
+        assertEquals(Chronology.getBuddhist(), m.getChronology());
+    }
+
+    public void testSetIntoInterval_Object_Chronology8() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        StringConverter.INSTANCE.setInto(m, "2003-08-09T+06:00/2004-06-09T+07:00", Chronology.getBuddhist(EIGHT));
+        assertEquals(new DateTime(2003, 8, 9, 0, 0, 0, 0, Chronology.getBuddhist(SIX)).withZone(EIGHT), m.getStart());
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getBuddhist(SEVEN)).withZone(EIGHT), m.getEnd());
+        assertEquals(Chronology.getBuddhist(EIGHT), m.getChronology());
     }
 
     public void testSetIntoIntervalEx_Object_Chronology1() throws Exception {

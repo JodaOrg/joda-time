@@ -158,6 +158,37 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     /**
+     * Returns true if toPrinter can be called without throwing an
+     * UnsupportedOperationException.
+     * 
+     * @return true if a printer can be built
+     */
+    public boolean canBuildPrinter() {
+        return isPrinter(getFormatter());
+    }
+
+    /**
+     * Returns true if toParser can be called without throwing an
+     * UnsupportedOperationException.
+     * 
+     * @return true if a parser can be built
+     */
+    public boolean canBuildParser() {
+        return isParser(getFormatter());
+    }
+
+    /**
+     * Returns true if toFormatter can be called without throwing an
+     * UnsupportedOperationException.
+     * 
+     * @return true if a formatter can be built
+     */
+    public boolean canBuildFormatter() {
+        return isFormatter(getFormatter());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Clears out all the appended elements, allowing this builder to be
      * reused.
      */
@@ -901,7 +932,7 @@ public class DateTimeFormatterBuilder {
         if (f instanceof DateTimeFormatter) {
             if (f instanceof Composite) {
                 return ((Composite)f).isPrinter()
-                    && ((Composite)f).isParser();
+                    || ((Composite)f).isParser();
             }
             return true;
         }
@@ -922,7 +953,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class CharacterLiteral
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final char iValue;
@@ -986,7 +1016,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class StringLiteral
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final String iValue;
@@ -1034,7 +1063,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static abstract class NumberFormatter
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
         protected final DateTimeFieldType iFieldType;
         protected final int iMaxParsedDigits;
@@ -1232,7 +1260,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TwoDigitYear
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final int iPivot;
@@ -1355,7 +1382,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TextField
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final DateTimeFieldType iFieldType;
@@ -1462,7 +1488,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class Fraction
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final DateTimeFieldType iFieldType;
@@ -1688,7 +1713,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TimeZoneOffset
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final String iZeroOffsetText;
@@ -2047,7 +2071,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TimeZonePrinter
-            extends BaseDateTimeFormatter
             implements DateTimePrinter {
 
         private final Locale iLocale;
@@ -2098,7 +2121,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class Composite
-            extends BaseDateTimeFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private final DateTimePrinter[] iPrinters;
@@ -2272,7 +2294,6 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class MatchingParser
-            extends BaseDateTimeFormatter
             implements DateTimeParser {
 
         private final DateTimeParser[] iParsers;

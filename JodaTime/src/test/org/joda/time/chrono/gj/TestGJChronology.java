@@ -144,11 +144,11 @@ abstract class TestGJChronology extends AbstractChronology {
         throw new UnsupportedOperationException();
     }
 
-    public long getTimeOnlyMillis(long millis) {
+    long getTimeOnlyMillis(long millis) {
         return mod(millis, MILLIS_PER_DAY);
     }
 
-    public long getDateOnlyMillis(long millis) {
+    long getDateOnlyMillis(long millis) {
         return millis - mod(millis, MILLIS_PER_DAY);
     }
 

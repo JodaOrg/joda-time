@@ -330,14 +330,14 @@ public class TestDuration_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testAddTo1() {
         long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
+        expected = ISOChronology.getInstanceUTC().years().add(expected, 1);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, 2);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, 3);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, 4);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, 5);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, 6);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, 7);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, 8);
         
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
         long added = test.addTo(TEST_TIME_NOW, 1);
@@ -346,14 +346,14 @@ public class TestDuration_Basics extends TestCase {
     
     public void testAddTo2() {
         long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, -2);
-        expected = ISOChronology.getInstance().months().add(expected, -4);
-        expected = ISOChronology.getInstance().weeks().add(expected, -6);
-        expected = ISOChronology.getInstance().days().add(expected, -8);
-        expected = ISOChronology.getInstance().hours().add(expected, -10);
-        expected = ISOChronology.getInstance().minutes().add(expected, -12);
-        expected = ISOChronology.getInstance().seconds().add(expected, -14);
-        expected = ISOChronology.getInstance().millis().add(expected, -16);
+        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
         
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
         long added = test.addTo(TEST_TIME_NOW, -2);
@@ -426,21 +426,37 @@ public class TestDuration_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testAddToRI1() {
         long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
+        expected = ISOChronology.getInstanceUTC().years().add(expected, 1);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, 2);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, 3);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, 4);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, 5);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, 6);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, 7);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, 8);
         
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(new Instant(), 1);
+        Instant added = test.addTo(new Instant(), 1);  // Instant has no time zone, uses duration's UTC
         assertEquals(expected, added.getMillis());
     }
     
     public void testAddToRI2() {
+        long expected = TEST_TIME_NOW;
+        expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, -6);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, -8);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, -10);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, -12);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, -14);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
+        
+        Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
+        Instant added = test.addTo(new Instant(), -2);  // Instant has no time zone, uses duration's UTC
+        assertEquals(expected, added.getMillis());
+    }
+    
+    public void testAddToRI3() {
         long expected = TEST_TIME_NOW;
         expected = ISOChronology.getInstance().years().add(expected, -2);
         expected = ISOChronology.getInstance().months().add(expected, -4);
@@ -452,23 +468,23 @@ public class TestDuration_Basics extends TestCase {
         expected = ISOChronology.getInstance().millis().add(expected, -16);
         
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(new Instant(), -2);
+        Instant added = test.addTo(new DateTime(), -2);  // DateTime has local time zone
         assertEquals(expected, added.getMillis());
     }
     
-    public void testAddToRI3() {
+    public void testAddToRI4() {
         long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
+        expected = ISOChronology.getInstanceUTC().years().add(expected, 1);
+        expected = ISOChronology.getInstanceUTC().months().add(expected, 2);
+        expected = ISOChronology.getInstanceUTC().weeks().add(expected, 3);
+        expected = ISOChronology.getInstanceUTC().days().add(expected, 4);
+        expected = ISOChronology.getInstanceUTC().hours().add(expected, 5);
+        expected = ISOChronology.getInstanceUTC().minutes().add(expected, 6);
+        expected = ISOChronology.getInstanceUTC().seconds().add(expected, 7);
+        expected = ISOChronology.getInstanceUTC().millis().add(expected, 8);
         
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(null, 1);
+        Instant added = test.addTo(null, 1);  // null has no time zone, uses duration's UTC
         assertEquals(expected, added.getMillis());
     }
     
@@ -508,16 +524,6 @@ public class TestDuration_Basics extends TestCase {
     }
     
     public void testAddIntoRWI3() {
-        long expected = TEST_TIME_NOW;
-        expected = ISOChronology.getInstance().years().add(expected, 1);
-        expected = ISOChronology.getInstance().months().add(expected, 2);
-        expected = ISOChronology.getInstance().weeks().add(expected, 3);
-        expected = ISOChronology.getInstance().days().add(expected, 4);
-        expected = ISOChronology.getInstance().hours().add(expected, 5);
-        expected = ISOChronology.getInstance().minutes().add(expected, 6);
-        expected = ISOChronology.getInstance().seconds().add(expected, 7);
-        expected = ISOChronology.getInstance().millis().add(expected, 8);
-        
         Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
         try {
             test.addInto(null, 1);
@@ -556,6 +562,39 @@ public class TestDuration_Basics extends TestCase {
     public void testConstant() {
         assertEquals(0L, Duration.ZERO.getTotalMillis());
         assertEquals(DurationType.getMillisType(), Duration.ZERO.getDurationType());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithDurationType1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationType(DurationType.getMillisType());
+        assertSame(test, result);
+    }
+
+    public void testWithDurationType2() {
+        Duration test = new Duration(3123L);
+        Duration result = test.withDurationType(DurationType.getDayHourType());
+        assertEquals(3, result.getSeconds());
+        assertEquals(123, result.getMillis());
+        assertEquals(3123L, result.getTotalMillis());
+        assertEquals(DurationType.getDayHourType(), result.getDurationType());
+    }
+
+    public void testWithDurationType3() {
+        Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getAllType());
+        try {
+            test.withDurationType(DurationType.getDayHourType());
+            fail();
+        } catch (IllegalStateException ex) {}
+    }
+
+    public void testWithDurationType4() {
+        Duration test = new Duration(3123L);
+        Duration result = test.withDurationType(null);
+        assertEquals(3, result.getSeconds());
+        assertEquals(123, result.getMillis());
+        assertEquals(3123L, result.getTotalMillis());
+        assertEquals(DurationType.getAllType(), result.getDurationType());
     }
 
     //-----------------------------------------------------------------------

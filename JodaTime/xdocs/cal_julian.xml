@@ -28,7 +28,7 @@ Normally, a more accurate historic calendar is found by using the
 
 </section>
 
-<section name="Using Julian in Joda-time">
+<section name="Using Julian chronology in Joda-time">
 <p>
 Within Joda-Time the Julian calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/JulianChronology.html">JulianChronology</a>.

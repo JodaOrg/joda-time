@@ -27,7 +27,7 @@ suitable replacement.
 
 </section>
 
-<section name="Using Gregorian in Joda-time">
+<section name="Using Gregorian chronology in Joda-time">
 <p>
 Within Joda-Time the Gregorian calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/GregorianChronology.html">GregorianChronology</a>.

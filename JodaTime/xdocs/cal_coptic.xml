@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Coptic calendar system</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Coptic calendar system">
+
+<p>
+The Coptic calendar system implemented in Joda-time is as follows.
+Years are defined as per the <a href="cal_julian.html">Julian</a> calendar system,
+that is once every four years.
+The year is broken down into 12 months, each of exactly 30 days in length.
+An extra period at the end of the year is either 5 or 6 days in length (depending on whether it is a leap year).
+Joda-time defines this period as a 13th month.
+</p>
+<p>
+Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
+Coptic years do not begin at the same time as Julian years.
+The implementation is not proleptic, as it does not allow dates before the first Coptic year.
+</p>
+
+</section>
+
+<section name="Using Coptic chronology in Joda-time">
+<p>
+Within Joda-Time the Coptic calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/CopticChronology.html">CopticChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/Chronology.html#getCoptic()">Chronology.getCoptic()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on Christmas 2004 (ISO year 2004)
+DateTime dtISO = new DateTime(2004, 12, 25, 12, 0, 0, 0);
+DateTime dtBuddhist = dtISO.withChronology(Chronology.getCoptic());
+</source>
+
+</section>
+
+</body>
+</document>

@@ -3,13 +3,13 @@
 <document>
 
  <properties>
-  <title>Java date and time API - Gregorian calendar system</title>
+  <title>Java date and time API - Buddhist calendar system</title>
   <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
  </properties>
 
  <body>
 
-<section name="Gregorian calendar system">
+<section name="Buddhist calendar system">
 
 <p>
 The Buddhist calendar system implemented in Joda-time is based on that supplied
@@ -22,7 +22,7 @@ from the current Gregorian year.
 
 </section>
 
-<section name="Using Buddhist in Joda-time">
+<section name="Using Buddhist chronology in Joda-time">
 <p>
 Within Joda-Time the Buddhist calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/BuddhistChronology.html">BuddhistChronology</a>.

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Instant</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Instant">
+
+<p>
+The most frequently used concept in Joda-time is that of the <i>Instant</i>.
+An Instant is defined as <quote>an instant in the datetime continuum specified as a
+number of milliseconds from 1970-01-01T00:00Z</quote>.
+This definition of milliseconds is consistent with that of the JDK in <code>Date</code>
+or <code>Calendar</code>. Interoperating between the two APIs is thus simple.
+</p>
+<p>
+The millisecond instant can be converted to any date time field using a
+<a href="key_chronology.html">Chronology</a>.
+</p>
+
+</section>
+
+<section name="Using Instants in Joda-time">
+<p>
+Within Joda-Time an instant is represented by the
+<a href="apidocs/org/joda/time/ReadableInstant.html">ReadableInstant</a> interface.
+There are four implementations of the interface provided:
+<ul>
+<li><a href="apidocs/org/joda/time/Instant.html">Instant</a> - A simple immutable implementation which
+is restricted to the UTC time zone and is intended for timezone and calendar neutral data transfer</li>
+<li><a href="apidocs/org/joda/time/DateTime.html">DateTime</a> - The most commonly used class in the library,
+and an immutable representation of a date and time with calendar and time zone</li>
+<li><a href="apidocs/org/joda/time/DateMidnight.html">DateMidnight</a> - Similar to <code>DateTime</code> and also
+immutable but with the time component forced to be midnight (at the start of a day)</li>
+<li><a href="apidocs/org/joda/time/MutableDateTime.html">MutableDateTime</a> - A mutable representation of date and
+time with calendar and time zone</li>
+</ul>
+</p>
+<source>
+// setup date object for midday on Christmas 2004 (ISO year 2004)
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0);
+int year = dt.getYear();  // returns 2004
+int dow = dt.getDayOfWeek();  // returns 1 (Monday) to 7 (Sunday)
+String dowStr = dt.dayOfWeek().getAsText();  // returns the text, such as 'Tuesday'
+</source>
+<p>
+Compared to <code>GregorianCalendar</code> Joda-time classes use 1-12 for months, and are
+immutable in the standard implementations.
+It is also easy to convert to and from the JDK classes.
+</p>
+<source>
+// construct DateTime from Date (could also be a Calendar)
+Date jdkDate = new Date();
+DateTime dt = new DateTime(jdkDate);
+
+// construct Calendar from DateTime (could also construct a Date)
+GregorianCalendar cal = dt.toGregorianCalendar();
+</source>
+
+<p>
+Note that the interface <code>ReadableInstant</code> should not be used like the collections API.
+The interface only contains the core subset of the operations of <code>DateTime</code>.
+You should use the interface only when you feel the need to be flexible about future changes
+to the object passed into a method.
+You might also want to consider the <a href="apidocs/org/joda/time/ReadableDateTime.html">ReadableDateTime</a>
+interface which extends <code>ReadableInstant</code> to provide additional methods.
+</p>
+
+</section>
+
+</body>
+</document>

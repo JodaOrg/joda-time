@@ -1290,21 +1290,6 @@ public class TestMutablePeriod_Updates extends TestCase {
     }
 
     public void testAdd_RInterval3() {
-        DateTime dt1 = new DateTime(2005, 12, 18, 0, 0, 0, 8);
-        DateTime dt2 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        MutablePeriod test = new MutablePeriod(100L);  // All type
-        test.add(new Interval(dt1, dt2));
-        assertEquals(-1, test.getYears());  // add field value from interval
-        assertEquals(-6, test.getMonths());  // add field value from interval
-        assertEquals(-1, test.getWeeks());  // add field value from interval
-        assertEquals(-2, test.getDays());  // add field value from interval
-        assertEquals(0, test.getHours());  // time zone OK
-        assertEquals(0, test.getMinutes());
-        assertEquals(0, test.getSeconds());
-        assertEquals(92, test.getMillis());
-    }
-
-    public void testAdd_RInterval4() {
         MutablePeriod test = new MutablePeriod(100L, PeriodType.getPreciseYearMonthType());
         test.add(new Interval(0L, 0L));
         assertEquals(0, test.getYears());
@@ -1317,7 +1302,7 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(100, test.getMillis());
     }
 
-    public void testAdd_RInterval5() {
+    public void testAdd_RInterval4() {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 0, 0, 0, 8);
         MutablePeriod test = new MutablePeriod(100L, PeriodType.getYearMonthType());
@@ -1332,7 +1317,7 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(108, test.getMillis());
     }
 
-    public void testAdd_RInterval6() {
+    public void testAdd_RInterval5() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.add((ReadableInterval) null);
         assertEquals(1, test.getYears());

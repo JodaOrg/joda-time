@@ -431,12 +431,28 @@ public class TestInterval_Basics extends TestCase {
         Interval test = new Interval(dt1, dt2);
         
         Period result = test.toPeriod(PeriodType.getYearWeekType());
-        System.err.println(result);
         assertEquals(PeriodType.getYearWeekType(), result.getPeriodType());
         assertEquals(1, result.getYears());
         assertEquals(0, result.getMonths());
         assertEquals(9, result.getWeeks());
         assertEquals(2, result.getDays());
+        assertEquals(5, result.getHours());
+        assertEquals(6, result.getMinutes());
+        assertEquals(7, result.getSeconds());
+        assertEquals(8, result.getMillis());
+    }
+
+    public void testToPeriod_PeriodType3() {
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
+        DateTime dt2 = new DateTime(2005, 6, 9, 12, 14, 16, 18);
+        Interval test = new Interval(dt1, dt2);
+        
+        Period result = test.toPeriod(PeriodType.getYearWeekType());
+        assertEquals(PeriodType.getYearWeekType(), result.getPeriodType());
+        assertEquals(1, result.getYears());
+        assertEquals(0, result.getMonths());
+        assertEquals(0, result.getWeeks());
+        assertEquals(0, result.getDays());
         assertEquals(5, result.getHours());
         assertEquals(6, result.getMinutes());
         assertEquals(7, result.getSeconds());

@@ -280,12 +280,13 @@ public class TestDuration_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        long length = (365 + 2 * 30 + 3 * 7 + 4) * DateTimeConstants.MILLIS_PER_DAY +
-            5 * DateTimeConstants.MILLIS_PER_HOUR +
-            6 * DateTimeConstants.MILLIS_PER_MINUTE +
-            7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
+        long length = (365L + 2L * 30L + 3L * 7L + 4L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        int total = (365 + 2 * 30 + 3 * 7 + 4) * 24 + 5;
         Duration test = new Duration(length);
-        assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString());
+        assertEquals("PT" + total + "H6M7.008S", test.toString());
         
         test = new Duration(0L);
         assertEquals("PT0S", test.toString());

@@ -457,6 +457,22 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis() - 1, test.toDurationMillis());
     }
 
+    public void testToPeriod_PeriodType3() {
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
+        DateTime dt2 = new DateTime(2005, 6, 9, 12, 14, 16, 18);
+        Period test = new Period(dt1.getMillis(), dt2.getMillis(), PeriodType.getYearWeekType());
+        
+        assertEquals(PeriodType.getYearWeekType(), test.getPeriodType());
+        assertEquals(1, test.getYears());  // tests using years and not weekyears
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+    }
+
     //-----------------------------------------------------------------------
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);

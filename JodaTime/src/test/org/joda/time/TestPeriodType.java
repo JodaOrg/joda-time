@@ -482,9 +482,9 @@ public class TestPeriodType extends TestCase {
         assertEquals("DayHourType", type.getName());
         assertEquals("PeriodType[DayHourType]", type.toString());
         assertSameAfterSerialization(type);
-        assertSame(type, type.withChronology(null));
+        assertSame(PeriodType.getDayHourType(), type.withChronology(null));
         assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
-        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+        assertEquals(PeriodType.getDayHourType(CopticChronology.getInstanceUTC()), type.withChronology(CopticChronology.getInstanceUTC()));
     }
 
     //-----------------------------------------------------------------------
@@ -509,9 +509,9 @@ public class TestPeriodType extends TestCase {
         assertEquals("YearDayType", type.getName());
         assertEquals("PeriodType[YearDayType]", type.toString());
         assertSameAfterSerialization(type);
-        assertSame(type, type.withChronology(null));
+        assertSame(PeriodType.getYearDayType(), type.withChronology(null));
         assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
-        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+        assertEquals(PeriodType.getYearDayType(CopticChronology.getInstanceUTC()), type.withChronology(CopticChronology.getInstanceUTC()));
     }
 
     //-----------------------------------------------------------------------
@@ -536,9 +536,9 @@ public class TestPeriodType extends TestCase {
         assertEquals("YearWeekType", type.getName());
         assertEquals("PeriodType[YearWeekType]", type.toString());
         assertSameAfterSerialization(type);
-        assertSame(type, type.withChronology(null));
+        assertSame(PeriodType.getYearWeekType(), type.withChronology(null));
         assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
-        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+        assertEquals(PeriodType.getYearWeekType(CopticChronology.getInstanceUTC()), type.withChronology(CopticChronology.getInstanceUTC()));
     }
 
     //-----------------------------------------------------------------------
@@ -563,9 +563,9 @@ public class TestPeriodType extends TestCase {
         assertEquals("YearMonthType", type.getName());
         assertEquals("PeriodType[YearMonthType]", type.toString());
         assertSameAfterSerialization(type);
-        assertSame(type, type.withChronology(null));
+        assertSame(PeriodType.getYearMonthType(), type.withChronology(null));
         assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
-        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+        assertEquals(PeriodType.getYearMonthType(CopticChronology.getInstanceUTC()), type.withChronology(CopticChronology.getInstanceUTC()));
     }
 
     //-----------------------------------------------------------------------
@@ -590,9 +590,9 @@ public class TestPeriodType extends TestCase {
         assertEquals("AllType", type.getName());
         assertEquals("PeriodType[AllType]", type.toString());
         assertSameAfterSerialization(type);
-        assertSame(type, type.withChronology(null));
+        assertSame(PeriodType.getAllType(), type.withChronology(null));
         assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
-        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+        assertEquals(PeriodType.getAllType(CopticChronology.getInstanceUTC()), type.withChronology(CopticChronology.getInstanceUTC()));
     }
 
     //-----------------------------------------------------------------------

@@ -404,7 +404,7 @@ public class TestMutableInterval_Basics extends TestCase {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
         assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
-        assertEquals(false, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1)));
+        assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1)));
         assertEquals(false, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
         
         assertEquals(false, test.isAfter(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));

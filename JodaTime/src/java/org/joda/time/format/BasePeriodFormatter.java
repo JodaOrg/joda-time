@@ -15,13 +15,9 @@
  */
 package org.joda.time.format;
 
-import java.io.IOException;
-import java.io.Writer;
-
 import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
-import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
 
 /**

@@ -631,10 +631,10 @@ public class TestTimeOfDay extends TestCase {
         assertSame(ISOChronology.getInstance().millisOfSecond(), test.getField(3));
         try {
             test.getField(-1);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
         try {
             test.getField(5);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
     }
 
     public void testGetFields() {
@@ -654,10 +654,10 @@ public class TestTimeOfDay extends TestCase {
         assertEquals(40, test.getValue(3));
         try {
             test.getValue(-1);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
         try {
             test.getValue(5);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
     }
 
     public void testGetValues() {

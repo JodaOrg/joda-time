@@ -446,10 +446,10 @@ public class TestYearMonthDay extends TestCase {
         assertSame(ISOChronology.getInstance().dayOfMonth(), test.getField(2));
         try {
             test.getField(-1);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
         try {
             test.getField(3);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
     }
 
     public void testGetFields() {
@@ -467,10 +467,10 @@ public class TestYearMonthDay extends TestCase {
         assertEquals(9, test.getValue(2));
         try {
             test.getValue(-1);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
         try {
             test.getValue(3);
-        } catch (IllegalArgumentException ex) {}
+        } catch (IndexOutOfBoundsException ex) {}
     }
 
     public void testGetValues() {

@@ -56,7 +56,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.joda.time.base.*;
+import org.joda.time.base.BasePartial;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.property.AbstractPartialFieldProperty;
 
@@ -89,7 +89,9 @@ import org.joda.time.property.AbstractPartialFieldProperty;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class YearMonthDay extends AbstractPartial implements ReadablePartial, Serializable {
+public final class YearMonthDay
+        extends BasePartial
+        implements ReadablePartial, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 797544782896179L;
@@ -231,9 +233,7 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
      * @param values  the new set of values
      */
     YearMonthDay(YearMonthDay partial, int[] values) {
-        super();
-        iChronology = partial.iChronology;
-        iValues = values;
+        super(partial, values);
     }
 
     //-----------------------------------------------------------------------

@@ -53,11 +53,6 @@
  */
 package org.joda.time.base;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.util.Arrays;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
@@ -66,9 +61,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.InstantConverter;
 
 /**
  * AbstractPartial provides a standard base implementation of most methods
@@ -77,223 +69,23 @@ import org.joda.time.convert.InstantConverter;
  * Calculations on are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
+ * The methods on this class uses {@link ReadablePartial#getFieldSize()},
+ * {@link ReadablePartial#getField(int)} and {@link ReadablePartial#getValue(int)}
+ * to calculate their results. Subclasses may have a better implementation.
+ * <p>
  * AbstractPartial allows subclasses may be mutable and not thread-safe.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
-public abstract class AbstractPartial implements ReadablePartial, Serializable {
+public abstract class AbstractPartial implements ReadablePartial {
 
-    /** Serialization version */
-    private static final long serialVersionUID = 2353678632973660L;
-
-    /** The chronology in use */
-    protected Chronology iChronology;
-    /** The values of each field in this partial */
-    protected int[] iValues;
-    /** The values of each field in this partial */
-    protected transient DateTimeField[] iFields;
-
-    // Constructors
     //-----------------------------------------------------------------------
     /**
-     * Constructs a AbstractPartial with the current time, using ISOChronology in
-     * the default zone to extract the fields.
-     * <p>
-     * The constructor uses the default time zone, resulting in the local time
-     * being initialised. Once the constructor is complete, all further calculations
-     * are performed without reference to a timezone (by switching to UTC).
+     * Constructor.
      */
     protected AbstractPartial() {
-        this(DateTimeUtils.currentTimeMillis(), null);
-    }
-
-    /**
-     * Constructs a AbstractPartial with the current time, using the specified chronology
-     * and zone to extract the fields.
-     * <p>
-     * The constructor uses the time zone of the chronology specified.
-     * Once the constructor is complete, all further calculations are performed
-     * without reference to a timezone (by switching to UTC).
-     *
-     * @param chronology  the chronology, null means ISOChronology in the default zone
-     */
-    protected AbstractPartial(Chronology chronology) {
-        this(DateTimeUtils.currentTimeMillis(), chronology);
-    }
-
-    /**
-     * Constructs a AbstractPartial extracting the partial fields from the specified
-     * milliseconds using the ISOChronology in the default zone.
-     * <p>
-     * The constructor uses the default time zone, resulting in the local time
-     * being initialised. Once the constructor is complete, all further calculations
-     * are performed without reference to a timezone (by switching to UTC).
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     */
-    protected AbstractPartial(long instant) {
-        this(instant, null);
-    }
-
-    /**
-     * Constructs a AbstractPartial extracting the partial fields from the specified
-     * milliseconds using the chronology provided.
-     * <p>
-     * The constructor uses the time zone of the chronology specified.
-     * Once the constructor is complete, all further calculations are performed
-     * without reference to a timezone (by switching to UTC).
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
-     * @param chronology  the chronology, null means ISOChronology in the default zone
-     */
-    protected AbstractPartial(long instant, Chronology chronology) {
         super();
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
-        iValues = initValues(instant, chronology);
-    }
-
-    /**
-     * Constructs a AbstractPartial from an Object that represents a time.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  the datetime object, must not be null
-     * @throws IllegalArgumentException if the date is null
-     */
-    protected AbstractPartial(Object instant) {
-        super();
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        long millis = converter.getInstantMillis(instant);
-        Chronology chronology = converter.getChronology(instant);
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
-        iValues = initValues(millis, chronology);
-    }
-
-    /**
-     * Constructs a AbstractPartial from an Object that represents a time, using the
-     * specified chronology.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     * <p>
-     * The constructor uses the time zone of the chronology specified.
-     * Once the constructor is complete, all further calculations are performed
-     * without reference to a timezone (by switching to UTC).
-     *
-     * @param instant  the datetime object, must not be null
-     * @param chronology  the chronology, null means ISOChronology
-     * @throws IllegalArgumentException if the date is null
-     */
-    protected AbstractPartial(Object instant, Chronology chronology) {
-        super();
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        long millis = converter.getInstantMillis(instant, chronology);
-        chronology = converter.getChronology(instant, chronology);
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
-        iValues = initValues(millis, chronology);
-    }
-
-    /**
-     * Constructs a AbstractPartial with specified time field values and chronology.
-     * <p>
-     * The constructor uses the time zone of the chronology specified.
-     * Once the constructor is complete, all further calculations are performed
-     * without reference to a timezone (by switching to UTC).
-     *
-     * @param values  the new set of values
-     * @param chronology  the chronology, null means ISOChronology in the default zone
-     */
-    protected AbstractPartial(int[] values, Chronology chronology) {
-        super();
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
-        iValues = values;
-        chronology.validate(this);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Recreates the state of this object after deserialization.
-     * 
-     * @param in  the input stream
-     */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        iFields = initFields(iChronology);
-    }
-
-    /**
-     * Initialize the array of fields.
-     * The field and value arrays must match.
-     * 
-     * @param chrono  the chronology to use
-     */
-    protected abstract DateTimeField[] initFields(Chronology chrono);
-
-    /**
-     * Initialize the array of values.
-     * The field and value arrays must match.
-     * 
-     * @param instant  the instant to use
-     * @param chrono  the chronology to use
-     */
-    protected abstract int[] initValues(long instant, Chronology chrono);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the number of fields in this partial.
-     * 
-     * @return the field count
-     */
-    public int getFieldSize() {
-        return iFields.length;
-    }
-
-    /**
-     * Gets the field at the specifed index.
-     * 
-     * @param index  the index
-     * @return the field
-     * @throws IndexOutOfBoundsException if the index is invalid
-     */
-    public DateTimeField getField(int index) {
-        if (index < 0 || index >= iFields.length) {
-            throw new IllegalArgumentException(Integer.toString(index));
-        }
-        return iFields[index];
-    }
-
-    /**
-     * Gets the value of the field at the specifed index.
-     * 
-     * @param index  the index
-     * @return the value
-     * @throws IndexOutOfBoundsException if the index is invalid
-     */
-    public int getValue(int index) {
-        if (index < 0 || index >= iValues.length) {
-            throw new IllegalArgumentException(Integer.toString(index));
-        }
-        return iValues[index];
     }
 
     //-----------------------------------------------------------------------
@@ -302,10 +94,14 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      *
-     * @return the fields supported (cloned), largest to smallest
+     * @return the fields supported in an array that may be altered, largest to smallest
      */
     public DateTimeField[] getFields() {
-        return (DateTimeField[]) iFields.clone();
+        DateTimeField[] result = new DateTimeField[getFieldSize()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getField(i);
+        }
+        return result;
     }
 
     /**
@@ -314,22 +110,14 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
      * Each value corresponds to the same array index as <code>getFields()</code>
      *
-     * @return the current values of each field (cloned), largest to smallest
+     * @return the current values of each field in an array that may be altered, largest to smallest
      */
     public int[] getValues() {
-        return (int[]) iValues.clone();
-    }
-
-    /**
-     * Gets the chronology of the partial which is never null.
-     * <p>
-     * The {@link Chronology} is the calculation engine behind the partial and
-     * provides conversion and validation of the fields in a particular calendar system.
-     * 
-     * @return the chronology
-     */
-    public Chronology getChronology() {
-        return iChronology;
+        int[] result = new int[getFieldSize()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getValue(i);
+        }
+        return result;
     }
 
     //-----------------------------------------------------------------------
@@ -343,9 +131,9 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @throws IllegalArgumentException if the field is null or not supported
      */
     public int get(DateTimeField field) {
-        for (int i = 0; i < iFields.length; i++) {
-            if (iFields[i] == field) {
-                return iValues[i];
+        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+            if (getField(i) == field) {
+                return getValue(i);
             }
         }
         throw new IllegalArgumentException("Field '" + field + "' is not supported");
@@ -358,8 +146,8 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @return true if the field is supported
      */
     public boolean isSupported(DateTimeField field) {
-        for (int i = 0; i < iFields.length; i++) {
-            if (iFields[i] == field) {
+        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+            if (getField(i) == field) {
                 return true;
             }
         }
@@ -380,7 +168,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @return the combined instant in milliseconds
      */
     public long resolve(long baseInstant, DateTimeZone zone) {
-        Chronology chrono = iChronology.withZone(zone);
+        Chronology chrono = getChronology().withZone(zone);
         return resolve(baseInstant, chrono);
     }
 
@@ -397,15 +185,9 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @return the combined datetime
      */
     public DateTime resolveDateTime(ReadableInstant baseInstant) {
-        long resolved;
-        Chronology chrono;
-        if (baseInstant == null) {
-            chrono = ISOChronology.getInstance();
-            resolved = resolve(DateTimeUtils.currentTimeMillis(), chrono);
-        } else {
-            chrono = baseInstant.getChronology();
-            resolved = resolve(baseInstant.getMillis(), chrono);
-        }
+        Chronology chrono = DateTimeUtils.getInstantChronology(baseInstant);
+        long instantMillis = DateTimeUtils.getInstantMillis(baseInstant);
+        long resolved = resolve(instantMillis, chrono);
         return new DateTime(resolved, chrono);
     }
 
@@ -438,8 +220,8 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      */
     protected long resolve(long baseInstant, Chronology chrono) {
         long millis = baseInstant;
-        for (int i = 0; i < iFields.length; i++) {
-            millis = iFields[i].set(millis, iValues[i]);
+        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+            millis = getField(i).set(millis, getValue(i));
         }
         return millis;
     }
@@ -453,18 +235,19 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @return true if fields and values are equal
      */
     public boolean equals(Object partial) {
-        if (partial instanceof AbstractPartial) {
-            AbstractPartial other = (AbstractPartial) partial;
-            return Arrays.equals(iValues, other.iValues) &&
-                   Arrays.equals(iFields, other.iFields) &&
-                   iChronology == other.iChronology;
-        } else if (partial instanceof ReadablePartial) {
-            ReadablePartial other = (ReadablePartial) partial;
-            return Arrays.equals(iValues, other.getValues()) &&
-                   Arrays.equals(iFields, other.getFields()) &&
-                   iChronology == other.getChronology();
+        if (partial instanceof ReadablePartial == false) {
+            return false;
         }
-        return false;
+        ReadablePartial other = (ReadablePartial) partial;
+        if (getFieldSize() != other.getFieldSize()) {
+            return false;
+        }
+        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+            if (getValue(i) != other.getValue(i) || getField(i) != other.getField(i)) {
+                return false;
+            }
+        }
+        return (getChronology() == other.getChronology());
     }
 
     /**
@@ -475,11 +258,11 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      */
     public int hashCode() {
         int total = 157;
-        for (int i = 0; i < iFields.length; i++) {
-            total = 23 * total + iValues[i];
-            total = 23 * total + iFields[i].hashCode();
+        for (int i = 0, isize = getFieldSize(); i < isize; i++) {
+            total = 23 * total + getValue(i);
+            total = 23 * total + getField(i).hashCode();
         }
-        total += iChronology.hashCode();
+        total += getChronology().hashCode();
         return total;
     }
 

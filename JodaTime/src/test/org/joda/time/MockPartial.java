@@ -74,13 +74,13 @@ public class MockPartial implements ReadablePartial {
         return ISOChronology.getInstance();
     }
     public int getFieldSize() {
-        return 0;
+        return getFields().length;
     }
     public DateTimeField getField(int index) {
-        return null;
+        return getFields()[index];
     }
     public int getValue(int index) {
-        return 0;
+        return getValues()[index];
     }
     public int get(DateTimeField field) {
         return 0;

@@ -90,7 +90,9 @@ import org.joda.time.property.AbstractPartialFieldProperty;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class TimeOfDay extends AbstractPartial implements ReadablePartial, Serializable {
+public final class TimeOfDay
+        extends BasePartial
+        implements ReadablePartial, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 3633353405803318660L;
@@ -299,9 +301,7 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
      * @param values  the new set of values
      */
     TimeOfDay(TimeOfDay partial, int[] values) {
-        super();
-        iChronology = partial.iChronology;
-        iValues = values;
+        super(partial, values);
     }
 
     //-----------------------------------------------------------------------

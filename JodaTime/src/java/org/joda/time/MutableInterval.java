@@ -61,8 +61,12 @@ import java.text.ParseException;
  * <p>
  * If performing significant calculations on an interval, it may be faster to
  * convert an Interval object to a MutableInterval one.
+ * <p>
+ * MutableInterval is mutable and not thread-safe, unless concurrent threads
+ * are not invoking mutator methods.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
 public final class MutableInterval extends AbstractInterval
@@ -80,6 +84,16 @@ public final class MutableInterval extends AbstractInterval
         super(interval);
     }
     
+    /**
+     * Constructs a time interval as a copy of another.
+     * 
+     * @param interval the time interval to convert
+     * @throws IllegalArgumentException if the interval is null
+     */
+    public MutableInterval(Object interval) {
+        super(interval);
+    }
+
     /**
      * Constructs an interval from a start and end instant.
      * 
@@ -108,6 +122,7 @@ public final class MutableInterval extends AbstractInterval
      * 
      * @param start  start of this interval
      * @param duration  duration of this interval
+     * @throws IllegalArgumentException if start or duration is null
      */
     public MutableInterval(ReadableInstant start, ReadableDuration duration) {
         super(start, duration);
@@ -118,23 +133,11 @@ public final class MutableInterval extends AbstractInterval
      * 
      * @param duration duration of this interval
      * @param end end of this interval
+     * @throws IllegalArgumentException if duration or end is null
      */
     public MutableInterval(ReadableDuration duration, ReadableInstant end) {
         super(duration, end);
     }
-    
-    /**
-     * Constructors an interval from an ISO format string.
-     *
-     * @param intervalStr  an ISO interval string
-     */
-    /* TODO
-    public MutableInterval(String intervalStr) throws ParseException {
-        Interval interval = (Interval) TimePeriodFormat.ISO_STANDARD_BASIC_FORMAT.parseObject(intervalStr);
-        iStartMillis = interval.getStartMillis();
-        iEndMillis = interval.getEndMillis();
-    }
-    */
     
     //-----------------------------------------------------------------------
     /**
@@ -179,6 +182,48 @@ public final class MutableInterval extends AbstractInterval
             throw new IllegalArgumentException("The instant must not be null");
         }
         super.setEndMillis(instant.getMillis());
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the start instant.
+     *
+     * @param millisDuration  new duration for interval
+     */
+    public void setDurationAfterStart(long millisDuration) {
+        super.setEndMillis(getStartMillis() + millisDuration);
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the start instant.
+     *
+     * @param duration  new duration for interval
+     */
+    public void setDurationAfterStart(ReadableDuration duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("The duration must not be null");
+        }
+        super.setEndMillis(duration.addTo(getStartMillis(), 1));
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the end instant.
+     *
+     * @param millisDuration  new duration for interval
+     */
+    public void setDurationBeforeEnd(long millisDuration) {
+        super.setStartMillis(getEndMillis() - millisDuration);
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the end instant.
+     *
+     * @param duration  new duration for interval
+     */
+    public void setDurationBeforeEnd(ReadableDuration duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("The duration must not be null");
+        }
+        super.setStartMillis(duration.addTo(getEndMillis(), -1));
     }
 
 }

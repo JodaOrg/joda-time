@@ -7,7 +7,6 @@ Duration:
  Write tests
  
 Interval:
- Write formatters/parsers
  Write tests
  
 Tests:

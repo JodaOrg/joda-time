@@ -57,7 +57,6 @@ import org.joda.time.ReadWritableTimePeriod;
 
 /**
  * LongConverter converts a Long to milliseconds in the ISOChronology.
- * The duration type created is the millis type.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill

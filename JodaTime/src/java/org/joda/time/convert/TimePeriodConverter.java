@@ -53,7 +53,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.ReadWritableTimePeriod;
 
 /**
@@ -76,13 +76,13 @@ public interface TimePeriodConverter extends Converter {
     void setInto(ReadWritableTimePeriod period, Object object);
 
     /**
-     * Selects a suitable duration type for the given object.
+     * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param precise  true if the duration type must be precise
-     * @return the duration type, never null
+     * @param precise  true if the period type must be precise
+     * @return the period type, never null
      * @throws ClassCastException if the object is invalid
      */
-    DurationType getDurationType(Object object, boolean precise);
+    PeriodType getPeriodType(Object object, boolean precise);
 
 }

@@ -92,7 +92,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
 
     /**
      * Sets all the fields in one go from an interval dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * 
      * @param interval  the interval to set, null means zero length
      */
@@ -100,7 +100,7 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
 
     /**
      * Sets all the fields in one go from a millisecond interval dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
@@ -109,20 +109,20 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
 
     /**
      * Sets all the fields in one go from a duration dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -140,20 +140,20 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
 
     /**
      * Sets all the fields in one go from a millisecond duration dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -211,18 +211,18 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -243,18 +243,18 @@ public interface ReadWritableTimePeriod extends ReadableTimePeriod {
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.

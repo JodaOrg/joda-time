@@ -58,7 +58,7 @@ import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableInterval;
 
 /**
- * Converts intervals into durations of any requested duration type.
+ * Converts intervals into durations of any requested period type.
  *
  * @author Brian S O'Neill
  * @since 1.0

@@ -81,29 +81,29 @@ public class MutableTimePeriod
     }
 
     /**
-     * Creates a zero-length period using the specified duration type.
+     * Creates a zero-length period using the specified period type.
      *
      * @param type  which set of fields this period supports
      */
-    public MutableTimePeriod(DurationType type) {
+    public MutableTimePeriod(PeriodType type) {
         super(0L, type);
     }
 
     /**
      * Creates a period from the given millisecond duration using AllType.
      * <p>
-     * The exact impact of this constructor is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this constructor is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -124,18 +124,18 @@ public class MutableTimePeriod
     /**
      * Creates a period from the given millisecond duration.
      * <p>
-     * The exact impact of this constructor is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this constructor is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -150,7 +150,7 @@ public class MutableTimePeriod
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports
      */
-    public MutableTimePeriod(long duration, DurationType type) {
+    public MutableTimePeriod(long duration, PeriodType type) {
         super(duration, type);
     }
 
@@ -199,7 +199,7 @@ public class MutableTimePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public MutableTimePeriod(int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis, DurationType type) {
+                    int hours, int minutes, int seconds, int millis, PeriodType type) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, type);
     }
 
@@ -222,7 +222,7 @@ public class MutableTimePeriod
      * @param endInstant  interval end, in milliseconds
      * @param type  which set of fields this period supports, null means AllType
      */
-    public MutableTimePeriod(long startInstant, long endInstant, DurationType type) {
+    public MutableTimePeriod(long startInstant, long endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -245,7 +245,7 @@ public class MutableTimePeriod
      * @param endInstant  interval end, null means now
      * @param type  which set of fields this period supports, null means AllType
      */
-    public MutableTimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+    public MutableTimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -270,22 +270,22 @@ public class MutableTimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableTimePeriod(Object period, DurationType type) {
+    public MutableTimePeriod(Object period, PeriodType type) {
         super(period, type);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Validates a duration type, converting nulls to a default value and
+     * Validates a period type, converting nulls to a default value and
      * checking the type is suitable for this instance.
      * 
      * @param type  the type to check, may be null
      * @return the validated type to use, not null
-     * @throws IllegalArgumentException if the duration type is not precise
+     * @throws IllegalArgumentException if the period type is not precise
      */
-    protected DurationType checkDurationType(DurationType type) {
+    protected PeriodType checkPeriodType(PeriodType type) {
         if (type == null) {
-            return DurationType.getAllType();
+            return PeriodType.getAllType();
         }
         return type;
     }
@@ -322,7 +322,7 @@ public class MutableTimePeriod
 
     /**
      * Sets all the fields in one go from an interval dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * 
      * @param interval  the interval to set, null means zero length
      */
@@ -332,7 +332,7 @@ public class MutableTimePeriod
 
     /**
      * Sets all the fields in one go from a millisecond interval dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
@@ -343,20 +343,20 @@ public class MutableTimePeriod
 
     /**
      * Sets all the fields in one go from a duration dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -376,20 +376,20 @@ public class MutableTimePeriod
 
     /**
      * Sets all the fields in one go from a millisecond duration dividing the
-     * fields using the duration type.
+     * fields using the period type.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -442,7 +442,7 @@ public class MutableTimePeriod
 
     /**
      * Adds an interval to this one by converting it to a period using the same
-     * duration type and then adding each field in turn.
+     * period type and then adding each field in turn.
      * 
      * @param interval  the interval to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
@@ -455,18 +455,18 @@ public class MutableTimePeriod
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -489,18 +489,18 @@ public class MutableTimePeriod
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If this period uses the PreciseAll duration type then all fields can be set.
+     * If this period uses the PreciseAll period type then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the period uses the All duration type then the years and months fields
+     * If the period uses the All period type then the years and months fields
      * will remain as zero, with the duration allocated to the weeks field.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.

@@ -77,7 +77,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.ReadableTimePeriod;
 import org.joda.time.TimePeriod;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.Interval;
 import org.joda.time.JodaTimePermission;
 import org.joda.time.ReadWritableTimePeriod;
@@ -368,7 +368,7 @@ public class TestConverterManager extends TestCase {
         c = ConverterManager.getInstance().getDurationConverter(new Duration(123L));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getDurationConverter(new TimePeriod(DurationType.getMillisType()));
+        c = ConverterManager.getInstance().getDurationConverter(new TimePeriod(PeriodType.getMillisType()));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getDurationConverter(new Interval(0L, 1000L));
@@ -507,7 +507,7 @@ public class TestConverterManager extends TestCase {
     private static int PERIOD_SIZE = 5;
     
     public void testGetTimePeriodConverter() {
-        TimePeriodConverter c = ConverterManager.getInstance().getTimePeriodConverter(new TimePeriod(DurationType.getMillisType()));
+        TimePeriodConverter c = ConverterManager.getInstance().getTimePeriodConverter(new TimePeriod(PeriodType.getMillisType()));
         assertEquals(ReadableTimePeriod.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getTimePeriodConverter(new Duration(123L));
@@ -551,7 +551,7 @@ public class TestConverterManager extends TestCase {
     public void testAddTimePeriodConverter1() {
         TimePeriodConverter c = new TimePeriodConverter() {
             public void setInto(ReadWritableTimePeriod duration, Object object) {}
-            public DurationType getDurationType(Object object, boolean tmm) {return null;}
+            public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         try {
@@ -568,7 +568,7 @@ public class TestConverterManager extends TestCase {
     public void testAddTimePeriodConverter2() {
         TimePeriodConverter c = new TimePeriodConverter() {
             public void setInto(ReadWritableTimePeriod duration, Object object) {}
-            public DurationType getDurationType(Object object, boolean tmm) {return null;}
+            public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return String.class;}
         };
         try {
@@ -618,7 +618,7 @@ public class TestConverterManager extends TestCase {
     public void testRemoveTimePeriodConverter2() {
         TimePeriodConverter c = new TimePeriodConverter() {
             public void setInto(ReadWritableTimePeriod duration, Object object) {}
-            public DurationType getDurationType(Object object, boolean tmm) {return null;}
+            public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         TimePeriodConverter removed = ConverterManager.getInstance().removeTimePeriodConverter(c);

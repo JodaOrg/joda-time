@@ -62,7 +62,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadableTimePeriod;
 import org.joda.time.TimePeriod;
@@ -124,19 +124,19 @@ public class TestReadablePeriodConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getAllType(),
-            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L), false));
-        assertEquals(DurationType.getPreciseAllType(),
-            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L), true));
-        assertEquals(DurationType.getPreciseAllType(),
-            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L, DurationType.getAllType()), true));
-        assertEquals(DurationType.getPreciseYearDayType(),
-            ReadableTimePeriodConverter.INSTANCE.getDurationType(new TimePeriod(123L, DurationType.getPreciseYearDayType()), true));
+    public void testGetPeriodType_Object() throws Exception {
+        assertEquals(PeriodType.getAllType(),
+            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L), false));
+        assertEquals(PeriodType.getPreciseAllType(),
+            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L), true));
+        assertEquals(PeriodType.getPreciseAllType(),
+            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L, PeriodType.getAllType()), true));
+        assertEquals(PeriodType.getPreciseYearDayType(),
+            ReadableTimePeriodConverter.INSTANCE.getPeriodType(new TimePeriod(123L, PeriodType.getPreciseYearDayType()), true));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableTimePeriod m = new MutableTimePeriod(DurationType.getYearMonthType());
+        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getYearMonthType());
         ReadableTimePeriodConverter.INSTANCE.setInto(m, new TimePeriod(0, 0, 0, 3, 0, 4, 0, 5));
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());

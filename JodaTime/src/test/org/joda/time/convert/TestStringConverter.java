@@ -65,7 +65,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.MutableInterval;
 import org.joda.time.chrono.ISOChronology;
@@ -321,15 +321,15 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getAllType(),
-            StringConverter.INSTANCE.getDurationType("P2Y6M9D", false));
-        assertEquals(DurationType.getPreciseAllType(),
-            StringConverter.INSTANCE.getDurationType("P2Y6M9D", true));
+    public void testGetPeriodType_Object() throws Exception {
+        assertEquals(PeriodType.getAllType(),
+            StringConverter.INSTANCE.getPeriodType("P2Y6M9D", false));
+        assertEquals(PeriodType.getPreciseAllType(),
+            StringConverter.INSTANCE.getPeriodType("P2Y6M9D", true));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableTimePeriod m = new MutableTimePeriod(DurationType.getYearMonthType());
+        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getYearMonthType());
         StringConverter.INSTANCE.setInto(m, "P2Y6M9DT12H24M48S");
         assertEquals(2, m.getYears());
         assertEquals(6, m.getMonths());
@@ -339,7 +339,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
         
-        m = new MutableTimePeriod(DurationType.getYearWeekType());
+        m = new MutableTimePeriod(PeriodType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48S");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());
@@ -349,7 +349,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
         
-        m = new MutableTimePeriod(1, 0, 1, 1, 1, 1, 1, 1, DurationType.getYearWeekType());
+        m = new MutableTimePeriod(1, 0, 1, 1, 1, 1, 1, 1, PeriodType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3D");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());

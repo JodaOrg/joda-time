@@ -158,7 +158,7 @@ public abstract class AbstractDuration implements ReadableDuration {
     /**
      * Converts this duration to a TimePeriod instance using the All type.
      * <p>
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
@@ -177,25 +177,25 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @return a TimePeriod created using the millisecond duration from this instance
      */
     public final TimePeriod toTimePeriod() {
-        return new TimePeriod(this, DurationType.getAllType());
+        return new TimePeriod(this, PeriodType.getAllType());
     }
 
     /**
-     * Converts this duration to a TimePeriod instance specifying a duration type
+     * Converts this duration to a TimePeriod instance specifying a period type
      * to control how the duration is split into fields.
      * <p>
-     * The exact impact of this method is determined by the duration type.
-     * Only precise fields in the duration type will be used and the calculation will use UTC.
+     * The exact impact of this method is determined by the period type.
+     * Only precise fields in the period type will be used and the calculation will use UTC.
      * <p>
      * If the duration is small, less than one day, then this method will perform
      * as you might expect and split the fields evenly. The situation is more complex
      * for larger durations.
      * <p>
-     * If the duration type is PreciseAll then all fields can be set.
+     * If the period type is PreciseAll then all fields can be set.
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
      * 1 year, 2 months and 5 days using the PreciseAll type.
      * <p>
-     * If the duration type is All then the years and months fields will remain as zero,
+     * If the period type is All then the years and months fields will remain as zero,
      * with the duration allocated to the weeks and days fields.
      * Normally, the weeks and days fields are imprecise, but this method
      * calculates using the UTC time zone making weeks and days precise.
@@ -207,10 +207,10 @@ public abstract class AbstractDuration implements ReadableDuration {
      * For more control over the conversion process, you should convert the duration
      * to an interval by referencing a fixed instant and then obtain the period.
      * 
-     * @param type  the duration type determining how to split the duration into fields
+     * @param type  the period type determining how to split the duration into fields
      * @return a TimePeriod created using the millisecond duration from this instance
      */
-    public final TimePeriod toTimePeriod(DurationType type) {
+    public final TimePeriod toTimePeriod(PeriodType type) {
         return new TimePeriod(this, type);
     }
 
@@ -315,7 +315,7 @@ public abstract class AbstractDuration implements ReadableDuration {
      * Gets the value as a String in the ISO8601 duration format.
      * <p>
      * For example, "P6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
-     * The field values are determined using the PreciseAll duration type.
+     * The field values are determined using the PreciseAll period type.
      *
      * @return the value as an ISO8601 string
      */

@@ -64,7 +64,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadableDuration;
 import org.joda.time.chrono.ISOChronology;
@@ -125,15 +125,15 @@ public class TestReadableDurationConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetDurationType_Object() throws Exception {
-        assertEquals(DurationType.getPreciseAllType(),
-            ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L), false));
-        assertEquals(DurationType.getPreciseAllType(),
-            ReadableDurationConverter.INSTANCE.getDurationType(new Duration(123L), true));
+    public void testGetPeriodType_Object() throws Exception {
+        assertEquals(PeriodType.getPreciseAllType(),
+            ReadableDurationConverter.INSTANCE.getPeriodType(new Duration(123L), false));
+        assertEquals(PeriodType.getPreciseAllType(),
+            ReadableDurationConverter.INSTANCE.getPeriodType(new Duration(123L), true));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableTimePeriod m = new MutableTimePeriod(DurationType.getYearMonthType());
+        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getYearMonthType());
         ReadableDurationConverter.INSTANCE.setInto(m, new Duration(
             3L * DateTimeConstants.MILLIS_PER_DAY +
             4L * DateTimeConstants.MILLIS_PER_MINUTE + 5L

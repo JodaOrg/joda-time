@@ -55,7 +55,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritableTimePeriod;
@@ -130,13 +130,13 @@ class StringConverter extends AbstractConverter
      */
     public long getDurationMillis(Object object) {
         String str = (String) object;
-        MutableTimePeriod period = new MutableTimePeriod(DurationType.getPreciseAllType());
+        MutableTimePeriod period = new MutableTimePeriod(PeriodType.getPreciseAllType());
         TimePeriodParser parser = ISOTimePeriodFormat.getInstance().standard();
         int pos = parser.parseInto(period, str, 0);
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutableTimePeriod(period.getDurationType(), str);
+                parser.parseMutableTimePeriod(period.getPeriodType(), str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
@@ -160,7 +160,7 @@ class StringConverter extends AbstractConverter
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutableTimePeriod(period.getDurationType(), str);
+                parser.parseMutableTimePeriod(period.getPeriodType(), str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
@@ -198,7 +198,7 @@ class StringConverter extends AbstractConverter
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            period = durationParser.parseTimePeriod(getDurationType(leftStr, false), leftStr);
+            period = durationParser.parseTimePeriod(getPeriodType(leftStr, false), leftStr);
         } else {
             startInstant = dateTimeParser.parseMillis(leftStr);
             period = null;
@@ -209,7 +209,7 @@ class StringConverter extends AbstractConverter
             if (period != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            period = durationParser.parseTimePeriod(getDurationType(rightStr, false), rightStr);
+            period = durationParser.parseTimePeriod(getPeriodType(rightStr, false), rightStr);
             writableInterval.setStartMillis(startInstant);
             writableInterval.setTimePeriodAfterStart(period);
         } else {

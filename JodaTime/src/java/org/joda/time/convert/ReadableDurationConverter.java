@@ -53,7 +53,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.ReadableDuration;
 
@@ -110,16 +110,16 @@ class ReadableDurationConverter extends AbstractConverter
     }
 
     /**
-     * Selects a suitable duration type for the given object.
+     * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
      * @param precise  true if a precise type is required
-     * @return the duration type from the readable duration
+     * @return the period type from the readable duration
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
-    public DurationType getDurationType(Object object, boolean precise) {
-        return DurationType.getPreciseAllType();
+    public PeriodType getPeriodType(Object object, boolean precise) {
+        return PeriodType.getPreciseAllType();
     }
 
     //-----------------------------------------------------------------------

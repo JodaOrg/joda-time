@@ -54,7 +54,7 @@
 package org.joda.time.format;
 
 import org.joda.time.TimePeriod;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadWritableTimePeriod;
 
@@ -96,7 +96,7 @@ public interface TimePeriodParser {
      * @return parsed value in a Duration object
      * @throws IllegalArgumentException if any field is out of range
      */
-    TimePeriod parseTimePeriod(DurationType type, String periodStr);
+    TimePeriod parseTimePeriod(PeriodType type, String periodStr);
 
     /**
      * Parses a period from the given text, returning a new MutableTimePeriod.
@@ -106,6 +106,6 @@ public interface TimePeriodParser {
      * @return parsed value in a MutableDuration object
      * @throws IllegalArgumentException if any field is out of range
      */
-    MutableTimePeriod parseMutableTimePeriod(DurationType type, String periodStr);
+    MutableTimePeriod parseMutableTimePeriod(PeriodType type, String periodStr);
 
 }

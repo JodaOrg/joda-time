@@ -138,7 +138,7 @@ public class TestDuration_Constructors extends TestCase {
      */
     public void testZERO() throws Throwable {
         MillisDuration test = MillisDuration.ZERO;
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -158,7 +158,7 @@ public class TestDuration_Constructors extends TestCase {
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
         MillisDuration test = new MillisDuration(length);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -172,13 +172,13 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testConstructor_long_DurationType1() throws Throwable {
+    public void testConstructor_long_PeriodType1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
         MillisDuration test = new MillisDuration(length, null);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -191,13 +191,13 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(length, test.getTotalMillis());
     }
 
-    public void testConstructor_long_DurationType2() throws Throwable {
+    public void testConstructor_long_PeriodType2() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MillisDuration test = new MillisDuration(length, DurationType.getMillisType());
-        assertEquals(DurationType.getMillisType(), test.getDurationType());
+        MillisDuration test = new MillisDuration(length, PeriodType.getMillisType());
+        assertEquals(PeriodType.getMillisType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -210,13 +210,13 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(length, test.getTotalMillis());
     }
 
-    public void testConstructor_long_DurationType3() throws Throwable {
+    public void testConstructor_long_PeriodType3() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MillisDuration test = new MillisDuration(length, DurationType.getPreciseDayHourType());
-        assertEquals(DurationType.getPreciseDayHourType(), test.getDurationType());
+        MillisDuration test = new MillisDuration(length, PeriodType.getPreciseDayHourType());
+        assertEquals(PeriodType.getPreciseDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -229,13 +229,13 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(length, test.getTotalMillis());
     }
 
-    public void testConstructor_long_DurationType4() throws Throwable {
+    public void testConstructor_long_PeriodType4() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MillisDuration test = new MillisDuration(length, DurationType.getPreciseAllType().withMillisRemoved());
-        assertEquals(DurationType.getPreciseAllType().withMillisRemoved(), test.getDurationType());
+        MillisDuration test = new MillisDuration(length, PeriodType.getPreciseAllType().withMillisRemoved());
+        assertEquals(PeriodType.getPreciseAllType().withMillisRemoved(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -254,7 +254,7 @@ public class TestDuration_Constructors extends TestCase {
      */
     public void testConstructor_4int1() throws Throwable {
         MillisDuration test = new MillisDuration(5, 6, 7, 8);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -275,7 +275,7 @@ public class TestDuration_Constructors extends TestCase {
      */
     public void testConstructor_8int1() throws Throwable {
         MillisDuration test = new MillisDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
         assertEquals(3, test.getWeeks());
@@ -295,9 +295,9 @@ public class TestDuration_Constructors extends TestCase {
     /**
      * Test constructor (8ints)
      */
-    public void testConstructor_8int__DurationType1() throws Throwable {
+    public void testConstructor_8int__PeriodType1() throws Throwable {
         MillisDuration test = new MillisDuration(1, 2, 3, 4, 5, 6, 7, 8, null);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
         assertEquals(3, test.getWeeks());
@@ -313,9 +313,9 @@ public class TestDuration_Constructors extends TestCase {
             7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.getTotalMillis());
     }
 
-    public void testConstructor_8int__DurationType2() throws Throwable {
-        MillisDuration test = new MillisDuration(0, 0, 0, 0, 5, 6, 7, 8, DurationType.getPreciseDayHourType());
-        assertEquals(DurationType.getPreciseDayHourType(), test.getDurationType());
+    public void testConstructor_8int__PeriodType2() throws Throwable {
+        MillisDuration test = new MillisDuration(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.getPreciseDayHourType());
+        assertEquals(PeriodType.getPreciseDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -330,9 +330,9 @@ public class TestDuration_Constructors extends TestCase {
             7 * DateTimeConstants.MILLIS_PER_SECOND + 8, test.getTotalMillis());
     }
 
-    public void testConstructor_8int__DurationType3() throws Throwable {
+    public void testConstructor_8int__PeriodType3() throws Throwable {
         try {
-            new MillisDuration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getDayHourType());
+            new MillisDuration(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getDayHourType());
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -342,7 +342,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis());
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -359,7 +359,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis());
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(1, test.getWeeks());
@@ -373,11 +373,11 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testConstructor_long_long_DurationType1() throws Throwable {
+    public void testConstructor_long_long_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis(), null);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -390,11 +390,11 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
     }
 
-    public void testConstructor_long_long_DurationType2() throws Throwable {
+    public void testConstructor_long_long_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
-        MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis(), DurationType.getPreciseDayHourType());
-        assertEquals(DurationType.getPreciseDayHourType(), test.getDurationType());
+        MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis(), PeriodType.getPreciseDayHourType());
+        assertEquals(PeriodType.getPreciseDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -407,11 +407,11 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
     }
 
-    public void testConstructor_long_long_DurationType3() throws Throwable {
+    public void testConstructor_long_long_PeriodType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis(), DurationType.getPreciseAllType().withMillisRemoved());
-        assertEquals(DurationType.getPreciseAllType().withMillisRemoved(), test.getDurationType());
+        MillisDuration test = new MillisDuration(dt1.getMillis(), dt2.getMillis(), PeriodType.getPreciseAllType().withMillisRemoved());
+        assertEquals(PeriodType.getPreciseAllType().withMillisRemoved(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(1, test.getWeeks());
@@ -429,7 +429,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1, dt2);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -446,7 +446,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1, dt2);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(1, test.getWeeks());
@@ -463,7 +463,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1, dt2);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(3, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(1, test.getWeeks());
@@ -480,7 +480,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
         MillisDuration test = new MillisDuration(dt1, dt2);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(-3, test.getYears());
         assertEquals(-1, test.getMonths());
         assertEquals(-1, test.getWeeks());
@@ -497,7 +497,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
         MillisDuration test = new MillisDuration(dt1, dt2);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -511,11 +511,11 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testConstructor_RI_RI_DurationType1() throws Throwable {
+    public void testConstructor_RI_RI_PeriodType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MillisDuration test = new MillisDuration(dt1, dt2, null);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -528,11 +528,11 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
     }
 
-    public void testConstructor_RI_RI_DurationType2() throws Throwable {
+    public void testConstructor_RI_RI_PeriodType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
-        MillisDuration test = new MillisDuration(dt1, dt2, DurationType.getPreciseDayHourType());
-        assertEquals(DurationType.getPreciseDayHourType(), test.getDurationType());
+        MillisDuration test = new MillisDuration(dt1, dt2, PeriodType.getPreciseDayHourType());
+        assertEquals(PeriodType.getPreciseDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -545,11 +545,11 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getTotalMillis());
     }
 
-    public void testConstructor_RI_RI_DurationType3() throws Throwable {
+    public void testConstructor_RI_RI_PeriodType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        MillisDuration test = new MillisDuration(dt1, dt2, DurationType.getPreciseAllType().withMillisRemoved());
-        assertEquals(DurationType.getPreciseAllType().withMillisRemoved(), test.getDurationType());
+        MillisDuration test = new MillisDuration(dt1, dt2, PeriodType.getPreciseAllType().withMillisRemoved());
+        assertEquals(PeriodType.getPreciseAllType().withMillisRemoved(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(1, test.getWeeks());
@@ -562,11 +562,11 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - dt1.getMillis() - 1, test.getTotalMillis());
     }
 
-    public void testConstructor_RI_RI_DurationType4() throws Throwable {
+    public void testConstructor_RI_RI_PeriodType4() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        MillisDuration test = new MillisDuration(dt1, dt2, DurationType.getPreciseAllType());
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        MillisDuration test = new MillisDuration(dt1, dt2, PeriodType.getPreciseAllType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(3, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(1, test.getWeeks());
@@ -579,11 +579,11 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(dt2.getMillis() - TEST_TIME_NOW, test.getTotalMillis());
     }
 
-    public void testConstructor_RI_RI_DurationType5() throws Throwable {
+    public void testConstructor_RI_RI_PeriodType5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        MillisDuration test = new MillisDuration(dt1, dt2, DurationType.getPreciseAllType());
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        MillisDuration test = new MillisDuration(dt1, dt2, PeriodType.getPreciseAllType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -602,7 +602,7 @@ public class TestDuration_Constructors extends TestCase {
      */
     public void testConstructor_Object1() throws Throwable {
         MillisDuration test = new MillisDuration("P1Y2M3D");
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -618,7 +618,7 @@ public class TestDuration_Constructors extends TestCase {
 
     public void testConstructor_Object2() throws Throwable {
         MillisDuration test = new MillisDuration((Object) null);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -632,9 +632,9 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object3() throws Throwable {
-        MillisDuration base = new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getPreciseDayHourType());
+        MillisDuration base = new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getPreciseDayHourType());
         MillisDuration test = new MillisDuration(base);
-        assertEquals(DurationType.getPreciseDayHourType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -653,7 +653,7 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         MillisDuration base = new MillisDuration(dt1, dt2);  // AllType and precise
         MillisDuration test = new MillisDuration(base);
-        assertEquals(DurationType.getPreciseAllType(), test.getDurationType());
+        assertEquals(PeriodType.getPreciseAllType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -667,7 +667,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object5() throws Throwable {
-        MillisDuration base = new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType());
+        MillisDuration base = new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getDayHourType());
         try {
             new MillisDuration(base);
             fail();
@@ -678,9 +678,9 @@ public class TestDuration_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
-    public void testConstructor_Object_DurationType1() throws Throwable {
-        MillisDuration test = new MillisDuration("P1Y2M3D", DurationType.getPreciseYearMonthType());
-        assertEquals(DurationType.getPreciseYearMonthType(), test.getDurationType());
+    public void testConstructor_Object_PeriodType1() throws Throwable {
+        MillisDuration test = new MillisDuration("P1Y2M3D", PeriodType.getPreciseYearMonthType());
+        assertEquals(PeriodType.getPreciseYearMonthType(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -694,9 +694,9 @@ public class TestDuration_Constructors extends TestCase {
             (365L + 2L * 30L + 3L) * DateTimeConstants.MILLIS_PER_DAY, test.getTotalMillis());
     }
 
-    public void testConstructor_Object_DurationType2() throws Throwable {
-        MillisDuration test = new MillisDuration((Object) null, DurationType.getPreciseYearMonthType());
-        assertEquals(DurationType.getPreciseYearMonthType(), test.getDurationType());
+    public void testConstructor_Object_PeriodType2() throws Throwable {
+        MillisDuration test = new MillisDuration((Object) null, PeriodType.getPreciseYearMonthType());
+        assertEquals(PeriodType.getPreciseYearMonthType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -709,10 +709,10 @@ public class TestDuration_Constructors extends TestCase {
         assertEquals(0, test.getTotalMillis());
     }
 
-    public void testConstructor_Object_DurationType3() throws Throwable {
+    public void testConstructor_Object_PeriodType3() throws Throwable {
         MillisDuration test = new MillisDuration(
-            new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getPreciseDayHourType()), DurationType.getPreciseYearMonthType());
-        assertEquals(DurationType.getPreciseYearMonthType(), test.getDurationType());
+            new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getPreciseDayHourType()), PeriodType.getPreciseYearMonthType());
+        assertEquals(PeriodType.getPreciseYearMonthType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -726,9 +726,9 @@ public class TestDuration_Constructors extends TestCase {
             3 * DateTimeConstants.MILLIS_PER_SECOND + 4, test.getTotalMillis());
     }
 
-    public void testConstructor_Object_DurationType4() throws Throwable {
-        MillisDuration test = new MillisDuration(new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getPreciseDayHourType()), null);
-        assertEquals(DurationType.getPreciseDayHourType(), test.getDurationType());
+    public void testConstructor_Object_PeriodType4() throws Throwable {
+        MillisDuration test = new MillisDuration(new MillisDuration(0, 0, 0, 0, 1, 2, 3, 4, PeriodType.getPreciseDayHourType()), null);
+        assertEquals(PeriodType.getPreciseDayHourType(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());

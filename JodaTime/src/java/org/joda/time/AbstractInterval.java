@@ -496,7 +496,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     //-----------------------------------------------------------------------
     /**
      * Converts the duration of the interval to a time period using the
-     * All duration type.
+     * All period type.
      * <p>
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
@@ -512,7 +512,7 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     /**
      * Converts the duration of the interval to a time period using the
-     * specified duration type.
+     * specified period type.
      * <p>
      * This method should be used to exract the field values describing the
      * difference between the start and end instants.
@@ -522,7 +522,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
-    public final TimePeriod toTimePeriod(DurationType type) {
+    public final TimePeriod toTimePeriod(PeriodType type) {
         return new TimePeriod(getStartMillis(), getEndMillis(), type);
     }
 

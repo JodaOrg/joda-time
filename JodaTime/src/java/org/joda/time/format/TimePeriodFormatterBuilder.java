@@ -58,7 +58,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.ReadableTimePeriod;
 
@@ -993,7 +993,7 @@ public class TimePeriodFormatterBuilder {
                 }
             }
 
-            if (!mustParse && !isSupported(period.getDurationType())) {
+            if (!mustParse && !isSupported(period.getPeriodType())) {
                 // If parsing is not required and the field is not supported,
                 // exit gracefully so that another parser can continue on.
                 return position;
@@ -1067,11 +1067,11 @@ public class TimePeriodFormatterBuilder {
          * is signed int value.
          */
         long getFieldValue(ReadableTimePeriod period) {
-            DurationType type;
+            PeriodType type;
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS) {
                 type = null; // Don't need to check if supported.
             } else {
-                type = period.getDurationType();
+                type = period.getPeriodType();
             }
 
             int value;
@@ -1136,7 +1136,7 @@ public class TimePeriodFormatterBuilder {
             return value & 0xffffffffL;
         }
 
-        boolean isSupported(DurationType type) {
+        boolean isSupported(PeriodType type) {
             switch (iFieldType) {
             default:
                 return false;
@@ -1483,7 +1483,7 @@ public class TimePeriodFormatterBuilder {
         }
 
         private FieldFormatter chooseFieldToPrint(ReadableTimePeriod period) {
-            DurationType type = period.getDurationType();
+            PeriodType type = period.getPeriodType();
             TimePeriodPrinter[] printers = iAlternatePrinters;
             if (iFavorFirstFieldForZero) {
                 int len = printers.length;

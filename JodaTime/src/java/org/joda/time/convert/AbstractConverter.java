@@ -55,7 +55,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -165,18 +165,18 @@ public abstract class AbstractConverter implements Converter {
     
     //-----------------------------------------------------------------------
     /**
-     * Selects a suitable duration type for the given object.
+     * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
      * @param precise  true if a precise type is required
-     * @return the duration type, never null
+     * @return the period type, never null
      * @throws ClassCastException if the object is invalid
      */
-    public DurationType getDurationType(Object object, boolean precise) {
+    public PeriodType getPeriodType(Object object, boolean precise) {
         if (precise) {
-            return DurationType.getPreciseAllType();
+            return PeriodType.getPreciseAllType();
         }
-        return DurationType.getAllType();
+        return PeriodType.getAllType();
     }
 
     //-----------------------------------------------------------------------

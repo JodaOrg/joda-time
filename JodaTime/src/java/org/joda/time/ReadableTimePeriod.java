@@ -62,7 +62,7 @@ package org.joda.time;
  * Time periods are split up into multiple fields, for example days and seconds.
  * Implementations are not required to evenly distribute the values across the fields.
  * The value for each field may be positive or negative.
- * The {@link DurationType} defines the rules for dividing the fields and which fields
+ * The {@link PeriodType} defines the rules for dividing the fields and which fields
  * are supported. Unsupported fields always have a value of zero.
  * <p>
  * When a time period is added to an instant, the effect is to add each field in turn.
@@ -80,9 +80,11 @@ package org.joda.time;
 public interface ReadableTimePeriod {
 
     /**
-     * Returns the object which defines which fields this period supports.
+     * Returns the period type which defines which fields this period supports.
+     * 
+     * @return the period type
      */
-    DurationType getDurationType();
+    PeriodType getPeriodType();
 
     /**
      * Is this period a precise length of time, or descriptive.
@@ -102,7 +104,7 @@ public interface ReadableTimePeriod {
     /**
      * Adds this period to the given instant, returning a new value.
      * <p>
-     * The addition uses the chronology of the DurationType.
+     * The addition uses the chronology of the PeriodType.
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
@@ -267,7 +269,7 @@ public interface ReadableTimePeriod {
      * Gets a hash code for the period that is compatable with the 
      * equals method. The hashcode must be calculated as follows:
      * <pre>
-     *   int hash = getDurationType().hashCode();
+     *   int hash = getPeriodType().hashCode();
      *   hash = 53 * hash + getYears();
      *   hash = 53 * hash + getMonths();
      *   hash = 53 * hash + getWeeks();

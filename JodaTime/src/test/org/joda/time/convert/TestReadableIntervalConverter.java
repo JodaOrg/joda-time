@@ -62,7 +62,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.Interval;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.MutableInterval;
@@ -126,17 +126,17 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetDurationType_Object() throws Exception {
+    public void testGetPeriodType_Object() throws Exception {
         Interval i = new Interval(100L, 223L);
-        assertEquals(DurationType.getAllType(),
-            ReadableIntervalConverter.INSTANCE.getDurationType(i, false));
-        assertEquals(DurationType.getPreciseAllType(),
-            ReadableIntervalConverter.INSTANCE.getDurationType(i, true));
+        assertEquals(PeriodType.getAllType(),
+            ReadableIntervalConverter.INSTANCE.getPeriodType(i, false));
+        assertEquals(PeriodType.getPreciseAllType(),
+            ReadableIntervalConverter.INSTANCE.getPeriodType(i, true));
     }
 
     public void testSetInto_Object() throws Exception {
         Interval i = new Interval(100L, 223L);
-        MutableTimePeriod m = new MutableTimePeriod(DurationType.getMillisType());
+        MutableTimePeriod m = new MutableTimePeriod(PeriodType.getMillisType());
         ReadableIntervalConverter.INSTANCE.setInto(m, i);
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());

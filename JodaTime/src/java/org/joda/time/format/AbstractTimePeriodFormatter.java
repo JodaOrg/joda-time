@@ -53,7 +53,7 @@
  */
 package org.joda.time.format;
 
-import org.joda.time.DurationType;
+import org.joda.time.PeriodType;
 import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadableTimePeriod;
 import org.joda.time.TimePeriod;
@@ -88,11 +88,11 @@ public abstract class AbstractTimePeriodFormatter {
         return buf.toString();
     }
 
-    public TimePeriod parseTimePeriod(DurationType type, String text) {
+    public TimePeriod parseTimePeriod(PeriodType type, String text) {
         return parseMutableTimePeriod(type, text).toTimePeriod();
     }
 
-    public MutableTimePeriod parseMutableTimePeriod(DurationType type, String text) {
+    public MutableTimePeriod parseMutableTimePeriod(PeriodType type, String text) {
         TimePeriodParser p = (TimePeriodParser) this;
         MutableTimePeriod period = new MutableTimePeriod(0, type);
 

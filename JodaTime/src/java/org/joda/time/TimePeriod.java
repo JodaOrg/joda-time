@@ -59,10 +59,10 @@ import java.io.Serializable;
  * An immutable time period specifying a set of duration field values.
  * <p>
  * A time period is divided into a number of fields, such as hours and seconds.
- * The way in which that divide occurs is controlled by the DurationType class.
+ * The way in which that divide occurs is controlled by the PeriodType class.
  * <p>
- * <code>TimePeriod</code> can use any duration type to split the milliseconds into fields.
- * The {@link DurationType#getAllType() All} type is used by default.
+ * <code>TimePeriod</code> can use any period type to split the milliseconds into fields.
+ * The {@link PeriodType#getAllType() All} type is used by default.
  * <code>All</code> uses the ISO chronology and divides a duration into years, months,
  * weeks, days, hours, minutes, seconds and milliseconds as best it can.
  * <p>
@@ -77,8 +77,8 @@ import java.io.Serializable;
  * 23 hours rather than 24 to ensure that the time remains the same.
  * If this is not the behaviour you want, then see {@link Duration}.
  * <p>
- * TimePeriod is thread-safe and immutable, provided that the DurationType is as well.
- * All standard DurationType classes supplied are thread-safe and immutable.
+ * TimePeriod is thread-safe and immutable, provided that the PeriodType is as well.
+ * All standard PeriodType classes supplied are thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
@@ -96,9 +96,9 @@ public class TimePeriod
      * Creates a period from the given millisecond duration using AllType.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
-     * the duration type. This ensures that there are no odd effects caused by
+     * the period type. This ensures that there are no odd effects caused by
      * time zones. The add methods will still use the time zone specific version
-     * of the duration type.
+     * of the period type.
      *
      * @param duration  the duration, in milliseconds
      */
@@ -110,14 +110,14 @@ public class TimePeriod
      * Creates a period from the given millisecond duration.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
-     * the duration type. This ensures that there are no odd effects caused by
+     * the period type. This ensures that there are no odd effects caused by
      * time zones. The add methods will still use the time zone specific version
-     * of the duration type.
+     * of the period type.
      *
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this period supports
      */
-    public TimePeriod(long duration, DurationType type) {
+    public TimePeriod(long duration, PeriodType type) {
         super(duration, type);
     }
 
@@ -166,7 +166,7 @@ public class TimePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public TimePeriod(int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis, DurationType type) {
+                    int hours, int minutes, int seconds, int millis, PeriodType type) {
         super(years, months, weeks, days, hours, minutes, seconds, millis, type);
     }
 
@@ -189,7 +189,7 @@ public class TimePeriod
      * @param endInstant  interval end, in milliseconds
      * @param type  which set of fields this period supports, null means AllType
      */
-    public TimePeriod(long startInstant, long endInstant, DurationType type) {
+    public TimePeriod(long startInstant, long endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -212,7 +212,7 @@ public class TimePeriod
      * @param endInstant  interval end, null means now
      * @param type  which set of fields this period supports, null means AllType
      */
-    public TimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+    public TimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
     }
 
@@ -237,22 +237,22 @@ public class TimePeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public TimePeriod(Object period, DurationType type) {
+    public TimePeriod(Object period, PeriodType type) {
         super(period, type);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Validates a duration type, converting nulls to a default value and
+     * Validates a period type, converting nulls to a default value and
      * checking the type is suitable for this instance.
      * 
      * @param type  the type to check, may be null
      * @return the validated type to use, not null
-     * @throws IllegalArgumentException if the duration type is not precise
+     * @throws IllegalArgumentException if the period type is not precise
      */
-    protected final DurationType checkDurationType(DurationType type) {
+    protected final PeriodType checkPeriodType(PeriodType type) {
         if (type == null) {
-            return DurationType.getAllType();
+            return PeriodType.getAllType();
         }
         return type;
     }
@@ -260,17 +260,17 @@ public class TimePeriod
     //-----------------------------------------------------------------------
     /**
      * Creates a new TimePeriod instance with the same field values but
-     * different DurationType.
+     * different PeriodType.
      * 
-     * @param type  the duration type to use, null means AllType
+     * @param type  the period type to use, null means AllType
      * @return the new period instance
      * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
-    public TimePeriod withDurationType(DurationType type) {
+    public TimePeriod withPeriodType(PeriodType type) {
         if (type == null) {
-            type = DurationType.getAllType();
+            type = PeriodType.getAllType();
         }
-        if (type.equals(getDurationType())) {
+        if (type.equals(getPeriodType())) {
             return this;
         }
         return new TimePeriod(getYears(), getMonths(), getWeeks(), getDays(),
@@ -279,17 +279,17 @@ public class TimePeriod
 
     /**
      * Creates a new TimePeriod instance with the same millisecond duration but
-     * different DurationType.
+     * different PeriodType.
      * 
-     * @param type  the duration type to use, null means AllType
+     * @param type  the period type to use, null means AllType
      * @return the new period instance
      * @throws IllegalStateException if this period is imprecise
      */
-    public TimePeriod withDurationTypeRetainDuration(DurationType type) {
+    public TimePeriod withPeriodTypeRetainDuration(PeriodType type) {
         if (type == null) {
-            type = DurationType.getAllType();
+            type = PeriodType.getAllType();
         }
-        if (type.equals(getDurationType())) {
+        if (type.equals(getPeriodType())) {
             return this;
         }
         return new TimePeriod(toDurationMillis(), type);
@@ -303,7 +303,7 @@ public class TimePeriod
      * @throws IllegalStateException if this period is imprecise
      */
     public TimePeriod withFieldsNormalized() {
-        return new TimePeriod(toDurationMillis(), getDurationType());
+        return new TimePeriod(toDurationMillis(), getPeriodType());
     }
 
     //-----------------------------------------------------------------------

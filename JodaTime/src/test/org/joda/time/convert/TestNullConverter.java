@@ -64,6 +64,8 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationType;
+import org.joda.time.MutableDuration;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -159,6 +161,25 @@ public class TestNullConverter extends TestCase {
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, NullConverter.INSTANCE.getChronology(null, JULIAN));
         assertEquals(ISO, NullConverter.INSTANCE.getChronology(null, (Chronology) null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetDurationMillis_Object() throws Exception {
+        assertEquals(0L, LongConverter.INSTANCE.getDurationMillis(null));
+    }
+
+    public void testGetDurationType_Object() throws Exception {
+        assertEquals(DurationType.getMillisType(), LongConverter.INSTANCE.getDurationType(null));
+    }
+
+    public void testIsPrecise_Object() throws Exception {
+        assertEquals(true, LongConverter.INSTANCE.isPrecise(null));
+    }
+
+    public void testSetInto_Object() throws Exception {
+        MutableDuration m = new MutableDuration(DurationType.getMillisType());
+        LongConverter.INSTANCE.setInto(m, null);
+        assertEquals(0L, m.getTotalMillis());
     }
 
     //-----------------------------------------------------------------------

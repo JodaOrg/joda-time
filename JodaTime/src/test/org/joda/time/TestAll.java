@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -109,6 +109,13 @@ public class TestAll extends TestCase {
         suite.addTest(TestMutablePeriod_Constructors.suite());
         suite.addTest(TestMutablePeriod_Basics.suite());
         suite.addTest(TestMutablePeriod_Updates.suite());
+        
+        suite.addTest(TestLocalDate_Basics.suite());
+        suite.addTest(TestLocalDate_Constructors.suite());
+        suite.addTest(TestLocalDate_Properties.suite());
+        
+        suite.addTest(TestLocalTime_Basics.suite());
+        suite.addTest(TestLocalTime_Constructors.suite());
         
         suite.addTest(TestTimeOfDay_Basics.suite());
         suite.addTest(TestTimeOfDay_Constructors.suite());

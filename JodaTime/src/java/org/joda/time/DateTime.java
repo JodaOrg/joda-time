@@ -102,6 +102,8 @@ public final class DateTime
 
     /** Serialization lock */
     private static final long serialVersionUID = -5171125899451703815L;
+    /** The epoch of 1970-01-01T00:00:00Z. */
+    static final DateTime EPOCH = new DateTime(0L, DateTimeZone.UTC);
 
     //-----------------------------------------------------------------------
     /**

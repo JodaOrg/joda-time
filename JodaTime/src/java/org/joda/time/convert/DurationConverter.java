@@ -54,7 +54,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.DurationType;
-import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadWritableTimePeriod;
 
 /**
  * DurationConverter defines how an object is converted to a millisecond duration.
@@ -90,7 +90,7 @@ public interface DurationConverter extends Converter {
      * @param object  the object to convert, must not be null
      * @throws ClassCastException if the object is invalid
      */
-    void setInto(ReadWritableDuration duration, Object object);
+    void setInto(ReadWritableTimePeriod duration, Object object);
 
     /**
      * Selects a suitable duration type for the given object.

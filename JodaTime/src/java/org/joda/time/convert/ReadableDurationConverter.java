@@ -55,7 +55,7 @@ package org.joda.time.convert;
 
 import org.joda.time.DurationType;
 import org.joda.time.ReadableDuration;
-import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadWritableTimePeriod;
 
 /**
  * ReadableDurationConverter extracts milliseconds and chronology from a ReadableDuration.
@@ -87,7 +87,7 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * @throws ClassCastException if the object is an invalid type
      */
     public boolean isPrecise(Object object) {
-        return ((ReadableDuration) object).isPrecise();
+        return true;
     }
 
     /**
@@ -100,7 +100,7 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * @throws IllegalArgumentException if the object is invalid
      */
     public long getDurationMillis(Object object) {
-        return ((ReadableDuration) object).getTotalMillis();
+        return ((ReadableDuration) object).getMillis();
     }
     
     /**
@@ -114,21 +114,21 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
      * @throws ClassCastException if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
-    public void setInto(ReadWritableDuration duration, Object object) {
-        duration.setDuration((ReadableDuration) object);
+    public void setInto(ReadWritableTimePeriod duration, Object object) {
+        duration.setTimePeriod((ReadableDuration) object);
     }
 
     /**
      * Selects a suitable duration type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param totalMillisMaster  true if total millis based duration
+     * @param precise  true if a precise type is required
      * @return the duration type from the readable duration
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
-    public DurationType getDurationType(Object object, boolean totalMillisMaster) {
-        return ((ReadableDuration) object).getDurationType();
+    public DurationType getDurationType(Object object, boolean precise) {
+        return DurationType.getPreciseAllType();
     }
 
     //-----------------------------------------------------------------------

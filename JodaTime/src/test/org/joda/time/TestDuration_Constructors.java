@@ -137,7 +137,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor ()
      */
     public void testZERO() throws Throwable {
-        Duration test = Duration.ZERO;
+        TimePeriod test = TimePeriod.ZERO;
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -157,7 +157,7 @@ public class TestDuration_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length);
+        TimePeriod test = new TimePeriod(length);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -177,7 +177,7 @@ public class TestDuration_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, null);
+        TimePeriod test = new TimePeriod(length, null);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -196,7 +196,7 @@ public class TestDuration_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, DurationType.getMillisType());
+        TimePeriod test = new TimePeriod(length, DurationType.getMillisType());
         assertEquals(DurationType.getMillisType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -215,7 +215,7 @@ public class TestDuration_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, DurationType.getDayHourType());
+        TimePeriod test = new TimePeriod(length, DurationType.getDayHourType());
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -234,7 +234,7 @@ public class TestDuration_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Duration test = new Duration(length, DurationType.getAllType().withMillisRemoved());
+        TimePeriod test = new TimePeriod(length, DurationType.getAllType().withMillisRemoved());
         assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -253,7 +253,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (4ints)
      */
     public void testConstructor_4int1() throws Throwable {
-        Duration test = new Duration(5, 6, 7, 8);
+        TimePeriod test = new TimePeriod(5, 6, 7, 8);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -274,7 +274,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (8ints)
      */
     public void testConstructor_8int1() throws Throwable {
-        Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8);
+        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -296,7 +296,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (8ints)
      */
     public void testConstructor_8int__DurationType1() throws Throwable {
-        Duration test = new Duration(1, 2, 3, 4, 5, 6, 7, 8, null);
+        TimePeriod test = new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, null);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -314,7 +314,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_8int__DurationType2() throws Throwable {
-        Duration test = new Duration(0, 0, 0, 0, 5, 6, 7, 8, DurationType.getDayHourType());
+        TimePeriod test = new TimePeriod(0, 0, 0, 0, 5, 6, 7, 8, DurationType.getDayHourType());
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -332,7 +332,7 @@ public class TestDuration_Constructors extends TestCase {
 
     public void testConstructor_8int__DurationType3() throws Throwable {
         try {
-            new Duration(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getDayHourType());
+            new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8, DurationType.getDayHourType());
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -341,7 +341,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_long_long1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration test = new Duration(dt1.getMillis(), dt2.getMillis());
+        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis());
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -358,7 +358,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_long_long2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        Duration test = new Duration(dt1.getMillis(), dt2.getMillis());
+        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis());
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -376,7 +376,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_long_long_DurationType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration test = new Duration(dt1.getMillis(), dt2.getMillis(), null);
+        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis(), null);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -393,7 +393,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_long_long_DurationType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
-        Duration test = new Duration(dt1.getMillis(), dt2.getMillis(), DurationType.getDayHourType());
+        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis(), DurationType.getDayHourType());
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -410,7 +410,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_long_long_DurationType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        Duration test = new Duration(dt1.getMillis(), dt2.getMillis(), DurationType.getAllType().withMillisRemoved());
+        TimePeriod test = new TimePeriod(dt1.getMillis(), dt2.getMillis(), DurationType.getAllType().withMillisRemoved());
         assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -428,7 +428,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2);
+        TimePeriod test = new TimePeriod(dt1, dt2);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -445,7 +445,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2);
+        TimePeriod test = new TimePeriod(dt1, dt2);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -462,7 +462,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI3() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2);
+        TimePeriod test = new TimePeriod(dt1, dt2);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(3, test.getYears());
         assertEquals(1, test.getMonths());
@@ -479,7 +479,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI4() throws Throwable {
         DateTime dt1 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        Duration test = new Duration(dt1, dt2);
+        TimePeriod test = new TimePeriod(dt1, dt2);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(-3, test.getYears());
         assertEquals(-1, test.getMonths());
@@ -496,7 +496,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        Duration test = new Duration(dt1, dt2);
+        TimePeriod test = new TimePeriod(dt1, dt2);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -514,7 +514,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI_DurationType1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2, null);
+        TimePeriod test = new TimePeriod(dt1, dt2, null);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -531,7 +531,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI_DurationType2() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2004, 7, 10, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2, DurationType.getDayHourType());
+        TimePeriod test = new TimePeriod(dt1, dt2, DurationType.getDayHourType());
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -548,7 +548,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI_DurationType3() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2, DurationType.getAllType().withMillisRemoved());
+        TimePeriod test = new TimePeriod(dt1, dt2, DurationType.getAllType().withMillisRemoved());
         assertEquals(DurationType.getAllType().withMillisRemoved(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -565,7 +565,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI_DurationType4() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = new DateTime(2005, 7, 17, 1, 1, 1, 1);
-        Duration test = new Duration(dt1, dt2, DurationType.getAllType());
+        TimePeriod test = new TimePeriod(dt1, dt2, DurationType.getAllType());
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(3, test.getYears());
         assertEquals(1, test.getMonths());
@@ -582,7 +582,7 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_RI_RI_DurationType5() throws Throwable {
         DateTime dt1 = null;  // 2002-06-09T01:00+01:00
         DateTime dt2 = null;  // 2002-06-09T01:00+01:00
-        Duration test = new Duration(dt1, dt2, DurationType.getAllType());
+        TimePeriod test = new TimePeriod(dt1, dt2, DurationType.getAllType());
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -601,7 +601,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_Object1() throws Throwable {
-        Duration test = new Duration("P1Y2M3D");
+        TimePeriod test = new TimePeriod("P1Y2M3D");
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -619,7 +619,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object2() throws Throwable {
-        Duration test = new Duration((Object) null);
+        TimePeriod test = new TimePeriod((Object) null);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -634,7 +634,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object3() throws Throwable {
-        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()));
+        TimePeriod test = new TimePeriod(new TimePeriod(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()));
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -652,8 +652,8 @@ public class TestDuration_Constructors extends TestCase {
     public void testConstructor_Object4() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Duration base = new Duration(dt1, dt2);  // AllType and precise
-        Duration test = new Duration(base);
+        TimePeriod base = new TimePeriod(dt1, dt2);  // AllType and precise
+        TimePeriod test = new TimePeriod(base);
         assertEquals(DurationType.getAllType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -672,7 +672,7 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_Object_DurationType1() throws Throwable {
-        Duration test = new Duration("P1Y2M3D", DurationType.getYearMonthType());
+        TimePeriod test = new TimePeriod("P1Y2M3D", DurationType.getYearMonthType());
         assertEquals(DurationType.getYearMonthType(), test.getDurationType());
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -690,7 +690,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_DurationType2() throws Throwable {
-        Duration test = new Duration((Object) null, DurationType.getYearMonthType());
+        TimePeriod test = new TimePeriod((Object) null, DurationType.getYearMonthType());
         assertEquals(DurationType.getYearMonthType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -705,7 +705,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_DurationType3() throws Throwable {
-        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), DurationType.getYearMonthType());
+        TimePeriod test = new TimePeriod(new TimePeriod(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), DurationType.getYearMonthType());
         assertEquals(DurationType.getYearMonthType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -721,7 +721,7 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     public void testConstructor_Object_DurationType4() throws Throwable {
-        Duration test = new Duration(new Duration(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), null);
+        TimePeriod test = new TimePeriod(new TimePeriod(0, 0, 0, 0, 1, 2, 3, 4, DurationType.getDayHourType()), null);
         assertEquals(DurationType.getDayHourType(), test.getDurationType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());

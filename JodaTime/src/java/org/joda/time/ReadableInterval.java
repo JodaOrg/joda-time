@@ -96,33 +96,28 @@ public interface ReadableInterval {
      */
     Instant getEndInstant();
 
-    /** 
+    //-----------------------------------------------------------------------
+    /**
      * Gets the duration of this time interval in milliseconds.
      * <p>
      * The duration returned will always be precise because it is relative to
      * a known date.
      *
      * @return the duration of the time interval in milliseconds
+     * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
     long getDurationMillis();
 
-    /** 
-     * Gets the duration of this time interval using the MillisType duration type.
+    /**
+     * Gets the millisecond duration of this time interval.
      * <p>
-     * The duration returned will always be precise because it is relative to
-     * a known date.
+     * If this interval was constructed using a precise duration then that object will
+     * be returned. Otherwise a new Duration instance using the MillisType is returned.
      *
-     * @return the duration of the time interval
+     * @return the precise duration of the time interval
+     * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
     Duration getDuration();
-
-    /** 
-     * Gets the duration of this time interval.
-     *
-     * @param type  the requested type of the duration, null means MillisType
-     * @return the duration of the time interval
-     */
-    Duration getDuration(DurationType type);
 
     //-----------------------------------------------------------------------
     /**
@@ -213,6 +208,35 @@ public interface ReadableInterval {
      * @return the time interval as a MutableInterval object
      */
     MutableInterval toMutableInterval();
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts the duration of the interval to a time period using the
+     * All duration type.
+     * <p>
+     * This method should be used to exract the field values describing the
+     * difference between the start and end instants.
+     * The time period may not be precise - if you want the millisecond duration
+     * then you should use {@link #getDuration()}.
+     *
+     * @param type  the requested type of the duration, null means AllType
+     * @return a time period derived from the interval
+     */
+    TimePeriod toTimePeriod();
+
+    /**
+     * Converts the duration of the interval to a time period using the
+     * specified duration type.
+     * <p>
+     * This method should be used to exract the field values describing the
+     * difference between the start and end instants.
+     * The time period may not be precise - if you want the millisecond duration
+     * then you should use {@link #getDuration()}.
+     *
+     * @param type  the requested type of the duration, null means AllType
+     * @return a time period derived from the interval
+     */
+    TimePeriod toTimePeriod(DurationType type);
 
     //-----------------------------------------------------------------------
     /**

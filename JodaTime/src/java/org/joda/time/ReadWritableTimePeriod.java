@@ -63,87 +63,116 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadWritableDuration extends ReadableDuration {
+public interface ReadWritableTimePeriod extends ReadableTimePeriod {
 
+    //-----------------------------------------------------------------------
     /**
-     * Sets all the fields in one go from another ReadableDuration.
+     * Sets all the fields in one go from another ReadableTimePeriod.
      * 
-     * @param duration  the duration to set
-     * @throws IllegalArgumentException if duration is null
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param period  the period to set, null means zero length period
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    void setDuration(ReadableDuration duration);
+    void setTimePeriod(ReadableTimePeriod period);
 
     /**
      * Sets all the fields in one go.
      * 
-     * @param years amount of years in this duration, which must be zero if
-     * unsupported.
-     * @param months amount of months in this duration, which must be zero if
-     * unsupported.
-     * @param weeks amount of weeks in this duration, which must be zero if
-     * unsupported.
-     * @param days amount of days in this duration, which must be zero if
-     * unsupported.
-     * @param hours amount of hours in this duration, which must be zero if
-     * unsupported.
-     * @param minutes amount of minutes in this duration, which must be zero if
-     * unsupported.
-     * @param seconds amount of seconds in this duration, which must be zero if
-     * unsupported.
-     * @param millis amount of milliseconds in this duration, which must be
-     * zero if unsupported.
-     * @throws UnsupportedOperationException if an unsupported field's value is
-     * non-zero
+     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param months  amount of months in this period, which must be zero if unsupported
+     * @param weeks  amount of weeks in this period, which must be zero if unsupported
+     * @param days  amount of days in this period, which must be zero if unsupported
+     * @param hours  amount of hours in this period, which must be zero if unsupported
+     * @param minutes  amount of minutes in this period, which must be zero if unsupported
+     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this period, which must be zero if unsupported
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    void setDuration(int years, int months, int weeks, int days,
-                     int hours, int minutes, int seconds, int millis);
+    void setTimePeriod(int years, int months, int weeks, int days,
+                       int hours, int minutes, int seconds, int millis);
 
     /**
-     * Sets all the fields in one go from a millisecond interval.
+     * Sets all the fields in one go from an interval dividing the
+     * fields using the duration type.
      * 
-     * @param startInstant interval start, in milliseconds
-     * @param endInstant interval end, in milliseconds
+     * @param interval  the interval to set, null means zero length
      */
-    void setTotalMillis(long startInstant, long endInstant);
+    void setTimePeriod(ReadableInterval interval);
 
     /**
-     * Sets all the fields in one go from a millisecond duration.
+     * Sets all the fields in one go from a millisecond interval dividing the
+     * fields using the duration type.
+     * 
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     */
+    void setTimePeriod(long startInstant, long endInstant);
+
+    /**
+     * Sets all the fields in one go from a duration dividing the
+     * fields using the duration type.
+     * 
+     * @param duration  the duration to set, null means zero length
+     */
+    void setTimePeriod(ReadableDuration duration);
+
+    /**
+     * Sets all the fields in one go from a millisecond duration dividing the
+     * fields using the duration type.
      * 
      * @param duration  the duration, in milliseconds
-     * @throws UnsupportedOperationException if any fields are imprecise
      */
-    void setTotalMillis(long duration);
-    
+    void setTimePeriod(long duration);
+
     //-----------------------------------------------------------------------
     /**
-     * Adds a millisecond duration to this one.
+     * Adds a period to this one by adding each field in turn.
      * 
-     * @param duration  the duration to add, in milliseconds
-     * @throws IllegalStateException if the duration is imprecise
+     * @param period  the period to add, null means add nothing
+     * @throws IllegalArgumentException if the period being added contains a field
+     * not supported by this period
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
-    void add(long duration);
-    
+    void add(ReadableTimePeriod period);
+
     /**
-     * Adds a duration to this one.
+     * Adds an interval to this one by dividing the interval into
+     * fields and then adding each field in turn.
      * 
-     * @param duration  the duration to add
-     * @throws IllegalArgumentException if the duration is null
-     * @throws IllegalStateException if the duration is imprecise
+     * @param interval  the interval to add, null means add nothing
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    void add(ReadableInterval interval);
+
+    /**
+     * Adds a duration to this one by dividing the duration into
+     * fields and then adding each field in turn.
+     * 
+     * @param duration  the duration to add, null means add nothing
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void add(ReadableDuration duration);
-    
+
     /**
-     * Normalizes all the field values in this duration.
+     * Adds a duration to this one by dividing the duration into
+     * fields and then adding each field in turn.
+     * 
+     * @param duration  the duration to add
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    void add(long duration);
+
+    /**
+     * Normalizes all the field values in this period.
+     * <p>
+     * This method converts to a milliecond duration and back again.
      *
-     * @throws IllegalStateException if this duration is imprecise
+     * @throws IllegalStateException if this period is imprecise
      */
     void normalize();
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of years of the duration.
+     * Sets the number of years of the period.
      * 
      * @param years  the number of years
      * @throws UnsupportedOperationException if field is not supported.
@@ -151,16 +180,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setYears(int years);
 
     /**
-     * Adds the specified years to the number of years in the duration.
+     * Adds the specified years to the number of years in the period.
      * 
      * @param years  the number of years
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addYears(int years);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of months of the duration.
+     * Sets the number of months of the period.
      * 
      * @param months  the number of months
      * @throws UnsupportedOperationException if field is not supported.
@@ -168,16 +198,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setMonths(int months);
 
     /**
-     * Adds the specified months to the number of months in the duration.
+     * Adds the specified months to the number of months in the period.
      * 
      * @param months  the number of months
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addMonths(int months);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of weeks of the duration.
+     * Sets the number of weeks of the period.
      * 
      * @param weeks  the number of weeks
      * @throws UnsupportedOperationException if field is not supported.
@@ -185,16 +216,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setWeeks(int weeks);
 
     /**
-     * Adds the specified weeks to the number of weeks in the duration.
+     * Adds the specified weeks to the number of weeks in the period.
      * 
      * @param weeks  the number of weeks
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addWeeks(int weeks);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of days of the duration.
+     * Sets the number of days of the period.
      * 
      * @param days  the number of days
      * @throws UnsupportedOperationException if field is not supported.
@@ -202,16 +234,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setDays(int days);
 
     /**
-     * Adds the specified days to the number of days in the duration.
+     * Adds the specified days to the number of days in the period.
      * 
      * @param days  the number of days
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addDays(int days);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of hours of the duration.
+     * Sets the number of hours of the period.
      * 
      * @param hours  the number of hours
      * @throws UnsupportedOperationException if field is not supported.
@@ -219,16 +252,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setHours(int hours);
 
     /**
-     * Adds the specified hours to the number of hours in the duration.
+     * Adds the specified hours to the number of hours in the period.
      * 
      * @param hours  the number of hours
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addHours(int hours);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of minutes of the duration.
+     * Sets the number of minutes of the period.
      * 
      * @param minutes  the number of minutes
      * @throws UnsupportedOperationException if field is not supported.
@@ -236,16 +270,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setMinutes(int minutes);
 
     /**
-     * Adds the specified minutes to the number of minutes in the duration.
+     * Adds the specified minutes to the number of minutes in the period.
      * 
      * @param minutes  the number of minutes
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addMinutes(int minutes);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of seconds of the duration.
+     * Sets the number of seconds of the period.
      * 
      * @param seconds  the number of seconds
      * @throws UnsupportedOperationException if field is not supported.
@@ -253,16 +288,17 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setSeconds(int seconds);
 
     /**
-     * Adds the specified seconds to the number of seconds in the duration.
+     * Adds the specified seconds to the number of seconds in the period.
      * 
      * @param seconds  the number of seconds
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addSeconds(int seconds);
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of millis of the duration.
+     * Sets the number of millis of the period.
      * 
      * @param millis  the number of millis
      * @throws UnsupportedOperationException if field is not supported.
@@ -270,10 +306,11 @@ public interface ReadWritableDuration extends ReadableDuration {
     void setMillis(int millis);
 
     /**
-     * Adds the specified millis to the number of millis in the duration.
+     * Adds the specified millis to the number of millis in the period.
      * 
      * @param millis  the number of millis
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addMillis(int millis);
 

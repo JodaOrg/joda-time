@@ -56,10 +56,10 @@ package org.joda.time;
 import java.io.Serializable;
 
 /**
- * Interval is the standard implementation of an immutable time interval
- * class. The duration of the time interval is always a precise amount of
- * milliseconds even if a variable length duration was passed into the
- * constructor.
+ * Interval is the standard implementation of an immutable time interval.
+ * <p>
+ * The duration of the time interval is always a precise amount of milliseconds
+ * even if a variable length duration was passed into the constructor.
  * <p>
  * Interval is thread-safe and immutable.
  *
@@ -68,32 +68,31 @@ import java.io.Serializable;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class Interval extends AbstractInterval
+public class Interval
+        extends AbstractInterval
         implements ReadableInterval, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 4922451897541386752L;
 
     /**
+     * Constructs an interval from a start and end instant.
+     * 
+     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     */
+    public Interval(long startInstant, long endInstant) {
+        super(startInstant, endInstant);
+    }
+
+    /**
      * Constructs a time interval as a copy of another.
      * 
-     * @param interval  the time interval to convert
+     * @param interval  the time interval to copy
      * @throws IllegalArgumentException if the interval is null or invalid
      */
     public Interval(Object interval) {
         super(interval);
-    }
-
-    /**
-     * Constructs an interval from a start and end instant.
-     * 
-     * @param startInstant  start of this interval, as milliseconds from
-     *  1970-01-01T00:00:00Z.
-     * @param endInstant  end of this interval, as milliseconds from
-     *  1970-01-01T00:00:00Z.
-     */
-    public Interval(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
     }
 
     /**
@@ -107,25 +106,56 @@ public final class Interval extends AbstractInterval
     }
 
     /**
-     * Constructs an interval from a start instant and a duration.
+     * Constructs an interval from a start instant and a millisecond duration.
      * 
      * @param start  start of this interval, null means now
-     * @param duration  duration of this interval, null means zero length
+     * @param duration  the duration of this interval, null means zero length
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public Interval(ReadableInstant start, ReadableDuration duration) {
         super(start, duration);
     }
 
     /**
-     * Constructs an interval from a duration and an end instant.
+     * Constructs an interval from a millisecond duration and an end instant.
      * 
-     * @param duration  duration of this interval, null means zero length
+     * @param duration  the duration of this interval, null means zero length
      * @param end  end of this interval, null means now
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public Interval(ReadableDuration duration, ReadableInstant end) {
         super(duration, end);
     }
 
+    /**
+     * Constructs an interval from a start instant and a time period.
+     * <p>
+     * When forming the interval, the chronology from the instant is used
+     * if present, otherwise the chronology of the period is used.
+     * 
+     * @param start  start of this interval, null means now
+     * @param period  the period of this interval, null means zero length
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     */
+    public Interval(ReadableInstant start, ReadableTimePeriod period) {
+        super(start, period);
+    }
+
+    /**
+     * Constructs an interval from a time period and an end instant.
+     * <p>
+     * When forming the interval, the chronology from the instant is used
+     * if present, otherwise the chronology of the period is used.
+     * 
+     * @param period  the period of this interval, null means zero length
+     * @param end  end of this interval, null means now
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     */
+    public Interval(ReadableTimePeriod period, ReadableInstant end) {
+        super(period, end);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
@@ -141,13 +171,7 @@ public final class Interval extends AbstractInterval
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
-    protected final void setDurationAfterStart(ReadableDuration duration) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setDurationBeforeEnd(ReadableDuration duration) {
+    protected final void storeDuration(Duration duration) {
     }
 
 }

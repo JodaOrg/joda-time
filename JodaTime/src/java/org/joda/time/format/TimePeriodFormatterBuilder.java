@@ -59,19 +59,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DurationType;
-import org.joda.time.ReadWritableDuration;
-import org.joda.time.ReadableDuration;
+import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.ReadableTimePeriod;
 
 /**
- * DurationFormatterBuilder is used for constructing {@link DurationFormatter}s.
- * DurationFormatters are built by appending specific fields and separators.
+ * TimePeriodFormatterBuilder is used for constructing {@link TimePeriodFormatter}s.
+ * TimePeriodFormatters are built by appending specific fields and separators.
  *
  * <p>
  * For example, a formatter that prints years and months, like "15 years and 8 months",
  * can be constructed as follows:
  * <p>
  * <pre>
- * DurationFormatter yearsAndMonths = new DurationFormatterBuilder()
+ * TimePeriodFormatter yearsAndMonths = new TimePeriodFormatterBuilder()
  *     .printZeroAlways()
  *     .appendYears()
  *     .appendSuffix(" year", " years")
@@ -82,13 +82,13 @@ import org.joda.time.ReadableDuration;
  *     .toFormatter();
  * </pre>
  * <p>
- * DurationFormatterBuilder itself is mutable and not thread-safe, but the
+ * TimePeriodFormatterBuilder itself is mutable and not thread-safe, but the
  * formatters that it builds are thread-safe and immutable.
  *
- * @see DurationFormat
+ * @see TimePeriodFormat
  * @author Brian S O'Neill
  */
-public class DurationFormatterBuilder {
+public class TimePeriodFormatterBuilder {
     private static final int PRINT_ZERO_RARELY = 1;
     private static final int PRINT_ZERO_IF_SUPPORTED = 2;
     private static final int PRINT_ZERO_ALWAYS = 3;
@@ -102,42 +102,42 @@ public class DurationFormatterBuilder {
 
     private DurationFieldAffix iPrefix;
 
-    // List of DurationFormatters used to build a final formatter.
+    // List of TimePeriodFormatters used to build a final formatter.
     private List iFormatters;
 
-    // List of DurationFormatters used to build an alternate formatter. The
+    // List of TimePeriodFormatters used to build an alternate formatter. The
     // alternate is chosen if no other fields are printed.
     private List iAlternateFormatters;
 
-    public DurationFormatterBuilder() {
+    public TimePeriodFormatterBuilder() {
         clear();
     }
 
     /**
-     * Converts to a DurationPrinter that prints using all the appended
+     * Converts to a TimePeriodPrinter that prints using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
      * printer.
      */
-    public DurationPrinter toPrinter() {
+    public TimePeriodPrinter toPrinter() {
         return toFormatter();
     }
 
     /**
-     * Converts to a DurationParser that parses using all the appended
+     * Converts to a TimePeriodParser that parses using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
      * parser.
      */
-    public DurationParser toParser() {
+    public TimePeriodParser toParser() {
         return toFormatter();
     }
 
     /**
-     * Converts to a DurationFormatter that formats using all the appended
+     * Converts to a TimePeriodFormatter that formats using all the appended
      * elements. Subsequent changes to this builder do not affect the returned
      * formatter.
      */
-    public DurationFormatter toFormatter() {
-        DurationFormatter formatter = toFormatter(iFormatters);
+    public TimePeriodFormatter toFormatter() {
+        TimePeriodFormatter formatter = toFormatter(iFormatters);
         List altFormatters = iAlternateFormatters;
         if (altFormatters.size() > 0) {
             // Alternate is needed only if field formatters were
@@ -153,10 +153,10 @@ public class DurationFormatterBuilder {
         return formatter;
     }
 
-    private static DurationFormatter toFormatter(List formatters) {
+    private static TimePeriodFormatter toFormatter(List formatters) {
         int size = formatters.size();
         if (size >= 2 && formatters.get(1) instanceof Separator) {
-            DurationFormatter before = (DurationFormatter) formatters.get(0);
+            TimePeriodFormatter before = (TimePeriodFormatter) formatters.get(0);
             if (size == 2) {
                 // Separator at the end would never format anything.
                 return before;
@@ -193,9 +193,9 @@ public class DurationFormatterBuilder {
     /**
      * Appends another formatter.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder append(DurationFormatter formatter)
+    public TimePeriodFormatterBuilder append(TimePeriodFormatter formatter)
         throws IllegalArgumentException
     {
         if (formatter == null) {
@@ -210,10 +210,10 @@ public class DurationFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect
      * it. The parser is case-insensitive.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @throws IllegalArgumentException if text is null
      */
-    public DurationFormatterBuilder appendLiteral(String text) {
+    public TimePeriodFormatterBuilder appendLiteral(String text) {
         if (text == null) {
             throw new IllegalArgumentException("Literal must not be null");
         }
@@ -229,9 +229,9 @@ public class DurationFormatterBuilder {
      * fields. By default, the minimum digits printed is one. If the field value
      * is zero, it is not printed unless a printZero rule is applied.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder minimumPrintedDigits(int minDigits) {
+    public TimePeriodFormatterBuilder minimumPrintedDigits(int minDigits) {
         iMinPrintedDigits = minDigits;
         return this;
     }
@@ -240,9 +240,9 @@ public class DurationFormatterBuilder {
      * Set the maximum digits parsed for the next and following appended
      * fields. By default, the maximum digits parsed is ten.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder maximumParsedDigits(int maxDigits) {
+    public TimePeriodFormatterBuilder maximumParsedDigits(int maxDigits) {
         iMaxParsedDigits = maxDigits;
         return this;
     }
@@ -250,9 +250,9 @@ public class DurationFormatterBuilder {
     /**
      * Reject signed values when parsing the next and following appended fields.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder rejectSignedValues(boolean v) {
+    public TimePeriodFormatterBuilder rejectSignedValues(boolean v) {
         iRejectSignedValues = v;
         return this;
     }
@@ -264,11 +264,11 @@ public class DurationFormatterBuilder {
      * <p>
      * This field setting is the default.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @see #favorLastFieldForZero()
      * @see #favorFirstFieldForZero()
      */
-    public DurationFormatterBuilder printZeroRarely() {
+    public TimePeriodFormatterBuilder printZeroRarely() {
         iPrintZeroSetting = PRINT_ZERO_RARELY;
         return this;
     }
@@ -277,9 +277,9 @@ public class DurationFormatterBuilder {
      * Print zero values for the next and following appened fields only if the
      * duration supports it.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder printZeroIfSupported() {
+    public TimePeriodFormatterBuilder printZeroIfSupported() {
         iPrintZeroSetting = PRINT_ZERO_IF_SUPPORTED;
         return this;
     }
@@ -289,9 +289,9 @@ public class DurationFormatterBuilder {
      * even if the duration doesn't support it. The parser requires values for
      * fields that always print zero.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder printZeroAlways() {
+    public TimePeriodFormatterBuilder printZeroAlways() {
         iPrintZeroSetting = PRINT_ZERO_ALWAYS;
         return this;
     }
@@ -301,10 +301,10 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the prefix.
      *
      * @param text text to print before field only if field is printed
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @see #appendSuffix
      */
-    public DurationFormatterBuilder appendPrefix(String text) {
+    public TimePeriodFormatterBuilder appendPrefix(String text) {
         if (text == null) {
             throw new IllegalArgumentException();
         }
@@ -320,10 +320,10 @@ public class DurationFormatterBuilder {
      *
      * @param singularText text to print if field value is one
      * @param pluralText text to print if field value is not one
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @see #appendSuffix
      */
-    public DurationFormatterBuilder appendPrefix(String singularText,
+    public TimePeriodFormatterBuilder appendPrefix(String singularText,
                                                  String pluralText) {
         if (singularText == null || pluralText == null) {
             throw new IllegalArgumentException();
@@ -336,10 +336,10 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the prefix.
      *
      * @param prefix custom prefix
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @see #appendSuffix
      */
-    private DurationFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
+    private TimePeriodFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException();
         }
@@ -353,9 +353,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer years field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendYears() {
+    public TimePeriodFormatterBuilder appendYears() {
         appendField(1);
         return this;
     }
@@ -363,9 +363,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer years field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendMonths() {
+    public TimePeriodFormatterBuilder appendMonths() {
         appendField(2);
         return this;
     }
@@ -373,9 +373,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer weeks field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendWeeks() {
+    public TimePeriodFormatterBuilder appendWeeks() {
         appendField(3);
         return this;
     }
@@ -383,9 +383,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer days field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendDays() {
+    public TimePeriodFormatterBuilder appendDays() {
         appendField(4);
         return this;
     }
@@ -393,9 +393,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer hours field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendHours() {
+    public TimePeriodFormatterBuilder appendHours() {
         appendField(5);
         return this;
     }
@@ -403,9 +403,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer minutes field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendMinutes() {
+    public TimePeriodFormatterBuilder appendMinutes() {
         appendField(6);
         return this;
     }
@@ -413,9 +413,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer seconds field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendSeconds() {
+    public TimePeriodFormatterBuilder appendSeconds() {
         appendField(7);
         return this;
     }
@@ -423,9 +423,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer millis field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendMillis() {
+    public TimePeriodFormatterBuilder appendMillis() {
         appendField(8);
         return this;
     }
@@ -433,9 +433,9 @@ public class DurationFormatterBuilder {
     /**
      * Instruct the printer to emit an integer millis field, if supported.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendMillis3Digit() {
+    public TimePeriodFormatterBuilder appendMillis3Digit() {
         appendField(8, 3);
         return this;
     }
@@ -459,11 +459,11 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the suffix.
      *
      * @param text text to print after field only if field is printed
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    public DurationFormatterBuilder appendSuffix(String text) {
+    public TimePeriodFormatterBuilder appendSuffix(String text) {
         if (text == null) {
             throw new IllegalArgumentException();
         }
@@ -479,11 +479,11 @@ public class DurationFormatterBuilder {
      *
      * @param singularText text to print if field value is one
      * @param pluralText text to print if field value is not one
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    public DurationFormatterBuilder appendSuffix(String singularText,
+    public TimePeriodFormatterBuilder appendSuffix(String singularText,
                                                  String pluralText) {
         if (singularText == null || pluralText == null) {
             throw new IllegalArgumentException();
@@ -496,11 +496,11 @@ public class DurationFormatterBuilder {
      * the field is not printed, neither is the suffix.
      *
      * @param suffix custom suffix
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    private DurationFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
+    private TimePeriodFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
         final Object originalField;
         if (iFormatters.size() > 0) {
             originalField = iFormatters.get(iFormatters.size() - 1);
@@ -531,9 +531,9 @@ public class DurationFormatterBuilder {
      * Note: appending a separator discontinues any further work on the latest
      * appended field.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendSeparator(String text) {
+    public TimePeriodFormatterBuilder appendSeparator(String text) {
         return appendSeparator(text, text);
     }
 
@@ -549,9 +549,9 @@ public class DurationFormatterBuilder {
      *
      * @param finalText alternate used if this is the final separator
      * printed
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      */
-    public DurationFormatterBuilder appendSeparator(String text,
+    public TimePeriodFormatterBuilder appendSeparator(String text,
                                                     String finalText) {
         if (text == null || finalText == null) {
             throw new IllegalArgumentException();
@@ -581,7 +581,7 @@ public class DurationFormatterBuilder {
             // Merge two adjacent separators together.
             iFormatters.set(i, lastSeparator.merge(text, finalText));
         } else {
-            DurationFormatter composite = createComposite(formatters);
+            TimePeriodFormatter composite = createComposite(formatters);
             formatters.clear();
             formatters.add(composite);
             
@@ -603,10 +603,10 @@ public class DurationFormatterBuilder {
      * <p>
      * This setting is the default.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @see #printZeroRarely()
      */
-    public DurationFormatterBuilder favorLastFieldForZero() {
+    public TimePeriodFormatterBuilder favorLastFieldForZero() {
         iFavorFirstFieldForZero = false;
         return this;
     }
@@ -620,10 +620,10 @@ public class DurationFormatterBuilder {
      * stopping until it finds a field that is supported by the duration being
      * printed. If no supported fields are found, then no fields are printed.
      *
-     * @return this DurationFormatterBuilder
+     * @return this TimePeriodFormatterBuilder
      * @see #printZeroRarely()
      */
-    public DurationFormatterBuilder favorFirstFieldForZero() {
+    public TimePeriodFormatterBuilder favorFirstFieldForZero() {
         iFavorFirstFieldForZero = true;
         return this;
     }
@@ -635,9 +635,9 @@ public class DurationFormatterBuilder {
         iPrefix = null;
     }
 
-    private static DurationFormatter createComposite(List formatters) {
+    private static TimePeriodFormatter createComposite(List formatters) {
         if (formatters.size() == 1) {
-            return (DurationFormatter)formatters.get(0);
+            return (TimePeriodFormatter)formatters.get(0);
         } else {
             return new Composite(formatters);
         }
@@ -817,8 +817,8 @@ public class DurationFormatterBuilder {
         }
     }
 
-    private static final class FieldFormatter extends AbstractDurationFormatter
-        implements DurationFormatter
+    private static final class FieldFormatter extends AbstractTimePeriodFormatter
+        implements TimePeriodFormatter
     {
         private final int iMinPrintedDigits;
         private final int iPrintZeroSetting;
@@ -865,19 +865,19 @@ public class DurationFormatterBuilder {
             iSuffix = field.iSuffix;
         }
 
-        public int countFieldsToPrint(ReadableDuration duration) {
-            if (iPrintZeroSetting == PRINT_ZERO_ALWAYS || getFieldValue(duration) >= 0) {
+        public int countFieldsToPrint(ReadableTimePeriod period) {
+            if (iPrintZeroSetting == PRINT_ZERO_ALWAYS || getFieldValue(period) >= 0) {
                 return 1;
             }
             return 0;
         }
 
-        public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
-            return stopAt <= 0 ? 0 : countFieldsToPrint(duration);
+        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+            return stopAt <= 0 ? 0 : countFieldsToPrint(period);
         }
 
-        public int calculatePrintedLength(ReadableDuration duration) {
-            long valueLong = getFieldValue(duration);
+        public int calculatePrintedLength(ReadableTimePeriod period) {
+            long valueLong = getFieldValue(period);
             if (valueLong < 0) {
                 return 0;
             }
@@ -902,8 +902,8 @@ public class DurationFormatterBuilder {
             return sum;
         }
         
-        public void printTo(StringBuffer buf, ReadableDuration duration) {
-            long valueLong = getFieldValue(duration);
+        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+            long valueLong = getFieldValue(period);
             if (valueLong < 0) {
                 return;
             }
@@ -924,8 +924,8 @@ public class DurationFormatterBuilder {
             }
         }
 
-        public void printTo(Writer out, ReadableDuration duration) throws IOException {
-            long valueLong = getFieldValue(duration);
+        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+            long valueLong = getFieldValue(period);
             if (valueLong < 0) {
                 return;
             }
@@ -946,7 +946,7 @@ public class DurationFormatterBuilder {
             }
         }
 
-        public int parseInto(ReadWritableDuration duration,
+        public int parseInto(ReadWritableTimePeriod period,
                              String text, int position) {
 
             boolean mustParse = (iPrintZeroSetting == PRINT_ZERO_ALWAYS);
@@ -993,7 +993,7 @@ public class DurationFormatterBuilder {
                 }
             }
 
-            if (!mustParse && !isSupported(duration.getDurationType())) {
+            if (!mustParse && !isSupported(period.getDurationType())) {
                 // If parsing is not required and the field is not supported,
                 // exit gracefully so that another parser can continue on.
                 return position;
@@ -1053,7 +1053,7 @@ public class DurationFormatterBuilder {
                 }
             }
             
-            setFieldValue(duration, value);
+            setFieldValue(period, value);
                 
             if (position >= 0 && iSuffix != null) {
                 position = iSuffix.parse(text, position);
@@ -1066,12 +1066,12 @@ public class DurationFormatterBuilder {
          * @return negative value if nothing to print, otherwise lower 32 bits
          * is signed int value.
          */
-        long getFieldValue(ReadableDuration duration) {
+        long getFieldValue(ReadableTimePeriod period) {
             DurationType type;
             if (iPrintZeroSetting == PRINT_ZERO_ALWAYS) {
                 type = null; // Don't need to check if supported.
             } else {
-                type = duration.getDurationType();
+                type = period.getDurationType();
             }
 
             int value;
@@ -1083,49 +1083,49 @@ public class DurationFormatterBuilder {
                 if (type != null && type.years().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getYears();
+                value = period.getYears();
                 break;
             case 2:
                 if (type != null && type.months().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getMonths();
+                value = period.getMonths();
                 break;
             case 3:
                 if (type != null && type.weeks().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getWeeks();
+                value = period.getWeeks();
                 break;
             case 4:
                 if (type != null && type.days().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getDays();
+                value = period.getDays();
                 break;
             case 5:
                 if (type != null && type.hours().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getHours();
+                value = period.getHours();
                 break;
             case 6:
                 if (type != null && type.minutes().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getMinutes();
+                value = period.getMinutes();
                 break;
             case 7:
                 if (type != null && type.seconds().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getSeconds();
+                value = period.getSeconds();
                 break;
             case 8:
                 if (type != null && type.millis().isSupported() == false) {
                     return -1;
                 }
-                value = duration.getMillis();
+                value = period.getMillis();
                 break;
             }
 
@@ -1159,33 +1159,33 @@ public class DurationFormatterBuilder {
             }
         }
 
-        void setFieldValue(ReadWritableDuration duration, int value) {
+        void setFieldValue(ReadWritableTimePeriod period, int value) {
             switch (iFieldType) {
             default:
                 break;
             case 1:
-                duration.setYears(value);
+                period.setYears(value);
                 break;
             case 2:
-                duration.setMonths(value);
+                period.setMonths(value);
                 break;
             case 3:
-                duration.setWeeks(value);
+                period.setWeeks(value);
                 break;
             case 4:
-                duration.setDays(value);
+                period.setDays(value);
                 break;
             case 5:
-                duration.setHours(value);
+                period.setHours(value);
                 break;
             case 6:
-                duration.setMinutes(value);
+                period.setMinutes(value);
                 break;
             case 7:
-                duration.setSeconds(value);
+                period.setSeconds(value);
                 break;
             case 8:
-                duration.setMillis(value);
+                period.setMillis(value);
                 break;
             }
         }
@@ -1195,8 +1195,8 @@ public class DurationFormatterBuilder {
         }
     }
 
-    private static final class Literal extends AbstractDurationFormatter
-        implements DurationFormatter
+    private static final class Literal extends AbstractTimePeriodFormatter
+        implements TimePeriodFormatter
     {
         private final String iText;
 
@@ -1204,66 +1204,66 @@ public class DurationFormatterBuilder {
             iText = text;
         }
 
-        public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
+        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
             return 0;
         }
 
-        public int calculatePrintedLength(ReadableDuration duration) {
+        public int calculatePrintedLength(ReadableTimePeriod period) {
             return iText.length();
         }
 
-        public void printTo(StringBuffer buf, ReadableDuration duration) {
+        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
             buf.append(iText);
         }
 
-        public void printTo(Writer out, ReadableDuration duration) throws IOException {
+        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
             out.write(iText);
         }
 
-        public int parseInto(ReadWritableDuration duration,
-                             String durationStr, int position) {
-            if (durationStr.regionMatches(true, position, iText, 0, iText.length())) {
+        public int parseInto(ReadWritableTimePeriod period,
+                             String periodStr, int position) {
+            if (periodStr.regionMatches(true, position, iText, 0, iText.length())) {
                 return position + iText.length();
             }
             return ~position;
         }
     }
 
-    private static final class Separator extends AbstractDurationFormatter
-        implements DurationFormatter
+    private static final class Separator extends AbstractTimePeriodFormatter
+        implements TimePeriodFormatter
     {
         private final String iText;
         private final String iFinalText;
 
-        private final DurationFormatter iBefore;
-        private final DurationFormatter iAfter;
+        private final TimePeriodFormatter iBefore;
+        private final TimePeriodFormatter iAfter;
 
         Separator(String text, String finalText) {
             this(text, finalText, null, null);
         }
 
         Separator(String text, String finalText,
-                  DurationFormatter before, DurationFormatter after) {
+                  TimePeriodFormatter before, TimePeriodFormatter after) {
             iText = text;
             iFinalText = finalText;
             iBefore = before;
             iAfter = after;
         }
 
-        public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
-            int sum = iBefore.countFieldsToPrint(duration, stopAt);
+        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+            int sum = iBefore.countFieldsToPrint(period, stopAt);
             if (sum < stopAt) {
-                sum += iAfter.countFieldsToPrint(duration, stopAt);
+                sum += iAfter.countFieldsToPrint(period, stopAt);
             }
             return sum;
         }
 
-        public int calculatePrintedLength(ReadableDuration duration) {
-            int sum = iBefore.calculatePrintedLength(duration)
-                + iAfter.calculatePrintedLength(duration);
+        public int calculatePrintedLength(ReadableTimePeriod period) {
+            int sum = iBefore.calculatePrintedLength(period)
+                + iAfter.calculatePrintedLength(period);
 
-            if (iBefore.countFieldsToPrint(duration, 1) > 0) {
-                int afterCount = iAfter.countFieldsToPrint(duration, 2);
+            if (iBefore.countFieldsToPrint(period, 1) > 0) {
+                int afterCount = iAfter.countFieldsToPrint(period, 2);
                 if (afterCount > 0) {
                     sum += (afterCount > 1 ? iText : iFinalText).length();
                 }
@@ -1272,43 +1272,43 @@ public class DurationFormatterBuilder {
             return sum;
         }
 
-        public void printTo(StringBuffer buf, ReadableDuration duration) {
-            DurationPrinter before = iBefore;
-            DurationPrinter after = iAfter;
+        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+            TimePeriodPrinter before = iBefore;
+            TimePeriodPrinter after = iAfter;
 
-            before.printTo(buf, duration);
+            before.printTo(buf, period);
 
-            if (before.countFieldsToPrint(duration, 1) > 0) {
-                int afterCount = after.countFieldsToPrint(duration, 2);
+            if (before.countFieldsToPrint(period, 1) > 0) {
+                int afterCount = after.countFieldsToPrint(period, 2);
                 if (afterCount > 0) {
                     buf.append(afterCount > 1 ? iText : iFinalText);
                 }
             }
 
-            after.printTo(buf, duration);
+            after.printTo(buf, period);
         }
 
-        public void printTo(Writer out, ReadableDuration duration) throws IOException {
-            DurationPrinter before = iBefore;
-            DurationPrinter after = iAfter;
+        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+            TimePeriodPrinter before = iBefore;
+            TimePeriodPrinter after = iAfter;
 
-            before.printTo(out, duration);
+            before.printTo(out, period);
 
-            if (before.countFieldsToPrint(duration, 1) > 0) {
-                int afterCount = after.countFieldsToPrint(duration, 2);
+            if (before.countFieldsToPrint(period, 1) > 0) {
+                int afterCount = after.countFieldsToPrint(period, 2);
                 if (afterCount > 0) {
                     out.write(afterCount > 1 ? iText : iFinalText);
                 }
             }
 
-            after.printTo(out, duration);
+            after.printTo(out, period);
         }
 
-        public int parseInto(ReadWritableDuration duration,
-                             String durationStr, int position) {
+        public int parseInto(ReadWritableTimePeriod period,
+                             String periodStr, int position) {
             final int oldPos = position;
 
-            position = iBefore.parseInto(duration, durationStr, position);
+            position = iBefore.parseInto(period, periodStr, position);
 
             if (position < 0) {
                 return position;
@@ -1317,73 +1317,73 @@ public class DurationFormatterBuilder {
             if (position > oldPos) {
                 // Since position advanced, this separator is
                 // allowed. Optionally parse it.
-                if (durationStr.regionMatches(true, position, iText, 0, iText.length())) {
+                if (periodStr.regionMatches(true, position, iText, 0, iText.length())) {
                     position += iText.length();
-                } else if (iText != iFinalText && durationStr.regionMatches
+                } else if (iText != iFinalText && periodStr.regionMatches
                            (true, position, iFinalText, 0, iFinalText.length())) {
                     position += iFinalText.length();
                 }
             }
 
-            return iAfter.parseInto(duration, durationStr, position);
+            return iAfter.parseInto(period, periodStr, position);
         }
 
         Separator merge(String text, String finalText) {
             return new Separator(iText + text, iFinalText + finalText, iBefore, iAfter);
         }
 
-        Separator finish(DurationFormatter before, DurationFormatter after) {
+        Separator finish(TimePeriodFormatter before, TimePeriodFormatter after) {
             return new Separator(iText, iFinalText, before, after);
         }
     }
 
-    private static final class Composite extends AbstractDurationFormatter
-        implements DurationFormatter
+    private static final class Composite extends AbstractTimePeriodFormatter
+        implements TimePeriodFormatter
     {
-        private final DurationFormatter[] iFormatters;
+        private final TimePeriodFormatter[] iFormatters;
 
         Composite(List formatters) {
-            iFormatters = (DurationFormatter[])formatters.toArray
-                (new DurationFormatter[formatters.size()]);
+            iFormatters = (TimePeriodFormatter[])formatters.toArray
+                (new TimePeriodFormatter[formatters.size()]);
         }
 
-        public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
+        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
             int sum = 0;
-            DurationPrinter[] printers = iFormatters;
+            TimePeriodPrinter[] printers = iFormatters;
             for (int i=printers.length; sum < stopAt && --i>=0; ) {
-                sum += printers[i].countFieldsToPrint(duration);
+                sum += printers[i].countFieldsToPrint(period);
             }
             return sum;
         }
 
-        public int calculatePrintedLength(ReadableDuration duration) {
+        public int calculatePrintedLength(ReadableTimePeriod period) {
             int sum = 0;
-            DurationPrinter[] printers = iFormatters;
+            TimePeriodPrinter[] printers = iFormatters;
             for (int i=printers.length; --i>=0; ) {
-                sum += printers[i].calculatePrintedLength(duration);
+                sum += printers[i].calculatePrintedLength(period);
             }
             return sum;
         }
 
-        public void printTo(StringBuffer buf, ReadableDuration duration) {
-            DurationPrinter[] printers = iFormatters;
+        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+            TimePeriodPrinter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
-                printers[i].printTo(buf, duration);
+                printers[i].printTo(buf, period);
             }
         }
 
-        public void printTo(Writer out, ReadableDuration duration) throws IOException {
-            DurationPrinter[] printers = iFormatters;
+        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+            TimePeriodPrinter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
-                printers[i].printTo(out, duration);
+                printers[i].printTo(out, period);
             }
         }
 
-        public int parseInto(ReadWritableDuration duration,
-                             String durationStr, int position) {
-            DurationParser[] parsers = iFormatters;
+        public int parseInto(ReadWritableTimePeriod period,
+                             String periodStr, int position) {
+            TimePeriodParser[] parsers = iFormatters;
 
             if (parsers == null) {
                 throw new UnsupportedOperationException();
@@ -1391,104 +1391,104 @@ public class DurationFormatterBuilder {
 
             int len = parsers.length;
             for (int i=0; i<len && position >= 0; i++) {
-                position = parsers[i].parseInto(duration, durationStr, position);
+                position = parsers[i].parseInto(period, periodStr, position);
             }
             return position;
         }
     }
 
-    private static final class AlternateSelector extends AbstractDurationFormatter
-        implements DurationFormatter
+    private static final class AlternateSelector extends AbstractTimePeriodFormatter
+        implements TimePeriodFormatter
     {
-        private final DurationFormatter iPrimaryFormatter;
-        private final DurationPrinter[] iAlternatePrinters;
+        private final TimePeriodFormatter iPrimaryFormatter;
+        private final TimePeriodPrinter[] iAlternatePrinters;
         private final boolean iFavorFirstFieldForZero;
 
-        AlternateSelector(DurationFormatter primaryFormatter,
+        AlternateSelector(TimePeriodFormatter primaryFormatter,
                           List alternatePrinters,
                           boolean favorFirstFieldForZero) {
             iPrimaryFormatter = primaryFormatter;
-            iAlternatePrinters = (DurationPrinter[])alternatePrinters.toArray
-                (new DurationPrinter[alternatePrinters.size()]);
+            iAlternatePrinters = (TimePeriodPrinter[])alternatePrinters.toArray
+                (new TimePeriodPrinter[alternatePrinters.size()]);
             iFavorFirstFieldForZero = favorFirstFieldForZero;
         }
 
-        public int countFieldsToPrint(ReadableDuration duration, int stopAt) {
-            int count = iPrimaryFormatter.countFieldsToPrint(duration, stopAt);
+        public int countFieldsToPrint(ReadableTimePeriod period, int stopAt) {
+            int count = iPrimaryFormatter.countFieldsToPrint(period, stopAt);
             if (count < 1 && stopAt >= 1) {
-                if (chooseFieldToPrint(duration) != null) {
+                if (chooseFieldToPrint(period) != null) {
                     return 1;
                 }
             }
             return count;
         }
 
-        public int calculatePrintedLength(ReadableDuration duration) {
-            if (iPrimaryFormatter.countFieldsToPrint(duration, 1) > 0) {
-                return iPrimaryFormatter.calculatePrintedLength(duration);
+        public int calculatePrintedLength(ReadableTimePeriod period) {
+            if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
+                return iPrimaryFormatter.calculatePrintedLength(period);
             }
 
-            Object chosenOne = chooseFieldToPrint(duration);
+            Object chosenOne = chooseFieldToPrint(period);
 
             int sum = 0;
-            DurationPrinter[] printers = iAlternatePrinters;
+            TimePeriodPrinter[] printers = iAlternatePrinters;
             for (int i=printers.length; --i>=0; ) {
-                DurationPrinter dp = printers[i];
+                TimePeriodPrinter dp = printers[i];
                 if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
-                    sum += dp.calculatePrintedLength(duration);
+                    sum += dp.calculatePrintedLength(period);
                 }
             }
             return sum;
         }
 
-        public void printTo(StringBuffer buf, ReadableDuration duration) {
-            if (iPrimaryFormatter.countFieldsToPrint(duration, 1) > 0) {
-                iPrimaryFormatter.printTo(buf, duration);
+        public void printTo(StringBuffer buf, ReadableTimePeriod period) {
+            if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
+                iPrimaryFormatter.printTo(buf, period);
                 return;
             }
 
-            Object chosenOne = chooseFieldToPrint(duration);
+            Object chosenOne = chooseFieldToPrint(period);
             
-            DurationPrinter[] printers = iAlternatePrinters;
+            TimePeriodPrinter[] printers = iAlternatePrinters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
-                DurationPrinter dp = printers[i];
+                TimePeriodPrinter dp = printers[i];
                 if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
-                    dp.printTo(buf, duration);
+                    dp.printTo(buf, period);
                 }
             }
         }
 
-        public void printTo(Writer out, ReadableDuration duration) throws IOException {
-            if (iPrimaryFormatter.countFieldsToPrint(duration, 1) > 0) {
-                iPrimaryFormatter.printTo(out, duration);
+        public void printTo(Writer out, ReadableTimePeriod period) throws IOException {
+            if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
+                iPrimaryFormatter.printTo(out, period);
                 return;
             }
             
-            Object chosenOne = chooseFieldToPrint(duration);
+            Object chosenOne = chooseFieldToPrint(period);
 
-            DurationPrinter[] printers = iAlternatePrinters;
+            TimePeriodPrinter[] printers = iAlternatePrinters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
-                DurationPrinter dp = printers[i];
+                TimePeriodPrinter dp = printers[i];
                 if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
-                    dp.printTo(out, duration);
+                    dp.printTo(out, period);
                 }
             }
         }
 
-        public int parseInto(ReadWritableDuration duration,
-                             String durationStr, int position) {
-            return iPrimaryFormatter.parseInto(duration, durationStr, position);
+        public int parseInto(ReadWritableTimePeriod period,
+                             String periodStr, int position) {
+            return iPrimaryFormatter.parseInto(period, periodStr, position);
         }
 
-        private FieldFormatter chooseFieldToPrint(ReadableDuration duration) {
-            DurationType type = duration.getDurationType();
-            DurationPrinter[] printers = iAlternatePrinters;
+        private FieldFormatter chooseFieldToPrint(ReadableTimePeriod period) {
+            DurationType type = period.getDurationType();
+            TimePeriodPrinter[] printers = iAlternatePrinters;
             if (iFavorFirstFieldForZero) {
                 int len = printers.length;
                 for (int i=0; i<len; i++) {
-                    DurationPrinter dp = printers[i];
+                    TimePeriodPrinter dp = printers[i];
                     if (dp instanceof FieldFormatter) {
                         FieldFormatter ff = (FieldFormatter) dp;
                         if (ff.isSupported(type)) {
@@ -1502,7 +1502,7 @@ public class DurationFormatterBuilder {
                 }
             } else {
                 for (int i=printers.length; --i>=0; ) {
-                    DurationPrinter dp = printers[i];
+                    TimePeriodPrinter dp = printers[i];
                     if (dp instanceof FieldFormatter) {
                         FieldFormatter ff = (FieldFormatter) dp;
                         if (ff.isSupported(type)) {

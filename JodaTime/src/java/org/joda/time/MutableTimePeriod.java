@@ -56,56 +56,41 @@ package org.joda.time;
 import java.io.Serializable;
 
 /**
- * Standard mutable duration implementation.
+ * Standard mutable time period implementation.
  * <p>
- * MutableDuration is mutable and not thread-safe, unless concurrent threads
+ * MutableTimePeriod is mutable and not thread-safe, unless concurrent threads
  * are not invoking mutator methods.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
- * @see Duration
+ * @see TimePeriod
  */
-public class MutableDuration
-        extends AbstractDuration
-        implements ReadWritableDuration, Cloneable, Serializable {
+public class MutableTimePeriod
+        extends AbstractTimePeriod
+        implements ReadWritableTimePeriod, Cloneable, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 3436451121567212165L;
 
     /**
-     * Creates a zero-length duration using AllType.
+     * Creates a zero-length period using AllType.
      */
-    public MutableDuration() {
-        super(0L, null, false);
+    public MutableTimePeriod() {
+        super(0L, null);
     }
 
     /**
-     * Creates a zero-length duration using the specified duration type.
+     * Creates a zero-length period using the specified duration type.
      *
-     * @param type  which set of fields this duration supports
+     * @param type  which set of fields this period supports
      */
-    public MutableDuration(DurationType type) {
-        super(0L, type, false);
+    public MutableTimePeriod(DurationType type) {
+        super(0L, type);
     }
 
     /**
-     * Creates a zero-length duration using the specified duration type.
-     * <p>
-     * This constructor enables the created object to be based on total miliseconds
-     * rather than the more normal fields. A total millisecond based duration
-     * performs all calculations using the total millis and is always precise.
-     *
-     * @param type  which set of fields this duration supports
-     * @param totalMillisBased  true if duration treats the total millis as the master field
-     * @throws IllegalArgumentException if the duration type is imprecise and totalMillisBased is true
-     */
-    public MutableDuration(DurationType type, boolean totalMillisBased) {
-        super(0L, type, totalMillisBased);
-    }
-
-    /**
-     * Creates a duration from the given millisecond duration using AllType.
+     * Creates a period from the given millisecond duration using AllType.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
      * the duration type. This ensures that there are no odd effects caused by
@@ -114,12 +99,12 @@ public class MutableDuration
      *
      * @param duration  the duration, in milliseconds
      */
-    public MutableDuration(long duration) {
-        super(duration, null, false);
+    public MutableTimePeriod(long duration) {
+        super(duration, null);
     }
 
     /**
-     * Creates a duration from the given millisecond duration.
+     * Creates a period from the given millisecond duration.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
      * the duration type. This ensures that there are no odd effects caused by
@@ -129,128 +114,128 @@ public class MutableDuration
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports
      */
-    public MutableDuration(long duration, DurationType type) {
-        super(duration, type, false);
+    public MutableTimePeriod(long duration, DurationType type) {
+        super(duration, type);
     }
 
     /**
-     * Create a duration from a set of field values using AllType.
-     * This constructor creates a precise duration.
+     * Create a period from a set of field values using AllType.
+     * This constructor creates a precise period.
      *
-     * @param hours  amount of hours in this duration
-     * @param minutes  amount of minutes in this duration
-     * @param seconds  amount of seconds in this duration
-     * @param millis  amount of milliseconds in this duration
+     * @param hours  amount of hours in this period
+     * @param minutes  amount of minutes in this period
+     * @param seconds  amount of seconds in this period
+     * @param millis  amount of milliseconds in this period
      */
-    public MutableDuration(int hours, int minutes, int seconds, int millis) {
-        super(0, 0, 0, 0, hours, minutes, seconds, millis, null, false);
+    public MutableTimePeriod(int hours, int minutes, int seconds, int millis) {
+        super(0, 0, 0, 0, hours, minutes, seconds, millis, null);
     }
 
     /**
-     * Create a duration from a set of field values using AllType.
+     * Create a period from a set of field values using AllType.
      *
-     * @param years  amount of years in this duration
-     * @param months  amount of months in this duration
-     * @param weeks  amount of weeks in this duration
-     * @param days  amount of days in this duration
-     * @param hours  amount of hours in this duration
-     * @param minutes  amount of minutes in this duration
-     * @param seconds  amount of seconds in this duration
-     * @param millis  amount of milliseconds in this duration
+     * @param years  amount of years in this period
+     * @param months  amount of months in this period
+     * @param weeks  amount of weeks in this period
+     * @param days  amount of days in this period
+     * @param hours  amount of hours in this period
+     * @param minutes  amount of minutes in this period
+     * @param seconds  amount of seconds in this period
+     * @param millis  amount of milliseconds in this period
      */
-    public MutableDuration(int years, int months, int weeks, int days,
+    public MutableTimePeriod(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, null, false);
+        super(years, months, weeks, days, hours, minutes, seconds, millis, null);
     }
 
     /**
-     * Create a duration from a set of field values.
+     * Create a period from a set of field values.
      *
-     * @param years  amount of years in this duration, which must be zero if unsupported
-     * @param months  amount of months in this duration, which must be zero if unsupported
-     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
-     * @param days  amount of days in this duration, which must be zero if unsupported
-     * @param hours  amount of hours in this duration, which must be zero if unsupported
-     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
-     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
-     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param months  amount of months in this period, which must be zero if unsupported
+     * @param weeks  amount of weeks in this period, which must be zero if unsupported
+     * @param days  amount of days in this period, which must be zero if unsupported
+     * @param hours  amount of hours in this period, which must be zero if unsupported
+     * @param minutes  amount of minutes in this period, which must be zero if unsupported
+     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this period, which must be zero if unsupported
+     * @param type  which set of fields this period supports, null means AllType
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public MutableDuration(int years, int months, int weeks, int days,
+    public MutableTimePeriod(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis, DurationType type) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, type, false);
+        super(years, months, weeks, days, hours, minutes, seconds, millis, type);
     }
 
     /**
-     * Creates a duration from the given interval endpoints using AllType.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints using AllType.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    public MutableDuration(long startInstant, long endInstant) {
-        super(startInstant, endInstant, null, false);
+    public MutableTimePeriod(long startInstant, long endInstant) {
+        super(startInstant, endInstant, null);
     }
 
     /**
-     * Creates a duration from the given interval endpoints.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this period supports, null means AllType
      */
-    public MutableDuration(long startInstant, long endInstant, DurationType type) {
-        super(startInstant, endInstant, type, false);
+    public MutableTimePeriod(long startInstant, long endInstant, DurationType type) {
+        super(startInstant, endInstant, type);
     }
 
     /**
-     * Creates a duration from the given interval endpoints using AllType.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints using AllType.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
      */
-    public MutableDuration(ReadableInstant startInstant, ReadableInstant endInstant) {
-        super(startInstant, endInstant, null, false);
+    public MutableTimePeriod(ReadableInstant startInstant, ReadableInstant endInstant) {
+        super(startInstant, endInstant, null);
     }
 
     /**
-     * Creates a duration from the given interval endpoints.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this period supports, null means AllType
      */
-    public MutableDuration(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
-        super(startInstant, endInstant, type, false);
+    public MutableTimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+        super(startInstant, endInstant, type);
     }
 
     /**
-     * Creates a duration from the specified object using the
+     * Creates a period from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  duration to convert
-     * @throws IllegalArgumentException if duration is invalid
+     * @param period  period to convert
+     * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(Object duration) {
-        super(duration, null, false);
+    public MutableTimePeriod(Object period) {
+        super(period, null);
     }
 
     /**
-     * Creates a duration from the specified object using the
+     * Creates a period from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  duration to convert
-     * @param type  which set of fields this duration supports, null means use converter
-     * @throws IllegalArgumentException if duration is invalid
+     * @param period  period to convert
+     * @param type  which set of fields this period supports, null means use converter
+     * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public MutableDuration(Object duration, DurationType type) {
-        super(duration, type, false);
+    public MutableTimePeriod(Object period, DurationType type) {
+        super(period, type);
     }
 
     //-----------------------------------------------------------------------
@@ -264,90 +249,134 @@ public class MutableDuration
      */
     protected DurationType checkDurationType(DurationType type) {
         if (type == null) {
-            if (isTotalMillisBased()) {
-                return DurationType.getPreciseAllType();
-            } else {
-                return DurationType.getAllType();
-            }
+            return DurationType.getAllType();
         }
         return type;
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Sets all the fields in one go from another ReadableDuration.
+     * Sets all the fields in one go from another ReadableTimePeriod.
      * 
-     * @param duration  the duration to set, null means zero length duration
+     * @param period  the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public void setDuration(ReadableDuration duration) {
-        super.setDuration(duration);
+    public void setTimePeriod(ReadableTimePeriod period) {
+        super.setTimePeriod(period);
     }
 
     /**
      * Sets all the fields in one go.
      * 
-     * @param years  amount of years in this duration, which must be zero if unsupported
-     * @param months  amount of months in this duration, which must be zero if unsupported
-     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
-     * @param days  amount of days in this duration, which must be zero if unsupported
-     * @param hours  amount of hours in this duration, which must be zero if unsupported
-     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
-     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
-     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param months  amount of months in this period, which must be zero if unsupported
+     * @param weeks  amount of weeks in this period, which must be zero if unsupported
+     * @param days  amount of days in this period, which must be zero if unsupported
+     * @param hours  amount of hours in this period, which must be zero if unsupported
+     * @param minutes  amount of minutes in this period, which must be zero if unsupported
+     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public void setDuration(int years, int months, int weeks, int days,
+    public void setTimePeriod(int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis) {
-        super.setDuration(years, months, weeks, days,
+        super.setTimePeriod(years, months, weeks, days,
                           hours, minutes, seconds, millis);
     }
 
     /**
-     * Sets all the fields in one go from a millisecond interval.
+     * Sets all the fields in one go from an interval dividing the
+     * fields using the duration type.
+     * 
+     * @param interval  the interval to set, null means zero length
+     */
+    public void setTimePeriod(ReadableInterval interval) {
+        super.setTimePeriod(interval);
+    }
+
+    /**
+     * Sets all the fields in one go from a millisecond interval dividing the
+     * fields using the duration type.
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
-    public void setTotalMillis(long startInstant, long endInstant) {
-        super.setTotalMillis(startInstant, endInstant);
+    public void setTimePeriod(long startInstant, long endInstant) {
+        super.setTimePeriod(startInstant, endInstant);
     }
 
     /**
-     * Sets all the fields in one go from a millisecond duration.
-     * Only fields that are supported and precise will be set.
+     * Sets all the fields in one go from a duration dividing the
+     * fields using the duration type.
+     * 
+     * @param duration  the duration to set, null means zero length
+     */
+    public void setTimePeriod(ReadableDuration duration) {
+        super.setTimePeriod(duration);
+    }
+
+    /**
+     * Sets all the fields in one go from a millisecond duration dividing the
+     * fields using the duration type.
      * 
      * @param duration  the duration, in milliseconds
      */
-    public void setTotalMillis(long duration) {
-        super.setTotalMillis(duration);
+    public void setTimePeriod(long duration) {
+        super.setTimePeriod(duration);
     }
     
     //-----------------------------------------------------------------------
     /**
-     * Adds a millisecond duration to this one.
+     * Adds a period to this one by adding each field in turn.
      * 
-     * @param duration  the duration to add, in milliseconds
-     * @throws IllegalStateException if the duration is imprecise
+     * @param period  the period to add, null means add nothing
+     * @throws IllegalArgumentException if the period being added contains a field
+     * not supported by this period
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
-    public void add(long duration) {
-        super.add(duration);
+    public void add(ReadableTimePeriod period) {
+        super.add(period);
     }
-    
+
     /**
-     * Adds a duration to this one.
+     * Adds an interval to this one by dividing the duration into
+     * fields and then adding each field in turn.
      * 
-     * @param duration  the duration to add, mulls means add nothing
-     * @throws IllegalStateException if the duration is imprecise
+     * @param interval  the interval to add, null means add nothing
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    public void add(ReadableInterval interval) {
+        super.add(interval);
+    }
+
+    /**
+     * Adds a duration to this one by dividing the duration into
+     * fields and then adding each field in turn.
+     * 
+     * @param duration  the duration to add, null means add nothing
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadableDuration duration) {
         super.add(duration);
     }
-    
+
     /**
-     * Normalizes all the field values in this duration.
+     * Adds a duration to this one by dividing the duration into
+     * fields and then adding each field in turn.
+     * 
+     * @param duration  the duration to add
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
+     */
+    public void add(long duration) {
+        super.add(duration);
+    }
+
+    /**
+     * Normalizes all the field values in this period.
+     * <p>
+     * This method converts to a milliecond duration and back again.
      *
-     * @throws IllegalStateException if this duration is imprecise
+     * @throws IllegalStateException if this period is imprecise
      */
     public void normalize() {
         super.normalize();
@@ -355,7 +384,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of years of the duration.
+     * Sets the number of years of the period.
      * 
      * @param years  the number of years
      * @throws UnsupportedOperationException if field is not supported.
@@ -365,10 +394,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified years to the number of years in the duration.
+     * Adds the specified years to the number of years in the period.
      * 
      * @param years  the number of years
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addYears(int years) {
         super.addYears(years);
@@ -376,7 +406,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of months of the duration.
+     * Sets the number of months of the period.
      * 
      * @param months  the number of months
      * @throws UnsupportedOperationException if field is not supported.
@@ -386,10 +416,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified months to the number of months in the duration.
+     * Adds the specified months to the number of months in the period.
      * 
      * @param months  the number of months
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMonths(int months) {
         super.addMonths(months);
@@ -397,7 +428,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of weeks of the duration.
+     * Sets the number of weeks of the period.
      * 
      * @param weeks  the number of weeks
      * @throws UnsupportedOperationException if field is not supported.
@@ -407,10 +438,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified weeks to the number of weeks in the duration.
+     * Adds the specified weeks to the number of weeks in the period.
      * 
      * @param weeks  the number of weeks
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addWeeks(int weeks) {
         super.addWeeks(weeks);
@@ -418,7 +450,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of days of the duration.
+     * Sets the number of days of the period.
      * 
      * @param days  the number of days
      * @throws UnsupportedOperationException if field is not supported.
@@ -428,10 +460,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified days to the number of days in the duration.
+     * Adds the specified days to the number of days in the period.
      * 
      * @param days  the number of days
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addDays(int days) {
         super.addDays(days);
@@ -439,7 +472,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of hours of the duration.
+     * Sets the number of hours of the period.
      * 
      * @param hours  the number of hours
      * @throws UnsupportedOperationException if field is not supported.
@@ -449,10 +482,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified hours to the number of hours in the duration.
+     * Adds the specified hours to the number of hours in the period.
      * 
      * @param hours  the number of hours
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addHours(int hours) {
         super.addHours(hours);
@@ -460,7 +494,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of minutes of the duration.
+     * Sets the number of minutes of the period.
      * 
      * @param minutes  the number of minutes
      * @throws UnsupportedOperationException if field is not supported.
@@ -470,10 +504,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified minutes to the number of minutes in the duration.
+     * Adds the specified minutes to the number of minutes in the period.
      * 
      * @param minutes  the number of minutes
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMinutes(int minutes) {
         super.addMinutes(minutes);
@@ -481,7 +516,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of seconds of the duration.
+     * Sets the number of seconds of the period.
      * 
      * @param seconds  the number of seconds
      * @throws UnsupportedOperationException if field is not supported.
@@ -491,10 +526,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified seconds to the number of seconds in the duration.
+     * Adds the specified seconds to the number of seconds in the period.
      * 
      * @param seconds  the number of seconds
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addSeconds(int seconds) {
         super.addSeconds(seconds);
@@ -502,7 +538,7 @@ public class MutableDuration
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of millis of the duration.
+     * Sets the number of millis of the period.
      * 
      * @param millis  the number of millis
      * @throws UnsupportedOperationException if field is not supported.
@@ -512,10 +548,11 @@ public class MutableDuration
     }
 
     /**
-     * Adds the specified millis to the number of millis in the duration.
+     * Adds the specified millis to the number of millis in the period.
      * 
      * @param millis  the number of millis
      * @throws UnsupportedOperationException if field is not supported.
+     * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMillis(int millis) {
         super.addMillis(millis);
@@ -528,8 +565,8 @@ public class MutableDuration
      *
      * @return a clone of the this object.
      */
-    public MutableDuration copy() {
-        return (MutableDuration)clone();
+    public MutableTimePeriod copy() {
+        return (MutableTimePeriod)clone();
     }
 
     /**

@@ -62,7 +62,7 @@ package org.joda.time.format;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface DurationFormatter extends DurationPrinter, DurationParser {
+public interface TimePeriodFormatter extends TimePeriodPrinter, TimePeriodParser {
 
     // Methods inherited
 }

@@ -74,11 +74,11 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Duration;
+import org.joda.time.TimePeriod;
 import org.joda.time.DurationType;
 import org.joda.time.Interval;
 import org.joda.time.JodaTimePermission;
-import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.ReadableDuration;
@@ -361,7 +361,7 @@ public class TestConverterManager extends TestCase {
         DurationConverter c = ConverterManager.getInstance().getDurationConverter(new Long(0L));
         assertEquals(Long.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getDurationConverter(new Duration(DurationType.getMillisType()));
+        c = ConverterManager.getInstance().getDurationConverter(new TimePeriod(DurationType.getMillisType()));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getDurationConverter(new Interval(0L, 1000L));
@@ -403,7 +403,7 @@ public class TestConverterManager extends TestCase {
         DurationConverter c = new DurationConverter() {
             public boolean isPrecise(Object object) {return false;}
             public long getDurationMillis(Object object) {return 0;}
-            public void setInto(ReadWritableDuration duration, Object object) {}
+            public void setInto(ReadWritableTimePeriod duration, Object object) {}
             public DurationType getDurationType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
@@ -422,7 +422,7 @@ public class TestConverterManager extends TestCase {
         DurationConverter c = new DurationConverter() {
             public boolean isPrecise(Object object) {return false;}
             public long getDurationMillis(Object object) {return 0;}
-            public void setInto(ReadWritableDuration duration, Object object) {}
+            public void setInto(ReadWritableTimePeriod duration, Object object) {}
             public DurationType getDurationType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return String.class;}
         };
@@ -474,7 +474,7 @@ public class TestConverterManager extends TestCase {
         DurationConverter c = new DurationConverter() {
             public boolean isPrecise(Object object) {return false;}
             public long getDurationMillis(Object object) {return 0;}
-            public void setInto(ReadWritableDuration duration, Object object) {}
+            public void setInto(ReadWritableTimePeriod duration, Object object) {}
             public DurationType getDurationType(Object object, boolean tmm) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };

@@ -68,27 +68,35 @@ import java.io.Serializable;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class MutableInterval extends AbstractInterval
+public final class MutableInterval
+        extends AbstractInterval
         implements ReadWritableInterval, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = -5982824024992428470L;
 
     /**
-     * Constructs a time interval as a copy of another.
-     * 
-     * @param interval the time interval to copy
-     * @throws IllegalArgumentException if the interval is null
+     * Constructs a time interval from 1970-01-01 to 1970-01-01.
      */
-    public MutableInterval(ReadableInterval interval) {
-        super(interval);
+    public MutableInterval() {
+        super(0L, 0L);
     }
-    
+
+    /**
+     * Constructs an interval from a start and end instant.
+     * 
+     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     */
+    public MutableInterval(long startInstant, long endInstant) {
+        super(startInstant, endInstant);
+    }
+
     /**
      * Constructs a time interval as a copy of another.
      * 
-     * @param interval the time interval to convert
-     * @throws IllegalArgumentException if the interval is null
+     * @param interval  the time interval to copy
+     * @throws IllegalArgumentException if the interval is null or invalid
      */
     public MutableInterval(Object interval) {
         super(interval);
@@ -97,48 +105,63 @@ public final class MutableInterval extends AbstractInterval
     /**
      * Constructs an interval from a start and end instant.
      * 
-     * @param startInstant  start of this interval, as milliseconds from
-     *  1970-01-01T00:00:00Z.
-     * @param endInstant  end of this interval, as milliseconds from
-     *  1970-01-01T00:00:00Z.
-     */
-    public MutableInterval(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
-    }
-    
-    /**
-     * Constructs an interval from a start and end instant.
-     * 
-     * @param start  start of this interval
-     * @param end  end of this interval
-     * @throws IllegalArgumentException if either instant is null
+     * @param start  start of this interval, null means now
+     * @param end  end of this interval, null means now
      */
     public MutableInterval(ReadableInstant start, ReadableInstant end) {
         super(start, end);
     }
-    
+
     /**
-     * Constructs an interval from a start instant and a duration.
+     * Constructs an interval from a start instant and a millisecond duration.
      * 
-     * @param start  start of this interval
-     * @param duration  duration of this interval
-     * @throws IllegalArgumentException if start or duration is null
+     * @param start  start of this interval, null means now
+     * @param duration  the duration of this interval, null means zero length
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public MutableInterval(ReadableInstant start, ReadableDuration duration) {
         super(start, duration);
     }
-    
+
     /**
-     * Constructs an interval from a duration and an end instant.
+     * Constructs an interval from a millisecond duration and an end instant.
      * 
-     * @param duration duration of this interval
-     * @param end end of this interval
-     * @throws IllegalArgumentException if duration or end is null
+     * @param duration  the duration of this interval, null means zero length
+     * @param end  end of this interval, null means now
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public MutableInterval(ReadableDuration duration, ReadableInstant end) {
         super(duration, end);
     }
-    
+
+    /**
+     * Constructs an interval from a start instant and a time period.
+     * <p>
+     * When forming the interval, the chronology from the instant is used
+     * if present, otherwise the chronology of the period is used.
+     * 
+     * @param start  start of this interval, null means now
+     * @param period  the period of this interval, null means zero length
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     */
+    public MutableInterval(ReadableInstant start, ReadableTimePeriod period) {
+        super(start, period);
+    }
+
+    /**
+     * Constructs an interval from a time period and an end instant.
+     * <p>
+     * When forming the interval, the chronology from the instant is used
+     * if present, otherwise the chronology of the period is used.
+     * 
+     * @param period  the period of this interval, null means zero length
+     * @param end  end of this interval, null means now
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     */
+    public MutableInterval(ReadableTimePeriod period, ReadableInstant end) {
+        super(period, end);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Sets the start of this time interval.
@@ -184,19 +207,32 @@ public final class MutableInterval extends AbstractInterval
         super.setEndMillis(instant.getMillis());
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the duration of this time interval, preserving the start instant.
      *
-     * @param millisDuration  new duration for interval
+     * @param duration  new duration for interval
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public void setDurationAfterStart(long millisDuration) {
-        super.setEndMillis(getStartMillis() + millisDuration);
+    public void setDurationAfterStart(long duration) {
+        super.setDurationAfterStart(duration);
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the end instant.
+     *
+     * @param duration  new duration for interval
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     */
+    public void setDurationBeforeEnd(long duration) {
+        super.setDurationBeforeEnd(duration);
     }
 
     /**
      * Sets the duration of this time interval, preserving the start instant.
      *
      * @param duration  new duration for interval
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public void setDurationAfterStart(ReadableDuration duration) {
         super.setDurationAfterStart(duration);
@@ -205,19 +241,31 @@ public final class MutableInterval extends AbstractInterval
     /**
      * Sets the duration of this time interval, preserving the end instant.
      *
-     * @param millisDuration  new duration for interval
-     */
-    public void setDurationBeforeEnd(long millisDuration) {
-        super.setStartMillis(getEndMillis() - millisDuration);
-    }
-
-    /**
-     * Sets the duration of this time interval, preserving the end instant.
-     *
      * @param duration  new duration for interval
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public void setDurationBeforeEnd(ReadableDuration duration) {
         super.setDurationBeforeEnd(duration);
+    }
+
+    /**
+     * Sets the period of this time interval, preserving the start instant.
+     *
+     * @param period  new period for interval, null means zero length
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     */
+    public void setTimePeriodAfterStart(ReadableTimePeriod period) {
+        super.setTimePeriodAfterStart(period);
+    }
+
+    /**
+     * Sets the period of this time interval, preserving the end instant.
+     *
+     * @param period  new period for interval, null means zero length
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     */
+    public void setTimePeriodBeforeEnd(ReadableTimePeriod period) {
+        super.setTimePeriodBeforeEnd(period);
     }
 
 }

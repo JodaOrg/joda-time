@@ -55,15 +55,16 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
+import org.joda.time.TimePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeParser;
-import org.joda.time.format.DurationFormatter;
-import org.joda.time.format.DurationParser;
+import org.joda.time.format.TimePeriodFormatter;
+import org.joda.time.format.TimePeriodParser;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.format.ISODurationFormat;
+import org.joda.time.format.ISOTimePeriodFormat;
 
 /**
  * StringConverter converts a String to milliseconds in the ISOChronology.
@@ -142,14 +143,14 @@ class StringConverter extends AbstractConverter
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
-    public void setInto(ReadWritableDuration duration, Object object) {
+    public void setInto(ReadWritableTimePeriod duration, Object object) {
         String str = (String) object;
-        DurationParser parser = ISODurationFormat.getInstance().standard();
+        TimePeriodParser parser = ISOTimePeriodFormat.getInstance().standard();
         int pos = parser.parseInto(duration, str, 0);
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutableDuration(duration.getDurationType(), str);
+                parser.parseMutableTimePeriod(duration.getDurationType(), str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
@@ -179,34 +180,34 @@ class StringConverter extends AbstractConverter
         }
 
         DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
-        DurationFormatter durationParser = ISODurationFormat.getInstance().standard();
+        TimePeriodFormatter durationParser = ISOTimePeriodFormat.getInstance().standard();
         long startInstant;
-        ReadableDuration duration;
+        TimePeriod period;
 
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            duration = durationParser.parseDuration(getDurationType(leftStr, false), leftStr);
+            period = durationParser.parseTimePeriod(getDurationType(leftStr, false), leftStr);
         } else {
             startInstant = dateTimeParser.parseMillis(leftStr);
-            duration = null;
+            period = null;
         }
 
         c = rightStr.charAt(0);
         if (c == 'P' || c == 'p') {
-            if (duration != null) {
+            if (period != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            duration = durationParser.parseDuration(getDurationType(rightStr, false), rightStr);
+            period = durationParser.parseTimePeriod(getDurationType(rightStr, false), rightStr);
             writableInterval.setStartMillis(startInstant);
-            writableInterval.setDurationAfterStart(duration);
+            writableInterval.setTimePeriodAfterStart(period);
         } else {
             long endInstant = dateTimeParser.parseMillis(rightStr);
             writableInterval.setEndMillis(endInstant);
-            if (duration == null) {
+            if (period == null) {
                 writableInterval.setStartMillis(startInstant);
             } else {
-                writableInterval.setDurationBeforeEnd(duration);
+                writableInterval.setTimePeriodBeforeEnd(period);
             }
         }
     }

@@ -96,15 +96,9 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the duration of this time interval, preserving the start instant.
      *
      * @param millisDuration  new duration for interval
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     void setDurationAfterStart(long millisDuration);
-
-    /**
-     * Sets the duration of this time interval, preserving the start instant.
-     *
-     * @param duration  new duration for interval
-     */
-    void setDurationAfterStart(ReadableDuration duration);
 
     /**
      * Sets the duration of this time interval, preserving the end instant.
@@ -114,10 +108,35 @@ public interface ReadWritableInterval extends ReadableInterval {
     void setDurationBeforeEnd(long millisDuration);
 
     /**
+     * Sets the duration of this time interval, preserving the start instant.
+     *
+     * @param duration  new duration for interval
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     */
+    void setDurationAfterStart(ReadableDuration duration);
+
+    /**
      * Sets the duration of this time interval, preserving the end instant.
      *
      * @param duration  new duration for interval
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     void setDurationBeforeEnd(ReadableDuration duration);
+
+    /**
+     * Sets the period of this time interval, preserving the start instant.
+     *
+     * @param period  new period for interval, null means zero length
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     */
+    void setTimePeriodAfterStart(ReadableTimePeriod period);
+
+    /**
+     * Sets the period of this time interval, preserving the end instant.
+     *
+     * @param period  new period for interval, null means zero length
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     */
+    void setTimePeriodBeforeEnd(ReadableTimePeriod period);
 
 }

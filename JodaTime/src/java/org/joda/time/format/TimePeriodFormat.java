@@ -53,60 +53,77 @@
  */
 package org.joda.time.format;
 
-import org.joda.time.Duration;
-import org.joda.time.DurationType;
-import org.joda.time.MutableDuration;
-import org.joda.time.ReadWritableDuration;
+import java.util.Locale;
 
 /**
- * Defines an interface for parsing textual representations of durations.
+ * TimePeriodFormat provides basic printing and parsing capabilities for
+ * durations. Eventually, this class will also support localization.
+ * <p>
+ * TimePeriodFormat is thread-safe and immutable, and the formatters it returns
+ * are as well.
  *
  * @author Brian S O'Neill
- * @see DurationFormatter
- * @see DurationFormatterBuilder
- * @see DurationFormat
  * @since 1.0
+ * @see ISOTimePeriodFormat
+ * @see TimePeriodFormatterBuilder
  */
-public interface DurationParser {
+public class TimePeriodFormat {
 
-    //-----------------------------------------------------------------------
-    /**
-     * Parses a duration from the given text, at the given position, saving the
-     * result into the fields of the given ReadWritableDuration. If the parse
-     * succeeds, the return value is the new text position. Note that the parse
-     * may succeed without fully reading the text.
-     * <p>
-     * If it fails, the return value is negative, but the duration may still be
-     * modified. To determine the position where the parse failed, apply the
-     * one's complement operator (~) on the return value.
-     *
-     * @param duration  a duration that will be modified
-     * @param durationStr  text to parse
-     * @param position position to start parsing from
-     * @return new position, if negative, parse failed. Apply complement
-     * operator (~) to get position of failure
-     * @throws IllegalArgumentException if any field is out of range
-     */
-    int parseInto(ReadWritableDuration duration, String durationStr, int position);
+    private static final TimePeriodFormat INSTANCE = new TimePeriodFormat();
 
     /**
-     * Parses a duration from the given text, returning a new Duration.
-     *
-     * @param type  defines which fields may be parsed
-     * @param durationStr  text to parse
-     * @return parsed value in a Duration object
-     * @throws IllegalArgumentException if any field is out of range
+     * Gets a formatter provider that works using the default locale.
+     * 
+     * @return a format provider
      */
-    Duration parseDuration(DurationType type, String durationStr);
+    public static TimePeriodFormat getInstance() {
+        return INSTANCE;
+    }
 
     /**
-     * Parses a duration from the given text, returning a new MutableDuration.
-     *
-     * @param type  defines which fields may be parsed
-     * @param durationStr  text to parse
-     * @return parsed value in a MutableDuration object
-     * @throws IllegalArgumentException if any field is out of range
+     * Gets a formatter provider that works using the given locale.
+     * 
+     * @param locale  the Locale to use, null for default locale
+     * @return a format provider
      */
-    MutableDuration parseMutableDuration(DurationType type, String durationStr);
+    public static TimePeriodFormat getInstance(Locale locale) {
+        return INSTANCE;
+    }
 
+    private final TimePeriodFormatter iDefault;
+
+    private TimePeriodFormat() {
+        iDefault = new TimePeriodFormatterBuilder()
+            .appendYears()
+            .appendSuffix(" year", " years")
+            .appendSeparator(", ", " and ")
+            .appendMonths()
+            .appendSuffix(" month", " months")
+            .appendSeparator(", ", " and ")
+            .appendWeeks()
+            .appendSuffix(" week", " weeks")
+            .appendSeparator(", ", " and ")
+            .appendDays()
+            .appendSuffix(" day", " days")
+            .appendSeparator(", ", " and ")
+            .appendHours()
+            .appendSuffix(" hour", " hours")
+            .appendSeparator(", ", " and ")
+            .appendMinutes()
+            .appendSuffix(" minute", " minutes")
+            .appendSeparator(", ", " and ")
+            .appendSeconds()
+            .appendSuffix(" second", " seconds")
+            .appendSeparator(", ", " and ")
+            .appendMillis()
+            .appendSuffix(" millisecond", " milliseconds")
+            .toFormatter();
+    }
+
+    /**
+     * Returns the default TimePeriodFormatter.
+     */
+    public TimePeriodFormatter getDefault() {
+        return iDefault;
+    }
 }

@@ -53,59 +53,59 @@
  */
 package org.joda.time.format;
 
-import org.joda.time.Duration;
+import org.joda.time.TimePeriod;
 import org.joda.time.DurationType;
-import org.joda.time.MutableDuration;
-import org.joda.time.ReadableDuration;
+import org.joda.time.MutableTimePeriod;
+import org.joda.time.ReadWritableTimePeriod;
 
 /**
- * Abstract base class for implementing {@link DurationPrinter}s,
- * {@link DurationParser}s, and {@link DurationFormatter}s. This class
- * intentionally does not implement any of those interfaces. You can subclass
- * and implement only the interfaces that you need to.
- * <p>
- * The print methods assume that your subclass has implemented DurationPrinter or
- * DurationFormatter. If not, a ClassCastException is thrown when calling those
- * methods.
- * <p>
- * Likewise, the parse methods assume that your subclass has implemented
- * DurationParser or DurationFormatter. If not, a ClassCastException is thrown
- * when calling the parse methods.
- * 
+ * Defines an interface for parsing textual representations of time periods.
+ *
  * @author Brian S O'Neill
+ * @see TimePeriodFormatter
+ * @see TimePeriodFormatterBuilder
+ * @see TimePeriodFormat
  * @since 1.0
  */
-public abstract class AbstractDurationFormatter {
-    
-    public int countFieldsToPrint(ReadableDuration duration) {
-        return ((DurationPrinter) this).countFieldsToPrint(duration, Integer.MAX_VALUE);
-    }
+public interface TimePeriodParser {
 
-    public String print(ReadableDuration duration) {
-        DurationPrinter p = (DurationPrinter) this;
-        StringBuffer buf = new StringBuffer(p.calculatePrintedLength(duration));
-        p.printTo(buf, duration);
-        return buf.toString();
-    }
+    /**
+     * Parses a period from the given text, at the given position, saving the
+     * result into the fields of the given ReadWritableDuration. If the parse
+     * succeeds, the return value is the new text position. Note that the parse
+     * may succeed without fully reading the text.
+     * <p>
+     * If it fails, the return value is negative, but the period may still be
+     * modified. To determine the position where the parse failed, apply the
+     * one's complement operator (~) on the return value.
+     *
+     * @param period  a period that will be modified
+     * @param periodStr  text to parse
+     * @param position position to start parsing from
+     * @return new position, if negative, parse failed. Apply complement
+     * operator (~) to get position of failure
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    int parseInto(ReadWritableTimePeriod period, String periodStr, int position);
 
-    public Duration parseDuration(DurationType type, String text) {
-        return parseMutableDuration(type, text).toDuration();
-    }
+    /**
+     * Parses a period from the given text, returning a new TimePeriod.
+     *
+     * @param type  defines which fields may be parsed
+     * @param periodStr  text to parse
+     * @return parsed value in a Duration object
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    TimePeriod parseTimePeriod(DurationType type, String periodStr);
 
-    public MutableDuration parseMutableDuration(DurationType type, String text) {
-        DurationParser p = (DurationParser) this;
-        MutableDuration duration = new MutableDuration(0, type);
+    /**
+     * Parses a period from the given text, returning a new MutableTimePeriod.
+     *
+     * @param type  defines which fields may be parsed
+     * @param periodStr  text to parse
+     * @return parsed value in a MutableDuration object
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    MutableTimePeriod parseMutableTimePeriod(DurationType type, String periodStr);
 
-        int newPos = p.parseInto(duration, text, 0);
-        if (newPos >= 0) {
-            if (newPos >= text.length()) {
-                return duration;
-            }
-        } else {
-            newPos = ~newPos;
-        }
-
-        throw new IllegalArgumentException(AbstractDateTimeFormatter
-                                           .createErrorMessage(text, newPos));
-    }
 }

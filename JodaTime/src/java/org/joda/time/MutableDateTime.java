@@ -480,8 +480,12 @@ public class MutableDateTime extends AbstractDateTime
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
     public void add(final Object duration, final int scalar) {
+        // TODO Change from Object to individual methods
         if (duration instanceof ReadableDuration) {
             ReadableDuration d = (ReadableDuration) duration;
+            add(FieldUtils.safeMultiply(d.getMillis(), scalar));
+        } else if (duration instanceof ReadableTimePeriod) {
+            ReadableTimePeriod d = (ReadableTimePeriod) duration;
             d.addInto(this, scalar);
         } else {
             DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);

@@ -141,247 +141,247 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testAddYears() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addYears(10);
         assertEquals(11, test.getYears());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addYears(-10);
         assertEquals(-9, test.getYears());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addYears(0);
         assertEquals(1, test.getYears());
     }
 
     //-----------------------------------------------------------------------
     public void testAddMonths() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMonths(10);
         assertEquals(12, test.getMonths());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMonths(-10);
         assertEquals(-8, test.getMonths());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMonths(0);
         assertEquals(2, test.getMonths());
     }
 
     //-----------------------------------------------------------------------
     public void testAddWeeks() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addWeeks(10);
         assertEquals(13, test.getWeeks());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addWeeks(-10);
         assertEquals(-7, test.getWeeks());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addWeeks(0);
         assertEquals(3, test.getWeeks());
     }
 
     //-----------------------------------------------------------------------
     public void testAddDays() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addDays(10);
         assertEquals(14, test.getDays());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addDays(-10);
         assertEquals(-6, test.getDays());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addDays(0);
         assertEquals(4, test.getDays());
     }
 
     //-----------------------------------------------------------------------
     public void testAddHours() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addHours(10);
         assertEquals(15, test.getHours());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addHours(-10);
         assertEquals(-5, test.getHours());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addHours(0);
         assertEquals(5, test.getHours());
     }
 
     //-----------------------------------------------------------------------
     public void testAddMinutes() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMinutes(10);
         assertEquals(16, test.getMinutes());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMinutes(-10);
         assertEquals(-4, test.getMinutes());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMinutes(0);
         assertEquals(6, test.getMinutes());
     }
 
     //-----------------------------------------------------------------------
     public void testAddSeconds() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addSeconds(10);
         assertEquals(17, test.getSeconds());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addSeconds(-10);
         assertEquals(-3, test.getSeconds());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addSeconds(0);
         assertEquals(7, test.getSeconds());
     }
 
     //-----------------------------------------------------------------------
     public void testAddMillis() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMillis(10);
         assertEquals(18, test.getMillis());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMillis(-10);
         assertEquals(-2, test.getMillis());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.addMillis(0);
         assertEquals(8, test.getMillis());
     }
 
     //-----------------------------------------------------------------------
     public void testSetYears() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setYears(10);
         assertEquals(10, test.getYears());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setYears(-10);
         assertEquals(-10, test.getYears());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setYears(0);
         assertEquals(0, test.getYears());
     }
 
     //-----------------------------------------------------------------------
     public void testSetMonths() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMonths(10);
         assertEquals(10, test.getMonths());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMonths(-10);
         assertEquals(-10, test.getMonths());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMonths(0);
         assertEquals(0, test.getMonths());
     }
 
     //-----------------------------------------------------------------------
     public void testSetWeeks() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setWeeks(10);
         assertEquals(10, test.getWeeks());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setWeeks(-10);
         assertEquals(-10, test.getWeeks());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setWeeks(0);
         assertEquals(0, test.getWeeks());
     }
 
     //-----------------------------------------------------------------------
     public void testSetDays() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setDays(10);
         assertEquals(10, test.getDays());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setDays(-10);
         assertEquals(-10, test.getDays());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setDays(0);
         assertEquals(0, test.getDays());
     }
 
     //-----------------------------------------------------------------------
     public void testSetHours() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setHours(10);
         assertEquals(10, test.getHours());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setHours(-10);
         assertEquals(-10, test.getHours());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setHours(0);
         assertEquals(0, test.getHours());
     }
 
     //-----------------------------------------------------------------------
     public void testSetMinutes() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMinutes(10);
         assertEquals(10, test.getMinutes());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMinutes(-10);
         assertEquals(-10, test.getMinutes());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMinutes(0);
         assertEquals(0, test.getMinutes());
     }
 
     //-----------------------------------------------------------------------
     public void testSetSeconds() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setSeconds(10);
         assertEquals(10, test.getSeconds());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setSeconds(-10);
         assertEquals(-10, test.getSeconds());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setSeconds(0);
         assertEquals(0, test.getSeconds());
     }
 
     //-----------------------------------------------------------------------
     public void testSetMillis() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMillis(10);
         assertEquals(10, test.getMillis());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMillis(-10);
         assertEquals(-10, test.getMillis());
         
-        test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setMillis(0);
         assertEquals(0, test.getMillis());
     }
 
     //-----------------------------------------------------------------------
     public void testSetDuration_8ints1() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setDuration(11, 12, 13, 14, 15, 16, 17, 18);
         assertEquals(11, test.getYears());
         assertEquals(12, test.getMonths());
@@ -394,7 +394,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_8ints2() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getMillisType());
         try {
             test.setDuration(11, 12, 13, 14, 15, 16, 17, 18);
             fail();
@@ -411,7 +411,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_8ints3() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getMillisType());
         test.setDuration(0, 0, 0, 0, 0, 0, 0, 18);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -425,7 +425,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_8ints4() {
-        MutableDuration test = new MutableDuration(0, 0, 0, 0, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(0, 0, 0, 0, 5, 6, 7, 8);
         assertEquals(true, test.isPrecise());
         test.setDuration(11, 12, 13, 14, 15, 16, 17, 18);
         assertEquals(false, test.isPrecise());
@@ -441,8 +441,8 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSetDuration_RD1() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
-        test.setDuration(new MutableDuration(11, 12, 13, 14, 15, 16, 17, 18));
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
+        test.setDuration(new MutableTimePeriod(11, 12, 13, 14, 15, 16, 17, 18));
         assertEquals(11, test.getYears());
         assertEquals(12, test.getMonths());
         assertEquals(13, test.getWeeks());
@@ -454,9 +454,9 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_RD2() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getMillisType());
         try {
-            test.setDuration(new MutableDuration(11, 12, 13, 14, 15, 16, 17, 18));
+            test.setDuration(new MutableTimePeriod(11, 12, 13, 14, 15, 16, 17, 18));
             fail();
         } catch (IllegalArgumentException ex) {}
         assertEquals(0, test.getYears());
@@ -471,8 +471,8 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_RD3() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getMillisType());
-        test.setDuration(new MutableDuration(0, 0, 0, 0, 0, 0, 0, 18));
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getMillisType());
+        test.setDuration(new MutableTimePeriod(0, 0, 0, 0, 0, 0, 0, 18));
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -485,9 +485,9 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_RD4() {
-        MutableDuration test = new MutableDuration(0, 0, 0, 0, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(0, 0, 0, 0, 5, 6, 7, 8);
         assertEquals(true, test.isPrecise());
-        test.setDuration(new MutableDuration(11, 12, 13, 14, 15, 16, 17, 18));
+        test.setDuration(new MutableTimePeriod(11, 12, 13, 14, 15, 16, 17, 18));
         assertEquals(false, test.isPrecise());
         assertEquals(11, test.getYears());
         assertEquals(12, test.getMonths());
@@ -500,7 +500,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetDuration_RD5() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setDuration(null);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -514,7 +514,7 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSetTotalMillis_long_long1() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -529,7 +529,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long2() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt2.getMillis(), dt1.getMillis());
@@ -544,7 +544,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long3() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         test.setTotalMillis(dt1.getMillis(), dt1.getMillis());
         assertEquals(0, test.getYears());
@@ -558,7 +558,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoYears() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withYearsRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withYearsRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -573,7 +573,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoMonths() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withMonthsRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withMonthsRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -588,7 +588,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoWeeks() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withWeeksRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withWeeksRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -603,7 +603,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoDays() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withDaysRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withDaysRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -618,7 +618,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoHours() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withHoursRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withHoursRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -633,7 +633,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoMinutes() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withMinutesRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withMinutesRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -648,7 +648,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoSeconds() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withSecondsRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withSecondsRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -663,7 +663,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long_long_NoMillis() {
-        MutableDuration test = new MutableDuration(DurationType.getAllType().withMillisRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getAllType().withMillisRemoved());
         DateTime dt1 = new DateTime(2002, 6, 9, 13, 15, 17, 19);
         DateTime dt2 = new DateTime(2003, 7, 17, 14, 16, 18, 20);
         test.setTotalMillis(dt1.getMillis(), dt2.getMillis());
@@ -679,7 +679,7 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testSetTotalMillis_long1() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setTotalMillis(100L);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -692,7 +692,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long2() {
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType());
         test.setTotalMillis(
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
@@ -709,7 +709,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testSetTotalMillis_long3() {
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearWeekType());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearWeekType());
         test.setTotalMillis(
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
@@ -731,7 +731,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withYearsRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withYearsRemoved());
         test.setTotalMillis(ms);
         assertEquals(0, test.getYears());
         assertEquals(15, test.getMonths()); // totalDays=365+85=450=15*30
@@ -750,7 +750,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withMonthsRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withMonthsRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(0, test.getMonths());
@@ -769,7 +769,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearWeekType().withWeeksRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearWeekType().withWeeksRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(0, test.getMonths());
@@ -788,7 +788,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withDaysRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withDaysRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -807,7 +807,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withHoursRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withHoursRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -826,7 +826,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withMinutesRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withMinutesRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -845,7 +845,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withSecondsRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withSecondsRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -864,7 +864,7 @@ public class TestMutableDuration_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutableDuration test = new MutableDuration(DurationType.getPreciseYearMonthType().withMillisRemoved());
+        MutableTimePeriod test = new MutableTimePeriod(DurationType.getPreciseYearMonthType().withMillisRemoved());
         test.setTotalMillis(ms);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -879,7 +879,7 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testAdd_long1() {
-        MutableDuration test = new MutableDuration(100L);
+        MutableTimePeriod test = new MutableTimePeriod(100L);
         test.add(100L);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -893,7 +893,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testAdd_long2() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getPreciseYearMonthType());
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getPreciseYearMonthType());
         long ms =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
@@ -912,7 +912,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testAdd_long3() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getPreciseYearMonthType());
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getPreciseYearMonthType());
         long ms =0L;
         test.add(ms);
         assertEquals(0, test.getYears());
@@ -927,7 +927,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testAdd_long4() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         try {
             test.add(100L);
             fail();
@@ -936,8 +936,8 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testAdd_RD1() {
-        MutableDuration test = new MutableDuration(100L);
-        test.add(new Duration(100L));
+        MutableTimePeriod test = new MutableTimePeriod(100L);
+        test.add(new TimePeriod(100L));
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -950,8 +950,8 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testAdd_RD2() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getPreciseYearMonthType());
-        test.add(new Duration(1, 0, 12, 1, 5, 6, 7, 8, DurationType.getPreciseYearWeekType()));
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getPreciseYearMonthType());
+        test.add(new TimePeriod(1, 0, 12, 1, 5, 6, 7, 8, DurationType.getPreciseYearWeekType()));
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -963,8 +963,8 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testAdd_RD3() {
-        MutableDuration test = new MutableDuration(100L, DurationType.getPreciseYearMonthType());
-        test.add(Duration.ZERO);
+        MutableTimePeriod test = new MutableTimePeriod(100L, DurationType.getPreciseYearMonthType());
+        test.add(TimePeriod.ZERO);
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -977,23 +977,23 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testAdd_RD4() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         try {
-            test.add(new Duration(100L));
+            test.add(new TimePeriod(100L));
             fail();
         } catch (IllegalStateException ex) {}
     }
 
     public void testAdd_RD5() {
-        MutableDuration test = new MutableDuration(100L);
+        MutableTimePeriod test = new MutableTimePeriod(100L);
         try {
-            test.add(new Duration(1, 2, 3, 4, 5, 6, 7, 8));
+            test.add(new TimePeriod(1, 2, 3, 4, 5, 6, 7, 8));
             fail();
         } catch (IllegalStateException ex) {}
     }
 
     public void testAdd_RD6() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.add(null);
         assertEquals(1, test.getYears());
         assertEquals(2, test.getMonths());
@@ -1007,7 +1007,7 @@ public class TestMutableDuration_Updates extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testNormalize1() {
-        MutableDuration test = new MutableDuration(1, 2, 3, 4, 5, 6, 7, 8);
+        MutableTimePeriod test = new MutableTimePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         try {
             test.normalize();
             fail();
@@ -1015,7 +1015,7 @@ public class TestMutableDuration_Updates extends TestCase {
     }
 
     public void testNormalize2() {
-        MutableDuration test = new MutableDuration(1, 14, 0, 36, 29, 66, 67, 1008, DurationType.getPreciseYearMonthType());
+        MutableTimePeriod test = new MutableTimePeriod(1, 14, 0, 36, 29, 66, 67, 1008, DurationType.getPreciseYearMonthType());
         //   365 + 14*30 + 6 days
         // extra year created from 12 months of 30 days plus 5 extra days
         // 2*365 +  2*30 + 1 day

@@ -168,12 +168,12 @@ public abstract class AbstractConverter implements Converter {
      * Selects a suitable duration type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param totalMillisMaster  true if total millis based duration
+     * @param precise  true if a precise type is required
      * @return the duration type, never null
      * @throws ClassCastException if the object is invalid
      */
-    public DurationType getDurationType(Object object, boolean totalMillisMaster) {
-        if (totalMillisMaster) {
+    public DurationType getDurationType(Object object, boolean precise) {
+        if (precise) {
             return DurationType.getPreciseAllType();
         }
         return DurationType.getAllType();

@@ -53,72 +53,60 @@
  */
 package org.joda.time.format;
 
-import java.io.IOException;
-import java.io.Writer;
-
-import org.joda.time.ReadableDuration;
+import org.joda.time.DurationType;
+import org.joda.time.MutableTimePeriod;
+import org.joda.time.ReadableTimePeriod;
+import org.joda.time.TimePeriod;
 
 /**
- * Defines an interface for creating textual representations of durations.
- *
+ * Abstract base class for implementing {@link TimePeriodPrinter}s,
+ * {@link TimePeriodParser}s, and {@link TimePeriodFormatter}s. This class
+ * intentionally does not implement any of those interfaces. You can subclass
+ * and implement only the interfaces that you need to.
+ * <p>
+ * The print methods assume that your subclass has implemented TimePeriodPrinter or
+ * TimePeriodFormatter. If not, a ClassCastException is thrown when calling those
+ * methods.
+ * <p>
+ * Likewise, the parse methods assume that your subclass has implemented
+ * TimePeriodParser or TimePeriodFormatter. If not, a ClassCastException is thrown
+ * when calling the parse methods.
+ * 
  * @author Brian S O'Neill
- * @see DurationFormatter
- * @see DurationFormatterBuilder
- * @see DurationFormat
  * @since 1.0
  */
-public interface DurationPrinter {
+public abstract class AbstractTimePeriodFormatter {
+    
+    public int countFieldsToPrint(ReadableTimePeriod period) {
+        return ((TimePeriodPrinter) this).countFieldsToPrint(period, Integer.MAX_VALUE);
+    }
 
-    /**
-     * Returns the amount of fields from the given duration that this printer
-     * will print.
-     * 
-     * @param duration duration to use
-     * @return amount of fields printed
-     */
-    int countFieldsToPrint(ReadableDuration duration);
+    public String print(ReadableTimePeriod period) {
+        TimePeriodPrinter p = (TimePeriodPrinter) this;
+        StringBuffer buf = new StringBuffer(p.calculatePrintedLength(period));
+        p.printTo(buf, period);
+        return buf.toString();
+    }
 
-    /**
-     * Returns the amount of fields from the given duration that this printer
-     * will print.
-     * 
-     * @param duration duration to use
-     * @param stopAt stop counting at this value
-     * @return amount of fields printed
-     */
-    int countFieldsToPrint(ReadableDuration duration, int stopAt);
+    public TimePeriod parseTimePeriod(DurationType type, String text) {
+        return parseMutableTimePeriod(type, text).toTimePeriod();
+    }
 
-    /**
-     * Returns the exact number of characters produced for the given duration.
-     * 
-     * @param duration duration to use
-     * @return the estimated length
-     */
-    int calculatePrintedLength(ReadableDuration duration);
+    public MutableTimePeriod parseMutableTimePeriod(DurationType type, String text) {
+        TimePeriodParser p = (TimePeriodParser) this;
+        MutableTimePeriod period = new MutableTimePeriod(0, type);
 
-    //-----------------------------------------------------------------------
-    /**
-     * Prints a ReadableDuration to a StringBuffer.
-     *
-     * @param buf  the formatted duration is appended to this buffer
-     * @param duration  duration to format
-     */
-    void printTo(StringBuffer buf, ReadableDuration duration);
+        int newPos = p.parseInto(period, text, 0);
+        if (newPos >= 0) {
+            if (newPos >= text.length()) {
+                return period;
+            }
+        } else {
+            newPos = ~newPos;
+        }
 
-    /**
-     * Prints a ReadableDuration to a Writer.
-     *
-     * @param out  the formatted duration is written out
-     * @param duration  duration to format
-     */
-    void printTo(Writer out, ReadableDuration duration) throws IOException;
-
-    /**
-     * Prints a ReadableDuration to a new String.
-     *
-     * @param duration  duration to format
-     * @return the printed result
-     */
-    String print(ReadableDuration duration);
+        throw new IllegalArgumentException(
+            AbstractDateTimeFormatter.createErrorMessage(text, newPos));
+    }
 
 }

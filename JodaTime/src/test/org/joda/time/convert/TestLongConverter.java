@@ -63,7 +63,7 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationType;
-import org.joda.time.MutableDuration;
+import org.joda.time.MutableTimePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -163,7 +163,7 @@ public class TestLongConverter extends TestCase {
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableDuration m = new MutableDuration(DurationType.getMillisType());
+        MutableTimePeriod m = new MutableTimePeriod(DurationType.getMillisType());
         LongConverter.INSTANCE.setInto(m, new Long(123L));
         assertEquals(123L, m.getTotalMillis());
     }

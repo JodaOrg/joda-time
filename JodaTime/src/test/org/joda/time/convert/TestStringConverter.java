@@ -65,7 +65,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationType;
-import org.joda.time.MutableDuration;
+import org.joda.time.MutableTimePeriod;
 import org.joda.time.MutableInterval;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
@@ -332,7 +332,7 @@ public class TestStringConverter extends TestCase {
     }
 
     public void testSetInto_Object() throws Exception {
-        MutableDuration m = new MutableDuration(DurationType.getYearMonthType());
+        MutableTimePeriod m = new MutableTimePeriod(DurationType.getYearMonthType());
         StringConverter.INSTANCE.setInto(m, "P2Y6M9DT12H24M48S");
         assertEquals(2, m.getYears());
         assertEquals(6, m.getMonths());
@@ -342,7 +342,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
         
-        m = new MutableDuration(DurationType.getYearWeekType());
+        m = new MutableTimePeriod(DurationType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48S");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());
@@ -352,7 +352,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
         
-        m = new MutableDuration(1, 0, 1, 1, 1, 1, 1, 1, DurationType.getYearWeekType());
+        m = new MutableTimePeriod(1, 0, 1, 1, 1, 1, 1, 1, DurationType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3D");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());

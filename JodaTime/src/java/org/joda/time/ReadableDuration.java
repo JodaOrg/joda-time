@@ -54,20 +54,13 @@
 package org.joda.time;
 
 /**
- * Defines a duration of time that can be queried using fields.
+ * Defines an exact duration of time in milliseconds.
  * <p>
  * The implementation of this interface may be mutable or immutable. This
  * interface only gives access to retrieve data, never to change it.
- * <p>
- * Durations can be split up into multiple fields, but implementations are not
- * required to evenly distribute the values across the fields. Nor are they
- * required to normalize the fields nor match the signs.
- * <p>
- * For example, an implementation can represent a duration of "4 days, 6 hours"
- * as "102 hours", "1 day, 78 hours", "367200000 milliseconds", or even
- * "3 days, -8 hours, 2275 minutes, 298 seconds, 2000 milliseconds".
  *
  * @see ReadableInterval
+ * @see ReadableTimePeriod
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
@@ -75,245 +68,106 @@ package org.joda.time;
 public interface ReadableDuration extends Comparable {
 
     /**
-     * Returns the object which defines which fields this duration supports.
-     */
-    DurationType getDurationType();
-
-    /**
-     * Is this duration based on a millisecond duration and thus performs
-     * all calculations using the total millisecond value.
-     * <p>
-     * Durations operate either using the total milliseconds as the master and the
-     * field values as derived, or vice versa. This method returns true if the
-     * total millis field is the master. The effect is to control how the duration
-     * manages addition over the daylight savings boundary.
-     * <p>
-     * If true, {@link #isPrecise()} will always return true, {@link #getTotalMillis()}
-     * and {@link #compareTo(Object)} methods will never throw an exception and the
-     * add methods will add using the total milliseconds value.
-     * See {@link MillisDuration} for details.
-     *
-     * @return true if the duration is based on total milliseconds
-     */
-    boolean isTotalMillisBased();
-
-    /**
-     * Gets the total length of this duration in milliseconds, 
-     * failing if the duration is imprecise.
+     * Gets the total length of this duration in milliseconds.
      *
      * @return the total length of the time duration in milliseconds.
-     * @throws IllegalStateException if the duration is imprecise
      */
-    long getTotalMillis();
-
-    /**
-     * Is this duration a precise length of time, or descriptive.
-     * <p>
-     * A precise duration could include millis, seconds, minutes or hours.
-     * However, days, weeks, months and years can vary in length, resulting in
-     * an imprecise duration.
-     * <p>
-     * An imprecise duration can be made precise by pairing it with a
-     * date in a {@link ReadableInterval}.
-     *
-     * @return true if the duration is precise
-     */
-    boolean isPrecise();
+    long getMillis();
 
     //-----------------------------------------------------------------------
     /**
-     * Adds this duration to the given instant, returning a new value.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @return milliseconds value plus this duration times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    long addTo(long instant, int scalar);
-
-    /**
-     * Adds this duration to the given instant, returning a new value.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @param chrono  override the duration's chronology, unless null is passed in
-     * @return milliseconds value plus this duration times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    long addTo(long instant, int scalar, Chronology chrono);
-
-    /**
-     * Adds this duration to the given instant, returning a new Instant.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the instant to add the duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @return instant with the original value plus this duration times scalar
-     * @throws IllegalArgumentException if the instant is null
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    Instant addTo(ReadableInstant instant, int scalar);
-
-    /**
-     * Adds this duration into the given mutable instant.
-     * <p>
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the instant to update with the added duration
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @throws IllegalArgumentException if the instant is null
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    void addInto(ReadWritableInstant instant, int scalar);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the years field part of the duration.
+     * Converts this duration to a Duration instance.
+     * This can be useful if you don't trust the implementation of the interface
+     * to be well-behaved, or to get a guaranteed immutable object.
      * 
-     * @return the number of years in the duration, zero if unsupported
-     */
-    int getYears();
-
-    /**
-     * Gets the months field part of the duration.
-     * 
-     * @return the number of months in the duration, zero if unsupported
-     */
-    int getMonths();
-
-    /**
-     * Gets the weeks field part of the duration.
-     * 
-     * @return the number of weeks in the duration, zero if unsupported
-     */
-    int getWeeks();
-
-    /**
-     * Gets the days field part of the duration.
-     * 
-     * @return the number of days in the duration, zero if unsupported
-     */
-    int getDays();
-
-    /**
-     * Gets the hours field part of the duration.
-     * 
-     * @return the number of hours in the duration, zero if unsupported
-     */
-    int getHours();
-
-    /**
-     * Gets the minutes field part of the duration.
-     * 
-     * @return the number of minutes in the duration, zero if unsupported
-     */
-    int getMinutes();
-
-    /**
-     * Gets the seconds field part of the duration.
-     * 
-     * @return the number of seconds in the duration, zero if unsupported
-     */
-    int getSeconds();
-
-    /**
-     * Gets the millis field part of the duration.
-     * 
-     * @return the number of millis in the duration, zero if unsupported
-     */
-    int getMillis();
-
-    /**
-     * Gets this object as an immutable Duration. This can be useful if you
-     * don't trust the implementation of the interface to be well-behaved, or
-     * to get a guaranteed immutable object.
-     * 
-     * @return a Duration using the same field set and values
+     * @return a Duration created using the millisecond duration from this instance
      */
     Duration toDuration();
 
+    //-----------------------------------------------------------------------
     /**
-     * Get this object as a MutableDuration.
+     * Converts this duration to a TimePeriod instance using the PreciseAll type.
+     * <p>
+     * The PreciseAll type fixes days at 24 hours, months ay 30 days and years at 365 days
+     * thus the time period will be precise. As a result there is no loss of precision
+     * with regards the length of the duration and the following code will work:
+     * <pre>
+     * Duration dur = new Duration(123456789L);
+     * TimePeriod period = d.toTimePeriod();
+     * Duration dur2 = period.toDuration();
+     * // dur.getMillis() == dur2.getMillis()
+     * </pre>
      * 
-     * @return a MutableDuration using the same field set and values
+     * @return a TimePeriod created using the millisecond duration from this instance
      */
-    MutableDuration toMutableDuration();
+    TimePeriod toTimePeriod();
+
+    /**
+     * Converts this duration to a TimePeriod instance specifying a duration type
+     * to control how the duration is split into fields.
+     * <p>
+     * If a non-precise duration type is used, the resulting time period will only
+     * represent an approximation of the duration. As a result it will not be
+     * possible to call {@link TimePeriod#toDuration()} to get the duration back.
+     * 
+     * @param type  the duration type determining how to split the duration into fields
+     * @return a TimePeriod created using the millisecond duration from this instance
+     */
+    TimePeriod toTimePeriod(DurationType type);
 
     //-----------------------------------------------------------------------
     /**
-     * Compares this duration with the specified duration, which can only be
-     * performed if both are precise.
+     * Compares this duration with the specified duration based on length.
      *
-     * @param obj  a precise duration to check against
+     * @param obj  a duration to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the given object is not supported
-     * @throws IllegalStateException if either duration is imprecise
      */
     int compareTo(Object obj);
 
     /**
      * Is the length of this duration equal to the duration passed in.
-     * Both durations must be precise.
      *
-     * @param duration  another duration to compare to
+     * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
-     * @throws IllegalArgumentException if the duration is null
-     * @throws IllegalStateException if either duration is imprecise
      */
     boolean isEqual(ReadableDuration duration);
 
     /**
      * Is the length of this duration longer than the duration passed in.
-     * Both durations must be precise.
      *
-     * @param duration  another duration to compare to
+     * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
-     * @throws IllegalArgumentException if the duration is null
-     * @throws IllegalStateException if either duration is imprecise
      */
     boolean isLongerThan(ReadableDuration duration);
 
     /**
      * Is the length of this duration shorter than the duration passed in.
-     * Both durations must be precise.
      *
-     * @param duration  another duration to compare to
+     * @param duration  another duration to compare to, null means zero milliseconds
      * @return true if this duration is equal to than the duration passed in
-     * @throws IllegalArgumentException if the duration is null
-     * @throws IllegalStateException if either duration is imprecise
      */
     boolean isShorterThan(ReadableDuration duration);
 
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on the value of each field. All ReadableDuration instances are accepted.
-     * <p>
-     * To compare two durations for absolute duration (ie. millisecond duration
-     * ignoring the fields), use {@link #isEqual(ReadableDuration)} or
-     * {@link #compareTo(Object)}.
+     * on the millisecond length. All ReadableDuration instances are accepted.
      *
      * @param readableDuration  a readable duration to check against
-     * @return true if all the field values are equal, false if
-     *  not or the duration is null or of an incorrect type
+     * @return true if the length of the duration is equal
      */
     boolean equals(Object readableDuration);
 
     /**
      * Gets a hash code for the duration that is compatable with the 
      * equals method.
+     * The following formula must be used:
+     * <pre>
+     *  long len = getMillis();
+     *  return (int) (len ^ (len >>> 32));
+     * </pre>
      *
      * @return a hash code
      */
@@ -323,7 +177,8 @@ public interface ReadableDuration extends Comparable {
     /**
      * Gets the value as a String in the ISO8601 duration format.
      * <p>
-     * For example, "P6H3M5S" represents 6 hours, 3 minutes, 5 seconds.
+     * For example, "P6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
+     * The field values are determined using the PreciseAll duration type.
      *
      * @return the value as an ISO8601 string
      */

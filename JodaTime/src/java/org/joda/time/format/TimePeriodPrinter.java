@@ -53,77 +53,72 @@
  */
 package org.joda.time.format;
 
-import java.util.Locale;
+import java.io.IOException;
+import java.io.Writer;
+
+import org.joda.time.ReadableTimePeriod;
 
 /**
- * DurationFormat provides basic printing and parsing capabilities for
- * durations. Eventually, this class will also support localization.
- * <p>
- * DurationFormat is thread-safe and immutable, and the formatters it returns
- * are as well.
+ * Defines an interface for creating textual representations of time periods.
  *
  * @author Brian S O'Neill
+ * @see TimePeriodFormatter
+ * @see TimePeriodFormatterBuilder
+ * @see TimePeriodFormat
  * @since 1.0
- * @see ISODurationFormat
- * @see DurationFormatterBuilder
  */
-public class DurationFormat {
-
-    private static final DurationFormat INSTANCE = new DurationFormat();
+public interface TimePeriodPrinter {
 
     /**
-     * Gets a formatter provider that works using the default locale.
+     * Returns the amount of fields from the given duration that this printer
+     * will print.
      * 
-     * @return a format provider
+     * @param period  the period to use
+     * @return amount of fields printed
      */
-    public static DurationFormat getInstance() {
-        return INSTANCE;
-    }
+    int countFieldsToPrint(ReadableTimePeriod period);
 
     /**
-     * Gets a formatter provider that works using the given locale.
+     * Returns the amount of fields from the given duration that this printer
+     * will print.
      * 
-     * @param locale  the Locale to use, null for default locale
-     * @return a format provider
+     * @param period  the period to use
+     * @param stopAt stop counting at this value
+     * @return amount of fields printed
      */
-    public static DurationFormat getInstance(Locale locale) {
-        return INSTANCE;
-    }
-
-    private final DurationFormatter iDefault;
-
-    private DurationFormat() {
-        iDefault = new DurationFormatterBuilder()
-            .appendYears()
-            .appendSuffix(" year", " years")
-            .appendSeparator(", ", " and ")
-            .appendMonths()
-            .appendSuffix(" month", " months")
-            .appendSeparator(", ", " and ")
-            .appendWeeks()
-            .appendSuffix(" week", " weeks")
-            .appendSeparator(", ", " and ")
-            .appendDays()
-            .appendSuffix(" day", " days")
-            .appendSeparator(", ", " and ")
-            .appendHours()
-            .appendSuffix(" hour", " hours")
-            .appendSeparator(", ", " and ")
-            .appendMinutes()
-            .appendSuffix(" minute", " minutes")
-            .appendSeparator(", ", " and ")
-            .appendSeconds()
-            .appendSuffix(" second", " seconds")
-            .appendSeparator(", ", " and ")
-            .appendMillis()
-            .appendSuffix(" millisecond", " milliseconds")
-            .toFormatter();
-    }
+    int countFieldsToPrint(ReadableTimePeriod period, int stopAt);
 
     /**
-     * Returns the default DurationFormatter.
+     * Returns the exact number of characters produced for the given duration.
+     * 
+     * @param period  the period to use
+     * @return the estimated length
      */
-    public DurationFormatter getDefault() {
-        return iDefault;
-    }
+    int calculatePrintedLength(ReadableTimePeriod period);
+
+    //-----------------------------------------------------------------------
+    /**
+     * Prints a ReadableTimePeriod to a StringBuffer.
+     *
+     * @param buf  the formatted period is appended to this buffer
+     * @param period  the period to format
+     */
+    void printTo(StringBuffer buf, ReadableTimePeriod period);
+
+    /**
+     * Prints a ReadableTimePeriod to a Writer.
+     *
+     * @param out  the formatted period is written out
+     * @param period  the period to format
+     */
+    void printTo(Writer out, ReadableTimePeriod period) throws IOException;
+
+    /**
+     * Prints a ReadableTimePeriod to a new String.
+     *
+     * @param period  the period to format
+     * @return the printed result
+     */
+    String print(ReadableTimePeriod period);
+
 }

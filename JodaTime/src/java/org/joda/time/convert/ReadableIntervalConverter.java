@@ -53,7 +53,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.ReadWritableDuration;
+import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableInterval;
 
@@ -101,9 +101,9 @@ class ReadableIntervalConverter extends AbstractConverter implements IntervalCon
      * @param writableDuration  the duration to set
      * @param object  the interval to set from
      */
-    public void setInto(ReadWritableDuration writableDuration, Object object) {
+    public void setInto(ReadWritableTimePeriod writableDuration, Object object) {
         ReadableInterval interval = (ReadableInterval) object;
-        writableDuration.setTotalMillis(interval.getStartMillis(), interval.getEndMillis());
+        writableDuration.setTimePeriod(interval.getStartMillis(), interval.getEndMillis());
     }
 
     /**

@@ -85,7 +85,7 @@ import org.joda.time.ReadablePartial;
  */
 public abstract class AbstractDateTimeFormatter {
 
-    // Accessed also by AbstractDurationFormatter.
+    // Accessed also by AbstractTimePeriodFormatter.
     static String createErrorMessage(final String text, final int errorPos) {
         int sampleLen = errorPos + 20;
         String sampleText;

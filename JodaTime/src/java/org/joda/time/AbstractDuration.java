@@ -75,8 +75,7 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     private static void checkSupport(DurationField field, String name) {
         if (!field.isSupported()) {
             throw new UnsupportedOperationException
-                ("Duration does not support field \"" + name
-                 + "\". Supplied value must be zero.");
+                ("Duration does not support field \"" + name + '"');
         }
     }
 

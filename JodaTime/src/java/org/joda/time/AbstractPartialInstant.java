@@ -199,7 +199,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
-     * @param chronology  the chronology, must not be null
+     * @param chronology  the chronology, null means ISOChronology
      * @throws IllegalArgumentException if the date or chronology is null
      */
     protected AbstractPartialInstant(Object instant, final Chronology chronology) {

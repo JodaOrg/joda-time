@@ -84,7 +84,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * Selects the correct chronology to use for the chronology based constructors
      * on subclasses.
      * 
-     * @param chrono  the chronology to use, must not be null
+     * @param chrono  the chronology to use
      * @return the passed in Chronology
      */
     private static Chronology selectChronology(Chronology chrono) {

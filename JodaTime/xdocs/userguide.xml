@@ -78,12 +78,12 @@ more advanced topics.
   </ul>
 </li>
 -->
-<li><a href="#serialization">Input and Output</a>
+<li><a href="#Input_and_Output">Input and Output</a>
 <ul>
-    <li><a href="#formatters">Formatters: DateTimeFormatter</a></li>
-    <li><a href="#standard_formatters">Standard Formatters: ISODateTimeFormat</a></li>
-    <li><a href="#custom_formatters">Custom Formatters: DateTimeFormat</a></li>
-    <li><a href="#freaky_formatters">Freaky Formatters: DateTimeFormatterBuilder</a></li>
+    <li><a href="#Formatters">Formatters</a></li>
+    <li><a href="#Standard_Formatters">Standard Formatters</a></li>
+    <li><a href="#Custom_Formatters">Custom Formatters</a></li>
+    <li><a href="#Freaky_Formatters">Freaky Formatters</a></li>
 </ul>
 </li>
 <li><a href="#Advanced_features">Advanced features</a>
@@ -773,7 +773,6 @@ DateTime calc = start.plus(period);
 
 <!-- ========================================================================= -->
 
-<a name="serialization"/>
 <section name="Input and Output">
 <p>
 Reading date time information from external sources which have their own custom
@@ -799,11 +798,10 @@ Joda time supports these different requirements through a flexible architecture.
 We will now describe the various elements of this architecture.
 </p>
 
-<a name="formatter"/>
 <subsection name="Formatters">
 <p>
-All serialization is performed by a <code>DateTimeFormatter</code> object. Given
-such an object <code>fmt</code>, input is performed as follows
+All printing and parsing is performed using a <code>DateTimeFormatter</code> object.
+Given such an object <code>fmt</code>, parsing is performed as follows
 <source>
     String strInputDateTime;
     // string is populated with a date time string in some fashion
@@ -818,28 +816,24 @@ formatter. Similarly, output is performed as
 </p>
 </subsection>
 
-<a name="standard_formatters"/>
-<subsection name="Standard Formatters: ISODateTimeFormat">
+<subsection name="Standard Formatters">
 <p>
-Support for standard or "canned" formats is provided by the
-<code>ISODateTimeFormat</code> class which provides a number of factory methods
-which return various standard formatters.
+Support for standard formats based on ISO8601 is provided by the
+<code>ISODateTimeFormat</code> class. This provides a number of factory methods.
 </p>
 <p>
 For example, if you wanted to use the ISO standard format for <em>datetime</em>,
 which is <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code>, you would initialize
 <code>fmt</code> as
 <source>
-    DateTimeFormatter fmt = ISODateTimeFormat.getInstance().dateTime();
+    DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
 </source>
 You would then use <code>fmt</code> as described above, to read or write datetime
-objects in this format. <code>ISODateTimeFormat.getInstance()</code> returns an
-instance of the formatter-provider.
+objects in this format.
 </p>
 </subsection>
 
-<a name="custom_formatters"/>
-<subsection name="Custom Formatters: DateTimeFormat">
+<subsection name="Custom Formatters">
 <p>
 If you need a custom formatter which can be described in terms of
 a format pattern, you can use the factory method provided by the
@@ -847,22 +841,30 @@ a format pattern, you can use the factory method provided by the
 2 digit month and 2 digit day of month, i.e. a format of <code>yyyyMMdd</code>
 you would do
 <source>
-    DateTimeFormatter fmt = DateTimeFormat.getInstance().forPattern("yyyyMMdd");
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
 </source>
 The pattern string is compatible with JDK date patterns.
-<code>DateTimeFormat.getInstance()</code> returns an instance of the
-formatter-provider for the current locale. A localized version
-of <code>getInstance</code> also exists.
+</p>
+<p>
+You may need to print or parse in a particular <code>Locale</code>.
+This is achieved by calling the <code>withLocale</code> method on a formatter,
+which returns another formatter based on the original.
+<source>
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+    DateTimeFormatter frenchFmt = fmt.withLocale(Locale.FRENCH);
+    DateTimeFormatter germanFmt = fmt.withLocale(Locale.GERMAN);
+</source>
+Formatters are immutable, so the original is not altered by the
+<code>withLocale</code> method.
 </p>
 </subsection>
 
-<a name="freaky_formatters"/>
-<subsection name="Freaky Formatters: DateTimeFormatterBuilder">
+<subsection name="Freaky Formatters">
 <p>
 Finally, if you have a format that is not easily represented by a pattern string,
 Joda Time architecture exposes a builder class that can be used to build a custom
 formatter which is programatically defined. Thus if you wanted a formatter to
-recognize dates of the form "22-Jan-65", you could do the following:
+print and parse dates of the form "22-Jan-65", you could do the following:
 <source>
     DateTimeFormatter fmt = new DateTimeFormatterBuilder()
             .appendDayOfMonth(2)
@@ -930,9 +932,9 @@ See <code>JodaTimePermission</code> for details.
 
 <!-- ========================================================================= -->
 
-<section name="Where to Go Next">
+<!--<section name="Where to Go Next">
 <p><b>list of resources</b></p>
-</section>
+</section>-->
 
 </body>
 </document>

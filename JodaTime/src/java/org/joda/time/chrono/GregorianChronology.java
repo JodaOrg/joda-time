@@ -182,7 +182,8 @@ public final class GregorianChronology extends AbstractGJChronology {
      * Serialization singleton
      */
     private Object readResolve() {
-        return getInstance(getBase().getZone());
+        Chronology base = getBase();
+        return base == null ? getInstanceUTC() : getInstance(base.getZone());
     }
 
     // Conversion

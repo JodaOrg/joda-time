@@ -591,7 +591,6 @@ public abstract class AbstractDateTime extends AbstractInstant
      *
      * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the
      * instant to
-     * @throws IllegalArgumentException if the value is invalid
      */
     protected void setMillis(long instant) {
         iMillis = instant;
@@ -625,7 +624,6 @@ public abstract class AbstractDateTime extends AbstractInstant
      * all lower subclasses are also immutable.
      * 
      * @param chronology  the chronology to use, null means ISOChronology in default zone
-     * @throws IllegalArgumentException if the value is invalid
      */
     protected void setChronology(Chronology chronology) {
         iChronology = selectChronology(chronology);
@@ -636,7 +634,6 @@ public abstract class AbstractDateTime extends AbstractInstant
      * zone does not affect the millisecond value of this instant.
      *
      * @param zone  the time zone to use, null means default zone
-     * @throws IllegalArgumentException if the value is invalid
      * @see #moveDateTimeZone
      */
     protected void setDateTimeZone(DateTimeZone zone) {
@@ -656,7 +653,6 @@ public abstract class AbstractDateTime extends AbstractInstant
      * relative to the new time zone.
      *
      * @param zone  the time zone to use, null means default zone
-     * @throws IllegalArgumentException if the value is invalid
      * @see #setDateTimeZone
      */
     protected void moveDateTimeZone(DateTimeZone zone) {

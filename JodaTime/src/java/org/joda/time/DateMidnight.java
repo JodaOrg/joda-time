@@ -57,7 +57,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.time.base.BaseDateTime;
-import org.joda.time.property.AbstractReadableInstantFieldProperty;
+import org.joda.time.field.AbstractReadableInstantFieldProperty;
 
 /**
  * DateMidnight defines a date where the time component is fixed at midnight.

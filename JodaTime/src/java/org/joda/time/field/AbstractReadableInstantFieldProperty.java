@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.property;
+package org.joda.time.field;
 
 import java.util.Locale;
 import java.io.Serializable;

@@ -58,8 +58,8 @@ import java.util.Locale;
 
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.

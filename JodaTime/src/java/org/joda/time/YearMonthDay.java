@@ -57,8 +57,8 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.time.base.BasePartial;
+import org.joda.time.field.AbstractPartialFieldProperty;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.property.AbstractPartialFieldProperty;
 
 /**
  * YearMonthDay is an immutable partial supporting the year, monthOfYear

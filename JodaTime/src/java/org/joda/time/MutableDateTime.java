@@ -54,12 +54,13 @@
 package org.joda.time;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.property.ReadWritableInstantFieldProperty;
 
 /**
  * MutableDateTime is the standard implementation of a modifiable datetime class.
@@ -969,8 +970,8 @@ public class MutableDateTime
      * 
      * @return the era property
      */
-    public ReadWritableInstantFieldProperty era() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().era());
+    public Property era() {
+        return new Property(this, getChronology().era());
     }
 
     /**
@@ -978,8 +979,8 @@ public class MutableDateTime
      * 
      * @return the year of era property
      */
-    public ReadWritableInstantFieldProperty centuryOfEra() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().centuryOfEra());
+    public Property centuryOfEra() {
+        return new Property(this, getChronology().centuryOfEra());
     }
 
     /**
@@ -987,8 +988,8 @@ public class MutableDateTime
      * 
      * @return the year of era property
      */
-    public ReadWritableInstantFieldProperty yearOfCentury() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().yearOfCentury());
+    public Property yearOfCentury() {
+        return new Property(this, getChronology().yearOfCentury());
     }
 
     /**
@@ -996,8 +997,8 @@ public class MutableDateTime
      * 
      * @return the year of era property
      */
-    public ReadWritableInstantFieldProperty yearOfEra() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().yearOfEra());
+    public Property yearOfEra() {
+        return new Property(this, getChronology().yearOfEra());
     }
 
     /**
@@ -1005,8 +1006,8 @@ public class MutableDateTime
      * 
      * @return the year property
      */
-    public ReadWritableInstantFieldProperty year() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().year());
+    public Property year() {
+        return new Property(this, getChronology().year());
     }
 
     /**
@@ -1014,8 +1015,8 @@ public class MutableDateTime
      * 
      * @return the year of a week based year property
      */
-    public ReadWritableInstantFieldProperty weekyear() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().weekyear());
+    public Property weekyear() {
+        return new Property(this, getChronology().weekyear());
     }
 
     /**
@@ -1023,8 +1024,8 @@ public class MutableDateTime
      * 
      * @return the month of year property
      */
-    public ReadWritableInstantFieldProperty monthOfYear() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().monthOfYear());
+    public Property monthOfYear() {
+        return new Property(this, getChronology().monthOfYear());
     }
 
     /**
@@ -1032,8 +1033,8 @@ public class MutableDateTime
      * 
      * @return the week of a week based year property
      */
-    public ReadWritableInstantFieldProperty weekOfWeekyear() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().weekOfWeekyear());
+    public Property weekOfWeekyear() {
+        return new Property(this, getChronology().weekOfWeekyear());
     }
 
     /**
@@ -1041,8 +1042,8 @@ public class MutableDateTime
      * 
      * @return the day of year property
      */
-    public ReadWritableInstantFieldProperty dayOfYear() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfYear());
+    public Property dayOfYear() {
+        return new Property(this, getChronology().dayOfYear());
     }
 
     /**
@@ -1052,8 +1053,8 @@ public class MutableDateTime
      * 
      * @return the day of month property
      */
-    public ReadWritableInstantFieldProperty dayOfMonth() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfMonth());
+    public Property dayOfMonth() {
+        return new Property(this, getChronology().dayOfMonth());
     }
 
     /**
@@ -1063,8 +1064,8 @@ public class MutableDateTime
      * 
      * @return the day of week property
      */
-    public ReadWritableInstantFieldProperty dayOfWeek() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().dayOfWeek());
+    public Property dayOfWeek() {
+        return new Property(this, getChronology().dayOfWeek());
     }
 
     //-----------------------------------------------------------------------
@@ -1073,8 +1074,8 @@ public class MutableDateTime
      * 
      * @return the hour of day property
      */
-    public ReadWritableInstantFieldProperty hourOfDay() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().hourOfDay());
+    public Property hourOfDay() {
+        return new Property(this, getChronology().hourOfDay());
     }
 
     /**
@@ -1082,8 +1083,8 @@ public class MutableDateTime
      * 
      * @return the minute of day property
      */
-    public ReadWritableInstantFieldProperty minuteOfDay() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().minuteOfDay());
+    public Property minuteOfDay() {
+        return new Property(this, getChronology().minuteOfDay());
     }
 
     /**
@@ -1091,8 +1092,8 @@ public class MutableDateTime
      * 
      * @return the minute of hour property
      */
-    public ReadWritableInstantFieldProperty minuteOfHour() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().minuteOfHour());
+    public Property minuteOfHour() {
+        return new Property(this, getChronology().minuteOfHour());
     }
 
     /**
@@ -1100,8 +1101,8 @@ public class MutableDateTime
      * 
      * @return the second of day property
      */
-    public ReadWritableInstantFieldProperty secondOfDay() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().secondOfDay());
+    public Property secondOfDay() {
+        return new Property(this, getChronology().secondOfDay());
     }
 
     /**
@@ -1109,8 +1110,8 @@ public class MutableDateTime
      * 
      * @return the second of minute property
      */
-    public ReadWritableInstantFieldProperty secondOfMinute() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().secondOfMinute());
+    public Property secondOfMinute() {
+        return new Property(this, getChronology().secondOfMinute());
     }
 
     /**
@@ -1118,8 +1119,8 @@ public class MutableDateTime
      * 
      * @return the millis of day property
      */
-    public ReadWritableInstantFieldProperty millisOfDay() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().millisOfDay());
+    public Property millisOfDay() {
+        return new Property(this, getChronology().millisOfDay());
     }
 
     /**
@@ -1127,8 +1128,8 @@ public class MutableDateTime
      * 
      * @return the millis of second property
      */
-    public ReadWritableInstantFieldProperty millisOfSecond() {
-        return new ReadWritableInstantFieldProperty(this, getChronology().millisOfSecond());
+    public Property millisOfSecond() {
+        return new Property(this, getChronology().millisOfSecond());
     }
 
     //-----------------------------------------------------------------------
@@ -1162,6 +1163,213 @@ public class MutableDateTime
      */
     public String toString() {
         return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
+    }
+
+    /**
+     * MutableDateTime.Property binds a MutableDateTime to a
+     * DateTimeField allowing powerful datetime functionality to be easily
+     * accessed.
+     * <p>
+     * The example below shows how to use the property to change the value of a
+     * MutableDateTime object.
+     * <pre>
+     * MutableDateTime dt = new MutableDateTime(1972, 12, 3, 13, 32, 19, 123);
+     * dt.year().add(20);
+     * dt.second().roundFloor().minute().set(10);
+     * </pre>
+     * <p>
+     * MutableDateTime.Propery itself is thread-safe and immutable, but the
+     * MutableDateTime being operated on is not.
+     *
+     * @author Stephen Colebourne
+     * @author Brian S O'Neill
+     * @since 1.0
+     */
+    public static final class Property extends AbstractReadableInstantFieldProperty {
+        
+        /** Serialization version */
+        private static final long serialVersionUID = -4481126543819298617L;
+        
+        /** The instant this property is working against */
+        private final MutableDateTime iInstant;
+        /** The field this property is working against */
+        private final DateTimeField iField;
+        
+        /**
+         * Constructor.
+         * 
+         * @param instant  the instant to set
+         * @param field  the field to use
+         */
+        Property(MutableDateTime instant, DateTimeField field) {
+            super();
+            iInstant = instant;
+            iField = field;
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Gets the field being used.
+         * 
+         * @return the field
+         */
+        public DateTimeField getField() {
+            return iField;
+        }
+        
+        /**
+         * Gets the instant being used.
+         * 
+         * @return the instant
+         */
+        public ReadableInstant getReadableInstant() {
+            return iInstant;
+        }
+        
+        /**
+         * Gets the mutable datetime being used.
+         * 
+         * @return the mutable datetime
+         */
+        public MutableDateTime getMutableDateTime() {
+            return iInstant;
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Adds a value to the millis value.
+         * 
+         * @param value  the value to add
+         * @return mutable datetime being used
+         * @see DateTimeField#add(long,int)
+         */
+        public MutableDateTime add(int value) {
+            iInstant.setMillis(getField().add(iInstant.getMillis(), value));
+            return iInstant;
+        }
+        
+        /**
+         * Adds a value to the millis value.
+         * 
+         * @param value  the value to add
+         * @return mutable datetime being used
+         * @see DateTimeField#add(long,long)
+         */
+        public MutableDateTime add(long value) {
+            iInstant.setMillis(getField().add(iInstant.getMillis(), value));
+            return iInstant;
+        }
+        
+        /**
+         * Adds a value, possibly wrapped, to the millis value.
+         * 
+         * @param value  the value to add
+         * @return mutable datetime being used
+         * @see DateTimeField#addWrapField
+         */
+        public MutableDateTime addWrapField(int value) {
+            iInstant.setMillis(getField().addWrapField(iInstant.getMillis(), value));
+            return iInstant;
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Sets a value.
+         * 
+         * @param value  the value to set.
+         * @return mutable datetime being used
+         * @see DateTimeField#set(long,int)
+         */
+        public MutableDateTime set(int value) {
+            iInstant.setMillis(getField().set(iInstant.getMillis(), value));
+            return iInstant;
+        }
+        
+        /**
+         * Sets a text value.
+         * 
+         * @param text  the text value to set
+         * @param locale  optional locale to use for selecting a text symbol
+         * @return mutable datetime being used
+         * @throws IllegalArgumentException if the text value isn't valid
+         * @see DateTimeField#set(long,java.lang.String,java.util.Locale)
+         */
+        public MutableDateTime set(String text, Locale locale) {
+            iInstant.setMillis(getField().set(iInstant.getMillis(), text, locale));
+            return iInstant;
+        }
+        
+        /**
+         * Sets a text value.
+         * 
+         * @param text  the text value to set
+         * @return mutable datetime being used
+         * @throws IllegalArgumentException if the text value isn't valid
+         * @see DateTimeField#set(long,java.lang.String)
+         */
+        public MutableDateTime set(String text) {
+            set(text, null);
+            return iInstant;
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
+         * Round to the lowest whole unit of this field.
+         *
+         * @return mutable datetime being used
+         * @see DateTimeField#roundFloor
+         */
+        public MutableDateTime roundFloor() {
+            iInstant.setMillis(getField().roundFloor(iInstant.getMillis()));
+            return iInstant;
+        }
+
+        /**
+         * Round to the highest whole unit of this field.
+         *
+         * @return mutable datetime being used
+         * @see DateTimeField#roundCeiling
+         */
+        public MutableDateTime roundCeiling() {
+            iInstant.setMillis(getField().roundCeiling(iInstant.getMillis()));
+            return iInstant;
+        }
+        
+        /**
+         * Round to the nearest whole unit of this field, favoring the floor if
+         * halfway.
+         *
+         * @return mutable datetime being used
+         * @see DateTimeField#roundHalfFloor
+         */
+        public MutableDateTime roundHalfFloor() {
+            iInstant.setMillis(getField().roundHalfFloor(iInstant.getMillis()));
+            return iInstant;
+        }
+        
+        /**
+         * Round to the nearest whole unit of this field, favoring the ceiling if
+         * halfway.
+         *
+         * @return mutable datetime being used
+         * @see DateTimeField#roundHalfCeiling
+         */
+        public MutableDateTime roundHalfCeiling() {
+            iInstant.setMillis(getField().roundHalfCeiling(iInstant.getMillis()));
+            return iInstant;
+        }
+
+        /**
+         * Round to the nearest whole unit of this field. If halfway, the ceiling
+         * is favored over the floor only if it makes this field's value even.
+         *
+         * @return mutable datetime being used
+         * @see DateTimeField#roundHalfEven
+         */
+        public MutableDateTime roundHalfEven() {
+            iInstant.setMillis(getField().roundHalfEven(iInstant.getMillis()));
+            return iInstant;
+        }
     }
 
 }

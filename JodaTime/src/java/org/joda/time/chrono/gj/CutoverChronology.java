@@ -77,12 +77,24 @@ final class CutoverChronology extends GJChronology {
     /**
      * Convert a datetime from one chronology to another.
      */
-    private static long convert(long instant, Chronology from, Chronology to) {
+    private static long convertByYear(long instant, Chronology from, Chronology to) {
         return to.getDateTimeMillis
             (from.year().get(instant),
              from.monthOfYear().get(instant),
              from.dayOfMonth().get(instant),
              from.millisOfDay().get(instant));
+    }
+
+    /**
+     * Convert a datetime from one chronology to another.
+     */
+    private static long convertByWeekyear(final long instant, Chronology from, Chronology to) {
+        long newInstant;
+        newInstant = to.weekyear().set(0, from.weekyear().get(instant));
+        newInstant = to.weekOfWeekyear().set(newInstant, from.weekOfWeekyear().get(instant));
+        newInstant = to.dayOfWeek().set(newInstant, from.dayOfWeek().get(instant));
+        newInstant = to.millisOfDay().set(newInstant, from.millisOfDay().get(instant));
+        return newInstant;
     }
 
     private static void checkUTC(Chronology chrono) {
@@ -119,7 +131,7 @@ final class CutoverChronology extends GJChronology {
         iCutoverInstant = cutoverInstant;
 
         // Compute difference between the chronologies at the cutover instant
-        iGapDuration = cutoverInstant - julianToGregorian(cutoverInstant);
+        iGapDuration = cutoverInstant - julianToGregorianByYear(cutoverInstant);
 
         // Begin field definitions.
 
@@ -168,7 +180,7 @@ final class CutoverChronology extends GJChronology {
         {
             long cutover = gregorian.weekyear().roundCeiling(iCutoverInstant);
             iWeekOfWeekyearField = new CutoverField
-                (julian.weekOfWeekyear(), gregorian.weekOfWeekyear(), cutover);
+                (julian.weekOfWeekyear(), gregorian.weekOfWeekyear(), cutover, true);
         }
 
         // These fields are special because they have imprecise durations. The
@@ -188,7 +200,7 @@ final class CutoverChronology extends GJChronology {
             iMonthOfYearField = new ImpreciseCutoverField(julian.monthOfYear(), gregorian.monthOfYear());
             iMonthsField = iMonthOfYearField.getDurationField();
             
-            iWeekyearField = new ImpreciseCutoverField(julian.weekyear(), gregorian.weekyear());
+            iWeekyearField = new ImpreciseCutoverField(julian.weekyear(), gregorian.weekyear(), true);
             iWeekyearsField = iWeekyearField.getDurationField();
         }
     }
@@ -261,12 +273,20 @@ final class CutoverChronology extends GJChronology {
         return iGregorianChronology.getMinimumDaysInFirstWeek();
     }
 
-    long julianToGregorian(long instant) {
-        return convert(instant, iJulianChronology, iGregorianChronology);
+    long julianToGregorianByYear(long instant) {
+        return convertByYear(instant, iJulianChronology, iGregorianChronology);
     }
 
-    long gregorianToJulian(long instant) {
-        return convert(instant, iGregorianChronology, iJulianChronology);
+    long gregorianToJulianByYear(long instant) {
+        return convertByYear(instant, iGregorianChronology, iJulianChronology);
+    }
+
+    long julianToGregorianByWeekyear(long instant) {
+        return convertByWeekyear(instant, iJulianChronology, iGregorianChronology);
+    }
+
+    long gregorianToJulianByWeekyear(long instant) {
+        return convertByWeekyear(instant, iGregorianChronology, iJulianChronology);
     }
 
     /**
@@ -279,6 +299,7 @@ final class CutoverChronology extends GJChronology {
         final DateTimeField iJulianField;
         final DateTimeField iGregorianField;
         final long iCutover;
+        final boolean iConvertByWeekyear;
 
         protected DurationField iDurationField;
 
@@ -287,14 +308,29 @@ final class CutoverChronology extends GJChronology {
          * @param gregorianField field from the chronology used at and after the cutover
          */
         CutoverField(DateTimeField julianField, DateTimeField gregorianField) {
-            this(julianField, gregorianField, iCutoverInstant);
+            this(julianField, gregorianField, iCutoverInstant, false);
+        }
+
+        /**
+         * @param julianField field from the chronology used before the cutover instant
+         * @param gregorianField field from the chronology used at and after the cutover
+         * @param convertByWeekyear
+         */
+        CutoverField(DateTimeField julianField, DateTimeField gregorianField, boolean convertByWeekyear) {
+            this(julianField, gregorianField, iCutoverInstant, convertByWeekyear);
         }
 
         CutoverField(DateTimeField julianField, DateTimeField gregorianField, long cutoverInstant) {
+            this(julianField, gregorianField, cutoverInstant, false);
+        }
+
+        CutoverField(DateTimeField julianField, DateTimeField gregorianField,
+                     long cutoverInstant, boolean convertByWeekyear) {
             super(gregorianField.getName());
             iJulianField = julianField;
             iGregorianField = gregorianField;
             iCutover = cutoverInstant;
+            iConvertByWeekyear = convertByWeekyear;
             // Although average length of Julian and Gregorian years differ,
             // use the Gregorian duration field because it is more accurate.
             iDurationField = gregorianField.getDurationField();
@@ -516,6 +552,22 @@ final class CutoverChronology extends GJChronology {
             return Math.max(iJulianField.getMaximumShortTextLength(locale),
                             iGregorianField.getMaximumShortTextLength(locale));
         }
+
+        protected long julianToGregorian(long instant) {
+            if (iConvertByWeekyear) {
+                return julianToGregorianByWeekyear(instant);
+            } else {
+                return julianToGregorianByYear(instant);
+            }
+        }
+
+        protected long gregorianToJulian(long instant) {
+            if (iConvertByWeekyear) {
+                return gregorianToJulianByWeekyear(instant);
+            } else {
+                return gregorianToJulianByYear(instant);
+            }
+        }
     }
 
     /**
@@ -531,7 +583,15 @@ final class CutoverChronology extends GJChronology {
          * Creates a duration field that links back to this.
          */
         ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField) {
-            this(julianField, gregorianField, null);
+            this(julianField, gregorianField, null, false);
+        }
+
+        /**
+         * Creates a duration field that links back to this.
+         */
+        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
+                              boolean convertByWeekyear) {
+            this(julianField, gregorianField, null, convertByWeekyear);
         }
 
         /**
@@ -542,7 +602,18 @@ final class CutoverChronology extends GJChronology {
         ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
                               DurationField durationField)
         {
-            super(julianField, gregorianField);
+            this(julianField, gregorianField, durationField, false);
+        }
+
+        /**
+         * Uses a shared duration field rather than creating a new one.
+         *
+         * @param durationField shared duration field
+         */
+        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
+                              DurationField durationField, boolean convertByWeekyear)
+        {
+            super(julianField, gregorianField, convertByWeekyear);
             if (durationField == null) {
                 durationField = new LinkedDurationField(iDurationField, this);
             }

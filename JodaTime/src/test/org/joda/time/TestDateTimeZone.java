@@ -228,42 +228,52 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstance_int() {
-        assertEquals(DateTimeZone.UTC, DateTimeZone.getInstance(0));
-        assertEquals(DateTimeZone.getInstance("+03:00"), DateTimeZone.getInstance(3));
-        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstance(-2));
+    public void testGetInstanceFixedHours_int() {
+        assertSame(DateTimeZone.UTC, DateTimeZone.getInstanceFixedHours(0));
+        assertEquals(DateTimeZone.getInstance("+03:00"), DateTimeZone.getInstanceFixedHours(3));
+        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstanceFixedHours(-2));
         try {
-            DateTimeZone.getInstance(999999);
+            DateTimeZone.getInstanceFixedHours(999999);
             fail();
         } catch (IllegalArgumentException ex) {}
     }        
 
     //-----------------------------------------------------------------------
-    public void testGetInstance_int_int() {
-        assertEquals(DateTimeZone.UTC, DateTimeZone.getInstance(0));
-        assertEquals(DateTimeZone.getInstance("+03:15"), DateTimeZone.getInstance(3, 15));
-        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstance(-2, 0));
-        assertEquals(DateTimeZone.getInstance("-02:30"), DateTimeZone.getInstance(-2, 30));
+    public void testGetInstanceFixedHoursMinutes_int_int() {
+        assertSame(DateTimeZone.UTC, DateTimeZone.getInstanceFixedHoursMinutes(0, 0));
+        assertEquals(DateTimeZone.getInstance("+03:15"), DateTimeZone.getInstanceFixedHoursMinutes(3, 15));
+        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstanceFixedHoursMinutes(-2, 0));
+        assertEquals(DateTimeZone.getInstance("-02:30"), DateTimeZone.getInstanceFixedHoursMinutes(-2, 30));
         try {
-            DateTimeZone.getInstance(2, 60);
+            DateTimeZone.getInstanceFixedHoursMinutes(2, 60);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(-2, 60);
+            DateTimeZone.getInstanceFixedHoursMinutes(-2, 60);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(2, -1);
+            DateTimeZone.getInstanceFixedHoursMinutes(2, -1);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(-2, -1);
+            DateTimeZone.getInstanceFixedHoursMinutes(-2, -1);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            DateTimeZone.getInstance(999999, 0);
+            DateTimeZone.getInstanceFixedHoursMinutes(999999, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }        
+
+    //-----------------------------------------------------------------------
+    public void testGetInstanceFixedMillis_int() {
+        assertSame(DateTimeZone.UTC, DateTimeZone.getInstanceFixedMillis(0));
+        assertEquals(DateTimeZone.getInstance("+03:00"), DateTimeZone.getInstanceFixedMillis(3 * 60 * 60 * 1000));
+        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstanceFixedMillis(-2 * 60 * 60 * 1000));
+        assertEquals(DateTimeZone.getInstance("+04:45:17.045"),
+                DateTimeZone.getInstanceFixedMillis(
+                        4 * 60 * 60 * 1000 + 45 * 60 * 1000 + 17 * 1000 + 45));
     }        
 
     //-----------------------------------------------------------------------

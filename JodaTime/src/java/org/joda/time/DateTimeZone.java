@@ -206,8 +206,8 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the offset
      * @throws IllegalArgumentException if the offset is too large or too small
      */
-    public static DateTimeZone getInstance(int hoursOffset) throws IllegalArgumentException {
-        return getInstance(hoursOffset, 0);
+    public static DateTimeZone getInstanceFixedHours(int hoursOffset) {
+        return getInstanceFixedHoursMinutes(hoursOffset, 0);
     }
 
     /**
@@ -223,7 +223,7 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the offset
      * @throws IllegalArgumentException if the offset or minute is too large or too small
      */
-    public static DateTimeZone getInstance(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
+    public static DateTimeZone getInstanceFixedHoursMinutes(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
         if (hoursOffset == 0 && minutesOffset == 0) {
             return DateTimeZone.UTC;
         }
@@ -242,8 +242,18 @@ public abstract class DateTimeZone implements Serializable {
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }
-        String id = printOffset(offset);
-        return fixedOffsetZone(id, offset);
+        return getInstanceFixedMillis(offset);
+    }
+
+    /**
+     * Get a time zone by the millisecond difference from UTC.
+     *
+     * @param millisOffset  the offset in millis from UTC
+     * @return the DateTimeZone object for the offset
+     */
+    public static DateTimeZone getInstanceFixedMillis(int millisOffset) {
+        String id = printOffset(millisOffset);
+        return fixedOffsetZone(id, millisOffset);
     }
 
     /**
@@ -306,6 +316,9 @@ public abstract class DateTimeZone implements Serializable {
      * @return the zone
      */
     private static synchronized DateTimeZone fixedOffsetZone(String id, int offset) {
+        if (offset == 0) {
+            return DateTimeZone.UTC;
+        }
         if (iFixedOffsetCache == null) {
             iFixedOffsetCache = new HashMap();
         }

@@ -41,10 +41,10 @@ import org.joda.time.chrono.JulianChronology;
  */
 public class TestStringConverter extends TestCase {
 
-    private static final DateTimeZone ONE_HOUR = DateTimeZone.getInstance(1);
-    private static final DateTimeZone SIX = DateTimeZone.getInstance(6);
-    private static final DateTimeZone SEVEN = DateTimeZone.getInstance(7);
-    private static final DateTimeZone EIGHT = DateTimeZone.getInstance(8);
+    private static final DateTimeZone ONE_HOUR = DateTimeZone.getInstanceFixedHours(1);
+    private static final DateTimeZone SIX = DateTimeZone.getInstanceFixedHours(6);
+    private static final DateTimeZone SEVEN = DateTimeZone.getInstanceFixedHours(7);
+    private static final DateTimeZone EIGHT = DateTimeZone.getInstanceFixedHours(8);
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");

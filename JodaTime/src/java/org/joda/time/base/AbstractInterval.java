@@ -109,7 +109,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the start of the time interval
      */
-    public final Instant getStartInstant() {
+    public Instant getStartInstant() {
         return new Instant(getStartMillis());
     }
 
@@ -118,7 +118,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the end of the time interval
      */
-    public final Instant getEndInstant() {
+    public Instant getEndInstant() {
         return new Instant(getEndMillis());
     }
 
@@ -131,7 +131,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return the duration of the time interval in milliseconds
      * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
-    public final long getDurationMillis() {
+    public long getDurationMillis() {
         return FieldUtils.safeAdd(getEndMillis(), -getStartMillis());
     }
 
@@ -141,7 +141,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return the duration of the time interval
      * @throws ArithmeticException if the duration exceeds the capacity of a long
      */
-    public final Duration getDuration() {
+    public Duration getDuration() {
         long durMillis = getDurationMillis();
         if (durMillis == 0) {
             return Duration.ZERO;
@@ -160,7 +160,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval contains the millisecond
      */
-    public final boolean contains(long millisInstant) {
+    public boolean contains(long millisInstant) {
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
         return (millisInstant >= thisStart && millisInstant < thisEnd);
@@ -173,7 +173,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @return true if this time interval contains the current instant
      */
-    public final boolean containsNow() {
+    public boolean containsNow() {
         return contains(DateTimeUtils.currentTimeMillis());
     }
 
@@ -185,7 +185,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
      */
-    public final boolean contains(ReadableInstant instant) {
+    public boolean contains(ReadableInstant instant) {
         if (instant == null) {
             return contains(DateTimeUtils.currentTimeMillis());
         }
@@ -201,7 +201,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if this time interval contains the time interval
      * @throws IllegalArgumentException if the interval is null
      */
-    public final boolean contains(ReadableInterval interval) {
+    public boolean contains(ReadableInterval interval) {
         if (interval == null) {
             throw new IllegalArgumentException("The time interval must not be null");
         }
@@ -222,7 +222,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return true if the time intervals overlap
      * @throws IllegalArgumentException if the interval is null
      */
-    public final boolean overlaps(ReadableInterval interval) {
+    public boolean overlaps(ReadableInterval interval) {
         if (interval == null) {
             throw new IllegalArgumentException("The time interval must not be null");
         }
@@ -243,7 +243,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is before the instant
      */
-    public final boolean isBefore(long millisInstant) {
+    public boolean isBefore(long millisInstant) {
         return (getEndMillis() <= millisInstant);
     }
 
@@ -254,7 +254,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @return true if this time interval is before the current instant
      */
-    public final boolean isBeforeNow() {
+    public boolean isBeforeNow() {
         return isBefore(DateTimeUtils.currentTimeMillis());
     }
 
@@ -266,7 +266,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param instant  the instant to compare to, null means now
      * @return true if this time interval is before the instant
      */
-    public final boolean isBefore(ReadableInstant instant) {
+    public boolean isBefore(ReadableInstant instant) {
         if (instant == null) {
             return isBefore(DateTimeUtils.currentTimeMillis());
         }
@@ -282,7 +282,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @return true if this time interval is after the instant
      */
-    public final boolean isAfter(long millisInstant) {
+    public boolean isAfter(long millisInstant) {
         return (getStartMillis() > millisInstant);
     }
 
@@ -293,7 +293,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * @return true if this time interval is after the current instant
      */
-    public final boolean isAfterNow() {
+    public boolean isAfterNow() {
         return isAfter(DateTimeUtils.currentTimeMillis());
     }
 
@@ -305,7 +305,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param instant  the instant to compare to, null means now
      * @return true if this time interval is after the instant
      */
-    public final boolean isAfter(ReadableInstant instant) {
+    public boolean isAfter(ReadableInstant instant) {
         if (instant == null) {
             return isAfter(DateTimeUtils.currentTimeMillis());
         }
@@ -320,7 +320,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the interval as an Interval object
      */
-    public final Interval toInterval() {
+    public Interval toInterval() {
         if (this instanceof Interval) {
             return (Interval) this;
         }
@@ -334,7 +334,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return the time interval as a MutableInterval object
      */
-    public final MutableInterval toMutableInterval() {
+    public MutableInterval toMutableInterval() {
         return new MutableInterval(getStartMillis(), getEndMillis());
     }
 
@@ -350,7 +350,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return a time period derived from the interval
      */
-    public final Period toPeriod() {
+    public Period toPeriod() {
         return new Period(getStartMillis(), getEndMillis());
     }
 
@@ -366,7 +366,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
-    public final Period toPeriod(PeriodType type) {
+    public Period toPeriod(PeriodType type) {
         return new Period(getStartMillis(), getEndMillis(), type);
     }
 
@@ -381,7 +381,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @param readableInterval  a readable interval to check against
      * @return true if the start and end millis are equal
      */
-    public final boolean equals(Object readableInterval) {
+    public boolean equals(Object readableInterval) {
         if (this == readableInterval) {
             return true;
         }
@@ -398,7 +398,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return suitable hashcode
      */
-    public final int hashCode() {
+    public int hashCode() {
         long start = getStartMillis();
         long end = getEndMillis();
         int result = 97;
@@ -412,7 +412,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      *
      * @return re-parsable string
      */
-    public final String toString() {
+    public String toString() {
         DateTimePrinter printer =
             ISODateTimeFormat.getInstance(ISOChronology.getInstanceUTC())
             .dateHourMinuteSecondFraction();

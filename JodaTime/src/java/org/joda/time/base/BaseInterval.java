@@ -51,42 +51,47 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.base;
 
 import java.io.Serializable;
 
-import org.joda.time.base.BaseInterval;
+import org.joda.time.Chronology;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.ReadWritableInterval;
+import org.joda.time.ReadableDuration;
+import org.joda.time.ReadableInstant;
+import org.joda.time.ReadableInterval;
+import org.joda.time.ReadablePeriod;
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.IntervalConverter;
+import org.joda.time.field.FieldUtils;
 
 /**
- * Interval is the standard implementation of an immutable time interval.
+ * BaseInterval is an abstract implementation of ReadableInterval that stores
+ * data in two <code>long</code> millisecond fields.
  * <p>
- * A time interval represents a period of time between two instants.
- * Intervals are inclusive of the start instant and exclusive of the end.
- * The end instant is always greater than or equal to the start instant.
+ * This class should generally not be used directly by API users.
+ * The {@link ReadableInterval} interface should be used when different 
+ * kinds of interval objects are to be referenced.
  * <p>
- * Intervals have a fixed millisecond duration.
- * This is the difference between the start and end instants.
- * The duration is represented separately by {@link ReadableDuration}.
- * As a result, intervals are not comparable.
- * To compare the length of two intervals, you should compare their durations.
- * <p>
- * An interval can also be converted to a {@link ReadablePeriod}.
- * This represents the difference between the start and end points in terms of fields
- * such as years and days.
- * <p>
- * Interval is thread-safe and immutable.
+ * BaseInterval subclasses may be mutable and not thread-safe.
  *
  * @author Brian S O'Neill
  * @author Sean Geoghegan
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class Interval
-        extends BaseInterval
+public class BaseInterval
+        extends AbstractInterval
         implements ReadableInterval, Serializable {
 
     /** Serialization version */
-    private static final long serialVersionUID = 4922451897541386752L;
+    private static final long serialVersionUID = 576586928732749278L;
+
+    /** The start of the interval */
+    private long iStartMillis;
+    /** The end of the interval */
+    private long iEndMillis;
 
     /**
      * Constructs an interval from a start and end instant.
@@ -95,8 +100,11 @@ public final class Interval
      * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @throws IllegalArgumentException if the end is before the start
      */
-    public Interval(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
+    public BaseInterval(long startInstant, long endInstant) {
+        super();
+        checkInterval(startInstant, endInstant);
+        iStartMillis = startInstant;
+        iEndMillis = endInstant;
     }
 
     /**
@@ -106,8 +114,15 @@ public final class Interval
      * @param end  end of this interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
-    public Interval(ReadableInstant start, ReadableInstant end) {
-        super(start, end);
+    public BaseInterval(ReadableInstant start, ReadableInstant end) {
+        super();
+        if (start == null && end == null) {
+            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+        } else {
+            iStartMillis = DateTimeUtils.getInstantMillis(start);
+            iEndMillis = DateTimeUtils.getInstantMillis(end);
+            checkInterval(iStartMillis, iEndMillis);
+        }
     }
 
     /**
@@ -118,8 +133,12 @@ public final class Interval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public Interval(ReadableInstant start, ReadableDuration duration) {
-        super(start, duration);
+    public BaseInterval(ReadableInstant start, ReadableDuration duration) {
+        super();
+        iStartMillis = DateTimeUtils.getInstantMillis(start);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        iEndMillis = FieldUtils.safeAdd(iStartMillis, durationMillis);
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -130,8 +149,12 @@ public final class Interval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public Interval(ReadableDuration duration, ReadableInstant end) {
-        super(duration, end);
+    public BaseInterval(ReadableDuration duration, ReadableInstant end) {
+        super();
+        iEndMillis = DateTimeUtils.getInstantMillis(end);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        iStartMillis = FieldUtils.safeAdd(iEndMillis, -durationMillis);
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -145,8 +168,16 @@ public final class Interval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    public Interval(ReadableInstant start, ReadablePeriod period) {
-        super(start, period);
+    public BaseInterval(ReadableInstant start, ReadablePeriod period) {
+        super();
+        iStartMillis = DateTimeUtils.getInstantMillis(start);
+        if (period == null) {
+            iEndMillis = iStartMillis;
+        } else {
+            Chronology chrono = DateTimeUtils.getInstantChronology(start, null);
+            iEndMillis = period.addTo(iStartMillis, 1, chrono);
+        }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -160,8 +191,16 @@ public final class Interval
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    public Interval(ReadablePeriod period, ReadableInstant end) {
-        super(period, end);
+    public BaseInterval(ReadablePeriod period, ReadableInstant end) {
+        super();
+        iEndMillis = DateTimeUtils.getInstantMillis(end);
+        if (period == null) {
+            iStartMillis = iEndMillis;
+        } else {
+            Chronology chrono = DateTimeUtils.getInstantChronology(end, null);
+            iStartMillis = period.addTo(iEndMillis, -1, chrono);
+        }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     /**
@@ -170,61 +209,74 @@ public final class Interval
      * @param interval  the time interval to copy
      * @throws IllegalArgumentException if the interval is null or invalid
      */
-    public Interval(Object interval) {
-        super(interval);
+    public BaseInterval(Object interval) {
+        super();
+        IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
+        if (this instanceof ReadWritableInterval) {
+            converter.setInto((ReadWritableInterval) this, interval);
+        } else {
+            long[] millis = converter.getIntervalMillis(interval);
+            iStartMillis = millis[0];
+            iEndMillis = millis[1];
+        }
+        checkInterval(iStartMillis, iEndMillis);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new interval with the specified start millisecond instant.
+     * Gets the start of this time interval which is inclusive.
      *
-     * @param startInstant  the start instant for the new interval
-     * @return an interval with the end from this interval and the specified start
-     * @throws IllegalArgumentException if the resulting interval has end before start
+     * @return the start of the time interval,
+     *  millisecond instant from 1970-01-01T00:00:00Z
      */
-    public Interval withStartMillis(long startInstant) {
-        if (startInstant == getStartMillis()) {
-            return this;
-        }
-        return new Interval(startInstant, getEndMillis());
+    public long getStartMillis() {
+        return iStartMillis;
     }
 
     /**
-     * Creates a new interval with the specified start instant.
+     * Gets the end of this time interval which is exclusive.
      *
-     * @param start  the start instant for the new interval, null means now
-     * @return an interval with the end from this interval and the specified start
-     * @throws IllegalArgumentException if the resulting interval has end before start
+     * @return the end of the time interval,
+     *  millisecond instant from 1970-01-01T00:00:00Z
      */
-    public Interval withStartInstant(ReadableInstant start) {
-        long startMillis = DateTimeUtils.getInstantMillis(start);
-        return withStartMillis(startMillis);
+    public long getEndMillis() {
+        return iEndMillis;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Sets the start of this time interval which is inclusive.
+     *
+     * @param startInstant  the new start of the time interval,
+     *  millisecond instant from 1970-01-01T00:00:00Z
+     */
+    protected void setStartMillis(long startInstant) {
+        checkInterval(startInstant, iEndMillis);
+        iStartMillis = startInstant;
     }
 
     /**
-     * Creates a new interval with the specified start millisecond instant.
+     * Sets the end of this time interval which is exclusive.
      *
-     * @param endInstant  the end instant for the new interval
-     * @return an interval with the start from this interval and the specified end
-     * @throws IllegalArgumentException if the resulting interval has end before start
+     * @param endInstant  the new end of the time interval,
+     *  millisecond instant from 1970-01-01T00:00:00Z
      */
-    public Interval withEndMillis(long endInstant) {
-        if (endInstant == getEndMillis()) {
-            return this;
-        }
-        return new Interval(getStartMillis(), endInstant);
+    protected void setEndMillis(long endInstant) {
+        checkInterval(iStartMillis, endInstant);
+        iEndMillis = endInstant;
     }
 
     /**
-     * Creates a new interval with the specified start instant.
+     * Sets this interval from two millisecond instants.
      *
-     * @param end  the end instant for the new interval, null means now
-     * @return an interval with the start from this interval and the specified end
-     * @throws IllegalArgumentException if the resulting interval has end before start
+     * @param startInstant  the start of the time interval
+     * @param endInstant  the start of the time interval
+     * @throws IllegalArgumentException if the end is before the start
      */
-    public Interval withEndInstant(ReadableInstant end) {
-        long endMillis = DateTimeUtils.getInstantMillis(end);
-        return withEndMillis(endMillis);
+    protected void setInterval(long startInstant, long endInstant) {
+        checkInterval(startInstant, endInstant);
+        iStartMillis = startInstant;
+        iEndMillis = endInstant;
     }
 
 }

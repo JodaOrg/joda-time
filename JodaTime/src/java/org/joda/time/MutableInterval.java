@@ -55,9 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.base.*;
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.IntervalConverter;
+import org.joda.time.base.BaseInterval;
 import org.joda.time.field.FieldUtils;
 
 /**
@@ -88,22 +86,17 @@ import org.joda.time.field.FieldUtils;
  * @since 1.0
  */
 public class MutableInterval
-        extends AbstractInterval
+        extends BaseInterval
         implements ReadWritableInterval, Cloneable, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = -5982824024992428470L;
 
-    /** The start of the period */
-    private long iStartMillis;
-    /** The end of the period */
-    private long iEndMillis;
-
     /**
      * Constructs a zero length time interval from 1970-01-01 to 1970-01-01.
      */
     public MutableInterval() {
-        super();
+        super(0L, 0L);
     }
 
     /**
@@ -114,10 +107,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public MutableInterval(long startInstant, long endInstant) {
-        super();
-        checkInterval(startInstant, endInstant);
-        iStartMillis = startInstant;
-        iEndMillis = endInstant;
+        super(startInstant, endInstant);
     }
 
     /**
@@ -128,14 +118,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public MutableInterval(ReadableInstant start, ReadableInstant end) {
-        super();
-        if (start == null && end == null) {
-            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
-        } else {
-            iStartMillis = DateTimeUtils.getInstantMillis(start);
-            iEndMillis = DateTimeUtils.getInstantMillis(end);
-            checkInterval(iStartMillis, iEndMillis);
-        }
+        super(start, end);
     }
 
     /**
@@ -147,11 +130,7 @@ public class MutableInterval
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public MutableInterval(ReadableInstant start, ReadableDuration duration) {
-        super();
-        iStartMillis = DateTimeUtils.getInstantMillis(start);
-        long durationMillis = DateTimeUtils.getDurationMillis(duration);
-        iEndMillis = FieldUtils.safeAdd(iStartMillis, durationMillis);
-        checkInterval(iStartMillis, iEndMillis);
+        super(start, duration);
     }
 
     /**
@@ -163,11 +142,7 @@ public class MutableInterval
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public MutableInterval(ReadableDuration duration, ReadableInstant end) {
-        super();
-        iEndMillis = DateTimeUtils.getInstantMillis(end);
-        long durationMillis = DateTimeUtils.getDurationMillis(duration);
-        iStartMillis = FieldUtils.safeAdd(iEndMillis, -durationMillis);
-        checkInterval(iStartMillis, iEndMillis);
+        super(duration, end);
     }
 
     /**
@@ -182,15 +157,7 @@ public class MutableInterval
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public MutableInterval(ReadableInstant start, ReadablePeriod period) {
-        super();
-        iStartMillis = DateTimeUtils.getInstantMillis(start);
-        if (period == null) {
-            iEndMillis = iStartMillis;
-        } else {
-            Chronology chrono = DateTimeUtils.getInstantChronology(start, null);
-            iEndMillis = period.addTo(iStartMillis, 1, chrono);
-        }
-        checkInterval(iStartMillis, iEndMillis);
+        super(start, period);
     }
 
     /**
@@ -205,15 +172,7 @@ public class MutableInterval
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public MutableInterval(ReadablePeriod period, ReadableInstant end) {
-        super();
-        iEndMillis = DateTimeUtils.getInstantMillis(end);
-        if (period == null) {
-            iStartMillis = iEndMillis;
-        } else {
-            Chronology chrono = DateTimeUtils.getInstantChronology(end, null);
-            iStartMillis = period.addTo(iEndMillis, -1, chrono);
-        }
-        checkInterval(iStartMillis, iEndMillis);
+        super(period, end);
     }
 
     /**
@@ -223,52 +182,24 @@ public class MutableInterval
      * @throws IllegalArgumentException if the interval is null or invalid
      */
     public MutableInterval(Object interval) {
-        super();
-        IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
-        converter.setInto(this, interval);
-        checkInterval(iStartMillis, iEndMillis);
+        super(interval);
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Gets the start of this time interval which is inclusive.
-     *
-     * @return the start of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     */
-    public long getStartMillis() {
-        return iStartMillis;
-    }
-
-    /** 
-     * Gets the end of this time interval which is exclusive.
-     *
-     * @return the end of the time interval,
-     *  millisecond instant from 1970-01-01T00:00:00Z
-     */
-    public long getEndMillis() {
-        return iEndMillis;
-    }
-
-    //-----------------------------------------------------------------------
+    // NOTE: All updates go via setInterval(long,long), setStartMillis(long)
+    // or setEndMillis(long) on this class
+    
     /**
      * Sets this interval from two millisecond instants.
-     * <p>
-     * All updates ocurr via this method (exclusing the constructors).
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setInterval(long startInstant, long endInstant) {
-        if (startInstant != iStartMillis || endInstant != iEndMillis) {
-            checkInterval(startInstant, endInstant);
-            iStartMillis = startInstant;
-            iEndMillis = endInstant;
-        }
+        super.setInterval(startInstant, endInstant);
     }
 
-    //-----------------------------------------------------------------------
     /**
      * Sets this interval to be the same as another.
      *
@@ -293,7 +224,8 @@ public class MutableInterval
      */
     public void setInterval(ReadableInstant start, ReadableInstant end) {
         if (start == null && end == null) {
-            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+            long now = DateTimeUtils.currentTimeMillis();
+            setInterval(now, now);
         } else {
             long startMillis = DateTimeUtils.getInstantMillis(start);
             long endMillis = DateTimeUtils.getInstantMillis(end);
@@ -310,7 +242,7 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setStartMillis(long startInstant) {
-        setInterval(startInstant, iEndMillis);
+        super.setStartMillis(startInstant);
     }
 
     /**
@@ -321,23 +253,19 @@ public class MutableInterval
      */
     public void setStartInstant(ReadableInstant start) {
         long startMillis = DateTimeUtils.getInstantMillis(start);
-        setInterval(startMillis, iEndMillis);
+        setStartMillis(startMillis);
     }
 
     //-----------------------------------------------------------------------
     /** 
      * Sets the end of this time interval.
-     * <p>
-     * Subclasses that wish to be immutable should override this method with an
-     * empty implementation that is public and final. This also ensures that
-     * all lower subclasses are also immutable.
      *
      * @param endInstant  the end of the time interval,
      *  millisecond instant from 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setEndMillis(long endInstant) {
-        setInterval(iStartMillis, endInstant);
+        super.setEndMillis(endInstant);
     }
 
     /** 
@@ -348,7 +276,7 @@ public class MutableInterval
      */
     public void setEndInstant(ReadableInstant end) {
         long endMillis = DateTimeUtils.getInstantMillis(end);
-        setInterval(iStartMillis, endMillis);
+        setEndMillis(endMillis);
     }
 
     //-----------------------------------------------------------------------

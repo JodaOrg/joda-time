@@ -1,0 +1,110 @@
+<body>
+<h3>DateTime object creation and manipulation.</h3>
+<p>
+This package aims to provide a full date and time implementation to replace
+the Java Date and Calendar classes. The implementation covers both the
+Gregorian/Julian calendar system and the ISO8601 standard.
+The design aims to be flexible enough to enable other calendar systems, or 
+extensions to the provided ones, to be created.
+</p>
+<p>
+The ISO8601 standard is the international standard for dates, times and time
+periods. It defines a String representation and fixes values for the first day
+of the week, Monday which has the value 1, and the first week in a year. This
+standard is being increasingly used in computer interchange and is the agreed
+format for XML. For most uses, the ISO standard is the same as Gregorian/Julian
+and is thus the preferred format.
+</p>
+
+<h4>Interfaces</h4>
+<p>
+The main API concepts are defined by interfaces:
+</p>
+<ul>
+<li><code>ReadableInstant</code> - an instant in time
+<li><code>ReadWriteableInstant</code> - an instant that can be updated
+</ul>
+<p>
+These define the public interface to dates and times. The design is
+millisecond based as with java.util.Date and Calendar. This should enable easy
+conversions.
+</p>
+<p>
+It is intended that dates are passed into methods using the interface. Methods
+will utilise the date and if necessary return a specified implementation, preferably
+<code>Instant</code>. By using the interface to pass time in and <code>Instant</code>
+to return time you are not hard coding a locale specific calendar system into your API.
+Within the method you can create an instance of a specific calendar system to work
+with if required.
+</p>
+
+<h4>Implementations</h4>
+<p>
+The basic implementation of the <code>ReadableInstant</code> interface is 
+<code>Instant</code>. This is a simple immutable class that stores the millisecond
+value and integrates with Java Date and Calendar. If you are dealing with an instant
+in time but do not know, or do not want to specify, which calendar system it refers
+to then you should use this class.
+</p>
+<p>
+The main implementation class for datetimes is the <code>DateTime</code> class.
+This implements the <code>ReadableInstant</code> interface, but also provides
+convenient methods to access the fields of the datetime. Conversion methods allow 
+integration with the Java Date and Calendar classes. <code>DateTime</code> has 
+three subclasses at present - <code>ISODateTime</code>, <code>GJDateTime</code> 
+and <code>BuddhistDateTime</code>. These provide the same functionality but with 
+different <i>chronologies</i>.
+</p>
+<p>
+These subclasses are <i>immutable</i>, so can be used safely in a multi-threaded
+environment. <code>DateTime</code> itself can be considered to be immutable so 
+long as you only use the methods it or a superclass defines. To be fully immutable
+<code>DateTime</code> would have to be final, but that prevents
+subclasses from adding convenient access methods. The chosen design allows the 
+flexibility of convenience, but at the risk of someone writing potentially mutable
+subclasses. (Note that the millisecond and chronology values are immutable, so the 
+'danger' posed is small.)
+</p>
+<p>
+In addition to the datetime classes, there are date and time only classes, 
+<code>DateOnly</code> and <code>TimeOnly</code>. These have similar subclasses 
+to <code>DateTime</code>.
+</p>
+<p>
+To enable the easy editing of datetimes, there is a single implementation of the
+<code>ReadWriteableInstant</code> interface, <code>MutableDateTime</code>.
+</p>
+
+<h4>Chronologies and Fields</h4>
+<p>
+In order to enable the package to be easily extended, each field of the datetime,
+such as the month, is calculated by a separate subclass of <code>DateTimeField</code>.
+If desired, applcations can then write their own implementations to retrieve an unusual 
+field from the millisecond value.
+</p>
+<p>
+The fields that together represent a calendar system are grouped into a <code>Chonology</code>.
+The chronology represents all the information to convert from a millisecond value to
+human understanable fields in a specific calendar system. Chronologies are provided for 
+ISO and Gregorian/Julian (GJ). (ISO is in fact a special case of GJ).
+</p>
+<p>
+This design results in a low overhead on the date time classes. Java Calendar class
+performs poorly because it has many internal fields that are constantly kept in sync.
+This design only calculates fields when required, resulting in lightweight and simple
+date time classes.
+</p>
+
+<h4>Formatting</h4>
+<p>
+Formatting is provided by the <code>format</code> subpackage. Comprehensive support is
+provided for outputting dates and times in multiple formats. A pattern similar to
+Java SimpleDateFormat can be used, but a more advanced programmatic technique is available.
+</p>
+
+<h4>General</h4>
+<p>
+The package is standalone and has no dependencies other than JDK 1.2.
+It is licenced under an Apache/BSD style licence.
+</p>
+</body>

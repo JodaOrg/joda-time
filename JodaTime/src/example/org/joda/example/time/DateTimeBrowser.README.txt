@@ -1,0 +1,53 @@
+- Joda jar(s) need to be in CLASSPATH.  So does the path
+which leads to this program's class and inner class files.
+
+- Before running set the default time zone for your
+environment (whatever it is will be displayed in the
+window title). (See more on TimeZone control  below.)
+
+- Once displayed, table columns can resized and rearranged by
+drag-n-drop.
+
+- Simple example command lines:
+
+	 # The default way -
+		java org.joda.example.DateTimeBrowser DateTimeFile.dat
+
+	 # Start with the hex view of DateTimes -
+		java org.joda.example.DateTimeBrowser -Duse.view=hex DateTimeFile.dat
+
+<!-- =============================================================== -->
+
+View Control:
+
+The initial view can be controlled from the command line with:
+
+	-Duse.view=
+
+	Valid values are: getter, hex, date, cal.
+	Getter is used if not specified or an invalid value is
+	specified.
+
+<!-- =============================================================== -->
+
+TimeZone Control:
+
+The TZ used can be controlled from the command line with:
+
+    -Duse.time.zone=xxx
+
+If not specified, the OS/user default is used.
+
+'xxx' should be a valid time zone (e.g. EST).  If specified
+and 'xxx' is bogus/nonextant, GMT is used.
+
+
+<!-- =============================================================== -->
+
+Regards and Enjoy, Guy Allard
+2002-04-18
+
+Last Update: 2002-04-27
+
+
+

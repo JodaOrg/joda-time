@@ -1,0 +1,37 @@
+JodaTime ToDo list
+==================
+
+1.0
+---
+Durations/TimePeriods:
+ Integrate new design
+ Write formatter
+ Write tests
+ 
+Tests:
+ Write tests to cover functionality
+ Ensure all tests pass!
+
+Serializable - need tests and serialVersionID field
+
+BuddhistChronology:
+ Code missing fields
+
+Factories for DateTime clases? Well a locale dependent one is needed at least
+
+
+Ideas longer term
+-----------------
+Chronology:
+ Add daysFrom(year)
+
+ISOCalendar:
+ Calendar subclass that implements our interface
+
+ISODate:
+ Date subclasses that implements our interface
+
+PartialDateTime:
+ Add a partial date time class? It would allow you to have specify for example 7th Feb
+ without specifying the year.
+

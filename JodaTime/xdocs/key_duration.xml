@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Duration</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Duration">
+
+<p>
+A <i>duration</i> in Joda-time represents a duration of time measured in milliseconds.
+The duration is often obtained from an <a href="key_interval.html">interval</a>.
+</p>
+<p>
+Durations are a very simple concept, and the implementation is also simple.
+They have no <a href="key_chronology.html">chronology</a> or time zone, and consist
+solely of the millisecond duration.
+</p>
+<p>
+Durations can be added to an <a href="key_instant.html">instant</a>, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  duration  =  instant
+</source>
+</p>
+<p>
+Durations implement <code>Comparable</code> which compares the lengths of the two durations.
+</p>
+
+</section>
+
+<section name="Using Durations in Joda-time">
+<p>
+Within Joda-Time a duration is represented by the
+<a href="apidocs/org/joda/time/ReadableDuration.html">ReadableDuration</a> interface.
+There is one implementation of the interface provided:
+<ul>
+<li><a href="apidocs/org/joda/time/Duration.html">Duration</a> -
+An immutable implementation</li>
+</ul>
+</p>
+<p>
+The code can be used in various ways:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+
+// duration in ms between two instants
+Duration dur = new Duration(start, end);
+
+// calc will be the same as end
+DateTime calc = start.plus(dur);
+</source>
+</p>
+<p>
+Note that the interface <code>ReadableDuration</code> should not be used like the collections API.
+The interface only contains the core subset of the operations.
+Instead, you should usually refer directly to the implementation class in your APIs.
+</p>
+
+<subsection name="Nulls">
+<p>
+Joda-time defines a null duration as zero length.
+Thus, when a method is defined as taking a <code>ReadableDuration</code>, passing null in
+will be the same as passing in a zero length duration.
+</p>
+</subsection>
+
+</section>
+
+</body>
+</document>

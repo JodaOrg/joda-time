@@ -16,12 +16,11 @@
     
     <menu name="Key concepts">
       <item name="Instant" href="/key_instant.html"/>
-<!--      <item name="Partial" href="/key_partial.html"/>
+      <item name="Partial" href="/key_partial.html"/>
       <item name="Interval" href="/key_interval.html"/>
       <item name="Duration" href="/key_duration.html"/>
       <item name="Period" href="/key_period.html"/>
       <item name="Chronology" href="/key_chronology.html"/>
-      <item name="Time zone" href="/key_zone.html"/>-->
     </menu>
     
     <menu name="Chronologies">

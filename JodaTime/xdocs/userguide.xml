@@ -33,14 +33,14 @@ The current chronologies supplied are:
 <ul>
 <li><a href="cal_iso.html">ISOChronology</a> - Implements the ISO8601 standard, which is compatible with Gregorian in modern times.</li>
 <li><a href="cal_gj.html">GJChronology</a> - The Gregorian/Julian calendar system, for historical use.</li>
-<li>BuddhistChronology - Offset from Gregorian/Julian by 543 years.</li>
-<li>CopticChronology - Offset from Gregorian/Julian by 284 years.</li>
+<li><a href="cal_buddhist.html">BuddhistChronology</a> - Offset from Gregorian/Julian by 543 years.</li>
+<li><a href="cal_coptic.html">CopticChronology</a> - Offset from Gregorian/Julian by 284 years.</li>
 </ul>
 <p>
 It is hoped that other chronologies will be added over time.
 </p>
 <p>
-Although the Chronology is key to the design, it is not key to using the API!
+Although the Chronology is key to the design, it is not key to using the API !!
 For most usages, the Chronology can be ignored as it will default to the ISOChronology.
 This is suitable for most uses.
 You would change it if you need accurate dates before October 15, 1582 when the Julian calendar was used,
@@ -55,12 +55,13 @@ or if you need a specific chronology like BuddhistChronology.
 Joda-Time defines a number of new interfaces.
 The most important is <a href="apidocs/org/joda/time/ReadableInstant.html">ReadableInstant</a>.
 This defines an instant in time that can be read.
-Other interfaces are defined for datetimes and durations.
+Other interfaces are defined for datetimes, durations, intervals and periods.
 </p>
 <p>
 These interfaces allow multiple implementations of the basic date and time functionality to interoperate.
-Where possible, your application should define dates in terms of these interfaces.
-The design principle is the same as the Java Collections Framework (List/Map/Set).
+However, these interfaces are not like the Java Collections Framework (List/Map/Set).
+This is because the interfaces only contain a subset of the useful methods of the API.
+Most applications will probably work with the implementation classes directly, not the interfaces.
 </p>
 
 </section>
@@ -111,6 +112,22 @@ The property has methods to:
 Knowing the methods on the property is the secret to making the most of the API.
 </p>
 
+</section>
+
+<section name="More details">
+
+<p>
+Additional information is provided in the 'key concepts' and 'chronologies' links
+on the left.
+The easiest way to learn the API is to use it however.
+</p>
+<p>
+One final point - the package structure is degned to group the methods in the public API
+from the private API.
+The public packages are the main package and the format package.
+The private packages are the base, chrono, convert, field and tz packages.
+Most applications should not need to import classes from the private packages.
+</p>
 </section>
 
 </body>

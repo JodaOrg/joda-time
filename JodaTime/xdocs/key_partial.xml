@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Partial</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Partial">
+
+<p>
+A <i>partial</i> in Joda-time is a partial date and time representation.
+The two supplied implementations are <code>TimeofDay</code> and <code>YearMonthDay</code>.
+These classes do not store the date or time using a <code>long</code> millisecond instant,
+but instead store individual <code>int</code> field values.
+They also do not store the time zone, and thus represent local times.
+</p>
+<p>
+These classes were created as it is not possible to directly interoperate between a local
+time and an <a href="key_instant.html">instant</a>.
+A partial does not fully specify a single point in the datetime continuum.
+Instead, a partial describes various datetime fields.
+For example, a <code>TimeofDay</code> occurs many times on the datetime continuum - once per day.
+</p>
+<p>
+A partial can be converted to a full instant by specifying the missing values.
+If just the time zone is specified then the missing values are filled in from the current date and time.
+Alternatively, an instant may be specified, and the result is the merger of the fields from the instant and the partial.
+</p>
+<p>
+In terms of datetime maths, you could write:
+<source>
+      partial  +  missing fields  +  time zone  =  instant
+</source>
+</p>
+
+<subsection name="Date representations">
+<p>
+Two classes represent a date in Joda-time - <code>DateMidnight</code> and <code>YearMonthDay</code>.
+These have different meanings.
+<code>DateMidnight</code> is a fully specified instant, with a time zone.
+It is defined as the milliseond instant at exactly mignight (00:00) at the start of a day.
+<code>YearMonthDay</code> defines a day using the year, monthOfYear and dayOfMonth fields and no time zone.
+It can be thought of as a local date that covers the whole of the day from 00:00 to 23:59.
+</p>
+</subsection>
+
+</section>
+
+<section name="Using Partials in Joda-time">
+<p>
+Within Joda-Time a partial is represented by the
+<a href="apidocs/org/joda/time/ReadablePartial.html">ReadablePartial</a> interface.
+There are two implementations of the interface provided:
+<ul>
+<li><a href="apidocs/org/joda/time/TimeOfDay.html">TimeOfDay</a> -
+An immutable implementation that stores the hour, minute, second and millisecond fields</li>
+<li><a href="apidocs/org/joda/time/YearMonthDay.html">YearMonthDay</a> -
+An immutable implementation that stores the year, monthOfYear and dayOfMonth fields</li>
+</ul>
+</p>
+<p>
+The code can be used in various ways:
+<source>
+// setup objects
+YearMonthDay date = new YearMonthDay(2004, 12, 25);
+TimeOfDay time = new TimeOfDay(12, 20);
+
+int year = date.getYear();  // returns 2004
+int hour = time.getHour();  // returns 12
+String monthStr = date.month().getAsText();  // returns 'December'
+</source>
+Conversion to and from instants is easy:
+<source>
+YearMonthDay date = new YearMonthDay(2004, 12, 25);
+TimeOfDay time = new TimeOfDay(12, 20);
+
+// merge, resulting in 2004-25-12T12:20 (default time zone)
+DateTime dt = date.toDateTime(time);
+
+// extract the date fields from someDT
+DateTime someDT = ...
+YearMonthDay date = new YearMonthDay(someDT);
+</source>
+</p>
+<p>
+Note that the interface <code>ReadablePartial</code> should not be used like the collections API.
+The interface only contains the core subset of the operations.
+Instead, you should refer directly to the implementation classes in your APIs.
+</p>
+
+<subsection name="Nulls">
+<p>
+Joda-time defines a null partial as the current time.
+Thus, when a method is defined as taking a <code>ReadablePartial</code>, passing null in
+will be the same as passing in a partial set to the current time.
+</p>
+</subsection>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Interval</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Interval">
+
+<p>
+An <i>interval</i> in Joda-time represents an interval of time from one millisecond
+<a href="key_instant.html">instant</a> to another instant.
+Both instants are fully specified instants in the datetime continuum, complete with time zone.
+</p>
+<p>
+Intervals are implemented as <i>half-open</i>, which is to say that the start instant is
+inclusive but the end instant is exclusive.
+The end is always greater than or equal to the start.
+The interval is also restricted to just one <a href="key_chronology.html">chronology</a> and time zone.
+</p>
+<p>
+Methods exist on intervals to obtain the start and end instants plus the chronology and time zone.
+There are also methods to obtain the <a href="key_duration.html">duration</a> and
+<a href="key_period.html">period</a> of the interval.
+</p>
+<p>
+You cannot compare intervals for order (ie. they do not implement <code>Comparable</code>.
+If you want to compare the length of intervals you must obtain the duration of each and compare those.
+</p>
+
+</section>
+
+<section name="Using Intervals in Joda-time">
+<p>
+Within Joda-Time an interval is represented by the
+<a href="apidocs/org/joda/time/ReadableInterval.html">ReadableInterval</a> interface.
+There are two implementations of the interface provided:
+<ul>
+<li><a href="apidocs/org/joda/time/Interval.html">Interval</a> - An immutable implementation</li>
+<li><a href="apidocs/org/joda/time/MutableInterval.html">MutableInterval</a> - A mutable implementation</li>
+</ul>
+We recommend the immutable implementation for general usage.
+</p>
+<p>
+The code can be used in various ways:
+<source>
+// interval from start to end
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+Interval interval = new Interval(start, end);
+</source>
+Accessing other objects is easy:
+<source>
+Interval interval = ...
+DateTime start = interval.getStart();
+DateTime end = interval.getEnd();
+Chronology chrono = interval.getChronology();
+Duration duration = interval.toDuration();
+Period period = interval.toPeriod();
+</source>
+</p>
+<p>
+Note that the interface <code>ReadableInterval</code> should not be used like the collections API.
+The interface only contains the core subset of the operations.
+Instead, you should usually refer directly to the implementation classes in your APIs.
+</p>
+
+<subsection name="Nulls">
+<p>
+Joda-time defines a null interval as a zero length interval from now to now.
+Thus, when a method is defined as taking a <code>ReadableInterval</code>, passing null in
+will be the same as passing in a zero length interval at the current time.
+</p>
+</subsection>
+
+</section>
+
+</body>
+</document>

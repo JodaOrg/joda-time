@@ -1,6 +1,7 @@
 body, td, select, input, li{
   font-family: Helvetica, Arial, sans-serif;
   font-size: 13px;
+  background-color: #fff;
 }
 a {
   text-decoration: none;
@@ -76,6 +77,7 @@ p, ul {
 #navcolumn li {
   font-size: 12px;
   padding-left: 12px;
+  background-color: #eef;
 }
 #navcolumn a:active, #navcolumn a:hover {
   text-decoration: none;

@@ -33,7 +33,7 @@ This is then passed into the constructors of the main date and time classes.
 <source>
 // setup date object for midday on Christmas 2004 (ISO year 2004)
 DateTime dtISO = new DateTime(2004, 12, 25, 12, 0, 0, 0);
-DateTime dtBuddhist = dtISO.withChronology(Chronology.getBuddhist());
+DateTime dtBudd = dtISO.withChronology(Chronology.getBuddhist());
 </source>
 
 </section>

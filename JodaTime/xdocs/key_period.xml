@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Period</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Period">
+
+<p>
+A <i>period</i> in Joda-time represents a period of time defined in terms of fields,
+for example, 3 years 5 months 2 days and 7 hours.
+This differs from a <a href="key_duration.html">duration</a> in that it is inexact in terms of milliseconds.
+A period can only be resolved to an exact number of milliseconds by specifying the
+<a href="key_instant.html">instant</a> (including chronology and time zone) it is relative to.
+</p>
+<p>
+For example, consider a period of 1 month.
+If you add this period to the 1st February (ISO) then you will get the 1st March.
+If you add the same period to the 1st March you will get the 1st April.
+But the duration added (in milliseconds) in these two cases is very different.
+</p>
+<p>
+As a second example, consider adding 1 day at the daylight savings boundary.
+If you use a period to do the addition then either 23 or 25 hours will be added as appropriate.
+If you had created a duration equal to 24 hours, then you would end up with the wrong result.
+</p>
+<p>
+Periods are implemented as a set of <code>int</code> fields.
+The standard set of fields in a period are years, months, weeks, days, hours, minutes, seconds and millis.
+The <a href="apidocs/org/joda/time/PeriodType.html">PeriodType</a> class allows this set
+of fields to be restricted, for example to elimate weeks.
+This is significant when converting a duration or interval to a period, as the calculation
+needs to know which period fields it should populate.
+</p>
+<p>
+Methods exist on periods to obtain each field value.
+Periods do not have a <a href="key_chronology.html">chronology</a> or time zone.
+You cannot compare periods for order (ie. they do not implement <code>Comparable</code>.
+</p>
+<p>
+Periods can be added to an <a href="key_instant.html">instant</a>, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  period  =  instant
+</source>
+</p>
+
+</section>
+
+<section name="Using Periods in Joda-time">
+<p>
+Within Joda-Time a period is represented by the
+<a href="apidocs/org/joda/time/ReadablePeriod.html">ReadablePeriod</a> interface.
+There are two implementations of the interface provided:
+<ul>
+<li><a href="apidocs/org/joda/time/Period.html">Period</a> -
+An immutable implementation</li>
+<li><a href="apidocs/org/joda/time/MutablePeriod.html">MutablePeriod</a> -
+A mutable implementation</li>
+</ul>
+We recommend the immutable implementation for general usage.
+</p>
+<p>
+The code can be used in various ways:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2006, 1, 1, 0, 0, 0, 0);
+
+// period of 1 year and 7 days
+Period period = new Period(start, end);
+
+// calc will equal end
+DateTime calc = start.plus(period);
+</source>
+</p>
+<p>
+Note that the interface <code>ReadablePeriod</code> should not be used like the collections API.
+The interface only contains the core subset of the operations.
+Instead, you should usually refer directly to the implementation classes in your APIs.
+</p>
+
+<subsection name="Nulls">
+<p>
+Joda-time defines a null period as a zero length period.
+Thus, when a method is defined as taking a <code>ReadablePeriod</code>, passing null in
+will be the same as passing in a zero length period.
+</p>
+</subsection>
+
+</section>
+
+</body>
+</document>

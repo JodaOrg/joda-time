@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Chronology</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Chronology">
+
+<p>
+A <i>chronology</i> in Joda-time is a pluggable calendar system.
+The JDK supports multiple calendar systems via subclasses of <code>Calendar</code>.
+This is clunky, and in practice it is very difficult to write another calendar system.
+Joda-time supports multiple calendar systems by designing a pluggable system.
+</p>
+<p>
+The default chronology in Joda-time is <a href="cal_iso.html">ISO</a>.
+This calendar system is the same as that used by business in the majority of the world today.
+The ISO system is unsuitable for historical work before 1583 as it applies the leap year rules
+from today back in time (it is a proleptic calendar).
+As a result, users requiring a more historically accurate calendar system are forced to
+think about their actual requirements, which we believe is a Good Thing.
+</p>
+<p>
+The actual calculations of the chronology are split between the
+<a href="apidocs/org/joda/time/Chronology.html">Chronology</a> class itself
+and the field classes -
+<a href="apidocs/org/joda/time/DateTimeField.html">DateTimeField</a> and
+<a href="apidocs/org/joda/time/Duration.html">DurationField</a>.
+Together, the subclasses of these three classes form the bulk of the code in the library.
+However, most users will never need to use or refer directly to the subclasses.
+Instead, most applications will simply obtain the chronology and use it as a singleton.
+</p>
+<p>
+The chronology class also supports the time zone functionality.
+This is applied to the underlying chronology via the decorator design pattern.
+The <a href="apidocs/org/joda/time/DateTimeZone.html">DateTimeZone</a> class provides
+access to the zones via factories, and also supports a default zone concept.
+</p>
+<p>
+Internally, all the chronology, field and time zone classes are maintained as singletons.
+Thus there is an initial setup cost when using Joda-time, but after that only
+the main API instance classes (DateTime, Interval, Period, etc.) have creation and
+garbage collector costs.
+</p>
+
+</section>
+
+<section name="Using Chronology in Joda-time">
+<p>
+A Chronology is obtained and used in Joda-time as a singleton:
+<source>
+DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+Chronology coptic = Chronology.getCoptic(zone);
+
+// current time with coptic chronology
+DateTime dt = new DateTime(coptic);
+
+int year = dt.getYear();   // gets the current coptic year
+int month = dt.getMonth(); // gets the current coptic month
+</source>
+</p>
+
+<subsection name="Nulls">
+<p>
+A null chronology always refers to ISO chronology in the default zone.
+Thus, when a method is defined as taking a <code>Chronology</code>, passing null in
+will be the same as passing in the ISO chronology in the default time zone.
+</p>
+</subsection>
+
+</section>
+
+</body>
+</document>

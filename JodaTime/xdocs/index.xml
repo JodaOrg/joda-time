@@ -47,10 +47,13 @@ Current interfaces and implementations include:
 <ul>
 <li>Instant</li>
 <li>DateTime</li>
-<li>DateOnly</li>
-<li>TimeOnly</li>
+<li>DateMidnight</li>
+<li>YearMonthDay</li>
+<li>TimeOfDay</li>
 <li>Duration</li>
+<li>Period</li>
 <li>Interval</li>
+<li>Chronology</li>
 <li>DateTimeZone</li>
 <li>...plus formatting and parsing</li>
 </ul>
@@ -67,6 +70,8 @@ which is an Apache/BSD cloned licence.
 Various documentation is available:
 </p>
 <ul>
+<li>The <a href="userguide.html">user guide</a></li>
+<li>The key concepts and chronology documents in the left navigation area</li>
 <li>The javadoc for the <a href="api-0.95/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
@@ -79,14 +84,20 @@ Various documentation is available:
 <p>
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212&amp;release_id=217327">Release 0.95</a>
 is the current latest release.
-It is reasonably stable, and we hope that the main APIs are now stable for 1.0.
+This release is stable in that it tells the right time, and we are aware of sites where it has been used in production.
+However, there have been significant API changes to the CVS version since 0.95, all resulting from issues identified in testing.
+It is hoped to release a new release in Q4 2004.
 </p>
 </section>
 
-<section name="Contact">
+<section name="Support">
 <p>
-If you have any questions, or want to volunteer to help, just email
-<a href="mailto:scolebourne@users.sourceforge.net">scolebourne@users.sourceforge.net</a>
+For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>
+(or email direct to the list via <a href="mailto:joda-interest@lists.sourceforge.net">joda-interest@lists.sourceforge.net</a>).
+</p>
+<p>
+Alternatively, you can contact the project lead, Stephen Colebourne via
+<a href="mailto:scolebourne@users.sourceforge.net">scolebourne@users.sourceforge.net</a>.
 </p>
 </section>
 </body>

@@ -144,7 +144,13 @@ public abstract class PreciseDurationDateTimeField extends AbstractDateTimeField
      * @throws IllegalArgumentException if value is too large or too small.
      */
     public long set(long instant, int value) {
-        Utils.verifyValueBounds(this, value, getMinimumValue(), getMaximumValue());
+        int max;
+        if (getRangeDurationField().isPrecise()) {
+            max = getMaximumValue();
+        } else {
+            max = getMaximumValueForSet(instant, value);
+        }
+        Utils.verifyValueBounds(this, value, getMinimumValue(), max);
         return instant + (value - get(instant)) * iUnitMillis;
     }
 
@@ -220,6 +226,15 @@ public abstract class PreciseDurationDateTimeField extends AbstractDateTimeField
 
     public final long getUnitMillis() {
         return iUnitMillis;
+    }
+
+    /**
+     * Called by the set method if the range duration field is imprecise. By
+     * default, returns getMaximumValue(instant). Override to provide a faster
+     * implementation.
+     */
+    protected int getMaximumValueForSet(long instant, int value) {
+        return getMaximumValue(instant);
     }
 
 }

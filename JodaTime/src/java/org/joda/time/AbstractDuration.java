@@ -73,7 +73,7 @@ public abstract class AbstractDuration implements ReadableDuration {
     /**
      * Constructor.
      */
-    public AbstractDuration() {
+    protected AbstractDuration() {
         super();
     }
 

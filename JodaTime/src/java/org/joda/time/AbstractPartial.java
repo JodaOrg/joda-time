@@ -96,7 +96,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * being initialised. Once the constructor is complete, all further calculations
      * are performed without reference to a timezone (by switching to UTC).
      */
-    public AbstractPartial() {
+    protected AbstractPartial() {
         this(DateTimeUtils.currentTimeMillis(), null);
     }
 
@@ -110,7 +110,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      *
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public AbstractPartial(Chronology chronology) {
+    protected AbstractPartial(Chronology chronology) {
         this(DateTimeUtils.currentTimeMillis(), chronology);
     }
 
@@ -124,7 +124,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
-    public AbstractPartial(long instant) {
+    protected AbstractPartial(long instant) {
         this(instant, null);
     }
 
@@ -139,7 +139,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public AbstractPartial(long instant, Chronology chronology) {
+    protected AbstractPartial(long instant, Chronology chronology) {
         super();
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
@@ -159,7 +159,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @param instant  the datetime object, must not be null
      * @throws IllegalArgumentException if the date is null
      */
-    public AbstractPartial(Object instant) {
+    protected AbstractPartial(Object instant) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         long millis = converter.getInstantMillis(instant);
@@ -188,7 +188,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @param chronology  the chronology, null means ISOChronology
      * @throws IllegalArgumentException if the date is null
      */
-    public AbstractPartial(Object instant, Chronology chronology) {
+    protected AbstractPartial(Object instant, Chronology chronology) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         long millis = converter.getInstantMillis(instant, chronology);
@@ -211,7 +211,7 @@ public abstract class AbstractPartial implements ReadablePartial, Serializable {
      * @param values  the new set of values
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
-    public AbstractPartial(int[] values, Chronology chronology) {
+    protected AbstractPartial(int[] values, Chronology chronology) {
         super();
         if (chronology == null) {
             chronology = ISOChronology.getInstance();

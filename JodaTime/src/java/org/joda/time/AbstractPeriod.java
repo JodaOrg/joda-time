@@ -88,9 +88,9 @@ public abstract class AbstractPeriod
     /** The period type that allocates the duration to fields */
     private final PeriodType iType;
     /** The object state */
-    private int iState;
+    private transient int iState;
     /** The duration, if known */
-    private long iDuration;
+    private transient long iDuration;
     /** Value for years */
     private int iYears;
     /** Value for months */
@@ -118,7 +118,7 @@ public abstract class AbstractPeriod
      * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if period type is invalid
      */
-    public AbstractPeriod(long duration, PeriodType type) {
+    protected AbstractPeriod(long duration, PeriodType type) {
         super();
         type = checkPeriodType(type);
         iType = type;
@@ -141,7 +141,7 @@ public abstract class AbstractPeriod
      * @throws IllegalArgumentException if period type is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractPeriod(int years, int months, int weeks, int days,
+    protected AbstractPeriod(int years, int months, int weeks, int days,
                             int hours, int minutes, int seconds, int millis,
                             PeriodType type) {
         super();
@@ -159,7 +159,7 @@ public abstract class AbstractPeriod
      * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if period type is invalid
      */
-    public AbstractPeriod(long startInstant, long endInstant, PeriodType type) {
+    protected AbstractPeriod(long startInstant, long endInstant, PeriodType type) {
         super();
         type = checkPeriodType(type);
         iType = type;
@@ -175,7 +175,7 @@ public abstract class AbstractPeriod
      * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if period type is invalid
      */
-    public AbstractPeriod(
+    protected AbstractPeriod(
             ReadableInstant startInstant, ReadableInstant  endInstant, PeriodType type) {
         super();
         type = checkPeriodType(type);
@@ -198,7 +198,7 @@ public abstract class AbstractPeriod
      * @throws IllegalArgumentException if period is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractPeriod(Object period, PeriodType type) {
+    protected AbstractPeriod(Object period, PeriodType type) {
         super();
         PeriodConverter converter = ConverterManager.getInstance().getPeriodConverter(period);
         type = (type == null ? converter.getPeriodType(period, false) : type);
@@ -363,10 +363,8 @@ public abstract class AbstractPeriod
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public final Instant addTo(ReadableInstant instant, int scalar) {
-        if (instant == null) {
-            return new Instant(addTo(DateTimeUtils.currentTimeMillis(), scalar));
-        }
-        return new Instant(addTo(instant.getMillis(), scalar, instant.getChronology()));
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        return new Instant(addTo(instantMillis, scalar, instant.getChronology()));
     }
 
     /**

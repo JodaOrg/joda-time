@@ -63,9 +63,8 @@ import java.io.Writer;
  *
  * @author Brian S O'Neill
  */
-// Note: Use strictfp and StrictMath to ensure consistent results on all VMs.
-public strictfp class FormatUtils {
-    private static final double LOG_10 = StrictMath.log(10);
+public class FormatUtils {
+    private static final double LOG_10 = Math.log(10);
 
     private FormatUtils() {
     }
@@ -111,7 +110,7 @@ public strictfp class FormatUtils {
             } else if (value < 10000) {
                 digits = 4;
             } else {
-                digits = (int)(StrictMath.log(value) / LOG_10) + 1;
+                digits = (int)(Math.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
                 buf.append('0');
@@ -149,7 +148,7 @@ public strictfp class FormatUtils {
                     return;
                 }
             }
-            int digits = (int)(StrictMath.log(value) / LOG_10) + 1;
+            int digits = (int)(Math.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
                 buf.append('0');
             }
@@ -200,7 +199,7 @@ public strictfp class FormatUtils {
             } else if (value < 10000) {
                 digits = 4;
             } else {
-                digits = (int)(StrictMath.log(value) / LOG_10) + 1;
+                digits = (int)(Math.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
                 out.write('0');
@@ -240,7 +239,7 @@ public strictfp class FormatUtils {
                     return;
                 }
             }
-            int digits = (int)(StrictMath.log(value) / LOG_10) + 1;
+            int digits = (int)(Math.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
                 out.write('0');
             }
@@ -359,7 +358,7 @@ public strictfp class FormatUtils {
              (value < 100 ? 2 :
               (value < 1000 ? 3 :
                (value < 10000 ? 4 :
-                ((int)(StrictMath.log(value) / LOG_10) + 1)))));
+                ((int)(Math.log(value) / LOG_10) + 1)))));
     }
 
     static int parseTwoDigits(String text, int position) {

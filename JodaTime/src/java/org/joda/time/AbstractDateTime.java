@@ -256,7 +256,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      */
     protected AbstractDateTime(
             final int year,
@@ -284,7 +284,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      * @param zone  the time zone, null means default time zone
      */
     protected AbstractDateTime(
@@ -315,7 +315,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     protected AbstractDateTime(
@@ -582,7 +582,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     }
 
     /**
-     * Set the value as the number of miliseconds since the epoch,
+     * Set the value as the number of milliseconds since the epoch,
      * 1970-01-01T00:00:00Z.
      * <p>
      * Subclasses that wish to be immutable should override this method with an

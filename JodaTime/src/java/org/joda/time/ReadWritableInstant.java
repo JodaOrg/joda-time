@@ -69,7 +69,7 @@ import org.joda.time.convert.ConverterManager;
 public interface ReadWritableInstant extends ReadableInstant {
 
     /**
-     * Set the value as the number of miliseconds since
+     * Set the value as the number of milliseconds since
      * the epoch, 1970-01-01T00:00:00Z.
      * 
      * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the

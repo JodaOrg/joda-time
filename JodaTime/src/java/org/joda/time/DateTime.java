@@ -237,7 +237,7 @@ public class DateTime extends AbstractDateTime
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      */
     public DateTime(
             int year,
@@ -262,7 +262,7 @@ public class DateTime extends AbstractDateTime
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      * @param zone  the time zone, null means default time zone
      */
     public DateTime(
@@ -291,7 +291,7 @@ public class DateTime extends AbstractDateTime
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public DateTime(

@@ -327,7 +327,7 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @param hour  the hour
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      * @throws IllegalArgumentException if the value is invalid
      */
     void setTime(int hour, int minuteOfHour, int secondOfMinute, int millisOfSecond);
@@ -363,7 +363,7 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the milisecond of the second
+     * @param millisOfSecond  the millisecond of the second
      * @throws IllegalArgumentException if the value is invalid
      */
     void setDateTime(

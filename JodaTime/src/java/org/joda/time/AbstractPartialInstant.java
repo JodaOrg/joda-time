@@ -400,7 +400,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
     public abstract String toString();
 
     /**
-     * Set the value as the number of miliseconds since the epoch,
+     * Set the value as the number of milliseconds since the epoch,
      * 1970-01-01T00:00:00Z.
      * <p>
      * Subclasses that wish to be immutable should override this method with an

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <pomVersion>3</pomVersion>
+  <id>joda-time</id>
+  <name>Joda time</name>
+  <groupId>joda-time</groupId>
+  <currentVersion>0.5</currentVersion>
+  <organization>
+    <name>Joda.org</name>
+    <url>http://www.joda.org</url>
+    <logo>http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2</logo>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>org.joda.time.*</package>
+  <logo>http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2</logo>
+
+  <description>
+    Utility classes that aid integration between time and objects.
+  </description>
+  <shortDescription>Joda primitive type utilities</shortDescription>
+  <url>http://joda-time.sourceforge.net</url>
+  
+  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&group_id=97367&func=browse</issueTrackingUrl>
+  
+  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/</siteDirectory>
+  <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
+  
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTime</connection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/</url>
+  </repository>
+  
+  <!--mailingLists>
+    <mailingList>
+      <name>Interest list</name>
+      <subscribe></subscribe>
+      <unsubscribe></unsubscribe>
+      <archive></archive>
+    </mailingList>
+  </mailingLists-->
+
+  <developers>
+    <developer>
+      <name>Stephen Colebourne</name>
+      <id>scolebourne</id>
+      <email>scolebourne@joda.org</email>
+      <organization>SITA ATS Ltd</organization>
+      <roles>
+        <role>Project Lead</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Brian O'Neill</name>
+      <id>broneill</id>
+      <email>broneill@users.sourceforge.net</email>
+      <organization></organization>
+    </developer>
+  </developers>
+  
+  <contributors>
+  </contributors>
+
+  <dependencies>
+    <dependency>
+      <id>junit</id>
+      <groupId>junit</groupId>
+      <version>3.7</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>org/joda/time/**/Test*.java</include>
+      </includes>
+    </unitTest>
+  </build>
+
+  <reports>
+     <report>maven-changelog-plugin</report>
+     <report>maven-changes-plugin</report>
+     <report>maven-checkstyle-plugin</report>
+     <!-- <report>maven-clover-plugin</report> -->
+     <report>maven-jcoverage-plugin</report>
+     <report>maven-developer-activity-plugin</report>
+     <report>maven-file-activity-plugin</report>
+     <report>maven-javadoc-plugin</report>
+     <!-- <report>maven-jellydoc-plugin</report> -->
+     <report>maven-junit-report-plugin</report>
+     <report>maven-jxr-plugin</report>
+     <report>maven-license-plugin</report>
+     <!--report>maven-linkcheck-plugin</report-->
+     <!--report>maven-statcvs-plugin</report-->
+     <!--report>maven-tasklist-plugin</report-->
+  </reports>
+
+</project>

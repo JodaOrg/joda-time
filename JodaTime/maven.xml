@@ -1,0 +1,4 @@
+<project default="java:jar"
+  xmlns:j="jelly:core">
+
+</project>

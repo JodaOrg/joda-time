@@ -1,0 +1,226 @@
+<project name="joda-time" default="compile" basedir=".">
+
+<!-- Joda-time ANT script -->
+<!-- Based on script from Apache Jakarta Commons -->
+
+
+<!-- ========== Properties ================================================ -->
+
+  <property file="build.properties"/>
+  <property name="junit.jar"               value="lib/junit.jar"/>
+
+
+<!-- ========== Component Declarations ==================================== -->
+
+
+  <!-- The name of this component -->
+  <property name="component.name"          value="joda-time"/>
+
+  <!-- The primary package name of this component -->
+  <property name="component.package"       value="org.joda.time"/>
+
+  <!-- The title of this component -->
+  <property name="component.title"         value="Joda date and time"/>
+
+  <!-- The current version number of this component -->
+  <property name="component.version"       value="0.95"/>
+
+  <!-- The base directory for component configuration files -->
+  <property name="conf.home"               value="src/conf"/>
+
+  <!-- The base directory for component sources -->
+  <property name="source.home"             value="src/java"/>
+
+  <!-- The base directory for unit test sources -->
+  <property name="test.home"               value="src/test"/>
+
+  <!-- The base directory for example sources -->
+  <property name="example.home"            value="src/example"/>
+
+  <!-- The base directory for compilation targets -->
+  <property name="build.home"              value="build"/>
+  <property name="build.conf"              value="${build.home}/conf"/>
+  <property name="build.classes"           value="${build.home}/classes"/>
+  <property name="build.tests"             value="${build.home}/tests"/>
+  <property name="build.dist"              value="${build.home}/dist"/>
+
+
+<!-- ========== Compiler Defaults ========================================= -->
+
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug"           value="true"/>
+
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation"     value="true"/>
+
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize"        value="true"/>
+
+  <!-- Construct compile classpath -->
+  <path id="compile.classpath">
+    <pathelement location="${build.classes}"/>
+  </path>
+
+
+<!-- ========== Test Execution Defaults =================================== -->
+
+  <!-- Construct unit test classpath -->
+  <path id="test.classpath">
+    <pathelement location="${build.classes}"/>
+    <pathelement location="${build.home}/tests"/>
+    <pathelement location="${junit.jar}"/>
+  </path>
+
+  <!-- Should all tests fail if one does? -->
+  <property name="test.failonerror"        value="true"/>
+
+  <!-- The test runner to execute -->
+  <property name="test.runner"             value="junit.textui.TestRunner"/>
+
+
+<!-- ====================================================================== -->
+<!-- ========== Executable Targets ======================================== -->
+<!-- ====================================================================== -->
+
+  <target name="clean"
+          description="Clean build and distribution directories">
+    <delete dir="${build.home}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="init"
+          description="Initialize and evaluate conditionals">
+    <echo message="-------- ${component.name} ${component.version} --------"/>
+    <filter token="name"                  value="${component.name}"/>
+    <filter token="package"               value="${component.package}"/>
+    <filter token="version"               value="${component.version}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="prepare" depends="init"
+          description="Prepare build directory">
+    <mkdir dir="${build.home}"/>
+    <mkdir dir="${build.classes}"/>
+    <mkdir dir="${build.conf}"/>
+    <mkdir dir="${build.tests}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="static" depends="prepare"
+          description="Copy static files to build directory">
+    <tstamp/>
+    <copy todir="${build.conf}" filtering="on">
+      <fileset dir="${conf.home}" includes="*.MF"/>
+    </copy>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="compile" depends="static"
+          description="Compile shareable components">
+    <javac  srcdir="${source.home}"
+           destdir="${build.classes}"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="compile.classpath"/>
+    </javac>
+    <copy    todir="${build.classes}" filtering="on">
+      <fileset dir="${source.home}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="compile.tests" depends="compile"
+          description="Compile unit test cases">
+    <javac  srcdir="${test.home}"
+           destdir="${build.tests}"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="test.classpath"/>
+    </javac>
+    <copy    todir="${build.tests}" filtering="on">
+      <fileset dir="${test.home}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="all" depends="clean,compile"
+          description="Clean and compile all components"/>
+
+<!-- ====================================================================== -->
+
+  <target name="javadoc" depends="compile"
+          description="Create component Javadoc documentation">
+    <mkdir      dir="${dist.home}"/>
+    <mkdir      dir="${dist.home}/docs"/>
+    <mkdir      dir="${dist.home}/docs/api"/>
+    <javadoc sourcepath="${source.home}"
+                destdir="${dist.home}/docs/api"
+           packagenames="org.joda.time.*"
+                 author="true"
+                private="true"
+                version="true"
+               doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
+            windowtitle="${component.title} (Version ${component.version})"
+                 bottom="Copyright (c) 2003 - Joda.org">
+      <classpath refid="compile.classpath"/>
+    </javadoc>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="dist" depends="compile,javadoc"
+          description="Create binary distribution">
+    <mkdir      dir="${dist.home}"/>
+    <copy      file="LICENSE.txt"
+              todir="${dist.home}"/>
+    <copy      file="RELEASE-NOTES.txt"
+              todir="${dist.home}"/>
+    <antcall target="jar"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="jar" depends="compile"
+          description="Create jar">
+    <mkdir      dir="${dist.home}"/>
+    <mkdir      dir="${build.classes}/META-INF"/>
+    <copy      file="LICENSE.txt"
+             tofile="${build.classes}/META-INF/LICENSE.txt"/>
+    <jar    jarfile="${dist.home}/${component.name}.jar"
+            basedir="${build.classes}"
+           manifest="${build.conf}/MANIFEST.MF"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="test"  depends="compile.tests, test.time"
+          description="Run all unit test cases">
+  </target>
+
+
+  <target name="test.time" depends="compile.tests">
+    <echo message="Running time tests ..."/>
+    <junit printsummary="yes" haltonfailure="yes">
+      <classpath>
+        <pathelement location="${build.tests}"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+
+      <batchtest fork="yes">
+        <fileset dir="${src.tests}">
+          <include name="**/*Test*.java"/>
+          <exclude name="**/AllTests.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+</project>

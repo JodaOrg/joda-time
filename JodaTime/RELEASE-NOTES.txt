@@ -25,7 +25,14 @@ Bug fixes since 0.98
 New features since 0.98
 -----------------------
 
-- Added support to create Periods from a duration and end instant
+- Added support to create periods from a duration and an end instant
+
+- Periods can be converted to durations by end instant too
+
+- Durations can be converted to periods by end instant too
+
+- Durations can be converted to intervals by end instant too
+
 
 Feedback
 --------

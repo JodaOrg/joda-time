@@ -765,11 +765,13 @@ public class ZoneInfoCompiler {
             }
         }
 
+        /*
         public DateTimeZone buildDateTimeZone(Map ruleSets) {
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             addToBuilder(builder, ruleSets);
             return builder.toDateTimeZone(iName);
         }
+        */
 
         /**
          * Adds zone info to the builder.

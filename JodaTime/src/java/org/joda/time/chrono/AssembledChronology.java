@@ -123,7 +123,7 @@ public abstract class AssembledChronology extends AbstractChronology {
     /**
      * Constructor calls the assemble method, enabling subclasses to define its
      * supported fields. If a base chronology is supplied, the field set
-     * initially contains references to each base chronlogy field.
+     * initially contains references to each base chronology field.
      * <p>
      * Other methods in this class will delegate to the base chronology, if it
      * can be determined that the base chronology will produce the same results

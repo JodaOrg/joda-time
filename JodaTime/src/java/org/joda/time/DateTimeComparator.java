@@ -255,6 +255,35 @@ public class DateTimeComparator implements Comparator, Serializable {
     }
 
     /**
+     * Compares this comparator to another.
+     * 
+     * @param object  the object to compare to
+     * @return true if equal
+     */
+    public boolean equals(Object object) {
+        if (object instanceof DateTimeComparator) {
+            DateTimeComparator other = (DateTimeComparator) object;
+            if (getLowerLimit() == null) {
+            }
+            return (iLowerLimit == other.getLowerLimit() ||
+                    (iLowerLimit != null && iLowerLimit.equals(other.getLowerLimit()))) &&
+                   (iUpperLimit == other.getUpperLimit() ||
+                    (iUpperLimit != null && iUpperLimit.equals(other.getUpperLimit())));
+        }
+        return false;
+    }
+
+    /**
+     * Gets a suitable hashcode.
+     * 
+     * @return the hashcode
+     */
+    public int hashCode() {
+        return (iLowerLimit == null ? 0 : iLowerLimit.hashCode()) +
+               (iUpperLimit == null ? 0 : iUpperLimit.hashCode());
+    }
+
+    /**
      * Gets a debugging string.
      * 
      * @return a debugging string

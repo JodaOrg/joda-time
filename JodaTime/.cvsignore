@@ -3,3 +3,7 @@
 target
 bin
 build.properties
+velocity.log
+maven.log
+jcoverage.ser
+build

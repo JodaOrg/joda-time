@@ -58,12 +58,12 @@ package org.joda.time;
  * chronological calendar system. Various chronologies are supported by
  * subclasses including ISO and GregorianJulian.
  * <p>
- * This class defines a number of fields with names from the ISO8601 standard.
- * Chronology does not 'strongly' define these fields however, thus subclasses
- * are free to interpret the field names as they wish. For example, a week
- * could be defined as 10 days and a month as 40 days in a special
- * WeirdChronology implementation. Clearly the GJ and ISO implementations
- * provided use the field names as you would expect.
+ * This interface defines a number of fields with names from the ISO8601
+ * standard. Chronology does not 'strongly' define these fields however, thus
+ * implementations are free to interpret the field names as they wish. For
+ * example, a week could be defined as 10 days and a month as 40 days in a
+ * special WeirdChronology implementation. Clearly the GJ and ISO
+ * implementations provided use the field names as you would expect.
  * 
  * @see org.joda.time.chrono.ISOChronology
  * @see org.joda.time.chrono.GJChronology

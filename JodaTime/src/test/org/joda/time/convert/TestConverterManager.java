@@ -87,6 +87,7 @@ import org.joda.time.ReadableDateTime;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadableInterval;
+import org.joda.time.TimeOfDay;
 
 /**
  * This class is a JUnit test for ConverterManager.
@@ -360,9 +361,14 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+    private static final int PARTIAL_SIZE = 7;
+    
     public void testGetPartialConverter() {
         PartialConverter c = ConverterManager.getInstance().getPartialConverter(new Long(0L));
         assertEquals(Long.class, c.getSupportedType());
+        
+        c = ConverterManager.getInstance().getPartialConverter(new TimeOfDay());
+        assertEquals(ReadablePartial.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getPartialConverter(new DateTime());
         assertEquals(ReadableInstant.class, c.getSupportedType());
@@ -395,7 +401,7 @@ public class TestConverterManager extends TestCase {
         } finally {
             ConverterManager.getInstance().addPartialConverter(NullConverter.INSTANCE);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testGetPartialConverterOKMultipleMatches() {
@@ -412,7 +418,7 @@ public class TestConverterManager extends TestCase {
         } finally {
             ConverterManager.getInstance().removePartialConverter(c);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testGetPartialConverterBadMultipleMatches() {
@@ -432,13 +438,13 @@ public class TestConverterManager extends TestCase {
         } finally {
             ConverterManager.getInstance().removePartialConverter(c);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     //-----------------------------------------------------------------------
     public void testGetPartialConverters() {
         PartialConverter[] array = ConverterManager.getInstance().getPartialConverters();
-        assertEquals(6, array.length);
+        assertEquals(PARTIAL_SIZE, array.length);
     }
 
     //-----------------------------------------------------------------------
@@ -452,11 +458,11 @@ public class TestConverterManager extends TestCase {
             PartialConverter removed = ConverterManager.getInstance().addPartialConverter(c);
             assertEquals(null, removed);
             assertEquals(Boolean.class, ConverterManager.getInstance().getPartialConverter(Boolean.TRUE).getSupportedType());
-            assertEquals(7, ConverterManager.getInstance().getPartialConverters().length);
+            assertEquals(PARTIAL_SIZE + 1, ConverterManager.getInstance().getPartialConverters().length);
         } finally {
             ConverterManager.getInstance().removePartialConverter(c);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testAddPartialConverter2() {
@@ -469,23 +475,23 @@ public class TestConverterManager extends TestCase {
             PartialConverter removed = ConverterManager.getInstance().addPartialConverter(c);
             assertEquals(StringConverter.INSTANCE, removed);
             assertEquals(String.class, ConverterManager.getInstance().getPartialConverter("").getSupportedType());
-            assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+            assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
         } finally {
             ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testAddPartialConverter3() {
         PartialConverter removed = ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
         assertEquals(null, removed);
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testAddPartialConverter4() {
         PartialConverter removed = ConverterManager.getInstance().addPartialConverter(null);
         assertEquals(null, removed);
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testAddPartialConverterSecurity() {
@@ -500,7 +506,7 @@ public class TestConverterManager extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     //-----------------------------------------------------------------------
@@ -508,11 +514,11 @@ public class TestConverterManager extends TestCase {
         try {
             PartialConverter removed = ConverterManager.getInstance().removePartialConverter(StringConverter.INSTANCE);
             assertEquals(StringConverter.INSTANCE, removed);
-            assertEquals(5, ConverterManager.getInstance().getPartialConverters().length);
+            assertEquals(PARTIAL_SIZE - 1, ConverterManager.getInstance().getPartialConverters().length);
         } finally {
             ConverterManager.getInstance().addPartialConverter(StringConverter.INSTANCE);
         }
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testRemovePartialConverter2() {
@@ -523,13 +529,13 @@ public class TestConverterManager extends TestCase {
         };
         PartialConverter removed = ConverterManager.getInstance().removePartialConverter(c);
         assertEquals(null, removed);
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testRemovePartialConverter3() {
         PartialConverter removed = ConverterManager.getInstance().removePartialConverter(null);
         assertEquals(null, removed);
-        assertEquals(6, ConverterManager.getInstance().getPartialConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     public void testRemovePartialConverterSecurity() {
@@ -544,7 +550,7 @@ public class TestConverterManager extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-        assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
+        assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
     //-----------------------------------------------------------------------
@@ -979,7 +985,7 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("ConverterManager[6 instant,6 partial,5 duration,5 period,3 interval]", ConverterManager.getInstance().toString());
+        assertEquals("ConverterManager[6 instant,7 partial,5 duration,5 period,3 interval]", ConverterManager.getInstance().toString());
     }
 
 }

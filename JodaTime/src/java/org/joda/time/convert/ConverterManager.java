@@ -152,6 +152,7 @@ public final class ConverterManager {
         });
 
         iPartialConverters = new ConverterSet(new Converter[] {
+            ReadablePartialConverter.INSTANCE,
             ReadableInstantConverter.INSTANCE,
             StringConverter.INSTANCE,
             CalendarConverter.INSTANCE,

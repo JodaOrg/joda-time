@@ -291,6 +291,19 @@ public class TestTimeOfDay_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
+    /**
+     * Test constructor (Object)
+     */
+    public void testConstructor_todObject() throws Throwable {
+        TimeOfDay base = new TimeOfDay(10, 20, 30, 40, Chronology.getCoptic(PARIS));
+        TimeOfDay test = new TimeOfDay(base);
+        assertEquals(Chronology.getCopticUTC(), test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Test constructor (Object, Chronology)

@@ -69,7 +69,7 @@ import org.joda.time.property.AbstractReadableInstantFieldProperty;
  * <p>
  * This class does not represent a day, but the millisecond instant at midnight.
  * If you need a class that represents the whole day, then an {@link Interval} or
- * a {@link org.joda.time.partial.YearMonthDay YearMonthDay} may be more suitable.
+ * a {@link YearMonthDay} may be more suitable.
  * <p>
  * This class uses a Chronology internally. The Chronology determines how the
  * millisecond instant value is converted into the date time fields.

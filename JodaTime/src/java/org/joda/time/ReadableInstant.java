@@ -141,11 +141,13 @@ public interface ReadableInstant extends Comparable {
     
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instant with different millis.
+     * Gets a copy of this instant with different millis, preserving the
+     * chronology.
      * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the millis will change, the chronology and time zone are kept.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be a new instance of the same implementation
+     * type. Only the millis will change, the chronology and time zone are
+     * kept. Immutable implementations may return <code>this</code> if
+     * appropriate.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
@@ -153,11 +155,12 @@ public interface ReadableInstant extends Comparable {
     ReadableInstant withMillis(long newMillis);
     
     /**
-     * Gets a copy of this instant with a different chronology.
+     * Gets a copy of this instant with a different chronology, preserving the
+     * millisecond instant.
      * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the chronology will change, the millis are kept.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be a new instance of the same implementation
+     * type. Only the chronology will change, the millis are kept. Immutable
+     * implementations may return <code>this</code> if appropriate.
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
@@ -165,16 +168,34 @@ public interface ReadableInstant extends Comparable {
     ReadableInstant withChronology(Chronology newChronology);
     
     /**
-     * Gets a copy of this instant with a different time zone.
+     * Gets a copy of this instant with a different time zone, preserving the
+     * millisecond instant.
      * <p>
      * The returned object will be a new instance of the same implementation
      * type. Only the time zone of the chronology will change, the millis are
-     * kept. Immutable subclasses may return <code>this</code> if appropriate.
+     * kept. Immutable implementations may return <code>this</code> if
+     * appropriate.
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
+     * @see #withDateTimeZoneMoved
      */
     ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone);
+
+    /**
+     * Gets a copy of this instant with a different time zone, preserving the
+     * field values.
+     * <p>
+     * The returned object will be a new instance of the same implementation
+     * type. Moving the time zone alters the millisecond value of this instant
+     * such that it is relative to the new time zone. Immutable implementations
+     * may return <code>this</code> if appropriate.
+     *
+     * @param newDateTimeZone  the new time zone
+     * @return a copy of this instant with a different time zone
+     * @see #withDateTimeZone
+     */
+    public ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone);
 
     //-----------------------------------------------------------------------
     /**

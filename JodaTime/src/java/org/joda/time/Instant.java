@@ -161,6 +161,17 @@ public final class Instant extends AbstractInstant
         return this;
     }
 
+    /**
+     * Since Instant does not support time zones, this method always returns
+     * <code>this</code>.
+     *
+     * @param newDateTimeZone  ignored
+     * @return this
+     */
+    public ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone) {
+        return this;
+    }
+
     // Accessors
     //-----------------------------------------------------------------------
     /**

@@ -86,7 +86,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Gets the time zone of the datetime from the chronology.
+     * Gets the time zone of the datetime from the chronology, or null if there
+     * isn't any chronology.
      * 
      * @return the DateTimeZone that the datetime is using
      */
@@ -119,7 +120,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Gets a copy of this instant with a different time zone.
+     * Gets a copy of this instant with a different time zone, preserving the
+     * millisecond instant.
      * <p>
      * The returned object will be a new instance of the same implementation
      * type. Only the time zone of the chronology will change, the millis are
@@ -127,12 +129,55 @@ public abstract class AbstractInstant implements ReadableInstant {
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
+     * @see #withDateTimeZoneMoved
      */
     public ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone) {
-        Chronology newChronology = getChronology();
-        newChronology = newChronology == null ? ISOChronology.getInstance(newDateTimeZone)
-            : newChronology.withDateTimeZone(newDateTimeZone);
-        return withChronology(newChronology);
+        final Chronology originalChrono = getChronology();
+        if (originalChrono == null) {
+            // Without an original chronology, no new time zone can be
+            // set. Call withMillis to allow subclass to decide if a clone
+            // should be made or not.
+            return withMillis(getMillis());
+        }
+        return withChronology(originalChrono.withDateTimeZone(newDateTimeZone));
+    }
+
+    /**
+     * Gets a copy of this instant with a different time zone, preserving the
+     * field values.
+     * <p>
+     * The returned object will be a new instance of the same implementation
+     * type. Moving the time zone alters the millisecond value of this instant
+     * such that it is relative to the new time zone. Immutable subclasses may
+     * return <code>this</code> if appropriate.
+     *
+     * @param newDateTimeZone  the new time zone
+     * @return a copy of this instant with a different time zone
+     * @see #withDateTimeZone
+     */
+    public ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone) {
+        final long originalMillis = getMillis();
+        final Chronology originalChrono = getChronology();
+        final DateTimeZone originalZone;
+        if (originalChrono == null || (originalZone = originalChrono.getDateTimeZone()) == null) {
+            // Without an original chronology or time zone, no new time zone
+            // can be set. Call withMillis to allow subclass to decide if a
+            // clone should be made or not.
+            return withMillis(originalMillis);
+        }
+
+        ReadableInstant newInstant = withChronology(originalChrono.withDateTimeZone(newDateTimeZone));
+        newDateTimeZone = newInstant.getDateTimeZone();
+
+        if (newDateTimeZone == null || newDateTimeZone == originalZone) {
+            // New time zone didn't stick or didn't change. Skip millis adjustment.
+            return newInstant;
+        }
+
+        long newMillis = originalMillis + originalZone.getOffset(originalMillis);
+        newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
+
+        return newInstant.withMillis(newMillis);
     }
 
     // Conversion

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Download and Installation</title>
+  <author email="almajor@boxspoon.com">Al Major</author>
+ </properties>
+
+<body>
+
+<section name="Joda Time Distribution">
+<p>
+Unless you have a specific reason to do otherwise, you should work with the
+pre-built <a href="">joda-time distribution</a>. Building the entire distribution
+from the CVS sources requires a maven installation, and is not (as yet)
+completely straightforward. Once the "joda-time.jar" is in your classpath,
+you will be able to use joda-time.
+</p>
+</section>
+
+<section name="Eclipse Support">
+<p>
+If you use Eclipse as your IDE and want to integrate the joda-time help files
+into the eclipse documentation tree, you need to download and install the
+<a href="">joda-time documentation plugin</a>.
+</p>
+<p>
+In addition, if you <em>are developing Eclipse plugins</em> (i.e. using the PDE),
+you may choose to use the <a href="">joda-time plugin</a>. This is a wrapper
+around
+the joda-time jar which allows a single copy of the joda-time jar to be used
+by all installed plugins. It needs to be available on both the development
+and the run-time machine.
+</p>
+<p>
+In addition you may also want the <a href="">joda-time source plugin</a>.
+This is a wrapper for the joda time sources to make them visible to the Eclipse
+PDE. It only needs to be made available on the development machine.
+</p>
+</section>
+
+
+</body>
+</document>

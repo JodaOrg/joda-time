@@ -10,22 +10,42 @@
 
 <section name="Introduction">
 <p>
-This document provides a tutorial introduction the Joda-Time user API.
-<b>little more of a summary needed here</b>
+Joda Time is like an iceberg, 9/10ths of it is invisible to user-code.
+Many, perhaps most, applications will never need to see what's below the surface.
+This document provides an introduction to the Joda-Time API for the
+average user, not for the would-be API developer.
+</p>
+<p>
+This user guide provide an intial overview of the major concepts in joda-time,
+including a brief summary of the more advanced parts of the API.
+</p>
+<p>
+The bulk of the
+text is devoted to code snippets that display the most common usage scenarios
+in which the library classes are used. In particular, we cover the usage of the
+key <code>DateTime</code>, <code>Interval</code>, <code>Duration</code>
+and <code>Period</code> classes.
+</p>
+<p>
+We finish with a look at the important topic of formatting and parsing and a few
+more advanced topics.
 </p>
 <p>
 <ul>
 <li><a href="#architecture_overview">Architecture Overview</a>
   <ul>
-    <li><a href="#chronology">Chronology</a></li>
-    <li><a href="#interfaces">Interfaces</a></li>
     <li><a href="#instants">Instants</a>
       <ul>
         <li><a href="#fields">Fields</a></li>
         <li><a href="#properties">Properties</a></li>
       </ul>
     </li>
-    <li><a href="#interval_duration_period">Interval, Duration and Period</a></li>
+    <li><a href="#intervals">Intervals</a></li>
+    <li><a href="#durations">Durations</a></li>
+    <li><a href="#periods">Periods</a></li>
+    <li><a href="#chronology">Chronology</a></li>
+    <li><a href="#timezones">TimeZones</a></li>
+    <li><a href="#interfaces">Interface Usage</a></li>
     <li><a href="#package_structure">Package Structure</a></li>
   </ul>
 </li>
@@ -37,9 +57,22 @@ This document provides a tutorial introduction the Joda-Time user API.
     <li><a href="#accessing_fields">Acessing Fields</a></li>
     <li><a href="#date_fields">Date Fields</a></li>
     <li><a href="#time_fields">Time Fields</a></li>
-    <li><a href="#manipulating_datetimes">Manipulating DateTimes</a></li>
+    <li><a href="#manipulating_datetimes">Manipulating DateTimes</a>
+		<ul>
+			<li><a href="#modifying_fields">Modifying Fields</a></li>
+			<li><a href="#datetime_methods">DateTime Methods</a></li>
+			<li><a href="#using_a_mutabledatetime">Using a MutableDateTime</a></li>
+		</ul>
+	</li>
     <li><a href="#changing_timezones">Changing Timezones</a></li>
     <li><a href="#changing_calendars">Changing Calendars</a></li>
+  </ul>
+</li>
+<li><a href="#intervals_durations_periods">Usage: Intervals, Durations and Periods</a>
+  <ul>
+    <li><a href="#interval_ex">Interval Examples</a></li>
+    <li><a href="#duration_ex">Duration Examples</a></li>
+    <li><a href="#period_ex">Period Examples</a></li>
   </ul>
 </li>
 <li><a href="#serialization">Serialization and Formats</a>
@@ -64,101 +97,50 @@ This document provides a tutorial introduction the Joda-Time user API.
 <a name="architecture_overview"/>
 <section name="Architecture Overview">
 <p>
-Joda Time is like an iceberg, 9/10ths of it is invisible to user-code. Many,
-perhaps most, applications will never need to see what's below the surface.
+The major building blocks of joda time are introduced below. These are the concepts
+of <em>instant</em>, <em>interval</em>, <em>duration</em>, <em>period</em> and
+<em>chronology</em> and <em>timezones</em>. We then say a few words about the role
+of interfaces in the library design, which is a little different than the norm. We
+end with a few words on package structure. Usage examples are delayed until the
+following sections of the guide.
 </p>
-<p>
-However, an overview of the design elements is useful. Even if you never want
-to extend the API, it'll help you make sense of those methods in the javadoc
-(and there's many of them) that use these unfamiliar constructs. If you're
-writing new chronologies or an unusual datetime implementation, this will provide
-an essential roadmap.
-</p>
-
-<a name="chronology"/>
-<section name="Chronology">
-<p>
-The Joda-Time design is based around the <em>Chronology</em>.
-This is the calculation engine that defines the complex rules for a calendar
-system. It encapsulates the <a href="#fields">field</a> objects, which are used
-on demand to split the absolute time instant (stored in milliseconds)
-into recognisable calendar fields like 'day-of-week'.
-</p>
-<p>
-Although the Chronology is key to the design, it is not key to using the API !!
-</p>
-<p>
-For most applications, the Chronology can be ignored as it will default to the
-ISOChronology. This is suitable for most uses.
-You would change it if you need accurate dates before October 15, 1582 when
-the Julian calendar was used, or if you need a specific calendar
-like BuddhistChronology.
-</p>
-</section>
-
-<a name="interfaces"/>
-<section name="Interfaces">
-<p>
-Joda-Time defines a number of new interfaces which are visible throughout
-the javadocs. The most important is
-<a href="apidocs/org/joda/time/ReadableInstant.html">ReadableInstant</a>.
-This defines an instant in time that can be read.
-Other interfaces are defined for datetimes, durations, intervals and periods.
-</p>
-<p>
-The Joda interface works differently to a JDK Collections Framework interface
-such as List or Map.
-When working with List or Map you will normally hold your variable as a type
-of List or Map, only referencing the concrete class when you create the object.
-<source>
-    List list = new ArrayList();
-    Map map = new HashMap();
-</source>
-In Joda-Time, the interfaces exist to allow <i>interoperation</i> between similar
-date implementations, such as a mutable and immutable version of a class.
-As such, they only offer a subset of the methods of the concrete class.
-For most work, you will reference the concrete class, not the interface.
-This gives access to the full power of the library.
-<source>
-    DateTime dt = new DateTime();
-</source>
-</p>
-<p>
-For maximum flexibility however, you might choose to declare your method
-parameters using the Joda-Time interface.
-A method on the interface will obtain the concrete class for use within the method.
-<source>
-    public void process(ReadableInstant instant) {
-      DateTime dt = instant.toDateTime();
-    }
-</source>
-Note: If the instant passed into the method is an instanceof <code>DateTime</code>
-then the <code>toDateTime()</code> method just typecasts <code>instant</code>.
-</p>
-</section>
 
 <a name="instants"/>
 <section name="Instants">
 <p>
-A point in the time continuum is represented by one of various implementations
-of <code>ReadableInstant</code>.
+The most frequently used concept in Joda-time is that of the <em>instant</em>.
+An Instant is defined as <em>a moment in the datetime continuum specified as a
+number of milliseconds from 1970-01-01T00:00Z</em>.
+This definition of milliseconds is consistent with that of the JDK in <code>Date</code>
+or <code>Calendar</code>. Interoperating between the two APIs is thus simple.
 </p>
 <p>
-The main implementation, and the class that the average API user needs to be
+Within Joda-Time an instant is represented by the
+<code>ReadableInstant</code> interface. The main implementation
+of this interface, and the class that the average API user needs to be
 most familiar with, is <code>DateTime</code>. DateTime is immutable - and once
 created the values do not change. Thus, this class can safely be passed around
 and used in multiple threads without synchronization.
 </p>
 <p>
+The millisecond instant can be converted to any date time field using a
+<em>Chronology</em>.
+To assist with this, methods are provided on
+<code>DateTime</code> that act as getters for the most common date and
+time fields.
+</p>
+<p>
+We discuss the chronology concept a litte further on in this overview.
+</p>
+<p>
 A companion mutable class to DateTime is
-<a href="apidocs/org/joda/time/MutableDateTime.html">MutableDateTime</a>. Objects
+<code>MutableDateTime</code>. Objects
 of this class can be modified and are not thread-safe.
 </p>
-<p>You can read more about Instant implementations at
-<a href="key_instant.html">this overview</a>. The rest of this user guide
-focuses on the common usage patterns of the <code>DateTime</code> class.
+<p>
+Other implementations of <code>ReadableInstant</code> include <code>Instant</code>
+and <code>DateMidnight</code>.
 </p>
-
 <a name="fields"/>
 <subsection name="Fields">
 <p>
@@ -187,20 +169,192 @@ We have more to say on the usage of properties later in this document.
 </subsection>
 </section>
 
-<a name="interval_duration_period"/>
-<section name="Interval, Duration and Period">
+<a name="intervals"/>
+<section name="Intervals">
 <p>
-<b>i'm not happy with this section. i think the separate docs on interval
-duration and period need to be amalgamated into this one document.</b>
+An <em>interval</em> in Joda-time represents an interval of time from one
+instant to another instant. Both instants are fully specified instants in the
+datetime continuum, complete with time zone.
 </p>
 <p>
-An <i>interval</i> in Joda-time represents an interval of time from one millisecond
-<a href="key_instant.html">instant</a> to another instant.
-Both instants are fully specified instants in the datetime continuum, complete with time zone.
+Intervals are implemented as <em>half-open</em>, which is to say that the start instant is
+inclusive but the end instant is exclusive. The end is always greater than or equal to the start.
+Both end-points are restricted to having the same chronology and the same time zone.
 </p>
 <p>
-A <i>duration</i> in Joda-time represents a duration of time measured in milliseconds.
-The duration is often obtained from an <a href="key_interval.html">interval</a>.
+Two implementations are provided, <code>Interval</code> and <code>MutableInterval</code>,
+both specialization of <code>ReadableInterval</code>.
+</p>
+</section>
+
+<a name="durations"/>
+<section name="Durations">
+<p>
+A <em>duration</em> in Joda-time represents a duration of time measured in milliseconds.
+The duration is often obtained from an interval.
+</p>
+<p>
+Durations are a very simple concept, and the implementation is also simple.
+They have no chronology or time zone, and consist solely of the millisecond duration.
+</p>
+<p>
+Durations can be added to an instant, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  duration  =  instant
+</source>
+</p>
+<p>
+Currently, there is only one implementation of the <code>ReadableDuration</code>
+interface: <code>Duration</code>.
+</p>
+</section>
+
+<a name="Periods"/>
+<section name="Periods">
+
+<p>
+A <em>period</em> in Joda-time represents a period of time defined in terms of fields,
+for example, 3 years 5 months 2 days and 7 hours.
+This differs from a duration in that it is inexact in terms of milliseconds.
+A period can only be resolved to an exact number of milliseconds by specifying the
+instant (including chronology and time zone) it is relative to.
+</p>
+<p>
+For example, consider a period of 1 month.
+If you add this period to the 1st February (ISO) then you will get the 1st March.
+If you add the same period to the 1st March you will get the 1st April.
+But the duration added (in milliseconds) in these two cases is very different.
+</p>
+<p>
+As a second example, consider adding 1 day at the daylight savings boundary.
+If you use a period to do the addition then either 23 or 25 hours will be added as appropriate.
+If you had created a duration equal to 24 hours, then you would end up with the wrong result.
+</p>
+<p>
+Periods are implemented as a set of <code>int</code> fields.
+The standard set of fields in a period are years, months, weeks, days, hours, minutes, seconds
+and millis.
+The <code>PeriodType</code> class allows this set
+of fields to be restricted, for example to elimate weeks.
+This is significant when converting a duration or interval to a period, as the calculation
+needs to know which period fields it should populate.
+</p>
+<p>
+Methods exist on periods to obtain each field value.
+Periods are not associated with either a chronology or a time zone.
+</p>
+<p>
+Periods can be added to an instant, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  period  =  instant
+</source>
+</p>
+<p>
+There are two implementations of the <code>ReadablePeriod</code> interface,
+<code>Period</code> and <code>MutablePeriod</code>.
+</p>
+</section>
+
+<a name="chronology"/>
+<section name="Chronology">
+<p>
+As should be obvious by now, the Joda-Time design is based around the
+<em>Chronology</em>. It is a calculation engine that supports the complex
+rules for a calendar system. It encapsulates the field objects, which are used
+on demand to split the absolute time instant into recognisable calendar
+fields like 'day-of-week'. It is effectively a pluggable calendar system.
+</p>
+<p>
+The actual calculations of the chronology are split between the
+<code>Chronology</code> class itself and the field classes -
+<code>DateTimeField</code> and <code>DurationField</code>.
+Together, the subclasses of these three classes form the bulk of the code
+in the library.
+Most users will never need to use or refer directly to the subclasses.
+Instead, they will simply obtain the chronology and use it as a singleton:
+<source>
+Chronology coptic = Chronology.getCoptic();
+</source>
+shows an example of creating a default Coptic chronology.
+</p>
+<p>
+Internally, all the chronology, field, etc. classes are maintained as singletons.
+Thus there is an initial setup cost when using Joda-time, but after that only
+the main API instance classes (DateTime, Interval, Period, etc.) have creation and
+garbage collector costs.
+</p>
+<p>
+Although the Chronology is key to the design, it is not key to using the API !!
+</p>
+<p>
+For most applications, the Chronology can be ignored as it will default to the
+ISOChronology. This is suitable for most uses.
+You would change it if you need accurate dates before October 15, 1582 when
+the Julian calendar was used, or if you need a specific calendar
+like the Coptic calendar illustrated earlier.
+</p>
+</section>
+
+<a name="timezones"/>
+<section name="TimeZones">
+<p>
+The chronology class also supports the time zone functionality.
+This is applied to the underlying chronology via the decorator design pattern.
+The <code>DateTimeZone</code> class provides
+access to the zones large through one factory method used as:
+<source>
+DateTimeZone zone = DateTimeZone.getInstance("Europe/London");
+</source>
+</p>
+<p>
+The TimeZone implementation is based on data provided by the public
+<a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>,
+otherwise known as the Olson database.
+</p>
+</section>
+
+<a name="interfaces"/>
+<section name="Interface Usage">
+<p>
+As you have seen, Joda-Time defines a number of new interfaces which are visible
+throughout the javadocs. The most important is <code>ReadableInstant</code> which
+currently has 4 implementations.
+Other significant interfaces include <code>ReadableInterval</code> and
+<code>ReadablePeriod</code>. These are currently used as generalizations for
+a value-only and a mutable class.
+</p>
+<p>
+An important point to mention here is that the Joda interfaces are used differently
+than, for instance, the JDK Collections Framework interfaces.
+When working with a Collections interface, such as List or Map you will normally
+hold your variable as a type of List or Map, only referencing the concrete class
+when you create the object.
+<source>
+    List list = new ArrayList();
+    Map map = new HashMap();
+</source>
+In Joda-Time, the interfaces exist to allow <em>interoperation</em> between similar
+date implementations, such as a mutable and immutable version of a class.
+As such, they only offer a subset of the methods of the concrete class.
+<em>For most work, you will reference the concrete class, not the interface</em>.
+This gives access to the full power of the library.
+<source>
+    DateTime dt = new DateTime();
+</source>
+</p>
+<p>
+For maximum flexibility however, you might choose to declare your method
+parameters using the Joda-Time interface.
+A method on the interface can obtain the concrete class for use within the method.
+<source>
+    public void process(ReadableInstant instant) {
+      DateTime dt = instant.toDateTime();
+    }
+</source>
 </p>
 </section>
 
@@ -230,11 +384,21 @@ constructor is used as follows
 </source>
 and creates a datetime object representing the current date and time in milliseconds
 as determined by the system clock. It is constructed using the ISO
-calendar in the default time zone. <code>DateTime</code> provides
+calendar in the default time zone.</p>
+<p>
+To create a datetime object representing a specific date and time, you may use an
+initialization string:
+<source>
+    DateTime dt = new DateTime("2004-12-13T21:39:45.618-08:00");
+</source>
+The initialization string must be in a format that is compatible with the ISO8601
+standard.
+</p>
+<p>
+<code>DateTime</code> also provides
 <a href="apidocs/org/joda/time/DateTime.html#constructor_summary">other
-constructors</a> which permit the use of any calendar and timezone, as well as
-the ability to specify a specific date and time using a variety of standard
-fields.
+constructors</a> to create a specific date and time using a variety of standard
+fields. The also permit the use of any calendar and timezone.
 </p>
 </section>
 
@@ -418,6 +582,7 @@ construction (they are immutable).
 Therefore, most simple manipulation of a datetime object involves
 construction of a new datetime as a modified copy of the original.
 </p>
+<a name="modifying_fields"/>
 <section name="Modifying Fields">
 <p>
 One way to do this is to use methods on properties. To
@@ -438,6 +603,7 @@ To add to a date you could use the <code>addToCopy</code> method.
 </p>
 </section>
 
+<a name="datetime_methods"/>
 <section name="DateTime Methods">
 <p>
 Another means of accomplishing similar calculations is to use methods on the
@@ -449,6 +615,7 @@ directly as follows:
 </p>
 </section>
 
+<a name="using_a_mutabledatetime"/>
 <section name="Using a MutableDateTime">
 <p>
 The methods outlined above are suitable for simple calculations involving one
@@ -517,6 +684,66 @@ get the datetime for the current time, but in the Buddhist Calendar, you would d
 </source>
 where <code>Chronology.getBuddhist</code> is a factory method for obtaining a
 Buddhist chronology.
+</p>
+</section>
+</section>
+
+<a name="#intervals_durations_periods"/>
+<section name="Usage: Intervals, Durations and Periods">
+
+<a name="#interval_ex"/>
+<section name="Interval Examples">
+<p>
+The code can be used in various ways:
+<source>
+// interval from start to end
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+Interval interval = new Interval(start, end);
+</source>
+Accessing other objects is easy:
+<source>
+Interval interval = ...
+DateTime start = interval.getStart();
+DateTime end = interval.getEnd();
+Chronology chrono = interval.getChronology();
+Duration duration = interval.toDuration();
+Period period = interval.toPeriod();
+</source>
+</p>
+</section>
+
+<a name="#duration_ex"/>
+<section name="Duration Examples">
+<p>
+The code can be used in various ways:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+
+// duration in ms between two instants
+Duration dur = new Duration(start, end);
+
+// calc will be the same as end
+DateTime calc = start.plus(dur);
+</source>
+</p>
+</section>
+
+<a name="#period_ex"/>
+<section name="Period Examples">
+<p>
+The code can be used in various ways:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2006, 1, 1, 0, 0, 0, 0);
+
+// period of 1 year and 7 days
+Period period = new Period(start, end);
+
+// calc will equal end
+DateTime calc = start.plus(period);
+</source>
 </p>
 </section>
 </section>

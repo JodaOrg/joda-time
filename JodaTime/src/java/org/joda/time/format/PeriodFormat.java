@@ -18,8 +18,11 @@ package org.joda.time.format;
 import java.util.Locale;
 
 /**
- * PeriodFormat provides basic printing and parsing capabilities for
- * periods. Eventually, this class will also support localization.
+ * Factory that creates instances of PeriodFormatter.
+ * <p>
+ * Period formatting is performed by the {@link PeriodFormatter} class.
+ * Three classes provide factory methods to create formatters, and this is one.
+ * The others are {@link ISOPeriodFormat} and {@link PeriodFormatterBuilder}.
  * <p>
  * PeriodFormat is thread-safe and immutable, and the formatters it returns
  * are as well.
@@ -31,62 +34,74 @@ import java.util.Locale;
  */
 public class PeriodFormat {
 
+    /** @deprecated */
     private static final PeriodFormat INSTANCE = new PeriodFormat();
 
+    /** An english words based formatter. */
+    private static PeriodFormatter cEnglishWords;
+
     /**
-     * Gets a formatter provider that works using the default locale.
+     * Deprecated, methods are now static.
      * 
-     * @return a format provider
+     * @deprecated use static methods
      */
     public static PeriodFormat getInstance() {
         return INSTANCE;
     }
 
     /**
-     * Gets a formatter provider that works using the given locale.
+     * Deprecated, methods are now static.
      * 
-     * @param locale  the Locale to use, null for default locale
-     * @return a format provider
+     * @deprecated use static methods
      */
     public static PeriodFormat getInstance(Locale locale) {
         return INSTANCE;
     }
 
-    private final PeriodFormatter iDefault;
-
+    /**
+     * Constructor.
+     */
     private PeriodFormat() {
-        String[] variants = {" ", ",", ",and ", ", and "};
-        iDefault = new PeriodFormatterBuilder()
-            .appendYears()
-            .appendSuffix(" year", " years")
-            .appendSeparator(", ", " and ", variants)
-            .appendMonths()
-            .appendSuffix(" month", " months")
-            .appendSeparator(", ", " and ", variants)
-            .appendWeeks()
-            .appendSuffix(" week", " weeks")
-            .appendSeparator(", ", " and ", variants)
-            .appendDays()
-            .appendSuffix(" day", " days")
-            .appendSeparator(", ", " and ", variants)
-            .appendHours()
-            .appendSuffix(" hour", " hours")
-            .appendSeparator(", ", " and ", variants)
-            .appendMinutes()
-            .appendSuffix(" minute", " minutes")
-            .appendSeparator(", ", " and ", variants)
-            .appendSeconds()
-            .appendSuffix(" second", " seconds")
-            .appendSeparator(", ", " and ", variants)
-            .appendMillis()
-            .appendSuffix(" millisecond", " milliseconds")
-            .toFormatter();
     }
 
     /**
-     * Returns the default PeriodFormatter.
+     * Gets the default PeriodFormatter.
+     * <p>
+     * This currently returns a word based formatter using English only.
+     * Hopefully future release will support localized period formatting.
+     * 
+     * @return the formatter
      */
-    public PeriodFormatter getDefault() {
-        return iDefault;
+    public static PeriodFormatter getDefault() {
+        if (cEnglishWords == null) {
+            String[] variants = {" ", ",", ",and ", ", and "};
+            cEnglishWords = new PeriodFormatterBuilder()
+                .appendYears()
+                .appendSuffix(" year", " years")
+                .appendSeparator(", ", " and ", variants)
+                .appendMonths()
+                .appendSuffix(" month", " months")
+                .appendSeparator(", ", " and ", variants)
+                .appendWeeks()
+                .appendSuffix(" week", " weeks")
+                .appendSeparator(", ", " and ", variants)
+                .appendDays()
+                .appendSuffix(" day", " days")
+                .appendSeparator(", ", " and ", variants)
+                .appendHours()
+                .appendSuffix(" hour", " hours")
+                .appendSeparator(", ", " and ", variants)
+                .appendMinutes()
+                .appendSuffix(" minute", " minutes")
+                .appendSeparator(", ", " and ", variants)
+                .appendSeconds()
+                .appendSuffix(" second", " seconds")
+                .appendSeparator(", ", " and ", variants)
+                .appendMillis()
+                .appendSuffix(" millisecond", " milliseconds")
+                .toFormatter();
+        }
+        return cEnglishWords;
     }
+
 }

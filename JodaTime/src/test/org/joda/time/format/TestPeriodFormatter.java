@@ -79,7 +79,7 @@ public class TestPeriodFormatter extends TestCase {
         DateTimeZone.setDefault(LONDON);
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
         Locale.setDefault(Locale.UK);
-        f = ISOPeriodFormat.getInstance().standard();
+        f = ISOPeriodFormat.standard();
     }
 
     protected void tearDown() throws Exception {

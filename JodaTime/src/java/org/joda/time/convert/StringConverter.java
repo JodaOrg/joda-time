@@ -130,7 +130,7 @@ class StringConverter extends AbstractConverter
      */
     public void setInto(ReadWritablePeriod period, Object object, Chronology chrono) {
         String str = (String) object;
-        PeriodFormatter parser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter parser = ISOPeriodFormat.standard();
         period.clear();
         int pos = parser.parseInto(period, str, 0);
         if (pos < str.length()) {
@@ -169,7 +169,7 @@ class StringConverter extends AbstractConverter
 
         DateTimeFormatter dateTimeParser = ISODateTimeFormat.dateTimeParser();
         dateTimeParser = dateTimeParser.withChronology(chrono);
-        PeriodFormatter periodParser = ISOPeriodFormat.getInstance().standard();
+        PeriodFormatter periodParser = ISOPeriodFormat.standard();
         long startInstant = 0, endInstant = 0;
         Period period = null;
         Chronology parsedChrono = null;

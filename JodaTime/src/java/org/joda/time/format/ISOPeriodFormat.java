@@ -16,7 +16,11 @@
 package org.joda.time.format;
 
 /**
- * ISOPeriodFormat provides factory methods for the ISO8601 standard.
+ * Factory that creates instances of PeriodFormatter for the ISO8601 standard.
+ * <p>
+ * Period formatting is performed by the {@link PeriodFormatter} class.
+ * Three classes provide factory methods to create formatters, and this is one.
+ * The others are {@link PeriodFormat} and {@link PeriodFormatterBuilder}.
  * <p>
  * ISOPeriodFormat is thread-safe and immutable, and the formatters it
  * returns are as well.
@@ -28,25 +32,36 @@ package org.joda.time.format;
  */
 public class ISOPeriodFormat {
 
+    /** @deprecated */
     private static final ISOPeriodFormat INSTANCE = new ISOPeriodFormat();
 
+    /** Cache of standard format. */
+    private static PeriodFormatter cStandard;
+    /** Cache of alternate months format. */
+    private static PeriodFormatter cAlternate;
+    /** Cache of alternate extended months format. */
+    private static PeriodFormatter cAlternateExtended;
+    /** Cache of alternate weeks format. */
+    private static PeriodFormatter cAlternateWithWeeks;
+    /** Cache of alternate extended weeks format. */
+    private static PeriodFormatter cAlternateExtendedWihWeeks;
+
     /**
-     * Returns a singleton instance of ISOPeriodFormat.
+     * Deprecated, methods are now static.
+     * 
+     * @deprecated use static methods
      */
     public static ISOPeriodFormat getInstance() {
         return INSTANCE;
     }
 
-    private transient PeriodFormatter
-        iStandard,
-        iAlternate,
-        iAlternateExtended,
-        iAlternateWithWeeks,
-        iAlternateExtendedWihWeeks;
-
+    /**
+     * Constructor.
+     */
     private ISOPeriodFormat() {
     }
 
+    //-----------------------------------------------------------------------
     /**
      * The standard ISO format - PyYmMwWdDThHmMsS.
      * Milliseconds are not output.
@@ -55,9 +70,9 @@ public class ISOPeriodFormat {
      * 
      * @return the formatter
      */
-    public PeriodFormatter standard() {
-        if (iStandard == null) {
-            iStandard = new PeriodFormatterBuilder()
+    public static PeriodFormatter standard() {
+        if (cStandard == null) {
+            cStandard = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .appendYears()
                 .appendSuffix("Y")
@@ -76,7 +91,7 @@ public class ISOPeriodFormat {
                 .appendSuffix("S")
                 .toFormatter();
         }
-        return iStandard;
+        return cStandard;
     }
 
     /**
@@ -87,9 +102,9 @@ public class ISOPeriodFormat {
      * 
      * @return the formatter
      */
-    public PeriodFormatter alternate() {
-        if (iAlternate == null) {
-            iAlternate = new PeriodFormatterBuilder()
+    public static PeriodFormatter alternate() {
+        if (cAlternate == null) {
+            cAlternate = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -103,7 +118,7 @@ public class ISOPeriodFormat {
                 .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
-        return iAlternate;
+        return cAlternate;
     }
 
     /**
@@ -114,9 +129,9 @@ public class ISOPeriodFormat {
      * 
      * @return the formatter
      */
-    public PeriodFormatter alternateExtended() {
-        if (iAlternateExtended == null) {
-            iAlternateExtended = new PeriodFormatterBuilder()
+    public static PeriodFormatter alternateExtended() {
+        if (cAlternateExtended == null) {
+            cAlternateExtended = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -134,7 +149,7 @@ public class ISOPeriodFormat {
                 .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
-        return iAlternateExtended;
+        return cAlternateExtended;
     }
 
     /**
@@ -145,9 +160,9 @@ public class ISOPeriodFormat {
      * 
      * @return the formatter
      */
-    public PeriodFormatter alternateWithWeeks() {
-        if (iAlternateWithWeeks == null) {
-            iAlternateWithWeeks = new PeriodFormatterBuilder()
+    public static PeriodFormatter alternateWithWeeks() {
+        if (cAlternateWithWeeks == null) {
+            cAlternateWithWeeks = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -162,7 +177,7 @@ public class ISOPeriodFormat {
                 .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
-        return iAlternateWithWeeks;
+        return cAlternateWithWeeks;
     }
 
     /**
@@ -173,9 +188,9 @@ public class ISOPeriodFormat {
      * 
      * @return the formatter
      */
-    public PeriodFormatter alternateExtendedWithWeeks() {
-        if (iAlternateExtendedWihWeeks == null) {
-            iAlternateExtendedWihWeeks = new PeriodFormatterBuilder()
+    public static PeriodFormatter alternateExtendedWithWeeks() {
+        if (cAlternateExtendedWihWeeks == null) {
+            cAlternateExtendedWihWeeks = new PeriodFormatterBuilder()
                 .appendLiteral("P")
                 .printZeroAlways()
                 .minimumPrintedDigits(4)
@@ -194,7 +209,7 @@ public class ISOPeriodFormat {
                 .appendSecondsWithOptionalMillis()
                 .toFormatter();
         }
-        return iAlternateExtendedWihWeeks;
+        return cAlternateExtendedWihWeeks;
     }
 
 }

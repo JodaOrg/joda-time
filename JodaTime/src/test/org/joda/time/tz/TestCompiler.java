@@ -15,11 +15,11 @@
  */
 package org.joda.time.tz;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.InputStream;
 import java.io.IOException;
-import java.io.StringBufferInputStream;
+import java.io.InputStream;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -113,7 +113,7 @@ public class TestCompiler extends TestCase {
         File tempFile = new File(tempDir, "tzdata");
         tempFile.deleteOnExit();
 
-        InputStream in = new StringBufferInputStream(data);
+        InputStream in = new ByteArrayInputStream(data.getBytes("UTF-8"));
 
         FileOutputStream out = new FileOutputStream(tempFile);
         byte[] buf = new byte[1000];

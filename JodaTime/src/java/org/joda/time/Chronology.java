@@ -53,6 +53,8 @@
  */
 package org.joda.time;
 
+import org.joda.time.partial.PartialInstant;
+
 /**
  * Chronology provides access to the individual date time fields for a
  * chronological calendar system. Various chronologies are supported by
@@ -230,6 +232,14 @@ public interface Chronology {
                            int hourOfDay, int minuteOfHour,
                            int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException;
+
+    /**
+     * Validates whether the fields stored in a partial instant are valid.
+     *
+     * @param instant  the partial instant to validate
+     * @throws IllegalArgumentException if the instant is invalid
+     */
+    void validate(PartialInstant instant);
 
     // Millis
     //-----------------------------------------------------------------------

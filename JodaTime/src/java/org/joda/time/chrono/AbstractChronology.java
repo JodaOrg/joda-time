@@ -56,13 +56,12 @@ package org.joda.time.chrono;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
-// Import for @link support
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * AbstractChronology provides a skeleton implementation for chronology
@@ -273,6 +272,40 @@ public abstract class AbstractChronology implements Chronology, Serializable {
         return millisOfSecond().set(instant, millisOfSecond);
     }
 
+    /**
+     * Validates whether the fields stored in a partial instant are valid.
+     * <p>
+     * This implementation uses {@link DateTimeField#getMinimumValue()} and
+     * {@link DateTimeField#getMaximumValue()}.
+     *
+     * @param instant  the partial instant to validate
+     * @throws IllegalArgumentException if the instant is invalid
+     */
+    public void validate(PartialInstant instant) {
+        DateTimeField[] fields = instant.getFields();
+        int[] values = instant.getValues();
+        for (int i = 0; i < fields.length; i++) {
+            if (values[i] < fields[i].getMinimumValue()) {
+                throw new IllegalArgumentException("Value " + values[i] +
+                        " for " + fields[i].getName() + " is less than minimum");
+            }
+            if (values[i] > fields[i].getMaximumValue()) {
+                throw new IllegalArgumentException("Value " + values[i] +
+                        " for " + fields[i].getName() + " is greater than maximum");
+            }
+        }
+        for (int i = 0; i < fields.length; i++) {
+            if (values[i] < fields[i].getMinimumValue(instant)) {
+                throw new IllegalArgumentException("Value " + values[i] +
+                        " for " + fields[i].getName() + " is less than minimum");
+            }
+            if (values[i] > fields[i].getMaximumValue(instant)) {
+                throw new IllegalArgumentException("Value " + values[i] +
+                        " for " + fields[i].getName() + " is greater than maximum");
+            }
+        }
+    }
+
     // Millis
     //-----------------------------------------------------------------------
     /**
@@ -431,7 +464,8 @@ public abstract class AbstractChronology implements Chronology, Serializable {
     /**
      * Get the day of week field for this chronology.
      *
-     * <p>DayOfWeek values are defined in {@link DateTimeConstants}.
+     * <p>DayOfWeek values are defined in
+     * {@link org.joda.time.DateTimeConstants DateTimeConstants}.
      * They use the ISO definitions, where 1 is Monday and 7 is Sunday.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported

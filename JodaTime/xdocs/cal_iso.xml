@@ -62,7 +62,7 @@ yyyy-ddd<b>T</b>HH:MM:SS.SSS<br />
 This format of ISO8601 has the following fields:
 <ul>
 <li>four digit year</li>
-<li>three digit day of year, from 01 to 366</li>
+<li>three digit day of year, from 001 to 366</li>
 <li>two digit hour, from 00 to 23</li>
 <li>two digit minute, from 00 to 59</li>
 <li>two digit second, from 00 to 59</li>

@@ -143,14 +143,27 @@ public final class Interval extends AbstractInterval
      * Overridden to do nothing, ensuring this class and all subclasses are
      * immutable.
      */
-    protected void setStartMillis(long millisInstant) {
+    protected final void setStartMillis(long millisInstant) {
     }
 
     /**
      * Overridden to do nothing, ensuring this class and all subclasses are
      * immutable.
      */
-    protected void setEndMillis(long millisInstant) {
+    protected final void setEndMillis(long millisInstant) {
     }
 
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are
+     * immutable.
+     */
+    protected final void setDurationAfterStart(ReadableDuration duration) {
+    }
+
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are
+     * immutable.
+     */
+    protected final void setDurationBeforeEnd(ReadableDuration duration) {
+    }
 }

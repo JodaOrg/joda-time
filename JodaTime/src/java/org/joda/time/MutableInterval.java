@@ -199,10 +199,7 @@ public final class MutableInterval extends AbstractInterval
      * @param duration  new duration for interval
      */
     public void setDurationAfterStart(ReadableDuration duration) {
-        if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
-        }
-        super.setEndMillis(duration.addTo(getStartMillis(), 1));
+        super.setDurationAfterStart(duration);
     }
 
     /**
@@ -220,10 +217,7 @@ public final class MutableInterval extends AbstractInterval
      * @param duration  new duration for interval
      */
     public void setDurationBeforeEnd(ReadableDuration duration) {
-        if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
-        }
-        super.setStartMillis(duration.addTo(getEndMillis(), -1));
+        super.setDurationBeforeEnd(duration);
     }
 
 }

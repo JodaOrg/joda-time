@@ -79,12 +79,13 @@ public abstract class AbstractInterval implements ReadableInterval {
     /** The end of the period */
     private long iEndMillis;
 
+    /** The duration, which may be lazily set */
+    private Duration iDuration;
+
     /** Cache the start instant */
     private transient Instant iStartInstant;
     /** Cache the end instant */
     private transient Instant iEndInstant;
-    /** Cache the duration */
-    private transient Duration iDuration;
     
     /**
      * Constructs a time interval as a copy of another.
@@ -99,6 +100,10 @@ public abstract class AbstractInterval implements ReadableInterval {
         }
         iStartMillis = interval.getStartMillis();
         iEndMillis = interval.getEndMillis();
+        Duration duration = interval.getDuration();
+        if (duration != null && duration.isPrecise()) {
+            iDuration = duration;
+        }
     }
     
     /**
@@ -109,20 +114,27 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public AbstractInterval(Object interval) {
         super();
+        Duration duration;
         if (interval instanceof ReadableInterval) {
             ReadableInterval ri = (ReadableInterval) interval;
             iStartMillis = ri.getStartMillis();
             iEndMillis = ri.getEndMillis();
+            duration = ri.getDuration();
         } else {
             IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
             if (this instanceof ReadWritableInterval) {
                 converter.setInto((ReadWritableInterval) this, interval);
+                duration = null;
             } else {
                 MutableInterval mi = new MutableInterval(0, 0);
                 converter.setInto(mi, interval);
                 iStartMillis = mi.getStartMillis();
                 iEndMillis = mi.getEndMillis();
+                duration = mi.getDuration();
             }
+        }
+        if (duration != null && duration.isPrecise()) {
+            iDuration = duration;
         }
     }
 
@@ -185,6 +197,9 @@ public abstract class AbstractInterval implements ReadableInterval {
             iStartInstant = (Instant) start;
         }
         iEndMillis = duration.addTo((ReadableInstant) start, 1).getMillis();
+        if (duration.isPrecise()) {
+            iDuration = duration.toDuration();
+        }
     }
     
     /**
@@ -207,6 +222,9 @@ public abstract class AbstractInterval implements ReadableInterval {
             iEndInstant = (Instant) end;
         }
         iStartMillis = duration.addTo((ReadableInstant) end, -1).getMillis();
+        if (duration.isPrecise()) {
+            iDuration = duration.toDuration();
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -502,6 +520,44 @@ public abstract class AbstractInterval implements ReadableInterval {
         iEndMillis = millisInstant;
         iEndInstant = null;
         iDuration = null;
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the start instant.
+     * <p>
+     * Subclasses that wish to be immutable should override this method with an
+     * empty implementation that is protected and final. This also ensures that
+     * all lower subclasses are also immutable.
+     *
+     * @param duration  new duration for interval
+     */
+    protected void setDurationAfterStart(ReadableDuration duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("The duration must not be null");
+        }
+        setEndMillis(duration.addTo(getStartMillis(), 1));
+        if (duration.isPrecise()) {
+            iDuration = duration.toDuration();
+        }
+    }
+
+    /**
+     * Sets the duration of this time interval, preserving the end instant.
+     * <p>
+     * Subclasses that wish to be immutable should override this method with an
+     * empty implementation that is protected and final. This also ensures that
+     * all lower subclasses are also immutable.
+     *
+     * @param duration  new duration for interval
+     */
+    protected void setDurationBeforeEnd(ReadableDuration duration) {
+        if (duration == null) {
+            throw new IllegalArgumentException("The duration must not be null");
+        }
+        setStartMillis(duration.addTo(getEndMillis(), -1));
+        if (duration.isPrecise()) {
+            iDuration = duration.toDuration();
+        }
     }
 
 }

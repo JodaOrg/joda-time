@@ -206,7 +206,7 @@ class StringConverter extends AbstractConverter
             throw new IllegalArgumentException("Format invalid: " + str);
         }
 
-        DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
+        DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
         PeriodFormatter periodParser = ISOPeriodFormat.getInstance().standard();
         long startInstant = 0, endInstant = 0;
         Period period = null;

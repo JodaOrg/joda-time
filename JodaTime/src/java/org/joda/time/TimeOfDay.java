@@ -51,14 +51,13 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.partial;
+package org.joda.time;
 
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeField;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.property.AbstractPartialFieldProperty;
 
 /**
  * TimeOfDay is an immutable partial supporting the hour, minute, second
@@ -420,11 +419,17 @@ public final class TimeOfDay extends AbstractPartial implements ReadablePartial,
 
     //-----------------------------------------------------------------------
     /**
-     * The property class for TimeOfDay.
+     * The property class for <code>TimeOfDay</code>.
+     * <p>
+     * This class binds a <code>TimeOfDay</code> to a <code>DateTimeField</code>.
+     * 
+     * @author Stephen Colebourne
+     * @since 1.0
      */
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
-        static final long serialVersionUID = 5598459141741063833L;
+        /** Serialization version */
+        private static final long serialVersionUID = 5598459141741063833L;
 
         /** The partial */
         private final TimeOfDay iTimeOfDay;

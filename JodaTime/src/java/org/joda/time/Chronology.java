@@ -53,8 +53,6 @@
  */
 package org.joda.time;
 
-import org.joda.time.partial.ReadablePartial;
-
 /**
  * Chronology provides access to the individual date time fields for a
  * chronological calendar system. Various chronologies are supported by

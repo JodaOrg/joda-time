@@ -55,8 +55,6 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import org.joda.time.partial.ReadablePartial;
-
 /**
  * Defines the calculation engine for date and time fields.
  * The interface defines a set of methods that manipulate a millisecond datetime

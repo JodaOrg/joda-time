@@ -51,13 +51,14 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.partial;
+package org.joda.time.property;
 
 import java.util.Locale;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
 import org.joda.time.ReadableInstant;
+import org.joda.time.ReadablePartial;
 
 /**
  * AbstractPartialFieldProperty is a base class for binding a

@@ -57,7 +57,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.ReadablePartial;
+import org.joda.time.ReadablePartial;
 
 /**
  * <code>DelegatedDateTimeField</code> delegates each method call to the

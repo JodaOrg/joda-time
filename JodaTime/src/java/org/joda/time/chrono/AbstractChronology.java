@@ -59,9 +59,9 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
-import org.joda.time.partial.ReadablePartial;
 
 /**
  * AbstractChronology provides a skeleton implementation for chronology

@@ -51,14 +51,13 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.partial;
+package org.joda.time;
 
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeField;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.property.AbstractPartialFieldProperty;
 
 /**
  * YearMonthDay is an immutable partial supporting the year, monthOfYear
@@ -332,11 +331,17 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
 
     //-----------------------------------------------------------------------
     /**
-     * The property class for YearMonthDay.
+     * The property class for <code>YearMonthDay</code>.
+     * <p>
+     * This class binds a <code>YearMonthDay</code> to a <code>DateTimeField</code>.
+     * 
+     * @author Stephen Colebourne
+     * @since 1.0
      */
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
-        static final long serialVersionUID = 5727734012190224363L;
+        /** Serialization version */
+        private static final long serialVersionUID = 5727734012190224363L;
 
         /** The partial */
         private final YearMonthDay iYearMonthDay;

@@ -83,6 +83,9 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateMidnight_Basics.suite());
         suite.addTest(TestDateMidnight_Properties.suite());
         
+        suite.addTest(TestTimeOfDay.suite());
+        suite.addTest(TestYearMonthDay.suite());
+        
         suite.addTest(TestDateTimeComparator.suite());
         suite.addTest(TestDateTimeConstants.suite());
         suite.addTest(TestDateTimeZone.suite());

@@ -51,37 +51,55 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.partial;
+package org.joda.time;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeZone;
+import org.joda.time.ReadWritableInstant;
+import org.joda.time.ReadableInstant;
+import org.joda.time.chrono.ISOChronology;
 
 /**
- * Entry point for all tests in this package.
- * 
- * @version $Revision$ $Date$
- * 
+ * A basic mock testing class for a PartialInstant that doesn't extend AbstractPartialInstant.
+ *
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
-
-    public TestAll(String testName) {
-        super(testName);
+public class MockPartial implements ReadablePartial {
+    
+    public static final ReadablePartial EMPTY_INSTANCE = new MockPartial();
+    
+    public Chronology getChronology() {
+        return ISOChronology.getInstance();
     }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestTimeOfDay.suite());
-        suite.addTest(TestYearMonthDay.suite());
-        return suite;
+    public int getFieldSize() {
+        return 0;
     }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
+    public DateTimeField getField(int index) {
+        return null;
     }
-
+    public int getValue(int index) {
+        return 0;
+    }
+    public int get(DateTimeField field) {
+        return 0;
+    }
+    public boolean isSupported(DateTimeField field) {
+        return false;
+    }
+    public long resolve(long baseMillis, DateTimeZone tz) {
+        return 0L;
+    }
+    public DateTime resolveDateTime(ReadableInstant base) {
+        return null;
+    }
+    public void resolveInto(ReadWritableInstant base) {
+    }
+    public DateTimeField[] getFields() {
+        return new DateTimeField[0];
+    }
+    public int[] getValues() {
+        return new int[0];
+    }
 }

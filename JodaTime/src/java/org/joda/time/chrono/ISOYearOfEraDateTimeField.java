@@ -54,9 +54,9 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.FieldUtils;
-import org.joda.time.partial.ReadablePartial;
 
 /**
  * This field is not publicy exposed by ISOChronology, but rather it is used to

@@ -59,7 +59,7 @@ import java.io.Writer;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
-import org.joda.time.partial.ReadablePartial;
+import org.joda.time.ReadablePartial;
 
 /**
  * Defines an interface for creating textual representations of datetimes.

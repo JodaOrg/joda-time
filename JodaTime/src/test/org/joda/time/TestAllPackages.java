@@ -74,7 +74,6 @@ public class TestAllPackages extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTest(org.joda.time.TestAll.suite());
         suite.addTest(org.joda.time.chrono.gj.TestAll.suite());
-        suite.addTest(org.joda.time.partial.TestAll.suite());
         return suite;
     }
 

@@ -58,7 +58,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.ReadablePartial;
+import org.joda.time.ReadablePartial;
 
 /**
  * A placeholder implementation to use when a datetime field is not supported.

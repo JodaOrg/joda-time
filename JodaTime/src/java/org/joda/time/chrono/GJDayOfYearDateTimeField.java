@@ -55,8 +55,8 @@ package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.PreciseDurationDateTimeField;
-import org.joda.time.partial.ReadablePartial;
 
 /**
  * Provides time calculations for the day of the year component of time.

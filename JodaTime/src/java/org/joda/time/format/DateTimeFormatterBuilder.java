@@ -62,9 +62,9 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.PreciseDateTimeField;
-import org.joda.time.partial.ReadablePartial;
 import org.joda.time.chrono.ISOChronology;
 
 /**

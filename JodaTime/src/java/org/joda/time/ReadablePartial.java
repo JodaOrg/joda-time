@@ -51,14 +51,8 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.partial;
+package org.joda.time;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadWritableInstant;
-import org.joda.time.ReadableInstant;
 
 /**
  * Defines an partial time that does not support every datetime field.

@@ -51,7 +51,7 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time.partial;
+package org.joda.time;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

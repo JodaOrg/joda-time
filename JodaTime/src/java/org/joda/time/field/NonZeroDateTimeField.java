@@ -55,7 +55,7 @@ package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.partial.ReadablePartial;
+import org.joda.time.ReadablePartial;
 
 /**
  * Wraps another field such that zero values are replaced with one more than

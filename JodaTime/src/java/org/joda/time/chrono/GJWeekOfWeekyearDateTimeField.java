@@ -56,8 +56,8 @@ package org.joda.time.chrono;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.PreciseDurationDateTimeField;
-import org.joda.time.partial.ReadablePartial;
 
 /**
  * Provides time calculations for the week of a week based year component of time.

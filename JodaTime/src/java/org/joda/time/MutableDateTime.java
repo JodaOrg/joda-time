@@ -455,7 +455,7 @@ public class MutableDateTime extends AbstractDateTime
      * @see #setZone
      */
     public void setZoneRetainFields(DateTimeZone zone) {
-        super.moveDateTimeZone(zone);
+        super.setZoneRetainFields(zone);
     }
 
     // Field based

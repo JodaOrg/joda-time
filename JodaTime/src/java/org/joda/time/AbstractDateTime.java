@@ -634,7 +634,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * zone does not affect the millisecond value of this instant.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #moveDateTimeZone
+     * @see #setZoneRetainFields
      */
     protected void setZone(DateTimeZone zone) {
         if (zone == null) {
@@ -655,7 +655,7 @@ public abstract class AbstractDateTime extends AbstractInstant
      * @param zone  the time zone to use, null means default zone
      * @see #setZone
      */
-    protected void moveDateTimeZone(DateTimeZone zone) {
+    protected void setZoneRetainFields(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }

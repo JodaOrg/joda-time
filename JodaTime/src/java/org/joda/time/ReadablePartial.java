@@ -135,23 +135,6 @@ public interface ReadablePartial {
     boolean isSupported(DateTimeFieldType field);
 
     /**
-     * Converts this partial to a full datetime using the specified time zone and
-     * filing in any gaps using the current datetime.
-     * <p>
-     * This method obtains the current datetime, creates a chronology from that
-     * on this instance plus the time zone specified, and then sets the fields
-     * from this instant on top.
-     * <p>
-     * For example, if this partial represents a time, then the result of this
-     * method will be the datetime from the specified base instant plus the
-     * time from this partial.
-     *
-     * @param zone  the zone to use, null means default
-     * @return the combined datetime
-     */
-    DateTime toDateTime(DateTimeZone zone);
-
-    /**
      * Converts this partial to a full datetime by resolving it against another
      * datetime.
      * <p>

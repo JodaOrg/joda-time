@@ -163,6 +163,9 @@ public class TestCalendarConverter extends TestCase {
         cal.setGregorianChange(new Date(Long.MIN_VALUE));
         assertEquals(GregorianChronology.getInstance(MOSCOW), CalendarConverter.INSTANCE.getChronology(cal));
         
+        cal = new GregorianCalendar(new MockUnknownTimeZone());
+        assertEquals(GJChronology.getInstance(), CalendarConverter.INSTANCE.getChronology(cal));
+        
         Calendar uc = new MockUnknownCalendar(TimeZone.getTimeZone("Europe/Moscow"));
         assertEquals(ISOChronology.getInstance(MOSCOW), CalendarConverter.INSTANCE.getChronology(uc));
         

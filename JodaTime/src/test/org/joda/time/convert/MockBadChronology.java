@@ -53,52 +53,33 @@
  */
 package org.joda.time.convert;
 
-import java.util.Calendar;
-import java.util.TimeZone;
+import org.joda.time.Chronology;
+import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.AbstractChronology;
 
 /**
  * A basic mock testing class for an unknown calendar.
  *
  * @author Stephen Colebourne
  */
-class MockUnknownCalendar extends Calendar {
+class MockBadChronology extends AbstractChronology {
     
-    private long millis;
-    private TimeZone zone;
-    
-    MockUnknownCalendar(long millis) {
-        this.millis = millis;
-    }
-    MockUnknownCalendar(TimeZone zone) {
-        this.zone = zone;
-    }
-    
-    public long getTimeInMillis() {
-        return millis;
-    }
-    public TimeZone getTimeZone() {
-        return zone;
+    MockBadChronology() {
+        super();
     }
 
-    protected void computeTime() {
+    public Chronology withZone(DateTimeZone zone) {
+        return null;
     }
-    protected void computeFields() {
+    
+    public DateTimeZone getZone() {
+        return null;
     }
-    public void add(int field, int amount) {
+    public Chronology withUTC() {
+        return null;
     }
-    public void roll(int field, boolean up) {
-    }
-    public int getMinimum(int field) {
-        return 0;
-    }
-    public int getMaximum(int field) {
-        return 0;
-    }
-    public int getGreatestMinimum(int field) {
-        return 0;
-    }
-    public int getLeastMaximum(int field) {
-        return 0;
+    public String toString() {
+        return null;
     }
     
 }

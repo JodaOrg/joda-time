@@ -53,52 +53,41 @@
  */
 package org.joda.time.convert;
 
-import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * A basic mock testing class for an unknown calendar.
+ * A basic mock testing class for an unknown time zone.
  *
  * @author Stephen Colebourne
  */
-class MockUnknownCalendar extends Calendar {
+class MockUnknownTimeZone extends TimeZone {
     
-    private long millis;
-    private TimeZone zone;
-    
-    MockUnknownCalendar(long millis) {
-        this.millis = millis;
-    }
-    MockUnknownCalendar(TimeZone zone) {
-        this.zone = zone;
+    MockUnknownTimeZone() {
+        super();
     }
     
-    public long getTimeInMillis() {
-        return millis;
+    public String getID() {
+        return "!!!";
     }
-    public TimeZone getTimeZone() {
-        return zone;
+    public String getDisplayName(boolean daylight, int style, Locale locale) {
+        return "!!!";
     }
 
-    protected void computeTime() {
-    }
-    protected void computeFields() {
-    }
-    public void add(int field, int amount) {
-    }
-    public void roll(int field, boolean up) {
-    }
-    public int getMinimum(int field) {
+    public int getOffset(int era, int year, int month, int day, int dayOfWeek, int milliseconds) {
         return 0;
     }
-    public int getMaximum(int field) {
+    public void setRawOffset(int offsetMillis) {
+    }
+    public int getRawOffset() {
         return 0;
     }
-    public int getGreatestMinimum(int field) {
-        return 0;
+    public boolean useDaylightTime() {
+        return false;
     }
-    public int getLeastMaximum(int field) {
-        return 0;
+    public boolean inDaylightTime(Date date) {
+        return false;
     }
     
 }

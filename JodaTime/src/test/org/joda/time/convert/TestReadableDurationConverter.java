@@ -64,6 +64,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.DurationType;
+import org.joda.time.MutableDuration;
 import org.joda.time.ReadableDuration;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
@@ -134,6 +135,19 @@ public class TestReadableDurationConverter extends TestCase {
     public void testIsPrecise_Object() throws Exception {
         assertEquals(true, ReadableDurationConverter.INSTANCE.isPrecise(new Duration(DurationType.getMillisType(), 123L)));
         assertEquals(false, ReadableDurationConverter.INSTANCE.isPrecise(new Duration(DurationType.getYearMonthType(), 1, 2, 0, 1, 0, 0, 0, 0)));
+    }
+
+    public void testSetInto_Object() throws Exception {
+        MutableDuration m = new MutableDuration(DurationType.getYearMonthType());
+        ReadableDurationConverter.INSTANCE.setInto(m, new Duration(DurationType.getYearMonthType(), 1, 2, 0, 3, 0, 0, 0, 0));
+        assertEquals(1, m.getYears());
+        assertEquals(2, m.getMonths());
+        assertEquals(0, m.getWeeks());
+        assertEquals(3, m.getDays());
+        assertEquals(0, m.getHours());
+        assertEquals(0, m.getMinutes());
+        assertEquals(0, m.getSeconds());
+        assertEquals(0, m.getMillis());
     }
 
     //-----------------------------------------------------------------------

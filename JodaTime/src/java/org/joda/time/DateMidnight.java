@@ -622,7 +622,10 @@ public final class DateMidnight
      * @return a YearMonthDay using the same millis and chronology
      */
     public Interval toInterval() {
-        return new Interval(this, Period.days(1));
+        Chronology chrono = getChronology();
+        long start = getMillis();
+        long end = DurationFieldType.days().getField(chrono).add(start, 1);
+        return new Interval(start, end, chrono);
     }
 
     // Date properties

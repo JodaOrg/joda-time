@@ -421,8 +421,7 @@ public final class YearMonthDay
      */
     public Interval toInterval(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
-        DateMidnight start = toDateMidnight(zone);
-        return new Interval(start, start.plus(Period.days(1)));
+        return toDateMidnight(zone).toInterval();
     }
 
     //-----------------------------------------------------------------------

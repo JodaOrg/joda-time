@@ -65,12 +65,18 @@ import org.joda.time.DurationField;
  * @author Brian S O'Neill
  */
 public final class MillisDurationField implements DurationField, Serializable {
-    
-    static final long serialVersionUID = 2656707858124633367L;
 
+    /** Serialization version. */
+    private static final long serialVersionUID = 2656707858124633367L;
+
+    /** Singleton instance. */
     public static final DurationField INSTANCE = new MillisDurationField();
 
+    /**
+     * Restricted constructor.
+     */
     private MillisDurationField() {
+        super();
     }
     
     //------------------------------------------------------------------------
@@ -79,6 +85,8 @@ public final class MillisDurationField implements DurationField, Serializable {
     }
 
     /**
+     * Returns true as this field is supported.
+     * 
      * @return true always
      */
     public boolean isSupported() {
@@ -86,14 +94,14 @@ public final class MillisDurationField implements DurationField, Serializable {
     }
 
     /**
-     * This field is precise.
+     * Returns true as this field is precise.
      * 
      * @return true always
      */
     public final boolean isPrecise() {
         return true;
     }
-    
+
     /**
      * Returns the amount of milliseconds per unit value of this field.
      *
@@ -178,7 +186,7 @@ public final class MillisDurationField implements DurationField, Serializable {
     }
 
     /**
-     * Serialization singleton
+     * Deserialize to the singleton.
      */
     private Object readResolve() {
         return INSTANCE;

@@ -95,18 +95,6 @@ public abstract class AbstractInstant implements ReadableInstant {
         return (chrono != null ? chrono.getDateTimeZone() : null);
     }
 
-    /**
-     * Creates a new instance of this class.
-     * <p>
-     * The returned object will be a new instance of the implementation.
-     * Immutable subclasses may return <code>this</code> if appropriate.
-     *
-     * @param instant  the new instant, from 1970-01-01T00:00:00Z
-     * @param chrono  the new chronology
-     * @return a new instance of this class
-     */
-    protected abstract ReadableInstant create(long instant, Chronology chrono);
-    
     // Accessors
     //-----------------------------------------------------------------------
     /**
@@ -128,36 +116,6 @@ public abstract class AbstractInstant implements ReadableInstant {
             throw new IllegalArgumentException("The DateTimeField must not be null");
         }
         return field.get(getMillis());
-    }
-
-    // Updates
-    //-----------------------------------------------------------------------
-    /**
-     * Gets a copy of this instant with different millis.
-     * <p>
-     * The returned object will be a new instance of this type.
-     * Only the millis will change, the chronology and time zone are kept.
-     * If the millis is the same, <code>this</code> will be returned.
-     *
-     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
-     * @return a copy of this instant with different millis
-     */
-    public final ReadableInstant toCopy(long newMillis) {
-        return create(newMillis, getChronology());
-    }
-    
-    /**
-     * Gets a copy of this instant with a different chronology.
-     * <p>
-     * The returned object will be a new instance of this type.
-     * Only the chronology will change, the millis are kept.
-     * If the chronology is the same, <code>this</code> will be returned.
-     *
-     * @param newChronology  the new chronology
-     * @return a copy of this instant with a different chronology
-     */
-    public final ReadableInstant toCopy(Chronology newChronology) {
-        return create(getMillis(), newChronology);
     }
 
     // Conversion

@@ -127,22 +127,27 @@ public final class Instant extends AbstractInstant
     }
 
     /**
-     * Creates a new instance of this class.
+     * Gets a copy of this instant with different millis, as an Instant.
      * <p>
-     * The returned object will be a new instance of the implementation.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be either be a new Instant or
+     * <code>this</code>.
      *
-     * @param instant  the new instant, from 1970-01-01T00:00:00Z
-     * @param chrono  the new chronology
-     * @return a new instance of this class
-     * @throws IllegalArgumentException if the chronology is null
+     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
+     * @return a copy of this instant with different millis
      */
-    protected ReadableInstant create(long instant, Chronology chrono) {
-        // ignore chrono
-        if (instant == getMillis()) {
-            return this;
-        }
-        return new Instant(instant);
+    public ReadableInstant toCopy(long newMillis) {
+        return newMillis == iMillis ? this : new Instant(newMillis);
+    }
+    
+    /**
+     * Since Instant does not support chronologies, this method always returns
+     * <code>this</code>.
+     *
+     * @param newChronology  ignored
+     * @return this
+     */
+    public ReadableInstant toCopy(Chronology newChronology) {
+        return this;
     }
     
     // Accessors

@@ -61,6 +61,7 @@ import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.InstantConverter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.property.MutableDateTimeFieldProperty;
 
 /**
  * MutableDateTime is the standard implementation of a modifiable datetime class.
@@ -313,21 +314,33 @@ public class MutableDateTime extends AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new instance of this class.
+     * Gets a copy of this instant with different millis.
      * <p>
-     * The returned object will be a new instance of the implementation.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be a new instance of the same implementation type.
+     * Only the millis will change, the chronology and time zone are kept.
      *
-     * @param instant  the new instant, from 1970-01-01T00:00:00Z
-     * @param chrono  the new chronology
-     * @return a new instance of this class
+     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
+     * @return a copy of this instant with different millis
+     */
+    public ReadableInstant toCopy(long newMillis) {
+        return new MutableDateTime(newMillis, getChronology());
+    }
+    
+    /**
+     * Gets a copy of this instant with a different chronology.
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * Only the chronology will change, the millis are kept.
+     *
+     * @param newChronology  the new chronology
+     * @return a copy of this instant with a different chronology
      * @throws IllegalArgumentException if the chronology is null
      */
-    protected ReadableInstant create(long instant, Chronology chrono) {
-        if (chrono == null) {
+    public ReadableInstant toCopy(Chronology newChronology) {
+        if (newChronology == null) {
             throw new IllegalArgumentException("The Chronology must not be null");
         }
-        return new MutableDateTime(instant, chrono);
+        return new MutableDateTime(getMillis(), newChronology);
     }
     
     // Millis
@@ -369,7 +382,7 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Add an amount of time to the date.
+     * Add an amount of time to the datetime.
      * 
      * @param duration  duration to add.
      */
@@ -378,7 +391,7 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Add an amount of time to the date.
+     * Add an amount of time to the datetime.
      * 
      * @param duration  duration to add.
      * @param scalar  direction and amount to add, which may be negative
@@ -388,7 +401,7 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Add an amount of time to the date.
+     * Add an amount of time to the datetime.
      * <p>
      * The recognised object types are defined in {@link ConverterManager} and
      * include ReadableDuration, and Long.
@@ -522,7 +535,7 @@ public class MutableDateTime extends AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Set the week of the year to the specified value.
+     * Set the weekyear to the specified value.
      *
      * @param weekyear  the weekyear
      * @throws IllegalArgumentException if the value is invalid

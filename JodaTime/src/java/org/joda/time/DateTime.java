@@ -58,6 +58,7 @@ import java.io.Serializable;
 // Import for @link support
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.property.DateTimeFieldProperty;
 
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.
@@ -309,39 +310,35 @@ public class DateTime extends AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new instance of this class.
+     * Gets a copy of this instant with different millis.
      * <p>
-     * The returned object will be a new instance of the implementation.
+     * The returned object will be a new instance of the same implementation type.
+     * Only the millis will change, the chronology and time zone are kept.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
-     * @param instant  the new instant, from 1970-01-01T00:00:00Z
-     * @param chrono  the new chronology
-     * @return a new instance of this class
-     * @throws IllegalArgumentException if the chronology is null
+     * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
+     * @return a copy of this instant with different millis
      */
-    protected final ReadableInstant create(final long instant, final Chronology chrono) {
-        return createDateTime(instant, chrono);
+    public ReadableInstant toCopy(long newMillis) {
+        return newMillis == getMillis() ? this : new DateTime(newMillis, getChronology());
     }
     
     /**
-     * Creates a new instance of this class.
+     * Gets a copy of this instant with a different chronology.
      * <p>
-     * The returned object will be a new instance of DateTime, or a subclass.
+     * The returned object will be a new instance of the same implementation type.
+     * Only the chronology will change, the millis are kept.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
-     * @param instant  the new instant, from 1970-01-01T00:00:00Z
-     * @param chrono  the new chronology
-     * @return a new instance of this class
+     * @param newChronology  the new chronology
+     * @return a copy of this instant with a different chronology
      * @throws IllegalArgumentException if the chronology is null
      */
-    protected DateTime createDateTime(final long instant, final Chronology chrono) {
-        if (chrono == null) {
+    public ReadableInstant toCopy(Chronology newChronology) {
+        if (newChronology == null) {
             throw new IllegalArgumentException("The Chronology must not be null");
         }
-        if (instant == getMillis() && chrono == getChronology()) {
-            return this;
-        }
-        return new DateTime(instant, chrono);
+        return newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology);
     }
     
     // Date properties

@@ -699,8 +699,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendWeekyear(final int minDigits, final int maxDigits) {
-        return appendDecimal
-            (iChronoUTC.weekyear(), minDigits, maxDigits);
+        return appendSignedDecimal(iChronoUTC.weekyear(), minDigits, maxDigits);
     }
 
     /**
@@ -2036,7 +2035,6 @@ public class DateTimeFormatterBuilder {
                         bestValidState = bucket.saveState();
                     }
                 } else {
-                    bucket.undoChanges(originalState);
                     if (parsePos < 0) {
                         parsePos = ~parsePos;
                         if (parsePos > bestInvalidPos) {
@@ -2044,12 +2042,13 @@ public class DateTimeFormatterBuilder {
                         }
                     }
                 }
+                bucket.restoreState(originalState);
             }
 
             if (bestValidPos > position || (bestValidPos == position && isOptional)) {
                 // Restore the state to the best valid parse.
                 if (bestValidState != null) {
-                    bucket.undoChanges(bestValidState);
+                    bucket.restoreState(bestValidState);
                 }
                 return bestValidPos;
             }

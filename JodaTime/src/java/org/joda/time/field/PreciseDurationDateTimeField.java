@@ -104,38 +104,6 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
     }
 
     /**
-     * Add the specified amount of units to the specified time instant. The
-     * amount added may be negative.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param amount  the amount of units to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long instant, int amount) {
-        return instant + amount * iUnitMillis;
-    }
-
-    /**
-     * Add the specified amount of units to the specified time instant. The
-     * amount added may be negative.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add to
-     * @param amount  the amount of units to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long instant, long amount) {
-        return instant + amount * iUnitMillis;
-    }
-
-    public int getDifference(long minuendInstant, long subtrahendInstant) {
-        return FieldUtils.safeToInt(getDifferenceAsLong(minuendInstant, subtrahendInstant));
-    }
-
-    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        return (minuendInstant - subtrahendInstant) / iUnitMillis;
-    }
-
-    /**
      * Set the specified amount of units to the specified time instant.
      * 
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
@@ -175,7 +143,7 @@ public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
      * </pre>
      */
     public long roundCeiling(long instant) {
-        if (instant >= 0) {
+        if (instant > 0) {
             instant -= 1;
             return instant - instant % iUnitMillis + iUnitMillis;
         } else {

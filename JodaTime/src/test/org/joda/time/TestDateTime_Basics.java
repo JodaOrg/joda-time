@@ -107,8 +107,9 @@ public class TestDateTime_Basics extends TestCase {
             + 14L * DateTimeConstants.MILLIS_PER_HOUR
             + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
     
-    private DateTimeZone zone = null;
-    private Locale locale = null;
+    private DateTimeZone originalDateTimeZone = null;
+    private TimeZone originalTimeZone = null;
+    private Locale originalLocale = null;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -124,17 +125,22 @@ public class TestDateTime_Basics extends TestCase {
 
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
-        zone = DateTimeZone.getDefault();
-        locale = Locale.getDefault();
+        originalDateTimeZone = DateTimeZone.getDefault();
+        originalTimeZone = TimeZone.getDefault();
+        originalLocale = Locale.getDefault();
         DateTimeZone.setDefault(LONDON);
+        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
         Locale.setDefault(Locale.UK);
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
-        DateTimeZone.setDefault(zone);
-        Locale.setDefault(locale);
-        zone = null;
+        DateTimeZone.setDefault(originalDateTimeZone);
+        TimeZone.setDefault(originalTimeZone);
+        Locale.setDefault(originalLocale);
+        originalDateTimeZone = null;
+        originalTimeZone = null;
+        originalLocale = null;
     }
 
     //-----------------------------------------------------------------------

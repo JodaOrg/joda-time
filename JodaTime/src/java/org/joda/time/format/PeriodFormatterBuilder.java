@@ -164,7 +164,7 @@ public class PeriodFormatterBuilder {
         int size = formatters.size();
         if (size >= 1 && formatters.get(0) instanceof Separator) {
             Separator sep = (Separator) formatters.get(0);
-            return sep.finish((BasePeriodFormatter) toFormatter(formatters.subList(1, size)));
+            return sep.finish(toFormatter(formatters.subList(1, size)));
         }
         return (PeriodFormatter) createComposite(formatters);
     }
@@ -194,9 +194,6 @@ public class PeriodFormatterBuilder {
     public PeriodFormatterBuilder append(PeriodFormatter formatter) {
         if (formatter == null) {
             throw new IllegalArgumentException("No formatter supplied");
-        }
-        if (formatter instanceof BasePeriodFormatter == false) {
-            throw new IllegalArgumentException("Formatter must extend BasePeriodFormatter");
         }
         clearPrefix();
         iFormatters.add(formatter);
@@ -708,7 +705,7 @@ public class PeriodFormatterBuilder {
         if (lastSeparator != null && formatters.size() == 0) {
             throw new IllegalStateException("Cannot have two adjacent separators");
         } else {
-            BasePeriodFormatter composite = createComposite(formatters);
+            PeriodFormatter composite = createComposite(formatters);
             formatters.clear();
             formatters.add
                 (new Separator(text, finalText, variants, composite, useBefore, useAfter));
@@ -724,12 +721,12 @@ public class PeriodFormatterBuilder {
         iPrefix = null;
     }
 
-    private static BasePeriodFormatter createComposite(List formatters) {
+    private static PeriodFormatter createComposite(List formatters) {
         switch (formatters.size()) {
             case 0:
                 return Literal.EMPTY;
             case 1:
-                return (BasePeriodFormatter) formatters.get(0);
+                return (PeriodFormatter) formatters.get(0);
             default:
                 return new Composite(formatters);
         }
@@ -1480,11 +1477,11 @@ public class PeriodFormatterBuilder {
         private final boolean iUseBefore;
         private final boolean iUseAfter;
 
-        private BasePeriodFormatter iBefore;
-        private BasePeriodFormatter iAfter;
+        private PeriodFormatter iBefore;
+        private PeriodFormatter iAfter;
 
         Separator(String text, String finalText, String[] variants,
-                  BasePeriodFormatter before, boolean useBefore, boolean useAfter) {
+                  PeriodFormatter before, boolean useBefore, boolean useAfter) {
             iText = text;
             iFinalText = finalText;
 
@@ -1521,8 +1518,8 @@ public class PeriodFormatterBuilder {
         }
 
         public int calculatePrintedLength(ReadablePeriod period) {
-            BasePeriodFormatter before = iBefore;
-            BasePeriodFormatter after = iAfter;
+            PeriodFormatter before = iBefore;
+            PeriodFormatter after = iAfter;
             
             int sum = before.calculatePrintedLength(period)
                     + after.calculatePrintedLength(period);
@@ -1546,8 +1543,8 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period) {
-            BasePeriodFormatter before = iBefore;
-            BasePeriodFormatter after = iAfter;
+            PeriodFormatter before = iBefore;
+            PeriodFormatter after = iAfter;
             
             before.printTo(buf, period);
             if (iUseBefore) {
@@ -1568,8 +1565,8 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period) throws IOException {
-            BasePeriodFormatter before = iBefore;
-            BasePeriodFormatter after = iAfter;
+            PeriodFormatter before = iBefore;
+            PeriodFormatter after = iAfter;
             
             before.printTo(out, period);
             if (iUseBefore) {
@@ -1636,7 +1633,7 @@ public class PeriodFormatterBuilder {
             return position;
         }
 
-        Separator finish(BasePeriodFormatter after) {
+        Separator finish(PeriodFormatter after) {
             iAfter = after;
             return this;
         }
@@ -1650,16 +1647,16 @@ public class PeriodFormatterBuilder {
             extends BasePeriodFormatter
             implements PeriodFormatter {
         
-        private final BasePeriodFormatter[] iFormatters;
+        private final PeriodFormatter[] iFormatters;
 
         Composite(List formatters) {
-            iFormatters = (BasePeriodFormatter[]) formatters.toArray(
-                new BasePeriodFormatter[formatters.size()]);
+            iFormatters = (PeriodFormatter[]) formatters.toArray(
+                new PeriodFormatter[formatters.size()]);
         }
 
         public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             int sum = 0;
-            BasePeriodFormatter[] printers = iFormatters;
+            PeriodFormatter[] printers = iFormatters;
             for (int i=printers.length; sum < stopAt && --i>=0; ) {
                 sum += printers[i].countFieldsToPrint(period);
             }
@@ -1668,7 +1665,7 @@ public class PeriodFormatterBuilder {
 
         public int calculatePrintedLength(ReadablePeriod period) {
             int sum = 0;
-            BasePeriodFormatter[] printers = iFormatters;
+            PeriodFormatter[] printers = iFormatters;
             for (int i=printers.length; --i>=0; ) {
                 sum += printers[i].calculatePrintedLength(period);
             }
@@ -1676,7 +1673,7 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period) {
-            BasePeriodFormatter[] printers = iFormatters;
+            PeriodFormatter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
                 printers[i].printTo(buf, period);
@@ -1684,7 +1681,7 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period) throws IOException {
-            BasePeriodFormatter[] printers = iFormatters;
+            PeriodFormatter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
                 printers[i].printTo(out, period);
@@ -1693,7 +1690,7 @@ public class PeriodFormatterBuilder {
 
         public int parseInto(ReadWritablePeriod period,
                              String periodStr, int position) {
-            BasePeriodFormatter[] parsers = iFormatters;
+            PeriodFormatter[] parsers = iFormatters;
             if (parsers == null) {
                 throw new UnsupportedOperationException();
             }

@@ -631,7 +631,14 @@ public class TestDateTimeZone extends TestCase {
         
         assertEquals(millisParis, LONDON.getMillisKeepLocal(PARIS, millisLondon));
         assertEquals(millisLondon, PARIS.getMillisKeepLocal(LONDON, millisParis));
-        assertEquals(millisLondon, PARIS.getMillisKeepLocal(null, millisParis));
+        
+        DateTimeZone zone = DateTimeZone.getDefault();
+        try {
+            DateTimeZone.setDefault(LONDON);
+            assertEquals(millisLondon, PARIS.getMillisKeepLocal(null, millisParis));
+        } finally {
+            DateTimeZone.setDefault(zone);
+        }
     }
 
     //-----------------------------------------------------------------------

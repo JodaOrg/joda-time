@@ -301,9 +301,15 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     public void testSetDate_Object2() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.setDate(null);
-        assertEquals(TEST_TIME_NOW, test.getMillis());
+        MutableDateTime test = new MutableDateTime(2010, 7, 8, 12, 24, 48, 501);
+        test.setDate(null);  // sets to TEST_TIME_NOW
+        assertEquals(2002, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+        assertEquals(12, test.getHourOfDay());
+        assertEquals(24, test.getMinuteOfHour());
+        assertEquals(48, test.getSecondOfMinute());
+        assertEquals(501, test.getMillisOfSecond());
     }
 
     //-----------------------------------------------------------------------
@@ -357,9 +363,15 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     public void testSetTime_Object2() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
-        test.setTime(null);
-        assertEquals(TEST_TIME_NOW, test.getMillis());
+        MutableDateTime test = new MutableDateTime(2010, 7, 8, 12, 24, 48, 501);
+        test.setTime(null);  // sets to TEST_TIME_NOW, which has no time part
+        assertEquals(2010, test.getYear());
+        assertEquals(7, test.getMonthOfYear());
+        assertEquals(8, test.getDayOfMonth());
+        assertEquals(new DateTime(TEST_TIME_NOW).getHourOfDay(), test.getHourOfDay());
+        assertEquals(new DateTime(TEST_TIME_NOW).getMinuteOfHour(), test.getMinuteOfHour());
+        assertEquals(new DateTime(TEST_TIME_NOW).getSecondOfMinute(), test.getSecondOfMinute());
+        assertEquals(new DateTime(TEST_TIME_NOW).getMillisOfSecond(), test.getMillisOfSecond());
     }
 
     //-----------------------------------------------------------------------

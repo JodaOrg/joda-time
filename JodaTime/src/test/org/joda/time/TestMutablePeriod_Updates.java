@@ -276,6 +276,12 @@ public class TestMutablePeriod_Updates extends TestCase {
         test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.setYears(1);
         assertEquals(1, test.getYears());
+        
+        test = new MutablePeriod(0, 0, 0, 0, 0, 0, 0, 1, PeriodType.getMillisType());
+        try {
+            test.setYears(1);
+            fail();
+        } catch (UnsupportedOperationException ex) {}
     }
 
     //-----------------------------------------------------------------------

@@ -154,10 +154,15 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
     }
 
-    public void testGetDuration() {
+    public void testGetDuration1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
+    }
+
+    public void testGetDuration2() {
+        MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME1);
+        assertSame(Duration.ZERO, test.getDuration());
     }
 
     public void testEqualsHashCode() {
@@ -482,5 +487,20 @@ public class TestMutableInterval_Basics extends TestCase {
         MutableInterval test = new MutableInterval(dt1, dt2);
         assertEquals("2004-06-09T07:08:09.010/2005-08-13T12:14:16.018", test.toString());
     }
+
+    //-----------------------------------------------------------------------
+    public void testCopy() {
+        MutableInterval test = new MutableInterval(123L, 456L);
+        MutableInterval cloned = test.copy();
+        assertEquals(test, cloned);
+        assertNotSame(test, cloned);
+    }
+    public void testClone() {
+        MutableInterval test = new MutableInterval(123L, 456L);
+        MutableInterval cloned = (MutableInterval) test.clone();
+        assertEquals(test, cloned);
+        assertNotSame(test, cloned);
+    }
+
 
 }

@@ -154,10 +154,15 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
     }
 
-    public void testGetDuration() {
+    public void testGetDuration1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDurationMillis());
         assertEquals(TEST_TIME2 - TEST_TIME1, test.getDuration().getMillis());
+    }
+
+    public void testGetDuration2() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME1);
+        assertSame(Duration.ZERO, test.getDuration());
     }
 
     public void testEqualsHashCode() {
@@ -498,6 +503,12 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testWithStartMillis_long3() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withStartMillis(TEST_TIME1);
+        assertSame(test, result);
+    }
+
     //-----------------------------------------------------------------------
     public void testWithStartInstant_RI1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
@@ -535,6 +546,12 @@ public class TestInterval_Basics extends TestCase {
             test.withEndMillis(TEST_TIME1 - 1);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithEndMillis_long3() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        Interval result = test.withEndMillis(TEST_TIME2);
+        assertSame(test, result);
     }
 
     //-----------------------------------------------------------------------

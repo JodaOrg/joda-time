@@ -62,6 +62,10 @@ import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.ISOChronology;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -268,6 +272,55 @@ public class TestDateTimeUtils extends TestCase {
         } finally {
             DateTimeUtils.setCurrentMillisSystem();
         }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetInstantMillis_RI() {
+        Instant i = new Instant(123L);
+        assertEquals(123L, DateTimeUtils.getInstantMillis(i));
+        try {
+            DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
+            assertEquals(TEST_TIME_NOW, DateTimeUtils.getInstantMillis(null));
+        } finally {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetInstantChronology_RI() {
+        DateTime dt = new DateTime(123L, BuddhistChronology.getInstance());
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getInstantChronology(dt));
+        
+        Instant i = new Instant(123L);
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(i));
+        
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(null));
+    }
+
+    public void testGetInstantChronology_RI_long() {
+        DateTime dt = new DateTime(123L, BuddhistChronology.getInstance());
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getInstantChronology(dt, CopticChronology.getInstance()));
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getInstantChronology(dt, null));
+        
+        Instant i = new Instant(123L);
+        assertEquals(CopticChronology.getInstance(), DateTimeUtils.getInstantChronology(i, CopticChronology.getInstance()));
+        assertEquals(null, DateTimeUtils.getInstantChronology(i, null));
+        
+        assertEquals(CopticChronology.getInstance(), DateTimeUtils.getInstantChronology(null, CopticChronology.getInstance()));
+        assertEquals(null, DateTimeUtils.getInstantChronology(null, null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetChronology_Chronology() {
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getChronology(BuddhistChronology.getInstance()));
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getChronology(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testGetDurationMillis_RI() {
+        Duration dur = new Duration(123L);
+        assertEquals(123L, DateTimeUtils.getDurationMillis(dur));
+        assertEquals(0L, DateTimeUtils.getDurationMillis(null));
     }
 
 }

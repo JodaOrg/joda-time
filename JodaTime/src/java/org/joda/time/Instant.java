@@ -102,24 +102,13 @@ public final class Instant extends AbstractInstant
     }
 
     /**
-     * Constructs an instance from a <code>ReadableInstant</code>.
-     * 
-     * @param instant  the ReadableInstant
-     * @throws IllegalArgumentException if the instant is null
-     */
-    public Instant(ReadableInstant instant) {
-        super();
-        iMillis = instant.getMillis();
-    }
-
-    /**
      * Constructs an instance from an Object that represents a datetime.
      * <p>
      * The recognised object types are defined in {@link ConverterManager} and
      * include String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
-     * @throws IllegalArgumentException if the instant is null or invalid
+     * @param instant  the datetime object, null means now
+     * @throws IllegalArgumentException if the instant is invalid
      */
     public Instant(Object instant) {
         super();

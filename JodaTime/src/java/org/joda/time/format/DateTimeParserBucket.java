@@ -55,8 +55,8 @@ public class DateTimeParserBucket {
     private final long iMillis;
     
     // TimeZone to switch to in computeMillis. If null, use offset.
-    DateTimeZone iZone;
-    int iOffset;
+    private DateTimeZone iZone;
+    private int iOffset;
     /** The locale to use for parsing. */
     private Locale iLocale;
     
@@ -123,8 +123,8 @@ public class DateTimeParserBucket {
     
     //-----------------------------------------------------------------------
     /**
-     * Returns the time zone offset used by computeMillis, unless
-     * getZone doesn't return null.
+     * Returns the time zone offset in milliseconds used by computeMillis,
+     * unless getZone doesn't return null.
      */
     public int getOffset() {
         return iOffset;

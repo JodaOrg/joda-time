@@ -180,12 +180,27 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     /**
+     * Parses the given pattern and appends the rules to the given
+     * DateTimeFormatterBuilder.
+     *
+     * @param pattern  pattern specification
+     * @throws IllegalArgumentException if the pattern is invalid
+     * @see #forPattern(String)
+     */
+    public static void appendPatternTo(DateTimeFormatterBuilder builder, String pattern) {
+        getInstance(null).parsePatternTo(builder, pattern);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets an instance of the formatter provider that works with the given locale.
      * 
      * @param locale  the Locale to use, null for default locale
      * @return a format provider
      */
     private synchronized static DateTimeFormat getInstance(Locale locale) {
+        // This instance mechanism has been kept to allow subclasses to be created
+        // and inserted here in place of the default instance, just not in v1.0
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -199,6 +214,17 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     /**
+     * Constructor.
+     * 
+     * @param locale  the locale to use, must not be null
+     */
+    protected DateTimeFormat(Locale locale) {
+        super();
+        iLocale = locale;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Parses the given pattern and appends the rules to the given
      * DateTimeFormatterBuilder.
      *
@@ -206,7 +232,7 @@ public class DateTimeFormat {
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #forPattern
      */
-    public static void appendPatternTo(DateTimeFormatterBuilder builder, String pattern) {
+    protected void parsePatternTo(DateTimeFormatterBuilder builder, String pattern) {
         int length = pattern.length();
         int[] indexRef = new int[1];
 
@@ -362,7 +388,15 @@ public class DateTimeFormat {
         }
     }
 
-    private static String parseToken(final String pattern, final int[] indexRef) {
+    /**
+     * Parses an individual token.
+     * 
+     * @param pattern  the pattern string
+     * @param indexRef  a single element array, where the input is the start
+     *  location and the output is the location after parsing the token
+     * @return the parsed token
+     */
+    protected String parseToken(String pattern, int[] indexRef) {
         StringBuffer buf = new StringBuffer();
 
         int i = indexRef[0];
@@ -414,8 +448,13 @@ public class DateTimeFormat {
         return buf.toString();
     }
 
-    // Returns true if token should be parsed as a numeric field.
-    private static boolean isNumericToken(final String token) {
+    /**
+     * Returns true if token should be parsed as a numeric field.
+     * 
+     * @param token  the token to parse
+     * @return true if numeric field
+     */
+    protected boolean isNumericToken(String token) {
         int tokenLen = token.length();
         if (tokenLen > 0) {
             char c = token.charAt(0);
@@ -451,24 +490,13 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     /**
-     * Constructor.
-     * 
-     * @param locale  the locale to use, must not be null
-     */
-    protected DateTimeFormat(final Locale locale) {
-        super();
-        iLocale = locale;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Select a format from a custom pattern.
      *
      * @param pattern  pattern specification
      * @throws IllegalArgumentException if the pattern is invalid
      * @see #appendPatternTo
      */
-    protected DateTimeFormatter createFormatterForPattern(final String pattern) {
+    protected DateTimeFormatter createFormatterForPattern(String pattern) {
         synchronized (cPatternedCache) {
             DateTimeFormatter formatter = (DateTimeFormatter) cPatternedCache.get(pattern);
             if (formatter != null) {
@@ -480,7 +508,7 @@ public class DateTimeFormat {
             }
 
             DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
-            appendPatternTo(builder, pattern);
+            parsePatternTo(builder, pattern);
             formatter = builder.toFormatter();
 
             cPatternedCache.put(pattern, formatter);

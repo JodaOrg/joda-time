@@ -51,7 +51,11 @@ public class DateTimeFormatter {
     private final DateTimeZone iZone;
 
     /**
-     * Constructor.
+     * Creates a new formatter, however you will normally use the factory
+     * or the builder.
+     * 
+     * @param printer  the internal printer, null if cannot print
+     * @param parser  the internal parser, null if cannot parse
      */
     public DateTimeFormatter(
             DateTimePrinter printer, DateTimeParser parser) {
@@ -67,7 +71,7 @@ public class DateTimeFormatter {
     /**
      * Constructor.
      */
-    public DateTimeFormatter(
+    private DateTimeFormatter(
             DateTimePrinter printer, DateTimeParser parser,
             Locale locale, boolean offsetParsed,
             Chronology chrono, DateTimeZone zone) {
@@ -152,7 +156,8 @@ public class DateTimeFormatter {
      * <p>
      * After calling this method, a string '2004-06-09T10:20:30-08:00' will
      * create a datetime with a zone of -08:00 (a fixed zone, with no daylight
-     * savings rules).
+     * savings rules). If the parsed string represents a local time (no zone
+     * offset) the parsed datetime will be in the default zone.
      * <p>
      * Calling this method sets the override zone to null.
      * Calling the override zone method sets this flag off.
@@ -228,7 +233,7 @@ public class DateTimeFormatter {
      * @return the new formatter
      */
     public DateTimeFormatter withZone(DateTimeZone zone) {
-        if (iChrono != null && iChrono.getZone() == zone) {
+        if (iZone == zone) {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, iLocale, false, iChrono, zone);
@@ -374,8 +379,8 @@ public class DateTimeFormatter {
     /**
      * Prints a ReadablePartial to a new String.
      * <p>
-     * This method will use the override chronololgy if it is set.
-     * Otherwise it will use the chronology of the partial.
+     * Neither the override chronology nor the override zone are used
+     * by this method.
      *
      * @param partial  partial to format
      * @return the printed result
@@ -389,13 +394,7 @@ public class DateTimeFormatter {
     }
 
     private void printTo(StringBuffer buf, long instant, Chronology chrono) {
-        chrono = DateTimeUtils.getChronology(chrono);
-        if (iChrono != null) {
-            chrono = iChrono;
-        }
-        if (iZone != null) {
-            chrono = chrono.withZone(iZone);
-        }
+        chrono = selectChronology(chrono);
         // Shift instant into local time (UTC) to avoid excessive offset
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
@@ -404,13 +403,7 @@ public class DateTimeFormatter {
     }
 
     private void printTo(Writer buf, long instant, Chronology chrono) throws IOException {
-        chrono = DateTimeUtils.getChronology(chrono);
-        if (iChrono != null) {
-            chrono = iChrono;
-        }
-        if (iZone != null) {
-            chrono = chrono.withZone(iZone);
-        }
+        chrono = selectChronology(chrono);
         // Shift instant into local time (UTC) to avoid excessive offset
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
@@ -436,6 +429,13 @@ public class DateTimeFormatter {
      * succeeds, the return value is the new text position. Note that the parse
      * may succeed without fully reading the text.
      * <p>
+     * Only those fields present in the string will be changed in the specified
+     * instant. All other fields will remain unaltered. Thus if the string only
+     * contains a year and a month, then the day and time will be retained from
+     * the input instant. If this is not the behaviour you want, then reset the
+     * fields before calling this method, or use {@link #parseDateTime(String)}
+     * or {@link #parseMutableDateTime(String)}.
+     * <p>
      * If it fails, the return value is negative, but the instant may still be
      * modified. To determine the position where the parse failed, apply the
      * one's complement operator (~) on the return value.
@@ -456,16 +456,26 @@ public class DateTimeFormatter {
         if (instant == null) {
             throw new IllegalArgumentException("Instant must not be null");
         }
-
-        // TODO
-        long millis = instant.getMillis();
+        
+        long instantMillis = instant.getMillis();
         Chronology chrono = instant.getChronology();
-        long instantLocal = millis + chrono.getZone().getOffset(millis);
-
+        long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
+        chrono = selectChronology(chrono);
+        
         DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono, iLocale);
-        int resultPos = iParser.parseInto(bucket, text, position);
-        instant.setMillis(bucket.computeMillis());
-        return resultPos;
+        int newPos = iParser.parseInto(bucket, text, 0);
+        if (newPos >= 0) {
+            if (newPos >= text.length()) {
+                instant.setMillis(bucket.computeMillis());
+                if (iOffsetParsed && bucket.getZone() == null) {
+                    int parsedOffset = bucket.getOffset();
+                    DateTimeZone parsedZone = DateTimeZone.getInstanceFixedMillis(parsedOffset);
+                    chrono = chrono.withZone(parsedZone);
+                }
+                instant.setChronology(chrono);
+            }
+        }
+        return newPos;
     }
 
     /**
@@ -483,11 +493,7 @@ public class DateTimeFormatter {
     public long parseMillis(String text) {
         checkParser();
         
-        Chronology chrono = DateTimeUtils.getChronology(iChrono);
-        if (iZone != null) {
-            chrono = chrono.withZone(iZone);
-        }
-        
+        Chronology chrono = selectChronology(iChrono);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
@@ -503,8 +509,14 @@ public class DateTimeFormatter {
     /**
      * Parses a datetime from the given text, returning a new DateTime.
      * <p>
-     * The parse will use the ISO chronology and default time zone.
-     * If the text contains a time zone string then that will be taken into account.
+     * The parse will use the zone and chronology specified on this formatter.
+     * <p>
+     * If the text contains a time zone string then that will be taken into
+     * account in adjusting the time of day as follows.
+     * If the {@link #withOffsetParsed()} has been called, then the resulting
+     * DateTime will have a fixed offset based on the parsed time zone.
+     * Otherwise the resulting DateTime will have the zone of this formatter,
+     * but the parsed zone may have caused the time to be adjusted.
      *
      * @param text  the text to parse
      * @return parsed value in a DateTime object
@@ -514,18 +526,18 @@ public class DateTimeFormatter {
     public DateTime parseDateTime(String text) {
         checkParser();
         
-        Chronology chrono = DateTimeUtils.getChronology(iChrono);
-        if (iZone != null) {
-            chrono = chrono.withZone(iZone);
-        }
-        
+        Chronology chrono = selectChronology(null);
         DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true);
-                bucket.getOffset(); // TODO
-                return new DateTime(millis, iChrono);
+                if (iOffsetParsed && bucket.getZone() == null) {
+                    int parsedOffset = bucket.getOffset();
+                    DateTimeZone parsedZone = DateTimeZone.getInstanceFixedMillis(parsedOffset);
+                    chrono = chrono.withZone(parsedZone);
+                }
+                return new DateTime(millis, chrono);
             }
         } else {
             newPos = ~newPos;
@@ -536,8 +548,14 @@ public class DateTimeFormatter {
     /**
      * Parses a datetime from the given text, returning a new MutableDateTime.
      * <p>
-     * The parse will use the ISO chronology and default time zone.
-     * If the text contains a time zone string then that will be taken into account.
+     * The parse will use the zone and chronology specified on this formatter.
+     * <p>
+     * If the text contains a time zone string then that will be taken into
+     * account in adjusting the time of day as follows.
+     * If the {@link #withOffsetParsed()} has been called, then the resulting
+     * DateTime will have a fixed offset based on the parsed time zone.
+     * Otherwise the resulting DateTime will have the zone of this formatter,
+     * but the parsed zone may have caused the time to be adjusted.
      *
      * @param text  the text to parse
      * @return parsed value in a MutableDateTime object
@@ -547,9 +565,23 @@ public class DateTimeFormatter {
     public MutableDateTime parseMutableDateTime(String text) {
         checkParser();
         
-        // TODO
-        long millis = parseMillis(text);
-        return new MutableDateTime(millis, iChrono);
+        Chronology chrono = selectChronology(null);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale);
+        int newPos = iParser.parseInto(bucket, text, 0);
+        if (newPos >= 0) {
+            if (newPos >= text.length()) {
+                long millis = bucket.computeMillis(true);
+                if (iOffsetParsed && bucket.getZone() == null) {
+                    int parsedOffset = bucket.getOffset();
+                    DateTimeZone parsedZone = DateTimeZone.getInstanceFixedMillis(parsedOffset);
+                    chrono = chrono.withZone(parsedZone);
+                }
+                return new MutableDateTime(millis, chrono);
+            }
+        } else {
+            newPos = ~newPos;
+        }
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
     }
 
     /**
@@ -561,6 +593,24 @@ public class DateTimeFormatter {
         if (iParser == null) {
             throw new UnsupportedOperationException("Parsing not supported");
         }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Determines the correct chronology to use.
+     *
+     * @param chrono  the proposed chronology
+     * @return the actual chronology
+     */
+    private Chronology selectChronology(Chronology chrono) {
+        chrono = DateTimeUtils.getChronology(chrono);
+        if (iChrono != null) {
+            chrono = iChrono;
+        }
+        if (iZone != null) {
+            chrono = chrono.withZone(iZone);
+        }
+        return chrono;
     }
 
 }

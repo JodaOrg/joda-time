@@ -91,7 +91,7 @@ public abstract class BasePartial
 
     //-----------------------------------------------------------------------
     /**
-     * Constructs a AbstractPartial with the current time, using ISOChronology in
+     * Constructs a partial with the current time, using ISOChronology in
      * the default zone to extract the fields.
      * <p>
      * The constructor uses the default time zone, resulting in the local time
@@ -103,7 +103,7 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a AbstractPartial with the current time, using the specified chronology
+     * Constructs a partial with the current time, using the specified chronology
      * and zone to extract the fields.
      * <p>
      * The constructor uses the time zone of the chronology specified.
@@ -117,7 +117,7 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a AbstractPartial extracting the partial fields from the specified
+     * Constructs a partial extracting the partial fields from the specified
      * milliseconds using the ISOChronology in the default zone.
      * <p>
      * The constructor uses the default time zone, resulting in the local time
@@ -131,7 +131,7 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a AbstractPartial extracting the partial fields from the specified
+     * Constructs a partial extracting the partial fields from the specified
      * milliseconds using the chronology provided.
      * <p>
      * The constructor uses the time zone of the chronology specified.
@@ -149,7 +149,7 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a AbstractPartial from an Object that represents a time.
+     * Constructs a partial from an Object that represents a time.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
@@ -169,7 +169,7 @@ public abstract class BasePartial
     }
 
     /**
-     * Constructs a AbstractPartial from an Object that represents a time, using the
+     * Constructs a partial from an Object that represents a time, using the
      * specified chronology.
      * <p>
      * The recognised object types are defined in
@@ -192,6 +192,26 @@ public abstract class BasePartial
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
         iValues = initValues(millis, chronology);
+    }
+
+    /**
+     * Constructs a partial with specified time field values and chronology.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
+     * <p>
+     * The array of values is assigned (not cloned) to the new instance.
+     *
+     * @param values  the new set of values
+     * @param chronology  the chronology, null means ISOChronology in the default zone
+     */
+    protected BasePartial(int[] values, Chronology chronology) {
+        super();
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        chronology.validate(this, values);
+        iValues = values;
     }
 
     /**

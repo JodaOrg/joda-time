@@ -404,8 +404,7 @@ public class DateTimeFormat {
             case 'y': // year (number)
             case 'Y': // year of era (number)
                 if (tokenLen == 2) {
-                    // Use a new remainder type to ensure that the year of
-                    // century is zero-based.
+                    // Use pivots which are compatible with SimpleDateFormat.
                     DateTimeFieldType type;
                     switch (c) {
                     case 'x':

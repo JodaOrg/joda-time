@@ -335,7 +335,7 @@ public class TestParseISO extends BulkTest {
         }
         
         protected abstract void run();
-        protected void assert() {
+        protected void assertDate() {
             String msg = "\nSpec:   " + spec + "\nParsed: " + extended + "\nTo:     " + dt;
             assertEquals(msg + "\nCentury: ", century, dt.getCenturyOfEra());
             assertEquals(msg + "\nYear: ", yearOfCentury, dt.getYearOfCentury());
@@ -383,7 +383,7 @@ public class TestParseISO extends BulkTest {
         protected void run() {
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
             parse(ISODateTimeFormat.getInstance().dateTimeParser());
-            super.assert();
+            super.assertDate();
         }
     }
     protected static class DMatcher extends Matcher {
@@ -403,11 +403,11 @@ public class TestParseISO extends BulkTest {
         protected void run() {
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
             parse(ISODateTimeFormat.getInstance().dateParser());
-            super.assert();
+            super.assertDate();
         
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
             parse(ISODateTimeFormat.getInstance().dateTimeParser());
-            super.assert();
+            super.assertDate();
         }
     }
     protected static class TMatcher extends Matcher {
@@ -427,16 +427,16 @@ public class TestParseISO extends BulkTest {
         protected void run() {
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
             parse(ISODateTimeFormat.getInstance().timeParser());
-            super.assert();
+            super.assertDate();
             
             extended = "T" + extended;
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
             parse(ISODateTimeFormat.getInstance().timeParser());
-            super.assert();
+            super.assertDate();
             
             dt = new MutableDateTime(1972, 12, 3, 10, 32, 40, 205);
             parse(ISODateTimeFormat.getInstance().dateTimeParser());
-            super.assert();
+            super.assertDate();
         }
     }
 }

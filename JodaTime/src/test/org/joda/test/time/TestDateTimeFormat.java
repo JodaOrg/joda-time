@@ -68,255 +68,101 @@ import junit.framework.TestSuite;
  */
 public class TestDateTimeFormat extends BulkTest {
 
-	/**
-	 * This is the main class for this test suite.
-	 * @param args command line arguments.
-	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(suite());
-	}
-	/**
-	 * TestSuite is a junit required method.
-	 */
-	public static TestSuite suite() {
-		return BulkTest.makeSuite(TestDateTimeFormat.class);
-	}
-	/**
-	 * TestDateTimeField constructor.
-	 * @param name
-	 */
-	public TestDateTimeFormat(String name) {
-		super(name);
-	}
-	// Class Name: org.joda.time.format.DateTimeFormat
-	/**
-	 * Junit <code>setUp()</code> method.
-	 */
-	public void setUp() /* throws Exception */ {
-		// super.setUp();
-	}
-	/**
-	 * Junit <code>tearDown()</code> method.
-	 */
-	protected void tearDown() /* throws Exception */ {
-		// super.tearDown();
-	}
-	/**
-	 * Test the <code>getInstance()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance()
-	 */
-	protected void testGetInstance() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getInstance(java.lang.String)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance(java.lang.String)
-	 */
-	public void testGetInstanceString() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getInstance(java.lang.String, java.util.TimeZone)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance(java.lang.String, java.util.TimeZone)
-	 */
-	public void testGetInstanceSTZ() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getInstance(java.lang.String, java.util.TimeZone, java.util.Locale)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance(java.lang.String, java.util.TimeZone, java.util.Locale)
-	 */
-	public void testGetInstanceSTZL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getInstance(java.lang.String, org.joda.time.Chronology)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance(java.lang.String, org.joda.time.Chronology)
-	 */
-	public void testGetInstanceSC() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getInstance(java.lang.String, org.joda.time.Chronology, java.util.TimeZone)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance(java.lang.String, org.joda.time.Chronology, java.util.TimeZone)
-	 */
-	public void testGetInstanceSCT() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getInstance(java.lang.String, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getInstance(java.lang.String, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)
-	 */
-	public void testGetInstanceSCTL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getDateInstance(java.lang.Object, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getDateInstance(java.lang.Object, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)
-	 */
-	public void testGetDateInstance() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getTimeInstance(java.lang.Object, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getTimeInstance(java.lang.Object, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)
-	 */
-	public void testGetTimeInstance() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getDateTimeInstance(java.lang.Object, java.lang.Object, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getDateTimeInstance(java.lang.Object, java.lang.Object, org.joda.time.Chronology, java.util.TimeZone, java.util.Locale)
-	 */
-	public void testGetDateTimeInstance() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getPattern()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getPattern()
-	 */
-	public void testGetPattern() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getChronology()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getChronology()
-	 */
-	public void testGetChronology() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getTimeZone()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getTimeZone()
-	 */
-	public void testGetTimeZone() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getLocale()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getLocale()
-	 */
-	public void testGetLocale() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getPrinter()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getPrinter()
-	 */
-	public void testGetPrinter() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>getParser()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#getParser()
-	 */
-	public void testGetParser() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>estimatePrintedLength()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#estimatePrintedLength()
-	 */
-	public void testEstimatePrintedLength() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>printTo(java.lang.StringBuffer, long, long)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#printTo(java.lang.StringBuffer, long, long)
-	 */
-	public void testPrintToSLL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>printTo(java.io.Writer, long, long)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#printTo(java.io.Writer, long, long)
-	 */
-	public void testPrintToWLL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>printTo(java.lang.StringBuffer, org.joda.time.ReadableInstant)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#printTo(java.lang.StringBuffer, org.joda.time.ReadableInstant)
-	 */
-	public void testPrintToSBRI() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>printTo(java.lang.StringBuffer, long)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#printTo(java.lang.StringBuffer, long)
-	 */
-	public void testPrintToSBL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>printTo(java.io.Writer, org.joda.time.ReadableInstant)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#printTo(java.io.Writer, org.joda.time.ReadableInstant)
-	 */
-	public void testPrintToWRI() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>printTo(java.io.Writer, long)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#printTo(java.io.Writer, long)
-	 */
-	public void testPrintToWL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>print(org.joda.time.ReadableInstant)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#print(org.joda.time.ReadableInstant)
-	 */
-	public void testPrintRI() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>print(long)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#print(long)
-	 */
-	public void testPrintL() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>estimateParsedLength()</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#estimateParsedLength()
-	 */
-	public void testEstimateParsedLength() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>parseInto(org.joda.time.format.DateTimeParserBucket, java.lang.String, int)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#parseInto(org.joda.time.format.DateTimeParserBucket, java.lang.String, int)
-	 */
-	public void testParseIntoPBSI() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>parseInto(org.joda.time.ReadWritableInstant, java.lang.String)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#parseInto(org.joda.time.ReadWritableInstant, java.lang.String)
-	 */
-	public void testParseIntoRWIS() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>parseInto(org.joda.time.ReadWritableInstant, java.lang.String, int)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#parseInto(org.joda.time.ReadWritableInstant, java.lang.String, int)
-	 */
-	public void testParseIntoRWISI() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>parse(java.lang.String)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#parse(java.lang.String)
-	 */
-	public void testParseS() {
-		fail("TBD");
-	}
-	/**
-	 * Test the <code>parse(java.lang.String, int, long)</code> method.
-	 * @see org.joda.time.format.DateTimeFormat#parse(java.lang.String, int, long)
-	 */
-	public void testParseSL() {
-		fail("TBD");
-	}
+    /**
+     * This is the main class for this test suite.
+     * @param args command line arguments.
+     */
+    public static void main(String[] args) {
+        junit.textui.TestRunner.run(suite());
+    }
+    /**
+     * TestSuite is a junit required method.
+     */
+    public static TestSuite suite() {
+        return BulkTest.makeSuite(TestDateTimeFormat.class);
+    }
+    /**
+     * TestDateTimeField constructor.
+     * @param name
+     */
+    public TestDateTimeFormat(String name) {
+        super(name);
+    }
+    // Class Name: org.joda.time.format.DateTimeFormat
+    /**
+     * Junit <code>setUp()</code> method.
+     */
+    public void setUp() /* throws Exception */ {
+        // super.setUp();
+    }
+    /**
+     * Junit <code>tearDown()</code> method.
+     */
+    protected void tearDown() /* throws Exception */ {
+        // super.tearDown();
+    }
+    /**
+     * Test the <code>getInstanceUTC()</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getInstanceUTC()
+     */
+    protected void testGetInstanceUTC() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>getInstance()</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getInstance()
+     */
+    protected void testGetInstance() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>getInstance(org.joda.time.DateTimeZone)</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getInstance(org.joda.time.DateTimeZone)
+     */
+    public void testGetInstanceTZ() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>getInstance(org.joda.time.DateTimeZone, java.util.Locale)</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getInstance(org.joda.time.DateTimeZone, java.util.Locale)
+     */
+    public void testGetInstanceTZL() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>getInstance(org.joda.time.Chronology)</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getInstance(org.joda.time.Chronology)
+     */
+    public void testGetInstanceC() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>getInstance(org.joda.time.Chronology, java.util.Locale)</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getInstance(org.joda.time.Chronology, java.util.Locale)
+     */
+    public void testGetInstanceCL() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>forPattern(String)</code> method.
+     * @see org.joda.time.format.DateTimeFormat#forPattern(String)
+     */
+    public void testForPattern() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>forStyle(String)</code> method.
+     * @see org.joda.time.format.DateTimeFormat#forStyle(String)
+     */
+    public void testForStyle() {
+        fail("TBD");
+    }
+    /**
+     * Test the <code>getPatternForStyle()</code> method.
+     * @see org.joda.time.format.DateTimeFormat#getPatternForStyle(String)
+     */
+    public void testGetPatternForStyle() {
+        fail("TBD");
+    }
 
 }

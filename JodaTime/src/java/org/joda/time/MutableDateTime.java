@@ -54,22 +54,22 @@
 
 package org.joda.time;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
+import java.io.Serializable;
 
 import org.joda.time.chrono.iso.ISOChronology;
-import org.joda.time.format.DateTimeParser;
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.DurationConverter;
+import org.joda.time.convert.InstantConverter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * MutableDateTime is the standard implementation of a modifiable
- * datetime class.
- * It holds the date/time as milliseconds from the Java epoch of
- * 1970-01-01T00:00:00Z.
+ * MutableDateTime is the standard implementation of a modifiable datetime class.
+ * It holds the datetime as milliseconds from the Java epoch of 1970-01-01T00:00:00Z.
  * <p>
- * This class requires a Chronology to be specified. The Chronology determines
- * how the millisecond instant value is converted into the date time fields.
+ * This class uses a Chronology internally. The Chronology determines how the
+ * millisecond instant value is converted into the date time fields.
+ * The default Chronology is <code>ISOChronology</code> which is the agreed
+ * international standard and compatable with the modern Gregorian calendar.
  * <p>
  * Each individual field can be accessed in two ways:
  * <ul>
@@ -90,401 +90,363 @@ import org.joda.time.format.ISODateTimeFormat;
  * <li>field minimum value
  * </ul>
  *
+ * <p>
+ * MutableDateTime is mutable and not thread-safe, unless concurrent threads
+ * are not invoking mutator methods.
+ *
  * @author Guy Allard
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
+ * @see DateTime
  */
 public class MutableDateTime extends AbstractDateTime
-    implements ReadableDateTime, ReadWritableInstant, Cloneable
-{
-    /** The millis from 1970-01-01T00:00:00Z. */
-    private long iMillis;
-    /** The chronology to use */
-    private Chronology iChronology;
+        implements ReadWritableDateTime, Cloneable, Serializable {
+    
+    static final long serialVersionUID = 2852608688135209575L;
 
-    // Constructors (same as DateTime)
-    //-----------------------------------------------------------
-
+    // Constructors
+    //-----------------------------------------------------------------------
     /**
-     * Constructs a MutableDateTime to the current datetime, as reported by the system
-     * clock. The chronology used is ISO, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
+     * Constructs an instance set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
      */
     public MutableDateTime() {
-        iChronology = ISOChronology.getInstance();
-        iMillis = System.currentTimeMillis();
+        super();
     }
 
     /**
-     * Constructs a MutableDateTime to the current datetime, as reported by the system
-     * clock. The chronology used is ISO, in the supplied time zone.
+     * Constructs an instance set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
      *
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the zone is null
+     * @param zone  the time zone, null means default zone
      */
     public MutableDateTime(DateTimeZone zone) {
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = System.currentTimeMillis();
+        super(zone);
     }
 
     /**
-     * Constructs a MutableDateTime to the current datetime, as reported by the system
-     * clock.
+     * Constructs an instance set to the current system millisecond time
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
      *
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the chronology is null
+     * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public MutableDateTime(Chronology chronology) {
-        iChronology = selectChronology(chronology);
-        iMillis = System.currentTimeMillis();
+        super(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     */
+    public MutableDateTime(long instant) {
+        super(instant);
     }
 
     /**
-     * Constructs a MutableDateTime set to the milliseconds from 1970-01-01T00:00:00Z,
-     * using the ISO chronology, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
      *
-     * @param millis  the milliseconds
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param zone  the time zone, null means default zone
      */
-    public MutableDateTime(long millis) {
-        iChronology = ISOChronology.getInstance();
-        iMillis = millis;
+    public MutableDateTime(long instant, DateTimeZone zone) {
+        super(instant, zone);
     }
 
     /**
-     * Constructs a MutableDateTime set to the milliseconds from 1970-01-01T00:00:00Z,
-     * using the ISO chronology, in the supplied time zone.
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
      *
-     * @param millis  the milliseconds
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the zone is null
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public MutableDateTime(long millis, DateTimeZone zone) {
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = millis;
+    public MutableDateTime(long instant, Chronology chronology) {
+        super(instant, chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance from an Object that represents a datetime.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code>
+     * in the default time zone is used.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  the datetime object, must not be null
+     * @throws IllegalArgumentException if the instant is null or invalid
+     */
+    public MutableDateTime(Object instant) {
+        super(instant);
     }
 
     /**
-     * Constructs a MutableDateTime set to the milliseconds from 1970-01-01T00:00:00Z,
-     * using the supplied chronology.
+     * Constructs an instance from an Object that represents a datetime,
+     * forcing the time zone to that specified.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code> is used.
+     * If the specified time zone is null, the default zone is used.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
      *
-     * @param millis  the milliseconds
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the chronology is null
+     * @param instant  the datetime object, must not be null
+     * @param zone  the time zone, null means default time zone
+     * @throws IllegalArgumentException if the instant is null or invalid
      */
-    public MutableDateTime(long millis, Chronology chronology) {
-        iChronology = selectChronology(chronology);
-        iMillis = millis;
+    public MutableDateTime(Object instant, DateTimeZone zone) {
+        super(instant, zone);
     }
 
     /**
-     * Constructs a MutableDateTime from a ReadableInstant, using its chronology. If
-     * its chronology null, then the chronology is set to ISO, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
+     * Constructs an instance from an Object that represents a datetime,
+     * using the specifed chronology.
+     * <p>
+     * If the chronology is null, ISOChronology in the default time zone is used.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the ReadableInstant, must not be null
-     * @throws IllegalArgumentException if the instant is null
+     * @param instant  the datetime object, must not be null
+     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @throws IllegalArgumentException if the instant is null or invalid
      */
-    public MutableDateTime(ReadableInstant instant) {
-        iChronology = selectChronology(instant);
-        iMillis = instant.getMillis();
+    public MutableDateTime(Object instant, Chronology chronology) {
+        super(instant, chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the milisecond of the second
+     */
+    public MutableDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond) {
+        super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     /**
-     * Constructs a MutableDateTime from a ReadableInstant, using its chronology
-     * against a different time zone. If its chronology is null, then the
-     * chronology is set to ISO. If the selected chronology is not in the
-     * supplied time zone, a new chronology is created that is.
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
      *
-     * @param instant  the ReadableInstant, must not be null
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the instant or zone is null
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the milisecond of the second
+     * @param zone  the time zone, null means default time zone
      */
-    public MutableDateTime(ReadableInstant instant, DateTimeZone zone) {
-        iChronology = selectChronology(instant, zone);
-        iMillis = instant.getMillis();
+    public MutableDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond,
+            DateTimeZone zone) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, zone);
     }
 
     /**
-     * Constructs a MutableDateTime from a ReadableInstant, using the supplied
-     * chronology.
+     * Constructs an instance from datetime field values
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
      *
-     * @param instant  the ReadableInstant, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the instant or chronology is null
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the milisecond of the second
+     * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public MutableDateTime(ReadableInstant instant, Chronology chronology) {
-        iChronology = selectChronology(instant, chronology);
-        iMillis = instant.getMillis();
+    public MutableDateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond,
+            Chronology chronology) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
 
-    /**
-     * Constructs a MutableDateTime from a Date, using the ISO chronology, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
-     *
-     * @param date  the Date, must not be null
-     * @throws IllegalArgumentException if the date is null
-     */
-    public MutableDateTime(Date date) {
-        iChronology = selectChronology(date);
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructs a MutableDateTime from a Date, using the ISO chronology, in the
-     * supplied time zone.
-     *
-     * @param date  the Date, must not be null
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the date or zone is null
-     */
-    public MutableDateTime(Date date, DateTimeZone zone) {
-        iChronology = selectChronology(date, zone);
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructs a MutableDateTime from a Date, using the supplied chronology.
-     *
-     * @param date  the Date, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the date or chronology is null
-     */
-    public MutableDateTime(Date date, Chronology chronology) {
-        iChronology = selectChronology(date, chronology);
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructs a MutableDateTime from a Calendar, using its closest mapped
-     * chronology and time zone.
-     *
-     * <p>When converting calendars to chronologies, the constructor is aware
-     * of GregorianCalendar and BuddhistCalendar and maps them to the
-     * equivalent chronology. Other calendars map to ISOChronology.
-     *
-     * @param calendar  the Calendar, must not be null
-     * @throws IllegalArgumentException if the calendar is null
-     */
-    public MutableDateTime(Calendar calendar) {
-        iChronology = selectChronology(calendar);
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructs a MutableDateTime from a Calendar, using its closest mapped
-     * chronology against a different time zone.
-     *
-     * <p>When converting calendars to chronologies, the constructor is aware
-     * of GregorianCalendar and BuddhistCalendar and maps them to the
-     * equivalent chronology. Other calendars map to ISOChronology.
-     *
-     * @param calendar  the Calendar, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the calendar or zone is null
-     */
-    public MutableDateTime(Calendar calendar, DateTimeZone zone) {
-        iChronology = selectChronology(calendar, zone);
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructs a MutableDateTime from a Calendar, using the supplied chronology.
-     *
-     * @param calendar  the Calendar, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the calendar or chronology is null
-     */
-    public MutableDateTime(Calendar calendar, Chronology chronology) {
-        iChronology = selectChronology(calendar, chronology);
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructs a MutableDateTime from an ISO formatted String, using the ISO
-     * chronology, in the {@link DateTimeZone#getDefault() default} time zone.
-     *
-     * @param str  the string to parse, must not be null
-     * @throws IllegalArgumentException if the string is null
-     * @throws ParseException if parsing fails
-     */
-    public MutableDateTime(String str) throws ParseException {
-        iChronology = selectChronology(str);
-        DateTimeParser p = ISODateTimeFormat.getInstance(iChronology).dateTimeParser();
-        iMillis = p.parseMillis(str);
-    }
-
-    /**
-     * Constructs a MutableDateTime from an ISO formatted String, using the ISO
-     * chronology, in the supplied time zone.
-     *
-     * @param str  the string to parse, must not be null
-     * @param zone the time zone, must not be null
-     * @throws IllegalArgumentException if the string or zone is null
-     * @throws ParseException if parsing fails
-     */
-    public MutableDateTime(String str, DateTimeZone zone) throws ParseException {
-        iChronology = selectChronology(str, zone);
-        DateTimeParser p = ISODateTimeFormat.getInstance(iChronology).dateTimeParser();
-        iMillis = p.parseMillis(str);
-    }
-
-    /**
-     * Constructs a MutableDateTime from an ISO formatted String, using the supplied
-     * chronology.
-     *
-     * @param str  the string to parse, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the string or chronology is null
-     * @throws ParseException if parsing fails
-     */
-    public MutableDateTime(String str, Chronology chronology) throws ParseException {
-        iChronology = selectChronology(str, chronology);
-        DateTimeParser p = ISODateTimeFormat.getInstance(iChronology).dateTimeParser();
-        iMillis = p.parseMillis(str);
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Creates a new instance of this class.
      * <p>
      * The returned object will be a new instance of the implementation.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
-     * @param millis  the new millis, from 1970-01-01T00:00:00Z
+     * @param instant  the new instant, from 1970-01-01T00:00:00Z
      * @param chrono  the new chronology
      * @return a new instance of this class
      * @throws IllegalArgumentException if the chronology is null
      */
-    protected ReadableInstant create(long millis, Chronology chrono) {
+    protected ReadableInstant create(long instant, Chronology chrono) {
         if (chrono == null) {
             throw new IllegalArgumentException("The Chronology must not be null");
         }
-        return new MutableDateTime(millis, chrono);
+        return new MutableDateTime(instant, chrono);
     }
     
-    // Accessor/mutator/adder methods (Accessors same as for DateTime)
-    //-----------------------------------------------------------
-
-    /**
-     * Gets the milliseconds of the datetime instant from the Java epoch
-     * of 1970-01-01T00:00:00Z.
-     * 
-     * @return the number of milliseconds since 1970-01-01T00:00:00Z
-     */
-    public long getMillis() {
-        return iMillis;
-    }
-
+    // Millis
+    //-----------------------------------------------------------------------
     /**
      * Set the milliseconds of the datetime.
      *
-     * @param millis the milliseconds since 1970-01-01T00:00:00Z to set the
+     * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the
      * datetime to
+     * @see #setDateTime(long)
      */
-    public void setMillis(long millis) {
-        iMillis = millis;
+    public void setMillis(long instant) {
+        super.setMillis(instant);
     }
 
     /**
-     * Set the number of milliseconds of the datetime.
-     * 
-     * @param datetime  a ReadableInstant, Date, Calendar, Long or String
-     * @throws IllegalArgumentException if the object is null
-     * @throws ClassCastException if the object's type cannot be recognised
+     * Set the date and time from an object representing an instant.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  an object representing an instant
+     * @throws IllegalArgumentException if the object is null or invalid
+     * @see #setDateTime(Object)
      */
-    public void setMillis(Object object) {
-        iMillis = getDateTimeMillisFromObject(object);
+    public void setMillis(Object instant) {
+        super.setMillis(instant);
     }
 
-    /**
-     * Add an amount of time to the date.
-     * 
-     * @param duration duration to add.
-     */
-    /*
-    public void add(ReadableDuration duration) {
-        duration.addTo(this, 1);
-    }
-    */
-
-    /**
-     * Add an amount of time to the date.
-     * 
-     * @param duration duration to add.
-     * @param scalar direction and amount to add, which may be negative
-     */
-    /*
-    public void add(ReadableDuration duration, int scalar) {
-        duration.addTo(this, scalar);
-    }
-    */
-
-    /**
-     * Add an amount of time to the date.
-     * 
-     * @param object a ReadableDuration, Long or String evaluating to a
-     * duration
-     */
-    public void add(Object object) {
-        /*
-        if (object instanceof ReadableDuration) {
-            add((ReadableDuration)object);
-        } else {
-            iMillis += getDurationMillisFromObject(object);
-        }
-        */
-        iMillis += getDurationMillisFromObject(object);
-    }
-
+    // Add
+    //-----------------------------------------------------------------------
     /**
      * Add an amount of time to the datetime.
      * 
-     * @param millis  the millis to add
+     * @param duration  the millis to add
      */
-    public void addMillis(long millis) {
-        iMillis += millis;
+    public void add(final long duration) {
+        setMillis(getMillis() + duration);
     }
 
     /**
-     * Gets the chronology of the datetime.
+     * Add an amount of time to the date.
      * 
-     * @return the Chronology that the datetime is using
+     * @param duration  duration to add.
      */
-    public Chronology getChronology() {
-        return iChronology;
+    public void add(final ReadableDuration duration) {
+        duration.addInto(this, 1);
     }
 
+    /**
+     * Add an amount of time to the date.
+     * 
+     * @param duration  duration to add.
+     * @param scalar  direction and amount to add, which may be negative
+     */
+    public void add(final ReadableDuration duration, final int scalar) {
+        duration.addInto(this, scalar);
+    }
+
+    /**
+     * Add an amount of time to the date.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableDuration, String and Long.
+     * 
+     * @param duration  an object representing a duration
+     */
+    public void add(final Object duration) {
+        if (duration instanceof ReadableDuration) {
+            add((ReadableDuration) duration);
+        } else {
+            DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+            add(converter.getDurationMillis(duration));
+        }
+    }
+
+    // Chronology
+    //-----------------------------------------------------------------------
     /**
      * Set the chronology of the datetime.
      * 
-     * @param chronology  the chronology to use
-     * @throws IllegalArgumentException if the chronology is null
+     * @param chronology  the chronology to use, null means ISOChronology in default zone
      */
     public void setChronology(Chronology chronology) {
-        if (chronology == null) {
-            throw new IllegalArgumentException("The Chronology must not be null");
-        }
-        iChronology = chronology;
+        super.setChronology(chronology);
+    }
+
+    // Time zone
+    //-----------------------------------------------------------------------
+    /**
+     * Sets the time zone of the datetime, which changes the
+     * chronology. Setting the time zone does not affect the millisecond value
+     * of this instant.
+     * <p>
+     * If the chronology already has this time zone, no change occurs.
+     *
+     * @param zone  the time zone to use, null means default zone
+     * @see #moveDateTimeZone
+     */
+    public void setDateTimeZone(DateTimeZone zone) {
+        super.setDateTimeZone(zone);
     }
 
     /**
-     * Sets the time zone of the datetime via the chronology.
+     * Moves the time zone of the datetime, which changes the
+     * chronology. Moving the time zone alters the millisecond value of this
+     * instant such that it is relative to the new time zone.
+     * <p>
+     * If the chronology already has this time zone, no change occurs.
      *
-     * @param zone  the time zone to use
-     * @throws IllegalArgumentException if the time zone is null
+     * @param zone  the time zone to use, null means default zone
+     * @see #setDateTimeZone
      */
-    public void setDateTimeZone(DateTimeZone zone) {
-        if (zone == null) {
-            throw new IllegalArgumentException("The DateTimeZone must not be null");
-        }
-        if (iChronology.getDateTimeZone() != zone) {
-            iChronology = iChronology.withDateTimeZone(zone);
-        }
+    public void moveDateTimeZone(DateTimeZone zone) {
+        super.moveDateTimeZone(zone);
     }
 
-    // public int get(DateTimeField field);  inherited from AbstractInstant
-
+    // Field based
+    //-----------------------------------------------------------------------
     /**
      * Set a value in the specified field.
      * This could be used to set a field using a different Chronology.
@@ -498,8 +460,8 @@ public class MutableDateTime extends AbstractDateTime
      * @param value the value
      * @throws NullPointerException if the field is null
      */
-    public void set(DateTimeField field, int value) {
-        iMillis = field.set(getMillis(), value);
+    public void set(final DateTimeField field, final int value) {
+        setMillis(field.set(getMillis(), value));
     }
 
     /**
@@ -515,8 +477,8 @@ public class MutableDateTime extends AbstractDateTime
      * @param value the value
      * @throws NullPointerException if the field is null
      */
-    public void add(DateTimeField field, int value) {
-        iMillis = field.add(getMillis(), value);
+    public void add(final DateTimeField field, final int value) {
+        setMillis(field.add(getMillis(), value));
     }
 
     /**
@@ -532,241 +494,284 @@ public class MutableDateTime extends AbstractDateTime
      * @param value the value
      * @throws NullPointerException if the field is null
      */
-    public void addWrapped(DateTimeField field, int value) {
-        iMillis = field.addWrapped(getMillis(), value);
+    public void addWrapped(final DateTimeField field, final int value) {
+        setMillis(field.addWrapped(getMillis(), value));
     }
 
-    // Date field mutator/adder methods
-    //-----------------------------------------------------------
-
+    // Date methods
+    //-----------------------------------------------------------------------
     /**
-     * Set the day of week to a value.
+     * Set the year to the specified value.
      *
-     * @param dayOfWeek  the day of the week.
+     * @param year  the year
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setDayOfWeek(int dayOfWeek) {
-        iMillis = getChronology().dayOfWeek().set(iMillis, dayOfWeek);
-    }
-
-    /**
-     * Set the day of the month to a value.
-     *
-     * @param dayOfMonth  the day of the month.
-     */
-    public void setDayOfMonth(int dayOfMonth) {
-        iMillis = getChronology().dayOfMonth().set(iMillis, dayOfMonth);
-    }
-
-    /**
-     * Set the day of year to a value.
-     *
-     * @param dayOfYear the day of the year.
-     */
-    public void setDayOfYear(int dayOfYear) {
-        iMillis = getChronology().dayOfYear().set(iMillis, dayOfYear);
-    }
-
-    /**
-     * Add a number of days to the date.
-     *
-     * @param days  the days to add.
-     */
-    public void addDays(int days) {
-        iMillis = getChronology().dayOfYear().add(iMillis, days);
-    }
-
-    /**
-     * Set the week of weekyear to a value.
-     *
-     * @param weekOfWeekyear the week of the weekyear.
-     */
-    public void setWeekOfWeekyear(int weekOfWeekyear) {
-        iMillis = getChronology().weekOfWeekyear().set(iMillis, weekOfWeekyear);
-    }
-
-    /**
-     * Add a number of weeks to the date.
-     *
-     * @param weeks  the weeks to add.
-     */
-    public void addWeeks(int weeks) {
-        iMillis = getChronology().weekOfWeekyear().add(iMillis, weeks);
-    }
-
-    /**
-     * Set the week of the year to a value.
-     *
-     * @param weekyear  the weekyear.
-     */
-    public void setWeekyear(int weekyear) {
-        iMillis = getChronology().weekyear().set(iMillis, weekyear);
-    }
-
-    /**
-     * Add a number of weekyears to the date.
-     *
-     * @param weekyears  the weekyears to add.
-     */
-    public void addWeekyears(int weekyears) {
-        iMillis = getChronology().weekyear().add(iMillis, weekyears);
-    }
-
-    /**
-     * Set the month of the year to a value.
-     *
-     * @param month  the month of the year.
-     */
-    public void setMonthOfYear(int month) {
-        iMillis = getChronology().monthOfYear().set(iMillis, month);
-    }
-
-    /**
-     * Add a number of months to the date.
-     *
-     * @param months  the months to add.
-     */
-    public void addMonths(int months) {
-        iMillis = getChronology().monthOfYear().add(iMillis, months);
-    }
-
-    /**
-     * Set the year to a value.
-     *
-     * @param year  the year.
-     */
-    public void setYear(int year) {
-        iMillis = getChronology().year().set(iMillis, year);
+    public void setYear(final int year) {
+        setMillis(getChronology().year().set(getMillis(), year));
     }
 
     /**
      * Add a number of years to the date.
      *
-     * @param years  the years to add.
+     * @param years  the years to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void addYears(int years) {
-        iMillis = getChronology().year().add(iMillis, years);
+    public void addYears(final int years) {
+        setMillis(getChronology().years().add(getMillis(), years));
     }
 
-    // Time field mutator/adder methods
-    //-----------------------------------------------------------
-
+    //-----------------------------------------------------------------------
     /**
-     * Set the millis of the second.
+     * Set the week of the year to the specified value.
      *
-     * @param millis  the millis of second.
+     * @param weekyear  the weekyear
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setMillisOfSecond(int millis) {
-        iMillis = getChronology().millisOfSecond().set(iMillis, millis);
-    }
-
-    /**
-     * Set the millis of the day.
-     *
-     * @param millis  the millis of day.
-     */
-    public void setMillisOfDay(int millis) {
-        iMillis = getChronology().millisOfDay().set(iMillis, millis);
+    public void setWeekyear(final int weekyear) {
+        setMillis(getChronology().weekyear().set(getMillis(), weekyear));
     }
 
     /**
-     * Set the second of the minute.
+     * Add a number of weekyears to the date.
      *
-     * @param second  the second of minute.
+     * @param weekyears  the weekyears to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setSecondOfMinute(int second) {
-        iMillis = getChronology().secondOfMinute().set(iMillis, second);
+    public void addWeekyears(final int weekyears) {
+        setMillis(getChronology().weekyears().add(getMillis(), weekyears));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Set the month of the year to the specified value.
+     *
+     * @param monthOfYear  the month of the year
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setMonthOfYear(final int monthOfYear) {
+        setMillis(getChronology().monthOfYear().set(getMillis(), monthOfYear));
     }
 
     /**
-     * Set the second of the day.
+     * Add a number of months to the date.
      *
-     * @param second  the second of day.
+     * @param months  the months to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setSecondOfDay(int second) {
-        iMillis = getChronology().secondOfDay().set(iMillis, second);
+    public void addMonths(final int months) {
+        setMillis(getChronology().months().add(getMillis(), months));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Set the week of weekyear to the specified value.
+     *
+     * @param weekOfWeekyear the week of the weekyear
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setWeekOfWeekyear(final int weekOfWeekyear) {
+        setMillis(getChronology().weekOfWeekyear().set(getMillis(), weekOfWeekyear));
     }
 
     /**
-     * Add a number of seconds to the date.
+     * Add a number of weeks to the date.
      *
-     * @param seconds  the seconds to add.
+     * @param weeks  the weeks to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void addSeconds(int seconds) {
-        iMillis = getChronology().secondOfDay().add(iMillis, seconds);
+    public void addWeeks(final int weeks) {
+        setMillis(getChronology().weeks().add(getMillis(), weeks));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Set the day of year to the specified value.
+     *
+     * @param dayOfYear the day of the year
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setDayOfYear(final int dayOfYear) {
+        setMillis(getChronology().dayOfYear().set(getMillis(), dayOfYear));
     }
 
     /**
-     * Set the minute of the hour.
+     * Set the day of the month to the specified value.
      *
-     * @param minute  the minute of hour.
+     * @param dayOfMonth  the day of the month
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setMinuteOfHour(int minute) {
-        iMillis = getChronology().minuteOfHour().set(iMillis, minute);
+    public void setDayOfMonth(final int dayOfMonth) {
+        setMillis(getChronology().dayOfMonth().set(getMillis(), dayOfMonth));
     }
 
     /**
-     * Set the minute of the day.
+     * Set the day of week to the specified value.
      *
-     * @param minute  the minute of day.
+     * @param dayOfWeek  the day of the week
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setMinuteOfDay(int minute) {
-        iMillis = getChronology().minuteOfDay().set(iMillis, minute);
+    public void setDayOfWeek(final int dayOfWeek) {
+        setMillis(getChronology().dayOfWeek().set(getMillis(), dayOfWeek));
     }
 
     /**
-     * Add a number of minutes to the date.
+     * Add a number of days to the date.
      *
-     * @param minutes  the minutes to add.
+     * @param days  the days to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void addMinutes(int minutes) {
-        iMillis = getChronology().minuteOfDay().add(iMillis, minutes);
+    public void addDays(final int days) {
+        setMillis(getChronology().days().add(getMillis(), days));
     }
 
+    // Time methods
+    //-----------------------------------------------------------------------
     /**
-     * Set the hour of the day.
+     * Set the hour of the day to the specified value.
      *
-     * @param hour  the hour of day.
+     * @param hourOfDay  the hour of day
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setHourOfDay(int hour) {
-        iMillis = getChronology().hourOfDay().set(iMillis, hour);
+    public void setHourOfDay(final int hourOfDay) {
+        setMillis(getChronology().hourOfDay().set(getMillis(), hourOfDay));
     }
 
     /**
      * Add a number of hours to the date.
      *
-     * @param hours  the hours to add.
+     * @param hours  the hours to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void addHours(int hours) {
-        iMillis = getChronology().hourOfDay().add(iMillis, hours);
+    public void addHours(final int hours) {
+        setMillis(getChronology().hours().add(getMillis(), hours));
     }
-
-    // Convenient helpers
-    //----------------------------------------------------
     
+    //-----------------------------------------------------------------------
     /**
-     * Set the date from various different types of object.
-     * The time part of the parameter will be ignored.
-     * The time part of this object will be unaffected.
+     * Set the minute of the day to the specified value.
      *
-     * @param date  a ReadableInstant, Date, Calendar, Long or String
-     * @throws IllegalArgumentException if the object is null.
-     * @throws ClassCastException if the object's type cannot be recognised
+     * @param minuteOfDay  the minute of day
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setDate(Object date) {
-        setDate(getDateTimeMillisFromObject(date));
+    public void setMinuteOfDay(final int minuteOfDay) {
+        setMillis(getChronology().minuteOfDay().set(getMillis(), minuteOfDay));
     }
 
+    /**
+     * Set the minute of the hour to the specified value.
+     *
+     * @param minuteOfHour  the minute of hour
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setMinuteOfHour(final int minuteOfHour) {
+        setMillis(getChronology().minuteOfHour().set(getMillis(), minuteOfHour));
+    }
+
+    /**
+     * Add a number of minutes to the date.
+     *
+     * @param minutes  the minutes to add
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void addMinutes(final int minutes) {
+        setMillis(getChronology().minutes().add(getMillis(), minutes));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Set the second of the day to the specified value.
+     *
+     * @param secondOfDay  the second of day
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setSecondOfDay(final int secondOfDay) {
+        setMillis(getChronology().secondOfDay().set(getMillis(), secondOfDay));
+    }
+
+    /**
+     * Set the second of the minute to the specified value.
+     *
+     * @param secondOfMinute  the second of minute
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setSecondOfMinute(final int secondOfMinute) {
+        setMillis(getChronology().secondOfMinute().set(getMillis(), secondOfMinute));
+    }
+
+    /**
+     * Add a number of seconds to the date.
+     *
+     * @param seconds  the seconds to add
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void addSeconds(final int seconds) {
+        setMillis(getChronology().seconds().add(getMillis(), seconds));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Set the millis of the day to the specified value.
+     *
+     * @param millisOfDay  the millis of day
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setMillisOfDay(final int millisOfDay) {
+        setMillis(getChronology().millisOfDay().set(getMillis(), millisOfDay));
+    }
+
+    /**
+     * Set the millis of the second to the specified value.
+     *
+     * @param millisOfSecond  the millis of second
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void setMillisOfSecond(final int millisOfSecond) {
+        setMillis(getChronology().millisOfSecond().set(getMillis(), millisOfSecond));
+    }
+
+    /**
+     * Add a number of milliseconds to the date. The implementation of this
+     * method differs from the {@link #add(long)} method in that a
+     * DateTimeField performs the addition.
+     *
+     * @param millis  the milliseconds to add
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public void addMillis(final int millis) {
+        setMillis(getChronology().millis().add(getMillis(), millis));
+    }
+
+    // Setters
+    //-----------------------------------------------------------------------
     /**
      * Set the date from milliseconds.
-     * The time part of the parameter will be ignored.
      * The time part of this object will be unaffected.
      *
-     * @param millis milliseconds from 1970-01-01T00:00:00Z, ignoring time of
-     * day
+     * @param instant  milliseconds from 1970-01-01T00:00:00Z, time part ignored
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setDate(long millis) {
+    public void setDate(final long instant) {
         Chronology c = getChronology();
-        iMillis = c.getDateOnlyMillis(millis) + c.getTimeOnlyMillis(iMillis);
+        setMillis(c.getDateOnlyMillis(instant) + c.getTimeOnlyMillis(getMillis()));
+    }
+
+    /**
+     * Set the date from an object representing an instant.
+     * The time part of this object will be unaffected.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  an object representing an instant, time part ignored
+     * @throws IllegalArgumentException if the object is null or invalid
+     */
+    public void setDate(final Object instant) {
+        if (instant instanceof ReadableInstant) {
+            setDate(((ReadableInstant) instant).getMillis());
+        } else {
+            InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+            setDate(converter.getInstantMillis(instant));
+        }
     }
 
     /**
@@ -774,42 +779,50 @@ public class MutableDateTime extends AbstractDateTime
      * The time part of this object will be unaffected.
      *
      * @param year  the year
-     * @param month  the month of the year
+     * @param monthOfYear  the month of the year
      * @param dayOfMonth  the day of the month
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setDate(int year, int monthOfYear, int dayOfMonth) {
-        // Do not modify this object until method completion
+    public void setDate(
+            final int year,
+            final int monthOfYear,
+            final int dayOfMonth) {
         Chronology c = getChronology();
-        long workVal = c.getTimeOnlyMillis( iMillis );
-        workVal = c.year().set( workVal, year );
-        workVal = c.monthOfYear().set( workVal, monthOfYear );
-        workVal = c.dayOfMonth().set( workVal, dayOfMonth );
-        iMillis = workVal;
+        long instant = c.getDateTimeMillis(
+            year, monthOfYear, dayOfMonth, 0, 0, 0, 0);
+        setDate(instant);
     }
 
-    /**
-     * Set the time from an object.
-     * The date part of the parameter will be ignored.
-     * The date part of this object will be unaffected.
-     *
-     * @param time  a ReadableInstant, Date, Calendar, Long or String
-     * @throws IllegalArgumentException if the object is null.
-     * @throws ClassCastException if the object's type cannot be recognised
-     */
-    public void setTime(Object time) {
-        setTime(getDateTimeMillisFromObject(time));
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Set the time from milliseconds.
-     * The date part of the parameter will be ignored.
      * The date part of this object will be unaffected.
      *
-     * @param millis milliseconds from T00:00:00Z, ignoring date
+     * @param millis milliseconds from T00:00:00Z, date part ignored
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setTime(long millis) {
+    public void setTime(final long millis) {
         Chronology c = getChronology();
-        iMillis = c.getDateOnlyMillis(iMillis) + c.getTimeOnlyMillis(millis);
+        setMillis(c.getDateOnlyMillis(getMillis()) + c.getTimeOnlyMillis(millis));
+    }
+
+    /**
+     * Set the date from an object representing an instant.
+     * The date part of this object will be unaffected.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  an object representing an instant, date part ignored
+     * @throws IllegalArgumentException if the object is null or invalid
+     */
+    public void setTime(final Object instant) {
+        if (instant instanceof ReadableInstant) {
+            setDateTime(((ReadableInstant) instant).getMillis());
+        } else {
+            InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+            setDateTime(converter.getInstantMillis(instant));
+        }
     }
 
     /**
@@ -820,109 +833,114 @@ public class MutableDateTime extends AbstractDateTime
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
      * @param millisOfSecond  the milisecond of the second
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setTime(int hour, int minuteOfHour, int secondOfMinute, int millisOfSecond) {
-        // Do not modify this object until method completion
-        Chronology c = getChronology();
-        long workVal = c.getDateOnlyMillis( iMillis );
-        workVal = c.hourOfDay().set( workVal, hour );
-        workVal = c.minuteOfHour().set( workVal, minuteOfHour );
-        workVal = c.secondOfMinute().set( workVal, secondOfMinute );
-        workVal = c.millisOfSecond().set( workVal, millisOfSecond );
-        iMillis = workVal;
+    public void setTime(
+            final int hour,
+            final int minuteOfHour,
+            final int secondOfMinute,
+            final int millisOfSecond) {
+        long instant = getChronology().getDateTimeMillis(
+            getMillis(), hour, minuteOfHour, secondOfMinute, millisOfSecond);
+        setTime(instant);
     }
 
-    /**
-     * Set the date and time from an object.
-     *
-     * @param datetime  a ReadableInstant, Date, Calendar, Long or String
-     * @throws IllegalArgumentException if the object is null.
-     * @throws ClassCastException if the object's type cannot be recognised
-     */
-    public void setDateTime(Object datetime) {
-        iMillis = getDateTimeMillisFromObject(datetime);
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Set the date and time from milliseconds.
+     * This method is a synonm for {@link #setMillis(long)}.
      *
-     * @param millis  the millis
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setDateTime(long millis) {
-        iMillis = millis;
+    public void setDateTime(final long instant) {
+        setMillis(instant);
+    }
+
+    /**
+     * Set the date and time from an object representing an instant.
+     * This method is a synonm for {@link #setMillis(Object)}.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  an object representing an instant
+     * @throws IllegalArgumentException if the object is null or invalid
+     */
+    public void setDateTime(final Object instant) {
+        setDateTime(instant);
     }
 
     /**
      * Set the date and time from fields.
      *
      * @param year  the year
-     * @param month  the month of the year
+     * @param monthOfYear  the month of the year
      * @param dayOfMonth  the day of the month
-     * @param hour  the hour
+     * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
      * @param millisOfSecond  the milisecond of the second
+     * @throws IllegalArgumentException if the value is invalid
      */
-    public void setDateTime(int year,
-                            int monthOfYear,
-                            int dayOfMonth,
-                            int hourOfDay,
-                            int minuteOfHour,
-                            int secondOfMinute,
-                            int millisOfSecond)
-    {
-        // Do not modify this object until method completion
-        Chronology c = getChronology();
-        long workVal = 0;
-        workVal = c.year().set( workVal, year );
-        workVal = c.monthOfYear().set( workVal, monthOfYear );
-        workVal = c.dayOfMonth().set( workVal, dayOfMonth );
-        workVal = c.hourOfDay().set( workVal, hourOfDay );
-        workVal = c.minuteOfHour().set( workVal, minuteOfHour );
-        workVal = c.secondOfMinute().set( workVal, secondOfMinute );
-        workVal = c.millisOfSecond().set( workVal, millisOfSecond );
-        iMillis = workVal;
+    public void setDateTime(
+            final int year,
+            final int monthOfYear,
+            final int dayOfMonth,
+            final int hourOfDay,
+            final int minuteOfHour,
+            final int secondOfMinute,
+            final int millisOfSecond) {
+        long instant = getChronology().getDateTimeMillis(
+            year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        setDateTime(instant);
     }
 
     // Date properties
-    //-----------------------------------------------------------
-
+    //-----------------------------------------------------------------------
     /**
-     * Get the day of week property.
-     * <p>
-     * The values for day of week are defined in {@link DateTimeConstants}.
+     * Get the era property.
      * 
-     * @return the day of week property
+     * @return the era property
      */
-    public MutableDateTimeFieldProperty dayOfWeek() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfWeek());
+    public MutableDateTimeFieldProperty era() {
+        return new MutableDateTimeFieldProperty(this, getChronology().era());
     }
 
     /**
-     * Get the day of month property.
+     * Get the century of era property.
      * 
-     * @return the day of month property
+     * @return the year of era property
      */
-    public MutableDateTimeFieldProperty dayOfMonth() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfMonth());
+    public MutableDateTimeFieldProperty centuryOfEra() {
+        return new MutableDateTimeFieldProperty(this, getChronology().centuryOfEra());
     }
 
     /**
-     * Get the day of year property.
+     * Get the year of century property.
      * 
-     * @return the day of year property
+     * @return the year of era property
      */
-    public MutableDateTimeFieldProperty dayOfYear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().dayOfYear());
+    public MutableDateTimeFieldProperty yearOfCentury() {
+        return new MutableDateTimeFieldProperty(this, getChronology().yearOfCentury());
     }
 
     /**
-     * Get the week of a week based year property.
+     * Get the year of era property.
      * 
-     * @return the week of a week based year property
+     * @return the year of era property
      */
-    public MutableDateTimeFieldProperty weekOfWeekyear() {
-        return new MutableDateTimeFieldProperty(this, getChronology().weekOfWeekyear());
+    public MutableDateTimeFieldProperty yearOfEra() {
+        return new MutableDateTimeFieldProperty(this, getChronology().yearOfEra());
+    }
+
+    /**
+     * Get the year property.
+     * 
+     * @return the year property
+     */
+    public MutableDateTimeFieldProperty year() {
+        return new MutableDateTimeFieldProperty(this, getChronology().year());
     }
 
     /**
@@ -944,96 +962,54 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Get the year property.
+     * Get the week of a week based year property.
      * 
-     * @return the year property
+     * @return the week of a week based year property
      */
-    public MutableDateTimeFieldProperty year() {
-        return new MutableDateTimeFieldProperty(this, getChronology().year());
+    public MutableDateTimeFieldProperty weekOfWeekyear() {
+        return new MutableDateTimeFieldProperty(this, getChronology().weekOfWeekyear());
     }
 
     /**
-     * Get the year of era property.
+     * Get the day of year property.
      * 
-     * @return the year of era property
+     * @return the day of year property
      */
-    public MutableDateTimeFieldProperty yearOfEra() {
-        return new MutableDateTimeFieldProperty(this, getChronology().yearOfEra());
+    public MutableDateTimeFieldProperty dayOfYear() {
+        return new MutableDateTimeFieldProperty(this, getChronology().dayOfYear());
     }
 
     /**
-     * Get the year of century property.
+     * Get the day of month property.
+     * <p>
+     * The values for day of month are defined in {@link DateTimeConstants}.
      * 
-     * @return the year of era property
+     * @return the day of month property
      */
-    public MutableDateTimeFieldProperty yearOfCentury() {
-        return new MutableDateTimeFieldProperty(this, getChronology().yearOfCentury());
+    public MutableDateTimeFieldProperty dayOfMonth() {
+        return new MutableDateTimeFieldProperty(this, getChronology().dayOfMonth());
     }
 
     /**
-     * Get the century of era property.
+     * Get the day of week property.
+     * <p>
+     * The values for day of week are defined in {@link DateTimeConstants}.
      * 
-     * @return the year of era property
+     * @return the day of week property
      */
-    public MutableDateTimeFieldProperty centuryOfEra() {
-        return new MutableDateTimeFieldProperty(this, getChronology().centuryOfEra());
-    }
-
-    /**
-     * Get the era property.
-     * 
-     * @return the era property
-     */
-    public MutableDateTimeFieldProperty era() {
-        return new MutableDateTimeFieldProperty(this, getChronology().era());
+    public MutableDateTimeFieldProperty dayOfWeek() {
+        return new MutableDateTimeFieldProperty(this, getChronology().dayOfWeek());
     }
 
     // Time properties
-    //-----------------------------------------------------------
-    
+    //-----------------------------------------------------------------------
     /**
-     * Get the millis of second property
+     * Get the hour of day field property
      * 
-     * @return the millis of second property
+     * @return the hour of day property
      */
-    public MutableDateTimeFieldProperty millisOfSecond() {
-        return new MutableDateTimeFieldProperty(this, getChronology().millisOfSecond());
-    }
-
-    /**
-     * Get the millis of day property
-     * 
-     * @return the millis of day property
-     */
-    public MutableDateTimeFieldProperty millisOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().millisOfDay());
-    }
-
-    /**
-     * Get the second of minute field property
-     * 
-     * @return the second of minute property
-     */
-    public MutableDateTimeFieldProperty secondOfMinute() {
-        return new MutableDateTimeFieldProperty(this, getChronology().secondOfMinute());
-    }
-
-    /**
-     * Get the second of day property
-     * 
-     * @return the second of day property
-     */
-    public MutableDateTimeFieldProperty secondOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().secondOfDay());
-    }
-
-    /**
-     * Get the minute of hour field property
-     * 
-     * @return the minute of hour property
-     */
-    public MutableDateTimeFieldProperty minuteOfHour() {
-        return new MutableDateTimeFieldProperty(this, getChronology().minuteOfHour());
+    public MutableDateTimeFieldProperty hourOfDay() {
+        return new MutableDateTimeFieldProperty(this, getChronology().hourOfDay());
     }
 
     /**
@@ -1046,37 +1022,59 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Get the hour of day field property
+     * Get the minute of hour field property
      * 
-     * @return the hour of day property
+     * @return the minute of hour property
      */
-    public MutableDateTimeFieldProperty hourOfDay() {
-        return new MutableDateTimeFieldProperty(this, getChronology().hourOfDay());
+    public MutableDateTimeFieldProperty minuteOfHour() {
+        return new MutableDateTimeFieldProperty(this, getChronology().minuteOfHour());
+    }
+
+    /**
+     * Get the second of day property
+     * 
+     * @return the second of day property
+     */
+    public MutableDateTimeFieldProperty secondOfDay() {
+        return new MutableDateTimeFieldProperty(this, getChronology().secondOfDay());
+    }
+
+    /**
+     * Get the second of minute field property
+     * 
+     * @return the second of minute property
+     */
+    public MutableDateTimeFieldProperty secondOfMinute() {
+        return new MutableDateTimeFieldProperty(this, getChronology().secondOfMinute());
+    }
+
+    /**
+     * Get the millis of day property
+     * 
+     * @return the millis of day property
+     */
+    public MutableDateTimeFieldProperty millisOfDay() {
+        return new MutableDateTimeFieldProperty(this, getChronology().millisOfDay());
+    }
+
+    /**
+     * Get the millis of second property
+     * 
+     * @return the millis of second property
+     */
+    public MutableDateTimeFieldProperty millisOfSecond() {
+        return new MutableDateTimeFieldProperty(this, getChronology().millisOfSecond());
     }
 
     // Misc
-    //-----------------------------------------------------------
-
-    /**
-     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).
-     * 
-     * @return ISO8601 time formatted string.
-     */
-    public String toString() {
-        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Clone this object without having to cast the returned object.
      *
      * @return a clone of the this object.
      */
     public MutableDateTime copy() {
-        try {
-            return (MutableDateTime)super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new InternalError("Clone error");
-        }
+        return (MutableDateTime)clone();
     }
 
     /**
@@ -1093,69 +1091,12 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Extracts a long datetime value from an object.
-     *
-     * @param object  an input object
-     * @return a long date-time value
-     * @throws IllegalArgumentException if the object is null, or the string invalid
-     * @throws ClassCastException if the object type is not supported
-     */
-    protected long getDateTimeMillisFromObject(Object object) {
-        if (object instanceof ReadableInstant) {
-            return ((ReadableInstant) object).getMillis();
-
-        } else if (object instanceof Date) {
-            return ((Date) object).getTime();
-
-        } else if (object instanceof Calendar) {
-            return ((Calendar) object).getTime().getTime();
-
-        } else if (object instanceof Long) {
-            return ((Long) object).longValue();
-
-        } else if (object instanceof String) {
-            try {
-                Instant instant = new Instant((String) object);
-                return instant.getMillis();
-
-            } catch (ParseException ex) {
-                throw new IllegalArgumentException("String '" + object + "' is an invalid date format");
-            }
-        } else if (object == null) {
-            throw new IllegalArgumentException("<null> cannot be converted to a datetime");
-        } else {
-            throw new ClassCastException("Class '" + object.getClass().getName() + "' cannot be converted to a datetime");
-        }
-    }
-
-    /**
-     * Extracts a fixed millisecond duration from an object.
+     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).
      * 
-     * @param object  Long or String
-     * @throws IllegalArgumentException if the object is null, or the string invalid
-     * @throws ClassCastException if the object type is not supported
+     * @return ISO8601 time formatted string.
      */
-    protected long getDurationMillisFromObject(Object object) {
-        if (object instanceof Long) {
-            Long other = (Long) object;
-            return other.longValue();
-        /* TODO } else if (object instanceof String) {
-            try {
-                TimePeriod other = new TimePeriod((String) object);
-                return other.getMillis();
-            } catch (ParseException ex) {
-                throw new IllegalArgumentException
-                    ("String '" + object + "' is an invalid time period format");
-            }*/
-        } else {
-            String type;
-            if (object == null) {
-                type = "<null>";
-            } else {
-                type = "Object of type \"" + object.getClass().getName() + '"';
-            }
-            throw new IllegalArgumentException(type + " cannot be converted to a duration");
-        }
+    public String toString() {
+        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
     }
-    
+
 }

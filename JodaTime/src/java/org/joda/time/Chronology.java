@@ -54,27 +54,35 @@
 package org.joda.time;
 
 import java.io.Serializable;
+import org.joda.time.chrono.UnsupportedDateTimeField;
+import org.joda.time.chrono.UnsupportedDurationField;
 
 /**
  * Chronology provides access to the individual date time fields for
  * a chronological calendar system.
- * <p>
- * Chronology subclasses <em>must</em> be immutable.
- * <p>
  * Various chronologies are supported by subclasses including ISO and 
  * GregorianJulian. 
  * <p>
- * This class does not strongly define each field. Subclasses may interpret
- * the fields differently.
+ * This class defines a number of fields with names from the ISO8601 standard.
+ * Chronology does not 'strongly' define these fields however, thus subclasses
+ * are free to interpret the field names as they wish. For example, a week
+ * could be defined as 10 days and a month as 40 days in a special
+ * WeirdChronology subclass. Clearly the GJ and ISO implementations provided
+ * use the field names as you would expect.
+ * <p>
+ * Chronology is thread-safe and immutable, and all subclasses must be as well.
  * 
  * @see org.joda.time.chrono.iso.ISOChronology
  * @see org.joda.time.chrono.gj.GJChronology
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
 public abstract class Chronology implements Serializable {
     
+    static final long serialVersionUID = -7310865996721419676L;
+
     /**
      * Restricted constructor
      */
@@ -103,270 +111,495 @@ public abstract class Chronology implements Serializable {
      * Returns an instance of this Chronology that operates in any time zone.
      *
      * @return a version of this chronology with a specific time zone
-     * @throws IllegalArgumentException if zone is null
+     * @param zone to use, or default if null
      * @see org.joda.time.chrono.ZonedChronology
      */
     public abstract Chronology withDateTimeZone(DateTimeZone zone);
 
     /**
-     * Get the millis for a time only field. The default implementation simply
-     * returns <code>dayOfYear().remainder(millis)</code>.
+     * Returns a date-only millisecond instant, by clearing the time fields
+     * from the given instant.
+     * <p>
+     * The default implementation simply returns
+     * <code>dayOfYear().roundFloor(instant)</code>.
      * 
-     * @param millis  the millis to convert to time only
-     * @return millis with the date part stripped
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     * @return millisecond instant from 1970-01-01T00:00:00Z with the time part
+     * cleared
      */
-    public long getTimeOnlyMillis(long millis) {
-        return dayOfYear().remainder(millis);
+    public long getDateOnlyMillis(long instant) {
+        return dayOfYear().roundFloor(instant);
     }
 
     /**
-     * Get the millis for a date only field. The default implementation simply
-     * returns <code>dayOfYear().roundFloor(millis)</code>.
-     * 
-     * @param millis  the millis to convert to date only
-     * @return millis with the time part stripped
+     * Returns a date-only millisecond instant, formed from the given year,
+     * month, and day values. The set of given values must refer to a valid
+     * date, or else an IllegalArgumentException is thrown.
+     * <p>
+     * The default implementation simply returns
+     * <code>getDateTimeMillis(year, monthOfYear, dayOfMonth, 0)</code>.
+     *
+     * @param year year to use
+     * @param monthOfYear month to use
+     * @param dayOfMonth day of month to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z without any time
+     * part
      */
-    public long getDateOnlyMillis(long millis) {
-        return dayOfYear().roundFloor(millis);
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
+    }
+
+    /**
+     * Returns a time-only millisecond instant, by clearing the date fields
+     * from the given instant.
+     * <p>
+     * The default implementation simply returns
+     * <code>dayOfYear().remainder(instant)</code>.
+     * 
+     * @param instant the milliseconds from 1970-01-01T00:00:00Z
+     * @return millisecond instant from 1970-01-01T00:00:00Z with the date part
+     * cleared
+     */
+    public long getTimeOnlyMillis(long instant) {
+        return dayOfYear().remainder(instant);
+    }
+
+    /**
+     * Returns a time-only millisecond instant, formed from the given hour,
+     * minute, second, and millisecond values. The set of given values must
+     * refer to a valid time, or else an IllegalArgumentException is thrown.
+     * <p>
+     * The default implementation calls upon separate DateTimeFields to
+     * determine the result. Subclasses are encouraged to provide a more
+     * efficient implementation.
+     *
+     * @param hourOfDay hour to use
+     * @param minuteOfHour minute to use
+     * @param secondOfMinute second to use
+     * @param millisOfSecond millisecond to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z without any date
+     * part
+     */
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        long instant = hourOfDay().set(0, hourOfDay);
+        instant = minuteOfHour().set(instant, minuteOfHour);
+        instant = secondOfMinute().set(instant, secondOfMinute);
+        return millisOfSecond().set(instant, millisOfSecond);
+    }
+
+    /**
+     * Returns a datetime millisecond instant, formed from the given year,
+     * month, day, and millisecond values. The set of given values must refer
+     * to a valid datetime, or else an IllegalArgumentException is thrown.
+     * <p>
+     * The default implementation calls upon separate DateTimeFields to
+     * determine the result. Subclasses are encouraged to provide a more
+     * efficient implementation.
+     *
+     * @param year year to use
+     * @param monthOfYear month to use
+     * @param dayOfMonth day of month to use
+     * @param millisOfDay millisecond to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z
+     */
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int millisOfDay)
+        throws IllegalArgumentException
+    {
+        long instant = year().set(0, year);
+        instant = monthOfYear().set(instant, monthOfYear);
+        instant = dayOfMonth().set(instant, dayOfMonth);
+        return millisOfDay().set(instant, millisOfDay);
+    }
+
+    /**
+     * Returns a datetime millisecond instant, from from the given instant,
+     * hour, minute, second, and millisecond values. The set of given values
+     * must refer to a valid datetime, or else an IllegalArgumentException is
+     * thrown.
+     * <p>
+     * The default implementation calls upon separate DateTimeFields to
+     * determine the result. Subclasses are encouraged to provide a more
+     * efficient implementation.
+     *
+     * @param instant instant to start from
+     * @param hourOfDay hour to use
+     * @param minuteOfHour minute to use
+     * @param secondOfMinute second to use
+     * @param millisOfSecond millisecond to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z
+     */
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        instant = hourOfDay().set(instant, hourOfDay);
+        instant = minuteOfHour().set(instant, minuteOfHour);
+        instant = secondOfMinute().set(instant, secondOfMinute);
+        return millisOfSecond().set(instant, millisOfSecond);
+    }
+
+    /**
+     * Returns a datetime millisecond instant, formed from the given year,
+     * month, day, hour, minute, second, and millisecond values. The set of
+     * given values must refer to a valid datetime, or else an
+     * IllegalArgumentException is thrown.
+     * <p>
+     * The default implementation calls upon separate DateTimeFields to
+     * determine the result. Subclasses are encouraged to provide a more
+     * efficient implementation.
+     *
+     * @param year year to use
+     * @param monthOfYear month to use
+     * @param dayOfMonth day of month to use
+     * @param hourOfDay hour to use
+     * @param minuteOfHour minute to use
+     * @param secondOfMinute second to use
+     * @param millisOfSecond millisecond to use
+     * @return millisecond instant from 1970-01-01T00:00:00Z
+     */
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        long instant = year().set(0, year);
+        instant = monthOfYear().set(instant, monthOfYear);
+        instant = dayOfMonth().set(instant, dayOfMonth);
+        instant = hourOfDay().set(instant, hourOfDay);
+        instant = minuteOfHour().set(instant, minuteOfHour);
+        instant = secondOfMinute().set(instant, secondOfMinute);
+        return millisOfSecond().set(instant, millisOfSecond);
     }
 
     // Millis
     //-----------------------------------------------------------------------
     /**
+     * Get the millis duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField millis() {
+        return UnsupportedDurationField.getInstance("millis");
+    }
+
+    /**
      * Get the millis of second field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfSecond() {
-        throw new UnsupportedOperationException("millisOfSecond is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("millisOfSecond", millis());
     }
 
     /**
      * Get the millis of day field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField millisOfDay() {
-        throw new UnsupportedOperationException("millisOfDay is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("millisOfDay", millis());
     }
 
     // Second
     //-----------------------------------------------------------------------
     /**
+     * Get the seconds duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField seconds() {
+        return UnsupportedDurationField.getInstance("seconds");
+    }
+
+    /**
      * Get the second of minute field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfMinute() {
-        throw new UnsupportedOperationException("secondOfMinute is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("secondOfMinute", seconds());
     }
 
     /**
      * Get the second of day field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField secondOfDay() {
-        throw new UnsupportedOperationException("secondOfDay is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("secondOfDay", seconds());
     }
 
     // Minute
     //-----------------------------------------------------------------------
     /**
+     * Get the minutes duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField minutes() {
+        return UnsupportedDurationField.getInstance("minutes");
+    }
+
+    /**
      * Get the minute of hour field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfHour() {
-        throw new UnsupportedOperationException("minuteOfHour is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("minuteOfHour", minutes());
     }
 
     /**
      * Get the minute of day field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField minuteOfDay() {
-        throw new UnsupportedOperationException("minuteOfDay is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("minuteOfDay", minutes());
     }
 
     // Hour
     //-----------------------------------------------------------------------
     /**
+     * Get the hours duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField hours() {
+        return UnsupportedDurationField.getInstance("hours");
+    }
+
+    /**
      * Get the hour of day (0-23) field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfDay() {
-        throw new UnsupportedOperationException("hourOfDay is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("hourOfDay", hours());
     }
 
     /**
      * Get the hour of day (offset to 1-24) field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfDay() {
-        throw new UnsupportedOperationException("clockhourOfDay is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("clockhourOfDay", hours());
     }
 
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField hourOfHalfday() {
-        throw new UnsupportedOperationException("hourOfHalfday is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("hourOfHalfday", hours());
     }
 
     /**
      * Get the hour of am/pm (offset to 1-12) field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField clockhourOfHalfday() {
-        throw new UnsupportedOperationException("clockhourOfHalfday is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("clockhourOfHalfday", hours());
     }
 
     /**
      * Get the AM(0) PM(1) field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField halfdayOfDay() {
-        throw new UnsupportedOperationException("halfdayOfDay is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance
+            ("halfdayOfDay", UnsupportedDurationField.getInstance("halfdays"));
     }
 
     // Day
     //-----------------------------------------------------------------------
+    /**
+     * Get the days duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField days() {
+        return UnsupportedDurationField.getInstance("days");
+    }
+
     /**
      * Get the day of week field for this chronology.
      *
      * <p>DayOfWeek values are defined in {@link DateTimeConstants}.
      * They use the ISO definitions, where 1 is Monday and 7 is Sunday.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfWeek() {
-        throw new UnsupportedOperationException("dayOfWeek is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("dayOfWeek", days());
     }
 
     /**
      * Get the day of month field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfMonth() {
-        throw new UnsupportedOperationException("dayOfMonth is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("dayOfMonth", days());
     }
 
     /**
      * Get the day of year field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField dayOfYear() {
-        throw new UnsupportedOperationException("dayOfYear is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("dayOfYear", days());
     }
 
     // Week
     //-----------------------------------------------------------------------
     /**
+     * Get the weeks duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField weeks() {
+        return UnsupportedDurationField.getInstance("weeks");
+    }
+
+    /**
      * Get the week of a week based year field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekOfWeekyear() {
-        throw new UnsupportedOperationException("weekOfWeekyear is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("weekOfWeekyear", weeks());
+    }
+
+    /**
+     * Get the weekyears duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField weekyears() {
+        return UnsupportedDurationField.getInstance("weekyears");
     }
 
     /**
      * Get the year of a week based year field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField weekyear() {
-        throw new UnsupportedOperationException("weekyear is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("weekyear", weekyears());
     }
 
     // Month
     //-----------------------------------------------------------------------
     /**
+     * Get the months duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField months() {
+        return UnsupportedDurationField.getInstance("months");
+    }
+
+    /**
      * Get the month of year field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField monthOfYear() {
-        throw new UnsupportedOperationException("monthOfYear is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("monthOfYear", months());
     }
 
     // Year
     //-----------------------------------------------------------------------
     /**
+     * Get the years duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField years() {
+        return UnsupportedDurationField.getInstance("years");
+    }
+
+    /**
      * Get the year field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField year() {
-        throw new UnsupportedOperationException("year is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("year", years());
     }
 
     /**
      * Get the year of era field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfEra() {
-        throw new UnsupportedOperationException("yearOfEra is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("yearOfEra", years());
     }
 
     /**
      * Get the year of century field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField yearOfCentury() {
-        throw new UnsupportedOperationException("yearOfCentury is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("yearOfCentury", years());
+    }
+
+    /**
+     * Get the centuries duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField centuries() {
+        return UnsupportedDurationField.getInstance("centuries");
     }
 
     /**
      * Get the century of era field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField centuryOfEra() {
-        throw new UnsupportedOperationException("centuryOfEra is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("centuryOfEra", centuries());
+    }
+
+    /**
+     * Get the eras duration field for this chronology.
+     * 
+     * @return DurationField or UnsupportedDurationField if unsupported
+     */
+    public DurationField eras() {
+        return UnsupportedDurationField.getInstance("eras");
     }
 
     /**
      * Get the era field for this chronology.
      * 
-     * @return DateTimeField
-     * @throws UnsupportedOperationException if unsupported
+     * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
     public DateTimeField era() {
-        throw new UnsupportedOperationException("era is unsupported for " + getClass().getName());
+        return UnsupportedDateTimeField.getInstance("era", eras());
     }
+
+    /**
+     * Gets a debugging toString.
+     * 
+     * @return a debugging string
+     */
+    public abstract String toString();
 
 }

@@ -54,21 +54,19 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.DurationField;
+
 /**
  * 
  * @author Brian S O'Neill
  */
 class TestGJDayOfMonthField extends TestGJDateTimeField {
     public TestGJDayOfMonthField(TestGJChronology chrono) {
-        super("dayOfMonth", chrono);
+        super("dayOfMonth", "days", chrono.MILLIS_PER_DAY, chrono);
     }
 
     public int get(long millis) {
         return iChronology.gjFromMillis(millis)[2];
-    }
-
-    public long add(long millis, int value) {
-        return millis + value * iChronology.MILLIS_PER_DAY;
     }
 
     public long set(long millis, int value) {
@@ -77,12 +75,12 @@ class TestGJDayOfMonthField extends TestGJDateTimeField {
             + iChronology.millisFromGJ(ymd[0], ymd[1], value);
     }
 
-    public long getUnitMillis() {
-        return iChronology.MILLIS_PER_DAY;
+    public long add(long millis, long value) {
+        return millis + value * iChronology.MILLIS_PER_DAY;
     }
 
-    public long getRangeMillis() {
-        return (long)(365.2425 * iChronology.MILLIS_PER_DAY / 12);
+    public DurationField getRangeDurationField() {
+        return iChronology.months();
     }
 
     public int getMinimumValue() {

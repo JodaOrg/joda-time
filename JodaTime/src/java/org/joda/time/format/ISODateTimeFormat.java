@@ -61,37 +61,73 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.iso.ISOChronology;
 
 /**
- * Factory methods for many ISO8601 formats (the ISO standard is a framework
- * for outputting data, but not an absolute standard). The most common formats
- * are date, time, and dateTime.
- * 
+ * ISODateTimeFormat provides factory methods for the ISO8601 standard.
+ * <p>
+ * ISO8601 is the international standard for data interchange. It defines a
+ * framework, rather than an absolute standard. As a result this provider has a
+ * number of methods that represent common uses of the framework. The most common
+ * formats are {@link #date() date}, {@link #time() time}, and {@link #dateTime() dateTime}.
+ * <p>
+ * For example, to format a date time in ISO format:
+ * <pre>
+ * DateTime dt = new DateTime();
+ * DateTimeFormatter fmt = DateTimeFormat.getInstance().dateTime();
+ * String str = fmt.print(dt);
+ * </pre>
+ * <p>
+ * ISODateTimeFormat is thread-safe and immutable, and the formatters it
+ * returns are as well.
+ *
  * @author Brian S O'Neill
+ * @since 1.0
  * @see DateTimeFormat
  * @see DateTimeFormatterBuilder
  */
 public class ISODateTimeFormat {
 
-    // Maps Chronology instances to instances.
+    /**
+     * Cache that maps Chronology instances to instances.
+     */
     private static Map cCache = new HashMap(7);
 
+    /**
+     * Gets an instance of a format provider that uses the ISOChronology in UTC.
+     * 
+     * @return a format provider
+     */
     public static ISODateTimeFormat getInstanceUTC() {
         return getInstance(ISOChronology.getInstanceUTC());
     }
 
+    /**
+     * Gets an instance of a format provider that uses the ISOChronology
+     * in the default time zone.
+     * 
+     * @return a format provider
+     */
     public static ISODateTimeFormat getInstance() {
         return getInstance(ISOChronology.getInstance());
     }
 
-    public static ISODateTimeFormat getInstance(DateTimeZone zone) {
+    /**
+     * Gets an instance of a format provider that uses the ISOChronology
+     * in the specified time zone.
+     * 
+     * @return a format provider
+     */
+    public static ISODateTimeFormat getInstance(final DateTimeZone zone) {
         return getInstance(ISOChronology.getInstance(zone));
     }
 
     /**
-     * @param chrono Chronology to use
+     * Gets an instance of a format provider that uses the specified chronology.
+     * 
+     * @param chrono  the chronology to use, null means default chronology
+     * @return a format provider
      */
     public static synchronized ISODateTimeFormat getInstance(Chronology chrono) {
         if (chrono == null) {
-            throw new IllegalArgumentException("The Chronology must not be null");
+            chrono = ISOChronology.getInstance();
         }
         ISODateTimeFormat instance = (ISODateTimeFormat)cCache.get(chrono);
         if (instance == null) {
@@ -101,6 +137,7 @@ public class ISODateTimeFormat {
         return instance;
     }
 
+    //-----------------------------------------------------------------------
     private final Chronology iChrono;
 
     private transient DateTimeFormatter
@@ -142,12 +179,18 @@ public class ISODateTimeFormat {
         tp, // time parser
         dtp; // date time parser
 
-    private ISODateTimeFormat(Chronology chrono) {
+    /**
+     * Restricted constructor.
+     * 
+     * @param chrono  the chronology to use, must not be null
+     */
+    private ISODateTimeFormat(final Chronology chrono) {
         iChrono = chrono;
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Returns a generic ISO date parser that accepts formats described by
+     * Returns a generic ISO date parser. It accepts formats described by
      * the following syntax:
      * <pre>
      * date         = date-element ['T' offset]
@@ -170,7 +213,7 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a generic ISO date parser that accepts formats described by
+     * Returns a generic ISO date parser. It accepts formats described by
      * the following syntax:
      * <pre>
      * date-element = yyyy ['-' MM ['-' dd]]
@@ -191,7 +234,7 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a generic ISO time parser that accepts formats described by
+     * Returns a generic ISO time parser. It accepts formats described by
      * the following syntax:
      * <pre>
      * time         = ['T'] time-element [offset]
@@ -214,7 +257,7 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a generic ISO time parser that accepts formats described by
+     * Returns a generic ISO time parser. It accepts formats described by
      * the following syntax:
      * <pre>
      * time-element = HH [':' mm [':' ss ['.' SSS]]]
@@ -239,7 +282,7 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a generic ISO datetime parser that accepts formats described by
+     * Returns a generic ISO datetime parser. It accepts formats described by
      * the following syntax:
      * <pre>
      * datetime     = time | (date-element [time | ('T' offset)])
@@ -279,6 +322,7 @@ public class ISODateTimeFormat {
         return dtp;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns a formatter for a full date as four digit year, two digit month
      * of year, and two digit day of month. (yyyy-MM-dd)
@@ -318,6 +362,7 @@ public class ISODateTimeFormat {
         return dt;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns a basic formatter for a full date as four digit year, two digit
      * month of year, and two digit day of month. (yyyyMMdd)
@@ -325,7 +370,9 @@ public class ISODateTimeFormat {
     public DateTimeFormatter basicDate() {
         if (bd == null) {
             bd = new DateTimeFormatterBuilder(iChrono)
-                .appendPattern("yyyyMMdd")
+                .appendYear(4, 4)
+                .appendMonthOfYear(2)
+                .appendDayOfMonth(2)
                 .toFormatter();
         }
         return bd;
@@ -339,7 +386,9 @@ public class ISODateTimeFormat {
     public DateTimeFormatter basicTime() {
         if (bt == null) {
             bt = new DateTimeFormatterBuilder(iChrono)
-                .appendPattern("HHmmss")
+                .appendHourOfDay(2)
+                .appendMinuteOfHour(2)
+                .appendSecondOfMinute(2)
                 .appendTimeZoneOffset("", false, 1, 2)
                 .toFormatter();
         }
@@ -361,6 +410,7 @@ public class ISODateTimeFormat {
         return bdt;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns a formatter for a four digit year. (yyyy)
      */
@@ -512,6 +562,7 @@ public class ISODateTimeFormat {
         return dhmsf;
     }
 
+    //-----------------------------------------------------------------------
     private DateTimeFormatter yearElement() {
         if (ye == null) {
             ye = new DateTimeFormatterBuilder(iChrono)

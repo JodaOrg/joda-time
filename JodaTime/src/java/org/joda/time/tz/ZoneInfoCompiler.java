@@ -55,13 +55,14 @@
 package org.joda.time.tz;
 
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -79,6 +80,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.iso.ISOChronology;
 
 /**
@@ -86,10 +88,13 @@ import org.joda.time.chrono.iso.ISOChronology;
  * in the database. {@link DateTimeZoneBuilder} is used to construct and encode
  * compiled data files. {@link ZoneInfoProvider} loads the encoded files and
  * converts them back into {@link DateTimeZone} objects.
- *
- * <p>Although this tool is similar to zic, the binary formats are not
+ * <p>
+ * Although this tool is similar to zic, the binary formats are not
  * compatible. The latest Olson database files may be obtained
  * <a href="http://www.twinsun.com/tz/tz-link.htm">here</a>.
+ * <p>
+ * ZoneInfoCompiler is mutable and not thread-safe, although the main method
+ * may be safely invoked by multiple threads.
  *
  * @author Brian S O'Neill
  */
@@ -128,6 +133,79 @@ public class ZoneInfoCompiler {
             ("Usage: java ZoneInfoCompiler [-d outputDirectory] sourceFile ...");
     }
 
+    /**
+     * @param zimap maps string ids to DateTimeZone objects.
+     */
+    static void writeZoneInfoMap(DataOutputStream dout, Map zimap) throws IOException {
+        // Build the string pool.
+        Map idToIndex = new HashMap(zimap.size());
+        TreeMap indexToId = new TreeMap();
+
+        Iterator it = zimap.entrySet().iterator();
+        short count = 0;
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry)it.next();
+            String id = (String)entry.getKey();
+            if (!idToIndex.containsKey(id)) {
+                Short index = new Short(count);
+                idToIndex.put(id, index);
+                indexToId.put(index, id);
+                if (++count == 0) {
+                    throw new InternalError("Too many time zone ids");
+                }
+            }
+            id = ((DateTimeZone)entry.getValue()).getID();
+            if (!idToIndex.containsKey(id)) {
+                Short index = new Short(count);
+                idToIndex.put(id, index);
+                indexToId.put(index, id);
+                if (++count == 0) {
+                    throw new InternalError("Too many time zone ids");
+                }
+            }
+        }
+
+        // Write the string pool, ordered by index.
+        dout.writeShort(indexToId.size());
+        it = indexToId.values().iterator();
+        while (it.hasNext()) {
+            dout.writeUTF((String)it.next());
+        }
+
+        // Write the mappings.
+        dout.writeShort(zimap.size());
+        it = zimap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry)it.next();
+            String id = (String)entry.getKey();
+            dout.writeShort(((Short)idToIndex.get(id)).shortValue());
+            id = ((DateTimeZone)entry.getValue()).getID();
+            dout.writeShort(((Short)idToIndex.get(id)).shortValue());
+        }
+    }
+
+    /**
+     * @param zimap gets filled with string id to string id mappings
+     */
+    static void readZoneInfoMap(DataInputStream din, Map zimap) throws IOException {
+        // Read the string pool.
+        int size = din.readUnsignedShort();
+        String[] pool = new String[size];
+        for (int i=0; i<size; i++) {
+            pool[i] = din.readUTF().intern();
+        }
+
+        // Read the mappings.
+        size = din.readUnsignedShort();
+        for (int i=0; i<size; i++) {
+            try {
+                zimap.put(pool[din.readUnsignedShort()], pool[din.readUnsignedShort()]);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                throw new IOException("Corrupt zone info map");
+            }
+        }
+    }
+
     static int parseYear(String str, int def) {
         str = str.toLowerCase();
         if (str.equals("minimum") || str.equals("min")) {
@@ -155,7 +233,7 @@ public class ZoneInfoCompiler {
     }
 
     static int parseTime(String str) {
-        Chronology chrono = ISOChronology.getInstanceUTC();
+        Chronology chrono = new LenientChronology(ISOChronology.getInstanceUTC());
         DateTimeParser p = ISODateTimeFormat
             .getInstance(chrono)
             .hourMinuteSecondFraction();
@@ -361,24 +439,19 @@ public class ZoneInfoCompiler {
         }
 
         if (dir != null) {
-            Map zimap = new TreeMap();
-            Iterator it = map.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry entry = (Map.Entry)it.next();
-                String id = (String)entry.getKey();
-                DateTimeZone tz = (DateTimeZone)entry.getValue();
-                zimap.put(id, tz.getID());
-            }
-
             System.out.println("Writing ZoneInfoMap");
             File file = new File(dir, "ZoneInfoMap");
             if (!file.getParentFile().exists()) {
                 file.getParentFile().mkdirs();
             }
+
             OutputStream out = new FileOutputStream(file);
-            ObjectOutputStream oout = new ObjectOutputStream(out);
-            oout.writeObject(zimap);
-            oout.close();
+            DataOutputStream dout = new DataOutputStream(out);
+            // Sort and filter out any duplicates that match case.
+            Map zimap = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+            zimap.putAll(map);
+            writeZoneInfoMap(dout, zimap);
+            dout.close();
         }
 
         return map;

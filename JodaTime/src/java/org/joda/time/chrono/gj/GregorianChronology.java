@@ -62,6 +62,9 @@ import org.joda.time.DateTimeConstants;
  * @author Brian S O'Neill
  */
 final class GregorianChronology extends ProlepticChronology {
+
+    static final long serialVersionUID = 3691407383323710523L;
+
     GregorianChronology(int minDaysInFirstWeek) {
         super(minDaysInFirstWeek);
     }

@@ -53,12 +53,16 @@
  */
 package org.joda.time.chrono.iso;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.DelegateChronology;
+import org.joda.time.chrono.DelegatedChronology;
 import org.joda.time.chrono.gj.GJChronology;
 
 /**
@@ -66,17 +70,26 @@ import org.joda.time.chrono.gj.GJChronology;
  * for the ISO8601 defined chronological calendar system. When ISO 
  * does not define a field, but it can be determined (such as AM/PM)
  * it is included.
+ * <p>
+ * ISOChronology is thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class ISOChronology extends DelegateChronology {
+public final class ISOChronology extends DelegatedChronology {
     
+    static final long serialVersionUID = -6212696554273812441L;
+
     /** Singleton instance of a UTC ISOChronology */
     private static final ISOChronology INSTANCE_UTC =
         new ISOChronology(GJChronology.getInstance(DateTimeZone.UTC, Long.MIN_VALUE, true));
         
+    private static final int FAST_CACHE_SIZE = 64;
+
+    /** Fast cache of zone to chronology */
+    private static final ISOChronology[] cFastCache = new ISOChronology[FAST_CACHE_SIZE];
+
     /** Cache of zone to chronology */
     private static final Map cCache = new HashMap();
     static {
@@ -108,15 +121,24 @@ public final class ISOChronology extends DelegateChronology {
      * @param zone  the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
      */
-    public static synchronized ISOChronology getInstance(DateTimeZone zone) {
+    public static ISOChronology getInstance(DateTimeZone zone) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        ISOChronology chrono = (ISOChronology) cCache.get(zone);
-        if (chrono == null) {
-            chrono = new ISOChronology(GJChronology.getInstance(zone, Long.MIN_VALUE, true));
-            cCache.put(zone, chrono);
+        int index = System.identityHashCode(zone) & (FAST_CACHE_SIZE - 1);
+        ISOChronology chrono = cFastCache[index];
+        if (chrono != null && chrono.getDateTimeZone() == zone) {
+            return chrono;
         }
+        synchronized (cCache) {
+            chrono = (ISOChronology) cCache.get(zone);
+            if (chrono == null) {
+                chrono = new ISOChronology
+                    (GJChronology.getInstance(zone, Long.MIN_VALUE, true));
+                cCache.put(zone, chrono);
+            }
+        }
+        cFastCache[index] = chrono;
         return chrono;
     }
 
@@ -130,10 +152,11 @@ public final class ISOChronology extends DelegateChronology {
     }
 
     /**
-     * Serialization singleton
+     * Serialize ISOChronology instances using a small stub. This reduces the
+     * serialized size, and deserialized instances come from the cache.
      */
-    private Object readResolve() {
-        return getInstance(getChronology().getDateTimeZone());
+    private Object writeReplace() {
+        return new Stub(getDateTimeZone());
     }
 
     // Conversion
@@ -171,8 +194,36 @@ public final class ISOChronology extends DelegateChronology {
      * @return a debugging string
      */
     public String toString() {
+        String str = "ISOChronology";
         DateTimeZone zone = getDateTimeZone();
-        return "ISOChronology[" + (zone == null ? "" : zone.getID()) + "]";
+        if (zone != null) {
+            str = str + '[' + zone.getID() + ']';
+        }
+        return str;
     }
-   
+
+    private static final class Stub implements Serializable {
+        static final long serialVersionUID = -6212696554273812441L;
+
+        private transient DateTimeZone iZone;
+
+        Stub(DateTimeZone zone) {
+            iZone = zone;
+        }
+
+        private Object readResolve() {
+            return ISOChronology.getInstance(iZone);
+        }
+
+        private void writeObject(ObjectOutputStream out) throws IOException {
+            out.writeObject(iZone);
+        }
+
+        private void readObject(ObjectInputStream in)
+            throws IOException, ClassNotFoundException
+        {
+            iZone = (DateTimeZone)in.readObject();
+        }
+    }
+
 }

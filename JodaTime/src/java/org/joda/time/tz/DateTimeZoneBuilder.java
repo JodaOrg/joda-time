@@ -76,6 +76,9 @@ import org.joda.time.chrono.iso.ISOChronology;
  * creating a new DateTimeZone this way is a relatively expensive operation,
  * built zones can be written to a file. Reading back the encoded data is a
  * quick operation.
+ * <p>
+ * DateTimeZoneBuilder itself is mutable and not thread-safe, but the
+ * DateTimeZone objects that it builds are thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @see ZoneInfoCompiler
@@ -538,7 +541,7 @@ public class DateTimeZoneBuilder {
         /**
          * @param standardOffset standard offset just before next recurrence
          */
-        public long next(long millis, int standardOffset, int saveMillis) {
+        public long next(long instant, int standardOffset, int saveMillis) {
             int offset;
             if (iMode == 'w') {
                 offset = standardOffset + saveMillis;
@@ -549,21 +552,23 @@ public class DateTimeZoneBuilder {
             }
 
             // Convert from UTC to local time.
-            millis += offset;
+            instant += offset;
 
             Chronology chrono = ISOChronology.getInstanceUTC();
-            long next = chrono.monthOfYear().set(millis, iMonthOfYear);
-            next = chrono.millisOfDay().set(next, iMillisOfDay);
+            long next = chrono.monthOfYear().set(instant, iMonthOfYear);
+            // Be lenient with millisOfDay.
+            next = chrono.millisOfDay().set(next, 0);
+            next = chrono.millisOfDay().add(next, iMillisOfDay);
             next = setDayOfMonthNext(chrono, next);
 
             if (iDayOfWeek == 0) {
-                if (next <= millis) {
+                if (next <= instant) {
                     next = chrono.year().add(next, 1);
                     next = setDayOfMonthNext(chrono, next);
                 }
             } else {
                 next = setDayOfWeek(chrono, next);
-                if (next <= millis) {
+                if (next <= instant) {
                     next = chrono.year().add(next, 1);
                     next = chrono.monthOfYear().set(next, iMonthOfYear);
                     next = setDayOfMonthNext(chrono, next);
@@ -578,7 +583,7 @@ public class DateTimeZoneBuilder {
         /**
          * @param standardOffset standard offset just before previous recurrence
          */
-        public long previous(long millis, int standardOffset, int saveMillis) {
+        public long previous(long instant, int standardOffset, int saveMillis) {
             int offset;
             if (iMode == 'w') {
                 offset = standardOffset + saveMillis;
@@ -589,21 +594,23 @@ public class DateTimeZoneBuilder {
             }
 
             // Convert from UTC to local time.
-            millis += offset;
+            instant += offset;
 
             Chronology chrono = ISOChronology.getInstanceUTC();
-            long prev = chrono.monthOfYear().set(millis, iMonthOfYear);
-            prev = chrono.millisOfDay().set(prev, iMillisOfDay);
+            long prev = chrono.monthOfYear().set(instant, iMonthOfYear);
+            // Be lenient with millisOfDay.
+            prev = chrono.millisOfDay().set(prev, 0);
+            prev = chrono.millisOfDay().add(prev, iMillisOfDay);
             prev = setDayOfMonthPrevious(chrono, prev);
 
             if (iDayOfWeek == 0) {
-                if (prev >= millis) {
+                if (prev >= instant) {
                     prev = chrono.year().add(prev, -1);
                     prev = setDayOfMonthPrevious(chrono, prev);
                 }
             } else {
                 prev = setDayOfWeek(chrono, prev);
-                if (prev >= millis) {
+                if (prev >= instant) {
                     prev = chrono.year().add(prev, -1);
                     prev = chrono.monthOfYear().set(prev, iMonthOfYear);
                     prev = setDayOfMonthPrevious(chrono, prev);
@@ -692,19 +699,19 @@ public class DateTimeZoneBuilder {
             return prev;
         }
 
-        private long setDayOfMonth(Chronology chrono, long millis) {
+        private long setDayOfMonth(Chronology chrono, long instant) {
             if (iDayOfMonth >= 0) {
-                millis = chrono.dayOfMonth().set(millis, iDayOfMonth);
+                instant = chrono.dayOfMonth().set(instant, iDayOfMonth);
             } else {
-                millis = chrono.dayOfMonth().set(millis, 1);
-                millis = chrono.monthOfYear().add(millis, 1);
-                millis = chrono.dayOfMonth().add(millis, iDayOfMonth);
+                instant = chrono.dayOfMonth().set(instant, 1);
+                instant = chrono.monthOfYear().add(instant, 1);
+                instant = chrono.dayOfMonth().add(instant, iDayOfMonth);
             }
-            return millis;
+            return instant;
         }
 
-        private long setDayOfWeek(Chronology chrono, long millis) {
-            int dayOfWeek = chrono.dayOfWeek().get(millis);
+        private long setDayOfWeek(Chronology chrono, long instant) {
+            int dayOfWeek = chrono.dayOfWeek().get(instant);
             int daysToAdd = iDayOfWeek - dayOfWeek;
             if (daysToAdd != 0) {
                 if (iAdvance) {
@@ -716,9 +723,9 @@ public class DateTimeZoneBuilder {
                         daysToAdd -= 7;
                     }
                 }
-                millis = chrono.dayOfWeek().add(millis, daysToAdd);
+                instant = chrono.dayOfWeek().add(instant, daysToAdd);
             }
-            return millis;
+            return instant;
         }
     }
 
@@ -747,15 +754,15 @@ public class DateTimeZoneBuilder {
         /**
          * @param standardOffset standard offset just before next recurrence
          */
-        public long next(long millis, int standardOffset, int saveMillis) {
-            return iOfYear.next(millis, standardOffset, saveMillis);
+        public long next(long instant, int standardOffset, int saveMillis) {
+            return iOfYear.next(instant, standardOffset, saveMillis);
         }
 
         /**
          * @param standardOffset standard offset just before previous recurrence
          */
-        public long previous(long millis, int standardOffset, int saveMillis) {
-            return iOfYear.previous(millis, standardOffset, saveMillis);
+        public long previous(long instant, int standardOffset, int saveMillis) {
+            return iOfYear.previous(instant, standardOffset, saveMillis);
         }
 
         public String getNameKey() {
@@ -821,34 +828,34 @@ public class DateTimeZoneBuilder {
             return iRecurrence.getSaveMillis();
         }
 
-        public long next(final long millis, int standardOffset, int saveMillis) {
+        public long next(final long instant, int standardOffset, int saveMillis) {
             Chronology chrono = ISOChronology.getInstanceUTC();
 
             final int wallOffset = standardOffset + saveMillis;
-            long testMillis = millis;
+            long testInstant = instant;
 
             int year;
-            if (millis == Long.MIN_VALUE) {
+            if (instant == Long.MIN_VALUE) {
                 year = Integer.MIN_VALUE;
             } else {
-                year = chrono.year().get(millis + wallOffset);
+                year = chrono.year().get(instant + wallOffset);
             }
 
             if (year < iFromYear) {
-                // First advance millis to start of from year.
-                testMillis = chrono.year().set(0, iFromYear) - wallOffset;
+                // First advance instant to start of from year.
+                testInstant = chrono.year().set(0, iFromYear) - wallOffset;
                 // Back off one millisecond to account for next recurrence
                 // being exactly at the beginning of the year.
-                testMillis -= 1;
+                testInstant -= 1;
             }
 
-            long next = iRecurrence.next(testMillis, standardOffset, saveMillis);
+            long next = iRecurrence.next(testInstant, standardOffset, saveMillis);
 
-            if (next > millis) {
+            if (next > instant) {
                 year = chrono.year().get(next + wallOffset);
                 if (year > iToYear) {
                     // Out of range, return original value.
-                    next = millis;
+                    next = instant;
                 }
             }
 
@@ -1062,7 +1069,7 @@ public class DateTimeZoneBuilder {
          *
          * @param saveMillis savings before next transition
          */
-        public Transition nextTransition(final long millis, final int saveMillis) {
+        public Transition nextTransition(final long instant, final int saveMillis) {
             Chronology chrono = ISOChronology.getInstanceUTC();
 
             // Find next matching rule.
@@ -1072,8 +1079,8 @@ public class DateTimeZoneBuilder {
             Iterator it = iRules.iterator();
             while (it.hasNext()) {
                 Rule rule = (Rule)it.next();
-                long next = rule.next(millis, iStandardOffset, saveMillis);
-                if (next <= millis) {
+                long next = rule.next(instant, iStandardOffset, saveMillis);
+                if (next <= instant) {
                     it.remove();
                     continue;
                 }
@@ -1161,44 +1168,74 @@ public class DateTimeZoneBuilder {
             iEndRecurrence = endRecurrence;
         }
 
-        public String getNameKey(long millis) {
-            return findMatchingRecurrence(millis).getNameKey();
+        public String getNameKey(long instant) {
+            return findMatchingRecurrence(instant).getNameKey();
         }
 
-        public int getOffset(long millis) {
-            return iStandardOffset + findMatchingRecurrence(millis).getSaveMillis();
+        public int getOffset(long instant) {
+            return iStandardOffset + findMatchingRecurrence(instant).getSaveMillis();
         }
 
-        public int getStandardOffset(long millis) {
+        public int getStandardOffset(long instant) {
             return iStandardOffset;
         }
 
-        public long nextTransition(long millis) {
+        public boolean isFixed() {
+            return false;
+        }
+
+        public long nextTransition(long instant) {
             int standardOffset = iStandardOffset;
             Recurrence startRecurrence = iStartRecurrence;
             Recurrence endRecurrence = iEndRecurrence;
 
-            long start = startRecurrence.next
-                (millis, standardOffset, endRecurrence.getSaveMillis());
-            long end = endRecurrence.next
-                (millis, standardOffset, startRecurrence.getSaveMillis());
+            long start, end;
+
+            try {
+                start = startRecurrence.next
+                    (instant, standardOffset, endRecurrence.getSaveMillis());
+            } catch (IllegalArgumentException e) {
+                // Overflowed.
+                start = instant;
+            }
+
+            try {
+                end = endRecurrence.next
+                    (instant, standardOffset, startRecurrence.getSaveMillis());
+            } catch (IllegalArgumentException e) {
+                // Overflowed.
+                end = instant;
+            }
 
             return (start > end) ? end : start;
         }
 
-        public long previousTransition(long millis) {
-            // Increment in order to handle the case where millis is exactly at
+        public long previousTransition(long instant) {
+            // Increment in order to handle the case where instant is exactly at
             // a transition.
-            millis++;
+            instant++;
 
             int standardOffset = iStandardOffset;
             Recurrence startRecurrence = iStartRecurrence;
             Recurrence endRecurrence = iEndRecurrence;
 
-            long start = startRecurrence.previous
-                (millis, standardOffset, endRecurrence.getSaveMillis());
-            long end = endRecurrence.previous
-                (millis, standardOffset, startRecurrence.getSaveMillis());
+            long start, end;
+
+            try {
+                start = startRecurrence.previous
+                    (instant, standardOffset, endRecurrence.getSaveMillis());
+            } catch (IllegalArgumentException e) {
+                // Overflowed.
+                start = instant;
+            }
+
+            try {
+                end = endRecurrence.previous
+                    (instant, standardOffset, startRecurrence.getSaveMillis());
+            } catch (IllegalArgumentException e) {
+                // Overflowed.
+                end = instant;
+            }
 
             return ((start > end) ? start : end) - 1;
         }
@@ -1224,15 +1261,28 @@ public class DateTimeZoneBuilder {
             iEndRecurrence.writeTo(out);
         }
 
-        private Recurrence findMatchingRecurrence(long millis) {
+        private Recurrence findMatchingRecurrence(long instant) {
             int standardOffset = iStandardOffset;
             Recurrence startRecurrence = iStartRecurrence;
             Recurrence endRecurrence = iEndRecurrence;
 
-            long start = startRecurrence.next
-                (millis, standardOffset, endRecurrence.getSaveMillis());
-            long end = endRecurrence.next
-                (millis, standardOffset, startRecurrence.getSaveMillis());
+            long start, end;
+
+            try {
+                start = startRecurrence.next
+                    (instant, standardOffset, endRecurrence.getSaveMillis());
+            } catch (IllegalArgumentException e) {
+                // Overflowed.
+                start = instant;
+            }
+
+            try {
+                end = endRecurrence.next
+                    (instant, standardOffset, startRecurrence.getSaveMillis());
+            } catch (IllegalArgumentException e) {
+                // Overflowed.
+                end = instant;
+            }
 
             return (start > end) ? startRecurrence : endRecurrence;
         }
@@ -1336,9 +1386,9 @@ public class DateTimeZoneBuilder {
             iTailZone = tailZone;
         }
 
-        public String getNameKey(long millis) {
+        public String getNameKey(long instant) {
             long[] transitions = iTransitions;
-            int i = Arrays.binarySearch(transitions, millis);
+            int i = Arrays.binarySearch(transitions, instant);
             if (i >= 0) {
                 return iNameKeys[i];
             }
@@ -1352,12 +1402,12 @@ public class DateTimeZoneBuilder {
             if (iTailZone == null) {
                 return iNameKeys[i - 1];
             }
-            return iTailZone.getNameKey(millis);
+            return iTailZone.getNameKey(instant);
         }
 
-        public int getOffset(long millis) {
+        public int getOffset(long instant) {
             long[] transitions = iTransitions;
-            int i = Arrays.binarySearch(transitions, millis);
+            int i = Arrays.binarySearch(transitions, instant);
             if (i >= 0) {
                 return iWallOffsets[i];
             }
@@ -1371,12 +1421,12 @@ public class DateTimeZoneBuilder {
             if (iTailZone == null) {
                 return iWallOffsets[i - 1];
             }
-            return iTailZone.getOffset(millis);
+            return iTailZone.getOffset(instant);
         }
 
-        public int getStandardOffset(long millis) {
+        public int getStandardOffset(long instant) {
             long[] transitions = iTransitions;
-            int i = Arrays.binarySearch(transitions, millis);
+            int i = Arrays.binarySearch(transitions, instant);
             if (i >= 0) {
                 return iStandardOffsets[i];
             }
@@ -1390,34 +1440,38 @@ public class DateTimeZoneBuilder {
             if (iTailZone == null) {
                 return iStandardOffsets[i - 1];
             }
-            return iTailZone.getStandardOffset(millis);
+            return iTailZone.getStandardOffset(instant);
         }
 
-        public long nextTransition(long millis) {
+        public boolean isFixed() {
+            return false;
+        }
+
+        public long nextTransition(long instant) {
             long[] transitions = iTransitions;
-            int i = Arrays.binarySearch(transitions, millis);
+            int i = Arrays.binarySearch(transitions, instant);
             i = (i >= 0) ? (i + 1) : ~i;
             if (i < transitions.length) {
                 return transitions[i];
             }
             if (iTailZone == null) {
-                return millis;
+                return instant;
             }
             long end = transitions[transitions.length - 1];
-            if (millis < end) {
-                millis = end;
+            if (instant < end) {
+                instant = end;
             }
-            return iTailZone.nextTransition(millis);
+            return iTailZone.nextTransition(instant);
         }
 
-        public long previousTransition(long millis) {
+        public long previousTransition(long instant) {
             long[] transitions = iTransitions;
-            int i = Arrays.binarySearch(transitions, millis);
+            int i = Arrays.binarySearch(transitions, instant);
             if (i >= 0) {
-                if (millis > Long.MIN_VALUE) {
-                    return millis - 1;
+                if (instant > Long.MIN_VALUE) {
+                    return instant - 1;
                 }
-                return millis;
+                return instant;
             }
             i = ~i;
             if (i < transitions.length) {
@@ -1427,11 +1481,11 @@ public class DateTimeZoneBuilder {
                         return prev - 1;
                     }
                 }
-                return millis;
+                return instant;
             }
             if (iTailZone != null) {
-                long prev = iTailZone.previousTransition(millis);
-                if (prev < millis) {
+                long prev = iTailZone.previousTransition(instant);
+                if (prev < instant) {
                     return prev;
                 }
             }
@@ -1439,7 +1493,7 @@ public class DateTimeZoneBuilder {
             if (prev > Long.MIN_VALUE) {
                 return prev - 1;
             }
-            return millis;
+            return instant;
         }
 
         public boolean equals(Object obj) {

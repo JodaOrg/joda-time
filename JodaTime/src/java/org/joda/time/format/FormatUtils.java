@@ -59,11 +59,14 @@ import java.io.Writer;
 
 /**
  * Utility methods used by formatters.
+ * <p>
+ * FormatUtils is thread-safe and immutable.
  *
  * @author Brian S O'Neill
  */
-public class FormatUtils {
-    private static final double LOG_10 = Math.log(10);
+// Note: Use strictfp and StrictMath to ensure consistent results on all VMs.
+public strictfp class FormatUtils {
+    private static final double LOG_10 = StrictMath.log(10);
 
     private FormatUtils() {
     }
@@ -109,7 +112,7 @@ public class FormatUtils {
             } else if (value < 10000) {
                 digits = 4;
             } else {
-                digits = (int)(Math.log(value) / LOG_10) + 1;
+                digits = (int)(StrictMath.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
                 buf.append('0');
@@ -147,7 +150,7 @@ public class FormatUtils {
                     return;
                 }
             }
-            int digits = (int)(Math.log(value) / LOG_10) + 1;
+            int digits = (int)(StrictMath.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
                 buf.append('0');
             }
@@ -198,7 +201,7 @@ public class FormatUtils {
             } else if (value < 10000) {
                 digits = 4;
             } else {
-                digits = (int)(Math.log(value) / LOG_10) + 1;
+                digits = (int)(StrictMath.log(value) / LOG_10) + 1;
             }
             for (; size > digits; size--) {
                 out.write('0');
@@ -238,7 +241,7 @@ public class FormatUtils {
                     return;
                 }
             }
-            int digits = (int)(Math.log(value) / LOG_10) + 1;
+            int digits = (int)(StrictMath.log(value) / LOG_10) + 1;
             for (; size > digits; size--) {
                 out.write('0');
             }
@@ -338,6 +341,26 @@ public class FormatUtils {
         } else {
             out.write(Long.toString(value));
         }
+    }
+
+    /**
+     * Calculates the number of decimal digits for the given value, ignoring
+     * sign.
+     */
+    public static int calculateDigitCount(int value) {
+        if (value < 0) {
+            if (value != Integer.MIN_VALUE) {
+                value = -value;
+            } else {
+                return 10;
+            }
+        }
+        return 
+            (value < 10 ? 1 :
+             (value < 100 ? 2 :
+              (value < 1000 ? 3 :
+               (value < 10000 ? 4 :
+                ((int)(StrictMath.log(value) / LOG_10) + 1)))));
     }
 
     static int parseTwoDigits(String text, int position) {

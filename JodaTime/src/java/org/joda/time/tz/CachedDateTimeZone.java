@@ -60,6 +60,8 @@ import org.joda.time.DateTimeZone;
  * Improves the performance of requesting time zone offsets and name keys by
  * caching the results. Time zones that have simple rules or are fixed should
  * not be cached, as it is unlikely to improve performance.
+ * <p>
+ * CachedDateTimeZone is thread-safe and immutable.
  * 
  * @author Brian S O'Neill
  */
@@ -67,20 +69,29 @@ public class CachedDateTimeZone extends DateTimeZone {
     private static final int cInfoCacheMask;
 
     static {
-        Integer i = Integer.getInteger("org.joda.time.tz.CachedDateTimeZone.size");
-
-        // With a cache size of 512, dates that lie within any 69.7 year period
-        // have no cache collisions.
-        int cacheSize = (i == null) ? 512 : i.intValue();
-
-        // Ensure cache size is even power of 2.
-        cacheSize--;
-        int shift = 0;
-        while (cacheSize > 0) {
-            shift++;
-            cacheSize >>= 1;
+        Integer i;
+        try {
+            i = Integer.getInteger("org.joda.time.tz.CachedDateTimeZone.size");
+        } catch (SecurityException e) {
+            i = null;
         }
-        cacheSize = 1 << shift;
+
+        int cacheSize;
+        if (i == null) {
+            // With a cache size of 512, dates that lie within any 69.7 year
+            // period have no cache collisions.
+            cacheSize = 512; // (1 << 9)
+        } else {
+            cacheSize = i.intValue();
+            // Ensure cache size is even power of 2.
+            cacheSize--;
+            int shift = 0;
+            while (cacheSize > 0) {
+                shift++;
+                cacheSize >>= 1;
+            }
+            cacheSize = 1 << shift;
+        }
 
         cInfoCacheMask = cacheSize - 1;
     }
@@ -127,24 +138,28 @@ public class CachedDateTimeZone extends DateTimeZone {
         return iZone;
     }
 
-    public String getNameKey(long millis) {
-        return getInfo(millis).getNameKey(millis);
+    public String getNameKey(long instant) {
+        return getInfo(instant).getNameKey(instant);
     }
 
-    public int getOffset(long millis) {
-        return getInfo(millis).getOffset(millis);
+    public int getOffset(long instant) {
+        return getInfo(instant).getOffset(instant);
     }
 
-    public int getStandardOffset(long millis) {
-        return getInfo(millis).getStandardOffset(millis);
+    public int getStandardOffset(long instant) {
+        return getInfo(instant).getStandardOffset(instant);
     }
 
-    public long nextTransition(long millis) {
-        return iZone.nextTransition(millis);
+    public boolean isFixed() {
+        return iZone.isFixed();
     }
 
-    public long previousTransition(long millis) {
-        return iZone.previousTransition(millis);
+    public long nextTransition(long instant) {
+        return iZone.nextTransition(instant);
+    }
+
+    public long previousTransition(long instant) {
+        return iZone.previousTransition(instant);
     }
 
     public int hashCode() {

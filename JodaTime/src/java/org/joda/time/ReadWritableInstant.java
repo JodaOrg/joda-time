@@ -53,11 +53,15 @@
  */
 package org.joda.time;
 
+// Import for @link support
+import org.joda.time.convert.ConverterManager;
+
 /**
- * Writable interface for an instant in the datetime continuum. 
+ * Defines an instant in the datetime continuum that can be queried and modified.
+ * This interface expresses the datetime as milliseconds from 1970-01-01T00:00:00Z.
  * <p>
- * This interface expresses the datetime as milliseconds from 
- * 1970-01-01T00:00:00Z.
+ * The implementation of this interface will be mutable.
+ * It may provide more advanced methods than those in the interface.
  *
  * @author Stephen Colebourne
  * @since 1.0
@@ -67,51 +71,56 @@ public interface ReadWritableInstant extends ReadableInstant {
     /**
      * Set the value as the number of miliseconds since
      * the epoch, 1970-01-01T00:00:00Z.
-     *
-     * @return the value as milliseconds
+     * 
+     * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the
+     * instant to
+     * @throws IllegalArgumentException if the value is invalid
      */
-    void setMillis(long millis);
+    void setMillis(long instant);
 
     /**
-     * Set the value from Date, Calendar, DateTime etc.
-     *
-     * @return the value as a Calendar
+     * Set the value from an Object representing an instant.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     * 
+     * @param instant  an object representing an instant
+     * @throws IllegalArgumentException if the value is invalid
      */
-    void setMillis(Object obj);
+    void setMillis(Object instant);
+
+    /**
+     * Set the chronology of the datetime, which has no effect if not
+     * applicable.
+     * 
+     * @param chronology  the chronology to use, null means ISOChronology in default zone
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    void setChronology(Chronology chronology);
+
+    /**
+     * Sets the time zone of the datetime via the chronology, which has no
+     * effect if not applicable. Setting the time zone does not affect the
+     * millisecond value of this instant.
+     *
+     * @param zone  the time zone to use, null means default zone
+     * @throws IllegalArgumentException if the value is invalid
+     * @see #moveDateTimeZone
+     */
+    void setDateTimeZone(DateTimeZone zone);
+
+    /**
+     * Moves the time zone of the datetime via the chronology, which has no
+     * effect if not applicable. Moving the time zone alters the millisecond
+     * value of this instant such that it is relative to the new time zone.
+     *
+     * @param zone  the time zone to use, null means default zone
+     * @throws IllegalArgumentException if the value is invalid
+     * @see #setDateTimeZone
+     */
+    void moveDateTimeZone(DateTimeZone zone);
 
     //-----------------------------------------------------------------------
-    /**
-     * Add an amount of time.
-     * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     *
-     * @param duration duration to add.
-     */
-    //void add(ReadableDuration duration);
-
-    /**
-     * Add an amount of time.
-     * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     *
-     * @param duration duration to add.
-     * @param scalar direction and amount to add, which may be negative
-     */
-    //void add(ReadableDuration duration, int scalar);
-
-    /**
-     * Add an amount of time, either a ReadableDuration or Long (millis).
-     * <p>
-     * If the resulting value is too large for the implementation,
-     * an exception is thrown.
-     *
-     * @param object  an object evaluating to an a period of time to
-     *  add.
-     */
-    void add(Object object);
-
     /**
      * Add a number of millis to the value.
      * <p>
@@ -119,9 +128,47 @@ public interface ReadWritableInstant extends ReadableInstant {
      * will change and so on unless it is too large for the
      * implementation, when an exception is thrown.
      *
-     * @param millis  the millis to add
+     * @param duration  the millis to add
+     * @throws IllegalArgumentException if the value is invalid
      */
-    void addMillis(long millis);
+    void add(long duration);
+
+    /**
+     * Add an amount of time.
+     * <p>
+     * If the resulting value is too large for the implementation,
+     * an exception is thrown.
+     *
+     * @param duration  duration to add.
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    void add(ReadableDuration duration);
+
+    /**
+     * Add an amount of time.
+     * <p>
+     * If the resulting value is too large for the implementation,
+     * an exception is thrown.
+     *
+     * @param duration  duration to add.
+     * @param scalar direction and amount to add, which may be negative
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    void add(ReadableDuration duration, int scalar);
+
+    /**
+     * Add an amount of time, either a ReadableDuration or Long (millis).
+     * <p>
+     * If the resulting value is too large for the implementation,
+     * an exception is thrown.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableDuration, String and Long.
+     *
+     * @param duration  an object representing a duration
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    void add(Object duration);
 
     //-----------------------------------------------------------------------
     /**
@@ -133,6 +180,7 @@ public interface ReadWritableInstant extends ReadableInstant {
      *
      * @param field  a DateTimeField instance, usually obtained from a Chronology
      * @param value  the value of that field for the millis set in the implementation
+     * @throws IllegalArgumentException if the value is invalid
      */
     void set(DateTimeField field, int value);
     
@@ -145,6 +193,7 @@ public interface ReadWritableInstant extends ReadableInstant {
      *
      * @param field  a DateTimeField instance, usually obtained from a Chronology
      * @param value  the value of that field for the millis set in the implementation
+     * @throws IllegalArgumentException if the value is invalid
      */
     void add(DateTimeField field, int value);
     
@@ -160,6 +209,7 @@ public interface ReadWritableInstant extends ReadableInstant {
      *
      * @param field  a DateTimeField instance, usually obtained from a Chronology
      * @param value  the value of that field for the millis set in the implementation
+     * @throws IllegalArgumentException if the value is invalid
      */
     void addWrapped(DateTimeField field, int value);
     

@@ -53,7 +53,9 @@
  */
 package org.joda.time;
 
+import java.io.Serializable;
 import java.util.Comparator;
+import org.joda.time.convert.ConverterManager;
 
 /**
  * DateTimeComparator is the standard implementation of the Comparator
@@ -66,12 +68,17 @@ import java.util.Comparator;
  * <li>java.util.Long (milliseconds)
  * </ul>
  *
+ * <p>
+ * DateTimeComparator is thread-safe and immutable.
+ *
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class DateTimeComparator implements Comparator {
+public class DateTimeComparator implements Comparator, Serializable {
+
+    static final long serialVersionUID = -6097339773320178364L;
 
     private static final DateTimeComparator INSTANCE = new DateTimeComparator(null, null);
 
@@ -133,6 +140,20 @@ public class DateTimeComparator implements Comparator {
     }
 
     /**
+     * @return null if no lower limit
+     */
+    public DateTimeField getLowerLimit() {
+        return iLowerLimit;
+    }
+
+    /**
+     * @return null if no upper limit
+     */
+    public DateTimeField getUpperLimit() {
+        return iUpperLimit;
+    }
+
+    /**
      * Compare two objects against only the range of date time fields as
      * specified in the constructor.
      * 
@@ -140,33 +161,62 @@ public class DateTimeComparator implements Comparator {
      * comparison
      * @param rhsObj The second object, logically on the right of a &lt;
      * comparison
-     * @return 0 if order does not matter, -1 if lhsObj &lt; rhsObj, 1
-     * otherwise.
-     * @throws IllegalArgumentException if either argument is null
-     * @throws ClassCastException if either argument is one of the support
-     * types
+     * @return zero if order does not matter, negative value if lhsObj &lt;
+     * rhsObj, positive value otherwise.
+     * @throws IllegalArgumentException if either argument is not supported
      */
     public int compare(Object lhsObj, Object rhsObj) {
-        long lhs = getMillisFromObject(lhsObj);
-        long rhs = getMillisFromObject(rhsObj);
+        long lhsMillis, rhsMillis;
 
-        if (iLowerLimit != null) {
-            lhs = iLowerLimit.roundFloor(lhs);
-            rhs = iLowerLimit.roundFloor(rhs);
+        if (lhsObj instanceof ReadableInstant) {
+            ReadableInstant lhsInstant = (ReadableInstant) lhsObj;
+
+            if (rhsObj instanceof ReadableInstant) {
+                ReadableInstant rhsInstant = (ReadableInstant) rhsObj;
+
+                // If instants are partial, then they can use each other to
+                // fill in missing fields.
+                lhsMillis = lhsInstant.getMillis(rhsInstant);
+                rhsMillis = rhsInstant.getMillis(lhsInstant);
+            } else {
+                lhsMillis = lhsInstant.getMillis();
+                rhsMillis = getMillisFromObject(rhsObj);
+            }
+        } else {
+            lhsMillis = getMillisFromObject(lhsObj);
+
+            if (rhsObj instanceof ReadableInstant) {
+                rhsMillis = ((ReadableInstant) rhsObj).getMillis();
+            } else {
+                rhsMillis = getMillisFromObject(rhsObj);
+            }
         }
 
-        if (iUpperLimit != null) {
-            lhs = iUpperLimit.remainder(lhs);
-            rhs = iUpperLimit.remainder(rhs);
+        DateTimeField field;
+        if ((field = iLowerLimit) != null) {
+            lhsMillis = field.roundFloor(lhsMillis);
+            rhsMillis = field.roundFloor(rhsMillis);
         }
 
-        if (lhs < rhs) {
+        if ((field = iUpperLimit) != null) {
+            lhsMillis = field.remainder(lhsMillis);
+            rhsMillis = field.remainder(rhsMillis);
+        }
+
+        if (lhsMillis < rhsMillis) {
             return -1;
-        } else if (lhs > rhs) {
+        } else if (lhsMillis > rhsMillis) {
             return 1;
         } else {
             return 0;
         }
+    }
+
+    /**
+     * Support serialization singletons
+     */
+    private Object readResolve() {
+        return getInstance(iLowerLimit, iUpperLimit);
     }
 
     /*
@@ -179,29 +229,10 @@ public class DateTimeComparator implements Comparator {
 
     /*
      * @param obj
-     * @throws ClassCastException
      * @return millis since the epoch
      */
-    private long getMillisFromObject(Object obj) {
-        if (obj instanceof ReadableInstant) {
-            return ((ReadableInstant)obj).getMillis();
-        }
-        if (obj instanceof java.util.Date) {
-            return ((java.util.Date)obj).getTime();
-        }
-        if (obj instanceof java.util.Calendar) {
-            return ((java.util.Calendar)obj).getTime().getTime();
-        }
-        if (obj instanceof Long) {
-            return ((Long)obj).longValue();
-        }
-
-        if (obj == null) {
-            throw new IllegalArgumentException("Object to compare must not be null");
-        }
-
-        throw new ClassCastException
-            ("Invalid class for DateTimeComparator: " + obj.getClass());
+    private static long getMillisFromObject(Object obj) {
+        return ConverterManager.getInstance().getInstantConverter(obj).getInstantMillis(obj);
     }
 
 }

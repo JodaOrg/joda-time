@@ -63,6 +63,9 @@ import org.joda.time.DateTimeConstants;
  * @author Stephen Colebourne
  */
 final class JulianWithYearZeroChronology extends ProlepticChronology {
+
+    static final long serialVersionUID = 9044685826106463217L;
+
     JulianWithYearZeroChronology(int minDaysInFirstWeek) {
         super(minDaysInFirstWeek);
     }

@@ -64,7 +64,7 @@ import java.util.Map;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.gj.GJChronology;
-import org.joda.time.chrono.iso.ISOChronology;
+
 /**
  * DateTimePerformance provides various comparisons between the Java supplied
  * Date classes and the Joda ones.
@@ -110,51 +110,63 @@ public class DateTimePerformance {
      */
     public DateTimePerformance() throws Exception {
         checkJodaConstructor1();
+        checkJISOConstructor1();
         checkGCalConstructor1();
         checkDateConstructor1();
         
         checkJodaConstructor2();
+        checkJISOConstructor2();
         checkGCalConstructor2();
         checkDateConstructor2();
         
         checkJodaConstructor3();
+        checkJISOConstructor3();
         checkGCalConstructor3();
         checkDateConstructor3();
         
         checkJodaGetYear();
+        checkJISOGetYear();
         checkGCalGetYear();
         checkDateGetYear();
         
 //        checkJodaGetMonth();
+//        checkJISOGetMonth();
 //        checkGCalGetMonth();
 //        checkDateGetMonth();
         
 //        checkJodaGetDay();
+//        checkJISOGetDay();
 //        checkGCalGetDay();
 //        checkDateGetDay();
         
         checkJodaGetHour();
+        checkJISOGetHour();
         checkGCalGetHour();
         checkDateGetHour();
         
         checkJodaSetYear();
+        checkJISOSetYear();
         checkGCalSetYear();
         checkDateSetYear();
         
         checkJodaSetGetYear();
+        checkJISOSetGetYear();
         checkGCalSetGetYear();
         checkDateSetGetYear();
         
         checkJodaSetHour();
+        checkJISOSetHour();
         checkGCalSetHour();
         checkDateSetHour();
         
         checkJodaSetGetHour();
+        checkJISOSetGetHour();
         checkGCalSetGetHour();
         checkDateSetGetHour();
         
         System.out.println("");
         long jodaTotal = 0;
+        long jisoTotal = 0;
         long gcalTotal = 0;
         long dateTotal = 0;
         for (Iterator it = resultList.iterator(); it.hasNext();) {
@@ -162,6 +174,8 @@ public class DateTimePerformance {
             System.out.println(res.object + "." + res.name + ": " + res.avg + "ns");
             if (res.object.equals("Joda")) {
                 jodaTotal += res.avg;
+            } else if (res.object.equals("JISO")) {
+                jisoTotal += res.avg;
             } else if (res.object.equals("GCal")) {
                 gcalTotal += res.avg;
             } else if (res.object.equals("Date")) {
@@ -170,6 +184,7 @@ public class DateTimePerformance {
             }
         }
         System.out.println("Joda: " + jodaTotal);
+        System.out.println("JISO: " + jisoTotal);
         System.out.println("GCal: " + gcalTotal);
         System.out.println("Date: " + dateTotal);
     }
@@ -181,9 +196,22 @@ public class DateTimePerformance {
         int COUNT = COUNT_SLOW;
         DateTime dt = new DateTime(GJChronology.getInstance());
         for (int i = 0; i < AVERAGE; i++) {
-            start("Joda", "new");
+            start("Joda", "new()");
             for (int j = 0; j < COUNT; j++) {
                 dt = new DateTime(GJChronology.getInstance());
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOConstructor1() {
+        int COUNT = COUNT_SLOW;
+        DateTime dt = new DateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "new()");
+            for (int j = 0; j < COUNT; j++) {
+                dt = new DateTime();
                 if (dt == null) {System.out.println("Anti optimise");}
             }
             end(COUNT);
@@ -194,7 +222,7 @@ public class DateTimePerformance {
         int COUNT = COUNT_SLOW;
         GregorianCalendar dt = new GregorianCalendar();
         for (int i = 0; i < AVERAGE; i++) {
-            start("GCal", "new");
+            start("GCal", "new()");
             for (int j = 0; j < COUNT; j++) {
                 dt = new GregorianCalendar();
                 if (dt == null) {System.out.println("Anti optimise");}
@@ -207,7 +235,7 @@ public class DateTimePerformance {
         int COUNT = COUNT_SLOW;
         Date dt = new Date();
         for (int i = 0; i < AVERAGE; i++) {
-            start("Date", "new");
+            start("Date", "new()");
             for (int j = 0; j < COUNT; j++) {
                 dt = new Date();
                 if (dt == null) {System.out.println("Anti optimise");}
@@ -226,6 +254,19 @@ public class DateTimePerformance {
             start("Joda", "new(millis)");
             for (int j = 0; j < COUNT; j++) {
                 dt = new DateTime(12345L, GJChronology.getInstance());
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOConstructor2() {
+        int COUNT = COUNT_VERY_FAST;
+        DateTime dt = new DateTime(12345L);
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "new(millis)");
+            for (int j = 0; j < COUNT; j++) {
+                dt = new DateTime(12345L);
                 if (dt == null) {System.out.println("Anti optimise");}
             }
             end(COUNT);
@@ -264,14 +305,26 @@ public class DateTimePerformance {
     
     private void checkJodaConstructor3() {
         int COUNT = COUNT_SLOW;
-        DateTime dt = new DateTime(12345L, GJChronology.getInstance());
-        MutableDateTime mdt = new MutableDateTime(ISOChronology.getInstance());
+        DateTime dt = new DateTime(1972, 10, 1, 0, 0, 0, 0,
+                                   GJChronology.getInstance());
         for (int i = 0; i < AVERAGE; i++) {
             start("Joda", "new(YMD)");
             for (int j = 0; j < COUNT; j++) {
-                mdt = new MutableDateTime(ISOChronology.getInstance());
-                mdt.setDate(1972, 10, 1);
-                dt = mdt.toDateTime();
+                dt = new DateTime(1972, 10, 1, 0, 0, 0, 0,
+                                  GJChronology.getInstance());
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOConstructor3() {
+        int COUNT = COUNT_SLOW;
+        DateTime dt = new DateTime(1972, 10, 1, 0, 0, 0, 0);
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "new(YMD)");
+            for (int j = 0; j < COUNT; j++) {
+                dt = new DateTime(1972, 10, 1, 0, 0, 0, 0);
                 if (dt == null) {System.out.println("Anti optimise");}
             }
             end(COUNT);
@@ -312,6 +365,19 @@ public class DateTimePerformance {
         DateTime dt = new DateTime(GJChronology.getInstance());
         for (int i = 0; i < AVERAGE; i++) {
             start("Joda", "getYear");
+            for (int j = 0; j < COUNT; j++) {
+                int val = dt.getYear();
+                if (val == 0) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOGetYear() {
+        int COUNT = COUNT_VERY_FAST;
+        DateTime dt = new DateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "getYear");
             for (int j = 0; j < COUNT; j++) {
                 int val = dt.getYear();
                 if (val == 0) {System.out.println("Anti optimise");}
@@ -362,6 +428,19 @@ public class DateTimePerformance {
         }
     }
 
+    private void checkJISOGetMonth() {
+        int COUNT = COUNT_VERY_FAST;
+        DateTime dt = new DateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "getMonth");
+            for (int j = 0; j < COUNT; j++) {
+                int val = dt.getMonthOfYear();
+                if (val == 0) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
     private void checkGCalGetMonth() {
         int COUNT = COUNT_VERY_FAST;
         GregorianCalendar dt = new GregorianCalendar();
@@ -404,6 +483,19 @@ public class DateTimePerformance {
         }
     }
 
+    private void checkJISOGetDay() {
+        int COUNT = COUNT_VERY_FAST;
+        DateTime dt = new DateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "getDay");
+            for (int j = 0; j < COUNT; j++) {
+                int val = dt.getDayOfMonth();
+                if (val == 0) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
     private void checkGCalGetDay() {
         int COUNT = COUNT_VERY_FAST;
         GregorianCalendar dt = new GregorianCalendar();
@@ -438,6 +530,19 @@ public class DateTimePerformance {
         DateTime dt = new DateTime(GJChronology.getInstance());
         for (int i = 0; i < AVERAGE; i++) {
             start("Joda", "getHour");
+            for (int j = 0; j < COUNT; j++) {
+                int val = dt.getHourOfDay();
+                if (val == -1) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOGetHour() {
+        int COUNT = COUNT_VERY_FAST;
+        DateTime dt = new DateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "getHour");
             for (int j = 0; j < COUNT; j++) {
                 int val = dt.getHourOfDay();
                 if (val == -1) {System.out.println("Anti optimise");}
@@ -489,6 +594,20 @@ public class DateTimePerformance {
         }
     }
 
+    private void checkJISOSetYear() {
+        int COUNT = COUNT_FAST;
+        // Is it fair to use only MutableDateTime here? You decide.
+        MutableDateTime dt = new MutableDateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "setYear");
+            for (int j = 0; j < COUNT; j++) {
+                dt.setYear(1972);
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
     private void checkGCalSetYear() {
         int COUNT = COUNT_VERY_FAST;
         GregorianCalendar dt = new GregorianCalendar();
@@ -524,6 +643,21 @@ public class DateTimePerformance {
         MutableDateTime dt = new MutableDateTime(GJChronology.getInstance());
         for (int i = 0; i < AVERAGE; i++) {
             start("Joda", "setGetYear");
+            for (int j = 0; j < COUNT; j++) {
+                dt.setYear(1972);
+                int val = dt.getYear();
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOSetGetYear() {
+        int COUNT = COUNT_FAST;
+        // Is it fair to use only MutableDateTime here? You decide.
+        MutableDateTime dt = new MutableDateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "setGetYear");
             for (int j = 0; j < COUNT; j++) {
                 dt.setYear(1972);
                 int val = dt.getYear();
@@ -578,6 +712,20 @@ public class DateTimePerformance {
         }
     }
 
+    private void checkJISOSetHour() {
+        int COUNT = COUNT_VERY_FAST;
+        // Is it fair to use only MutableDateTime here? You decide.
+        MutableDateTime dt = new MutableDateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "setHour");
+            for (int j = 0; j < COUNT; j++) {
+                dt.setHourOfDay(13);
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
     private void checkGCalSetHour() {
         int COUNT = COUNT_VERY_FAST;
         GregorianCalendar dt = new GregorianCalendar();
@@ -613,6 +761,21 @@ public class DateTimePerformance {
         MutableDateTime dt = new MutableDateTime(GJChronology.getInstance());
         for (int i = 0; i < AVERAGE; i++) {
             start("Joda", "setGetHour");
+            for (int j = 0; j < COUNT; j++) {
+                dt.setHourOfDay(13);
+                int val = dt.getHourOfDay();
+                if (dt == null) {System.out.println("Anti optimise");}
+            }
+            end(COUNT);
+        }
+    }
+
+    private void checkJISOSetGetHour() {
+        int COUNT = COUNT_VERY_FAST;
+        // Is it fair to use only MutableDateTime here? You decide.
+        MutableDateTime dt = new MutableDateTime();
+        for (int i = 0; i < AVERAGE; i++) {
+            start("JISO", "setGetHour");
             for (int j = 0; j < COUNT; j++) {
                 dt.setHourOfDay(13);
                 int val = dt.getHourOfDay();

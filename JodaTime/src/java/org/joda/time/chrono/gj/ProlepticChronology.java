@@ -58,11 +58,14 @@ import java.util.Locale;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
 import org.joda.time.chrono.DividedDateTimeField;
-import org.joda.time.chrono.FractionalDateTimeField;
-//import org.joda.time.chrono.OneBasedFractionalDateTimeField;
+import org.joda.time.chrono.MillisDurationField;
 import org.joda.time.chrono.NonZeroDateTimeField;
 import org.joda.time.chrono.RemainderDateTimeField;
+import org.joda.time.chrono.PreciseDateTimeField;
+import org.joda.time.chrono.PreciseDurationField;
+import org.joda.time.chrono.Utils;
 
 /**
  * ProlepticChronology uses a consistent set of rules for all dates and
@@ -73,6 +76,9 @@ import org.joda.time.chrono.RemainderDateTimeField;
  * @since 1.0
  */
 abstract class ProlepticChronology extends GJChronology {
+
+    static final long serialVersionUID = 541866437970475456L;
+
     static final long MILLIS_1970_TO_2000 = 946684800000L;
 
     // These arrays are NOT public. We trust ourselves not to alter the array.
@@ -89,6 +95,14 @@ abstract class ProlepticChronology extends GJChronology {
 
     private static final long[] MIN_TOTAL_MILLIS_BY_MONTH_ARRAY;
     private static final long[] MAX_TOTAL_MILLIS_BY_MONTH_ARRAY;
+
+    private static final DurationField cMillisField;
+    private static final DurationField cSecondsField;
+    private static final DurationField cMinutesField;
+    private static final DurationField cHoursField;
+    private static final DurationField cHalfdaysField;
+    private static final DurationField cDaysField;
+    private static final DurationField cWeeksField;
 
     private static final DateTimeField cMillisOfSecondField;
     private static final DateTimeField cMillisOfDayField;
@@ -120,51 +134,49 @@ abstract class ProlepticChronology extends GJChronology {
             MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[i] = maxSum;
         }
 
-        cMillisOfSecondField = new FractionalDateTimeField
-            ("millisOfSecond",
-             1,
-             DateTimeConstants.MILLIS_PER_SECOND);
+        cMillisField = MillisDurationField.INSTANCE;
+        cSecondsField = new PreciseDurationField
+            ("seconds", DateTimeConstants.MILLIS_PER_SECOND);
+        cMinutesField = new PreciseDurationField
+            ("minutes", DateTimeConstants.MILLIS_PER_MINUTE);
+        cHoursField = new PreciseDurationField
+            ("hours", DateTimeConstants.MILLIS_PER_HOUR);
+        cHalfdaysField = new PreciseDurationField
+            ("halfdays", DateTimeConstants.MILLIS_PER_DAY / 2);
+        cDaysField = new PreciseDurationField
+            ("days", DateTimeConstants.MILLIS_PER_DAY);
+        cWeeksField = new PreciseDurationField
+            ("weeks", DateTimeConstants.MILLIS_PER_WEEK);
 
-        cMillisOfDayField = new FractionalDateTimeField
-            ("millisOfDay",
-             1,
-             DateTimeConstants.MILLIS_PER_DAY);
+        cMillisOfSecondField = new PreciseDateTimeField
+            ("millisOfSecond", cMillisField, cSecondsField);
 
-        cSecondOfMinuteField = new FractionalDateTimeField
-            ("secondOfMinute", 
-             DateTimeConstants.MILLIS_PER_SECOND, 
-             DateTimeConstants.SECONDS_PER_MINUTE);
+        cMillisOfDayField = new PreciseDateTimeField
+            ("millisOfDay", cMillisField, cDaysField);
+             
+        cSecondOfMinuteField = new PreciseDateTimeField
+            ("secondOfMinute", cSecondsField, cMinutesField);
 
-        cSecondOfDayField = new FractionalDateTimeField
-            ("secondOfDay",
-             DateTimeConstants.MILLIS_PER_SECOND,
-             DateTimeConstants.SECONDS_PER_DAY);
+        cSecondOfDayField = new PreciseDateTimeField
+            ("secondOfDay", cSecondsField, cDaysField);
 
-        cMinuteOfHourField = new FractionalDateTimeField
-            ("minuteOfHour",
-             DateTimeConstants.MILLIS_PER_MINUTE,
-             DateTimeConstants.MINUTES_PER_HOUR);
+        cMinuteOfHourField = new PreciseDateTimeField
+            ("minuteOfHour", cMinutesField, cHoursField);
 
-        cMinuteOfDayField = new FractionalDateTimeField
-            ("minuteOfDay",
-             DateTimeConstants.MILLIS_PER_MINUTE,
-             DateTimeConstants.MINUTES_PER_DAY);
+        cMinuteOfDayField = new PreciseDateTimeField
+            ("minuteOfDay", cMinutesField, cDaysField);
 
-        cHourOfDayField = new FractionalDateTimeField
-            ("hourOfDay",
-             DateTimeConstants.MILLIS_PER_HOUR,
-             DateTimeConstants.HOURS_PER_DAY);
+        cHourOfDayField = new PreciseDateTimeField
+            ("hourOfDay", cHoursField, cDaysField);
 
-        cHourOfHalfdayField = new FractionalDateTimeField
-            ("hourOfHalfday",
-             DateTimeConstants.MILLIS_PER_HOUR,
-             DateTimeConstants.HOURS_PER_DAY / 2);
+        cHourOfHalfdayField = new PreciseDateTimeField
+            ("hourOfHalfday", cHoursField, cHalfdaysField);
 
         cClockhourOfDayField = new NonZeroDateTimeField
-            ("clockhourOfDay", cHourOfDayField);
+            (cHourOfDayField, "clockhourOfDay");
 
         cClockhourOfHalfdayField = new NonZeroDateTimeField
-            ("clockhourOfHalfday", cHourOfHalfdayField);
+            (cHourOfHalfdayField, "clockhourOfHalfday");
 
         cHalfdayOfDayField = new HalfdayField();
     }
@@ -178,32 +190,41 @@ abstract class ProlepticChronology extends GJChronology {
         super();
         iMinDaysInFirstWeek = minDaysInFirstWeek;
 
-        Integer i = Integer.getInteger("org.joda.time.gj.ProlepticChronology.yearInfoCacheSize");
-        int cacheSize = (i == null) ? 1024 : i.intValue();
-        // Ensure cache size is even power of 2.
-        cacheSize--;
-        int shift = 0;
-        while (cacheSize > 0) {
-            shift++;
-            cacheSize >>= 1;
+        Integer i;
+        try {
+            i = Integer.getInteger("org.joda.time.gj.ProlepticChronology.yearInfoCacheSize");
+        } catch (SecurityException e) {
+            i = null;
         }
-        cacheSize = 1 << shift;
+
+        int cacheSize;
+        if (i == null) {
+            cacheSize = 1024; // (1 << 10)
+        } else {
+            cacheSize = i.intValue();
+            // Ensure cache size is even power of 2.
+            cacheSize--;
+            int shift = 0;
+            while (cacheSize > 0) {
+                shift++;
+                cacheSize >>= 1;
+            }
+            cacheSize = 1 << shift;
+        }
+
         iYearInfoCache = new YearInfo[cacheSize];
         iYearInfoCacheMask = cacheSize - 1;
 
-        iYearField = new GJYearDateTimeField(this);
-        iYearOfEraField = new GJYearOfEraDateTimeField(this);
+        // First copy fields that are the same for all Gregorian and Julian
+        // chronologies.
 
-        iCenturyOfEraField = new DividedDateTimeField("centuryOfEra", iYearOfEraField, 100);
-        iYearOfCenturyField = new RemainderDateTimeField("yearOfCentury", iYearOfEraField, 100);
-
-        iEraField = new GJEraDateTimeField(this);
-        iDayOfWeekField = new GJDayOfWeekDateTimeField(this);
-        iDayOfMonthField = new GJDayOfMonthDateTimeField(this);
-        iDayOfYearField = new GJDayOfYearDateTimeField(this);
-        iMonthOfYearField = new GJMonthOfYearDateTimeField(this);
-        iWeekOfWeekyearField = new GJWeekOfWeekyearDateTimeField(this);
-        iWeekyearField = new GJWeekyearDateTimeField(this);
+        iMillisField = cMillisField;
+        iSecondsField = cSecondsField;
+        iMinutesField = cMinutesField;
+        iHoursField = cHoursField;
+        //iHalfdaysField = cHalfdaysField;  Doesn't exist in public interface
+        iDaysField = cDaysField;
+        iWeeksField = cWeeksField;
 
         iMillisOfSecondField = cMillisOfSecondField;
         iMillisOfDayField = cMillisOfDayField;
@@ -216,10 +237,119 @@ abstract class ProlepticChronology extends GJChronology {
         iClockhourOfDayField = cClockhourOfDayField;
         iClockhourOfHalfdayField = cClockhourOfHalfdayField;
         iHalfdayOfDayField = cHalfdayOfDayField;
+
+        // Now create fields that have unique behavior for Gregorian and Julian
+        // chronologies.
+
+        iYearField = new GJYearDateTimeField(this);
+        iYearOfEraField = new GJYearOfEraDateTimeField(iYearField, this);
+
+        iCenturyOfEraField = new DividedDateTimeField
+            (iYearOfEraField, "centuryOfEra", "centuries", 100);
+        iYearOfCenturyField = new RemainderDateTimeField
+            ((DividedDateTimeField)iCenturyOfEraField, "yearOfCentury");
+
+        iEraField = new GJEraDateTimeField(this);
+        iDayOfWeekField = new GJDayOfWeekDateTimeField(this, iDaysField);
+        iDayOfMonthField = new GJDayOfMonthDateTimeField(this, iDaysField);
+        iDayOfYearField = new GJDayOfYearDateTimeField(this, iDaysField);
+        iMonthOfYearField = new GJMonthOfYearDateTimeField(this);
+        iWeekyearField = new GJWeekyearDateTimeField(this);
+        iWeekOfWeekyearField = new GJWeekOfWeekyearDateTimeField(this, iWeeksField);
+
+        // The remaining (imprecise) durations are available from the newly
+        // created datetime fields.
+
+        iYearsField = iYearField.getDurationField();
+        iCenturiesField = iCenturyOfEraField.getDurationField();
+        iMonthsField = iMonthOfYearField.getDurationField();
+        iWeekyearsField = iWeekyearField.getDurationField();
     }
 
     public Chronology withUTC() {
         return this;
+    }
+
+    /**
+     * Override the default implementation
+     */
+    public final long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        boolean isLeap = isLeapYear(year);
+
+        Utils.verifyValueBounds("monthOfYear", monthOfYear, 1, 12);
+        Utils.verifyValueBounds("dayOfMonth", dayOfMonth, 1,
+                                (isLeap ? MAX_DAYS_PER_MONTH_ARRAY : MIN_DAYS_PER_MONTH_ARRAY)
+                                [monthOfYear - 1]);
+
+        long instant = getYearMillis(year);
+
+        if (monthOfYear > 1) {
+            instant += 
+                (isLeap ? MAX_TOTAL_MILLIS_BY_MONTH_ARRAY : MIN_TOTAL_MILLIS_BY_MONTH_ARRAY)
+                [monthOfYear - 2];
+        }
+
+        if (dayOfMonth != 1) {
+            instant += (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
+        }
+
+        return instant;
+    }
+
+    /**
+     * Override the default implementation
+     */
+    public final long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                        int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+
+        Utils.verifyValueBounds("hourOfDay", hourOfDay, 0, 23);
+        Utils.verifyValueBounds("minuteOfHour", minuteOfHour, 0, 59);
+        Utils.verifyValueBounds("secondOfMinute", secondOfMinute, 0, 59);
+        Utils.verifyValueBounds("millisOfSecond", millisOfSecond, 0, 999);
+
+        return hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
+            + minuteOfHour * DateTimeConstants.MILLIS_PER_MINUTE
+            + secondOfMinute * DateTimeConstants.MILLIS_PER_SECOND
+            + millisOfSecond;
+    }
+
+    /**
+     * Override the default implementation
+     */
+    public final long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                        int millisOfDay)
+        throws IllegalArgumentException
+    {
+        Utils.verifyValueBounds("millisOfDay", millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY);
+        return getDateOnlyMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
+    }
+
+    /**
+     * Override the default implementation
+     */
+    public final long getDateTimeMillis(long instant,
+                                        int hourOfDay, int minuteOfHour,
+                                        int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return getDateOnlyMillis(instant)
+            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    /**
+     * Override the default implementation
+     */
+    public final long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                        int hourOfDay, int minuteOfHour,
+                                        int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return getDateOnlyMillis(year, monthOfYear, dayOfMonth)
+            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public final boolean isCenturyISO() {
@@ -433,9 +563,11 @@ abstract class ProlepticChronology extends GJChronology {
         return info;
     }
 
-    private static class HalfdayField extends FractionalDateTimeField {
+    private static class HalfdayField extends PreciseDateTimeField {
+        static final long serialVersionUID = 581601443656929254L;
+
         HalfdayField() {
-            super("halfdayOfDay", DateTimeConstants.MILLIS_PER_HOUR * 12, 2);
+            super("halfdayOfDay", cHalfdaysField, cDaysField);
         }
 
         public String getAsText(long millis, Locale locale) {

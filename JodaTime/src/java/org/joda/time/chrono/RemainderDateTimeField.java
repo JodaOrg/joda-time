@@ -54,79 +54,81 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
 
 /**
- * Generic remainder datetime field.
- * 
+ * Counterpart remainder datetime field to {@link DividedDateTimeField}. The
+ * field's unit duration is unchanged, but the range duration is scaled
+ * accordingly.
+ * <p>
+ * RemainderDateTimeField is thread-safe and immutable.
+ *
  * @see DividedDateTimeField
- * 
+ *
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class RemainderDateTimeField extends DateTimeField {
-    /** The field to get the remainder */
-    private final DateTimeField iField;
-    /** The amount to divide by in the correct units */
-    private final int iUnitDivisor;
+public class RemainderDateTimeField extends DecoratedDateTimeField {
+
+    static final long serialVersionUID = 5708241235177666790L;
+
+    // Shared with DividedDateTimeField.
+    final int iDivisor;
+    final DurationField iRangeField;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param name  short, descriptive name, like "yearOfCentury".
      * @param field  the field to wrap, like "year()".
-     * @param unitDivisor  divisor in units, such as 100 years in a century
-     * @throws IllegalArgumentException if unit is less than two
+     * @param name  short, descriptive name, like "yearOfCentury".
+     * @param rangeName  short, descriptive name, like "centuries".
+     * @param divisor  divisor, such as 100 years in a century
+     * @throws IllegalArgumentException if divisor is less than two
      */
-    public RemainderDateTimeField(String name, DateTimeField field, int unitDivisor) {
-        super(name);
-                
-        if (field == null) {
-            throw new IllegalArgumentException("The field must not be null");
+    public RemainderDateTimeField(DateTimeField field,
+                                  String name, String rangeName, int divisor) {
+        super(field, name);
+
+        if (divisor < 2) {
+            throw new IllegalArgumentException("The divisor must be at least 2");
         }
-        if (unitDivisor < 2) {
-            throw new IllegalArgumentException("The unit divisor must be at least 2");
+
+        DurationField rangeField = field.getDurationField();
+        if (rangeField == null) {
+            iRangeField = null;
+        } else {
+            iRangeField = new ScaledDurationField(rangeField, rangeName, divisor);
         }
-        iField = field;
-        iUnitDivisor = unitDivisor;
+
+        iDivisor = divisor;
+    }
+
+    /**
+     * Construct a RemainderDateTimeField that compliments the given
+     * DividedDateTimeField.
+     *
+     * @param dividedField  complimentary divided field, like "century()".
+     * @param name  short, descriptive name, like "yearOfCentury".
+     */
+    public RemainderDateTimeField(DividedDateTimeField dividedField, String name) {
+        super(dividedField.getWrappedField(), name);
+        iDivisor = dividedField.iDivisor;
+        iRangeField = dividedField.iDurationField;
     }
 
     /**
      * Get the remainder from the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the remainder extracted from the input.
      */
-    public int get(long millis) {
-        int value = iField.get(millis);
+    public int get(long instant) {
+        int value = getWrappedField().get(instant);
         if (value >= 0) {
-            return value % iUnitDivisor;
+            return value % iDivisor;
         } else {
-            return (iUnitDivisor - 1) + ((value + 1) % iUnitDivisor);
+            return (iDivisor - 1) + ((value + 1) % iDivisor);
         }
-    }
-    
-    /**
-     * Add the specified amount to the specified time instant. The amount added
-     * may be negative.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param amount  the amount to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long millis, int amount) {
-        return iField.add(millis, amount);
-    }
-    
-    /**
-     * Add the specified amount to the specified time instant. The amount added
-     * may be negative.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param amount  the amount to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long millis, long amount) {
-        return iField.add(millis, amount);
     }
 
     /**
@@ -134,41 +136,33 @@ public class RemainderDateTimeField extends DateTimeField {
      * within the remainder range if necessary. The amount added may be
      * negative.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param amount  the amount to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int amount) {
-        return set(millis, getWrappedValue(get(millis), amount, 0, iUnitDivisor - 1));
-    }
-    
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return iField.getDifference(minuendMillis, subtrahendMillis);
+    public long addWrapped(long instant, int amount) {
+        return set(instant, Utils.getWrappedValue(get(instant), amount, 0, iDivisor - 1));
     }
 
     /**
      * Set the specified amount of remainder units to the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param value  value of remainder units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
-    public long set(long millis, int value) {
-        verifyValueBounds(value, 0, iUnitDivisor - 1);
-        int divided = getDivided(iField.get(millis));
-        return iField.set(millis, divided * iUnitDivisor + value);
-    }
-    
-    public long getUnitMillis() {
-        return iField.getUnitMillis();
+    public long set(long instant, int value) {
+        Utils.verifyValueBounds(this, value, 0, iDivisor - 1);
+        int divided = getDivided(getWrappedField().get(instant));
+        return getWrappedField().set(instant, divided * iDivisor + value);
     }
 
     /**
-     * Returns the wrapped field's unit size multiplied by the unit divisor.
+     * Returns a scaled version of the wrapped field's unit duration field.
      */
-    public long getRangeMillis() {
-        return iField.getUnitMillis() * iUnitDivisor;
+    public DurationField getRangeDurationField() {
+        return iRangeField;
     }
 
     /**
@@ -179,52 +173,55 @@ public class RemainderDateTimeField extends DateTimeField {
     public int getMinimumValue() {
         return 0;
     }
-    
+
     /**
      * Get the maximum value for the field, which is always one less than the
-     * unit divisor.
+     * divisor.
      * 
      * @return the maximum value
      */
     public int getMaximumValue() {
-        return iUnitDivisor - 1;
-    }
-    
-    public long roundFloor(long millis) {
-        return iField.roundFloor(millis);
+        return iDivisor - 1;
     }
 
-    public long roundCeiling(long millis) {
-        return iField.roundCeiling(millis);
+    public long roundFloor(long instant) {
+        return getWrappedField().roundFloor(instant);
     }
 
-    public long remainder(long millis) {
-        return iField.remainder(millis);
+    public long roundCeiling(long instant) {
+        return getWrappedField().roundCeiling(instant);
+    }
+
+    public long roundHalfFloor(long instant) {
+        return getWrappedField().roundHalfFloor(instant);
+    }
+
+    public long roundHalfCeiling(long instant) {
+        return getWrappedField().roundHalfCeiling(instant);
+    }
+
+    public long roundHalfEven(long instant) {
+        return getWrappedField().roundHalfEven(instant);
+    }
+
+    public long remainder(long instant) {
+        return getWrappedField().remainder(instant);
     }
 
     /**
-     * Returns the DateTimeField being wrapped.
-     * 
-     * @return field
-     */
-    public DateTimeField getField() {
-        return iField;
-    }
-
-    /**
-     * Returns the divisor to apply to the field in the field's units.
+     * Returns the divisor applied, in the field's units.
      * 
      * @return the divisor
      */
-    public int getUnitDivisor() {
-        return iUnitDivisor;
+    public int getDivisor() {
+        return iDivisor;
     }
 
     private int getDivided(int value) {
         if (value >= 0) {
-            return value / iUnitDivisor;
+            return value / iDivisor;
         } else {
-            return ((value + 1) / iUnitDivisor) - 1;
+            return ((value + 1) / iDivisor) - 1;
         }
     }
 

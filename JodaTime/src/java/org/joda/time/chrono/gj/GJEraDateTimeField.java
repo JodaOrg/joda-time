@@ -56,7 +56,10 @@ package org.joda.time.chrono.gj;
 import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.AbstractDateTimeField;
+import org.joda.time.chrono.UnsupportedDurationField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the era component of time.
@@ -66,8 +69,10 @@ import org.joda.time.DateTimeField;
  * @version 1.0
  * @since 1.0
  */
-final class GJEraDateTimeField extends DateTimeField {
+final class GJEraDateTimeField extends AbstractDateTimeField {
     
+    static final long serialVersionUID = 4240986525305515528L;
+
     private final ProlepticChronology iChronology;
 
     /**
@@ -78,85 +83,88 @@ final class GJEraDateTimeField extends DateTimeField {
         iChronology = chronology;
     }
 
+    public boolean isLenient() {
+        return false;
+    }
+
     /**
      * Get the Era component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      */
-    public int get(long millis) {
-        if (iChronology.year().get(millis) <= 0) {
+    public int get(long instant) {
+        if (iChronology.year().get(instant) <= 0) {
             return DateTimeConstants.BCE;
         } else {
             return DateTimeConstants.CE;
         }
     }
 
-    public String getAsText(long millis, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).eraValueToText(get(millis));
-    }
-
-    /**
-     * Unsupported - add the specified eras to the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param eras  
-     * @return the updated time instant.
-     */
-    public long add(long millis, int eras) {
-        throw new UnsupportedOperationException("Adding to Era field is unsupported");
-    }
-
-    public long add(long millis, long value) {
-        throw new UnsupportedOperationException("Adding to Era field is unsupported");
-    }
-
-    /**
-     * Unsupported - add the specified eras to the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param eras
-     * @return the updated time instant.
-     */
-    public long addWrapped(long millis, int years) {
-        throw new UnsupportedOperationException("Adding to Era field is unsupported");
-    }
-
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        throw new UnsupportedOperationException("Era field difference is unsupported");
+    public String getAsText(long instant, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).eraValueToText(get(instant));
     }
 
     /**
      * Set the Era component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param era  the era to update the time to.
      * @return the updated time instant.
      * @throws IllegalArgumentException  if era is invalid.
      */
-    public long set(long millis, int era) {
-        super.verifyValueBounds(era, DateTimeConstants.BCE, DateTimeConstants.CE);
+    public long set(long instant, int era) {
+        Utils.verifyValueBounds(this, era, DateTimeConstants.BCE, DateTimeConstants.CE);
             
-        int oldEra = get(millis);
+        int oldEra = get(instant);
         if (oldEra != era) {
-            int year = iChronology.year().get(millis);
-            return iChronology.year().set(millis, -year);
+            int year = iChronology.year().get(instant);
+            return iChronology.year().set(instant, -year);
         } else {
-            return millis;
+            return instant;
         }
     }
 
-    public long set(long millis, String text, Locale locale) {
-        return set(millis, GJLocaleSymbols.forLocale(locale).eraTextToValue(text));
+    public long set(long instant, String text, Locale locale) {
+        return set(instant, GJLocaleSymbols.forLocale(locale).eraTextToValue(text));
     }
 
-    public long getUnitMillis() {
-        return Long.MAX_VALUE;
+    public long roundFloor(long instant) {
+        if (get(instant) == DateTimeConstants.CE) {
+            return iChronology.year().set(0, 1);
+        } else {
+            return Long.MIN_VALUE;
+        }
     }
 
-    public long getRangeMillis() {
-        // Should actually be double this, but that is not possible since Java
-        // doesn't support unsigned types.
-        return Long.MAX_VALUE;
+    public long roundCeiling(long instant) {
+        if (get(instant) == DateTimeConstants.BCE) {
+            return iChronology.year().set(0, 1);
+        } else {
+            return Long.MAX_VALUE;
+        }
+    }
+
+    public long roundHalfFloor(long instant) {
+        // In reality, the era is infinite, so there is no halfway point.
+        return roundFloor(instant);
+    }
+
+    public long roundHalfCeiling(long instant) {
+        // In reality, the era is infinite, so there is no halfway point.
+        return roundFloor(instant);
+    }
+
+    public long roundHalfEven(long instant) {
+        // In reality, the era is infinite, so there is no halfway point.
+        return roundFloor(instant);
+    }
+
+    public DurationField getDurationField() {
+        return UnsupportedDurationField.INSTANCE;
+    }
+
+    public DurationField getRangeDurationField() {
+        return null;
     }
 
     public int getMinimumValue() {
@@ -169,20 +177,6 @@ final class GJEraDateTimeField extends DateTimeField {
 
     public int getMaximumTextLength(Locale locale) {
         return GJLocaleSymbols.forLocale(locale).getEraMaxTextLength();
-    }
-
-    /**
-     * Unsupported.
-     */
-    public long roundFloor(long millis) {
-        throw new UnsupportedOperationException("Rounding an Era field is unsupported");
-    }
-
-    /**
-     * Unsupported.
-     */
-    public long remainder(long millis) {
-        throw new UnsupportedOperationException("Calculating remainder from Era field is unsupported");
     }
 
     /**

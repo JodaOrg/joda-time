@@ -63,7 +63,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -82,8 +81,8 @@ import javax.swing.text.Document;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
 import org.joda.time.chrono.iso.ISOChronology;
 
 /**
@@ -95,15 +94,14 @@ import org.joda.time.chrono.iso.ISOChronology;
  */
 public class AgeCalculator extends JFrame {
     static final int
-        YEAR = 1,
-        MONTH_OF_YEAR = 2,
-        DAY_OF_MONTH = 3,
-        WEEKYEAR = 4,
-        WEEK_OF_WEEKYEAR = 5,
-        DAY_OF_WEEK = 6,
-        HOUR_OF_DAY = 101,
-        MINUTE_OF_HOUR = 102,
-        SECOND_OF_MINUTE = 103;
+        YEARS = 1,
+        MONTHS = 2,
+        DAYS = 3,
+        WEEKYEARS = 4,
+        WEEKS = 5,
+        HOURS = 101,
+        MINUTES = 102,
+        SECONDS = 103;
 
     public static void main(String[] args) throws Exception {
         new AgeCalculator().show();
@@ -223,21 +221,21 @@ public class AgeCalculator extends JFrame {
 
         iFieldSets = new FieldSet[] {
             new FieldSet("Month Based", new FieldGroup[] {
-                new FieldGroup(listener, "Years", YEAR),
-                new FieldGroup(listener, "Months", MONTH_OF_YEAR),
-                new FieldGroup(listener, "Days", DAY_OF_MONTH),
-                new FieldGroup(listener, "Hours", HOUR_OF_DAY),
-                new FieldGroup(listener, "Minutes", MINUTE_OF_HOUR),
-                new FieldGroup(listener, "Seconds", SECOND_OF_MINUTE)
+                new FieldGroup(listener, "Years", YEARS),
+                new FieldGroup(listener, "Months", MONTHS),
+                new FieldGroup(listener, "Days", DAYS),
+                new FieldGroup(listener, "Hours", HOURS),
+                new FieldGroup(listener, "Minutes", MINUTES),
+                new FieldGroup(listener, "Seconds", SECONDS)
             })
             ,
             new FieldSet("Week Based", new FieldGroup[] {
-                new FieldGroup(listener, "Weekyears", WEEKYEAR),
-                new FieldGroup(listener, "Weeks", WEEK_OF_WEEKYEAR),
-                new FieldGroup(listener, "Days", DAY_OF_WEEK),
-                new FieldGroup(listener, "Hours", HOUR_OF_DAY),
-                new FieldGroup(listener, "Minutes", MINUTE_OF_HOUR),
-                new FieldGroup(listener, "Seconds", SECOND_OF_MINUTE)
+                new FieldGroup(listener, "Weekyears", WEEKYEARS),
+                new FieldGroup(listener, "Weeks", WEEKS),
+                new FieldGroup(listener, "Days", DAYS),
+                new FieldGroup(listener, "Hours", HOURS),
+                new FieldGroup(listener, "Minutes", MINUTES),
+                new FieldGroup(listener, "Seconds", SECONDS)
             })
         };
 
@@ -263,7 +261,7 @@ public class AgeCalculator extends JFrame {
                 iFieldSets[i].updateResults(minuend, subtrahend);
             }
         }
-        catch (ParseException e) {
+        catch (IllegalArgumentException e) {
             for (int i=0; i<iFieldSets.length; i++) {
                 iFieldSets[i].setResultsText("");
             }
@@ -287,41 +285,38 @@ public class AgeCalculator extends JFrame {
             // Because time zone can be dynamically changed, field must be
             // dynamically acquired.
 
-            DateTimeField field;
+            DurationField field;
             switch (iFieldType) {
-            case YEAR:
-                field = iChronology.year();
+            case YEARS:
+                field = iChronology.years();
                 break;
-            case MONTH_OF_YEAR:
-                field = iChronology.monthOfYear();
+            case MONTHS:
+                field = iChronology.months();
                 break;
-            case DAY_OF_MONTH:
-                field = iChronology.dayOfMonth();
+            case DAYS:
+                field = iChronology.days();
                 break;
-            case WEEKYEAR:
-                field = iChronology.weekyear();
+            case WEEKYEARS:
+                field = iChronology.weekyears();
                 break;
-            case WEEK_OF_WEEKYEAR:
-                field = iChronology.weekOfWeekyear();
+            case WEEKS:
+                field = iChronology.weeks();
                 break;
-            case DAY_OF_WEEK:
-                field = iChronology.dayOfWeek();
+            case HOURS:
+                field = iChronology.hours();
                 break;
-            case HOUR_OF_DAY:
-                field = iChronology.hourOfDay();
+            case MINUTES:
+                field = iChronology.minutes();
                 break;
-            case MINUTE_OF_HOUR:
-                field = iChronology.minuteOfHour();
-                break;
-            case SECOND_OF_MINUTE: default:
-                field = iChronology.secondOfMinute();
+            case SECONDS: default:
+                field = iChronology.seconds();
                 break;
             }
 
             String textToSet = "";
 
             if (iCheckbox.isSelected()) {
-                long difference = field.getDifference(minuend, subtrahend);
+                long difference = field.getDifferenceAsLong(minuend, subtrahend);
                 textToSet = Long.toString(difference);
                 subtrahend = field.add(subtrahend, difference);
             }

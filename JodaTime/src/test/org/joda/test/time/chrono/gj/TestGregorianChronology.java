@@ -78,6 +78,18 @@ public final class TestGregorianChronology extends TestGJChronology {
         super(epochYear, epochMonth, epochDay);
     }
 
+    public String toString() {
+        return "TestGregorianChronology";
+    }
+
+    long millisPerYear() {
+        return (long)(365.2425 * MILLIS_PER_DAY);
+    }
+
+    long millisPerMonth() {
+        return (long)(365.2425 * MILLIS_PER_DAY / 12);
+    }
+
     boolean isLeapYear(int year) {
         if (mod(year, 4) == 0) {
             int t = (int)mod(year, 400);

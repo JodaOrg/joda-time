@@ -54,20 +54,35 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.DurationField;
+
 /**
  * 
  * @author Brian S O'Neill
  */
 class TestGJMonthOfYearField extends TestGJDateTimeField {
     public TestGJMonthOfYearField(TestGJChronology chrono) {
-        super("monthOfYear", chrono);
+        super("monthOfYear", "months", chrono.millisPerMonth(), chrono);
     }
 
     public int get(long millis) {
         return iChronology.gjFromMillis(millis)[1];
     }
 
-    public long add(long millis, int value) {
+    public long set(long millis, int value) {
+        long timeOnlyMillis = iChronology.getTimeOnlyMillis(millis);
+        int[] ymd = iChronology.gjFromMillis(millis);
+        // First set to start of month...
+        millis = iChronology.millisFromGJ(ymd[0], value, 1);
+        // ...and use dayOfMonth field to check range.
+        int maxDay = iChronology.dayOfMonth().getMaximumValue(millis);
+        if (ymd[2] > maxDay) {
+            ymd[2] = maxDay;
+        }
+        return timeOnlyMillis + iChronology.millisFromGJ(ymd[0], value, ymd[2]);
+    }
+
+    public long add(long millis, long value) {
         int newYear = iChronology.year().get(millis)
             + (int)iChronology.div(value, 12);
         int newMonth = get(millis) + (int)iChronology.mod(value, 12);
@@ -84,25 +99,21 @@ class TestGJMonthOfYearField extends TestGJDateTimeField {
         return millis;
     }
 
-    public long set(long millis, int value) {
-        long timeOnlyMillis = iChronology.getTimeOnlyMillis(millis);
+    public boolean isLeap(long millis) {
         int[] ymd = iChronology.gjFromMillis(millis);
-        // First set to start of month...
-        millis = iChronology.millisFromGJ(ymd[0], value, 1);
-        // ...and use dayOfMonth field to check range.
-        int maxDay = iChronology.dayOfMonth().getMaximumValue(millis);
-        if (ymd[2] > maxDay) {
-            ymd[2] = maxDay;
-        }
-        return timeOnlyMillis + iChronology.millisFromGJ(ymd[0], value, ymd[2]);
+        return ymd[1] == 2 && iChronology.isLeapYear(ymd[0]);
     }
 
-    public long getUnitMillis() {
-        return (long)(365.2425 * iChronology.MILLIS_PER_DAY / 12);
+    public int getLeapAmount(long millis) {
+        return isLeap(millis) ? 1 : 0;
     }
 
-    public long getRangeMillis() {
-        return (long)(365.2425 * iChronology.MILLIS_PER_DAY);
+    public DurationField getLeapDurationField() {
+        return iChronology.days();
+    }
+
+    public DurationField getRangeDurationField() {
+        return iChronology.years();
     }
 
     public int getMinimumValue() {

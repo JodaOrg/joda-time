@@ -58,17 +58,39 @@ package org.joda.example.time;
 /*
  * Import required Java packages.
  */
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import java.io.*;
-import java.util.*;
-import java.text.*;
-/*
- * Import required Joda packages.
- */
-import org.joda.time.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.WindowConstants;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+
+import org.joda.time.DateTime;
 
 /** DateTimeBrowser is a Java Swing application which reads a file contining
  * strings and displays DateTime values in a JTable.<p>
@@ -381,7 +403,7 @@ public class DateTimeBrowser extends JFrame {
         {
             retDT = new DateTime( s );
         } // the try
-        catch(ParseException pe)
+        catch(IllegalArgumentException pe)
         {
             // ignore it here, caller sees null
         } // the catch

@@ -58,6 +58,8 @@ import org.joda.time.DateTimeZone;
 
 /**
  * Basic DateTimeZone implementation that has a fixed name key and offsets.
+ * <p>
+ * FixedDateTimeZone is thread-safe and immutable.
  * 
  * @author Brian S O'Neill
  */
@@ -74,28 +76,32 @@ public final class FixedDateTimeZone extends DateTimeZone {
         iStandardOffset = standardOffset;
     }
 
-    public String getNameKey(long millis) {
+    public String getNameKey(long instant) {
         return iNameKey;
     }
 
-    public int getOffset(long millis) {
+    public int getOffset(long instant) {
         return iWallOffset;
     }
 
-    public int getStandardOffset(long millis) {
+    public int getStandardOffset(long instant) {
         return iStandardOffset;
     }
 
-    public int getOffsetFromLocal(long millisLocal) {
+    public int getOffsetFromLocal(long instantLocal) {
         return iWallOffset;
     }
 
-    public long nextTransition(long millis) {
-        return millis;
+    public boolean isFixed() {
+        return true;
     }
 
-    public long previousTransition(long millis) {
-        return millis;
+    public long nextTransition(long instant) {
+        return instant;
+    }
+
+    public long previousTransition(long instant) {
+        return instant;
     }
 
     public boolean equals(Object obj) {

@@ -98,7 +98,7 @@ public class TestGJYearDateTimeField extends AbstractTestGJDateTimeField {
         return -292269053;
     }
     protected int getMaximumValue() {
-        return 292272992;
+        return 292278993;
     }
     protected int getCalendarValue(long millis) {
         millis = millis + getZone().getOffset(millis);

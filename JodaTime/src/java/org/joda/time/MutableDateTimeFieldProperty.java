@@ -56,10 +56,20 @@ package org.joda.time;
 import java.util.Locale;
 
 /**
- * MutableDateTimeFieldProperty binds a ReadWritableInstant to a DateTimeField.
+ * MutableDateTimeFieldProperty binds a MutableDateTime to a DateTimeField
+ * allowing powerful datetime functionality to be easily accessed.
  * <p>
- * MutableDateTimeFieldProperty allows the date and time manipulation code to
- * be field based yet still easy to use.
+ * The example below shows how to use the property to change the value of a
+ * MutableDateTime object.
+ * <pre>
+ * MutableDateTime dt = new MutableDateTime(1972, 12, 3, 0, 0, 0, 0);
+ * dt.year().add(20);
+ * dt.second().roundFloor();
+ * dt.minute().set(10);
+ * </pre>
+ * <p>
+ * MutableDateTimeFieldPropery itself is thread-safe and immutable, but the
+ * MutableDateTime being operated on may not be thread-safe.
  *
  * @see ReadWritableInstant
  * @see DateTimeField
@@ -68,51 +78,87 @@ import java.util.Locale;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
+public class MutableDateTimeFieldProperty extends AbstractDateTimeFieldProperty {
+
+    static final long serialVersionUID = -4481126543819298617L;
+
+    /** The instant this property is working against */
+    private final MutableDateTime iInstant;
+    /** The field this property is working against */
+    private final DateTimeField iField;
 
     /**
      * Constructor.
-     *
+     * 
      * @param instant  the instant to set
      * @param field  the field to use
      */
-    public MutableDateTimeFieldProperty(ReadWritableInstant instant, DateTimeField field) {
-        super(instant, field);
+    public MutableDateTimeFieldProperty(MutableDateTime instant, DateTimeField field) {
+        super();
+        iInstant = instant;
+        iField = field;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the field being used.
+     * 
+     * @return the field
+     */
+    public DateTimeField getField() {
+        return iField;
     }
 
     /**
+     * Gets the instant being used.
+     * 
+     * @return the instant
+     */
+    public ReadableDateTime getInstant() {
+        return iInstant;
+    }
+
+    /**
+     * Gets the instant being used.
+     * 
+     * @return the instant
+     */
+    public MutableDateTime getMutableDateTime() {
+        return iInstant;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Adds a value to the millis value.
      * 
-     * @param value  the value to add.
+     * @param value  the value to add
      * @see DateTimeField#add(long,int)
      */
     public void add(int value) {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().add(instant.getMillis(), value));
+        iInstant.setMillis(getField().add(iInstant.getMillis(), value));
     }
 
     /**
      * Adds a value to the millis value.
      * 
-     * @param value  the value to add.
+     * @param value  the value to add
      * @see DateTimeField#add(long,long)
      */
     public void add(long value) {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().add(instant.getMillis(), value));
+        iInstant.setMillis(getField().add(iInstant.getMillis(), value));
     }
 
     /**
      * Adds a value, possibly wrapped, to the millis value.
      * 
-     * @param value  the value to add.
+     * @param value  the value to add
      * @see DateTimeField#addWrapped
      */
     public void addWrapped(int value) {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().addWrapped(instant.getMillis(), value));
+        iInstant.setMillis(getField().addWrapped(iInstant.getMillis(), value));
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets a value.
      * 
@@ -120,8 +166,7 @@ public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
      * @see DateTimeField#set(long,int)
      */
     public void set(int value) {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().set(instant.getMillis(), value));
+        iInstant.setMillis(getField().set(iInstant.getMillis(), value));
     }
 
     /**
@@ -133,8 +178,7 @@ public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
      * @see DateTimeField#set(long,java.lang.String,java.util.Locale)
      */
     public void set(String text, Locale locale) {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().set(instant.getMillis(), text, locale));
+        iInstant.setMillis(getField().set(iInstant.getMillis(), text, locale));
     }
 
     /**
@@ -148,14 +192,14 @@ public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
         set(text, null);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Round to the lowest whole unit of this field.
      *
      * @see DateTimeField#roundFloor
      */
     public void roundFloor() {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().roundFloor(instant.getMillis()));
+        iInstant.setMillis(getField().roundFloor(iInstant.getMillis()));
     }
 
     /**
@@ -164,8 +208,7 @@ public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
      * @see DateTimeField#roundCeiling
      */
     public void roundCeiling() {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().roundCeiling(instant.getMillis()));
+        iInstant.setMillis(getField().roundCeiling(iInstant.getMillis()));
     }
 
     /**
@@ -175,8 +218,7 @@ public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
      * @see DateTimeField#roundHalfFloor
      */
     public void roundHalfFloor() {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().roundHalfFloor(instant.getMillis()));
+        iInstant.setMillis(getField().roundHalfFloor(iInstant.getMillis()));
     }
 
     /**
@@ -186,28 +228,17 @@ public class MutableDateTimeFieldProperty extends DateTimeFieldProperty {
      * @see DateTimeField#roundHalfCeiling
      */
     public void roundHalfCeiling() {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().roundHalfCeiling(instant.getMillis()));
+        iInstant.setMillis(getField().roundHalfCeiling(iInstant.getMillis()));
     }
 
     /**
      * Round to the nearest whole unit of this field. If halfway, the ceiling
-     * is favored the floor only if it makes this field's value even.
+     * is favored over the floor only if it makes this field's value even.
      *
      * @see DateTimeField#roundHalfEven
      */
     public void roundHalfEven() {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().roundHalfEven(instant.getMillis()));
+        iInstant.setMillis(getField().roundHalfEven(iInstant.getMillis()));
     }
 
-    /**
-     * Retains only the fractional units of this field.
-     *
-     * @see DateTimeField#remainder
-     */
-    public void remainder() {
-        ReadWritableInstant instant = (ReadWritableInstant)getInstant();
-        instant.setMillis(getField().remainder(instant.getMillis()));
-    }
 }

@@ -54,72 +54,80 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
 
 /**
  * Wraps another field such that zero values are replaced with one more than
  * it's maximum. This is particularly useful for implementing an clockhourOfDay
  * field, where the midnight value of 0 is replaced with 24.
+ * <p>
+ * NonZeroDateTimeField is thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class NonZeroDateTimeField extends DateTimeField {
-    private final DateTimeField iField;
+public final class NonZeroDateTimeField extends DecoratedDateTimeField {
+
+    static final long serialVersionUID = 961749798233026866L;
 
     /**
      * @param name  short, descriptive name, like "clockhourOfDay".
      * @throws IllegalArgumentException if wrapped field's minimum value is not zero
      */
-    public NonZeroDateTimeField(String name, DateTimeField field) {
-        super(name);
-        if (field == null) {
-            throw new IllegalArgumentException("The field must not be null");
-        }
+    public NonZeroDateTimeField(DateTimeField field, String name) {
+        super(field, name);
         if (field.getMinimumValue() != 0) {
             throw new IllegalArgumentException("Wrapped field's minumum value must be zero");
         }
-        iField = field;
     }
 
-    public int get(long millis) {
-        int value = iField.get(millis);
+    public int get(long instant) {
+        int value = getWrappedField().get(instant);
         if (value == 0) {
             value = getMaximumValue();
         }
         return value;
     }
 
-    public long add(long millis, int amount) {
-        return iField.add(millis, amount);
+    public long add(long instant, int value) {
+        return getWrappedField().add(instant, value);
     }
 
-    public long add(long millis, long amount) {
-        return iField.add(millis, amount);
+    public long add(long instant, long value) {
+        return getWrappedField().add(instant, value);
     }
 
-    public long addWrapped(long millis, int amount) {
-        return iField.addWrapped(millis, amount);
-    }
-    
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return iField.getDifference(minuendMillis, subtrahendMillis);
+    public long addWrapped(long instant, int value) {
+        return getWrappedField().addWrapped(instant, value);
     }
 
-    public long set(long millis, int value) {
+    public int getDifference(long minuendInstant, long subtrahendInstant) {
+        return getWrappedField().getDifference(minuendInstant, subtrahendInstant);
+    }
+
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant);
+    }
+
+    public long set(long instant, int value) {
         int max = getMaximumValue();
-        verifyValueBounds(value, 1, max);
+        Utils.verifyValueBounds(this, value, 1, max);
         if (value == max) {
             value = 0;
         }
-        return iField.set(millis, value);
+        return getWrappedField().set(instant, value);
     }
 
-    public long getUnitMillis() {
-        return iField.getUnitMillis();
+    public boolean isLeap(long instant) {
+        return getWrappedField().isLeap(instant);
     }
 
-    public long getRangeMillis() {
-        return iField.getRangeMillis();
+    public int getLeapAmount(long instant) {
+        return getWrappedField().getLeapAmount(instant);
+    }
+
+    public DurationField getLeapDurationField() {
+        return getWrappedField().getLeapDurationField();
     }
 
     /**
@@ -136,7 +144,7 @@ public final class NonZeroDateTimeField extends DateTimeField {
      * 
      * @return the minimum value of 1
      */
-    public int getMinimumValue(long millis) {
+    public int getMinimumValue(long instant) {
         return 1;
     }
 
@@ -147,7 +155,7 @@ public final class NonZeroDateTimeField extends DateTimeField {
      * @return the maximum value
      */
     public int getMaximumValue() {
-        return iField.getMaximumValue() + 1;
+        return getWrappedField().getMaximumValue() + 1;
     }
 
     /**
@@ -156,28 +164,32 @@ public final class NonZeroDateTimeField extends DateTimeField {
      * 
      * @return the maximum value
      */
-    public int getMaximumValue(long millis) {
-        return iField.getMaximumValue(millis) + 1;
+    public int getMaximumValue(long instant) {
+        return getWrappedField().getMaximumValue(instant) + 1;
     }
 
-    public long roundFloor(long millis) {
-        return iField.roundFloor(millis);
+    public long roundFloor(long instant) {
+        return getWrappedField().roundFloor(instant);
     }
 
-    public long roundCeiling(long millis) {
-        return iField.roundCeiling(millis);
+    public long roundCeiling(long instant) {
+        return getWrappedField().roundCeiling(instant);
     }
 
-    public long remainder(long millis) {
-        return iField.remainder(millis);
+    public long roundHalfFloor(long instant) {
+        return getWrappedField().roundHalfFloor(instant);
     }
 
-    /**
-     * Returns the DateTimeField being wrapped.
-     * 
-     * @return field
-     */
-    public DateTimeField getField() {
-        return iField;
+    public long roundHalfCeiling(long instant) {
+        return getWrappedField().roundHalfCeiling(instant);
     }
+
+    public long roundHalfEven(long instant) {
+        return getWrappedField().roundHalfEven(instant);
+    }
+
+    public long remainder(long instant) {
+        return getWrappedField().remainder(instant);
+    }
+
 }

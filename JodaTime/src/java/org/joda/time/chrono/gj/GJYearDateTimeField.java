@@ -55,7 +55,9 @@
 package org.joda.time.chrono.gj;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.ImpreciseDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the year component of time.
@@ -65,84 +67,83 @@ import org.joda.time.DateTimeField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-final class GJYearDateTimeField extends DateTimeField {
+final class GJYearDateTimeField extends ImpreciseDateTimeField {
+
+    static final long serialVersionUID = -679076949530018869L;
 
     private static final long FEB_29 = (31L + 29 - 1) * DateTimeConstants.MILLIS_PER_DAY;
 
     private final ProlepticChronology iChronology;
-    private final transient long iRoughMillisPerYear;
 
     /**
      * Restricted constructor
      */
     GJYearDateTimeField(ProlepticChronology chronology) {
-        super("year");
+        super("year", "years", chronology.getRoughMillisPerYear());
         iChronology = chronology;
-        iRoughMillisPerYear = chronology.getRoughMillisPerYear();
+    }
+
+    public boolean isLenient() {
+        return false;
     }
 
     /**
      * Get the Year component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the year extracted from the input.
      */
-    public int get(long millis) {
-        // Get an initial estimate of the year, and the millis value
-        // that represents the start of that year.
-        int year = 1970 + (int) (millis / iRoughMillisPerYear);
-        long yearStartMillis = iChronology.getYearMillis(year);
+    public int get(long instant) {
+        // Get an initial estimate of the year, and the millis value that
+        // represents the start of that year. Then verify estimate and fix if
+        // necessary.
 
-        if (millis > yearStartMillis) {
-            for (;;) {
-                // Actual year may be greater than what we estimated. Check if
-                // year should advance.
-                if (iChronology.isLeapYear(year)) {
-                    yearStartMillis += DateTimeConstants.MILLIS_PER_DAY * 366L;
-                } else {
-                    yearStartMillis += DateTimeConstants.MILLIS_PER_DAY * 365L;
-                }
-                if (millis < yearStartMillis) {
-                    // Year was correct, no need to advance.
-                    break;
-                }
-                year++;
-                if (millis == yearStartMillis) {
-                    // Millis is at start of year; year is now correct, so no
-                    // need to check anymore.
-                    break;
-                }
-                if ((millis ^ yearStartMillis) < 0) {
-                    // Sign mismatch, operation overflowed.
-                    return getOverflow(millis);
-                }
+        int year;
+
+        long unitMillis = getDurationUnitMillis();
+        if (instant >= 0) {
+            year = 1970 + (int) (instant / unitMillis);
+        } else {
+            year = 1970 + (int) ((instant - unitMillis + 1) / unitMillis);
+        }
+
+        long yearStart = iChronology.getYearMillis(year);
+        if ((yearStart ^ instant) < 0) {
+            // Sign mismatch, operation overflowed.
+            return getOverflow(instant);
+        }
+
+        long diff = instant - yearStart;
+
+        if (diff < 0) {
+            // Subtract one year to fix estimate.
+            year--;
+        } else if (diff >= DateTimeConstants.MILLIS_PER_DAY * 365L) {
+            // One year may need to be added to fix estimate.
+            long oneYear;
+            if (iChronology.isLeapYear(year)) {
+                oneYear = DateTimeConstants.MILLIS_PER_DAY * 366L;
+            } else {
+                oneYear = DateTimeConstants.MILLIS_PER_DAY * 365L;
             }
-        } else if (millis < yearStartMillis) {
-            for (;;) {
-                // Actual year less than what we estimated. Go to previous year
-                // and check.
-                year--;
-                if (iChronology.isLeapYear(year)) {
-                    yearStartMillis -= DateTimeConstants.MILLIS_PER_DAY * 366L;
-                } else {
-                    yearStartMillis -= DateTimeConstants.MILLIS_PER_DAY * 365L;
-                }
-                if (millis >= yearStartMillis) {
-                    // Year is now correct.
-                    break;
-                }
-                if ((millis ^ yearStartMillis) < 0) {
-                    // Sign mismatch, operation overflowed.
-                    return getOverflow(millis);
-                }
+
+            yearStart += oneYear;
+            if ((yearStart ^ instant) < 0) {
+                // Sign mismatch, operation overflowed.
+                return getOverflow(instant);
+            }
+
+            if (yearStart <= instant) {
+                // Didn't go too far, so actually add one year.
+                year++;
             }
         }
 
         return year;
     }
 
-    private int getOverflow(long millis) {
-        if (millis > 0) {
+    private int getOverflow(long instant) {
+        if (instant > 0) {
             int year = iChronology.getMaxYear();
             long yearStartMillis = iChronology.getYearMillis(year);
             if (iChronology.isLeapYear(year)) {
@@ -152,21 +153,21 @@ final class GJYearDateTimeField extends DateTimeField {
             }
             long yearEndMillis = yearStartMillis - 1;
 
-            if (millis <= yearEndMillis) {
+            if (instant <= yearEndMillis) {
                 return year;
             }
 
             throw new IllegalArgumentException
-                ("Instant too large: " + millis + " > " + yearEndMillis);
+                ("Instant too large: " + instant + " > " + yearEndMillis);
         } else {
             int year = iChronology.getMinYear();
             long yearStartMillis = iChronology.getYearMillis(year);
-            if (millis >= yearStartMillis) {
+            if (instant >= yearStartMillis) {
                 return year;
             }
 
             throw new IllegalArgumentException
-                ("Instant too small: " + millis + " < " + yearStartMillis);
+                ("Instant too small: " + instant + " < " + yearStartMillis);
         }
     }
 
@@ -174,53 +175,53 @@ final class GJYearDateTimeField extends DateTimeField {
      * Add the specified year to the specified time instant.
      * The amount added may be negative.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, int years) {
+    public long add(long instant, int years) {
         if (years == 0) {
-            return millis;
+            return instant;
         }
-        int thisYear = get(millis);
+        int thisYear = get(instant);
         int newYear = thisYear + years;
-        return set(millis, newYear);
+        return set(instant, newYear);
     }
 
-    public long add(long millis, long years) {
-        return addLong(millis, years);
+    public long add(long instant, long years) {
+        return add(instant, Utils.safeToInt(years));
     }
 
     /**
      * Add to the Year component of the specified time instant
      * wrapping around within that component if necessary.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int years) {
+    public long addWrapped(long instant, int years) {
         if (years == 0) {
-            return millis;
+            return instant;
         }
         // Return newly calculated millis value
-        int thisYear = iChronology.year().get(millis);
-        int wrappedYear = getWrappedValue
+        int thisYear = iChronology.year().get(instant);
+        int wrappedYear = Utils.getWrappedValue
             (thisYear, years, iChronology.getMinYear(), iChronology.getMaxYear());
-        return set(millis, wrappedYear);
+        return set(instant, wrappedYear);
     }
 
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        if (minuendMillis < subtrahendMillis) {
-            return -getDifference(subtrahendMillis, minuendMillis);
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        if (minuendInstant < subtrahendInstant) {
+            return -getDifference(subtrahendInstant, minuendInstant);
         }
 
-        int minuendYear = get(minuendMillis);
-        int subtrahendYear = get(subtrahendMillis);
+        int minuendYear = get(minuendInstant);
+        int subtrahendYear = get(subtrahendInstant);
 
         // Inlined remainder method to avoid duplicate calls to get.
-        long minuendRem = minuendMillis - iChronology.getYearMillis(minuendYear);
-        long subtrahendRem = subtrahendMillis - iChronology.getYearMillis(subtrahendYear);
+        long minuendRem = minuendInstant - iChronology.getYearMillis(minuendYear);
+        long subtrahendRem = subtrahendInstant - iChronology.getYearMillis(subtrahendYear);
 
         // Balance leap year differences on remainders.
         if (subtrahendRem >= FEB_29) {
@@ -243,19 +244,20 @@ final class GJYearDateTimeField extends DateTimeField {
     /**
      * Set the Year component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param year  the year (-292269055,292278994) to update the time to.
      * @return the updated time instant.
      * @throws IllegalArgumentException  if year is invalid.
      */
-    public long set(long millis, int year) {
-        super.verifyValueBounds(year, iChronology.getMinYear(), iChronology.getMaxYear());
+    public long set(long instant, int year) {
+        Utils.verifyValueBounds
+            (this, year, iChronology.getMinYear(), iChronology.getMaxYear());
 
-        int dayOfYear = iChronology.dayOfYear().get(millis);
-        int millisOfDay = iChronology.millisOfDay().get(millis);
+        int dayOfYear = iChronology.dayOfYear().get(instant);
+        int millisOfDay = iChronology.millisOfDay().get(instant);
 
         if (dayOfYear > (31 + 28)) { // after Feb 28
-            if (isLeap(millis)) {
+            if (isLeap(instant)) {
                 // Old date is Feb 29 or later.
                 if (!iChronology.isLeapYear(year)) {
                     // Moving to a non-leap year, Feb 29 does not exist.
@@ -270,32 +272,30 @@ final class GJYearDateTimeField extends DateTimeField {
             }
         }
 
-        millis = iChronology.getYearMonthDayMillis(year, 1, dayOfYear);
-        millis += millisOfDay;
+        instant = iChronology.getYearMonthDayMillis(year, 1, dayOfYear);
+        instant += millisOfDay;
 
-        return millis;
+        return instant;
     }
 
-    public boolean isLeap(long millis) {
-        return iChronology.isLeapYear(get(millis));
+    public DurationField getRangeDurationField() {
+        return null;
     }
 
-    public int getLeapAmount(long millis) {
-        if (iChronology.isLeapYear(get(millis))) {
+    public boolean isLeap(long instant) {
+        return iChronology.isLeapYear(get(instant));
+    }
+
+    public int getLeapAmount(long instant) {
+        if (iChronology.isLeapYear(get(instant))) {
             return 1;
         } else {
             return 0;
         }
     }
 
-    public long getUnitMillis() {
-        return iRoughMillisPerYear;
-    }
-
-    public long getRangeMillis() {
-        // Should actually be double this, but that is not possible since Java
-        // doesn't support unsigned types.
-        return Long.MAX_VALUE;
+    public DurationField getLeapDurationField() {
+        return iChronology.days();
     }
 
     public int getMinimumValue() {
@@ -306,22 +306,22 @@ final class GJYearDateTimeField extends DateTimeField {
         return iChronology.getMaxYear();
     }
 
-    public long roundFloor(long millis) {
-        return iChronology.getYearMillis(get(millis));
+    public long roundFloor(long instant) {
+        return iChronology.getYearMillis(get(instant));
     }
 
-    public long roundCeiling(long millis) {
-        int year = get(millis);
+    public long roundCeiling(long instant) {
+        int year = get(instant);
         long yearStartMillis = iChronology.getYearMillis(year);
-        if (millis != yearStartMillis) {
+        if (instant != yearStartMillis) {
             // Bump up to start of next year.
-            millis = iChronology.getYearMillis(year + 1);
+            instant = iChronology.getYearMillis(year + 1);
         }
-        return millis;
+        return instant;
     }
 
-    public long remainder(long millis) {
-        return millis - roundFloor(millis);
+    public long remainder(long instant) {
+        return instant - roundFloor(instant);
     }
 
     /**

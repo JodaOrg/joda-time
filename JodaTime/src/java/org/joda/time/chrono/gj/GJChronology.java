@@ -62,10 +62,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.joda.time.Chronology;
+// Import for @link support
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
 import org.joda.time.Instant;
 import org.joda.time.ReadableInstant;
+import org.joda.time.format.DateTimePrinter;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * GJChronology provides access to the individual date time fields 
@@ -96,12 +101,17 @@ import org.joda.time.ReadableInstant;
  * A pure proleptic Gregorian chronology is obtained by specifying a cutover of
  * Long.MIN_VALUE. Likewise, a pure Julian chronology is obtained with a
  * cutover of Long.MAX_VALUE.
+ * <p>
+ * GJChronology is thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
 public abstract class GJChronology extends Chronology {
+
+    static final long serialVersionUID = 3258844765135550418L;
+
     /**
      * The default GregorianJulian cutover point
      */
@@ -109,6 +119,18 @@ public abstract class GJChronology extends Chronology {
 
     // Cache that maps DateTimeZones to Factory instances.
     private static HashMap cZonesToFactories = new HashMap();
+
+    transient DurationField iYearsField;
+    transient DurationField iCenturiesField;
+    transient DurationField iMonthsField;
+    transient DurationField iWeekyearsField;
+
+    transient DurationField iMillisField;
+    transient DurationField iSecondsField;
+    transient DurationField iMinutesField;
+    transient DurationField iHoursField;
+    transient DurationField iDaysField;
+    transient DurationField iWeeksField;
 
     transient DateTimeField iYearField;
     transient DateTimeField iYearOfEraField;
@@ -240,13 +262,13 @@ public abstract class GJChronology extends Chronology {
                                                         boolean centuryISO,
                                                         int minDaysInFirstWeek)
     {
-        long millis;
+        long cutover;
         if (gregorianCutover != null) {
-            millis = gregorianCutover.getMillis();
+            cutover = gregorianCutover.getMillis();
         } else {
-            millis = DEFAULT_CUTOVER;
+            cutover = DEFAULT_CUTOVER;
         }
-        return getInstance(zone, millis, centuryISO, minDaysInFirstWeek);
+        return getInstance(zone, cutover, centuryISO, minDaysInFirstWeek);
     }
 
     /**
@@ -295,7 +317,7 @@ public abstract class GJChronology extends Chronology {
 
     public Chronology withDateTimeZone(DateTimeZone zone) {
         if (zone == null) {
-            throw new IllegalArgumentException("The DateTimeZone must not be null");
+            zone = DateTimeZone.getDefault();
         }
         if (zone == getDateTimeZone()) {
             return this;
@@ -341,6 +363,10 @@ public abstract class GJChronology extends Chronology {
     // Milliseconds
     //------------------------------------------------------------
 
+    public DurationField millis() {
+        return iMillisField;
+    }
+
     public DateTimeField millisOfSecond() {
         return iMillisOfSecondField;
     }
@@ -352,12 +378,23 @@ public abstract class GJChronology extends Chronology {
     // Seconds
     //------------------------------------------------------------
 
+    public DurationField seconds() {
+        return iSecondsField;
+    }
+
     public DateTimeField secondOfMinute() {
         return iSecondOfMinuteField;
     }
 
     public DateTimeField secondOfDay() {
         return iSecondOfDayField;
+    }
+
+    // Minutes
+    //------------------------------------------------------------
+
+    public DurationField minutes() {
+        return iMinutesField;
     }
 
     public DateTimeField minuteOfHour() {
@@ -370,6 +407,10 @@ public abstract class GJChronology extends Chronology {
 
     // Hours
     //------------------------------------------------------------
+
+    public DurationField hours() {
+        return iHoursField;
+    }
 
     public DateTimeField hourOfDay() {
         return iHourOfDayField;
@@ -394,6 +435,10 @@ public abstract class GJChronology extends Chronology {
     // Day
     //------------------------------------------------------------
     
+    public DurationField days() {
+        return iDaysField;
+    }
+
     public DateTimeField dayOfWeek() {
         return iDayOfWeekField;
     }
@@ -409,8 +454,16 @@ public abstract class GJChronology extends Chronology {
     // Week
     //------------------------------------------------------------
     
+    public DurationField weeks() {
+        return iWeeksField;
+    }
+
     public DateTimeField weekOfWeekyear() {
         return iWeekOfWeekyearField;
+    }
+
+    public DurationField weekyears() {
+        return iWeekyearsField;
     }
 
     public DateTimeField weekyear() {
@@ -420,6 +473,10 @@ public abstract class GJChronology extends Chronology {
     // Month
     //------------------------------------------------------------
     
+    public DurationField months() {
+        return iMonthsField;
+    }
+
     public DateTimeField monthOfYear() {
         return iMonthOfYearField;
     }
@@ -427,6 +484,10 @@ public abstract class GJChronology extends Chronology {
     // Year
     //------------------------------------------------------------
     
+    public DurationField years() {
+        return iYearsField;
+    }
+
     public DateTimeField year() {
         return iYearField;
     }
@@ -439,12 +500,57 @@ public abstract class GJChronology extends Chronology {
         return iYearOfCenturyField;
     }
 
+    public DurationField centuries() {
+        return iCenturiesField;
+    }
+
     public DateTimeField centuryOfEra() {
         return iCenturyOfEraField;
     }
 
     public DateTimeField era() {
         return iEraField;
+    }
+
+    // Output
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a debugging toString.
+     * 
+     * @return a debugging string
+     */
+    public String toString() {
+        StringBuffer sb = new StringBuffer(50);
+        sb.append("GJChronology");
+        sb.append('[');
+        sb.append(getDateTimeZone().getID());
+        sb.append(", ");
+
+        long cutover = getGregorianJulianCutoverMillis();
+        if (cutover == Long.MAX_VALUE) {
+            sb.append("julian");
+        } else if (cutover == Long.MIN_VALUE) {
+            sb.append("gregorian");
+        } else {
+            sb.append("cutover=");
+            ISODateTimeFormat format = ISODateTimeFormat.getInstance(withUTC());
+            DateTimePrinter printer;
+            if (withUTC().getTimeOnlyMillis(cutover) == 0) {
+                printer = format.date();
+            } else {
+                printer = format.dateTime();
+            }
+            printer.printTo(sb, cutover);
+        }
+
+        sb.append(", century=");
+        sb.append(isCenturyISO() ? "iso" : "gj");
+
+        sb.append(", mdfw=");
+        sb.append(getMinimumDaysInFirstWeek());
+        sb.append(']');
+
+        return sb.toString();
     }
 
     /**
@@ -461,7 +567,51 @@ public abstract class GJChronology extends Chronology {
                         getMinimumDaysInFirstWeek());
     }
 
+    /**
+     * Used by subclass constructors to copy all the fields of another
+     * chronology into this one.
+     */
+    void copyFields(Chronology chrono) {
+        iYearsField = chrono.years();
+        iCenturiesField = chrono.centuries();
+        iMonthsField = chrono.months();
+        iWeekyearsField = chrono.weekyears();
+
+        iMillisField = chrono.millis();
+        iSecondsField = chrono.seconds();
+        iMinutesField = chrono.minutes();
+        iHoursField = chrono.hours();
+        iDaysField = chrono.days();
+        iWeeksField = chrono.weeks();
+
+        iYearField = chrono.year();
+        iYearOfEraField = chrono.yearOfEra();
+        iYearOfCenturyField = chrono.yearOfCentury();
+        iCenturyOfEraField = chrono.centuryOfEra();
+        iEraField = chrono.era();
+        iDayOfWeekField = chrono.dayOfWeek();
+        iDayOfMonthField = chrono.dayOfMonth();
+        iDayOfYearField = chrono.dayOfYear();
+        iMonthOfYearField = chrono.monthOfYear();
+        iWeekOfWeekyearField = chrono.weekOfWeekyear();
+        iWeekyearField = chrono.weekyear();
+
+        iMillisOfSecondField = chrono.millisOfSecond();
+        iMillisOfDayField = chrono.millisOfDay();
+        iSecondOfMinuteField = chrono.secondOfMinute();
+        iSecondOfDayField = chrono.secondOfDay();
+        iMinuteOfHourField = chrono.minuteOfHour();
+        iMinuteOfDayField = chrono.minuteOfDay();
+        iHourOfDayField = chrono.hourOfDay();
+        iHourOfHalfdayField = chrono.hourOfHalfday();
+        iClockhourOfDayField = chrono.clockhourOfDay();
+        iClockhourOfHalfdayField = chrono.clockhourOfHalfday();
+        iHalfdayOfDayField = chrono.halfdayOfDay();
+    }
+
     private static final class Stub implements Serializable {
+        static final long serialVersionUID = -1220272966668670015L;
+
         private transient DateTimeZone iZone;
         private transient long iCutover;
         private transient boolean iCenturyISO;
@@ -534,27 +684,29 @@ public abstract class GJChronology extends Chronology {
                 }
             }
 
-            if (gregorianCutover == Long.MAX_VALUE) {
-                chrono = new JulianChronology(minDaysInFirstWeek);
-            } else if (gregorianCutover == Long.MIN_VALUE) {
-                chrono = new GregorianChronology(minDaysInFirstWeek);
+            if (iZone != DateTimeZone.UTC) {
+                chrono = GJChronology.getInstance
+                    (DateTimeZone.UTC, gregorianCutover, centuryISO, minDaysInFirstWeek);
+                chrono = new GJZonedChronology(chrono, iZone);
             } else {
-                JulianChronology julian_utc = (JulianChronology)GJChronology.getInstance
-                    (DateTimeZone.UTC, Long.MAX_VALUE, true, minDaysInFirstWeek);
-                GregorianChronology gregorian_utc = (GregorianChronology)GJChronology.getInstance
-                    (DateTimeZone.UTC, Long.MIN_VALUE, true, minDaysInFirstWeek);
+                if (gregorianCutover == Long.MAX_VALUE) {
+                    chrono = new JulianChronology(minDaysInFirstWeek);
+                } else if (gregorianCutover == Long.MIN_VALUE) {
+                    chrono = new GregorianChronology(minDaysInFirstWeek);
+                } else {
+                    JulianChronology julian_utc = (JulianChronology)GJChronology.getInstance
+                        (DateTimeZone.UTC, Long.MAX_VALUE, true, minDaysInFirstWeek);
+                    GregorianChronology gregorian_utc = (GregorianChronology)GJChronology.getInstance
+                        (DateTimeZone.UTC, Long.MIN_VALUE, true, minDaysInFirstWeek);
+                    
+                    chrono = new CutoverChronology(julian_utc, gregorian_utc, gregorianCutover);
+                }
 
-                chrono = new CutoverChronology(julian_utc, gregorian_utc, gregorianCutover);
-            }
-
-            if (!centuryISO) {
-                chrono = new GJCenturyChronology(chrono);
+                if (!centuryISO) {
+                    chrono = new GJCenturyChronology(chrono);
+                }
             }
             
-            if (iZone != DateTimeZone.UTC) {
-                chrono = new GJZonedChronology(chrono, iZone);
-            }
-
             cache.add(new SoftReference(chrono));
             return chrono;
         }

@@ -56,15 +56,22 @@ package org.joda.time.chrono.buddhist;
 import java.util.Locale;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.AbstractDateTimeField;
+import org.joda.time.chrono.UnsupportedDurationField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the buddhist era component of time.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
-final class BuddhistEraDateTimeField extends DateTimeField {
+final class BuddhistEraDateTimeField extends AbstractDateTimeField {
     
+    static final long serialVersionUID = -9175876774456816364L;
+
     /**
      * Singleton instance of BuddhistYearDateTimeField
      */
@@ -84,77 +91,70 @@ final class BuddhistEraDateTimeField extends DateTimeField {
         return INSTANCE;
     }
 
+    public boolean isLenient() {
+        return false;
+    }
+
     /**
      * Get the Era component of the specified time instant.
      * 
      * @param millis  the time instant in millis to query.
      * @return the era extracted from the input.
      */
-    public int get(long millis) {
+    public int get(long instant) {
         return BuddhistChronology.BE;
-    }
-
-    /**
-     * Unsupported - add the specified eras to the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long millis, int era) {
-        throw new UnsupportedOperationException("Adding to Era field is unsupported");
-    }
-
-    /**
-     * Unsupported - add the specified eras to the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long millis, long era) {
-        throw new UnsupportedOperationException("Adding to Era field is unsupported");
-    }
-
-    /**
-     * Unsupported - add the specified eras to the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param era  the era to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long addWrapped(long millis, int era) {
-        throw new UnsupportedOperationException("Adding to Era field is unsupported");
-    }
-
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        throw new UnsupportedOperationException("Era field difference is unsupported");
     }
 
     /**
      * Set the Era component of the specified time instant.
      * 
      * @param millis  the time instant in millis to update.
-     * @param era  the era (BuddhistChonology.BE) to update the time to.
+     * @param era  the era (BuddhistChronology.BE) to update the time to.
      * @return the updated time instant.
      * @throws IllegalArgumentException  if era is invalid.
      */
-    public long set(long millis, int era) {
-        super.verifyValueBounds(era, getMinimumValue(), getMaximumValue());
+    public long set(long instant, int era) {
+        Utils.verifyValueBounds(this, era, getMinimumValue(), getMaximumValue());
 
-        return millis;
+        return instant;
     }
 
-    public long getUnitMillis() {
-        // Should actually be double this, but that is not possible since Java
-        // doesn't support unsigned types.
+    /**
+     * @see org.joda.time.DateTimeField#set(long, String, Locale)
+     */
+    public long set(long instant, String text, Locale locale) {
+        if ("BE".equals(text) == false) {
+            throw new IllegalArgumentException("Invalid era text: " + text);
+        }
+        return instant;
+    }
+
+    public long roundFloor(long instant) {
+        return Long.MIN_VALUE;
+    }
+
+    public long roundCeiling(long instant) {
         return Long.MAX_VALUE;
     }
 
-    public long getRangeMillis() {
-        // Should actually be double this, but that is not possible since Java
-        // doesn't support unsigned types.
-        return Long.MAX_VALUE;
+    public long roundHalfFloor(long instant) {
+        return Long.MIN_VALUE;
+    }
+
+    public long roundHalfCeiling(long instant) {
+        return Long.MIN_VALUE;
+    }
+
+    public long roundHalfEven(long instant) {
+        return Long.MIN_VALUE;
+    }
+
+    public DurationField getDurationField() {
+        return UnsupportedDurationField.INSTANCE;
+    }
+
+    public DurationField getRangeDurationField() {
+        return null;
     }
 
     public int getMinimumValue() {
@@ -168,7 +168,7 @@ final class BuddhistEraDateTimeField extends DateTimeField {
     /**
      * @see org.joda.time.DateTimeField#getAsShortText(long, Locale)
      */
-    public String getAsShortText(long millis, Locale locale) {
+    public String getAsShortText(long instant, Locale locale) {
         return "BE";
     }
     
@@ -182,7 +182,7 @@ final class BuddhistEraDateTimeField extends DateTimeField {
     /**
      * @see org.joda.time.DateTimeField#getAsShortText(long, Locale)
      */
-    public String getAsText(long millis, Locale locale) {
+    public String getAsText(long instant, Locale locale) {
         return "BE";
     }
 
@@ -193,30 +193,4 @@ final class BuddhistEraDateTimeField extends DateTimeField {
         return 2;
     }
 
-    /**
-     * @see org.joda.time.DateTimeField#set(long, String, Locale)
-     */
-    public long set(long millis, String text, Locale locale) {
-        if ("BE".equals(text) == false) {
-            throw new IllegalArgumentException("Invalid era text: " + text);
-        }
-        return millis;    
-    }
-    
-
-    /**
-     * Unsupported.
-     * @throws UnsupportedOperationException always
-     */
-    public long roundFloor(long millis) {
-        throw new UnsupportedOperationException("Rounding an Era field is unsupported");
-    }
-
-    /**
-     * Unsupported.
-     * @throws UnsupportedOperationException always
-     */
-    public long remainder(long millis) {
-        throw new UnsupportedOperationException("Calculating remainder from Era field is unsupported");
-    }
 }

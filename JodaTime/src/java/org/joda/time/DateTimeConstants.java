@@ -53,12 +53,12 @@
  */
 package org.joda.time;
 
-import java.util.*;
-
 /**
  * DateTimeConstants is a non-instantiable class of constants used in
  * the date time system. These are the ISO8601 constants, but should be
  * used by all chronologies.
+ * <p>
+ * DateTimeConstants is thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
@@ -102,55 +102,6 @@ public final class DateTimeConstants {
 
     /** Constant (12) representing December, the twelfth month */
     public static final int DECEMBER = 12;
-
-
-    /**
-     * Constant list of the number of days in the month. The index into
-     * the list is the month constant as defined in ReadableDate, thus 
-     * MAX_DAYS_IN_MONTH.get(0) has no meaning and returns null. This is a 
-     * list rather than an array as it must be unmodifiable.
-     */
-    public static final List MAX_DAYS_PER_MONTH =
-        Collections.unmodifiableList(
-            Arrays.asList(
-                new Integer[] {
-                    null,
-                    new Integer(31),
-                    new Integer(29),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31)}));
-    /**
-     * Constant list of the number of days in the month. The index into
-     * the list is the month constant as defined in ReadableDate, thus 
-     * MIN_DAYS_IN_MONTH.get(0) has no meaning and returns null. This is a 
-     * list rather than an array as it must be unmodifiable.
-     */
-    public static final List MIN_DAYS_PER_MONTH =
-        Collections.unmodifiableList(
-            Arrays.asList(
-                new Integer[] {
-                    null,
-                    new Integer(31),
-                    new Integer(28),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31),
-                    new Integer(30),
-                    new Integer(31)}));
-
 
     // These are ints not enumerations as they represent genuine int values
     /** Constant (1) representing Monday, the first day of the week (ISO) */

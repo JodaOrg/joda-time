@@ -54,24 +54,30 @@
 
 package org.joda.test.time.chrono.gj;
 
-import org.joda.time.DateTimeField;
+import org.joda.time.chrono.ImpreciseDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * 
  * @author Brian S O'Neill
  */
-abstract class TestGJDateTimeField extends DateTimeField {
+abstract class TestGJDateTimeField extends ImpreciseDateTimeField {
     protected final TestGJChronology iChronology;
 
-    public TestGJDateTimeField(String name, TestGJChronology chrono) {
-        super(name);
+    public TestGJDateTimeField(String name, String duratioName,
+                               long unitMillis, TestGJChronology chrono) {
+        super(name, duratioName, unitMillis);
         iChronology = chrono;
     }
 
-    // Redeclare to work around compiler bug.
-    public abstract long add(long millis, int value);
-
-    public long add(long millis, long value) {
-        return addLong(millis, value);
+    public boolean isLenient() {
+        return false;
     }
+
+    public long add(long instant, int value) {
+        return add(instant, (long)value);
+    }
+
+    public abstract long add(long instant, long value);
+
 }

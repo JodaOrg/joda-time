@@ -53,26 +53,29 @@
  */
 package org.joda.time;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
+import java.io.Serializable;
 
+import org.joda.time.convert.InstantConverter;
+import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.format.DateTimeParser;
 
 /**
- * Instant is the standard implementation of a fully immutable instant in 
- * time. It holds the instant as milliseconds from the Java Epoch of 
- * 1970-01-01T00:00:00Z.
+ * Instant is the standard implementation of a fully immutable instant in time.
+ * It holds the instant as milliseconds from the Java Epoch of 1970-01-01T00:00:00Z.
  * <p>
- * There is no concept of a calendar system, chronology or time zone. In 
- * a fully internationalized program, methods should accept the ReadableInstant 
- * interface as input and return Instant objects.
+ * There is no concept of a calendar system, chronology or time zone.
+ * In a fully internationalized program, you may want to ensure methods accept the
+ * ReadableInstant interface as input and return Instant objects.
+ * <p>
+ * Instant is thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class Instant extends AbstractInstant implements ReadableInstant {
+public final class Instant extends AbstractInstant
+        implements ReadableInstant, Serializable {
+
+    static final long serialVersionUID = 3299096530934209741L;
 
     /** The millis from 1970-01-01T00:00:00Z */
     private final long iMillis;
@@ -80,8 +83,7 @@ public final class Instant extends AbstractInstant implements ReadableInstant {
     // Constructors
     //-----------------------------------------------------------------------
     /**
-     * Constructor that sets the time to be the current time from the
-     * system clock.
+     * Constructs an instance set to the current system millisecond time.
      */
     public Instant() {
         super();
@@ -89,71 +91,39 @@ public final class Instant extends AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Constructor that takes milliseconds from 1970-01-01T00:00:00Z.
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z.
      * 
-     * @param millis  the milliseconds
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
-    public Instant(long millis) {
+    public Instant(long instant) {
         super();
-        iMillis = millis;
+        iMillis = instant;
     }
 
     /**
-     * Constructor that takes a ReadableInstant.
+     * Constructs an instance from a <code>ReadableInstant</code>.
      * 
      * @param instant  the ReadableInstant
      * @throws IllegalArgumentException if the instant is null
      */
     public Instant(ReadableInstant instant) {
         super();
-        if (instant == null) {
-            throw new IllegalArgumentException("The ReadableInstant must not be null");
-        }
         iMillis = instant.getMillis();
     }
 
     /**
-     * Constructor that takes a Date.
-     * 
-     * @param date  the Date
-     * @throws IllegalArgumentException if the date is null
+     * Constructs an instance from an Object that represents a datetime.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include String, Calendar and Date.
+     *
+     * @param instant  the datetime object, must not be null
+     * @throws IllegalArgumentException if the instant is null or invalid
      */
-    public Instant(Date date) {
+    public Instant(Object instant) {
         super();
-        if (date == null) {
-            throw new IllegalArgumentException("The Date must not be null");
-        }
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructor that takes a Calendar.
-     * 
-     * @param calendar  the Calendar
-     * @throws IllegalArgumentException if the calendar is null
-     */
-    public Instant(Calendar calendar) {
-        super();
-        if (calendar == null) {
-            throw new IllegalArgumentException("The Calendar must not be null");
-        }
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructor that parses an ISO formatted string.
-     * 
-     * @param str  the string
-     * @throws IllegalArgumentException if the string is null
-     * @throws ParseException if the string is incorrectly formatted
-     */
-    public Instant(String str) throws ParseException {
-        super();
-        if (str == null) {
-            throw new IllegalArgumentException("The String must not be null");
-        }
-        DateTimeParser p = ISODateTimeFormat.getInstanceUTC().dateTimeParser();
-        iMillis = p.parseMillis(str);
+        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        iMillis = converter.getInstantMillis(instant);
     }
 
     /**
@@ -162,17 +132,17 @@ public final class Instant extends AbstractInstant implements ReadableInstant {
      * The returned object will be a new instance of the implementation.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
-     * @param millis  the new millis, from 1970-01-01T00:00:00Z
+     * @param instant  the new instant, from 1970-01-01T00:00:00Z
      * @param chrono  the new chronology
      * @return a new instance of this class
      * @throws IllegalArgumentException if the chronology is null
      */
-    protected ReadableInstant create(long millis, Chronology chrono) {
+    protected ReadableInstant create(long instant, Chronology chrono) {
         // ignore chrono
-        if (millis == getMillis()) {
+        if (instant == getMillis()) {
             return this;
         }
-        return new Instant(millis);
+        return new Instant(instant);
     }
     
     // Accessors
@@ -183,6 +153,27 @@ public final class Instant extends AbstractInstant implements ReadableInstant {
      * @return the number of milliseconds since 1970-01-01T00:00:00Z
      */
     public final long getMillis() {
+        return iMillis;
+    }
+
+    /**
+     * Gets the milliseconds of the instant.
+     *
+     * @param base ignored
+     * @return the number of milliseconds since 1970-01-01T00:00:00Z
+     */
+    public final long getMillis(ReadableInstant base) {
+        return iMillis;
+    }
+
+    /**
+     * Gets the milliseconds of the instant.
+     *
+     * @param base ignored
+     * @param zone ignored
+     * @return the number of milliseconds since 1970-01-01T00:00:00Z
+     */
+    public final long getMillis(ReadableInstant base, DateTimeZone zone) {
         return iMillis;
     }
 

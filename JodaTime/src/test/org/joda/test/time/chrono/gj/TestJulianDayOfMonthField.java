@@ -64,6 +64,6 @@ class TestJulianDayOfMonthField extends TestGJDayOfMonthField {
     }
 
     public long getRangeMillis() {
-        return (long)(365.25 * iChronology.MILLIS_PER_DAY / 12);
+        return iChronology.millisPerMonth();
     }
 }

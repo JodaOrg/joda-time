@@ -55,7 +55,8 @@ package org.joda.time.chrono.gj;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
-import org.joda.time.chrono.DelegateDateTimeField;
+import org.joda.time.chrono.DelegatedDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Year zero is dropped from the year and weekyear fields.
@@ -63,6 +64,9 @@ import org.joda.time.chrono.DelegateDateTimeField;
  * @author Brian S O'Neill
  */
 final class JulianChronology extends GJChronology {
+
+    static final long serialVersionUID = -8731039522547897247L;
+
     private final JulianWithYearZeroChronology iChronology;
 
     /**
@@ -72,34 +76,60 @@ final class JulianChronology extends GJChronology {
         JulianWithYearZeroChronology chrono =
             new JulianWithYearZeroChronology(minDaysInFirstWeek);
         iChronology = chrono;
+        copyFields(chrono);
+
+        // Override only the fields that differ.
 
         iYearField = new NoYearZeroField(chrono.year());
-        iYearOfEraField = chrono.yearOfEra();
-        iYearOfCenturyField = chrono.yearOfCentury();
-        iCenturyOfEraField = chrono.centuryOfEra();
-        iEraField = chrono.era();
-        iDayOfMonthField = chrono.dayOfMonth();
-        iDayOfWeekField = chrono.dayOfWeek();
-        iDayOfYearField = chrono.dayOfYear();
-        iMonthOfYearField = chrono.monthOfYear();
-        iWeekOfWeekyearField = chrono.weekOfWeekyear();
         iWeekyearField = new NoWeekyearZeroField(chrono.weekyear());
-        
-        iMillisOfSecondField = chrono.millisOfSecond();
-        iMillisOfDayField = chrono.millisOfDay();
-        iSecondOfMinuteField = chrono.secondOfMinute();
-        iSecondOfDayField = chrono.secondOfDay();
-        iMinuteOfHourField = chrono.minuteOfHour();
-        iMinuteOfDayField = chrono.minuteOfDay();
-        iHourOfDayField = chrono.hourOfDay();
-        iHourOfHalfdayField = chrono.hourOfHalfday();
-        iClockhourOfDayField = chrono.clockhourOfDay();
-        iClockhourOfHalfdayField = chrono.clockhourOfHalfday();
-        iHalfdayOfDayField = chrono.halfdayOfDay();
     }
 
     public Chronology withUTC() {
         return this;
+    }
+
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        year = adjustYearForSet(year);
+        return iChronology.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
+    }
+
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getTimeOnlyMillis
+            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int millisOfDay)
+        throws IllegalArgumentException
+    {
+        year = adjustYearForSet(year);
+        return iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis
+            (instant,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        year = adjustYearForSet(year);
+        return iChronology.getDateTimeMillis
+            (year, monthOfYear, dayOfMonth,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public long getGregorianJulianCutoverMillis() {
@@ -114,7 +144,19 @@ final class JulianChronology extends GJChronology {
         return iChronology.getMinimumDaysInFirstWeek();
     }
 
-    private class NoYearZeroField extends DelegateDateTimeField {
+    int adjustYearForSet(int year) {
+        if (year <= 0) {
+            if (year == 0) {
+                throw new IllegalArgumentException("Invalid year: " + year);
+            }
+            year++;
+        }
+        return year;
+    }
+
+    private class NoYearZeroField extends DelegatedDateTimeField {
+        static final long serialVersionUID = -8869148464118507846L;
+
         private transient int iMinYear;
 
         NoYearZeroField(DateTimeField field) {
@@ -131,14 +173,8 @@ final class JulianChronology extends GJChronology {
         }
 
         public long set(long millis, int year) {
-            super.verifyValueBounds(year, iMinYear, getMaximumValue());
-            if (year <= 0) {
-                if (year == 0) {
-                    throw new IllegalArgumentException("Invalid year: " + year);
-                }
-                year++;
-            }
-            return super.set(millis, year);
+            Utils.verifyValueBounds(this, year, iMinYear, getMaximumValue());
+            return super.set(millis, adjustYearForSet(year));
         }
 
         public int getMinimumValue() {
@@ -151,6 +187,8 @@ final class JulianChronology extends GJChronology {
     }
 
     private final class NoWeekyearZeroField extends NoYearZeroField {
+        static final long serialVersionUID = -5013429014495501104L;
+
         NoWeekyearZeroField(DateTimeField field) {
             super(field);
         }

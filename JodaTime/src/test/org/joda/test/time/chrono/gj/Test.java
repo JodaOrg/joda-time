@@ -227,6 +227,7 @@ public class Test {
     {
         int a, b;
         long x, y;
+        boolean m, n;
 
         // get test
         a = fieldA.get(millis);
@@ -303,6 +304,16 @@ public class Test {
             System.out.println("Test datetime 2: " + makeDatetime(millis2));
             throw e;
         }
+
+        // isLeap test
+        m = fieldA.isLeap(millis);
+        n = fieldB.isLeap(millis);
+        testBoolean(fieldA, fieldB, "isLeap", millis, m, n);
+
+        // getLeapAmount test
+        a = fieldA.getLeapAmount(millis);
+        b = fieldB.getLeapAmount(millis);
+        testValue(fieldA, fieldB, "getLeapAmount", millis, a, b);
     }
 
     private int getWrappedValue(int value, int minValue, int maxValue) {
@@ -344,6 +355,13 @@ public class Test {
                             int valueA, int valueB) {
         if (millisA != millisB) {
             failMillis(fieldA, fieldB, method, millis, millisA, millisB, valueA, valueB);
+        }
+    }
+
+    private void testBoolean(DateTimeField fieldA, DateTimeField fieldB,
+                             String method, long millis, boolean boolA, boolean boolB) {
+        if (boolA != boolB) {
+            failBoolean(fieldA, fieldB, method, millis, boolA, boolB);
         }
     }
 
@@ -406,6 +424,17 @@ public class Test {
                            fieldB.get(millisB));
         System.out.println("Value to set for first field: " + valueA);
         System.out.println("Value to set for second field: " + valueB);
+        throw new RuntimeException();
+    }
+
+    private void failBoolean(DateTimeField fieldA, DateTimeField fieldB,
+                             String method, long millis, boolean boolA, boolean boolB) {
+        System.out.println("Failure on " + makeName(fieldA, fieldB) + "." + method);
+        System.out.println(fieldA.getClass().getName() + "\n\tvs. "
+                           + fieldB.getClass().getName());
+        System.out.println("Datetime: " + makeDatetime(millis));
+        System.out.println("Millis from 1970: " + millis);
+        System.out.println(boolA + " != " + boolB);
         throw new RuntimeException();
     }
 

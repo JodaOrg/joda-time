@@ -53,14 +53,20 @@
  */
 package org.joda.test.time;
 
-import java.util.*;
-import java.text.* ;
-import java.io.*;
+import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import junit.framework.TestSuite;
 
-import org.joda.time.*;
-import org.joda.time.chrono.iso.* ;
+import org.joda.time.Chronology;
+import org.joda.time.Instant;
+import org.joda.time.MutableDateTime;
+import org.joda.time.ReadableInstant;
+import org.joda.time.chrono.iso.ISOChronology;
 /**
  * This class is a Junit unit test for the
  * org.joda.time.MutableDateTime class.
@@ -233,9 +239,9 @@ public class TestMDTAddWrapped extends BulkTest {
         {
             mdt = new MutableDateTime( isoString, ISOChronology.getInstanceUTC() );
         }
-        catch(ParseException pe)
+        catch(IllegalArgumentException pe)
         {
-            ewtr.println("ParseException Detected: " + isoString);
+            ewtr.println("IllegalArgumentException Detected: " + isoString);
             ewtr.println( pe.getMessage() );
             ewtr.flush();
         }

@@ -53,11 +53,21 @@
  */
 package org.joda.test.time;
 
-import java.util.*;
-import java.text.* ;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
+
 import junit.framework.TestSuite;
-import org.joda.time.*;
-import org.joda.time.chrono.iso.*;
+
+import org.joda.time.Chronology;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.DateTimeZone;
+import org.joda.time.ReadableInstant;
+import org.joda.time.chrono.iso.ISOChronology;
 /**
  * This class is a Junit unit test for the
  * org.joda.time.DateTimeComparator class.
@@ -832,7 +842,7 @@ public class TestDateTimeComparator extends BulkTest {
         {
             retDT = new DateTime( s, DateTimeZone.UTC );
         }
-        catch(ParseException pe)
+        catch(IllegalArgumentException pe)
         {
             pe.printStackTrace();
         }
@@ -849,7 +859,7 @@ public class TestDateTimeComparator extends BulkTest {
                 newList.add( new DateTime( someStrs[i], DateTimeZone.UTC ) );
             } // end of the for
         }
-        catch(ParseException pe)
+        catch(IllegalArgumentException pe)
         {
             pe.printStackTrace();
         }

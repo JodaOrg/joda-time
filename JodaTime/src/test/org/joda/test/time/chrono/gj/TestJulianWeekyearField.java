@@ -54,6 +54,8 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.chrono.Utils;
+
 /**
  * 
  * @author Brian S O'Neill
@@ -65,14 +67,14 @@ class TestJulianWeekyearField extends TestGJWeekyearField {
 
     public long addWrapped(long millis, int value) {
         int weekyear = get(millis);
-        int wrapped = getWrappedValue
+        int wrapped = Utils.getWrappedValue
             (weekyear, value, getMinimumValue(), getMaximumValue());
-        return add(millis, wrapped - weekyear);
+        return add(millis, (long) wrapped - weekyear);
     }
 
-    public long add(long millis, int value) {
+    public long add(long millis, long value) {
         int weekyear = get(millis);
-        int newWeekyear = weekyear + value;
+        int newWeekyear = weekyear + Utils.safeToInt(value);
         if (weekyear < 0) {
             if (newWeekyear >= 0) {
                 newWeekyear++;
@@ -83,10 +85,6 @@ class TestJulianWeekyearField extends TestGJWeekyearField {
             }
         }
         return set(millis, newWeekyear);
-    }
-
-    public long getUnitMillis() {
-        return (long)(365.25 * iChronology.MILLIS_PER_DAY);
     }
 
     public int getMinimumValue() {

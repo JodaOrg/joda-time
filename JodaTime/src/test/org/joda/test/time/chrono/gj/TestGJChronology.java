@@ -57,6 +57,7 @@ package org.joda.test.time.chrono.gj;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
 
 /**
  * A reference Gregorian/Julian chronology implementation, intended for testing
@@ -151,6 +152,10 @@ abstract class TestGJChronology extends Chronology {
         return millis - mod(millis, MILLIS_PER_DAY);
     }
 
+    public DurationField days() {
+        return dayOfWeek().getDurationField();
+    }
+
     public DateTimeField dayOfWeek() {
         return new TestGJDayOfWeekField(this);
     }
@@ -163,21 +168,41 @@ abstract class TestGJChronology extends Chronology {
         return new TestGJDayOfYearField(this);
     }
 
+    public DurationField weeks() {
+        return weekOfWeekyear().getDurationField();
+    }
+
     public DateTimeField weekOfWeekyear() {
         return new TestGJWeekOfWeekyearField(this);
+    }
+
+    public DurationField weekyears() {
+        return weekyear().getDurationField();
     }
 
     public DateTimeField weekyear() {
         return new TestGJWeekyearField(this);
     }
 
+    public DurationField months() {
+        return monthOfYear().getDurationField();
+    }
+
     public DateTimeField monthOfYear() {
         return new TestGJMonthOfYearField(this);
+    }
+
+    public DurationField years() {
+        return year().getDurationField();
     }
 
     public DateTimeField year() {
         return new TestGJYearField(this);
     }
+
+    abstract long millisPerYear();
+
+    abstract long millisPerMonth();
 
     abstract boolean isLeapYear(int year);
 

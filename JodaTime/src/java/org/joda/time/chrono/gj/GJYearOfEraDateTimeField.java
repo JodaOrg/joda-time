@@ -56,31 +56,36 @@ package org.joda.time.chrono.gj;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.chrono.DecoratedDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the year of era component of time.
  * 
  * @author Brian S O'Neill
  */
-final class GJYearOfEraDateTimeField extends DateTimeField {
+final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
+
+    static final long serialVersionUID = -5961050944769862059L;
+
     private final ProlepticChronology iChronology;
 
     /**
-     * Restricted constructor
+     * Restricted constructor.
      */
-    GJYearOfEraDateTimeField(ProlepticChronology chronology) {
-        super("yearOfEra");
+    GJYearOfEraDateTimeField(DateTimeField yearField, ProlepticChronology chronology) {
+        super(yearField, "yearOfEra");
         iChronology = chronology;
     }
 
     /**
      * Get the year of era component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the year of era extracted from the input.
      */
-    public int get(long millis) {
-        int year = iChronology.year().get(millis);
+    public int get(long instant) {
+        int year = getWrappedField().get(instant);
         if (year <= 0) {
             year = 1 - year;
         }
@@ -91,57 +96,53 @@ final class GJYearOfEraDateTimeField extends DateTimeField {
      * Add the specified year to the specified time instant.
      * The amount added may be negative.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, int years) {
-        return iChronology.year().add(millis, years);
+    public long add(long instant, int years) {
+        return getWrappedField().add(instant, years);
     }
 
-    public long add(long millis, long years) {
-        return addLong(millis, years);
+    public long add(long instant, long years) {
+        return getWrappedField().add(instant, years);
     }
 
     /**
      * Add to the year component of the specified time instant
      * wrapping around within that component if necessary.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int years) {
-        return iChronology.year().addWrapped(millis, years);
+    public long addWrapped(long instant, int years) {
+        return getWrappedField().addWrapped(instant, years);
     }
 
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return iChronology.year().getDifference(minuendMillis, subtrahendMillis);
+    public int getDifference(long minuendInstant, long subtrahendInstant) {
+        return getWrappedField().getDifference(minuendInstant, subtrahendInstant);
+    }
+
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant);
     }
 
     /**
      * Set the year component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param year  the year (0,292278994) to update the time to.
      * @return the updated time instant.
      * @throws IllegalArgumentException  if year is invalid.
      */
-    public long set(long millis, int year) {
-        super.verifyValueBounds(year, 1, iChronology.getMaxYear());
-        if (iChronology.era().get(millis) == DateTimeConstants.BCE) {
-            return iChronology.year().set(millis, 1 - year);
+    public long set(long instant, int year) {
+        Utils.verifyValueBounds(this, year, 1, getMaximumValue());
+        if (iChronology.era().get(instant) == DateTimeConstants.BCE) {
+            return super.set(instant, 1 - year);
         } else {
-            return iChronology.year().set(millis, year);
+            return super.set(instant, year);
         }
-    }
-
-    public long getUnitMillis() {
-        return iChronology.getRoughMillisPerYear();
-    }
-
-    public long getRangeMillis() {
-        return Long.MAX_VALUE;
     }
 
     public int getMinimumValue() {
@@ -149,19 +150,19 @@ final class GJYearOfEraDateTimeField extends DateTimeField {
     }
 
     public int getMaximumValue() {
-        return iChronology.getMaxYear();
+        return getWrappedField().getMaximumValue();
     }
 
-    public long roundFloor(long millis) {
-        return iChronology.year().roundFloor(millis);
+    public long roundFloor(long instant) {
+        return getWrappedField().roundFloor(instant);
     }
 
-    public long roundCeiling(long millis) {
-        return iChronology.year().roundCeiling(millis);
+    public long roundCeiling(long instant) {
+        return getWrappedField().roundCeiling(instant);
     }
 
-    public long remainder(long millis) {
-        return iChronology.year().remainder(millis);
+    public long remainder(long instant) {
+        return getWrappedField().remainder(instant);
     }
 
     /**

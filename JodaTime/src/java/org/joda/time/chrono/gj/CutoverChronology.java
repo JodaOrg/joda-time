@@ -58,6 +58,9 @@ import java.util.Locale;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.AbstractDateTimeField;
+import org.joda.time.chrono.DecoratedDurationField;
 
 /**
  * Chronology for supporting the cutover from the Julian calendar to the
@@ -68,25 +71,18 @@ import org.joda.time.DateTimeZone;
  * @since 1.0
  */
 final class CutoverChronology extends GJChronology {
+
+    static final long serialVersionUID = -2545574827706931671L;
+
     /**
      * Convert a datetime from one chronology to another.
      */
-    private static long convert(long millis, Chronology from, Chronology to) {
-        if (from == to) {
-            return millis;
-        }
-
-        int year = from.year().get(millis);
-        int monthOfYear = from.monthOfYear().get(millis);
-        int dayOfMonth = from.dayOfMonth().get(millis);
-        int millisOfDay = from.millisOfDay().get(millis);
-
-        millis = to.year().set(0, year);
-        millis = to.monthOfYear().set(millis, monthOfYear);
-        millis = to.dayOfMonth().set(millis, dayOfMonth);
-        millis = to.millisOfDay().set(millis, millisOfDay);
-
-        return millis;
+    private static long convert(long instant, Chronology from, Chronology to) {
+        return to.getDateTimeMillis
+            (from.year().get(instant),
+             from.monthOfYear().get(instant),
+             from.dayOfMonth().get(instant),
+             from.millisOfDay().get(instant));
     }
 
     private static void checkUTC(Chronology chrono) {
@@ -99,15 +95,15 @@ final class CutoverChronology extends GJChronology {
     private final GJChronology iJulianChronology;
     private final GJChronology iGregorianChronology;
 
-    final long iCutoverMillis;
-    transient final long iGapMillis;
+    final long iCutoverInstant;
+    transient final long iGapDuration;
 
     /**
      * @param julian chronology used before the cutover instant
      * @param gregorian chronology used at and after the cutover instant
-     * @param cutoverMillis instant when the gregorian chronology began
+     * @param cutoverInstant instant when the gregorian chronology began
      */
-    CutoverChronology(JulianChronology julian, GregorianChronology gregorian, long cutoverMillis) {
+    CutoverChronology(JulianChronology julian, GregorianChronology gregorian, long cutoverInstant) {
         checkUTC(julian);
         checkUTC(gregorian);
 
@@ -120,29 +116,22 @@ final class CutoverChronology extends GJChronology {
 
         iJulianChronology = julian;
         iGregorianChronology = gregorian;
-        iCutoverMillis = cutoverMillis;
+        iCutoverInstant = cutoverInstant;
 
         // Compute difference between the chronologies at the cutover instant
-        iGapMillis = cutoverMillis - julianToGregorian(cutoverMillis);
+        iGapDuration = cutoverInstant - julianToGregorian(cutoverInstant);
 
         // Begin field definitions.
 
+        // First just copy all the Gregorian fields and then override those
+        // that need special attention.
+        copyFields(gregorian);
+        
         // Assuming cutover is at midnight, all time of day fields can be
         // gregorian since they are unaffected by cutover.
-        iMillisOfSecondField = gregorian.millisOfSecond();
-        iMillisOfDayField = gregorian.millisOfDay();
-        iSecondOfMinuteField = gregorian.secondOfMinute();
-        iSecondOfDayField = gregorian.secondOfDay();
-        iMinuteOfHourField = gregorian.minuteOfHour();
-        iMinuteOfDayField = gregorian.minuteOfDay();
-        iHourOfDayField = gregorian.hourOfDay();
-        iHourOfHalfdayField = gregorian.hourOfHalfday();
-        iClockhourOfDayField = gregorian.clockhourOfDay();
-        iClockhourOfHalfdayField = gregorian.clockhourOfHalfday();
-        iHalfdayOfDayField = gregorian.halfdayOfDay();
 
         // Verify assumption.
-        if (gregorian.millisOfDay().get(cutoverMillis) == 0) {
+        if (gregorian.millisOfDay().get(cutoverInstant) == 0) {
             // Cutover is sometime in the day, so cutover fields are required
             // for time of day.
 
@@ -160,17 +149,10 @@ final class CutoverChronology extends GJChronology {
         }
 
         // These fields just require basic cutover support.
-        iEraField = new CutoverField(julian.era(), gregorian.era());
-        iDayOfMonthField = new CutoverField(julian.dayOfMonth(), gregorian.dayOfMonth());
-
-        // These fields require special attention when add is called since they
-        // internally call set.
-        iYearField = new CutoverVarField(julian.year(), gregorian.year());
-        iYearOfEraField = new CutoverVarField(julian.yearOfEra(), gregorian.yearOfEra());
-        iYearOfCenturyField = new CutoverVarField(julian.yearOfCentury(), gregorian.yearOfCentury());
-        iCenturyOfEraField = new CutoverVarField(julian.centuryOfEra(), gregorian.centuryOfEra());
-        iMonthOfYearField = new CutoverVarField(julian.monthOfYear(), gregorian.monthOfYear());
-        iWeekyearField = new CutoverVarField(julian.weekyear(), gregorian.weekyear());
+        {
+            iEraField = new CutoverField(julian.era(), gregorian.era());
+            iDayOfMonthField = new CutoverField(julian.dayOfMonth(), gregorian.dayOfMonth());
+        }
 
         // DayOfYear and weekOfWeekyear require special handling since cutover
         // year has fewer days and weeks. Extend the cutover to the start of
@@ -178,27 +160,97 @@ final class CutoverChronology extends GJChronology {
         // the cutover year.
 
         {
-            long cutover = gregorian.year().roundCeiling(iCutoverMillis);
+            long cutover = gregorian.year().roundCeiling(iCutoverInstant);
             iDayOfYearField = new CutoverField
                 (julian.dayOfYear(), gregorian.dayOfYear(), cutover);
         }
 
         {
-            long cutover = gregorian.weekyear().roundCeiling(iCutoverMillis);
+            long cutover = gregorian.weekyear().roundCeiling(iCutoverInstant);
             iWeekOfWeekyearField = new CutoverField
                 (julian.weekOfWeekyear(), gregorian.weekOfWeekyear(), cutover);
         }
 
-        // Day of week is unaffected by cutover. Either julian or gregorian will work.
-        iDayOfWeekField = gregorian.dayOfWeek();
+        // These fields are special because they have imprecise durations. The
+        // family of addition methods need special attention. Override affected
+        // duration fields as well.
+        {
+            iYearField = new ImpreciseCutoverField(julian.year(), gregorian.year());
+            iYearsField = iYearField.getDurationField();
+            iYearOfEraField = new ImpreciseCutoverField
+                (julian.yearOfEra(), gregorian.yearOfEra(), iYearsField);
+            iYearOfCenturyField = new ImpreciseCutoverField
+                (julian.yearOfCentury(), gregorian.yearOfCentury(), iYearsField);
+            
+            iCenturyOfEraField = new ImpreciseCutoverField(julian.centuryOfEra(), gregorian.centuryOfEra());
+            iCenturiesField = iCenturyOfEraField.getDurationField();
+            
+            iMonthOfYearField = new ImpreciseCutoverField(julian.monthOfYear(), gregorian.monthOfYear());
+            iMonthsField = iMonthOfYearField.getDurationField();
+            
+            iWeekyearField = new ImpreciseCutoverField(julian.weekyear(), gregorian.weekyear());
+            iWeekyearsField = iWeekyearField.getDurationField();
+        }
     }
 
     public Chronology withUTC() {
         return this;
     }
 
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
+    }
+
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        // Time fields are same for Julian and Gregorian.
+        return iGregorianChronology.getTimeOnlyMillis
+            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int millisOfDay)
+        throws IllegalArgumentException
+    {
+        // Assume date is Gregorian.
+        long instant = iGregorianChronology.getDateTimeMillis
+            (year, monthOfYear, dayOfMonth, millisOfDay);
+        if (instant < iCutoverInstant) {
+            // Maybe it's Julian.
+            instant = iJulianChronology.getDateTimeMillis
+                (year, monthOfYear, dayOfMonth, millisOfDay);
+            if (instant >= iCutoverInstant) {
+                // Okay, it's in the illegal cutover gap.
+                throw new IllegalArgumentException("Specified date does not exist");
+            }
+        }
+        return instant;
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return getDateOnlyMillis(instant)
+            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0)
+            + getTimeOnlyMillis(hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
     public long getGregorianJulianCutoverMillis() {
-        return iCutoverMillis;
+        return iCutoverInstant;
     }
 
     public boolean isCenturyISO() {
@@ -209,242 +261,250 @@ final class CutoverChronology extends GJChronology {
         return iGregorianChronology.getMinimumDaysInFirstWeek();
     }
 
-    long julianToGregorian(long millis) {
-        return convert(millis, iJulianChronology, iGregorianChronology);
+    long julianToGregorian(long instant) {
+        return convert(instant, iJulianChronology, iGregorianChronology);
     }
 
-    long gregorianToJulian(long millis) {
-        return convert(millis, iGregorianChronology, iJulianChronology);
+    long gregorianToJulian(long instant) {
+        return convert(instant, iGregorianChronology, iJulianChronology);
     }
 
     /**
      * This basic cutover field adjusts calls to 'get' and 'set' methods, and
      * assumes that calls to add and addWrapped are unaffected by the cutover.
      */
-    private class CutoverField extends DateTimeField {
+    private class CutoverField extends AbstractDateTimeField {
+        static final long serialVersionUID = 3528501219481026402L;
+
         final DateTimeField iJulianField;
         final DateTimeField iGregorianField;
         final long iCutover;
+
+        protected DurationField iDurationField;
 
         /**
          * @param julianField field from the chronology used before the cutover instant
          * @param gregorianField field from the chronology used at and after the cutover
          */
         CutoverField(DateTimeField julianField, DateTimeField gregorianField) {
+            this(julianField, gregorianField, iCutoverInstant);
+        }
+
+        CutoverField(DateTimeField julianField, DateTimeField gregorianField, long cutoverInstant) {
             super(gregorianField.getName());
             iJulianField = julianField;
             iGregorianField = gregorianField;
-            iCutover = iCutoverMillis;
+            iCutover = cutoverInstant;
+            // Although average length of Julian and Gregorian years differ,
+            // use the Gregorian duration field because it is more accurate.
+            iDurationField = gregorianField.getDurationField();
         }
 
-        CutoverField(DateTimeField julianField, DateTimeField gregorianField, long cutoverMillis) {
-            super(gregorianField.getName());
-            iJulianField = julianField;
-            iGregorianField = gregorianField;
-            iCutover = cutoverMillis;
+        public boolean isLenient() {
+            return false;
         }
 
-        public int get(long millis) {
-            if (millis >= iCutover) {
-                return iGregorianField.get(millis);
+        public int get(long instant) {
+            if (instant >= iCutover) {
+                return iGregorianField.get(instant);
             } else {
-                return iJulianField.get(millis);
+                return iJulianField.get(instant);
             }
         }
 
-        public String getAsText(long millis, Locale locale) {
-            if (millis >= iCutover) {
-                return iGregorianField.getAsText(millis, locale);
+        public String getAsText(long instant, Locale locale) {
+            if (instant >= iCutover) {
+                return iGregorianField.getAsText(instant, locale);
             } else {
-                return iJulianField.getAsText(millis, locale);
+                return iJulianField.getAsText(instant, locale);
             }
         }
 
-        public String getAsShortText(long millis, Locale locale) {
-            if (millis >= iCutover) {
-                return iGregorianField.getAsShortText(millis, locale);
+        public String getAsShortText(long instant, Locale locale) {
+            if (instant >= iCutover) {
+                return iGregorianField.getAsShortText(instant, locale);
             } else {
-                return iJulianField.getAsShortText(millis, locale);
+                return iJulianField.getAsShortText(instant, locale);
             }
         }
 
-        public long add(long millis, int value) {
-            return iGregorianField.add(millis, value);
+        public long add(long instant, int value) {
+            return iGregorianField.add(instant, value);
         }
 
-        public long add(long millis, long value) {
-            return iGregorianField.add(millis, value);
+        public long add(long instant, long value) {
+            return iGregorianField.add(instant, value);
         }
 
-        public long addWrapped(long millis, int value) {
-            return iGregorianField.addWrapped(millis, value);
+        public int getDifference(long minuendInstant, long subtrahendInstant) {
+            return iGregorianField.getDifference(minuendInstant, subtrahendInstant);
         }
 
-        public long getDifference(long minuendMillis, long subtrahendMillis) {
-            return iGregorianField.getDifference(minuendMillis, subtrahendMillis);
+        public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+            return iGregorianField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
         }
 
-        public long set(long millis, int value) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.set(millis, value);
-                if (millis < iCutover) {
+        public long set(long instant, int value) {
+            if (instant >= iCutover) {
+                instant = iGregorianField.set(instant, value);
+                if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
+                    if (instant + iGapDuration < iCutover) {
+                        instant = gregorianToJulian(instant);
                     }
                     // Verify that new value stuck.
-                    if (get(millis) != value) {
+                    if (get(instant) != value) {
                         throw new IllegalArgumentException
                             ("Illegal value for " + iGregorianField.getName() + ": " + value);
                     }
                 }
             } else {
-                millis = iJulianField.set(millis, value);
-                if (millis >= iCutover) {
+                instant = iJulianField.set(instant, value);
+                if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
+                    if (instant - iGapDuration >= iCutover) {
+                        instant = julianToGregorian(instant);
                     }
                     // Verify that new value stuck.
-                    if (get(millis) != value) {
+                    if (get(instant) != value) {
                         throw new IllegalArgumentException
                             ("Illegal value for " + iJulianField.getName() + ": " + value);
                     }
                 }
             }
-            return millis;
+            return instant;
         }
 
-        public long set(long millis, String text, Locale locale) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.set(millis, text, locale);
-                if (millis < iCutover) {
+        public long set(long instant, String text, Locale locale) {
+            if (instant >= iCutover) {
+                instant = iGregorianField.set(instant, text, locale);
+                if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
+                    if (instant + iGapDuration < iCutover) {
+                        instant = gregorianToJulian(instant);
                     }
                     // Cannot verify that new value stuck because set may be lenient.
                 }
             } else {
-                millis = iJulianField.set
-                    (millis, text, locale);
-                if (millis >= iCutover) {
+                instant = iJulianField.set(instant, text, locale);
+                if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
+                    if (instant - iGapDuration >= iCutover) {
+                        instant = julianToGregorian(instant);
                     }
                     // Cannot verify that new value stuck because set may be lenient.
                 }
             }
-            return millis;
+            return instant;
         }
 
-        public boolean isLeap(long millis) {
-            if (millis >= iCutover) {
-                return iGregorianField.isLeap(millis);
+        public DurationField getDurationField() {
+            return iDurationField;
+        }
+
+        public DurationField getRangeDurationField() {
+            DurationField rangeField = iGregorianField.getRangeDurationField();
+            if (rangeField == null) {
+                rangeField = iJulianField.getRangeDurationField();
+            }
+            return rangeField;
+        }
+
+        public boolean isLeap(long instant) {
+            if (instant >= iCutover) {
+                return iGregorianField.isLeap(instant);
             } else {
-                return iJulianField.isLeap(millis);
+                return iJulianField.isLeap(instant);
             }
         }
 
-        public int getLeapAmount(long millis) {
-            if (millis >= iCutover) {
-                return iGregorianField.getLeapAmount(millis);
+        public int getLeapAmount(long instant) {
+            if (instant >= iCutover) {
+                return iGregorianField.getLeapAmount(instant);
             } else {
-                return iJulianField.getLeapAmount(millis);
+                return iJulianField.getLeapAmount(instant);
             }
         }
 
-        public long getUnitMillis() {
-            // Since getUnitSize doesn't accept a millis argument, return
-            // Gregorian unit size because it is more accurate.
-            return iGregorianField.getUnitMillis();
+        public DurationField getLeapDurationField() {
+            return iGregorianField.getLeapDurationField();
         }
 
-        public long getRangeMillis() {
-            return iGregorianField.getRangeMillis();
-        }
-
-        // Note on getMinimumValue and getMaximumValue: For all fields but
-        // year, yearOfEra, and centuryOfEra, the Julian and Gregorian limits
-        // are identical. The Julian limit is returned for getMaximumValue
-        // because it is smaller than the Gregorian limit. This is to prevent
-        // calling a field mutator that advances so far beyond the gap that the
-        // Julian calendar overflows.
 
         public int getMinimumValue() {
+            // For all precise fields, the Julian and Gregorian limits are
+            // identical. Choose Julian to tighten up the year limits.
             return iJulianField.getMinimumValue();
         }
         
-        public int getMinimumValue(long millis) {
-            if (millis >= iCutover) {
-                return iGregorianField.getMinimumValue(millis);
-            } else {
-                return iJulianField.getMinimumValue(millis);
+        public int getMinimumValue(long instant) {
+            if (instant < iCutover) {
+                return iJulianField.getMinimumValue(instant);
             }
+
+            int min = iGregorianField.getMinimumValue(instant);
+
+            // Because the cutover may reduce the length of this field, verify
+            // the minimum by setting it.
+            instant = iGregorianField.set(instant, min);
+            if (instant < iCutover) {
+                min = iGregorianField.get(iCutover);
+            }
+
+            return min;
         }
 
         public int getMaximumValue() {
-            return iJulianField.getMaximumValue();
+            // For all precise fields, the Julian and Gregorian limits are
+            // identical.
+            return iGregorianField.getMaximumValue();
         }
 
-        public int getMaximumValue(long millis) {
-            if (millis >= iCutover) {
-                return iGregorianField.getMaximumValue(millis);
-            } else {
-                return iJulianField.getMaximumValue(millis);
+        public int getMaximumValue(long instant) {
+            if (instant >= iCutover) {
+                return iGregorianField.getMaximumValue(instant);
             }
+
+            int max = iJulianField.getMaximumValue(instant);
+
+            // Because the cutover may reduce the length of this field, verify
+            // the maximum by setting it.
+            instant = iJulianField.set(instant, max);
+            if (instant >= iCutover) {
+                max = iJulianField.get(iJulianField.add(iCutover, -1));
+            }
+
+            return max;
         }
 
-        public long roundFloor(long millis) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.roundFloor(millis);
-                if (millis < iCutover) {
+        public long roundFloor(long instant) {
+            if (instant >= iCutover) {
+                instant = iGregorianField.roundFloor(instant);
+                if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
+                    if (instant + iGapDuration < iCutover) {
+                        instant = gregorianToJulian(instant);
                     }
                 }
             } else {
-                millis = iJulianField.roundFloor(millis);
+                instant = iJulianField.roundFloor(instant);
             }
-            return millis;
+            return instant;
         }
 
-        public long roundCeiling(long millis) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.roundCeiling(millis);
+        public long roundCeiling(long instant) {
+            if (instant >= iCutover) {
+                instant = iGregorianField.roundCeiling(instant);
             } else {
-                millis = iJulianField.roundCeiling(millis);
-                if (millis >= iCutover) {
+                instant = iJulianField.roundCeiling(instant);
+                if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
+                    if (instant - iGapDuration >= iCutover) {
+                        instant = julianToGregorian(instant);
                     }
                 }
             }
-            return millis;
-        }
-
-        public long remainder(long millis) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.remainder(millis);
-                if (millis < iCutover) {
-                    // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
-                    }
-                }
-            } else {
-                millis = iJulianField.remainder(millis);
-                if (millis >= iCutover) {
-                    // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
-                    }
-                }
-            }
-            return millis;
+            return instant;
         }
 
         public int getMaximumTextLength(Locale locale) {
@@ -464,92 +524,167 @@ final class CutoverChronology extends GJChronology {
      * set must be applied to add and addWrapped. Knowing when to use this
      * field requires specific knowledge of how the GJ fields are implemented.
      */
-    private class CutoverVarField extends CutoverField {
-        CutoverVarField(DateTimeField julianField, DateTimeField gregorianField) {
-            super(julianField, gregorianField);
+    private final class ImpreciseCutoverField extends CutoverField {
+        static final long serialVersionUID = 3410248757173576441L;
+
+        /**
+         * Creates a duration field that links back to this.
+         */
+        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField) {
+            this(julianField, gregorianField, null);
         }
 
-        public long add(long millis, int value) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.add(millis, value);
-                if (millis < iCutover) {
+        /**
+         * Uses a shared duration field rather than creating a new one.
+         *
+         * @param durationField shared duration field
+         */
+        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
+                              DurationField durationField)
+        {
+            super(julianField, gregorianField);
+            if (durationField == null) {
+                durationField = new LinkedDurationField(iDurationField, this);
+            }
+            iDurationField = durationField;
+        }
+
+        public long add(long instant, int value) {
+            if (instant >= iCutover) {
+                instant = iGregorianField.add(instant, value);
+                if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
+                    if (instant + iGapDuration < iCutover) {
+                        instant = gregorianToJulian(instant);
                     }
                 }
             } else {
-                millis = iJulianField.add(millis, value);
-                if (millis >= iCutover) {
+                instant = iJulianField.add(instant, value);
+                if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
+                    if (instant - iGapDuration >= iCutover) {
+                        instant = julianToGregorian(instant);
                     }
                 }
             }
-            return millis;
+            return instant;
         }
         
-        public long add(long millis, long value) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.add(millis, value);
-                if (millis < iCutover) {
+        public long add(long instant, long value) {
+            if (instant >= iCutover) {
+                instant = iGregorianField.add(instant, value);
+                if (instant < iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
+                    if (instant + iGapDuration < iCutover) {
+                        instant = gregorianToJulian(instant);
                     }
                 }
             } else {
-                millis = iJulianField.add(millis, value);
-                if (millis >= iCutover) {
+                instant = iJulianField.add(instant, value);
+                if (instant >= iCutover) {
                     // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
+                    if (instant - iGapDuration >= iCutover) {
+                        instant = julianToGregorian(instant);
                     }
                 }
             }
-            return millis;
+            return instant;
         }
 
-        public long addWrapped(long millis, int value) {
-            if (millis >= iCutover) {
-                millis = iGregorianField.addWrapped(millis, value);
-                if (millis < iCutover) {
-                    // Only adjust if gap fully crossed.
-                    if (millis + iGapMillis < iCutover) {
-                        millis = gregorianToJulian(millis);
-                    }
-                }
-            } else {
-                millis = iJulianField.addWrapped(millis, value);
-                if (millis >= iCutover) {
-                    // Only adjust if gap fully crossed.
-                    if (millis - iGapMillis >= iCutover) {
-                        millis = julianToGregorian(millis);
-                    }
-                }
-            }
-            return millis;
-        }
-
-        public long getDifference(long minuendMillis, long subtrahendMillis) {
-            if (minuendMillis >= iCutover) {
-                if (subtrahendMillis >= iCutover) {
-                    return iGregorianField.getDifference(minuendMillis, subtrahendMillis);
+        public int getDifference(long minuendInstant, long subtrahendInstant) {
+            if (minuendInstant >= iCutover) {
+                if (subtrahendInstant >= iCutover) {
+                    return iGregorianField.getDifference(minuendInstant, subtrahendInstant);
                 }
                 // Remember, the add is being reversed. Since subtrahend is
                 // Julian, convert minuend to Julian to match.
-                minuendMillis = gregorianToJulian(minuendMillis);
-                return iJulianField.getDifference(minuendMillis, subtrahendMillis);
+                minuendInstant = gregorianToJulian(minuendInstant);
+                return iJulianField.getDifference(minuendInstant, subtrahendInstant);
             } else {
-                if (subtrahendMillis < iCutover) {
-                    return iJulianField.getDifference(minuendMillis, subtrahendMillis);
+                if (subtrahendInstant < iCutover) {
+                    return iJulianField.getDifference(minuendInstant, subtrahendInstant);
                 }
                 // Remember, the add is being reversed. Since subtrahend is
                 // Gregorian, convert minuend to Gregorian to match.
-                minuendMillis = julianToGregorian(minuendMillis);
-                return iGregorianField.getDifference(minuendMillis, subtrahendMillis);
+                minuendInstant = julianToGregorian(minuendInstant);
+                return iGregorianField.getDifference(minuendInstant, subtrahendInstant);
             }
+        }
+
+        public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+            if (minuendInstant >= iCutover) {
+                if (subtrahendInstant >= iCutover) {
+                    return iGregorianField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+                }
+                // Remember, the add is being reversed. Since subtrahend is
+                // Julian, convert minuend to Julian to match.
+                minuendInstant = gregorianToJulian(minuendInstant);
+                return iJulianField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+            } else {
+                if (subtrahendInstant < iCutover) {
+                    return iJulianField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+                }
+                // Remember, the add is being reversed. Since subtrahend is
+                // Gregorian, convert minuend to Gregorian to match.
+                minuendInstant = julianToGregorian(minuendInstant);
+                return iGregorianField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
+            }
+        }
+
+        // Since the imprecise fields have durations longer than the gap
+        // duration, keep these methods simple. The inherited implementations
+        // produce incorrect results.
+        //
+        // Degenerate case: If this field is a month, and the cutover is set
+        // far into the future, then the gap duration may be so large as to
+        // reduce the number of months in a year. If the missing month(s) are
+        // at the beginning or end of the year, then the minimum and maximum
+        // values are not 1 and 12. I don't expect this case to ever occur.
+
+        public int getMinimumValue(long instant) {
+            if (instant >= iCutover) {
+                return iGregorianField.getMinimumValue(instant);
+            } else {
+                return iJulianField.getMinimumValue(instant);
+            }
+        }
+
+        public int getMaximumValue(long instant) {
+            if (instant >= iCutover) {
+                return iGregorianField.getMaximumValue(instant);
+            } else {
+                return iJulianField.getMaximumValue(instant);
+            }
+        }
+    }
+
+    /**
+     * Links the duration back to a ImpreciseCutoverField.
+     */
+    private static class LinkedDurationField extends DecoratedDurationField {
+        static final long serialVersionUID = 4097975388007713084L;
+
+        private final ImpreciseCutoverField iField;
+
+        LinkedDurationField(DurationField durationField, ImpreciseCutoverField dateTimeField) {
+            super(durationField, durationField.getName());
+            iField = dateTimeField;
+        }
+
+        public long add(long instant, int value) {
+            return iField.add(instant, value);
+        }
+
+        public long add(long instant, long value) {
+            return iField.add(instant, value);
+        }
+
+        public int getDifference(long minuendInstant, long subtrahendInstant) {
+            return iField.getDifference(minuendInstant, subtrahendInstant);
+        }
+
+        public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+            return iField.getDifferenceAsLong(minuendInstant, subtrahendInstant);
         }
     }
 }

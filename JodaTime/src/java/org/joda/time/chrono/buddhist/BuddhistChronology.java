@@ -57,11 +57,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.DelegateChronology;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.DecoratedChronology;
+import org.joda.time.chrono.DividedDateTimeField;
+import org.joda.time.chrono.LimitChronology;
 import org.joda.time.chrono.OffsetDateTimeField;
+import org.joda.time.chrono.RemainderDateTimeField;
 import org.joda.time.chrono.gj.GJChronology;
 
 /**
@@ -72,14 +77,16 @@ import org.joda.time.chrono.gj.GJChronology;
  * in the year. This class is compatable with the BuddhistCalendar class 
  * supplied by Sun.
  * <p>
- * At present the century fields are unsupported.
+ * BuddhistChronology is thread-safe and immutable.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class BuddhistChronology extends DelegateChronology {
+public final class BuddhistChronology extends DecoratedChronology {
     
+    static final long serialVersionUID = -3474595157769370126L;
+
     /**
      * Constant value for 'Buddhist Era', equivalent to the value returned
      * for AD/CE.
@@ -89,15 +96,11 @@ public final class BuddhistChronology extends DelegateChronology {
     /** Number of years difference in calendars. */
     private static final int BUDDHIST_OFFSET = 543;
 
-    /** UTC instance of the chronology */
-    private static final BuddhistChronology INSTANCE_UTC =
-        new BuddhistChronology(GJChronology.getInstance(DateTimeZone.UTC, null, false));
-
     /** Cache of zone to chronology */
     private static final Map cCache = new HashMap();
-    static {
-        cCache.put(DateTimeZone.UTC, INSTANCE_UTC);
-    }
+
+    /** UTC instance of the chronology */
+    private static final BuddhistChronology INSTANCE_UTC = getInstance(DateTimeZone.UTC);
 
     /**
      * Standard instance of a Buddhist Chronology, that matches
@@ -125,7 +128,6 @@ public final class BuddhistChronology extends DelegateChronology {
      * GregorianJulian calendar rules with a cutover date.
      *
      * @param zone  the time zone to use, null is default
-     * @throws IllegalArgumentException if the zone is null
      */
     public static synchronized BuddhistChronology getInstance(DateTimeZone zone) {
         if (zone == null) {
@@ -138,30 +140,71 @@ public final class BuddhistChronology extends DelegateChronology {
         }
         return chrono;
     }
-    
+
     // Constructors and instance variables
     //-----------------------------------------------------------------------
     // Fields are transient because readResolve will always return a cached instance.
     private transient DateTimeField iYearField;
     private transient DateTimeField iWeekyearField;
+    private transient DateTimeField iYearOfCenturyField;
+    private transient DateTimeField iCenturyOfEraField;
     
     /**
      * Restricted constructor.
      */
-    private BuddhistChronology(GJChronology gjChronology) {
-        super(gjChronology);
-        DateTimeField field = gjChronology.year();
-        iYearField = new OffsetDateTimeField(field.getName(), field, BUDDHIST_OFFSET);
-        field = gjChronology.weekyear();
-        iWeekyearField = new OffsetDateTimeField(field.getName(), field, BUDDHIST_OFFSET);
+    private BuddhistChronology(Chronology chronology) {
+        this(chronology, false);
+    }
+
+    /**
+     * Restricted constructor.
+     */
+    private BuddhistChronology(Chronology chronology, boolean unlimited) {
+        // BuddhistChronology is constructed in three magic steps:
+        //
+        // 1. Wrap a BuddhistChronology with proper offset, but no range limits
+        // 2. Wrap a LimitChronology, which will copy and wrap all the fields
+        // 3. Wrap a BuddhistChronology which purely delegates to LimitChronology
+        //
+        // Why is it done this way? So that the LimitChronology error message
+        // shows the limit printed using BuddhistChronology fields. This extra
+        // wrapping does not impose any additional overhead when accessing
+        // fields because LimitChronology copies them.
+        //
+        // Is this a good design? No.
+
+        super(unlimited ? chronology : limitChronology(chronology));
+
+        DateTimeField field = getWrappedChronology().year();
+        if (unlimited) {
+            field = new OffsetDateTimeField(field, field.getName(), BUDDHIST_OFFSET);
+        }
+        iYearField = field;
+            
+        field = getWrappedChronology().weekyear();
+        if (unlimited) {
+            field = new OffsetDateTimeField(field, field.getName(), BUDDHIST_OFFSET);
+        }
+        iWeekyearField = field;
+
         // All other fields delegated to GJ
+    }
+
+    /**
+     * Returns a LimitChronology that wraps an unlimited BuddhistChronology
+     * that wraps the given Chronology.
+     */    
+    private static Chronology limitChronology(Chronology chrono) {
+        chrono = new BuddhistChronology(chrono, true);
+        DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
+        return new LimitChronology(chrono, lowerLimit, null);
     }
     
     /**
      * Serialization singleton
      */
     private Object readResolve() {
-        return getInstance(getChronology().getDateTimeZone());
+        return getInstance(getWrappedChronology().getDateTimeZone());
     }
 
     // Conversion
@@ -191,8 +234,222 @@ public final class BuddhistChronology extends DelegateChronology {
         return getInstance(zone);
     }
 
+    // Millis
+    //------------------------------------------------------------
+
+    /**
+     * Get the millis duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField millis() {
+        return getWrappedChronology().millis();
+    }
+
+    /**
+     * Get the millis of second field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField millisOfSecond() {
+        return getWrappedChronology().millisOfSecond();
+    }
+
+    /**
+     * Get the millis of day field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField millisOfDay() {
+        return getWrappedChronology().millisOfDay();
+    }
+
+    // Seconds
+    //------------------------------------------------------------
+
+    /**
+     * Get the seconds duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField seconds() {
+        return getWrappedChronology().seconds();
+    }
+
+    /**
+     * Get the second of minute field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField secondOfMinute() {
+        return getWrappedChronology().secondOfMinute();
+    }
+
+    /**
+     * Get the second of day field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField secondOfDay() {
+        return getWrappedChronology().secondOfDay();
+    }
+
+    // Minutes
+    //------------------------------------------------------------
+
+    /**
+     * Get the minutes duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField minutes() {
+        return getWrappedChronology().minutes();
+    }
+
+    /**
+     * Get the minute of hour field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField minuteOfHour() {
+        return getWrappedChronology().minuteOfHour();
+    }
+
+    /**
+     * Get the minute of day field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField minuteOfDay() {
+        return getWrappedChronology().minuteOfDay();
+    }
+
+    // Hours
+    //------------------------------------------------------------
+
+    /**
+     * Get the hours duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField hours() {
+        return getWrappedChronology().hours();
+    }
+
+    /**
+     * Get the hour of day (0-23) field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField hourOfDay() {
+        return getWrappedChronology().hourOfDay();
+    }
+
+    /**
+     * Get the hour of day (offset to 1-24) field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField clockhourOfDay() {
+        return getWrappedChronology().clockhourOfDay();
+    }
+
+    /**
+     * Get the hour of am/pm (0-11) field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField hourOfHalfday() {
+        return getWrappedChronology().hourOfHalfday();
+    }
+
+    /**
+     * Get the hour of am/pm (offset to 1-12) field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField clockhourOfHalfday() {
+        return getWrappedChronology().clockhourOfHalfday();
+    }
+
+    /**
+     * Get the AM(0) PM(1) field for this chronology.
+     * 
+     * @return DateTimeField
+     */
+    public DateTimeField halfdayOfDay() {
+        return getWrappedChronology().halfdayOfDay();
+    }
+
+    // Day
+    //------------------------------------------------------------
+
+    /**
+     * Get the days duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField days() {
+        return getWrappedChronology().days();
+    }
+
+    /**
+     * Get the day of week field for this chronology.
+     *
+     * @return DateTimeField
+     */
+    public DateTimeField dayOfWeek() {
+        return getWrappedChronology().dayOfWeek();
+    }
+
+    /**
+     * Get the day of month field for this chronology.
+     *
+     * @return DateTimeField
+     */
+    public DateTimeField dayOfMonth() {
+        return getWrappedChronology().dayOfMonth();
+    }
+
+    /**
+     * Get the day of year field for this chronology.
+     *
+     * @return DateTimeField
+     */
+    public DateTimeField dayOfYear() {
+        return getWrappedChronology().dayOfYear();
+    }
+
     // Week
-    //-----------------------------------------------------------------------
+    //------------------------------------------------------------
+
+    /**
+     * Get the weeks duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField weeks() {
+        return getWrappedChronology().weeks();
+    }
+
+    /**
+     * Get the week of a week based year field for this chronology.
+     *
+     * @return DateTimeField
+     */
+    public DateTimeField weekOfWeekyear() {
+        return getWrappedChronology().weekOfWeekyear();
+    }
+
+    /**
+     * Get the weekyears duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField weekyears() {
+        return getWrappedChronology().weekyears();
+    }
+
     /**
      * Get the year of a week based year field for this chronology.
      *
@@ -202,15 +459,45 @@ public final class BuddhistChronology extends DelegateChronology {
         return iWeekyearField;
     }
 
+    // Month
+    //------------------------------------------------------------
+
+    /**
+     * Get the months duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField months() {
+        return getWrappedChronology().months();
+    }
+
+    /**
+     * Get the month of year field for this chronology.
+     *
+     * @return DateTimeField
+     */
+    public DateTimeField monthOfYear() {
+        return getWrappedChronology().monthOfYear();
+    }
+
     // Year
-    //-----------------------------------------------------------------------
+    //------------------------------------------------------------
+
+    /**
+     * Get the years duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField years() {
+        return getWrappedChronology().years();
+    }
+
     /**
      * Get the year field for this chronology.
      * 
      * @return DateTimeField
      */
     public DateTimeField year() {
-        // TODO block negative years
         return iYearField;
     }
 
@@ -220,7 +507,6 @@ public final class BuddhistChronology extends DelegateChronology {
      * @return DateTimeField
      */
     public DateTimeField yearOfEra() {
-        // TODO block negative years
         return iYearField;
     }
 
@@ -228,26 +514,39 @@ public final class BuddhistChronology extends DelegateChronology {
      * Get the year of century field for this chronology.
      * 
      * @return DateTimeField
-     * @throws UnsupportedOperationException always
      */
     public DateTimeField yearOfCentury() {
-        // TODO
-        throw new UnsupportedOperationException("yearOfCentury is unsupported for " + getClass().getName());
+        if (iYearOfCenturyField == null) {
+            DateTimeField tempField = new RemainderDateTimeField
+                ((DividedDateTimeField)centuryOfEra(), "");
+            iYearOfCenturyField = new OffsetDateTimeField(tempField, "yearOfCentury", 1);
+        }
+        return iYearOfCenturyField;
+    }
+
+    /**
+     * Get the centuries duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField centuries() {
+        return getWrappedChronology().centuries();
     }
 
     /**
      * Get the century of era field for this chronology.
      * 
      * @return DateTimeField
-     * @throws UnsupportedOperationException always
      */
     public DateTimeField centuryOfEra() {
-        // TODO
-        throw new UnsupportedOperationException("centuryOfEra is unsupported for " + getClass().getName());
+        if (iCenturyOfEraField == null) {
+            DateTimeField tempField = new OffsetDateTimeField(yearOfEra(), "", 99);
+            iCenturyOfEraField = new DividedDateTimeField
+                (tempField, "centuryOfEra", "centuries", 100);
+        }
+        return iCenturyOfEraField;
     }
 
-    // Misc
-    //-----------------------------------------------------------------------
     /**
      * Get the era field for this chronology.
      * 
@@ -256,7 +555,7 @@ public final class BuddhistChronology extends DelegateChronology {
     public DateTimeField era() {
         return BuddhistEraDateTimeField.INSTANCE;
     }
-    
+
     // Output
     //-----------------------------------------------------------------------
     /**
@@ -265,8 +564,12 @@ public final class BuddhistChronology extends DelegateChronology {
      * @return a debugging string
      */
     public String toString() {
+        String str = "BuddhistChronology";
         DateTimeZone zone = getDateTimeZone();
-        return "BuddhistChronology[" + (zone == null ? "" : zone.getID()) + "]";
+        if (zone != null) {
+            str = str + '[' + zone.getID() + ']';
+        }
+        return str;
     }
    
 }

@@ -63,6 +63,8 @@ import org.joda.time.DateTimeZone;
 /**
  * Allows fields to be saved in any order, but physically set in a consistent
  * order.
+ * <p>
+ * DateTimeParserBucket is mutable and not thread-safe.
  *
  * @author Brian S O'Neill
  */
@@ -77,10 +79,10 @@ public class DateTimeParserBucket {
     ArrayList iSavedFields = new ArrayList();
 
     /**
-     * @param millis the initial millis from 1970-01-01T00:00:00, local time
+     * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
      */
-    public DateTimeParserBucket(long millis) {
-        iMillis = millis;
+    public DateTimeParserBucket(long instantLocal) {
+        iMillis = instantLocal;
     }
 
     /**
@@ -106,7 +108,7 @@ public class DateTimeParserBucket {
      * Returns the time zone offset used by computeMillis, unless
      * getDateTimeZone doesn't return null.
      */
-    public long getOffset() {
+    public int getOffset() {
         return iOffset;
     }
 
@@ -226,28 +228,35 @@ public class DateTimeParserBucket {
         }
 
         /**
-         * The field with the larger range is ordered first. If the ranges
-         * match, then the field with the larger unit is ordered first. This
-         * ordering gives preference to more precise fields. For example,
-         * dayOfYear is chosen over monthOfYear.
+         * The field with the larger range is ordered first, where null is
+         * considered infinite. If the ranges match, then the field with the
+         * larger unit is ordered first. This ordering casues "smaller" fields
+         * to be set last, and thus their value sticks. For example, dayOfMonth
+         * takes precedence over monthOfYear, and dayOfWeek takes precedence
+         * over dayOfMonth.
          */
         public int compareTo(Object obj) {
             DateTimeField other = ((SavedField)obj).iField;
-            long a = iField.getRangeMillis();
-            long b = other.getRangeMillis();
-            if (a > b) {
+            int result = compareReverse
+                (iField.getRangeDurationField(), other.getRangeDurationField());
+            if (result != 0) {
+                return result;
+            }
+            return compareReverse
+                (iField.getDurationField(), other.getDurationField());
+        }
+
+        private int compareReverse(Comparable a, Comparable b) {
+            if (a == null) {
+                if (b == null) {
+                    return 0;
+                }
                 return -1;
-            } else if (a < b) {
+            }
+            if (b == null) {
                 return 1;
             }
-            a = iField.getUnitMillis();
-            b = other.getUnitMillis();
-            if (a > b) {
-                return -1;
-            } else if (a < b) {
-                return 1;
-            }
-            return 0;
+            return -a.compareTo(b);
         }
     }
 

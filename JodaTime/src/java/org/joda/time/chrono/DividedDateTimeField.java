@@ -54,9 +54,14 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
 
 /**
- * Generic division datetime field.
+ * Divides a DateTimeField such that the retrieved values are reduced by a
+ * fixed divisor. The field's unit duration is scaled accordingly, but the
+ * range duration is unchanged.
+ * <p>
+ * DividedDateTimeField is thread-safe and immutable.
  *
  * @see RemainderDateTimeField
  * 
@@ -64,127 +69,154 @@ import org.joda.time.DateTimeField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class DividedDateTimeField extends DateTimeField {
+public class DividedDateTimeField extends DecoratedDateTimeField {
 
-    /** The field to divide */
-    private final DateTimeField iField;
-    /** The amount to divide by in the correct units */
-    private final int iUnitDivisor;
+    static final long serialVersionUID = 8318475124230605365L;
+
+    // Shared with RemainderDateTimeField.
+    final int iDivisor;
+    final DurationField iDurationField;
 
     private final int iMin;
     private final int iMax;
 
     /**
-     * Constructor
+     * Constructor.
      * 
-     * @param name  short, descriptive name, like "century".
      * @param field  the field to wrap, like "year()".
-     * @param unitDivisor  divisor in units, such as 100 years in a century
-     * @throws IllegalArgumentException if unit is less than two
+     * @param name  short, descriptive name, like "century".
+     * @param durationName  short, descriptive name, like "centuries".
+     * @param divisor  divisor, such as 100 years in a century
+     * @throws IllegalArgumentException if divisor is less than two
      */
-    public DividedDateTimeField(String name, DateTimeField field, int unitDivisor) {
-        super(name);
+    public DividedDateTimeField(DateTimeField field,
+                                String name, String durationName, int divisor) {
+        super(field, name);
                 
-        if (field == null) {
-            throw new IllegalArgumentException("The field must not be null");
+        if (divisor < 2) {
+            throw new IllegalArgumentException("The divisor must be at least 2");
         }
-        if (unitDivisor < 2) {
-            throw new IllegalArgumentException("The unit divisor must be at least 2");
+
+        DurationField unitField = field.getDurationField();
+        if (unitField == null) {
+            iDurationField = null;
+        } else {
+            iDurationField = new ScaledDurationField(unitField, durationName, divisor);
         }
-        iField = field;
-        iUnitDivisor = unitDivisor;
 
-        int i = iField.getMinimumValue();
-        int min = (i >= 0) ? i / unitDivisor : ((i + 1) / unitDivisor - 1);
+        iDivisor = divisor;
 
-        int j = iField.getMaximumValue();
-        int max = (j >= 0) ? j / unitDivisor : ((j + 1) / unitDivisor - 1);
+        int i = field.getMinimumValue();
+        int min = (i >= 0) ? i / divisor : ((i + 1) / divisor - 1);
+
+        int j = field.getMaximumValue();
+        int max = (j >= 0) ? j / divisor : ((j + 1) / divisor - 1);
 
         iMin = min;
         iMax = max;
     }
 
     /**
-     * Get the amount of divided units from the specified time instant.
-     * 
-     * @param millis  the time instant in millis to query.
-     * @return the amount of divided units extracted from the input.
+     * Construct a DividedDateTimeField that compliments the given
+     * RemainderDateTimeField.
+     *
+     * @param remainderField  complimentary remainder field, like "yearOfCentury()".
+     * @param name  short, descriptive name, like "century".
      */
-    public int get(long millis) {
-        int value = iField.get(millis);
+    public DividedDateTimeField(RemainderDateTimeField remainderField, String name) {
+        super(remainderField.getWrappedField(), name);
+        int divisor = iDivisor = remainderField.iDivisor;
+        iDurationField = remainderField.iRangeField;
+
+        DateTimeField field = getWrappedField();
+        int i = field.getMinimumValue();
+        int min = (i >= 0) ? i / divisor : ((i + 1) / divisor - 1);
+
+        int j = field.getMaximumValue();
+        int max = (j >= 0) ? j / divisor : ((j + 1) / divisor - 1);
+
+        iMin = min;
+        iMax = max;
+    }
+
+    /**
+     * Get the amount of scaled units from the specified time instant.
+     * 
+     * @param instant  the time instant in millis to query.
+     * @return the amount of scaled units extracted from the input.
+     */
+    public int get(long instant) {
+        int value = getWrappedField().get(instant);
         if (value >= 0) {
-            return value / iUnitDivisor;
+            return value / iDivisor;
         } else {
-            return ((value + 1) / iUnitDivisor) - 1;
+            return ((value + 1) / iDivisor) - 1;
         }
     }
 
     /**
-     * Add the specified amount of divided units to the specified time
+     * Add the specified amount of scaled units to the specified time
      * instant. The amount added may be negative.
      * 
-     * @param millis  the time instant in millis to update.
-     * @param amount  the amount of divided units to add (can be negative).
+     * @param instant  the time instant in millis to update.
+     * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, int amount) {
-        return iField.add(millis, amount * iUnitDivisor);
+    public long add(long instant, int amount) {
+        return getWrappedField().add(instant, amount * iDivisor);
     }
 
     /**
-     * Add the specified amount of divided units to the specified time
+     * Add the specified amount of scaled units to the specified time
      * instant. The amount added may be negative.
      * 
-     * @param millis  the time instant in millis to update.
-     * @param amount  the amount of divided units to add (can be negative).
+     * @param instant  the time instant in millis to update.
+     * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, long amount) {
-        return iField.add(millis, amount * iUnitDivisor);
+    public long add(long instant, long amount) {
+        return getWrappedField().add(instant, amount * iDivisor);
     }
 
     /**
-     * Add to the divided component of the specified time instant,
+     * Add to the scaled component of the specified time instant,
      * wrapping around within that component if necessary.
      * 
-     * @param millis  the time instant in millis to update.
-     * @param amount  the amount of divided units to add (can be negative).
+     * @param instant  the time instant in millis to update.
+     * @param amount  the amount of scaled units to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int amount) {
-        return set(millis, getWrappedValue(get(millis), amount, iMin, iMax));
+    public long addWrapped(long instant, int amount) {
+        return set(instant, Utils.getWrappedValue(get(instant), amount, iMin, iMax));
     }
 
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return iField.getDifference(minuendMillis, subtrahendMillis) / iUnitDivisor;
+    public int getDifference(long minuendInstant, long subtrahendInstant) {
+        return getWrappedField().getDifference(minuendInstant, subtrahendInstant) / iDivisor;
+    }
+
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        return getWrappedField().getDifferenceAsLong(minuendInstant, subtrahendInstant) / iDivisor;
     }
 
     /**
-     * Set the specified amount of divided units to the specified time instant.
+     * Set the specified amount of scaled units to the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
-     * @param value  value of divided units to set.
+     * @param instant  the time instant in millis to update.
+     * @param value  value of scaled units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
-    public long set(long millis, int value) {
-        verifyValueBounds(value, iMin, iMax);
-        int remainder = getRemainder(iField.get(millis));
-        return iField.set(millis, value * iUnitDivisor + remainder);
+    public long set(long instant, int value) {
+        Utils.verifyValueBounds(this, value, iMin, iMax);
+        int remainder = getRemainder(getWrappedField().get(instant));
+        return getWrappedField().set(instant, value * iDivisor + remainder);
     }
 
     /**
-     * Returns the wrapped field's unit size multiplied by the unit divisor.
+     * Returns a scaled version of the wrapped field's unit duration field.
      */
-    public long getUnitMillis() {
-        return iField.getUnitMillis() * iUnitDivisor;
-    }
-
-    /**
-     * Returns the wrapped field's range.
-     */
-    public long getRangeMillis() {
-        return iField.getRangeMillis();
+    public DurationField getDurationField() {
+        return iDurationField;
     }
 
     /**
@@ -204,38 +236,30 @@ public class DividedDateTimeField extends DateTimeField {
     public int getMaximumValue() {
         return iMax;
     }
-    
-    public long roundFloor(long millis) {
-        return iField.roundFloor(iField.set(millis, get(millis) * iUnitDivisor));
+
+    public long roundFloor(long instant) {
+        DateTimeField field = getWrappedField();
+        return field.roundFloor(field.set(instant, get(instant) * iDivisor));
     }
 
-    public long remainder(long millis) {
-        return set(millis, get(iField.remainder(millis)));
-    }
-
-    /**
-     * Returns the DateTimeField being wrapped.
-     * 
-     * @return field
-     */
-    public DateTimeField getField() {
-        return iField;
+    public long remainder(long instant) {
+        return set(instant, get(getWrappedField().remainder(instant)));
     }
 
     /**
-     * Returns the divisor to apply to the field in the field's units.
+     * Returns the divisor applied, in the field's units.
      * 
      * @return the divisor
      */
-    public int getUnitDivisor() {
-        return iUnitDivisor;
+    public int getDivisor() {
+        return iDivisor;
     }
 
     private int getRemainder(int value) {
         if (value >= 0) {
-            return value % iUnitDivisor;
+            return value % iDivisor;
         } else {
-            return (iUnitDivisor - 1) + ((value + 1) % iUnitDivisor);
+            return (iDivisor - 1) + ((value + 1) % iDivisor);
         }
     }
 

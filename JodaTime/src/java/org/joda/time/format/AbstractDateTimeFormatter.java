@@ -55,8 +55,6 @@ package org.joda.time.format;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.lang.reflect.Method;
-import java.text.ParseException;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -78,30 +76,16 @@ import org.joda.time.ReadableInstant;
  * Likewise, the parse methods assume that your subclass has implemented
  * DateTimeParser or DateTimeFormatter. If not, a ClassCastException is thrown
  * when calling the parse methods.
+ * <p>
+ * AbstractDateTimeFormatter is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public abstract class AbstractDateTimeFormatter {
 
-    private static Method cInitCauseMethod;
-
-    static {
-        // cope with JDK 1.4 enhancements
-        Method initCauseMethod = null;
-        try {
-            initCauseMethod = Throwable.class.getMethod
-                ("initCause", new Class[] {Throwable.class});
-            
-        } catch (NoSuchMethodException ex) {
-            // ignore
-        } catch (SecurityException ex) {
-            // ignore
-        }
-        cInitCauseMethod = initCauseMethod;
-    }
-
     // Accessed also by AbstractDurationFormatter.
-    static String createErrorMessage(String text, int errorPos) {
+    static String createErrorMessage(final String text, final int errorPos) {
         int sampleLen = errorPos + 20;
         String sampleText;
         if (text.length() <= sampleLen) {
@@ -122,98 +106,97 @@ public abstract class AbstractDateTimeFormatter {
             sampleText.substring(errorPos) + '"';
     }
 
-    private static void setCause(ParseException pe, Throwable initCause) {
-        if (cInitCauseMethod != null) {
-            try {
-                cInitCauseMethod.invoke(pe, new Object[]{initCause});
-            } catch (Exception e) {
-                cInitCauseMethod = null;
-            }
-        }
-    }
-
     /**
      * Returns the Chronology being used by the formatter, or null if none.
      */
     public abstract Chronology getChronology();
 
-    public void printTo(StringBuffer buf, ReadableInstant instant) {
+    /**
+     * Returns the DateTimeZone from the formatter's Chronology, defaulting to
+     * UTC if the Chronology or its DateTimeZone is null.
+     */
+    public DateTimeZone getDateTimeZone() {
+        Chronology chrono = getChronology();
+        if (chrono == null) {
+            return DateTimeZone.UTC;
+        }
+        DateTimeZone zone = chrono.getDateTimeZone();
+        return zone == null ? DateTimeZone.UTC : zone;
+    }
+
+    public void printTo(final StringBuffer buf, final ReadableInstant instant) {
         long millisUTC = instant.getMillis();
         Chronology chrono;
         if ((chrono = instant.getChronology()) != null) {
             printTo(buf, millisUTC, chrono.getDateTimeZone());
         } else {
-            ((DateTimePrinter)this).printTo(buf, millisUTC, null, millisUTC);
+            ((DateTimePrinter)this).printTo(buf, millisUTC, null);
         }
     }
 
-    public void printTo(Writer out, ReadableInstant instant) throws IOException {
+    public void printTo(final Writer out, final ReadableInstant instant) throws IOException {
         long millisUTC = instant.getMillis();
         Chronology chrono;
         if ((chrono = instant.getChronology()) != null) {
             printTo(out, millisUTC, chrono.getDateTimeZone());
         } else {
-            ((DateTimePrinter)this).printTo(out, millisUTC, null, millisUTC);
+            ((DateTimePrinter)this).printTo(out, millisUTC, null);
         }
     }
 
-    public void printTo(StringBuffer buf, long millisUTC) {
-        printTo(buf, millisUTC, null);
+    public void printTo(final StringBuffer buf, final long instant) {
+        printTo(buf, instant, null);
     }
 
-    public void printTo(Writer out, long millisUTC) throws IOException {
-        printTo(out, millisUTC, null);
+    public void printTo(final Writer out, final long instant) throws IOException {
+        printTo(out, instant, null);
     }
 
-    public void printTo(StringBuffer buf, long millisUTC, DateTimeZone zone) {
-        if (zone != null) {
-            ((DateTimePrinter)this).printTo
-                (buf, millisUTC, zone, millisUTC + zone.getOffset(millisUTC));
-        } else {
-            ((DateTimePrinter)this).printTo(buf, millisUTC, null, millisUTC);
+    public void printTo(final StringBuffer buf, final long instant, DateTimeZone zone) {
+        if (zone == null) {
+            zone = getDateTimeZone();
         }
+        ((DateTimePrinter) this).printTo
+            (buf, instant, zone, instant + zone.getOffset(instant));
     }
 
-    public void printTo(Writer out, long millisUTC, DateTimeZone zone) throws IOException {
-        if (zone != null) {
-            ((DateTimePrinter)this).printTo
-                (out, millisUTC, zone, millisUTC + zone.getOffset(millisUTC));
-        } else {
-            ((DateTimePrinter)this).printTo(out, millisUTC, null, millisUTC);
+    public void printTo(final Writer out, final long instant, DateTimeZone zone) throws IOException {
+        if (zone == null) {
+            zone = getDateTimeZone();
         }
+        ((DateTimePrinter) this).printTo
+            (out, instant, zone, instant + zone.getOffset(instant));
     }
 
-    public String print(ReadableInstant instant) {
+    public String print(final ReadableInstant instant) {
         long millisUTC = instant.getMillis();
         Chronology chrono;
         if ((chrono = instant.getChronology()) != null) {
             return print(millisUTC, chrono.getDateTimeZone());
         } else {
-            return print(millisUTC, null, millisUTC);
+            return print(millisUTC, null);
         }
     }
 
-    public String print(long millisUTC) {
-        return print(millisUTC, null);
+    public String print(final long instant) {
+        return print(instant, null);
     }
 
-    public String print(long millisUTC, DateTimeZone zone) {
-        if (zone != null) {
-            return print
-                (millisUTC, zone, millisUTC + zone.getOffset(millisUTC));
-        } else {
-            return print(millisUTC, null, millisUTC);
+    public String print(final long instant, DateTimeZone zone) {
+        if (zone == null) {
+            zone = getDateTimeZone();
         }
+        return print(instant, zone, instant + zone.getOffset(instant));
     }
 
-    public String print(long millisUTC, DateTimeZone zone, long millisLocal) {
+    public String print(final long instant, final DateTimeZone zone, final long instantLocal) {
         DateTimePrinter p = (DateTimePrinter)this;
         StringBuffer buf = new StringBuffer(p.estimatePrintedLength());
-        p.printTo(buf, millisUTC, zone, millisLocal);
+        p.printTo(buf, instant, zone, instantLocal);
         return buf.toString();
     }
 
-    public int parseInto(ReadWritableInstant instant, String text, int position) {
+    public int parseInto(final ReadWritableInstant instant, final String text, final int position) {
         DateTimeParser p = (DateTimeParser)this;
 
         long millis = instant.getMillis();
@@ -227,46 +210,62 @@ public abstract class AbstractDateTimeFormatter {
         }
 
         DateTimeParserBucket bucket = createBucket(millis);
-        position = p.parseInto(bucket, text, position);
+        int resultPos = p.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis());
-        return position;
+        return resultPos;
     }
     
-    public long parseMillis(String text) throws ParseException {
+    public long parseMillis(final String text) {
         return parseMillis(text, 0);
     }
 
-    public long parseMillis(String text, long millis) throws ParseException {
+    public long parseMillis(final String text, final long instantLocal) {
         DateTimeParser p = (DateTimeParser)this;
-        DateTimeParserBucket bucket = createBucket(millis);
+        DateTimeParserBucket bucket = createBucket(instantLocal);
 
         int newPos = p.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
-                try {
-                    return bucket.computeMillis();
-                } catch (IllegalArgumentException ex) {
-                    ParseException pe = new ParseException(ex.getMessage(), 0);
-                    setCause(pe, ex);
-                    throw pe;
-                }
+                return bucket.computeMillis();
             }
         } else {
             newPos = ~newPos;
         }
 
-        throw new ParseException(createErrorMessage(text, newPos), newPos);
+        throw new IllegalArgumentException(createErrorMessage(text, newPos));
     }
 
-    public DateTime parseDateTime(String text) throws ParseException {
+    public DateTime parseDateTime(final String text) {
         return new DateTime(parseMillis(text), getChronology());
     }
 
-    public MutableDateTime parseMutableDateTime(String text) throws ParseException {
+    public DateTime parseDateTime(final String text, final ReadableInstant instant) {
+        return new DateTime(parseMillis(text, getInstantLocal(instant)), getChronology());
+    }
+
+    public MutableDateTime parseMutableDateTime(final String text) {
         return new MutableDateTime(parseMillis(text), getChronology());
     }
 
-    private DateTimeParserBucket createBucket(long millis) {
+    public MutableDateTime parseMutableDateTime(final String text, final ReadableInstant instant) {
+        return new MutableDateTime(parseMillis(text, getInstantLocal(instant)), getChronology());
+    }
+
+    private long getInstantLocal(ReadableInstant instant) {
+        long instantLocal;
+        if (instant == null) {
+            instantLocal = 0;
+        } else {
+            instantLocal = instant.getMillis();
+            DateTimeZone zone = instant.getDateTimeZone();
+            if (zone != null) {
+                instantLocal += zone.getOffset(instantLocal);
+            }
+        }
+        return instantLocal;
+    }
+
+    private DateTimeParserBucket createBucket(final long millis) {
         DateTimeParserBucket bucket = new DateTimeParserBucket(millis);
         Chronology chrono = getChronology();
         if (chrono != null) {

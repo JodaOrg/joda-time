@@ -58,6 +58,9 @@ import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.ImpreciseDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the month of the year component of time.
@@ -68,7 +71,10 @@ import org.joda.time.DateTimeField;
  * @version 1.0
  * @since 1.0
  */
-final class GJMonthOfYearDateTimeField extends DateTimeField {
+final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
+
+    static final long serialVersionUID = -4748157875845286249L;
+
     private static final int MIN = DateTimeConstants.JANUARY;
     private static final int MAX = DateTimeConstants.DECEMBER;
 
@@ -78,8 +84,12 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
      * Restricted constructor
      */
     GJMonthOfYearDateTimeField(ProlepticChronology chronology) {
-        super("monthOfYear");
+        super("monthOfYear", "months", chronology.getRoughMillisPerMonth());
         iChronology = chronology;
+    }
+
+    public boolean isLenient() {
+        return false;
     }
 
     /**
@@ -87,19 +97,19 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
      *
      * @see org.joda.time.DateTimeField#get(long)
      * @see org.joda.time.ReadableDateTime#getMonthOfYear()
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the month extracted from the input.
      */
-    public int get(long millis) {
-        return iChronology.getMonthOfYear(millis);
+    public int get(long instant) {
+        return iChronology.getMonthOfYear(instant);
     }
 
-    public String getAsText(long millis, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(get(millis));
+    public String getAsText(long instant, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(get(instant));
     }
 
-    public String getAsShortText(long millis, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(get(millis));
+    public String getAsShortText(long instant, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(get(instant));
     }
 
     /**
@@ -113,24 +123,24 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
      * 
      * @see org.joda.time.DateTimeField#add
      * @see org.joda.time.ReadWritableDateTime#addMonths(int)
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param months  the months to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, int months) {
+    public long add(long instant, int months) {
         if (months == 0) {
-            return millis; // the easy case
+            return instant; // the easy case
         }
         //
         // Save time part first.
         //
-        long timePart = iChronology.millisOfDay().get(millis);
+        long timePart = iChronology.millisOfDay().get(instant);
         //
         //
         // Get this year and month.
         //
-        int thisYear = iChronology.year().get(millis);
-        int thisMonth = iChronology.getMonthOfYear(millis, thisYear);
+        int thisYear = iChronology.year().get(instant);
+        int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
         // ----------------------------------------------------------
         //
         // Do not refactor without careful consideration.
@@ -162,7 +172,7 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
         //
         // Quietly force DOM to nearest sane value.
         //
-        int dayToUse = iChronology.getDayOfMonth(millis, thisYear, thisMonth);
+        int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
         int maxDay = iChronology.getDaysInYearMonth(yearToUse, monthToUse);
         if (dayToUse > maxDay) {
             dayToUse = maxDay;
@@ -175,18 +185,18 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
         return datePart + timePart;
     }
 
-    public long add(long millis, long months) {
+    public long add(long instant, long months) {
         int i_months = (int)months;
         if (i_months == months) {
-            return add(millis, i_months);
+            return add(instant, i_months);
         }
 
         // Copied from add(long, int) and modified slightly:
 
-        long timePart = iChronology.millisOfDay().get(millis);
+        long timePart = iChronology.millisOfDay().get(instant);
 
-        int thisYear = iChronology.year().get(millis);
-        int thisMonth = iChronology.getMonthOfYear(millis, thisYear);
+        int thisYear = iChronology.year().get(instant);
+        int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
 
         long yearToUse;
         long monthToUse = thisMonth - 1 + months;
@@ -216,7 +226,7 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
         int i_yearToUse = (int)yearToUse;
         int i_monthToUse = (int)monthToUse;
 
-        int dayToUse = iChronology.getDayOfMonth(millis, thisYear, thisMonth);
+        int dayToUse = iChronology.getDayOfMonth(instant, thisYear, thisMonth);
         int maxDay = iChronology.getDaysInYearMonth(i_yearToUse, i_monthToUse);
         if (dayToUse > maxDay) {
             dayToUse = maxDay;
@@ -233,45 +243,45 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
      * 
      * @see org.joda.time.DateTimeField#addWrapped
      * @see org.joda.time.ReadWritableDateTime#addWrappedMonthOfYear(int)
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param months  the months to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int months) {
-        return set(millis, getWrappedValue(get(millis), months, MIN, MAX));
+    public long addWrapped(long instant, int months) {
+        return set(instant, Utils.getWrappedValue(get(instant), months, MIN, MAX));
     }
 
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        if (minuendMillis < subtrahendMillis) {
-            return -getDifference(subtrahendMillis, minuendMillis);
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        if (minuendInstant < subtrahendInstant) {
+            return -getDifference(subtrahendInstant, minuendInstant);
         }
 
         DateTimeField yearField = iChronology.year();
-        int minuendYear = yearField.get(minuendMillis);
-        int minuendMonth = iChronology.getMonthOfYear(minuendMillis, minuendYear);
-        int subtrahendYear = yearField.get(subtrahendMillis);
-        int subtrahendMonth = iChronology.getMonthOfYear(subtrahendMillis, subtrahendYear);
+        int minuendYear = yearField.get(minuendInstant);
+        int minuendMonth = iChronology.getMonthOfYear(minuendInstant, minuendYear);
+        int subtrahendYear = yearField.get(subtrahendInstant);
+        int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
 
         long difference = (minuendYear - subtrahendYear) * 12L + minuendMonth - subtrahendMonth;
 
         // Before adjusting for remainder, account for special case of add
         // where the day-of-month is forced to the nearest sane value.
         int minuendDom = iChronology.getDayOfMonth
-            (minuendMillis, minuendYear, minuendMonth);
+            (minuendInstant, minuendYear, minuendMonth);
         if (minuendDom == iChronology.getDaysInYearMonth(minuendYear, minuendMonth)) {
             // Last day of the minuend month...
             int subtrahendDom = iChronology.getDayOfMonth
-                (subtrahendMillis, subtrahendYear, subtrahendMonth);
+                (subtrahendInstant, subtrahendYear, subtrahendMonth);
             if (subtrahendDom > minuendDom) {
                 // ...and day of subtrahend month is larger.
-                subtrahendMillis = iChronology.dayOfMonth().set(subtrahendMillis, minuendDom);
+                subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
             }
         }
 
         // Inlined remainder method to avoid duplicate calls.
-        long minuendRem = minuendMillis
+        long minuendRem = minuendInstant
             - iChronology.getYearMonthMillis(minuendYear, minuendMonth);
-        long subtrahendRem = subtrahendMillis
+        long subtrahendRem = subtrahendInstant
             - iChronology.getYearMonthMillis(subtrahendYear, subtrahendMonth);
 
         if (minuendRem < subtrahendRem) {
@@ -289,17 +299,17 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
      * 07-31 to month 6 = 06-30<p>
      * 03-31 to month 2 = 02-28 or 02-29 depending<p>
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param month  the month (1,12) to update the time to.
      * @return the updated time instant.
      * @throws IllegalArgumentException  if month is invalid
      */
-    public long set(long millis, int month) {
-        super.verifyValueBounds(month, MIN, MAX);
+    public long set(long instant, int month) {
+        Utils.verifyValueBounds(this, month, MIN, MAX);
         //
-        int thisYear = iChronology.year().get(millis);
+        int thisYear = iChronology.year().get(instant);
         //
-        int thisDom = iChronology.getDayOfMonth(millis, thisYear);
+        int thisDom = iChronology.getDayOfMonth(instant, thisYear);
         int maxDom = iChronology.getDaysInYearMonth(thisYear, month);
         if (thisDom > maxDom) {
             // Quietly force DOM to nearest sane value.
@@ -307,19 +317,33 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
         }
         // Return newly calculated millis value
         return iChronology.getYearMonthDayMillis(thisYear, month, thisDom) +
-            iChronology.millisOfDay().get(millis);
+            iChronology.millisOfDay().get(instant);
     }
 
-    public long set(long millis, String text, Locale locale) {
-        return set(millis, GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text));
+    public long set(long instant, String text, Locale locale) {
+        return set(instant, GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text));
     }
 
-    public long getUnitMillis() {
-        return iChronology.getRoughMillisPerMonth();
+    public DurationField getRangeDurationField() {
+        return iChronology.years();
     }
 
-    public long getRangeMillis() {
-        return iChronology.getRoughMillisPerYear();
+    public boolean isLeap(long instant) {
+        int thisYear = iChronology.year().get(instant);
+        int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
+        if (thisMonth != 2) {
+            return false;
+        } else {
+            return 29 == iChronology.getDaysInYearMonth(thisYear, thisMonth);
+        }
+    }
+
+    public int getLeapAmount(long instant) {
+        return isLeap(instant) ? 1 : 0;
+    }
+
+    public DurationField getLeapDurationField() {
+        return iChronology.days();
     }
 
     public int getMinimumValue() {
@@ -338,14 +362,14 @@ final class GJMonthOfYearDateTimeField extends DateTimeField {
         return GJLocaleSymbols.forLocale(locale).getMonthMaxShortTextLength();
     }
 
-    public long roundFloor(long millis) {
-        int year = iChronology.year().get(millis);
-        int month = iChronology.getMonthOfYear(millis, year);
+    public long roundFloor(long instant) {
+        int year = iChronology.year().get(instant);
+        int month = iChronology.getMonthOfYear(instant, year);
         return iChronology.getYearMonthMillis(year, month);
     }
 
-    public long remainder(long millis) {
-        return millis - roundFloor(millis);
+    public long remainder(long instant) {
+        return instant - roundFloor(instant);
     }
 
     /**

@@ -53,13 +53,18 @@
  */
 package org.joda.test.time;
 
-import java.util.*;
-import java.text.* ;
-import java.io.*;
+import java.io.PrintStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import junit.framework.TestSuite;
 
-import org.joda.time.*;
+import org.joda.time.Chronology;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.iso.ISOChronology;
 /**
  * This class is a Junit unit test for the
@@ -351,7 +356,7 @@ public class TestMDTGet extends BulkTest {
     }
     /**
      * Test the <code>getWeekOfYearWeek()</code> method.
-     * @see org.joda.time.MutableDateTime#getWeekOfYearWeek()
+     * @see org.joda.time.MutableDateTime#getWeekOfWeekyear()
      */
     public void testGetWeekOfWeekyear() {
         for (int ngc = 0; ngc < gcals.length; ++ngc) {
@@ -361,7 +366,7 @@ public class TestMDTGet extends BulkTest {
     }
     /**
      * Test the <code>getWeekOfYearYear()</code> method.
-     * @see org.joda.time.MutableDateTime#getWeekOfYearYear()
+     * @see org.joda.time.MutableDateTime#getWeekOfWeekyear()
      */
     public void testGetYearOfWeekyear() {
         for (int ngc = 0; ngc < gcals.length; ++ngc) {
@@ -547,7 +552,7 @@ public class TestMDTGet extends BulkTest {
     }
     /**
      * Test the <code>weekOfYearWeek()</code> method.
-     * @see org.joda.time.MutableDateTime#weekOfYearWeek()
+     * @see org.joda.time.MutableDateTime#weekOfWeekyear()
      */
     public void testWeekOfWeekyear() {
         for (int ngc = 0; ngc < gcals.length; ++ngc) {
@@ -564,9 +569,9 @@ public class TestMDTGet extends BulkTest {
     }
     /**
      * Test the <code>weekOfYearYear()</code> method.
-     * @see org.joda.time.MutableDateTime#weekOfYearYear()
+     * @see org.joda.time.MutableDateTime#weekyear()
      */
-    public void testYearOfWeekyear() {
+    public void testWeekyear() {
         for (int ngc = 0; ngc < gcals.length; ++ngc) {
             prepTest( ngc );
             assertEquals("DWOYY1:"+isoString, expected_woyy,
@@ -841,9 +846,9 @@ public class TestMDTGet extends BulkTest {
         {
             mdt = new MutableDateTime( isoString, ISOChronology.getInstanceUTC() );
         }
-        catch(ParseException pe)
+        catch(IllegalArgumentException pe)
         {
-            ewtr.println("ParseException Detected: " + isoString);
+            ewtr.println("IllegalArgumentException Detected: " + isoString);
             ewtr.println( pe.getMessage() );
             ewtr.flush();
         }

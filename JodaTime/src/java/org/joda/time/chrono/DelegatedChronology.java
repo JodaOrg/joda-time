@@ -56,26 +56,34 @@ package org.joda.time.chrono;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
 
 /**
- * <code>DelegateChronology</code> delegates each method call to the
+ * <code>DelegatedChronology</code> delegates each method call to the
  * chronology it wraps.
+ * <p>
+ * DelegatedChronology is thread-safe and immutable, and its subclasses must
+ * be as well.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
+ * @see DecoratedChronology
  */
-public abstract class DelegateChronology extends Chronology {
+public abstract class DelegatedChronology extends Chronology {
     
-    /** The Chonology being wrapped */
+    static final long serialVersionUID = 216867504527676612L;
+
+    /** The Chronology being wrapped */
     private final Chronology iChronology;
     
     /**
-     * Create a DelegateChronology for any chronology.
+     * Create a DelegatedChronology for any chronology.
      *
      * @param chrono the chronology
      * @throws IllegalArgumentException if chronology is null
      */
-    protected DelegateChronology(Chronology chrono) {
+    protected DelegatedChronology(Chronology chrono) {
         if (chrono == null) {
             throw new IllegalArgumentException("The Chronology must not be null");
         }
@@ -87,7 +95,7 @@ public abstract class DelegateChronology extends Chronology {
      * 
      * @return the wrapped Chronology
      */
-    protected Chronology getChronology() {
+    protected Chronology getWrappedChronology() {
         return iChronology;
     }
 
@@ -114,8 +122,65 @@ public abstract class DelegateChronology extends Chronology {
         return iChronology.getDateTimeZone();
     }
 
+    public long getDateOnlyMillis(long instant) {
+        return iChronology.getDateOnlyMillis(instant);
+    }
+
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
+    }
+
+    public long getTimeOnlyMillis(long instant) {
+        return iChronology.getTimeOnlyMillis(instant);
+    }
+
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getTimeOnlyMillis
+            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis
+            (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int millisOfDay)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis
+            (year, monthOfYear, dayOfMonth,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
     // Millis
     //------------------------------------------------------------
+
+    /**
+     * Get the millis duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField millis() {
+        return iChronology.millis();
+    }
 
     /**
      * Get the millis of second field for this chronology.
@@ -139,6 +204,15 @@ public abstract class DelegateChronology extends Chronology {
     //------------------------------------------------------------
 
     /**
+     * Get the seconds duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField seconds() {
+        return iChronology.seconds();
+    }
+
+    /**
      * Get the second of minute field for this chronology.
      * 
      * @return DateTimeField
@@ -160,6 +234,15 @@ public abstract class DelegateChronology extends Chronology {
     //------------------------------------------------------------
 
     /**
+     * Get the minutes duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField minutes() {
+        return iChronology.minutes();
+    }
+
+    /**
      * Get the minute of hour field for this chronology.
      * 
      * @return DateTimeField
@@ -179,6 +262,15 @@ public abstract class DelegateChronology extends Chronology {
 
     // Hours
     //------------------------------------------------------------
+
+    /**
+     * Get the hours duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField hours() {
+        return iChronology.hours();
+    }
 
     /**
      * Get the hour of day (0-23) field for this chronology.
@@ -229,6 +321,15 @@ public abstract class DelegateChronology extends Chronology {
     //------------------------------------------------------------
 
     /**
+     * Get the days duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField days() {
+        return iChronology.days();
+    }
+
+    /**
      * Get the day of week field for this chronology.
      *
      * @return DateTimeField
@@ -259,12 +360,30 @@ public abstract class DelegateChronology extends Chronology {
     //------------------------------------------------------------
 
     /**
+     * Get the weeks duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField weeks() {
+        return iChronology.weeks();
+    }
+
+    /**
      * Get the week of a week based year field for this chronology.
      *
      * @return DateTimeField
      */
     public DateTimeField weekOfWeekyear() {
         return iChronology.weekOfWeekyear();
+    }
+
+    /**
+     * Get the weekyears duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField weekyears() {
+        return iChronology.weekyears();
     }
 
     /**
@@ -280,6 +399,15 @@ public abstract class DelegateChronology extends Chronology {
     //------------------------------------------------------------
 
     /**
+     * Get the months duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField months() {
+        return iChronology.months();
+    }
+
+    /**
      * Get the month of year field for this chronology.
      *
      * @return DateTimeField
@@ -290,6 +418,15 @@ public abstract class DelegateChronology extends Chronology {
 
     // Year
     //------------------------------------------------------------
+
+    /**
+     * Get the years duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField years() {
+        return iChronology.years();
+    }
 
     /**
      * Get the year field for this chronology.
@@ -319,12 +456,30 @@ public abstract class DelegateChronology extends Chronology {
     }
 
     /**
+     * Get the centuries duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField centuries() {
+        return iChronology.centuries();
+    }
+
+    /**
      * Get the century of era field for this chronology.
      * 
      * @return DateTimeField
      */
     public DateTimeField centuryOfEra() {
         return iChronology.centuryOfEra();
+    }
+
+    /**
+     * Get the eras duration field for this chronology.
+     * 
+     * @return DurationField
+     */
+    public DurationField eras() {
+        return iChronology.eras();
     }
 
     /**

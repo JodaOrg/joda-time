@@ -61,6 +61,8 @@ import java.util.Locale;
 /**
  * The default name provider acquires localized names from
  * {@link DateFormatSymbols java.text.DateFormatSymbols}.
+ * <p>
+ * DefaultNameProvider is thread-safe and immutable.
  *
  * @author Brian S O'Neill
  */

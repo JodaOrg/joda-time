@@ -96,7 +96,7 @@ public class TestGJYearOfEraDateTimeField extends AbstractTestDateTimeField {
         return 1;
     }
     protected int getMaximumValue() {
-        return 292272992;
+        return 292278993;
     }
     protected int getCalendarValue(long millis) {
         iDate.setTime(millis);

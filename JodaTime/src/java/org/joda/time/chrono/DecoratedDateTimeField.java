@@ -53,36 +53,45 @@
  */
 package org.joda.time.chrono;
 
-import java.util.Locale;
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
 
 /**
- * <code>DelegateDateTimeField</code> delegates each method call to the
- * date time field it wraps.
+ * <code>DecoratedDateTimeField</code> extends {@link AbstractDateTimeField},
+ * implementing only the minimum required set of methods. These implemented
+ * methods delegate to a wrapped field.
+ * <p>
+ * This design allows new DateTimeField types to be defined that piggyback on
+ * top of another, inheriting all the safe method implementations from
+ * AbstractDateTimeField. Should any method require pure delegation to the
+ * wrapped field, simply override and use the provided getWrappedField method.
+ * <p>
+ * DecoratedDateTimeField is thread-safe and immutable, and its subclasses must
+ * be as well.
  *
  * @author Brian S O'Neill
  * @since 1.0
+ * @see DelegatedDateTimeField
  */
-public abstract class DelegateDateTimeField extends DateTimeField {
+public class DecoratedDateTimeField extends AbstractDateTimeField {
 
-    private static DateTimeField getField(DateTimeField field) {
-        if (field == null) {
-            throw new IllegalArgumentException("The field must not be null");
-        }
-        return field;
-    }
+    static final long serialVersionUID = 203115783733757597L;
 
     /** The DateTimeField being wrapped */
     private final DateTimeField iField;
 
-    protected DelegateDateTimeField(DateTimeField field) {
-        super(getField(field).getName());
-        iField = field;
-    }
-
-    protected DelegateDateTimeField(String name, DateTimeField field) {
+    /**
+     * @param name allow name to be overridden
+     */
+    public DecoratedDateTimeField(DateTimeField field, String name) {
         super(name);
-        iField = getField(field);
+        if (field == null) {
+            throw new IllegalArgumentException("The field must not be null");
+        }
+        if (!field.isSupported()) {
+            throw new IllegalArgumentException("The field must be supported");
+        }
+        iField = field;
     }
 
     /**
@@ -90,111 +99,40 @@ public abstract class DelegateDateTimeField extends DateTimeField {
      * 
      * @return the wrapped DateTimeField
      */
-    protected DateTimeField getDateTimeField() {
+    public final DateTimeField getWrappedField() {
         return iField;
     }
 
-    public int get(long millis) {
-        return iField.get(millis);
+    public boolean isLenient() {
+        return iField.isLenient();
     }
 
-    public String getAsText(long millis, Locale locale) {
-        return iField.getAsText(millis, locale);
+    public int get(long instant) {
+        return iField.get(instant);
     }
 
-    public String getAsShortText(long millis, Locale locale) {
-        return iField.getAsShortText(millis, locale);
+    public long set(long instant, int value) {
+        return iField.set(instant, value);
     }
 
-    public long add(long millis, int value) {
-        return iField.add(millis, value);
+    public DurationField getDurationField() {
+        return iField.getDurationField();
     }
 
-    public long add(long millis, long value) {
-        return iField.add(millis, value);
-    }
-
-    public long addWrapped(long millis, int value) {
-        return iField.addWrapped(millis, value);
-    }
-
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return iField.getDifference(minuendMillis, subtrahendMillis);
-    }
-
-    public long set(long millis, int value) {
-        return iField.set(millis, value);
-    }
-
-    public long set(long millis, String text, Locale locale) {
-        return iField.set(millis, text, locale);
-    }
-
-    public boolean isLeap(long millis) {
-        return iField.isLeap(millis);
-    }
-
-    public int getLeapAmount(long millis) {
-        return iField.getLeapAmount(millis);
-    }
-
-    public long getUnitMillis() {
-        return iField.getUnitMillis();
-    }
-
-    public long getRangeMillis() {
-        return iField.getRangeMillis();
+    public DurationField getRangeDurationField() {
+        return iField.getRangeDurationField();
     }
 
     public int getMinimumValue() {
         return iField.getMinimumValue();
     }
 
-    public int getMinimumValue(long millis) {
-        return iField.getMinimumValue(millis);
-    }
-
     public int getMaximumValue() {
         return iField.getMaximumValue();
     }
 
-    public int getMaximumValue(long millis) {
-        return iField.getMaximumValue(millis);
+    public long roundFloor(long instant) {
+        return iField.roundFloor(instant);
     }
 
-    public int getMaximumTextLength(Locale locale) {
-        return iField.getMaximumTextLength(locale);
-    }
-
-    public int getMaximumShortTextLength(Locale locale) {
-        return iField.getMaximumShortTextLength(locale);
-    }
-
-    public long roundFloor(long millis) {
-        return iField.roundFloor(millis);
-    }
-
-    public long roundCeiling(long millis) {
-        return iField.roundCeiling(millis);
-    }
-
-    public long roundHalfFloor(long millis) {
-        return iField.roundHalfFloor(millis);
-    }
-
-    public long roundHalfCeiling(long millis) {
-        return iField.roundHalfCeiling(millis);
-    }
-
-    public long roundHalfEven(long millis) {
-        return iField.roundHalfEven(millis);
-    }
-
-    public long remainder(long millis) {
-        return iField.remainder(millis);
-    }
-
-    public String toString() {
-        return iField.toString();
-    }
 }

@@ -54,7 +54,9 @@
 package org.joda.time.chrono.gj;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.PreciseDurationDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the day of the year component of time.
@@ -64,83 +66,33 @@ import org.joda.time.DateTimeField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-final class GJDayOfYearDateTimeField extends DateTimeField {
+final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
+
+    static final long serialVersionUID = -6821236822336841037L;
+
     private final ProlepticChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    GJDayOfYearDateTimeField(ProlepticChronology chronology) {
-        super("dayOfYear");
+    GJDayOfYearDateTimeField(ProlepticChronology chronology, DurationField days) {
+        super("dayOfYear", days);
         iChronology = chronology;
     }
 
     /**
      * Get the day of the year component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the day of the year extracted from the input.
      */
-    public int get(long millis) {
-        long dateMillis = iChronology.year().roundFloor(millis);
-        return (int) ((millis - dateMillis) / DateTimeConstants.MILLIS_PER_DAY) + 1;
+    public int get(long instant) {
+        long dateInstant = iChronology.year().roundFloor(instant);
+        return (int) ((instant - dateInstant) / DateTimeConstants.MILLIS_PER_DAY) + 1;
     }
 
-    /**
-     * Add the specified day of the year to the specified time instant.
-     * The amount added may be negative.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param days  the days to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long add(long millis, int days) {
-        return millis + days * (long)DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long add(long millis, long days) {
-        return millis + days * DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    /**
-     * Add to the day of the year component of the specified time instant
-     * wrapping around within that component if necessary.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param years  the years to add (can be negative).
-     * @return the updated time instant.
-     */
-    public long addWrapped(long millis, int days) {
-        int thisDoy = get(millis);
-        int wrappedDoy = getWrappedValue(thisDoy, days, getMinimumValue(millis), getMaximumValue(millis));
-        // avoid recalculating fields in set
-        return millis + (wrappedDoy - thisDoy) * (long)DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return (minuendMillis - subtrahendMillis) / DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    /**
-     * Set the day of the year component of the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update.
-     * @param day  the day of the year (1,365/366) to update the time to.
-     * @return the updated time instant.
-     * @throws IllegalArgumentException  if year is invalid.
-    */
-    public long set(long millis, int day) {
-        verifyValueBounds(day, getMinimumValue(millis), getMaximumValue(millis));
-        int thisDoy = get(millis);
-        return millis + (day - thisDoy) * (long)DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long getUnitMillis() {
-        return DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long getRangeMillis() {
-        return iChronology.getRoughMillisPerYear();
+    public DurationField getRangeDurationField() {
+        return iChronology.years();
     }
 
     public int getMinimumValue() {
@@ -151,35 +103,9 @@ final class GJDayOfYearDateTimeField extends DateTimeField {
         return 366;
     }
 
-    public int getMaximumValue(long millis) {
-        int thisYear = iChronology.year().get(millis);
+    public int getMaximumValue(long instant) {
+        int thisYear = iChronology.year().get(instant);
         return iChronology.getDaysInYear(thisYear);
-    }
-
-    public long roundFloor(long millis) {
-        if (millis >= 0) {
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY;
-        } else {
-            millis += 1;
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY - DateTimeConstants.MILLIS_PER_DAY;
-        }
-    }
-
-    public long roundCeiling(long millis) {
-        if (millis >= 0) {
-            millis -= 1;
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY + DateTimeConstants.MILLIS_PER_DAY;
-        } else {
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY;
-        }
-    }
-
-    public long remainder(long millis) {
-        if (millis >= 0) {
-            return millis % DateTimeConstants.MILLIS_PER_DAY;
-        } else {
-            return (millis + 1) % DateTimeConstants.MILLIS_PER_DAY + (DateTimeConstants.MILLIS_PER_DAY - 1);
-        }
     }
 
     /**

@@ -55,6 +55,9 @@ package org.joda.time.chrono.gj;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.ImpreciseDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * Provides time calculations for the week of the weekyear component of time.
@@ -66,8 +69,10 @@ import org.joda.time.DateTimeField;
  * @since 1.0
  * @see org.joda.time.DateTimeField
  */
-final class GJWeekyearDateTimeField extends DateTimeField {
+final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
     
+    static final long serialVersionUID = 6215066916806820644L;
+
     private static final long WEEK_53 = (53L - 1) * DateTimeConstants.MILLIS_PER_WEEK;
 
     private final ProlepticChronology iChronology;
@@ -76,25 +81,29 @@ final class GJWeekyearDateTimeField extends DateTimeField {
      * Restricted constructor
      */
     GJWeekyearDateTimeField(ProlepticChronology chronology) {
-        super("weekyear");
+        super("weekyear", "weekyears", chronology.getRoughMillisPerYear());
         iChronology = chronology;
+    }
+
+    public boolean isLenient() {
+        return false;
     }
 
     /**
      * Get the Year of a week based year component of the specified time instant.
      * 
      * @see org.joda.time.DateTimeField#get
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the year extracted from the input.
      */
-    public int get(long millis) {
-        int week = iChronology.weekOfWeekyear().get(millis);
+    public int get(long instant) {
+        int week = iChronology.weekOfWeekyear().get(instant);
         if (week == 1) {
-            return iChronology.year().get(millis + DateTimeConstants.MILLIS_PER_WEEK);
+            return iChronology.year().get(instant + DateTimeConstants.MILLIS_PER_WEEK);
         } else if (week > 51) {
-            return iChronology.year().get(millis - (2 * DateTimeConstants.MILLIS_PER_WEEK));
+            return iChronology.year().get(instant - (2 * DateTimeConstants.MILLIS_PER_WEEK));
         } else {
-            return iChronology.year().get(millis);
+            return iChronology.year().get(instant);
         }
     }
 
@@ -102,19 +111,19 @@ final class GJWeekyearDateTimeField extends DateTimeField {
      * Add the specified years to the specified time instant.
      * 
      * @see org.joda.time.DateTimeField#add
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, int years) {
+    public long add(long instant, int years) {
         if (years == 0) {
-            return millis;
+            return instant;
         }
-        return set(millis, get(millis) + years);
+        return set(instant, get(instant) + years);
     }
 
-    public long add(long millis, long value) {
-        return addLong(millis, value);
+    public long add(long instant, long value) {
+        return add(instant, Utils.safeToInt(value));
     }
 
     /**
@@ -122,24 +131,24 @@ final class GJWeekyearDateTimeField extends DateTimeField {
      * wrapping around within that component if necessary.
      * 
      * @see org.joda.time.DateTimeField#addWrapped
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param years  the years to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int years) {
-        return add(millis, years);
+    public long addWrapped(long instant, int years) {
+        return add(instant, years);
     }
 
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        if (minuendMillis < subtrahendMillis) {
-            return -getDifference(subtrahendMillis, minuendMillis);
+    public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
+        if (minuendInstant < subtrahendInstant) {
+            return -getDifference(subtrahendInstant, minuendInstant);
         }
 
-        int minuendWeekyear = get(minuendMillis);
-        int subtrahendWeekyear = get(subtrahendMillis);
+        int minuendWeekyear = get(minuendInstant);
+        int subtrahendWeekyear = get(subtrahendInstant);
 
-        long minuendRem = remainder(minuendMillis);
-        long subtrahendRem = remainder(subtrahendMillis);
+        long minuendRem = remainder(minuendInstant);
+        long subtrahendRem = remainder(subtrahendInstant);
 
         // Balance leap weekyear differences on remainders.
         if (subtrahendRem >= WEEK_53 && iChronology.getWeeksInYear(minuendWeekyear) <= 52) {
@@ -157,25 +166,25 @@ final class GJWeekyearDateTimeField extends DateTimeField {
      * Set the Year of a week based year component of the specified time instant.
      *
      * @see org.joda.time.DateTimeField#set
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param year  the year (-9999,9999) to set the date to.
      * @return the updated DateTime.
      * @throws IllegalArgumentException  if year is invalid.
      */
-    public long set(long millis, int year) {
-        super.verifyValueBounds(Math.abs(year),
+    public long set(long instant, int year) {
+        Utils.verifyValueBounds(this, Math.abs(year),
                                 iChronology.getMinYear(), iChronology.getMaxYear());
         //
         // Do nothing if no real change is requested.
         //
-        int thisWeekyear = get( millis );
+        int thisWeekyear = get( instant );
         if ( thisWeekyear == year ) {
-            return millis;
+            return instant;
         }
         //
         // Calculate the DayOfWeek (to be preserved).
         //
-        int thisDow = iChronology.dayOfWeek().get( millis );
+        int thisDow = iChronology.dayOfWeek().get( instant );
         //
         // Calculate the maximum weeks in the target year.
         //
@@ -189,7 +198,7 @@ final class GJWeekyearDateTimeField extends DateTimeField {
         // for the target weekyear.  In that case it is adjusted
         // to the maximum possible.
         //
-        int setToWeek = iChronology.weekOfWeekyear().get( millis );
+        int setToWeek = iChronology.weekOfWeekyear().get( instant );
         if ( setToWeek > maxOutWeeks ) {
             setToWeek = maxOutWeeks;
         }
@@ -197,74 +206,63 @@ final class GJWeekyearDateTimeField extends DateTimeField {
         // Get a wroking copy of the current date-time.
         // This can be a convenience for debugging.
         //
-        long workMillis = millis; // Get a copy
+        long workInstant = instant; // Get a copy
         //
         // Attempt to get close to the proper weekyear.
         // Note - we cannot currently call ourself, so we just call
         // set for the year.  This at least gets us close.
         //
-        workMillis = iChronology.year().set( workMillis, year );
+        workInstant = iChronology.year().set( workInstant, year );
         //
         // Calculate the weekyear number for the get close to value
         // (which might not be equal to the year just set).
         //
-        int workWoyYear = iChronology.weekyear().get( workMillis );
-
-        // *TEMP Debugging
-        /*
-        MutableDateTime temp = new MutableDateTime(workMillis,
-            ISOChronology.getInstance());
-        System.out.println("Current mdt value 01: "
-            + temp
-            + " " + workWoyYear
-        );
-        System.out.println("->Temp: " + temp.toString()
-            + " WOYYr=" + temp.getWeekyear()
-            + " WOYWk=" + temp.getWeekOfWeekyear()
-            + " DoW=" + temp.getDayOfWeek()
-        );
-        */
+        int workWoyYear = iChronology.weekyear().get( workInstant );
 
         //
         // At most we are off by one year, which can be "fixed" by
         // adding/subtracting a week.
         //
         if ( workWoyYear < year ) {
-            // System.out.println("Year: Adding "+workWoyYear+" "+year);
-            workMillis += DateTimeConstants.MILLIS_PER_WEEK;
+            workInstant += DateTimeConstants.MILLIS_PER_WEEK;
         } else if ( workWoyYear > year ) {
-            // System.out.println("Year: Subing "+workWoyYear+" "+year);
-            workMillis -= DateTimeConstants.MILLIS_PER_WEEK;
+            workInstant -= DateTimeConstants.MILLIS_PER_WEEK;
         }
         //
         // Set the proper week in the current weekyear.
         //
 
         // BEGIN: possible set WeekOfWeekyear logic.
-        int currentWoyWeek = iChronology.weekOfWeekyear().get( workMillis );
+        int currentWoyWeek = iChronology.weekOfWeekyear().get( workInstant );
         // No range check required (we already know it is OK).
-        workMillis = workMillis + (setToWeek - currentWoyWeek)
+        workInstant = workInstant + (setToWeek - currentWoyWeek)
             * (long)DateTimeConstants.MILLIS_PER_WEEK;
         // END: possible set WeekOfWeekyear logic.
 
         //
         // Reset DayOfWeek to previous value.
         //
-        workMillis = iChronology.dayOfWeek().set( workMillis, thisDow );
+        workInstant = iChronology.dayOfWeek().set( workInstant, thisDow );
         //
         // Return result.
         //
-        return workMillis;
+        return workInstant;
     }
 
-    public long getUnitMillis() {
-        return iChronology.getRoughMillisPerYear();
+    public DurationField getRangeDurationField() {
+        return null;
     }
 
-    public long getRangeMillis() {
-        // Should actually be double this, but that is not possible since Java
-        // doesn't support unsigned types.
-        return Long.MAX_VALUE;
+    public boolean isLeap(long instant) {
+        return iChronology.weekOfWeekyear().getMaximumValue(instant) > 52;
+    }
+
+    public int getLeapAmount(long instant) {
+        return iChronology.weekOfWeekyear().getMaximumValue(instant) - 52;
+    }
+
+    public DurationField getLeapDurationField() {
+        return iChronology.weeks();
     }
 
     public int getMinimumValue() {
@@ -275,18 +273,18 @@ final class GJWeekyearDateTimeField extends DateTimeField {
         return iChronology.getMaxYear();
     }
 
-    public long roundFloor(long millis) {
+    public long roundFloor(long instant) {
         DateTimeField wowField = iChronology.weekOfWeekyear();
-        millis = wowField.roundFloor(millis);
-        int wow = wowField.get(millis);
+        instant = wowField.roundFloor(instant);
+        int wow = wowField.get(instant);
         if (wow > 1) {
-            millis = wowField.add(millis, 1 - wow);
+            instant = wowField.add(instant, 1 - wow);
         }
-        return millis;
+        return instant;
     }
 
-    public long remainder(long millis) {
-        return millis - roundFloor(millis);
+    public long remainder(long instant) {
+        return instant - roundFloor(instant);
     }
 
     /**

@@ -56,7 +56,14 @@ package org.joda.time;
 import java.util.Locale;
 
 /**
- * Extends the ReadableInstant interface to support specific datetime fields.
+ * Defines an instant in time that can be queried using datetime fields.
+ * <p>
+ * The implementation of this interface may be mutable or immutable.
+ * This interface only gives access to retrieve data, never to change it.
+ * <p>
+ * Methods in your application should be defined using <code>ReadableDateTime</code>
+ * as a parameter if the method only wants to read the datetime, and not perform
+ * any advanced manipulations.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
@@ -197,50 +204,58 @@ public interface ReadableDateTime extends ReadableInstant {
 
     /**
      * Get this object as a DateTime.
+     * <p>
+     * If the implementation of the interface is a DateTime, it is returned directly.
      * 
-     * @return a DateTime using the same millis
+     * @return a DateTime using the same millis, unless partially specified
      */
     DateTime toDateTime();
 
     /**
      * Get this object as a DateTime.
+     * <p>
+     * If the implementation of the interface is a DateTime in the correct zone,
+     * it is returned directly.
      * 
-     * @param zone time zone to apply
-     * @return a DateTime using the same millis
+     * @param zone  time zone to apply
+     * @return a DateTime using the same millis, unless partially specified
      * @throws IllegalArgumentException if the time zone is null
      */
     DateTime toDateTime(DateTimeZone zone);
 
     /**
      * Get this object as a DateTime.
+     * <p>
+     * If the implementation of the interface is a DateTime in the correct chronology,
+     * it is returned directly.
      * 
-     * @param chronology chronology to apply
-     * @return a DateTime using the same millis
+     * @param chronology  chronology to apply
+     * @return a DateTime using the same millis, unless partially specified
      * @throws IllegalArgumentException if the chronology is null
      */
     DateTime toDateTime(Chronology chronology);
 
     /**
-     * Get this object as a MutableDateTime.
+     * Get this object as a MutableDateTime, always returning a new instance.
      * 
-     * @return a MutableDateTime using the same millis
+     * @return a MutableDateTime using the same millis, unless partially specified
      */
     MutableDateTime toMutableDateTime();
 
     /**
-     * Get this object as a MutableDateTime.
+     * Get this object as a MutableDateTime, always returning a new instance.
      * 
-     * @param zone time zone to apply
-     * @return a MutableDateTime using the same millis
+     * @param zone  time zone to apply
+     * @return a MutableDateTime using the same millis, unless partially specified
      * @throws IllegalArgumentException if the time zone is null
      */
     MutableDateTime toMutableDateTime(DateTimeZone zone);
 
     /**
-     * Get this object as a MutableDateTime.
+     * Get this object as a MutableDateTime, always returning a new instance.
      * 
-     * @param chronology chronology to apply
-     * @return a MutableDateTime using the same millis
+     * @param chronology  chronology to apply
+     * @return a MutableDateTime using the same millis, unless partially specified
      * @throws IllegalArgumentException if the chronology is null
      */
     MutableDateTime toMutableDateTime(Chronology chronology);
@@ -248,50 +263,51 @@ public interface ReadableDateTime extends ReadableInstant {
     /**
      * Get this object as a DateOnly.
      * 
-     * @return a DateOnly using the same millis
+     * @return a DateOnly using the same millis, unless partially specified
      */
-    //DateOnly toDateOnly();
+    DateOnly toDateOnly();
 
     /**
      * Get this object as a DateOnly.
      * 
      * @param chronology chronology to apply
-     * @return a DateOnly using the same millis
+     * @return a DateOnly using the same millis, unless partially specified
      * @throws IllegalArgumentException if the chronology is null
      */
-    //DateOnly toDateOnly(Chronology chronology);
+    DateOnly toDateOnly(Chronology chronology);
 
     /**
      * Get this object as a TimeOnly.
      * 
-     * @return a TimeOnly using the same millis
+     * @return a TimeOnly using the same millis, unless partially specified
      */
-    //TimeOnly toTimeOnly();
+    TimeOnly toTimeOnly();
 
     /**
      * Get this object as a TimeOnly.
      * 
      * @param chronology chronology to apply
-     * @return a TimeOnly using the same millis
+     * @return a TimeOnly using the same millis, unless partially specified
      * @throws IllegalArgumentException if the chronology is null
      */
-    //TimeOnly toTimeOnly(Chronology chronology);
+    TimeOnly toTimeOnly(Chronology chronology);
 
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern pattern specification
-     * @see org.joda.time.format.DateTimeFormatterBuilder#appendPattern(java.lang.String)
+     * @param pattern  pattern specification
+     * @throws IllegalArgumentException  if pattern is invalid
+     * @see  org.joda.time.format.DateTimeFormat
      */
     String toString(String pattern) throws IllegalArgumentException;
 
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern pattern specification
-     * @param locale Locale to use, must not be null
-     * @see org.joda.time.format.DateTimeFormatterBuilder#appendPattern(java.lang.String)
-     * @throws IllegalArgumentException if the locale is null
+     * @param pattern  pattern specification
+     * @param locale  Locale to use, or null for default
+     * @throws IllegalArgumentException  if pattern is invalid
+     * @see  org.joda.time.format.DateTimeFormat
      */
     String toString(String pattern, Locale locale) throws IllegalArgumentException;
     

@@ -54,10 +54,15 @@
 package org.joda.time;
 
 /**
- * Readable interface for an instant in the datetime continuum. 
+ * Defines an instant in the datetime continuum.
+ * This interface expresses the datetime as milliseconds from 1970-01-01T00:00:00Z.
  * <p>
- * This interface expresses the datetime as milliseconds from 
- * 1970-01-01T00:00:00Z.
+ * The implementation of this interface may be mutable or immutable.
+ * This interface only gives access to retrieve data, never to change it.
+ * <p>
+ * Methods in your application should be defined using <code>ReadableInstant</code>
+ * as a parameter if the method only wants to read the instant without needing to know
+ * the specific datetime fields.
  *
  * @author Stephen Colebourne
  * @since 1.0
@@ -65,12 +70,44 @@ package org.joda.time;
 public interface ReadableInstant extends Comparable {
 
     /**
-     * Get the value as the number of miliseconds since
+     * Get the value as the number of milliseconds since
      * the epoch, 1970-01-01T00:00:00Z.
      *
      * @return the value as milliseconds
      */
     long getMillis();
+
+    /**
+     * Get the value as the number of milliseconds since the epoch,
+     * 1970-01-01T00:00:00Z, with unsupported field values filled in by the
+     * given base instant.
+     * <p>
+     * This method is useful for ReadableInstants that only partially describe
+     * the instant. The base supplies missing information, including time
+     * zone. Instants that are complete simply return the same value as for
+     * getMillis(), ignoring the given base.
+     *
+     * @param base optional source of missing fields
+     * @return the value as milliseconds
+     */
+    long getMillis(ReadableInstant base);
+
+    /**
+     * Get the value as the number of milliseconds since the epoch,
+     * 1970-01-01T00:00:00Z, with unsupported field values filled in by the
+     * given base instant.
+     * <p>
+     * This method is useful for ReadableInstants that only partially describe
+     * the instant. The base supplies missing information, excluding time
+     * zone. Instants that are complete simply return the same value as for
+     * getMillis(), ignoring the given base.
+     *
+     * @param base source of missing fields
+     * @param zone override the base time zone, null implies override with no
+     * time zone
+     * @return the value as milliseconds
+     */
+    long getMillis(ReadableInstant base, DateTimeZone zone);
 
     /**
      * Gets the chronology of the instant, null if not applicable.
@@ -179,7 +216,7 @@ public interface ReadableInstant extends Comparable {
      * All ReadableInstant instances are accepted.
      *
      * @param readableInstant  a readable instant to check against
-     * @return -1 if this is less, 0 if equal or +1 if greater
+     * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */

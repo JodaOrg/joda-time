@@ -67,8 +67,8 @@ class TestJulianMonthOfYearField extends TestGJMonthOfYearField {
         return iChronology.gjFromMillis(millis)[1];
     }
 
-    public long add(long millis, int value) {
-		int year = iChronology.year().get(millis);
+    public long add(long millis, long value) {
+        int year = iChronology.year().get(millis);
         int newYear = year + (int)iChronology.div(value, 12);
         if (year < 0) {
             if (newYear >= 0) {
@@ -81,11 +81,11 @@ class TestJulianMonthOfYearField extends TestGJMonthOfYearField {
         }
         int newMonth = get(millis) + (int)iChronology.mod(value, 12);
         if (newMonth > 12) {
-			if (newYear == -1) {
-				newYear = 1;
-			} else {
-				newYear++;
-			}
+            if (newYear == -1) {
+                newYear = 1;
+            } else {
+                newYear++;
+            }
             newMonth -= 12;
         }
         int newDay = iChronology.dayOfMonth().get(millis);
@@ -95,13 +95,5 @@ class TestJulianMonthOfYearField extends TestGJMonthOfYearField {
             millis = iChronology.dayOfYear().add(millis, -1);
         }
         return millis;
-    }
-
-    public long getUnitMillis() {
-        return (long)(365.25 * iChronology.MILLIS_PER_DAY / 12);
-    }
-
-    public long getRangeMillis() {
-        return (long)(365.25 * iChronology.MILLIS_PER_DAY);
     }
 }

@@ -56,7 +56,9 @@ package org.joda.time.chrono.gj;
 import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
+import org.joda.time.chrono.PreciseDurationDateTimeField;
+import org.joda.time.chrono.Utils;
 
 /**
  * GJDayOfWeekDateTimeField provides time calculations for the
@@ -67,35 +69,34 @@ import org.joda.time.DateTimeField;
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  */
-final class GJDayOfWeekDateTimeField extends DateTimeField {
+final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     
-    private static final int MIN = DateTimeConstants.MONDAY;
-    private static final int MAX = DateTimeConstants.SUNDAY;
-    
+    static final long serialVersionUID = -3857947176719041436L;
+
     private final ProlepticChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    GJDayOfWeekDateTimeField(ProlepticChronology chronology) {
-        super("dayOfWeek");
+    GJDayOfWeekDateTimeField(ProlepticChronology chronology, DurationField days) {
+        super("dayOfWeek", days);
         iChronology = chronology;
     }
 
     /**
      * Get the value of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query
+     * @param instant  the time instant in millis to query
      * @return the day of the week extracted from the input
      */
-    public int get(long millis) {
+    public int get(long instant) {
         // 1970-01-01 is day of week 4, Thursday.
 
         long daysSince19700101;
-        if (millis >= 0) {
-            daysSince19700101 = millis / DateTimeConstants.MILLIS_PER_DAY;
+        if (instant >= 0) {
+            daysSince19700101 = instant / DateTimeConstants.MILLIS_PER_DAY;
         } else {
-            daysSince19700101 = (millis - (DateTimeConstants.MILLIS_PER_DAY - 1))
+            daysSince19700101 = (instant - (DateTimeConstants.MILLIS_PER_DAY - 1))
                 / DateTimeConstants.MILLIS_PER_DAY;
             if (daysSince19700101 < -3) {
                 return 7 + (int) ((daysSince19700101 + 4) % 7);
@@ -108,93 +109,39 @@ final class GJDayOfWeekDateTimeField extends DateTimeField {
     /**
      * Get the textual value of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query
+     * @param instant  the time instant in millis to query
      * @param locale  the locale to use
      * @return the day of the week, such as 'Monday'
      */
-    public String getAsText(long millis, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(get(millis));
+    public String getAsText(long instant, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(get(instant));
     }
 
     /**
      * Get the abbreviated textual value of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query
+     * @param instant  the time instant in millis to query
      * @param locale  the locale to use
      * @return the day of the week, such as 'Mon'
      */
-    public String getAsShortText(long millis, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(get(millis));
-    }
-
-    /**
-     * Add to the value of the specified time instant.
-     * The amount added may be negative.
-     * 
-     * @param millis  the time instant in millis to update
-     * @param day  the day of the week to add (can be negative)
-     * @return the updated time instant
-     */
-    public long add(long millis, int days) {
-        return millis + days * (long)DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long add(long millis, long days) {
-        return millis + days * DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    /**
-     * Add to the value of the specified time instant wrapping around
-     * within that component if necessary.
-     * The amount added may be negative.
-     * 
-     * @param millis  the time instant in millis to update
-     * @param day  the day of the week to add (can be negative)
-     * @return the updated time instant.
-     */
-    public long addWrapped(long millis, int days) {
-        int thisDow = get(millis);
-        int wrappedDow = getWrappedValue(thisDow, days, MIN, MAX);
-        // copy code from set() to avoid repeat call to get()
-        return millis + (wrappedDow - thisDow) * (long)DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return (minuendMillis - subtrahendMillis) / DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    /**
-     * Set the value of the specified time instant.
-     * 
-     * @param millis  the time instant in millis to update
-     * @param day  the day of the week (1,7) to update the time to
-     * @return the updated time instant
-     * @throws IllegalArgumentException  if day is invalid
-     */
-    public long set(long millis, int day) {
-        verifyValueBounds(day, MIN, MAX);
-        int thisDow = get(millis);
-        return millis + (day - thisDow) * (long)DateTimeConstants.MILLIS_PER_DAY;
+    public String getAsShortText(long instant, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(get(instant));
     }
 
     /**
      * Set the value of the specified time instant from text.
      * 
-     * @param millis  the time instant in millis to update
+     * @param instant  the time instant in millis to update
      * @param text  the text to set from
      * @param locale  the locale to use
      * @return the updated millis
      */
-    public long set(long millis, String text, Locale locale) {
-        return set(millis, GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text));
+    public long set(long instant, String text, Locale locale) {
+        return set(instant, GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text));
     }
 
-    public long getUnitMillis() {
-        return DateTimeConstants.MILLIS_PER_DAY;
-    }
-
-    public long getRangeMillis() {
-        return DateTimeConstants.MILLIS_PER_WEEK;
+    public DurationField getRangeDurationField() {
+        return iChronology.weeks();
     }
 
     /**
@@ -203,7 +150,7 @@ final class GJDayOfWeekDateTimeField extends DateTimeField {
      * @return the field's minimum value
      */
     public int getMinimumValue() {
-        return MIN;
+        return DateTimeConstants.MONDAY;
     }
 
     /**
@@ -212,7 +159,7 @@ final class GJDayOfWeekDateTimeField extends DateTimeField {
      * @return the field's maximum value
      */
     public int getMaximumValue() {
-        return MAX;
+        return DateTimeConstants.SUNDAY;
     }
 
     /**
@@ -233,32 +180,6 @@ final class GJDayOfWeekDateTimeField extends DateTimeField {
      */
     public int getMaximumShortTextLength(Locale locale) {
         return GJLocaleSymbols.forLocale(locale).getDayOfWeekMaxShortTextLength();
-    }
-    
-    public long roundFloor(long millis) {
-        if (millis >= 0) {
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY;
-        } else {
-            millis += 1;
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY - DateTimeConstants.MILLIS_PER_DAY;
-        }
-    }
-
-    public long roundCeiling(long millis) {
-        if (millis >= 0) {
-            millis -= 1;
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY + DateTimeConstants.MILLIS_PER_DAY;
-        } else {
-            return millis - millis % DateTimeConstants.MILLIS_PER_DAY;
-        }
-    }
-
-    public long remainder(long millis) {
-        if (millis >= 0) {
-            return millis % DateTimeConstants.MILLIS_PER_DAY;
-        } else {
-            return (millis + 1) % DateTimeConstants.MILLIS_PER_DAY + (DateTimeConstants.MILLIS_PER_DAY - 1);
-        }
     }
 
     /**

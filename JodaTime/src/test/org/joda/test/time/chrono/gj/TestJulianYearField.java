@@ -54,6 +54,8 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.chrono.Utils;
+
 /**
  * 
  * @author Brian S O'Neill
@@ -65,14 +67,14 @@ class TestJulianYearField extends TestGJYearField {
 
     public long addWrapped(long millis, int value) {
         int year = get(millis);
-        int wrapped = getWrappedValue
+        int wrapped = Utils.getWrappedValue
             (year, value, getMinimumValue(), getMaximumValue());
-        return add(millis, wrapped - year);
+        return add(millis, (long) wrapped - year);
     }
 
-    public long add(long millis, int value) {
+    public long add(long millis, long value) {
         int year = get(millis);
-        int newYear = year + value;
+        int newYear = year + Utils.safeToInt(value);
         if (year < 0) {
             if (newYear >= 0) {
                 newYear++;
@@ -83,10 +85,6 @@ class TestJulianYearField extends TestGJYearField {
             }
         }
         return set(millis, newYear);
-    }
-
-    public long getUnitMillis() {
-        return (long)(365.25 * iChronology.MILLIS_PER_DAY);
     }
 
     public int getMinimumValue() {

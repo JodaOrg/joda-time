@@ -59,17 +59,20 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.OffsetDateTimeField;
 import org.joda.time.chrono.DividedDateTimeField;
-import org.joda.time.chrono.NonZeroDateTimeField;
+import org.joda.time.chrono.RemainderDateTimeField;
 
 /**
  * Chronology for supporting GJ style centuries. Century 1 begin on year 1, and
- * century of year ranges from 1 to 100.
+ * year of century ranges from 1 to 100.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
  */
 class GJCenturyChronology extends GJChronology {
+
+    static final long serialVersionUID = -8572000567534692411L;
+
     private final GJChronology iChronology;
 
     /**
@@ -85,39 +88,60 @@ class GJCenturyChronology extends GJChronology {
         }
 
         iChronology = chrono;
+        copyFields(chrono);
 
-        iYearField = chrono.year();
-        iYearOfEraField = chrono.yearOfEra();
-        iEraField = chrono.era();
-        iDayOfMonthField = chrono.dayOfMonth();
-        iDayOfWeekField = chrono.dayOfWeek();
-        iDayOfYearField = chrono.dayOfYear();
-        iMonthOfYearField = chrono.monthOfYear();
-        iWeekOfWeekyearField = chrono.weekOfWeekyear();
-        iWeekyearField = chrono.weekyear();
+        DateTimeField tempField = new OffsetDateTimeField(iYearOfEraField, "", 99);
+        iCenturyOfEraField = new DividedDateTimeField
+            (tempField, "centuryOfEra", "centuries", 100);
 
-        iMillisOfSecondField = chrono.millisOfSecond();
-        iMillisOfDayField = chrono.millisOfDay();
-        iSecondOfMinuteField = chrono.secondOfMinute();
-        iSecondOfDayField = chrono.secondOfDay();
-        iMinuteOfHourField = chrono.minuteOfHour();
-        iMinuteOfDayField = chrono.minuteOfDay();
-        iHourOfDayField = chrono.hourOfDay();
-        iHourOfHalfdayField = chrono.hourOfHalfday();
-        iClockhourOfDayField = chrono.clockhourOfDay();
-        iClockhourOfHalfdayField = chrono.clockhourOfHalfday();
-        iHalfdayOfDayField = chrono.halfdayOfDay();
-
-        DateTimeField offsetYear =
-            new OffsetDateTimeField("yearOfEra", iYearOfEraField, 99);
-        iCenturyOfEraField =
-            new DividedDateTimeField("centuryOfEra", offsetYear, 100);
-        iYearOfCenturyField =
-            new NonZeroDateTimeField("yearOfCentury", chrono.yearOfCentury());
+        tempField = new RemainderDateTimeField
+            ((DividedDateTimeField)iCenturyOfEraField, "");
+        iYearOfCenturyField = new OffsetDateTimeField(tempField, "yearOfCentury", 1);
     }
 
     public Chronology withUTC() {
         return this;
+    }
+
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
+    }
+
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getTimeOnlyMillis
+            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int millisOfDay)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis
+            (instant,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iChronology.getDateTimeMillis
+            (year, monthOfYear, dayOfMonth,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public long getGregorianJulianCutoverMillis() {

@@ -61,7 +61,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 
 /**
- * Converts datetimes into a sequence of human-readable characters.
+ * Defines an interface for creating textual representations of datetimes.
  *
  * @author Brian S O'Neill
  * @see DateTimeFormatter
@@ -72,21 +72,26 @@ public interface DateTimePrinter {
     
     /**
      * Returns the Chronology being used by the printer, or null if none.
+     * 
+     * @return the chronology in use, may be null if none
      */
     Chronology getChronology();
 
     /**
      * Returns the expected maximum number of characters produced. The actual
      * amount should rarely exceed this estimate.
+     * 
+     * @return the estimated length
      */
     int estimatePrintedLength();
 
+    //-----------------------------------------------------------------------
     /**
      * Prints a ReadableInstant, attempting to use the DateTimeZone supplied by
      * the instant.
      *
-     * @param buf formatted instant is appended to this buffer
-     * @param instant instant to format
+     * @param buf  formatted instant is appended to this buffer
+     * @param instant  instant to format
      */
     void printTo(StringBuffer buf, ReadableInstant instant);
 
@@ -94,86 +99,82 @@ public interface DateTimePrinter {
      * Prints a ReadableInstant, attempting to use the DateTimeZone supplied by
      * the instant.
      *
-     * @param out formatted instant is written out
-     * @param instant instant to format
+     * @param out  formatted instant is written out
+     * @param instant  instant to format
      */
     void printTo(Writer out, ReadableInstant instant) throws IOException;
 
+    //-----------------------------------------------------------------------
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * using the formatter's DateTimeZone.
      *
-     * @param buf formatted instant is appended to this buffer
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
+     * @param buf  formatted instant is appended to this buffer
+     * @param instant  millis since 1970-01-01T00:00:00Z
      */
-    void printTo(StringBuffer buf, long millisUTC);
+    void printTo(StringBuffer buf, long instant);
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * using the formatter's DateTimeZone.
      *
-     * @param out formatted instant is written out
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
+     * @param out  formatted instant is written out
+     * @param instant  millis since 1970-01-01T00:00:00Z
      */
-    void printTo(Writer out, long millisUTC) throws IOException;
+    void printTo(Writer out, long instant) throws IOException;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * attempting to use the given DateTimeZone.
+     *
+     * @param buf  formatted instant is appended to this buffer
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param zone  DateTimeZone to use, overriding the formatter's own zone if not null
+     */
+    void printTo(StringBuffer buf, long instant, DateTimeZone zone);
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * attempting to use the given DateTimeZone.
      *
-     * @param buf formatted instant is appended to this buffer
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
-     * @param zone DateTimeZone to use, overriding the formatter's own zone if
-     * not null
+     * @param out  formatted instant is written out
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param zone  DateTimeZone to use, overriding the formatter's own zone if not null
      */
-    void printTo(StringBuffer buf, long millisUTC, DateTimeZone zone);
+    void printTo(Writer out, long instant, DateTimeZone zone) throws IOException;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * attempting to use the given DateTimeZone.
+     *
+     * @param buf  formatted instant is appended to this buffer
+     * @param instant  millis since 1970-01-01T00:00:00Z, used by time zone printers
+     * @param zone  DateTimeZone to use, overriding the formatter's own zone if not null
+     * @param instantLocal  pre-calculated millis since 1970-01-01T00:00:00, local time
+     */
+    void printTo(StringBuffer buf, long instant,
+                 DateTimeZone zone, long instantLocal);
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * attempting to use the given DateTimeZone.
      *
-     * @param out formatted instant is written out
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
-     * @param zone DateTimeZone to use, overriding the formatter's own zone if
-     * not null
+     * @param out  formatted instant is written out
+     * @param instant millis  since 1970-01-01T00:00:00Z, used by time zone printers
+     * @param zone  DateTimeZone to use, overriding the formatter's own zone if not null
+     * @param instantLocal  pre-calculated millis since 1970-01-01T00:00:00, local time
      */
-    void printTo(Writer out, long millisUTC, DateTimeZone zone) throws IOException;
+    void printTo(Writer out, long instant,
+                 DateTimeZone zone, long instantLocal) throws IOException;
 
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * attempting to use the given DateTimeZone.
-     *
-     * @param buf formatted instant is appended to this buffer
-     * @param millisUTC millis since 1970-01-01T00:00:00Z, used by time zone
-     * printers
-     * @param zone DateTimeZone to use, overriding the formatter's own zone if
-     * not null
-     * @param millisLocal pre-calculated millis since 1970-01-01T00:00:00,
-     * local time
-     */
-    void printTo(StringBuffer buf, long millisUTC,
-                 DateTimeZone zone, long millisLocal);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * attempting to use the given DateTimeZone.
-     *
-     * @param out formatted instant is written out
-     * @param millisUTC millis since 1970-01-01T00:00:00Z, used by time zone
-     * printers
-     * @param zone DateTimeZone to use, overriding the formatter's own zone if
-     * not null
-     * @param millisLocal pre-calculated millis since 1970-01-01T00:00:00,
-     * local time
-     */
-    void printTo(Writer out, long millisUTC,
-                 DateTimeZone zone, long millisLocal) throws IOException;
-
+    //-----------------------------------------------------------------------
     /**
      * Prints a ReadableInstant to a new String, attempting to use the
      * DateTimeZone supplied by the instant.
      *
-     * @param instant instant to format
+     * @param instant  instant to format
      * @return the printed result
      */
     String print(ReadableInstant instant);
@@ -182,32 +183,30 @@ public interface DateTimePrinter {
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * using the formatter's DateTimeZone.
      *
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
+     * @param instant  millis since 1970-01-01T00:00:00Z
      * @return the printed result
      */
-    String print(long millisUTC);
+    String print(long instant);
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * attempting to use the given DateTimeZone.
      *
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
-     * @param zone DateTimeZone to use, overriding the formatter's own zone if
-     * not null
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param zone  DateTimeZone to use, overriding the formatter's own zone if not null
      * @return the printed result
      */
-    String print(long millisUTC, DateTimeZone zone);
+    String print(long instant, DateTimeZone zone);
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * attempting to use the given DateTimeZone.
      *
-     * @param millisUTC millis since 1970-01-01T00:00:00Z
-     * @param zone DateTimeZone to use, overriding the formatter's own zone if
-     * not null
-     * @param millisLocal pre-calculated millis since 1970-01-01T00:00:00,
-     * local time
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @param zone  DateTimeZone to use, overriding the formatter's own zone if not null
+     * @param instantLocal  pre-calculated millis since 1970-01-01T00:00:00, local time
      * @return the printed result
      */
-    String print(long millisUTC, DateTimeZone zone, long millisLocal);
+    String print(long instant, DateTimeZone zone, long instantLocal);
+    
 }

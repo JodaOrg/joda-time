@@ -54,21 +54,19 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.DurationField;
+
 /**
  * 
  * @author Brian S O'Neill
  */
 class TestGJYearField extends TestGJDateTimeField {
     public TestGJYearField(TestGJChronology chrono) {
-        super("year", chrono);
+        super("year", "years", chrono.millisPerYear(), chrono);
     }
 
     public int get(long millis) {
         return iChronology.gjYearFromMillis(millis);
-    }
-
-    public long add(long millis, int value) {
-        return set(millis, get(millis) + value);
     }
 
     public long set(long millis, int value) {
@@ -81,6 +79,10 @@ class TestGJYearField extends TestGJDateTimeField {
         return millis;
     }
 
+    public long add(long millis, long value) {
+        return set(millis, (int)(get(millis) + value));
+    }
+
     public boolean isLeap(long millis) {
         return iChronology.isLeapYear(get(millis));
     }
@@ -89,12 +91,12 @@ class TestGJYearField extends TestGJDateTimeField {
         return isLeap(millis) ? 1 : 0;
     }
 
-    public long getUnitMillis() {
-        return (long)(365.2425 * iChronology.MILLIS_PER_DAY);
+    public DurationField getLeapDurationField() {
+        return iChronology.days();
     }
 
-    public long getRangeMillis() {
-        return Long.MAX_VALUE;
+    public DurationField getRangeDurationField() {
+        return null;
     }
 
     public int getMinimumValue() {

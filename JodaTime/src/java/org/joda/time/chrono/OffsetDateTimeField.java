@@ -54,16 +54,19 @@
 package org.joda.time.chrono;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DurationField;
 
 /**
  * Generic offset adjusting datetime field.
+ * <p>
+ * OffsetDateTimeField is thread-safe and immutable.
  * 
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class OffsetDateTimeField extends DateTimeField {
-    /** The field to adjust */
-    private final DateTimeField iField;
+public class OffsetDateTimeField extends DecoratedDateTimeField {
+    static final long serialVersionUID = 3145790132623583142L;
+
     private final int iOffset;
 
     private final int iMin;
@@ -72,46 +75,42 @@ public class OffsetDateTimeField extends DateTimeField {
     /**
      * Constructor
      * 
-     * @param name  short, descriptive name, like "offsetYear".
      * @param field  the field to wrap, like "year()".
+     * @param name  short, descriptive name, like "offsetYear".
      * @param offset  offset to add to field values
      * @throws IllegalArgumentException if offset is zero
      */
-    public OffsetDateTimeField(String name, DateTimeField field, int offset) {
-        this(name, field, offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    public OffsetDateTimeField(DateTimeField field, String name, int offset) {
+        this(field, name, offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**
      * Constructor
      * 
-     * @param name  short, descriptive name, like "offsetYear".
      * @param field  the field to wrap, like "year()".
+     * @param name  short, descriptive name, like "offsetYear".
      * @param offset  offset to add to field values
      * @param minValue  minimum allowed value
      * @param maxValue  maximum allowed value
      * @throws IllegalArgumentException if offset is zero
      */
-    public OffsetDateTimeField(String name, DateTimeField field, int offset,
+    public OffsetDateTimeField(DateTimeField field, String name, int offset,
                                int minValue, int maxValue) {
-        super(name);
+        super(field, name);
                 
-        if (field == null) {
-            throw new IllegalArgumentException("The field must not be null");
-        }
         if (offset == 0) {
             throw new IllegalArgumentException("The offset cannot be zero");
         }
 
-        iField = field;
         iOffset = offset;
 
-        if (minValue < (iField.getMinimumValue() + offset)) {
-            iMin = iField.getMinimumValue() + offset;
+        if (minValue < (field.getMinimumValue() + offset)) {
+            iMin = field.getMinimumValue() + offset;
         } else {
             iMin = minValue;
         }
-        if (maxValue > (iField.getMaximumValue() + offset)) {
-            iMax = iField.getMaximumValue() + offset;
+        if (maxValue > (field.getMaximumValue() + offset)) {
+            iMax = field.getMaximumValue() + offset;
         } else {
             iMax = maxValue;
         }
@@ -120,76 +119,76 @@ public class OffsetDateTimeField extends DateTimeField {
     /**
      * Get the amount of offset units from the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the amount of units extracted from the input.
      */
-    public int get(long millis) {
-        return iField.get(millis) + iOffset;
+    public int get(long instant) {
+        return super.get(instant) + iOffset;
     }
 
     /**
      * Add the specified amount of offset units to the specified time
      * instant. The amount added may be negative.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, int amount) {
-        millis = iField.add(millis, amount);
-        verifyValueBounds(get(millis), iMin, iMax);
-        return millis;
+    public long add(long instant, int amount) {
+        instant = super.add(instant, amount);
+        Utils.verifyValueBounds(this, get(instant), iMin, iMax);
+        return instant;
     }
 
     /**
      * Add the specified amount of offset units to the specified time
      * instant. The amount added may be negative.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
-    public long add(long millis, long amount) {
-        millis = iField.add(millis, amount);
-        verifyValueBounds(get(millis), iMin, iMax);
-        return millis;
+    public long add(long instant, long amount) {
+        instant = super.add(instant, amount);
+        Utils.verifyValueBounds(this, get(instant), iMin, iMax);
+        return instant;
     }
 
     /**
      * Add to the offset component of the specified time instant,
      * wrapping around within that component if necessary.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param amount  the amount of units to add (can be negative).
      * @return the updated time instant.
      */
-    public long addWrapped(long millis, int amount) {
-        return set(millis, getWrappedValue(get(millis), amount, iMin, iMax));
-    }
-
-    public long getDifference(long minuendMillis, long subtrahendMillis) {
-        return iField.getDifference(minuendMillis, subtrahendMillis);
+    public long addWrapped(long instant, int amount) {
+        return set(instant, Utils.getWrappedValue(get(instant), amount, iMin, iMax));
     }
 
     /**
      * Set the specified amount of offset units to the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param value  value of units to set.
      * @return the updated time instant.
      * @throws IllegalArgumentException if value is too large or too small.
      */
-    public long set(long millis, int value) {
-        verifyValueBounds(value, iMin, iMax);
-        return iField.set(millis, value - iOffset);
+    public long set(long instant, int value) {
+        Utils.verifyValueBounds(this, value, iMin, iMax);
+        return super.set(instant, value - iOffset);
     }
 
-    public long getUnitMillis() {
-        return iField.getUnitMillis();
+    public boolean isLeap(long instant) {
+        return getWrappedField().isLeap(instant);
     }
 
-    public long getRangeMillis() {
-        return iField.getRangeMillis();
+    public int getLeapAmount(long instant) {
+        return getWrappedField().getLeapAmount(instant);
+    }
+
+    public DurationField getLeapDurationField() {
+        return getWrappedField().getLeapDurationField();
     }
 
     /**
@@ -210,29 +209,28 @@ public class OffsetDateTimeField extends DateTimeField {
         return iMax;
     }
     
-    public long roundFloor(long millis) {
-        return iField.roundFloor(millis);
+    public long roundFloor(long instant) {
+        return getWrappedField().roundFloor(instant);
     }
 
-    public long roundCeiling(long millis) {
-        return iField.roundCeiling(millis);
+    public long roundCeiling(long instant) {
+        return getWrappedField().roundCeiling(instant);
     }
 
-    public long roundHalfFloor(long millis) {
-        return iField.roundHalfFloor(millis);
+    public long roundHalfFloor(long instant) {
+        return getWrappedField().roundHalfFloor(instant);
     }
 
-    public long remainder(long millis) {
-        return iField.remainder(millis);
+    public long roundHalfCeiling(long instant) {
+        return getWrappedField().roundHalfCeiling(instant);
     }
 
-    /**
-     * Returns the DateTimeField being wrapped.
-     * 
-     * @return field
-     */
-    public DateTimeField getField() {
-        return iField;
+    public long roundHalfEven(long instant) {
+        return getWrappedField().roundHalfEven(instant);
+    }
+
+    public long remainder(long instant) {
+        return getWrappedField().remainder(instant);
     }
 
     /**

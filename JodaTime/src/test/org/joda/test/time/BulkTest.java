@@ -53,21 +53,21 @@
  */
 package org.joda.test.time ;
 //
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.text.ParseException;
-import org.joda.time.* ;
-import org.joda.time.chrono.iso.* ;
+import java.util.List;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
+import org.joda.time.MutableDateTime;
+import org.joda.time.chrono.iso.ISOChronology;
 /**
  *  A {@link TestCase} that can define both simple and bulk test methods.<P>
  *
@@ -501,9 +501,9 @@ public class BulkTest extends TestCase implements Cloneable {
             retVal = new MutableDateTime( s,
                 ISOChronology.getInstanceUTC() );
         }
-        catch(ParseException pe)
+        catch(IllegalArgumentException pe)
         {
-            System.err.println("ParseException Detected");
+            System.err.println("IllegalArgumentException Detected");
             pe.printStackTrace();
         }
         return retVal;

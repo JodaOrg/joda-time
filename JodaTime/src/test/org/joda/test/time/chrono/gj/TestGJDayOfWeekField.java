@@ -54,37 +54,35 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.DurationField;
+
 /**
  * 
  * @author Brian S O'Neill
  */
 class TestGJDayOfWeekField extends TestGJDateTimeField {
     public TestGJDayOfWeekField(TestGJChronology chrono) {
-        super("dayOfWeek", chrono);
+        super("dayOfWeek", "days", chrono.MILLIS_PER_DAY, chrono);
     }
 
     public int get(long millis) {
-		int dayOfWeek = (int)iChronology.mod(iChronology.fixedFromMillis(millis), 7);
-		if (dayOfWeek == 0) {
-			dayOfWeek = 7;
-		}
-		return dayOfWeek;
-    }
-
-    public long add(long millis, int value) {
-        return millis + value * iChronology.MILLIS_PER_DAY;
+        int dayOfWeek = (int)iChronology.mod(iChronology.fixedFromMillis(millis), 7);
+        if (dayOfWeek == 0) {
+            dayOfWeek = 7;
+        }
+        return dayOfWeek;
     }
 
     public long set(long millis, int value) {
-        return add(millis, value - get(millis));
+        return add(millis, (long) value - get(millis));
     }
 
-    public long getUnitMillis() {
-        return iChronology.MILLIS_PER_DAY;
+    public long add(long millis, long value) {
+        return millis + value * iChronology.MILLIS_PER_DAY;
     }
 
-    public long getRangeMillis() {
-        return iChronology.MILLIS_PER_DAY * 7;
+    public DurationField getRangeDurationField() {
+        return iChronology.weeks();
     }
 
     public int getMinimumValue() {
@@ -96,6 +94,6 @@ class TestGJDayOfWeekField extends TestGJDateTimeField {
     }
 
     public long roundFloor(long millis) {
-		return iChronology.getDateOnlyMillis(millis);
+        return iChronology.getDateOnlyMillis(millis);
     }
 }

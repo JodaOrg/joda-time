@@ -59,7 +59,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
@@ -68,6 +67,7 @@ import java.util.Set;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.tz.DateTimeZonePermission;
 import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.FixedDateTimeZone;
 import org.joda.time.tz.NameProvider;
@@ -110,6 +110,8 @@ import org.joda.time.tz.ZoneInfoProvider;
  * However, the factory that accepts a TimeZone will attempt to convert from
  * the old short id to a suitable long id.
  * <p>
+ * DateTimeZone is thread-safe and immutable, and all subclasses must be as
+ * well.
  * 
  * @author Brian S O'Neill
  * @author Stephen Colebourne
@@ -117,6 +119,8 @@ import org.joda.time.tz.ZoneInfoProvider;
  */
 public abstract class DateTimeZone implements Serializable {
     
+    static final long serialVersionUID = 5546345482340108586L;
+
     /** The UTC time zone */
     public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
 
@@ -134,52 +138,8 @@ public abstract class DateTimeZone implements Serializable {
     private static Map cZoneIdConversion;
 
     static {
-        Provider provider = null;
-
-        String providerClass = System.getProperty("org.joda.time.DateTimeZone.Provider");
-        if (providerClass != null) {
-            try {
-                provider = (Provider)Class.forName(providerClass).newInstance();
-            }
-            catch (Exception e) {
-                Thread t = Thread.currentThread();
-                t.getThreadGroup().uncaughtException(t, e);
-            }
-        }
-
-        if (provider == null) {
-            try {
-                provider = new ZoneInfoProvider("org/joda/time/tz/data");
-            } catch (Exception e) {
-                Thread t = Thread.currentThread();
-                t.getThreadGroup().uncaughtException(t, e);
-            }
-        }
-
-        if (provider == null) {
-            provider = new UTCProvider();
-        }
-
-        setProvider(provider);
-
-        NameProvider nameProvider = null;
-
-        providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
-        if (providerClass != null) {
-            try {
-                nameProvider = (NameProvider)Class.forName(providerClass).newInstance();
-            }
-            catch (Exception e) {
-                Thread t = Thread.currentThread();
-                t.getThreadGroup().uncaughtException(t, e);
-            }
-        }
-
-        if (nameProvider == null) {
-            nameProvider = new DefaultNameProvider();
-        }
-
-        setNameProvider(nameProvider);
+        setProvider0(null);
+        setNameProvider0(null);
 
         try {
             try {
@@ -211,7 +171,10 @@ public abstract class DateTimeZone implements Serializable {
      * @throws IllegalArgumentException if the zone is null
      */
     public static void setDefault(DateTimeZone zone) throws SecurityException {
-        // TODO: Put in a security check.
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new DateTimeZonePermission("setDefault"));
+        }
         if (zone == null) {
             throw new IllegalArgumentException("The datetime zone must not be null");
         }
@@ -245,14 +208,10 @@ public abstract class DateTimeZone implements Serializable {
             return zone;
         }
         if (id.startsWith("+") || id.startsWith("-")) {
-            try {
-                int offset = -(int)offsetFormatter().parseMillis(id);
-                // Canonicalize the id.
-                id = offsetFormatter().print(0, UTC, offset);
-                return new FixedDateTimeZone(id, null, offset, offset);
-            } catch (ParseException e) {
-                throw new IllegalArgumentException(e.getMessage());
-            }
+            int offset = -(int)offsetFormatter().parseMillis(id);
+            // Canonicalize the id.
+            id = offsetFormatter().print(0, UTC, offset);
+            return new FixedDateTimeZone(id, null, offset, offset);
         }
         throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
     }
@@ -293,14 +252,10 @@ public abstract class DateTimeZone implements Serializable {
             convId = zone.getDisplayName();
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
-                try {
-                    int offset = -(int)offsetFormatter().parseMillis(convId);
-                    // Canonicalize the id.
-                    convId = offsetFormatter().print(0, UTC, offset);
-                    return new FixedDateTimeZone(convId, null, offset, offset);
-                } catch (ParseException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
+                int offset = -(int)offsetFormatter().parseMillis(convId);
+                // Canonicalize the id.
+                convId = offsetFormatter().print(0, UTC, offset);
+                return new FixedDateTimeZone(convId, null, offset, offset);
             }
         }
 
@@ -343,10 +298,23 @@ public abstract class DateTimeZone implements Serializable {
         return cProvider;
     }
 
+    /**
+     * @param provider provider to use, or null for default
+     */
     public static void setProvider(Provider provider) throws SecurityException {
-        // TODO: Put in a security check.
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new DateTimeZonePermission("setProvider"));
+        }
+        setProvider0(provider);
+    }
+
+    /**
+     * Doesn't perform a security check.
+     */
+    private static void setProvider0(Provider provider) {
         if (provider == null) {
-            throw new IllegalArgumentException("The provider must not be null");
+            provider = getDefaultProvider();
         }
         Set ids = provider.getAvailableIDs();
         if (ids == null || ids.size() == 0) {
@@ -367,10 +335,23 @@ public abstract class DateTimeZone implements Serializable {
         return cNameProvider;
     }
 
+    /**
+     * @param nameProvider provider to use, or null for default
+     */
     public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
-        // TODO: Put in a security check.
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new DateTimeZonePermission("setNameProvider"));
+        }
+        setNameProvider0(nameProvider);
+    }
+
+    /**
+     * Doesn't perform a security check.
+     */
+    private static void setNameProvider0(NameProvider nameProvider) {
         if (nameProvider == null) {
-            throw new IllegalArgumentException("The provider must not be null");
+            nameProvider = getDefaultNameProvider();
         }
         cNameProvider = nameProvider;
     }
@@ -426,6 +407,65 @@ public abstract class DateTimeZone implements Serializable {
         return cOffsetFormatter;
     }
 
+    private static Provider getDefaultProvider() {
+        Provider provider = null;
+
+        try {
+            String providerClass =
+                System.getProperty("org.joda.time.DateTimeZone.Provider");
+            if (providerClass != null) {
+                try {
+                    provider = (Provider)Class.forName(providerClass).newInstance();
+                }
+                catch (Exception e) {
+                    Thread t = Thread.currentThread();
+                    t.getThreadGroup().uncaughtException(t, e);
+                }
+            }
+        } catch (SecurityException e) {
+        }
+
+        if (provider == null) {
+            try {
+                provider = new ZoneInfoProvider("org/joda/time/tz/data");
+            } catch (Exception e) {
+                Thread t = Thread.currentThread();
+                t.getThreadGroup().uncaughtException(t, e);
+            }
+        }
+
+        if (provider == null) {
+            provider = new UTCProvider();
+        }
+
+        return provider;
+    }
+
+    private static NameProvider getDefaultNameProvider() {
+        NameProvider nameProvider = null;
+
+        try {
+            String providerClass =
+                System.getProperty("org.joda.time.DateTimeZone.NameProvider");
+            if (providerClass != null) {
+                try {
+                    nameProvider = (NameProvider)Class.forName(providerClass).newInstance();
+                }
+                catch (Exception e) {
+                    Thread t = Thread.currentThread();
+                    t.getThreadGroup().uncaughtException(t, e);
+                }
+            }
+        } catch (SecurityException e) {
+        }
+
+        if (nameProvider == null) {
+            nameProvider = new DefaultNameProvider();
+        }
+
+        return nameProvider;
+    }
+
     // Instance fields and methods
     //--------------------------------------------------------------------
 
@@ -454,10 +494,10 @@ public abstract class DateTimeZone implements Serializable {
      * Returns a non-localized name that is unique to this time zone. It can be
      * combined with id to form a unique key for fetching localized names.
      *
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the name for
      * @return name key or null if id should be used for names
      */
-    public abstract String getNameKey(long millis);
+    public abstract String getNameKey(long instant);
 
     /**
      * Gets the short name of this datetime zone suitable for display using
@@ -466,11 +506,11 @@ public abstract class DateTimeZone implements Serializable {
      * If the name is not available for the locale, then this method returns a
      * string in the format <code>[+-]hh:mm</code>.
      * 
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the name for
      * @return the human-readable short name in the default locale
      */
-    public final String getShortName(long millis) {
-        return getShortName(millis, null);
+    public final String getShortName(long instant) {
+        return getShortName(instant, null);
     }
 
     /**
@@ -480,14 +520,14 @@ public abstract class DateTimeZone implements Serializable {
      * If the name is not available for the locale, then this method returns a
      * string in the format <code>[+-]hh:mm</code>.
      * 
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the name for
      * @return the human-readable short name in the specified locale
      */
-    public String getShortName(long millis, Locale locale) {
+    public String getShortName(long instant, Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        String nameKey = getNameKey(millis);
+        String nameKey = getNameKey(instant);
         if (nameKey == null) {
             return iID;
         }
@@ -495,7 +535,7 @@ public abstract class DateTimeZone implements Serializable {
         if (name != null) {
             return name;
         }
-        return offsetFormatter().print(millis, this);
+        return offsetFormatter().print(instant, this);
     }
 
     /**
@@ -505,11 +545,11 @@ public abstract class DateTimeZone implements Serializable {
      * If the name is not available for the locale, then this method returns a
      * string in the format <code>[+-]hh:mm</code>.
      * 
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the name for
      * @return the human-readable long name in the default locale
      */
-    public final String getName(long millis) {
-        return getName(millis, null);
+    public final String getName(long instant) {
+        return getName(instant, null);
     }
 
     /**
@@ -519,14 +559,14 @@ public abstract class DateTimeZone implements Serializable {
      * If the name is not available for the locale, then this method returns a
      * string in the format <code>[+-]hh:mm</code>.
      * 
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the name for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the name for
      * @return the human-readable long name in the specified locale
      */
-    public String getName(long millis, Locale locale) {
+    public String getName(long instant, Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        String nameKey = getNameKey(millis);
+        String nameKey = getNameKey(instant);
         if (nameKey == null) {
             return iID;
         }
@@ -534,16 +574,16 @@ public abstract class DateTimeZone implements Serializable {
         if (name != null) {
             return name;
         }
-        return offsetFormatter().print(millis, this);
+        return offsetFormatter().print(instant, this);
     }
 
     /**
      * Gets the millisecond offset to add to UTC to get local time.
      * 
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the offset for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the offset for
      * @return the millisecond offset to add to UTC to get local time
      */
-    public abstract int getOffset(long millis);
+    public abstract int getOffset(long instant);
 
     /**
      * Gets the millisecond offset to add to UTC to get local time.
@@ -563,10 +603,10 @@ public abstract class DateTimeZone implements Serializable {
      * Gets the standard millisecond offset to add to UTC to get local time,
      * when standard time is in effect.
      * 
-     * @param millis milliseconds from 1970-01-01T00:00:00Z to get the offset for
+     * @param instant milliseconds from 1970-01-01T00:00:00Z to get the offset for
      * @return the millisecond offset to add to UTC to get local time
      */
-    public abstract int getStandardOffset(long millis);
+    public abstract int getStandardOffset(long instant);
 
     /**
      * Gets the millisecond offset to subtract from local time to get UTC time.
@@ -581,33 +621,40 @@ public abstract class DateTimeZone implements Serializable {
      * offset transitions (due to DST or other historical changes), ranges of
      * local times may map to different UTC times.
      *
-     * @param millisLocal the millisecond instant, relative to this time zone, to
+     * @param instantLocal the millisecond instant, relative to this time zone, to
      * get the offset for
      * @return the millisceond offset to subtract from local time to get UTC time.
      */
-    public int getOffsetFromLocal(long millisLocal) {
-        return getOffset(millisLocal - getOffset(millisLocal));
+    public int getOffsetFromLocal(long instantLocal) {
+        return getOffset(instantLocal - getOffset(instantLocal));
     }
+
+    /**
+     * Returns true if this time zone has no transitions.
+     *
+     * @return true if no transitions
+     */
+    public abstract boolean isFixed();
 
     /**
      * Advances the given instant to where the time zone offset or name
      * changes. If the instant returned is exactly the same as passed in, then
      * no changes occur after the given instant.
      *
-     * @param millis milliseconds from 1970-01-01T00:00:00Z
+     * @param instant milliseconds from 1970-01-01T00:00:00Z
      * @return milliseconds from 1970-01-01T00:00:00Z
      */
-    public abstract long nextTransition(long millis);
+    public abstract long nextTransition(long instant);
 
     /**
      * Retreats the given instant to where the time zone offset or name
      * changes. If the instant returned is exactly the same as passed in, then
      * no changes occur before the given instant.
      *
-     * @param millis milliseconds from 1970-01-01T00:00:00Z
+     * @param instant milliseconds from 1970-01-01T00:00:00Z
      * @return milliseconds from 1970-01-01T00:00:00Z
      */
-    public abstract long previousTransition(long millis);
+    public abstract long previousTransition(long instant);
 
     // Basic methods
     //--------------------------------------------------------------------
@@ -627,7 +674,7 @@ public abstract class DateTimeZone implements Serializable {
      * @param object the object to compare with
      * @return true if equal, based on the ID and all internal rules
      */
-    public abstract boolean equals(Object obj);
+    public abstract boolean equals(Object object);
 
     /**
      * Gets a hash code compatable with equals.
@@ -671,6 +718,8 @@ public abstract class DateTimeZone implements Serializable {
      * Used to serialize DateTimeZones by id.
      */
     private static final class Stub implements Serializable {
+        static final long serialVersionUID = -6471952376487863581L;
+
         private transient String iID;
 
         Stub(String id) {

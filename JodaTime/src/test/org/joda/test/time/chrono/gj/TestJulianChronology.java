@@ -102,6 +102,18 @@ public final class TestJulianChronology extends TestGJChronology {
         return new TestJulianYearField(this);
     }
 
+    public String toString() {
+        return "TestJulianChronology";
+    }
+
+    long millisPerYear() {
+        return (long)(365.25 * MILLIS_PER_DAY);
+    }
+
+    long millisPerMonth() {
+        return (long)(365.25 * MILLIS_PER_DAY / 12);
+    }
+
     boolean isLeapYear(int year) {
         if (year == 0) {
             throw new IllegalArgumentException("Illegal year: " + year);

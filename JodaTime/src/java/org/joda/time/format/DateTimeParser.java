@@ -53,15 +53,14 @@
  */
 package org.joda.time.format;
 
-import java.text.ParseException;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
+import org.joda.time.ReadableInstant;
 import org.joda.time.ReadWritableInstant;
 
 /**
- * Converts sequences of human-readable characters into datetimes.
+ * Defines an interface for parsing textual representations of datetimes.
  *
  * @author Brian S O'Neill
  * @see DateTimeFormatter
@@ -72,15 +71,20 @@ public interface DateTimeParser {
 
     /**
      * Returns the Chronology being used by the parser, or null if none.
+     * 
+     * @return the chronology in use, may be null if none
      */
     Chronology getChronology();
 
     /**
      * Returns the expected maximum number of characters consumed. The actual
      * amount should rarely exceed this estimate.
+     * 
+     * @return the estimated length
      */
     int estimateParsedLength();
 
+    //-----------------------------------------------------------------------
     /**
      * Parse an element from the given text, saving any fields into the given
      * DateTimeParserBucket. If the parse succeeds, the return value is the new
@@ -91,11 +95,11 @@ public interface DateTimeParser {
      * where the parse failed, apply the one's complement operator (~) on the
      * return value.
      *
-     * @param bucket field are saved into this
-     * @param text the text to parse
-     * @param position position to start parsing from
-     * @return new position, if negative, parse failed. Apply complement
-     * operator (~) to get position of failure
+     * @param bucket  field are saved into this
+     * @param text  the text to parse
+     * @param position  position to start parsing from
+     * @return new position, negative value means parse failed -
+     *  apply complement operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
     int parseInto(DateTimeParserBucket bucket, String text, int position);
@@ -110,53 +114,78 @@ public interface DateTimeParser {
      * modified. To determine the position where the parse failed, apply the
      * one's complement operator (~) on the return value.
      *
-     * @param instant an instant that will be modified
-     * @param text text to parse
-     * @param position position to start parsing from
-     * @return new position, if negative, parse failed. Apply complement
-     * operator (~) to get position of failure
+     * @param instant  an instant that will be modified
+     * @param text  text to parse
+     * @param position  position to start parsing from
+     * @return new position, negative value means parse failed -
+     *  apply complement operator (~) to get position of failure
      * @throws IllegalArgumentException if any field is out of range
      */
     int parseInto(ReadWritableInstant instant, String text, int position);
 
+    //-----------------------------------------------------------------------
     /**
      * Parses a datetime from the given text, returning the number of
      * milliseconds since the epoch, 1970-01-01T00:00:00Z.
      *
-     * @param text text to parse
+     * @param text  text to parse
      * @return parsed value expressed in milliseconds since the epoch
-     * @throws ParseException if any field is out of range
+     * @throws IllegalArgumentException if the text to parse is invalid
      */
-    long parseMillis(String text) throws ParseException;
+    long parseMillis(String text);
 
     /**
      * Parses a datetime from the given text, at the given position, returning
-     * the number of milliseconds since the epoch, 1970-01-01T00:00:00Z. An
-     * initial millisecond value is passed in, which is relative to the epoch,
+     * the number of milliseconds since the epoch, 1970-01-01T00:00:00Z.
+     * An initial millisecond value is passed in, which is relative to the epoch,
      * local time.
      *
-     * @param text text to parse
-     * @param millis initial value of millis, relative to the epoch, local time
+     * @param text  text to parse
+     * @param instantLocal  initial value of instant, relative to the epoch, local time
      * @return parsed value expressed in milliseconds since the epoch, UTC
-     * @throws ParseException if any field is out of range
+     * @throws IllegalArgumentException if the text to parse is invalid
      */
-    long parseMillis(String text, long millis) throws ParseException;
+    long parseMillis(String text, long instantLocal);
 
+    //-----------------------------------------------------------------------
     /**
      * Parses a datetime from the given text, returning a new DateTime.
      *
-     * @param text text to parse
+     * @param text  text to parse
      * @return parsed value in a DateTime object
-     * @throws ParseException if any field is out of range
+     * @throws IllegalArgumentException if the text to parse is invalid
      */
-    DateTime parseDateTime(String text) throws ParseException;
+    DateTime parseDateTime(String text);
+
+    /**
+     * Parses a datetime from the given text, returning a new DateTime, using
+     * the given instant to supply field values that were not parsed.
+     *
+     * @param text  text to parse
+     * @param instant  initial value of DateTime
+     * @return parsed value in a DateTime object
+     * @throws IllegalArgumentException if the text to parse is invalid
+     */
+    DateTime parseDateTime(String text, ReadableInstant instant);
 
     /**
      * Parses a datetime from the given text, returning a new MutableDateTime.
      *
-     * @param text text to parse
-     * @return parsed value in a MutabkeDateTime object
-     * @throws ParseException if any field is out of range
+     * @param text  text to parse
+     * @return parsed value in a MutableDateTime object
+     * @throws IllegalArgumentException if the text to parse is invalid
      */
-    MutableDateTime parseMutableDateTime(String text) throws ParseException;
+    MutableDateTime parseMutableDateTime(String text);
+
+    /**
+     * Parses a datetime from the given text, returning a new MutableDateTime,
+     * using the given instant to supply field values that were not parsed.
+     *
+     * @param text  text to parse
+     * @param instant  initial value of DateTime
+     * @return parsed value in a MutableDateTime object
+     * @throws IllegalArgumentException if the text to parse is invalid
+     */
+    MutableDateTime parseMutableDateTime(String text, ReadableInstant instant);
+    
 }

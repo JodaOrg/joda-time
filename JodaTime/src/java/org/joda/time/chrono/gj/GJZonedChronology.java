@@ -58,45 +58,24 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ZonedChronology;
 
 /**
- * A specialism of zoned chronology for the GJ chronology.
+ * A special zoned chronology for the GJ chronology.
  * 
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0
  */
-class GJZonedChronology extends GJChronology {
+final class GJZonedChronology extends GJChronology {
+
+    static final long serialVersionUID = -4148749408058922172L;
+
     private final GJChronology iChronology;
     private final DateTimeZone iZone;
+    private final ZonedChronology iZonedChronology;
 
     GJZonedChronology(GJChronology chrono, DateTimeZone zone) {
         iChronology = chrono;
         iZone = zone;
-
-        Chronology zc = new ZonedChronology(chrono, zone);
-
-        iYearField = zc.year();
-        iYearOfEraField = zc.yearOfEra();
-        iYearOfCenturyField = zc.yearOfCentury();
-        iCenturyOfEraField = zc.centuryOfEra();
-        iEraField = zc.era();
-        iDayOfMonthField = zc.dayOfMonth();
-        iDayOfWeekField = zc.dayOfWeek();
-        iDayOfYearField = zc.dayOfYear();
-        iMonthOfYearField = zc.monthOfYear();
-        iWeekOfWeekyearField = zc.weekOfWeekyear();
-        iWeekyearField = zc.weekyear();
-        
-        iMillisOfSecondField = zc.millisOfSecond();
-        iMillisOfDayField = zc.millisOfDay();
-        iSecondOfMinuteField = zc.secondOfMinute();
-        iSecondOfDayField = zc.secondOfDay();
-        iMinuteOfHourField = zc.minuteOfHour();
-        iMinuteOfDayField = zc.minuteOfDay();
-        iHourOfDayField = zc.hourOfDay();
-        iHourOfHalfdayField = zc.hourOfHalfday();
-        iClockhourOfDayField = zc.clockhourOfDay();
-        iClockhourOfHalfdayField = zc.clockhourOfHalfday();
-        iHalfdayOfDayField = zc.halfdayOfDay();
+        copyFields(iZonedChronology = new ZonedChronology(chrono, zone));
     }
 
     public DateTimeZone getDateTimeZone() {
@@ -105,6 +84,47 @@ class GJZonedChronology extends GJChronology {
 
     public Chronology withUTC() {
         return iChronology;
+    }
+
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        return iZonedChronology.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
+    }
+
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                        int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iZonedChronology.getTimeOnlyMillis
+            (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                        int millisOfDay)
+        throws IllegalArgumentException
+    {
+        return iZonedChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iZonedChronology.getDateTimeMillis
+            (instant,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return iZonedChronology.getDateTimeMillis
+            (year, monthOfYear, dayOfMonth,
+             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     public long getGregorianJulianCutoverMillis() {

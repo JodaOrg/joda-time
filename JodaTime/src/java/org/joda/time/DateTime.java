@@ -53,18 +53,20 @@
  */
 package org.joda.time;
 
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
+import java.io.Serializable;
 
-import org.joda.time.chrono.iso.ISOChronology;
-import org.joda.time.format.DateTimeParser;
+// Import for @link support
+import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * DateTime is the basic implementation of a datetime class supporting
- * chronologies and time zones. It holds the time as milliseconds from the Java
- * epoch of 1970-01-01T00:00:00Z.
+ * DateTime is the standard implementation of an unmodifiable datetime class.
+ * It holds the datetime as milliseconds from the Java epoch of 1970-01-01T00:00:00Z.
+ * <p>
+ * This class uses a Chronology internally. The Chronology determines how the
+ * millisecond instant value is converted into the date time fields.
+ * The default Chronology is <code>ISOChronology</code> which is the agreed
+ * international standard and compatable with the modern Gregorian calendar.
  *
  * <p>Each individual field can be queried in two ways:
  * <ul>
@@ -81,342 +83,312 @@ import org.joda.time.format.ISODateTimeFormat;
  * <li>minimum value
  * </ul>
  *
- * <p>This class is immutable provided that the Chronology is immutable. All 
- * Chronology classes supplied are immutable.
+ * <p>
+ * DateTime is thread-safe and immutable, provided that the Chronology is as
+ * well. All standard Chronology classes supplied are thread-safe and
+ * immutable.
  *
  * @author Stephen Colebourne
  * @author Kandarp Shah
  * @author Brian S O'Neill
  * @since 1.0
+ * @see MutableDateTime
+ * @see DateOnly
+ * @see TimeOnly
  */
-public class DateTime extends AbstractDateTime implements ReadableDateTime {
+public class DateTime extends AbstractDateTime
+        implements ReadableDateTime, Serializable {
     
-    /** The millis from 1970-01-01T00:00:00Z */
-    private final long iMillis;
-    /** The chronology to use */
-    private final Chronology iChronology;
+    static final long serialVersionUID = -5171125899451703815L;
 
     // Constructors
     //-----------------------------------------------------------------------
     /**
-     * Constructs a DateTime to the current datetime, as reported by the system
-     * clock. The chronology used is ISO, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
+     * Constructs an instance set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
      */
     public DateTime() {
-        iChronology = ISOChronology.getInstance();
-        iMillis = System.currentTimeMillis();
+        super();
     }
 
     /**
-     * Constructs a DateTime to the current datetime, as reported by the system
-     * clock. The chronology used is ISO, in the supplied time zone.
+     * Constructs an instance set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
      *
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the zone is null
+     * @param zone  the time zone, null means default zone
      */
     public DateTime(DateTimeZone zone) {
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = System.currentTimeMillis();
+        super(zone);
     }
 
     /**
-     * Constructs a DateTime to the current datetime, as reported by the system
-     * clock.
+     * Constructs an instance set to the current system millisecond time
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
      *
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the chronology is null
+     * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public DateTime(Chronology chronology) {
-        iChronology = selectChronology(chronology);
-        iMillis = System.currentTimeMillis();
+        super(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     */
+    public DateTime(long instant) {
+        super(instant);
     }
 
     /**
-     * Constructs a DateTime set to the milliseconds from 1970-01-01T00:00:00Z,
-     * using the ISO chronology, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
      *
-     * @param millis  the milliseconds
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param zone  the time zone, null means default zone
      */
-    public DateTime(long millis) {
-        iChronology = ISOChronology.getInstance();
-        iMillis = millis;
+    public DateTime(long instant, DateTimeZone zone) {
+        super(instant, zone);
     }
 
     /**
-     * Constructs a DateTime set to the milliseconds from 1970-01-01T00:00:00Z,
-     * using the ISO chronology, in the supplied time zone.
+     * Constructs an instance set to the milliseconds from 1970-01-01T00:00:00Z
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
      *
-     * @param millis  the milliseconds
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the zone is null
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z
+     * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public DateTime(long millis, DateTimeZone zone) {
-        iChronology = ISOChronology.getInstance(zone);
-        iMillis = millis;
+    public DateTime(long instant, Chronology chronology) {
+        super(instant, chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance from an Object that represents a datetime.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code>
+     * in the default time zone is used.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  the datetime object, must not be null
+     * @throws IllegalArgumentException if the instant is null or invalid
+     */
+    public DateTime(Object instant) {
+        super(instant);
     }
 
     /**
-     * Constructs a DateTime set to the milliseconds from 1970-01-01T00:00:00Z,
-     * using the supplied chronology.
+     * Constructs an instance from an Object that represents a datetime,
+     * forcing the time zone to that specified.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code> is used.
+     * If the specified time zone is null, the default zone is used.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
      *
-     * @param millis  the milliseconds
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the chronology is null
+     * @param instant  the datetime object, must not be null
+     * @param zone  the time zone, null means default time zone
+     * @throws IllegalArgumentException if the instant is null or invalid
      */
-    public DateTime(long millis, Chronology chronology) {
-        iChronology = selectChronology(chronology);
-        iMillis = millis;
+    public DateTime(Object instant, DateTimeZone zone) {
+        super(instant, zone);
     }
 
     /**
-     * Constructs a DateTime from a ReadableInstant, using its chronology. If
-     * its chronology null, then the chronology is set to ISO, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
+     * Constructs an instance from an Object that represents a datetime,
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, ISOChronology in the default time zone is used.
+     * <p>
+     * The recognised object types are defined in {@link ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the ReadableInstant, must not be null
-     * @throws IllegalArgumentException if the instant is null
+     * @param instant  the datetime object, must not be null
+     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @throws IllegalArgumentException if the instant is null or invalid
      */
-    public DateTime(ReadableInstant instant) {
-        iChronology = selectChronology(instant);
-        iMillis = instant.getMillis();
+    public DateTime(Object instant, Chronology chronology) {
+        super(instant, chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the milisecond of the second
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond) {
+        super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
     }
 
     /**
-     * Constructs a DateTime from a ReadableInstant, using its chronology
-     * against a different time zone. If its chronology is null, then the
-     * chronology is set to ISO. If the selected chronology is not in the
-     * supplied time zone, a new chronology is created that is.
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
      *
-     * @param instant  the ReadableInstant, must not be null
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the instant or zone is null
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the milisecond of the second
+     * @param zone  the time zone, null means default time zone
      */
-    public DateTime(ReadableInstant instant, DateTimeZone zone) {
-        iChronology = selectChronology(instant, zone);
-        iMillis = instant.getMillis();
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond,
+            DateTimeZone zone) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, zone);
     }
 
     /**
-     * Constructs a DateTime from a ReadableInstant, using the supplied
-     * chronology.
+     * Constructs an instance from datetime field values
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
      *
-     * @param instant  the ReadableInstant, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the instant or chronology is null
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param millisOfSecond  the milisecond of the second
+     * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public DateTime(ReadableInstant instant, Chronology chronology) {
-        iChronology = selectChronology(instant, chronology);
-        iMillis = instant.getMillis();
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            int millisOfSecond,
+            Chronology chronology) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
 
-    /**
-     * Constructs a DateTime from a Date, using the ISO chronology, in the
-     * {@link DateTimeZone#getDefault() default} time zone.
-     *
-     * @param date  the Date, must not be null
-     * @throws IllegalArgumentException if the date is null
-     */
-    public DateTime(Date date) {
-        iChronology = selectChronology(date);
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructs a DateTime from a Date, using the ISO chronology, in the
-     * supplied time zone.
-     *
-     * @param date  the Date, must not be null
-     * @param zone  the time zone, must not be null
-     * @throws IllegalArgumentException if the date or zone is null
-     */
-    public DateTime(Date date, DateTimeZone zone) {
-        iChronology = selectChronology(date, zone);
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructs a DateTime from a Date, using the supplied chronology.
-     *
-     * @param date  the Date, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the date or chronology is null
-     */
-    public DateTime(Date date, Chronology chronology) {
-        iChronology = selectChronology(date, chronology);
-        iMillis = date.getTime();
-    }
-
-    /**
-     * Constructs a DateTime from a Calendar, using its closest mapped
-     * chronology and time zone.
-     *
-     * <p>When converting calendars to chronologies, the constructor is aware
-     * of GregorianCalendar and BuddhistCalendar and maps them to the
-     * equivalent chronology. Other calendars map to ISOChronology.
-     *
-     * @param calendar  the Calendar, must not be null
-     * @throws IllegalArgumentException if the calendar is null
-     */
-    public DateTime(Calendar calendar) {
-        iChronology = selectChronology(calendar);
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructs a DateTime from a Calendar, using its closest mapped
-     * chronology against a different time zone.
-     *
-     * <p>When converting calendars to chronologies, the constructor is aware
-     * of GregorianCalendar and BuddhistCalendar and maps them to the
-     * equivalent chronology. Other calendars map to ISOChronology.
-     *
-     * @param calendar  the Calendar, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the calendar or zone is null
-     */
-    public DateTime(Calendar calendar, DateTimeZone zone) {
-        iChronology = selectChronology(calendar, zone);
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructs a DateTime from a Calendar, using the supplied chronology.
-     *
-     * @param calendar  the Calendar, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the calendar or chronology is null
-     */
-    public DateTime(Calendar calendar, Chronology chronology) {
-        iChronology = selectChronology(calendar, chronology);
-        iMillis = calendar.getTime().getTime();
-    }
-
-    /**
-     * Constructs a DateTime from an ISO formatted String, using the ISO
-     * chronology, in the {@link DateTimeZone#getDefault() default} time zone.
-     *
-     * @param str  the string to parse, must not be null
-     * @throws IllegalArgumentException if the string is null
-     * @throws ParseException if parsing fails
-     */
-    public DateTime(String str) throws ParseException {
-        iChronology = selectChronology(str);
-        DateTimeParser p = ISODateTimeFormat.getInstance(iChronology).dateTimeParser();
-        iMillis = p.parseMillis(str);
-    }
-
-    /**
-     * Constructs a DateTime from an ISO formatted String, using the ISO
-     * chronology, in the supplied time zone.
-     *
-     * @param str  the string to parse, must not be null
-     * @param zone the time zone, must not be null
-     * @throws IllegalArgumentException if the string or zone is null
-     * @throws ParseException if parsing fails
-     */
-    public DateTime(String str, DateTimeZone zone) throws ParseException {
-        iChronology = selectChronology(str, zone);
-        DateTimeParser p = ISODateTimeFormat.getInstance(iChronology).dateTimeParser();
-        iMillis = p.parseMillis(str);
-    }
-
-    /**
-     * Constructs a DateTime from an ISO formatted String, using the supplied
-     * chronology.
-     *
-     * @param str  the string to parse, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the string or chronology is null
-     * @throws ParseException if parsing fails
-     */
-    public DateTime(String str, Chronology chronology) throws ParseException {
-        iChronology = selectChronology(str, chronology);
-        DateTimeParser p = ISODateTimeFormat.getInstance(iChronology).dateTimeParser();
-        iMillis = p.parseMillis(str);
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Creates a new instance of this class.
      * <p>
      * The returned object will be a new instance of the implementation.
      * Immutable subclasses may return <code>this</code> if appropriate.
      *
-     * @param millis  the new millis, from 1970-01-01T00:00:00Z
+     * @param instant  the new instant, from 1970-01-01T00:00:00Z
      * @param chrono  the new chronology
      * @return a new instance of this class
      * @throws IllegalArgumentException if the chronology is null
      */
-    protected ReadableInstant create(long millis, Chronology chrono) {
+    protected final ReadableInstant create(final long instant, final Chronology chrono) {
+        return createDateTime(instant, chrono);
+    }
+    
+    /**
+     * Creates a new instance of this class.
+     * <p>
+     * The returned object will be a new instance of DateTime, or a subclass.
+     * Immutable subclasses may return <code>this</code> if appropriate.
+     *
+     * @param instant  the new instant, from 1970-01-01T00:00:00Z
+     * @param chrono  the new chronology
+     * @return a new instance of this class
+     * @throws IllegalArgumentException if the chronology is null
+     */
+    protected DateTime createDateTime(final long instant, final Chronology chrono) {
         if (chrono == null) {
             throw new IllegalArgumentException("The Chronology must not be null");
         }
-        if (millis == getMillis() && chrono == getChronology()) {
+        if (instant == getMillis() && chrono == getChronology()) {
             return this;
         }
-        return new DateTime(millis, chrono);
+        return new DateTime(instant, chrono);
     }
     
-    // Accessors
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the milliseconds of the datetime instant from the Java epoch
-     * of 1970-01-01T00:00:00Z.
-     * 
-     * @return the number of milliseconds since 1970-01-01T00:00:00Z
-     */
-    public final long getMillis() {
-        return iMillis;
-    }
-
-    /**
-     * Gets the chronology of the datetime.
-     * 
-     * @return the Chronology that the datetime is using
-     */
-    public final Chronology getChronology() {
-        return iChronology;
-    }
-
     // Date properties
     //-----------------------------------------------------------------------
     /**
-     * Get the day of week property.
-     * <p>
-     * The values for day of week are defined in {@link DateTimeConstants}.
+     * Get the era property.
      * 
-     * @return the day of week property
+     * @return the era property
      */
-    public final DateTimeFieldProperty dayOfWeek() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfWeek());
+    public final DateTimeFieldProperty era() {
+        return new DateTimeFieldProperty(this, getChronology().era());
     }
 
     /**
-     * Get the day of month property.
+     * Get the century of era property.
      * 
-     * @return the day of month property
+     * @return the year of era property
      */
-    public final DateTimeFieldProperty dayOfMonth() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfMonth());
+    public final DateTimeFieldProperty centuryOfEra() {
+        return new DateTimeFieldProperty(this, getChronology().centuryOfEra());
     }
 
     /**
-     * Get the day of year property.
+     * Get the year of century property.
      * 
-     * @return the day of year property
+     * @return the year of era property
      */
-    public final DateTimeFieldProperty dayOfYear() {
-        return new DateTimeFieldProperty(this, getChronology().dayOfYear());
+    public final DateTimeFieldProperty yearOfCentury() {
+        return new DateTimeFieldProperty(this, getChronology().yearOfCentury());
     }
 
     /**
-     * Get the week of a week based year property.
+     * Get the year of era property.
      * 
-     * @return the week of a week based year property
+     * @return the year of era property
      */
-    public final DateTimeFieldProperty weekOfWeekyear() {
-        return new DateTimeFieldProperty(this, getChronology().weekOfWeekyear());
+    public final DateTimeFieldProperty yearOfEra() {
+        return new DateTimeFieldProperty(this, getChronology().yearOfEra());
+    }
+
+    /**
+     * Get the year property.
+     * 
+     * @return the year property
+     */
+    public final DateTimeFieldProperty year() {
+        return new DateTimeFieldProperty(this, getChronology().year());
     }
 
     /**
@@ -438,99 +410,58 @@ public class DateTime extends AbstractDateTime implements ReadableDateTime {
     }
 
     /**
-     * Get the year property.
+     * Get the week of a week based year property.
      * 
-     * @return the year property
+     * @return the week of a week based year property
      */
-    public final DateTimeFieldProperty year() {
-        return new DateTimeFieldProperty(this, getChronology().year());
+    public final DateTimeFieldProperty weekOfWeekyear() {
+        return new DateTimeFieldProperty(this, getChronology().weekOfWeekyear());
     }
 
     /**
-     * Get the year of era property.
+     * Get the day of year property.
      * 
-     * @return the year of era property
+     * @return the day of year property
      */
-    public final DateTimeFieldProperty yearOfEra() {
-        return new DateTimeFieldProperty(this, getChronology().yearOfEra());
+    public final DateTimeFieldProperty dayOfYear() {
+        return new DateTimeFieldProperty(this, getChronology().dayOfYear());
     }
 
     /**
-     * Get the year of century property.
+     * Get the day of month property.
+     * <p>
+     * The values for day of month are defined in {@link DateTimeConstants}.
      * 
-     * @return the year of era property
+     * @return the day of month property
      */
-    public final DateTimeFieldProperty yearOfCentury() {
-        return new DateTimeFieldProperty(this, getChronology().yearOfCentury());
+    public final DateTimeFieldProperty dayOfMonth() {
+        return new DateTimeFieldProperty(this, getChronology().dayOfMonth());
     }
 
     /**
-     * Get the century of era property.
+     * Get the day of week property.
+     * <p>
+     * The values for day of week are defined in {@link DateTimeConstants}.
      * 
-     * @return the year of era property
+     * @return the day of week property
      */
-    public final DateTimeFieldProperty centuryOfEra() {
-        return new DateTimeFieldProperty(this, getChronology().centuryOfEra());
-    }
-
-    /**
-     * Get the era property.
-     * 
-     * @return the era property
-     */
-    public final DateTimeFieldProperty era() {
-        return new DateTimeFieldProperty(this, getChronology().era());
+    public final DateTimeFieldProperty dayOfWeek() {
+        return new DateTimeFieldProperty(this, getChronology().dayOfWeek());
     }
 
     // Time properties
     //-----------------------------------------------------------------------
     /**
-     * Get the millis of second property.
+     * Get the hour of day field property
      * 
-     * @return the millis of second property
+     * @return the hour of day property
      */
-    public final DateTimeFieldProperty millisOfSecond() {
-        return new DateTimeFieldProperty(this, getChronology().millisOfSecond());
+    public final DateTimeFieldProperty hourOfDay() {
+        return new DateTimeFieldProperty(this, getChronology().hourOfDay());
     }
 
     /**
-     * Get the millis of day property.
-     * 
-     * @return the millis of day property
-     */
-    public final DateTimeFieldProperty millisOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().millisOfDay());
-    }
-
-    /**
-     * Get the second of minute field property.
-     * 
-     * @return the second of minute property
-     */
-    public final DateTimeFieldProperty secondOfMinute() {
-        return new DateTimeFieldProperty(this, getChronology().secondOfMinute());
-    }
-
-    /**
-     * Get the second of day property.
-     * 
-     * @return the second of day property
-     */
-    public final DateTimeFieldProperty secondOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().secondOfDay());
-    }
-
-    /**
-     * Get the minute of hour field property.
-     * 
-     * @return the minute of hour property
-     */
-    public final DateTimeFieldProperty minuteOfHour() {
-        return new DateTimeFieldProperty(this, getChronology().minuteOfHour());
-    }
-
-    /**
-     * Get the minute of day property.
+     * Get the minute of day property
      * 
      * @return the minute of day property
      */
@@ -539,12 +470,48 @@ public class DateTime extends AbstractDateTime implements ReadableDateTime {
     }
 
     /**
-     * Get the hour of day field property.
+     * Get the minute of hour field property
      * 
-     * @return the hour of day property
+     * @return the minute of hour property
      */
-    public final DateTimeFieldProperty hourOfDay() {
-        return new DateTimeFieldProperty(this, getChronology().hourOfDay());
+    public final DateTimeFieldProperty minuteOfHour() {
+        return new DateTimeFieldProperty(this, getChronology().minuteOfHour());
+    }
+
+    /**
+     * Get the second of day property
+     * 
+     * @return the second of day property
+     */
+    public final DateTimeFieldProperty secondOfDay() {
+        return new DateTimeFieldProperty(this, getChronology().secondOfDay());
+    }
+
+    /**
+     * Get the second of minute field property
+     * 
+     * @return the second of minute property
+     */
+    public final DateTimeFieldProperty secondOfMinute() {
+        return new DateTimeFieldProperty(this, getChronology().secondOfMinute());
+    }
+
+    /**
+     * Get the millis of day property
+     * 
+     * @return the millis of day property
+     */
+    public final DateTimeFieldProperty millisOfDay() {
+        return new DateTimeFieldProperty(this, getChronology().millisOfDay());
+    }
+
+    /**
+     * Get the millis of second property
+     * 
+     * @return the millis of second property
+     */
+    public final DateTimeFieldProperty millisOfSecond() {
+        return new DateTimeFieldProperty(this, getChronology().millisOfSecond());
     }
 
     // Output
@@ -556,6 +523,20 @@ public class DateTime extends AbstractDateTime implements ReadableDateTime {
      */
     public final String toString() {
         return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
+    }
+
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are
+     * immutable.
+     */
+    protected final void setMillis(long millis) {
+    }
+
+    /**
+     * Overridden to do nothing, ensuring this class and all subclasses are
+     * immutable.
+     */
+    protected final void setChronology(Chronology chronology) {
     }
 
 }

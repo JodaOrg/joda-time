@@ -54,21 +54,19 @@
 
 package org.joda.test.time.chrono.gj;
 
+import org.joda.time.DurationField;
+
 /**
  * 
  * @author Brian S O'Neill
  */
 class TestGJWeekyearField extends TestGJDateTimeField {
     public TestGJWeekyearField(TestGJChronology chrono) {
-        super("weekyear", chrono);
+        super("weekyear", "weekyears", chrono.millisPerYear(), chrono);
     }
 
     public int get(long millis) {
         return iChronology.isoFromMillis(millis)[0];
-    }
-
-    public long add(long millis, int value) {
-        return set(millis, get(millis) + value);
     }
 
     public long set(long millis, int value) {
@@ -85,12 +83,12 @@ class TestGJWeekyearField extends TestGJDateTimeField {
         return millis;
     }
 
-    public long getUnitMillis() {
-        return (long)(365.2425 * iChronology.MILLIS_PER_DAY);
+    public long add(long millis, long value) {
+        return set(millis, (int)(get(millis) + value));
     }
 
-    public long getRangeMillis() {
-        return Long.MAX_VALUE;
+    public DurationField getRangeDurationField() {
+        return null;
     }
 
     public int getMinimumValue() {

@@ -53,21 +53,17 @@
  */
 package org.joda.test.time;
 //
-import java.text.ParseException;
 import java.io.PrintStream;
-//
+
 import junit.framework.TestSuite;
-//
+
 import org.joda.time.DateTime;
-//import org.joda.time.DateOnly;
-//import org.joda.time.TimeOnly;
 import org.joda.time.ReadableInstant;
-import org.joda.time.DateTimeFieldProperty;
 //
 /**
  * This class is a Junit unit test for the
- * constructors of various ISODateTime, ISODateOnly, and
- * ISOTimeOnly objects.
+ * constructors of various DateTime, DateOnly, and
+ * TimeOnly objects.
  *
  * @author Guy Allard
  *
@@ -103,8 +99,8 @@ public class TestConstructors extends BulkTest {
         super.tearDown();
     }
     /**
-     * Test the <code>ISODateOnly</code> constructors.
-     * @see org.joda.time.iso.ISODateOnly
+     * Test the <code>DateOnly</code> constructors.
+     * @see org.joda.time.DateOnly
      */
     public void testDateOnlyConstructors() {
         dateOnly = true;
@@ -162,8 +158,8 @@ public class TestConstructors extends BulkTest {
         tt.showResults();
     }
     /**
-     * Test the <code>ISOTimeOnly</code> constructors.
-     * @see org.joda.time.iso.ISOTimeOnly
+     * Test the <code>TimeOnly</code> constructors.
+     * @see org.joda.time.TimeOnly
      */
     public void testTimeOnlyConstructors() {
         dateOnly = false;
@@ -238,8 +234,8 @@ public class TestConstructors extends BulkTest {
         tt.showResults();
     }
     /**
-     * Test the <code>ISODateTime</code> constructors.
-     * @see org.joda.time.iso.ISODateTime
+     * Test the <code>DateTime</code> constructors.
+     * @see org.joda.time.DateTime
      */
     public void testDateTimeConstructors() {
         dateTimes = true;
@@ -691,7 +687,7 @@ public class TestConstructors extends BulkTest {
                     }
                     */
                 }
-                catch(ParseException pe)
+                catch(IllegalArgumentException pe)
                 {
                     ss.bumpFailedTests();
                     tt.bumpFailedTests();

@@ -54,8 +54,9 @@
 
 package org.joda.time.chrono.gj;
 
+import java.lang.ref.WeakReference;
 import java.text.DateFormatSymbols;
-import java.util.HashMap;
+import java.util.WeakHashMap;
 import java.util.Locale;
 
 /**
@@ -64,14 +65,26 @@ import java.util.Locale;
  * @author Brian S O'Neill
  */
 class GJLocaleSymbols {
-    private static HashMap cCache = new HashMap();
+    private static final int FAST_CACHE_SIZE = 64;
 
-    public static synchronized GJLocaleSymbols forLocale(Locale locale) {
-        GJLocaleSymbols symbols = (GJLocaleSymbols)cCache.get(locale);
-        if (symbols == null) {
-            symbols = new GJLocaleSymbols(locale);
-            cCache.put(locale, symbols);
+    private static final GJLocaleSymbols[] cFastCache = new GJLocaleSymbols[FAST_CACHE_SIZE];
+
+    private static WeakHashMap cCache = new WeakHashMap();
+
+    public static GJLocaleSymbols forLocale(Locale locale) {
+        int index = System.identityHashCode(locale) & (FAST_CACHE_SIZE - 1);
+        GJLocaleSymbols symbols = cFastCache[index];
+        if (symbols != null && symbols.iLocale.get() == locale) {
+            return symbols;
         }
+        synchronized (cCache) {
+            symbols = (GJLocaleSymbols) cCache.get(locale);
+            if (symbols == null) {
+                symbols = new GJLocaleSymbols(locale);
+                cCache.put(locale, symbols);
+            }
+        }
+        cFastCache[index] = symbols;
         return symbols;
     }
 
@@ -105,6 +118,8 @@ class GJLocaleSymbols {
         return max;
     }
 
+    private final WeakReference iLocale;
+
     private final String[] iEras;
     private final String[] iDaysOfWeek;
     private final String[] iShortDaysOfWeek;
@@ -123,6 +138,9 @@ class GJLocaleSymbols {
         if (locale == null) {
             locale = Locale.getDefault();
         }
+
+        iLocale = new WeakReference(locale);
+
         DateFormatSymbols dfs = new DateFormatSymbols(locale);
 
         iEras = dfs.getEras();

@@ -90,11 +90,22 @@ import org.joda.time.ReadablePeriod;
  * @author Brian S O'Neill
  */
 public class PeriodFormatterBuilder {
-    private static final int PRINT_ZERO_RARELY = 1;
-    private static final int PRINT_ZERO_IF_SUPPORTED = 2;
-    private static final int PRINT_ZERO_ALWAYS = 3;
-
-    private boolean iFavorFirstFieldForZero;
+    private static final int PRINT_ZERO_RARELY_FIRST = 1;
+    private static final int PRINT_ZERO_RARELY_LAST = 2;
+    private static final int PRINT_ZERO_IF_SUPPORTED = 3;
+    private static final int PRINT_ZERO_ALWAYS = 4;
+    private static final int PRINT_ZERO_NEVER = 5;
+    
+    private static final int YEARS = 0;
+    private static final int MONTHS = 1;
+    private static final int WEEKS = 2;
+    private static final int DAYS = 3;
+    private static final int HOURS = 4;
+    private static final int MINUTES = 5;
+    private static final int SECONDS = 6;
+    private static final int MILLIS = 7;
+    private static final int SECONDS_MILLIS = 8;
+    private static final int SECONDS_OPTIONAL_MILLIS = 9;
 
     private int iMinPrintedDigits;
     private int iPrintZeroSetting;
@@ -106,51 +117,42 @@ public class PeriodFormatterBuilder {
     // List of PeriodFormatters used to build a final formatter.
     private List iFormatters;
 
-    // List of PeriodFormatters used to build an alternate formatter. The
-    // alternate is chosen if no other fields are printed.
-    private List iAlternateFormatters;
+    // Last PeriodFormatter appended of each field type.
+    private FieldFormatter[] iFieldFormatters;
 
     public PeriodFormatterBuilder() {
         clear();
     }
 
     /**
-     * Converts to a PeriodPrinter that prints using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * printer.
+     * Converts to a PeriodPrinter that prints using all the appended elements.
+     * Subsequent changes to this builder do not affect the returned printer.
+     * 
+     * @return the newly created printer
      */
     public PeriodPrinter toPrinter() {
         return toFormatter();
     }
 
     /**
-     * Converts to a PeriodParser that parses using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * parser.
+     * Converts to a PeriodParser that parses using all the appended elements.
+     * Subsequent changes to this builder do not affect the returned parser.
+     * 
+     * @return the newly created parser
      */
     public PeriodParser toParser() {
         return toFormatter();
     }
 
     /**
-     * Converts to a PeriodFormatter that formats using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * formatter.
+     * Converts to a PeriodFormatter that formats using all the appended elements.
+     * Subsequent changes to this builder do not affect the returned formatter.
+     * 
+     * @return the newly created formatter
      */
     public PeriodFormatter toFormatter() {
         PeriodFormatter formatter = toFormatter(iFormatters);
-        List altFormatters = iAlternateFormatters;
-        if (altFormatters.size() > 0) {
-            // Alternate is needed only if field formatters were
-            // appended. Literals may have been appended as well.
-            for (int i=altFormatters.size(); --i>=0; ) {
-                if (altFormatters.get(i) instanceof FieldFormatter) {
-                    formatter = new AlternateSelector
-                        (formatter, altFormatters, iFavorFirstFieldForZero);
-                    break;
-                }
-            }
-        }
+        iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
         return formatter;
     }
 
@@ -164,13 +166,11 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Clears out all the appended elements, allowing this builder to be
-     * reused.
+     * Clears out all the appended elements, allowing this builder to be reused.
      */
     public void clear() {
-        iFavorFirstFieldForZero = false;
         iMinPrintedDigits = 1;
-        iPrintZeroSetting = PRINT_ZERO_RARELY;
+        iPrintZeroSetting = PRINT_ZERO_RARELY_LAST;
         iMaxParsedDigits = 10;
         iRejectSignedValues = false;
         iPrefix = null;
@@ -179,11 +179,7 @@ public class PeriodFormatterBuilder {
         } else {
             iFormatters.clear();
         }
-        if (iAlternateFormatters == null) {
-            iAlternateFormatters = new ArrayList();
-        } else {
-            iAlternateFormatters.clear();
-        }
+        iFieldFormatters = new FieldFormatter[10];
     }
 
     /**
@@ -216,7 +212,6 @@ public class PeriodFormatterBuilder {
         clearPrefix();
         Literal literal = new Literal(text);
         iFormatters.add(literal);
-        iAlternateFormatters.add(literal);
         return this;
     }
 
@@ -256,16 +251,26 @@ public class PeriodFormatterBuilder {
     /**
      * Never print zero values for the next and following appended fields,
      * unless no fields would be printed. If no fields are printed, the printer
-     * forces at most one "printZeroRarely" field to print a zero.
+     * forces the last "printZeroRarely" field to print a zero.
      * <p>
      * This field setting is the default.
      *
      * @return this PeriodFormatterBuilder
-     * @see #favorLastFieldForZero()
-     * @see #favorFirstFieldForZero()
      */
-    public PeriodFormatterBuilder printZeroRarely() {
-        iPrintZeroSetting = PRINT_ZERO_RARELY;
+    public PeriodFormatterBuilder printZeroRarelyLast() {
+        iPrintZeroSetting = PRINT_ZERO_RARELY_LAST;
+        return this;
+    }
+
+    /**
+     * Never print zero values for the next and following appended fields,
+     * unless no fields would be printed. If no fields are printed, the printer
+     * forces the first "printZeroRarely" field to print a zero.
+     *
+     * @return this PeriodFormatterBuilder
+     */
+    public PeriodFormatterBuilder printZeroRarelyFirst() {
+        iPrintZeroSetting = PRINT_ZERO_RARELY_FIRST;
         return this;
     }
 
@@ -289,6 +294,20 @@ public class PeriodFormatterBuilder {
      */
     public PeriodFormatterBuilder printZeroAlways() {
         iPrintZeroSetting = PRINT_ZERO_ALWAYS;
+        return this;
+    }
+
+    /**
+     * Never print zero values for the next and following appended fields,
+     * unless no fields would be printed. If no fields are printed, the printer
+     * forces the last "printZeroRarely" field to print a zero.
+     * <p>
+     * This field setting is the default.
+     *
+     * @return this PeriodFormatterBuilder
+     */
+    public PeriodFormatterBuilder printZeroNever() {
+        iPrintZeroSetting = PRINT_ZERO_NEVER;
         return this;
     }
 
@@ -352,7 +371,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendYears() {
-        appendField(1);
+        appendField(YEARS);
         return this;
     }
 
@@ -362,7 +381,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendMonths() {
-        appendField(2);
+        appendField(MONTHS);
         return this;
     }
 
@@ -372,7 +391,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendWeeks() {
-        appendField(3);
+        appendField(WEEKS);
         return this;
     }
 
@@ -382,7 +401,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendDays() {
-        appendField(4);
+        appendField(DAYS);
         return this;
     }
 
@@ -392,7 +411,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendHours() {
-        appendField(5);
+        appendField(HOURS);
         return this;
     }
 
@@ -402,7 +421,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendMinutes() {
-        appendField(6);
+        appendField(MINUTES);
         return this;
     }
 
@@ -412,7 +431,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendSeconds() {
-        appendField(7);
+        appendField(SECONDS);
         return this;
     }
 
@@ -424,7 +443,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendSecondsWithMillis() {
-        appendField(9);
+        appendField(SECONDS_MILLIS);
         return this;
     }
 
@@ -436,7 +455,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendSecondsWithOptionalMillis() {
-        appendField(10);
+        appendField(SECONDS_OPTIONAL_MILLIS);
         return this;
     }
 
@@ -446,7 +465,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendMillis() {
-        appendField(8);
+        appendField(MILLIS);
         return this;
     }
 
@@ -456,7 +475,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      */
     public PeriodFormatterBuilder appendMillis3Digit() {
-        appendField(8, 3);
+        appendField(7, 3);
         return this;
     }
 
@@ -466,11 +485,9 @@ public class PeriodFormatterBuilder {
 
     private void appendField(int type, int minPrinted) {
         FieldFormatter field = new FieldFormatter(minPrinted, iPrintZeroSetting,
-            iMaxParsedDigits, iRejectSignedValues, type, iPrefix, null);
+            iMaxParsedDigits, iRejectSignedValues, type, iFieldFormatters, iPrefix, null);
         iFormatters.add(field);
-        if (iPrintZeroSetting == PRINT_ZERO_RARELY) {
-            iAlternateFormatters.add(field);
-        }
+        iFieldFormatters[type] = field;
         iPrefix = null;
     }
 
@@ -533,14 +550,10 @@ public class PeriodFormatterBuilder {
         }
 
         clearPrefix();
-        Object newField = new FieldFormatter((FieldFormatter) originalField, suffix);
+        FieldFormatter newField = new FieldFormatter((FieldFormatter) originalField, suffix);
         iFormatters.set(iFormatters.size() - 1, newField);
-
-        int index = iAlternateFormatters.lastIndexOf(originalField);
-        if (index >= 0) {
-            iAlternateFormatters.set(index, newField);
-        }
-
+        iFieldFormatters[newField.getFieldType()] = newField;
+        
         return this;
     }
 
@@ -663,42 +676,6 @@ public class PeriodFormatterBuilder {
             formatters.add(new Separator(text, finalText, composite, useBefore, useAfter));
         }
         
-        return this;
-    }
-
-    /**
-     * If the printer doesn't print any field values, it forces a
-     * "printZeroRarely" field to print. This setting controls which field is
-     * selected.
-     * <p>
-     * It starts from the last appended field, and moves towards the first,
-     * stopping until it finds a field that is supported by the period being
-     * printed. If no supported fields are found, then no fields are printed.
-     * <p>
-     * This setting is the default.
-     *
-     * @return this PeriodFormatterBuilder
-     * @see #printZeroRarely()
-     */
-    public PeriodFormatterBuilder favorLastFieldForZero() {
-        iFavorFirstFieldForZero = false;
-        return this;
-    }
-
-    /**
-     * If the printer doesn't print any field values, it forces a
-     * "printZeroRarely" field to print. This setting controls which field is
-     * selected.
-     * <p>
-     * It starts from the first appended field, and moves towards the last,
-     * stopping until it finds a field that is supported by the period being
-     * printed. If no supported fields are found, then no fields are printed.
-     *
-     * @return this PeriodFormatterBuilder
-     * @see #printZeroRarely()
-     */
-    public PeriodFormatterBuilder favorFirstFieldForZero() {
-        iFavorFirstFieldForZero = true;
         return this;
     }
 
@@ -920,20 +897,29 @@ public class PeriodFormatterBuilder {
         private final int iPrintZeroSetting;
         private final int iMaxParsedDigits;
         private final boolean iRejectSignedValues;
-
+        
+        /** The index of the field type, 0=year, etc. */
         private final int iFieldType;
-
+        /**
+         * The array of the latest formatter added for each type.
+         * This is shared between all the field formatters in a formatter.
+         */
+        private final FieldFormatter[] iFieldFormatters;
+        
         private final PeriodFieldAffix iPrefix;
         private final PeriodFieldAffix iSuffix;
+        
 
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
                        int maxParsedDigits, boolean rejectSignedValues,
-                       int fieldType, PeriodFieldAffix prefix, PeriodFieldAffix suffix) {
+                       int fieldType, FieldFormatter[] fieldFormatters,
+                       PeriodFieldAffix prefix, PeriodFieldAffix suffix) {
             iMinPrintedDigits = minPrintedDigits;
             iPrintZeroSetting = printZeroSetting;
             iMaxParsedDigits = maxParsedDigits;
             iRejectSignedValues = rejectSignedValues;
             iFieldType = fieldType;
+            iFieldFormatters = fieldFormatters;
             iPrefix = prefix;
             iSuffix = suffix;
         }
@@ -944,21 +930,12 @@ public class PeriodFormatterBuilder {
             iMaxParsedDigits = field.iMaxParsedDigits;
             iRejectSignedValues = field.iRejectSignedValues;
             iFieldType = field.iFieldType;
+            iFieldFormatters = field.iFieldFormatters;
             iPrefix = field.iPrefix;
             if (field.iSuffix != null) {
                 suffix = new CompositeAffix(field.iSuffix, suffix);
             }
             iSuffix = suffix;
-        }
-
-        FieldFormatter(FieldFormatter field, int printZeroSetting) {
-            iMinPrintedDigits = field.iMinPrintedDigits;
-            iPrintZeroSetting = printZeroSetting;
-            iMaxParsedDigits = field.iMaxParsedDigits;
-            iRejectSignedValues = field.iRejectSignedValues;
-            iFieldType = field.iFieldType;
-            iPrefix = field.iPrefix;
-            iSuffix = field.iSuffix;
         }
 
         public int countFieldsToPrint(ReadablePeriod period) {
@@ -979,21 +956,21 @@ public class PeriodFormatterBuilder {
             }
 
             int sum = Math.max(FormatUtils.calculateDigitCount(valueLong), iMinPrintedDigits);
-            if (iFieldType >= 9) {
+            if (iFieldType >= 8) {
                 sum++; // decimal point
-                if (iFieldType == 10 && (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND) == 0) {
+                if (iFieldType == SECONDS_OPTIONAL_MILLIS &&
+                    (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND) == 0) {
                     sum -= 4; // remove three digits and decimal point
                 }
                 valueLong = valueLong / DateTimeConstants.MILLIS_PER_SECOND;
             }
             int value = (int) valueLong;
 
-            PeriodFieldAffix affix;
-            if ((affix = iPrefix) != null) {
-                sum += affix.calculatePrintedLength(value);
+            if (iPrefix != null) {
+                sum += iPrefix.calculatePrintedLength(value);
             }
-            if ((affix = iSuffix) != null) {
-                sum += affix.calculatePrintedLength(value);
+            if (iSuffix != null) {
+                sum += iSuffix.calculatePrintedLength(value);
             }
 
             return sum;
@@ -1005,13 +982,12 @@ public class PeriodFormatterBuilder {
                 return;
             }
             int value = (int) valueLong;
-            if (iFieldType >= 9) {
+            if (iFieldType >= 8) {
                 value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
             }
 
-            PeriodFieldAffix affix;
-            if ((affix = iPrefix) != null) {
-                affix.printTo(buf, value);
+            if (iPrefix != null) {
+                iPrefix.printTo(buf, value);
             }
             int minDigits = iMinPrintedDigits;
             if (minDigits <= 1) {
@@ -1019,15 +995,15 @@ public class PeriodFormatterBuilder {
             } else {
                 FormatUtils.appendPaddedInteger(buf, value, minDigits);
             }
-            if (iFieldType >= 9) {
+            if (iFieldType >= 8) {
                 int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
-                if (iFieldType == 9 || dp > 0) {
+                if (iFieldType == SECONDS_MILLIS || dp > 0) {
                     buf.append('.');
                     FormatUtils.appendPaddedInteger(buf, dp, 3);
                 }
             }
-            if ((affix = iSuffix) != null) {
-                affix.printTo(buf, value);
+            if (iSuffix != null) {
+                iSuffix.printTo(buf, value);
             }
         }
 
@@ -1037,13 +1013,12 @@ public class PeriodFormatterBuilder {
                 return;
             }
             int value = (int) valueLong;
-            if (iFieldType >= 9) {
+            if (iFieldType >= 8) {
                 value = (int) (valueLong / DateTimeConstants.MILLIS_PER_SECOND);
             }
 
-            PeriodFieldAffix affix;
-            if ((affix = iPrefix) != null) {
-                affix.printTo(out, value);
+            if (iPrefix != null) {
+                iPrefix.printTo(out, value);
             }
             int minDigits = iMinPrintedDigits;
             if (minDigits <= 1) {
@@ -1051,15 +1026,15 @@ public class PeriodFormatterBuilder {
             } else {
                 FormatUtils.writePaddedInteger(out, value, minDigits);
             }
-            if (iFieldType >= 9) {
+            if (iFieldType >= 8) {
                 int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
-                if (iFieldType == 9 || dp > 0) {
+                if (iFieldType == SECONDS_MILLIS || dp > 0) {
                     out.write('.');
                     FormatUtils.writePaddedInteger(out, dp, 3);
                 }
             }
-            if ((affix = iSuffix) != null) {
-                affix.printTo(out, value);
+            if (iSuffix != null) {
+                iSuffix.printTo(out, value);
             }
         }
 
@@ -1110,7 +1085,7 @@ public class PeriodFormatterBuilder {
                 }
             }
 
-            if (!mustParse && !isSupported(period.getPeriodType())) {
+            if (!mustParse && !isSupported(period.getPeriodType(), iFieldType)) {
                 // If parsing is not required and the field is not supported,
                 // exit gracefully so that another parser can continue on.
                 return position;
@@ -1178,7 +1153,7 @@ public class PeriodFormatterBuilder {
                 }
             }
             
-            setFieldValue(period, value);
+            setFieldValue(period, iFieldType, value);
                 
             if (position >= 0 && iSuffix != null) {
                 position = iSuffix.parse(text, position);
@@ -1197,135 +1172,144 @@ public class PeriodFormatterBuilder {
             } else {
                 type = period.getPeriodType();
             }
+            if (type != null && isSupported(type, iFieldType) == false) {
+                return Long.MAX_VALUE;
+            }
 
             int value;
 
             switch (iFieldType) {
             default:
                 return Long.MAX_VALUE;
-            case 1:
-                if (type != null && type.years().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case YEARS:
                 value = period.getYears();
                 break;
-            case 2:
-                if (type != null && type.months().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case MONTHS:
                 value = period.getMonths();
                 break;
-            case 3:
-                if (type != null && type.weeks().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case WEEKS:
                 value = period.getWeeks();
                 break;
-            case 4:
-                if (type != null && type.days().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case DAYS:
                 value = period.getDays();
                 break;
-            case 5:
-                if (type != null && type.hours().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case HOURS:
                 value = period.getHours();
                 break;
-            case 6:
-                if (type != null && type.minutes().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case MINUTES:
                 value = period.getMinutes();
                 break;
-            case 7:
-                if (type != null && type.seconds().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case SECONDS:
                 value = period.getSeconds();
                 break;
-            case 8:
-                if (type != null && type.millis().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case MILLIS:
                 value = period.getMillis();
                 break;
-            case 9: // drop through
-            case 10:
-                if (type != null && type.seconds().isSupported() == false && type.millis().isSupported() == false) {
-                    return Long.MAX_VALUE;
-                }
+            case SECONDS_MILLIS: // drop through
+            case SECONDS_OPTIONAL_MILLIS:
                 value = period.getSeconds() * DateTimeConstants.MILLIS_PER_SECOND + period.getMillis();
                 break;
             }
 
-            if (value == 0 && iPrintZeroSetting == PRINT_ZERO_RARELY) {
-                return Long.MAX_VALUE;
+            // determine if period is zero and this is the last field
+            if (value == 0) {
+                switch (iPrintZeroSetting) {
+                case PRINT_ZERO_NEVER:
+                    return Long.MAX_VALUE;
+                case PRINT_ZERO_RARELY_LAST:
+                    if (isZero(period) && iFieldFormatters[iFieldType] == this) {
+                        for (int i = iFieldType + 1; i < 10; i++) {
+                            if (isSupported(type, i) && iFieldFormatters[i] != null) {
+                                return Long.MAX_VALUE;
+                            }
+                        }
+                    } else {
+                        return Long.MAX_VALUE;
+                    }
+                    break;
+                case PRINT_ZERO_RARELY_FIRST:
+                    if (isZero(period) && iFieldFormatters[iFieldType] == this) {
+                        for (int i = Math.min(iFieldType, 8) - 1; i >= 0; i++) {
+                            if (isSupported(type, i) && iFieldFormatters[i] != null) {
+                                return Long.MAX_VALUE;
+                            }
+                        }
+                    } else {
+                        return Long.MAX_VALUE;
+                    }
+                    break;
+                }
             }
 
             return value;
         }
 
-        boolean isSupported(PeriodType type) {
-            switch (iFieldType) {
+        boolean isZero(ReadablePeriod period) {
+            return (period.getYears() == 0 && period.getMonths() == 0 &&
+                    period.getWeeks() == 0 && period.getDays() == 0 &&
+                    period.getHours() == 0 && period.getMinutes() == 0 &&
+                    period.getSeconds() == 0 && period.getMillis() == 0);
+        }
+
+        boolean isSupported(PeriodType type, int field) {
+            switch (field) {
             default:
                 return false;
-            case 1:
+            case YEARS:
                 return type.years().isSupported();
-            case 2:
+            case MONTHS:
                 return type.months().isSupported();
-            case 3:
+            case WEEKS:
                 return type.weeks().isSupported();
-            case 4:
+            case DAYS:
                 return type.days().isSupported();
-            case 5:
+            case HOURS:
                 return type.hours().isSupported();
-            case 6:
+            case MINUTES:
                 return type.minutes().isSupported();
-            case 7:
+            case SECONDS:
                 return type.seconds().isSupported();
-            case 8:
+            case MILLIS:
                 return type.millis().isSupported();
-            case 9: // drop through
-            case 10:
+            case SECONDS_MILLIS: // drop through
+            case SECONDS_OPTIONAL_MILLIS:
                 return type.seconds().isSupported() ||  type.millis().isSupported();
             }
         }
 
-        void setFieldValue(ReadWritablePeriod period, int value) {
-            switch (iFieldType) {
+        void setFieldValue(ReadWritablePeriod period, int field, int value) {
+            switch (field) {
             default:
                 break;
-            case 1:
+            case YEARS:
                 period.setYears(value);
                 break;
-            case 2:
+            case MONTHS:
                 period.setMonths(value);
                 break;
-            case 3:
+            case WEEKS:
                 period.setWeeks(value);
                 break;
-            case 4:
+            case DAYS:
                 period.setDays(value);
                 break;
-            case 5:
+            case HOURS:
                 period.setHours(value);
                 break;
-            case 6:
+            case MINUTES:
                 period.setMinutes(value);
                 break;
-            case 7:
+            case SECONDS:
                 period.setSeconds(value);
                 break;
-            case 8:
+            case MILLIS:
                 period.setMillis(value);
                 break;
             }
         }
 
-        int getPrintZeroSetting() {
-            return iPrintZeroSetting;
+        int getFieldType() {
+            return iFieldType;
         }
     }
 
@@ -1559,132 +1543,6 @@ public class PeriodFormatterBuilder {
                 position = parsers[i].parseInto(period, periodStr, position);
             }
             return position;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Selects between a number of choices based on which matches best.
-     */
-    private static final class AlternateSelector extends AbstractPeriodFormatter
-        implements PeriodFormatter
-    {
-        private final PeriodFormatter iPrimaryFormatter;
-        private final PeriodPrinter[] iAlternatePrinters;
-        private final boolean iFavorFirstFieldForZero;
-
-        AlternateSelector(PeriodFormatter primaryFormatter,
-                          List alternatePrinters,
-                          boolean favorFirstFieldForZero) {
-            iPrimaryFormatter = primaryFormatter;
-            iAlternatePrinters = (PeriodPrinter[])alternatePrinters.toArray
-                (new PeriodPrinter[alternatePrinters.size()]);
-            iFavorFirstFieldForZero = favorFirstFieldForZero;
-        }
-
-        public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
-            int count = iPrimaryFormatter.countFieldsToPrint(period, stopAt);
-            if (count < 1 && stopAt >= 1) {
-                if (chooseFieldToPrint(period) != null) {
-                    return 1;
-                }
-            }
-            return count;
-        }
-
-        public int calculatePrintedLength(ReadablePeriod period) {
-            if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
-                return iPrimaryFormatter.calculatePrintedLength(period);
-            }
-
-            Object chosenOne = chooseFieldToPrint(period);
-
-            int sum = 0;
-            PeriodPrinter[] printers = iAlternatePrinters;
-            for (int i=printers.length; --i>=0; ) {
-                PeriodPrinter dp = printers[i];
-                if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
-                    sum += dp.calculatePrintedLength(period);
-                }
-            }
-            return sum;
-        }
-
-        public void printTo(StringBuffer buf, ReadablePeriod period) {
-            if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
-                iPrimaryFormatter.printTo(buf, period);
-                return;
-            }
-
-            Object chosenOne = chooseFieldToPrint(period);
-            
-            PeriodPrinter[] printers = iAlternatePrinters;
-            int len = printers.length;
-            for (int i=0; i<len; i++) {
-                PeriodPrinter dp = printers[i];
-                if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
-                    dp.printTo(buf, period);
-                }
-            }
-        }
-
-        public void printTo(Writer out, ReadablePeriod period) throws IOException {
-            if (iPrimaryFormatter.countFieldsToPrint(period, 1) > 0) {
-                iPrimaryFormatter.printTo(out, period);
-                return;
-            }
-            
-            Object chosenOne = chooseFieldToPrint(period);
-
-            PeriodPrinter[] printers = iAlternatePrinters;
-            int len = printers.length;
-            for (int i=0; i<len; i++) {
-                PeriodPrinter dp = printers[i];
-                if (dp == chosenOne || !(dp instanceof FieldFormatter)) {
-                    dp.printTo(out, period);
-                }
-            }
-        }
-
-        public int parseInto(ReadWritablePeriod period,
-                             String periodStr, int position) {
-            return iPrimaryFormatter.parseInto(period, periodStr, position);
-        }
-
-        private FieldFormatter chooseFieldToPrint(ReadablePeriod period) {
-            PeriodType type = period.getPeriodType();
-            PeriodPrinter[] printers = iAlternatePrinters;
-            if (iFavorFirstFieldForZero) {
-                int len = printers.length;
-                for (int i=0; i<len; i++) {
-                    PeriodPrinter dp = printers[i];
-                    if (dp instanceof FieldFormatter) {
-                        FieldFormatter ff = (FieldFormatter) dp;
-                        if (ff.isSupported(type)) {
-                            if (ff.getPrintZeroSetting() == PRINT_ZERO_RARELY) {
-                                ff = new FieldFormatter(ff, PRINT_ZERO_IF_SUPPORTED);
-                                printers[i] = ff;
-                            }
-                            return ff;
-                        }
-                    }
-                }
-            } else {
-                for (int i=printers.length; --i>=0; ) {
-                    PeriodPrinter dp = printers[i];
-                    if (dp instanceof FieldFormatter) {
-                        FieldFormatter ff = (FieldFormatter) dp;
-                        if (ff.isSupported(type)) {
-                            if (ff.getPrintZeroSetting() == PRINT_ZERO_RARELY) {
-                                ff = new FieldFormatter(ff, PRINT_ZERO_IF_SUPPORTED);
-                                printers[i] = ff;
-                            }
-                            return ff;
-                        }
-                    }
-                }
-            }
-            return null;
         }
     }
 

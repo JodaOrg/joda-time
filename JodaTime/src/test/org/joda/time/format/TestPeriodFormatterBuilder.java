@@ -516,12 +516,20 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("---0", f.print(EMPTY_PERIOD));
         assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
         assertEquals(1, f.countFieldsToPrint(EMPTY_PERIOD));
+        
+        // test only last instance of same field is output
+        f = new PeriodFormatterBuilder()
+                .appendYears().appendLiteral("-")
+                .appendYears().toFormatter();
+        assertEquals("-0", f.print(EMPTY_PERIOD));
+        assertEquals(2, f.calculatePrintedLength(EMPTY_PERIOD));
+        assertEquals(1, f.countFieldsToPrint(EMPTY_PERIOD));
     }
 
-    public void testFormatPrintZeroRarely() {
+    public void testFormatPrintZeroRarelyLast() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
-                .printZeroRarely()
+                .printZeroRarelyLast()
                 .appendYears().appendLiteral("-")
                 .appendMonths().appendLiteral("-")
                 .appendWeeks().appendLiteral("-")
@@ -543,10 +551,10 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.countFieldsToPrint(EMPTY_PERIOD));
     }
 
-    public void testFormatPrintZeroRarelyFavorFirst() {
+    public void testFormatPrintZeroRarelyFirst() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
-                .printZeroRarely().favorFirstFieldForZero()
+                .printZeroRarelyFirst()
                 .appendYears().appendLiteral("-")
                 .appendMonths().appendLiteral("-")
                 .appendWeeks().appendLiteral("-")
@@ -564,31 +572,6 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
         
         assertEquals("0---", f.print(EMPTY_PERIOD));
-        assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
-        assertEquals(1, f.countFieldsToPrint(EMPTY_PERIOD));
-    }
-
-    public void testFormatPrintZeroRarelyFavorLast() {
-        PeriodFormatter f =
-            new PeriodFormatterBuilder()
-                .printZeroRarely().favorLastFieldForZero()
-                .appendYears().appendLiteral("-")
-                .appendMonths().appendLiteral("-")
-                .appendWeeks().appendLiteral("-")
-                .appendDays().toFormatter();
-        assertEquals("1-2-3-4", f.print(PERIOD));
-        assertEquals(7, f.calculatePrintedLength(PERIOD));
-        assertEquals(4, f.countFieldsToPrint(PERIOD));
-        
-        assertEquals("---0", f.print(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(4, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
-        assertEquals(1, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
-        
-        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
-        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
-        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
-        
-        assertEquals("---0", f.print(EMPTY_PERIOD));
         assertEquals(4, f.calculatePrintedLength(EMPTY_PERIOD));
         assertEquals(1, f.countFieldsToPrint(EMPTY_PERIOD));
     }
@@ -641,6 +624,31 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0-0-0-0", f.print(EMPTY_PERIOD));
         assertEquals(7, f.calculatePrintedLength(EMPTY_PERIOD));
         assertEquals(4, f.countFieldsToPrint(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroNever() {
+        PeriodFormatter f =
+            new PeriodFormatterBuilder()
+                .printZeroNever()
+                .appendYears().appendLiteral("-")
+                .appendMonths().appendLiteral("-")
+                .appendWeeks().appendLiteral("-")
+                .appendDays().toFormatter();
+        assertEquals("1-2-3-4", f.print(PERIOD));
+        assertEquals(7, f.calculatePrintedLength(PERIOD));
+        assertEquals(4, f.countFieldsToPrint(PERIOD));
+        
+        assertEquals("---", f.print(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(3, f.calculatePrintedLength(EMPTY_YEAR_DAY_PERIOD));
+        assertEquals(0, f.countFieldsToPrint(EMPTY_YEAR_DAY_PERIOD));
+        
+        assertEquals("1---4", f.print(YEAR_DAY_PERIOD));
+        assertEquals(5, f.calculatePrintedLength(YEAR_DAY_PERIOD));
+        assertEquals(2, f.countFieldsToPrint(YEAR_DAY_PERIOD));
+        
+        assertEquals("---", f.print(EMPTY_PERIOD));
+        assertEquals(3, f.calculatePrintedLength(EMPTY_PERIOD));
+        assertEquals(0, f.countFieldsToPrint(EMPTY_PERIOD));
     }
 
 }

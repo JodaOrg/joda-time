@@ -154,6 +154,7 @@ public class ISODateTimeFormat {
         lse, // millisOfSecond element (.SSS)
         fse, // fractionOfSecond element (.SSSSSSSSS)
         ze,  // zone offset element
+        lte, // literal 'T' element
         
         //y,   // year (same as year element)
         ym,  // year month
@@ -177,19 +178,27 @@ public class ISODateTimeFormat {
 
         //d,  // date (same as ymd)
         t,  // time
+        tx,  // time no millis
         tt,  // Ttime
+        ttx,  // Ttime no millis
         dt, // date time
+        dtx, // date time no millis
 
         //wd,  // week date (same as wwd)
         wdt, // week date time
+        wdtx, // week date time no millis
 
         bd,  // basic date
         bt,  // basic time
+        btx,  // basic time no millis
         btt, // basic Ttime
+        bttx, // basic Ttime no millis
         bdt, // basic date time
+        bdtx, // basic date time no millis
 
         bwd,  // basic week date
-        bwdt; // basic week date time
+        bwdt, // basic week date time
+        bwdtx; // basic week date time no millis
 
     private transient DateTimeParser
         dpe, // date parser element
@@ -410,7 +419,9 @@ public class ISODateTimeFormat {
     //-----------------------------------------------------------------------
     /**
      * Returns a formatter for a full date as four digit year, two digit month
-     * of year, and two digit day of month. (yyyy-MM-dd)
+     * of year, and two digit day of month (yyyy-MM-dd).
+     * 
+     * @return a formatter for yyyy-MM-dd
      */
     public DateTimeFormatter date() {
         return yearMonthDay();
@@ -419,8 +430,10 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, three digit fraction of second, and
-     * time zone offset. (HH:mm:ss.SSSZ) The time zone offset is 'Z' for zero,
-     * and of the form '\u00b1HH:mm' for non-zero.
+     * time zone offset (HH:mm:ss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for HH:mm:ss.SSSZ
      */
     public DateTimeFormatter time() {
         if (t == null) {
@@ -434,23 +447,63 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
-     * hour, two digit second of minute, three digit fraction of second, and
-     * time zone offset prefixed by 'T'. ('T'HH:mm:ss.SSSZ)
+     * hour, two digit second of minute, and time zone offset (HH:mm:ssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for HH:mm:ssZ
      */
-    public DateTimeFormatter tTime() {
-        if (t == null) {
-            t = new DateTimeFormatterBuilder(iChrono)
-                .appendLiteral('T')
-                .append(time())
+    public DateTimeFormatter timeNoMillis() {
+        if (tx == null) {
+            tx = new DateTimeFormatterBuilder(iChrono)
+                .append(hourMinuteSecond())
+                .append(offsetElement())
                 .toFormatter();
         }
-        return t;
+        return tx;
     }
 
     /**
-     * Returns a formatter that combines a full date and time, separated by a 'T'.
-     * (yyyy-MM-dd'T'HH:mm:ss.SSSZ)
+     * Returns a formatter for a two digit hour of day, two digit minute of
+     * hour, two digit second of minute, three digit fraction of second, and
+     * time zone offset prefixed by 'T' ('T'HH:mm:ss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for 'T'HH:mm:ss.SSSZ
+     */
+    public DateTimeFormatter tTime() {
+        if (tt == null) {
+            tt = new DateTimeFormatterBuilder(iChrono)
+                .append(literalTElement())
+                .append(time())
+                .toFormatter();
+        }
+        return tt;
+    }
+
+    /**
+     * Returns a formatter for a two digit hour of day, two digit minute of
+     * hour, two digit second of minute, and time zone offset prefixed
+     * by 'T' ('T'HH:mm:ssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for 'T'HH:mm:ssZ
+     */
+    public DateTimeFormatter tTimeNoMillis() {
+        if (ttx == null) {
+            ttx = new DateTimeFormatterBuilder(iChrono)
+                .append(literalTElement())
+                .append(timeNoMillis())
+                .toFormatter();
+        }
+        return ttx;
+    }
+
+    /**
+     * Returns a formatter that combines a full date and time, separated by a 'T'
+     * (yyyy-MM-dd'T'HH:mm:ss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSSZ
      */
     public DateTimeFormatter dateTime() {
         if (dt == null) {
@@ -463,8 +516,27 @@ public class ISODateTimeFormat {
     }
 
     /**
+     * Returns a formatter that combines a full date and time without millis,
+     * separated by a 'T' (yyyy-MM-dd'T'HH:mm:ssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ssZ
+     */
+    public DateTimeFormatter dateTimeNoMillis() {
+        if (dtx == null) {
+            dtx = new DateTimeFormatterBuilder(iChrono)
+                .append(date())
+                .append(tTimeNoMillis())
+                .toFormatter();
+        }
+        return dtx;
+    }
+
+    /**
      * Returns a formatter for a full date as four digit weekyear, two digit
-     * week of weekyear, and one digit day of week. (xxxx-'W'ww-e)
+     * week of weekyear, and one digit day of week (xxxx-'W'ww-e).
+     * 
+     * @return a formatter for xxxx-'W'ww-e
      */
     public DateTimeFormatter weekDate() {
         return weekyearWeekDay();
@@ -472,23 +544,44 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full weekyear date and time,
-     * separated by a 'T'. (xxxx-'W'ww-e'T'HH:mm:ss.SSSZ)
+     * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ss.SSSZ
      */
     public DateTimeFormatter weekDateTime() {
         if (wdt == null) {
             wdt = new DateTimeFormatterBuilder(iChrono)
                 .append(weekDate())
-                .appendLiteral('T')
-                .append(time())
+                .append(tTime())
                 .toFormatter();
         }
         return wdt;
     }
 
+    /**
+     * Returns a formatter that combines a full weekyear date and time without millis,
+     * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ssZ
+     */
+    public DateTimeFormatter weekDateTimeNoMillis() {
+        if (wdtx == null) {
+            wdtx = new DateTimeFormatterBuilder(iChrono)
+                .append(weekDate())
+                .append(tTimeNoMillis())
+                .toFormatter();
+        }
+        return wdtx;
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns a basic formatter for a full date as four digit year, two digit
-     * month of year, and two digit day of month. (yyyyMMdd)
+     * month of year, and two digit day of month (yyyyMMdd).
+     * 
+     * @return a formatter for yyyyMMdd
      */
     public DateTimeFormatter basicDate() {
         if (bd == null) {
@@ -503,8 +596,11 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a basic formatter for a two digit hour of day, two digit minute
-     * of hour, two digit second of minute, and time zone offset. (HHmmssZ) The time zone
-     * offset is blank for zero, and of the form '\u00b1HHmm' for non-zero.
+     * of hour, two digit second of minute, three digit millis, and time zone
+     * offset (HHmmss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for HHmmss.SSSZ
      */
     public DateTimeFormatter basicTime() {
         if (bt == null) {
@@ -512,7 +608,9 @@ public class ISODateTimeFormat {
                 .appendHourOfDay(2)
                 .appendMinuteOfHour(2)
                 .appendSecondOfMinute(2)
-                .appendTimeZoneOffset("", false, 1, 2)
+                .appendLiteral('.')
+                .appendMillisOfSecond(3)
+                .appendTimeZoneOffset("Z", false, 2, 2)
                 .toFormatter();
         }
         return bt;
@@ -520,23 +618,65 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a basic formatter for a two digit hour of day, two digit minute
-     * of hour, two digit second of minute, and time zone offset prefixed by 'T'.
-     * ('T'HHmmssZ)
-     * The time zone offset is blank for zero, and of the form '\u00b1HHmm' for non-zero.
+     * of hour, two digit second of minute, and time zone offset (HHmmssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for HHmmssZ
+     */
+    public DateTimeFormatter basicTimeNoMillis() {
+        if (btx == null) {
+            btx = new DateTimeFormatterBuilder(iChrono)
+                .appendHourOfDay(2)
+                .appendMinuteOfHour(2)
+                .appendSecondOfMinute(2)
+                .appendTimeZoneOffset("Z", false, 2, 2)
+                .toFormatter();
+        }
+        return btx;
+    }
+
+    /**
+     * Returns a basic formatter for a two digit hour of day, two digit minute
+     * of hour, two digit second of minute, three digit millis, and time zone
+     * offset prefixed by 'T' ('T'HHmmss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for 'T'HHmmss.SSSZ
      */
     public DateTimeFormatter basicTTime() {
-        if (bt == null) {
-            bt = new DateTimeFormatterBuilder(iChrono)
-                .appendLiteral('T')
+        if (btt == null) {
+            btt = new DateTimeFormatterBuilder(iChrono)
+                .append(literalTElement())
                 .append(basicTime())
                 .toFormatter();
         }
-        return bt;
+        return btt;
+    }
+
+    /**
+     * Returns a basic formatter for a two digit hour of day, two digit minute
+     * of hour, two digit second of minute, and time zone offset prefixed by 'T'
+     * ('T'HHmmssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for 'T'HHmmssZ
+     */
+    public DateTimeFormatter basicTTimeNoMillis() {
+        if (bttx == null) {
+            bttx = new DateTimeFormatterBuilder(iChrono)
+                .append(literalTElement())
+                .append(basicTimeNoMillis())
+                .toFormatter();
+        }
+        return bttx;
     }
 
     /**
      * Returns a basic formatter that combines a basic date and time, separated
-     * by a 'T'. (yyyyMMdd'T'HHmmssZ)
+     * by a 'T' (yyyyMMdd'T'HHmmss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for yyyyMMdd'T'HHmmss.SSSZ
      */
     public DateTimeFormatter basicDateTime() {
         if (bdt == null) {
@@ -549,8 +689,27 @@ public class ISODateTimeFormat {
     }
 
     /**
+     * Returns a basic formatter that combines a basic date and time without millis,
+     * separated by a 'T' (yyyyMMdd'T'HHmmssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for yyyyMMdd'T'HHmmssZ
+     */
+    public DateTimeFormatter basicDateTimeNoMillis() {
+        if (bdtx == null) {
+            bdtx = new DateTimeFormatterBuilder(iChrono)
+                .append(basicDate())
+                .append(basicTTimeNoMillis())
+                .toFormatter();
+        }
+        return bdtx;
+    }
+
+    /**
      * Returns a basic formatter for a full date as four digit weekyear, two
-     * digit week of weekyear, and one digit day of week. (xxxx'W'wwe)
+     * digit week of weekyear, and one digit day of week (xxxx'W'wwe).
+     * 
+     * @return a formatter for xxxx'W'wwe
      */
     public DateTimeFormatter basicWeekDate() {
         if (bwd == null) {
@@ -566,22 +725,43 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a basic formatter that combines a basic weekyear date and time,
-     * separated by a 'T'. (xxxx'W'wwe'T'HHmmssZ)
+     * separated by a 'T' (xxxx'W'wwe'T'HHmmss.SSSZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for xxxx'W'wwe'T'HHmmss.SSSZ
      */
     public DateTimeFormatter basicWeekDateTime() {
         if (bwdt == null) {
             bwdt = new DateTimeFormatterBuilder(iChrono)
                 .append(basicWeekDate())
-                .appendLiteral('T')
-                .append(basicTime())
+                .append(basicTTime())
                 .toFormatter();
         }
         return bwdt;
     }
 
+    /**
+     * Returns a basic formatter that combines a basic weekyear date and time
+     * without millis, separated by a 'T' (xxxx'W'wwe'T'HHmmssZ).
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * 
+     * @return a formatter for xxxx'W'wwe'T'HHmmssZ
+     */
+    public DateTimeFormatter basicWeekDateTimeNoMillis() {
+        if (bwdtx == null) {
+            bwdtx = new DateTimeFormatterBuilder(iChrono)
+                .append(basicWeekDate())
+                .append(basicTTimeNoMillis())
+                .toFormatter();
+        }
+        return bwdtx;
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns a formatter for a four digit year. (yyyy)
+     * 
+     * @return a formatter for yyyy
      */
     public DateTimeFormatter year() {
         return yearElement();
@@ -590,6 +770,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit year and two digit month of
      * year. (yyyy-MM)
+     * 
+     * @return a formatter for yyyy-MM
      */
     public DateTimeFormatter yearMonth() {
         if (ym == null) {
@@ -604,6 +786,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit year, two digit month of year, and
      * two digit day of month. (yyyy-MM-dd)
+     * 
+     * @return a formatter for yyyy-MM-dd
      */
     public DateTimeFormatter yearMonthDay() {
         if (ymd == null) {
@@ -618,6 +802,8 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a four digit weekyear. (xxxx)
+     * 
+     * @return a formatter for xxxx
      */
     public DateTimeFormatter weekyear() {
         return weekyearElement();
@@ -626,6 +812,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit weekyear and two digit week of
      * weekyear. (xxxx-'W'ww)
+     * 
+     * @return a formatter for xxxx-'W'ww
      */
     public DateTimeFormatter weekyearWeek() {
         if (ww == null) {
@@ -640,6 +828,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a four digit weekyear, two digit week of
      * weekyear, and one digit day of week. (xxxx-'W'ww-e)
+     * 
+     * @return a formatter for xxxx-'W'ww-e
      */
     public DateTimeFormatter weekyearWeekDay() {
         if (wwd == null) {
@@ -654,6 +844,8 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a two digit hour of day. (HH)
+     * 
+     * @return a formatter for HH
      */
     public DateTimeFormatter hour() {
         return hourElement();
@@ -662,6 +854,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day and two digit minute of
      * hour. (HH:mm)
+     * 
+     * @return a formatter for HH:mm
      */
     public DateTimeFormatter hourMinute() {
         if (hm == null) {
@@ -676,6 +870,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, and two digit second of minute. (HH:mm:ss)
+     * 
+     * @return a formatter for HH:mm:ss
      */
     public DateTimeFormatter hourMinuteSecond() {
         if (hms == null) {
@@ -692,6 +888,8 @@ public class ISODateTimeFormat {
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, and three digit fraction of
      * second. (HH:mm:ss.SSS)
+     * 
+     * @return a formatter for HH:mm:ss.SSS
      */
     public DateTimeFormatter hourMinuteSecondMillis() {
         if (hmsl == null) {
@@ -709,6 +907,8 @@ public class ISODateTimeFormat {
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, and three digit fraction of
      * second. (HH:mm:ss.SSS)
+     * 
+     * @return a formatter for HH:mm:ss.SSS
      */
     public DateTimeFormatter hourMinuteSecondFraction() {
         if (hmsf == null) {
@@ -725,12 +925,14 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date and two digit hour of
      * day. (yyyy-MM-dd'T'HH)
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH
      */
     public DateTimeFormatter dateHour() {
         if (dh == null) {
             dh = new DateTimeFormatterBuilder(iChrono)
                 .append(date())
-                .appendLiteral('T')
+                .append(literalTElement())
                 .append(hour())
                 .toFormatter();
         }
@@ -740,12 +942,14 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
      * and two digit minute of hour. (yyyy-MM-dd'T'HH:mm)
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH:mm
      */
     public DateTimeFormatter dateHourMinute() {
         if (dhm == null) {
             dhm = new DateTimeFormatterBuilder(iChrono)
                 .append(date())
-                .appendLiteral('T')
+                .append(literalTElement())
                 .append(hourMinute())
                 .toFormatter();
         }
@@ -756,12 +960,14 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, and two digit second of
      * minute. (yyyy-MM-dd'T'HH:mm:ss)
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ss
      */
     public DateTimeFormatter dateHourMinuteSecond() {
         if (dhms == null) {
             dhms = new DateTimeFormatterBuilder(iChrono)
                 .append(date())
-                .appendLiteral('T')
+                .append(literalTElement())
                 .append(hourMinuteSecond())
                 .toFormatter();
         }
@@ -772,12 +978,14 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, two digit second of minute, and three digit
      * fraction of second. (yyyy-MM-dd'T'HH:mm:ss.SSS)
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSS
      */
     public DateTimeFormatter dateHourMinuteSecondMillis() {
         if (dhmsl == null) {
             dhmsl = new DateTimeFormatterBuilder(iChrono)
                 .append(date())
-                .appendLiteral('T')
+                .append(literalTElement())
                 .append(hourMinuteSecondMillis())
                 .toFormatter();
         }
@@ -788,12 +996,14 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, two digit second of minute, and three digit
      * fraction of second. (yyyy-MM-dd'T'HH:mm:ss.SSS)
+     * 
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSS
      */
     public DateTimeFormatter dateHourMinuteSecondFraction() {
         if (dhmsf == null) {
             dhmsf = new DateTimeFormatterBuilder(iChrono)
                 .append(date())
-                .appendLiteral('T')
+                .append(literalTElement())
                 .append(hourMinuteSecondFraction())
                 .toFormatter();
         }
@@ -867,6 +1077,15 @@ public class ISODateTimeFormat {
                 .toFormatter();
         }
         return dye;
+    }
+    
+    private DateTimeFormatter literalTElement() {
+        if (lte == null) {
+            lte = new DateTimeFormatterBuilder(iChrono)
+                .appendLiteral('T')
+                .toFormatter();
+        }
+        return lte;
     }
 
     private DateTimeFormatter hourElement() {

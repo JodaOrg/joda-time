@@ -83,7 +83,7 @@ import org.joda.time.ReadablePartial;
  * S       fraction of second           number        978
  *
  * z       time zone                    text          Pacific Standard Time; PST
- * Z       time zone offset/id          text          -0800; -08:00; Asia/Tokyo
+ * Z       time zone offset/id          zone          -0800; -08:00; Asia/Tokyo
  *
  * '       escape for text              delimiter
  * ''      single quote                 literal       '

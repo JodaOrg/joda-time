@@ -22,13 +22,13 @@
   </description>
   <shortDescription>Joda time contrib</shortDescription>
   <url>http://joda-time.sourceforge.net</url>
-  
+
   <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
-  
+
   <siteAddress>shell.sourceforge.net</siteAddress>
   <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/</siteDirectory>
   <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
-  
+
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib</connection>
     <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/</url>
@@ -63,7 +63,7 @@
       </roles>
     </developer>
   </developers>
-  
+
 <!--  <contributors>
     <contributor>
       <name>Guy Allard</name>
@@ -90,6 +90,14 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.0rc1</version>
     </dependency>
   </dependencies>
 

@@ -89,7 +89,7 @@ public interface ReadWritableDateTime extends ReadableDateTime, ReadWritableInst
 
     //-----------------------------------------------------------------------
     /**
-     * Set the week of the year to the specified value.
+     * Set the weekyear to the specified value.
      *
      * @param weekyear  the weekyear
      * @throws IllegalArgumentException if the value is invalid

@@ -53,6 +53,11 @@
  */
 package org.joda.time;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -62,12 +67,7 @@ import java.util.List;
 
 import junit.framework.TestSuite;
 
-import org.joda.test.time.*;
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadableInstant;
+import org.joda.test.time.BulkTest;
 import org.joda.time.chrono.ISOChronology;
 /**
  * This class is a Junit unit test for the
@@ -77,6 +77,8 @@ import org.joda.time.chrono.ISOChronology;
  */
 public class TestDateTimeComparator extends BulkTest {
 
+    private static final Chronology ISO = ISOChronology.getInstance();
+    
     /**
      * The main method for this test program.
      * @param args command line arguments.
@@ -217,6 +219,104 @@ public class TestDateTimeComparator extends BulkTest {
         cTime = null;
     }
 
+    //-----------------------------------------------------------------------
+    public void testClass() {
+        assertEquals(true, Modifier.isPublic(DateTimeComparator.class.getModifiers()));
+        assertEquals(false, Modifier.isFinal(DateTimeComparator.class.getModifiers()));
+        assertEquals(1, DateTimeComparator.class.getDeclaredConstructors().length);
+        assertEquals(true, Modifier.isProtected(DateTimeComparator.class.getDeclaredConstructors()[0].getModifiers()));
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testStaticGetInstance() {
+        DateTimeComparator c = DateTimeComparator.getInstance();
+        assertEquals(null, c.getLowerLimit());
+        assertEquals(null, c.getUpperLimit());
+        assertEquals("DateTimeComparator[]", c.toString());
+    }        
+    public void testStaticGetDateOnlyInstance() {
+        DateTimeComparator c = DateTimeComparator.getDateOnlyInstance(ISO);
+        assertEquals(ISO.dayOfYear(), c.getLowerLimit());
+        assertEquals(null, c.getUpperLimit());
+        assertEquals("DateTimeComparator[dayOfYear-]", c.toString());
+        
+        c = DateTimeComparator.getDateOnlyInstance(null);
+        assertEquals(ISO.dayOfYear(), c.getLowerLimit());
+        assertEquals(null, c.getUpperLimit());
+    }
+    public void testStaticGetTimeOnlyInstance() {
+        DateTimeComparator c = DateTimeComparator.getTimeOnlyInstance(ISO);
+        assertEquals(null, c.getLowerLimit());
+        assertEquals(ISO.dayOfYear(), c.getUpperLimit());
+        assertEquals("DateTimeComparator[-dayOfYear]", c.toString());
+        
+        c = DateTimeComparator.getTimeOnlyInstance(null);
+        assertEquals(null, c.getLowerLimit());
+        assertEquals(ISO.dayOfYear(), c.getUpperLimit());
+    }
+    public void testStaticGetInstanceLower() {
+        DateTimeComparator c = DateTimeComparator.getInstance(ISO.hourOfDay());
+        assertEquals(ISO.hourOfDay(), c.getLowerLimit());
+        assertEquals(null, c.getUpperLimit());
+        assertEquals("DateTimeComparator[hourOfDay-]", c.toString());
+        
+        c = DateTimeComparator.getInstance(null);
+        assertSame(DateTimeComparator.getInstance(), c);
+    }
+    public void testStaticGetInstanceLowerUpper() {
+        DateTimeComparator c = DateTimeComparator.getInstance(ISO.hourOfDay(), ISO.dayOfYear());
+        assertEquals(ISO.hourOfDay(), c.getLowerLimit());
+        assertEquals(ISO.dayOfYear(), c.getUpperLimit());
+        assertEquals("DateTimeComparator[hourOfDay-dayOfYear]", c.toString());
+        
+        c = DateTimeComparator.getInstance(null, null);
+        assertSame(DateTimeComparator.getInstance(), c);
+        
+        try {
+            DateTimeComparator.getInstance(ISO.dayOfYear(), ISO.hourOfDay());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testSerialization1() throws Exception {
+        DateTimeField f = ISO.dayOfYear();
+        f.toString();
+        DateTimeComparator c = DateTimeComparator.getInstance(ISO.hourOfDay(), ISO.dayOfYear());
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(c);
+        byte[] bytes = baos.toByteArray();
+        oos.close();
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        DateTimeComparator result = (DateTimeComparator) ois.readObject();
+        ois.close();
+        
+        assertEquals(c, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSerialization2() throws Exception {
+        DateTimeComparator c = DateTimeComparator.getInstance();
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(c);
+        byte[] bytes = baos.toByteArray();
+        oos.close();
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        DateTimeComparator result = (DateTimeComparator) ois.readObject();
+        ois.close();
+        
+        assertSame(c, result);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Test all basic comparator operation with DateTime objects.
      */

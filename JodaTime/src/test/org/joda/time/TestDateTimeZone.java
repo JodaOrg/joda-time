@@ -53,7 +53,10 @@
  */
 package org.joda.time;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Modifier;
 import java.security.AllPermission;
@@ -713,6 +716,42 @@ public class TestDateTimeZone extends TestCase {
         DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
         assertEquals("Europe/Paris", zone.toString());
         assertEquals("UTC", DateTimeZone.UTC.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSerialization1() throws Exception {
+        DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(zone);
+        byte[] bytes = baos.toByteArray();
+        oos.close();
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        DateTimeZone result = (DateTimeZone) ois.readObject();
+        ois.close();
+        
+        assertSame(zone, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSerialization2() throws Exception {
+        DateTimeZone zone = DateTimeZone.getInstance("+01:00");
+        
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(zone);
+        byte[] bytes = baos.toByteArray();
+        oos.close();
+        
+        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+        ObjectInputStream ois = new ObjectInputStream(bais);
+        DateTimeZone result = (DateTimeZone) ois.readObject();
+        ois.close();
+        
+        assertSame(zone, result);
     }
 
 }

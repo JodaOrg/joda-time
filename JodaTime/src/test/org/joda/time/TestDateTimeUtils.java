@@ -161,12 +161,14 @@ public class TestDateTimeUtils extends TestCase {
     public void testClass() {
         Class cls = DateTimeUtils.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
-        assertEquals(true, Modifier.isFinal(cls.getModifiers()));
+        assertEquals(false, Modifier.isFinal(cls.getModifiers()));
         
         assertEquals(1, cls.getDeclaredConstructors().length);
-        assertEquals(true, Modifier.isPrivate(cls.getDeclaredConstructors()[0].getModifiers()));
+        assertEquals(true, Modifier.isProtected(cls.getDeclaredConstructors()[0].getModifiers()));
+        
+        DateTimeUtils utils = new DateTimeUtils() {};
     }
-
+    
     //-----------------------------------------------------------------------
     public void testSystemMillis() {
         long nowSystem = System.currentTimeMillis();

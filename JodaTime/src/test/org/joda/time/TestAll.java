@@ -80,6 +80,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateTime_Properties.suite());
         
         suite.addTest(TestDateMidnight_Constructors.suite());
+        suite.addTest(TestDateMidnight_Basics.suite());
         
         suite.addTest(TestDateTimeComparator.suite());
         suite.addTest(TestDateTimeConstants.suite());

@@ -61,8 +61,15 @@ import org.joda.time.property.AbstractReadableInstantFieldProperty;
 
 /**
  * DateMidnight defines a date where the time component is fixed at midnight.
- * The class uses a time zone, if supplied, so midnight is local unless a UTC
- * time zone is used.
+ * The class uses a time zone, thus midnight is local unless a UTC time zone is used.
+ * <p>
+ * It is important to emphasise that this class represents the time of midnight on
+ * any given day.
+ * Note that midnight is defined as 00:00, which is at the very start of a day.
+ * <p>
+ * This class does not represent a day, but the millisecond instant at midnight.
+ * If you need a class that represnts the whole day, then an {@link Interval} or
+ * a {@link YearMonthDay} may be more suitable.
  * <p>
  * This class uses a Chronology internally. The Chronology determines how the
  * millisecond instant value is converted into the date time fields.
@@ -314,10 +321,22 @@ public class DateMidnight extends AbstractDateTime
     }
 
     /**
-     * Gets a copy of this instant with a different chronology.
-     * The returned object will have a local time of midnight in the new chronology.
+     * Gets a copy of this instant with a different chronology, potentially
+     * changing the day in unexpected ways.
      * <p>
-     * The returned object will be either be a new instance or <code>this</code>.
+     * This method creates a new DateMidnight using the midnight millisecond value
+     * and the new chronology. If the same or similar chronology is specified, but
+     * with a different time zone, the day may change. This occurs because the new
+     * DateMidnight rounds down the millisecond value to get to midnight, and the
+     * time zone change may result in a rounding down to a different day.
+     * <p>
+     * For example, changing time zone from London (+00:00) to Paris (+01:00) will
+     * retain the same day, but changing from Paris to London will change the day.
+     * (When its midnight in London its the same day in Paris, but when its midnight
+     * in Paris its still the previous day in London)
+     * <p>
+     * To avoid these unusual effects, use {@link #withZoneRetainFields(DateTimeZone)}
+     * to change time zones.
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
@@ -327,44 +346,12 @@ public class DateMidnight extends AbstractDateTime
     }
 
     /**
-     * Gets a copy of this instant with a different time zone, preserving the
-     * millisecond instant.
-     * The returned object will have a local time of midnight.
-     * <p>
-     * This method is useful for finding the local time in another timezone.
-     * For example, if this instant holds 12:30 in Europe/London, the result
-     * from this method with Europe/Paris would be 13:30.
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * This method changes alters the time zone, and does not change the
-     * millisecond instant, with the effect that the field values usually change.
-     * The returned object will be either be a new instance or <code>this</code>.
+     * Gets a copy of this instant with a different time zone, preserving the day
+     * The returned object will have a local time of midnight in the new zone on
+     * the same day as the original instant.
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
-     * @see #withZoneRetainFields
-     */
-    public final DateMidnight withZone(DateTimeZone newDateTimeZone) {
-        return withChronology(getChronology().withZone(newDateTimeZone));
-    }
-
-    /**
-     * Gets a copy of this instant with a different time zone, preserving the
-     * field values.
-     * The returned object will have a local time of midnight.
-     * <p>
-     * This method is useful for finding the millisecond time in another timezone.
-     * For example, if this instant holds 12:30 in Europe/London (ie. 12:30Z),
-     * the result from this method with Europe/Paris would be 12:30 (ie. 11:30Z).
-     * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * This method alters the time zone and the millisecond instant to keep
-     * the field values the same.
-     * The returned object will be either be a new instance or <code>this</code>.
-     *
-     * @param newDateTimeZone  the new time zone
-     * @return a copy of this instant with a different time zone
-     * @see #withZone
      */
     public final DateMidnight withZoneRetainFields(DateTimeZone newDateTimeZone) {
         final long originalMillis = getMillis();
@@ -376,19 +363,14 @@ public class DateMidnight extends AbstractDateTime
             // be made or not.
             return withMillis(originalMillis);
         }
-
-        DateMidnight newInstant = withChronology(originalChrono.withZone(newDateTimeZone));
-        newDateTimeZone = newInstant.getZone();
-
-        if (newDateTimeZone == null || newDateTimeZone == originalZone) {
-            // New time zone didn't stick or didn't change. Skip millis adjustment.
-            return newInstant;
+        if (newDateTimeZone == null) {
+            newDateTimeZone = DateTimeZone.getDefault();
         }
 
         long newMillis = originalMillis + originalZone.getOffset(originalMillis);
         newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
 
-        return newInstant.withMillis(newMillis);
+        return new DateMidnight(newMillis, originalChrono.withZone(newDateTimeZone));
     }
 
     // Date properties

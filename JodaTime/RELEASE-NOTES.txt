@@ -66,23 +66,18 @@ Enhancements since 0.98
 
 - YearMonthDay/TimeOfDay
   - add toString variants that take a pattern
-
-- YearMonthDay/TimeOfDay
   - add withField(), withFieldAdded(), withPeriodAdded(), plus() and minus()
 
 - DateTimeField
-  - Add methods getAsText(int, Locale) and getAsShortText(int, Locale) for simple access to text values
+  - Add methods getAsText(int, Locale) and getAsShortText(int, Locale) for
+    simple access to text values
 
 - Period
   - Added support to create periods from a duration and an end instant
-
-- Period
   - Periods can be converted to durations by end instant too
 
 - Duration
   - Durations can be converted to periods by end instant too
-
-- Duration
   - Durations can be converted to intervals by end instant too
 
 - Formatting package

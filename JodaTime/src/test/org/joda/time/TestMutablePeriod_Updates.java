@@ -698,12 +698,12 @@ public class TestMutablePeriod_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L);
-            System.err.println(test);  // TODO
-        assertEquals(1, test.getYears());  // 365
-        assertEquals(2, test.getMonths()); // 31 + 30 (Jan + Feb)
-        assertEquals(3, test.getWeeks());  // 3 * 7
-        assertEquals(3, test.getDays());   // 3 left (one given to months)
-        assertEquals(5, test.getHours());
+        // only time fields are precise
+        assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals((450 * 24) + 5, test.getHours());
         assertEquals(6, test.getMinutes());
         assertEquals(7, test.getSeconds());
         assertEquals(8, test.getMillis());
@@ -941,6 +941,25 @@ public class TestMutablePeriod_Updates extends TestCase {
     }
 
     public void testAdd_long2() {
+        MutablePeriod test = new MutablePeriod(100L, PeriodType.getAllType());
+        long ms =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        test.add(ms);
+        // only time fields are precise
+        assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals((450 * 24) + 5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(108, test.getMillis());
+    }
+
+    public void testAdd_long3() {
         MutablePeriod test = new MutablePeriod(100L, PeriodType.getPreciseYearMonthType());
         long ms =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -959,7 +978,7 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(ms + 100L, test.toDurationMillis());
     }
 
-    public void testAdd_long3() {
+    public void testAdd_long4() {
         MutablePeriod test = new MutablePeriod(100L, PeriodType.getPreciseYearMonthType());
         long ms =0L;
         test.add(ms);
@@ -974,7 +993,7 @@ public class TestMutablePeriod_Updates extends TestCase {
         assertEquals(100L, test.toDurationMillis());
     }
 
-    public void testAdd_long4() {
+    public void testAdd_long5() {
         MutablePeriod test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         test.add(2100L);
         assertEquals(1, test.getYears());

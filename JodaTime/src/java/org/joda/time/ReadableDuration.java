@@ -88,23 +88,26 @@ public interface ReadableDuration extends Comparable {
     /**
      * Converts this duration to a Period instance using the All type.
      * <p>
-     * Only precise fields in the period type will be used and the calculation will use UTC.
+     * Only precise fields in the period type will be used.
+     * For AllType, this is the time fields only.
+     * The year, month, week and day fields will not be populated.
+     * The period constructed will always be precise.
      * <p>
      * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
+     * as you might expect and split the fields evenly.
      * <p>
-     * If the duration is larger then the years and months fields will remain as zero,
-     * with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
+     * If the duration is larger than one day then all the remaining duration will
+     * be stored in the largest available precise field, hours in this case.
      * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * For example, a duration effectively equal to (365 + 60 + 5) days will be
+     * converted to ((365 + 60 + 5) * 24) hours by this constructor.
+     * <p>
+     * For more control over the conversion process, you have two options:
+     * <ul>
+     * <li>convert the duration to an {@link Interval}, and from there obtain the period
+     * <li>specify a period type that contains precise definitions of the day and larger
+     * fields, such as the UTC or precise types.
+     * </ul>
      * 
      * @return a Period created using the millisecond duration from this instance
      */
@@ -114,26 +117,16 @@ public interface ReadableDuration extends Comparable {
      * Converts this duration to a Period instance specifying a period type
      * to control how the duration is split into fields.
      * <p>
-     * The exact impact of this method is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * The period constructed will always be precise.
      * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
      * <p>
-     * If the period type is PreciseAll then all fields can be set.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
-     * <p>
-     * If the period type is All then the years and months fields will remain as zero,
-     * with the duration allocated to the weeks and days fields.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
      * 
      * @param type  the period type determining how to split the duration into fields
      * @return a Period created using the millisecond duration from this instance

@@ -790,6 +790,7 @@ public abstract class AbstractPeriod
      * all lower subclasses are also immutable.
      * 
      * @param duration  the duration, in milliseconds
+     * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     protected void setPeriod(long duration) {
         setPeriod(iType, duration);
@@ -815,7 +816,6 @@ public abstract class AbstractPeriod
             return;
         }
         
-        type = type.withChronology(type.getChronology().withUTC());
         long startInstant = 0;
         int years = 0, months = 0, weeks = 0, days = 0;
         int hours = 0, minutes = 0, seconds = 0, millis = 0;

@@ -92,28 +92,26 @@ public class MutablePeriod
     /**
      * Creates a period from the given millisecond duration using AllType.
      * <p>
-     * The exact impact of this constructor is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
+     * Only precise fields in the period type will be used.
+     * For AllType, this is the time fields only.
+     * The year, month, week and day fields will not be populated.
+     * The period constructed will always be precise.
      * <p>
      * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
+     * as you might expect and split the fields evenly.
      * <p>
-     * If this period uses the PreciseAll period type then all fields can be set.
+     * If the duration is larger than one day then all the remaining duration will
+     * be stored in the largest available precise field, hours in this case.
+     * <p>
      * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
+     * ((365 + 60 + 5) * 24) hours by this constructor.
      * <p>
-     * If the period uses the All period type then the years and months fields
-     * will remain as zero, with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * For more control over the conversion process, you have two options:
+     * <ul>
+     * <li>convert the duration to an {@link Interval}, and from there obtain the period
+     * <li>specify a period type that contains precise definitions of the day and larger
+     * fields, such as the UTC or precise types.
+     * </ul>
      *
      * @param duration  the duration, in milliseconds
      */
@@ -124,28 +122,16 @@ public class MutablePeriod
     /**
      * Creates a period from the given millisecond duration.
      * <p>
-     * The exact impact of this constructor is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * The period constructed will always be precise.
      * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
      * <p>
-     * If this period uses the PreciseAll period type then all fields can be set.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
-     * <p>
-     * If the period uses the All period type then the years and months fields
-     * will remain as zero, with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
      *
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports
@@ -345,28 +331,9 @@ public class MutablePeriod
      * Sets all the fields in one go from a duration dividing the
      * fields using the period type.
      * <p>
-     * The exact impact of this method is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
-     * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
-     * <p>
-     * If this period uses the PreciseAll period type then all fields can be set.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
-     * <p>
-     * If the period uses the All period type then the years and months fields
-     * will remain as zero, with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be stored in the largest
+     * available precise field.
      * 
      * @param duration  the duration to set, null means zero length
      */
@@ -378,28 +345,9 @@ public class MutablePeriod
      * Sets all the fields in one go from a millisecond duration dividing the
      * fields using the period type.
      * <p>
-     * The exact impact of this method is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
-     * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
-     * <p>
-     * If this period uses the PreciseAll period type then all fields can be set.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
-     * <p>
-     * If the period uses the All period type then the years and months fields
-     * will remain as zero, with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be stored in the largest
+     * available precise field.
      * 
      * @param duration  the duration, in milliseconds
      */
@@ -455,28 +403,9 @@ public class MutablePeriod
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
      * <p>
-     * The exact impact of this method is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
-     * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
-     * <p>
-     * If this period uses the PreciseAll period type then all fields can be set.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
-     * <p>
-     * If the period uses the All period type then the years and months fields
-     * will remain as zero, with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be added to the largest
+     * available precise field.
      * 
      * @param duration  the duration to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
@@ -489,28 +418,9 @@ public class MutablePeriod
      * Adds a duration to this one by dividing the duration into
      * fields and then adding each field in turn.
      * <p>
-     * The exact impact of this method is determined by the period type.
-     * Only precise fields in the period type will be used and the calculation will use UTC.
-     * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly. The situation is more complex
-     * for larger durations.
-     * <p>
-     * If this period uses the PreciseAll period type then all fields can be set.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 1 year, 2 months and 5 days using the PreciseAll type.
-     * <p>
-     * If the period uses the All period type then the years and months fields
-     * will remain as zero, with the duration allocated to the weeks field.
-     * Normally, the weeks and days fields are imprecise, but this method
-     * calculates using the UTC time zone making weeks and days precise.
-     * The effect is that a large duration of several years or months will be converted
-     * to a period including a large number of weeks and zero years and months.
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * 61 weeks and 3 days.
-     * <p>
-     * For more control over the conversion process, you should convert the duration
-     * to an interval by referencing a fixed instant and then obtain the period.
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be added to the largest
+     * available precise field.
      * 
      * @param duration  the duration to add
      * @throws ArithmeticException if the addition exceeds the capacity of the period

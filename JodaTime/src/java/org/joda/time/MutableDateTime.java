@@ -391,13 +391,13 @@ public class MutableDateTime extends AbstractDateTime
      * Add an amount of time to the date.
      * <p>
      * The recognised object types are defined in {@link ConverterManager} and
-     * include ReadableDuration, String and Long.
+     * include ReadableDuration, and Long.
      * 
      * @param duration  an object representing a duration
      */
     public void add(final Object duration) {
         if (duration instanceof ReadableDuration) {
-            add((ReadableDuration) duration);
+            add((ReadableDuration) duration, 1);
         } else {
             DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
             add(converter.getDurationMillis(duration));

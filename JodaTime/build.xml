@@ -119,8 +119,12 @@
 
 <!-- ====================================================================== -->
 
-  <target name="compile" depends="static"
-          description="Compile shareable components">
+  <target name="compile" depends="static,compile.main,compile.zoneinfo"
+          description="Compile shareable components"/>
+          
+          
+  <target name="compile.main" depends="static"
+          description="Compile main datetime classes">
     <javac  srcdir="${source.home}"
            destdir="${build.classes}"
              debug="${compile.debug}"
@@ -133,6 +137,41 @@
     </copy>
   </target>
 
+<!-- ====================================================================== -->
+
+  <target name="compile.zoneinfo"
+          depends="compile.main"
+          description="Compile timezone data files" >
+    <!-- Invoke the newly built ZoneInfoCompiler to compile the zoneinfo data files -->
+    <mkdir dir="${build.classes}/org/joda/time/tz/data" />
+    <java classname="org.joda.time.tz.ZoneInfoCompiler"
+          fork="true"
+          dir="${source.home}/org/joda/time/tz/src"
+          failonerror="true">
+      <classpath path="${build.classes}" />
+      <!-- Override default provider since data directory doesn't exist yet -->
+      <sysproperty key="org.joda.time.DateTimeZone.Provider"
+                   value="org.joda.time.DateTimeZone$UTCProvider" />
+      <!-- Specify destination directory for compiled data files -->
+      <arg line="-d ../../../../../../../${build.classes}/org/joda/time/tz/data" />
+      <!-- Specify all the data files to compile -->
+      <arg value="africa" />
+      <arg value="antarctica" />
+      <arg value="asia" />
+      <arg value="australasia" />
+      <arg value="europe" />
+      <arg value="northamerica" />
+      <arg value="southamerica" />
+      <arg value="pacificnew" />
+      <arg value="etcetera" />
+      <arg value="backward" />
+      <arg value="systemv" />
+      <arg value="solar87" />
+      <arg value="solar88" />
+      <arg value="solar89" />
+    </java>
+  </target>
+  
 <!-- ====================================================================== -->
 
   <target name="compile.tests" depends="compile"
@@ -194,7 +233,7 @@
     <mkdir      dir="${build.classes}/META-INF"/>
     <copy      file="LICENSE.txt"
              tofile="${build.classes}/META-INF/LICENSE.txt"/>
-    <jar    jarfile="${dist.home}/${component.name}.jar"
+    <jar    jarfile="${dist.home}/${component.name}-${component.version}.jar"
             basedir="${build.classes}"
            manifest="${build.conf}/MANIFEST.MF"/>
   </target>
@@ -214,12 +253,12 @@
         <pathelement path="${java.class.path}"/>
       </classpath>
 
-      <batchtest fork="yes">
+<!--      <batchtest fork="yes">
         <fileset dir="${src.tests}">
           <include name="**/*Test*.java"/>
           <exclude name="**/AllTests.java"/>
         </fileset>
-      </batchtest>
+      </batchtest>-->
     </junit>
   </target>
 

@@ -65,7 +65,7 @@ public class MockPartial implements ReadablePartial {
     public static final ReadablePartial EMPTY_INSTANCE = new MockPartial();
     
     public Chronology getChronology() {
-        return ISOChronology.getInstance();
+        return ISOChronology.getInstanceUTC();
     }
     public int size() {
         return getFields().length;
@@ -85,7 +85,10 @@ public class MockPartial implements ReadablePartial {
     public boolean isSupported(DateTimeFieldType field) {
         return false;
     }
-    public DateTime toDateTimeUsing(ReadableInstant base) {
+    public DateTime toDateTime(DateTimeZone zone) {
+        return null;
+    }
+    public DateTime toDateTime(ReadableInstant base) {
         return null;
     }
     public DateTimeField[] getFields() {

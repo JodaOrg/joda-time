@@ -134,9 +134,28 @@ public interface ReadablePartial {
     boolean isSupported(DateTimeFieldType field);
 
     /**
-     * Resolves this partial against another complete instant to create a new
-     * full instant. The combination is performed using the chronology of the
-     * specified instant.
+     * Converts this partial to a full datetime using the specified time zone and
+     * filing in any gaps using the current datetime.
+     * <p>
+     * This method obtains the current datetime, creates a chronology from that
+     * on this instance plus the time zone specified, and then sets the fields
+     * from this instant on top.
+     * <p>
+     * For example, if this partial represents a time, then the result of this
+     * method will be the datetime from the specified base instant plus the
+     * time from this partial.
+     *
+     * @param zone  the zone to use, null means default
+     * @return the combined datetime
+     */
+    DateTime toDateTime(DateTimeZone zone);
+
+    /**
+     * Converts this partial to a full datetime by resolving it against another
+     * datetime.
+     * <p>
+     * This method takes the specified datetime and sets the fields from this
+     * instant on top. The chronology from the base instant is used.
      * <p>
      * For example, if this partial represents a time, then the result of this
      * method will be the datetime from the specified base instant plus the
@@ -145,7 +164,7 @@ public interface ReadablePartial {
      * @param baseInstant  the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
-    DateTime toDateTimeUsing(ReadableInstant baseInstant);
+    DateTime toDateTime(ReadableInstant baseInstant);
 
     //-----------------------------------------------------------------------
     /**

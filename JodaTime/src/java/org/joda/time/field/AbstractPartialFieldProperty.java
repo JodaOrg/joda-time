@@ -312,6 +312,28 @@ public abstract class AbstractPartialFieldProperty {
 
     //-----------------------------------------------------------------------
     /**
+     * Compares this property to another.
+     * 
+     * @param object  the object to compare to
+     * @return true if equal
+     */
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object instanceof AbstractPartialFieldProperty) {
+            AbstractPartialFieldProperty other = (AbstractPartialFieldProperty) object;
+            if (get() == other.get() &&
+                getFieldType() == other.getFieldType() &&
+                getReadablePartial().getChronology() == other.getReadablePartial().getChronology()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Output a debugging string.
      * 
      * @return debugging string

@@ -233,13 +233,23 @@ public final class YearMonthDay
     }
 
     /**
-     * Constructs a YearMonthDay with specified fields, values and chronology.
+     * Constructs a YearMonthDay with chronology from this instance and new values.
      *
      * @param partial  the partial to base this new instance on
      * @param values  the new set of values
      */
     YearMonthDay(YearMonthDay partial, int[] values) {
         super(partial, values);
+    }
+
+    /**
+     * Constructs a YearMonthDay with values from this instance and a new chronology.
+     *
+     * @param partial  the partial to base this new instance on
+     * @param chrono  the new chronology
+     */
+    YearMonthDay(YearMonthDay partial, Chronology chrono) {
+        super(partial, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -299,13 +309,18 @@ public final class YearMonthDay
     //-----------------------------------------------------------------------
     /**
      * Creates a new YearMonthDay instance with the specified chronology.
+     * This instance is immutable and unaffected by this method call.
      * <p>
-     * This period instance is immutable and unaffected by this method call.
+     * This method retains the values of the fields, thus the result will
+     * typically refer to a different instant.
+     * <p>
+     * The time zone of the specified chronology is ignored, as TimeOfDay
+     * operates without a time zone.
      *
      * @param newChronology  the new chronology, null means ISO
      * @return a copy of this datetime with a different chronology
      */
-    public YearMonthDay withChronology(Chronology newChronology) {
+    public YearMonthDay withChronologyRetainFields(Chronology newChronology) {
         newChronology = DateTimeUtils.getChronology(newChronology);
         newChronology = newChronology.withUTC();
         if (newChronology == getChronology()) {
@@ -343,7 +358,47 @@ public final class YearMonthDay
      * @return the DateMidnight instance
      */
     public DateMidnight toDateMidnight(DateTimeZone zone) {
-        return new DateMidnight(getYear(), getMonthOfYear(), getDayOfMonth(), zone);
+        Chronology chrono = getChronology().withZone(zone);
+        return new DateMidnight(getYear(), getMonthOfYear(), getDayOfMonth(), chrono);
+    }
+
+    /**
+     * Converts this object to a DateTime using a TimeOfDay to fill in the
+     * missing fields and using the default time zone.
+     * This instance is immutable and unaffected by this method call.
+     * <p>
+     * The resulting chronology is determined by the chronology of this
+     * YearMonthDay plus the time zone.
+     * The chronology of the time is ignored - only the field values are used.
+     *
+     * @param time  the time of day to use, null means current time
+     * @return the DateTime instance
+     */
+    public DateTime toDateTime(TimeOfDay time) {
+        return toDateTime(time, null);
+    }
+
+    /**
+     * Converts this object to a DateTime using a TimeOfDay to fill in the
+     * missing fields.
+     * This instance is immutable and unaffected by this method call.
+     * <p>
+     * The resulting chronology is determined by the chronology of this
+     * YearMonthDay plus the time zone.
+     * The chronology of the time is ignored - only the field values are used.
+     *
+     * @param time  the time of day to use, null means current time
+     * @param zone  the zone to get the DateTime in, null means default
+     * @return the DateTime instance
+     */
+    public DateTime toDateTime(TimeOfDay time, DateTimeZone zone) {
+        Chronology chrono = getChronology().withZone(zone);
+        long instant = DateTimeUtils.currentTimeMillis();
+        instant = chrono.set(this, instant);
+        if (time != null) {
+            instant = chrono.set(time, instant);
+        }
+        return new DateTime(instant, chrono);
     }
 
     //-----------------------------------------------------------------------

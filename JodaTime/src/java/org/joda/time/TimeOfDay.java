@@ -93,6 +93,8 @@ import org.joda.time.format.ISODateTimeFormat;
 public final class TimeOfDay
         extends BasePartial
         implements ReadablePartial, Serializable {
+    // NOTE: No toDateTime(YearMonthDay) as semantics are confusing when
+    // different chronologies
 
     /** Serialization version */
     private static final long serialVersionUID = 3633353405803318660L;
@@ -103,6 +105,9 @@ public final class TimeOfDay
         DateTimeFieldType.secondOfMinute(),
         DateTimeFieldType.millisOfSecond(),
     };
+
+    /** Constant for midnight. */
+    public static final TimeOfDay MIDNIGHT = new TimeOfDay(0, 0, 0, 0);
 
     /** The index of the hourOfDay field in the field array */
     public static final int HOUR_OF_DAY = 0;
@@ -334,13 +339,23 @@ public final class TimeOfDay
     }
 
     /**
-     * Constructs a TimeOfDay with specified fields, values and chronology.
+     * Constructs a TimeOfDay with chronology from this instance and new values.
      *
      * @param partial  the partial to base this new instance on
      * @param values  the new set of values
      */
     TimeOfDay(TimeOfDay partial, int[] values) {
         super(partial, values);
+    }
+
+    /**
+     * Constructs a TimeOfDay with values from this instance and a new chronology.
+     *
+     * @param partial  the partial to base this new instance on
+     * @param chrono  the new chronology
+     */
+    TimeOfDay(TimeOfDay partial, Chronology chrono) {
+        super(partial, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -402,13 +417,18 @@ public final class TimeOfDay
     //-----------------------------------------------------------------------
     /**
      * Creates a new TimeOfDay instance with the specified chronology.
+     * This instance is immutable and unaffected by this method call.
      * <p>
-     * This period instance is immutable and unaffected by this method call.
+     * This method retains the values of the fields, thus the result will
+     * typically refer to a different instant.
+     * <p>
+     * The time zone of the specified chronology is ignored, as TimeOfDay
+     * operates without a time zone.
      *
      * @param newChronology  the new chronology, null means ISO
      * @return a copy of this datetime with a different chronology
      */
-    public TimeOfDay withChronology(Chronology newChronology) {
+    public TimeOfDay withChronologyRetainFields(Chronology newChronology) {
         newChronology = DateTimeUtils.getChronology(newChronology);
         newChronology = newChronology.withUTC();
         if (newChronology == getChronology()) {

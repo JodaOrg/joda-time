@@ -57,7 +57,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractPartial;
-import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.field.AbstractPartialFieldProperty;
 
 /**
  * This class is a Junit unit test for YearMonthDay.
@@ -133,8 +133,8 @@ public class TestAbstractPartial extends TestCase {
 
     public void testGetField() throws Throwable {
         MockPartial mock = new MockPartial();
-        assertEquals(BuddhistChronology.getInstance().year(), mock.getField(0));
-        assertEquals(BuddhistChronology.getInstance().monthOfYear(), mock.getField(1));
+        assertEquals(Chronology.getBuddhistUTC().year(), mock.getField(0));
+        assertEquals(Chronology.getBuddhistUTC().monthOfYear(), mock.getField(1));
         
         try {
             mock.getField(-1);
@@ -167,6 +167,21 @@ public class TestAbstractPartial extends TestCase {
         assertEquals(2, vals.length);
         assertEquals(DateTimeFieldType.year(), vals[0]);
         assertEquals(DateTimeFieldType.monthOfYear(), vals[1]);
+    }
+
+    public void testGetPropertyEquals() throws Throwable {
+        MockPartial mock = new MockPartial();
+        YearMonthDay ymd = new YearMonthDay(1970, 2, 1, Chronology.getBuddhist());
+        
+        MockProperty0 prop0 = new MockProperty0();
+        assertEquals(true, prop0.equals(prop0));
+        assertEquals(true, prop0.equals(new MockProperty0()));
+        assertEquals(false, prop0.equals(new MockProperty1()));
+        assertEquals(false, prop0.equals(new MockProperty0Val()));
+        assertEquals(false, prop0.equals(new MockProperty0Field()));
+        assertEquals(false, prop0.equals(new MockProperty0Chrono()));
+        assertEquals(false, prop0.equals(""));
+        assertEquals(false, prop0.equals(null));
     }
 
     //-----------------------------------------------------------------------
@@ -202,7 +217,51 @@ public class TestAbstractPartial extends TestCase {
         }
 
         public Chronology getChronology() {
-            return BuddhistChronology.getInstance();
+            return Chronology.getBuddhistUTC();
+        }
+    }
+    
+    static class MockProperty0 extends AbstractPartialFieldProperty {
+        MockPartial partial = new MockPartial();
+        public DateTimeField getField() {
+            return partial.getField(0);
+        }
+        public ReadablePartial getReadablePartial() {
+            return partial;
+        }
+        public int get() {
+            return partial.getValue(0);
+        }
+    }
+    static class MockProperty1 extends AbstractPartialFieldProperty {
+        MockPartial partial = new MockPartial();
+        public DateTimeField getField() {
+            return partial.getField(1);
+        }
+        public ReadablePartial getReadablePartial() {
+            return partial;
+        }
+        public int get() {
+            return partial.getValue(1);
+        }
+    }
+    static class MockProperty0Field extends MockProperty0 {
+        public DateTimeField getField() {
+            return Chronology.getBuddhistUTC().hourOfDay();
+        }
+    }
+    static class MockProperty0Val extends MockProperty0 {
+        public int get() {
+            return 99;
+        }
+    }
+    static class MockProperty0Chrono extends MockProperty0 {
+        public ReadablePartial getReadablePartial() {
+            return new MockPartial() {
+                public Chronology getChronology() {
+                    return Chronology.getISOUTC();
+                }
+            };
         }
     }
 }

@@ -58,6 +58,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
@@ -226,6 +227,28 @@ public abstract class AbstractPartial implements ReadablePartial {
 
     //-----------------------------------------------------------------------
     /**
+     * Converts this partial to a full datetime using the specified time zone and
+     * filing in any gaps using the current datetime.
+     * <p>
+     * This method obtains the current datetime, creates a chronology from that
+     * on this instance plus the time zone specified, and then sets the fields
+     * from this instant on top.
+     * <p>
+     * For example, if this partial represents a time, then the result of this
+     * method will be the datetime from the specified base instant plus the
+     * time from this partial.
+     *
+     * @param zone  the zone to use, null means default
+     * @return the combined datetime
+     */
+    public DateTime toDateTime(DateTimeZone zone) {
+        Chronology chrono = getChronology().withZone(zone);
+        long instantMillis = DateTimeUtils.currentTimeMillis();
+        long resolved = chrono.set(this, instantMillis);
+        return new DateTime(resolved, chrono);
+    }
+
+    /**
      * Resolves this partial against another complete instant to create a new
      * full instant. The combination is performed using the chronology of the
      * specified instant.
@@ -237,7 +260,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @param baseInstant  the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
-    public DateTime toDateTimeUsing(ReadableInstant baseInstant) {
+    public DateTime toDateTime(ReadableInstant baseInstant) {
         Chronology chrono = DateTimeUtils.getInstantChronology(baseInstant);
         long instantMillis = DateTimeUtils.getInstantMillis(baseInstant);
         long resolved = chrono.set(this, instantMillis);

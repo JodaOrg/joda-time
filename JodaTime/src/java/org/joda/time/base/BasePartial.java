@@ -56,8 +56,10 @@ package org.joda.time.base;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
@@ -300,6 +302,17 @@ public abstract class BasePartial
     protected void setValues(int[] values) {
         getChronology().validate(this, values);
         iValues = values;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this object to a DateTime using the current date to fill in the
+     * missing fields and using the default time zone.
+     *
+     * @return the DateTime instance
+     */
+    public DateTime toDateTime() {
+        return toDateTime((DateTimeZone) null);
     }
 
 }

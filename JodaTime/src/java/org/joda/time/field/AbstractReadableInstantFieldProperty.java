@@ -395,6 +395,28 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     //-----------------------------------------------------------------------
     /**
+     * Compares this property to another.
+     * 
+     * @param object  the object to compare to
+     * @return true if equal
+     */
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        }
+        if (object instanceof AbstractReadableInstantFieldProperty) {
+            AbstractReadableInstantFieldProperty other = (AbstractReadableInstantFieldProperty) object;
+            if (get() == other.get() &&
+                getFieldType() == other.getFieldType() &&
+                getReadableInstant().getChronology() == other.getReadableInstant().getChronology()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Output a debugging string.
      * 
      * @return debugging string

@@ -1,14 +1,18 @@
-<project name="joda-time" default="compile" basedir=".">
+<project name="joda-time" default="jar" basedir=".">
 
 <!-- Joda-time ANT script -->
-<!-- Based on script from Apache Jakarta Commons -->
+<!-- Based on scripts from Apache Jakarta Commons and elsewhere -->
 
+<!-- This is the recommended way to build Joda-Time. -->
+<!-- Maven is only intended for building the website. -->
+
+<!-- This ant file will download junit-3.8.1.jar to the lib subdirectory -->
+<!-- automatically if it does not find it there already. To change this -->
+<!-- behaviour, override the junit.jar property in build.properties. -->
 
 <!-- ========== Properties ================================================ -->
 
   <property file="build.properties"/>
-  <property name="junit.jar"               value="lib/junit.jar"/>
-
 
 <!-- ========== Component Declarations ==================================== -->
 
@@ -30,7 +34,11 @@
   
   <!-- The directory of source files -->
   <property name="xdocs"                   value="xdocs"/>
-  
+
+  <!-- Dependencies -->
+  <property name="lib"                     value="lib"/>
+  <property name="junit.jar"               value="${lib}/junit-3.8.1.jar"/>
+
   <!-- The directory of source files -->
   <property name="source"                  value="src"/>
   <property name="source.home"             value="${source}/java"/>
@@ -103,11 +111,38 @@
     <filter token="name"                  value="${component.name}"/>
     <filter token="package"               value="${component.package}"/>
     <filter token="version"               value="${component.version}"/>
+    <available property="junit.ant" classname="junit.framework.Test"/>
+    <available property="junit.present" file="${junit.jar}"/>
+    <uptodate property="tz.build.notneeded" targetfile="${build.tz}/ZoneInfoMap" >
+      <srcfiles dir= "${source.tz}" includes="**/*.*"/>
+    </uptodate>
   </target>
 
 <!-- ====================================================================== -->
 
-  <target name="prepare" depends="init"
+  <target name="getjunit" unless="junit.present">
+    <echo message="Getting junit from http://www.ibiblio.org/maven/junit"/>
+    <setproxy />
+    <mkdir dir="${lib}"/>
+    <get dest="${junit.jar}" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar" />
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="installjunit" unless="junit.ant">
+    <echo message="Installing junit in ${ant.home}/lib"/>
+  	<copy file="${junit.jar}" todir="${ant.home}/lib" />
+    <echo message="***************************************************************"/>
+    <echo message="*  A copy of junit has been installed in your ant directory   *"/>
+    <echo message="*                                                             *"/>
+    <echo message="* You will need to restart the ant build to pickup the change *"/>
+    <echo message="***************************************************************"/>
+  	<fail message="Please restart ant"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="prepare" depends="init,getjunit,installjunit"
           description="Prepare build directory">
     <mkdir dir="${build}"/>
     <mkdir dir="${build.classes}"/>
@@ -126,12 +161,8 @@
 
 <!-- ====================================================================== -->
 
-  <target name="compile" depends="compile.main"
+  <target name="compile" depends="compile.main,compile.zoneinfo"
           description="Compile shareable components">
-    <uptodate property="tz.build.notneeded" targetfile="${build.tz}/ZoneInfoMap" >
-      <srcfiles dir= "${source.tz}" includes="**/*.*"/>
-    </uptodate>
-    <antcall target="compile.zoneinfo" />
   </target>
           
           
@@ -273,7 +304,6 @@
     </copy>
 	<delete     dir="${build.dist.fullname}/src/tzdata"/>
     <copy      file="build.xml" todir="${build.dist.fullname}"/>
-    <copy      file="build.properties.sample" todir="${build.dist.fullname}"/>
     <copy      file="maven.xml" todir="${build.dist.fullname}"/>
     <copy      file="project.xml" todir="${build.dist.fullname}"/>
     <copy      file="project.properties" todir="${build.dist.fullname}"/>
@@ -320,6 +350,7 @@
       <classpath>
         <pathelement location="${build.fullname}.jar"/>
         <pathelement location="${build.tests}"/>
+        <pathelement location="${junit.jar}"/>
         <pathelement path="${java.class.path}"/>
       </classpath>
 

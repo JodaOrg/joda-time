@@ -60,8 +60,19 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 
 /**
- * Allows fields to be saved in any order, but physically set in a consistent
- * order.
+ * Allows fields to be saved in any order, but be physically set in a
+ * consistent order. This is useful for parsing against formats that allow
+ * field values to contradict each other.
+ * <p>
+ * Field values are applied in an order where the "larger" fields are set
+ * first, making their value less likely to stick.  A field is larger than
+ * another when it's range duration is longer. If both ranges are the same,
+ * then the larger field has the longer duration. If it cannot be determined
+ * which field is larger, then the fields are set in the order they were saved.
+ * <p>
+ * For example, these fields were saved in this order: dayOfWeek, monthOfYear,
+ * dayOfMonth, dayOfYear. When computeMillis is called, the fields are set in
+ * this order: monthOfYear, dayOfYear, dayOfMonth, dayOfWeek.
  * <p>
  * DateTimeParserBucket is mutable and not thread-safe.
  *
@@ -285,12 +296,9 @@ public class DateTimeParserBucket {
         }
 
         /**
-         * The field with the larger range is ordered first, where null is
-         * considered infinite. If the ranges match, then the field with the
-         * larger unit is ordered first. This ordering casues "smaller" fields
-         * to be set last, and thus their value sticks. For example, dayOfMonth
-         * takes precedence over monthOfYear, and dayOfWeek takes precedence
-         * over dayOfMonth.
+         * The field with the longer range duration is ordered first, where
+         * null is considered infinite. If the ranges match, then the field
+         * with the longer duration is ordered first.
          */
         public int compareTo(Object obj) {
             DateTimeField other = ((SavedField)obj).iField;

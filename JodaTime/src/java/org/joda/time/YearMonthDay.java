@@ -353,10 +353,10 @@ public final class YearMonthDay
      * @throws IllegalArgumentException if the value is null or invalid
      */
     public YearMonthDay withField(DateTimeFieldType fieldType, int value) {
+        int index = indexOfSupported(fieldType);
         if (value == 0) {
             return this;
         }
-        int index = indexOfSupported(fieldType);
         int[] newValues = getValues();
         newValues = getField(index).set(this, index, newValues, value);
         return new YearMonthDay(this, newValues);
@@ -369,7 +369,7 @@ public final class YearMonthDay
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * YearMonthDay added = ymd.withField(DateTimeFieldType.dayOfMonth(), 6);
+     * YearMonthDay added = ymd.withFieldAdded(DateTimeFieldType.dayOfMonth(), 6);
      * YearMonthDay added = ymd.dayOfMonth().addToCopy(6);
      * YearMonthDay added = ymd.property(DateTimeFieldType.dayOfMonth()).addToCopy(6);
      * </pre>
@@ -381,10 +381,10 @@ public final class YearMonthDay
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
     public YearMonthDay withFieldAdded(DurationFieldType fieldType, int amount) {
+        int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
         }
-        int index = indexOfSupported(fieldType);
         int[] newValues = getValues();
         newValues = getField(index).add(this, index, newValues, amount);
         return new YearMonthDay(this, newValues);

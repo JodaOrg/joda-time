@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Joda Time - tasks outstanding</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Tasks outstanding">
+
+<p>
+The following tasks still need doing:
+</p>
+
+<ul>
+<li>DateOnly/TimeOnly properties</li>
+<li>API consistency</li>
+<li>Interval</li>
+<li>Testing</li>
+<li>Release!</li>
+</ul>
+
+<p>
+Would you like to <a href="mailto:scolebourne@users.sourceforge.net">volunteer</a>?
+</p>
+</section>
+
+</body>
+</document>
+
+
+
+
+
+

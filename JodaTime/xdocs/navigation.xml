@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<project name="Joda Time">
+
+  <title>Joda Time</title>
+  <organizationLogo href="">Joda.org</organizationLogo>
+
+  <body>
+    <menu name="Joda Time">
+      <item name="Overview" href="/index.html"/>
+      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
+      <item name="Javadoc" href="/apidocs/index.html"/>
+      <item name="CVS" href="http://cvs.sourceforge.net/viewcvs.py/joda-time/"/>
+      <item name="Test results" href="/junit-report.html"/>
+      <item name="Mailing lists" href="/mail-lists.html"/>
+      <item name="TODO" href="/tasks.html"/>
+      <item name="License" href="/license.html"/>
+    </menu>
+    <menu name="Joda">
+      <item name="Joda home" href="http://joda.sourceforge.net"/>
+      <item name="Beans" href="http://joda.sourceforge.net/beans.html"/>
+      <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
+    </menu>
+    
+  </body>
+</project>

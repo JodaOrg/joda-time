@@ -199,8 +199,9 @@ public abstract class AbstractInstant implements ReadableInstant {
 
         DateTimeZone trusted = DateTimeZone.getInstance(zone.getID());
         
-        if (zone == trusted && this instanceof DateTime
-            && getChronology() instanceof ISOChronology) {
+        if (zone == trusted &&
+            getClass() == DateTime.class &&
+            getChronology().getClass() == ISOChronology.class) {
             return (DateTime) this;
         }
         
@@ -348,17 +349,17 @@ public abstract class AbstractInstant implements ReadableInstant {
      * <p>
      * All ReadableInstant instances are accepted.
      *
-     * @param readableInstant  a readable instant to check against
+     * @param instant  a readable instant to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */
-    public final int compareTo(Object readableInstant) {
-        if (this == readableInstant) {
+    public final int compareTo(Object instant) {
+        if (this == instant) {
             return 0;
         }
 
-        ReadableInstant otherInstant = (ReadableInstant) readableInstant;
+        ReadableInstant otherInstant = (ReadableInstant) instant;
 
         long otherMillis = otherInstant.getMillis();
         long thisMillis = getMillis();
@@ -377,43 +378,40 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Is the millisecond value after the millisecond passed in.
      *
-     * @param readableInstant  an instant to check against
+     * @param instant  an instant to check against, null returns false
      * @return true if the instant is after the instant passed in
-     * @throws IllegalArgumentException if the object is null
      */
-    public final boolean isAfter(ReadableInstant readableInstant) {
-        if (readableInstant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+    public final boolean isAfter(ReadableInstant instant) {
+        if (instant == null) {
+            return false;
         }
-        return (getMillis() > readableInstant.getMillis());
+        return (getMillis() > instant.getMillis());
     }
 
     /**
      * Is the millisecond value before the millisecond passed in.
      *
-     * @param readableInstant  an instant to check against
+     * @param instant  an instant to check against, null returns false
      * @return true if the instant is before the instant passed in
-     * @throws IllegalArgumentException if the object is null
      */
-    public final boolean isBefore(ReadableInstant readableInstant) {
-        if (readableInstant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+    public final boolean isBefore(ReadableInstant instant) {
+        if (instant == null) {
+            return false;
         }
-        return (getMillis() < readableInstant.getMillis());
+        return (getMillis() < instant.getMillis());
     }
 
     /**
      * Is the millisecond value equal to the millisecond passed in.
      *
-     * @param readableInstant  an instant to check against
+     * @param instant  an instant to check against, null returns false
      * @return true if the instant is equal to the instant passed in
-     * @throws IllegalArgumentException if the object is null
      */
-    public final boolean isEqual(ReadableInstant readableInstant) {
-        if (readableInstant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+    public final boolean isEqual(ReadableInstant instant) {
+        if (instant == null) {
+            return false;
         }
-        return (getMillis() == readableInstant.getMillis());
+        return (getMillis() == instant.getMillis());
     }
 
     // Output    

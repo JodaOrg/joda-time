@@ -57,10 +57,9 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.convert.InstantConverter;
 import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.InstantConverter;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * AbstractDateTime provides the common behaviour for datetime classes.
@@ -200,7 +199,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime(final Object instant) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iChronology = converter.getChronology(instant);
+        iChronology = selectChronology(converter.getChronology(instant));
         iMillis = converter.getInstantMillis(instant);
     }
 
@@ -221,7 +220,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime(final Object instant, final DateTimeZone zone) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iChronology = converter.getChronology(instant, zone);
+        iChronology = selectChronology(converter.getChronology(instant, zone));
         iMillis = converter.getInstantMillis(instant, zone);
     }
 
@@ -241,7 +240,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime(final Object instant, final Chronology chronology) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iChronology = converter.getChronology(instant, chronology);
+        iChronology = selectChronology(converter.getChronology(instant, chronology));
         iMillis = converter.getInstantMillis(instant, chronology);
     }
 
@@ -531,30 +530,32 @@ public abstract class AbstractDateTime extends AbstractInstant
      *
      * @return ISO8601 time formatted string.
      */
-    public String toString() {
-        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
-    }
+    public abstract String toString();
 
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  the pattern specification
-     * @throws IllegalArgumentException  if pattern is invalid
+     * @param pattern  the pattern specification, null means use <code>toString</code>
      * @see  org.joda.time.format.DateTimeFormat
      */
-    public String toString(String pattern) throws IllegalArgumentException {
+    public String toString(String pattern) {
+        if (pattern == null) {
+            return toString();
+        }
         return DateTimeFormat.getInstance(getChronology()).forPattern(pattern).print(this);
     }
 
     /**
      * Output the instant using the specified format pattern.
      *
-     * @param pattern  the pattern specification
-     * @param locale  Locale to use, or default if null
-     * @throws IllegalArgumentException  if pattern is invalid
+     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param locale  Locale to use, null means default
      * @see  org.joda.time.format.DateTimeFormat
      */
     public String toString(String pattern, Locale locale) throws IllegalArgumentException {
+        if (pattern == null) {
+            return toString();
+        }
         return DateTimeFormat.getInstance(getChronology(), locale).forPattern(pattern).print(this);
     }
 
@@ -585,12 +586,8 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected void setMillis(Object instant) {
         // Don't set iMillis directly, as it may provide a backdoor to
         // immutable subclasses.
-        if (instant instanceof ReadableInstant) {
-            setMillis(((ReadableInstant) instant).getMillis());
-        } else {
-            InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-            setMillis(converter.getInstantMillis(instant));
-        }
+        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        setMillis(converter.getInstantMillis(instant));
     }
 
     /**

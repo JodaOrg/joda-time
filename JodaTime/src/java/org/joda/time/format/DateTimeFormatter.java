@@ -447,9 +447,9 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Method called when there is nothing to parse.
+     * Checks whether printing is supported.
      * 
-     * @return the exception
+     * @throws IllegalArgumentException if parsing not supported
      */
     private void checkPrinter() {
         if (iPrinter == null) {
@@ -671,9 +671,9 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Method called when there is nothing to parse.
+     * Checks whether parsing is supported.
      * 
-     * @return the exception
+     * @throws IllegalArgumentException if parsing not supported
      */
     private void checkParser() {
         if (iParser == null) {

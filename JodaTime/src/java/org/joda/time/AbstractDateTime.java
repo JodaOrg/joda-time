@@ -626,23 +626,23 @@ public abstract class AbstractDateTime extends AbstractInstant
      * zone alters the millisecond value of this instant such that it is
      * relative to the new time zone.
      *
-     * @param zone  the time zone to use, null means default zone
+     * @param newZone  the time zone to use, null means default zone
      * @see #setZone
      */
-    protected void setZoneRetainFields(DateTimeZone zone) {
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
+    protected void setZoneRetainFields(DateTimeZone newZone) {
+        newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
+        DateTimeZone originalZone = getZone();
+        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
+        if (newZone == originalZone) {
+            return;
         }
-        DateTimeZone currentZone = iChronology.getZone();
-        if (currentZone != zone) {
-            long millis = iMillis;
-            millis += currentZone.getOffset(millis);
-            millis -= zone.getOffsetFromLocal(millis);
-            // Don't set iChronology and iMillis directly, as it may provide a
-            // backdoor to immutable subclasses.
-            setChronology(iChronology.withZone(zone));
-            setMillis(millis);
-        }
+        
+        long millis = getMillis();
+        millis += originalZone.getOffset(millis);
+        millis -= newZone.getOffsetFromLocal(millis);
+        
+        setChronology(iChronology.withZone(newZone));
+        setMillis(millis);
     }
 
 }

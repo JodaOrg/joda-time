@@ -373,23 +373,23 @@ public class DateTime extends AbstractDateTime
      * the field values the same.
      * The returned object will be either be a new instance or <code>this</code>.
      *
-     * @param newDateTimeZone  the new time zone, null means default
+     * @param newZone  the new time zone, null means default
      * @return a copy of this instant with a different time zone
      * @see #withZone
      */
-    public final DateTime withZoneRetainFields(DateTimeZone newDateTimeZone) {
-        newDateTimeZone = (newDateTimeZone == null ? DateTimeZone.getDefault() : newDateTimeZone);
+    public final DateTime withZoneRetainFields(DateTimeZone newZone) {
+        newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
         DateTimeZone originalZone = getZone();
         originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
-        if (newDateTimeZone == originalZone) {
+        if (newZone == originalZone) {
             return this;
         }
         
-        long originalMillis = getMillis();
-        long newMillis = originalMillis + originalZone.getOffset(originalMillis);
-        newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
+        long millis = getMillis();
+        millis += originalZone.getOffset(millis);
+        millis -= newZone.getOffsetFromLocal(millis);
 
-        return new DateTime(newMillis, getChronology().withZone(newDateTimeZone));
+        return new DateTime(millis, getChronology().withZone(newZone));
     }
 
     // Date properties

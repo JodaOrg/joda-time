@@ -86,8 +86,6 @@ public abstract class BasePartial
     private Chronology iChronology;
     /** The values of each field in this partial */
     private int[] iValues;
-    /** A cached array of fields. */
-    private transient DateTimeField[] iFields;
 
     //-----------------------------------------------------------------------
     /**
@@ -218,7 +216,6 @@ public abstract class BasePartial
      * Private constructor to be used by subclasses only which performs no validation.
      * <p>
      * Data is assigned (not cloned) to the new instance.
-     * Thus, two BasePartials will share the same field array.
      *
      * @param other  the other partial to use to extract the fields and chronology
      * @param values  the new set of values, not cloned
@@ -227,7 +224,6 @@ public abstract class BasePartial
         super();
         iChronology = other.iChronology;
         iValues = values;
-        iFields = other.iFields;
     }
 
     //-----------------------------------------------------------------------
@@ -247,38 +243,6 @@ public abstract class BasePartial
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Gets the field at the specifed index.
-     * 
-     * @param index  the index
-     * @return the field
-     * @throws IndexOutOfBoundsException if the index is invalid
-     */
-    public DateTimeField getField(int index) {
-        DateTimeField[] fields = iFields;
-        if (fields != null) {
-            return fields[index];
-        } else {
-            return getField(index, getChronology());
-        }
-    }
-
-    /**
-     * Gets an array of the fields that this partial supports.
-     * <p>
-     * The fields are returned largest to smallest, for example Hour, Minute, Second.
-     *
-     * @return the fields supported in an array that may be altered, largest to smallest
-     */
-    public DateTimeField[] getFields() {
-        DateTimeField[] fields = iFields;
-        if (fields == null) {
-            fields = super.getFields();
-            iFields = fields;
-        }
-        return (DateTimeField[]) fields.clone();
-    }
-
     /**
      * Gets the value of the field at the specifed index.
      * 

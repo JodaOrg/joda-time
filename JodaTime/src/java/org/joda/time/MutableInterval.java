@@ -88,7 +88,7 @@ import org.joda.time.field.FieldUtils;
  */
 public class MutableInterval
         extends AbstractInterval
-        implements ReadWritableInterval, Serializable {
+        implements ReadWritableInterval, Cloneable, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = -5982824024992428470L;
@@ -426,6 +426,29 @@ public class MutableInterval
             setStartMillis(getEndMillis());
         } else {
             setStartMillis(period.addTo(getEndMillis(), -1));
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Clone this object without having to cast the returned object.
+     *
+     * @return a clone of the this object.
+     */
+    public MutableInterval copy() {
+        return (MutableInterval) clone();
+    }
+
+    /**
+     * Clone this object.
+     *
+     * @return a clone of this object.
+     */
+    public Object clone() {
+        try {
+            return super.clone();
+        } catch (CloneNotSupportedException ex) {
+            throw new InternalError("Clone error");
         }
     }
 

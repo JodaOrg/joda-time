@@ -67,7 +67,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 /**
  * This class is a Junit unit test for the
  * org.joda.time.DateTimeComparator class.

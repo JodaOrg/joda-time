@@ -67,7 +67,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
 import org.joda.time.ReadableInstant;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 /**
  * This class is a Junit unit test base class for
  * ReadableInstant implementations.

@@ -54,11 +54,11 @@
 package org.joda.time;
 
 import java.io.Serializable;
-import org.joda.time.chrono.MillisDurationField;
-import org.joda.time.chrono.PreciseDurationField;
-import org.joda.time.chrono.ScaledDurationField;
-import org.joda.time.chrono.UnsupportedDurationField;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.field.MillisDurationField;
+import org.joda.time.field.PreciseDurationField;
+import org.joda.time.field.ScaledDurationField;
+import org.joda.time.field.UnsupportedDurationField;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * Controls a duration implementation by specifying which duration fields are to be used.

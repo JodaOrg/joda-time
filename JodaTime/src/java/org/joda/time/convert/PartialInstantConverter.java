@@ -56,7 +56,7 @@ package org.joda.time.convert;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PartialInstant;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * PartialInstantConverter extracts milliseconds and chronology from a

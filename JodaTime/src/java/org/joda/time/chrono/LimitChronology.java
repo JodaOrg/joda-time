@@ -67,6 +67,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableDateTime;
+import org.joda.time.field.DecoratedDateTimeField;
+import org.joda.time.field.DecoratedDurationField;
 import org.joda.time.format.DateTimePrinter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -85,53 +87,44 @@ import org.joda.time.format.ISODateTimeFormat;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public class LimitChronology extends Chronology {
+public final class LimitChronology extends AssembledChronology {
 
     static final long serialVersionUID = 7670866536893052522L;
 
-    private final Chronology iChronology;
+    /**
+     * Wraps another chronology, with datetime limits. When withUTC or
+     * withDateTimeZone is called, the returned LimitChronology instance has
+     * the same limits, except they are time zone adjusted.
+     *
+     * @param base base chronology to wrap
+     * @param lowerLimit  inclusive lower limit, or null if none
+     * @param upperLimit  exclusive upper limit, or null if none
+     * @throws IllegalArgumentException if chronology is null or limits are invalid
+     */
+    public static LimitChronology getInstance(Chronology base,
+                                              ReadableDateTime lowerLimit,
+                                              ReadableDateTime upperLimit) {
+        if (base == null) {
+            throw new IllegalArgumentException("Must supply a chronology");
+        }
+
+        lowerLimit = lowerLimit == null ? null : lowerLimit.toDateTime();
+        upperLimit = upperLimit == null ? null : upperLimit.toDateTime();
+
+        if (lowerLimit != null && upperLimit != null) {
+            if (!lowerLimit.isBefore(upperLimit)) {
+                throw new IllegalArgumentException
+                    ("The lower limit must be come before than the upper limit");
+            }
+        }
+
+        return new LimitChronology(base, (DateTime)lowerLimit, (DateTime)upperLimit);
+    }
 
     final DateTime iLowerLimit;
     final DateTime iUpperLimit;
 
     private transient LimitChronology iWithUTC;
-
-    private transient DurationField iErasField;
-    private transient DurationField iCenturiesField;
-    private transient DurationField iYearsField;
-    private transient DurationField iMonthsField;
-    private transient DurationField iWeekyearsField;
-    private transient DurationField iWeeksField;
-    private transient DurationField iDaysField;
-
-    private transient DurationField iHoursField;
-    private transient DurationField iMinutesField;
-    private transient DurationField iSecondsField;
-    private transient DurationField iMillisField;
-
-    private transient DateTimeField iYearField;
-    private transient DateTimeField iYearOfEraField;
-    private transient DateTimeField iYearOfCenturyField;
-    private transient DateTimeField iCenturyOfEraField;
-    private transient DateTimeField iEraField;
-    private transient DateTimeField iDayOfWeekField;
-    private transient DateTimeField iDayOfMonthField;
-    private transient DateTimeField iDayOfYearField;
-    private transient DateTimeField iMonthOfYearField;
-    private transient DateTimeField iWeekOfWeekyearField;
-    private transient DateTimeField iWeekyearField;
-
-    private transient DateTimeField iMillisOfSecondField;
-    private transient DateTimeField iMillisOfDayField;
-    private transient DateTimeField iSecondOfMinuteField;
-    private transient DateTimeField iSecondOfDayField;
-    private transient DateTimeField iMinuteOfHourField;
-    private transient DateTimeField iMinuteOfDayField;
-    private transient DateTimeField iHourOfDayField;
-    private transient DateTimeField iHourOfHalfdayField;
-    private transient DateTimeField iClockhourOfDayField;
-    private transient DateTimeField iClockhourOfHalfdayField;
-    private transient DateTimeField iHalfdayOfDayField;
 
     /**
      * Wraps another chronology, with datetime limits. When withUTC or
@@ -140,104 +133,13 @@ public class LimitChronology extends Chronology {
      *
      * @param lowerLimit  inclusive lower limit, or null if none
      * @param upperLimit  exclusive upper limit, or null if none
-     * @throws IllegalArgumentException if chronology is null or limits are invalid
      */
-    public LimitChronology(Chronology chrono,
-                           ReadableDateTime lowerLimit, ReadableDateTime upperLimit) {
-        if (chrono == null) {
-            throw new IllegalArgumentException("Must supply a chronology");
-        }
-
-        iChronology = chrono;
-
-        iLowerLimit = lowerLimit == null ? null : lowerLimit.toDateTime();
-        iUpperLimit = upperLimit == null ? null : upperLimit.toDateTime();
-
-        if (iLowerLimit != null && iUpperLimit != null) {
-            if (!iLowerLimit.isBefore(iUpperLimit)) {
-                throw new IllegalArgumentException
-                    ("The lower limit must be come before than the upper limit");
-            }
-        }
-
-        setFields();
-    }
-
-    private void setFields() {
-        Chronology c = iChronology;
-
-        // Keep a local cache of converted fields so as not to create redundant
-        // objects.
-        HashMap converted = new HashMap();
-
-        // Convert duration fields...
-
-        iErasField = convertField(c.eras(), converted);
-        iCenturiesField = convertField(c.centuries(), converted);
-        iYearsField = convertField(c.years(), converted);
-        iMonthsField = convertField(c.months(), converted);
-        iWeekyearsField = convertField(c.weekyears(), converted);
-        iWeeksField = convertField(c.weeks(), converted);
-        iDaysField = convertField(c.days(), converted);
-
-        iHoursField = convertField(c.hours(), converted);
-        iMinutesField = convertField(c.minutes(), converted);
-        iSecondsField = convertField(c.seconds(), converted);
-        iMillisField = convertField(c.millis(), converted);
-
-        // Convert datetime fields...
-
-        iYearField = convertField(c.year(), converted);
-        iYearOfEraField = convertField(c.yearOfEra(), converted);
-        iYearOfCenturyField = convertField(c.yearOfCentury(), converted);
-        iCenturyOfEraField = convertField(c.centuryOfEra(), converted);
-        iEraField = convertField(c.era(), converted);
-        iDayOfWeekField = convertField(c.dayOfWeek(), converted);
-        iDayOfMonthField = convertField(c.dayOfMonth(), converted);
-        iDayOfYearField = convertField(c.dayOfYear(), converted);
-        iMonthOfYearField = convertField(c.monthOfYear(), converted);
-        iWeekOfWeekyearField = convertField(c.weekOfWeekyear(), converted);
-        iWeekyearField = convertField(c.weekyear(), converted);
-
-        iMillisOfSecondField = convertField(c.millisOfSecond(), converted);
-        iMillisOfDayField = convertField(c.millisOfDay(), converted);
-        iSecondOfMinuteField = convertField(c.secondOfMinute(), converted);
-        iSecondOfDayField = convertField(c.secondOfDay(), converted);
-        iMinuteOfHourField = convertField(c.minuteOfHour(), converted);
-        iMinuteOfDayField = convertField(c.minuteOfDay(), converted);
-        iHourOfDayField = convertField(c.hourOfDay(), converted);
-        iHourOfHalfdayField = convertField(c.hourOfHalfday(), converted);
-        iClockhourOfDayField = convertField(c.clockhourOfDay(), converted);
-        iClockhourOfHalfdayField = convertField(c.clockhourOfHalfday(), converted);
-        iHalfdayOfDayField = convertField(c.halfdayOfDay(), converted);
-    }
-
-    private DurationField convertField(DurationField field, HashMap converted) {
-        if (field == null || !field.isSupported()) {
-            return field;
-        }
-        if (converted.containsKey(field)) {
-            return (DurationField)converted.get(field);
-        }
-        LimitDurationField limitField = new LimitDurationField(field);
-        converted.put(field, limitField);
-        return limitField;
-    }
-
-    private DateTimeField convertField(DateTimeField field, HashMap converted) {
-        if (field == null || !field.isSupported()) {
-            return field;
-        }
-        if (converted.containsKey(field)) {
-            return (DateTimeField)converted.get(field);
-        }
-        LimitDateTimeField limitField =
-            new LimitDateTimeField(field,
-                                   convertField(field.getDurationField(), converted),
-                                   convertField(field.getRangeDurationField(), converted),
-                                   convertField(field.getLeapDurationField(), converted));
-        converted.put(field, limitField);
-        return limitField;
+    private LimitChronology(Chronology base,
+                            DateTime lowerLimit, DateTime upperLimit) {
+        super(base, null);
+        // These can be set after assembly.
+        iLowerLimit = lowerLimit;
+        iUpperLimit = upperLimit;
     }
 
     /**
@@ -254,17 +156,8 @@ public class LimitChronology extends Chronology {
      * 
      * @return upper limit
      */
-    public DateTime getUpperBound() {
+    public DateTime getUpperLimit() {
         return iUpperLimit;
-    }
-
-    /**
-     * Gets the wrapped chronology.
-     * 
-     * @return the wrapped Chronology
-     */
-    protected Chronology getWrappedChronology() {
-        return iChronology;
     }
 
     /**
@@ -307,8 +200,8 @@ public class LimitChronology extends Chronology {
             upperLimit = mdt.toDateTime();
         }
         
-        LimitChronology chrono = new LimitChronology
-            (iChronology.withDateTimeZone(zone), lowerLimit, upperLimit);
+        LimitChronology chrono = getInstance
+            (getBase().withDateTimeZone(zone), lowerLimit, upperLimit);
 
         if (zone == DateTimeZone.UTC) {
             iWithUTC = chrono;
@@ -317,13 +210,9 @@ public class LimitChronology extends Chronology {
         return chrono;
     }
 
-    public DateTimeZone getDateTimeZone() {
-        return iChronology.getDateTimeZone();
-    }
-
     public long getDateOnlyMillis(long instant) {
         checkLimits(instant, null);
-        instant = iChronology.getDateOnlyMillis(instant);
+        instant = getBase().getDateOnlyMillis(instant);
         checkLimits(instant, "resulting");
         return instant;
     }
@@ -331,14 +220,14 @@ public class LimitChronology extends Chronology {
     public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
-        long instant = iChronology.getDateOnlyMillis(year, monthOfYear, dayOfMonth);
+        long instant = getBase().getDateOnlyMillis(year, monthOfYear, dayOfMonth);
         checkLimits(instant, "resulting");
         return instant;
     }
 
     public long getTimeOnlyMillis(long instant) {
         checkLimits(instant, null);
-        instant = iChronology.getTimeOnlyMillis(instant);
+        instant = getBase().getTimeOnlyMillis(instant);
         checkLimits(instant, "resulting");
         return instant;
     }
@@ -347,7 +236,7 @@ public class LimitChronology extends Chronology {
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException
     {
-        long instant = iChronology.getTimeOnlyMillis
+        long instant = getBase().getTimeOnlyMillis
             (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         checkLimits(instant, "resulting");
         return instant;
@@ -357,7 +246,7 @@ public class LimitChronology extends Chronology {
                                   int millisOfDay)
         throws IllegalArgumentException
     {
-        long instant = iChronology.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
+        long instant = getBase().getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
         checkLimits(instant, "resulting");
         return instant;
     }
@@ -368,7 +257,7 @@ public class LimitChronology extends Chronology {
         throws IllegalArgumentException
     {
         checkLimits(instant, null);
-        instant = iChronology.getDateTimeMillis
+        instant = getBase().getDateTimeMillis
             (instant, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         checkLimits(instant, "resulting");
         return instant;
@@ -379,178 +268,90 @@ public class LimitChronology extends Chronology {
                                   int secondOfMinute, int millisOfSecond)
         throws IllegalArgumentException
     {
-        long instant = iChronology.getDateTimeMillis
+        long instant = getBase().getDateTimeMillis
             (year, monthOfYear, dayOfMonth,
              hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         checkLimits(instant, "resulting");
         return instant;
     }
 
-    // Milliseconds
-    //------------------------------------------------------------
+    protected void assemble(Fields fields) {
+        // Keep a local cache of converted fields so as not to create redundant
+        // objects.
+        HashMap converted = new HashMap();
 
-    public DurationField millis() {
-        return iMillisField;
+        // Convert duration fields...
+
+        fields.eras = convertField(fields.eras, converted);
+        fields.centuries = convertField(fields.centuries, converted);
+        fields.years = convertField(fields.years, converted);
+        fields.months = convertField(fields.months, converted);
+        fields.weekyears = convertField(fields.weekyears, converted);
+        fields.weeks = convertField(fields.weeks, converted);
+        fields.days = convertField(fields.days, converted);
+
+        fields.hours = convertField(fields.hours, converted);
+        fields.minutes = convertField(fields.minutes, converted);
+        fields.seconds = convertField(fields.seconds, converted);
+        fields.millis = convertField(fields.millis, converted);
+
+        // Convert datetime fields...
+
+        fields.year = convertField(fields.year, converted);
+        fields.yearOfEra = convertField(fields.yearOfEra, converted);
+        fields.yearOfCentury = convertField(fields.yearOfCentury, converted);
+        fields.centuryOfEra = convertField(fields.centuryOfEra, converted);
+        fields.era = convertField(fields.era, converted);
+        fields.dayOfWeek = convertField(fields.dayOfWeek, converted);
+        fields.dayOfMonth = convertField(fields.dayOfMonth, converted);
+        fields.dayOfYear = convertField(fields.dayOfYear, converted);
+        fields.monthOfYear = convertField(fields.monthOfYear, converted);
+        fields.weekOfWeekyear = convertField(fields.weekOfWeekyear, converted);
+        fields.weekyear = convertField(fields.weekyear, converted);
+
+        fields.millisOfSecond = convertField(fields.millisOfSecond, converted);
+        fields.millisOfDay = convertField(fields.millisOfDay, converted);
+        fields.secondOfMinute = convertField(fields.secondOfMinute, converted);
+        fields.secondOfDay = convertField(fields.secondOfDay, converted);
+        fields.minuteOfHour = convertField(fields.minuteOfHour, converted);
+        fields.minuteOfDay = convertField(fields.minuteOfDay, converted);
+        fields.hourOfDay = convertField(fields.hourOfDay, converted);
+        fields.hourOfHalfday = convertField(fields.hourOfHalfday, converted);
+        fields.clockhourOfDay = convertField(fields.clockhourOfDay, converted);
+        fields.clockhourOfHalfday = convertField(fields.clockhourOfHalfday, converted);
+        fields.halfdayOfDay = convertField(fields.halfdayOfDay, converted);
     }
 
-    public DateTimeField millisOfSecond() {
-        return iMillisOfSecondField;
+    private DurationField convertField(DurationField field, HashMap converted) {
+        if (field == null || !field.isSupported()) {
+            return field;
+        }
+        if (converted.containsKey(field)) {
+            return (DurationField)converted.get(field);
+        }
+        LimitDurationField limitField = new LimitDurationField(field);
+        converted.put(field, limitField);
+        return limitField;
     }
 
-    public DateTimeField millisOfDay() {
-        return iMillisOfDayField;
-    }
-
-    // Seconds
-    //------------------------------------------------------------
-
-    public DurationField seconds() {
-        return iSecondsField;
-    }
-
-    public DateTimeField secondOfMinute() {
-        return iSecondOfMinuteField;
-    }
-
-    public DateTimeField secondOfDay() {
-        return iSecondOfDayField;
-    }
-
-    // Minutes
-    //------------------------------------------------------------
-
-    public DurationField minutes() {
-        return iMinutesField;
-    }
-
-    public DateTimeField minuteOfHour() {
-        return iMinuteOfHourField;
-    }
-
-    public DateTimeField minuteOfDay() {
-        return iMinuteOfDayField;
-    }
-
-    // Hours
-    //------------------------------------------------------------
-
-    public DurationField hours() {
-        return iHoursField;
-    }
-
-    public DateTimeField hourOfDay() {
-        return iHourOfDayField;
-    }
-
-    public DateTimeField clockhourOfDay() {
-        return iClockhourOfDayField;
-    }
-
-    public DateTimeField hourOfHalfday() {
-        return iHourOfHalfdayField;
-    }
-
-    public DateTimeField clockhourOfHalfday() {
-        return iClockhourOfHalfdayField;
-    }
-
-    public DateTimeField halfdayOfDay() {
-        return iHalfdayOfDayField;
-    }
-
-    // Day
-    //------------------------------------------------------------
-
-    public DurationField days() {
-        return iDaysField;
-    }
-
-    public DateTimeField dayOfWeek() {
-        return iDayOfWeekField;
-    }
-
-    public DateTimeField dayOfMonth() {
-        return iDayOfMonthField;
-    }
-
-    public DateTimeField dayOfYear() {
-        return iDayOfYearField;
-    }
-
-    // Week
-    //------------------------------------------------------------
-
-    public DurationField weeks() {
-        return iWeeksField;
-    }
-
-    public DateTimeField weekOfWeekyear() {
-        return iWeekOfWeekyearField;
-    }
-
-    public DurationField weekyears() {
-        return iWeekyearsField;
-    }
-
-    public DateTimeField weekyear() {
-        return iWeekyearField;
-    }
-
-    // Month
-    //------------------------------------------------------------
-
-    public DurationField months() {
-        return iMonthsField;
-    }
-
-    public DateTimeField monthOfYear() {
-        return iMonthOfYearField;
-    }
-
-    // Year
-    //------------------------------------------------------------
-
-    public DurationField years() {
-        return iYearsField;
-    }
-
-    public DateTimeField year() {
-        return iYearField;
-    }
-
-    public DateTimeField yearOfEra() {
-        return iYearOfEraField;
-    }
-
-    public DateTimeField yearOfCentury() {
-        return iYearOfCenturyField;
-    }
-
-    public DurationField centuries() {
-        return iCenturiesField;
-    }
-
-    public DateTimeField centuryOfEra() {
-        return iCenturyOfEraField;
-    }
-
-    public DurationField eras() {
-        return iErasField;
-    }
-
-    public DateTimeField era() {
-        return iEraField;
+    private DateTimeField convertField(DateTimeField field, HashMap converted) {
+        if (field == null || !field.isSupported()) {
+            return field;
+        }
+        if (converted.containsKey(field)) {
+            return (DateTimeField)converted.get(field);
+        }
+        LimitDateTimeField limitField =
+            new LimitDateTimeField(field,
+                                   convertField(field.getDurationField(), converted),
+                                   convertField(field.getRangeDurationField(), converted),
+                                   convertField(field.getLeapDurationField(), converted));
+        converted.put(field, limitField);
+        return limitField;
     }
 
     public String toString() {
-        return iChronology.toString();
-    }
-
-    private void readObject(ObjectInputStream in)
-        throws IOException, ClassNotFoundException
-    {
-        in.defaultReadObject();
-        setFields();
+        return getBase().toString();
     }
 
     void checkLimits(long instant, String desc) {
@@ -587,18 +388,18 @@ public class LimitChronology extends Chronology {
             }
             buf.append(" instant is ");
 
-            DateTimePrinter p = ISODateTimeFormat.getInstance(getWrappedChronology()).dateTime();
+            DateTimePrinter p = ISODateTimeFormat.getInstance(getBase()).dateTime();
 
             if (iIsLow) {
                 buf.append("below the supported minimum of ");
-                p.printTo(buf, iLowerLimit);
+                p.printTo(buf, getLowerLimit());
             } else {
                 buf.append("above the supported maximum of ");
-                p.printTo(buf, iUpperLimit);
+                p.printTo(buf, getUpperLimit());
             }
             
             buf.append(" (");
-            buf.append(getWrappedChronology());
+            buf.append(getBase());
             buf.append(')');
 
             return buf.toString();

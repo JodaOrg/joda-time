@@ -58,8 +58,8 @@ import junit.framework.TestSuite;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
-import org.joda.time.chrono.gj.GJChronology;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
 /**
  * This class is a Junit unit test for the CTORs of the
  * DateTime date time class.  The DateTime class is passed

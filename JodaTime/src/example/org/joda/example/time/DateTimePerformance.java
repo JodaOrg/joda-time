@@ -63,7 +63,7 @@ import java.util.Map;
 
 import org.joda.time.DateTime;
 import org.joda.time.MutableDateTime;
-import org.joda.time.chrono.gj.GJChronology;
+import org.joda.time.chrono.GJChronology;
 
 /**
  * DateTimePerformance provides various comparisons between the Java supplied

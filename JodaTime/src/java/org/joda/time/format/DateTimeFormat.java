@@ -68,8 +68,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
-import org.joda.time.chrono.RemainderDateTimeField;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.field.RemainderDateTimeField;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * DateTimeFormat provides localized printing and parsing capabilities for all

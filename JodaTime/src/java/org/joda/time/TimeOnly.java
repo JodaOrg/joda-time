@@ -55,7 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 // Import for @link support
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.format.ISODateTimeFormat;

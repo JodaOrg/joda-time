@@ -58,7 +58,7 @@ import java.util.Map;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * ISODateTimeFormat provides factory methods for the ISO8601 standard.

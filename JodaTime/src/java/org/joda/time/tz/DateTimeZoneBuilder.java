@@ -68,7 +68,7 @@ import java.util.Set;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * DateTimeZoneBuilder allows complex DateTimeZones to be constructed. Since

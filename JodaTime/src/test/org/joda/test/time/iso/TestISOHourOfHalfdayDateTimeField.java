@@ -57,7 +57,7 @@ import junit.framework.TestSuite;
 
 import org.joda.test.time.gj.TestGJHourOfHalfdayDateTimeField;
 import org.joda.time.DateTimeField;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for the date time field.

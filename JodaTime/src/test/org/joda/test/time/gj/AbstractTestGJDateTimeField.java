@@ -54,7 +54,7 @@
 package org.joda.test.time.gj;
 
 import org.joda.test.time.AbstractTestDateTimeField;
-import org.joda.time.chrono.gj.GJChronology;
+import org.joda.time.chrono.GJChronology;
 /**
  * This class is a Junit unit test for the date time field.
  *
@@ -68,7 +68,7 @@ public abstract class AbstractTestGJDateTimeField extends AbstractTestDateTimeFi
     }
 
     static final int[] monthLengths = {-1, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    protected static final long GJ_CUTOVER_MILLIS = GJChronology.getInstanceUTC().getGregorianJulianCutoverMillis();
+    protected static final long GJ_CUTOVER_MILLIS = GJChronology.getInstanceUTC().getGregorianCutover().getMillis();
     
     protected int[] getDMYDS(long millis) {
         return getDMYDS(millis, GJ_CUTOVER_MILLIS, 1582, 10);

@@ -53,8 +53,7 @@
  */
 package org.joda.test.time.chrono.gj;
 
-import org.joda.time.chrono.ImpreciseDateTimeField;
-import org.joda.time.chrono.Utils;
+import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
  * 

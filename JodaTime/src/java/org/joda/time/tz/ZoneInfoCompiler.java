@@ -80,7 +80,7 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.chrono.LenientChronology;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * Compiles Olson ZoneInfo database files into binary files for each time zone
@@ -98,7 +98,9 @@ import org.joda.time.chrono.iso.ISOChronology;
  * @author Brian S O'Neill
  */
 public class ZoneInfoCompiler {
-    static final DateTimeOfYear START_OF_YEAR = new DateTimeOfYear();
+    static DateTimeOfYear cStartOfYear;
+
+    static Chronology cLenientISO;
 
     /**
      * Launches the ZoneInfoCompiler tool.
@@ -157,6 +159,20 @@ public class ZoneInfoCompiler {
         System.out.println("where possible options include:");
         System.out.println("  -src <directory>    Specify where to read source files");
         System.out.println("  -dst <directory>    Specify where to write generated files");
+    }
+
+    static DateTimeOfYear getStartOfYear() {
+        if (cStartOfYear == null) {
+            cStartOfYear = new DateTimeOfYear();
+        }
+        return cStartOfYear;
+    }
+
+    static Chronology getLenientISOChronology() {
+        if (cLenientISO == null) {
+            cLenientISO = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
+        }
+        return cLenientISO;
     }
 
     /**
@@ -259,11 +275,10 @@ public class ZoneInfoCompiler {
     }
 
     static int parseTime(String str) {
-        Chronology chrono = new LenientChronology(ISOChronology.getInstanceUTC());
         DateTimeParser p = ISODateTimeFormat
-            .getInstance(chrono)
+            .getInstance(getLenientISOChronology())
             .hourMinuteSecondFraction();
-        MutableDateTime mdt = new MutableDateTime(0, chrono);
+        MutableDateTime mdt = new MutableDateTime(0, getLenientISOChronology());
         int pos = 0;
         if (str.startsWith("-")) {
             pos = 1;
@@ -768,7 +783,7 @@ public class ZoneInfoCompiler {
             iFormat = st.nextToken().intern();
 
             int year = Integer.MAX_VALUE;
-            DateTimeOfYear dtOfYear = START_OF_YEAR;
+            DateTimeOfYear dtOfYear = getStartOfYear();
 
             if (st.hasMoreTokens()) {
                 year = Integer.parseInt(st.nextToken());

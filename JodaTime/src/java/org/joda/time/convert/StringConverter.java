@@ -59,7 +59,7 @@ import org.joda.time.DurationType;
 import org.joda.time.ReadWritableDuration;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.DurationParser;
 import org.joda.time.format.ISODateTimeFormat;

@@ -62,7 +62,7 @@ import junit.framework.TestSuite;
 import org.joda.test.time.AbstractTestDateTimeField;
 import org.joda.test.time.BulkTest;
 import org.joda.time.DateTimeField;
-import org.joda.time.chrono.buddhist.BuddhistChronology;
+import org.joda.time.chrono.BuddhistChronology;
 /**
  * This class is the Junit unit test for a DateTimeField.
  *

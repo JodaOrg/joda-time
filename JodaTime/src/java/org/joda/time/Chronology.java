@@ -53,50 +53,38 @@
  */
 package org.joda.time;
 
-import java.io.Serializable;
-import org.joda.time.chrono.UnsupportedDateTimeField;
-import org.joda.time.chrono.UnsupportedDurationField;
-
 /**
- * Chronology provides access to the individual date time fields for
- * a chronological calendar system.
- * Various chronologies are supported by subclasses including ISO and 
- * GregorianJulian. 
+ * Chronology provides access to the individual date time fields for a
+ * chronological calendar system. Various chronologies are supported by
+ * subclasses including ISO and GregorianJulian.
  * <p>
  * This class defines a number of fields with names from the ISO8601 standard.
  * Chronology does not 'strongly' define these fields however, thus subclasses
  * are free to interpret the field names as they wish. For example, a week
  * could be defined as 10 days and a month as 40 days in a special
- * WeirdChronology subclass. Clearly the GJ and ISO implementations provided
- * use the field names as you would expect.
- * <p>
- * Chronology is thread-safe and immutable, and all subclasses must be as well.
+ * WeirdChronology implementation. Clearly the GJ and ISO implementations
+ * provided use the field names as you would expect.
  * 
- * @see org.joda.time.chrono.iso.ISOChronology
- * @see org.joda.time.chrono.gj.GJChronology
+ * @see org.joda.time.chrono.ISOChronology
+ * @see org.joda.time.chrono.GJChronology
+ * @see org.joda.time.chrono.GregorianChronology
+ * @see org.joda.time.chrono.JulianChronology
+ * @see org.joda.time.chrono.CopticChronology
+ * @see org.joda.time.chrono.BuddhistChronology
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class Chronology implements Serializable {
+public interface Chronology {
     
-    static final long serialVersionUID = -7310865996721419676L;
-
-    /**
-     * Restricted constructor
-     */
-    protected Chronology() {
-        super();
-    }
-
     /**
      * Returns the DateTimeZone that this Chronology operates in, or null if
      * unspecified.
      *
      * @return DateTimeZone null if unspecified
      */
-    public abstract DateTimeZone getDateTimeZone();
+    DateTimeZone getDateTimeZone();
 
     /**
      * Returns an instance of this Chronology that operates in the UTC time
@@ -105,7 +93,7 @@ public abstract class Chronology implements Serializable {
      *
      * @return a version of this chronology that ignores time zones
      */
-    public abstract Chronology withUTC();
+    Chronology withUTC();
     
     /**
      * Returns an instance of this Chronology that operates in any time zone.
@@ -114,7 +102,7 @@ public abstract class Chronology implements Serializable {
      * @param zone to use, or default if null
      * @see org.joda.time.chrono.ZonedChronology
      */
-    public abstract Chronology withDateTimeZone(DateTimeZone zone);
+    Chronology withDateTimeZone(DateTimeZone zone);
 
     /**
      * Returns a date-only millisecond instant, by clearing the time fields
@@ -127,9 +115,7 @@ public abstract class Chronology implements Serializable {
      * @return millisecond instant from 1970-01-01T00:00:00Z with the time part
      * cleared
      */
-    public long getDateOnlyMillis(long instant) {
-        return dayOfYear().roundFloor(instant);
-    }
+    long getDateOnlyMillis(long instant);
 
     /**
      * Returns a date-only millisecond instant, formed from the given year,
@@ -145,11 +131,8 @@ public abstract class Chronology implements Serializable {
      * @return millisecond instant from 1970-01-01T00:00:00Z without any time
      * part
      */
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
-    }
+    long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException;
 
     /**
      * Returns a time-only millisecond instant, by clearing the date fields
@@ -162,9 +145,7 @@ public abstract class Chronology implements Serializable {
      * @return millisecond instant from 1970-01-01T00:00:00Z with the date part
      * cleared
      */
-    public long getTimeOnlyMillis(long instant) {
-        return dayOfYear().remainder(instant);
-    }
+    long getTimeOnlyMillis(long instant);
 
     /**
      * Returns a time-only millisecond instant, formed from the given hour,
@@ -182,15 +163,9 @@ public abstract class Chronology implements Serializable {
      * @return millisecond instant from 1970-01-01T00:00:00Z without any date
      * part
      */
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        long instant = hourOfDay().set(0, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
+    long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                           int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException;
 
     /**
      * Returns a datetime millisecond instant, formed from the given year,
@@ -207,15 +182,8 @@ public abstract class Chronology implements Serializable {
      * @param millisOfDay millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                  int millisOfDay)
-        throws IllegalArgumentException
-    {
-        long instant = year().set(0, year);
-        instant = monthOfYear().set(instant, monthOfYear);
-        instant = dayOfMonth().set(instant, dayOfMonth);
-        return millisOfDay().set(instant, millisOfDay);
-    }
+    long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth, int millisOfDay)
+        throws IllegalArgumentException;
 
     /**
      * Returns a datetime millisecond instant, from from the given instant,
@@ -234,16 +202,10 @@ public abstract class Chronology implements Serializable {
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        instant = hourOfDay().set(instant, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
+    long getDateTimeMillis(long instant,
+                           int hourOfDay, int minuteOfHour,
+                           int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException;
 
     /**
      * Returns a datetime millisecond instant, formed from the given year,
@@ -264,19 +226,10 @@ public abstract class Chronology implements Serializable {
      * @param millisOfSecond millisecond to use
      * @return millisecond instant from 1970-01-01T00:00:00Z
      */
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        long instant = year().set(0, year);
-        instant = monthOfYear().set(instant, monthOfYear);
-        instant = dayOfMonth().set(instant, dayOfMonth);
-        instant = hourOfDay().set(instant, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
+    long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                           int hourOfDay, int minuteOfHour,
+                           int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException;
 
     // Millis
     //-----------------------------------------------------------------------
@@ -285,27 +238,21 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField millis() {
-        return UnsupportedDurationField.getInstance("millis");
-    }
+    DurationField millis();
 
     /**
      * Get the millis of second field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField millisOfSecond() {
-        return UnsupportedDateTimeField.getInstance("millisOfSecond", millis());
-    }
+    DateTimeField millisOfSecond();
 
     /**
      * Get the millis of day field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField millisOfDay() {
-        return UnsupportedDateTimeField.getInstance("millisOfDay", millis());
-    }
+    DateTimeField millisOfDay();
 
     // Second
     //-----------------------------------------------------------------------
@@ -314,27 +261,21 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField seconds() {
-        return UnsupportedDurationField.getInstance("seconds");
-    }
+    DurationField seconds();
 
     /**
      * Get the second of minute field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField secondOfMinute() {
-        return UnsupportedDateTimeField.getInstance("secondOfMinute", seconds());
-    }
+    DateTimeField secondOfMinute();
 
     /**
      * Get the second of day field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField secondOfDay() {
-        return UnsupportedDateTimeField.getInstance("secondOfDay", seconds());
-    }
+    DateTimeField secondOfDay();
 
     // Minute
     //-----------------------------------------------------------------------
@@ -343,27 +284,21 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField minutes() {
-        return UnsupportedDurationField.getInstance("minutes");
-    }
+    DurationField minutes();
 
     /**
      * Get the minute of hour field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField minuteOfHour() {
-        return UnsupportedDateTimeField.getInstance("minuteOfHour", minutes());
-    }
+    DateTimeField minuteOfHour();
 
     /**
      * Get the minute of day field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField minuteOfDay() {
-        return UnsupportedDateTimeField.getInstance("minuteOfDay", minutes());
-    }
+    DateTimeField minuteOfDay();
 
     // Hour
     //-----------------------------------------------------------------------
@@ -372,55 +307,42 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField hours() {
-        return UnsupportedDurationField.getInstance("hours");
-    }
+    DurationField hours();
 
     /**
      * Get the hour of day (0-23) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField hourOfDay() {
-        return UnsupportedDateTimeField.getInstance("hourOfDay", hours());
-    }
+    DateTimeField hourOfDay();
 
     /**
      * Get the hour of day (offset to 1-24) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField clockhourOfDay() {
-        return UnsupportedDateTimeField.getInstance("clockhourOfDay", hours());
-    }
+    DateTimeField clockhourOfDay();
 
     /**
      * Get the hour of am/pm (0-11) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField hourOfHalfday() {
-        return UnsupportedDateTimeField.getInstance("hourOfHalfday", hours());
-    }
+    DateTimeField hourOfHalfday();
 
     /**
      * Get the hour of am/pm (offset to 1-12) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField clockhourOfHalfday() {
-        return UnsupportedDateTimeField.getInstance("clockhourOfHalfday", hours());
-    }
+    DateTimeField clockhourOfHalfday();
 
     /**
      * Get the AM(0) PM(1) field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField halfdayOfDay() {
-        return UnsupportedDateTimeField.getInstance
-            ("halfdayOfDay", UnsupportedDurationField.getInstance("halfdays"));
-    }
+    DateTimeField halfdayOfDay();
 
     // Day
     //-----------------------------------------------------------------------
@@ -429,9 +351,7 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField days() {
-        return UnsupportedDurationField.getInstance("days");
-    }
+    DurationField days();
 
     /**
      * Get the day of week field for this chronology.
@@ -441,27 +361,21 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField dayOfWeek() {
-        return UnsupportedDateTimeField.getInstance("dayOfWeek", days());
-    }
+    DateTimeField dayOfWeek();
 
     /**
      * Get the day of month field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField dayOfMonth() {
-        return UnsupportedDateTimeField.getInstance("dayOfMonth", days());
-    }
+    DateTimeField dayOfMonth();
 
     /**
      * Get the day of year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField dayOfYear() {
-        return UnsupportedDateTimeField.getInstance("dayOfYear", days());
-    }
+    DateTimeField dayOfYear();
 
     // Week
     //-----------------------------------------------------------------------
@@ -470,36 +384,28 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField weeks() {
-        return UnsupportedDurationField.getInstance("weeks");
-    }
+    DurationField weeks();
 
     /**
      * Get the week of a week based year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField weekOfWeekyear() {
-        return UnsupportedDateTimeField.getInstance("weekOfWeekyear", weeks());
-    }
+    DateTimeField weekOfWeekyear();
 
     /**
      * Get the weekyears duration field for this chronology.
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField weekyears() {
-        return UnsupportedDurationField.getInstance("weekyears");
-    }
+    DurationField weekyears();
 
     /**
      * Get the year of a week based year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField weekyear() {
-        return UnsupportedDateTimeField.getInstance("weekyear", weekyears());
-    }
+    DateTimeField weekyear();
 
     // Month
     //-----------------------------------------------------------------------
@@ -508,18 +414,14 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField months() {
-        return UnsupportedDurationField.getInstance("months");
-    }
+    DurationField months();
 
     /**
      * Get the month of year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField monthOfYear() {
-        return UnsupportedDateTimeField.getInstance("monthOfYear", months());
-    }
+    DateTimeField monthOfYear();
 
     // Year
     //-----------------------------------------------------------------------
@@ -528,78 +430,62 @@ public abstract class Chronology implements Serializable {
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField years() {
-        return UnsupportedDurationField.getInstance("years");
-    }
+    DurationField years();
 
     /**
      * Get the year field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField year() {
-        return UnsupportedDateTimeField.getInstance("year", years());
-    }
+    DateTimeField year();
 
     /**
      * Get the year of era field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField yearOfEra() {
-        return UnsupportedDateTimeField.getInstance("yearOfEra", years());
-    }
+    DateTimeField yearOfEra();
 
     /**
      * Get the year of century field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField yearOfCentury() {
-        return UnsupportedDateTimeField.getInstance("yearOfCentury", years());
-    }
+    DateTimeField yearOfCentury();
 
     /**
      * Get the centuries duration field for this chronology.
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField centuries() {
-        return UnsupportedDurationField.getInstance("centuries");
-    }
+    DurationField centuries();
 
     /**
      * Get the century of era field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField centuryOfEra() {
-        return UnsupportedDateTimeField.getInstance("centuryOfEra", centuries());
-    }
+    DateTimeField centuryOfEra();
 
     /**
      * Get the eras duration field for this chronology.
      * 
      * @return DurationField or UnsupportedDurationField if unsupported
      */
-    public DurationField eras() {
-        return UnsupportedDurationField.getInstance("eras");
-    }
+    DurationField eras();
 
     /**
      * Get the era field for this chronology.
      * 
      * @return DateTimeField or UnsupportedDateTimeField if unsupported
      */
-    public DateTimeField era() {
-        return UnsupportedDateTimeField.getInstance("era", eras());
-    }
+    DateTimeField era();
 
     /**
      * Gets a debugging toString.
      * 
      * @return a debugging string
      */
-    public abstract String toString();
+    String toString();
 
 }

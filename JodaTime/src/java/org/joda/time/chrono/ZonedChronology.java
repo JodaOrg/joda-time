@@ -53,9 +53,6 @@
  */
 package org.joda.time.chrono;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -64,6 +61,8 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.field.AbstractDateTimeField;
+import org.joda.time.field.AbstractDurationField;
 
 /**
  * Wraps another Chronology for supporting time zones.
@@ -74,7 +73,29 @@ import org.joda.time.DurationField;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public class ZonedChronology extends Chronology {
+public final class ZonedChronology extends AssembledChronology {
+
+    /**
+     * Create a ZonedChronology for any chronology, overriding any time zone it
+     * may already have.
+     *
+     * @param base base chronology to wrap
+     * @param zone the time zone
+     * @throws IllegalArgumentException if chronology or time zone is null
+     */
+    public static ZonedChronology getInstance(Chronology base, DateTimeZone zone) {
+        if (base == null) {
+            throw new IllegalArgumentException("Must supply a chronology");
+        }
+        base = base.withUTC();
+        if (base == null) {
+            throw new IllegalArgumentException("UTC chronology must not be null");
+        }
+        if (zone == null) {
+            throw new IllegalArgumentException("DateTimeZone must not be null");
+        }
+        return new ZonedChronology(base, zone);
+    }
 
     static final long serialVersionUID = -1079258847191166848L;
 
@@ -84,118 +105,139 @@ public class ZonedChronology extends Chronology {
         return field != null && field.getUnitMillis() < DateTimeConstants.MILLIS_PER_HOUR * 12;
     }
 
-    private final Chronology iChronology;
-    private final DateTimeZone iZone;
-
-    private transient DurationField iErasField;
-    private transient DurationField iCenturiesField;
-    private transient DurationField iYearsField;
-    private transient DurationField iMonthsField;
-    private transient DurationField iWeekyearsField;
-    private transient DurationField iWeeksField;
-    private transient DurationField iDaysField;
-
-    private transient DurationField iHoursField;
-    private transient DurationField iMinutesField;
-    private transient DurationField iSecondsField;
-    private transient DurationField iMillisField;
-
-    private transient DateTimeField iYearField;
-    private transient DateTimeField iYearOfEraField;
-    private transient DateTimeField iYearOfCenturyField;
-    private transient DateTimeField iCenturyOfEraField;
-    private transient DateTimeField iEraField;
-    private transient DateTimeField iDayOfWeekField;
-    private transient DateTimeField iDayOfMonthField;
-    private transient DateTimeField iDayOfYearField;
-    private transient DateTimeField iMonthOfYearField;
-    private transient DateTimeField iWeekOfWeekyearField;
-    private transient DateTimeField iWeekyearField;
-
-    private transient DateTimeField iMillisOfSecondField;
-    private transient DateTimeField iMillisOfDayField;
-    private transient DateTimeField iSecondOfMinuteField;
-    private transient DateTimeField iSecondOfDayField;
-    private transient DateTimeField iMinuteOfHourField;
-    private transient DateTimeField iMinuteOfDayField;
-    private transient DateTimeField iHourOfDayField;
-    private transient DateTimeField iHourOfHalfdayField;
-    private transient DateTimeField iClockhourOfDayField;
-    private transient DateTimeField iClockhourOfHalfdayField;
-    private transient DateTimeField iHalfdayOfDayField;
-
     /**
-     * Create a ZonedChronology for any chronology, overriding any time zone it
-     * may already have.
+     * Restricted constructor
      *
-     * @param chrono the chronology
+     * @param base base chronology to wrap
      * @param zone the time zone
-     * @throws IllegalArgumentException if chronology or time zone is null
      */
-    public ZonedChronology(Chronology chrono, DateTimeZone zone) {
-        if (chrono == null) {
-            throw new IllegalArgumentException("Must supply a chronology");
-        }
-        chrono = chrono.withUTC();
-        if (chrono == null) {
-            throw new IllegalArgumentException("UTC chronology must not be null");
-        }
-        if (zone == null) {
-            throw new IllegalArgumentException("DateTimeZone must not be null");
-        }
-
-        iChronology = chrono;
-        iZone = zone;
-        setFields();
+    private ZonedChronology(Chronology base, DateTimeZone zone) {
+        super(base, zone);
     }
 
-    private void setFields() {
-        Chronology c = iChronology;
+    public DateTimeZone getDateTimeZone() {
+        return (DateTimeZone)getParam();
+    }
 
+    public Chronology withUTC() {
+        return getBase();
+    }
+
+    public Chronology withDateTimeZone(DateTimeZone zone) {
+        if (zone == null) {
+            zone = DateTimeZone.getDefault();
+        }
+        if (zone == getParam()) {
+            return this;
+        }
+        if (zone == DateTimeZone.UTC) {
+            return getBase();
+        }
+        return new ZonedChronology(getBase(), zone);
+    }
+
+    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
+        throws IllegalArgumentException
+    {
+        return localToUTC(getBase().getDateOnlyMillis
+                          (year, monthOfYear, dayOfMonth));
+    }
+
+    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return localToUTC(getBase().getTimeOnlyMillis
+                          (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int millisOfDay)
+        throws IllegalArgumentException
+    {
+        return localToUTC(getBase().getDateTimeMillis
+                          (year, monthOfYear, dayOfMonth, millisOfDay));
+    }
+
+    public long getDateTimeMillis(long instant,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return localToUTC(getBase().getDateTimeMillis
+                          (instant + getDateTimeZone().getOffset(instant),
+                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
+    }
+
+    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+                                  int hourOfDay, int minuteOfHour,
+                                  int secondOfMinute, int millisOfSecond)
+        throws IllegalArgumentException
+    {
+        return localToUTC(getBase().getDateTimeMillis
+                          (year, monthOfYear, dayOfMonth, 
+                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
+    }
+
+    /**
+     * @param instant instant from 1970-01-01T00:00:00 local time
+     */
+    private long localToUTC(long instant) {
+        DateTimeZone zone = getDateTimeZone();
+        int offset = zone.getOffsetFromLocal(instant);
+        instant -= offset;
+        if (offset != zone.getOffset(instant)) {
+            throw new IllegalArgumentException
+                ("Illegal instant due to time zone offset transition");
+        }
+        return instant;
+    }
+
+    protected void assemble(Fields fields) {
         // Keep a local cache of converted fields so as not to create redundant
         // objects.
         HashMap converted = new HashMap();
 
         // Convert duration fields...
 
-        iErasField = convertField(c.eras(), converted);
-        iCenturiesField = convertField(c.centuries(), converted);
-        iYearsField = convertField(c.years(), converted);
-        iMonthsField = convertField(c.months(), converted);
-        iWeekyearsField = convertField(c.weekyears(), converted);
-        iWeeksField = convertField(c.weeks(), converted);
-        iDaysField = convertField(c.days(), converted);
+        fields.eras = convertField(fields.eras, converted);
+        fields.centuries = convertField(fields.centuries, converted);
+        fields.years = convertField(fields.years, converted);
+        fields.months = convertField(fields.months, converted);
+        fields.weekyears = convertField(fields.weekyears, converted);
+        fields.weeks = convertField(fields.weeks, converted);
+        fields.days = convertField(fields.days, converted);
 
-        iHoursField = convertField(c.hours(), converted);
-        iMinutesField = convertField(c.minutes(), converted);
-        iSecondsField = convertField(c.seconds(), converted);
-        iMillisField = convertField(c.millis(), converted);
+        fields.hours = convertField(fields.hours, converted);
+        fields.minutes = convertField(fields.minutes, converted);
+        fields.seconds = convertField(fields.seconds, converted);
+        fields.millis = convertField(fields.millis, converted);
 
         // Convert datetime fields...
 
-        iYearField = convertField(c.year(), converted);
-        iYearOfEraField = convertField(c.yearOfEra(), converted);
-        iYearOfCenturyField = convertField(c.yearOfCentury(), converted);
-        iCenturyOfEraField = convertField(c.centuryOfEra(), converted);
-        iEraField = convertField(c.era(), converted);
-        iDayOfWeekField = convertField(c.dayOfWeek(), converted);
-        iDayOfMonthField = convertField(c.dayOfMonth(), converted);
-        iDayOfYearField = convertField(c.dayOfYear(), converted);
-        iMonthOfYearField = convertField(c.monthOfYear(), converted);
-        iWeekOfWeekyearField = convertField(c.weekOfWeekyear(), converted);
-        iWeekyearField = convertField(c.weekyear(), converted);
+        fields.year = convertField(fields.year, converted);
+        fields.yearOfEra = convertField(fields.yearOfEra, converted);
+        fields.yearOfCentury = convertField(fields.yearOfCentury, converted);
+        fields.centuryOfEra = convertField(fields.centuryOfEra, converted);
+        fields.era = convertField(fields.era, converted);
+        fields.dayOfWeek = convertField(fields.dayOfWeek, converted);
+        fields.dayOfMonth = convertField(fields.dayOfMonth, converted);
+        fields.dayOfYear = convertField(fields.dayOfYear, converted);
+        fields.monthOfYear = convertField(fields.monthOfYear, converted);
+        fields.weekOfWeekyear = convertField(fields.weekOfWeekyear, converted);
+        fields.weekyear = convertField(fields.weekyear, converted);
 
-        iMillisOfSecondField = convertField(c.millisOfSecond(), converted);
-        iMillisOfDayField = convertField(c.millisOfDay(), converted);
-        iSecondOfMinuteField = convertField(c.secondOfMinute(), converted);
-        iSecondOfDayField = convertField(c.secondOfDay(), converted);
-        iMinuteOfHourField = convertField(c.minuteOfHour(), converted);
-        iMinuteOfDayField = convertField(c.minuteOfDay(), converted);
-        iHourOfDayField = convertField(c.hourOfDay(), converted);
-        iHourOfHalfdayField = convertField(c.hourOfHalfday(), converted);
-        iClockhourOfDayField = convertField(c.clockhourOfDay(), converted);
-        iClockhourOfHalfdayField = convertField(c.clockhourOfHalfday(), converted);
-        iHalfdayOfDayField = convertField(c.halfdayOfDay(), converted);
+        fields.millisOfSecond = convertField(fields.millisOfSecond, converted);
+        fields.millisOfDay = convertField(fields.millisOfDay, converted);
+        fields.secondOfMinute = convertField(fields.secondOfMinute, converted);
+        fields.secondOfDay = convertField(fields.secondOfDay, converted);
+        fields.minuteOfHour = convertField(fields.minuteOfHour, converted);
+        fields.minuteOfDay = convertField(fields.minuteOfDay, converted);
+        fields.hourOfDay = convertField(fields.hourOfDay, converted);
+        fields.hourOfHalfday = convertField(fields.hourOfHalfday, converted);
+        fields.clockhourOfDay = convertField(fields.clockhourOfDay, converted);
+        fields.clockhourOfHalfday = convertField(fields.clockhourOfHalfday, converted);
+        fields.halfdayOfDay = convertField(fields.halfdayOfDay, converted);
     }
 
     private DurationField convertField(DurationField field, HashMap converted) {
@@ -205,7 +247,7 @@ public class ZonedChronology extends Chronology {
         if (converted.containsKey(field)) {
             return (DurationField)converted.get(field);
         }
-        ZonedDurationField zonedField = new ZonedDurationField(field, iZone);
+        ZonedDurationField zonedField = new ZonedDurationField(field, getDateTimeZone());
         converted.put(field, zonedField);
         return zonedField;
     }
@@ -218,7 +260,7 @@ public class ZonedChronology extends Chronology {
             return (DateTimeField)converted.get(field);
         }
         ZonedDateTimeField zonedField =
-            new ZonedDateTimeField(field, iZone,
+            new ZonedDateTimeField(field, getDateTimeZone(),
                                    convertField(field.getDurationField(), converted),
                                    convertField(field.getRangeDurationField(), converted),
                                    convertField(field.getLeapDurationField(), converted));
@@ -226,248 +268,8 @@ public class ZonedChronology extends Chronology {
         return zonedField;
     }
 
-    public DateTimeZone getDateTimeZone() {
-        return iZone;
-    }
-
-    public Chronology withUTC() {
-        return iChronology;
-    }
-
-    public Chronology withDateTimeZone(DateTimeZone zone) {
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
-        if (zone == iZone) {
-            return this;
-        }
-        if (zone == DateTimeZone.UTC) {
-            return iChronology;
-        }
-        return new ZonedChronology(iChronology, zone);
-    }
-
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        return localToUTC(iChronology.getDateOnlyMillis
-                          (year, monthOfYear, dayOfMonth));
-    }
-
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        return localToUTC(iChronology.getTimeOnlyMillis
-                          (hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
-    }
-
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                  int millisOfDay)
-        throws IllegalArgumentException
-    {
-        return localToUTC(iChronology.getDateTimeMillis
-                          (year, monthOfYear, dayOfMonth, millisOfDay));
-    }
-
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        return localToUTC(iChronology.getDateTimeMillis
-                          (instant + iZone.getOffset(instant),
-                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
-    }
-
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        return localToUTC(iChronology.getDateTimeMillis
-                          (year, monthOfYear, dayOfMonth, 
-                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond));
-    }
-
-    /**
-     * @param instant instant from 1970-01-01T00:00:00 local time
-     */
-    private long localToUTC(long instant) {
-        int offset = iZone.getOffsetFromLocal(instant);
-        instant -= offset;
-        if (offset != iZone.getOffset(instant)) {
-            throw new IllegalArgumentException
-                ("Illegal instant due to time zone offset transition");
-        }
-        return instant;
-    }
-
-    // Milliseconds
-    //------------------------------------------------------------
-
-    public DurationField millis() {
-        return iMillisField;
-    }
-
-    public DateTimeField millisOfSecond() {
-        return iMillisOfSecondField;
-    }
-
-    public DateTimeField millisOfDay() {
-        return iMillisOfDayField;
-    }
-
-    // Seconds
-    //------------------------------------------------------------
-
-    public DurationField seconds() {
-        return iSecondsField;
-    }
-
-    public DateTimeField secondOfMinute() {
-        return iSecondOfMinuteField;
-    }
-
-    public DateTimeField secondOfDay() {
-        return iSecondOfDayField;
-    }
-
-    // Minutes
-    //------------------------------------------------------------
-
-    public DurationField minutes() {
-        return iMinutesField;
-    }
-
-    public DateTimeField minuteOfHour() {
-        return iMinuteOfHourField;
-    }
-
-    public DateTimeField minuteOfDay() {
-        return iMinuteOfDayField;
-    }
-
-    // Hours
-    //------------------------------------------------------------
-
-    public DurationField hours() {
-        return iHoursField;
-    }
-
-    public DateTimeField hourOfDay() {
-        return iHourOfDayField;
-    }
-
-    public DateTimeField clockhourOfDay() {
-        return iClockhourOfDayField;
-    }
-
-    public DateTimeField hourOfHalfday() {
-        return iHourOfHalfdayField;
-    }
-
-    public DateTimeField clockhourOfHalfday() {
-        return iClockhourOfHalfdayField;
-    }
-
-    public DateTimeField halfdayOfDay() {
-        return iHalfdayOfDayField;
-    }
-
-    // Day
-    //------------------------------------------------------------
-
-    public DurationField days() {
-        return iDaysField;
-    }
-
-    public DateTimeField dayOfWeek() {
-        return iDayOfWeekField;
-    }
-
-    public DateTimeField dayOfMonth() {
-        return iDayOfMonthField;
-    }
-
-    public DateTimeField dayOfYear() {
-        return iDayOfYearField;
-    }
-
-    // Week
-    //------------------------------------------------------------
-
-    public DurationField weeks() {
-        return iWeeksField;
-    }
-
-    public DateTimeField weekOfWeekyear() {
-        return iWeekOfWeekyearField;
-    }
-
-    public DurationField weekyears() {
-        return iWeekyearsField;
-    }
-
-    public DateTimeField weekyear() {
-        return iWeekyearField;
-    }
-
-    // Month
-    //------------------------------------------------------------
-
-    public DurationField months() {
-        return iMonthsField;
-    }
-
-    public DateTimeField monthOfYear() {
-        return iMonthOfYearField;
-    }
-
-    // Year
-    //------------------------------------------------------------
-
-    public DurationField years() {
-        return iYearsField;
-    }
-
-    public DateTimeField year() {
-        return iYearField;
-    }
-
-    public DateTimeField yearOfEra() {
-        return iYearOfEraField;
-    }
-
-    public DateTimeField yearOfCentury() {
-        return iYearOfCenturyField;
-    }
-
-    public DurationField centuries() {
-        return iCenturiesField;
-    }
-
-    public DateTimeField centuryOfEra() {
-        return iCenturyOfEraField;
-    }
-
-    public DurationField eras() {
-        return iErasField;
-    }
-
-    public DateTimeField era() {
-        return iEraField;
-    }
-
     public String toString() {
-        return iChronology.toString();
-    }
-
-    private void readObject(ObjectInputStream in)
-        throws IOException, ClassNotFoundException
-    {
-        in.defaultReadObject();
-        setFields();
+        return "ZonedChronology[" + getBase() + ", " + getDateTimeZone().getID() + ']';
     }
 
     /*

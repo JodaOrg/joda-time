@@ -56,6 +56,7 @@ package org.joda.time.chrono;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.field.StrictDateTimeField;
 
 /**
  * Wraps another chronology, ensuring all the fields are strict.
@@ -66,304 +67,90 @@ import org.joda.time.DateTimeZone;
  * @see StrictDateTimeField
  * @see LenientChronology
  */
-public class StrictChronology extends DelegatedChronology {
+public final class StrictChronology extends AssembledChronology {
 
     static final long serialVersionUID = 6633006628097111960L;
 
-    private transient DateTimeField iYearField;
-    private transient DateTimeField iYearOfEraField;
-    private transient DateTimeField iYearOfCenturyField;
-    private transient DateTimeField iCenturyOfEraField;
-    private transient DateTimeField iEraField;
-    private transient DateTimeField iDayOfWeekField;
-    private transient DateTimeField iDayOfMonthField;
-    private transient DateTimeField iDayOfYearField;
-    private transient DateTimeField iMonthOfYearField;
-    private transient DateTimeField iWeekOfWeekyearField;
-    private transient DateTimeField iWeekyearField;
-
-    private transient DateTimeField iMillisOfSecondField;
-    private transient DateTimeField iMillisOfDayField;
-    private transient DateTimeField iSecondOfMinuteField;
-    private transient DateTimeField iSecondOfDayField;
-    private transient DateTimeField iMinuteOfHourField;
-    private transient DateTimeField iMinuteOfDayField;
-    private transient DateTimeField iHourOfDayField;
-    private transient DateTimeField iHourOfHalfdayField;
-    private transient DateTimeField iClockhourOfDayField;
-    private transient DateTimeField iClockhourOfHalfdayField;
-    private transient DateTimeField iHalfdayOfDayField;
+    /**
+     * Create a StrictChronology for any chronology.
+     *
+     * @param base the chronology to wrap
+     * @throws IllegalArgumentException if chronology is null
+     */
+    public static StrictChronology getInstance(Chronology base) {
+        if (base == null) {
+            throw new IllegalArgumentException("Must supply a chronology");
+        }
+        return new StrictChronology(base);
+    }
 
     private transient Chronology iWithUTC;
 
     /**
      * Create a StrictChronology for any chronology.
      *
-     * @param chrono the chronology
-     * @throws IllegalArgumentException if chronology is null
+     * @param base the chronology to wrap
      */
-    public StrictChronology(Chronology chrono) {
-        super(chrono);
+    private StrictChronology(Chronology base) {
+        super(base, null);
     }
 
     public Chronology withUTC() {
         if (iWithUTC == null) {
-            iWithUTC = new StrictChronology(getWrappedChronology().withUTC());
+            if (getDateTimeZone() == DateTimeZone.UTC) {
+                iWithUTC = this;
+            } else {
+                iWithUTC = StrictChronology.getInstance(getBase().withUTC());
+            }
         }
         return iWithUTC;
     }
 
     public Chronology withDateTimeZone(DateTimeZone zone) {
-        return new StrictChronology(getWrappedChronology().withDateTimeZone(zone));
-    }
-
-    /**
-     * Overridden to ensure strict fields are used.
-     */
-    public long getDateOnlyMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        return getDateTimeMillis(year, monthOfYear, dayOfMonth, 0);
-    }
-
-    /**
-     * Overridden to ensure strict fields are used.
-     */
-    public long getTimeOnlyMillis(int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        long instant = hourOfDay().set(0, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
-
-    /**
-     * Overridden to ensure strict fields are used.
-     */
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                  int millisOfDay)
-        throws IllegalArgumentException
-    {
-        long instant = year().set(0, year);
-        instant = monthOfYear().set(instant, monthOfYear);
-        instant = dayOfMonth().set(instant, dayOfMonth);
-        return millisOfDay().set(instant, millisOfDay);
-    }
-
-    /**
-     * Overridden to ensure strict fields are used.
-     */
-    public long getDateTimeMillis(long instant,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        instant = hourOfDay().set(instant, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
-
-    /**
-     * Overridden to ensure strict fields are used.
-     */
-    public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                  int hourOfDay, int minuteOfHour,
-                                  int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
-        long instant = year().set(0, year);
-        instant = monthOfYear().set(instant, monthOfYear);
-        instant = dayOfMonth().set(instant, dayOfMonth);
-        instant = hourOfDay().set(instant, hourOfDay);
-        instant = minuteOfHour().set(instant, minuteOfHour);
-        instant = secondOfMinute().set(instant, secondOfMinute);
-        return millisOfSecond().set(instant, millisOfSecond);
-    }
-
-    // Milliseconds
-    //------------------------------------------------------------
-
-    public DateTimeField millisOfSecond() {
-        if (iMillisOfDayField == null) {
-            iMillisOfSecondField = StrictDateTimeField.getInstance(super.millisOfSecond());
+        if (zone == null) {
+            zone = DateTimeZone.getDefault();
         }
-        return iMillisOfSecondField;
+        if (zone == DateTimeZone.UTC) {
+            return withUTC();
+        }
+        if (zone == getDateTimeZone()) {
+            return this;
+        }
+        return StrictChronology.getInstance(getBase().withDateTimeZone(zone));
     }
 
-    public DateTimeField millisOfDay() {
-        if (iMillisOfDayField == null) {
-            iMillisOfDayField = StrictDateTimeField.getInstance(super.millisOfDay());
-        }
-        return iMillisOfDayField;
+    protected void assemble(Fields fields) {
+        fields.year = convertField(fields.year);
+        fields.yearOfEra = convertField(fields.yearOfEra);
+        fields.yearOfCentury = convertField(fields.yearOfCentury);
+        fields.centuryOfEra = convertField(fields.centuryOfEra);
+        fields.era = convertField(fields.era);
+        fields.dayOfWeek = convertField(fields.dayOfWeek);
+        fields.dayOfMonth = convertField(fields.dayOfMonth);
+        fields.dayOfYear = convertField(fields.dayOfYear);
+        fields.monthOfYear = convertField(fields.monthOfYear);
+        fields.weekOfWeekyear = convertField(fields.weekOfWeekyear);
+        fields.weekyear = convertField(fields.weekyear);
+
+        fields.millisOfSecond = convertField(fields.millisOfSecond);
+        fields.millisOfDay = convertField(fields.millisOfDay);
+        fields.secondOfMinute = convertField(fields.secondOfMinute);
+        fields.secondOfDay = convertField(fields.secondOfDay);
+        fields.minuteOfHour = convertField(fields.minuteOfHour);
+        fields.minuteOfDay = convertField(fields.minuteOfDay);
+        fields.hourOfDay = convertField(fields.hourOfDay);
+        fields.hourOfHalfday = convertField(fields.hourOfHalfday);
+        fields.clockhourOfDay = convertField(fields.clockhourOfDay);
+        fields.clockhourOfHalfday = convertField(fields.clockhourOfHalfday);
+        fields.halfdayOfDay = convertField(fields.halfdayOfDay);
     }
 
-    // Seconds
-    //------------------------------------------------------------
-
-    public DateTimeField secondOfMinute() {
-        if (iSecondOfMinuteField == null) {
-            iSecondOfMinuteField = StrictDateTimeField.getInstance(super.secondOfMinute());
-        }
-        return iSecondOfMinuteField;
-    }
-
-    public DateTimeField secondOfDay() {
-        if (iSecondOfDayField == null) {
-            iSecondOfDayField = StrictDateTimeField.getInstance(super.secondOfDay());
-        }
-        return iSecondOfDayField;
-    }
-
-    // Minutes
-    //------------------------------------------------------------
-
-    public DateTimeField minuteOfHour() {
-        if (iMinuteOfHourField == null) {
-            iMinuteOfHourField = StrictDateTimeField.getInstance(super.minuteOfHour());
-        }
-        return iMinuteOfHourField;
-    }
-
-    public DateTimeField minuteOfDay() {
-        if (iMinuteOfDayField == null) {
-            iMinuteOfDayField = StrictDateTimeField.getInstance(super.minuteOfDay());
-        }
-        return iMinuteOfDayField;
-    }
-
-    // Hours
-    //------------------------------------------------------------
-
-    public DateTimeField hourOfDay() {
-        if (iHourOfDayField == null) {
-            iHourOfDayField = StrictDateTimeField.getInstance(super.hourOfDay());
-        }
-        return iHourOfDayField;
-    }
-
-    public DateTimeField clockhourOfDay() {
-        if (iClockhourOfDayField == null) {
-            iClockhourOfDayField = StrictDateTimeField.getInstance(super.clockhourOfDay());
-        }
-        return iClockhourOfDayField;
-    }
-
-    public DateTimeField hourOfHalfday() {
-        if (iHourOfHalfdayField == null) {
-            iHourOfHalfdayField = StrictDateTimeField.getInstance(super.hourOfHalfday());
-        }
-        return iHourOfHalfdayField;
-    }
-
-    public DateTimeField clockhourOfHalfday() {
-        if (iClockhourOfHalfdayField == null) {
-            iClockhourOfHalfdayField =
-                StrictDateTimeField.getInstance(super.clockhourOfHalfday());
-        }
-        return iClockhourOfHalfdayField;
-    }
-
-    public DateTimeField halfdayOfDay() {
-        if (iHalfdayOfDayField == null) {
-            iHalfdayOfDayField = StrictDateTimeField.getInstance(super.halfdayOfDay());
-        }
-        return iHalfdayOfDayField;
-    }
-
-    // Day
-    //------------------------------------------------------------
-
-    public DateTimeField dayOfWeek() {
-        if (iDayOfWeekField == null) {
-            iDayOfWeekField = StrictDateTimeField.getInstance(super.dayOfWeek());
-        }
-        return iDayOfWeekField;
-    }
-
-    public DateTimeField dayOfMonth() {
-        if (iDayOfMonthField == null) {
-            iDayOfMonthField = StrictDateTimeField.getInstance(super.dayOfMonth());
-        }
-        return iDayOfMonthField;
-    }
-
-    public DateTimeField dayOfYear() {
-        if (iDayOfYearField == null) {
-            iDayOfYearField = StrictDateTimeField.getInstance(super.dayOfYear());
-        }
-        return iDayOfYearField;
-    }
-
-    // Week
-    //------------------------------------------------------------
-
-    public DateTimeField weekOfWeekyear() {
-        if (iWeekOfWeekyearField == null) {
-            iWeekOfWeekyearField = StrictDateTimeField.getInstance(super.weekOfWeekyear());
-        }
-        return iWeekOfWeekyearField;
-    }
-
-    public DateTimeField weekyear() {
-        if (iWeekyearField == null) {
-            iWeekyearField = StrictDateTimeField.getInstance(super.weekyear());
-        }
-        return iWeekyearField;
-    }
-
-    // Month
-    //------------------------------------------------------------
-
-    public DateTimeField monthOfYear() {
-        if (iMonthOfYearField == null) {
-            iMonthOfYearField = StrictDateTimeField.getInstance(super.monthOfYear());
-        }
-        return iMonthOfYearField;
-    }
-
-    // Year
-    //------------------------------------------------------------
-
-    public DateTimeField year() {
-        if (iYearField == null) {
-            iYearField = StrictDateTimeField.getInstance(super.year());
-        }
-        return iYearField;
-    }
-
-    public DateTimeField yearOfEra() {
-        if (iYearOfEraField == null) {
-            iYearOfEraField = StrictDateTimeField.getInstance(super.yearOfEra());
-        }
-        return iYearOfEraField;
-    }
-
-    public DateTimeField yearOfCentury() {
-        if (iYearOfCenturyField == null) {
-            iYearOfCenturyField = StrictDateTimeField.getInstance(super.yearOfCentury());
-        }
-        return iYearOfCenturyField;
-    }
-
-    public DateTimeField centuryOfEra() {
-        if (iCenturyOfEraField == null) {
-            iCenturyOfEraField = StrictDateTimeField.getInstance(super.centuryOfEra());
-        }
-        return iCenturyOfEraField;
-    }
-
-    public DateTimeField era() {
-        if (iEraField == null) {
-            iEraField = StrictDateTimeField.getInstance(super.era());
-        }
-        return iEraField;
+    private static final DateTimeField convertField(DateTimeField field) {
+        return StrictDateTimeField.getInstance(field);
     }
 
     public String toString() {
-        return "StrictChronology[" + getWrappedChronology().toString() + ']';
+        return "StrictChronology[" + getBase().toString() + ']';
     }
 
 }

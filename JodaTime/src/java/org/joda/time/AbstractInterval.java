@@ -53,7 +53,7 @@
  */
 package org.joda.time;
 
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.IntervalConverter;
 import org.joda.time.format.DateTimePrinter;

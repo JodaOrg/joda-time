@@ -59,7 +59,8 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.gj.GJChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.JulianChronology;
 
 /**
  * Tests either the Julian or Gregorian chronology from org.joda.time.chrono.gj
@@ -203,10 +204,10 @@ public class Test {
         iMode = mode;
         if (mode == GREGORIAN_MODE) {
             iTest = new TestGregorianChronology();
-            iActual = GJChronology.getInstance(DateTimeZone.UTC, Long.MIN_VALUE, true);
+            iActual = GregorianChronology.getInstanceUTC();
         } else {
             iTest = new TestJulianChronology();
-            iActual = GJChronology.getInstance(DateTimeZone.UTC, Long.MAX_VALUE, true);
+            iActual = JulianChronology.getInstanceUTC();
         }
     }
 

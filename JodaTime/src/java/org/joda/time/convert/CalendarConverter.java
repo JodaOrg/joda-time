@@ -58,9 +58,11 @@ import java.util.GregorianCalendar;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.buddhist.BuddhistChronology;
-import org.joda.time.chrono.gj.GJChronology;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * CalendarConverter converts a java util Calendar to milliseconds in the
@@ -126,11 +128,16 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
     public Chronology getChronology(Object object, DateTimeZone zone) {
         if (object instanceof GregorianCalendar) {
             GregorianCalendar gc = (GregorianCalendar) object;
-            return GJChronology.getInstance(zone, gc.getGregorianChange().getTime(), false);
-            
+            long cutover = gc.getGregorianChange().getTime();
+            if (cutover == Long.MIN_VALUE) {
+                return GregorianChronology.getInstance(zone);
+            } else if (cutover == Long.MAX_VALUE) {
+                return JulianChronology.getInstance(zone);
+            } else {
+                return GJChronology.getInstance(zone, cutover, 4);
+            }
         } else if (object.getClass().getName().endsWith(".BuddhistCalendar")) {
             return BuddhistChronology.getInstance(zone);
-            
         } else {
             return ISOChronology.getInstance(zone);
         }

@@ -56,7 +56,7 @@ package org.joda.test.time.gj;
 import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeField;
-import org.joda.time.chrono.gj.GJChronology;
+import org.joda.time.chrono.GJChronology;
 /**
  * This class is a Junit unit test for the date time field.
  *

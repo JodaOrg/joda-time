@@ -67,7 +67,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.MutableDateTime;
-import org.joda.time.chrono.iso.ISOChronology;
+import org.joda.time.chrono.ISOChronology;
 /**
  *  A {@link TestCase} that can define both simple and bulk test methods.<P>
  *

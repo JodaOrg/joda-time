@@ -57,7 +57,7 @@ import java.util.GregorianCalendar;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.buddhist.BuddhistChronology;
+import org.joda.time.chrono.BuddhistChronology;
 
 import junit.framework.TestSuite;
 /**

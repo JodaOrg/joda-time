@@ -17,6 +17,7 @@ package org.joda.time.format;
 
 import java.text.DateFormat;
 import java.util.Locale;
+import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import junit.framework.TestCase;
@@ -152,9 +153,13 @@ public class TestDateTimeFormatStyle extends TestCase {
         expect = DateFormat.getTimeInstance(DateFormat.SHORT, FRANCE).format(dt.toDate());
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
         
-        DateTime date = new DateTime(
+        if (TimeZone.getDefault() instanceof SimpleTimeZone) {
+            // skip test, as it needs historical time zone info
+        } else {
+            DateTime date = new DateTime(
                 DateFormat.getTimeInstance(DateFormat.SHORT, FRANCE).parse(expect));
-        assertEquals(date, f.withLocale(FRANCE).parseDateTime(expect));
+            assertEquals(date, f.withLocale(FRANCE).parseDateTime(expect));
+        }
     }
 
     public void testForStyle_shortDateTime() throws Exception {
@@ -170,7 +175,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
         
         DateTime date = new DateTime(
-                DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, FRANCE).parse(expect));
+            DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT, FRANCE).parse(expect));
         assertEquals(date, f.withLocale(FRANCE).parseDateTime(expect));
     }
 

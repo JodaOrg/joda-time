@@ -3,21 +3,13 @@ JodaTime ToDo list
 
 1.0
 ---
-Duration:
- Write tests
- 
-Interval:
- Write tests
- 
-Tests:
- Write tests to cover functionality
- Ensure all tests pass!
 
-Serializable:
- Tests
- 
-DateOnly/TimeOnly:
- Enable DateTimeProperty
+Tests:
+ Write tests for Durations...
+ Write tests for Intervals...
+ Write tests for serialization...
+ ...write tests to cover all functionality
+ Ensure all tests pass!
 
 Consistency:
  Check API for design and naming consistency

@@ -614,7 +614,8 @@ public class DateTime extends AbstractDateTime
      */
     public static class Property extends AbstractReadableInstantFieldProperty {
         
-        static final long serialVersionUID = -6983323811635733510L;
+        /** Serialization version */
+        private static final long serialVersionUID = -6983323811635733510L;
         
         /** The instant this property is working against */
         private final DateTime iInstant;
@@ -675,8 +676,7 @@ public class DateTime extends AbstractDateTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public DateTime addToCopy(int value) {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.add(instant.getMillis(), value));
+            return iInstant.withMillis(iField.add(iInstant.getMillis(), value));
         }
         
         /**
@@ -692,8 +692,7 @@ public class DateTime extends AbstractDateTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public DateTime addToCopy(long value) {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.add(instant.getMillis(), value));
+            return iInstant.withMillis(iField.add(iInstant.getMillis(), value));
         }
         
         /**
@@ -711,8 +710,7 @@ public class DateTime extends AbstractDateTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public DateTime addWrapFieldToCopy(int value) {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.addWrapField(instant.getMillis(), value));
+            return iInstant.withMillis(iField.addWrapField(iInstant.getMillis(), value));
         }
         
         //-----------------------------------------------------------------------
@@ -729,8 +727,7 @@ public class DateTime extends AbstractDateTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public DateTime setCopy(int value) {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.set(instant.getMillis(), value));
+            return iInstant.withMillis(iField.set(iInstant.getMillis(), value));
         }
         
         /**
@@ -747,8 +744,7 @@ public class DateTime extends AbstractDateTime
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public DateTime setCopy(String text, Locale locale) {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.set(instant.getMillis(), text, locale));
+            return iInstant.withMillis(iField.set(iInstant.getMillis(), text, locale));
         }
         
         /**
@@ -774,8 +770,7 @@ public class DateTime extends AbstractDateTime
          * @return a copy of the DateTime with the field value changed
          */
         public DateTime roundFloorCopy() {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.roundFloor(instant.getMillis()));
+            return iInstant.withMillis(iField.roundFloor(iInstant.getMillis()));
         }
         
         /**
@@ -784,8 +779,7 @@ public class DateTime extends AbstractDateTime
          * @return a copy of the DateTime with the field value changed
          */
         public DateTime roundCeilingCopy() {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.roundCeiling(instant.getMillis()));
+            return iInstant.withMillis(iField.roundCeiling(iInstant.getMillis()));
         }
         
         /**
@@ -795,8 +789,7 @@ public class DateTime extends AbstractDateTime
          * @return a copy of the DateTime with the field value changed
          */
         public DateTime roundHalfFloorCopy() {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.roundHalfFloor(instant.getMillis()));
+            return iInstant.withMillis(iField.roundHalfFloor(iInstant.getMillis()));
         }
         
         /**
@@ -806,8 +799,7 @@ public class DateTime extends AbstractDateTime
          * @return a copy of the DateTime with the field value changed
          */
         public DateTime roundHalfCeilingCopy() {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.roundHalfCeiling(instant.getMillis()));
+            return iInstant.withMillis(iField.roundHalfCeiling(iInstant.getMillis()));
         }
         
         /**
@@ -818,8 +810,7 @@ public class DateTime extends AbstractDateTime
          * @return a copy of the DateTime with the field value changed
          */
         public DateTime roundHalfEvenCopy() {
-            DateTime instant = iInstant;
-            return instant.withMillis(iField.roundHalfEven(instant.getMillis()));
+            return iInstant.withMillis(iField.roundHalfEven(iInstant.getMillis()));
         }
     }
 

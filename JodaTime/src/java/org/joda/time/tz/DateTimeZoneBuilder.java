@@ -67,6 +67,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.ISOChronology;
 
@@ -933,7 +934,7 @@ public class DateTimeZoneBuilder {
             // simple DST cycle is detected or the last rule is a fixed
             // offset. If a zone has a fixed offset set more than 100 years
             // into the future, then it won't be observed.
-            long now = System.currentTimeMillis();
+            long now = DateTimeUtils.currentTimeMillis();
             YEAR_LIMIT = ISOChronology.getInstanceUTC().year().get(now) + 100;
         }
 

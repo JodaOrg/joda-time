@@ -147,7 +147,7 @@ public abstract class AbstractPartialInstant extends AbstractInstant
     protected AbstractPartialInstant(final Chronology chronology) {
         iChronology = selectChronologyUTC(chronology);
         iMillis = resetUnsupportedFields
-            (toLocalTime(System.currentTimeMillis(), chronology, iChronology));
+            (toLocalTime(DateTimeUtils.currentTimeMillis(), chronology, iChronology));
     }
 
     /**

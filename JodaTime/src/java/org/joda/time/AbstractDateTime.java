@@ -108,7 +108,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime() {
         super();
         iChronology = ISOChronology.getInstance();
-        iMillis = System.currentTimeMillis();
+        iMillis = DateTimeUtils.currentTimeMillis();
     }
 
     /**
@@ -122,7 +122,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime(final DateTimeZone zone) {
         super();
         iChronology = ISOChronology.getInstance(zone);
-        iMillis = System.currentTimeMillis();
+        iMillis = DateTimeUtils.currentTimeMillis();
     }
 
     /**
@@ -137,7 +137,7 @@ public abstract class AbstractDateTime extends AbstractInstant
     protected AbstractDateTime(final Chronology chronology) {
         super();
         iChronology = selectChronology(chronology);
-        iMillis = System.currentTimeMillis();
+        iMillis = DateTimeUtils.currentTimeMillis();
     }
 
     //-----------------------------------------------------------------------

@@ -87,7 +87,7 @@ public final class Instant extends AbstractInstant
      */
     public Instant() {
         super();
-        iMillis = System.currentTimeMillis();
+        iMillis = DateTimeUtils.currentTimeMillis();
     }
 
     /**

@@ -113,6 +113,38 @@ public final class TimeOfDay
     /** The index of the millisOfSecond field in the field array */
     public static final int MILLIS_OF_SECOND = 3;
 
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs a TimeOfDay from the specified millis of day using the
+     * ISO chronology.
+     * <p>
+     * The millisOfDay value may exceed the number of millis in one day,
+     * but additional days will be ignored.
+     * This method uses the UTC time zone internally.
+     *
+     * @param millisOfDay  the number of milliseconds into a day to convert
+     */
+    public static TimeOfDay fromMillisOfDay(long millisOfDay) {
+        return fromMillisOfDay(millisOfDay, null);
+    }
+
+    /**
+     * Constructs a TimeOfDay from the specified millis of day using the
+     * specified chronology.
+     * <p>
+     * The millisOfDay value may exceed the number of millis in one day,
+     * but additional days will be ignored.
+     * This method uses the UTC time zone internally.
+     *
+     * @param instant  the number of milliseconds into a day to convert
+     * @param chrono  the chronology, null means ISO chronology
+     */
+    public static TimeOfDay fromMillisOfDay(long millisOfDay, Chronology chrono) {
+        chrono = DateTimeUtils.getChronology(chrono);
+        chrono = chrono.withUTC();
+        return new TimeOfDay(millisOfDay, chrono);
+    }
+
     // Constructors
     //-----------------------------------------------------------------------
     /**
@@ -365,6 +397,25 @@ public final class TimeOfDay
      */
     public DateTimeFieldType[] getFieldTypes() {
         return (DateTimeFieldType[]) FIELD_TYPES.clone();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a new TimeOfDay instance with the specified chronology.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param newChronology  the new chronology, null means ISO
+     * @return a copy of this datetime with a different chronology
+     */
+    public TimeOfDay withChronology(Chronology newChronology) {
+        newChronology = DateTimeUtils.getChronology(newChronology);
+        newChronology = newChronology.withUTC();
+        if (newChronology == getChronology()) {
+            return this;
+        } else {
+            return new TimeOfDay(this, newChronology);
+        }
     }
 
     //-----------------------------------------------------------------------

@@ -582,6 +582,8 @@ public final class Period
     /**
      * Creates a new Period instance with the same field values but
      * different PeriodType.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
      * 
      * @param type  the period type to use, null means standard
      * @return the new period instance
@@ -597,7 +599,9 @@ public final class Period
 
     /**
      * Creates a new Period instance with the fields from the specified period
-     * set to new values.
+     * copied on top of those from this period.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
      * 
      * @param period  the period to copy from, null ignored
      * @return the new period instance
@@ -615,6 +619,8 @@ public final class Period
     //-----------------------------------------------------------------------
     /**
      * Creates a new Period instance with the specified field set to a new value.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
      * 
      * @param field  the field to set, null ignored
      * @param value  the value to set to
@@ -632,6 +638,8 @@ public final class Period
 
     /**
      * Creates a new Period instance with the valueToAdd added to the specified field.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
      * 
      * @param field  the field to set, null ignored
      * @param value  the value to add

@@ -217,13 +217,30 @@ public abstract class BasePartial
      * <p>
      * Data is assigned (not cloned) to the new instance.
      *
-     * @param other  the other partial to use to extract the fields and chronology
-     * @param values  the new set of values, not cloned
+     * @param base  the base partial
+     * @param values  the new set of values, not cloned, null means use base
+     * @param chrono  the chronology to use, null means use base
      */
-    protected BasePartial(BasePartial other, int[] values) {
+    protected BasePartial(BasePartial base, int[] values) {
         super();
-        iChronology = other.iChronology;
+        iChronology = base.iChronology;
         iValues = values;
+    }
+
+    /**
+     * Private constructor to be used by subclasses only which performs no validation.
+     * <p>
+     * Data is assigned (not cloned) to the new instance.
+     * This should not be used by mutable subclasses.
+     *
+     * @param base  the base partial
+     * @param values  the new set of values, not cloned, null means use base
+     * @param chrono  the chronology to use, null means use base
+     */
+    protected BasePartial(BasePartial base, Chronology chrono) {
+        super();
+        iChronology = chrono.withUTC();
+        iValues = base.iValues;
     }
 
     //-----------------------------------------------------------------------

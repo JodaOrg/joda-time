@@ -298,6 +298,25 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
+     * Creates a new YearMonthDay instance with the specified chronology.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param newChronology  the new chronology, null means ISO
+     * @return a copy of this datetime with a different chronology
+     */
+    public YearMonthDay withChronology(Chronology newChronology) {
+        newChronology = DateTimeUtils.getChronology(newChronology);
+        newChronology = newChronology.withUTC();
+        if (newChronology == getChronology()) {
+            return this;
+        } else {
+            return new YearMonthDay(this, newChronology);
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Get the year field value.
      *
      * @return the year

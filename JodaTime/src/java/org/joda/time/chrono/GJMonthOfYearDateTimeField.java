@@ -272,7 +272,8 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
                 (subtrahendInstant, subtrahendYear, subtrahendMonth);
             if (subtrahendDom > minuendDom) {
                 // ...and day of subtrahend month is larger.
-                // TODO: Don't depend on other fields
+                // Note: This works fine, but it ideally shouldn't invoke other
+                // fields from within a field.
                 subtrahendInstant = iChronology.dayOfMonth().set(subtrahendInstant, minuendDom);
             }
         }

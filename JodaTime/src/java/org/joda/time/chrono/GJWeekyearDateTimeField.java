@@ -235,7 +235,8 @@ final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
         //
         // Reset DayOfWeek to previous value.
         //
-        // TODO: Don't depend on other fields
+        // Note: This works fine, but it ideally shouldn't invoke other
+        // fields from within a field.
         workInstant = iChronology.dayOfWeek().set( workInstant, thisDow );
         //
         // Return result.
@@ -268,7 +269,8 @@ final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
     }
 
     public long roundFloor(long instant) {
-        // TODO: Don't depend on other fields
+        // Note: This works fine, but it ideally shouldn't invoke other
+        // fields from within a field.
         instant = iChronology.weekOfWeekyear().roundFloor(instant);
         int wow = iChronology.getWeekOfWeekyear(instant);
         if (wow > 1) {

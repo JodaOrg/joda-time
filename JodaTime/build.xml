@@ -27,7 +27,7 @@
   <property name="component.title"         value="Joda date and time"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="0.99"/>
+  <property name="component.version"       value="1.0"/>
 
   <!-- The current version number of this component -->
   <property name="component.fullname"      value="${component.name}-${component.version}"/>

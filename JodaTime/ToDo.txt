@@ -1,51 +1,61 @@
 JodaTime ToDo list
 ==================
 
-for 1.0
+For 1.1
 -------
+The TODO list for 1.1 has not been set yet, however I would hope that
+at least some of the items below will be included.
 
-Nothing left to do for 1.0
+Join joda-interest@lists.sourceforge.net to help out!
 
 
 Ideas longer term
 -----------------
-DateTimeField.setNext(instant, value, howManyNext)
+- More chronologies:
+   Implement more chronologies, like ChineseChronology, HebrewChronology,
+   PersianChronology, etc. This may require more work in localization.
 
-DateHourMinute
-DateHourMin
-DateHM
+- DateTimeFormatter.appendLocaleFormatterMap(map)
+    Adds a map of Locale to Formatter, which picks the formatter to use
+    based on the locale of the print/parse. Allows for the flexible insertion
+    of any locale based text into a shared multi-language formatter.
 
-DateHourMinuteSecond
-DateHourMinSec
-DateHMS
+- DateTimeField.setNext(instant, value, howManyNext)
+    Allows questions like what is the date next Tuesday
 
-DurationProperty on DateTime, Period and related
+- Partial
+    A full implementation of partial, where any field may be present,
+    and any field may be substituted for. Thus you might define DayOfWeek=Friday
+    and DayOfMonth=13, and then resolve to find the next date.
 
-Factories for DateTime classes?
- Is a locale dependent one needed at least?
+- DateHourMinute/DateHourMinuteSecond
+    More instant variations
 
-More chronologies:
- Implement more chronologies, like ChineseChronology, HebrewChronology,
- PersianChronology, etc. This may require more work in localization.
+- DurationProperty on DateTime, Period and related
+    Possibly a clear way to do duration stuff, however adding plusDays() type
+    methods might be simpler.
 
-Chronology:
- Add daysFrom(year)
- This would be a DateTimeField that, given a base year, returns the number of
- elapsed days from 1st Jan that year. Apparantly useful for Excel, where a
- standard format is days from 1900.
+- Factories for DateTime classes?
+    Perhaps, but the constructors cover this now.
 
-ISOCalendar:
- Calendar subclass that implements our interface. This might be difficult to
- do since Calendar has so many final methods and a rigid specification.
+- Chronology:
+    Add daysFrom(year)
+    This would be a DateTimeField that, given a base year, returns the number of
+    elapsed days from 1st Jan that year. Apparantly useful for Excel, where a
+    standard format is days from 1900.
 
-ISODate:
- Date subclasses that implements our interface. This might not be a worthwhile
- effort since almost all Date methods are deprecated.
+- ISOCalendar:
+    Calendar subclass that implements our interface. This might be difficult to
+    do since Calendar has so many final methods and a rigid specification.
 
-Recurrence:
- Create a set of classes for supporting recurrences. This will need to support
- complex specifications such as "2nd Wednesday in May" and "next Thursday".
- A builder design might be helpful.
+- ISODate:
+    Date subclasses that implements our interface. This might not be a worthwhile
+    effort since almost all Date methods are deprecated.
 
-Holidays:
- These can simply be special instances of Recurrences.
+- Recurrence:
+    Create a set of classes for supporting recurrences. This will need to support
+    complex specifications such as "2nd Wednesday in May" and "next Thursday".
+    A builder design might be helpful.
+
+- Holidays:
+    These might simply be special instances of Recurrences.

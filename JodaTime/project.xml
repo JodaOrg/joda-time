@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- You are strongly recommended to use ant for compiling and building -->
+<!-- We only use and test maven for website construction -->
 
 <project>
   <pomVersion>3</pomVersion>
   <id>joda-time</id>
   <name>Joda time</name>
   <groupId>joda-time</groupId>
-  <currentVersion>0.99</currentVersion>
+  <currentVersion>1.0</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>

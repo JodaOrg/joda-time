@@ -38,7 +38,7 @@ import org.joda.time.field.RemainderDateTimeField;
  * Most of the utility methods required by subclasses are package-private,
  * reflecting the intention that they be defined in the same package.
  * <p>
- * AbstractGJChronology is thread-safe and immutable, and all subclasses must
+ * BaseGJChronology is thread-safe and immutable, and all subclasses must
  * be as well.
  *
  * @author Stephen Colebourne

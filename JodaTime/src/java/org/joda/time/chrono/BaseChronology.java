@@ -30,10 +30,10 @@ import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 
 /**
- * AbstractChronology provides a skeleton implementation for chronology
+ * BaseChronology provides a skeleton implementation for chronology
  * classes. Many utility methods are defined, but all fields are unsupported.
  * <p>
- * AbstractChronology is thread-safe and immutable, and all subclasses must be
+ * BaseChronology is thread-safe and immutable, and all subclasses must be
  * as well.
  *
  * @author Brian S O'Neill

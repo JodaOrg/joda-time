@@ -144,13 +144,12 @@ public class DateTimeParserBucket {
         SavedField[] savedFields = iSavedFields;
         int savedFieldsCount = iSavedFieldsCount;
 
-        if (savedFieldsCount == savedFields.length) {
-            SavedField[] newArray = new SavedField[savedFieldsCount * 2];
+        if (savedFieldsCount == savedFields.length || iSavedFieldsShared) {
+            // Expand capacity or merely copy if saved fields are shared.
+            SavedField[] newArray = new SavedField
+                [savedFieldsCount == savedFields.length ? savedFieldsCount * 2 : savedFields.length];
             System.arraycopy(savedFields, 0, newArray, 0, savedFieldsCount);
             iSavedFields = savedFields = newArray;
-            iSavedFieldsShared = false;
-        } else if (iSavedFieldsShared) {
-            iSavedFields = savedFields = (SavedField[])savedFields.clone();
             iSavedFieldsShared = false;
         }
 
@@ -204,7 +203,7 @@ public class DateTimeParserBucket {
     public long computeMillis() {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
-        Arrays.sort(savedFields, 0, count);
+        sort(savedFields, count);
 
         long millis = iMillis;
         for (int i=0; i<count; i++) {
@@ -223,6 +222,38 @@ public class DateTimeParserBucket {
         }
 
         return millis;
+    }
+
+    /**
+     * Sorts elements [0,high). Calling java.util.Arrays isn't always the right
+     * choice since it always creates an internal copy of the array, even if it
+     * doesn't need to. If the array slice is small enough, an insertion sort
+     * is chosen instead, but it doesn't need a copy!
+     * <p>
+     * This method has a modified version of that insertion sort, except it
+     * doesn't create an unnecessary array copy. If high is over 10, then
+     * java.util.Arrays is called, which will perform a merge sort, which is
+     * faster than insertion sort on large lists.
+     * <p>
+     * The end result is much greater performace when computeMillis is called.
+     * Since the amount of saved fields is small, the insertion sort is a
+     * better choice. Additional performance is gained since there is no extra
+     * array allocation and copying. Also, the insertion sort here does not
+     * perform any casting operations. The version in java.util.Arrays performs
+     * casts within the insertion sort loop.
+     */
+    private static void sort(Comparable[] array, int high) {
+        if (high > 10) {
+            Arrays.sort(array, 0, high);
+        } else {
+            for (int i=0; i<high; i++) {
+                for (int j=i; j>0 && (array[j-1]).compareTo(array[j])>0; j--) {
+                    Comparable t = array[j];
+                    array[j] = array[j-1];
+                    array[j-1] = t;
+                }
+            }
+        }
     }
 
     private static class SavedField implements Comparable {
@@ -297,18 +328,23 @@ public class DateTimeParserBucket {
             this.iOffset = DateTimeParserBucket.this.iOffset;
             this.iSavedFields = DateTimeParserBucket.this.iSavedFields;
             this.iSavedFieldsCount = DateTimeParserBucket.this.iSavedFieldsCount;
-            DateTimeParserBucket.this.iSavedFieldsShared = true;
         }
 
         boolean revertState(DateTimeParserBucket enclosing) {
             if (enclosing != DateTimeParserBucket.this) {
                 return false;
             }
-            DateTimeParserBucket.this.iZone = this.iZone;
-            DateTimeParserBucket.this.iOffset = this.iOffset;
-            DateTimeParserBucket.this.iSavedFields = this.iSavedFields;
-            DateTimeParserBucket.this.iSavedFieldsCount = this.iSavedFieldsCount;
-            DateTimeParserBucket.this.iSavedFieldsShared = true;
+            enclosing.iZone = this.iZone;
+            enclosing.iOffset = this.iOffset;
+            enclosing.iSavedFields = this.iSavedFields;
+            if (this.iSavedFieldsCount < enclosing.iSavedFieldsCount) {
+                // Since count is being restored to a lower count, the
+                // potential exists for new saved fields to destroy data being
+                // shared by another state. Set this flag such that the array
+                // of saved fields is cloned prior to modification.
+                enclosing.iSavedFieldsShared = true;
+            }
+            enclosing.iSavedFieldsCount = this.iSavedFieldsCount;
             return true;
         }
     }

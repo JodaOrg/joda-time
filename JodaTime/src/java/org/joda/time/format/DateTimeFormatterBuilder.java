@@ -702,11 +702,33 @@ public class DateTimeFormatterBuilder {
      * 2050      2000..2099      2000    2020    2040    2060    2080
      * </pre>
      *
-     * @param pivot pivot year to use when parsing
+     * @param pivot  pivot year to use when parsing
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTwoDigitYear(int pivot) {
-        return append0(new TwoDigitYear(pivot));
+        return append0(new TwoDigitYear(DateTimeFieldType.year(), pivot));
+    }
+
+    /**
+     * Instructs the printer to emit a numeric weekyear field which always prints
+     * and parses two digits. A pivot year is used during parsing to determine
+     * the range of supported years as <code>(pivot - 50) .. (pivot + 49)</code>.
+     *
+     * <pre>
+     * pivot   supported range   00 is   20 is   40 is   60 is   80 is
+     * ---------------------------------------------------------------
+     * 1950      1900..1999      1900    1920    1940    1960    1980
+     * 1975      1925..2024      2000    2020    1940    1960    1980
+     * 2000      1950..2049      2000    2020    2040    1960    1980
+     * 2025      1975..2074      2000    2020    2040    2060    1980
+     * 2050      2000..2099      2000    2020    2040    2060    2080
+     * </pre>
+     *
+     * @param pivot  pivot weekyear to use when parsing
+     * @return this DateTimeFormatterBuilder
+     */
+    public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot) {
+        return append0(new TwoDigitYear(DateTimeFieldType.weekyear(), pivot));
     }
 
     /**
@@ -815,7 +837,7 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneName() {
-        return append0(new TimeZonePrinter(false), null);
+        return append0(new TimeZoneName(TimeZoneName.LONG_NAME), null);
     }
 
     /**
@@ -826,7 +848,17 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName() {
-        return append0(new TimeZonePrinter(true), null);
+        return append0(new TimeZoneName(TimeZoneName.SHORT_NAME), null);
+    }
+
+    /**
+     * Instructs the printer to emit the identifier of the time zone.
+     * This field cannot currently be parsed.
+     *
+     * @return this DateTimeFormatterBuilder
+     */
+    public DateTimeFormatterBuilder appendTimeZoneId() {
+        return append0(new TimeZoneName(TimeZoneName.ID), null);
     }
 
     /**
@@ -1246,10 +1278,12 @@ public class DateTimeFormatterBuilder {
     static class TwoDigitYear
             implements DateTimePrinter, DateTimeParser {
 
+        private final DateTimeFieldType iType;
         private final int iPivot;
 
-        TwoDigitYear(int pivot) {
+        TwoDigitYear(DateTimeFieldType type, int pivot) {
             super();
+            iType = type;
             iPivot = pivot;
         }
 
@@ -1286,7 +1320,7 @@ public class DateTimeFormatterBuilder {
 
             year += low + ((year < t) ? 100 : 0) - t;
 
-            bucket.saveField(DateTimeFieldType.year(), year);
+            bucket.saveField(iType, year);
             return position + 2;
         }
         
@@ -1320,7 +1354,7 @@ public class DateTimeFormatterBuilder {
 
         private int getTwoDigitYear(long instant, Chronology chrono) {
             try {
-                int year = chrono.year().get(instant);
+                int year = iType.getField(chrono).get(instant);
                 if (year < 0) {
                     year = -year;
                 }
@@ -1351,9 +1385,9 @@ public class DateTimeFormatterBuilder {
         }
 
         private int getTwoDigitYear(ReadablePartial partial) {
-            if (partial.isSupported(DateTimeFieldType.year())) {
+            if (partial.isSupported(iType)) {
                 try {
-                    int year = partial.get(DateTimeFieldType.year());
+                    int year = partial.get(iType);
                     if (year < 0) {
                         year = -year;
                     }
@@ -2052,18 +2086,22 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static class TimeZonePrinter
+    static class TimeZoneName
             implements DateTimePrinter {
 
-        private final boolean iShortFormat;
+        static final int LONG_NAME = 0;
+        static final int SHORT_NAME = 1;
+        static final int ID = 2;
 
-        TimeZonePrinter(boolean shortFormat) {
+        private final int iType;
+
+        TimeZoneName(int type) {
             super();
-            iShortFormat = shortFormat;
+            iType = type;
         }
 
         public int estimatePrintedLength() {
-            return iShortFormat ? 4 : 20;
+            return (iType == SHORT_NAME ? 4 : 20);
         }
 
         public void printTo(
@@ -2082,11 +2120,15 @@ public class DateTimeFormatterBuilder {
             if (displayZone == null) {
                 return "";  // no zone
             }
-            if (iShortFormat) {
-                return displayZone.getShortName(instant, locale);
-            } else {
-                return displayZone.getName(instant, locale);
+            switch (iType) {
+                case LONG_NAME:
+                    return displayZone.getName(instant, locale);
+                case SHORT_NAME:
+                    return displayZone.getShortName(instant, locale);
+                case ID:
+                    return displayZone.getID();
             }
+            return "";
         }
 
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {

@@ -241,6 +241,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertNotNull(f2.print(0L));
         try {
             f2.parseDateTime("Thu 1970-01-01T00:00:00Z");
+            fail();
         } catch (UnsupportedOperationException ex) {}
         
         f2 = new DateTimeFormatter(null, f.getParser());
@@ -250,6 +251,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(true, f2.isParser());
         try {
             f2.print(0L);
+            fail();
         } catch (UnsupportedOperationException ex) {}
         assertNotNull(f2.parseDateTime("Thu 1970-01-01T00:00:00Z"));
     }
@@ -262,6 +264,7 @@ public class TestDateTimeFormatter extends TestCase {
         
         try {
             g.parseDateTime("ABC");
+            fail();
         } catch (IllegalArgumentException ex) {}
     }
 
@@ -356,6 +359,7 @@ public class TestDateTimeFormatter extends TestCase {
         
         try {
             g.parseMutableDateTime("ABC");
+            fail();
         } catch (IllegalArgumentException ex) {}
     }
 
@@ -452,10 +456,12 @@ public class TestDateTimeFormatter extends TestCase {
         
         try {
             g.parseInto(null, "2004-06-09T10:20:30Z", 0);
+            fail();
         } catch (IllegalArgumentException ex) {}
-        try {
-            g.parseInto(result, "ABC", 0);
-        } catch (IllegalArgumentException ex) {}
+        
+        assertEquals(~0, g.parseInto(result, "ABC", 0));
+        assertEquals(~10, g.parseInto(result, "2004-06-09", 0));
+        assertEquals(~13, g.parseInto(result, "XX2004-06-09T", 2));
     }
 
     public void testParseInto_zone() {

@@ -24,12 +24,10 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTimeField;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationFieldType;
 import org.joda.time.ReadablePartial;
-import org.joda.time.field.RemainderDateTimeField;
 
 /**
  * Factory that creates instances of DateTimeFormatter from patterns and styles.
@@ -85,7 +83,7 @@ import org.joda.time.field.RemainderDateTimeField;
  * S       fraction of second           number        978
  *
  * z       time zone                    text          Pacific Standard Time; PST
- * Z       time zone offset             text          -08:00; -0800
+ * Z       time zone offset/id          text          -0800; -08:00; Asia/Tokyo
  *
  * '       escape for text              delimiter
  * ''      single quote                 literal       '
@@ -107,9 +105,12 @@ import org.joda.time.field.RemainderDateTimeField;
  * <p>
  * <strong>Month</strong>: 3 or over, use text, otherwise use number.
  * <p>
+ * <strong>Zone</strong>: 'Z' outputs offset without a colon, 'ZZ' outputs
+ * the offset with a colon, 'ZZZ' or more outputs the zone id.
+ * <p>
  * Any characters in the pattern that are not in the ranges of ['a'..'z']
  * and ['A'..'Z'] will be treated as quoted text. For instance, characters
- * like ':', '.', ' ', '#' and '@' will appear in the resulting time text
+ * like ':', '.', ' ', '#' and '?' will appear in the resulting time text
  * even they are not embraced within single quotes.
  * <p>
  * DateTimeFormat is thread-safe and immutable, and the formatters it returns
@@ -148,7 +149,15 @@ public class DateTimeFormat {
     //-----------------------------------------------------------------------
     /**
      * Factory to create a formatter from a pattern string.
-     * The pattern string is encoded as per SimpleDateFormat.
+     * The pattern string is described above, and is similar to SimpleDateFormat.
+     * <p>
+     * The format may contain locale specific output, and this will change as
+     * you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * For example:
+     * <pre>
+     * DateTimeFormat.forPattern(pattern).withLocale(Locale.FRANCE).print(dt);
+     * </pre>
      *
      * @param pattern  pattern specification
      * @return the formatter
@@ -169,7 +178,10 @@ public class DateTimeFormat {
      * The returned formatter will dynamically adjust to the locale that
      * the print/parse takes place in. Thus you just call
      * {@link DateTimeFormatter#withLocale(Locale)} and the Short/Medium/Long/Full
-     * style for that locale will be output.
+     * style for that locale will be output. For example:
+     * <pre>
+     * DateTimeFormat.forStyle(style).withLocale(Locale.FRANCE).print(dt);
+     * </pre>
      *
      * @param style  two characters from the set {"S", "M", "L", "F", "-"}
      * @return the formatter
@@ -193,43 +205,6 @@ public class DateTimeFormat {
     }
 
     /**
-     * Creates a format that outputs a medium date format.
-     * <p>
-     * The format will change as you change the locale of the formatter.
-     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
-     * @return the formatter
-     */
-    public static DateTimeFormatter mediumDate() {
-        return createFormatterForStyleIndex(MEDIUM, NONE);
-    }
-
-    /**
-     * Creates a format that outputs a long date format.
-     * <p>
-     * The format will change as you change the locale of the formatter.
-     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
-     * @return the formatter
-     */
-    public static DateTimeFormatter longDate() {
-        return createFormatterForStyleIndex(LONG, NONE);
-    }
-
-    /**
-     * Creates a format that outputs a full date format.
-     * <p>
-     * The format will change as you change the locale of the formatter.
-     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
-     * @return the formatter
-     */
-    public static DateTimeFormatter fullDate() {
-        return createFormatterForStyleIndex(FULL, NONE);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Creates a format that outputs a short time format.
      * <p>
      * The format will change as you change the locale of the formatter.
@@ -239,6 +214,31 @@ public class DateTimeFormat {
      */
     public static DateTimeFormatter shortTime() {
         return createFormatterForStyleIndex(NONE, SHORT);
+    }
+
+    /**
+     * Creates a format that outputs a short datetime format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter shortDateTime() {
+        return createFormatterForStyleIndex(SHORT, SHORT);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a format that outputs a medium date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter mediumDate() {
+        return createFormatterForStyleIndex(MEDIUM, NONE);
     }
 
     /**
@@ -254,6 +254,31 @@ public class DateTimeFormat {
     }
 
     /**
+     * Creates a format that outputs a medium datetime format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter mediumDateTime() {
+        return createFormatterForStyleIndex(MEDIUM, MEDIUM);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a format that outputs a long date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter longDate() {
+        return createFormatterForStyleIndex(LONG, NONE);
+    }
+
+    /**
      * Creates a format that outputs a long time format.
      * <p>
      * The format will change as you change the locale of the formatter.
@@ -266,43 +291,6 @@ public class DateTimeFormat {
     }
 
     /**
-     * Creates a format that outputs a full time format.
-     * <p>
-     * The format will change as you change the locale of the formatter.
-     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
-     * @return the formatter
-     */
-    public static DateTimeFormatter fullTime() {
-        return createFormatterForStyleIndex(NONE, FULL);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Creates a format that outputs a short datetime format.
-     * <p>
-     * The format will change as you change the locale of the formatter.
-     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
-     * @return the formatter
-     */
-    public static DateTimeFormatter shortDateTime() {
-        return createFormatterForStyleIndex(SHORT, SHORT);
-    }
-
-    /**
-     * Creates a format that outputs a medium datetime format.
-     * <p>
-     * The format will change as you change the locale of the formatter.
-     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
-     * 
-     * @return the formatter
-     */
-    public static DateTimeFormatter mediumDateTime() {
-        return createFormatterForStyleIndex(MEDIUM, MEDIUM);
-    }
-
-    /**
      * Creates a format that outputs a long datetime format.
      * <p>
      * The format will change as you change the locale of the formatter.
@@ -312,6 +300,31 @@ public class DateTimeFormat {
      */
     public static DateTimeFormatter longDateTime() {
         return createFormatterForStyleIndex(LONG, LONG);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a format that outputs a full date format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter fullDate() {
+        return createFormatterForStyleIndex(FULL, NONE);
+    }
+
+    /**
+     * Creates a format that outputs a full time format.
+     * <p>
+     * The format will change as you change the locale of the formatter.
+     * Call {@link DateTimeFormatter#withLocale(Locale)} to switch the locale.
+     * 
+     * @return the formatter
+     */
+    public static DateTimeFormatter fullTime() {
+        return createFormatterForStyleIndex(NONE, FULL);
     }
 
     /**
@@ -396,19 +409,14 @@ public class DateTimeFormat {
                     DateTimeFieldType type;
                     switch (c) {
                     case 'x':
-                        type = new RemainderType(DateTimeFieldType.weekyear(),
-                                                 DateTimeFieldType.weekyearOfCentury(), 100);
+                        builder.appendTwoDigitWeekyear(new DateTime().getWeekyear() - 30);
                         break;
-                    case 'y': default:
-                        type = new RemainderType(DateTimeFieldType.year(),
-                                                 DateTimeFieldType.yearOfCentury(), 100);
-                        break;
+                    case 'y':
                     case 'Y':
-                        type = new RemainderType(DateTimeFieldType.yearOfEra(),
-                                                 DateTimeFieldType.yearOfCentury(), 100);
+                    default:
+                        builder.appendTwoDigitYear(new DateTime().getYear() - 30);
                         break;
                     }
-                    builder.appendDecimal(type, 2, 2);
                 } else {
                     // Try to support long year values.
                     int maxDigits = 9;
@@ -498,10 +506,12 @@ public class DateTimeFormat {
                 }
                 break;
             case 'Z': // time zone offset
-                if (tokenLen >= 4) {
+                if (tokenLen == 1) {
+                    builder.appendTimeZoneOffset(null, false, 2, 2);
+                } else if (tokenLen == 2) {
                     builder.appendTimeZoneOffset(null, true, 2, 2);
                 } else {
-                    builder.appendTimeZoneOffset(null, false, 2, 2);
+                    builder.appendTimeZoneId();
                 }
                 break;
             case '\'': // literal text
@@ -630,7 +640,7 @@ public class DateTimeFormat {
      * @see #appendPatternTo
      */
     private static DateTimeFormatter createFormatterForPattern(String pattern) {
-        if (pattern == null) {
+        if (pattern == null || pattern.length() == 0) {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
         DateTimeFormatter formatter = null;
@@ -687,7 +697,7 @@ public class DateTimeFormat {
                 } else if (timeStyle == NONE) {
                     type = DATE;
                 }
-                LengthLocaleFormatter llf = new LengthLocaleFormatter(
+                StyleFormatter llf = new StyleFormatter(
                         dateStyle, timeStyle, type);
                 f = new DateTimeFormatter(llf, llf);
                 cStyleCache[index] = f;
@@ -720,45 +730,7 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Special field type which derives a new field as a remainder.
-     */
-    static class RemainderType extends DateTimeFieldType {
-        private final DateTimeFieldType iWrappedType;
-        private final DateTimeFieldType iType;
-        private final int iDivisor;
-
-        private transient RemainderDateTimeField iRecent;
-
-        RemainderType(DateTimeFieldType wrappedType, DateTimeFieldType type, int divisor) {
-            super(type.getName());
-            iWrappedType = wrappedType;
-            iType = type;
-            iDivisor = divisor;
-        }
-
-        public DurationFieldType getDurationType() {
-            return iType.getDurationType();
-        }
-
-        public DurationFieldType getRangeDurationType() {
-            return iType.getRangeDurationType();
-        }
-
-        public DateTimeField getField(Chronology chrono) {
-            DateTimeField wrappedField = iWrappedType.getField(chrono);
-            RemainderDateTimeField field = iRecent;
-            if (field != null && field.getWrappedField() == wrappedField) {
-                return field;
-            }
-            field = new RemainderDateTimeField(wrappedField, iType, iDivisor);
-            iRecent = field;
-            return field;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    static class LengthLocaleFormatter
+    static class StyleFormatter
             implements DateTimePrinter, DateTimeParser {
 
         private static final Map cCache = new HashMap();  // manual sync
@@ -767,7 +739,7 @@ public class DateTimeFormat {
         private final int iTimeStyle;
         private final int iType;
 
-        LengthLocaleFormatter(int dateStyle, int timeStyle, int type) {
+        StyleFormatter(int dateStyle, int timeStyle, int type) {
             super();
             iDateStyle = dateStyle;
             iTimeStyle = timeStyle;
@@ -812,7 +784,8 @@ public class DateTimeFormat {
         }
 
         private DateTimeFormatter getFormatter(Locale locale) {
-            String key = Integer.toString(iType + iDateStyle << 4 + iTimeStyle << 8) + locale.toString();
+            locale = (locale == null ? Locale.getDefault() : locale);
+            String key = Integer.toString(iType + (iDateStyle << 4) + (iTimeStyle << 8)) + locale.toString();
             DateTimeFormatter f = null;
             synchronized (cCache) {
                 f = (DateTimeFormatter) cCache.get(key);

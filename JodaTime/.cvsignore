@@ -8,3 +8,4 @@ maven.log
 jcoverage.ser
 build
 junit*.properties
+lib

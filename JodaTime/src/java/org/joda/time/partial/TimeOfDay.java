@@ -224,6 +224,68 @@ public final class TimeOfDay implements PartialInstant, Serializable {
     }
 
     /**
+     * Constructs a TimeOfDay with specified hour and minute and zero seconds and milliseconds
+     * using <code>ISOChronology</code> in the default zone.
+     * <p>
+     * The constructor uses the no time zone initialising the fields as provided.
+     * Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
+     *
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     */
+    public TimeOfDay(int hourOfDay, int minuteOfHour) {
+        this(hourOfDay, minuteOfHour, 0, 0, null);
+    }
+
+    /**
+     * Constructs a TimeOfDay with specified hour and minute and zero seconds and milliseconds.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
+     *
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param chronology  the chronology, null means ISOChronology in the default zone
+     */
+    public TimeOfDay(int hourOfDay, int minuteOfHour, Chronology chronology) {
+        this(hourOfDay, minuteOfHour, 0, 0, chronology);
+    }
+
+    /**
+     * Constructs a TimeOfDay with specified time field values and zero milliseconds
+     * using <code>ISOChronology</code> in the default zone.
+     * <p>
+     * The constructor uses the no time zone initialising the fields as provided.
+     * Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
+     *
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     */
+    public TimeOfDay(int hourOfDay, int minuteOfHour, int secondOfMinute) {
+        this(hourOfDay, minuteOfHour, secondOfMinute, 0, null);
+    }
+
+    /**
+     * Constructs a TimeOfDay with specified time field values and zero milliseconds.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
+     *
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param chronology  the chronology, null means ISOChronology in the default zone
+     */
+    public TimeOfDay(int hourOfDay, int minuteOfHour, int secondOfMinute, Chronology chronology) {
+        this(hourOfDay, minuteOfHour, secondOfMinute, 0, chronology);
+    }
+
+    /**
      * Constructs a TimeOfDay with specified time field values using
      * <code>ISOChronology</code> in the default zone.
      * <p>
@@ -259,9 +321,9 @@ public final class TimeOfDay implements PartialInstant, Serializable {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
-        // TODO: Validate
         iValues = new int[] {hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond};
         iChronology = chronology.withUTC();
+        chronology.validate(this);
     }
 
     /**

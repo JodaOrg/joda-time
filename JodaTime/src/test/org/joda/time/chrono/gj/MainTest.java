@@ -166,7 +166,7 @@ public class MainTest extends TestCase {
             modeStr = "Julian";
         }
 
-        System.out.println("Testing " + modeStr + " chronology over " + iterations + " iterations");
+        System.out.println("\nTesting " + modeStr + " chronology over " + iterations + " iterations");
 
         Random rnd = new Random(seed);
         long updateMillis = System.currentTimeMillis() + UPDATE_INTERVAL;

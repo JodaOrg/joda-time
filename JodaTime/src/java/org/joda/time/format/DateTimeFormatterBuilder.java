@@ -31,10 +31,15 @@ import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.PreciseDateTimeField;
 
 /**
- * DateTimeFormatterBuilder is used for constructing {@link DateTimeFormatter}s.
- * DateTimeFormatters can be built by appending specific fields or other
- * formatters.
- *
+ * Factory that creates complex instances of DateTimeFormatter via method calls.
+ * <p>
+ * Datetime formatting is performed by the {@link DateTimeFormatter} class.
+ * Three classes provide factory methods to create formatters, and this is one.
+ * The others are {@link DateTimeFormat} and {@link ISODateTimeFormat}.
+ * <p>
+ * DateTimeFormatterBuilder is used for constructing formatters which are then
+ * used to print or parse. The formatters are built by appending specific fields
+ * or other formatters to an instanece of this builder.
  * <p>
  * For example, a formatter that prints month and year, like "January 1970",
  * can be constructed as follows:

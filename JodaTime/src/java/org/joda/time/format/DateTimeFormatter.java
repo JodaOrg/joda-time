@@ -29,8 +29,45 @@ import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
 /**
- * Main API for printing and parsing datetimes.
- *
+ * Controls the printing and parsing of a datetime to and from a string.
+ * <p>
+ * This class is the main API for printing and parsing used by most applications.
+ * Instances of this class are created via one of three factory classes:
+ * <ul>
+ * <li>{@link DateTimeFormat} - formats by pattern and style</li>
+ * <li>{@link ISODateTimeFormat} - ISO8601 formats</li>
+ * <li>{@link DateTimeFormatterBuilder} - complex formats created via method calls</li>
+ * </ul>
+ * <p>
+ * An instance of this class holds a reference internally to one printer and
+ * one parser. It is possible that one of these may be null, in which case the
+ * formatter cannot print/parse. This can be checked via the {@link #isPrinter()}
+ * and {@link #isParser()} methods.
+ * <p>
+ * The underlying printer/parser can be altered to behave exactly as required
+ * by using one of the decorator modifiers:
+ * <ul>
+ * <li>{@link #withLocale(Locale)} - returns a new formatter that uses the specified locale</li>
+ * <li>{@link #withZone(DateTimeZone)} - returns a new formatter that uses the specified time zone</li>
+ * <li>{@link #withChronology(Chronology)} - returns a new formatter that uses the specified chronology</li>
+ * <li>{@link #withOffsetParsed()} - returns a new formatter that returns the parsed time zone offset</li>
+ * </ul>
+ * Each of these returns a new formatter (instances of this class are immutable).
+ * <p>
+ * The main methods of the class are the <code>printXxx</code> and
+ * <code>parseXxx</code> methods. These are used as follows:
+ * <pre>
+ * // print using the defaults (default locale, chronology/zone of the datetime)
+ * String dateStr = formatter.print(dt);
+ * // print using the French locale
+ * String dateStr = formatter.withLocale(Locale.FRENCH).print(dt);
+ * // print using the UTC zone
+ * String dateStr = formatter.withZone(DateTimeZone.UTC).print(dt);
+ * 
+ * // parse using the Paris zone
+ * DateTime date = formatter.withZone(DateTimeZone.forID("Europe/Paris")).parseDateTime(str);
+ * </pre>
+ * 
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.0

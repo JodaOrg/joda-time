@@ -28,10 +28,13 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
- * DateTimeFormat provides localized printing and parsing capabilities for all
- * dates and times.
+ * Factory that creates instances of DateTimeFormatter from patterns and styles.
  * <p>
- * This class provides access to the actual DateTimeFormatter instances in two ways:
+ * Datetime formatting is performed by the {@link DateTimeFormatter} class.
+ * Three classes provide factory methods to create formatters, and this is one.
+ * The others are {@link ISODateTimeFormat} and {@link DateTimeFormatterBuilder}.
+ * <p>
+ * This class provides two types of factory:
  * <ul>
  * <li>{@link #forPattern(String) Pattern} provides a DateTimeFormatter based on
  * a pattern string that is compatible with the JDK date patterns.
@@ -497,23 +500,21 @@ public class DateTimeFormat {
      * @see #appendPatternTo
      */
     protected DateTimeFormatter createFormatterForPattern(String pattern) {
-        synchronized (cPatternedCache) {
-            DateTimeFormatter formatter = (DateTimeFormatter) cPatternedCache.get(pattern);
-            if (formatter != null) {
-                return formatter;
-            }
-
-            if (pattern == null) {
-                throw new IllegalArgumentException("Invalid pattern specification");
-            }
-
-            DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
-            parsePatternTo(builder, pattern);
-            formatter = builder.toFormatter();
-
-            cPatternedCache.put(pattern, formatter);
-            return formatter;
+        if (pattern == null) {
+            throw new IllegalArgumentException("Invalid pattern specification");
         }
+        DateTimeFormatter formatter = null;
+        synchronized (cPatternedCache) {
+            formatter = (DateTimeFormatter) cPatternedCache.get(pattern);
+            if (formatter == null) {
+                DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
+                parsePatternTo(builder, pattern);
+                formatter = builder.toFormatter();
+
+                cPatternedCache.put(pattern, formatter);
+            }
+        }
+        return formatter;
     }
 
     /**

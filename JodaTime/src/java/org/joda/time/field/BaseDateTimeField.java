@@ -162,7 +162,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Get the human-readable, text value of this field from a partial instant.
      * If the specified locale is null, the default locale is used.
      * <p>
-     * The default implementation calls {@link ReadablePartial#get(DateTimeField)}
+     * The default implementation calls {@link ReadablePartial#get(DateTimeFieldType)}
      * and {@link #getAsText(ReadablePartial, int, Locale)}.
      *
      * @param partial  the partial instant to query
@@ -236,7 +236,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
      * Get the human-readable, short text value of this field from a partial instant.
      * If the specified locale is null, the default locale is used.
      * <p>
-     * The default implementation calls {@link ReadablePartial#get(DateTimeField)}
+     * The default implementation calls {@link ReadablePartial#get(DateTimeFieldType)}
      * and {@link #getAsText(ReadablePartial, int, Locale)}.
      *
      * @param partial  the partial instant to query

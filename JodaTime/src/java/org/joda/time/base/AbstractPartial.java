@@ -69,7 +69,7 @@ import org.joda.time.ReadablePartial;
  * Calculations on are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
- * The methods on this class uses {@link ReadablePartial#getFieldSize()},
+ * The methods on this class uses {@link ReadablePartial#size()},
  * {@link ReadablePartial#getField(int)} and {@link ReadablePartial#getValue(int)}
  * to calculate their results. Subclasses may have a better implementation.
  * <p>

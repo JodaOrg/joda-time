@@ -120,7 +120,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * If the field type specified is not supported by the period then zero
      * is returned.
      *
-     * @param field  the field type to query, null returns zero
+     * @param type  the field type to query, null returns zero
      * @return the value of that field, zero if field not supported
      */
     public int get(DurationFieldType type) {
@@ -177,7 +177,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      * Compares this object with the specified object for equality based
      * on the value of each field. All ReadablePeriod instances are accepted.
      *
-     * @param readablePeriod  a readable period to check against
+     * @param period  a readable period to check against
      * @return true if all the field values are equal, false if
      *  not or the period is null or of an incorrect type
      */

@@ -248,7 +248,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param instant  the instant to compare to, null means now
+     * @param interval  the interval to compare to, null means now
      * @return true if this time interval is before the interval specified
      */
     public boolean isBefore(ReadableInterval interval) {
@@ -303,7 +303,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
      * 
-     * @param instant  the instant to compare to, null means now
+     * @param interval  the interval to compare to, null means now
      * @return true if this time interval is after the interval specified
      */
     public boolean isAfter(ReadableInterval interval) {
@@ -398,7 +398,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * on start and end millis plus the chronology.
      * All ReadableInterval instances are accepted.
      * <p>
-     * To compare the duration of two time intervals, use {@link #getDuration()}
+     * To compare the duration of two time intervals, use {@link #toDuration()}
      * to get the durations and compare those.
      *
      * @param readableInterval  a readable interval to check against

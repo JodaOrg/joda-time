@@ -255,7 +255,7 @@ public interface ReadableInterval {
      * on start and end millis plus the chronology.
      * All ReadableInterval instances are accepted.
      * <p>
-     * To compare the duration of two time intervals, use {@link #getDuration()}
+     * To compare the duration of two time intervals, use {@link #toDuration()}
      * to get the durations and compare those.
      *
      * @param readableInterval  a readable interval to check against

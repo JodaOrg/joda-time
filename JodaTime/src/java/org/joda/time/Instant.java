@@ -204,7 +204,7 @@ public final class Instant
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
-     * @param durationToAdd  the duration to add to this one, null means zero
+     * @param duration  the duration to add to this one, null means zero
      * @return a copy of this instant with the duration added
      * @throws ArithmeticException if the new instant exceeds the capacity of a long
      */
@@ -235,8 +235,8 @@ public final class Instant
      * @return a copy of this instant with the duration taken away
      * @throws ArithmeticException if the new instant exceeds the capacity of a long
      */
-    public Instant minus(ReadableDuration durationToAdd) {
-        return withDurationAdded(durationToAdd, -1);
+    public Instant minus(ReadableDuration duration) {
+        return withDurationAdded(duration, -1);
     }
 
     //-----------------------------------------------------------------------

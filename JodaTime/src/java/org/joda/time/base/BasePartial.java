@@ -201,7 +201,6 @@ public abstract class BasePartial
      *
      * @param base  the base partial
      * @param values  the new set of values, not cloned, null means use base
-     * @param chrono  the chronology to use, null means use base
      */
     protected BasePartial(BasePartial base, int[] values) {
         super();
@@ -216,7 +215,6 @@ public abstract class BasePartial
      * This should not be used by mutable subclasses.
      *
      * @param base  the base partial
-     * @param values  the new set of values, not cloned, null means use base
      * @param chrono  the chronology to use, null means use base
      */
     protected BasePartial(BasePartial base, Chronology chrono) {

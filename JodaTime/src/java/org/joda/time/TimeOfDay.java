@@ -141,7 +141,7 @@ public final class TimeOfDay
      * but additional days will be ignored.
      * This method uses the UTC time zone internally.
      *
-     * @param instant  the number of milliseconds into a day to convert
+     * @param millisOfDay  the number of milliseconds into a day to convert
      * @param chrono  the chronology, null means ISO chronology
      */
     public static TimeOfDay fromMillisOfDay(long millisOfDay, Chronology chrono) {

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-03 Stephen Colebourne.
+ * Copyright (c) 2001-2004 Stephen Colebourne.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,6 @@
 package org.joda.time.convert;
 
 import org.joda.time.DurationType;
-import org.joda.time.ReadableDuration;
 import org.joda.time.ReadWritableDuration;
 
 /**

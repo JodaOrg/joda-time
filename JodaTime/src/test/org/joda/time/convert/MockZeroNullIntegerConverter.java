@@ -66,20 +66,8 @@ public class MockZeroNullIntegerConverter implements InstantConverter {
     
     public static final InstantConverter INSTANCE = new MockZeroNullIntegerConverter();
 
-    public long getInstantMillis(Object object) {
-        return 0;
-    }
-
-    public long getInstantMillis(Object object, DateTimeZone zone) {
-        return 0;
-    }
-
     public long getInstantMillis(Object object, Chronology chrono) {
         return 0;
-    }
-
-    public Chronology getChronology(Object object) {
-        return null;
     }
 
     public Chronology getChronology(Object object, DateTimeZone zone) {

@@ -60,9 +60,6 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.JulianChronology;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * CalendarConverter converts a java util Calendar to an instant or partial.
@@ -89,24 +86,23 @@ final class CalendarConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the millis, which is the Calendar millis value.
-     * 
-     * @param object  the object to convert, must not be null
-     * @return the millisecond value
-     */
-    public long getInstantMillis(Object object) {
-        return ((Calendar) object).getTime().getTime();
-    }
-
-    /**
-     * Gets the chronology, which is the GJChronology if a GregorianCalendar is used,
+     * Gets the chronology.
+     * <p>
+     * If a chronology is specified then it is used.
+     * Otherwise, it is the GJChronology if a GregorianCalendar is used,
      * BuddhistChronology if a BuddhistCalendar is used or ISOChronology otherwise.
      * The time zone is extracted from the calendar if possible, default used if not.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the Calendar to convert, must not be null
+     * @param chrono  the chronology to use, null means use Calendar
      * @return the chronology, never null
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
-    public Chronology getChronology(Object object) {
+    public Chronology getChronology(Object object, Chronology chrono) {
+        if (chrono != null) {
+            return chrono;
+        }
         Calendar cal = (Calendar) object;
         DateTimeZone zone = null;
         try {
@@ -123,9 +119,11 @@ final class CalendarConverter extends AbstractConverter
      * BuddhistChronology if a BuddhistCalendar is used or ISOChronology otherwise.
      * The time zone specified is used in preference to that on the calendar.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the Calendar to convert, must not be null
      * @param zone  the specified zone to use, null means default zone
      * @return the chronology, never null
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
     public Chronology getChronology(Object object, DateTimeZone zone) {
         if (object.getClass().getName().endsWith(".BuddhistCalendar")) {
@@ -134,15 +132,28 @@ final class CalendarConverter extends AbstractConverter
             GregorianCalendar gc = (GregorianCalendar) object;
             long cutover = gc.getGregorianChange().getTime();
             if (cutover == Long.MIN_VALUE) {
-                return GregorianChronology.getInstance(zone);
+                return Chronology.getGregorian(zone);
             } else if (cutover == Long.MAX_VALUE) {
-                return JulianChronology.getInstance(zone);
+                return Chronology.getJulian(zone);
             } else {
                 return GJChronology.getInstance(zone, cutover, 4);
             }
         } else {
-            return ISOChronology.getInstance(zone);
+            return Chronology.getISO(zone);
         }
+    }
+
+    /**
+     * Gets the millis, which is the Calendar millis value.
+     * 
+     * @param object  the Calendar to convert, must not be null
+     * @param chrono  the chronology result from getChronology, non-null
+     * @return the millisecond value
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
+     */
+    public long getInstantMillis(Object object, Chronology chrono) {
+        return ((Calendar) object).getTime().getTime();
     }
 
     //-----------------------------------------------------------------------

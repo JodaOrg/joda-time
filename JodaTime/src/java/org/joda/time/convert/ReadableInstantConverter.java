@@ -54,6 +54,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
@@ -71,7 +72,7 @@ class ReadableInstantConverter extends AbstractConverter
      * Singleton instance.
      */
     static final ReadableInstantConverter INSTANCE = new ReadableInstantConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -81,39 +82,13 @@ class ReadableInstantConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the millis from an object of this convertor's type.
-     * 
-     * @param object  the object to convert, must not be null
-     * @return the millisecond value
-     */
-    public long getInstantMillis(Object object) {
-        return ((ReadableInstant) object).getMillis();
-    }
-    
-    /**
-     * Gets the chronology, which is taken from the ReadableInstant.
-     * If the chronology on the instant is null, the ISOChronology in the
-     * default time zone is used.
-     * 
-     * @param object  the object to convert, must not be null
-     * @return the chronology, never null
-     */
-    public Chronology getChronology(Object object) {
-        Chronology chrono = ((ReadableInstant) object).getChronology();
-        if (chrono == null) {
-            return ISOChronology.getInstance();
-        }
-        return chrono;
-    }
-    
-    /**
      * Gets the chronology, which is taken from the ReadableInstant.
      * If the chronology on the instant is null, the ISOChronology in the
      * specified time zone is used.
      * If the chronology on the instant is not in the specified zone, it is
      * adapted.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the ReadableInstant to convert, must not be null
      * @param zone  the specified zone to use, null means default zone
      * @return the chronology, never null
      */
@@ -130,6 +105,37 @@ class ReadableInstantConverter extends AbstractConverter
             }
         }
         return chrono;
+    }
+
+    /**
+     * Gets the chronology, which is taken from the ReadableInstant.
+     * <p>
+     * If the passed in chronology is non-null, it is used.
+     * Otherwise the chronology from the instant is used.
+     * 
+     * @param object  the ReadableInstant to convert, must not be null
+     * @param chrono  the chronology to use, null means use that from object
+     * @return the chronology, never null
+     */
+    public Chronology getChronology(Object object, Chronology chrono) {
+        if (chrono == null) {
+            chrono = ((ReadableInstant) object).getChronology();
+            chrono = DateTimeUtils.getChronology(chrono);
+        }
+        return chrono;
+    }
+
+    /**
+     * Extracts the millis from an object of this convertor's type.
+     * 
+     * @param object  the ReadableInstant to convert, must not be null
+     * @param chrono  the non-null result of getChronology
+     * @return the millisecond value
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
+     */
+    public long getInstantMillis(Object object, Chronology chrono) {
+        return ((ReadableInstant) object).getMillis();
     }
 
     //-----------------------------------------------------------------------

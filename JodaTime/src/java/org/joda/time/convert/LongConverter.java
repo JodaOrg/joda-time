@@ -53,6 +53,8 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.Chronology;
+
 /**
  * LongConverter converts a Long to an instant, partial or duration.
  * The Long value represents milliseconds in the ISO chronology.
@@ -63,12 +65,12 @@ package org.joda.time.convert;
  */
 class LongConverter extends AbstractConverter
         implements InstantConverter, PartialConverter, DurationConverter {
-    
+
     /**
      * Singleton instance.
      */
     static final LongConverter INSTANCE = new LongConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -80,20 +82,21 @@ class LongConverter extends AbstractConverter
     /**
      * Gets the millisecond instant, which is the Long value.
      * 
-     * @param object  the object to convert, must not be null
-     * @return the millisecond instant
+     * @param object  the Long to convert, must not be null
+     * @param chrono  the chronology to use, which is always non-null
+     * @return the millisecond value
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
-    public long getInstantMillis(Object object) {
+    public long getInstantMillis(Object object, Chronology chrono) {
         return ((Long) object).longValue();
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Gets the millisecond duration, which is the Long value.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the Long to convert, must not be null
      * @return the millisecond duration
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type

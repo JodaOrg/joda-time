@@ -124,7 +124,7 @@ public final class Instant
     public Instant(Object instant) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iMillis = converter.getInstantMillis(instant);
+        iMillis = converter.getInstantMillis(instant, Chronology.getISOUTC());
     }
 
     //-----------------------------------------------------------------------

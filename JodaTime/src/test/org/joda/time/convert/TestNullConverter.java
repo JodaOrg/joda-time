@@ -137,25 +137,12 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstantMillis_Object() throws Exception {
-        assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null));
-    }
-
-    public void testGetInstantMillis_Object_Zone() throws Exception {
-        assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null, PARIS));
-        assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null, (DateTimeZone) null));
-    }
-
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null, JULIAN));
         assertEquals(TEST_TIME_NOW, NullConverter.INSTANCE.getInstantMillis(null, (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
-    public void testGetChronology_Object() throws Exception {
-        assertEquals(ISO, NullConverter.INSTANCE.getChronology(null));
-    }
-
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, NullConverter.INSTANCE.getChronology(null, PARIS));
         assertEquals(ISO, NullConverter.INSTANCE.getChronology(null, (DateTimeZone) null));

@@ -70,12 +70,12 @@ import org.joda.time.ReadWritablePeriod;
  */
 class NullConverter extends AbstractConverter
         implements InstantConverter, PartialConverter, DurationConverter, PeriodConverter, IntervalConverter {
-    
+
     /**
      * Singleton instance.
      */
     static final NullConverter INSTANCE = new NullConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -85,20 +85,9 @@ class NullConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the millisecond instant, which is now.
-     * 
-     * @param object  the object to convert
-     * @return the millisecond instant of now
-     */
-    public long getInstantMillis(Object object) {
-        return DateTimeUtils.currentTimeMillis();
-    }
-    
-    //-----------------------------------------------------------------------
-    /**
      * Gets the millisecond duration, which is zero.
      * 
-     * @param object  the object to convert
+     * @param object  the object to convert, which is null
      * @return the millisecond duration
      */
     public long getDurationMillis(Object object) {
@@ -110,7 +99,7 @@ class NullConverter extends AbstractConverter
      * Sets the given ReadWritableDuration to zero milliseconds.
      *
      * @param duration duration to get modified
-     * @param object  the object to convert
+     * @param object  the object to convert, which is null
      * @param chrono  the chronology to use
      * @throws NullPointerException if the duration is null
      */
@@ -124,7 +113,7 @@ class NullConverter extends AbstractConverter
      * type, and sets them into the given ReadWritableInterval.
      *
      * @param writableInterval interval to get modified, not null
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert, which is null
      * @param chrono  the chronology to use, may be null
      * @throws NullPointerException if the interval is null
      */

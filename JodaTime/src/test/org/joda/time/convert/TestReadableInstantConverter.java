@@ -121,18 +121,6 @@ public class TestReadableInstantConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstantMillis_Object() throws Exception {
-        assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new Instant(123L)));
-        assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new DateTime(123L)));
-    }
-
-    public void testGetInstantMillis_Object_Zone() throws Exception {
-        assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new Instant(123L), PARIS));
-        assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new DateTime(123L), PARIS));
-        assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new Instant(123L), (DateTimeZone) null));
-        assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new DateTime(123L), (DateTimeZone) null));
-    }
-
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new Instant(123L), JULIAN));
         assertEquals(123L, ReadableInstantConverter.INSTANCE.getInstantMillis(new DateTime(123L), JULIAN));
@@ -141,18 +129,6 @@ public class TestReadableInstantConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetChronology_Object() throws Exception {
-        assertEquals(ISO.withUTC(), ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L)));
-        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L)));
-        
-        MutableDateTime mdt = new MutableDateTime() {
-            public Chronology getChronology() {
-                return null; // bad
-            }
-        };
-        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(mdt));
-    }
-
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), PARIS));
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), PARIS));
@@ -171,11 +147,21 @@ public class TestReadableInstantConverter extends TestCase {
         assertEquals(ISO_PARIS, ReadableInstantConverter.INSTANCE.getChronology(mdt, PARIS));
     }
 
+    public void testGetChronology_Object_nullChronology() throws Exception {
+        assertEquals(ISO.withUTC(), ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), (Chronology) null));
+        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), (Chronology) null));
+        
+        MutableDateTime mdt = new MutableDateTime() {
+            public Chronology getChronology() {
+                return null; // bad
+            }
+        };
+        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(mdt, (Chronology) null));
+    }
+
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), JULIAN));
         assertEquals(JULIAN, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), JULIAN));
-        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L), (Chronology) null));
-        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------

@@ -55,6 +55,8 @@ package org.joda.time.convert;
 
 import java.util.Date;
 
+import org.joda.time.Chronology;
+
 /**
  * DateConverter converts a java util Date to an instant or partial.
  * The Date is converted to milliseconds in the ISO chronology.
@@ -64,12 +66,12 @@ import java.util.Date;
  */
 final class DateConverter extends AbstractConverter
         implements InstantConverter, PartialConverter {
-    
+
     /**
      * Singleton instance.
      */
     static final DateConverter INSTANCE = new DateConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -81,13 +83,16 @@ final class DateConverter extends AbstractConverter
     /**
      * Gets the millis, which is the Date millis value.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the Date to convert, must not be null
+     * @param chrono  the non-null result of getChronology
      * @return the millisecond value
+     * @throws NullPointerException if the object is null
+     * @throws ClassCastException if the object is an invalid type
      */
-    public long getInstantMillis(Object object) {
+    public long getInstantMillis(Object object, Chronology chrono) {
         return ((Date) object).getTime();
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Returns Date.class.
@@ -97,5 +102,5 @@ final class DateConverter extends AbstractConverter
     public Class getSupportedType() {
         return Date.class;
     }
-    
+
 }

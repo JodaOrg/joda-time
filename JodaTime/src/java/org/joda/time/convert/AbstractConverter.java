@@ -54,10 +54,10 @@
 package org.joda.time.convert;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadablePartial;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * AbstractConverter simplifies the process of implementing a converter.
@@ -66,7 +66,7 @@ import org.joda.time.chrono.ISOChronology;
  * @since 1.0
  */
 public abstract class AbstractConverter implements Converter {
-    
+
     /**
      * Restricted constructor.
      */
@@ -78,92 +78,46 @@ public abstract class AbstractConverter implements Converter {
     /**
      * Extracts the millis from an object of this convertor's type.
      * <p>
-     * This implementation calls {@link #getInstantMillis(Object, DateTimeZone)}.
+     * This implementation returns the current time.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is always non-null
      * @return the millisecond value
-     * @throws ClassCastException if the object is invalid
-     */
-    public long getInstantMillis(Object object) {
-        return getInstantMillis(object, (DateTimeZone) null);
-    }
-    
-    /**
-     * Extracts the millis from an object of this convertor's type.
-     * <p>
-     * This implementation calls {@link #getInstantMillis(Object)}.
-     * 
-     * @param object  the object to convert, must not be null
-     * @param zone  the zone to use, null means default zone
-     * @return the millisecond value
-     * @throws ClassCastException if the object is invalid
-     */
-    public long getInstantMillis(Object object, DateTimeZone zone) {
-        return getInstantMillis(object);
-    }
-    
-    /**
-     * Extracts the millis from an object of this convertor's type.
-     * <p>
-     * This implementation calls {@link #getInstantMillis(Object)}.
-     * 
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, null means ISOChronology
-     * @return the millisecond value
-     * @throws ClassCastException if the object is invalid
      */
     public long getInstantMillis(Object object, Chronology chrono) {
-        return getInstantMillis(object);
+        return DateTimeUtils.currentTimeMillis();
     }
+
     //-----------------------------------------------------------------------
-    
-    /**
-     * Extracts the chronology from an object of this convertor's type.
-     * <p>
-     * This implementation returns the ISOChronology.
-     * 
-     * @param object  the object to convert, must not be null
-     * @return the chronology, never null
-     * @throws ClassCastException if the object is invalid
-     */
-    public Chronology getChronology(Object object) {
-        return ISOChronology.getInstance();
-    }
-    
     /**
      * Extracts the chronology from an object of this convertor's type
      * where the time zone is specified.
      * <p>
-     * This implementation returns the ISOChronology.
+     * This implementation returns the ISO chronology.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
      * @param zone  the specified zone to use, null means default zone
      * @return the chronology, never null
-     * @throws ClassCastException if the object is invalid
      */
     public Chronology getChronology(Object object, DateTimeZone zone) {
-        return ISOChronology.getInstance(zone);
+        return Chronology.getISO(zone);
     }
-    
+
     /**
      * Extracts the chronology from an object of this convertor's type
      * where the chronology is specified.
      * <p>
      * This implementation returns the chronology specified, or the
-     * ISOChronology in the default zone if null passed in.
+     * ISO chronology in the default zone if null passed in.
      * 
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, null means ISOChronology
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, null means ISO default
      * @return the chronology, never null
-     * @throws ClassCastException if the object is invalid
      */
     public Chronology getChronology(Object object, Chronology chrono) {
-        if (chrono == null) {
-            return ISOChronology.getInstance();
-        }
-        return chrono;
+        return DateTimeUtils.getChronology(chrono);
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Extracts the values of the partial from an object of this converter's type.
@@ -175,7 +129,6 @@ public abstract class AbstractConverter implements Converter {
      * @param object  the object to convert
      * @param chrono  the chronology to use, which is the non-null result of getChronology()
      * @return the array of field values that match the 
-     * @throws ClassCastException if the object is invalid
      */
     public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono) {
         long instant = getInstantMillis(object, chrono);
@@ -186,9 +139,8 @@ public abstract class AbstractConverter implements Converter {
     /**
      * Selects a suitable period type for the given object.
      *
-     * @param object  the object to examine, must not be null
+     * @param object  the object to examine
      * @return the period type, never null
-     * @throws ClassCastException if the object is invalid
      */
     public PeriodType getPeriodType(Object object) {
         return PeriodType.standard();
@@ -200,10 +152,9 @@ public abstract class AbstractConverter implements Converter {
      * <p>
      * If it is, then the calling code should cast and copy the fields directly.
      *
-     * @param object  the object to convert, must not be null
+     * @param object  the object to convert
      * @param chrono  the chronology to use, may be null
      * @return true if the input is a ReadableInterval
-     * @throws ClassCastException if the object is invalid
      */
     public boolean isReadableInterval(Object object, Chronology chrono) {
         return false;

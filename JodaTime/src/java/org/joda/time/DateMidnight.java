@@ -191,8 +191,10 @@ public final class DateMidnight
      * Constructs an instance from an Object that represents a datetime.
      * The constructed object will have a local time of midnight.
      * <p>
-     * If the object contains no chronology, <code>ISOChronology</code>
-     * in the default time zone is used.
+     * If the object implies a chronology (such as GregorianCalendar does),
+     * then that chronology will be used. Otherwise, ISO default is used.
+     * Thus if a GregorianCalendar is passed in, the chronology used will
+     * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
@@ -202,7 +204,7 @@ public final class DateMidnight
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateMidnight(Object instant) {
-        super(instant);
+        super(instant, (Chronology) null);
     }
 
     /**
@@ -210,8 +212,12 @@ public final class DateMidnight
      * forcing the time zone to that specified.
      * The constructed object will have a local time of midnight.
      * <p>
-     * If the object contains no chronology, <code>ISOChronology</code> is used.
+     * If the object implies a chronology (such as GregorianCalendar does),
+     * then that chronology will be used, but with the time zone adjusted.
+     * Otherwise, ISO is used in the specified time zone.
      * If the specified time zone is null, the default zone is used.
+     * Thus if a GregorianCalendar is passed in, the chronology used will
+     * be GJ, but if a Date is passed in the chronology will be ISO.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
@@ -230,7 +236,9 @@ public final class DateMidnight
      * using the specified chronology.
      * The constructed object will have a local time of midnight.
      * <p>
-     * If the chronology is null, ISOChronology in the default time zone is used.
+     * If the chronology is null, ISO in the default time zone is used.
+     * Any chronology implied by the object (such as GregorianCalendar does)
+     * is ignored.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
@@ -241,7 +249,7 @@ public final class DateMidnight
      * @throws IllegalArgumentException if the instant is invalid
      */
     public DateMidnight(Object instant, Chronology chronology) {
-        super(instant, chronology);
+        super(instant, DateTimeUtils.getChronology(chronology));
     }
 
     //-----------------------------------------------------------------------

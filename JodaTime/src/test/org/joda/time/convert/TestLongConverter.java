@@ -117,25 +117,12 @@ public class TestLongConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstantMillis_Object() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L)));
-    }
-
-    public void testGetInstantMillis_Object_Zone() throws Exception {
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), PARIS));
-        assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), (DateTimeZone) null));
-    }
-
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), JULIAN));
         assertEquals(123L, LongConverter.INSTANCE.getInstantMillis(new Long(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
-    public void testGetChronology_Object() throws Exception {
-        assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L)));
-    }
-
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, LongConverter.INSTANCE.getChronology(new Long(123L), PARIS));
         assertEquals(ISO, LongConverter.INSTANCE.getChronology(new Long(123L), (DateTimeZone) null));

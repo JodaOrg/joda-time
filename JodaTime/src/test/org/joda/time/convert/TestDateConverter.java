@@ -118,25 +118,12 @@ public class TestDateConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetInstantMillis_Object() throws Exception {
-        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L)));
-    }
-
-    public void testGetInstantMillis_Object_Zone() throws Exception {
-        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), PARIS));
-        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), (DateTimeZone) null));
-    }
-
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), JULIAN));
         assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
-    public void testGetChronology_Object() throws Exception {
-        assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L)));
-    }
-
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, DateConverter.INSTANCE.getChronology(new Date(123L), PARIS));
         assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L), (DateTimeZone) null));
@@ -150,8 +137,8 @@ public class TestDateConverter extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = Chronology.getISO().get(tod, 12345678L);
-        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, new Date(12345678L), Chronology.getISO());
+        int[] expected = Chronology.getCoptic().get(tod, 12345678L);
+        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, new Date(12345678L), Chronology.getCoptic());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

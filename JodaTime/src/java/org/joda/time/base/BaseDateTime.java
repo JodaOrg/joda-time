@@ -166,26 +166,6 @@ public abstract class BaseDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Constructs an instance from an Object that represents a datetime.
-     * <p>
-     * If the object contains no chronology, <code>ISOChronology</code>
-     * in the default time zone is used.
-     * <p>
-     * The recognised object types are defined in
-     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
-     *
-     * @param instant  the datetime object, null means now
-     * @throws IllegalArgumentException if the instant is invalid
-     */
-    public BaseDateTime(Object instant) {
-        super();
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iChronology = checkChronology(converter.getChronology(instant));
-        iMillis = checkInstant(converter.getInstantMillis(instant), iChronology);
-    }
-
-    /**
      * Constructs an instance from an Object that represents a datetime,
      * forcing the time zone to that specified.
      * <p>
@@ -196,29 +176,30 @@ public abstract class BaseDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, null means now
-     * @param zone  the time zone, null means default time zone
+     * @param instant  the datetime object
+     * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public BaseDateTime(Object instant, DateTimeZone zone) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iChronology = checkChronology(converter.getChronology(instant, zone));
-        iMillis = checkInstant(converter.getInstantMillis(instant, zone), iChronology);
+        Chronology chrono = checkChronology(converter.getChronology(instant, zone));
+        iChronology = chrono;
+        iMillis = checkInstant(converter.getInstantMillis(instant, chrono), chrono);
     }
 
     /**
      * Constructs an instance from an Object that represents a datetime,
      * using the specified chronology.
      * <p>
-     * If the chronology is null, ISOChronology in the default time zone is used.
+     * If the chronology is null, ISO in the default time zone is used.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, null means now
-     * @param chronology  the chronology, null means ISOChronology in default zone
+     * @param instant  the datetime object
+     * @param chronology  the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
     public BaseDateTime(Object instant, Chronology chronology) {

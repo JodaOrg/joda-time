@@ -55,11 +55,9 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
@@ -94,29 +92,13 @@ class StringConverter extends AbstractConverter
     /**
      * Gets the millis, which is the ISO parsed string value.
      * 
-     * @param object  the object to convert, must not be null
-     * @param zone  the zone to use, null means default zone
-     * @return the millisecond value
-     * @throws IllegalArgumentException if the value if invalid
-     */
-    public long getInstantMillis(Object object, DateTimeZone zone) {
-        String str = (String) object;
-        Chronology chrono = ISOChronology.getInstance(zone);
-        DateTimeParser p = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
-        return p.parseMillis(str);
-    }
-
-    /**
-     * Gets the millis, which is the ISO parsed string value.
-     * 
-     * @param object  the object to convert, must not be null
-     * @param chrono  the chronology to use, null means ISOChronology
+     * @param object  the String to convert, must not be null
+     * @param chrono  the chronology to use, non-null result of getChronology
      * @return the millisecond value
      * @throws IllegalArgumentException if the value if invalid
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         String str = (String) object;
-        chrono = getChronology(object, chrono);
         DateTimeParser p = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
         return p.parseMillis(str);
     }
@@ -126,7 +108,7 @@ class StringConverter extends AbstractConverter
      * Gets the duration of the string using the standard type.
      * This matches the toString() method of ReadableDuration.
      * 
-     * @param object  the object to convert, must not be null
+     * @param object  the String to convert, must not be null
      * @throws ClassCastException if the object is invalid
      */
     public long getDurationMillis(Object object) {
@@ -180,7 +162,7 @@ class StringConverter extends AbstractConverter
      * sets them into the given ReadWritableDuration.
      *
      * @param period  period to get modified
-     * @param object  the object to convert, must not be null
+     * @param object  the String to convert, must not be null
      * @param chrono  the chronology to use
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
@@ -203,7 +185,7 @@ class StringConverter extends AbstractConverter
      * Sets the value of the mutable interval from the string.
      * 
      * @param writableInterval  the interval to set
-     * @param object  the string to set from
+     * @param object  the String to convert, must not be null
      * @param chrono  the chronology to use, may be null
      */
     public void setInto(ReadWritableInterval writableInterval, Object object, Chronology chrono) {

@@ -160,7 +160,7 @@ public abstract class BasePartial
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
      *
-     * @param instant  the datetime object, null means use converter
+     * @param instant  the datetime object
      * @param chronology  the chronology, null means use converter
      * @throws IllegalArgumentException if the date is invalid
      */

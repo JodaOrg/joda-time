@@ -58,55 +58,16 @@ import org.joda.time.DateTimeZone;
 
 /**
  * InstantConverter defines how an object is converted to milliseconds/chronology.
+ * <p>
+ * The two methods in this interface must be called in order, as the
+ * <code>getInstantMillis</code> method relies on the result of the
+ * <code>getChronology</code> method being passed in.
  *
  * @author Stephen Colebourne
  * @since 1.0
  */
 public interface InstantConverter extends Converter {
 
-    /**
-     * Extracts the millis from an object of this converter's type.
-     * 
-     * @param object  the object to convert
-     * @return the millisecond instant
-     * @throws ClassCastException if the object is invalid
-     */
-    long getInstantMillis(Object object);
-    
-    /**
-     * Extracts the millis from an object of this converter's type. The zone
-     * parameter is a hint to the converter, should it require a time zone to
-     * aid in conversion.
-     * 
-     * @param object  the object to convert
-     * @param zone  the zone to use, null means default zone
-     * @return the millisecond instant
-     * @throws ClassCastException if the object is invalid
-     */
-    long getInstantMillis(Object object, DateTimeZone zone);
-    
-    /**
-     * Extracts the millis from an object of this converter's type. The chrono
-     * parameter is a hint to the converter, should it require a chronology to
-     * aid in conversion.
-     * 
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, null usually means ISO
-     * @return the millisecond instant
-     * @throws ClassCastException if the object is invalid
-     */
-    long getInstantMillis(Object object, Chronology chrono);
-    
-    //-----------------------------------------------------------------------
-    /**
-     * Extracts the chronology from an object of this converter's type.
-     * 
-     * @param object  the object to convert
-     * @return the chronology, never null
-     * @throws ClassCastException if the object is invalid
-     */
-    Chronology getChronology(Object object);
-    
     /**
      * Extracts the chronology from an object of this converter's type
      * where the time zone is specified.
@@ -117,16 +78,32 @@ public interface InstantConverter extends Converter {
      * @throws ClassCastException if the object is invalid
      */
     Chronology getChronology(Object object, DateTimeZone zone);
-    
+
     /**
      * Extracts the chronology from an object of this converter's type
-     * where the chronology is specified.
+     * where the chronology may be specified.
+     * <p>
+     * If the chronology is non-null it should be used. If it is null, then the
+     * object should be queried, and if it has no chronology then ISO default is used.
      * 
      * @param object  the object to convert
-     * @param chrono  the chronology to use, null usually means ISO
+     * @param chrono  the chronology to use, null means use object
      * @return the chronology, never null
      * @throws ClassCastException if the object is invalid
      */
     Chronology getChronology(Object object, Chronology chrono);
-    
+
+    //-----------------------------------------------------------------------
+    /**
+     * Extracts the millis from an object of this converter's type.
+     * <p>
+     * The chronology passed in is the result of the call to <code>getChronology</code>.
+     * 
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     * @return the millisecond instant
+     * @throws ClassCastException if the object is invalid
+     */
+    long getInstantMillis(Object object, Chronology chrono);
+
 }

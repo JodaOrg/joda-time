@@ -79,13 +79,16 @@ import org.joda.time.chrono.JulianChronology;
  */
 public class TestStringConverter extends TestCase {
 
-    private static final DateTimeZone ONE_HOUR = DateTimeZone.getInstance("+01:00");
+    private static final DateTimeZone ONE_HOUR = DateTimeZone.getInstance(1);
+    private static final DateTimeZone EIGHT = DateTimeZone.getInstance(8);
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     private static final Chronology ISO = ISOChronology.getInstance();
     private static final Chronology JULIAN = JulianChronology.getInstance();
+    private static final Chronology ISO_EIGHT = ISOChronology.getInstance(EIGHT);
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
     
     private DateTimeZone zone = null;
     private Locale locale = null;
@@ -139,88 +142,80 @@ public class TestStringConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_Object() throws Exception {
-        DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+01:00"));
+        DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 1, 1, 0, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004T+01:00"));
+        dt = new DateTime(2004, 1, 1, 0, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004T+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 1, 0, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06T+01:00"));
+        dt = new DateTime(2004, 6, 1, 0, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06T+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T+01:00"));
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-161T+01:00"));
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-161T+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-W24-3T+01:00"));
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-W24-3T+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 7, 0, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-W24T+01:00"));
+        dt = new DateTime(2004, 6, 7, 0, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-W24T+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 12, 0, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12+01:00"));
+        dt = new DateTime(2004, 6, 9, 12, 0, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 12, 24, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24+01:00"));
+        dt = new DateTime(2004, 6, 9, 12, 24, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 12, 24, 48, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48+01:00"));
+        dt = new DateTime(2004, 6, 9, 12, 24, 48, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 12, 30, 0, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12.5+01:00"));
+        dt = new DateTime(2004, 6, 9, 12, 30, 0, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12.5+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 12, 24, 30, 0, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24.5+01:00"));
+        dt = new DateTime(2004, 6, 9, 12, 24, 30, 0, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24.5+08:00", ISO_EIGHT));
         
-        dt = new DateTime(2004, 6, 9, 12, 24, 48, 500, ONE_HOUR);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.5+01:00"));
+        dt = new DateTime(2004, 6, 9, 12, 24, 48, 500, EIGHT);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.5+08:00", ISO_EIGHT));
         
         dt = new DateTime(2004, 6, 9, 12, 24, 48, 501);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501"));
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", ISO));
     }
 
     public void testGetInstantMillis_Object_Zone() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, PARIS);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+02:00", PARIS));
-        
-        dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, LONDON);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+01:00", (DateTimeZone) null));
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+02:00", ISO_PARIS));
         
         dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, PARIS);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", PARIS));
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", ISO_PARIS));
         
         dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, LONDON);
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", (DateTimeZone) null));
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+01:00", ISO_LONDON));
+        
+        dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, LONDON);
+        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501", ISO_LONDON));
     }
 
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, JulianChronology.getInstance(LONDON));
         assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+01:00", JULIAN));
-        
-        dt = new DateTime(2004, 6, 9, 12, 24, 48, 501, ISOChronology.getInstance(LONDON));
-        assertEquals(dt.getMillis(), StringConverter.INSTANCE.getInstantMillis("2004-06-09T12:24:48.501+01:00", (Chronology) null));
     }
 
     public void testGetInstantMillisInvalid() {
         try {
-            StringConverter.INSTANCE.getInstantMillis("");
+            StringConverter.INSTANCE.getInstantMillis("", (Chronology) null);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            StringConverter.INSTANCE.getInstantMillis("X");
+            StringConverter.INSTANCE.getInstantMillis("X", (Chronology) null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
-    public void testGetChronology_Object() throws Exception {
-        assertEquals(ISOChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501+01:00"));
-        assertEquals(ISOChronology.getInstance(LONDON), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501"));
-    }
-
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISOChronology.getInstance(PARIS), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501+01:00", PARIS));
         assertEquals(ISOChronology.getInstance(PARIS), StringConverter.INSTANCE.getChronology("2004-06-09T12:24:48.501", PARIS));

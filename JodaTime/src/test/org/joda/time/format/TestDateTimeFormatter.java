@@ -15,6 +15,7 @@
  */
 package org.joda.time.format;
 
+import java.io.CharArrayWriter;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -27,6 +28,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
+import org.joda.time.ReadablePartial;
 
 /**
  * This class is a Junit unit test for DateTime Formating.
@@ -149,6 +151,28 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testPrint_writerMethods() throws Exception {
+        DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        CharArrayWriter out = new CharArrayWriter();
+        f.printTo(out, dt);
+        assertEquals("Wed 2004-06-09T10:20:30Z", out.toString());
+        
+        out = new CharArrayWriter();
+        f.printTo(out, dt.getMillis());
+        assertEquals("Wed 2004-06-09T11:20:30+01:00", out.toString());
+        
+        out = new CharArrayWriter();
+        ISODateTimeFormat.yearMonthDay().printTo(out, dt.toYearMonthDay());
+        assertEquals("2004-06-09", out.toString());
+        
+        out = new CharArrayWriter();
+        try {
+            ISODateTimeFormat.yearMonthDay().printTo(out, (ReadablePartial) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testPrint_chrono_and_zone() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T10:20:30Z",
@@ -192,14 +216,26 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(Locale.FRENCH, f2.getLocale());
         assertSame(f2, f2.withLocale(Locale.FRENCH));
         
+        f2 = f.withLocale(null);
+        assertEquals(null, f2.getLocale());
+        assertSame(f2, f2.withLocale(null));
+        
         f2 = f.withZone(PARIS);
         assertEquals(PARIS, f2.getZone());
         assertSame(f2, f2.withZone(PARIS));
         
+        f2 = f.withZone(null);
+        assertEquals(null, f2.getZone());
+        assertSame(f2, f2.withZone(null));
+        
         f2 = f.withChronology(BUDDHIST_PARIS);
         assertEquals(BUDDHIST_PARIS, f2.getChronolgy());
         assertSame(f2, f2.withChronology(BUDDHIST_PARIS));
-    }        
+        
+        f2 = f.withChronology(null);
+        assertEquals(null, f2.getChronolgy());
+        assertSame(f2, f2.withChronology(null));
+    }
 
     public void testWithGetOffsetParsedMethods() {
         DateTimeFormatter f2 = f;

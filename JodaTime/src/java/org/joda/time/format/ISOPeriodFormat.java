@@ -86,6 +86,8 @@ public class ISOPeriodFormat {
     /**
      * The standard ISO format - PyYmMwWdDThHmMsS.
      * Milliseconds are not output.
+     * Note that the ISO8601 standard actually indicates weeks should not
+     * be shown if any other field is present and vice versa.
      */
     public PeriodFormatter standard() {
         if (iStandard == null) {
@@ -100,7 +102,7 @@ public class ISOPeriodFormat {
                 .appendSuffix("W")
                 .appendDays()
                 .appendSuffix("D")
-                .appendSeparator("T")
+                .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendSuffix("H")
                 .appendMinutes()
@@ -125,7 +127,7 @@ public class ISOPeriodFormat {
                 .minimumPrintedDigits(2)
                 .appendMonths()
                 .appendDays()
-                .appendSeparator("T")
+                .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendMinutes()
                 .appendSeconds()
@@ -149,7 +151,7 @@ public class ISOPeriodFormat {
                 .appendMonths()
                 .appendSeparator("-")
                 .appendDays()
-                .appendSeparator("T")
+                .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendSeparator(":")
                 .appendMinutes()
@@ -174,7 +176,7 @@ public class ISOPeriodFormat {
                 .appendPrefix("W")
                 .appendWeeks()
                 .appendDays()
-                .appendSeparator("T")
+                .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendMinutes()
                 .appendSeconds()
@@ -199,7 +201,7 @@ public class ISOPeriodFormat {
                 .appendWeeks()
                 .appendSeparator("-")
                 .appendDays()
-                .appendSeparator("T")
+                .appendSeparatorIfFieldsAfter("T")
                 .appendHours()
                 .appendSeparator(":")
                 .appendMinutes()

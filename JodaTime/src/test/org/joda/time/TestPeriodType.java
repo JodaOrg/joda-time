@@ -263,6 +263,33 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testYearDayType() throws Exception {
+        PeriodType type = PeriodType.getYearDayType();
+        assertEquals(true, type.years().isSupported());
+        assertEquals(false, type.months().isSupported());
+        assertEquals(false, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(false, type.isPrecise());
+        assertEquals(ISOChronology.getInstance(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.getYearDayType());
+        assertEquals(false, type.equals(PeriodType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.getYearDayType().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.getAllType().hashCode());
+        assertEquals("YearDayType", type.getName());
+        assertEquals("PeriodType[YearDayType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstance()));
+        assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
+    }
+
+    //-----------------------------------------------------------------------
     public void testYearWeekType() throws Exception {
         PeriodType type = PeriodType.getYearWeekType();
         assertEquals(true, type.years().isSupported());
@@ -431,6 +458,141 @@ public class TestPeriodType extends TestCase {
         assertSame(PeriodType.getAllType(), type.withChronology(null));
         assertSame(PeriodType.getAllType(), type.withChronology(ISOChronology.getInstance()));
         assertEquals(CopticChronology.getInstanceUTC(), type.withChronology(CopticChronology.getInstanceUTC()).getChronology());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testDayHourTypeUTC() throws Exception {
+        PeriodType type = PeriodType.getDayHourTypeUTC();
+        assertEquals(false, type.years().isSupported());
+        assertEquals(false, type.months().isSupported());
+        assertEquals(false, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(true, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.getDayHourTypeUTC());
+        assertEquals(false, type.equals(PeriodType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.getDayHourTypeUTC().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.getAllType().hashCode());
+        assertEquals("DayHourType", type.getName());
+        assertEquals("PeriodType[DayHourType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testYearDayTypeUTC() throws Exception {
+        PeriodType type = PeriodType.getYearDayTypeUTC();
+        assertEquals(true, type.years().isSupported());
+        assertEquals(false, type.months().isSupported());
+        assertEquals(false, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(false, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.getYearDayTypeUTC());
+        assertEquals(false, type.equals(PeriodType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.getYearDayTypeUTC().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.getAllType().hashCode());
+        assertEquals("YearDayType", type.getName());
+        assertEquals("PeriodType[YearDayType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testYearWeekTypeUTC() throws Exception {
+        PeriodType type = PeriodType.getYearWeekTypeUTC();
+        assertEquals(true, type.years().isSupported());
+        assertEquals(false, type.months().isSupported());
+        assertEquals(true, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(false, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.getYearWeekTypeUTC());
+        assertEquals(false, type.equals(PeriodType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.getYearWeekTypeUTC().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.getAllType().hashCode());
+        assertEquals("YearWeekType", type.getName());
+        assertEquals("PeriodType[YearWeekType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testYearMonthTypeUTC() throws Exception {
+        PeriodType type = PeriodType.getYearMonthTypeUTC();
+        assertEquals(true, type.years().isSupported());
+        assertEquals(true, type.months().isSupported());
+        assertEquals(false, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(false, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.getYearMonthTypeUTC());
+        assertEquals(false, type.equals(PeriodType.getAllType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.getYearMonthTypeUTC().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.getAllType().hashCode());
+        assertEquals("YearMonthType", type.getName());
+        assertEquals("PeriodType[YearMonthType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAllTypeUTC() throws Exception {
+        PeriodType type = PeriodType.getAllTypeUTC();
+        assertEquals(true, type.years().isSupported());
+        assertEquals(true, type.months().isSupported());
+        assertEquals(true, type.weeks().isSupported());
+        assertEquals(true, type.days().isSupported());
+        assertEquals(true, type.hours().isSupported());
+        assertEquals(true, type.minutes().isSupported());
+        assertEquals(true, type.seconds().isSupported());
+        assertEquals(true, type.millis().isSupported());
+        assertEquals(false, type.isPrecise());
+        assertEquals(ISOChronology.getInstanceUTC(), type.getChronology());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.getAllTypeUTC());
+        assertEquals(false, type.equals(PeriodType.getMillisType()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.getAllTypeUTC().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.getMillisType().hashCode());
+        assertEquals("AllType", type.getName());
+        assertEquals("PeriodType[AllType]", type.toString());
+        assertSameAfterSerialization(type);
+        assertSame(type, type.withChronology(null));
+        assertSame(type, type.withChronology(ISOChronology.getInstanceUTC()));
+        assertSame(type, type.withChronology(CopticChronology.getInstanceUTC()));
     }
 
     //-----------------------------------------------------------------------

@@ -93,40 +93,40 @@ import org.joda.time.field.UnsupportedDurationField;
 public abstract class PeriodType implements Serializable {
     private static final long serialVersionUID = 2274324892792009998L;
 
-    private static final PeriodType MILLIS_TYPE;
-    private static final PeriodType DAY_HOUR_TYPE;
-    private static final PeriodType YEAR_DAY_TYPE;
-    private static final PeriodType YEAR_WEEK_TYPE;
-    private static final PeriodType YEAR_MONTH_TYPE;
-    private static final PeriodType ALL_TYPE;
-    private static final PeriodType UTC_DAY_HOUR_TYPE;
-    private static final PeriodType UTC_YEAR_DAY_TYPE;
-    private static final PeriodType UTC_YEAR_WEEK_TYPE;
-    private static final PeriodType UTC_YEAR_MONTH_TYPE;
-    private static final PeriodType UTC_ALL_TYPE;
-    private static final PeriodType PRECISE_DAY_HOUR_TYPE;
-    private static final PeriodType PRECISE_YEAR_DAY_TYPE;
-    private static final PeriodType PRECISE_YEAR_WEEK_TYPE;
-    private static final PeriodType PRECISE_YEAR_MONTH_TYPE;
-    private static final PeriodType PRECISE_ALL_TYPE;
+    private static final PeriodType MILLIS;
+    private static final PeriodType DAY_HOUR;
+    private static final PeriodType YEAR_DAY;
+    private static final PeriodType YEAR_WEEK;
+    private static final PeriodType YEAR_MONTH;
+    private static final PeriodType ALL;
+    private static final PeriodType DAY_HOUR_UTC;
+    private static final PeriodType YEAR_DAY_UTC;
+    private static final PeriodType YEAR_WEEK_UTC;
+    private static final PeriodType YEAR_MONTH_UTC;
+    private static final PeriodType ALL_UTC;
+    private static final PeriodType PRECISE_DAY_HOUR;
+    private static final PeriodType PRECISE_YEAR_DAY;
+    private static final PeriodType PRECISE_YEAR_WEEK;
+    private static final PeriodType PRECISE_YEAR_MONTH;
+    private static final PeriodType PRECISE_ALL;
 
     static {
-        MILLIS_TYPE = new MillisType();
-        DAY_HOUR_TYPE = new DayHourType(ISOChronology.getInstance());
-        YEAR_DAY_TYPE = new YearDayType(ISOChronology.getInstance());
-        YEAR_WEEK_TYPE = new YearWeekType(ISOChronology.getInstance());
-        YEAR_MONTH_TYPE = new YearMonthType(ISOChronology.getInstance());
-        ALL_TYPE = new AllType(ISOChronology.getInstance());
-        UTC_DAY_HOUR_TYPE = new DayHourType(ISOChronology.getInstanceUTC());
-        UTC_YEAR_DAY_TYPE = new YearDayType(ISOChronology.getInstanceUTC());
-        UTC_YEAR_WEEK_TYPE = new YearWeekType(ISOChronology.getInstanceUTC());
-        UTC_YEAR_MONTH_TYPE = new YearMonthType(ISOChronology.getInstanceUTC());
-        UTC_ALL_TYPE = new AllType(ISOChronology.getInstanceUTC());
-        PRECISE_DAY_HOUR_TYPE = new PreciseDayHourType(ISOChronology.getInstanceUTC());
-        PRECISE_YEAR_DAY_TYPE = new PreciseYearDayType(ISOChronology.getInstanceUTC());
-        PRECISE_YEAR_WEEK_TYPE = new PreciseYearWeekType(ISOChronology.getInstanceUTC());
-        PRECISE_YEAR_MONTH_TYPE = new PreciseYearMonthType(ISOChronology.getInstanceUTC());
-        PRECISE_ALL_TYPE = new PreciseAllType(ISOChronology.getInstanceUTC());
+        MILLIS = new MillisType();
+        DAY_HOUR = new DayHourType(ISOChronology.getInstance());
+        YEAR_DAY = new YearDayType(ISOChronology.getInstance());
+        YEAR_WEEK = new YearWeekType(ISOChronology.getInstance());
+        YEAR_MONTH = new YearMonthType(ISOChronology.getInstance());
+        ALL = new AllType(ISOChronology.getInstance());
+        DAY_HOUR_UTC = new DayHourType(ISOChronology.getInstanceUTC());
+        YEAR_DAY_UTC = new YearDayType(ISOChronology.getInstanceUTC());
+        YEAR_WEEK_UTC = new YearWeekType(ISOChronology.getInstanceUTC());
+        YEAR_MONTH_UTC = new YearMonthType(ISOChronology.getInstanceUTC());
+        ALL_UTC = new AllType(ISOChronology.getInstanceUTC());
+        PRECISE_DAY_HOUR = new PreciseDayHourType(ISOChronology.getInstanceUTC());
+        PRECISE_YEAR_DAY = new PreciseYearDayType(ISOChronology.getInstanceUTC());
+        PRECISE_YEAR_WEEK = new PreciseYearWeekType(ISOChronology.getInstanceUTC());
+        PRECISE_YEAR_MONTH = new PreciseYearMonthType(ISOChronology.getInstanceUTC());
+        PRECISE_ALL = new PreciseAllType(ISOChronology.getInstanceUTC());
     }
 
     /**
@@ -135,7 +135,7 @@ public abstract class PeriodType implements Serializable {
      * typically limited by a 32 bit int.
      */
     public static PeriodType getMillisType() {
-        return MILLIS_TYPE;
+        return MILLIS;
     }
 
     /**
@@ -143,14 +143,29 @@ public abstract class PeriodType implements Serializable {
      *
      * <ul>
      * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
      * </ul>
      */
     public static PeriodType getDayHourType() {
-        return DAY_HOUR_TYPE;
+        return DAY_HOUR;
+    }
+
+    /**
+     * Returns a precise PeriodType using the ISOChronology in UTC of:
+     *
+     * <ul>
+     * <li>days (precise, fixed at 24 hours)
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getDayHourTypeUTC() {
+        return DAY_HOUR_UTC;
     }
 
     /**
@@ -158,10 +173,10 @@ public abstract class PeriodType implements Serializable {
      *
      * <ul>
      * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
      * </ul>
      *
      * This factory method returns a PeriodType that calculates using any Chronology.
@@ -173,11 +188,195 @@ public abstract class PeriodType implements Serializable {
             return getDayHourType();
         }
         if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
-            return getUTCDayHourType();
+            return getDayHourTypeUTC();
         }
         return new DayHourType(chrono);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a PeriodType using the ISOChronology in current time zone of:
+     *
+     * <ul>
+     * <li>years
+     * <li>days
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getYearDayType() {
+        return YEAR_DAY;
+    }
+
+    /**
+     * Returns a PeriodType using the ISOChronology in UTC of:
+     *
+     * <ul>
+     * <li>years
+     * <li>days (precise, fixed at 24 hours)
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getYearDayTypeUTC() {
+        return YEAR_DAY_UTC;
+    }
+
+    /**
+     * Returns a PeriodType of:
+     *
+     * <ul>
+     * <li>years
+     * <li>days
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     *
+     * This factory method returns a PeriodType that calculates using any Chronology.
+     *
+     * @param chrono Chronology to use for calculations.
+     */
+    public static PeriodType getYearDayType(Chronology chrono) {
+        if (chrono == null || chrono.equals(ISOChronology.getInstance())) {
+            return getYearDayType();
+        }
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getYearDayTypeUTC();
+        }
+        return new YearDayType(chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a PeriodType using the ISOChronology in current time zone of:
+     *
+     * <ul>
+     * <li>years (weekyears)
+     * <li>weeks
+     * <li>days
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getYearWeekType() {
+        return YEAR_WEEK;
+    }
+
+    /**
+     * Returns a PeriodType using the ISOChronology in UTC of:
+     *
+     * <ul>
+     * <li>years
+     * <li>weeks (precise, fixed at 7 days)
+     * <li>days (precise, fixed at 24 hours)
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getYearWeekTypeUTC() {
+        return YEAR_WEEK_UTC;
+    }
+
+    /**
+     * Returns a PeriodType of:
+     *
+     * <ul>
+     * <li>years (weekyears)
+     * <li>weeks
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     *
+     * This factory method returns a PeriodType that calculates using any Chronology.
+     *
+     * @param chrono Chronology to use for calculations.
+     */
+    public static PeriodType getYearWeekType(Chronology chrono) {
+        if (chrono == null || chrono.equals(ISOChronology.getInstance())) {
+            return getYearWeekType();
+        }
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getYearWeekTypeUTC();
+        }
+        return new YearWeekType(chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a PeriodType using the ISOChronology in current time zone of:
+     *
+     * <ul>
+     * <li>years
+     * <li>months
+     * <li>days
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getYearMonthType() {
+        return YEAR_MONTH;
+    }
+
+    /**
+     * Returns a PeriodType using the ISOChronology in UTC of:
+     *
+     * <ul>
+     * <li>years
+     * <li>months
+     * <li>days (precise, fixed at 24 hours)
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getYearMonthTypeUTC() {
+        return YEAR_MONTH_UTC;
+    }
+
+    /**
+     * Returns a PeriodType of:
+     *
+     * <ul>
+     * <li>years
+     * <li>months
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     *
+     * This factory method returns a PeriodType that calculates using any Chronology.
+     *
+     * @param chrono Chronology to use for calculations.
+     */
+    public static PeriodType getYearMonthType(Chronology chrono) {
+        if (chrono == null || chrono.equals(ISOChronology.getInstance())) {
+            return getYearMonthType();
+        }
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getYearMonthTypeUTC();
+        }
+        return new YearMonthType(chrono);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Returns a PeriodType using the ISOChronology in current time zone of:
      *
@@ -193,7 +392,25 @@ public abstract class PeriodType implements Serializable {
      * </ul>
      */
     public static PeriodType getAllType() {
-        return ALL_TYPE;
+        return ALL;
+    }
+
+    /**
+     * Returns a PeriodType using the ISOChronology in UTC of:
+     *
+     * <ul>
+     * <li>years
+     * <li>months
+     * <li>weeks (precise, fixed at 7 days)
+     * <li>days (precise, fixed at 24 hours)
+     * <li>hours (precise)
+     * <li>minutes (precise)
+     * <li>seconds (precise)
+     * <li>milliseconds (precise)
+     * </ul>
+     */
+    public static PeriodType getAllTypeUTC() {
+        return ALL_UTC;
     }
 
     /**
@@ -219,223 +436,9 @@ public abstract class PeriodType implements Serializable {
             return getAllType();
         }
         if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
-            return getUTCAllType();
+            return getAllTypeUTC();
         }
         return new AllType(chrono);
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in current time zone of:
-     *
-     * <ul>
-     * <li>years
-     * <li>days
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getYearDayType() {
-        return YEAR_DAY_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType of:
-     *
-     * <ul>
-     * <li>years
-     * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
-     * </ul>
-     *
-     * This factory method returns a PeriodType that calculates using any Chronology.
-     *
-     * @param chrono Chronology to use for calculations.
-     */
-    public static PeriodType getYearDayType(Chronology chrono) {
-        if (chrono == null || chrono.equals(ISOChronology.getInstance())) {
-            return getYearDayType();
-        }
-        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
-            return getUTCYearDayType();
-        }
-        return new YearDayType(chrono);
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in current time zone of:
-     *
-     * <ul>
-     * <li>years
-     * <li>months
-     * <li>days
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getYearMonthType() {
-        return YEAR_MONTH_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType of:
-     *
-     * <ul>
-     * <li>years
-     * <li>months
-     * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
-     * </ul>
-     *
-     * This factory method returns a PeriodType that calculates using any Chronology.
-     *
-     * @param chrono Chronology to use for calculations.
-     */
-    public static PeriodType getYearMonthType(Chronology chrono) {
-        if (chrono == null || chrono.equals(ISOChronology.getInstance())) {
-            return getYearMonthType();
-        }
-        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
-            return getUTCYearMonthType();
-        }
-        return new YearMonthType(chrono);
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in current time zone of:
-     *
-     * <ul>
-     * <li>years (weekyears)
-     * <li>weeks
-     * <li>days
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getYearWeekType() {
-        return YEAR_WEEK_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType of:
-     *
-     * <ul>
-     * <li>years (weekyears)
-     * <li>weeks
-     * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
-     * </ul>
-     *
-     * This factory method returns a PeriodType that calculates using any Chronology.
-     *
-     * @param chrono Chronology to use for calculations.
-     */
-    public static PeriodType getYearWeekType(Chronology chrono) {
-        if (chrono == null || chrono.equals(ISOChronology.getInstance())) {
-            return getYearWeekType();
-        }
-        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
-            return getUTCYearWeekType();
-        }
-        return new YearWeekType(chrono);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Returns a precise PeriodType using the ISOChronology in UTC of:
-     *
-     * <ul>
-     * <li>days (precise, fixed at 24 hours)
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getUTCDayHourType() {
-        return UTC_DAY_HOUR_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in UTC of:
-     *
-     * <ul>
-     * <li>years
-     * <li>days (precise, fixed at 24 hours)
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getUTCYearDayType() {
-        return UTC_YEAR_DAY_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in UTC of:
-     *
-     * <ul>
-     * <li>years
-     * <li>months
-     * <li>days (precise, fixed at 24 hours)
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getUTCYearMonthType() {
-        return UTC_YEAR_MONTH_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in UTC of:
-     *
-     * <ul>
-     * <li>years
-     * <li>weeks (precise, fixed at 7 days)
-     * <li>days (precise, fixed at 24 hours)
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getUTCYearWeekType() {
-        return UTC_YEAR_WEEK_TYPE;
-    }
-
-    /**
-     * Returns a PeriodType using the ISOChronology in UTC of:
-     *
-     * <ul>
-     * <li>years
-     * <li>months
-     * <li>weeks (precise, fixed at 7 days)
-     * <li>days (precise, fixed at 24 hours)
-     * <li>hours (precise)
-     * <li>minutes (precise)
-     * <li>seconds (precise)
-     * <li>milliseconds (precise)
-     * </ul>
-     */
-    public static PeriodType getUTCAllType() {
-        return UTC_ALL_TYPE;
     }
 
     //-----------------------------------------------------------------------
@@ -451,7 +454,7 @@ public abstract class PeriodType implements Serializable {
      * </ul>
      */
     public static PeriodType getPreciseDayHourType() {
-        return PRECISE_DAY_HOUR_TYPE;
+        return PRECISE_DAY_HOUR;
     }
 
     /**
@@ -467,7 +470,7 @@ public abstract class PeriodType implements Serializable {
      * </ul>
      */
     public static PeriodType getPreciseYearDayType() {
-        return PRECISE_YEAR_DAY_TYPE;
+        return PRECISE_YEAR_DAY;
     }
 
     /**
@@ -484,7 +487,7 @@ public abstract class PeriodType implements Serializable {
      * </ul>
      */
     public static PeriodType getPreciseYearMonthType() {
-        return PRECISE_YEAR_MONTH_TYPE;
+        return PRECISE_YEAR_MONTH;
     }
 
     /**
@@ -501,7 +504,7 @@ public abstract class PeriodType implements Serializable {
      * </ul>
      */
     public static PeriodType getPreciseYearWeekType() {
-        return PRECISE_YEAR_WEEK_TYPE;
+        return PRECISE_YEAR_WEEK;
     }
 
     /**
@@ -519,7 +522,7 @@ public abstract class PeriodType implements Serializable {
      * </ul>
      */
     public static PeriodType getPreciseAllType() {
-        return PRECISE_ALL_TYPE;
+        return PRECISE_ALL;
     }
 
     //-----------------------------------------------------------------------
@@ -891,7 +894,7 @@ public abstract class PeriodType implements Serializable {
             if (chrono == iChronology) {
                 return this;
             }
-            return PeriodType.getYearWeekType(chrono);
+            return PeriodType.getYearDayType(chrono);
         }
 
         public boolean isPrecise() {

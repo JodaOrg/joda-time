@@ -110,16 +110,6 @@ public interface ReadWritablePeriod extends ReadablePeriod {
     void setPeriod(ReadableInterval interval, Chronology chrono);
 
     /**
-     * Sets all the fields in one go from a millisecond interval dividing the
-     * fields using the period type.
-     * 
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void setPeriod(long startInstant, long endInstant, Chronology chrono);
-
-    /**
      * Sets all the fields in one go from a duration dividing the
      * fields using the period type.
      * <p>
@@ -131,19 +121,6 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * @param chrono  the chronology to use, null means ISO default
      */
     void setPeriod(ReadableDuration duration, Chronology chrono);
-
-    /**
-     * Sets all the fields in one go from a millisecond duration dividing the
-     * fields using the period type.
-     * <p>
-     * When dividing the duration, only precise fields in the period type will be used.
-     * For large durations, all the remaining duration will be stored in the largest
-     * available precise field.
-     * 
-     * @param duration  the duration, in milliseconds
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void setPeriod(long duration, Chronology chrono);
 
     //-----------------------------------------------------------------------
     /**
@@ -206,19 +183,6 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void add(ReadableDuration duration);
-
-    /**
-     * Adds a duration to this one by dividing the duration into
-     * fields and then adding each field in turn.
-     * <p>
-     * When dividing the duration, only precise fields in the period type will be used.
-     * For large durations, all the remaining duration will be added to the largest
-     * available precise field.
-     * 
-     * @param duration  the duration to add
-     * @throws ArithmeticException if the addition exceeds the capacity of the period
-     */
-    void add(long duration);
 
     //-----------------------------------------------------------------------
     /**

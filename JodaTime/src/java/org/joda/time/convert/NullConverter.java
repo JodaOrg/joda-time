@@ -55,6 +55,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
+import org.joda.time.Period;
 import org.joda.time.ReadWritablePeriod;
 
 /**
@@ -111,7 +112,7 @@ class NullConverter extends AbstractConverter
      * @throws NullPointerException if the duration is null
      */
     public void setInto(ReadWritablePeriod duration, Object object, Chronology chrono) {
-        duration.setPeriod(0L, chrono);
+        duration.setPeriod((Period) null);
     }
 
     //-----------------------------------------------------------------------

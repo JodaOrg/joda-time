@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -531,9 +531,14 @@ public class TestPeriod_Basics extends TestCase {
 //        assertEquals(123L, test.toDurationMillisFrom(0L, null));
 //    }
 
-    public void testToDuration() {
+    public void testToDurationFrom() {
         Period test = new Period(123L);
         assertEquals(new Duration(123L), test.toDurationFrom(new Instant(0L)));
+    }
+
+    public void testToDurationTo() {
+        Period test = new Period(123L);
+        assertEquals(new Duration(123L), test.toDurationTo(new Instant(123L)));
     }
 
     //-----------------------------------------------------------------------

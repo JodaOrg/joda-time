@@ -71,7 +71,8 @@ import org.joda.time.field.FieldUtils;
  */
 final class GJEraDateTimeField extends AbstractDateTimeField {
     
-    static final long serialVersionUID = 4240986525305515528L;
+    /** Serialization version */
+    private static final long serialVersionUID = 4240986525305515528L;
 
     private final AbstractGJChronology iChronology;
 
@@ -100,8 +101,8 @@ final class GJEraDateTimeField extends AbstractDateTimeField {
         }
     }
 
-    public String getAsText(long instant, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).eraValueToText(get(instant));
+    protected String getAsText(int fieldValue, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
     }
 
     /**

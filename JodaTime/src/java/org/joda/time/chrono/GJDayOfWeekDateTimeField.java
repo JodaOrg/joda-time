@@ -70,7 +70,8 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  */
 final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     
-    static final long serialVersionUID = -3857947176719041436L;
+    /** Serialization version */
+    private static final long serialVersionUID = -3857947176719041436L;
 
     private final AbstractGJChronology iChronology;
 
@@ -95,12 +96,12 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Get the textual value of the specified time instant.
      * 
-     * @param instant  the time instant in millis to query
+     * @param fieldValue  the field value to query
      * @param locale  the locale to use
      * @return the day of the week, such as 'Monday'
      */
-    public String getAsText(long instant, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(get(instant));
+    protected String getAsText(int fieldValue, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToText(fieldValue);
     }
 
     /**
@@ -110,8 +111,8 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
      * @param locale  the locale to use
      * @return the day of the week, such as 'Mon'
      */
-    public String getAsShortText(long instant, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(get(instant));
+    protected String getAsShortText(int fieldValue, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekValueToShortText(fieldValue);
     }
 
     /**

@@ -57,6 +57,7 @@ import java.io.Serializable;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * <code>DelegatedDateTimeField</code> delegates each method call to the
@@ -69,9 +70,10 @@ import org.joda.time.DurationField;
  * @since 1.0
  * @see DecoratedDateTimeField
  */
-public class DelegatedDateTimeField implements DateTimeField, Serializable {
+public class DelegatedDateTimeField extends DateTimeField implements Serializable {
 
-    static final long serialVersionUID = -4730164440214502503L;
+    /** Serialization version */
+    private static final long serialVersionUID = -4730164440214502503L;
 
     /** The DateTimeField being wrapped */
     private final DateTimeField iField;
@@ -124,12 +126,28 @@ public class DelegatedDateTimeField implements DateTimeField, Serializable {
         return iField.getAsText(instant);
     }
 
+    public String getAsText(PartialInstant partial, int fieldValue, Locale locale) {
+        return iField.getAsText(partial, fieldValue, locale);
+    }
+
+    public String getAsText(PartialInstant partial, Locale locale) {
+        return iField.getAsText(partial, locale);
+    }
+
     public String getAsShortText(long instant, Locale locale) {
         return iField.getAsShortText(instant, locale);
     }
 
     public String getAsShortText(long instant) {
         return iField.getAsShortText(instant);
+    }
+
+    public String getAsShortText(PartialInstant partial, int fieldValue, Locale locale) {
+        return iField.getAsShortText(partial, fieldValue, locale);
+    }
+
+    public String getAsShortText(PartialInstant partial, Locale locale) {
+        return iField.getAsShortText(partial, locale);
     }
 
     public long add(long instant, int value) {

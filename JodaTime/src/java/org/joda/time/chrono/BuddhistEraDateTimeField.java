@@ -70,7 +70,8 @@ import org.joda.time.field.FieldUtils;
  */
 final class BuddhistEraDateTimeField extends AbstractDateTimeField {
     
-    static final long serialVersionUID = -9175876774456816364L;
+    /** Serialization version */
+    private static final long serialVersionUID = -9175876774456816364L;
 
     /**
      * Singleton instance
@@ -164,31 +165,11 @@ final class BuddhistEraDateTimeField extends AbstractDateTimeField {
     public int getMaximumValue() {
         return BuddhistChronology.BE;
     }
-    
-    /**
-     * @see org.joda.time.DateTimeField#getAsShortText(long, Locale)
-     */
-    public String getAsShortText(long instant, Locale locale) {
-        return "BE";
-    }
-    
-    /**
-     * @see org.joda.time.DateTimeField#getMaximumShortTextLength(Locale)
-     */
-    public int getMaximumShortTextLength(Locale locale) {
-        return 2;
-    }
 
-    /**
-     * @see org.joda.time.DateTimeField#getAsShortText(long, Locale)
-     */
-    public String getAsText(long instant, Locale locale) {
+    protected String getAsText(int fieldValue, Locale locale) {
         return "BE";
     }
 
-    /**
-     * @see org.joda.time.DateTimeField#getMaximumShortTextLength(Locale)
-     */
     public int getMaximumTextLength(Locale locale) {
         return 2;
     }

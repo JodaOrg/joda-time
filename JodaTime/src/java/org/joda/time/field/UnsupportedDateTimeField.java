@@ -58,6 +58,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * A placeholder implementation to use when a datetime field is not supported.
@@ -66,9 +67,10 @@ import org.joda.time.DurationField;
  *
  * @author Brian S O'Neill
  */
-public final class UnsupportedDateTimeField implements DateTimeField, Serializable {
+public final class UnsupportedDateTimeField extends DateTimeField implements Serializable {
 
-    static final long serialVersionUID = -1934618396111902255L;
+    /** Serialilzation version */
+    private static final long serialVersionUID = -1934618396111902255L;
 
     /**
      * Instance with the name "unsupported".
@@ -160,7 +162,7 @@ public final class UnsupportedDateTimeField implements DateTimeField, Serializab
      *
      * @throws UnsupportedOperationException
      */
-    public String getAsText(long instant) {
+    public String getAsText(PartialInstant partial, int fieldValue, Locale locale) {
         throw unsupported();
     }
 
@@ -178,7 +180,7 @@ public final class UnsupportedDateTimeField implements DateTimeField, Serializab
      *
      * @throws UnsupportedOperationException
      */
-    public String getAsShortText(long instant) {
+    public String getAsShortText(PartialInstant partial, int fieldValue, Locale locale) {
         throw unsupported();
     }
 
@@ -242,15 +244,6 @@ public final class UnsupportedDateTimeField implements DateTimeField, Serializab
      * @throws UnsupportedOperationException
      */
     public long set(long instant, String text, Locale locale) {
-        throw unsupported();
-    }
-
-    /**
-     * Always throws UnsupportedOperationException
-     *
-     * @throws UnsupportedOperationException
-     */
-    public long set(long instant, String text) {
         throw unsupported();
     }
 

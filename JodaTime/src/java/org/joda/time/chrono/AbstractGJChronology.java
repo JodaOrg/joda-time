@@ -840,8 +840,8 @@ public abstract class AbstractGJChronology extends AssembledChronology {
             super("halfdayOfDay", cHalfdaysField, cDaysField);
         }
 
-        public String getAsText(long millis, Locale locale) {
-            return GJLocaleSymbols.forLocale(locale).halfdayValueToText(get(millis));
+        protected String getAsText(int fieldValue, Locale locale) {
+            return GJLocaleSymbols.forLocale(locale).halfdayValueToText(fieldValue);
         }
 
         public long set(long millis, String text, Locale locale) {

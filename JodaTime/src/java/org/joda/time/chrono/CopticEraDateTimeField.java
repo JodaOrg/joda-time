@@ -69,7 +69,8 @@ import org.joda.time.field.FieldUtils;
  */
 final class CopticEraDateTimeField extends AbstractDateTimeField {
     
-    static final long serialVersionUID = 4090856468123006167L;
+    /** Serialization version */
+    private static final long serialVersionUID = 4090856468123006167L;
 
     /**
      * Singleton instance
@@ -164,30 +165,10 @@ final class CopticEraDateTimeField extends AbstractDateTimeField {
         return CopticChronology.AM;
     }
     
-    /**
-     * @see org.joda.time.DateTimeField#getAsShortText(long, Locale)
-     */
-    public String getAsShortText(long instant, Locale locale) {
-        return "AM";
-    }
-    
-    /**
-     * @see org.joda.time.DateTimeField#getMaximumShortTextLength(Locale)
-     */
-    public int getMaximumShortTextLength(Locale locale) {
-        return 2;
-    }
-
-    /**
-     * @see org.joda.time.DateTimeField#getAsShortText(long, Locale)
-     */
-    public String getAsText(long instant, Locale locale) {
+    protected String getAsText(int fieldValue, Locale locale) {
         return "AM";
     }
 
-    /**
-     * @see org.joda.time.DateTimeField#getMaximumShortTextLength(Locale)
-     */
     public int getMaximumTextLength(Locale locale) {
         return 2;
     }

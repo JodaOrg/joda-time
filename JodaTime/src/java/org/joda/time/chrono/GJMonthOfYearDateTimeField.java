@@ -56,10 +56,9 @@ package org.joda.time.chrono;
 import java.util.Locale;
 
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
-import org.joda.time.field.ImpreciseDateTimeField;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
  * Provides time calculations for the month of the year component of time.
@@ -72,7 +71,8 @@ import org.joda.time.field.FieldUtils;
  */
 final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
 
-    static final long serialVersionUID = -4748157875845286249L;
+    /** Serialization version */
+    private static final long serialVersionUID = -4748157875845286249L;
 
     private static final int MIN = DateTimeConstants.JANUARY;
     private static final int MAX = DateTimeConstants.DECEMBER;
@@ -103,12 +103,12 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         return iChronology.getMonthOfYear(instant);
     }
 
-    public String getAsText(long instant, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(get(instant));
+    protected String getAsText(int fieldValue, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
     }
 
-    public String getAsShortText(long instant, Locale locale) {
-        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(get(instant));
+    protected String getAsShortText(int fieldValue, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
     }
 
     /**

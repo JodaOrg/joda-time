@@ -55,6 +55,8 @@ package org.joda.time;
 
 import java.util.Locale;
 
+import org.joda.time.partial.PartialInstant;
+
 /**
  * Defines the calculation engine for date and time fields.
  * The interface defines a set of methods that manipulate a millisecond datetime
@@ -68,7 +70,7 @@ import java.util.Locale;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public interface DateTimeField {
+public abstract class DateTimeField {
 
     /**
      * Get the name of the field, intended for debugging purposes only. By
@@ -79,14 +81,14 @@ public interface DateTimeField {
      * 
      * @return field name
      */
-    String getName();
+    public abstract String getName();
 
     /**
      * Returns true if this field is supported.
      * 
      * @return true if this field is supported
      */
-    boolean isSupported();
+    public abstract boolean isSupported();
 
     /**
      * Returns true if the set method is lenient. If so, it accepts values that
@@ -95,7 +97,7 @@ public interface DateTimeField {
      * 
      * @return true if this field is lenient
      */
-    boolean isLenient();
+    public abstract boolean isLenient();
 
     // Main access API
     //------------------------------------------------------------------------
@@ -105,7 +107,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the value of the field, in the units of the field
      */
-    int get(long instant);
+    public abstract int get(long instant);
 
     /**
      * Get the human-readable, text value of this field from the milliseconds.
@@ -115,7 +117,7 @@ public interface DateTimeField {
      * @param locale the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    String getAsText(long instant, Locale locale);
+    public abstract String getAsText(long instant, Locale locale);
 
     /**
      * Get the human-readable, text value of this field from the milliseconds.
@@ -123,7 +125,32 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the text value of the field
      */
-    String getAsText(long instant);
+    public String getAsText(long instant) {
+        return getAsText(instant, null);
+    }
+
+    /**
+     * Get the human-readable, text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     *
+     * @param partial  the partial instant to query
+     * @param fieldValue  the field value of this field, provided for performance
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public abstract String getAsText(PartialInstant partial, int fieldValue, Locale locale);
+
+    /**
+     * Get the human-readable, text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     *
+     * @param partial  the partial instant to query
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public String getAsText(PartialInstant partial, Locale locale) {
+        return getAsText(partial, partial.get(this), locale);
+    }
 
     /**
      * Get the human-readable, short text value of this field from the
@@ -133,7 +160,7 @@ public interface DateTimeField {
      * @param locale the locale to use for selecting a text symbol, null for default
      * @return the short text value of the field
      */
-    String getAsShortText(long instant, Locale locale);
+    public abstract String getAsShortText(long instant, Locale locale);
 
     /**
      * Get the human-readable, short text value of this field from the
@@ -142,7 +169,32 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the short text value of the field
      */
-    String getAsShortText(long instant);
+    public String getAsShortText(long instant) {
+        return getAsShortText(instant, null);
+    }
+
+    /**
+     * Get the human-readable, short text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     *
+     * @param partial  the partial instant to query
+     * @param fieldValue  the field value of this field, provided for performance
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public abstract String getAsShortText(PartialInstant partial, int fieldValue, Locale locale);
+
+    /**
+     * Get the human-readable, short text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     *
+     * @param partial  the partial instant to query
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public String getAsShortText(PartialInstant partial, Locale locale) {
+        return getAsShortText(partial, partial.get(this), locale);
+    }
 
     /**
      * Adds a value (which may be negative) to the millis value,
@@ -165,7 +217,7 @@ public interface DateTimeField {
      * @param value  the value to add, in the units of the field
      * @return the updated milliseconds
      */
-    long add(long instant, int value);
+    public abstract long add(long instant, int value);
 
     /**
      * Adds a value (which may be negative) to the millis value,
@@ -177,7 +229,7 @@ public interface DateTimeField {
      * @throws IllegalArgumentException if value is too large
      * @see #add(long,int)
      */
-    long add(long instant, long value);
+    public abstract long add(long instant, long value);
 
     /**
      * Adds a value (which may be negative) to the millis value,
@@ -200,7 +252,7 @@ public interface DateTimeField {
      * @param value  the value to add, in the units of the field
      * @return the updated milliseconds
      */
-    long addWrapped(long instant, int value) ;
+    public abstract long addWrapped(long instant, int value) ;
 
     /**
      * Computes the difference between two instants, as measured in the units
@@ -221,7 +273,7 @@ public interface DateTimeField {
      * subtract off the minuend
      * @return the difference in the units of this field
      */
-    int getDifference(long minuendInstant, long subtrahendInstant);
+    public abstract int getDifference(long minuendInstant, long subtrahendInstant);
 
     /**
      * Computes the difference between two instants, as measured in the units
@@ -242,7 +294,7 @@ public interface DateTimeField {
      * subtract off the minuend
      * @return the difference in the units of this field
      */
-    long getDifferenceAsLong(long minuendInstant, long subtrahendInstant);
+    public abstract long getDifferenceAsLong(long minuendInstant, long subtrahendInstant);
 
     /**
      * Sets a value in the milliseconds supplied.
@@ -255,7 +307,7 @@ public interface DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the value is invalid
      */
-    long set(long instant, int value);
+    public abstract long set(long instant, int value);
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text
@@ -268,7 +320,7 @@ public interface DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
-    long set(long instant, String text, Locale locale);
+    public abstract long set(long instant, String text, Locale locale);
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text
@@ -279,7 +331,9 @@ public interface DateTimeField {
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
-    long set(long instant, String text);
+    public long set(long instant, String text) {
+        return set(instant, text, null);
+    }
 
     // Extra information API
     //------------------------------------------------------------------------
@@ -290,7 +344,7 @@ public interface DateTimeField {
      * @return the duration of this field, or UnsupportedDurationField if field
      * has no duration
      */
-    DurationField getDurationField();
+    public abstract DurationField getDurationField();
 
     /**
      * Returns the range duration of this field. For example, if this field
@@ -298,7 +352,7 @@ public interface DateTimeField {
      *
      * @return the range duration of this field, or null if field has no range
      */
-    DurationField getRangeDurationField();
+    public abstract DurationField getRangeDurationField();
 
     /**
      * Returns whether this field is 'leap' for the specified instant.
@@ -308,7 +362,7 @@ public interface DateTimeField {
      * 
      * @return true if the field is 'leap'
      */
-    boolean isLeap(long instant);
+    public abstract boolean isLeap(long instant);
 
     /**
      * Gets the amount by which this field is 'leap' for the specified instant.
@@ -316,13 +370,13 @@ public interface DateTimeField {
      * For example, a leap year would return one, a non leap year would return
      * zero.
      */
-    int getLeapAmount(long instant);
+    public abstract int getLeapAmount(long instant);
 
     /**
      * If this field were to leap, then it would be in units described by the
      * returned duration. If this field doesn't ever leap, null is returned.
      */
-    DurationField getLeapDurationField();
+    public abstract DurationField getLeapDurationField();
 
     /**
      * Get the minimum allowable value for this field.
@@ -330,7 +384,7 @@ public interface DateTimeField {
      * @return the minimum valid value for this field, in the units of the
      * field
      */
-    int getMinimumValue();
+    public abstract int getMinimumValue();
 
     /**
      * Get the minimum value for this field evaluated at the specified time.
@@ -338,7 +392,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the minimum value for this field, in the units of the field
      */
-    int getMinimumValue(long instant);
+    public abstract int getMinimumValue(long instant);
 
     /**
      * Get the maximum allowable value for this field.
@@ -346,7 +400,7 @@ public interface DateTimeField {
      * @return the maximum valid value for this field, in the units of the
      * field
      */
-    int getMaximumValue();
+    public abstract int getMaximumValue();
 
     /**
      * Get the maximum value for this field evaluated at the specified time.
@@ -354,7 +408,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the maximum value for this field, in the units of the field
      */
-    int getMaximumValue(long instant);
+    public abstract int getMaximumValue(long instant);
 
     /**
      * Get the maximum text value for this field.
@@ -362,7 +416,7 @@ public interface DateTimeField {
      * @param locale  the locale to use for selecting a text symbol
      * @return the maximum text length
      */
-    int getMaximumTextLength(Locale locale);
+    public abstract int getMaximumTextLength(Locale locale);
 
     /**
      * Get the maximum short text value for this field.
@@ -370,7 +424,7 @@ public interface DateTimeField {
      * @param locale  the locale to use for selecting a text symbol
      * @return the maximum short text length
      */
-    int getMaximumShortTextLength(Locale locale);
+    public abstract int getMaximumShortTextLength(Locale locale);
 
     // Calculation API
     //------------------------------------------------------------------------
@@ -386,7 +440,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
-    long roundFloor(long instant);
+    public abstract long roundFloor(long instant);
 
     /**
      * Round to the highest whole unit of this field. The value of this field
@@ -400,7 +454,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
-    long roundCeiling(long instant);
+    public abstract long roundCeiling(long instant);
 
     /**
      * Round to the nearest whole unit of this field. If the given millisecond
@@ -411,7 +465,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
-    long roundHalfFloor(long instant);
+    public abstract long roundHalfFloor(long instant);
 
     /**
      * Round to the nearest whole unit of this field. If the given millisecond
@@ -422,7 +476,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
-    long roundHalfCeiling(long instant);
+    public abstract long roundHalfCeiling(long instant);
 
     /**
      * Round to the nearest whole unit of this field. If the given millisecond
@@ -437,7 +491,7 @@ public interface DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @return rounded milliseconds
      */
-    long roundHalfEven(long instant);
+    public abstract long roundHalfEven(long instant);
 
     /**
      * Returns the fractional duration milliseconds of this field. In other
@@ -451,13 +505,13 @@ public interface DateTimeField {
      * remainder
      * @return remainder duration, in milliseconds
      */
-    long remainder(long instant);
+    public abstract long remainder(long instant);
 
     /**
      * Get a suitable debug string.
      * 
      * @return debug string
      */
-    String toString();
+    public abstract String toString();
     
 }

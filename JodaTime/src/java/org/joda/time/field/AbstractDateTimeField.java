@@ -55,8 +55,10 @@ package org.joda.time.field;
 
 import java.io.Serializable;
 import java.util.Locale;
+
 import org.joda.time.DateTimeField;
 import org.joda.time.DurationField;
+import org.joda.time.partial.PartialInstant;
 
 /**
  * AbstractDateTimeField provides the common behaviour for DateTimeField
@@ -73,9 +75,10 @@ import org.joda.time.DurationField;
  * @since 1.0
  * @see DecoratedDateTimeField
  */
-public abstract class AbstractDateTimeField implements DateTimeField, Serializable {
+public abstract class AbstractDateTimeField extends DateTimeField implements Serializable {
 
-    static final long serialVersionUID = -4388055220581798589L;
+    /** Serialization version */
+    private static final long serialVersionUID = -4388055220581798589L;
 
     /** A desriptive name for the field */
     private final String iName;
@@ -112,8 +115,39 @@ public abstract class AbstractDateTimeField implements DateTimeField, Serializab
      */
     public abstract int get(long instant);
 
+    //-----------------------------------------------------------------------
     /**
      * Get the human-readable, text value of this field from the milliseconds.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * The default implementation returns getAsText(get(instant)).
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param locale the locale to use for selecting a text symbol, null for
+     * default
+     * @return the text value of the field
+     */
+    public String getAsText(long instant, Locale locale) {
+        return getAsText(get(instant));
+    }
+
+    /**
+     * Get the human-readable, text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * The default implementation returns getAsText(fieldValue).
+     *
+     * @param partial  the partial instant to query
+     * @param fieldValue  the field value of this field, provided for performance
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public String getAsText(PartialInstant partial, int fieldValue, Locale locale) {
+        return getAsText(fieldValue);
+    }
+
+    /**
+     * Get the human-readable, text value of this field from the field value.
      * If the specified locale is null, the default locale is used.
      * <p>
      * The default implementation returns Integer.toString(get(instant)).
@@ -122,55 +156,61 @@ public abstract class AbstractDateTimeField implements DateTimeField, Serializab
      * getMaximumTextLength.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @param locale the locale to use for selecting a text symbol, null for
-     * default
+     * @param locale the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsText(long instant, Locale locale) {
-        return Integer.toString(get(instant));
+    protected String getAsText(int fieldValue, Locale locale) {
+        return Integer.toString(fieldValue);
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Get the human-readable, text value of this field from the milliseconds.
-     * This implementation returns getAsText(instant, null).
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @return the text value of the field
-     */
-    public final String getAsText(long instant) {
-        return getAsText(instant, null);
-    }
-
-    /**
-     * Get the human-readable, short text value of this field from the
-     * milliseconds.  If the specified locale is null, the default locale is
-     * used.
+     * Get the human-readable, short text value of this field from the milliseconds.
+     * If the specified locale is null, the default locale is used.
      * <p>
-     * The default implementation returns getAsText(instant, locale).
+     * The default implementation returns getAsShortText(get(instant)).
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param locale the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public String getAsShortText(long instant, Locale locale) {
+        return getAsShortText(get(instant));
+    }
+
+    /**
+     * Get the human-readable, short text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * The default implementation returns getAsShortText(fieldValue).
+     *
+     * @param partial  the partial instant to query
+     * @param fieldValue  the field value of this field, provided for performance
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public String getAsShortText(PartialInstant partial, int fieldValue, Locale locale) {
+        return getAsShortText(fieldValue);
+    }
+
+    /**
+     * Get the human-readable, short text value of this field from the field value.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * The default implementation returns getAsText(fieldValue, locale).
      * <p>
      * Note: subclasses that override this method should also override
      * getMaximumShortTextLength.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @param locale the locale to use for selecting a text symbol, null for
-     * default
-     * @return the short text value of the field
+     * @param locale the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
      */
-    public String getAsShortText(long instant, Locale locale) {
-        return getAsText(instant, locale);
+    protected String getAsShortText(int fieldValue, Locale locale) {
+        return getAsText(fieldValue, locale);
     }
 
-    /**
-     * Get the human-readable, short text value of this field from the
-     * milliseconds.  This implementation returns getAsShortText(instant, null).
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @return the short text value of the field
-     */
-    public final String getAsShortText(long instant) {
-        return getAsShortText(instant, null);
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Adds a value (which may be negative) to the instant value,
      * overflowing into larger fields if necessary.
@@ -241,6 +281,7 @@ public abstract class AbstractDateTimeField implements DateTimeField, Serializab
         return set(instant, wrapped);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Computes the difference between two instants, as measured in the units
      * of this field. Any fractional units are dropped from the result. Calling
@@ -323,19 +364,6 @@ public abstract class AbstractDateTimeField implements DateTimeField, Serializab
         } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Invalid " + getName() + " text: " + text);
         }
-    }
-
-    /**
-     * Sets a value in the milliseconds supplied from a human-readable, text
-     * value. This implementation returns set(instant, text, null).
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param text  the text value to set
-     * @return the updated milliseconds
-     * @throws IllegalArgumentException if the text value is invalid
-     */
-    public final long set(long instant, String text) {
-        return set(instant, text, null);
     }
 
     // Extra information API

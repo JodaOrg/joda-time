@@ -338,14 +338,13 @@ public abstract class AbstractDuration
     }
 
     /**
-     * Sets all the fields in one go from a millisecond interval.
+     * Sets all the fields in one go from a millisecond duration.
      * <p>
      * Subclasses that wish to be immutable should override this method with an
      * empty implementation that is protected and final. This also ensures that
      * all lower subclasses are also immutable.
      * 
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
+     * @param length  duration length, in milliseconds
      */
     protected void setMillis(long length) {
         iMillis = length;

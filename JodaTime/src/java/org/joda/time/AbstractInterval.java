@@ -494,7 +494,6 @@ public abstract class AbstractInterval implements ReadableInterval {
      * The time period may not be precise - if you want the millisecond duration
      * then you should use {@link #getDuration()}.
      *
-     * @param type  the requested type of the duration, null means AllType
      * @return a time period derived from the interval
      */
     public final Period toPeriod() {
@@ -510,7 +509,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * The time period may not be precise - if you want the millisecond duration
      * then you should use {@link #getDuration()}.
      *
-     * @param type  the requested type of the duration, null means AllType
+     * @param type  the requested type of the period, null means AllType
      * @return a time period derived from the interval
      */
     public final Period toPeriod(PeriodType type) {

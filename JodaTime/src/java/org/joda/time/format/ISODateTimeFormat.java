@@ -44,18 +44,6 @@ package org.joda.time.format;
  */
 public class ISODateTimeFormat {
 
-    /** The singleton instance. */
-    private static final ISODateTimeFormat INSTANCE = new ISODateTimeFormat();
-
-    /**
-     * Deprecated, use static methods instead.
-     * 
-     * @deprecated remove method call, as methods are now static
-     */
-    public static ISODateTimeFormat getInstance() {
-        return INSTANCE;
-    }
-
     //-----------------------------------------------------------------------
     private static DateTimeFormatter
         ye,  // year element (yyyy)

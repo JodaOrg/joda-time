@@ -32,9 +32,6 @@ package org.joda.time.format;
  */
 public class ISOPeriodFormat {
 
-    /** @deprecated */
-    private static final ISOPeriodFormat INSTANCE = new ISOPeriodFormat();
-
     /** Cache of standard format. */
     private static PeriodFormatter cStandard;
     /** Cache of alternate months format. */
@@ -45,15 +42,6 @@ public class ISOPeriodFormat {
     private static PeriodFormatter cAlternateWithWeeks;
     /** Cache of alternate extended weeks format. */
     private static PeriodFormatter cAlternateExtendedWihWeeks;
-
-    /**
-     * Deprecated, methods are now static.
-     * 
-     * @deprecated use static methods
-     */
-    public static ISOPeriodFormat getInstance() {
-        return INSTANCE;
-    }
 
     /**
      * Constructor.

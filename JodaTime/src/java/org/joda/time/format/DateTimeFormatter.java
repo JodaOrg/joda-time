@@ -457,60 +457,6 @@ public class DateTimeFormatter {
         }
     }
 
-    /**
-     * Deprecated, use withZone(zone).printTo(buf, millis).
-     * 
-     * @deprecated use withZone(zone).printTo(buf, millis)
-     */
-    public void print(StringBuffer buf, long millis, DateTimeZone zone) {
-        withChronology(null).withZone(zone).printTo(buf, millis);
-    }
-
-    /**
-     * Deprecated, use withChronology(chrono).printTo(buf, millis).
-     * 
-     * @deprecated use withChronology(chrono).printTo(buf, millis)
-     */
-    public void print(StringBuffer buf, long millis, Chronology chrono) {
-        withZone(null).withChronology(chrono).printTo(buf, millis);
-    }
-
-    /**
-     * Deprecated, use withZone(zone).printTo(out, millis).
-     * 
-     * @deprecated use withZone(zone).printTo(out, millis)
-     */
-    public void print(Writer out, long millis, DateTimeZone zone) throws IOException {
-        withChronology(null).withZone(zone).printTo(out, millis);
-    }
-
-    /**
-     * Deprecated, use withChronology(chrono).printTo(out, millis).
-     * 
-     * @deprecated use withChronology(chrono).printTo(out, millis)
-     */
-    public void print(Writer out, long millis, Chronology chrono) throws IOException {
-        withZone(null).withChronology(chrono).printTo(out, millis);
-    }
-
-    /**
-     * Deprecated, use withZone(zone).print(millis).
-     * 
-     * @deprecated use withZone(zone).print(millis)
-     */
-    public String print(long millis, DateTimeZone zone) {
-        return withChronology(null).withZone(zone).print(millis);
-    }
-
-    /**
-     * Deprecated, use withChronology(chrono).print(millis).
-     * 
-     * @deprecated use withChronology(chrono).print(millis)
-     */
-    public String print(long millis, Chronology chrono) {
-        return withZone(null).withChronology(chrono).print(millis);
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Parses a datetime from the given text, at the given position, saving the
@@ -679,33 +625,6 @@ public class DateTimeFormatter {
         if (iParser == null) {
             throw new UnsupportedOperationException("Parsing not supported");
         }
-    }
-
-    /**
-     * Deprecated, use withChronology(chrono).parseMillis(str).
-     * 
-     * @deprecated use withChronology(chrono).parseMillis(str)
-     */
-    public long parseMillis(String text, Chronology chrono) {
-        return withZone(null).withChronology(chrono).parseMillis(text);
-    }
-
-    /**
-     * Deprecated, use withChronology(chrono).parseDateTime(str).
-     * 
-     * @deprecated use withChronology(chrono).parseDateTime(str)
-     */
-    public DateTime parseDateTime(String text, Chronology chrono) {
-        return withZone(null).withChronology(chrono).parseDateTime(text);
-    }
-
-    /**
-     * Deprecated, use withChronology(chrono).parseMutableDateTime(str).
-     * 
-     * @deprecated use withChronology(chrono).parseMutableDateTime(str)
-     */
-    public MutableDateTime parseMutableDateTime(String text, Chronology chrono) {
-        return withZone(null).withChronology(chrono).parseMutableDateTime(text);
     }
 
     //-----------------------------------------------------------------------

@@ -353,16 +353,6 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     /**
-     * Deprecated, methods on DateTimeFormat are now static.
-     * 
-     * @deprecated remove this call as the methods are now static
-     */
-    public static DateTimeFormat getInstance() {
-        return new DateTimeFormat();
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Constructor.
      */
     private DateTimeFormat() {

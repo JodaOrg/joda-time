@@ -327,24 +327,6 @@ public class PeriodFormatter {
     }
 
     /**
-     * Deprecated, use withParseType(type).parsePeriod(p).
-     *
-     * @deprecated use withParseType(type).parsePeriod(p).
-     */
-    public Period parsePeriod(PeriodType type, String text) {
-        return withParseType(type).parsePeriod(text);
-    }
-
-    /**
-     * Deprecated, use withParseType(type).parseMutablePeriod(p).
-     *
-     * @deprecated use withParseType(type).parseMutablePeriod(p).
-     */
-    public MutablePeriod parseMutablePeriod(PeriodType type, String text) {
-        return withParseType(type).parseMutablePeriod(text);
-    }
-
-    /**
      * Checks whether parsing is supported.
      * 
      * @throws UnsupportedOperationException if parsing is not supported

@@ -313,43 +313,6 @@ public abstract class DateTimeZone implements Serializable {
 
     //-----------------------------------------------------------------------
     /**
-     * Deprecated, use {@link #forID(String)}.
-     * 
-     * @deprecated use forID(String)
-     */
-    public static DateTimeZone getInstance(String id) {
-        return forID(id);
-    }
-
-    /**
-     * Deprecated, use {@link #forOffsetHours(int)}.
-     * 
-     * @deprecated use forOffsetHours(int)
-     */
-    public static DateTimeZone getInstance(int hours) {
-        return forOffsetHours(hours);
-    }
-
-    /**
-     * Deprecated, use {@link #forOffsetHoursMinutes(int, int)}.
-     * 
-     * @deprecated use forOffsetHoursMinutes(int,int)
-     */
-    public static DateTimeZone getInstance(int hours, int mins) {
-        return forOffsetHoursMinutes(hours, mins);
-    }
-
-    /**
-     * Deprecated, use {@link #forTimeZone(TimeZone)}.
-     * 
-     * @deprecated use forTimeZone(TimeZone)
-     */
-    public static DateTimeZone getInstance(TimeZone jdkZone) {
-        return forTimeZone(jdkZone);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Gets the zone using a fixed offset amount.
      * 
      * @param id  the zone id

@@ -15,8 +15,6 @@
  */
 package org.joda.time.format;
 
-import java.util.Locale;
-
 /**
  * Factory that creates instances of PeriodFormatter.
  * <p>
@@ -34,29 +32,8 @@ import java.util.Locale;
  */
 public class PeriodFormat {
 
-    /** @deprecated */
-    private static final PeriodFormat INSTANCE = new PeriodFormat();
-
     /** An english words based formatter. */
     private static PeriodFormatter cEnglishWords;
-
-    /**
-     * Deprecated, methods are now static.
-     * 
-     * @deprecated use static methods
-     */
-    public static PeriodFormat getInstance() {
-        return INSTANCE;
-    }
-
-    /**
-     * Deprecated, methods are now static.
-     * 
-     * @deprecated use static methods
-     */
-    public static PeriodFormat getInstance(Locale locale) {
-        return INSTANCE;
-    }
 
     /**
      * Constructor.

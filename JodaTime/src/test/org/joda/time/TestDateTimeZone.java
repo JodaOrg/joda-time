@@ -151,7 +151,8 @@ public class TestDateTimeZone extends TestCase {
         };
     }
     
-    private Locale locale = null;
+    private DateTimeZone zone;
+    private Locale locale;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -167,11 +168,13 @@ public class TestDateTimeZone extends TestCase {
 
     protected void setUp() throws Exception {
         locale = Locale.getDefault();
+        zone = DateTimeZone.getDefault();
         Locale.setDefault(Locale.UK);
     }
 
     protected void tearDown() throws Exception {
         Locale.setDefault(locale);
+        DateTimeZone.setDefault(zone);
     }
 
     //-----------------------------------------------------------------------

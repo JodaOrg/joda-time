@@ -444,7 +444,7 @@ public abstract class AbstractPartialInstant implements PartialInstant, Serializ
      * Compares this PartialInstant with another returning true if the chronology,
      * fields and values are equal.
      *
-     * @param AbstractPartialInstant  an object to check against
+     * @param instant  an object to check against
      * @return true if fields and values are equal
      */
     public boolean equals(Object instant) {

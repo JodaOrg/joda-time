@@ -731,6 +731,28 @@ public class DateTimeFormatterBuilder {
     }
 
     /**
+     * Instructs the printer to emit a numeric year field which always prints
+     * and parses two digits. A pivot year is used during parsing to determine
+     * the range of supported years as <code>(pivot - 50) .. (pivot + 49)</code>.
+     *
+     * <pre>
+     * pivot   supported range   00 is   20 is   40 is   60 is   80 is
+     * ---------------------------------------------------------------
+     * 1950      1900..1999      1900    1920    1940    1960    1980
+     * 1975      1925..2024      2000    2020    1940    1960    1980
+     * 2000      1950..2049      2000    2020    2040    1960    1980
+     * 2025      1975..2074      2000    2020    2040    2060    1980
+     * 2050      2000..2099      2000    2020    2040    2060    2080
+     * </pre>
+     *
+     * @param pivot pivot year to use when parsing
+     * @return this DateTimeFormatterBuilder
+     */
+    public DateTimeFormatterBuilder appendTwoDigitYear(int pivot) {
+        return append0(new TwoDigitYear(iChrono, iChronoUTC.year(), pivot));
+    }
+
+    /**
      * Instructs the printer to emit a numeric yearOfEra field.
      *
      * @param minDigits minumum number of digits to <i>print</i>
@@ -1191,6 +1213,94 @@ public class DateTimeFormatterBuilder {
                 for (int i=iMinPrintedDigits; --i>=0; ) {
                     out.write('\ufffd');
                 }
+            }
+        }
+    }
+
+    private static class TwoDigitYear extends AbstractFormatter
+        implements DateTimeFormatter
+    {
+        private final DateTimeField iField;
+        private final int iPivot;
+
+        TwoDigitYear(Chronology chrono, DateTimeField field, int pivot) {
+            super(chrono);
+            iField = field;
+            iPivot = pivot;
+        }
+
+        public int estimateParsedLength() {
+            return 2;
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            int limit = Math.min(2, text.length() - position);
+            if (limit < 2) {
+                return ~position;
+            }
+
+            int year;
+            char c = text.charAt(position);
+            if (c < '0' || c > '9') {
+                return ~position;
+            }
+            year = c - '0';
+            c = text.charAt(position + 1);
+            if (c < '0' || c > '9') {
+                return ~position;
+            }
+            year = ((year << 3) + (year << 1)) + c - '0';
+
+            int low = iPivot - 50;
+
+            int t;
+            if (low >= 0) {
+                t = low % 100;
+            } else {
+                t = 99 + ((low + 1) % 100);
+            }
+
+            year += low + ((year < t) ? 100 : 0) - t;
+
+            bucket.saveField(iField, year);
+            return position + 2;
+        }
+        
+        public int estimatePrintedLength() {
+            return 2;
+        }
+
+        public void printTo(StringBuffer buf, long instant,
+                            DateTimeZone zone, long instantLocal) {
+            int year = getTwoDigitYear(instantLocal);
+            if (year < 0) {
+                buf.append('\ufffd');
+                buf.append('\ufffd');
+            } else {
+                FormatUtils.appendPaddedInteger(buf, year, 2);
+            }
+        }
+
+        public void printTo(Writer out, long instant,
+                            DateTimeZone zone, long instantLocal) throws IOException {
+            int year = getTwoDigitYear(instantLocal);
+            if (year < 0) {
+                out.write('\ufffd');
+                out.write('\ufffd');
+            } else {
+                FormatUtils.writePaddedInteger(out, year, 2);
+            }
+        }
+
+        private int getTwoDigitYear(long instantLocal) {
+            try {
+                int year = iField.get(instantLocal);
+                if (year < 0) {
+                    year = -year;
+                }
+                return year % 100;
+            } catch (RuntimeException e) {
+                return -1;
             }
         }
     }

@@ -861,8 +861,12 @@ public class MutableDateTime
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setDate(final ReadableInstant instant) {
-        // TODO: Does time zone need to be considered? See setTime(ReadableInstant)
         long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        Chronology instantChrono = DateTimeUtils.getInstantChronology(instant);
+        DateTimeZone zone = instantChrono.getZone();
+        if (zone != null) {
+            instantMillis = zone.getMillisKeepLocal(DateTimeZone.UTC, instantMillis);
+        }
         setDate(instantMillis);
     }
 

@@ -538,6 +538,9 @@ public abstract class DurationType implements Serializable {
     private static final class MillisType extends DurationType {
         static final long serialVersionUID = -4314867016852780422L;
 
+        public MillisType() {
+        }
+
         public boolean isPrecise() {
             return true;
         }

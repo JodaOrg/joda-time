@@ -40,7 +40,7 @@ needs to know which period fields it should populate.
 <p>
 Methods exist on periods to obtain each field value.
 Periods do not have a <a href="key_chronology.html">chronology</a> or time zone.
-You cannot compare periods for order (ie. they do not implement <code>Comparable</code>.
+You cannot compare periods for order (ie. they do not implement <code>Comparable</code>).
 </p>
 <p>
 Periods can be added to an <a href="key_instant.html">instant</a>, or to either

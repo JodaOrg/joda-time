@@ -249,12 +249,12 @@ public final class JulianChronology extends AbstractGJChronology {
 
     int getMinYear() {
         // The lowest year that can be fully supported.
-        return -292269053;
+        return -292269054;
     }
 
     int getMaxYear() {
         // The highest year that can be fully supported.
-        return 292272992;
+        return 292271022;
     }
 
     long getAverageMillisPerYear() {

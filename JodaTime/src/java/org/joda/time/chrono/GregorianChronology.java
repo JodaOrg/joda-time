@@ -249,7 +249,7 @@ public final class GregorianChronology extends AbstractGJChronology {
 
     int getMaxYear() {
         // The highest year that can be fully supported.
-        return 292278993;
+        return 292277023;
     }
 
     long getAverageMillisPerYear() {

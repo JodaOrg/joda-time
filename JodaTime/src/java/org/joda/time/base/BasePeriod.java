@@ -251,7 +251,7 @@ public abstract class BasePeriod
      * an imprecise period.
      * <p>
      * An imprecise period can be made precise by pairing it with a
-     * date in a {@link ReadableInterval}.
+     * date in a {@link org.joda.time.ReadableInterval}.
      *
      * @return true if the period is precise
      */

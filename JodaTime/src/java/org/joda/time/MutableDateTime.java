@@ -400,7 +400,6 @@ public class MutableDateTime
      *
      * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the
      * datetime to
-     * @see #setDateTime(long)
      */
     public void setMillis(long instant) {
         switch (iRoundingMode) {
@@ -894,7 +893,7 @@ public class MutableDateTime
      * Set the time from milliseconds.
      * The date part of this object will be unaffected.
      *
-     * @param instant  an instant to copy the time from, date part ignored
+     * @param millis  an instant to copy the time from, date part ignored
      * @throws IllegalArgumentException if the value is invalid
      */
     public void setTime(final long millis) {

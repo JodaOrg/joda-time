@@ -53,8 +53,7 @@ interoperability easy, and joda-time comes with out-of-the-box JDK interoperabil
 as it recalculates fields at unexpected moments. Joda-time does only the minimal
 calculation for the field that is being accessed.</li>
 <li><b>Good Test Coverage</b>. Joda-time has a comprehensive set of developer tests,
-providing assurance that the library remains relatively bug-free as it
-evolves over time.</li>
+providing assurance of the library's quality.</li>
 <li><b>Complete Documentation</b>. There is an introductory
 <a href="userguide.html">User Guide</a> which provides an overview and covers
 common usage scenarios. The <a href="api-0.98/index.html">javadoc</a>

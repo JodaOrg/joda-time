@@ -112,7 +112,7 @@ public abstract class AbstractPartialFieldProperty {
      * 
      * @return the partial instant
      */
-    public abstract ReadablePartial getReadablePartial();
+    protected abstract ReadablePartial getReadablePartial();
 
     //-----------------------------------------------------------------------
     /**

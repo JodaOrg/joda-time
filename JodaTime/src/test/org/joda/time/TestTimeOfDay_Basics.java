@@ -58,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -301,12 +302,12 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDateTime() {
+    public void testToDateTimeToday() {
         TimeOfDay base = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTime();
+        DateTime test = base.toDateTimeToday();
         check(base, 10, 20, 30, 40);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_LONDON);
         expected = expected.hourOfDay().setCopy(10);
@@ -317,12 +318,12 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDateTime_Zone() {
+    public void testToDateTimeToday_Zone() {
         TimeOfDay base = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTime(TOKYO);
+        DateTime test = base.toDateTimeToday(TOKYO);
         check(base, 10, 20, 30, 40);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_TOKYO);
         expected = expected.hourOfDay().setCopy(10);
@@ -332,12 +333,12 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
-    public void testToDateTime_nullZone() {
+    public void testToDateTimeToday_nullZone() {
         TimeOfDay base = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTime((DateTimeZone) null);
+        DateTime test = base.toDateTimeToday((DateTimeZone) null);
         check(base, 10, 20, 30, 40);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_LONDON);
         expected = expected.hourOfDay().setCopy(10);
@@ -558,6 +559,22 @@ public class TestTimeOfDay_Basics extends TestCase {
     public void testToString() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertEquals("T10:20:30.040", test.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_String() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        assertEquals(" 10", test.toString("yyyy HH"));
+        assertEquals("T10:20:30.040", test.toString(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_String_Locale() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        assertEquals("10 20", test.toString("H m", Locale.ENGLISH));
+        assertEquals("T10:20:30.040", test.toString(null, Locale.ENGLISH));
+        assertEquals("10 20", test.toString("H m", null));
+        assertEquals("T10:20:30.040", test.toString(null, null));
     }
 
     //-----------------------------------------------------------------------

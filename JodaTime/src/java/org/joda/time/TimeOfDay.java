@@ -58,6 +58,7 @@ import java.util.Locale;
 
 import org.joda.time.base.BasePartial;
 import org.joda.time.field.AbstractPartialFieldProperty;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -442,6 +443,131 @@ public final class TimeOfDay
     }
 
     /**
+     * Gets a copy of this date with the specified field set to a new value.
+     * <p>
+     * For example, if the field type is <code>minuteOfHour</code> then the day
+     * would be changed in the returned instance.
+     * <p>
+     * These three lines are equivalent:
+     * <pre>
+     * TimeOfDay updated = tod.withField(DateTimeFieldType.minuteOfHour(), 6);
+     * TimeOfDay updated = tod.minuteOfHour().setCopy(6);
+     * TimeOfDay updated = tod.property(DateTimeFieldType.minuteOfHour()).setCopy(6);
+     * </pre>
+     *
+     * @param fieldType  the field type to set, not null
+     * @param value  the value to set
+     * @return a copy of this instance with the field set
+     * @throws IllegalArgumentException if the value is null or invalid
+     */
+    public TimeOfDay withField(DateTimeFieldType fieldType, int value) {
+        if (value == 0) {
+            return this;
+        }
+        int index = indexOfSupported(fieldType);
+        int[] newValues = getValues();
+        newValues = getField(index).set(this, index, newValues, value);
+        return new TimeOfDay(this, newValues);
+    }
+
+    /**
+     * Gets a copy of this date with the value of the specified field increased.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * <p>
+     * These three lines are equivalent:
+     * <pre>
+     * TimeOfDay added = tod.withField(DateTimeFieldType.minuteOfHour(), 6);
+     * TimeOfDay added = tod.minuteOfHour().addToCopy(6);
+     * TimeOfDay added = tod.property(DateTimeFieldType.minuteOfHour()).addToCopy(6);
+     * </pre>
+     * 
+     * @param fieldType  the field type to add to, not null
+     * @param amount  the amount to add
+     * @return a copy of this instance with the field updated
+     * @throws IllegalArgumentException if the value is null or invalid
+     * @throws ArithmeticException if the new datetime exceeds the capacity
+     */
+    public TimeOfDay withFieldAdded(DurationFieldType fieldType, int amount) {
+        if (amount == 0) {
+            return this;
+        }
+        int index = indexOfSupported(fieldType);
+        int[] newValues = getValues();
+        newValues = getField(index).add(this, index, newValues, amount);
+        return new TimeOfDay(this, newValues);
+    }
+
+    /**
+     * Gets a copy of this date with the specified period added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * Fields in the period that aren't present in the partial are ignored.
+     * <p>
+     * To add or subtract on a single field see
+     * {@link #withFieldAdded(DurationFieldType, int)}.
+     * 
+     * @param period  the period to add to this one, null means zero
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this instance with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity
+     */
+    public TimeOfDay withPeriodAdded(ReadablePeriod period, int scalar) {
+        if (period == null || scalar == 0) {
+            return this;
+        }
+        int[] newValues = getValues();
+        for (int i = 0; i < period.size(); i++) {
+            DurationFieldType fieldType = period.getFieldType(i);
+            int index = indexOf(fieldType);
+            if (index >= 0) {
+                newValues = getField(index).add(this, index, newValues,
+                        FieldUtils.safeMultiplyToInt(period.getValue(i), scalar));
+            }
+        }
+        return new TimeOfDay(this, newValues);
+    }
+
+    /**
+     * Gets a copy of this instance with the specified period added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * <p>
+     * The following two lines are identical in effect:
+     * <pre>
+     * TimeOfDay added = tod.minuteOfHour().addToCopy(6);
+     * TimeOfDay added = tod.plus(Period.days(6));
+     * </pre>
+     * 
+     * @param period  the duration to add to this one, null means zero
+     * @return a copy of this instance with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public TimeOfDay plus(ReadablePeriod period) {
+        return withPeriodAdded(period, 1);
+    }
+
+    /**
+     * Gets a copy of this instance with the specified period take away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * <p>
+     * The following lines are identical in effect:
+     * <pre>
+     * TimeOfDay added = tod.minuteOfHour().addToCopy(-6);
+     * TimeOfDay added = tod.minus(Period.days(6));
+     * TimeOfDay added = tod.plus(Period.days(-6));
+     * </pre>
+     * 
+     * @param period  the period to reduce this instant by
+     * @return a copy of this instance with the period taken away
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public TimeOfDay minus(ReadablePeriod period) {
+        return withPeriodAdded(period, -1);
+    }
+
+    /**
      * Gets the property object for the specified type, which contains many useful methods.
      *
      * @param type  the field type to get the chronology for
@@ -450,6 +576,36 @@ public final class TimeOfDay
      */
     public Property property(DateTimeFieldType type) {
         return new Property(this, indexOfSupported(type));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this partial to a full datetime using the default time zone
+     * setting the time fields from this instance and the date fields from
+     * the current time.
+     *
+     * @return this date as a datetime with the time as the current time
+     */
+    public DateTime toDateTimeToday() {
+        return toDateTimeToday(null);
+    }
+
+    /**
+     * Converts this partial to a full datetime using the specified time zone
+     * setting the time fields from this instance and the date fields from
+     * the current time.
+     * <p>
+     * This method uses the chronology from this instance plus the time zone
+     * specified.
+     *
+     * @param zone  the zone to use, null means default
+     * @return this date as a datetime with the time as the current time
+     */
+    public DateTime toDateTimeToday(DateTimeZone zone) {
+        Chronology chrono = getChronology().withZone(zone);
+        long instantMillis = DateTimeUtils.currentTimeMillis();
+        long resolved = chrono.set(this, instantMillis);
+        return new DateTime(resolved, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -581,7 +737,7 @@ public final class TimeOfDay
          * 
          * @return the partial
          */
-        public ReadablePartial getReadablePartial() {
+        protected ReadablePartial getReadablePartial() {
             return iTimeOfDay;
         }
 

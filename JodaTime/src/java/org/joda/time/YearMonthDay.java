@@ -58,6 +58,7 @@ import java.util.Locale;
 
 import org.joda.time.base.BasePartial;
 import org.joda.time.field.AbstractPartialFieldProperty;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -334,6 +335,131 @@ public final class YearMonthDay
     }
 
     /**
+     * Gets a copy of this date with the specified field set to a new value.
+     * <p>
+     * For example, if the field type is <code>dayOfMonth</code> then the day
+     * would be changed in the returned instance.
+     * <p>
+     * These three lines are equivalent:
+     * <pre>
+     * YearMonthDay updated = ymd.withField(DateTimeFieldType.dayOfMonth(), 6);
+     * YearMonthDay updated = ymd.dayOfMonth().setCopy(6);
+     * YearMonthDay updated = ymd.property(DateTimeFieldType.dayOfMonth()).setCopy(6);
+     * </pre>
+     *
+     * @param fieldType  the field type to set, not null
+     * @param value  the value to set
+     * @return a copy of this instance with the field set
+     * @throws IllegalArgumentException if the value is null or invalid
+     */
+    public YearMonthDay withField(DateTimeFieldType fieldType, int value) {
+        if (value == 0) {
+            return this;
+        }
+        int index = indexOfSupported(fieldType);
+        int[] newValues = getValues();
+        newValues = getField(index).set(this, index, newValues, value);
+        return new YearMonthDay(this, newValues);
+    }
+
+    /**
+     * Gets a copy of this date with the value of the specified field increased.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * <p>
+     * These three lines are equivalent:
+     * <pre>
+     * YearMonthDay added = ymd.withField(DateTimeFieldType.dayOfMonth(), 6);
+     * YearMonthDay added = ymd.dayOfMonth().addToCopy(6);
+     * YearMonthDay added = ymd.property(DateTimeFieldType.dayOfMonth()).addToCopy(6);
+     * </pre>
+     * 
+     * @param fieldType  the field type to add to, not null
+     * @param amount  the amount to add
+     * @return a copy of this instance with the field updated
+     * @throws IllegalArgumentException if the value is null or invalid
+     * @throws ArithmeticException if the new datetime exceeds the capacity
+     */
+    public YearMonthDay withFieldAdded(DurationFieldType fieldType, int amount) {
+        if (amount == 0) {
+            return this;
+        }
+        int index = indexOfSupported(fieldType);
+        int[] newValues = getValues();
+        newValues = getField(index).add(this, index, newValues, amount);
+        return new YearMonthDay(this, newValues);
+    }
+
+    /**
+     * Gets a copy of this date with the specified period added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * Fields in the period that aren't present in the partial are ignored.
+     * <p>
+     * To add or subtract on a single field see
+     * {@link #withFieldAdded(DurationFieldType, int)}.
+     * 
+     * @param period  the period to add to this one, null means zero
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this instance with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity
+     */
+    public YearMonthDay withPeriodAdded(ReadablePeriod period, int scalar) {
+        if (period == null || scalar == 0) {
+            return this;
+        }
+        int[] newValues = getValues();
+        for (int i = 0; i < period.size(); i++) {
+            DurationFieldType fieldType = period.getFieldType(i);
+            int index = indexOf(fieldType);
+            if (index >= 0) {
+                newValues = getField(index).add(this, index, newValues,
+                        FieldUtils.safeMultiplyToInt(period.getValue(i), scalar));
+            }
+        }
+        return new YearMonthDay(this, newValues);
+    }
+
+    /**
+     * Gets a copy of this instance with the specified period added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * <p>
+     * The following two lines are identical in effect:
+     * <pre>
+     * YearMonthDay added = ymd.dayOfMonth().addToCopy(6);
+     * YearMonthDay added = ymd.plus(Period.days(6));
+     * </pre>
+     * 
+     * @param period  the duration to add to this one, null means zero
+     * @return a copy of this instance with the period added
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public YearMonthDay plus(ReadablePeriod period) {
+        return withPeriodAdded(period, 1);
+    }
+
+    /**
+     * Gets a copy of this instance with the specified period take away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * <p>
+     * The following lines are identical in effect:
+     * <pre>
+     * YearMonthDay added = ymd.dayOfMonth().addToCopy(-6);
+     * YearMonthDay added = ymd.minus(Period.days(6));
+     * YearMonthDay added = ymd.plus(Period.days(-6));
+     * </pre>
+     * 
+     * @param period  the period to reduce this instant by
+     * @return a copy of this instance with the period taken away
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public YearMonthDay minus(ReadablePeriod period) {
+        return withPeriodAdded(period, -1);
+    }
+
+    /**
      * Gets the property object for the specified type, which contains many useful methods.
      *
      * @param type  the field type to get the chronology for
@@ -342,6 +468,62 @@ public final class YearMonthDay
      */
     public Property property(DateTimeFieldType type) {
         return new Property(this, indexOfSupported(type));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this YearMonthDay to a full datetime at midnight using the
+     * default time zone.
+     *
+     * @return this date as a datetime at midnight
+     */
+    public DateTime toDateTimeAtMidnight() {
+        return toDateTimeAtMidnight(null);
+    }
+
+    /**
+     * Converts this YearMonthDay to a full datetime at midnight using the
+     * specified time zone.
+     * <p>
+     * This method uses the chronology from this instance plus the time zone
+     * specified.
+     *
+     * @param zone  the zone to use, null means default
+     * @return this date as a datetime at midnight
+     */
+    public DateTime toDateTimeAtMidnight(DateTimeZone zone) {
+        Chronology chrono = getChronology().withZone(zone);
+        return new DateTime(getYear(), getMonthOfYear(), getDayOfMonth(), 0, 0, 0, 0, chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this partial to a full datetime using the default time zone
+     * setting the date fields from this instance and the time fields from
+     * the current time.
+     *
+     * @return this date as a datetime with the time as the current time
+     */
+    public DateTime toDateTimeAtCurrentTime() {
+        return toDateTimeAtCurrentTime(null);
+    }
+
+    /**
+     * Converts this partial to a full datetime using the specified time zone
+     * setting the date fields from this instance and the time fields from
+     * the current time.
+     * <p>
+     * This method uses the chronology from this instance plus the time zone
+     * specified.
+     *
+     * @param zone  the zone to use, null means default
+     * @return this date as a datetime with the time as the current time
+     */
+    public DateTime toDateTimeAtCurrentTime(DateTimeZone zone) {
+        Chronology chrono = getChronology().withZone(zone);
+        long instantMillis = DateTimeUtils.currentTimeMillis();
+        long resolved = chrono.set(this, instantMillis);
+        return new DateTime(resolved, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -485,7 +667,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Output the time in the ISO8601 format YYYY-MM-DD.
+     * Output the date in the ISO8601 format YYYY-MM-DD.
      * 
      * @return ISO8601 formatted string
      */
@@ -538,7 +720,7 @@ public final class YearMonthDay
          * 
          * @return the partial
          */
-        public ReadablePartial getReadablePartial() {
+        protected ReadablePartial getReadablePartial() {
             return iYearMonthDay;
         }
 

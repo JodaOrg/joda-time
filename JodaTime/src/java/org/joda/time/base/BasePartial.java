@@ -54,15 +54,15 @@
 package org.joda.time.base;
 
 import java.io.Serializable;
+import java.util.Locale;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PartialConverter;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  * BasePartial is an abstract implementation of ReadablePartial that stores
@@ -284,13 +284,30 @@ public abstract class BasePartial
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this object to a DateTime using the current date to fill in the
-     * missing fields and using the default time zone.
+     * Output the date using the specified format pattern.
      *
-     * @return the DateTime instance
+     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @see org.joda.time.format.DateTimeFormat
      */
-    public DateTime toDateTime() {
-        return toDateTime((DateTimeZone) null);
+    public String toString(String pattern) {
+        if (pattern == null) {
+            return toString();
+        }
+        return DateTimeFormat.getInstance().forPattern(pattern).print(this);
+    }
+
+    /**
+     * Output the date using the specified format pattern.
+     *
+     * @param pattern  the pattern specification, null means use <code>toString</code>
+     * @param locale  Locale to use, null means default
+     * @see org.joda.time.format.DateTimeFormat
+     */
+    public String toString(String pattern, Locale locale) throws IllegalArgumentException {
+        if (pattern == null) {
+            return toString();
+        }
+        return DateTimeFormat.getInstance(locale).forPattern(pattern).print(this);
     }
 
 }

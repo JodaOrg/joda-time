@@ -58,7 +58,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
+import org.joda.time.DurationFieldType;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
@@ -213,8 +213,8 @@ public abstract class AbstractPartial implements ReadablePartial {
      * Gets the index of the specified field, throwing an exception if the
      * field is unsupported.
      *
-     * @param type  the type to check, may be null which returns -1
-     * @return the index of the field, -1 if unsupported
+     * @param type  the type to check, not null
+     * @return the index of the field
      * @throws IllegalArgumentException if the field is null or not supported
      */
     protected int indexOfSupported(DateTimeFieldType type) {
@@ -225,29 +225,39 @@ public abstract class AbstractPartial implements ReadablePartial {
         return index;
     }
 
-    //-----------------------------------------------------------------------
     /**
-     * Converts this partial to a full datetime using the specified time zone and
-     * filing in any gaps using the current datetime.
-     * <p>
-     * This method obtains the current datetime, creates a chronology from that
-     * on this instance plus the time zone specified, and then sets the fields
-     * from this instant on top.
-     * <p>
-     * For example, if this partial represents a time, then the result of this
-     * method will be the datetime from the specified base instant plus the
-     * time from this partial.
+     * Gets the index of the first fields to have the specified duration,
+     * or -1 if the field is unsupported.
      *
-     * @param zone  the zone to use, null means default
-     * @return the combined datetime
+     * @param type  the type to check, may be null which returns -1
+     * @return the index of the field, -1 if unsupported
      */
-    public DateTime toDateTime(DateTimeZone zone) {
-        Chronology chrono = getChronology().withZone(zone);
-        long instantMillis = DateTimeUtils.currentTimeMillis();
-        long resolved = chrono.set(this, instantMillis);
-        return new DateTime(resolved, chrono);
+    protected int indexOf(DurationFieldType type) {
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getFieldType(i).getDurationType() == type) {
+                return i;
+            }
+        }
+        return -1;
     }
 
+    /**
+     * Gets the index of the first fields to have the specified duration,
+     * throwing an exception if the field is unsupported.
+     *
+     * @param type  the type to check, not null
+     * @return the index of the field
+     * @throws IllegalArgumentException if the field is null or not supported
+     */
+    protected int indexOfSupported(DurationFieldType type) {
+        int index = indexOf(type);
+        if (index == -1) {
+            throw new IllegalArgumentException("Field '" + type + "' is not supported");
+        }
+        return index;
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Resolves this partial against another complete instant to create a new
      * full instant. The combination is performed using the chronology of the

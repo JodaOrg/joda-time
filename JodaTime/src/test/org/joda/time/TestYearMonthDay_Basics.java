@@ -58,6 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Locale;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -286,12 +287,38 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDateTime() {
+    public void testToDateTimeAtMidnight() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtMidnight();
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToDateTimeAtMidnight_Zone() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtMidnight(TOKYO);
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_TOKYO), test);
+    }
+
+    public void testToDateTimeAtMidnight_nullZone() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtMidnight((DateTimeZone) null);
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToDateTimeAtCurrentTime() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTime();
+        DateTime test = base.toDateTimeAtCurrentTime();
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_LONDON);
         expected = expected.year().setCopy(2005);
@@ -301,12 +328,12 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDateTime_Zone() {
+    public void testToDateTimeAtCurrentTime_Zone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTime(TOKYO);
+        DateTime test = base.toDateTimeAtCurrentTime(TOKYO);
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_TOKYO);
         expected = expected.year().setCopy(2005);
@@ -315,12 +342,12 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
-    public void testToDateTime_nullZone() {
+    public void testToDateTimeAtCurrentTime_nullZone() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTime((DateTimeZone) null);
+        DateTime test = base.toDateTimeAtCurrentTime((DateTimeZone) null);
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_LONDON);
         expected = expected.year().setCopy(2005);
@@ -504,8 +531,25 @@ public class TestYearMonthDay_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        assertEquals("1972-06-09", test.toString());
+        YearMonthDay test = new YearMonthDay(2002, 6, 9);
+        assertEquals("2002-06-09", test.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_String() {
+        YearMonthDay test = new YearMonthDay(2002, 6, 9);
+        assertEquals("2002 ", test.toString("yyyy HH"));
+        assertEquals("2002-06-09", test.toString(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_String_Locale() {
+        YearMonthDay test = new YearMonthDay(2002, 6, 9);
+        assertEquals("Sun 9/6", test.toString("EEE d/M", Locale.ENGLISH));
+        assertEquals("dim. 9/6", test.toString("EEE d/M", Locale.FRENCH));
+        assertEquals("2002-06-09", test.toString(null, Locale.ENGLISH));
+        assertEquals("Sun 9/6", test.toString("EEE d/M", null));
+        assertEquals("2002-06-09", test.toString(null, null));
     }
 
     //-----------------------------------------------------------------------

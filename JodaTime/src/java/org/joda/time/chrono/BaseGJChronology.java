@@ -65,8 +65,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
         31,29,31,30,31,30,31,31,30,31,30,31
     };
 
-    private static final long FEB_29 = (31L + 29 - 1) * DateTimeConstants.MILLIS_PER_DAY;
-
     private static final long[] MIN_TOTAL_MILLIS_BY_MONTH_ARRAY;
     private static final long[] MAX_TOTAL_MILLIS_BY_MONTH_ARRAY;
 
@@ -299,7 +297,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
         // Now create fields that have unique behavior for Gregorian and Julian
         // chronologies.
 
-        fields.year = new BasicYearDateTimeField(this);
+        fields.year = new GJYearDateTimeField(this);
         fields.yearOfEra = new GJYearOfEraDateTimeField(fields.year, this);
 
         // Define one-based centuryOfEra and yearOfCentury.
@@ -537,12 +535,9 @@ public abstract class BaseGJChronology extends AssembledChronology {
     }
 
     /**
-     * Sets the year.
-     * 
-     * @param instant  millis from 1970-01-01T00:00:00Z
-     * @param year  the year to set
+     * @param instant millis from 1970-01-01T00:00:00Z
      */
-    long setYear(long instant, int year) {
+    final long setYear(long instant, int year) {
         int thisYear = getYear(instant);
         int dayOfYear = getDayOfYear(instant, thisYear);
         int millisOfDay = getMillisOfDay(instant);
@@ -754,32 +749,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
         }
 
         return instant;
-    }
-
-    long getYearDifference(long minuendInstant, long subtrahendInstant) {
-        int minuendYear = getYear(minuendInstant);
-        int subtrahendYear = getYear(subtrahendInstant);
-
-        // Inlined remainder method to avoid duplicate calls to get.
-        long minuendRem = minuendInstant - getYearMillis(minuendYear);
-        long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
-
-        // Balance leap year differences on remainders.
-        if (subtrahendRem >= FEB_29) {
-            if (isLeapYear(subtrahendYear)) {
-                if (!isLeapYear(minuendYear)) {
-                    subtrahendRem -= DateTimeConstants.MILLIS_PER_DAY;
-                }
-            } else if (minuendRem >= FEB_29 && isLeapYear(minuendYear)) {
-                minuendRem -= DateTimeConstants.MILLIS_PER_DAY;
-            }
-        }
-
-        int difference = minuendYear - subtrahendYear;
-        if (minuendRem < subtrahendRem) {
-            difference--;
-        }
-        return difference;
     }
 
     abstract boolean isLeapYear(int year);

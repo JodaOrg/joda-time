@@ -200,42 +200,6 @@ public final class CopticChronology extends BaseGJChronology {
         return getInstance(zone);
     }
 
-    //-----------------------------------------------------------------------
-    long setYear(long instant, int year) {
-        // optimsed implementation of set, due to 30 day months
-        int thisYear = getYear(instant);
-        int dayOfYear = getDayOfYear(instant, thisYear);
-        int millisOfDay = getMillisOfDay(instant);
-
-        if (dayOfYear > 365) {
-            // Current year is leap, and day is leap.
-            if (!isLeapYear(year)) {
-                // Moving to a non-leap year, leap day doesn't exist.
-                dayOfYear--;
-            }
-        }
-
-        instant = getYearMonthDayMillis(year, 1, dayOfYear);
-        instant += millisOfDay;
-        return instant;
-    }
-
-    long getYearDifference(long minuendInstant, long subtrahendInstant) {
-        // optimsed implementation of getDifference, due to 30 day months
-        int minuendYear = getYear(minuendInstant);
-        int subtrahendYear = getYear(subtrahendInstant);
-
-        // Inlined remainder method to avoid duplicate calls to get.
-        long minuendRem = minuendInstant - getYearMillis(minuendYear);
-        long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
-
-        int difference = minuendYear - subtrahendYear;
-        if (minuendRem < subtrahendRem) {
-            difference--;
-        }
-        return difference;
-    }
-
     long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
@@ -315,7 +279,7 @@ public final class CopticChronology extends BaseGJChronology {
         if (getBase() == null) {
             super.assemble(fields);
 
-            fields.year = new BasicYearDateTimeField(this);
+            fields.year = new CopticYearDateTimeField(this);
             fields.years = fields.year.getDurationField();
 
             // Coptic, like Julian, has no year zero.

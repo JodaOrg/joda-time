@@ -198,11 +198,10 @@ class GJLocaleSymbols {
         }
         try {
             int month = Integer.parseInt(text);
-            if (month < 1 || month > 12) {
-                throw new IllegalArgumentException("Illegal monthOfYear text: " + text);
+            if (month >= 1 && month <= 12) {
+                return month;
             }
-            return month;
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             // ignore
         }
         throw new IllegalArgumentException("Illegal monthOfYear text: " + text);
@@ -239,11 +238,10 @@ class GJLocaleSymbols {
         }
         try {
             int day = Integer.parseInt(text);
-            if (day < 1 || day > 7) {
-                throw new IllegalArgumentException("Illegal dayOfWeek text: " + text);
+            if (day >= 1 && day <= 7) {
+                return day;
             }
-            return day;
-        } catch (Exception ex) {
+        } catch (NumberFormatException ex) {
             // ignore
         }
         throw new IllegalArgumentException("Illegal dayOfWeek text: " + text);

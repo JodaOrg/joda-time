@@ -87,7 +87,7 @@ import org.joda.time.ReadableInstant;
  *
  * @author Brian S O'Neill
  */
-public class DateOnlyFieldProperty extends AbstractDateTimeFieldProperty {
+public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty {
 
     static final long serialVersionUID = -7764886769525930067L;
 

@@ -59,8 +59,9 @@ import org.joda.time.ReadableInstant;
 import org.joda.time.ReadWritableInstant;
 
 /**
- * MutableDateTimeFieldProperty binds a ReadWritableInstant to a DateTimeField
- * allowing powerful datetime functionality to be easily accessed.
+ * ReadWritabelInstantFieldProperty binds a ReadWritableInstant to a
+ * DateTimeField allowing powerful datetime functionality to be easily
+ * accessed.
  * <p>
  * The example below shows how to use the property to change the value of a
  * MutableDateTime object.
@@ -71,14 +72,14 @@ import org.joda.time.ReadWritableInstant;
  * dt.minute().set(10);
  * </pre>
  * <p>
- * MutableDateTimeFieldPropery itself is thread-safe and immutable, but the
+ * ReadWritableInstantFieldPropery itself is thread-safe and immutable, but the
  * ReadWritableInstant being operated on may not be thread-safe.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class MutableDateTimeFieldProperty extends AbstractDateTimeFieldProperty {
+public class ReadWritableInstantFieldProperty extends AbstractReadableInstantFieldProperty {
 
     static final long serialVersionUID = -4481126543819298617L;
 
@@ -93,7 +94,7 @@ public class MutableDateTimeFieldProperty extends AbstractDateTimeFieldProperty 
      * @param instant  the instant to set
      * @param field  the field to use
      */
-    public MutableDateTimeFieldProperty(ReadWritableInstant instant, DateTimeField field) {
+    public ReadWritableInstantFieldProperty(ReadWritableInstant instant, DateTimeField field) {
         super();
         iInstant = instant;
         iField = field;

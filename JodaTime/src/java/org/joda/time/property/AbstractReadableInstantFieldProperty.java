@@ -60,27 +60,28 @@ import org.joda.time.DurationField;
 import org.joda.time.ReadableInstant;
 
 /**
- * AbstractDateTimeFieldProperty is a base class for binding a
+ * AbstractReadableInstantFieldProperty is a base class for binding a
  * ReadableInstant to a DateTimeField.
  * <p>
  * It allows the date and time manipulation code to be field based yet
  * still easy to use.
  * <p>
- * AbstractDateTimeFieldPropery itself is thread-safe and immutable, but the
- * ReadableInstant being operated on may be mutable and not thread-safe.
+ * AbstractReadableInstantFieldProperty itself is thread-safe and immutable,
+ * but the ReadableInstant being operated on may be mutable and not
+ * thread-safe.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class AbstractDateTimeFieldProperty implements Serializable {
+public abstract class AbstractReadableInstantFieldProperty implements Serializable {
     
     static final long serialVersionUID = 1971226328211649661L;
 
     /**
      * Constructor.
      */
-    public AbstractDateTimeFieldProperty() {
+    public AbstractReadableInstantFieldProperty() {
         super();
     }
 

@@ -1240,7 +1240,7 @@ public class MutableDateTime
          * Adds a value to the millis value.
          * 
          * @param value  the value to add
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#add(long,int)
          */
         public MutableDateTime add(int value) {
@@ -1252,7 +1252,7 @@ public class MutableDateTime
          * Adds a value to the millis value.
          * 
          * @param value  the value to add
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#add(long,long)
          */
         public MutableDateTime add(long value) {
@@ -1264,7 +1264,7 @@ public class MutableDateTime
          * Adds a value, possibly wrapped, to the millis value.
          * 
          * @param value  the value to add
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#addWrapField
          */
         public MutableDateTime addWrapField(int value) {
@@ -1277,7 +1277,7 @@ public class MutableDateTime
          * Sets a value.
          * 
          * @param value  the value to set.
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#set(long,int)
          */
         public MutableDateTime set(int value) {
@@ -1290,7 +1290,7 @@ public class MutableDateTime
          * 
          * @param text  the text value to set
          * @param locale  optional locale to use for selecting a text symbol
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @throws IllegalArgumentException if the text value isn't valid
          * @see DateTimeField#set(long,java.lang.String,java.util.Locale)
          */
@@ -1303,7 +1303,7 @@ public class MutableDateTime
          * Sets a text value.
          * 
          * @param text  the text value to set
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @throws IllegalArgumentException if the text value isn't valid
          * @see DateTimeField#set(long,java.lang.String)
          */
@@ -1316,7 +1316,7 @@ public class MutableDateTime
         /**
          * Round to the lowest whole unit of this field.
          *
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#roundFloor
          */
         public MutableDateTime roundFloor() {
@@ -1327,7 +1327,7 @@ public class MutableDateTime
         /**
          * Round to the highest whole unit of this field.
          *
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#roundCeiling
          */
         public MutableDateTime roundCeiling() {
@@ -1339,7 +1339,7 @@ public class MutableDateTime
          * Round to the nearest whole unit of this field, favoring the floor if
          * halfway.
          *
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#roundHalfFloor
          */
         public MutableDateTime roundHalfFloor() {
@@ -1351,7 +1351,7 @@ public class MutableDateTime
          * Round to the nearest whole unit of this field, favoring the ceiling if
          * halfway.
          *
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#roundHalfCeiling
          */
         public MutableDateTime roundHalfCeiling() {
@@ -1363,7 +1363,7 @@ public class MutableDateTime
          * Round to the nearest whole unit of this field. If halfway, the ceiling
          * is favored over the floor only if it makes this field's value even.
          *
-         * @return mutable datetime being used
+         * @return the mutable datetime being used, so calls can be chained
          * @see DateTimeField#roundHalfEven
          */
         public MutableDateTime roundHalfEven() {

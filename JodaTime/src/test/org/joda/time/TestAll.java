@@ -95,6 +95,9 @@ public class TestAll extends TestCase {
         suite.addTest(TestInterval_Constructors.suite());
         suite.addTest(TestInterval_Basics.suite());
         
+        suite.addTest(TestMutableInterval_Constructors.suite());
+        suite.addTest(TestMutableInterval_Basics.suite());
+        
         suite.addTest(TestPeriod_Constructors.suite());
         suite.addTest(TestPeriod_Basics.suite());
         

@@ -653,7 +653,7 @@ public class DateTimeBrowser extends JFrame {
                 "DayOfMon",
                 "DayOfYr",
                 "WeekOfWY",
-                "YearOfWY",
+                "Weekyear",
                 "MonOfYr",
                 "Year"
             };

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -310,6 +310,7 @@ public class TestCopticChronology extends TestCase {
         DateTimeField dayOfMonth = COPTIC_UTC.dayOfMonth();
         DateTimeField monthOfYear = COPTIC_UTC.monthOfYear();
         DateTimeField year = COPTIC_UTC.year();
+        DateTimeField yearOfEra = COPTIC_UTC.yearOfEra();
         DateTimeField era = COPTIC_UTC.era();
         int expectedDOW = 5;
         int expectedDOY = 1;
@@ -322,6 +323,7 @@ public class TestCopticChronology extends TestCase {
             int dayValue = dayOfMonth.get(millis);
             int monthValue = monthOfYear.get(millis);
             int yearValue = year.get(millis);
+            int yearOfEraValue = yearOfEra.get(millis);
             int eraValue = era.get(millis);
             int monthLen = dayOfMonth.getMaximumValue(millis);
             if (monthValue < 1 || monthValue > 13) {
@@ -335,6 +337,7 @@ public class TestCopticChronology extends TestCase {
             
             // test date
             assertEquals(expectedYear, yearValue);
+            assertEquals(expectedYear, yearOfEraValue);
             assertEquals(expectedMonth, monthValue);
             assertEquals(expectedDay, dayValue);
             assertEquals(expectedDOW, dowValue);
@@ -385,6 +388,7 @@ public class TestCopticChronology extends TestCase {
         assertEquals(18, dt.getCenturyOfEra());  // TODO confirm
         assertEquals(20, dt.getYearOfCentury());
         assertEquals(1720, dt.getYear());
+        assertEquals(1720, dt.getYearOfEra());
         assertEquals(10, dt.getMonthOfYear());
         assertEquals(2, dt.getDayOfMonth());
         assertEquals(DateTimeConstants.WEDNESDAY, dt.getDayOfWeek());
@@ -399,6 +403,7 @@ public class TestCopticChronology extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 12, 0, 0, 0, PARIS).withChronology(COPTIC_UTC);
         assertEquals(CopticChronology.AM, dt.getEra());
         assertEquals(1720, dt.getYear());
+        assertEquals(1720, dt.getYearOfEra());
         assertEquals(10, dt.getMonthOfYear());
         assertEquals(2, dt.getDayOfMonth());
         assertEquals(10, dt.getHourOfDay());  // PARIS is UTC+2 in summer (12-2=10)

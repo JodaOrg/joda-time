@@ -127,7 +127,7 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      * @throws ClassCastException if the object is invalid
      */
     public DurationType getDurationType(Object object) {
-        return DurationType.getMillisType();
+        return DurationType.getAverageYearMonthType();
     }
 
     //-----------------------------------------------------------------------

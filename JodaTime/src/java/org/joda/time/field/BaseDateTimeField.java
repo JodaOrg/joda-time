@@ -155,7 +155,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * Note: subclasses that override this method should also override
      * getMaximumTextLength.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param fieldValue  the numeric value to convert to text
      * @param locale the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
@@ -202,7 +202,7 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * Note: subclasses that override this method should also override
      * getMaximumShortTextLength.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @param fieldValue  the numeric value to convert to text
      * @param locale the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */

@@ -12,7 +12,7 @@ names given to date and time concepts in the Gregorian calendar.
 These fields are expressed as <code>XxxOfYyy</code> where <code>Xxx</code> and <code>Yyy</code> are two date time units.
 <code>Yyy</code> will always be larger than <code>Xxx</code>.
 For example, <code>DayOfWeek</code> or <code>SecondOfMinute</code>.
-A side effect of this is that these fields cannot be negative.
+A side effect of this is that these field values cannot be negative.
 </p>
 <p>
 Certain fields extend over all time, and do not include the word 'Of' in their names.
@@ -21,8 +21,8 @@ These fields can have negative values (see the table for details).
 <p>
 <p>
 The fields are explained in more detail below (for the GJChronology):
-<center>
-<table cols="3" border="1" width="500">
+<p>
+<table cols="3" border="1">
 <tr>
 <th>Name
 <th>Min value (GJ)
@@ -30,112 +30,116 @@ The fields are explained in more detail below (for the GJChronology):
 <th>Notes
 </tr><tr>
 <td><a href="#millisOfSecond">millisOfSecond</a>
-<td>0
-<td>999
+<td align="center">0
+<td align="center">999
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#millisOfDay">millisOfDay</a>
-<td>0
-<td>86399999
+<td align="center">0
+<td align="center">86 399 999
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#secondOfMinute">secondOfMinute</a>
-<td>0
-<td>59
+<td align="center">0
+<td align="center">59
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#secondOfDay">secondOfDay</a>
-<td>0
-<td>86399
+<td align="center">0
+<td align="center">86 399
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#minuteOfHour">minuteOfHour</a>
-<td>0
-<td>59
+<td align="center">0
+<td align="center">59
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#minuteOfDay">minuteOfDay</a>
-<td>0
-<td>1439
+<td align="center">0
+<td align="center">1439
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#hourOfDay">hourOfDay</a>
-<td>0
-<td>23
+<td align="center">0
+<td align="center">23
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#hourOfHalfday">hourOfHalfday</a>
-<td>0
-<td>11
+<td align="center">0
+<td align="center">11
+<td>&nbsp;</td>
+</tr><tr>
+<td><a href="#hourOfDay">clockhourOfDay</a>
+<td align="center">1
+<td align="center">24
+<td>&nbsp;</td>
+</tr><tr>
+<td><a href="#hourOfHalfday">clockhourOfHalfday</a>
+<td align="center">1
+<td align="center">12
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#halfdayOfDay">halfdayOfDay</a>
-<td>0 (AM)
-<td>1 (PM)
+<td align="center">0 (AM)
+<td align="center">1 (PM)
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#dayOfWeek">dayOfWeek</a>
-<td>1 (Monday)
-<td>7 (Sunday)
+<td align="center">1 (Monday)
+<td align="center">7 (Sunday)
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#weekOfWeekyear">weekOfWeekyear</a>
-<td>1
-<td>53
+<td align="center">1
+<td align="center">53
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#weekyear">weekyear</a>
-<td>Unbounded negative
-<td>Unbounded
+<td align="center">-292 000 000
+<td align="center">292 000 000
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#dayOfMonth">dayOfMonth</a>
-<td>1
-<td>31
+<td align="center">1
+<td align="center">31
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#dayOfYear">dayOfYear</a>
-<td>1
-<td>366
+<td align="center">1
+<td align="center">366
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#monthOfYear">monthOfYear</a>
-<td>1 (January)
-<td>12 (December)
+<td align="center">1 (January)
+<td align="center">12 (December)
 <td>&nbsp;</td>
 </tr><tr>
 <td><a href="#year">year</a>
-<td>Unbounded negative
-<td>Unbounded
+<td align="center">-292 000 000
+<td align="center">292 000 000
 <td>&nbsp;</td>
 </tr><tr>
-<td><a href="#year">yearOfCentury</a>
-<td>1
-<td>100
-<td>[1]</td>
+<td><a href="#yearOfCentury">yearOfCentury</a>
+<td align="center">1
+<td align="center">100
+<td align="center">[1]</td>
 </tr><tr>
-<td><a href="#year">yearOfEra</a>
-<td>1
-<td>Unbounded
+<td><a href="#yearOfEra">yearOfEra</a>
+<td align="center">1
+<td align="center">292 000 000
 <td>&nbsp;</td>
 </tr><tr>
-<td><a href="#year">century</a>
-<td>Unbounded
-<td>Unbounded
-<td>&nbsp;</td>
+<td><a href="#centuryOfEra">centuryOfEra</a>
+<td align="center">1
+<td align="center">2 920 000
+<td align="center">[2]</td>
 </tr><tr>
-<td><a href="#year">centuryOfEra</a>
-<td>1
-<td>Unbounded
-<td>[2]</td>
-</tr><tr>
-<td><a href="#year">era</a>
-<td>0 (BC/BCE)
-<td>1 (AD/CE)
+<td><a href="#era">era</a>
+<td align="center">0 (BC/BCE)
+<td align="center">1 (AD/CE)
 <td>&nbsp;</td>
 </tr>
 </table>
-</center>
 [1] For the ISOChronology, the year of century range is from 0 to 99.<br />
 [2] For the ISOChronology, the century of era range is from 0.<br />
 </p>
@@ -186,9 +190,23 @@ The number of minutes in the specified time once the day and larger parts are re
 <a name="hourOfDay" />
 <h4>HourOfDay</h4>
 <p>
-The number of hours in the specified time once the day and larger parts are removed.
+The number of hours in the specified time once the day and larger parts are
+removed. The clockhour value represents midnight of the current day as 24
+instead of 0.
 </p>
 
+<a name="hourOfHalfday" />
+<h4>HourOfHalfday</h4>
+<p>
+The number of hours within the half day. The clockhour value represents
+midnight or noon of the current day as 12 instead of 0.
+</p>
+
+<a name="halfdayOfDay" />
+<h4>HalfdayOfDay</h4>
+<p>
+The AM/PM value of the day.
+</p>
 
 <a name="dayOfWeek" />
 <h4>DayOfWeek</h4>
@@ -253,98 +271,160 @@ January is defined as 1, through to December as 12.
 <a name="year" />
 <h4>Year</h4>
 <p>
-The year, using negative values to represent years in the previous era.
-The GJ chronology allows the behaviour of this field to be controlled for years before 1.
-The options are to either include or not include the year zero.
-The ISO chronology always includes the year zero.
+The year, using negative values to represent years in the previous era. For the
+GJ chronology, year zero is not included, unless the cutover to Gregorian is
+specified at or before 1 BCE. The ISO chronology always includes the year
+zero.
 </p>
 
-
-<a name="yearOfCentury" />
-<a name="century" />
 <a name="centuryOfEra" />
-<h4>YearOfCentury, Century and CenturyOfEra</h4>
+<a name="yearOfCentury" />
+<h4>CenturyOfEra and YearOfCentury</h4>
 <p>
 The definition of these varies by chronology:
 </p>
 <p>
-<table cols="9" border="1" width="650">
+<table border="1">
 <tr>
-<th colspan="3">Year
-<th colspan="3">GJ
-<th colspan="3">ISO
-</tr>
-<tr>
-<th>output
-<th>GJ no year 0
-<th>ISO/ GJ inc year 0
-<th>year of century
-<th>century
-<th>century of era
-<th>year of century
-<th>century
-<th>century of era
-
+<th></th>
+<th colspan="3">GJ</th>
+<th colspan="3">ISO</th>
 </tr><tr>
-<td align="center">2BC
-<td align="center">-2
-<td align="center">-1
-<td align="center">99
-<td align="center">-1
-<td align="center">1
-<td align="center">99
-<td align="center">-1
-<td align="center">0
+<th>&nbsp;year of era&nbsp;</th>
+<th>&nbsp;year&nbsp;</th>
+<th>&nbsp;century of era&nbsp;</th>
+<th>&nbsp;year of century&nbsp;</th>
+<th>&nbsp;year&nbsp;</th>
+<th>&nbsp;century of era&nbsp;</th>
+<th>&nbsp;year of century&nbsp;</th>
 </tr><tr>
-<td align="center">1BC
-<td align="center">-1
-<td align="center">0
-<td align="center">100
-<td align="center">-1
-<td align="center">1
-<td align="center">0
-<td align="center">0
-<td align="center">0
+<td align="center">101 BCE</td>
+<td align="center">-101</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">-100</td>
+<td align="center">1</td>
+<td align="center">0</td>
 </tr><tr>
-<td align="center">1AD
-<td align="center">1
-<td align="center">1
-<td align="center">1
-<td align="center">1
-<td align="center">1
-<td align="center">1
-<td align="center">0
-<td align="center">0
+<td align="center">100 BCE</td>
+<td align="center">-100</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-99</td>
+<td align="center">0</td>
+<td align="center">99</td>
 </tr><tr>
-<td align="center">99AD
-<td align="center">99
-<td align="center">99
-<td align="center">99
-<td align="center">1
-<td align="center">1
-<td align="center">99
-<td align="center">0
-<td align="center">0
+<td align="center">99 BCE</td>
+<td align="center">-99</td>
+<td align="center">1</td>
+<td align="center">99</td>
+<td align="center">-98</td>
+<td align="center">0</td>
+<td align="center">98</td>
 </tr><tr>
-<td align="center">100AD
-<td align="center">100
-<td align="center">100
-<td align="center">100
-<td align="center">1
-<td align="center">1
-<td align="center">0
-<td align="center">1
-<td align="center">1
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
 </tr><tr>
-<td align="center">101AD
-<td align="center">101
-<td align="center">101
-<td align="center">1
-<td align="center">2
-<td align="center">2
-<td align="center">1
-<td align="center">1
-<td align="center">1
+<td align="center">2 BCE</td>
+<td align="center">-2</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">-1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr><tr>
+<td align="center">1 BCE</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">1 CE</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr><tr>
+<td align="center">2 CE</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">2</td>
+</tr><tr>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr><tr>
+<td align="center">99 CE</td>
+<td align="center">99</td>
+<td align="center">1</td>
+<td align="center">99</td>
+<td align="center">99</td>
+<td align="center">0</td>
+<td align="center">99</td>
+</tr><tr>
+<td align="center">100 CE</td>
+<td align="center">100</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">100</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">101 CE</td>
+<td align="center">101</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">101</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr><tr>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr><tr>
+<td align="center">1999 CE</td>
+<td align="center">1999</td>
+<td align="center">20</td>
+<td align="center">99</td>
+<td align="center">1999</td>
+<td align="center">19</td>
+<td align="center">99</td>
+</tr><tr>
+<td align="center">2000 CE</td>
+<td align="center">2000</td>
+<td align="center">20</td>
+<td align="center">100</td>
+<td align="center">2000</td>
+<td align="center">20</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">2001 CE</td>
+<td align="center">2001</td>
+<td align="center">21</td>
+<td align="center">1</td>
+<td align="center">2001</td>
+<td align="center">20</td>
+<td align="center">1</td>
 </tr>
 </table>
 

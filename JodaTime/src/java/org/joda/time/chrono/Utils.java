@@ -134,15 +134,15 @@ public class Utils {
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalArgumentException(
-                "Value: "
+                "Value "
                     + value
                     + " for "
                     + field.getName()
-                    + " must be in the range ("
+                    + " must be in the range ["
                     + lowerBound
                     + ','
                     + upperBound
-                    + ')');
+                    + ']');
         }
     }
 
@@ -158,15 +158,15 @@ public class Utils {
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalArgumentException(
-                "Value: "
+                "Value "
                     + value
                     + " for "
                     + fieldName
-                    + " must be in the range ("
+                    + " must be in the range ["
                     + lowerBound
                     + ','
                     + upperBound
-                    + ')');
+                    + ']');
         }
     }
 

@@ -136,7 +136,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Creates a DateTimeFormatterBuilder with any chronology and locale.
      *
-     * @param chrono Chronology to use, or null for default iso
+     * @param chrono Chronology to use, or null for default of ISO
      * @param locale Locale to use, or null for default
      */
     public DateTimeFormatterBuilder(Chronology chrono, Locale locale) {
@@ -161,7 +161,7 @@ public class DateTimeFormatterBuilder {
     }
 
     /**
-     * Returns the locale being used the formatter builder.
+     * Returns the locale being used by the formatter builder.
      */
     public Locale getLocale() {
         return iLocale;

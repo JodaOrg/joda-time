@@ -100,7 +100,7 @@ public class PeriodFormatterBuilder {
     private int iMaxParsedDigits;
     private boolean iRejectSignedValues;
 
-    private DurationFieldAffix iPrefix;
+    private PeriodFieldAffix iPrefix;
 
     // List of PeriodFormatters used to build a final formatter.
     private List iFormatters;
@@ -275,7 +275,7 @@ public class PeriodFormatterBuilder {
 
     /**
      * Print zero values for the next and following appened fields only if the
-     * duration supports it.
+     * period supports it.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -286,7 +286,7 @@ public class PeriodFormatterBuilder {
 
     /**
      * Always print zero values for the next and following appended fields,
-     * even if the duration doesn't support it. The parser requires values for
+     * even if the period doesn't support it. The parser requires values for
      * fields that always print zero.
      *
      * @return this PeriodFormatterBuilder
@@ -339,7 +339,7 @@ public class PeriodFormatterBuilder {
      * @return this PeriodFormatterBuilder
      * @see #appendSuffix
      */
-    private PeriodFormatterBuilder appendPrefix(DurationFieldAffix prefix) {
+    private PeriodFormatterBuilder appendPrefix(PeriodFieldAffix prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException();
         }
@@ -500,7 +500,7 @@ public class PeriodFormatterBuilder {
      * @throws IllegalStateException if no field exists to append to
      * @see #appendPrefix
      */
-    private PeriodFormatterBuilder appendSuffix(DurationFieldAffix suffix) {
+    private PeriodFormatterBuilder appendSuffix(PeriodFieldAffix suffix) {
         final Object originalField;
         if (iFormatters.size() > 0) {
             originalField = iFormatters.get(iFormatters.size() - 1);
@@ -598,7 +598,7 @@ public class PeriodFormatterBuilder {
      * selected.
      * <p>
      * It starts from the last appended field, and moves towards the first,
-     * stopping until it finds a field that is supported by the duration being
+     * stopping until it finds a field that is supported by the period being
      * printed. If no supported fields are found, then no fields are printed.
      * <p>
      * This setting is the default.
@@ -617,7 +617,7 @@ public class PeriodFormatterBuilder {
      * selected.
      * <p>
      * It starts from the first appended field, and moves towards the last,
-     * stopping until it finds a field that is supported by the duration being
+     * stopping until it finds a field that is supported by the period being
      * printed. If no supported fields are found, then no fields are printed.
      *
      * @return this PeriodFormatterBuilder
@@ -648,7 +648,7 @@ public class PeriodFormatterBuilder {
      * Defines a formatted field's prefix or suffix text.
      * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
-    private static interface DurationFieldAffix {
+    private static interface PeriodFieldAffix {
         int calculatePrintedLength(int value);
         
         void printTo(StringBuffer buf, int value);
@@ -658,19 +658,19 @@ public class PeriodFormatterBuilder {
         /**
          * @return new position after parsing affix, or ~position of failure
          */
-        int parse(String durationStr, int position);
+        int parse(String periodStr, int position);
 
         /**
          * @return position where affix starts, or original ~position if not found
          */
-        int scan(String durationStr, int position);
+        int scan(String periodStr, int position);
     }
 
     //-----------------------------------------------------------------------
     /**
      * Implements an affix where the text does not vary by the amount.
      */
-    private static final class SimpleAffix implements DurationFieldAffix {
+    private static final class SimpleAffix implements PeriodFieldAffix {
         private final String iText;
 
         SimpleAffix(String text) {
@@ -689,21 +689,21 @@ public class PeriodFormatterBuilder {
             out.write(iText);
         }
 
-        public int parse(String durationStr, int position) {
+        public int parse(String periodStr, int position) {
             String text = iText;
             int textLength = text.length();
-            if (durationStr.regionMatches(true, position, text, 0, textLength)) {
+            if (periodStr.regionMatches(true, position, text, 0, textLength)) {
                 return position + textLength;
             }
             return ~position;
         }
 
-        public int scan(String durationStr, final int position) {
+        public int scan(String periodStr, final int position) {
             String text = iText;
             int textLength = text.length();
-            int sourceLength = durationStr.length();
+            int sourceLength = periodStr.length();
             for (int pos = position; pos < sourceLength; pos++) {
-                if (durationStr.regionMatches(true, pos, text, 0, textLength)) {
+                if (periodStr.regionMatches(true, pos, text, 0, textLength)) {
                     return pos;
                 }
             }
@@ -716,7 +716,7 @@ public class PeriodFormatterBuilder {
      * Implements an affix where the text varies by the amount of the field.
      * Only singular (1) and plural (not 1) are supported.
      */
-    private static final class PluralAffix implements DurationFieldAffix {
+    private static final class PluralAffix implements PeriodFieldAffix {
         private final String iSingularText;
         private final String iPluralText;
 
@@ -737,7 +737,7 @@ public class PeriodFormatterBuilder {
             out.write(value == 1 ? iSingularText : iPluralText);
         }
 
-        public int parse(String durationStr, int position) {
+        public int parse(String periodStr, int position) {
             String text1 = iPluralText;
             String text2 = iSingularText; 
 
@@ -748,11 +748,11 @@ public class PeriodFormatterBuilder {
                 text2 = temp;
             }
 
-            if (durationStr.regionMatches
+            if (periodStr.regionMatches
                 (true, position, text1, 0, text1.length())) {
                 return position + text1.length();
             }
-            if (durationStr.regionMatches
+            if (periodStr.regionMatches
                 (true, position, text2, 0, text2.length())) {
                 return position + text2.length();
             }
@@ -760,7 +760,7 @@ public class PeriodFormatterBuilder {
             return ~position;
         }
 
-        public int scan(String durationStr, final int position) {
+        public int scan(String periodStr, final int position) {
             String text1 = iPluralText;
             String text2 = iSingularText; 
 
@@ -774,12 +774,12 @@ public class PeriodFormatterBuilder {
             int textLength1 = text1.length();
             int textLength2 = text2.length();
 
-            int sourceLength = durationStr.length();
+            int sourceLength = periodStr.length();
             for (int pos = position; pos < sourceLength; pos++) {
-                if (durationStr.regionMatches(true, pos, text1, 0, textLength1)) {
+                if (periodStr.regionMatches(true, pos, text1, 0, textLength1)) {
                     return pos;
                 }
-                if (durationStr.regionMatches(true, pos, text2, 0, textLength2)) {
+                if (periodStr.regionMatches(true, pos, text2, 0, textLength2)) {
                     return pos;
                 }
             }
@@ -791,11 +791,11 @@ public class PeriodFormatterBuilder {
     /**
      * Builds a composite affix by merging two other affix implementations.
      */
-    private static final class CompositeAffix implements DurationFieldAffix {
-        private final DurationFieldAffix iLeft;
-        private final DurationFieldAffix iRight;
+    private static final class CompositeAffix implements PeriodFieldAffix {
+        private final PeriodFieldAffix iLeft;
+        private final PeriodFieldAffix iRight;
 
-        CompositeAffix(DurationFieldAffix left, DurationFieldAffix right) {
+        CompositeAffix(PeriodFieldAffix left, PeriodFieldAffix right) {
             iLeft = left;
             iRight = right;
         }
@@ -815,18 +815,18 @@ public class PeriodFormatterBuilder {
             iRight.printTo(out, value);
         }
 
-        public int parse(String durationStr, int position) {
-            position = iLeft.parse(durationStr, position);
+        public int parse(String periodStr, int position) {
+            position = iLeft.parse(periodStr, position);
             if (position >= 0) {
-                position = iRight.parse(durationStr, position);
+                position = iRight.parse(periodStr, position);
             }
             return position;
         }
 
-        public int scan(String durationStr, final int position) {
-            int pos = iLeft.scan(durationStr, position);
+        public int scan(String periodStr, final int position) {
+            int pos = iLeft.scan(periodStr, position);
             if (pos >= 0) {
-                return iRight.scan(durationStr, pos);
+                return iRight.scan(periodStr, pos);
             }
             return ~position;
         }
@@ -846,12 +846,12 @@ public class PeriodFormatterBuilder {
 
         private final int iFieldType;
 
-        private final DurationFieldAffix iPrefix;
-        private final DurationFieldAffix iSuffix;
+        private final PeriodFieldAffix iPrefix;
+        private final PeriodFieldAffix iSuffix;
 
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
                        int maxParsedDigits, boolean rejectSignedValues,
-                       int fieldType, DurationFieldAffix prefix, DurationFieldAffix suffix) {
+                       int fieldType, PeriodFieldAffix prefix, PeriodFieldAffix suffix) {
             iMinPrintedDigits = minPrintedDigits;
             iPrintZeroSetting = printZeroSetting;
             iMaxParsedDigits = maxParsedDigits;
@@ -861,7 +861,7 @@ public class PeriodFormatterBuilder {
             iSuffix = suffix;
         }
 
-        FieldFormatter(FieldFormatter field, DurationFieldAffix suffix) {
+        FieldFormatter(FieldFormatter field, PeriodFieldAffix suffix) {
             iMinPrintedDigits = field.iMinPrintedDigits;
             iPrintZeroSetting = field.iPrintZeroSetting;
             iMaxParsedDigits = field.iMaxParsedDigits;
@@ -910,7 +910,7 @@ public class PeriodFormatterBuilder {
                 sum++;
             }
 
-            DurationFieldAffix affix;
+            PeriodFieldAffix affix;
             if ((affix = iPrefix) != null) {
                 sum += affix.calculatePrintedLength(value);
             }
@@ -928,7 +928,7 @@ public class PeriodFormatterBuilder {
             }
             int value = (int)valueLong;
 
-            DurationFieldAffix affix;
+            PeriodFieldAffix affix;
             if ((affix = iPrefix) != null) {
                 affix.printTo(buf, value);
             }
@@ -950,7 +950,7 @@ public class PeriodFormatterBuilder {
             }
             int value = (int)valueLong;
 
-            DurationFieldAffix affix;
+            PeriodFieldAffix affix;
             if ((affix = iPrefix) != null) {
                 affix.printTo(out, value);
             }

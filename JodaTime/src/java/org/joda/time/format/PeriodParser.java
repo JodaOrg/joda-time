@@ -71,7 +71,7 @@ public interface PeriodParser {
 
     /**
      * Parses a period from the given text, at the given position, saving the
-     * result into the fields of the given ReadWritableDuration. If the parse
+     * result into the fields of the given ReadWritablePeriod. If the parse
      * succeeds, the return value is the new text position. Note that the parse
      * may succeed without fully reading the text.
      * <p>
@@ -93,7 +93,7 @@ public interface PeriodParser {
      *
      * @param type  defines which fields may be parsed
      * @param periodStr  text to parse
-     * @return parsed value in a Duration object
+     * @return parsed value in a Period object
      * @throws IllegalArgumentException if any field is out of range
      */
     Period parsePeriod(PeriodType type, String periodStr);
@@ -103,7 +103,7 @@ public interface PeriodParser {
      *
      * @param type  defines which fields may be parsed
      * @param periodStr  text to parse
-     * @return parsed value in a MutableDuration object
+     * @return parsed value in a MutablePeriod object
      * @throws IllegalArgumentException if any field is out of range
      */
     MutablePeriod parseMutablePeriod(PeriodType type, String periodStr);

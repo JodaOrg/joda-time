@@ -70,7 +70,7 @@ import org.joda.time.ReadablePeriod;
 public interface PeriodPrinter {
 
     /**
-     * Returns the amount of fields from the given duration that this printer
+     * Returns the amount of fields from the given period that this printer
      * will print.
      * 
      * @param period  the period to use
@@ -79,7 +79,7 @@ public interface PeriodPrinter {
     int countFieldsToPrint(ReadablePeriod period);
 
     /**
-     * Returns the amount of fields from the given duration that this printer
+     * Returns the amount of fields from the given period that this printer
      * will print.
      * 
      * @param period  the period to use
@@ -89,7 +89,7 @@ public interface PeriodPrinter {
     int countFieldsToPrint(ReadablePeriod period, int stopAt);
 
     /**
-     * Returns the exact number of characters produced for the given duration.
+     * Returns the exact number of characters produced for the given period.
      * 
      * @param period  the period to use
      * @return the estimated length

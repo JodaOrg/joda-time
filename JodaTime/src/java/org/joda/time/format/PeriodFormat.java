@@ -57,7 +57,7 @@ import java.util.Locale;
 
 /**
  * PeriodFormat provides basic printing and parsing capabilities for
- * durations. Eventually, this class will also support localization.
+ * periods. Eventually, this class will also support localization.
  * <p>
  * PeriodFormat is thread-safe and immutable, and the formatters it returns
  * are as well.

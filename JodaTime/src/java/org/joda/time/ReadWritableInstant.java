@@ -231,6 +231,7 @@ public interface ReadWritableInstant extends ReadableInstant {
      *
      * @param field  a DateTimeField instance, usually obtained from a Chronology
      * @param value  the value of that field for the millis set in the implementation
+     * @throws IllegalArgumentException if the field is null
      * @throws IllegalArgumentException if the value is invalid
      */
     void set(DateTimeField field, int value);
@@ -244,6 +245,7 @@ public interface ReadWritableInstant extends ReadableInstant {
      *
      * @param field  a DateTimeField instance, usually obtained from a Chronology
      * @param value  the value of that field for the millis set in the implementation
+     * @throws IllegalArgumentException if the field is null
      * @throws IllegalArgumentException if the value is invalid
      */
     void add(DateTimeField field, int value);
@@ -260,6 +262,7 @@ public interface ReadWritableInstant extends ReadableInstant {
      *
      * @param field  a DateTimeField instance, usually obtained from a Chronology
      * @param value  the value of that field for the millis set in the implementation
+     * @throws IllegalArgumentException if the field is null
      * @throws IllegalArgumentException if the value is invalid
      */
     void addWrapField(DateTimeField field, int value);

@@ -55,7 +55,6 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.InstantConverter;
@@ -496,9 +495,13 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @param field  the DateTimeField to use
      * @param value the value
-     * @throws NullPointerException if the field is null
+     * @throws IllegalArgumentException if the field is null
+     * @throws IllegalArgumentException if the value is invalid
      */
     public void set(final DateTimeField field, final int value) {
+        if (field == null) {
+            throw new IllegalArgumentException("The DateTimeField must not be null");
+        }
         setMillis(field.set(getMillis(), value));
     }
 
@@ -513,9 +516,13 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @param field  the DateTimeField to use
      * @param value the value
-     * @throws NullPointerException if the field is null
+     * @throws IllegalArgumentException if the field is null
+     * @throws IllegalArgumentException if the value is invalid
      */
     public void add(final DateTimeField field, final int value) {
+        if (field == null) {
+            throw new IllegalArgumentException("The DateTimeField must not be null");
+        }
         setMillis(field.add(getMillis(), value));
     }
 
@@ -530,9 +537,13 @@ public class MutableDateTime extends AbstractDateTime
      * 
      * @param field  the DateTimeField to use
      * @param value the value
-     * @throws NullPointerException if the field is null
+     * @throws IllegalArgumentException if the field is null
+     * @throws IllegalArgumentException if the value is invalid
      */
     public void addWrapField(final DateTimeField field, final int value) {
+        if (field == null) {
+            throw new IllegalArgumentException("The DateTimeField must not be null");
+        }
         setMillis(field.addWrapField(getMillis(), value));
     }
 
@@ -804,12 +815,8 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the object is null or invalid
      */
     public void setDate(final Object instant) {
-        if (instant instanceof ReadableInstant) {
-            setDate(((ReadableInstant) instant).getMillis());
-        } else {
-            InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-            setDate(converter.getInstantMillis(instant));
-        }
+        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        setDate(converter.getInstantMillis(instant));
     }
 
     /**
@@ -845,7 +852,7 @@ public class MutableDateTime extends AbstractDateTime
     }
 
     /**
-     * Set the date from an object representing an instant.
+     * Set the time from an object representing an instant.
      * The date part of this object will be unaffected.
      * <p>
      * The recognised object types are defined in {@link ConverterManager} and
@@ -855,12 +862,8 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the object is null or invalid
      */
     public void setTime(final Object instant) {
-        if (instant instanceof ReadableInstant) {
-            setDateTime(((ReadableInstant) instant).getMillis());
-        } else {
-            InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-            setDateTime(converter.getInstantMillis(instant));
-        }
+        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        setTime(converter.getInstantMillis(instant));
     }
 
     /**
@@ -906,7 +909,7 @@ public class MutableDateTime extends AbstractDateTime
      * @throws IllegalArgumentException if the object is null or invalid
      */
     public void setDateTime(final Object instant) {
-        setDateTime(instant);
+        setMillis(instant);
     }
 
     /**

@@ -107,7 +107,7 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Get the abbreviated textual value of the specified time instant.
      * 
-     * @param instant  the time instant in millis to query
+     * @param fieldValue  the field value to query
      * @param locale  the locale to use
      * @return the day of the week, such as 'Mon'
      */

@@ -98,7 +98,7 @@ final class CopticEraDateTimeField extends BaseDateTimeField {
     /**
      * Get the Era component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to query.
+     * @param instant  the time instant in millis to query.
      * @return the era extracted from the input.
      */
     public int get(long instant) {
@@ -108,7 +108,7 @@ final class CopticEraDateTimeField extends BaseDateTimeField {
     /**
      * Set the Era component of the specified time instant.
      * 
-     * @param millis  the time instant in millis to update.
+     * @param instant  the time instant in millis to update.
      * @param era  the era (CopticChronology.AM) to update the time to.
      * @return the updated time instant.
      * @throws IllegalArgumentException  if era is invalid.

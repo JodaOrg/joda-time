@@ -250,7 +250,7 @@ class ConverterSet {
      * Returns a copy of this set, with the converter at the given index
      * removed.
      *
-     * @param converter converter to remove
+     * @param index index of converter to remove
      * @param removed if not null, element 0 is set to the removed converter
      * @throws IndexOutOfBoundsException if the index is invalid
      */

@@ -352,7 +352,6 @@ public final class YearMonthDay extends AbstractPartial implements ReadableParti
          * Constructs a property.
          * 
          * @param partial  the partial instance
-         * @param field  the field
          * @param fieldIndex  the index in the partial
          */
         Property(YearMonthDay partial, int fieldIndex) {

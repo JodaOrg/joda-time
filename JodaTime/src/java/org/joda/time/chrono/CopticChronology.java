@@ -75,6 +75,11 @@ import org.joda.time.field.PreciseDurationField;
  * Coptic years do not begin at the same time as Julian years. This chronology
  * is not proleptic, as it does not allow dates before the first Coptic year.
  * <p>
+ * This implementation defines a day as midnight to midnight exactly as per
+ * the ISO chronology. Some references indicate that a coptic day starts at
+ * sunset on the previous ISO day, but this has not been confirmed and is not
+ * implemented.
+ * <p>
  * CopticChronology is thread-safe and immutable.
  *
  * @see <a href="http://en.wikipedia.org/wiki/Coptic_calendar">Wikipedia</a>

@@ -196,6 +196,15 @@ class GJLocaleSymbols {
                 return i;
             }
         }
+        try {
+            int month = Integer.parseInt(text);
+            if (month < 1 || month > 12) {
+                throw new IllegalArgumentException("Illegal monthOfYear text: " + text);
+            }
+            return month;
+        } catch (Exception ex) {
+            // ignore
+        }
         throw new IllegalArgumentException("Illegal monthOfYear text: " + text);
     }
 
@@ -227,6 +236,15 @@ class GJLocaleSymbols {
             if (daysOfWeek[i].equalsIgnoreCase(text)) {
                 return i;
             }
+        }
+        try {
+            int day = Integer.parseInt(text);
+            if (day < 1 || day > 7) {
+                throw new IllegalArgumentException("Illegal dayOfWeek text: " + text);
+            }
+            return day;
+        } catch (Exception ex) {
+            // ignore
         }
         throw new IllegalArgumentException("Illegal dayOfWeek text: " + text);
     }

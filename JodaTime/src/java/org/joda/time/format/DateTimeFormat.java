@@ -66,6 +66,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationFieldType;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
@@ -283,25 +284,24 @@ public class DateTimeFormat {
             case 'y': // year (number)
             case 'Y': // year of era (number)
                 if (tokenLen == 2) {
-                    // Use a new RemainderDateTimeField to ensure that the year
-                    // of century is zero-based.
-                    DateTimeField field;
-                    Chronology chronoUTC = builder.getChronology().withUTC();
+                    // Use a new remainder type to ensure that the year of
+                    // century is zero-based.
+                    DateTimeFieldType type;
                     switch (c) {
                     case 'x':
-                        field = new RemainderDateTimeField
-                            (chronoUTC.weekyear(), DateTimeFieldType.weekyearOfCentury(), 100);
+                        type = new RemainderType(DateTimeFieldType.weekyear(),
+                                                 DateTimeFieldType.weekyearOfCentury(), 100);
                         break;
                     case 'y': default:
-                        field = new RemainderDateTimeField
-                            (chronoUTC.year(), DateTimeFieldType.yearOfCentury(), 100);
+                        type = new RemainderType(DateTimeFieldType.year(),
+                                                 DateTimeFieldType.yearOfCentury(), 100);
                         break;
                     case 'Y':
-                        field = new RemainderDateTimeField
-                            (chronoUTC.yearOfEra(), DateTimeFieldType.yearOfCentury(), 100);
+                        type = new RemainderType(DateTimeFieldType.yearOfEra(),
+                                                 DateTimeFieldType.yearOfCentury(), 100);
                         break;
                     }
-                    builder.appendDecimal(field, 2, 2);
+                    builder.appendDecimal(type, 2, 2);
                 } else {
                     // Try to support long year values.
                     int maxDigits = 9;
@@ -652,12 +652,49 @@ public class DateTimeFormat {
 
     //-----------------------------------------------------------------------
     /**
+     * Special field type which derives a new field as a remainder.
+     */
+    static class RemainderType extends DateTimeFieldType {
+        private final DateTimeFieldType iWrappedType;
+        private final DateTimeFieldType iType;
+        private final int iDivisor;
+
+        private transient RemainderDateTimeField iRecent;
+
+        RemainderType(DateTimeFieldType wrappedType, DateTimeFieldType type, int divisor) {
+            super(type.getName());
+            iWrappedType = wrappedType;
+            iType = type;
+            iDivisor = divisor;
+        }
+
+        public DurationFieldType getDurationType() {
+            return iType.getDurationType();
+        }
+
+        public DurationFieldType getRangeDurationType() {
+            return iType.getRangeDurationType();
+        }
+
+        public DateTimeField getField(Chronology chrono) {
+            DateTimeField wrappedField = iWrappedType.getField(chrono);
+            RemainderDateTimeField field = iRecent;
+            if (field.getWrappedField() == wrappedField) {
+                return field;
+            }
+            field = new RemainderDateTimeField(wrappedField, iType, iDivisor);
+            iRecent = field;
+            return field;
+        }
+    }
+
+    /**
      * A fake formatter that can only print.
      */
     static class FPrinter implements DateTimeFormatter {
         private final DateTimePrinter mPrinter;
 
-        FPrinter(final DateTimePrinter printer) {
+        FPrinter(DateTimePrinter printer) {
             super();
             mPrinter = printer;
         }
@@ -670,38 +707,38 @@ public class DateTimeFormat {
             return mPrinter.estimatePrintedLength();
         }
 
-        public void printTo(final StringBuffer buf, final ReadableInstant instant) {
+        public void printTo(StringBuffer buf, ReadableInstant instant) {
             mPrinter.printTo(buf, instant);
         }
 
-        public void printTo(final Writer out, final ReadableInstant instant) throws IOException {
+        public void printTo(Writer out, ReadableInstant instant) throws IOException {
             mPrinter.printTo(out, instant);
         }
 
-        public void printTo(final StringBuffer buf, final long instant) {
+        public void printTo(StringBuffer buf, long instant) {
             mPrinter.printTo(buf, instant);
         }
 
-        public void printTo(final Writer out, final long instant) throws IOException {
+        public void printTo(Writer out, long instant) throws IOException {
             mPrinter.printTo(out, instant);
         }
 
-        public void printTo(final StringBuffer buf, final long instant, final DateTimeZone zone) {
+        public void printTo(StringBuffer buf, long instant, DateTimeZone zone) {
             mPrinter.printTo(buf, instant, zone);
         }
 
-        public void printTo(final Writer out, final long instant, final DateTimeZone zone)
+        public void printTo(Writer out, long instant, DateTimeZone zone)
             throws IOException {
             mPrinter.printTo(out, instant, zone);
         }
 
-        public void printTo(final StringBuffer buf, final long instant,
-                            final DateTimeZone zone, final long instantLocal) {
+        public void printTo(StringBuffer buf, long instant,
+                            DateTimeZone zone, long instantLocal) {
             mPrinter.printTo(buf, instant, zone, instantLocal);
         }
 
-        public void printTo(final Writer out, final long instant,
-                            final DateTimeZone zone, final long instantLocal)
+        public void printTo(Writer out, long instant,
+                            DateTimeZone zone, long instantLocal)
             throws IOException {
             mPrinter.printTo(out, instant, zone, instantLocal);
         }
@@ -714,19 +751,19 @@ public class DateTimeFormat {
             mPrinter.printTo(out, instant);
         }
 
-        public String print(final ReadableInstant instant) {
+        public String print(ReadableInstant instant) {
             return mPrinter.print(instant);
         }
 
-        public String print(final long instant) {
+        public String print(long instant) {
             return mPrinter.print(instant);
         }
 
-        public String print(final long instant, final DateTimeZone zone) {
+        public String print(long instant, DateTimeZone zone) {
             return mPrinter.print(instant, zone);
         }
 
-        public String print(final long instant, final DateTimeZone zone, final long instantLocal) {
+        public String print(long instant, DateTimeZone zone, long instantLocal) {
             return mPrinter.print(instant, zone, instantLocal);
         }
 
@@ -738,36 +775,36 @@ public class DateTimeFormat {
             return 0;
         }
 
-        public int parseInto(final DateTimeParserBucket bucket, final String text, final int position) {
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
             throw unsupported();
         }
 
-        public int parseInto(final ReadWritableInstant instant, final String text, final int position) {
+        public int parseInto(ReadWritableInstant instant, String text, int position) {
             throw unsupported();
         }
 
-        public long parseMillis(final String text) {
+        public long parseMillis(String text) {
             throw unsupported();
         }
 
-        public long parseMillis(final String text, final long instantLocal) {
+        public long parseMillis(String text, long instantLocal) {
             throw unsupported();
         }
 
-        public DateTime parseDateTime(final String text) {
+        public DateTime parseDateTime(String text) {
             throw unsupported();
         }
 
-        public DateTime parseDateTime(final String text, final ReadableInstant instant) {
+        public DateTime parseDateTime(String text, ReadableInstant instant) {
             throw unsupported();
         }
 
-        public MutableDateTime parseMutableDateTime(final String text) {
+        public MutableDateTime parseMutableDateTime(String text) {
             throw unsupported();
         }
 
-        public MutableDateTime parseMutableDateTime(final String text,
-                                                    final ReadableInstant instant) {
+        public MutableDateTime parseMutableDateTime(String text,
+                                                    ReadableInstant instant) {
             throw unsupported();
         }
 
@@ -783,7 +820,7 @@ public class DateTimeFormat {
     static class FParser implements DateTimeFormatter {
         private final DateTimeParser mParser;
 
-        FParser(final DateTimeParser parser) {
+        FParser(DateTimeParser parser) {
             super();
             mParser = parser;
         }
@@ -796,37 +833,37 @@ public class DateTimeFormat {
             return 0;
         }
 
-        public void printTo(final StringBuffer buf, final ReadableInstant instant) {
+        public void printTo(StringBuffer buf, ReadableInstant instant) {
             throw unsupported();
         }
 
-        public void printTo(final Writer out, final ReadableInstant instant) throws IOException {
+        public void printTo(Writer out, ReadableInstant instant) throws IOException {
             throw unsupported();
         }
 
-        public void printTo(final StringBuffer buf, final long instant) {
+        public void printTo(StringBuffer buf, long instant) {
             throw unsupported();
         }
 
-        public void printTo(final Writer out, final long instant) throws IOException {
+        public void printTo(Writer out, long instant) throws IOException {
             throw unsupported();
         }
 
-        public void printTo(final StringBuffer buf, final long instant, final DateTimeZone zone) {
+        public void printTo(StringBuffer buf, long instant, DateTimeZone zone) {
             throw unsupported();
         }
 
-        public void printTo(final Writer out, final long instant, final DateTimeZone zone) {
+        public void printTo(Writer out, long instant, DateTimeZone zone) {
             throw unsupported();
         }
 
-        public void printTo(final StringBuffer buf, final long instant,
-                            final DateTimeZone zone, final long instantLocal) {
+        public void printTo(StringBuffer buf, long instant,
+                            DateTimeZone zone, long instantLocal) {
             throw unsupported();
         }
 
-        public void printTo(final Writer out, final long instant,
-                            final DateTimeZone zone, final long instantLocal) {
+        public void printTo(Writer out, long instant,
+                            DateTimeZone zone, long instantLocal) {
             throw unsupported();
         }
 
@@ -838,19 +875,19 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
-        public String print(final ReadableInstant instant) {
+        public String print(ReadableInstant instant) {
             throw unsupported();
         }
 
-        public String print(final long instant) {
+        public String print(long instant) {
             throw unsupported();
         }
 
-        public String print(final long instant, final DateTimeZone zone) {
+        public String print(long instant, DateTimeZone zone) {
             throw unsupported();
         }
 
-        public String print(final long instant, final DateTimeZone zone, final long instantLocal) {
+        public String print(long instant, DateTimeZone zone, long instantLocal) {
             throw unsupported();
         }
 
@@ -862,36 +899,36 @@ public class DateTimeFormat {
             return mParser.estimateParsedLength();
         }
 
-        public int parseInto(final DateTimeParserBucket bucket, final String text, final int position) {
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
             return mParser.parseInto(bucket, text, position);
         }
 
-        public int parseInto(final ReadWritableInstant instant, final String text, final int position) {
+        public int parseInto(ReadWritableInstant instant, String text, int position) {
             return mParser.parseInto(instant, text, position);
         }
 
-        public long parseMillis(final String text) {
+        public long parseMillis(String text) {
             return mParser.parseMillis(text);
         }
 
-        public long parseMillis(final String text, final long instantLocal) {
+        public long parseMillis(String text, long instantLocal) {
             return mParser.parseMillis(text, instantLocal);
         }
 
-        public DateTime parseDateTime(final String text) {
+        public DateTime parseDateTime(String text) {
             return mParser.parseDateTime(text);
         }
 
-        public DateTime parseDateTime(final String text, final ReadableInstant instant) {
+        public DateTime parseDateTime(String text, ReadableInstant instant) {
             return mParser.parseDateTime(text, instant);
         }
 
-        public MutableDateTime parseMutableDateTime(final String text) {
+        public MutableDateTime parseMutableDateTime(String text) {
             return mParser.parseMutableDateTime(text);
         }
 
-        public MutableDateTime parseMutableDateTime(final String text,
-                                                    final ReadableInstant instant) {
+        public MutableDateTime parseMutableDateTime(String text,
+                                                    ReadableInstant instant) {
             return mParser.parseMutableDateTime(text, instant);
         }
 

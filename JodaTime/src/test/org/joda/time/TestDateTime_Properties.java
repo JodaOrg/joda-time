@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -330,20 +330,29 @@ public class TestDateTime_Properties extends TestCase {
 
     public void testPropertyCompareToYear2() {
         DateTime test1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        YearMonthDay test2 = new YearMonthDay(2004, 6, 9);
-        YearMonthDay test3 = new YearMonthDay(2005, 6, 9);
-        assertEquals(true, test1.year().compareTo(test1) == 0);
-        assertEquals(true, test2.year().compareTo(test2) == 0);
-        assertEquals(true, test3.year().compareTo(test3) == 0);
-        
-        assertEquals(true, test1.year().compareTo(test2) == 0);
-        assertEquals(true, test2.year().compareTo(test1) == 0);
-        assertEquals(true, test1.year().compareTo(test3) < 0);
-        assertEquals(true, test3.year().compareTo(test1) > 0);
+        YearMonthDay ymd1 = new YearMonthDay(2003, 6, 9);
+        YearMonthDay ymd2 = new YearMonthDay(2004, 6, 9);
+        YearMonthDay ymd3 = new YearMonthDay(2005, 6, 9);
+        assertEquals(true, test1.year().compareTo(ymd1) > 0);
+        assertEquals(true, test1.year().compareTo(ymd2) == 0);
+        assertEquals(true, test1.year().compareTo(ymd3) < 0);
         try {
             test1.year().compareTo((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testPropertyEqualsHashCodeYear() {
+        DateTime test1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        assertEquals(true, test1.year().equals(test1.year()));
+        assertEquals(true, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0).year()));
+        assertEquals(false, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0).monthOfYear()));
+        assertEquals(false, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic()).year()));
+        
+        assertEquals(true, test1.year().hashCode() == test1.year().hashCode());
+        assertEquals(true, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0).year().hashCode());
+        assertEquals(false, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0).monthOfYear().hashCode());
+        assertEquals(false, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic()).year().hashCode());
     }
 
     //-----------------------------------------------------------------------

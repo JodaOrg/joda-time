@@ -150,7 +150,7 @@ public interface ReadableInstant extends Comparable {
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    ReadableInstant toCopy(long newMillis);
+    ReadableInstant withMillis(long newMillis);
     
     /**
      * Gets a copy of this instant with a different chronology.
@@ -161,10 +161,21 @@ public interface ReadableInstant extends Comparable {
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
-     * @throws IllegalArgumentException if the chronology is null
      */
-    ReadableInstant toCopy(Chronology newChronology);
+    ReadableInstant withChronology(Chronology newChronology);
     
+    /**
+     * Gets a copy of this instant with a different time zone.
+     * <p>
+     * The returned object will be a new instance of the same implementation
+     * type. Only the time zone of the chronology will change, the millis are
+     * kept. Immutable subclasses may return <code>this</code> if appropriate.
+     *
+     * @param newDateTimeZone  the new time zone
+     * @return a copy of this instant with a different time zone
+     */
+    ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone);
+
     //-----------------------------------------------------------------------
     /**
      * Get the value as a simple immutable <code>Instant</code> object.

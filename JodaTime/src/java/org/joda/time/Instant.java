@@ -135,7 +135,7 @@ public final class Instant extends AbstractInstant
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant toCopy(long newMillis) {
+    public ReadableInstant withMillis(long newMillis) {
         return newMillis == iMillis ? this : new Instant(newMillis);
     }
     
@@ -146,10 +146,21 @@ public final class Instant extends AbstractInstant
      * @param newChronology  ignored
      * @return this
      */
-    public ReadableInstant toCopy(Chronology newChronology) {
+    public ReadableInstant withChronology(Chronology newChronology) {
         return this;
     }
     
+    /**
+     * Since Instant does not support time zones, this method always returns
+     * <code>this</code>.
+     *
+     * @param newDateTimeZone  ignored
+     * @return this
+     */
+    public ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone) {
+        return this;
+    }
+
     // Accessors
     //-----------------------------------------------------------------------
     /**

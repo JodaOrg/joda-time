@@ -231,7 +231,7 @@ public class MutableDateOnly extends AbstractPartialInstant
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant toCopy(long newMillis) {
+    public ReadableInstant withMillis(long newMillis) {
         return new MutableDateOnly(newMillis, getChronology());
     }
     
@@ -243,12 +243,10 @@ public class MutableDateOnly extends AbstractPartialInstant
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
-     * @throws IllegalArgumentException if the chronology is null
      */
-    public ReadableInstant toCopy(Chronology newChronology) {
-        if (newChronology == null) {
-            throw new IllegalArgumentException("The Chronology must not be null");
-        }
+    public ReadableInstant withChronology(Chronology newChronology) {
+        newChronology = newChronology == null ? ISOChronology.getInstanceUTC()
+            : newChronology.withUTC();
         return new MutableDateOnly(getMillis(), newChronology);
     }
 

@@ -171,8 +171,8 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object, must not be null
-     * @param chronology  the chronology, must not be null
-     * @throws IllegalArgumentException if the date or chronology is null
+     * @param chronology  the chronology, null means ISOChronology
+     * @throws IllegalArgumentException if the date is null
      */
     public TimeOnly(Object instant, Chronology chronology) {
         super(instant, chronology);
@@ -233,7 +233,7 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant toCopy(long newMillis) {
+    public ReadableInstant withMillis(long newMillis) {
         newMillis = resetUnsupportedFields(newMillis);
         return newMillis == getMillis() ? this : new TimeOnly(newMillis, getChronology());
     }
@@ -247,13 +247,10 @@ public class TimeOnly extends AbstractPartialInstant implements Serializable {
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
-     * @throws IllegalArgumentException if the chronology is null
      */
-    public ReadableInstant toCopy(Chronology newChronology) {
-        if (newChronology == null) {
-            throw new IllegalArgumentException("The Chronology must not be null");
-        }
-        newChronology = newChronology.withUTC();
+    public ReadableInstant withChronology(Chronology newChronology) {
+        newChronology = newChronology == null ? ISOChronology.getInstanceUTC()
+            : newChronology.withUTC();
         return newChronology == getChronology() ? this : new TimeOnly(getMillis(), newChronology);
     }
 

@@ -321,7 +321,7 @@ public class MutableDateTime extends AbstractDateTime
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
      */
-    public ReadableInstant toCopy(long newMillis) {
+    public ReadableInstant withMillis(long newMillis) {
         return new MutableDateTime(newMillis, getChronology());
     }
     
@@ -333,12 +333,8 @@ public class MutableDateTime extends AbstractDateTime
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
-     * @throws IllegalArgumentException if the chronology is null
      */
-    public ReadableInstant toCopy(Chronology newChronology) {
-        if (newChronology == null) {
-            throw new IllegalArgumentException("The Chronology must not be null");
-        }
+    public ReadableInstant withChronology(Chronology newChronology) {
         return new MutableDateTime(getMillis(), newChronology);
     }
     

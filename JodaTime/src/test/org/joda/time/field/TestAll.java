@@ -51,40 +51,36 @@
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.field;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 /**
- * Entry point for all tests in Joda Time.
+ * Entry point for all tests in this package.
  * 
- * @version $Revision$ $Date$
+ * @version $Id$
  * 
  * @author Stephen Colebourne
  */
-public class TestAllPackages extends TestCase {
+public class TestAll extends TestCase {
 
-    public TestAllPackages(String testName) {
+    public TestAll(String testName) {
         super(testName);
     }
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        suite.addTest(org.joda.time.TestAll.suite());
-        suite.addTest(org.joda.time.chrono.TestAll.suite());
-        suite.addTest(org.joda.time.chrono.gj.TestAll.suite());
-        suite.addTest(org.joda.time.convert.TestAll.suite());
-        suite.addTest(org.joda.time.field.TestAll.suite());
-        suite.addTest(org.joda.time.format.TestAll.suite());
-        suite.addTest(org.joda.time.tz.TestAll.suite());
+        
+        suite.addTest(TestMillisDurationField.suite());
+        
         return suite;
     }
 
     public static void main(String args[]) {
         String[] testCaseName = {
-            TestAllPackages.class.getName()
+            TestAll.class.getName()
         };
         junit.textui.TestRunner.main(testCaseName);
     }

@@ -68,9 +68,8 @@ import java.io.Serializable;
  * Whether a particular duration instance is precise depends on the constructor
  * used and the duration type specified.
  * <p>
- * Duration is thread-safe and immutable, provided that the DurationType is
- * as well. All standard DurationType classes supplied are thread-safe and
- * immutable.
+ * Duration is thread-safe and immutable, provided that the DurationType is as well.
+ * All standard DurationType classes supplied are thread-safe and immutable.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne

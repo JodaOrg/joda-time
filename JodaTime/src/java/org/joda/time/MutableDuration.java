@@ -73,7 +73,8 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a zero length millisecond duration using MillisType.
-     * MillisType using ISOChronology in UTC is a precise duration type.
+     * This constructor creates a precise duration because
+     * MillisType in ISOChronology UTC is precise.
      */
     public MutableDuration() {
         super((DurationType) null);
@@ -81,8 +82,9 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a zero length duration.
+     * This constructor creates a precise duration.
      *
-     * @param type  which set of fields this duration supports, null means MillisType
+     * @param type  which set of fields this duration supports, null means millis type
      */
     public MutableDuration(DurationType type) {
         super(type);
@@ -115,7 +117,8 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Create a duration from a set of field values using DayHourType.
-     * DayHourType using ISOChronology in UTC is a precise duration type.
+     * This constructor creates a precise duration because
+     * DayHourType in ISOChronology UTC is precise.
      *
      * @param days  amount of days in this duration
      * @param hours  amount of hours in this duration
@@ -132,15 +135,14 @@ public class MutableDuration extends AbstractDuration
      * AllType using ISOChronology in UTC is an imprecise duration type
      * unless the year, month and week fields are zero.
      *
-     * @param years  amount of years in this duration, which must be zero if unsupported
-     * @param months  amount of months in this duration, which must be zero if unsupported
-     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
-     * @param days  amount of days in this duration, which must be zero if unsupported
-     * @param hours  amount of hours in this duration, which must be zero if unsupported
-     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
-     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
-     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     * @param years  amount of years in this duration
+     * @param months  amount of months in this duration
+     * @param weeks  amount of weeks in this duration
+     * @param days  amount of days in this duration
+     * @param hours  amount of hours in this duration
+     * @param minutes  amount of minutes in this duration
+     * @param seconds  amount of seconds in this duration
+     * @param millis  amount of milliseconds in this duration
      */
     public MutableDuration(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
@@ -168,8 +170,7 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a duration from the given interval endpoints using AllType.
-     * AllType using ISOChronology in UTC is an imprecise duration type
-     * unless the year, month and week fields are zero.
+     * This constructor creates a precise duration.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
@@ -180,6 +181,7 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a duration from the given interval endpoints.
+     * This constructor creates a precise duration.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
@@ -191,8 +193,7 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a duration from the given interval endpoints using AllType.
-     * AllType using ISOChronology in UTC is an imprecise duration type
-     * unless the year, month and week fields are zero.
+     * This constructor creates a precise duration.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -203,19 +204,20 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a duration from the given interval endpoints.
+     * This constructor creates a precise duration.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
      * @param type  which set of fields this duration supports, null means AllType
      */
-    public MutableDuration(
-            ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
+    public MutableDuration(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
         super(startInstant, endInstant, type);
     }
 
     /**
      * Creates a duration from the given millisecond duration using MillisType.
-     * MillisType using ISOChronology in UTC is a precise duration type.
+     * This constructor creates a precise duration because
+     * MillisType in ISOChronology UTC is precise.
      *
      * @param duration  the duration, in milliseconds
      */
@@ -225,6 +227,7 @@ public class MutableDuration extends AbstractDuration
 
     /**
      * Creates a duration from the given millisecond duration.
+     * This constructor creates a precise duration.
      *
      * @param duration  the duration, in milliseconds
      * @param type  which set of fields this duration supports

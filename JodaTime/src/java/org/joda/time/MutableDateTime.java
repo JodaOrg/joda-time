@@ -856,7 +856,7 @@ public class MutableDateTime extends AbstractDateTime
     //-----------------------------------------------------------------------
     /**
      * Set the date and time from milliseconds.
-     * This method is a synonm for {@link #setMillis(long)}.
+     * This method is a synonym for {@link #setMillis(long)}.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if the value is invalid
@@ -867,7 +867,7 @@ public class MutableDateTime extends AbstractDateTime
 
     /**
      * Set the date and time from an object representing an instant.
-     * This method is a synonm for {@link #setMillis(Object)}.
+     * This method is a synonym for {@link #setMillis(Object)}.
      * <p>
      * The recognised object types are defined in {@link ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.

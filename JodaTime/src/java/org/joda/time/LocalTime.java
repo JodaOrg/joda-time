@@ -358,47 +358,18 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the amount of time this instance represents.
+     * Gets the <i>local</i> millisecond instant of this instance.
      * <p>
-     * The value returned from this method will be relative to the epoch
-     * returned by {@link #getEpoch()} and in the units of {@link #getUnitDurationType()}.
+     * The local millisecond corresponds to the number of milliseconds from
+     * 1970-01-01T00:00 ignoring the notion of time zone. For a LocalTime,
+     * the date is not relevant, but is effectively always set to 1970-01-01.
      * <p>
-     * Currently, this is a UTC milliseconds value with the date set to 1970-01-01.
-     * However, you should not rely on that remaining true and always refer to
-     * this method with respect to the Epoch and Unit duration.
+     * API users are not expected to directly use this field.
      *
-     * @return the amount of time this local represents
+     * @return the local milliseconds
      */
-    public long getAmount() {
+    public long getLocalMillis() {
         return iLocalMillis;
-    }
-
-    /**
-     * Gets the length of each unit that this instance uses for the amount.
-     * <p>
-     * A <code>ReadableLocal</code> measures time in units defined by this method.
-     * The result of {@link #getAmount()} must be interpretted in terms of these units.
-     * <p>
-     * Currently, this returns milliseconds.
-     *
-     * @return the duration of each unit of time this local represents
-     */
-    public DurationFieldType getUnitDurationType() {
-        return DurationFieldType.millis();
-    }
-
-    /**
-     * Gets the epoch that this instance uses.
-     * <p>
-     * A <code>ReadableLocal</code> measures time in units whose duration is
-     * defined by {@link #getUnitDurationType()}. This method returns the zero point,
-     * allowing conversion between a <code>ReadableLocal</code> and a
-     * <code>ReadableInstant</code>.
-     *
-     * @return the epoch that this instance measures against
-     */
-    public DateTime getEpoch() {
-        return DateTime.EPOCH;
     }
 
     /**
@@ -439,7 +410,7 @@ public final class LocalTime
      */
     public int get(DateTimeFieldType type) {
         DateTimeField field = getDateTimeField(type);
-        return field.get(getAmount());
+        return field.get(getLocalMillis());
     }
 
     /**
@@ -509,8 +480,8 @@ public final class LocalTime
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this datetime with different millis
      */
-    LocalTime withAmount(long newMillis) {
-        return (newMillis == getAmount() ? this : new LocalTime(newMillis, getChronology()));
+    LocalTime withLocalMillis(long newMillis) {
+        return (newMillis == getLocalMillis() ? this : new LocalTime(newMillis, getChronology()));
     }
 
     /**
@@ -558,8 +529,8 @@ public final class LocalTime
      */
     public LocalTime withField(DateTimeFieldType fieldType, int value) {
         DateTimeField field = getDateTimeField(fieldType);
-        long instant = field.set(getAmount(), value);
-        return withAmount(instant);
+        long instant = field.set(getLocalMillis(), value);
+        return withLocalMillis(instant);
     }
 
     /**
@@ -592,8 +563,8 @@ public final class LocalTime
         if (amount == 0) {
             return this;
         }
-        long instant = field.add(getAmount(), amount);
-        return withAmount(instant);
+        long instant = field.add(getLocalMillis(), amount);
+        return withLocalMillis(instant);
     }
 
     /**
@@ -616,8 +587,8 @@ public final class LocalTime
         if (period == null || scalar == 0) {
             return this;
         }
-        long instant = getChronology().add(period, getAmount(), scalar);
-        return withAmount(instant);
+        long instant = getChronology().add(period, getLocalMillis(), scalar);
+        return withLocalMillis(instant);
     }
 
     /**
@@ -760,7 +731,7 @@ public final class LocalTime
      * @return the hour of day
      */
     public int getHourOfDay() {
-        return getChronology().hourOfDay().get(getAmount());
+        return getChronology().hourOfDay().get(getLocalMillis());
     }
 
     /**
@@ -769,7 +740,7 @@ public final class LocalTime
      * @return the minute of day
      */
     public int getMinuteOfDay() {
-        return getChronology().minuteOfDay().get(getAmount());
+        return getChronology().minuteOfDay().get(getLocalMillis());
     }
 
     /**
@@ -778,7 +749,7 @@ public final class LocalTime
      * @return the minute of hour
      */
     public int getMinuteOfHour() {
-        return getChronology().minuteOfHour().get(getAmount());
+        return getChronology().minuteOfHour().get(getLocalMillis());
     }
 
     /**
@@ -787,7 +758,7 @@ public final class LocalTime
      * @return the second of day
      */
     public int getSecondOfDay() {
-        return getChronology().secondOfDay().get(getAmount());
+        return getChronology().secondOfDay().get(getLocalMillis());
     }
 
     /**
@@ -796,7 +767,7 @@ public final class LocalTime
      * @return the second of minute
      */
     public int getSecondOfMinute() {
-        return getChronology().secondOfMinute().get(getAmount());
+        return getChronology().secondOfMinute().get(getLocalMillis());
     }
 
     /**
@@ -805,7 +776,7 @@ public final class LocalTime
      * @return the millis of day
      */
     public int getMillisOfDay() {
-        return getChronology().millisOfDay().get(getAmount());
+        return getChronology().millisOfDay().get(getLocalMillis());
     }
 
     /**
@@ -814,7 +785,7 @@ public final class LocalTime
      * @return the millis of second
      */
     public int getMillisOfSecond() {
-        return getChronology().millisOfSecond().get(getAmount());
+        return getChronology().millisOfSecond().get(getLocalMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -900,8 +871,8 @@ public final class LocalTime
         if (other.getChronology() != getChronology()) {
             throw new IllegalArgumentException("The LocalTime cannot be compared");
         }
-        long thisAmount = getAmount();
-        long otherAmount = other.getAmount();
+        long thisAmount = getLocalMillis();
+        long otherAmount = other.getLocalMillis();
         if (thisAmount > otherAmount) {
             return 1;
         } else if (thisAmount < otherAmount) {
@@ -923,7 +894,7 @@ public final class LocalTime
     public boolean isAfterNow() {
         long now = DateTimeUtils.currentTimeMillis();
         now = adjustInstant(now, Chronology.getISO());
-        return (getAmount() > now);
+        return (getLocalMillis() > now);
     }
 
     /**
@@ -943,7 +914,7 @@ public final class LocalTime
         if (local.getChronology() != getChronology()) {
             throw new IllegalArgumentException("The LocalTime cannot be compared");
         }
-        return (getAmount() > local.getAmount());
+        return (getLocalMillis() > local.getLocalMillis());
     }
 
     /**
@@ -957,7 +928,7 @@ public final class LocalTime
     public boolean isBeforeNow() {
         long now = DateTimeUtils.currentTimeMillis();
         now = adjustInstant(now, Chronology.getISO());
-        return (getAmount() < now);
+        return (getLocalMillis() < now);
     }
 
     /**
@@ -977,7 +948,7 @@ public final class LocalTime
         if (local.getChronology() != getChronology()) {
             throw new IllegalArgumentException("The LocalTime cannot be compared");
         }
-        return (getAmount() < local.getAmount());
+        return (getLocalMillis() < local.getLocalMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -997,7 +968,7 @@ public final class LocalTime
         }
         if (localTime instanceof LocalTime) {
             LocalTime otherTime = (LocalTime) localTime;
-            if (getAmount() == otherTime.getAmount()) {
+            if (getLocalMillis() == otherTime.getLocalMillis()) {
                 Chronology chrono = getChronology();
                 if (chrono == otherTime.getChronology()) {
                     return true;
@@ -1014,7 +985,7 @@ public final class LocalTime
      */
     public int hashCode() {
         return
-            ((int) (getAmount() ^ (getAmount() >>> 32))) +
+            ((int) (getLocalMillis() ^ (getLocalMillis() >>> 32))) +
             (getChronology().hashCode());
     }
 
@@ -1025,8 +996,7 @@ public final class LocalTime
      * @return ISO8601 formatted string
      */
     public String toString() {
-        return ISODateTimeFormat.getInstance().tTime().print(
-            getAmount(), getChronology());
+        return ISODateTimeFormat.getInstance().tTime().print(this);
     }
 
     /**
@@ -1039,8 +1009,7 @@ public final class LocalTime
         if (pattern == null) {
             return toString();
         }
-        return DateTimeFormat.getInstance().forPattern(pattern).print(
-            getAmount(), getChronology());
+        return DateTimeFormat.getInstance().forPattern(pattern).print(this);
     }
 
     /**
@@ -1054,8 +1023,7 @@ public final class LocalTime
         if (pattern == null) {
             return toString();
         }
-        return DateTimeFormat.getInstance(locale).forPattern(pattern).print(
-            getAmount(), getChronology());
+        return DateTimeFormat.getInstance(locale).forPattern(pattern).print(this);
     }
 
     //-----------------------------------------------------------------------
@@ -1123,7 +1091,7 @@ public final class LocalTime
          * @return the milliseconds
          */
         protected long getMillis() {
-            return iTime.getAmount();
+            return iTime.getLocalMillis();
         }
 
         /**
@@ -1146,7 +1114,7 @@ public final class LocalTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalTime addToCopy(int value) {
-            return iTime.withAmount(iField.add(iTime.getAmount(), value));
+            return iTime.withLocalMillis(iField.add(iTime.getLocalMillis(), value));
         }
         
         /**
@@ -1160,7 +1128,7 @@ public final class LocalTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalTime addToCopy(long value) {
-            return iTime.withAmount(iField.add(iTime.getAmount(), value));
+            return iTime.withLocalMillis(iField.add(iTime.getLocalMillis(), value));
         }
         
         /**
@@ -1175,7 +1143,7 @@ public final class LocalTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalTime addWrapFieldToCopy(int value) {
-            return iTime.withAmount(iField.addWrapField(iTime.getAmount(), value));
+            return iTime.withLocalMillis(iField.addWrapField(iTime.getLocalMillis(), value));
         }
         
         //-----------------------------------------------------------------------
@@ -1189,7 +1157,7 @@ public final class LocalTime
          * @throws IllegalArgumentException if the value isn't valid
          */
         public LocalTime setCopy(int value) {
-            return iTime.withAmount(iField.set(iTime.getAmount(), value));
+            return iTime.withLocalMillis(iField.set(iTime.getLocalMillis(), value));
         }
         
         /**
@@ -1203,7 +1171,7 @@ public final class LocalTime
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public LocalTime setCopy(String text, Locale locale) {
-            return iTime.withAmount(iField.set(iTime.getAmount(), text, locale));
+            return iTime.withLocalMillis(iField.set(iTime.getLocalMillis(), text, locale));
         }
         
         /**
@@ -1226,7 +1194,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          */
         public LocalTime roundFloorCopy() {
-            return iTime.withAmount(iField.roundFloor(iTime.getAmount()));
+            return iTime.withLocalMillis(iField.roundFloor(iTime.getLocalMillis()));
         }
         
         /**
@@ -1235,7 +1203,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          */
         public LocalTime roundCeilingCopy() {
-            return iTime.withAmount(iField.roundCeiling(iTime.getAmount()));
+            return iTime.withLocalMillis(iField.roundCeiling(iTime.getLocalMillis()));
         }
         
         /**
@@ -1245,7 +1213,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          */
         public LocalTime roundHalfFloorCopy() {
-            return iTime.withAmount(iField.roundHalfFloor(iTime.getAmount()));
+            return iTime.withLocalMillis(iField.roundHalfFloor(iTime.getLocalMillis()));
         }
         
         /**
@@ -1255,7 +1223,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          */
         public LocalTime roundHalfCeilingCopy() {
-            return iTime.withAmount(iField.roundHalfCeiling(iTime.getAmount()));
+            return iTime.withLocalMillis(iField.roundHalfCeiling(iTime.getLocalMillis()));
         }
         
         /**
@@ -1266,7 +1234,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          */
         public LocalTime roundHalfEvenCopy() {
-            return iTime.withAmount(iField.roundHalfEven(iTime.getAmount()));
+            return iTime.withLocalMillis(iField.roundHalfEven(iTime.getLocalMillis()));
         }
     }
 

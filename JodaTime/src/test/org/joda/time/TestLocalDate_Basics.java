@@ -481,14 +481,14 @@ public class TestLocalDate_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testWithLocalMillis_long() {
         LocalDate test = new LocalDate(TEST_TIME1_UTC);
-        LocalDate result = test.withAmount(test.getAmount() - 1);
+        LocalDate result = test.withLocalMillis(test.getLocalMillis() - 1);
         assertEquals(test.getYear(), result.getYear());
         assertEquals(test.getMonthOfYear(), result.getMonthOfYear());
         assertEquals(test.getDayOfMonth() - 1, result.getDayOfMonth());
         assertEquals(test.getChronology(), result.getChronology());
         
         test = new LocalDate(TEST_TIME1_UTC);
-        result = test.withAmount(test.getAmount());
+        result = test.withLocalMillis(test.getLocalMillis());
         assertSame(test, result);
     }
 

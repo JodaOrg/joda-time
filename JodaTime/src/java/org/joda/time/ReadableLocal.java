@@ -54,8 +54,8 @@
 package org.joda.time;
 
 /**
- * Defines a local time (no time zone) that does not fully define a single
- * instant in the datetime continuum.
+ * Defines a local datetime (no time zone) that does not fully define a
+ * single instant in the datetime continuum.
  * <p>
  * A <code>ReadableLocal</code> will never have a timezone, thus is
  * always a local time. It may also only support a subset of the fields
@@ -67,43 +67,25 @@ package org.joda.time;
 public interface ReadableLocal extends ReadableMoment {
 
     /**
-     * Gets the amount of time this instance represents.
+     * Gets the <i>local</i> millisecond instant of this instance.
      * <p>
-     * The value returned from this method will be relative to the epoch
-     * returned by {@link #getEpoch()} and in the units of {@link #getUnitDurationType()}.
-     *
-     * @return the amount of time this local represents
-     */
-    long getAmount();
-
-    /**
-     * Gets the length of each unit that this instance uses for the amount.
+     * The local millisecond corresponds to the number of milliseconds from
+     * 1970-01-01T00:00 ignoring the notion of time zone.
      * <p>
-     * A <code>ReadableLocal</code> measures time in units defined by this method.
-     * The result of {@link #getAmount()} must be interpretted in terms of these units.
+     * A <code>ReadableLocal</code> may represent an incomplete view of a
+     * datetime, for example it may a time only value. In this case, the
+     * millisecond value will be set to zero for fields that are not used.
      *
-     * @return the duration of each unit of time this local represents
+     * @return the local milliseconds
      */
-    DurationFieldType getUnitDurationType();
-
-    /**
-     * Gets the epoch that this instance uses.
-     * <p>
-     * A <code>ReadableLocal</code> measures time in units whose duration is
-     * defined by {@link #getUnitDurationType()}. This method returns the zero point,
-     * allowing conversion between a <code>ReadableLocal</code> and a
-     * <code>ReadableInstant</code>.
-     *
-     * @return the epoch that this instance measures against
-     */
-    DateTime getEpoch();
+    long getLocalMillis();
 
     /**
      * Get the value as a String in a recognisable ISO8601 format, only
      * displaying supported fields.
      * <p>
      * The string output is in ISO8601 format to enable the String
-     * constructor to correctly parse it.
+     * constructor to correctly parse it. There will be no time zone.
      *
      * @return the value as an ISO8601 string
      */

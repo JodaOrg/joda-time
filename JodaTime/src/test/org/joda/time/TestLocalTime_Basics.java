@@ -145,8 +145,6 @@ public class TestLocalTime_Basics extends TestCase {
         assertEquals(30 + ((20 + (10 * 60)) * 60), test.getSecondOfDay());
         assertEquals(40, test.getMillisOfSecond());
         assertEquals(40 + ((30 + ((20 + (10 * 60)) * 60)) * 1000), test.getMillisOfDay());
-        
-        assertEquals(new DateTime(0L, Chronology.getISOUTC()), test.getEpoch());
     }
 
     //-----------------------------------------------------------------------
@@ -255,7 +253,7 @@ public class TestLocalTime_Basics extends TestCase {
         ois.close();
         
         assertEquals(test, result);
-        assertEquals(test.getAmount(), result.getAmount());
+        assertEquals(test.getLocalMillis(), result.getLocalMillis());
         assertEquals(test.getChronology(), result.getChronology());
     }
 

@@ -1,4 +1,4 @@
-# @(#)asia	7.76
+# @(#)asia	7.77
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -639,7 +639,7 @@ Rule	Zion	1988	only	-	Apr	 9	0:00	1:00	D
 Rule	Zion	1988	only	-	Sep	 3	0:00	0	S
 
 # From Ephraim Silverberg <ephraim@cs.huji.ac.il>
-# (1997-03-04, 1998-03-16, 1998-12-28, 2000-01-17, 2000-07-25, and 2004-09-20):
+# (1997-03-04, 1998-03-16, 1998-12-28, 2000-01-17 and 2000-07-25):
 
 # According to the Office of the Secretary General of the Ministry of
 # Interior, there is NO set rule for Daylight-Savings/Standard time changes.
@@ -735,14 +735,6 @@ Rule	Zion	2003	only	-	Oct	 3	1:00	0	S
 Rule	Zion	2004	only	-	Apr	 7	1:00	1:00	D
 Rule	Zion	2004	only	-	Sep	22	1:00	0	S
 
-# The latest rumour, however, is that in 2005, when the clock changes to
-# Daylight Saving Time (date as yet unknown), the move will be a two-hour leap
-# forward (from UTC+0200 to UTC+0400) and then, in the fall, the clock will
-# move back only an hour to UTC+0300 thus effectively moving Israel's timezone
-# from UTC+0200 to UTC+0300.  However, no actual draft has been put before the
-# Knesset (Israel's Parliament) though the intention is to do so this
-# month [2004-09].
-
 # From Paul Eggert (2000-07-25):
 # Here are guesses for rules after 2004.
 # They are probably wrong, but they are more likely than no DST at all.
@@ -768,6 +760,26 @@ Zone	Asia/Jerusalem	2:20:56 -	LMT	1880
 # the summer months (i.e. GMT+4).  However, no legislation in this
 # direction is expected until the latter part of 2004 which is a long
 # time off in terms of Israeli politics.
+
+# (2004-09-20):
+# The latest rumour, however, is that in 2005, when the clock changes to
+# Daylight Saving Time (date as yet unknown), the move will be a two-hour leap
+# forward (from UTC+0200 to UTC+0400) and then, in the fall, the clock will
+# move back only an hour to UTC+0300 thus effectively moving Israel's timezone
+# from UTC+0200 to UTC+0300.  However, no actual draft has been put before the
+# Knesset (Israel's Parliament) though the intention is to do so this
+# month [2004-09].
+
+# (2004-09-26):
+# Even though the draft law for the above did pass the Ministerial Committee
+# for Legislative Matters three months ago, it was voted down in today's
+# Cabinet meeting.  The current suggestion is to keep the current timezone at
+# UTC+0200 but have an extended period of Daylight Saving Time (UTC+0300) from
+# the beginning of Passover holiday in the spring to after the Tabernacle
+# holiday in the fall (i.e. the dates of which are governed by the Hebrew
+# calendar but this means at least 184 days of DST).  However, this is only a
+# suggestion that was raised in today's cabinet meeting and has not yet been
+# drafted.
 
 
 

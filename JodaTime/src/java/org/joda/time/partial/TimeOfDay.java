@@ -167,7 +167,7 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the date is null
      */
     public TimeOfDay(Object instant) {
@@ -186,7 +186,7 @@ public final class TimeOfDay extends AbstractPartialInstant implements PartialIn
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
      *
-     * @param instant  the datetime object, must not be null
+     * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISOChronology
      * @throws IllegalArgumentException if the date is null
      */

@@ -125,6 +125,7 @@ public final class ConverterManager {
             CalendarConverter.INSTANCE,
             DateConverter.INSTANCE,
             LongConverter.INSTANCE,
+            NullConverter.INSTANCE,
         });
 
         iDurationConverters = new ConverterSet(new Converter[] {

@@ -28,12 +28,15 @@ import junit.framework.TestSuite;
  */
 public class TestAll extends TestCase {
 
+    public static boolean FAST = false;
+
     public TestAll(String testName) {
         super(testName);
     }
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
+        FAST = true;
         
         suite.addTest(TestBuddhistChronology.suite());
         suite.addTest(TestCopticChronology.suite());

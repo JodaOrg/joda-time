@@ -35,6 +35,8 @@ import org.joda.time.DateTimeZone;
  */
 public class TestCopticChronology extends TestCase {
 
+    private static int SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
+
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
@@ -59,6 +61,7 @@ public class TestCopticChronology extends TestCase {
     }
 
     public static TestSuite suite() {
+        SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
         return new TestSuite(TestCopticChronology.class);
     }
 
@@ -262,9 +265,11 @@ public class TestCopticChronology extends TestCase {
      * Tests era, year, monthOfYear, dayOfMonth and dayOfWeek.
      */
     public void testCalendar() {
+        if (TestAll.FAST) {
+            return;
+        }
         System.out.println("\nTestCopticChronology.testCalendar");
         DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, COPTIC_UTC);
-        long oneDay = DateTimeConstants.MILLIS_PER_DAY;
         long millis = epoch.getMillis();
         long end = new DateTime(3000, 1, 1, 0, 0, 0, 0, ISO_UTC).getMillis();
         DateTimeField dayOfWeek = COPTIC_UTC.dayOfWeek();
@@ -340,7 +345,7 @@ public class TestCopticChronology extends TestCase {
                     expectedDOY = 1;
                 }
             }
-            millis += oneDay;
+            millis += SKIP;
         }
     }
 

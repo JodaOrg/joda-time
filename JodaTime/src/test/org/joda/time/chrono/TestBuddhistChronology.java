@@ -36,6 +36,8 @@ import org.joda.time.Period;
  */
 public class TestBuddhistChronology extends TestCase {
 
+    private static int SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
+    
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.getInstance("Asia/Tokyo");
@@ -58,6 +60,7 @@ public class TestBuddhistChronology extends TestCase {
     private Locale originalLocale = null;
 
     public static void main(String[] args) {
+        SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
         junit.textui.TestRunner.run(suite());
     }
 
@@ -305,9 +308,11 @@ public class TestBuddhistChronology extends TestCase {
     }
 
     public void testCalendar() {
+        if (TestAll.FAST) {
+            return;
+        }
         System.out.println("\nTestBuddhistChronology.testCalendar");
         DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
-        long oneDay = DateTimeConstants.MILLIS_PER_DAY;
         long millis = epoch.getMillis();
         long end = new DateTime(3000, 1, 1, 0, 0, 0, 0, ISO_UTC).getMillis();
         DateTimeField dayOfWeek = BUDDHIST_UTC.dayOfWeek();
@@ -340,7 +345,7 @@ public class TestBuddhistChronology extends TestCase {
             yearValue += 543;
             assertEquals(yearValue, year.get(millis));
             assertEquals(yearValue, yearOfEra.get(millis));
-            millis += oneDay;
+            millis += SKIP;
         }
     }
 

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -232,7 +232,7 @@ public final class BuddhistChronology extends AssembledChronology {
             fields.weekyearOfCentury = new OffsetDateTimeField(
                 field, DateTimeFieldType.weekyearOfCentury(), 1);
             
-            fields.era = BuddhistEraDateTimeField.INSTANCE;
+            fields.era = ThaiBuddhistEraDateTimeField.INSTANCE;
         }
     }
    

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ import org.joda.time.field.UnsupportedDurationField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-final class BuddhistEraDateTimeField extends BaseDateTimeField {
+final class ThaiBuddhistEraDateTimeField extends BaseDateTimeField {
     
     /** Serialization version */
     private static final long serialVersionUID = -9175876774456816364L;
@@ -78,12 +78,12 @@ final class BuddhistEraDateTimeField extends BaseDateTimeField {
     /**
      * Singleton instance
      */
-    static final DateTimeField INSTANCE = new BuddhistEraDateTimeField();
+    static final DateTimeField INSTANCE = new ThaiBuddhistEraDateTimeField();
 
     /**
      * Restricted constructor
      */
-    private BuddhistEraDateTimeField() {
+    private ThaiBuddhistEraDateTimeField() {
         super(DateTimeFieldType.era());
     }
 

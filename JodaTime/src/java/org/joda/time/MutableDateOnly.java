@@ -316,7 +316,7 @@ public class MutableDateOnly extends AbstractPartialInstant
      *
      * @param zone  ignored
      */
-    public void moveDateTimeZone(DateTimeZone zone) {
+    public void setDateTimeZoneRetainFields(DateTimeZone zone) {
     }
 
     // Add

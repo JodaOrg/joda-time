@@ -123,13 +123,18 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Gets a copy of this instant with a different time zone, preserving the
      * millisecond instant.
      * <p>
-     * The returned object will be a new instance of the same implementation
-     * type. Only the time zone of the chronology will change, the millis are
-     * kept. Immutable subclasses may return <code>this</code> if appropriate.
+     * This method is useful for finding the local time in another timezone.
+     * For example, if this instant holds 12:30 in Europe/London, the result
+     * from this method with Europe/Paris would be 13:30.
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * This method changes alters the time zone, and does not change the
+     * millisecond instant, with the effect that the field values usually change.
+     * Immutable implementations may return <code>this</code> if appropriate.
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
-     * @see #withDateTimeZoneMoved
+     * @see #withDateTimeZoneRetainFields
      */
     public ReadableInstant withDateTimeZone(DateTimeZone newDateTimeZone) {
         final Chronology originalChrono = getChronology();
@@ -146,16 +151,20 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Gets a copy of this instant with a different time zone, preserving the
      * field values.
      * <p>
-     * The returned object will be a new instance of the same implementation
-     * type. Moving the time zone alters the millisecond value of this instant
-     * such that it is relative to the new time zone. Immutable subclasses may
-     * return <code>this</code> if appropriate.
+     * This method is useful for finding the millisecond time in another timezone.
+     * For example, if this instant holds 12:30 in Europe/London (ie. 12:30Z),
+     * the result from this method with Europe/Paris would be 12:30 (ie. 11:30Z).
+     * <p>
+     * The returned object will be a new instance of the same implementation type.
+     * This method changes alters the time zone and the millisecond instant to keep
+     * the field values the same.
+     * Immutable implementations may return <code>this</code> if appropriate.
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
      * @see #withDateTimeZone
      */
-    public ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone) {
+    public ReadableInstant withDateTimeZoneRetainFields(DateTimeZone newDateTimeZone) {
         final long originalMillis = getMillis();
         final Chronology originalChrono = getChronology();
         final DateTimeZone originalZone;

@@ -53,9 +53,6 @@
  */
 package org.joda.time;
 
-// Import for @link support
-import org.joda.time.convert.ConverterManager;
-
 /**
  * Defines an instant in the datetime continuum that can be queried and modified.
  * This interface expresses the datetime as milliseconds from 1970-01-01T00:00:00Z.
@@ -81,7 +78,8 @@ public interface ReadWritableInstant extends ReadableInstant {
     /**
      * Set the value from an Object representing an instant.
      * <p>
-     * The recognised object types are defined in {@link ConverterManager} and
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * 
      * @param instant  an object representing an instant
@@ -99,26 +97,33 @@ public interface ReadWritableInstant extends ReadableInstant {
     void setChronology(Chronology chronology);
 
     /**
-     * Sets the time zone of the datetime via the chronology, which has no
-     * effect if not applicable. Setting the time zone does not affect the
-     * millisecond value of this instant.
+     * Sets the time zone of the datetime, changing the chronology and field values.
+     * <p>
+     * Changing the zone using this method retains the millisecond instant.
+     * The millisecond instant is adjusted in the new zone to compensate.
+     * 
+     * chronology. Setting the time zone does not affect the millisecond value
+     * of this instant.
+     * <p>
+     * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @throws IllegalArgumentException if the value is invalid
-     * @see #moveDateTimeZone
+     * @see #setDateTimeZoneRetainFields
      */
     void setDateTimeZone(DateTimeZone zone);
 
     /**
-     * Moves the time zone of the datetime via the chronology, which has no
-     * effect if not applicable. Moving the time zone alters the millisecond
-     * value of this instant such that it is relative to the new time zone.
+     * Sets the time zone of the datetime, changing the chronology and millisecond.
+     * <p>
+     * Changing the zone using this method retains the field values.
+     * The millisecond instant is adjusted in the new zone to compensate.
+     * <p>
+     * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @throws IllegalArgumentException if the value is invalid
      * @see #setDateTimeZone
      */
-    void moveDateTimeZone(DateTimeZone zone);
+    void setDateTimeZoneRetainFields(DateTimeZone zone);
 
     //-----------------------------------------------------------------------
     /**

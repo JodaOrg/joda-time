@@ -426,30 +426,35 @@ public class MutableDateTime extends AbstractDateTime
     // Time zone
     //-----------------------------------------------------------------------
     /**
-     * Sets the time zone of the datetime, which changes the
+     * Sets the time zone of the datetime, changing the chronology and field values.
+     * <p>
+     * Changing the zone using this method retains the millisecond instant.
+     * The millisecond instant is adjusted in the new zone to compensate.
+     * 
      * chronology. Setting the time zone does not affect the millisecond value
      * of this instant.
      * <p>
      * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
-     * @see #moveDateTimeZone
+     * @see #setDateTimeZoneRetainFields
      */
     public void setDateTimeZone(DateTimeZone zone) {
         super.setDateTimeZone(zone);
     }
 
     /**
-     * Moves the time zone of the datetime, which changes the
-     * chronology. Moving the time zone alters the millisecond value of this
-     * instant such that it is relative to the new time zone.
+     * Sets the time zone of the datetime, changing the chronology and millisecond.
+     * <p>
+     * Changing the zone using this method retains the field values.
+     * The millisecond instant is adjusted in the new zone to compensate.
      * <p>
      * If the chronology already has this time zone, no change occurs.
      *
      * @param zone  the time zone to use, null means default zone
      * @see #setDateTimeZone
      */
-    public void moveDateTimeZone(DateTimeZone zone) {
+    public void setDateTimeZoneRetainFields(DateTimeZone zone) {
         super.moveDateTimeZone(zone);
     }
 

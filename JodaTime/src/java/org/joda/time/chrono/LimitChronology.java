@@ -186,14 +186,14 @@ public final class LimitChronology extends AssembledChronology {
         DateTime lowerLimit = iLowerLimit;
         if (lowerLimit != null) {
             MutableDateTime mdt = lowerLimit.toMutableDateTime();
-            mdt.moveDateTimeZone(zone);
+            mdt.setDateTimeZoneRetainFields(zone);
             lowerLimit = mdt.toDateTime();
         }
 
         DateTime upperLimit = iUpperLimit;
         if (upperLimit != null) {
             MutableDateTime mdt = upperLimit.toMutableDateTime();
-            mdt.moveDateTimeZone(zone);
+            mdt.setDateTimeZoneRetainFields(zone);
             upperLimit = mdt.toDateTime();
         }
         

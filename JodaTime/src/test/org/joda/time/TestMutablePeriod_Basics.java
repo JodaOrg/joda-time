@@ -63,7 +63,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.base.AbstractPeriod;
+import org.joda.time.base.BasePeriod;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -196,12 +196,9 @@ public class TestMutablePeriod_Basics extends TestCase {
         assertEquals(false, test1.equals(new Period(123L, PeriodType.getDayHourType())));
     }
     
-    class MockMutablePeriod extends AbstractPeriod {
+    class MockMutablePeriod extends BasePeriod {
         public MockMutablePeriod(long value) {
             super(value, null);
-        }
-        protected PeriodType checkPeriodType(PeriodType type) {
-            return PeriodType.getAllType();
         }
     }
 

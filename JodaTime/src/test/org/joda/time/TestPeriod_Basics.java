@@ -63,7 +63,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.base.AbstractPeriod;
+import org.joda.time.base.BasePeriod;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -195,12 +195,9 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(false, test1.equals(new Period(123L, PeriodType.getDayHourType())));
     }
     
-    class MockPeriod extends AbstractPeriod {
+    class MockPeriod extends BasePeriod {
         public MockPeriod(long value) {
             super(value, null);
-        }
-        protected PeriodType checkPeriodType(PeriodType type) {
-            return PeriodType.getAllType();
         }
     }
 
@@ -590,113 +587,6 @@ public class TestPeriod_Basics extends TestCase {
             test.withFieldsNormalized();
             fail();
         } catch (IllegalStateException ex) {}
-    }
-
-    //-----------------------------------------------------------------------
-    public void testImmutable() {
-        MockChangeDuration test = new MockChangeDuration(111L);
-        test.testSetPeriod_RP();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetPeriod_RD();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetPeriod_ints();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetPeriod_1();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetPeriod_2();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetYears();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetMonths();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetWeeks();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetDays();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetHours();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetMinutes();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetSeconds();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetMillis();
-        assertEquals(111L, test.toDurationMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testNormalize();
-        assertEquals(111L, test.toDurationMillis());
-    }
-    
-    static class MockChangeDuration extends Period {
-        MockChangeDuration(long duration) {
-            super(duration);
-        }
-        public void testSetPeriod_RP() {
-            setPeriod((ReadablePeriod) null);
-        }
-        public void testSetPeriod_RD() {
-            setPeriod((ReadableDuration) null);
-        }
-        public void testSetPeriod_ints() {
-            setPeriod(1, 2, 3, 4, 5, 6, 7, 8);
-        }
-        public void testSetPeriod_1() {
-            setPeriod(123L);
-        }
-        public void testSetPeriod_2() {
-            setPeriod(123L, 321L);
-        }
-        public void testSetYears() {
-            setYears(1);
-        }
-        public void testSetMonths() {
-            setMonths(1);
-        }
-        public void testSetWeeks() {
-            setWeeks(1);
-        }
-        public void testSetDays() {
-            setDays(1);
-        }
-        public void testSetHours() {
-            setHours(1);
-        }
-        public void testSetMinutes() {
-            setMinutes(1);
-        }
-        public void testSetSeconds() {
-            setSeconds(1);
-        }
-        public void testSetMillis() {
-            setMillis(1);
-        }
-        public void testNormalize() {
-            super.normalize();
-        }
     }
 
 }

@@ -211,7 +211,7 @@ public class DateTimeUtils {
      * will be returned. Otherwise, the chronology is returned.
      * 
      * @param chrono  the chronology to use, null means ISO in the default zone
-     * @return the chronology, or ISOChronology if null
+     * @return the chronology, never null
      */
     public static final Chronology getChronology(Chronology chrono) {
         if (chrono == null) {
@@ -225,16 +225,33 @@ public class DateTimeUtils {
      * Gets the zone handling null.
      * <p>
      * If the zone is <code>null</code>, {@link DateTimeZone#getDefault()}
-     * will be returned. Otherwise, the chronology is returned.
+     * will be returned. Otherwise, the zone specified is returned.
      * 
      * @param zone  the time zone to use, null means the default zone
-     * @return the time zone, or default if null
+     * @return the time zone, never null
      */
     public static final DateTimeZone getZone(DateTimeZone zone) {
         if (zone == null) {
             return DateTimeZone.getDefault();
         }
         return zone;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the period type handling null.
+     * <p>
+     * If the zone is <code>null</code>, {@link PeriodType#getAllType()}
+     * will be returned. Otherwise, the type specified is returned.
+     * 
+     * @param type  the time zone to use, null means the All type
+     * @return the type to use, never null
+     */
+    public static final PeriodType getPeriodType(PeriodType type) {
+        if (type == null) {
+            return PeriodType.getAllType();
+        }
+        return type;
     }
 
     //-----------------------------------------------------------------------

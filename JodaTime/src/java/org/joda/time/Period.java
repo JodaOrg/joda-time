@@ -55,7 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.base.*;
+import org.joda.time.base.BasePeriod;
 
 /**
  * An immutable time period specifying a set of duration field values.
@@ -87,8 +87,8 @@ import org.joda.time.base.*;
  * @since 1.0
  * @see MutablePeriod
  */
-public class Period
-        extends AbstractPeriod
+public final class Period
+        extends BasePeriod
         implements ReadablePeriod, Serializable {
 
     /** Serialization version */
@@ -267,18 +267,13 @@ public class Period
 
     //-----------------------------------------------------------------------
     /**
-     * Validates a period type, converting nulls to a default value and
-     * checking the type is suitable for this instance.
+     * Get this period as an immutable <code>Period</code> object
+     * by returning <code>this</code>.
      * 
-     * @param type  the type to check, may be null
-     * @return the validated type to use, not null
-     * @throws IllegalArgumentException if the period type is not precise
+     * @return <code>this</code>
      */
-    protected final PeriodType checkPeriodType(PeriodType type) {
-        if (type == null) {
-            return PeriodType.getAllType();
-        }
-        return type;
+    public Period toPeriod() {
+        return this;
     }
 
     //-----------------------------------------------------------------------
@@ -290,7 +285,7 @@ public class Period
      * @return the new period instance
      * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
-    public final Period withPeriodType(PeriodType type) {
+    public Period withPeriodType(PeriodType type) {
         if (type == null) {
             type = PeriodType.getAllType();
         }
@@ -309,7 +304,7 @@ public class Period
      * @return the new period instance
      * @throws IllegalStateException if this period is imprecise
      */
-    public final Period withPeriodTypeRetainDuration(PeriodType type) {
+    public Period withPeriodTypeRetainDuration(PeriodType type) {
         if (type == null) {
             type = PeriodType.getAllType();
         }
@@ -326,82 +321,8 @@ public class Period
      * @return the new period instance
      * @throws IllegalStateException if this period is imprecise
      */
-    public final Period withFieldsNormalized() {
+    public Period withFieldsNormalized() {
         return new Period(toDurationMillis(), getPeriodType());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setPeriod(ReadablePeriod period) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setPeriod(int years, int months, int weeks, int days,
-                                       int hours, int minutes, int seconds, int millis) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setPeriod(long startInstant, long endInstant) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setPeriod(long duration) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setYears(int years) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setMonths(int months) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setWeeks(int weeks) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setDays(int days) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setHours(int hours) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setMinutes(int minutes) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setSeconds(int seconds) {
-    }
-
-    /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
-     */
-    protected final void setMillis(int millis) {
     }
 
 }

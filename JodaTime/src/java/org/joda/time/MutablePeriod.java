@@ -55,7 +55,8 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.base.*;
+import org.joda.time.base.BasePeriod;
+import org.joda.time.field.FieldUtils;
 
 /**
  * Standard mutable time period implementation.
@@ -69,7 +70,7 @@ import org.joda.time.base.*;
  * @see Period
  */
 public class MutablePeriod
-        extends AbstractPeriod
+        extends BasePeriod
         implements ReadWritablePeriod, Cloneable, Serializable {
 
     /** Serialization version */
@@ -264,29 +265,21 @@ public class MutablePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Validates a period type, converting nulls to a default value and
-     * checking the type is suitable for this instance.
-     * 
-     * @param type  the type to check, may be null
-     * @return the validated type to use, not null
-     * @throws IllegalArgumentException if the period type is not precise
-     */
-    protected PeriodType checkPeriodType(PeriodType type) {
-        if (type == null) {
-            return PeriodType.getAllType();
-        }
-        return type;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Sets all the fields in one go from another ReadablePeriod.
      * 
      * @param period  the period to set, null means zero length period
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void setPeriod(ReadablePeriod period) {
-        super.setPeriod(period);
+        if (period == null) {
+            setPeriod(0L);
+        } else {
+            setPeriod(
+                period.getYears(), period.getMonths(),
+                period.getWeeks(), period.getDays(),
+                period.getHours(), period.getMinutes(),
+                period.getSeconds(), period.getMillis());
+        }
     }
 
     /**
@@ -315,7 +308,11 @@ public class MutablePeriod
      * @param interval  the interval to set, null means zero length
      */
     public void setPeriod(ReadableInterval interval) {
-        super.setPeriod(interval);
+        if (interval == null) {
+            setPeriod(0L);
+        } else {
+            setPeriod(interval.getStartMillis(), interval.getEndMillis());
+        }
     }
 
     /**
@@ -340,7 +337,8 @@ public class MutablePeriod
      * @param duration  the duration to set, null means zero length
      */
     public void setPeriod(ReadableDuration duration) {
-        super.setPeriod(duration);
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        setPeriod(durationMillis);
     }
 
     /**
@@ -367,7 +365,18 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadablePeriod period) {
-        super.add(period);
+        if (period != null) {
+            setPeriod(
+                FieldUtils.safeAdd(getYears(), period.getYears()),
+                FieldUtils.safeAdd(getMonths(), period.getMonths()),
+                FieldUtils.safeAdd(getWeeks(), period.getWeeks()),
+                FieldUtils.safeAdd(getDays(), period.getDays()),
+                FieldUtils.safeAdd(getHours(), period.getHours()),
+                FieldUtils.safeAdd(getMinutes(), period.getMinutes()),
+                FieldUtils.safeAdd(getSeconds(), period.getSeconds()),
+                FieldUtils.safeAdd(getMillis(), period.getMillis())
+            );
+        }
     }
 
     /**
@@ -386,49 +395,54 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis) {
-        super.add(years, months, weeks, days, hours, minutes, seconds, millis);
+                       int hours, int minutes, int seconds, int millis) {
+        setPeriod(
+            FieldUtils.safeAdd(getYears(), years),
+            FieldUtils.safeAdd(getMonths(), months),
+            FieldUtils.safeAdd(getWeeks(), weeks),
+            FieldUtils.safeAdd(getDays(), days),
+            FieldUtils.safeAdd(getHours(), hours),
+            FieldUtils.safeAdd(getMinutes(), minutes),
+            FieldUtils.safeAdd(getSeconds(), seconds),
+            FieldUtils.safeAdd(getMillis(), millis)
+        );
     }
 
     /**
-     * Adds an interval to this one by converting it to a period using the same
-     * period type and then adding each field in turn.
+     * Adds an interval to this one by dividing the interval into
+     * fields and calling {@link #add(ReadablePeriod)}.
      * 
      * @param interval  the interval to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadableInterval interval) {
-        super.add(interval);
+        if (interval != null) {
+            add(interval.toPeriod(getPeriodType()));
+        }
     }
 
     /**
      * Adds a duration to this one by dividing the duration into
-     * fields and then adding each field in turn.
-     * <p>
-     * When dividing the duration, only precise fields in the period type will be used.
-     * For large durations, all the remaining duration will be added to the largest
-     * available precise field.
+     * fields and calling {@link #add(ReadablePeriod)}.
      * 
      * @param duration  the duration to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(ReadableDuration duration) {
-        super.add(duration);
+        if (duration != null) {
+            add(new Period(duration.getMillis(), getPeriodType()));
+        }
     }
 
     /**
-     * Adds a duration to this one by dividing the duration into
-     * fields and then adding each field in turn.
-     * <p>
-     * When dividing the duration, only precise fields in the period type will be used.
-     * For large durations, all the remaining duration will be added to the largest
-     * available precise field.
+     * Adds a millisecond duration to this one by dividing the duration into
+     * fields and calling {@link #add(ReadablePeriod)}.
      * 
-     * @param duration  the duration to add
+     * @param duration  the duration, in milliseconds
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void add(long duration) {
-        super.add(duration);
+        add(new Period(duration, getPeriodType()));
     }
 
     /**
@@ -439,7 +453,7 @@ public class MutablePeriod
      * @throws IllegalStateException if this period is imprecise
      */
     public void normalize() {
-        super.normalize();
+        setPeriod(toDurationMillis());
     }
 
     //-----------------------------------------------------------------------
@@ -461,7 +475,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addYears(int years) {
-        super.addYears(years);
+        if (years != 0) {
+            setYears(FieldUtils.safeAdd(getYears(), years));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -483,7 +499,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMonths(int months) {
-        super.addMonths(months);
+        if (months != 0) {
+            setMonths(FieldUtils.safeAdd(getMonths(), months));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -505,7 +523,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addWeeks(int weeks) {
-        super.addWeeks(weeks);
+        if (weeks != 0) {
+            setWeeks(FieldUtils.safeAdd(getWeeks(), weeks));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -527,7 +547,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addDays(int days) {
-        super.addDays(days);
+        if (days != 0) {
+            setDays(FieldUtils.safeAdd(getDays(), days));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -549,7 +571,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addHours(int hours) {
-        super.addHours(hours);
+        if (hours != 0) {
+            setHours(FieldUtils.safeAdd(getHours(), hours));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -571,7 +595,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMinutes(int minutes) {
-        super.addMinutes(minutes);
+        if (minutes != 0) {
+            setMinutes(FieldUtils.safeAdd(getMinutes(), minutes));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -593,7 +619,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addSeconds(int seconds) {
-        super.addSeconds(seconds);
+        if (seconds != 0) {
+            setSeconds(FieldUtils.safeAdd(getSeconds(), seconds));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -615,7 +643,9 @@ public class MutablePeriod
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMillis(int millis) {
-        super.addMillis(millis);
+        if (millis != 0) {
+            setMillis(FieldUtils.safeAdd(getMillis(), millis));
+        }
     }
 
     // Misc

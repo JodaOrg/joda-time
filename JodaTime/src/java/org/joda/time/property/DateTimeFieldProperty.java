@@ -54,10 +54,9 @@
 package org.joda.time.property;
 
 import java.util.Locale;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
-// Import for @link support
-import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableInstant;
 
 /**
@@ -80,7 +79,7 @@ import org.joda.time.ReadableInstant;
  * DateTime dt20 = dt.year().addToCopy(20);
  * </pre>
  * Serious modification of dates (ie. more than just changing one or two fields)
- * should use the {@link MutableDateTime} class.
+ * should use the {@link org.joda.time.MutableDateTime MutableDateTime} class.
  * <p>
  * DateTimeFieldPropery itself is thread-safe and immutable, as well as the
  * DateTime being operated on.
@@ -126,6 +125,15 @@ public class DateTimeFieldProperty extends AbstractReadableInstantFieldProperty 
      * @return the instant
      */
     public ReadableInstant getInstant() {
+        return iInstant;
+    }
+
+    /**
+     * Gets the datetime being used.
+     * 
+     * @return the datetime
+     */
+    public DateTime getDateTime() {
         return iInstant;
     }
 

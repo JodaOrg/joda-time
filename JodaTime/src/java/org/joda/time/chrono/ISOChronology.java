@@ -89,17 +89,18 @@ public final class ISOChronology extends AssembledChronology {
     private static final long serialVersionUID = -6212696554273812441L;
 
     /** Singleton instance of a UTC ISOChronology */
-    private static final ISOChronology INSTANCE_UTC =
-        new ISOChronology(GregorianChronology.getInstanceUTC());
+    private static final ISOChronology INSTANCE_UTC;
         
     private static final int FAST_CACHE_SIZE = 64;
 
     /** Fast cache of zone to chronology */
-    private static final ISOChronology[] cFastCache = new ISOChronology[FAST_CACHE_SIZE];
+    private static final ISOChronology[] cFastCache;
 
     /** Cache of zone to chronology */
     private static final Map cCache = new HashMap();
     static {
+        cFastCache = new ISOChronology[FAST_CACHE_SIZE];
+        INSTANCE_UTC = new ISOChronology(GregorianChronology.getInstanceUTC());
         cCache.put(DateTimeZone.UTC, INSTANCE_UTC);
     }
 

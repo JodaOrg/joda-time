@@ -80,6 +80,21 @@ public class FieldUtils {
      * @param val2  the second value
      * @return the new total
      */
+    public static int safeAdd(int val1, int val2) {
+        long total = ((long) val1) + ((long) val2);
+        if (total < Integer.MIN_VALUE || total > Integer.MAX_VALUE) {
+            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" + " + val2);
+        }
+        return (int) total;
+    }
+    
+    /**
+     * Add two values throwing an exception if overflow occurs.
+     * 
+     * @param val1  the first value
+     * @param val2  the second value
+     * @return the new total
+     */
     public static long safeAdd(long val1, long val2) {
         long total = val1 + val2;
         if (val1 > 0 && val2 > 0 && total < 0) {

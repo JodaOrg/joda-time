@@ -313,6 +313,13 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testWithField4() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        YearMonthDay result = test.withField(DateTimeFieldType.year(), 2004);
+        assertEquals(new YearMonthDay(2004, 6, 9), test);
+        assertSame(test, result);
+    }
+
     //-----------------------------------------------------------------------
     public void testWithFieldAdded1() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);

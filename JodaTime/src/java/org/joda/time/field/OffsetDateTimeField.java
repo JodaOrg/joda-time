@@ -81,7 +81,7 @@ public class OffsetDateTimeField extends DecoratedDateTimeField {
      * @throws IllegalArgumentException if offset is zero
      */
     public OffsetDateTimeField(DateTimeField field, int offset) {
-        this(field, field.getType(), offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        this(field, (field == null ? null : field.getType()), offset, Integer.MIN_VALUE, Integer.MAX_VALUE);
     }
 
     /**

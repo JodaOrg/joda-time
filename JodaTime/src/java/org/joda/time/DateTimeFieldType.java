@@ -430,13 +430,22 @@ public abstract class DateTimeFieldType implements Serializable {
     public abstract DurationFieldType getRangeDurationType();
 
     /**
-     * Select a suitable field for this type from the given Chronology.
+     * Gets a suitable field for this type from the given Chronology.
      *
-     * @param chronology Chronology to select a field from, null means
-     * ISOChronology in default zone
+     * @param chronology  the chronology to use, null means ISOChronology in default zone
      * @return a suitable field
      */
     public abstract DateTimeField getField(Chronology chronology);
+
+    /**
+     * Checks whether this field supported in the given Chronology.
+     *
+     * @param chronology  the chronology to use, null means ISOChronology in default zone
+     * @return true if supported
+     */
+    public boolean isSupported(Chronology chronology) {
+        return getField(chronology).isSupported();
+    }
 
     /**
      * Get a suitable debug string.

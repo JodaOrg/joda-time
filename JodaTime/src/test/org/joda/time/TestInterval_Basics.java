@@ -499,6 +499,12 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME1, TEST_TIME2, Chronology.getISO()), test);
     }
 
+    public void testWithChronology3() {
+        Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
+        Interval test = base.withChronology(COPTIC_PARIS);
+        assertSame(base, test);
+    }
+
     //-----------------------------------------------------------------------
     public void testWithStartMillis_long1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);

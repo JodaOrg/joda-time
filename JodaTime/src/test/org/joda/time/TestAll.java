@@ -74,6 +74,7 @@ public class TestAll extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTest(TestChronology.suite());
         suite.addTest(TestDateTimeFieldType.suite());
+        suite.addTest(TestDurationFieldType.suite());
         
         suite.addTest(TestInstant_Constructors.suite());
         suite.addTest(TestInstant_Basics.suite());

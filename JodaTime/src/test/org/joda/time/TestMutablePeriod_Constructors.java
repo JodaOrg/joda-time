@@ -962,4 +962,41 @@ public class TestMutablePeriod_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
     }
 
+    //-----------------------------------------------------------------------
+    public void testConstructor_Object_Chronology1() throws Throwable {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        MutablePeriod test = new MutablePeriod(new Duration(length), Chronology.getISO());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals((450 * 24) + 5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+    }
+
+    public void testConstructor_Object_Chronology2() throws Throwable {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        MutablePeriod test = new MutablePeriod(new Duration(length), Chronology.getISOUTC());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
+        assertEquals(0, test.getMonths());
+        assertEquals(64, test.getWeeks());
+        assertEquals(2, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+    }
+
 }

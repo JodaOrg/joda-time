@@ -132,10 +132,24 @@ public class TestReadableIntervalConverter extends TestCase {
             ReadableIntervalConverter.INSTANCE.getPeriodType(i));
     }
 
-    public void testSetIntoPeriod_Object() throws Exception {
+    public void testSetIntoPeriod_Object1() throws Exception {
         Interval i = new Interval(100L, 223L);
         MutablePeriod m = new MutablePeriod(PeriodType.millis());
         ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
+        assertEquals(0, m.getYears());
+        assertEquals(0, m.getMonths());
+        assertEquals(0, m.getWeeks());
+        assertEquals(0, m.getDays());
+        assertEquals(0, m.getHours());
+        assertEquals(0, m.getMinutes());
+        assertEquals(0, m.getSeconds());
+        assertEquals(123, m.getMillis());
+    }
+
+    public void testSetIntoPeriod_Object2() throws Exception {
+        Interval i = new Interval(100L, 223L);
+        MutablePeriod m = new MutablePeriod(PeriodType.millis());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getCoptic());
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());

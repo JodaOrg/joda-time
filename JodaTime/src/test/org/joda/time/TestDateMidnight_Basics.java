@@ -71,6 +71,7 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
+import org.joda.time.field.UnsupportedDurationField;
 
 /**
  * This class is a Junit unit test for DateMidnight.
@@ -901,7 +902,7 @@ public class TestDateMidnight_Basics extends TestCase {
                 return null;
             }
             public DateTimeField getField(Chronology chronology) {
-                return UnsupportedDateTimeField.getInstance(this, null);
+                return UnsupportedDateTimeField.getInstance(this, UnsupportedDurationField.getInstance(getDurationType()));
             }
         };
         try {

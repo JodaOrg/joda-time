@@ -541,7 +541,7 @@ public abstract class DateTimeFieldType implements Serializable {
                 return chronology.millisOfSecond();
             default:
                 // Shouldn't happen.
-                throw new IllegalStateException();
+                throw new InternalError();
             }
         }
 

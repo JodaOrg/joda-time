@@ -328,7 +328,7 @@ public abstract class DurationFieldType implements Serializable {
                 return chronology.millis();
             default:
                 // Shouldn't happen.
-                throw new IllegalStateException();
+                throw new InternalError();
             }
         }
 

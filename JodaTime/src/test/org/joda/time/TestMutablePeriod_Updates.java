@@ -436,6 +436,11 @@ public class TestMutablePeriod_Updates extends TestCase {
         test.add(DurationFieldType.years(), 10);
         assertEquals(11, test.getYears());
         
+        test = new MutablePeriod(0, 0, 0, 0, 0, 0, 0, 1, PeriodType.millis());
+        test.add(DurationFieldType.years(), 0);
+        assertEquals(0, test.getYears());
+        assertEquals(1, test.getMillis());
+        
         test = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         try {
             test.add(null, 0);

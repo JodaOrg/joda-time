@@ -65,9 +65,9 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeZone;
-import org.joda.time.PeriodType;
-import org.joda.time.MutablePeriod;
 import org.joda.time.MutableInterval;
+import org.joda.time.MutablePeriod;
+import org.joda.time.PeriodType;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -314,10 +314,17 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetDurationMillis_Object() throws Exception {
+    public void testGetDurationMillis_Object1() throws Exception {
         long millis = StringConverter.INSTANCE.getDurationMillis("P2Y6M9D");
         long len = (2L * 365L + 6L * 30L + 9L) * DateTimeConstants.MILLIS_PER_DAY;
         assertEquals(len, millis);
+    }
+
+    public void testGetDurationMillis_Object2() throws Exception {
+        try {
+            StringConverter.INSTANCE.getDurationMillis("P2Y6M9DXYZ");
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -373,6 +380,11 @@ public class TestStringConverter extends TestCase {
         
         try {
             StringConverter.INSTANCE.setInto(m, "PXY");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        
+        try {
+            StringConverter.INSTANCE.setInto(m, "PT0SXY");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

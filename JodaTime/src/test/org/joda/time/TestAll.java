@@ -108,6 +108,8 @@ public class TestAll extends TestCase {
         suite.addTest(TestMutablePeriod_Basics.suite());
         suite.addTest(TestMutablePeriod_Updates.suite());
         
+        suite.addTest(TestAbstractPartial.suite());
+        suite.addTest(TestBasePartial.suite());
         suite.addTest(TestTimeOfDay.suite());
         suite.addTest(TestYearMonthDay.suite());
         

@@ -103,11 +103,11 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         return iChronology.getMonthOfYear(instant);
     }
 
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).monthOfYearValueToText(fieldValue);
     }
 
-    protected String getAsShortText(int fieldValue, Locale locale) {
+    public String getAsShortText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).monthOfYearValueToShortText(fieldValue);
     }
 

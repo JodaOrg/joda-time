@@ -155,6 +155,16 @@ public abstract class DateTimeField {
     public abstract String getAsText(ReadablePartial partial, Locale locale);
 
     /**
+     * Get the human-readable, text value of this field from the field value.
+     * If the specified locale is null, the default locale is used.
+     *
+     * @param fieldValue  the numeric value to convert to text
+     * @param locale the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public abstract String getAsText(int fieldValue, Locale locale);
+
+    /**
      * Get the human-readable, short text value of this field from the
      * milliseconds.  If the specified locale is null, the default locale is used.
      *
@@ -193,6 +203,16 @@ public abstract class DateTimeField {
      * @return the text value of the field
      */
     public abstract String getAsShortText(ReadablePartial partial, Locale locale);
+
+    /**
+     * Get the human-readable, short text value of this field from the field value.
+     * If the specified locale is null, the default locale is used.
+     *
+     * @param fieldValue  the numeric value to convert to text
+     * @param locale the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public abstract String getAsShortText(int fieldValue, Locale locale);
 
     /**
      * Adds a value (which may be negative) to the millis value,

@@ -167,7 +167,7 @@ final class CopticEraDateTimeField extends BaseDateTimeField {
         return CopticChronology.AM;
     }
     
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return "AM";
     }
 

@@ -831,7 +831,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
             super(DateTimeFieldType.halfdayOfDay(), cHalfdaysField, cDaysField);
         }
 
-        protected String getAsText(int fieldValue, Locale locale) {
+        public String getAsText(int fieldValue, Locale locale) {
             return GJLocaleSymbols.forLocale(locale).halfdayValueToText(fieldValue);
         }
 

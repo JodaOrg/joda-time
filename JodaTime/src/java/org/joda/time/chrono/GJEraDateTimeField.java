@@ -102,7 +102,7 @@ final class GJEraDateTimeField extends BaseDateTimeField {
         }
     }
 
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return GJLocaleSymbols.forLocale(locale).eraValueToText(fieldValue);
     }
 

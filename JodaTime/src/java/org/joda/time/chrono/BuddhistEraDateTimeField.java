@@ -168,7 +168,7 @@ final class BuddhistEraDateTimeField extends BaseDateTimeField {
         return BuddhistChronology.BE;
     }
 
-    protected String getAsText(int fieldValue, Locale locale) {
+    public String getAsText(int fieldValue, Locale locale) {
         return "BE";
     }
 

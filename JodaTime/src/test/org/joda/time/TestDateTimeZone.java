@@ -625,6 +625,16 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetMillisKeepLocal() {
+        long millisLondon = TEST_TIME_SUMMER;
+        long millisParis = TEST_TIME_SUMMER - 1L * DateTimeConstants.MILLIS_PER_HOUR;
+        
+        assertEquals(millisParis, LONDON.getMillisKeepLocal(PARIS, millisLondon));
+        assertEquals(millisLondon, PARIS.getMillisKeepLocal(LONDON, millisParis));
+        assertEquals(millisLondon, PARIS.getMillisKeepLocal(null, millisParis));
+    }
+
+    //-----------------------------------------------------------------------
     public void testIsFixed() {
         DateTimeZone zone = DateTimeZone.getInstance("Europe/Paris");
         assertEquals(false, zone.isFixed());

@@ -350,22 +350,19 @@ public class DateMidnight extends AbstractDateTime
      * The returned object will have a local time of midnight in the new zone on
      * the same day as the original instant.
      *
-     * @param newDateTimeZone  the new time zone, null means default
+     * @param newZone  the new time zone, null means default
      * @return a copy of this instant with a different time zone
      */
-    public final DateMidnight withZoneRetainFields(DateTimeZone newDateTimeZone) {
-        newDateTimeZone = (newDateTimeZone == null ? DateTimeZone.getDefault() : newDateTimeZone);
+    public final DateMidnight withZoneRetainFields(DateTimeZone newZone) {
+        newZone = (newZone == null ? DateTimeZone.getDefault() : newZone);
         DateTimeZone originalZone = getZone();
         originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
-        if (newDateTimeZone == originalZone) {
+        if (newZone == originalZone) {
             return this;
         }
         
-        long originalMillis = getMillis();
-        long newMillis = originalMillis + originalZone.getOffset(originalMillis);
-        newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
-
-        return new DateMidnight(newMillis, getChronology().withZone(newDateTimeZone));
+        long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
+        return new DateMidnight(millis, getChronology().withZone(newZone));
     }
 
     // Date properties

@@ -637,9 +637,7 @@ public abstract class AbstractDateTime extends AbstractInstant
             return;
         }
         
-        long millis = getMillis();
-        millis += originalZone.getOffset(millis);
-        millis -= newZone.getOffsetFromLocal(millis);
+        long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
         // Don't set iChronology and iMillis directly, as it may provide a
         // backdoor to immutable subclasses.
         setChronology(iChronology.withZone(newZone));

@@ -385,10 +385,7 @@ public class DateTime extends AbstractDateTime
             return this;
         }
         
-        long millis = getMillis();
-        millis += originalZone.getOffset(millis);
-        millis -= newZone.getOffsetFromLocal(millis);
-
+        long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
         return new DateTime(millis, getChronology().withZone(newZone));
     }
 

@@ -53,6 +53,8 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.JodaTimePermission;
+
 /**
  * ConverterManager controls the date and time converters.
  * <p>
@@ -182,7 +184,10 @@ public final class ConverterManager {
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
      */
-    public InstantConverter addInstantConverter(InstantConverter converter) {
+    public InstantConverter addInstantConverter(InstantConverter converter)
+        throws SecurityException
+    {
+        checkAlterInstantConverters();
         if (converter == null) {
             return null;
         }
@@ -198,7 +203,10 @@ public final class ConverterManager {
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
      */
-    public InstantConverter removeInstantConverter(InstantConverter converter) {
+    public InstantConverter removeInstantConverter(InstantConverter converter)
+        throws SecurityException
+    {
+        checkAlterInstantConverters();
         if (converter == null) {
             return null;
         }
@@ -214,10 +222,18 @@ public final class ConverterManager {
      * @return replaced converter, or null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public InstantConverter removeInstantConverter(int index) {
+    public InstantConverter removeInstantConverter(int index) throws SecurityException {
+        checkAlterInstantConverters();
         InstantConverter[] removed = new InstantConverter[1];
         iInstantConverters = iInstantConverters.remove(index, removed);
         return removed[0];
+    }
+
+    private void checkAlterInstantConverters() throws SecurityException {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new JodaTimePermission("ConverterManager.alterInstantConverters"));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -264,7 +280,10 @@ public final class ConverterManager {
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
      */
-    public DurationConverter addDurationConverter(DurationConverter converter) {
+    public DurationConverter addDurationConverter(DurationConverter converter)
+        throws SecurityException
+    {
+        checkAlterDurationConverters();
         if (converter == null) {
             return null;
         }
@@ -280,7 +299,10 @@ public final class ConverterManager {
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
      */
-    public DurationConverter removeDurationConverter(DurationConverter converter) {
+    public DurationConverter removeDurationConverter(DurationConverter converter)
+        throws SecurityException
+    {
+        checkAlterDurationConverters();
         if (converter == null) {
             return null;
         }
@@ -296,10 +318,18 @@ public final class ConverterManager {
      * @return replaced converter, or null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public DurationConverter removeDurationConverter(int index) {
+    public DurationConverter removeDurationConverter(int index) throws SecurityException {
+        checkAlterDurationConverters();
         DurationConverter[] removed = new DurationConverter[1];
         iDurationConverters = iDurationConverters.remove(index, removed);
         return removed[0];
+    }
+
+    private void checkAlterDurationConverters() throws SecurityException {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new JodaTimePermission("ConverterManager.alterDurationConverters"));
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -346,7 +376,10 @@ public final class ConverterManager {
      * @param converter  the converter to add, null ignored
      * @return replaced converter, or null
      */
-    public IntervalConverter addIntervalConverter(IntervalConverter converter) {
+    public IntervalConverter addIntervalConverter(IntervalConverter converter) 
+        throws SecurityException
+    {
+        checkAlterIntervalConverters();
         if (converter == null) {
             return null;
         }
@@ -362,7 +395,10 @@ public final class ConverterManager {
      * @param converter  the converter to remove, null ignored
      * @return replaced converter, or null
      */
-    public IntervalConverter removeIntervalConverter(IntervalConverter converter) {
+    public IntervalConverter removeIntervalConverter(IntervalConverter converter)
+        throws SecurityException
+    {
+        checkAlterIntervalConverters();
         if (converter == null) {
             return null;
         }
@@ -378,10 +414,18 @@ public final class ConverterManager {
      * @return replaced converter, or null
      * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public IntervalConverter removeIntervalConverter(int index) {
+    public IntervalConverter removeIntervalConverter(int index) throws SecurityException {
+        checkAlterIntervalConverters();
         IntervalConverter[] removed = new IntervalConverter[1];
         iIntervalConverters = iIntervalConverters.remove(index, removed);
         return removed[0];
+    }
+
+    private void checkAlterIntervalConverters() throws SecurityException {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new JodaTimePermission("ConverterManager.alterIntervalConverters"));
+        }
     }
 
     //-----------------------------------------------------------------------

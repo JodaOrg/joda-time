@@ -94,7 +94,8 @@ public final class DateTimeUtils {
      * This method changes the behaviour of {@link #currentTimeMillis()}.
      * Whenever the current time is queried, {@link System#currentTimeMillis()} is used.
      */
-    public static void setCurrentMillisSystem() {
+    public static void setCurrentMillisSystem() throws SecurityException {
+        checkPermission();
         cMillisProvider = SYSTEM_MILLIS_PROVIDER;
     }
 
@@ -106,7 +107,8 @@ public final class DateTimeUtils {
      * 
      * @param fixedMillis  the fixed millisecond time to use
      */
-    public static void setCurrentMillisFixed(long fixedMillis) {
+    public static void setCurrentMillisFixed(long fixedMillis) throws SecurityException {
+        checkPermission();
         cMillisProvider = new FixedMillisProvider(fixedMillis);
     }
 
@@ -119,8 +121,16 @@ public final class DateTimeUtils {
      * 
      * @param offsetMillis  the fixed millisecond time to use
      */
-    public static void setCurrentMillisOffset(long offsetMillis) {
+    public static void setCurrentMillisOffset(long offsetMillis) throws SecurityException {
+        checkPermission();
         cMillisProvider = new OffsetMillisProvider(offsetMillis);
+    }
+
+    private static void checkPermission() throws SecurityException {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new JodaTimePermission("CurrentTime.setProvider"));
+        }
     }
 
     //-----------------------------------------------------------------------

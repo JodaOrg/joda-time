@@ -63,14 +63,14 @@ import org.joda.time.convert.DurationConverter;
 import org.joda.time.field.FieldUtils;
 
 /**
- * BaseDateTime is an abstract implementation of ReadableDuration that stores
+ * BaseDuration is an abstract implementation of ReadableDuration that stores
  * data in a <code>long</code> duration milliseconds field.
  * <p>
  * This class should generally not be used directly by API users.
- * The {@link ReadableDateTime} interface should be used when different 
- * kinds of date/time objects are to be referenced.
+ * The {@link ReadableDuration} interface should be used when different 
+ * kinds of duration objects are to be referenced.
  * <p>
- * BaseDateTime subclasses may be mutable and not thread-safe.
+ * BaseDuration subclasses may be mutable and not thread-safe.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne

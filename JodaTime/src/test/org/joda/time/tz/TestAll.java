@@ -36,6 +36,7 @@ public class TestAll extends TestCase {
         TestSuite suite = new TestSuite();
         suite.addTest(TestUTCProvider.suite());
         suite.addTest(TestBuilder.suite());
+        suite.addTest(TestCompiler.suite());
         return suite;
     }
 

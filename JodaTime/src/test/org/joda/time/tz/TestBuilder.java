@@ -15,6 +15,10 @@
  */
 package org.joda.time.tz;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -158,7 +162,7 @@ public class TestBuilder extends TestCase {
         {"2000-10-29T02:00:00.000-07:00", "PST", "-08:00", "-08:00"},
     };
 
-    static DateTimeZone buildAmericaLosAngeles() {
+    static DateTimeZoneBuilder buildAmericaLosAngelesBuilder() {
         return new DateTimeZoneBuilder()
             .addCutover(-2147483648, 'w', 1, 1, 0, false, 0)
             .setStandardOffset(-28378000)
@@ -180,8 +184,11 @@ public class TestBuilder extends TestCase {
             .addRecurringSavings("PDT", 3600000, 1974, 1974, 'w', 1,  6,  0, false, 7200000)
             .addRecurringSavings("PDT", 3600000, 1975, 1975, 'w', 2, 23,  0, false, 7200000)
             .addRecurringSavings("PDT", 3600000, 1976, 1986, 'w', 4, -1,  7, false, 7200000)
-            .addRecurringSavings("PDT", 3600000, 1987, 2147483647, 'w', 4, 1, 7, true, 7200000)
-            .toDateTimeZone("America/Los_Angeles");
+            .addRecurringSavings("PDT", 3600000, 1987, 2147483647, 'w', 4, 1, 7, true, 7200000);
+    }
+
+    static DateTimeZone buildAmericaLosAngeles() {
+        return buildAmericaLosAngelesBuilder().toDateTimeZone("America/Los_Angeles");
     }
 
     private DateTimeZone originalDateTimeZone = null;
@@ -202,6 +209,7 @@ public class TestBuilder extends TestCase {
     public void testID() {
         DateTimeZone tz = buildAmericaLosAngeles();
         assertEquals("America/Los_Angeles", tz.getID());
+        assertEquals(false, tz.isFixed());
     }
 
     public void testForwardTransitions() {
@@ -209,7 +217,7 @@ public class TestBuilder extends TestCase {
         testForwardTransitions(tz, AMERICA_LOS_ANGELES_DATA);
     }
 
-    private void testForwardTransitions(DateTimeZone tz, String[][] data) {
+    static void testForwardTransitions(DateTimeZone tz, String[][] data) {
         long instant = Long.MIN_VALUE;
         for (int i=0; i<data.length; i++) {
             String[] row = data[i];
@@ -247,7 +255,7 @@ public class TestBuilder extends TestCase {
         testReverseTransitions(tz, AMERICA_LOS_ANGELES_DATA);
     }
 
-    private void testReverseTransitions(DateTimeZone tz, String[][] data) {
+    static void testReverseTransitions(DateTimeZone tz, String[][] data) {
         long instant = new DateTime(data[data.length - 1][0]).getMillis();
         for (int i=data.length; --i>=1; ) {
             String[] row = data[i];
@@ -263,6 +271,44 @@ public class TestBuilder extends TestCase {
             assertEquals(expectedKey, tz.getNameKey(instant));
             assertEquals(expectedStandardOffset, tz.getStandardOffset(instant));
             assertEquals(expectedOffset, tz.getOffset(instant));
+        }
+    }
+
+    public void testSerialization() throws IOException {
+        DateTimeZone tz = testSerialization
+            (buildAmericaLosAngelesBuilder(), "America/Los_Angeles");
+
+        assertEquals(false, tz.isFixed());
+        testForwardTransitions(tz, AMERICA_LOS_ANGELES_DATA);
+        testReverseTransitions(tz, AMERICA_LOS_ANGELES_DATA);
+    }
+
+    static DateTimeZone testSerialization(DateTimeZoneBuilder builder, String id)
+        throws IOException
+    {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        builder.writeTo(out);
+        ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
+        DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
+        assertEquals(id, tz.getID());
+        return tz;
+    }
+
+    public void testFixed() throws IOException {
+        DateTimeZoneBuilder builder = new DateTimeZoneBuilder()
+            .setStandardOffset(3600000)
+            .setFixedSavings("LMT", 0);
+        DateTimeZone tz = builder.toDateTimeZone("Test");
+
+        for (int i=0; i<2; i++) {
+            assertEquals("Test", tz.getID());
+            assertEquals(true, tz.isFixed());
+            assertEquals(3600000, tz.getOffset(0));
+            assertEquals(3600000, tz.getStandardOffset(0));
+            assertEquals(0, tz.nextTransition(0));
+            assertEquals(0, tz.previousTransition(0));
+
+            tz = testSerialization(builder, "Test");
         }
     }
 }

@@ -134,20 +134,6 @@ public interface ReadablePartial {
     boolean isSupported(DateTimeFieldType field);
 
     /**
-     * Resolves this partial against another complete millisecond instant to
-     * create a new full instant specifying the time zone to resolve with.
-     * <p>
-     * For example, if this partial represents a time, then the result of this
-     * method will be the datetime from the specified base instant plus the
-     * time from this partial set using the time zone specified.
-     *
-     * @param baseInstant  source of missing fields
-     * @param zone  the time zone to use, null means default
-     * @return the combined instant in milliseconds
-     */
-    long resolve(long baseInstant, DateTimeZone zone);
-
-    /**
      * Resolves this partial against another complete instant to create a new
      * full instant. The combination is performed using the chronology of the
      * specified instant.
@@ -159,20 +145,7 @@ public interface ReadablePartial {
      * @param baseInstant  the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
-    DateTime resolveDateTime(ReadableInstant baseInstant);
-
-    /**
-     * Resolves this partial into another complete instant setting the relevant
-     * fields on the writable instant. The combination is performed using the
-     * chronology of the specified instant.
-     * <p>
-     * For example, if this partial represents a time, then the input writable
-     * instant will be updated with the time from this partial.
-     *
-     * @param baseInstant  the instant to set into, must not be null
-     * @throws IllegalArgumentException if the base instant is null
-     */
-    void resolveInto(ReadWritableInstant baseInstant);
+    DateTime toDateTimeUsing(ReadableInstant baseInstant);
 
     //-----------------------------------------------------------------------
     /**

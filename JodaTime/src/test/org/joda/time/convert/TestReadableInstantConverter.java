@@ -139,7 +139,7 @@ public class TestReadableInstantConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetChronology_Object() throws Exception {
-        assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L)));
+        assertEquals(ISO.withUTC(), ReadableInstantConverter.INSTANCE.getChronology(new Instant(123L)));
         assertEquals(ISO, ReadableInstantConverter.INSTANCE.getChronology(new DateTime(123L)));
     }
 

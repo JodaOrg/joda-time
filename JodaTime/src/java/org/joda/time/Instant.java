@@ -58,15 +58,25 @@ import java.io.Serializable;
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
-import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * Instant is the standard implementation of a fully immutable instant in time.
  * It holds the instant as milliseconds from the Java Epoch of 1970-01-01T00:00:00Z.
  * <p>
- * There is no concept of a calendar system, chronology or time zone.
- * In a fully internationalized program, you may want to ensure methods accept the
- * ReadableInstant interface as input and return Instant objects.
+ * The chronology used is always ISO in the UTC time zone.
+ * This corresponds to the definition of the Java Epoch.
+ * <p>
+ * An Instant can be used to compare two <code>DateTime</code> objects:
+ * <pre>
+ * boolean sameInstant = dt1.toInstant().equals(dt2.toInstant());
+ * </pre>
+ * This code will return true if the two <code>DateTime</code> objects represent
+ * the same instant regardless of chronology or time zone.
+ * <p>
+ * Note that the following code will also perform the same check:
+ * <pre>
+ * boolean sameInstant = dt1.isEqual(dt2);
+ * </pre>
  * <p>
  * Instant is thread-safe and immutable.
  *
@@ -140,6 +150,95 @@ public final class Instant
         return (newMillis == iMillis ? this : new Instant(newMillis));
     }
 
+    /**
+     * Gets a copy of this instant with the specified duration added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this instant with the duration added
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     */
+    public Instant withDurationAdded(long durationToAdd, int scalar) {
+        if (durationToAdd == 0 || scalar == 0) {
+            return this;
+        }
+        long instant = getChronology().add(getMillis(), durationToAdd, scalar);
+        return withMillis(instant);
+    }
+
+    /**
+     * Gets a copy of this instant with the specified duration added.
+     * <p>
+     * If the addition is zero, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return a copy of this instant with the duration added
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     */
+    public Instant withDurationAdded(ReadableDuration durationToAdd, int scalar) {
+        if (durationToAdd == null || scalar == 0) {
+            return this;
+        }
+        return withDurationAdded(durationToAdd.getMillis(), scalar);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this instant with the specified duration added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param duration  the duration to add to this one
+     * @return a copy of this instant with the duration added
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     */
+    public Instant plus(long duration) {
+        return withDurationAdded(duration, 1);
+    }
+
+    /**
+     * Gets a copy of this instant with the specified duration added.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one, null means zero
+     * @return a copy of this instant with the duration added
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     */
+    public Instant plus(ReadableDuration duration) {
+        return withDurationAdded(duration, 1);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this instant with the specified duration taken away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param duration  the duration to reduce this instant by
+     * @return a copy of this instant with the duration taken away
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     */
+    public Instant minus(long duration) {
+        return withDurationAdded(duration, -1);
+    }
+
+    /**
+     * Gets a copy of this instant with the specified duration taken away.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * 
+     * @param duration  the duration to reduce this instant by
+     * @return a copy of this instant with the duration taken away
+     * @throws ArithmeticException if the new instant exceeds the capacity of a long
+     */
+    public Instant minus(ReadableDuration durationToAdd) {
+        return withDurationAdded(durationToAdd, -1);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Gets the milliseconds of the instant.
@@ -151,30 +250,12 @@ public final class Instant
     }
 
     /**
-     * Gets the chronology of the instant, which is null.
-     * <p>
-     * The {@link Chronology} provides conversion from the millisecond
-     * value to meaningful fields in a particular calendar system. This
-     * class represents a chronology free view of time, so this method
-     * returns null.
+     * Gets the chronology of the instant, which is ISO in the UTC zone.
      * 
-     * @return null
+     * @return ISO in the UTC zone
      */
     public Chronology getChronology() {
-        return null;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Output the date time in ISO8601 format using the UTC time zone.
-     * <p>
-     * ISO8601 is deliberately used here so that the resulting string can be
-     * re-parsed by the constructor.
-     * 
-     * @return ISO8601 date formatted string
-     */
-    public String toString() {
-        return ISODateTimeFormat.getInstanceUTC().dateTime().print(this);
+        return Chronology.getISOUTC();
     }
 
 }

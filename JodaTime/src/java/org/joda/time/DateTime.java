@@ -59,7 +59,6 @@ import java.util.Locale;
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
-import org.joda.time.field.FieldUtils;
 
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.
@@ -385,10 +384,11 @@ public final class DateTime
      * Only the chronology will change, the millis are kept.
      * The returned object will be either be a new instance or <code>this</code>.
      *
-     * @param newChronology  the new chronology
+     * @param newChronology  the new chronology, null means ISO default
      * @return a copy of this datetime with a different chronology
      */
     public DateTime withChronology(Chronology newChronology) {
+        newChronology = DateTimeUtils.getChronology(newChronology);
         return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
     }
 
@@ -512,7 +512,7 @@ public final class DateTime
         if (partial == null) {
             return this;
         }
-        return partial.resolveDateTime(this);
+        return withMillis(getChronology().set(partial, getMillis()));
     }
 
     /**
@@ -522,9 +522,11 @@ public final class DateTime
      * field would be changed in the returned instance.
      * If the field type is null, then <code>this</code> is returned.
      * <p>
-     * An alternative to this method is to use the properties, for example:
+     * These three lines are equivalent:
      * <pre>
-     * DateTime added = dt.hourOfDay().setCopy(6);
+     * DateTime updated = dt.withField(DateTimeFieldType.dayOfMonth(), 6);
+     * DateTime updated = dt.dayOfMonth().setCopy(6);
+     * DateTime updated = dt.property(DateTimeFieldType.dayOfMonth()).setCopy(6);
      * </pre>
      *
      * @param fieldType  the field type to set, null ignored
@@ -545,9 +547,11 @@ public final class DateTime
      * <p>
      * If the addition is zero or the field is null, then <code>this</code> is returned.
      * <p>
-     * An alternative to this method is to use the properties, for example:
+     * These three lines are equivalent:
      * <pre>
-     * DateTime added = dt.hourOfDay().addToCopy(6);
+     * DateTime added = dt.withField(DateTimeFieldType.dayOfMonth(), 6);
+     * DateTime added = dt.dayOfMonth().addToCopy(6);
+     * DateTime added = dt.property(DateTimeFieldType.dayOfMonth()).addToCopy(6);
      * </pre>
      * 
      * @param fieldType  the field type to add to, null ignored
@@ -578,8 +582,7 @@ public final class DateTime
         if (durationToAdd == 0 || scalar == 0) {
             return this;
         }
-        long add = FieldUtils.safeMultiply(durationToAdd, scalar);
-        long instant = FieldUtils.safeAdd(getMillis(), add);
+        long instant = getChronology().add(getMillis(), durationToAdd, scalar);
         return withMillis(instant);
     }
 
@@ -713,6 +716,32 @@ public final class DateTime
      */
     public DateTime minus(ReadablePeriod period) {
         return withPeriodAdded(period, -1);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the property object for the specified type, which contains many useful methods.
+     *
+     * @param type  the field type to get the chronology for
+     * @return the property object
+     * @throws IllegalArgumentException if the field is null or unsupported
+     */
+    public Property property(DateTimeFieldType type) {
+        DateTimeField field = type.getField(getChronology());
+        if (field.isSupported() == false) {
+            throw new IllegalArgumentException("Field '" + type + "' is not supported");
+        }
+        return new Property(this, field);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get this object as a DateMidnight using the same millis and chronology.
+     * 
+     * @return a DateMidnight using the same millis and chronology
+     */
+    public DateMidnight toDateMidnight() {
+        return new DateMidnight(getMillis(), getChronology());
     }
 
     // Date properties

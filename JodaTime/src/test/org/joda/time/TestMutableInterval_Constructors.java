@@ -272,8 +272,8 @@ public class TestMutableInterval_Constructors extends TestCase {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
-        result = ISOChronology.getInstance().months().add(result, 6);
-        result = ISOChronology.getInstance().hours().add(result, 1);
+        result = Chronology.getISO().months().add(result, 6);
+        result = Chronology.getISO().hours().add(result, 1);
         
         MutableInterval test = new MutableInterval(dt, dur);
         assertEquals(dt.getMillis(), test.getStartMillis());
@@ -284,9 +284,9 @@ public class TestMutableInterval_Constructors extends TestCase {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
-        result = ISOChronology.getInstance().months().add(result, 6);
-        result = ISOChronology.getInstance().days().add(result, 3);
-        result = ISOChronology.getInstance().hours().add(result, 1);
+        result = Chronology.getISOUTC().months().add(result, 6);
+        result = Chronology.getISOUTC().days().add(result, 3);
+        result = Chronology.getISOUTC().hours().add(result, 1);
         
         MutableInterval test = new MutableInterval(dt, dur);
         assertEquals(dt.getMillis(), test.getStartMillis());
@@ -356,8 +356,8 @@ public class TestMutableInterval_Constructors extends TestCase {
         DateTime dt = new DateTime(TEST_TIME_NOW);
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
-        result = ISOChronology.getInstance().months().add(result, -6);
-        result = ISOChronology.getInstance().hours().add(result, -1);
+        result = Chronology.getISO().months().add(result, -6);
+        result = Chronology.getISO().hours().add(result, -1);
         
         MutableInterval test = new MutableInterval(dur, dt);
         assertEquals(result, test.getStartMillis());
@@ -368,9 +368,9 @@ public class TestMutableInterval_Constructors extends TestCase {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
-        result = ISOChronology.getInstance().months().add(result, -6);
-        result = ISOChronology.getInstance().days().add(result, -3);
-        result = ISOChronology.getInstance().hours().add(result, -1);
+        result = Chronology.getISOUTC().months().add(result, -6);
+        result = Chronology.getISOUTC().days().add(result, -3);
+        result = Chronology.getISOUTC().hours().add(result, -1);
         
         MutableInterval test = new MutableInterval(dur, dt);
         assertEquals(result, test.getStartMillis());

@@ -63,6 +63,7 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.ReadablePartial;
 import org.joda.time.ReadablePeriod;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 
@@ -339,6 +340,23 @@ public abstract class BaseChronology
             }
         }
         return instant;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Adds the duration to the instant, specifying the number of times to add.
+     *
+     * @param instant  the instant to add to
+     * @param duration  the duration to add
+     * @param scalar  the number of times to add
+     * @return the updated instant
+     */
+    public long add(long instant, long duration, int scalar) {
+        if (duration == 0 || scalar == 0) {
+            return instant;
+        }
+        long add = FieldUtils.safeMultiply(duration, scalar);
+        return FieldUtils.safeAdd(instant, add);
     }
 
     // Millis

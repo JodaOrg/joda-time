@@ -565,6 +565,17 @@ public abstract class Chronology {
      */
     public abstract long add(ReadablePeriod period, long instant, int scalar);
 
+    //-----------------------------------------------------------------------
+    /**
+     * Adds the duration to the instant, specifying the number of times to add.
+     *
+     * @param instant  the instant to add to
+     * @param duration  the duration to add
+     * @param scalar  the number of times to add
+     * @return the updated instant
+     */
+    public abstract long add(long instant, long duration, int scalar);
+
     // Millis
     //-----------------------------------------------------------------------
     /**

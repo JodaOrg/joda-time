@@ -53,12 +53,6 @@
  */
 package org.joda.time;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadWritableInstant;
-import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -91,13 +85,8 @@ public class MockPartial implements ReadablePartial {
     public boolean isSupported(DateTimeFieldType field) {
         return false;
     }
-    public long resolve(long baseMillis, DateTimeZone tz) {
-        return 0L;
-    }
-    public DateTime resolveDateTime(ReadableInstant base) {
+    public DateTime toDateTimeUsing(ReadableInstant base) {
         return null;
-    }
-    public void resolveInto(ReadWritableInstant base) {
     }
     public DateTimeField[] getFields() {
         return new DateTimeField[0];

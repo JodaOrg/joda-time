@@ -58,9 +58,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Modifier;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -185,8 +183,8 @@ public class TestInstant_Basics extends TestCase {
     public void testGetMethods() {
         Instant test = new Instant();
         
-        assertEquals(null, test.getChronology());
-        assertEquals(null, test.getZone());
+        assertEquals(Chronology.getISOUTC(), test.getChronology());
+        assertEquals(DateTimeZone.UTC, test.getZone());
         assertEquals(TEST_TIME_NOW, test.getMillis());
     }
 
@@ -222,7 +220,7 @@ public class TestInstant_Basics extends TestCase {
             return TEST_TIME1;
         }
         public Chronology getChronology() {
-            return null;
+            return Chronology.getISOUTC();
         }
     }
 
@@ -503,25 +501,6 @@ public class TestInstant_Basics extends TestCase {
         Instant test = new Instant(TEST_TIME1);
         Date result = test.toDate();
         assertEquals(test.getMillis(), result.getTime());
-    }
-
-    public void testToCalendar_Locale() {
-        Instant test = new Instant(TEST_TIME1);
-        Calendar result = test.toCalendar(null);
-        assertEquals(test.getMillis(), result.getTime().getTime());
-        assertEquals(TimeZone.getTimeZone("Europe/London"), result.getTimeZone());
-
-        test = new Instant(TEST_TIME1);
-        result = test.toCalendar(Locale.UK);
-        assertEquals(test.getMillis(), result.getTime().getTime());
-        assertEquals(TimeZone.getTimeZone("Europe/London"), result.getTimeZone());
-    }
-
-    public void testToGregorianCalendar() {
-        Instant test = new Instant(TEST_TIME1);
-        GregorianCalendar result = test.toGregorianCalendar();
-        assertEquals(test.getMillis(), result.getTime().getTime());
-        assertEquals(TimeZone.getTimeZone("Europe/London"), result.getTimeZone());
     }
 
     //-----------------------------------------------------------------------

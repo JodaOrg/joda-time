@@ -1606,7 +1606,7 @@ public class DateTimeFormatterBuilder {
 
         public void printTo(StringBuffer buf, ReadablePartial partial) {
             if (partial.isSupported(iField.getType())) {
-                long millis = partial.resolve(0L, DateTimeZone.UTC);
+                long millis = this.iChrono.withUTC().set(partial, 0L);
                 try {
                     printTo(buf, null, millis);
                 } catch (IOException e) {
@@ -1619,7 +1619,7 @@ public class DateTimeFormatterBuilder {
 
         public void printTo(Writer out, ReadablePartial partial) throws IOException {
             if (partial.isSupported(iField.getType())) {
-                long millis = partial.resolve(0L, DateTimeZone.UTC);
+                long millis = this.iChrono.withUTC().set(partial, 0L);
                 printTo(null, out, millis);
             } else {
                 out.write('\ufffd');

@@ -281,4 +281,72 @@ public final class Interval
         return withEndMillis(endMillis);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a new interval with the specified duration after the start instant.
+     *
+     * @param duration  the duration to add to the start to get the new end instant, null means zero
+     * @return an interval with the start from this interval and a calculated end
+     * @throws IllegalArgumentException if the duration is negative
+     */
+    public Interval withDurationAfterStart(ReadableDuration duration) {
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        if (durationMillis == toDurationMillis()) {
+            return this;
+        }
+        long startMillis = getStartMillis();
+        long endMillis = getChronology().add(startMillis, durationMillis, 1);
+        return new Interval(startMillis, endMillis);
+    }
+
+    /**
+     * Creates a new interval with the specified duration before the end instant.
+     *
+     * @param duration  the duration to add to the start to get the new end instant, null means zero
+     * @return an interval with the start from this interval and a calculated end
+     * @throws IllegalArgumentException if the duration is negative
+     */
+    public Interval withDurationBeforeEnd(ReadableDuration duration) {
+        long durationMillis = DateTimeUtils.getDurationMillis(duration);
+        if (durationMillis == toDurationMillis()) {
+            return this;
+        }
+        long endMillis = getEndMillis();
+        long startMillis = getChronology().add(endMillis, durationMillis, -1);
+        return new Interval(startMillis, endMillis);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a new interval with the specified period after the start instant.
+     *
+     * @param period  the period to add to the start to get the new end instant, null means zero
+     * @return an interval with the start from this interval and a calculated end
+     * @throws IllegalArgumentException if the period is negative
+     */
+    public Interval withPeriodAfterStart(ReadablePeriod period) {
+        if (period == null) {
+            return this;
+        }
+        long startMillis = getStartMillis();
+        long endMillis = getChronology().add(period, startMillis, 1);
+        return new Interval(startMillis, endMillis);
+    }
+
+    /**
+     * Creates a new interval with the specified period before the end instant.
+     *
+     * @param period  the period to add to the start to get the new end instant, null means zero
+     * @return an interval with the start from this interval and a calculated end
+     * @throws IllegalArgumentException if the period is negative
+     */
+    public Interval withPeriodBeforeEnd(ReadablePeriod period) {
+        if (period == null) {
+            return this;
+        }
+        long endMillis = getEndMillis();
+        long startMillis = getChronology().add(period, endMillis, -1);
+        return new Interval(startMillis, endMillis);
+    }
+
 }

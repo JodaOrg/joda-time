@@ -64,14 +64,6 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MutableDateTime;
-import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.joda.time.convert.ConverterManager;
@@ -734,26 +726,12 @@ public class TestTimeOfDay extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testResolve_long() {
-        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        DateTime dt = new DateTime(0L);
-        assertEquals("1970-01-01T00:00:00.000Z", dt.toString());
-        
-        DateTime result = new DateTime(test.resolve(dt.getMillis(), DateTimeZone.UTC));
-        assertEquals(10, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(30, test.getSecondOfMinute());
-        assertEquals(40, test.getMillisOfSecond());
-        assertEquals("1970-01-01T00:00:00.000Z", dt.toString());
-        assertEquals("1970-01-01T10:20:30.040Z", result.toString());
-    }
-
     public void testResolveDateTime_RI() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         DateTime dt = new DateTime(0L);
         assertEquals("1970-01-01T00:00:00.000Z", dt.toString());
         
-        DateTime result = test.resolveDateTime(dt);
+        DateTime result = test.toDateTimeUsing(dt);
         assertEquals(10, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
@@ -766,34 +744,12 @@ public class TestTimeOfDay extends TestCase {
         TimeOfDay test = new TimeOfDay(1, 2, 3, 4);
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME2);
         
-        DateTime result = test.resolveDateTime(null);
+        DateTime result = test.toDateTimeUsing(null);
         assertEquals(1, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
         assertEquals(3, test.getSecondOfMinute());
         assertEquals(4, test.getMillisOfSecond());
         assertEquals("1970-01-02T01:02:03.004Z", result.toString());
-    }
-
-    public void testResolveInto_RWI() {
-        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        MutableDateTime mdt = new MutableDateTime(0L);
-        assertEquals("1970-01-01T00:00:00.000Z", mdt.toString());
-        
-        test.resolveInto(mdt);
-        assertEquals(10, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(30, test.getSecondOfMinute());
-        assertEquals(40, test.getMillisOfSecond());
-        assertEquals("1970-01-01T10:20:30.040Z", mdt.toString());
-    }
-
-    public void testResolveInto_nullRWI() {
-        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        
-        try {
-            test.resolveInto(null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

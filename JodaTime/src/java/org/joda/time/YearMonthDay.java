@@ -315,6 +315,37 @@ public final class YearMonthDay
         }
     }
 
+    /**
+     * Gets the property object for the specified type, which contains many useful methods.
+     *
+     * @param type  the field type to get the chronology for
+     * @return the property object
+     * @throws IllegalArgumentException if the field is null or unsupported
+     */
+    public Property property(DateTimeFieldType type) {
+        return new Property(this, indexOfSupported(type));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this object to a DateMidnight in the default time zone.
+     *
+     * @return the DateMidnight instance in the default zone
+     */
+    public DateMidnight toDateMidnight() {
+        return toDateMidnight(null);
+    }
+
+    /**
+     * Converts this object to a DateMidnight.
+     *
+     * @param zone  the zone to get the DateMidnight in, null means default
+     * @return the DateMidnight instance
+     */
+    public DateMidnight toDateMidnight(DateTimeZone zone) {
+        return new DateMidnight(getYear(), getMonthOfYear(), getDayOfMonth(), zone);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Get the year field value.

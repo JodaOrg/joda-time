@@ -64,14 +64,6 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MutableDateTime;
-import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
@@ -542,23 +534,12 @@ public class TestYearMonthDay extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testResolve_long() {
-        YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        DateTime dt = new DateTime(TEST_TIME1);
-        assertEquals("1970-04-06T12:24:00.000Z", dt.toString());
-        
-        DateTime result = new DateTime(test.resolve(dt.getMillis(), DateTimeZone.UTC));
-        check(test, 1972, 6, 9);
-        assertEquals("1970-04-06T12:24:00.000Z", dt.toString());
-        assertEquals("1972-06-09T12:24:00.000Z", result.toString());
-    }
-
     public void testResolveDateTime_RI() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         DateTime dt = new DateTime(TEST_TIME1);
         assertEquals("1970-04-06T12:24:00.000Z", dt.toString());
         
-        DateTime result = test.resolveDateTime(dt);
+        DateTime result = test.toDateTimeUsing(dt);
         check(test, 1972, 6, 9);
         assertEquals("1970-04-06T12:24:00.000Z", dt.toString());
         assertEquals("1972-06-09T12:24:00.000Z", result.toString());
@@ -568,28 +549,9 @@ public class TestYearMonthDay extends TestCase {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME1);
         
-        DateTime result = test.resolveDateTime(null);
+        DateTime result = test.toDateTimeUsing(null);
         check(test, 1972, 6, 9);
         assertEquals("1972-06-09T12:24:00.000Z", result.toString());
-    }
-
-    public void testResolveInto_RWI() {
-        YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        MutableDateTime mdt = new MutableDateTime(TEST_TIME1);
-        assertEquals("1970-04-06T12:24:00.000Z", mdt.toString());
-        
-        test.resolveInto(mdt);
-        check(test, 1972, 6, 9);
-        assertEquals("1972-06-09T12:24:00.000Z", mdt.toString());
-    }
-
-    public void testResolveInto_nullRWI() {
-        YearMonthDay test = new YearMonthDay(1972, 6, 9);
-        
-        try {
-            test.resolveInto(null);
-            fail();
-        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

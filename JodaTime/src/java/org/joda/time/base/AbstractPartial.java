@@ -58,8 +58,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
@@ -182,12 +180,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @throws IllegalArgumentException if the field is null or not supported
      */
     public int get(DateTimeFieldType type) {
-        for (int i = 0, isize = size(); i < isize; i++) {
-            if (getFieldType(i) == type) {
-                return getValue(i);
-            }
-        }
-        throw new IllegalArgumentException("Field '" + type + "' is not supported");
+        return getValue(indexOfSupported(type));
     }
 
     /**
@@ -197,32 +190,41 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @return true if the field is supported
      */
     public boolean isSupported(DateTimeFieldType type) {
+        return (indexOf(type) != -1);
+    }
+
+    /**
+     * Gets the index of the specified field, or -1 if the field is unsupported.
+     *
+     * @param type  the type to check, may be null which returns -1
+     * @return the index of the field, -1 if unsupported
+     */
+    public int indexOf(DateTimeFieldType type) {
         for (int i = 0, isize = size(); i < isize; i++) {
             if (getFieldType(i) == type) {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
+    }
+
+    /**
+     * Gets the index of the specified field, throwing an exception if the
+     * field is unsupported.
+     *
+     * @param type  the type to check, may be null which returns -1
+     * @return the index of the field, -1 if unsupported
+     * @throws IllegalArgumentException if the field is null or not supported
+     */
+    protected int indexOfSupported(DateTimeFieldType type) {
+        int index = indexOf(type);
+        if (index == -1) {
+            throw new IllegalArgumentException("Field '" + type + "' is not supported");
+        }
+        return index;
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Resolves this partial against another complete millisecond instant to
-     * create a new full instant specifying the time zone to resolve with.
-     * <p>
-     * For example, if this partial represents a time, then the result of this
-     * method will be the datetime from the specified base instant plus the
-     * time from this partial set using the time zone specified.
-     *
-     * @param baseInstant  source of missing fields
-     * @param zone  the time zone to use, null means default
-     * @return the combined instant in milliseconds
-     */
-    public long resolve(long baseInstant, DateTimeZone zone) {
-        Chronology chrono = getChronology().withZone(zone);
-        return chrono.set(this, baseInstant);
-    }
-
     /**
      * Resolves this partial against another complete instant to create a new
      * full instant. The combination is performed using the chronology of the
@@ -235,31 +237,11 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @param baseInstant  the instant that provides the missing fields, null means now
      * @return the combined datetime
      */
-    public DateTime resolveDateTime(ReadableInstant baseInstant) {
+    public DateTime toDateTimeUsing(ReadableInstant baseInstant) {
         Chronology chrono = DateTimeUtils.getInstantChronology(baseInstant);
         long instantMillis = DateTimeUtils.getInstantMillis(baseInstant);
         long resolved = chrono.set(this, instantMillis);
         return new DateTime(resolved, chrono);
-    }
-
-    /**
-     * Resolves this partial into another complete instant setting the relevant
-     * fields on the writable instant. The combination is performed using the
-     * chronology of the specified instant.
-     * <p>
-     * For example, if this partial represents a time, then the input writable
-     * instant will be updated with the time from this partial.
-     *
-     * @param baseInstant  the instant to set into, must not be null
-     * @throws IllegalArgumentException if the base instant is null
-     */
-    public void resolveInto(ReadWritableInstant baseInstant) {
-        if (baseInstant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
-        }
-        Chronology chrono = DateTimeUtils.getInstantChronology(baseInstant);
-        long resolved = chrono.set(this, baseInstant.getMillis());
-        baseInstant.setMillis(resolved);
     }
 
     //-----------------------------------------------------------------------

@@ -59,6 +59,8 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
+import org.joda.time.TimeOfDay;
+import org.joda.time.YearMonthDay;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
@@ -384,6 +386,25 @@ public abstract class BaseDateTime
      */
     protected void setChronology(Chronology chronology) {
         iChronology = checkChronology(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get this object as a YearMonthDay and chronology.
+     * 
+     * @return a YearMonthDay using the same millis and chronology
+     */
+    public YearMonthDay toYearMonthDay() {
+        return new YearMonthDay(getMillis(), getChronology());
+    }
+
+    /**
+     * Get this object as a TimeOfDay and chronology.
+     * 
+     * @return a TimeOfDay using the same millis and chronology
+     */
+    public TimeOfDay toTimeOfDay() {
+        return new TimeOfDay(getMillis(), getChronology());
     }
 
 }

@@ -89,16 +89,14 @@ public class Examples {
         Instant in = new Instant();
         System.out.println("Millisecond time:     in.getMillis():           " + in.getMillis());
         System.out.println("ISO string version:   in.toString():            " + in.toString());
-        System.out.println("No chronology:        in.getChronology():       " + in.getChronology());
-        System.out.println("No time zone:         in.getDateTimeZone():     " + in.getZone());
+        System.out.println("ISO chronology:       in.getChronology():       " + in.getChronology());
+        System.out.println("UTC time zone:        in.getDateTimeZone():     " + in.getZone());
         System.out.println("Change millis:        in.withMillis(0):         " + in.withMillis(0L));
         System.out.println("");
         System.out.println("Convert to Instant:   in.toInstant():           " + in.toInstant());
         System.out.println("Convert to DateTime:  in.toDateTime():          " + in.toDateTime());
         System.out.println("Convert to MutableDT: in.toMutableDateTime():   " + in.toMutableDateTime());
         System.out.println("Convert to Date:      in.toDate():              " + in.toDate());
-        System.out.println("Convert to Calendar:  in.toCalendar(Locale.UK): " + in.toCalendar(Locale.UK).toString().substring(0, 46));
-        System.out.println("Convert to GregCal:   in.toGregorianCalendar(): " + in.toGregorianCalendar().toString().substring(0, 46));
         System.out.println("");
         System.out.println("                      in2 = new Instant(in.getMillis() + 10)");
         Instant in2 = new Instant(in.getMillis() + 10);

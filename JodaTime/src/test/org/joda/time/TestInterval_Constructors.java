@@ -270,9 +270,9 @@ public class TestInterval_Constructors extends TestCase {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
-        result = ISOChronology.getInstance().months().add(result, 6);
-        result = ISOChronology.getInstance().days().add(result, 3);
-        result = ISOChronology.getInstance().hours().add(result, 1);
+        result = ISOChronology.getInstanceUTC().months().add(result, 6);
+        result = ISOChronology.getInstanceUTC().days().add(result, 3);
+        result = ISOChronology.getInstanceUTC().hours().add(result, 1);
         
         Interval test = new Interval(dt, dur);
         assertEquals(dt.getMillis(), test.getStartMillis());
@@ -280,12 +280,12 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     public void testConstructor_RI_RP3() throws Throwable {
-        DateTime dt = new DateTime(TEST_TIME_NOW, Chronology.getISOUTC());
+        DateTime dt = new DateTime(TEST_TIME_NOW, Chronology.getCopticUTC());
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.standard());
         long result = TEST_TIME_NOW;
-        result = Chronology.getISOUTC().months().add(result, 6);
-        result = Chronology.getISOUTC().days().add(result, 3);
-        result = Chronology.getISOUTC().hours().add(result, 1);
+        result = Chronology.getCopticUTC().months().add(result, 6);
+        result = Chronology.getCopticUTC().days().add(result, 3);
+        result = Chronology.getCopticUTC().hours().add(result, 1);
         
         Interval test = new Interval(dt, dur);
         assertEquals(dt.getMillis(), test.getStartMillis());
@@ -354,9 +354,9 @@ public class TestInterval_Constructors extends TestCase {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0);
         long result = TEST_TIME_NOW;
-        result = ISOChronology.getInstance().months().add(result, -6);
-        result = ISOChronology.getInstance().days().add(result, -3);
-        result = ISOChronology.getInstance().hours().add(result, -1);
+        result = Chronology.getISOUTC().months().add(result, -6);
+        result = Chronology.getISOUTC().days().add(result, -3);
+        result = Chronology.getISOUTC().hours().add(result, -1);
         
         Interval test = new Interval(dur, dt);
         assertEquals(result, test.getStartMillis());
@@ -364,12 +364,12 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     public void testConstructor_RP_RI3() throws Throwable {
-        DateTime dt = new DateTime(TEST_TIME_NOW, Chronology.getISOUTC());
+        DateTime dt = new DateTime(TEST_TIME_NOW, Chronology.getCopticUTC());
         Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.standard());
         long result = TEST_TIME_NOW;
-        result = Chronology.getISOUTC().months().add(result, -6);
-        result = Chronology.getISOUTC().days().add(result, -3);
-        result = Chronology.getISOUTC().hours().add(result, -1);
+        result = Chronology.getCopticUTC().months().add(result, -6);
+        result = Chronology.getCopticUTC().days().add(result, -3);
+        result = Chronology.getCopticUTC().hours().add(result, -1);
         
         Interval test = new Interval(dur, dt);
         assertEquals(result, test.getStartMillis());

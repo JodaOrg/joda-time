@@ -53,9 +53,12 @@
  */
 package org.joda.time.base;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.format.DateTimeFormat;
 
@@ -271,6 +274,47 @@ public abstract class AbstractDateTime
      */
     public int getMillisOfSecond() {
         return getChronology().millisOfSecond().get(getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get the date time as a <code>java.util.Calendar</code>.
+     * The locale is passed in, enabling Calendar to select the correct
+     * localized subclass.
+     * 
+     * @param locale  the locale to get the Calendar for, or default if null
+     * @return a localized Calendar initialised with this datetime
+     */
+    public Calendar toCalendar(Locale locale) {
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
+        DateTimeZone zone = getZone();
+        Calendar cal;
+        if (zone == null) {
+            cal = Calendar.getInstance(locale);
+        } else {
+            cal = Calendar.getInstance(zone.toTimeZone(), locale);
+        }
+        cal.setTime(toDate());
+        return cal;
+    }
+
+    /**
+     * Get the date time as a <code>java.util.GregorianCalendar</code>.
+     * 
+     * @return a GregorianCalendar initialised with this datetime
+     */
+    public GregorianCalendar toGregorianCalendar() {
+        DateTimeZone zone = getZone();
+        GregorianCalendar cal;
+        if (zone == null) {
+            cal = new GregorianCalendar();
+        } else {
+            cal = new GregorianCalendar(zone.toTimeZone());
+        }
+        cal.setTime(toDate());
+        return cal;
     }
 
     //-----------------------------------------------------------------------

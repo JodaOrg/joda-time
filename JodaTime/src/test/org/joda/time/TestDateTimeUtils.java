@@ -65,6 +65,7 @@ import java.security.ProtectionDomain;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -291,7 +292,17 @@ public class TestDateTimeUtils extends TestCase {
         assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getInstantChronology(dt));
         
         Instant i = new Instant(123L);
-        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(i));
+        assertEquals(ISOChronology.getInstanceUTC(), DateTimeUtils.getInstantChronology(i));
+        
+        AbstractInstant ai = new AbstractInstant() {
+            public long getMillis() {
+                return 0L;
+            }
+            public Chronology getChronology() {
+                return null; // testing for this
+            }
+        };
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(ai));
         
         assertEquals(ISOChronology.getInstance(), DateTimeUtils.getInstantChronology(null));
     }

@@ -128,9 +128,13 @@ public class MutableInterval
      */
     public MutableInterval(ReadableInstant start, ReadableInstant end) {
         super();
-        iStartMillis = DateTimeUtils.getInstantMillis(start);
-        iEndMillis = getEndInstantMillis(end, start, iStartMillis);
-        checkInterval(iStartMillis, iEndMillis);
+        if (start == null && end == null) {
+            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+        } else {
+            iStartMillis = DateTimeUtils.getInstantMillis(start);
+            iEndMillis = DateTimeUtils.getInstantMillis(end);
+            checkInterval(iStartMillis, iEndMillis);
+        }
     }
 
     /**
@@ -287,9 +291,13 @@ public class MutableInterval
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setInterval(ReadableInstant start, ReadableInstant end) {
-        long startMillis = DateTimeUtils.getInstantMillis(start);
-        long endMillis = getEndInstantMillis(end, start, iStartMillis);
-        setInterval(startMillis, endMillis);
+        if (start == null && end == null) {
+            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+        } else {
+            long startMillis = DateTimeUtils.getInstantMillis(start);
+            long endMillis = DateTimeUtils.getInstantMillis(end);
+            setInterval(startMillis, endMillis);
+        }
     }
 
     //-----------------------------------------------------------------------

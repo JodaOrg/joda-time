@@ -95,9 +95,6 @@ public class Interval
     /** The end of the period */
     private final long iEndMillis;
 
-    /** The cached duration */
-    private transient Duration iDuration;
-
     /**
      * Constructs an interval from a start and end instant.
      * 
@@ -121,9 +118,13 @@ public class Interval
      */
     public Interval(ReadableInstant start, ReadableInstant end) {
         super();
-        iStartMillis = DateTimeUtils.getInstantMillis(start);
-        iEndMillis = getEndInstantMillis(end, start, iStartMillis);
-        checkInterval(iStartMillis, iEndMillis);
+        if (start == null && end == null) {
+            iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
+        } else {
+            iStartMillis = DateTimeUtils.getInstantMillis(start);
+            iEndMillis = DateTimeUtils.getInstantMillis(end);
+            checkInterval(iStartMillis, iEndMillis);
+        }
     }
 
     /**
@@ -139,9 +140,6 @@ public class Interval
         iStartMillis = DateTimeUtils.getInstantMillis(start);
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
         iEndMillis = FieldUtils.safeAdd(iStartMillis, durationMillis);
-        if (duration instanceof Duration) {
-            iDuration = (Duration) duration;
-        }
         checkInterval(iStartMillis, iEndMillis);
     }
 
@@ -158,9 +156,6 @@ public class Interval
         iEndMillis = DateTimeUtils.getInstantMillis(end);
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
         iStartMillis = FieldUtils.safeAdd(iEndMillis, -durationMillis);
-        if (duration instanceof Duration) {
-            iDuration = (Duration) duration;
-        }
         checkInterval(iStartMillis, iEndMillis);
     }
 
@@ -248,119 +243,51 @@ public class Interval
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the duration of this interval.
-     * <p>
-     * Where possible, this implementation reuses the same <code>Duration</code> object.
+     * Creates a new interval with the specified start millisecond instant.
      *
-     * @return the duration of the interval
+     * @param startInstant  the start instant for the new interval
+     * @return an interval with the end from this interval and the specified start
      */
-    public final Duration getDuration() {
-        if (iDuration == null) {
-            iDuration = super.getDuration();
+    public final Interval withStartMillis(long startInstant) {
+        if (startInstant == getStartMillis()) {
+            return this;
         }
-        return iDuration;
+        return new Interval(startInstant, getEndMillis());
     }
 
-    //-----------------------------------------------------------------------
-    // Protect against malicious subclasses, ensuring this class is immutable
-    //-----------------------------------------------------------------------
-    protected final void checkInterval(long start, long end) {
-        super.checkInterval(start, end);
+    /**
+     * Creates a new interval with the specified start instant.
+     *
+     * @param start  the start instant for the new interval, null means now
+     * @return an interval with the end from this interval and the specified start
+     */
+    public final Interval withStartInstant(ReadableInstant start) {
+        long startMillis = DateTimeUtils.getInstantMillis(start);
+        return withStartMillis(startMillis);
     }
 
-    protected final long getEndInstantMillis(ReadableInstant end, ReadableInstant start, long startMillis) {
-        return super.getEndInstantMillis(end, start, startMillis);
+    /**
+     * Creates a new interval with the specified start millisecond instant.
+     *
+     * @param endInstant  the end instant for the new interval
+     * @return an interval with the start from this interval and the specified end
+     */
+    public final Interval withEndMillis(long endInstant) {
+        if (endInstant == getEndMillis()) {
+            return this;
+        }
+        return new Interval(getStartMillis(), endInstant);
     }
 
-    //-----------------------------------------------------------------------
-    public final long getDurationMillis() {
-        return super.getDurationMillis();
-    }
-
-    public final Instant getStartInstant() {
-        return super.getStartInstant();
-    }
-
-    public final Instant getEndInstant() {
-        return super.getEndInstant();
-    }
-
-    //-----------------------------------------------------------------------
-    public final boolean contains(long millisInstant) {
-        return super.contains(millisInstant);
-    }
-
-    public final boolean containsNow() {
-        return super.containsNow();
-    }
-
-    public final boolean contains(ReadableInstant instant) {
-        return super.contains(instant);
-    }
-
-    public final boolean contains(ReadableInterval interval) {
-        return super.contains(interval);
-    }
-
-    public final boolean overlaps(ReadableInterval interval) {
-        return super.overlaps(interval);
-    }
-
-    //-----------------------------------------------------------------------
-    public final boolean equals(Object readableInterval) {
-        return super.equals(readableInterval);
-    }
-
-    public final int hashCode() {
-        return super.hashCode();
-    }
-
-    //-----------------------------------------------------------------------
-    public final boolean isAfter(long millisInstant) {
-        return super.isAfter(millisInstant);
-    }
-
-    public final boolean isAfterNow() {
-        return super.isAfterNow();
-    }
-
-    public final boolean isAfter(ReadableInstant instant) {
-        return super.isAfter(instant);
-    }
-
-    public final boolean isBefore(long millisInstant) {
-        return super.isBefore(millisInstant);
-    }
-
-    public final boolean isBeforeNow() {
-        return super.isBeforeNow();
-    }
-
-    public final boolean isBefore(ReadableInstant instant) {
-        return super.isBefore(instant);
-    }
-
-    //-----------------------------------------------------------------------
-    public final Interval toInterval() {
-        return super.toInterval();
-    }
-
-    public final MutableInterval toMutableInterval() {
-        return super.toMutableInterval();
-    }
-
-    //-----------------------------------------------------------------------
-    public final Period toPeriod() {
-        return super.toPeriod();
-    }
-
-    public final Period toPeriod(PeriodType type) {
-        return super.toPeriod(type);
-    }
-
-    //-----------------------------------------------------------------------
-    public final String toString() {
-        return super.toString();
+    /**
+     * Creates a new interval with the specified start instant.
+     *
+     * @param end  the end instant for the new interval, null means now
+     * @return an interval with the start from this interval and the specified end
+     */
+    public final Interval withEndInstant(ReadableInstant end) {
+        long endMillis = DateTimeUtils.getInstantMillis(end);
+        return withEndMillis(endMillis);
     }
 
 }

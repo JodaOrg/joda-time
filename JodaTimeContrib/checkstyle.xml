@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE module PUBLIC
+    "-//Puppy Crawl//DTD Check Configuration 1.1//EN"
+    "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
+
+<!-- customization of default Checkstyle behavior -->
+<module name="Checker">
+  <property name="localeLanguage" value="en"/>
+  <!--module name="PackageHtml"/-->
+  <module name="TreeWalker">
+    <module name="MemberName">
+      <property name="format" value="^i[A-Z][a-zA-Z0-9]*$"/>
+    </module>
+    <module name="LocalVariableName">
+      <property name="format" value="^ex[0-9]*$"/>
+      <property name="tokens" value="PARAMETER_DEF"/>
+    </module>
+    <module name="AvoidStarImport"/>
+    <module name="RedundantImport"/>
+    <module name="UnusedImports"/>
+    
+    <module name="TabCharacter"/>
+    <module name="NeedBraces"/>
+    <!--module name="TypecastParenPad"/-->
+    <module name="WhitespaceAfter"/>
+    <module name="WhitespaceAround"/>
+    <module name="ModifierOrder"/>
+    <module name="RedundantModifier"/>
+    
+    <module name="EmptyBlock"/>
+    <module name="LeftCurly"/>
+    <module name="NeedBraces"/>
+    <module name="RightCurly"/>
+    <!--module name="AvoidNestedBlocks">
+      <property name="allowInSwitchCase" value="true"/>
+    </module-->
+    
+    <!--module name="ArrayTrailingComma"/-->
+    <!--module name="CovariantEquals"/-->
+    <module name="DoubleCheckedLocking"/>
+    <module name="EmptyStatement"/>
+    <module name="EqualsHashCode"/>
+    <!--module name="HiddenField">
+      <property name="ignoreConstructorParameter" value="true"/>
+      <property name="ignoreSetter" value="true"/>
+    </module-->
+    <module name="IllegalInstantiation">
+      <property name="classes" value="java.lang.Boolean"/>
+    </module>
+    <!--module name="SuperClone"/-->
+    <!--module name="ExplicitInitialization"/-->
+              
+    <module name="GenericIllegalRegexp">
+      <property name="format" value="System\.out\.println"/>
+    </module>
+    <module name="GenericIllegalRegexp">
+      <property name="format" value="System\.err\.println"/>
+    </module>
+    <module name="TodoComment"/>
+    <module name="UpperEll"/>
+    <module name="ArrayTypeStyle"/>
+    <module name="Indentation"/>
+          
+    <module name="RedundantThrows">
+      <property name="allowUnchecked" value="true"/>
+    </module>
+    <module name="LineLength">
+      <property name="max" value="120"/>
+    </module>
+    <module name="JavadocVariable">
+      <property name="excludeScope" value="private"/>
+    </module>
+    <module name="JavadocMethod">
+      <property name="excludeScope" value="private"/>
+      <property name="allowUndeclaredRTE" value="true"/>
+    </module>
+ </module>
+</module>
+                        
+

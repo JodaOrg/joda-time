@@ -1,0 +1,323 @@
+<project name="joda-time-contrib" default="jar" basedir=".">
+
+<!-- Joda-time ANT script -->
+<!-- Based on scripts from Apache Jakarta Commons and elsewhere -->
+
+<!-- This is the recommended way to build Joda-Time. -->
+<!-- Maven is only intended for building the website. -->
+
+<!-- This ant file will download junit-3.8.1.jar to the lib subdirectory -->
+<!-- automatically if it does not find it there already. To change this -->
+<!-- behaviour, override the junit.jar property in build.properties. -->
+
+<!-- ========== Properties ================================================ -->
+
+  <property file="build.properties"/>
+
+<!-- ========== Component Declarations ==================================== -->
+
+
+  <!-- The name of this component -->
+  <property name="component.name"          value="joda-time-contrib"/>
+
+  <!-- The primary package name of this component -->
+  <property name="component.package"       value="org.joda.time.contrib"/>
+
+  <!-- The title of this component -->
+  <property name="component.title"         value="Joda date and time contributions"/>
+
+  <!-- The current version number of this component -->
+  <property name="component.version"       value="1.0"/>
+
+  <!-- The current version number of this component -->
+  <property name="component.fullname"      value="${component.name}-${component.version}"/>
+  
+  <!-- The directory of source files -->
+  <property name="xdocs"                   value="xdocs"/>
+
+  <!-- Dependencies -->
+  <property name="lib"                     value="lib"/>
+  <property name="junit.jar"               value="${lib}/junit-3.8.1.jar"/>
+
+  <!-- The directory of source files -->
+  <property name="source"                  value="src"/>
+  <property name="source.home"             value="${source}/java"/>
+  <property name="conf.home"               value="${source}/conf"/>
+  <property name="test.home"               value="${source}/test"/>
+
+  <!-- The base directory for example sources -->
+  <property name="example.home"            value="src/example"/>
+
+  <!-- The base directory for compilation targets -->
+  <property name="build"                   value="build"/>
+  <property name="build.conf"              value="${build}/conf"/>
+  <property name="build.classes"           value="${build}/classes"/>
+  <property name="build.tz"                value="${build.classes}/org/joda/time/tz/data"/>
+  <property name="build.tests"             value="${build}/tests"/>
+  <property name="build.docs"              value="${build}/docs"/>
+  <property name="build.dist"              value="${build}/dist"/>
+  <property name="build.jarname.full"      value="${build}/${component.name}-${component.version}.jar"/>
+  <property name="build.fullname"          value="${build}/${component.fullname}"/>
+  <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
+
+
+<!-- ========== Compiler Defaults ========================================= -->
+
+  <!-- Should Java compilations set the 'debug' compiler option? -->
+  <property name="compile.debug"           value="true"/>
+
+  <!-- Should Java compilations set the 'deprecation' compiler option? -->
+  <property name="compile.deprecation"     value="true"/>
+
+  <!-- Should Java compilations set the 'optimize' compiler option? -->
+  <property name="compile.optimize"        value="true"/>
+
+  <!-- Construct compile classpath -->
+  <path id="compile.classpath">
+    <pathelement location="${build.classes}"/>
+  </path>
+
+
+<!-- ========== Test Execution Defaults =================================== -->
+
+  <!-- Construct unit test classpath -->
+  <path id="test.classpath">
+    <pathelement location="${build.classes}"/>
+    <pathelement location="${build.tests}"/>
+    <pathelement location="${junit.jar}"/>
+  </path>
+
+  <!-- Should all tests fail if one does? -->
+  <property name="test.failonerror"        value="true"/>
+
+  <!-- The test runner to execute -->
+  <property name="test.runner"             value="junit.textui.TestRunner"/>
+
+
+<!-- ====================================================================== -->
+<!-- ========== Executable Targets ======================================== -->
+<!-- ====================================================================== -->
+
+  <target name="clean"
+          description="Clean build and distribution directories">
+    <delete dir="${build}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="init"
+          description="Initialize and evaluate conditionals">
+    <echo message="-------- ${component.name} ${component.version} --------"/>
+    <filter token="name"                  value="${component.name}"/>
+    <filter token="package"               value="${component.package}"/>
+    <filter token="version"               value="${component.version}"/>
+    <available property="junit.ant" classname="junit.framework.Test"/>
+    <available property="junit.present" file="${junit.jar}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="getjunit" unless="junit.present">
+    <echo message="Getting junit from http://www.ibiblio.org/maven/junit"/>
+    <setproxy />
+    <mkdir dir="${lib}"/>
+    <get dest="${junit.jar}" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar" />
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="installjunit" unless="junit.ant">
+    <echo message="Installing junit in ${ant.home}/lib"/>
+  	<copy file="${junit.jar}" todir="${ant.home}/lib" />
+    <echo message="***************************************************************"/>
+    <echo message="*  A copy of junit has been installed in your ant directory   *"/>
+    <echo message="*                                                             *"/>
+    <echo message="* You will need to restart the ant build to pickup the change *"/>
+    <echo message="***************************************************************"/>
+  	<fail message="Please restart ant"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="prepare" depends="init,getjunit,installjunit"
+          description="Prepare build directory">
+    <mkdir dir="${build}"/>
+    <mkdir dir="${build.classes}"/>
+    <mkdir dir="${build.conf}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="static" depends="prepare"
+          description="Copy static files to build directory">
+    <tstamp/>
+    <copy todir="${build.conf}" filtering="on">
+      <fileset dir="${conf.home}" includes="*.MF"/>
+    </copy>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="compile" depends="static" description="Compile shareable components">
+    <javac  srcdir="${source.home}"
+           destdir="${build.classes}"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="compile.classpath"/>
+    </javac>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="compile.tests" depends="compile"
+          description="Compile unit test cases">
+    <mkdir dir="${build.tests}"/>
+    <javac  srcdir="${test.home}"
+           destdir="${build.tests}"
+             debug="${compile.debug}"
+       deprecation="${compile.deprecation}"
+          optimize="${compile.optimize}">
+      <classpath refid="test.classpath"/>
+    </javac>
+    <copy    todir="${build.tests}" filtering="on">
+      <fileset dir="${test.home}" excludes="**/*.java"/>
+    </copy>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="all" depends="clean,compile"
+          description="Clean and compile all components"/>
+
+<!-- ====================================================================== -->
+
+  <target name="javadoc" depends="compile"
+          description="Create component Javadoc documentation">
+    <mkdir      dir="${build.docs}"/>
+    <javadoc sourcepath="${source.home}"
+                destdir="${build.docs}"
+           packagenames="org.joda.time.contrib.*"
+                 author="true"
+                private="false"
+                package="false"
+                version="true"
+                    use="yes"
+             splitindex="yes"
+               doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
+            windowtitle="${component.title} (Version ${component.version})"
+                 bottom="Copyright (c) 2001-2005 - Joda.org">
+      <classpath refid="compile.classpath"/>
+    </javadoc>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="jar" depends="compile"
+          description="Create jar">
+    <mkdir      dir="${build.classes}/META-INF"/>
+    <copy      file="LICENSE.txt"
+             tofile="${build.classes}/META-INF/LICENSE.txt"/>
+    <copy      file="NOTICE.txt"
+             tofile="${build.classes}/META-INF/NOTICE.txt"/>
+    <jar    jarfile="${build.jarname.full}"
+            basedir="${build.classes}"
+           manifest="${build.conf}/MANIFEST.MF">
+    </jar>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="dist" depends="compile,jar,test.jar,javadoc"
+          description="Create binary distribution">
+    <delete     dir="${build.dist.fullname}"/>
+    <mkdir      dir="${build.dist.fullname}"/>
+    
+	<!-- binary -->
+    <copy      file="LICENSE.txt" todir="${build.dist.fullname}"/>
+    <copy      file="NOTICE.txt" todir="${build.dist.fullname}"/>
+    <copy      file="RELEASE-NOTES.txt" todir="${build.dist.fullname}"/>
+    <copy      file="${build.jarname.full}"
+              todir="${build.dist.fullname}"/>
+    <copy     todir="${build.dist.fullname}">
+      <fileset  dir="${build}" includes="docs/**/*.*"/>
+    </copy>
+    
+	<tar   destfile="${build.fullname}.tar" basedir="${build.dist}"/>
+	<gzip   zipfile="${build.fullname}.tar.gz" src="${build.fullname}.tar"/>
+	<delete    file="${build.fullname}.tar"/>
+	<fixcrlf srcdir="${build.dist}" eol="crlf" includes="**/*.txt"/>
+	<zip   destfile="${build.fullname}.zip" basedir="${build.dist}"/>
+	
+	<!-- source -->
+	<delete     dir="${build.dist.fullname}/docs"/>
+    <copy      file="${build.jarname.tzcompiler}"
+              todir="${build.dist.fullname}"/>
+    <copy     todir="${build.dist.fullname}">
+      <fileset  dir="." includes="${source}/**/*" excludes="CVS/**/*"/>
+    </copy>
+    <copy     todir="${build.dist.fullname}">
+      <fileset  dir="." includes="${xdocs}/**/*" excludes="CVS/**/*"/>
+    </copy>
+	<delete     dir="${build.dist.fullname}/src/tzdata"/>
+    <copy      file="build.xml" todir="${build.dist.fullname}"/>
+    <copy      file="maven.xml" todir="${build.dist.fullname}"/>
+    <copy      file="project.xml" todir="${build.dist.fullname}"/>
+    <copy      file="project.properties" todir="${build.dist.fullname}"/>
+    <copy      file="checkstyle.xml" todir="${build.dist.fullname}"/>
+    <copy      file="ToDo.txt" todir="${build.dist.fullname}"/>
+	
+	<tar   destfile="${build.fullname}-src.tar" basedir="${build.dist}"/>
+	<gzip   zipfile="${build.fullname}-src.tar.gz" src="${build.fullname}-src.tar"/>
+	<delete    file="${build.fullname}-src.tar"/>
+	<fixcrlf srcdir="${build.dist}" eol="crlf" includes="**/*.txt"/>
+	<zip   destfile="${build.fullname}-src.zip" basedir="${build.dist}"/>
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="test"  depends="compile.tests, test.time"
+          description="Run all unit test cases">
+  </target>
+
+  <target name="test.time" depends="compile.tests">
+    <echo message="Running time tests ..."/>
+    <junit printsummary="yes" haltonfailure="yes">
+      <formatter type="plain" usefile="false" />
+      <classpath>
+        <pathelement location="${build.classes}"/>
+        <pathelement location="${build.tests}"/>
+        <pathelement location="${build.tz}"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+
+      <batchtest fork="yes">
+        <fileset dir="${test.home}">
+          <include name="**/TestAll.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+  <!-- don't depend on jar, so we can test jar built on another JDK version -->
+  <target name="test.jar" depends="compile.tests">
+    <echo message="Running time tests from jar ..."/>
+    <junit printsummary="yes" haltonfailure="yes">
+      <formatter type="plain" usefile="false" />
+      <classpath>
+        <pathelement location="${build.jarname.full}"/>
+        <pathelement location="${build.jarname.tzcompiler}"/>
+        <pathelement location="${build.tests}"/>
+        <pathelement location="${junit.jar}"/>
+        <pathelement path="${java.class.path}"/>
+      </classpath>
+
+      <batchtest fork="yes">
+        <fileset dir="${test.home}">
+          <include name="**/TestAll.java"/>
+        </fileset>
+      </batchtest>
+    </junit>
+  </target>
+
+</project>

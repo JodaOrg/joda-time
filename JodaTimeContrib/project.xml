@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You are strongly recommended to use ant for compiling and building -->
+<!-- We only use and test maven for website construction -->
+
+<project>
+  <pomVersion>3</pomVersion>
+  <id>joda-time-contrib</id>
+  <name>Joda time</name>
+  <groupId>joda-time</groupId>
+  <currentVersion>1.0</currentVersion>
+  <organization>
+    <name>Joda.org</name>
+    <url>http://www.joda.org</url>
+    <logo>/images/joda.png</logo>
+  </organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.joda.time.contrib</package>
+  <logo>/images/jodatime.png</logo>
+
+  <description>
+    User contributions to Joda-Time
+  </description>
+  <shortDescription>Joda time contrib</shortDescription>
+  <url>http://joda-time.sourceforge.net</url>
+  
+  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
+  
+  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/</siteDirectory>
+  <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
+  
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib</connection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>Joda Interest list</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Stephen Colebourne</name>
+      <id>scolebourne</id>
+      <email>scolebourne@joda.org</email>
+      <organization>SITA ATS Ltd</organization>
+      <roles>
+        <role>Project Lead</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Brian S O'Neill</name>
+      <id>broneill</id>
+      <email>broneill@users.sourceforge.net</email>
+      <organization></organization>
+      <roles>
+        <role>Senior Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  
+<!--  <contributors>
+    <contributor>
+      <name>Guy Allard</name>
+    </contributor>Fredrik Borgh
+    <contributor>
+      <name>Fredrik Borgh</name>
+    </contributor>
+    <contributor>
+      <name>Sean Geoghegan</name>
+    </contributor>
+    <contributor>
+      <name>Ashish Katyal</name>
+    </contributor>
+    <contributor>
+      <name>Al Major</name>
+    </contributor>
+    <contributor>
+      <name>Kandarp Shah</name>
+    </contributor>
+  </contributors>-->
+
+  <dependencies>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>org/joda/time/contrib/**/TestAll.java</include>
+      </includes>
+    </unitTest>
+  </build>
+
+  <reports>
+     <report>maven-changelog-plugin</report>
+     <report>maven-changes-plugin</report>
+     <report>maven-checkstyle-plugin</report>
+     <!-- <report>maven-clover-plugin</report> -->
+     <report>maven-jcoverage-plugin</report>
+     <report>maven-developer-activity-plugin</report>
+     <report>maven-file-activity-plugin</report>
+     <report>maven-javadoc-plugin</report>
+     <!-- <report>maven-jellydoc-plugin</report> -->
+     <report>maven-junit-report-plugin</report>
+     <report>maven-jxr-plugin</report>
+     <report>maven-license-plugin</report>
+     <!--report>maven-linkcheck-plugin</report-->
+     <!--report>maven-statcvs-plugin</report-->
+     <!--report>maven-tasklist-plugin</report-->
+  </reports>
+
+</project>

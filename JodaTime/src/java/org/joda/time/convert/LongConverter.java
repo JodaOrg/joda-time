@@ -117,7 +117,6 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      *
      * @param duration duration to get modified
      * @param object  the object to convert, must not be null
-     * @return the millisecond duration
      * @throws NullPointerException if the duration or object is null
      * @throws ClassCastException if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid

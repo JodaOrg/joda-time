@@ -936,7 +936,7 @@ public abstract class PeriodType implements Serializable {
         }
 
         public DurationField years() {
-            return iChronology.weekyears();
+            return iChronology.years();
         }
 
         public DurationField weeks() {

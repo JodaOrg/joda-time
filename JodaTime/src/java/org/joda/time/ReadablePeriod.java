@@ -267,8 +267,9 @@ public interface ReadablePeriod {
     boolean equals(Object readablePeriod);
 
     /**
-     * Gets a hash code for the period that is compatable with the 
-     * equals method. The hashcode must be calculated as follows:
+     * Gets a hash code for the period that is compatible with the 
+     * equals method. The hashcode is the period type hashcode plus
+     * each period value from largest to smallest calculated as follows:
      * <pre>
      *   int hash = getPeriodType().hashCode();
      *   hash = 53 * hash + getYears();

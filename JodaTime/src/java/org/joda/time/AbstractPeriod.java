@@ -559,8 +559,9 @@ public abstract class AbstractPeriod
     }
 
     /**
-     * Gets a hash code for the period that is compatable with the 
-     * equals method.
+     * Gets a hash code for the period that is compatible with the 
+     * equals method. The hashcode is the period type hashcode plus
+     * each period value from largest to smallest calculated as follows:
      *
      * @return a hash code
      */

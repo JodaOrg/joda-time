@@ -55,6 +55,10 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.DurationConverter;
+import org.joda.time.field.FieldUtils;
+
 /**
  * An immutable duration specifying a length of time in milliseconds.
  * <p>
@@ -79,13 +83,17 @@ public class Duration
     /** Serialization version */
     private static final long serialVersionUID = 2471658376918L;
 
+    /** The duration length */
+    private final long iMillis;
+
     /**
      * Creates a duration from the given millisecond duration.
      *
      * @param duration  the duration, in milliseconds
      */
     public Duration(long duration) {
-        super(duration);
+        super();
+        iMillis = duration;
     }
 
     /**
@@ -96,18 +104,26 @@ public class Duration
      * @throws ArithmeticException if the duration exceeds a 64 bit long
      */
     public Duration(long startInstant, long endInstant) {
-        super(startInstant, endInstant);
+        super();
+        iMillis = FieldUtils.safeAdd(endInstant, -startInstant);
     }
 
     /**
      * Creates a duration from the given interval endpoints.
      *
-     * @param startInstant  interval start, null means now
-     * @param endInstant  interval end, null means now
+     * @param start  interval start, null means now
+     * @param end  interval end, null means now
      * @throws ArithmeticException if the duration exceeds a 64 bit long
      */
-    public Duration(ReadableInstant startInstant, ReadableInstant endInstant) {
-        super(startInstant, endInstant);
+    public Duration(ReadableInstant start, ReadableInstant end) {
+        super();
+        if (start == end) {
+            iMillis = 0L;
+        } else {
+            long startMillis = DateTimeUtils.getInstantMillis(start);
+            long endMillis = DateTimeUtils.getInstantMillis(end);
+            iMillis = FieldUtils.safeAdd(endMillis, -startMillis);
+        }
     }
 
     /**
@@ -118,7 +134,19 @@ public class Duration
      * @throws IllegalArgumentException if duration is invalid
      */
     public Duration(Object duration) {
-        super(duration);
+        super();
+        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+        iMillis = converter.getDurationMillis(duration);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the total length of this duration in milliseconds.
+     *
+     * @return the total length of the duration in milliseconds.
+     */
+    public final long getMillis() {
+        return iMillis;
     }
 
     //-----------------------------------------------------------------------
@@ -128,18 +156,41 @@ public class Duration
      * @param duration  the new length of the duration
      * @return the new duration instance
      */
-    public Duration withMillis(long duration) {
+    public final Duration withMillis(long duration) {
         if (duration == getMillis()) {
             return this;
         }
         return new Duration(duration);
     }
 
-    //-----------------------------------------------------------------------
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
+     * Adds to this duration returning a new Duration instance.
+     * <p>
+     * If the addition is zero, this instance is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one
+     * @return the new duration instance
      */
-    protected final void setMillis(long duration) {
+    public final Duration withDurationAdded(long durationToAdd) {
+        return withDurationAdded(durationToAdd, 1);
+    }
+
+    /**
+     * Adds to this duration returning a new Duration instance.
+     * <p>
+     * If the addition is zero, this instance is returned.
+     * 
+     * @param durationToAdd  the duration to add to this one
+     * @param scalar  the amount of times to add, such as -1 to subtract once
+     * @return the new duration instance
+     */
+    public final Duration withDurationAdded(long durationToAdd, int scalar) {
+        if (durationToAdd == 0 || scalar == 0) {
+            return this;
+        }
+        long add = FieldUtils.safeMultiply(durationToAdd, scalar);
+        long duration = FieldUtils.safeAdd(getMillis(), add);
+        return new Duration(duration);
     }
 
 }

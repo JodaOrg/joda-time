@@ -53,11 +53,6 @@
  */
 package org.joda.time;
 
-import java.io.Serializable;
-
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.DurationConverter;
-import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 
 /**
@@ -73,75 +68,13 @@ import org.joda.time.format.ISOPeriodFormat;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public abstract class AbstractDuration
-        implements ReadableDuration, Serializable {
-
-    /** Serialization version */
-    private static final long serialVersionUID = 358732693691287348L;
-
-    /** The duration length */
-    private long iMillis;
+public abstract class AbstractDuration implements ReadableDuration {
 
     /**
-     * Creates a duration from the given millisecond duration.
-     *
-     * @param duration  the duration, in milliseconds
+     * Constructor.
      */
-    public AbstractDuration(long duration) {
+    public AbstractDuration() {
         super();
-        iMillis = duration;
-    }
-
-    /**
-     * Creates a duration from the given interval endpoints.
-     *
-     * @param startInstant  interval start, null means now
-     * @param endInstant  interval end, null means now
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
-     */
-    public AbstractDuration(long startInstant, long  endInstant) {
-        super();
-        iMillis = FieldUtils.safeAdd(endInstant, -startInstant);
-    }
-
-    /**
-     * Creates a duration from the given interval endpoints.
-     *
-     * @param startInstant  interval start, null means now
-     * @param endInstant  interval end, null means now
-     * @throws ArithmeticException if the duration exceeds a 64 bit long
-     */
-    public AbstractDuration(ReadableInstant startInstant, ReadableInstant  endInstant) {
-        super();
-        if (startInstant == endInstant) {
-            iMillis = 0L;
-        } else {
-            long start = (startInstant == null ? DateTimeUtils.currentTimeMillis() : startInstant.getMillis());
-            long end = (endInstant == null ? DateTimeUtils.currentTimeMillis() : endInstant.getMillis());
-            iMillis = FieldUtils.safeAdd(end, -start);
-        }
-    }
-
-    /**
-     * Creates a new duration based on another using the {@link ConverterManager}.
-     *
-     * @param duration  duration to convert
-     * @throws IllegalArgumentException if duration is invalid
-     */
-    public AbstractDuration(Object duration) {
-        super();
-        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-        iMillis = converter.getDurationMillis(duration);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the total length of this duration in milliseconds.
-     *
-     * @return the total length of the duration in milliseconds.
-     */
-    public final long getMillis() {
-        return iMillis;
     }
 
     //-----------------------------------------------------------------------
@@ -283,17 +216,17 @@ public abstract class AbstractDuration
      * Compares this object with the specified object for equality based
      * on the millisecond length. All ReadableDuration instances are accepted.
      *
-     * @param readableDuration  a readable duration to check against
+     * @param duration  a readable duration to check against
      * @return true if the length of the duration is equal
      */
-    public final boolean equals(Object readableDuration) {
-        if (this == readableDuration) {
+    public final boolean equals(Object duration) {
+        if (this == duration) {
             return true;
         }
-        if (readableDuration instanceof ReadableDuration == false) {
+        if (duration instanceof ReadableDuration == false) {
             return false;
         }
-        ReadableDuration other = (ReadableDuration) readableDuration;
+        ReadableDuration other = (ReadableDuration) duration;
         return (getMillis() == other.getMillis());
     }
 
@@ -320,36 +253,8 @@ public abstract class AbstractDuration
      *
      * @return the value as an ISO8601 string
      */
-    public String toString() {
+    public final String toString() {
         return ISOPeriodFormat.getInstance().standard().print(toPeriod());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets all the fields in one go from another ReadableDuration.
-     * 
-     * @param duration  the duration to set, null means zero length duration
-     * @throws IllegalArgumentException if an unsupported field's value is non-zero
-     */
-    protected void setDuration(ReadableDuration duration) {
-        if (duration == null) {
-            setMillis(0L);
-        } else {
-            setMillis(duration.getMillis());
-        }
-    }
-
-    /**
-     * Sets all the fields in one go from a millisecond duration.
-     * <p>
-     * Subclasses that wish to be immutable should override this method with an
-     * empty implementation that is protected and final. This also ensures that
-     * all lower subclasses are also immutable.
-     * 
-     * @param length  duration length, in milliseconds
-     */
-    protected void setMillis(long length) {
-        iMillis = length;
     }
 
 }

@@ -176,8 +176,13 @@ public class TestDuration_Basics extends TestCase {
     }
     
     class MockDuration extends AbstractDuration {
+        private final long iValue;
         public MockDuration(long value) {
-            super(value);
+            super();
+            iValue = value;
+        }
+        public long getMillis() {
+            return iValue;
         }
     }
 
@@ -390,61 +395,47 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testImmutable() {
-        MockChangeDuration test = new MockChangeDuration(111L);
-        test.testSetDuration_RD_1();
-        assertEquals(111L, test.getMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetDuration_RD_2();
-        assertEquals(111L, test.getMillis());
-        
-        test = new MockChangeDuration(111L);
-        test.testSetMillis();
-        assertEquals(111L, test.getMillis());
+    public void testWithDurationAdded_long1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(8000L);
+        assertEquals(8123L, result.getMillis());
     }
-    
-    static class MockChangeDuration extends Duration {
-        MockChangeDuration(long duration) {
-            super(duration);
-        }
-        public void testSetDuration_RD_1() {
-            setDuration(null);
-        }
-        public void testSetDuration_RD_2() {
-            setDuration(new Duration(0L));
-        }
-        public void testSetMillis() {
-            setMillis(0L);
-        }
+
+    public void testWithDurationAdded_long2() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(0L);
+        assertSame(test, result);
     }
 
     //-----------------------------------------------------------------------
-    public void testMutable() {
-        // No MutableDuration class, so this tests relevant methods in AbstractDuration
-        MockMutableDuration mutable = new MockMutableDuration(111L);
-        assertEquals(111L, mutable.getMillis());
-        
-        mutable.setMillis(1234L);
-        assertEquals(1234L, mutable.getMillis());
-        
-        mutable.setDuration(null);
-        assertEquals(0L, mutable.getMillis());
-        
-        mutable.setDuration(new Duration(123L));
-        assertEquals(123L, mutable.getMillis());
+    public void testWithDurationAdded_long_int1() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(8000L, 1);
+        assertEquals(8123L, result.getMillis());
     }
-    
-    static class MockMutableDuration extends AbstractDuration {
-        MockMutableDuration(long duration) {
-            super(duration);
-        }
-        public void setDuration(ReadableDuration d) {
-            super.setDuration(d);
-        }
-        public void setMillis(long d) {
-            super.setMillis(d);
-        }
+
+    public void testWithDurationAdded_long_int2() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(8000L, 2);
+        assertEquals(16123L, result.getMillis());
+    }
+
+    public void testWithDurationAdded_long_int3() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(8000L, -1);
+        assertEquals((123L - 8000L), result.getMillis());
+    }
+
+    public void testWithDurationAdded_long_int4() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(0L, 1);
+        assertSame(test, result);
+    }
+
+    public void testWithDurationAdded_long_int5() {
+        Duration test = new Duration(123L);
+        Duration result = test.withDurationAdded(8000L, 0);
+        assertSame(test, result);
     }
 
 }

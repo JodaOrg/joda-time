@@ -123,9 +123,7 @@ public abstract class DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the text value of the field
      */
-    public String getAsText(long instant) {
-        return getAsText(instant, null);
-    }
+    public abstract String getAsText(long instant);
 
     /**
      * Get the human-readable, text value of this field from a partial instant.
@@ -146,9 +144,7 @@ public abstract class DateTimeField {
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsText(ReadablePartial partial, Locale locale) {
-        return getAsText(partial, partial.get(this), locale);
-    }
+    public abstract String getAsText(ReadablePartial partial, Locale locale);
 
     /**
      * Get the human-readable, short text value of this field from the
@@ -167,9 +163,7 @@ public abstract class DateTimeField {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
      * @return the short text value of the field
      */
-    public String getAsShortText(long instant) {
-        return getAsShortText(instant, null);
-    }
+    public abstract String getAsShortText(long instant);
 
     /**
      * Get the human-readable, short text value of this field from a partial instant.
@@ -190,9 +184,7 @@ public abstract class DateTimeField {
      * @param locale  the locale to use for selecting a text symbol, null for default
      * @return the text value of the field
      */
-    public String getAsShortText(ReadablePartial partial, Locale locale) {
-        return getAsShortText(partial, partial.get(this), locale);
-    }
+    public abstract String getAsShortText(ReadablePartial partial, Locale locale);
 
     /**
      * Adds a value (which may be negative) to the millis value,
@@ -406,6 +398,21 @@ public abstract class DateTimeField {
 
     /**
      * Sets a value in the milliseconds supplied from a human-readable, text value.
+     * <p>
+     * If setting this field would make other fields invalid, then those fields
+     * may be changed. For example if the current date is the 31st January, and
+     * the month is set to February, the day would be invalid. Instead, the day
+     * would be changed to the closest value - the 28th/29th February as appropriate.
+     * 
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param text  the text value to set
+     * @return the updated milliseconds
+     * @throws IllegalArgumentException if the text value is invalid
+     */
+    public abstract long set(long instant, String text);
+
+    /**
+     * Sets a value in the milliseconds supplied from a human-readable, text value.
      * If the specified locale is null, the default locale is used.
      * <p>
      * If setting this field would make other fields invalid, then those fields
@@ -422,23 +429,6 @@ public abstract class DateTimeField {
      * @throws IllegalArgumentException if the text value is invalid
      */
     public abstract int[] set(ReadablePartial instant, int fieldIndex, int[] values, String text, Locale locale);
-
-    /**
-     * Sets a value in the milliseconds supplied from a human-readable, text value.
-     * <p>
-     * If setting this field would make other fields invalid, then those fields
-     * may be changed. For example if the current date is the 31st January, and
-     * the month is set to February, the day would be invalid. Instead, the day
-     * would be changed to the closest value - the 28th/29th February as appropriate.
-     * 
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
-     * @param text  the text value to set
-     * @return the updated milliseconds
-     * @throws IllegalArgumentException if the text value is invalid
-     */
-    public long set(long instant, String text) {
-        return set(instant, text, null);
-    }
 
     // Extra information API
     //------------------------------------------------------------------------

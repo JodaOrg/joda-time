@@ -123,12 +123,23 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * The default implementation returns getAsText(get(instant), locale).
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @param locale the locale to use for selecting a text symbol, null for
-     * default
+     * @param locale the locale to use for selecting a text symbol, null means default
      * @return the text value of the field
      */
     public String getAsText(long instant, Locale locale) {
         return getAsText(get(instant), locale);
+    }
+
+    /**
+     * Get the human-readable, text value of this field from the milliseconds.
+     * <p>
+     * The default implementation calls {@link #getAsText(long, Locale)}.
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @return the text value of the field
+     */
+    public final String getAsText(long instant) {
+        return getAsText(instant, null);
     }
 
     /**
@@ -144,6 +155,21 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      */
     public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
         return getAsText(fieldValue, locale);
+    }
+
+    /**
+     * Get the human-readable, text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * The default implementation calls {@link ReadablePartial#get(DateTimeField)}
+     * and {@link #getAsText(ReadablePartial, int, Locale)}.
+     *
+     * @param partial  the partial instant to query
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public final String getAsText(ReadablePartial partial, Locale locale) {
+        return getAsText(partial, partial.get(this), locale);
     }
 
     /**
@@ -171,11 +197,23 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * The default implementation returns getAsShortText(get(instant), locale).
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
-     * @param locale the locale to use for selecting a text symbol, null for default
+     * @param locale the locale to use for selecting a text symbol, null means default
      * @return the text value of the field
      */
     public String getAsShortText(long instant, Locale locale) {
         return getAsShortText(get(instant), locale);
+    }
+
+    /**
+     * Get the human-readable, short text value of this field from the milliseconds.
+     * <p>
+     * The default implementation calls {@link #getAsShortText(long, Locale)}.
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to query
+     * @return the text value of the field
+     */
+    public final String getAsShortText(long instant) {
+        return getAsShortText(instant, null);
     }
 
     /**
@@ -191,6 +229,21 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      */
     public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
         return getAsShortText(fieldValue, locale);
+    }
+
+    /**
+     * Get the human-readable, short text value of this field from a partial instant.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * The default implementation calls {@link ReadablePartial#get(DateTimeField)}
+     * and {@link #getAsText(ReadablePartial, int, Locale)}.
+     *
+     * @param partial  the partial instant to query
+     * @param locale  the locale to use for selecting a text symbol, null for default
+     * @return the text value of the field
+     */
+    public final String getAsShortText(ReadablePartial partial, Locale locale) {
+        return getAsShortText(partial, partial.get(this), locale);
     }
 
     /**
@@ -516,6 +569,22 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
     public long set(long instant, String text, Locale locale) {
         int value = convertText(text, locale);
         return set(instant, value);
+    }
+
+    /**
+     * Sets a value in the milliseconds supplied from a human-readable, text value.
+     * <p>
+     * This implementation uses {@link #set(long, String, Locale)}.
+     * <p>
+     * Note: subclasses that override this method should also override getAsText.
+     *
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
+     * @param text  the text value to set
+     * @return the updated milliseconds
+     * @throws IllegalArgumentException if the text value is invalid
+     */
+    public final long set(long instant, String text) {
+        return set(instant, text, null);
     }
 
     /**

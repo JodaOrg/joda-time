@@ -172,7 +172,25 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    public String getAsText(long instant) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
     public String getAsText(ReadablePartial partial, int fieldValue, Locale locale) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
+    public String getAsText(ReadablePartial partial, Locale locale) {
         throw unsupported();
     }
 
@@ -190,7 +208,25 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      *
      * @throws UnsupportedOperationException
      */
+    public String getAsShortText(long instant) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
     public String getAsShortText(ReadablePartial partial, int fieldValue, Locale locale) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
+    public String getAsShortText(ReadablePartial partial, Locale locale) {
         throw unsupported();
     }
 
@@ -281,6 +317,15 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
      * @throws UnsupportedOperationException
      */
     public long set(long instant, String text, Locale locale) {
+        throw unsupported();
+    }
+
+    /**
+     * Always throws UnsupportedOperationException
+     *
+     * @throws UnsupportedOperationException
+     */
+    public long set(long instant, String text) {
         throw unsupported();
     }
 

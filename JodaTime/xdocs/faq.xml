@@ -108,7 +108,7 @@ This would severely compromise the performance of the whole API for a very limit
 <p>
 Joda-Time is      designed for performance. Compared to java.util.Calendar,
 java.text.SimpleDateFormat, and java.util.TimeZone, nearly all equivalent
-operations in Java-Time are faster. The significant exceptions are operations
+operations in Joda-Time are faster. The significant exceptions are operations
 to get or set an individual field.
 </p>
 <p>

@@ -21,7 +21,7 @@ Supporting classes include time zone, duration, format and parsing.
 
 <p>
 The decision to create a cleanroom date implementation to replace Java's is based on the flaws in the JDK code.
-Date should have been immutable, like String, instead it it is mutable and has many deprecated methods.
+Date should have been immutable, like String, instead it is mutable and has many deprecated methods.
 Calendar makes accessing 'normal' dates difficult, due to the lack of simple methods.
 It also has some strange performance characteristics as it recalculates fields at unexpected moments.
 </p>

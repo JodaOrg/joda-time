@@ -368,8 +368,8 @@ public class TestConverterManager extends TestCase {
         c = ConverterManager.getInstance().getDurationConverter(new Duration(123L));
         assertEquals(ReadableDuration.class, c.getSupportedType());
         
-        c = ConverterManager.getInstance().getDurationConverter(new Period(PeriodType.getMillisType()));
-        assertEquals(ReadableDuration.class, c.getSupportedType());
+        c = ConverterManager.getInstance().getDurationConverter(new Period(1, 2, 3, 4, 5, 6, 7, 8));
+        assertEquals(ReadablePeriod.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getDurationConverter(new Interval(0L, 1000L));
         assertEquals(ReadableInterval.class, c.getSupportedType());
@@ -507,7 +507,7 @@ public class TestConverterManager extends TestCase {
     private static int PERIOD_SIZE = 5;
     
     public void testGetPeriodConverter() {
-        PeriodConverter c = ConverterManager.getInstance().getPeriodConverter(new Period(PeriodType.getMillisType()));
+        PeriodConverter c = ConverterManager.getInstance().getPeriodConverter(new Period(1, 2, 3, 4, 5, 6, 7, 8));
         assertEquals(ReadablePeriod.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getPeriodConverter(new Duration(123L));

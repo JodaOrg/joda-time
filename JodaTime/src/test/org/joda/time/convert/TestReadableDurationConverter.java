@@ -141,8 +141,8 @@ public class TestReadableDurationConverter extends TestCase {
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());
-        assertEquals(3, m.getDays());
-        assertEquals(0, m.getHours());
+        assertEquals(0, m.getDays());
+        assertEquals(3 * 24, m.getHours());
         assertEquals(4, m.getMinutes());
         assertEquals(0, m.getSeconds());
         assertEquals(5, m.getMillis());

@@ -86,6 +86,19 @@ import org.joda.time.tz.ZoneInfoProvider;
  * @author Stephen Colebourne
  */
 public class TestDateTimeZone extends TestCase {
+    private static final boolean OLD_JDK;
+    static {
+        String str = System.getProperty("java.version");
+        boolean old = true;
+        if (str.length() > 3 &&
+            str.charAt(0) == '1' &&
+            str.charAt(1) == '.' &&
+            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
+            old = false;
+        }
+        OLD_JDK = old;
+    }
+    
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -137,7 +150,8 @@ public class TestDateTimeZone extends TestCase {
                 if (permission instanceof JodaTimePermission) {
                     return false;
                 }
-                return super.implies(domain, permission);
+                return true;
+//                return super.implies(domain, permission);
             }
         };
         ALLOW = new Policy() {
@@ -191,6 +205,9 @@ public class TestDateTimeZone extends TestCase {
     }
             
     public void testDefaultSecurity() {
+        if (OLD_JDK) {
+            return;
+        }
         try {
             Policy.setPolicy(RESTRICT);
             System.setSecurityManager(new SecurityManager());
@@ -392,6 +409,9 @@ public class TestDateTimeZone extends TestCase {
     }
     
     public void testProviderSecurity() {
+        if (OLD_JDK) {
+            return;
+        }
         try {
             Policy.setPolicy(RESTRICT);
             System.setSecurityManager(new SecurityManager());
@@ -503,6 +523,9 @@ public class TestDateTimeZone extends TestCase {
     }        
     
     public void testNameProviderSecurity() {
+        if (OLD_JDK) {
+            return;
+        }
         try {
             Policy.setPolicy(RESTRICT);
             System.setSecurityManager(new SecurityManager());

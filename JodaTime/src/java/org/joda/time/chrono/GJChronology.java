@@ -499,24 +499,24 @@ public final class GJChronology extends AssembledChronology {
             // Cutover is sometime in the day, so cutover fields are required
             // for time of day.
 
-            fields.millisOfSecond = new CutoverField(julian.millisOfSecond(), fields.millisOfSecond);
-            fields.millisOfDay = new CutoverField(julian.millisOfDay(), fields.millisOfDay);
-            fields.secondOfMinute = new CutoverField(julian.secondOfMinute(), fields.secondOfMinute);
-            fields.secondOfDay = new CutoverField(julian.secondOfDay(), fields.secondOfDay);
-            fields.minuteOfHour = new CutoverField(julian.minuteOfHour(), fields.minuteOfHour);
-            fields.minuteOfDay = new CutoverField(julian.minuteOfDay(), fields.minuteOfDay);
-            fields.hourOfDay = new CutoverField(julian.hourOfDay(), fields.hourOfDay);
-            fields.hourOfHalfday = new CutoverField(julian.hourOfHalfday(), fields.hourOfHalfday);
-            fields.clockhourOfDay = new CutoverField(julian.clockhourOfDay(), fields.clockhourOfDay);
+            fields.millisOfSecond = new CutoverField(julian.millisOfSecond(), fields.millisOfSecond, iCutoverMillis);
+            fields.millisOfDay = new CutoverField(julian.millisOfDay(), fields.millisOfDay, iCutoverMillis);
+            fields.secondOfMinute = new CutoverField(julian.secondOfMinute(), fields.secondOfMinute, iCutoverMillis);
+            fields.secondOfDay = new CutoverField(julian.secondOfDay(), fields.secondOfDay, iCutoverMillis);
+            fields.minuteOfHour = new CutoverField(julian.minuteOfHour(), fields.minuteOfHour, iCutoverMillis);
+            fields.minuteOfDay = new CutoverField(julian.minuteOfDay(), fields.minuteOfDay, iCutoverMillis);
+            fields.hourOfDay = new CutoverField(julian.hourOfDay(), fields.hourOfDay, iCutoverMillis);
+            fields.hourOfHalfday = new CutoverField(julian.hourOfHalfday(), fields.hourOfHalfday, iCutoverMillis);
+            fields.clockhourOfDay = new CutoverField(julian.clockhourOfDay(), fields.clockhourOfDay, iCutoverMillis);
             fields.clockhourOfHalfday = new CutoverField(julian.clockhourOfHalfday(),
-                                                         fields.clockhourOfHalfday);
-            fields.halfdayOfDay = new CutoverField(julian.halfdayOfDay(), fields.halfdayOfDay);
+                                                         fields.clockhourOfHalfday, iCutoverMillis);
+            fields.halfdayOfDay = new CutoverField(julian.halfdayOfDay(), fields.halfdayOfDay, iCutoverMillis);
         }
 
         // These fields just require basic cutover support.
         {
-            fields.era = new CutoverField(julian.era(), fields.era);
-            fields.dayOfMonth = new CutoverField(julian.dayOfMonth(), fields.dayOfMonth);
+            fields.era = new CutoverField(julian.era(), fields.era, iCutoverMillis);
+            fields.dayOfMonth = new CutoverField(julian.dayOfMonth(), fields.dayOfMonth, iCutoverMillis);
         }
 
         // DayOfYear and weekOfWeekyear require special handling since cutover
@@ -526,38 +526,40 @@ public final class GJChronology extends AssembledChronology {
 
         {
             long cutover = gregorian.year().roundCeiling(iCutoverMillis);
-            fields.dayOfYear = new CutoverField
-                (julian.dayOfYear(), fields.dayOfYear, cutover);
+            fields.dayOfYear = new CutoverField(
+                julian.dayOfYear(), fields.dayOfYear, cutover);
         }
 
         {
             long cutover = gregorian.weekyear().roundCeiling(iCutoverMillis);
-            fields.weekOfWeekyear = new CutoverField
-                (julian.weekOfWeekyear(), fields.weekOfWeekyear, cutover, true);
+            fields.weekOfWeekyear = new CutoverField(
+                julian.weekOfWeekyear(), fields.weekOfWeekyear, cutover, true);
         }
 
         // These fields are special because they have imprecise durations. The
         // family of addition methods need special attention. Override affected
         // duration fields as well.
         {
-            fields.year = new ImpreciseCutoverField(julian.year(), fields.year);
+            fields.year = new ImpreciseCutoverField(
+                julian.year(), fields.year, iCutoverMillis);
             fields.years = fields.year.getDurationField();
-            fields.yearOfEra = new ImpreciseCutoverField
-                (julian.yearOfEra(), fields.yearOfEra, fields.years);
-            fields.yearOfCentury = new ImpreciseCutoverField
-                (julian.yearOfCentury(), fields.yearOfCentury, fields.years);
+            fields.yearOfEra = new ImpreciseCutoverField(
+                julian.yearOfEra(), fields.yearOfEra, fields.years, iCutoverMillis);
+            fields.yearOfCentury = new ImpreciseCutoverField(
+                julian.yearOfCentury(), fields.yearOfCentury, fields.years, iCutoverMillis);
             
-            fields.centuryOfEra = new ImpreciseCutoverField
-                (julian.centuryOfEra(), fields.centuryOfEra);
+            fields.centuryOfEra = new ImpreciseCutoverField(
+                julian.centuryOfEra(), fields.centuryOfEra, iCutoverMillis);
             fields.centuries = fields.centuryOfEra.getDurationField();
             
-            fields.monthOfYear = new ImpreciseCutoverField
-                (julian.monthOfYear(), fields.monthOfYear);
+            fields.monthOfYear = new ImpreciseCutoverField(
+                julian.monthOfYear(), fields.monthOfYear, iCutoverMillis);
             fields.months = fields.monthOfYear.getDurationField();
             
-            fields.weekyear = new ImpreciseCutoverField(julian.weekyear(), fields.weekyear, true);
-            fields.weekyearOfCentury = new ImpreciseCutoverField
-                (julian.weekyearOfCentury(), fields.weekyearOfCentury, fields.weekyears);
+            fields.weekyear = new ImpreciseCutoverField(
+                julian.weekyear(), fields.weekyear, null, iCutoverMillis, true);
+            fields.weekyearOfCentury = new ImpreciseCutoverField(
+                julian.weekyearOfCentury(), fields.weekyearOfCentury, fields.weekyears, iCutoverMillis);
             fields.weekyears = fields.weekyear.getDurationField();
         }
     }
@@ -596,24 +598,18 @@ public final class GJChronology extends AssembledChronology {
         /**
          * @param julianField field from the chronology used before the cutover instant
          * @param gregorianField field from the chronology used at and after the cutover
+         * @param cutoverMillis  the millis of the cutover
          */
-        CutoverField(DateTimeField julianField, DateTimeField gregorianField) {
-            this(julianField, gregorianField, iCutoverMillis, false);
+        CutoverField(DateTimeField julianField, DateTimeField gregorianField, long cutoverMillis) {
+            this(julianField, gregorianField, cutoverMillis, false);
         }
 
         /**
          * @param julianField field from the chronology used before the cutover instant
          * @param gregorianField field from the chronology used at and after the cutover
+         * @param cutoverMillis  the millis of the cutover
          * @param convertByWeekyear
          */
-        CutoverField(DateTimeField julianField, DateTimeField gregorianField, boolean convertByWeekyear) {
-            this(julianField, gregorianField, iCutoverMillis, convertByWeekyear);
-        }
-
-        CutoverField(DateTimeField julianField, DateTimeField gregorianField, long cutoverMillis) {
-            this(julianField, gregorianField, cutoverMillis, false);
-        }
-
         CutoverField(DateTimeField julianField, DateTimeField gregorianField,
                      long cutoverMillis, boolean convertByWeekyear) {
             super(gregorianField.getType());
@@ -873,16 +869,8 @@ public final class GJChronology extends AssembledChronology {
         /**
          * Creates a duration field that links back to this.
          */
-        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField) {
-            this(julianField, gregorianField, null, false);
-        }
-
-        /**
-         * Creates a duration field that links back to this.
-         */
-        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
-                              boolean convertByWeekyear) {
-            this(julianField, gregorianField, null, convertByWeekyear);
+        ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField, long cutoverMillis) {
+            this(julianField, gregorianField, null, cutoverMillis, false);
         }
 
         /**
@@ -891,9 +879,9 @@ public final class GJChronology extends AssembledChronology {
          * @param durationField shared duration field
          */
         ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
-                              DurationField durationField)
+                              DurationField durationField, long cutoverMillis)
         {
-            this(julianField, gregorianField, durationField, false);
+            this(julianField, gregorianField, durationField, cutoverMillis, false);
         }
 
         /**
@@ -902,9 +890,10 @@ public final class GJChronology extends AssembledChronology {
          * @param durationField shared duration field
          */
         ImpreciseCutoverField(DateTimeField julianField, DateTimeField gregorianField,
-                              DurationField durationField, boolean convertByWeekyear)
+                              DurationField durationField,
+                              long cutoverMillis, boolean convertByWeekyear)
         {
-            super(julianField, gregorianField, convertByWeekyear);
+            super(julianField, gregorianField, cutoverMillis, convertByWeekyear);
             if (durationField == null) {
                 durationField = new LinkedDurationField(iDurationField, this);
             }

@@ -20,7 +20,6 @@ import java.io.Writer;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
 /**
@@ -44,83 +43,6 @@ public interface DateTimePrinter {
      * @return the estimated length
      */
     int estimatePrintedLength();
-
-    /**
-     * Prints a ReadableInstant, using the chronology supplied by the instant.
-     *
-     * @param buf  formatted instant is appended to this buffer
-     * @param instant  instant to format, null means now
-     */
-    void printTo(StringBuffer buf, ReadableInstant instant);
-
-    /**
-     * Prints a ReadableInstant, using the chronology supplied by the instant.
-     *
-     * @param out  formatted instant is written out
-     * @param instant  instant to format, null means now
-     */
-    void printTo(Writer out, ReadableInstant instant) throws IOException;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the default DateTimeZone.
-     *
-     * @param buf  formatted instant is appended to this buffer
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     */
-    void printTo(StringBuffer buf, long instant);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the default DateTimeZone.
-     *
-     * @param out  formatted instant is written out
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     */
-    void printTo(Writer out, long instant) throws IOException;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the given DateTimeZone.
-     *
-     * @param buf  formatted instant is appended to this buffer
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param zone  the zone to use, null means default
-     */
-    void printTo(StringBuffer buf, long instant, DateTimeZone zone);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the given DateTimeZone.
-     *
-     * @param out  formatted instant is written out
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param zone  the zone to use, null means default
-     */
-    void printTo(Writer out, long instant, DateTimeZone zone) throws IOException;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given Chronology.
-     *
-     * @param buf  formatted instant is appended to this buffer
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void printTo(StringBuffer buf, long instant, Chronology chrono);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given Chronology.
-     *
-     * @param out  formatted instant is written out
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void printTo(Writer out, long instant, Chronology chrono) throws IOException;
 
     //-----------------------------------------------------------------------
     /**
@@ -167,64 +89,5 @@ public interface DateTimePrinter {
      * @param partial  partial to format
      */
     void printTo(Writer out, ReadablePartial partial) throws IOException;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Prints a ReadableInstant to a new String, using the chronology of the instant.
-     *
-     * @param instant  instant to format, null means now
-     * @return the printed result
-     */
-    String print(ReadableInstant instant);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the default zone.
-     *
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @return the printed result
-     */
-    String print(long instant);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the given zone.
-     *
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param zone  the zone to use, null means default
-     * @return the printed result
-     */
-    String print(long instant, DateTimeZone zone);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given chronology.
-     *
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronoogy to use
-     * @return the printed result
-     */
-    String print(long instant, Chronology chrono);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given chronology.
-     *
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronoogy to use
-     * @param displayOffset  if a time zone offset is printed, force it to use
-     * this millisecond value
-     * @param displayZone  if a time zone is printed, force it to use this one
-     * @return the printed result
-     */
-    String print(long instant, Chronology chrono, int displayOffset, DateTimeZone displayZone);
-
-    /**
-     * Prints a ReadablePartial to a new String.
-     *
-     * @param partial  partial to format
-     * @return the printed result
-     */
-    String print(ReadablePartial partial);
 
 }

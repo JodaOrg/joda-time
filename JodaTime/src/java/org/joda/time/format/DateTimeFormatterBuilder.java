@@ -79,6 +79,7 @@ public class DateTimeFormatterBuilder {
      * @param locale Locale to use, or null for default
      */
     public DateTimeFormatterBuilder(Locale locale) {
+        // TODO
         if (locale == null) {
             locale = Locale.getDefault();
         }
@@ -96,76 +97,63 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     /**
-     * Converts to a DateTimePrinter that prints using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * printer.
+     * Converts to a DateTimePrinter that can only print, using all the
+     * appended elements.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
      *
-     * @throws UnsupportedOperationException if any formatter element doesn't support
-     * printing
+     * @throws UnsupportedOperationException if printing is not supported
      */
-    public DateTimePrinter toPrinter() throws UnsupportedOperationException {
+    public DateTimePrinter toPrinter() {
         Object f = getFormatter();
         if (isPrinter(f)) {
-            return (DateTimePrinter)f;
+            return (DateTimePrinter) f;
         }
-        throw new UnsupportedOperationException("Printing not supported");
+        throw new UnsupportedOperationException("Printing is not supported");
     }
 
     /**
-     * Converts to a DateTimeParser that parses using all the appended
-     * elements. Subsequent changes to this builder do not affect the returned
-     * parser.
+     * Converts to a DateTimeFormatter that can only parse, using all the
+     * appended elements.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
      *
-     * @throws UnsupportedOperationException if any formatter element doesn't support
-     * parsing
+     * @throws UnsupportedOperationException if parsing is not supported
      */
-    public DateTimeParser toParser() throws UnsupportedOperationException {
+    public DateTimeParser toParser() {
         Object f = getFormatter();
         if (isParser(f)) {
-            return (DateTimeParser)f;
+            return (DateTimeParser) f;
         }
-        throw new UnsupportedOperationException("Parsing not supported");
+        throw new UnsupportedOperationException("Parsing is not supported");
     }
 
     /**
-     * Converts to a DateTimeFormatter that prints and parses using all the
-     * appended elements. Subsequent changes to this builder do not affect the
-     * returned formatter.
+     * Converts to a DateTimeFormatter that using all the appended elements.
+     * <p>
+     * Subsequent changes to this builder do not affect the returned formatter.
+     * <p>
+     * The returned formatter may not support both printing and parsing.
+     * The methods {@link DateTimeFormatter#isPrinter()} and
+     * {@link DateTimeFormatter#isParser()} will help you determine the state
+     * of the formatter.
      *
-     * @throws UnsupportedOperationException if any formatter element doesn't support
-     * both printing and parsing
+     * @throws UnsupportedOperationException if neither printing nor parsing is supported
      */
-    public DateTimeFormatter toFormatter() throws UnsupportedOperationException {
+    public DateTimeFormatter toFormatter() {
         Object f = getFormatter();
-        if (isFormatter(f)) {
-            return (DateTimeFormatter)f;
+        DateTimePrinter printer = null;
+        if (isPrinter(f)) {
+            printer = (DateTimePrinter) f;
+        }
+        DateTimeParser parser = null;
+        if (isParser(f)) {
+            parser = (DateTimeParser) f;
+        }
+        if (printer != null || parser != null) {
+            return new DateTimeFormatter(printer, parser);
         }
         throw new UnsupportedOperationException("Both printing and parsing not supported");
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Returns true if toPrinter can be called without throwing an
-     * UnsupportedOperationException.
-     */
-    public boolean canBuildPrinter() {
-        return isPrinter(getFormatter());
-    }
-
-    /**
-     * Returns true if toParser can be called without throwing an
-     * UnsupportedOperationException.
-     */
-    public boolean canBuildParser() {
-        return isParser(getFormatter());
-    }
-
-    /**
-     * Returns true if toFormatter can be called without throwing an
-     * UnsupportedOperationException.
-     */
-    public boolean canBuildFormatter() {
-        return isFormatter(getFormatter());
     }
 
     //-----------------------------------------------------------------------
@@ -190,7 +178,7 @@ public class DateTimeFormatterBuilder {
         if (formatter == null) {
             throw new IllegalArgumentException("No formatter supplied");
         }
-        return append0(formatter);
+        return append0(formatter.getPrinter(), formatter.getParser());
     }
 
     /**
@@ -286,9 +274,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder appendOptional(DateTimeParser parser) {
         checkParser(parser);
-        DateTimeFormatter[] parsers = new DateTimeFormatter[] {
-            (DateTimeFormatter) parser, null
-        };
+        DateTimeParser[] parsers = new DateTimeParser[] {parser, null};
         return append0(null, new MatchingParser(parsers));
     }
 
@@ -847,7 +833,7 @@ public class DateTimeFormatterBuilder {
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetText, boolean showSeparators,
             int minFields, int maxFields) {
-        return append0(new TimeZoneOffsetFormatter
+        return append0(new TimeZoneOffset
                        (zeroOffsetText, showSeparators, minFields, maxFields));
     }
 
@@ -937,7 +923,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class CharacterLiteral
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final char iValue;
 
@@ -968,15 +954,6 @@ public class DateTimeFormatterBuilder {
 
         public void printTo(Writer out, ReadablePartial partial) throws IOException {
             out.write(iValue);
-        }
-
-        public String print(long instant, Chronology chrono,
-                               int displayOffset, DateTimeZone displayZone) {
-            return String.valueOf(iValue);
-        }
-
-        public String print(ReadablePartial partial) {
-            return String.valueOf(iValue);
         }
 
         public int estimateParsedLength() {
@@ -1010,7 +987,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class StringLiteral
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final String iValue;
 
@@ -1043,15 +1020,6 @@ public class DateTimeFormatterBuilder {
             out.write(iValue);
         }
 
-        public String print(long instant, Chronology chrono,
-                            int displayOffset, DateTimeZone displayZone) {
-            return iValue;
-        }
-
-        public String print(ReadablePartial partial) {
-            return iValue;
-        }
-
         public int estimateParsedLength() {
             return iValue.length();
         }
@@ -1067,7 +1035,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static abstract class NumberFormatter
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
         protected final DateTimeFieldType iFieldType;
         protected final int iMaxParsedDigits;
         protected final boolean iSigned;
@@ -1265,7 +1233,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class TwoDigitYear
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final int iPivot;
 
@@ -1388,7 +1356,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class TextField
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final DateTimeFieldType iFieldType;
         private final Locale iLocale;
@@ -1441,7 +1409,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public String print(long instant, Chronology chrono,
+        private String print(long instant, Chronology chrono,
                             int displayOffset, DateTimeZone displayZone) {
             DateTimeField field = iFieldType.getField(chrono);
             if (iShort) {
@@ -1451,7 +1419,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        public String print(ReadablePartial partial) {
+        private String print(ReadablePartial partial) {
             if (partial.isSupported(iFieldType)) {
                 DateTimeField field = iFieldType.getField(partial.getChronology());
                 if (iShort) {
@@ -1495,7 +1463,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class Fraction
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final DateTimeFieldType iFieldType;
         protected int iMinDigits;
@@ -1719,16 +1687,16 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static class TimeZoneOffsetFormatter
+    static class TimeZoneOffset
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final String iZeroOffsetText;
         private final boolean iShowSeparators;
         private final int iMinFields;
         private final int iMaxFields;
 
-        TimeZoneOffsetFormatter(String zeroOffsetText,
+        TimeZoneOffset(String zeroOffsetText,
                                 boolean showSeparators,
                                 int minFields, int maxFields)
         {
@@ -2107,7 +2075,7 @@ public class DateTimeFormatterBuilder {
             out.write(print(instant, chrono, displayOffset, displayZone));
         }
 
-        public String print(long instant, Chronology chrono,
+        private String print(long instant, Chronology chrono,
                             int displayOffset, DateTimeZone displayZone) {
             if (displayZone == null) {
                 return "";  // no zone
@@ -2131,7 +2099,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class Composite
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter {
+            implements DateTimePrinter, DateTimeParser {
 
         private final DateTimePrinter[] iPrinters;
         private final DateTimeParser[] iParsers;
@@ -2178,7 +2146,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        private Composite(Composite base, DateTimeFormatter[] printers) {
+        private Composite(Composite base, DateTimePrinter[] printers) {
             iPrinters = printers;
             iParsers = base.iParsers;
             iPrintedLengthEstimate = base.iPrintedLengthEstimate;

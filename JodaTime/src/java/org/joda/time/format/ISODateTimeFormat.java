@@ -112,9 +112,8 @@ public class ISODateTimeFormat {
 
         bwd,  // basic week date
         bwdt, // basic week date time
-        bwdtx; // basic week date time no millis
+        bwdtx, // basic week date time no millis
 
-    private transient DateTimeParser
         dpe, // date parser element
         tpe, // time parser element
         dp,  // date parser
@@ -142,7 +141,7 @@ public class ISODateTimeFormat {
      * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
      */
-    public DateTimeParser dateParser() {
+    public DateTimeFormatter dateParser() {
         if (dp == null) {
             dp = new DateTimeFormatterBuilder()
                 .append(dateElementParser())
@@ -151,7 +150,7 @@ public class ISODateTimeFormat {
                  .appendLiteral('T')
                  .append(offsetElement())
                  .toParser())
-                .toParser();
+                .toFormatter();
         }
         return dp;
     }
@@ -166,7 +165,7 @@ public class ISODateTimeFormat {
      * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
      */
-    public DateTimeParser dateElementParser() {
+    public DateTimeFormatter dateElementParser() {
         if (dpe == null) {
             dpe = new DateTimeFormatterBuilder()
                 .append(null, new DateTimeParser[] {
@@ -175,20 +174,20 @@ public class ISODateTimeFormat {
                     .appendOptional
                     (new DateTimeFormatterBuilder()
                      .append(monthElement())
-                     .appendOptional(dayOfMonthElement())
+                     .appendOptional(dayOfMonthElement().getParser())
                      .toParser())
                     .toParser(),
                     new DateTimeFormatterBuilder()
                     .append(weekyearElement())
                     .append(weekElement())
-                    .appendOptional(dayOfWeekElement())
+                    .appendOptional(dayOfWeekElement().getParser())
                     .toParser(),
                     new DateTimeFormatterBuilder()
                     .append(yearElement())
                     .append(dayOfYearElement())
                     .toParser()
                 })
-                .toParser();
+                .toFormatter();
         }
         return dpe;
     }
@@ -205,7 +204,7 @@ public class ISODateTimeFormat {
      * offset         = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
      */
-    public DateTimeParser timeParser() {
+    public DateTimeFormatter timeParser() {
         if (tp == null) {
             tp = new DateTimeFormatterBuilder()
                 .appendOptional
@@ -213,8 +212,8 @@ public class ISODateTimeFormat {
                  .appendLiteral('T')
                  .toParser())
                 .append(timeElementParser())
-                .appendOptional(offsetElement())
-                .toParser();
+                .appendOptional(offsetElement().getParser())
+                .toFormatter();
         }
         return tp;
     }
@@ -229,7 +228,7 @@ public class ISODateTimeFormat {
      * fraction       = ('.' | ',') digit+
      * </pre>
      */
-    public DateTimeParser timeElementParser() {
+    public DateTimeFormatter timeElementParser() {
         if (tpe == null) {
             // Decimal point can be either '.' or ','
             DateTimeParser decimalPoint = new DateTimeFormatterBuilder()
@@ -277,7 +276,7 @@ public class ISODateTimeFormat {
                     .toParser(),
                     null
                 })
-                .toParser();
+                .toFormatter();
         }
         return tpe;
     }
@@ -299,14 +298,14 @@ public class ISODateTimeFormat {
      * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
      * </pre>
      */
-    public DateTimeParser dateTimeParser() {
+    public DateTimeFormatter dateTimeParser() {
         if (dtp == null) {
             // This is different from the general time parser in that the 'T'
             // is required.
             DateTimeParser time = new DateTimeFormatterBuilder()
                 .appendLiteral('T')
                 .append(timeElementParser())
-                .appendOptional(offsetElement())
+                .appendOptional(offsetElement().getParser())
                 .toParser();
 
             dtp = new DateTimeFormatterBuilder()
@@ -324,7 +323,7 @@ public class ISODateTimeFormat {
                     })
                     .toParser()
                 })
-                .toParser();
+                .toFormatter();
         }
         return dtp;
     }

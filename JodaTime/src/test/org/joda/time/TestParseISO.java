@@ -19,7 +19,7 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -319,7 +319,7 @@ public class TestParseISO extends TestCase {
             }
             assertEquals(msg + "\nZone: ", z, dt.getZone());
         }
-        protected void parse(DateTimeParser p) {
+        protected void parse(DateTimeFormatter p) {
             int result = p.parseInto(dt, extended, 0);
             assertTrue("\nSpec:   " + spec + "\nParsed: " + extended + "\nTo:     "
                 + dt + "\nParse failed at: " + ~result,

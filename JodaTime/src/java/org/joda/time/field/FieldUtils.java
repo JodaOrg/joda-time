@@ -136,7 +136,19 @@ public class FieldUtils {
         }
         throw new ArithmeticException("Value cannot fit in an int: " + value);
     }
-
+    
+    /**
+     * Multiply two values to return an int throwing an exception if overflow occurs.
+     * 
+     * @param val1  the first value
+     * @param val2  the second value
+     * @return the new total
+     */
+    public static int safeMultiplyToInt(long val1, long val2) {
+        long val = FieldUtils.safeMultiply(val1, val2);
+        return FieldUtils.safeToInt(val);
+    }
+    
     /**
      * Verify that input values are within specified bounds.
      * 

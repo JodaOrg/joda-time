@@ -1,31 +1,29 @@
 JodaTime ToDo list
 ==================
 
-0.96
-----
-Remove old partial code
-Rounded dates
+1.0B1
+-----
 
-DayOfWeek partial (new)
-MonthOfYear partial (new)
+Partial.resolve doesn't use chronology
 
-TimePeriod.toDurationByFields()
+DateTimeField.setNext(instant, value, howManyNext)
+
+DateHourMinute
+DateHourMin
+DateHM
+
+DateHourMinuteSecond
+DateHourMinSec
+DateHMS
+
+DurationProperty on DateTime, Period and related
 
 ...
 
-Tests
+Fix bugs identified by tests
 
 
 
-1.0
----
-
-Tests:
- Write tests for Durations...
- Write tests for Intervals...
- Write tests for serialization...
- ...write tests to cover all functionality
- Ensure all tests pass!
 
 
 Ideas longer term

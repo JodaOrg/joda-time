@@ -65,6 +65,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
@@ -149,17 +150,6 @@ public abstract class DateTimeZone implements Serializable {
         setProvider0(null);
         setNameProvider0(null);
 
-        // Because of the cyclic initializer dependencies between many of the
-        // main classes, and because cOffsetFormatter is built from those main
-        // classes, a user time zone with an explicit offset fails. Rather than
-        // duplicate all the code used by DateTimeFormatterBuilder's offset
-        // formatter, DateTimeFormatterBuilder's constructor tests if
-        // DateTimeZone.getDefault() is null, in which case it allows the
-        // chronology to be null. This breaks the dependency cycle and allows
-        // cOffsetFormatter to be defined. In order for this inelegant solution
-        // to work propery, cDefault must be left as null until after an
-        // attempt has been made to set the user time zone.
-
         try {
             try {
                 cDefault = getInstance(System.getProperty("user.timezone"));
@@ -232,13 +222,12 @@ public abstract class DateTimeZone implements Serializable {
             return zone;
         }
         if (id.startsWith("+") || id.startsWith("-")) {
-            // Pass in explicit chronology since default time zone may not yet be initialized.
-            int offset = -(int) offsetFormatter().parseMillis(id, ISOChronology.getInstance(UTC));
+            int offset = parseOffset(id);
             if (offset == 0L) {
                 return DateTimeZone.UTC;
             } else {
                 StringBuffer buf = new StringBuffer();
-                id = printTimeZone(offset);
+                id = printOffset(offset);
                 return fixedOffsetZone(id, offset);
             }
         }
@@ -291,7 +280,7 @@ public abstract class DateTimeZone implements Serializable {
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }
-        String id = printTimeZone(offset);
+        String id = printOffset(offset);
         return fixedOffsetZone(id, offset);
     }
 
@@ -334,13 +323,11 @@ public abstract class DateTimeZone implements Serializable {
             convId = zone.getDisplayName();
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
-                // Pass in explicit chronology since default time zone may not yet be initialized.
-                int offset = -(int) offsetFormatter().parseMillis
-                    (convId, ISOChronology.getInstance(UTC));
+                int offset = parseOffset(convId);
                 if (offset == 0L) {
                     return DateTimeZone.UTC;
                 } else {
-                    convId = printTimeZone(offset);
+                    convId = printOffset(offset);
                     return fixedOffsetZone(convId, offset);
                 }
             }
@@ -605,30 +592,42 @@ public abstract class DateTimeZone implements Serializable {
         return (String) map.get(id);
     }
 
-    /**
-     * Gets a printer/parser for managing the offset id formatting.
-     * 
-     * @return the formatter
-     */
-    private static synchronized DateTimeFormatter offsetFormatter() {
-        if (cOffsetFormatter == null) {
-            cOffsetFormatter = new DateTimeFormatterBuilder()
-                .appendTimeZoneOffset(null, true, 2, 4)
-                .toFormatter();
+    private static int parseOffset(String str) {
+        Chronology chrono;
+        if (cDefault != null) {
+            chrono = ISOChronology.getInstanceUTC();
+        } else {
+            // Can't use a real chronology if called during class
+            // initialization. Offset parser doesn't need it anyhow.
+            chrono = new BaseChronology() {
+                public DateTimeZone getZone() {
+                    return null;
+                }
+                public Chronology withUTC() {
+                    return this;
+                }
+                public Chronology withZone(DateTimeZone zone) {
+                    return this;
+                }
+                public String toString() {
+                    return getClass().getName();
+                }
+            };
         }
-        return cOffsetFormatter;
+
+        return -(int) offsetFormatter().parseMillis(str, chrono);
     }
 
     /**
      * Formats a timezone offset string.
      * <p>
-     * This method is kept separate from the formatting classe to speed and
+     * This method is kept separate from the formatting classes to speed and
      * simplify startup and classloading.
      * 
      * @param offset  the offset in milliseconds
      * @return the time zone string
      */
-    private static String printTimeZone(int offset) {
+    private static String printOffset(int offset) {
         StringBuffer buf = new StringBuffer();
         if (offset >= 0) {
             buf.append('+');
@@ -660,6 +659,20 @@ public abstract class DateTimeZone implements Serializable {
         buf.append('.');
         FormatUtils.appendPaddedInteger(buf, offset, 3);
         return buf.toString();
+    }
+
+    /**
+     * Gets a printer/parser for managing the offset id formatting.
+     * 
+     * @return the formatter
+     */
+    private static synchronized DateTimeFormatter offsetFormatter() {
+        if (cOffsetFormatter == null) {
+            cOffsetFormatter = new DateTimeFormatterBuilder()
+                .appendTimeZoneOffset(null, true, 2, 4)
+                .toFormatter();
+        }
+        return cOffsetFormatter;
     }
 
     // Instance fields and methods
@@ -738,7 +751,7 @@ public abstract class DateTimeZone implements Serializable {
         if (name != null) {
             return name;
         }
-        return printTimeZone(getOffset(instant));
+        return printOffset(getOffset(instant));
     }
 
     /**
@@ -778,7 +791,7 @@ public abstract class DateTimeZone implements Serializable {
         if (name != null) {
             return name;
         }
-        return printTimeZone(getOffset(instant));
+        return printOffset(getOffset(instant));
     }
 
     /**

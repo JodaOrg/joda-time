@@ -58,6 +58,7 @@ import org.joda.time.ReadWritableDuration;
 
 /**
  * LongConverter converts a Long to milliseconds in the ISOChronology.
+ * The duration type created is the millis type.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
@@ -127,7 +128,7 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      * @throws ClassCastException if the object is invalid
      */
     public DurationType getDurationType(Object object) {
-        return DurationType.getAverageYearMonthType();
+        return DurationType.getMillisType();
     }
 
     //-----------------------------------------------------------------------

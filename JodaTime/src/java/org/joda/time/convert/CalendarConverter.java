@@ -126,7 +126,9 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
      * @return the chronology, never null
      */
     public Chronology getChronology(Object object, DateTimeZone zone) {
-        if (object instanceof GregorianCalendar) {
+        if (object.getClass().getName().endsWith(".BuddhistCalendar")) {
+            return BuddhistChronology.getInstance(zone);
+        } else if (object instanceof GregorianCalendar) {
             GregorianCalendar gc = (GregorianCalendar) object;
             long cutover = gc.getGregorianChange().getTime();
             if (cutover == Long.MIN_VALUE) {
@@ -136,8 +138,6 @@ final class CalendarConverter extends AbstractConverter implements InstantConver
             } else {
                 return GJChronology.getInstance(zone, cutover, 4);
             }
-        } else if (object.getClass().getName().endsWith(".BuddhistCalendar")) {
-            return BuddhistChronology.getInstance(zone);
         } else {
             return ISOChronology.getInstance(zone);
         }

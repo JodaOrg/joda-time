@@ -168,7 +168,7 @@ public abstract class AbstractConverter implements Converter {
      * @return a debugging string
      */
     public String toString() {
-        return "Converter[" + getSupportedType() + "]";
+        return "Converter[" + (getSupportedType() == null ? "null" : getSupportedType().getName()) + "]";
     }
 
 }

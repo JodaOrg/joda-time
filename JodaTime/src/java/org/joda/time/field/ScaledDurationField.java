@@ -105,27 +105,33 @@ public class ScaledDurationField extends DecoratedDurationField {
     }
 
     public long getMillis(int value) {
-        return getWrappedField().getMillis(value * iScalar);
+        long scaled = ((long) value) * ((long) iScalar);
+        return getWrappedField().getMillis(scaled);
     }
 
     public long getMillis(long value) {
-        return getWrappedField().getMillis(value * iScalar);
+        long scaled = FieldUtils.safeMultiply(value, iScalar);
+        return getWrappedField().getMillis(scaled);
     }
 
     public long getMillis(int value, long instant) {
-        return getWrappedField().getMillis(value * iScalar, instant);
+        long scaled = ((long) value) * ((long) iScalar);
+        return getWrappedField().getMillis(scaled, instant);
     }
 
     public long getMillis(long value, long instant) {
-        return getWrappedField().getMillis(value * iScalar, instant);
+        long scaled = FieldUtils.safeMultiply(value, iScalar);
+        return getWrappedField().getMillis(scaled, instant);
     }
 
     public long add(long instant, int value) {
-        return getWrappedField().add(instant, value * iScalar);
+        long scaled = ((long) value) * ((long) iScalar);
+        return getWrappedField().add(instant, scaled);
     }
 
     public long add(long instant, long value) {
-        return getWrappedField().add(instant, value * iScalar);
+        long scaled = FieldUtils.safeMultiply(value, iScalar);
+        return getWrappedField().add(instant, scaled);
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {
@@ -140,6 +146,7 @@ public class ScaledDurationField extends DecoratedDurationField {
         return getWrappedField().getUnitMillis() * iScalar;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns the scalar applied, in the field's units.
      * 
@@ -148,4 +155,37 @@ public class ScaledDurationField extends DecoratedDurationField {
     public int getScalar() {
         return iScalar;
     }
+
+    /**
+     * Compares this duration field to another.
+     * Two fields are equal if of the same type and duration.
+     * 
+     * @param obj  the object to compare to
+     * @return if equal
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof ScaledDurationField) {
+            ScaledDurationField other = (ScaledDurationField) obj;
+            return (getWrappedField().equals(other.getWrappedField())) &&
+                   (getType() == other.getType()) &&
+                   (iScalar == other.iScalar);
+        }
+        return false;
+    }
+
+    /**
+     * Gets a hash code for this instance.
+     * 
+     * @return a suitable hashcode
+     */
+    public int hashCode() {
+        long scalar = iScalar;
+        int hash = (int) (scalar ^ (scalar >>> 32));
+        hash += getType().hashCode();
+        hash += getWrappedField().hashCode();
+        return hash;
+    }
+
 }

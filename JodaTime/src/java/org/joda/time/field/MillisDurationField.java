@@ -159,11 +159,11 @@ public final class MillisDurationField extends DurationField implements Serializ
     }
 
     public int getDifference(long minuendInstant, long subtrahendInstant) {
-        return FieldUtils.safeToInt(FieldUtils.safeAdd(minuendInstant, -subtrahendInstant));
+        return FieldUtils.safeToInt(FieldUtils.safeSubtract(minuendInstant, subtrahendInstant));
     }
 
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        return FieldUtils.safeAdd(minuendInstant, -subtrahendInstant);
+        return FieldUtils.safeSubtract(minuendInstant, subtrahendInstant);
     }
 
     //------------------------------------------------------------------------

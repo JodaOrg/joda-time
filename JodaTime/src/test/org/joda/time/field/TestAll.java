@@ -70,19 +70,21 @@ public class TestAll extends TestCase {
         super(testName);
     }
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        suite.addTest(TestMillisDurationField.suite());
-        
-        return suite;
-    }
-
     public static void main(String args[]) {
         String[] testCaseName = {
             TestAll.class.getName()
         };
         junit.textui.TestRunner.main(testCaseName);
+    }
+
+    public static Test suite() {
+        TestSuite suite = new TestSuite();
+        
+        suite.addTest(TestMillisDurationField.suite());
+        suite.addTest(TestPreciseDurationField.suite());
+        suite.addTest(TestScaledDurationField.suite());
+        
+        return suite;
     }
 
 }

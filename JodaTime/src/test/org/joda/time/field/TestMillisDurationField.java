@@ -212,7 +212,7 @@ public class TestMillisDurationField extends TestCase {
         assertEquals(567L - 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, 1234L));
         assertEquals(567L + 1234L, MillisDurationField.INSTANCE.getDifferenceAsLong(567L, -1234L));
         try {
-            MillisDurationField.INSTANCE.getDifferenceAsLong(Long.MAX_VALUE, 1L);
+            MillisDurationField.INSTANCE.getDifferenceAsLong(Long.MAX_VALUE, -1L);
             fail();
         } catch (ArithmeticException ex) {}
     }

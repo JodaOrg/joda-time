@@ -156,7 +156,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * negative
      */
     public long getMillis(int value) {
-        return value * getUnitMillis();
+        return value * getUnitMillis();  // safe
     }
 
     /**
@@ -168,7 +168,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
      * negative
      */
     public long getMillis(long value) {
-        return value * getUnitMillis();
+        return FieldUtils.safeMultiply(value, getUnitMillis());
     }
 
     // Calculation API

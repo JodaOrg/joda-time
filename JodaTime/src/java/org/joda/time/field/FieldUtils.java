@@ -107,6 +107,23 @@ public class FieldUtils {
     }
     
     /**
+     * Subtracts two values throwing an exception if overflow occurs.
+     * 
+     * @param val1  the first value, to be taken away from
+     * @param val2  the second value, the amount to take away
+     * @return the new total
+     */
+    public static long safeSubtract(long val1, long val2) {
+        if (val2 == Long.MIN_VALUE) {
+            if (val1 <= 0L) {
+                return (val1 - val2);
+            }
+            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" - " + val2);
+        }
+        return safeAdd(val1, -val2);
+    }
+    
+    /**
      * Multiply two values throwing an exception if overflow occurs.
      * 
      * @param val1  the first value

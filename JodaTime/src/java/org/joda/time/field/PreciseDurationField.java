@@ -111,7 +111,7 @@ public class PreciseDurationField extends BaseDurationField {
      * negative
      */
     public long getValueAsLong(long duration, long instant) {
-        return duration / iUnitMillis;
+        return duration / iUnitMillis;  // safe
     }
 
     /**
@@ -123,7 +123,7 @@ public class PreciseDurationField extends BaseDurationField {
      * negative
      */
     public long getMillis(int value, long instant) {
-        return value * iUnitMillis;
+        return value * iUnitMillis;  // safe
     }
 
     /**
@@ -135,19 +135,22 @@ public class PreciseDurationField extends BaseDurationField {
      * negative
      */
     public long getMillis(long value, long instant) {
-        return value * iUnitMillis;
+        return FieldUtils.safeMultiply(value, iUnitMillis);
     }
 
     public long add(long instant, int value) {
-        return instant + value * iUnitMillis;
+        long addition = value * iUnitMillis;  // safe
+        return FieldUtils.safeAdd(instant, addition);
     }
 
     public long add(long instant, long value) {
-        return instant + value * iUnitMillis;
+        long addition = FieldUtils.safeMultiply(value, iUnitMillis);
+        return FieldUtils.safeAdd(instant, addition);
     }
 
     public long getDifferenceAsLong(long minuendInstant, long subtrahendInstant) {
-        return (minuendInstant - subtrahendInstant) / iUnitMillis;
+        long difference = FieldUtils.safeSubtract(minuendInstant, subtrahendInstant);
+        return difference / iUnitMillis;
     }
 
     //-----------------------------------------------------------------------
@@ -163,7 +166,7 @@ public class PreciseDurationField extends BaseDurationField {
             return true;
         } else if (obj instanceof PreciseDurationField) {
             PreciseDurationField other = (PreciseDurationField) obj;
-            return (iUnitMillis == other.iUnitMillis);
+            return (getType() == other.getType()) && (iUnitMillis == other.iUnitMillis);
         }
         return false;
     }
@@ -175,7 +178,9 @@ public class PreciseDurationField extends BaseDurationField {
      */
     public int hashCode() {
         long millis = iUnitMillis;
-        return (int) (millis ^ (millis >>> 32));
+        int hash = (int) (millis ^ (millis >>> 32));
+        hash += getType().hashCode();
+        return hash;
     }
 
 }

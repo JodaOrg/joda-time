@@ -3,6 +3,9 @@ JodaTime ToDo list
 
 For 1.1
 -------
+- DateTimeFormatter.withPivotYear(year)
+    to provide more control of 2 digit year formatting
+
 The TODO list for 1.1 has not been set yet, however I would hope that
 at least some of the items below will be included.
 

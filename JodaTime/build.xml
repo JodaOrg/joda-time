@@ -25,24 +25,32 @@
   <!-- The current version number of this component -->
   <property name="component.version"       value="0.95"/>
 
-  <!-- The base directory for component configuration files -->
-  <property name="conf.home"               value="src/conf"/>
-
-  <!-- The base directory for component sources -->
-  <property name="source.home"             value="src/java"/>
-
-  <!-- The base directory for unit test sources -->
-  <property name="test.home"               value="src/test"/>
+  <!-- The current version number of this component -->
+  <property name="component.fullname"      value="${component.name}-${component.version}"/>
+  
+  <!-- The directory of source files -->
+  <property name="xdocs"                   value="xdocs"/>
+  
+  <!-- The directory of source files -->
+  <property name="source"                  value="src"/>
+  <property name="source.home"             value="${source}/java"/>
+  <property name="source.tz"               value="${source.home}/org/joda/time/tz/src"/>
+  <property name="conf.home"               value="${source}/conf"/>
+  <property name="test.home"               value="${source}/test"/>
 
   <!-- The base directory for example sources -->
   <property name="example.home"            value="src/example"/>
 
   <!-- The base directory for compilation targets -->
-  <property name="build.home"              value="build"/>
-  <property name="build.conf"              value="${build.home}/conf"/>
-  <property name="build.classes"           value="${build.home}/classes"/>
-  <property name="build.tests"             value="${build.home}/tests"/>
-  <property name="build.dist"              value="${build.home}/dist"/>
+  <property name="build"                   value="build"/>
+  <property name="build.conf"              value="${build}/conf"/>
+  <property name="build.classes"           value="${build}/classes"/>
+  <property name="build.tz"                value="${build.classes}/org/joda/time/tz/data"/>
+  <property name="build.tests"             value="${build}/tests"/>
+  <property name="build.docs"              value="${build}/docs"/>
+  <property name="build.dist"              value="${build}/dist"/>
+  <property name="build.fullname"          value="${build}/${component.fullname}"/>
+  <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
 
 
 <!-- ========== Compiler Defaults ========================================= -->
@@ -67,7 +75,7 @@
   <!-- Construct unit test classpath -->
   <path id="test.classpath">
     <pathelement location="${build.classes}"/>
-    <pathelement location="${build.home}/tests"/>
+    <pathelement location="${build.tests}"/>
     <pathelement location="${junit.jar}"/>
   </path>
 
@@ -84,7 +92,7 @@
 
   <target name="clean"
           description="Clean build and distribution directories">
-    <delete dir="${build.home}"/>
+    <delete dir="${build}"/>
   </target>
 
 <!-- ====================================================================== -->
@@ -101,10 +109,9 @@
 
   <target name="prepare" depends="init"
           description="Prepare build directory">
-    <mkdir dir="${build.home}"/>
+    <mkdir dir="${build}"/>
     <mkdir dir="${build.classes}"/>
     <mkdir dir="${build.conf}"/>
-    <mkdir dir="${build.tests}"/>
   </target>
 
 <!-- ====================================================================== -->
@@ -119,8 +126,13 @@
 
 <!-- ====================================================================== -->
 
-  <target name="compile" depends="static,compile.main,compile.zoneinfo"
-          description="Compile shareable components"/>
+  <target name="compile" depends="compile.main"
+          description="Compile shareable components">
+    <uptodate property="tz.build.notneeded" targetfile="${build.tz}/ZoneInfoMap" >
+      <srcfiles dir= "${source.tz}" includes="**/*.*"/>
+    </uptodate>
+    <antcall target="compile.zoneinfo" />
+  </target>
           
           
   <target name="compile.main" depends="static"
@@ -141,19 +153,20 @@
 
   <target name="compile.zoneinfo"
           depends="compile.main"
-          description="Compile timezone data files" >
+          description="Compile timezone data files"
+          unless="tz.build.notneeded">
     <!-- Invoke the newly built ZoneInfoCompiler to compile the zoneinfo data files -->
-    <mkdir dir="${build.classes}/org/joda/time/tz/data" />
+    <mkdir dir="${build.tz}" />
     <java classname="org.joda.time.tz.ZoneInfoCompiler"
           fork="true"
-          dir="${source.home}/org/joda/time/tz/src"
+          dir="${source.tz}"
           failonerror="true">
       <classpath path="${build.classes}" />
       <!-- Override default provider since data directory doesn't exist yet -->
       <sysproperty key="org.joda.time.DateTimeZone.Provider"
                    value="org.joda.time.tz.UTCProvider" />
       <!-- Specify destination directory for compiled data files -->
-      <arg line="-d ../../../../../../../${build.classes}/org/joda/time/tz/data" />
+      <arg line="-d ../../../../../../../${build.tz}" />
       <!-- Specify all the data files to compile -->
       <arg value="africa" />
       <arg value="antarctica" />
@@ -176,6 +189,7 @@
 
   <target name="compile.tests" depends="compile"
           description="Compile unit test cases">
+    <mkdir dir="${build.tests}"/>
     <javac  srcdir="${test.home}"
            destdir="${build.tests}"
              debug="${compile.debug}"
@@ -197,45 +211,77 @@
 
   <target name="javadoc" depends="compile"
           description="Create component Javadoc documentation">
-    <mkdir      dir="${dist.home}"/>
-    <mkdir      dir="${dist.home}/docs"/>
-    <mkdir      dir="${dist.home}/docs/api"/>
+    <mkdir      dir="${build.docs}"/>
     <javadoc sourcepath="${source.home}"
-                destdir="${dist.home}/docs/api"
+                destdir="${build.docs}"
            packagenames="org.joda.time.*"
                  author="true"
-                private="true"
+                private="false"
+                package="false"
                 version="true"
                doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
-                 bottom="Copyright (c) 2003 - Joda.org">
+                 bottom="Copyright (c) 2001-2003 - Joda.org">
       <classpath refid="compile.classpath"/>
     </javadoc>
   </target>
 
 <!-- ====================================================================== -->
 
-  <target name="dist" depends="compile,javadoc"
-          description="Create binary distribution">
-    <mkdir      dir="${dist.home}"/>
+  <target name="jar" depends="compile"
+          description="Create jar">
+    <mkdir      dir="${build.classes}/META-INF"/>
     <copy      file="LICENSE.txt"
-              todir="${dist.home}"/>
-    <copy      file="RELEASE-NOTES.txt"
-              todir="${dist.home}"/>
-    <antcall target="jar"/>
+             tofile="${build.classes}/META-INF/LICENSE.txt"/>
+    <jar    jarfile="${build.fullname}.jar"
+            basedir="${build.classes}"
+           manifest="${build.conf}/MANIFEST.MF"/>
   </target>
 
 <!-- ====================================================================== -->
 
-  <target name="jar" depends="compile"
-          description="Create jar">
-    <mkdir      dir="${dist.home}"/>
-    <mkdir      dir="${build.classes}/META-INF"/>
-    <copy      file="LICENSE.txt"
-             tofile="${build.classes}/META-INF/LICENSE.txt"/>
-    <jar    jarfile="${dist.home}/${component.name}-${component.version}.jar"
-            basedir="${build.classes}"
-           manifest="${build.conf}/MANIFEST.MF"/>
+  <target name="dist" depends="compile,jar,javadoc"
+          description="Create binary distribution">
+    <delete     dir="${build.dist.fullname}"/>
+    <mkdir      dir="${build.dist.fullname}"/>
+    
+	<!-- binary -->
+    <copy      file="LICENSE.txt" todir="${build.dist.fullname}"/>
+    <copy      file="RELEASE-NOTES.txt" todir="${build.dist.fullname}"/>
+    <copy      file="${build.fullname}.jar"
+              todir="${build.dist.fullname}"/>
+    <copy     todir="${build.dist.fullname}">
+      <fileset  dir="${build}" includes="docs/**/*.*"/>
+    </copy>
+    
+	<tar   destfile="${build.fullname}.tar" basedir="${build.dist}"/>
+	<gzip   zipfile="${build.fullname}.tar.gz" src="${build.fullname}.tar"/>
+	<delete    file="${build.fullname}.tar"/>
+	<fixcrlf srcdir="${build.dist}" eol="crlf" includes="**/*.txt"/>
+	<zip   destfile="${build.fullname}.zip" basedir="${build.dist}"/>
+	
+	<!-- source -->
+	<delete     dir="${build.dist.fullname}/docs"/>
+    <copy     todir="${build.dist.fullname}">
+      <fileset  dir="." includes="${source}/**/*" excludes="CVS/**/*"/>
+    </copy>
+    <copy     todir="${build.dist.fullname}">
+      <fileset  dir="." includes="${xdocs}/**/*" excludes="CVS/**/*"/>
+    </copy>
+	<delete     dir="${build.dist.fullname}/src/tzdata"/>
+    <copy      file="build.xml" todir="${build.dist.fullname}"/>
+    <copy      file="build.properties.sample" todir="${build.dist.fullname}"/>
+    <copy      file="maven.xml" todir="${build.dist.fullname}"/>
+    <copy      file="project.xml" todir="${build.dist.fullname}"/>
+    <copy      file="project.properties" todir="${build.dist.fullname}"/>
+    <copy      file="checkstyle.xml" todir="${build.dist.fullname}"/>
+    <copy      file="ToDo.txt" todir="${build.dist.fullname}"/>
+	
+	<tar   destfile="${build.fullname}-src.tar" basedir="${build.dist}"/>
+	<gzip   zipfile="${build.fullname}-src.tar.gz" src="${build.fullname}-src.tar"/>
+	<delete    file="${build.fullname}-src.tar"/>
+	<fixcrlf srcdir="${build.dist}" eol="crlf" includes="**/*.txt"/>
+	<zip   destfile="${build.fullname}-src.zip" basedir="${build.dist}"/>
   </target>
 
 <!-- ====================================================================== -->

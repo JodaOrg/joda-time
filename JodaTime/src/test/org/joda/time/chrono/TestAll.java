@@ -18,6 +18,7 @@ package org.joda.time.chrono;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 /**
  * Entry point for all tests in this package.
@@ -28,7 +29,7 @@ import junit.framework.TestSuite;
  */
 public class TestAll extends TestCase {
 
-    public static boolean FAST = false;
+    public static boolean FAST = true;
 
     public TestAll(String testName) {
         super(testName);
@@ -36,7 +37,6 @@ public class TestAll extends TestCase {
 
     public static Test suite() {
         TestSuite suite = new TestSuite();
-        FAST = true;
         
         suite.addTest(TestBuddhistChronology.suite());
         suite.addTest(TestCopticChronology.suite());
@@ -49,10 +49,8 @@ public class TestAll extends TestCase {
     }
 
     public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
+        FAST = false;
+        TestRunner.run(TestAll.suite());
     }
 
 }

@@ -6,7 +6,6 @@
 
 <!-- customization of default Checkstyle behavior -->
 <module name="Checker">
-  <property name="basedir" value="."/>
   <property name="localeLanguage" value="en"/>
   <!--module name="PackageHtml"/-->
   <module name="TreeWalker">

@@ -1038,6 +1038,12 @@ public class TestPeriodType extends TestCase {
     }        
 
     //-----------------------------------------------------------------------
+    public void testHashCode() throws Exception {
+        PeriodType type = new MockPeriodType();
+        assertEquals(type.hashCode(), type.hashCode());
+    }
+
+    //-----------------------------------------------------------------------
     public void testAbstract() throws Exception {
         assertEquals(true, Modifier.isPublic(PeriodType.class.getModifiers()));
         assertEquals(true, Modifier.isAbstract(PeriodType.class.getModifiers()));

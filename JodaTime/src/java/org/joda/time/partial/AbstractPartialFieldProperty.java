@@ -174,35 +174,6 @@ public abstract class AbstractPartialFieldProperty {
         return getField().getRangeDurationField();
     }
 
-// TODO
-//    /**
-//     * Gets whether this field is leap.
-//     * 
-//     * @return true if a leap field
-//     * @see DateTimeField#isLeap
-//     */
-//    public boolean isLeap() {
-//        return getField().isLeap(getPartialInstant(), get());
-//    }
-//
-//    /**
-//     * Gets the amount by which this field is leap.
-//     * 
-//     * @return the amount by which the field is leap
-//     * @see DateTimeField#getLeapAmount
-//     */
-//    public int getLeapAmount() {
-//        return getField().getLeapAmount(getPartialInstant(), get());
-//    }
-
-    /**
-     * If this field were to leap, then it would be in units described by the
-     * returned duration. If this field doesn't ever leap, null is returned.
-     */
-    public DurationField getLeapDurationField() {
-        return getField().getLeapDurationField();
-    }
-
     //-----------------------------------------------------------------------
 // TODO
 //    /**

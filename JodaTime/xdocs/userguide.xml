@@ -10,7 +10,7 @@
 
 <section name="Introduction">
 <p>
-This document provides a tutorial introduction the joda-time user API.
+This document provides a tutorial introduction the Joda-Time user API.
 <b>little more of a summary needed here</b>
 </p>
 <p>
@@ -48,6 +48,13 @@ This document provides a tutorial introduction the joda-time user API.
     <li><a href="#standard_formatters">Standard Formatters: ISODateTimeFormat</a></li>
     <li><a href="#custom_formatters">Custom Formatters: DateTimeFormat</a></li>
     <li><a href="#freaky_formatters">Freaky Formatters: DateTimeFormatterBuilder</a></li>
+</ul>
+</li>
+<li><a href="#advancedfeatures">Advanced Features</a>
+<ul>
+    <li><a href="#changetime">Change the Current Time</a></li>
+    <li><a href="#converters">Object Converters</a></li>
+    <li><a href="#security">Security</a></li>
 </ul>
 </li>
 </ul>
@@ -99,15 +106,34 @@ This defines an instant in time that can be read.
 Other interfaces are defined for datetimes, durations, intervals and periods.
 </p>
 <p>
-Unlike most Java interfaces (for instance, those in the Java Collections Framework
-- List/Map/Set), these interfaces are not designed for the API user. Their
-purpose is to allow multiple implementations of the basic date and time
-functionality to interoperate. Each interface represents
-a specific capability and only contains a subset of the useful methods
-of the API.
+The Joda interface works differently to a JDK Collections Framework interface
+such as List or Map.
+When working with List or Map you will normally hold your variable as a type
+of List or Map, only referencing the concrete class when you create the object.
+<source>
+    List list = new ArrayList();
+    Map map = new HashMap();
+</source>
+In Joda-Time, the interfaces exist to allow <i>interoperation</i> between similar
+date implementations, such as a mutable and immutable version of a class.
+As such, they only offer a subset of the methods of the concrete class.
+For most work, you will reference the concrete class, not the interface.
+This gives access to the full power of the library.
+<source>
+    DateTime dt = new DateTime();
+</source>
 </p>
 <p>
-Most applications will not need to be aware of these interfaces.
+For maximum flexibility however, you might choose to declare your method
+parameters using the Joda-Time interface.
+A method on the interface will obtain the concrete class for use within the method.
+<source>
+    public void process(ReadableInstant instant) {
+      DateTime dt = instant.toDateTime();
+    }
+</source>
+Note: If the instant passed into the method is an instanceof <code>DateTime</code>
+then the <code>toDateTime()</code> method just typecasts <code>instant</code>.
 </p>
 </section>
 
@@ -119,7 +145,7 @@ of <code>ReadableInstant</code>.
 </p>
 <p>
 The main implementation, and the class that the average API user needs to be
-most familiar with, is <code>DateTime</code>. DateTime is immutable, and once
+most familiar with, is <code>DateTime</code>. DateTime is immutable - and once
 created the values do not change. Thus, this class can safely be passed around
 and used in multiple threads without synchronization.
 </p>
@@ -134,7 +160,7 @@ focuses on the common usage patterns of the <code>DateTime</code> class.
 </p>
 
 <a name="fields"/>
-<section name="Fields">
+<subsection name="Fields">
 <p>
 The main API of <code>DateTime</code> has been kept small, limited to just
 get methods for each calendar field. So, for instance, the 'day-of-year' calendar
@@ -142,10 +168,10 @@ field would be retrieved by calling the <code>getDayOfYear()</code> method. For
 a complete list of fields and their descriptions, see the
 <a href="field.html">field reference</a>.
 </p>
-</section>
+</subsection>
 
 <a name="properties"/>
-<section name="Properties">
+<subsection name="Properties">
 <p>
 There is much more power available, however, through the use of what is termed a
 <em>property</em>. Each calendar field is associated with such a property.
@@ -158,7 +184,7 @@ the <code>dayOfYear()</code> method. The property class associated with
 Knowing the methods on the property is the secret to making the most of the API.
 We have more to say on the usage of properties later in this document.
 </p>
-</section>
+</subsection>
 </section>
 
 <a name="interval_duration_period"/>
@@ -200,7 +226,7 @@ Most applications should not need to import classes from the private packages.
 A datetime object is created by using a DateTime constructor. The default
 constructor is used as follows
 <source>
-        DateTime dt = new DateTime();
+    DateTime dt = new DateTime();
 </source>
 and creates a datetime object representing the current date and time in milliseconds
 as determined by the system clock. It is constructed using the ISO
@@ -217,7 +243,8 @@ fields.
 <p>
 The <code>DateTime</code> class has a constructor which takes an <code>Object</code>
 as input. In particular this constructor can be passed a JDK <code>Date</code>,
-JDK <code>Calendar</code> or JDK <code>GregorianCalendar</code>. This is one half
+JDK <code>Calendar</code> or JDK <code>GregorianCalendar</code> (It also accepts an
+ISO8601 formatted String, or Long object representing milliseconds). This is one half
 of the interoperability with the JDK. The other half of interoperability with JDK
 is provided by <code>DateTime</code> methods which return JDK objects.
 </p>
@@ -225,28 +252,28 @@ is provided by <code>DateTime</code> methods which return JDK objects.
 Thus inter-conversion between Joda <code>DateTime</code> and JDK <code>Date</code>
 can be performed as follows
 <source>
-        Date jdkDate = dt.toDate();
-        // modifications to jdkDate
-        ...
-        dt = new DateTime (jdkDate);
+    Date jdkDate = dt.toDate();
+    // modifications to jdkDate
+    ...
+    dt = new DateTime (jdkDate);
 </source>
 </p>
 <p>
 Similarly, for JDK <code>Calendar</code>:
 <source>
-        Calendar jdkCal = dt.toCalendar(Locale.CHINESE);
-        // modifications to jdkCal
-        ...
-        dt = new DateTime (jdkCal);
+    Calendar jdkCal = dt.toCalendar(Locale.CHINESE);
+    // modifications to jdkCal
+    ...
+    dt = new DateTime (jdkCal);
 </source>
 </p>
 <p>
 and JDK <code>GregorianCalendar</code>:
 <source>
-        GregorianCalendar jdkGC = dt.toGregorianCalendar();
-        // modifications to jdkGC
-        ...
-        dt = new DateTime (jdkGC);
+    GregorianCalendar jdkGC = dt.toGregorianCalendar();
+    // modifications to jdkGC
+    ...
+    dt = new DateTime (jdkGC);
 </source>
 </p>
 </section>
@@ -264,7 +291,7 @@ which provides access to the field.
 For instance, the direct way to get the day of week for a particular
 <code>DateTime</code>, involves calling the method
 <source>
-        int iDoW = dt.getDayOfWeek();
+    int iDoW = dt.getDayOfWeek();
 </source>
 where <code>iDoW</code> can take the values (from class
 <code>DateTimeConstants</code>).
@@ -284,24 +311,24 @@ where <code>iDoW</code> can take the values (from class
 <p>This is fine for simple usage, but more flexibility can be achieved via the
 property/field mechanism. This is done via the property <code>pDoW</code>
 <source>
-        DateTime.Property pDoW = dt.dayOfWeek();
+    DateTime.Property pDoW = dt.dayOfWeek();
 </source>
 which can be used to get richer information about the field, such as
 <source>
-        String strST = pDoW.getAsShortText(); // returns "Mon", "Tue", etc.
-        String strT = pDoW.getAsText(); // returns "Monday", "Tuesday", etc.
+    String strST = pDoW.getAsShortText(); // returns "Mon", "Tue", etc.
+    String strT = pDoW.getAsText(); // returns "Monday", "Tuesday", etc.
 </source>
 which return short and long name strings (based on the current locale)
 of the day-of-week. Localized versions of these methods are also available, thus
 <source>
-        String strTF = pDoW.getAsText(Locale.FRENCH); // returns "Lundi", etc.
+    String strTF = pDoW.getAsText(Locale.FRENCH); // returns "Lundi", etc.
 </source>
 can be used to return the day-of-week name string in French.
 </p>
 <p>
 Of course, the original integer value of the field is still accessible as
 <source>
-        iDoW = pDoW.get();
+    iDoW = pDoW.get();
 </source>
 The property also provides access to other values associated with the field
 such as metadata on the minimum and maximum text size, leap status, related 
@@ -314,10 +341,17 @@ In practice, one would not actually create the intermediate <code>pDoW</code>
 variable. The code is easier to read if the methods are called on anonymous
 intermediate objects. Thus, for example,
 <source>
-        strT = dt.dayOfWeek().getAsText();
-        iDoW = dt.dayOfWeek().get();
+    strT = dt.dayOfWeek().getAsText();
+    iDoW = dt.dayOfWeek().get();
 </source>
 would be written instead of the more indirect code presented earlier.
+</p>
+<p>
+Note: For the single case of getting the numerical value of a field, we recommend
+using the get method on the main DateTime object as it is more efficient.
+<source>
+    iDoW = dt.getDayOfWeek();
+</source>
 </p>
 </section>
 
@@ -325,19 +359,24 @@ would be written instead of the more indirect code presented earlier.
 <section name="Date Fields">
 <p>
 The <code>DateTime</code> implementation provides a complete list of standard
-calendar fields, via the methods
+calendar fields:
 <source>
-        dt.centuryOfEra();
-        dt.yearOfEra();
-        dt.yearOfCentury();
-        dt.monthOfYear();
-        dt.weekOfWeekyear();
-        dt.dayOfYear();
-        dt.dayOfMonth();
-        dt.dayOfWeek();
+    dt.getEra();
+    dt.getYear();
+    dt.getWeekyear();
+    dt.getCenturyOfEra();
+    dt.getYearOfEra();
+    dt.getYearOfCentury();
+    dt.getMonthOfYear();
+    dt.getWeekOfWeekyear();
+    dt.getDayOfYear();
+    dt.getDayOfMonth();
+    dt.getDayOfWeek();
 </source>
-each of which returns a <code>DateTime.Property</code> binding to the appropriate
-field. The fields represented by these properties behave pretty much as their
+Each of these also has a corresponding property method, which returns a
+<code>DateTime.Property</code> binding to the appropriate field, such as
+<code>year()</code> or <code>monthOfYear()</code>.
+The fields represented by these properties behave pretty much as their
 names would suggest. The precise definitions are available in the
 <code>DateTime</code> <a href="apidocs/org/joda/time/DateTime.html">javadoc</a>.
 </p>
@@ -346,9 +385,9 @@ As you would expect, all the methods we showed above in the day-of-week example
 can be applied to any of these properties. For example, to extract the standard
 month, day and year fields from a datetime, we can write
 <source>
-        int m = dt.monthOfYear().get();
-        int d = dt.dayOfMonth().get();
-        int y = dt.yearOfEra().get();
+    int m = dt.monthOfYear().getText();
+    int d = dt.dayOfMonth().getMaximumValue();
+    int y = dt.yearOfEra().isLeap();
 </source>
 </p>
 </section>
@@ -360,20 +399,12 @@ Another set of properties access fields representing intra-day durations for
 time calculations. Thus to compute the hours, minutes and seconds of the instant
 represented by a <code>DateTime</code>, we would write
 <source>
-        int hour = dt.hourOfDay().get();
-        int min = dt.minuteOfHour().get();
-        int sec = dt.secondOfMinute().get();
+    int hour = dt.getHourOfDay();
+    int min = dt.getMinuteOfHour();
+    int sec = dt.getSecondOfMinute();
 </source>
-</p>
-<p>
-Other properties representing time fields are returned by the methods
-<source>
-        dt.minuteOfDay();
-        dt.secondOfDay();
-        dt.millisOfDay();
-        dt.millisOfSecond();
-</source>
-The complete list can be found in the <code>DateTime</code>
+Again each of these has a corresponding property method for more complex manipulation.
+The complete list of time fields can be found in the <code>DateTime</code>
 <a href="apidocs/org/joda/time/DateTime.html">javadoc</a>
 </p>
 </section>
@@ -383,7 +414,8 @@ The complete list can be found in the <code>DateTime</code>
 <section name="Manipulating DateTimes">
 <p>
 <code>DateTime</code> objects have value semantics, and cannot be modified after
-construction. Therefore, most simple manipulation of a datetime object involves
+construction (they are immutable).
+Therefore, most simple manipulation of a datetime object involves
 construction of a new datetime as a modified copy of the original.
 </p>
 <section name="Modifying Fields">
@@ -391,14 +423,17 @@ construction of a new datetime as a modified copy of the original.
 One way to do this is to use methods on properties. To
 return to our prior example, if we wish to modify the <code>dt</code> object
 by changing its day-of-week field to Monday we can do so by using the
-<code>setCopy</code> method of the property
+<code>setCopy</code> method of the property:
 <source>
-        DateTime dt1 = dt.dayOfWeek().setCopy(DateTimeConstants.MONDAY);
+    DateTime dt1 = dt.dayOfWeek().setCopy(DateTimeConstants.MONDAY);
 </source>
-or, we may wish to add 3 days to the day-of-week. This can be accomplished with
-the <code>addToCopy</code> method.
+Note: If the <code>DateTime</code> object is already set to Monday then the same
+object will be returned.
+</p>
+<p>
+To add to a date you could use the <code>addToCopy</code> method.
 <source>
-        DateTime dt1 = dt.dayOfWeek().addToCopy(3);
+    DateTime dt1 = dt.dayOfWeek().addToCopy(3);
 </source>
 </p>
 </section>
@@ -409,7 +444,7 @@ Another means of accomplishing similar calculations is to use methods on the
 <code>DateTime</code> object itself. Thus we could add 3 days to <code>dt</code>
 directly as follows:
 <source>
-        DateTime dt1 = dt.plus(Period.days(3));
+    DateTime dt1 = dt.plus(Period.days(3));
 </source>
 </p>
 </section>
@@ -421,13 +456,13 @@ or two fields. In situations where multiple fields need to be modified, it is
 more efficient to create a mutable copy of the datetime, modify the copy and
 finally create a new value datetime.
 <source>
-        MutableDateTime mdt = dt.toMutableDateTime();
-        // perform various calculations on mdt
-        ...
-        DateTime dt1 = mdt.toDateTime();
+    MutableDateTime mdt = dt.toMutableDateTime();
+    // perform various calculations on mdt
+    ...
+    DateTime dt1 = mdt.toDateTime();
 </source>
-<code>MutableDateTime</code> has a number of methods for directly setting and
-modifying its fields.
+<code>MutableDateTime</code> has a number of methods, including standard setters,
+for directly modifying the datetime.
 </p>
 </section>
 </section>
@@ -439,10 +474,10 @@ modifying its fields.
 calculations. For instance, if you want to get the local time in London at this
 very moment, you would do the following
 <source>
-        // get current moment in default time zone
-        DateTime dt = new DateTime ();
-        // translate to London local time
-        DateTime dtLondon = dt.withZone(DateTimeZone.getInstance("Europe/London"));
+    // get current moment in default time zone
+    DateTime dt = new DateTime ();
+    // translate to London local time
+    DateTime dtLondon = dt.withZone(DateTimeZone.getInstance("Europe/London"));
 </source>
 where <code>DateTimeZone.getInstance("Europe/London")</code> returns the timezone
 value for London. The resulting value <code>dtLondon</code> has the same absolute
@@ -453,10 +488,10 @@ There is also support for the reverse operation, i.e. to get the datetime (absol
 millisecond) corresponding to the moment when London has the same local time as
 exists in the default time zone <em>now</em>. This is done as follows
 <source>
-        // get current moment in default time zone
-        DateTime dt = new DateTime ();
-        // find the moment when London will have / had the same time
-        dtLondonSameTime = dt.withZoneRetainFields(DateTimeZone.getInstance("Europe/London"));
+    // get current moment in default time zone
+    DateTime dt = new DateTime ();
+    // find the moment when London will have / had the same time
+    dtLondonSameTime = dt.withZoneRetainFields(DateTimeZone.getInstance("Europe/London"));
 </source>
 </p>
 <p>
@@ -474,10 +509,12 @@ The <code>DateTime</code> class also has one method for changing calendars. This
 allows you to change the calendar for a given moment in time. Thus if you want to
 get the datetime for the current time, but in the Buddhist Calendar, you would do
 <source>
-        // get current moment in default time zone
-        DateTime dt = new DateTime ();
-        // change to Buddhist chronology
-        DateTime dtBuddhist = dt.withChronology(Chronology.getBuddhist());
+    // get current moment in default time zone
+    DateTime dt = new DateTime ();
+    dt.getYear();  // returns 2004
+    // change to Buddhist chronology
+    DateTime dtBuddhist = dt.withChronology(Chronology.getBuddhist());
+    dtBuddhist.getYear();  // returns 2547
 </source>
 where <code>Chronology.getBuddhist</code> is a factory method for obtaining a
 Buddhist chronology.
@@ -517,15 +554,15 @@ We will now describe the various elements of this architecture.
 All serialization is performed by a <code>DateTimeFormatter</code> object. Given
 such an object <code>fmt</code>, input is performed as follows
 <source>
-        String strInputDateTime;
-        // string is populated with a date time string in some fashion
-        ...
-        dt = fmt.parseDateTime(strInputDateTime);
+    String strInputDateTime;
+    // string is populated with a date time string in some fashion
+    ...
+    dt = fmt.parseDateTime(strInputDateTime);
 </source>
 Thus a <code>DateTime</code> object is returned from the parse method of the
 formatter. Similarly, output is performed as
 <source>
-        String strOutputDateTime = fmt.print(dt);
+    String strOutputDateTime = fmt.print(dt);
 </source>
 </p>
 </section>
@@ -542,11 +579,11 @@ For example, if you wanted to use the ISO standard format for <em>datetime</em>,
 which is <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code>, you would initialize
 <code>fmt</code> as
 <source>
-        DateTimeFormatter fmt = ISODateTimeFormat.getInstance().dateTime();
+    DateTimeFormatter fmt = ISODateTimeFormat.getInstance().dateTime();
 </source>
 You would then use <code>fmt</code> as described above, to read or write datetime
 objects in this format. <code>ISODateTimeFormat.getInstance()</code> returns an
-instance of the formatter-provider.<b>why isn't there a localized version?</b>
+instance of the formatter-provider.
 </p>
 </section>
 
@@ -559,7 +596,7 @@ a format pattern, you can use the factory method provided by the
 2 digit month and 2 digit day of month, i.e. a format of <code>yyyyMMdd</code>
 you would do
 <source>
-        DateTimeFormatter fmt = DateTimeFormat.getInstance().forPattern("yyyyMMdd");
+    DateTimeFormatter fmt = DateTimeFormat.getInstance().forPattern("yyyyMMdd");
 </source>
 The pattern string is compatible with JDK date patterns.
 <code>DateTimeFormat.getInstance()</code> returns an instance of the
@@ -576,13 +613,13 @@ Joda Time architecture exposes a builder class that can be used to build a custo
 formatter which is programatically defined. Thus if you wanted a formatter to
 recognize dates of the form "22-Jan-65", you could do the following:
 <source>
-        DateTimeFormatter fmt = new DateTimeFormatterBuilder()
-			.appendDayOfMonth(2)
-			.appendLiteral('-')
-			.appendMonthOfYearShortText()
-			.appendLiteral('-')
-			.appendTwoDigitYear(1956)
-			.toFormatter();
+    DateTimeFormatter fmt = new DateTimeFormatterBuilder()
+            .appendDayOfMonth(2)
+            .appendLiteral('-')
+            .appendMonthOfYearShortText()
+            .appendLiteral('-')
+            .appendTwoDigitYear(1956)
+            .toFormatter();
 </source>
 Each <code>append..</code> method appends a new field to be parsed/printed to the
 calling builder and returns a new builder. The final <code>toFormatter</code> method
@@ -596,6 +633,47 @@ range of the two digits, by specifying the mid point of the range. In this examp
 the range will be (1956 - 50) = 1906, to (1956 + 49) = 2005. Thus 04 will be 2004
 but 07 will be 1907. This kind of conversion is not possible with ordinary format
 strings, highlighting the power of the Joda time formatting architecture.
+</p>
+</section>
+</section>
+
+<a name="advancedfeatures"/>
+<section name="Advanced features">
+
+<a name="changetime"/>
+<section name="Change the Current Time">
+<p>
+Joda-Time allows you to change the current time.
+All methods that get the current time are indirected via <code>DateTimeUtils</code>.
+This allows the current time to be changed, which can be very useful for testing.
+<source>
+    // always return the same time when querying current time
+    DateTimeUtils.setCurrentMillisFixed(millis);
+    // offset the real time
+    DateTimeUtils.setCurrentMillisOffset(millis);
+</source>
+</p>
+</section>
+
+<a name="converters"/>
+<section name="Object Converters">
+<p>
+The constructors on each major concrete class in the API take an <code>Object</code>
+as a parameter.
+This is passed to the converter subsystem which is responsible for converting
+the object to one acceptable to Joda-Time.
+For example, the converters can convert a JDK Date object to a DateTime.
+If required, you can add your own converters to those supplied in Joda-Time.
+</p>
+</section>
+
+<a name="security"/>
+<section name="Security">
+<p>
+Joda-Time includes hooks into the standard JDK security scheme for sensitive changes.
+These include changing the time zone handler, changing the current time and changing
+the converters.
+See <code>JodaTimePermission</code> for details.
 </p>
 </section>
 </section>

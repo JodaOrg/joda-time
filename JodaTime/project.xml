@@ -90,12 +90,17 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>org/joda/time/**/Test*.java</include>
+        <include>org/joda/time/**/TestAll.java</include>
       </includes>
-      <excludes>
-        <exclude>org/joda/time/**/TestSuite*.java</exclude>
-      </excludes>
     </unitTest>
+    <resources>
+      <resource>
+        <directory>${basedir}/target/classes</directory>
+        <includes>
+          <include>org/joda/time/tz/data/**</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 
   <reports>
@@ -103,7 +108,7 @@
      <report>maven-changes-plugin</report>
      <report>maven-checkstyle-plugin</report>
      <!-- <report>maven-clover-plugin</report> -->
-     <!-- report>maven-jcoverage-plugin</report -->
+     <!-- <report>maven-jcoverage-plugin</report> -->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>

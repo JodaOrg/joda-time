@@ -518,6 +518,37 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testWithFields1() {
+        Period test1 = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period test2 = new Period(0, 0, 0, 0, 0, 0, 0, 9, PeriodType.millis());
+        Period result = test1.withFields(test2);
+        
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 8), test1);
+        assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 9, PeriodType.millis()), test2);
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 9), result);
+    }
+
+    public void testWithFields2() {
+        Period test1 = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period test2 = null;
+        Period result = test1.withFields(test2);
+        
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 8), test1);
+        assertSame(test1, result);
+    }
+
+    public void testWithFields3() {
+        Period test1 = new Period(0, 0, 0, 0, 0, 0, 0, 9, PeriodType.millis());
+        Period test2 = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        try {
+            test1.withFields(test2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        assertEquals(new Period(0, 0, 0, 0, 0, 0, 0, 9, PeriodType.millis()), test1);
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 8), test2);
+    }
+
+    //-----------------------------------------------------------------------
     public void testPeriodStatics() {
         Period test;
         test = Period.years(1);

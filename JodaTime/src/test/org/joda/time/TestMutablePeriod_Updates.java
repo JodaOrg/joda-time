@@ -281,7 +281,7 @@ public class TestMutablePeriod_Updates extends TestCase {
         try {
             test.setYears(1);
             fail();
-        } catch (UnsupportedOperationException ex) {}
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

@@ -225,7 +225,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of years of the period.
      * 
      * @param years  the number of years
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setYears(int years);
 
@@ -233,7 +233,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified years to the number of years in the period.
      * 
      * @param years  the number of years
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addYears(int years);
@@ -243,7 +243,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of months of the period.
      * 
      * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setMonths(int months);
 
@@ -251,7 +251,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified months to the number of months in the period.
      * 
      * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addMonths(int months);
@@ -261,7 +261,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of weeks of the period.
      * 
      * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setWeeks(int weeks);
 
@@ -269,7 +269,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified weeks to the number of weeks in the period.
      * 
      * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addWeeks(int weeks);
@@ -279,7 +279,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of days of the period.
      * 
      * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setDays(int days);
 
@@ -287,7 +287,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified days to the number of days in the period.
      * 
      * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addDays(int days);
@@ -297,7 +297,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of hours of the period.
      * 
      * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setHours(int hours);
 
@@ -305,7 +305,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified hours to the number of hours in the period.
      * 
      * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addHours(int hours);
@@ -315,7 +315,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of minutes of the period.
      * 
      * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setMinutes(int minutes);
 
@@ -323,7 +323,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified minutes to the number of minutes in the period.
      * 
      * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addMinutes(int minutes);
@@ -333,7 +333,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of seconds of the period.
      * 
      * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setSeconds(int seconds);
 
@@ -341,7 +341,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified seconds to the number of seconds in the period.
      * 
      * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addSeconds(int seconds);
@@ -351,7 +351,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Sets the number of millis of the period.
      * 
      * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     void setMillis(int millis);
 
@@ -359,7 +359,7 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * Adds the specified millis to the number of millis in the period.
      * 
      * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void addMillis(int millis);

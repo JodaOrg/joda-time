@@ -436,6 +436,7 @@ public abstract class BasePeriod
         }
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the value of a field in this period.
      * 
@@ -444,15 +445,85 @@ public abstract class BasePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     protected void setField(DurationFieldType field, int value) {
+        setFieldInto(iValues, field, value);
+    }
+
+    /**
+     * Sets the value of a field in this period.
+     * 
+     * @param values  the array of values to update
+     * @param field  the field to set
+     * @param value  the value to set
+     * @throws IllegalArgumentException if field is not supported.
+     */
+    protected void setFieldInto(int[] values, DurationFieldType field, int value) {
         int index = indexOf(field);
         if (index == -1) {
             if (value != 0) {
-                throw new UnsupportedOperationException(
+                throw new IllegalArgumentException(
                     "Period does not support field '" + field.getName() + "'");
             }
         } else {
-            setValue(index, value);
+            values[index] = value;
         }
+    }
+
+    /**
+     * Adds the value of a field in this period.
+     * 
+     * @param field  the field to set
+     * @param value  the value to set
+     * @throws IllegalArgumentException if field is not supported.
+     */
+    protected void addField(DurationFieldType field, int value) {
+        addFieldInto(iValues, field, value);
+    }
+
+    /**
+     * Adds the value of a field in this period.
+     * 
+     * @param values  the array of values to update
+     * @param field  the field to set
+     * @param value  the value to set
+     * @throws IllegalArgumentException if field is not supported.
+     */
+    protected void addFieldInto(int[] values, DurationFieldType field, int value) {
+        int index = indexOf(field);
+        if (index == -1) {
+            if (value != 0) {
+                throw new IllegalArgumentException(
+                    "Period does not support field '" + field.getName() + "'");
+            }
+        } else {
+            values[index] = FieldUtils.safeAdd(values[index], value);
+        }
+    }
+
+    /**
+     * Merges the fields from another period.
+     * 
+     * @param period  the period to add from, not null
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     */
+    protected void mergePeriod(ReadablePeriod period) {
+        iValues = mergePeriodInto(getValues(), period);
+    }
+
+    /**
+     * Merges the fields from another period.
+     * 
+     * @param values  the array of values to update
+     * @param period  the period to add from, not null
+     * @return the updated values
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     */
+    protected int[] mergePeriodInto(int[] values, ReadablePeriod period) {
+         for (int i = 0, isize = period.size(); i < isize; i++) {
+             DurationFieldType type = period.getFieldType(i);
+             int value = period.getValue(i);
+             checkAndUpdate(type, values, value);
+         }
+         return values;
     }
 
     /**
@@ -462,7 +533,18 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void addPeriod(ReadablePeriod period) {
-         int[] newValues = getValues(); // already cloned
+        iValues = addPeriodInto(getValues(), period);
+    }
+
+    /**
+     * Adds the fields from another period.
+     * 
+     * @param values  the array of values to update
+     * @param period  the period to add from, not null
+     * @return the updated values
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     */
+    protected int[] addPeriodInto(int[] values, ReadablePeriod period) {
          for (int i = 0, isize = period.size(); i < isize; i++) {
              DurationFieldType type = period.getFieldType(i);
              int value = period.getValue(i);
@@ -473,10 +555,10 @@ public abstract class BasePeriod
                          "Period does not support field '" + type.getName() + "'");
                  }
              } else {
-                 newValues[index] = FieldUtils.safeAdd(getValue(index), value);
+                 values[index] = FieldUtils.safeAdd(getValue(index), value);
              }
          }
-         setValues(newValues);
+         return values;
     }
 
     //-----------------------------------------------------------------------

@@ -705,7 +705,7 @@ public class MutablePeriod
      * Sets the number of years of the period.
      * 
      * @param years  the number of years
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setYears(int years) {
         super.setField(DurationFieldType.years(), years);
@@ -715,7 +715,7 @@ public class MutablePeriod
      * Adds the specified years to the number of years in the period.
      * 
      * @param years  the number of years
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addYears(int years) {
@@ -729,7 +729,7 @@ public class MutablePeriod
      * Sets the number of months of the period.
      * 
      * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setMonths(int months) {
         super.setField(DurationFieldType.months(), months);
@@ -739,7 +739,7 @@ public class MutablePeriod
      * Adds the specified months to the number of months in the period.
      * 
      * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMonths(int months) {
@@ -753,7 +753,7 @@ public class MutablePeriod
      * Sets the number of weeks of the period.
      * 
      * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setWeeks(int weeks) {
         super.setField(DurationFieldType.weeks(), weeks);
@@ -763,7 +763,7 @@ public class MutablePeriod
      * Adds the specified weeks to the number of weeks in the period.
      * 
      * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addWeeks(int weeks) {
@@ -777,7 +777,7 @@ public class MutablePeriod
      * Sets the number of days of the period.
      * 
      * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setDays(int days) {
         super.setField(DurationFieldType.days(), days);
@@ -787,7 +787,7 @@ public class MutablePeriod
      * Adds the specified days to the number of days in the period.
      * 
      * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addDays(int days) {
@@ -801,7 +801,7 @@ public class MutablePeriod
      * Sets the number of hours of the period.
      * 
      * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setHours(int hours) {
         super.setField(DurationFieldType.hours(), hours);
@@ -811,7 +811,7 @@ public class MutablePeriod
      * Adds the specified hours to the number of hours in the period.
      * 
      * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addHours(int hours) {
@@ -825,7 +825,7 @@ public class MutablePeriod
      * Sets the number of minutes of the period.
      * 
      * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setMinutes(int minutes) {
         super.setField(DurationFieldType.minutes(), minutes);
@@ -835,7 +835,7 @@ public class MutablePeriod
      * Adds the specified minutes to the number of minutes in the period.
      * 
      * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMinutes(int minutes) {
@@ -849,7 +849,7 @@ public class MutablePeriod
      * Sets the number of seconds of the period.
      * 
      * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setSeconds(int seconds) {
         super.setField(DurationFieldType.seconds(), seconds);
@@ -859,7 +859,7 @@ public class MutablePeriod
      * Adds the specified seconds to the number of seconds in the period.
      * 
      * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addSeconds(int seconds) {
@@ -873,7 +873,7 @@ public class MutablePeriod
      * Sets the number of millis of the period.
      * 
      * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      */
     public void setMillis(int millis) {
         super.setField(DurationFieldType.millis(), millis);
@@ -883,7 +883,7 @@ public class MutablePeriod
      * Adds the specified millis to the number of millis in the period.
      * 
      * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported.
+     * @throws IllegalArgumentException if field is not supported and the value is non-zero
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     public void addMillis(int millis) {

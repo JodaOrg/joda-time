@@ -93,7 +93,7 @@ public final class Period
      * @return the period
      */
     public static Period years(int years) {
-        return new Period(new int[] {years}, PeriodType.standard());
+        return new Period(new int[] {years, 0, 0, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -104,7 +104,7 @@ public final class Period
      * @return the period
      */
     public static Period months(int months) {
-        return new Period(new int[] {months}, PeriodType.standard());
+        return new Period(new int[] {0, months, 0, 0, 0, 0, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -115,7 +115,7 @@ public final class Period
      * @return the period
      */
     public static Period weeks(int weeks) {
-        return new Period(new int[] {weeks}, PeriodType.standard());
+        return new Period(new int[] {0, 0, weeks, 0, 0, 0, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -126,7 +126,7 @@ public final class Period
      * @return the period
      */
     public static Period days(int days) {
-        return new Period(new int[] {days}, PeriodType.standard());
+        return new Period(new int[] {0, 0, 0, days, 0, 0, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -137,7 +137,7 @@ public final class Period
      * @return the period
      */
     public static Period hours(int hours) {
-        return new Period(new int[] {hours}, PeriodType.standard());
+        return new Period(new int[] {0, 0, 0, 0, hours, 0, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -148,7 +148,7 @@ public final class Period
      * @return the period
      */
     public static Period minutes(int minutes) {
-        return new Period(new int[] {minutes}, PeriodType.standard());
+        return new Period(new int[] {0, 0, 0, 0, 0, minutes, 0, 0}, PeriodType.standard());
     }
 
     /**
@@ -159,7 +159,7 @@ public final class Period
      * @return the period
      */
     public static Period seconds(int seconds) {
-        return new Period(new int[] {seconds}, PeriodType.standard());
+        return new Period(new int[] {0, 0, 0, 0, 0, 0, seconds, 0}, PeriodType.standard());
     }
 
     /**
@@ -170,7 +170,7 @@ public final class Period
      * @return the period
      */
     public static Period millis(int millis) {
-        return new Period(new int[] {millis}, PeriodType.standard());
+        return new Period(new int[] {0, 0, 0, 0, 0, 0, 0, millis}, PeriodType.standard());
     }
 
     //-----------------------------------------------------------------------
@@ -560,7 +560,7 @@ public final class Period
      * Creates a new Period instance with the same field values but
      * different PeriodType.
      * 
-     * @param type  the period type to use, null means AllType
+     * @param type  the period type to use, null means standard
      * @return the new period instance
      * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
@@ -572,7 +572,41 @@ public final class Period
         return new Period(this, type);
     }
 
+    /**
+     * Creates a new Period instance with the fields from the specified period
+     * set to new values.
+     * 
+     * @param period  the period to copy from, null ignored
+     * @return the new period instance
+     * @throws IllegalArgumentException if a field type is unsupported
+     */
+    public Period withFields(ReadablePeriod period) {
+        if (period == null) {
+            return this;
+        }
+        int[] newValues = getValues();  // cloned
+        newValues = super.mergePeriodInto(newValues, period);
+        return new Period(newValues, getPeriodType());
+    }
+
     //-----------------------------------------------------------------------
+    /**
+     * Creates a new Period instance with the specified field set to a new value.
+     * 
+     * @param field  the field to set, null ignored
+     * @param value  the value to set to
+     * @return the new period instance
+     * @throws IllegalArgumentException if the field type is unsupported
+     */
+    public Period withField(DurationFieldType field, int value) {
+        if (field == null) {
+            return this;
+        }
+        int[] newValues = getValues();  // cloned
+        super.setFieldInto(newValues, field, value);
+        return new Period(newValues, getPeriodType());
+    }
+
     /**
      * Returns a new period with the specified number of years.
      * <p>
@@ -694,6 +728,23 @@ public final class Period
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Creates a new Period instance with the valueToAdd added to the specified field.
+     * 
+     * @param field  the field to set, null ignored
+     * @param value  the value to add
+     * @return the new period instance
+     * @throws IllegalArgumentException if the field type is unsupported
+     */
+    public Period plusField(DurationFieldType field, int valueToAdd) {
+        if (valueToAdd == 0 || field == null) {
+            return this;
+        }
+        int[] newValues = getValues();  // cloned
+        super.addFieldInto(newValues, field, valueToAdd);
+        return new Period(newValues, getPeriodType());
+    }
+
     /**
      * Returns a new period with the specified number of years added.
      * <p>

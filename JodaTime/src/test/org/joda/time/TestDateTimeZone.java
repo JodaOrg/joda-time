@@ -246,6 +246,45 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetInstance_int() {
+        assertEquals(DateTimeZone.UTC, DateTimeZone.getInstance(0));
+        assertEquals(DateTimeZone.getInstance("+03:00"), DateTimeZone.getInstance(3));
+        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstance(-2));
+        try {
+            DateTimeZone.getInstance(999999);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }        
+
+    //-----------------------------------------------------------------------
+    public void testGetInstance_int_int() {
+        assertEquals(DateTimeZone.UTC, DateTimeZone.getInstance(0));
+        assertEquals(DateTimeZone.getInstance("+03:15"), DateTimeZone.getInstance(3, 15));
+        assertEquals(DateTimeZone.getInstance("-02:00"), DateTimeZone.getInstance(-2, 0));
+        assertEquals(DateTimeZone.getInstance("-02:30"), DateTimeZone.getInstance(-2, 30));
+        try {
+            DateTimeZone.getInstance(2, 60);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            DateTimeZone.getInstance(-2, 60);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            DateTimeZone.getInstance(2, -1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            DateTimeZone.getInstance(-2, -1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            DateTimeZone.getInstance(999999, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }        
+
+    //-----------------------------------------------------------------------
     public void testGetInstance_TimeZone() {
         assertEquals(DateTimeZone.getDefault(), DateTimeZone.getInstance((TimeZone) null));
         

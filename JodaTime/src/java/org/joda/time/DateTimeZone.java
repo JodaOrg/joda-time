@@ -65,6 +65,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.tz.DefaultNameProvider;
@@ -232,6 +233,54 @@ public abstract class DateTimeZone implements Serializable {
             }
         }
         throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
+    }
+
+    /**
+     * Get the time zone by the number of hours difference from UTC.
+     * <p>
+     * This factory is a convenient way of constructing zones with a fixed offset.
+     * 
+     * @param hoursOffset  the offset in hours from UTC
+     * @return the DateTimeZone object for the offset
+     * @throws IllegalArgumentException if the offset is too large or too small
+     */
+    public static DateTimeZone getInstance(int hoursOffset) throws IllegalArgumentException {
+        return getInstance(hoursOffset, 0);
+    }
+
+    /**
+     * Get the time zone by the number of hours and minutes difference from UTC.
+     * <p>
+     * This factory is a convenient way of constructing zones with a fixed offset.
+     * The minutes value is always positive and in the range 0 to 59.
+     * If constructed with the values (-2, 30), the resultiong zone is '-02:30'.
+     * 
+     * @param hoursOffset  the offset in hours from UTC
+     * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
+     * @return the DateTimeZone object for the offset
+     * @throws IllegalArgumentException if the offset or minute is too large or too small
+     */
+    public static DateTimeZone getInstance(int hoursOffset, int minutesOffset) throws IllegalArgumentException {
+        if (hoursOffset == 0 && minutesOffset == 0) {
+            return DateTimeZone.UTC;
+        }
+        if (minutesOffset < 0 || minutesOffset > 59) {
+            throw new IllegalArgumentException("Minutes out of range: " + minutesOffset);
+        }
+        int offset = 0;
+        try {
+            int hoursInMinutes = FieldUtils.safeMultiplyToInt(hoursOffset, 60);
+            if (hoursInMinutes < 0) {
+                minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);
+            } else {
+                minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);
+            }
+            offset = FieldUtils.safeMultiplyToInt(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
+        } catch (ArithmeticException ex) {
+            throw new IllegalArgumentException("Offset is too large");
+        }
+        String id = offsetFormatter().print(0, UTC, offset);
+        return fixedOffsetZone(id, offset);
     }
 
     /**

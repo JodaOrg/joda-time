@@ -2285,7 +2285,7 @@ public class DateTimeFormatterBuilder {
             int size = elementPairs.size();
             for (int i=0; i<size; i+=2) {
                 Object element = elementPairs.get(i);
-                if (element != null && element instanceof DateTimePrinter) {
+                if (element instanceof DateTimePrinter) {
                     if (element instanceof Composite) {
                         addArrayToList(printerList, ((Composite)element).iPrinters);
                     } else {
@@ -2294,7 +2294,7 @@ public class DateTimeFormatterBuilder {
                 }
 
                 element = elementPairs.get(i + 1);
-                if (element != null && element instanceof DateTimeParser) {
+                if (element instanceof DateTimeParser) {
                     if (element instanceof Composite) {
                         addArrayToList(parserList, ((Composite)element).iParsers);
                     } else {

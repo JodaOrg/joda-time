@@ -85,13 +85,35 @@ public class Duration extends AbstractDuration implements ReadableDuration, Seri
     }
 
     /**
+     * Creates a zero length duration.
+     *
+     * @param type determines which set of fields this duration supports
+     */
+    public Duration(DurationType type) {
+        super(type);
+    }
+
+    /**
      * Copies another duration to this one.
      *
      * @param type use a different DurationType
+     * @param duration duration to copy
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public Duration(DurationType type, ReadableDuration duration) {
+        super(type, duration);
+    }
+
+    /**
+     * Copies another duration to this one.
+     *
+     * @param type use a different DurationType
+     * @param duration duration to convert
+     * @throws UnsupportedOperationException if an unsupported field's value is
+     * non-zero
+     */
+    public Duration(DurationType type, Object duration) {
         super(type, duration);
     }
 

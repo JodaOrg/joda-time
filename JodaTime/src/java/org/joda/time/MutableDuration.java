@@ -55,6 +55,9 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.convert.DurationConverter;
+import org.joda.time.convert.ConverterManager;
+
 /**
  * Standard mutable duration implementation.
  * <p>
@@ -82,14 +85,38 @@ public class MutableDuration extends AbstractDuration
     }
 
     /**
+     * Creates a zero length duration.
+     *
+     * @param type determines which set of fields this duration supports
+     */
+    public MutableDuration(DurationType type) {
+        super(type);
+    }
+
+    /**
      * Copies another duration to this one.
      *
      * @param type use a different DurationType
+     * @param duration duration to copy
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public MutableDuration(DurationType type, ReadableDuration duration) {
         super(type, duration);
+    }
+
+    /**
+     * Copies another duration to this one.
+     *
+     * @param type use a different DurationType
+     * @param duration duration to convert
+     * @throws UnsupportedOperationException if an unsupported field's value is
+     * non-zero
+     */
+    public MutableDuration(DurationType type, Object duration) {
+        super(type);
+        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+        converter.setInto(this, duration);
     }
 
     /**

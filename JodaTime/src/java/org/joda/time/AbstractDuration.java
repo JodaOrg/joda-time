@@ -55,6 +55,10 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.time.convert.DurationConverter;
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.format.ISODurationFormat;
+
 /**
  * AbstractDuration provides the common behaviour for duration classes.
  * <p>
@@ -113,15 +117,49 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     }
 
     /**
+     * Creates a zero length duration.
+     *
+     * @param type determines which set of fields this duration supports
+     */
+    public AbstractDuration(DurationType type) {
+        iType = type;
+    }
+
+    /**
      * Copies another duration to this one.
      *
      * @param type use a different DurationType
+     * @param duration duration to copy
      * @throws UnsupportedOperationException if an unsupported field's value is
      * non-zero
      */
     public AbstractDuration(DurationType type, ReadableDuration duration) {
         // Only call a private method
         setDuration(iType = type, duration);
+    }
+
+    /**
+     * Copies another duration to this one.
+     *
+     * @param type use a different DurationType
+     * @param duration duration to convert
+     * @throws UnsupportedOperationException if an unsupported field's value is
+     * non-zero
+     */
+    public AbstractDuration(DurationType type, Object duration) {
+        if (duration instanceof ReadableDuration) {
+            // Only call a private method
+            setDuration(iType = type, (ReadableDuration) duration);
+        } else {
+            DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
+            if (converter.isPrecise(duration)) {
+                // Only call a private method
+                setTotalMillis(iType = type, converter.getDurationMillis(duration));
+            } else {
+                // Only call a private method
+                setDuration(iType = type, new MutableDuration(type, duration));
+            }
+        }
     }
 
     /**
@@ -663,12 +701,13 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
     /**
      * Gets the value as a String in the ISO8601 duration format.
      * <p>
-     * For example, "P6H3M5S" represents 6 hours, 3 minutes, 5 seconds.
+     * For example, "P6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
      *
      * @return the value as an ISO8601 string
      */
-    // TODO
-    //public String toString();
+    public String toString() {
+        return ISODurationFormat.getInstance().standard().print(this);
+    }
 
     /**
      * Sets all the fields in one go from another ReadableDuration.

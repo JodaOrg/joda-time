@@ -53,6 +53,8 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * DateTimeUtils provide public utility methods for the datetime library.
  * <p>
@@ -137,6 +139,107 @@ public class DateTimeUtils {
         if (sm != null) {
             sm.checkPermission(new JodaTimePermission("CurrentTime.setProvider"));
         }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the millisecond instant from the specified instant object handling null.
+     * <p>
+     * If the instant object is <code>null</code>, the {@link #currentTimeMillis()}
+     * will be returned. Otherwise, the millis from the object are returned.
+     * 
+     * @param instant  the instant to examine, null means now
+     * @return the time in milliseconds from 1970-01-01T00:00:00Z
+     */
+    public static final long getInstantMillis(ReadableInstant instant) {
+        if (instant == null) {
+            return DateTimeUtils.currentTimeMillis();
+        }
+        return instant.getMillis();
+    }
+
+    /**
+     * Gets the millisecond instant from the specified instant object handling null.
+     * <p>
+     * If the instant object is <code>null</code>, the <code>nullMillis</code>
+     * will be returned. Otherwise, the millis from the object are returned.
+     * 
+     * @param instant  the instant to examine, null means use nullMillis
+     * @param nullMillis  the millis to return if null
+     * @return the time in milliseconds from 1970-01-01T00:00:00Z
+     */
+    public static final long getInstantMillis(ReadableInstant instant, long nullMillis) {
+        if (instant == null) {
+            return nullMillis;
+        }
+        return instant.getMillis();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the chronology from the specified instant object handling null.
+     * <p>
+     * If the instant object is <code>null</code>, {@link ISOChronology#getInstance()}
+     * will be returned. Otherwise, the chronology from the object is returned.
+     * 
+     * @param instant  the instant to examine, null means ISO in the default zone
+     * @return the chronology
+     */
+    public static final Chronology getInstantChronology(ReadableInstant instant) {
+        if (instant == null) {
+            return ISOChronology.getInstance();
+        }
+        return instant.getChronology();
+    }
+
+    /**
+     * Gets the chronology from the specified instant object handling null.
+     * <p>
+     * If the instant object is <code>null</code>, <code>nullChrono</code>
+     * will be returned. Otherwise, the chronology from the object is returned.
+     * 
+     * @param instant  the instant to examine, null means use <code>nullChrono</code>
+     * @param nullChrono  the chronology to return if null
+     * @return the chronology
+     */
+    public static final Chronology getInstantChronology(ReadableInstant instant, Chronology nullChrono) {
+        if (instant == null) {
+            return nullChrono;
+        }
+        return instant.getChronology();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the millisecond duration from the specified duration object handling null.
+     * <p>
+     * If the duration object is <code>null</code>, zero will be returned.
+     * Otherwise, the millis from the object are returned.
+     * 
+     * @param duration  the duration to examine, null means zero
+     * @return the duration in milliseconds
+     */
+    public static final long getDurationMillis(ReadableDuration duration) {
+        if (duration == null) {
+            return 0L;
+        }
+        return duration.getMillis();
+    }
+
+    /**
+     * Gets the millisecond duration from the specified duration object handling null.
+     * <p>
+     * If the duration object is <code>null</code>, <code>nullDuration</code> will be returned.
+     * Otherwise, the millis from the object are returned.
+     * 
+     * @param duration  the duration to examine, null means use <code>nullDuration</code>
+     * @return the duration in milliseconds
+     */
+    public static final long getDurationMillis(ReadableDuration duration, long nullDuration) {
+        if (duration == null) {
+            return nullDuration;
+        }
+        return duration.getMillis();
     }
 
     //-----------------------------------------------------------------------

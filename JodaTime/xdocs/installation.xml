@@ -15,6 +15,13 @@ You can download the latest version of Joda-Time
 Once the "joda-time.jar" is in your classpath, you will be able to use Joda-Time.
 </p>
 <p>
+The release notes for upgraders can be found here:
+<ul>
+<li><a href="upgradeto100.html">Version 0.99 to Version 1.0</a></li>
+<li><a href="upgradeto099.html">Version 0.98 to Version 0.99</a></li>
+</ul>
+</p>
+<p>
 Unless you have a specific reason to do otherwise, it is advisable to use the
 binary download. If you want to build Joda-Time from source you will need
 <a href="http://ant.apache.org">Apache Ant</a>.

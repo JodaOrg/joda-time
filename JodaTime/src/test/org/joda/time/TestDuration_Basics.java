@@ -64,6 +64,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractDuration;
+import org.joda.time.base.BaseDuration;
 
 /**
  * This class is a Junit unit test for Duration.
@@ -494,6 +495,25 @@ public class TestDuration_Basics extends TestCase {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(null, 0);
         assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMutableDuration() {
+        // no MutableDuration, so...
+        MockMutableDuration test = new MockMutableDuration(123L);
+        assertEquals(123L, test.getMillis());
+        
+        test.setMillis(2345L);
+        assertEquals(2345L, test.getMillis());
+    }
+
+    static class MockMutableDuration extends BaseDuration {
+        public MockMutableDuration(long duration) {
+            super(duration);
+        }
+        public void setMillis(long duration) {
+            super.setMillis(duration);
+        }
     }
 
 }

@@ -107,7 +107,7 @@ public interface ReadableInterval {
     long getDurationMillis();
 
     /** 
-     * Gets the duration of this time interval.
+     * Gets the duration of this time interval using the MillisType duration type.
      * <p>
      * The duration returned will always be precise because it is relative to
      * a known date.
@@ -119,7 +119,7 @@ public interface ReadableInterval {
     /** 
      * Gets the duration of this time interval.
      *
-     * @param type the requested type of the duration
+     * @param type  the requested type of the duration, null means MillisType
      * @return the duration of the time interval
      */
     Duration getDuration(DurationType type);
@@ -137,9 +137,8 @@ public interface ReadableInterval {
     /**
      * Does this time interval contain the specified instant.
      * 
-     * @param instant  the instant
+     * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
-     * @throws IllegalArgumentException if the instant is null
      */
     public boolean contains(ReadableInstant instant);
     
@@ -176,9 +175,8 @@ public interface ReadableInterval {
     /**
      * Is this time interval before the specified instant.
      * 
-     * @param instant  the instant to compare to
+     * @param instant  the instant to compare to, null means now
      * @return true if this time interval is before the instant
-     * @throws IllegalArgumentException if the instant is null
      */
     public boolean isBefore(ReadableInstant instant);
     
@@ -194,9 +192,8 @@ public interface ReadableInterval {
     /**
      * Is this time interval after the specified instant.
      * 
-     * @param instant  the instant to compare to
+     * @param instant  the instant to compare to, null means now
      * @return true if this time interval is after the instant
-     * @throws IllegalArgumentException if the instant is null
      */
     public boolean isAfter(ReadableInstant instant);
     

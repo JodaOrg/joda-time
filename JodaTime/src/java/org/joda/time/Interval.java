@@ -54,7 +54,6 @@
 package org.joda.time;
 
 import java.io.Serializable;
-import java.text.ParseException;
 
 /**
  * Interval is the standard implementation of an immutable time interval
@@ -72,23 +71,14 @@ import java.text.ParseException;
 public final class Interval extends AbstractInterval
         implements ReadableInterval, Serializable {
 
-    static final long serialVersionUID = 4922451897541386752L;
-
-    /**
-     * Constructs a time interval as a copy of another.
-     * 
-     * @param interval  the time interval to copy
-     * @throws IllegalArgumentException if the interval is null
-     */
-    public Interval(ReadableInterval interval) {
-        super(interval);
-    }
+    /** Serialization version */
+    private static final long serialVersionUID = 4922451897541386752L;
 
     /**
      * Constructs a time interval as a copy of another.
      * 
      * @param interval  the time interval to convert
-     * @throws IllegalArgumentException if the interval is null
+     * @throws IllegalArgumentException if the interval is null or invalid
      */
     public Interval(Object interval) {
         super(interval);
@@ -109,9 +99,8 @@ public final class Interval extends AbstractInterval
     /**
      * Constructs an interval from a start and end instant.
      * 
-     * @param start  start of this interval
-     * @param end  end of this interval
-     * @throws IllegalArgumentException if either instant is null
+     * @param start  start of this interval, null means now
+     * @param end  end of this interval, null means now
      */
     public Interval(ReadableInstant start, ReadableInstant end) {
         super(start, end);
@@ -120,9 +109,8 @@ public final class Interval extends AbstractInterval
     /**
      * Constructs an interval from a start instant and a duration.
      * 
-     * @param start  start of this interval
-     * @param duration  duration of this interval
-     * @throws IllegalArgumentException if start or duration is null
+     * @param start  start of this interval, null means now
+     * @param duration  duration of this interval, null means zero length
      */
     public Interval(ReadableInstant start, ReadableDuration duration) {
         super(start, duration);
@@ -131,39 +119,35 @@ public final class Interval extends AbstractInterval
     /**
      * Constructs an interval from a duration and an end instant.
      * 
-     * @param duration duration of this interval
-     * @param end end of this interval
-     * @throws IllegalArgumentException if duration or end is null
+     * @param duration  duration of this interval, null means zero length
+     * @param end  end of this interval, null means now
      */
     public Interval(ReadableDuration duration, ReadableInstant end) {
         super(duration, end);
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setStartMillis(long millisInstant) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setEndMillis(long millisInstant) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setDurationAfterStart(ReadableDuration duration) {
     }
 
     /**
-     * Overridden to do nothing, ensuring this class and all subclasses are
-     * immutable.
+     * Overridden to do nothing, ensuring this class and all subclasses are immutable.
      */
     protected final void setDurationBeforeEnd(ReadableDuration duration) {
     }
+
 }

@@ -73,7 +73,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * @since 1.0
  */
 public abstract class AbstractInterval implements ReadableInterval {
-    
+
     /** The start of the period */
     private long iStartMillis;
     /** The end of the period */
@@ -86,31 +86,12 @@ public abstract class AbstractInterval implements ReadableInterval {
     private transient Instant iStartInstant;
     /** Cache the end instant */
     private transient Instant iEndInstant;
-    
-    /**
-     * Constructs a time interval as a copy of another.
-     * 
-     * @param interval the time interval to copy
-     * @throws IllegalArgumentException if the interval is null
-     */
-    public AbstractInterval(ReadableInterval interval) {
-        super();
-        if (interval == null) {
-            throw new IllegalArgumentException("The interval must not be null");
-        }
-        iStartMillis = interval.getStartMillis();
-        iEndMillis = interval.getEndMillis();
-        Duration duration = interval.getDuration();
-        if (duration != null && duration.isPrecise()) {
-            iDuration = duration;
-        }
-    }
-    
+
     /**
      * Constructs a time interval as a copy of another.
      * 
      * @param interval the time interval to convert
-     * @throws IllegalArgumentException if the interval is null
+     * @throws IllegalArgumentException if the interval is null or invalid
      */
     public AbstractInterval(Object interval) {
         super();
@@ -151,79 +132,97 @@ public abstract class AbstractInterval implements ReadableInterval {
         iStartMillis = startInstant;
         iEndMillis = endInstant;
     }
-    
+
     /**
      * Constructs an interval from a start and end instant.
      * 
-     * @param start  start of this interval
-     * @param end  end of this interval
-     * @throws IllegalArgumentException if either instant is null
+     * @param start  start of this interval, null means now
+     * @param end  end of this interval, null means now
      */
     public AbstractInterval(ReadableInstant start, ReadableInstant end) {
         super();
-        if (start == null) {
-            throw new IllegalArgumentException("The start instant must not be null");
-        }
-        if (end == null) {
-            throw new IllegalArgumentException("The end instant must not be null");
-        }
-        iStartMillis = start.getMillis();
-        if (start instanceof Instant) {
-            iStartInstant = (Instant) start;
-        }
-        iEndMillis = end.getMillis();
-        if (end instanceof Instant) {
-            iEndInstant = (Instant) end;
+        if (start == null && end == null) {
+            iStartMillis = DateTimeUtils.currentTimeMillis();
+            iEndMillis = iStartMillis;
+        } else {
+            if (start == null) {
+                iStartMillis = DateTimeUtils.currentTimeMillis();
+            } else {
+                iStartMillis = start.getMillis();
+                if (start instanceof Instant) {
+                    iStartInstant = (Instant) start;
+                }
+            }
+            if (end == null) {
+                iEndMillis = DateTimeUtils.currentTimeMillis();
+            } else {
+                iEndMillis = end.getMillis();
+                if (end instanceof Instant) {
+                    iEndInstant = (Instant) end;
+                }
+            }
         }
     }
-    
+
     /**
      * Constructs an interval from a start instant and a duration.
+     * <p>
+     * When forming the interval, the chronology from the instant is used
+     * if present, otherwise the chronology of the duration is used.
      * 
-     * @param start  start of this interval
-     * @param duration  duration of this interval
-     * @throws IllegalArgumentException if start or duration is null
+     * @param start  start of this interval, null means now
+     * @param duration  duration of this interval, null means zero length
      */
     public AbstractInterval(ReadableInstant start, ReadableDuration duration) {
         super();
+        Chronology chrono = null;
         if (start == null) {
-            throw new IllegalArgumentException("The start instant must not be null");
+            iStartMillis = DateTimeUtils.currentTimeMillis();
+        } else {
+            iStartMillis = start.getMillis();
+            chrono = start.getChronology();
+            if (start instanceof Instant) {
+                iStartInstant = (Instant) start;
+            }
         }
         if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
-        }
-        iStartMillis = start.getMillis();
-        if (start instanceof Instant) {
-            iStartInstant = (Instant) start;
-        }
-        iEndMillis = duration.addTo((ReadableInstant) start, 1).getMillis();
-        if (duration.isPrecise()) {
-            iDuration = duration.toDuration();
+            iEndMillis = iStartMillis;
+        } else {
+            iEndMillis = duration.addTo(iStartMillis, 1, chrono);
+            if (duration.isPrecise()) {
+                iDuration = duration.toDuration();
+            }
         }
     }
-    
+
     /**
      * Constructs an interval from a duration and an end instant.
+     * <p>
+     * When forming the interval, the chronology from the instant is used
+     * if present, otherwise the chronology of the duration is used.
      * 
-     * @param duration duration of this interval
-     * @param end end of this interval
-     * @throws IllegalArgumentException if duration or end is null
+     * @param duration  duration of this interval, null means zero length
+     * @param end  end of this interval, null means now
      */
     public AbstractInterval(ReadableDuration duration, ReadableInstant end) {
         super();
-        if (duration == null) {
-            throw new IllegalArgumentException("The duration must not be null");
-        }
+        Chronology chrono = null;
         if (end == null) {
-            throw new IllegalArgumentException("The end instant must not be null");
+            iEndMillis = DateTimeUtils.currentTimeMillis();
+        } else {
+            iEndMillis = end.getMillis();
+            chrono = end.getChronology();
+            if (end instanceof Instant) {
+                iEndInstant = (Instant) end;
+            }
         }
-        iEndMillis = end.getMillis();
-        if (end instanceof Instant) {
-            iEndInstant = (Instant) end;
-        }
-        iStartMillis = duration.addTo((ReadableInstant) end, -1).getMillis();
-        if (duration.isPrecise()) {
-            iDuration = duration.toDuration();
+        if (duration == null) {
+            iStartMillis = iEndMillis;
+        } else {
+            iStartMillis = duration.addTo(iEndMillis, 1, chrono);
+            if (duration.isPrecise()) {
+                iDuration = duration.toDuration();
+            }
         }
     }
 
@@ -285,13 +284,12 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     /**
-     * Gets the duration of this time interval.
+     * Gets the precise duration of this time interval.
      * <p>
-     * The duration returned will always be precise because it is relative to a
-     * known date. If this interval was not specified with a precise duration
-     * type, then the duration type defaults to ISO average-year-month type.
+     * If this interval was constructed using a precise duration then that object will
+     * be returned. Otherwise a new Duration instance using the MillisType is returned.
      *
-     * @return the duration of the time interval
+     * @return the precise duration of the time interval
      */
     public final Duration getDuration() {
         if (iDuration == null) {
@@ -300,26 +298,28 @@ public abstract class AbstractInterval implements ReadableInterval {
         return iDuration;
     }
 
-    /** 
-     * Gets the duration of this time interval.
+    /**
+     * Gets the duration of this time interval using the specified duration type.
      *
-     * @param type the requested type of the duration
+     * @param type  the requested type of the duration, null means MillisType
      * @return the duration of the time interval
      */
     public final Duration getDuration(DurationType type) {
         if (type == null) {
-            type = DurationType.getAverageYearMonthType();
+            type = DurationType.getMillisType();
         }
         Duration duration = iDuration;
         if (duration == null) {
             if (type.isPrecise()) {
                 duration = new Duration(getEndMillis() - getStartMillis(), type);
-                if (type.equals(DurationType.getAverageYearMonthType())) {
+                if (type.equals(DurationType.getMillisType())) {
                     iDuration = duration;
                 }
             } else {
                 duration = new Duration(getStartInstant(), getEndInstant(), type);
             }
+        } else {
+            duration = duration.withDurationType(type);
         }
         return duration;
     }
@@ -339,13 +339,12 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Does this time interval contain the specified instant.
      * 
-     * @param instant  the instant
+     * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
-     * @throws IllegalArgumentException if the instant is null
      */
     public final boolean contains(ReadableInstant instant) {
         if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+            return contains(DateTimeUtils.currentTimeMillis());
         }
         return contains(instant.getMillis());
     }
@@ -403,13 +402,12 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Is this time interval before the specified instant.
      * 
-     * @param instant  the instant to compare to
+     * @param instant  the instant to compare to, null means now
      * @return true if this time interval is before the instant
-     * @throws IllegalArgumentException if the instant is null
      */
     public final boolean isBefore(ReadableInstant instant) {
         if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+            return isBefore(DateTimeUtils.currentTimeMillis());
         }
         return isBefore(instant.getMillis());
     }
@@ -428,13 +426,12 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Is this time interval after the specified instant.
      * 
-     * @param instant  the instant to compare to
+     * @param instant  the instant to compare to, null means now
      * @return true if this time interval is after the instant
-     * @throws IllegalArgumentException if the instant is null
      */
     public final boolean isAfter(ReadableInstant instant) {
         if (instant == null) {
-            throw new IllegalArgumentException("The instant must not be null");
+            return isAfter(DateTimeUtils.currentTimeMillis());
         }
         return isAfter(instant.getMillis());
     }
@@ -453,7 +450,7 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     /**
-     * Get the object as a MutableInterval.
+     * Get the object as a MutableInterval always returning a new instance.
      * 
      * @return a mutable interval object
      */
@@ -480,13 +477,12 @@ public abstract class AbstractInterval implements ReadableInterval {
             return false;
         }
         ReadableInterval other = (ReadableInterval) readableInterval;
-        return 
-            (getStartMillis() == other.getStartMillis() 
-            && getEndMillis() == other.getEndMillis());
+        return (getStartMillis() == other.getStartMillis() &&
+                getEndMillis() == other.getEndMillis());
     }
 
     /**
-     * Hashcode compatable with equals method.
+     * Hashcode compatible with equals method.
      *
      * @return suitable hashcode
      */

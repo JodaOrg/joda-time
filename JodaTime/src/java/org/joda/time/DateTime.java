@@ -315,7 +315,7 @@ public class DateTime extends AbstractDateTime
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the millis will change, the chronology and time zone are kept.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
@@ -329,7 +329,7 @@ public class DateTime extends AbstractDateTime
      * <p>
      * The returned object will be a new instance of the same implementation type.
      * Only the chronology will change, the millis are kept.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology
@@ -349,7 +349,7 @@ public class DateTime extends AbstractDateTime
      * The returned object will be a new instance of the same implementation type.
      * This method changes alters the time zone, and does not change the
      * millisecond instant, with the effect that the field values usually change.
-     * Immutable implementations may return <code>this</code> if appropriate.
+     * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
@@ -370,7 +370,7 @@ public class DateTime extends AbstractDateTime
      * The returned object will be a new instance of the same implementation type.
      * This method changes alters the time zone and the millisecond instant to keep
      * the field values the same.
-     * Immutable implementations may return <code>this</code> if appropriate.
+     * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newDateTimeZone  the new time zone
      * @return a copy of this instant with a different time zone
@@ -382,8 +382,8 @@ public class DateTime extends AbstractDateTime
         final DateTimeZone originalZone;
         if (originalChrono == null || (originalZone = originalChrono.getZone()) == null) {
             // Without an original chronology or time zone, no new time zone
-            // can be set. Call withMillis to allow subclass to decide if a
-            // clone should be made or not.
+            // can be set. Call withMillis to let it decide if a clone should
+            // be made or not.
             return withMillis(originalMillis);
         }
 

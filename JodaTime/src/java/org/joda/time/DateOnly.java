@@ -226,7 +226,7 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      * The returned object will be a new instance of the same implementation type.
      * Only the millis will change, the chronology is kept.
      * Time fields will be removed from the specified millis.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this instant with different millis
@@ -242,7 +242,7 @@ public class DateOnly extends AbstractPartialInstant implements Serializable {
      * The returned object will be a new instance of the same implementation type.
      * Only the chronology will change, the millis are kept.
      * The chronology will be converted to a UTC zone.
-     * Immutable subclasses may return <code>this</code> if appropriate.
+     * The returned object will be either be a new instance or <code>this</code>.
      *
      * @param newChronology  the new chronology
      * @return a copy of this instant with a different chronology

@@ -443,13 +443,15 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the instant to add the duration to
+     * @param instant  the instant to add the duration to, null means now
      * @param scalar  the number of times to add the duration, negative to subtract
      * @return instant with the original value plus this duration times scalar
-     * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public final Instant addTo(ReadableInstant instant, int scalar) {
+        if (instant == null) {
+            return new Instant(addTo(DateTimeUtils.currentTimeMillis(), scalar));
+        }
         return new Instant(addTo(instant.getMillis(), scalar));
     }
 
@@ -459,12 +461,15 @@ public abstract class AbstractDuration implements ReadableDuration, Serializable
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the instant to update with the added duration
+     * @param instant  the instant to update with the added duration, must not be null
      * @param scalar  the number of times to add the duration, negative to subtract
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public final void addInto(ReadWritableInstant instant, int scalar) {
+        if (instant == null) {
+            throw new IllegalArgumentException("The instant must not be null");
+        }
         instant.setMillis(addTo(instant.getMillis(), scalar));
     }
 

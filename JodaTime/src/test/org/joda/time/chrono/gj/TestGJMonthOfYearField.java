@@ -46,8 +46,8 @@ class TestGJMonthOfYearField extends TestGJDateTimeField {
 
     public long add(long millis, long value) {
         int newYear = iChronology.year().get(millis)
-            + (int)iChronology.div(value, 12);
-        int newMonth = get(millis) + (int)iChronology.mod(value, 12);
+            + (int)TestGJChronology.div(value, 12);
+        int newMonth = get(millis) + (int)TestGJChronology.mod(value, 12);
         if (newMonth > 12) {
             newYear++;
             newMonth -= 12;

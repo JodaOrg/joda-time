@@ -15,9 +15,7 @@
  */
 package org.joda.time.chrono.gj;
 
-import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeZone;
 
 /**
  * A reference Julian chronology implementation, intended for testing purposes

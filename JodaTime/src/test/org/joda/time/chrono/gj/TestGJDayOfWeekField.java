@@ -24,11 +24,11 @@ import org.joda.time.DurationField;
  */
 class TestGJDayOfWeekField extends TestGJDateTimeField {
     public TestGJDayOfWeekField(TestGJChronology chrono) {
-        super(DateTimeFieldType.dayOfWeek(), chrono.MILLIS_PER_DAY, chrono);
+        super(DateTimeFieldType.dayOfWeek(), TestGJChronology.MILLIS_PER_DAY, chrono);
     }
 
     public int get(long millis) {
-        int dayOfWeek = (int)iChronology.mod(iChronology.fixedFromMillis(millis), 7);
+        int dayOfWeek = (int) TestGJChronology.mod(iChronology.fixedFromMillis(millis), 7);
         if (dayOfWeek == 0) {
             dayOfWeek = 7;
         }
@@ -40,7 +40,7 @@ class TestGJDayOfWeekField extends TestGJDateTimeField {
     }
 
     public long add(long millis, long value) {
-        return millis + value * iChronology.MILLIS_PER_DAY;
+        return millis + value * TestGJChronology.MILLIS_PER_DAY;
     }
 
     public DurationField getRangeDurationField() {

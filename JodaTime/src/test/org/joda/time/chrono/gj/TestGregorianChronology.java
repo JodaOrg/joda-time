@@ -15,10 +15,6 @@
  */
 package org.joda.time.chrono.gj;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeZone;
-
 /**
  * A reference Gregorian chronology implementation, intended for testing
  * purposes only. Correctness is favored over performance. The key functions

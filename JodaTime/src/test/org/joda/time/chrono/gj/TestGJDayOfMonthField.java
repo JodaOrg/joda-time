@@ -24,7 +24,7 @@ import org.joda.time.DurationField;
  */
 class TestGJDayOfMonthField extends TestGJDateTimeField {
     public TestGJDayOfMonthField(TestGJChronology chrono) {
-        super(DateTimeFieldType.dayOfMonth(), chrono.MILLIS_PER_DAY, chrono);
+        super(DateTimeFieldType.dayOfMonth(), TestGJChronology.MILLIS_PER_DAY, chrono);
     }
 
     public int get(long millis) {
@@ -38,7 +38,7 @@ class TestGJDayOfMonthField extends TestGJDateTimeField {
     }
 
     public long add(long millis, long value) {
-        return millis + value * iChronology.MILLIS_PER_DAY;
+        return millis + value * TestGJChronology.MILLIS_PER_DAY;
     }
 
     public DurationField getRangeDurationField() {

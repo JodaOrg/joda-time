@@ -95,7 +95,6 @@ public class Examples {
         System.out.println("");
         System.out.println("Convert to Instant:   in.toInstant():           " + in.toInstant());
         System.out.println("Convert to DateTime:  in.toDateTime():          " + in.toDateTime());
-        System.out.println("Convert to trusted:   in.toTrustedISODateTime():" + in.toTrustedISODateTime());
         System.out.println("Convert to MutableDT: in.toMutableDateTime():   " + in.toMutableDateTime());
         System.out.println("Convert to Date:      in.toDate():              " + in.toDate());
         System.out.println("Convert to Calendar:  in.toCalendar(Locale.UK): " + in.toCalendar(Locale.UK).toString().substring(0, 46));
@@ -139,7 +138,6 @@ public class Examples {
         System.out.println("...");
         System.out.println("Convert to Instant:   in.toInstant():           " + in.toInstant());
         System.out.println("Convert to DateTime:  in.toDateTime():          " + in.toDateTime());
-        System.out.println("Convert to trusted:   in.toTrustedISODateTime():" + in.toTrustedISODateTime());
         System.out.println("Convert to MutableDT: in.toMutableDateTime():   " + in.toMutableDateTime());
         System.out.println("Convert to Date:      in.toDate():              " + in.toDate());
         System.out.println("Convert to Calendar:  in.toCalendar(Locale.UK): " + in.toCalendar(Locale.UK).toString().substring(0, 46));

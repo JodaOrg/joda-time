@@ -73,6 +73,7 @@ public class TestAll extends TestCase {
     public static Test suite() {
         TestSuite suite = new TestSuite();
         suite.addTest(TestTimeOfDay.suite());
+        suite.addTest(TestYearMonthDay.suite());
         return suite;
     }
 

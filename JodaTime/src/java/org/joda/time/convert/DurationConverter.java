@@ -53,21 +53,44 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.ReadableDuration;
+import org.joda.time.ReadWritableDuration;
+
 /**
  * DurationConverter defines how an object is converted to a millisecond duration.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
 public interface DurationConverter extends Converter {
+
+    /**
+     * Returns true if the given support object represents a precice
+     * duration. If so, getDurationMillis can be called.
+     *
+     * @throws ClassCastException if the object is invalid
+     */
+    boolean isPrecise(Object object);
 
     /**
      * Extracts the millis from an object of this convertor's type.
      * 
      * @param object  the object to convert, must not be null
      * @return the millisecond duration
-     * @throws IllegalArgumentException if the object is invalid
+     * @throws ClassCastException if the object is invalid
      */
     long getDurationMillis(Object object);
-    
+
+    /**
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritableDuration.
+     *
+     * @param duration duration to get modified
+     * @param object  the object to convert, must not be null
+     * @return the millisecond duration
+     * @throws ClassCastException if the object is invalid
+     */
+    void setInto(ReadWritableDuration duration, Object object);
+
 }

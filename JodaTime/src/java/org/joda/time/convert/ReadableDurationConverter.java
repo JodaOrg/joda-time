@@ -54,11 +54,13 @@
 package org.joda.time.convert;
 
 import org.joda.time.ReadableDuration;
+import org.joda.time.ReadWritableDuration;
 
 /**
  * ReadableDurationConverter extracts milliseconds and chronology from a ReadableDuration.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
 class ReadableDurationConverter extends AbstractConverter implements DurationConverter {
@@ -77,6 +79,16 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
 
     //-----------------------------------------------------------------------
     /**
+     * Returns true if the given support object represents a precice
+     * duration. If so, getDurationMillis can be called.
+     *
+     * @throws ClassCastException if the object is invalid
+     */
+    public boolean isPrecise(Object object) {
+        return ((ReadableDuration) object).isPrecise();
+    }
+
+    /**
      * Extracts the millis from an object of this convertor's type.
      * 
      * @param object  the object to convert, must not be null
@@ -86,6 +98,19 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
         return ((ReadableDuration) object).getTotalMillis();
     }
     
+    /**
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritableDuration.
+     *
+     * @param duration duration to get modified
+     * @param object  the object to convert, must not be null
+     * @return the millisecond duration
+     * @throws ClassCastException if the object is invalid
+     */
+    public void setInto(ReadWritableDuration duration, Object object) {
+        duration.setDuration((ReadableDuration) object);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns ReadableDuration.class.

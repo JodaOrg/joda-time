@@ -65,7 +65,7 @@ import org.joda.time.DateTimeZone;
 public interface InstantConverter extends Converter {
 
     /**
-     * Extracts the millis from an object of this convertor's type.
+     * Extracts the millis from an object of this converter's type.
      * 
      * @param object  the object to convert, must not be null
      * @return the millisecond instant
@@ -74,7 +74,7 @@ public interface InstantConverter extends Converter {
     long getInstantMillis(Object object);
     
     /**
-     * Extracts the millis from an object of this convertor's type. The zone
+     * Extracts the millis from an object of this converter's type. The zone
      * parameter is a hint to the converter, should it require a time zone to
      * aid in conversion.
      * 
@@ -86,7 +86,7 @@ public interface InstantConverter extends Converter {
     long getInstantMillis(Object object, DateTimeZone zone);
     
     /**
-     * Extracts the millis from an object of this convertor's type. The chrono
+     * Extracts the millis from an object of this converter's type. The chrono
      * parameter is a hint to the converter, should it require a chronology to
      * aid in conversion.
      * 
@@ -99,7 +99,7 @@ public interface InstantConverter extends Converter {
     
     //-----------------------------------------------------------------------
     /**
-     * Extracts the chronology from an object of this convertor's type.
+     * Extracts the chronology from an object of this converter's type.
      * 
      * @param object  the object to convert, must not be null
      * @return the chronology, never null
@@ -108,7 +108,7 @@ public interface InstantConverter extends Converter {
     Chronology getChronology(Object object);
     
     /**
-     * Extracts the chronology from an object of this convertor's type
+     * Extracts the chronology from an object of this converter's type
      * where the time zone is specified.
      * 
      * @param object  the object to convert, must not be null
@@ -119,7 +119,7 @@ public interface InstantConverter extends Converter {
     Chronology getChronology(Object object, DateTimeZone zone);
     
     /**
-     * Extracts the chronology from an object of this convertor's type
+     * Extracts the chronology from an object of this converter's type
      * where the chronology is specified.
      * 
      * @param object  the object to convert, must not be null

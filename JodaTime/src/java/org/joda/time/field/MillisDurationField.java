@@ -182,7 +182,7 @@ public final class MillisDurationField extends DurationField implements Serializ
      * @return debug string
      */
     public String toString() {
-        return "DurationField[" + getName() + ']';
+        return "DurationField[millis]";
     }
 
     /**

@@ -65,9 +65,9 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.test.time.BulkTest;
 import org.joda.time.chrono.ISOChronology;
 /**
  * This class is a Junit unit test for the
@@ -75,30 +75,22 @@ import org.joda.time.chrono.ISOChronology;
  *
  * @author Guy Allard
  */
-public class TestDateTimeComparator extends BulkTest {
+public class TestDateTimeComparator extends TestCase {
 
     private static final Chronology ISO = ISOChronology.getInstance();
     
-    /**
-     * The main method for this test program.
-     * @param args command line arguments.
-     */
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
-    /**
-     * TestSuite is a junit required method.
-     */
+
     public static TestSuite suite() {
-        return BulkTest.makeSuite(TestDateTimeComparator.class);
+        return new TestSuite(TestDateTimeComparator.class);
     }
-    /**
-     * TestDateTimeComparator constructor.
-     * @param name
-     */
+
     public TestDateTimeComparator(String name) {
         super(name);
     }
+
     /**
      * A reference to a DateTime object.
      */

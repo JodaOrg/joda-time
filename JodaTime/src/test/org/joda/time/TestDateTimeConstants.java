@@ -53,16 +53,15 @@
  */
 package org.joda.time;
 
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
-
-import org.joda.test.time.BulkTest;
 
 /**
  * Test case.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeConstants extends BulkTest {
+public class TestDateTimeConstants extends TestCase {
 
     /**
      * The main method for this test program.
@@ -76,7 +75,7 @@ public class TestDateTimeConstants extends BulkTest {
      * TestSuite is a junit required method.
      */
     public static TestSuite suite() {
-        return BulkTest.makeSuite(TestDateTimeConstants.class);
+        return new TestSuite(TestDateTimeConstants.class);
     }
 
     /**

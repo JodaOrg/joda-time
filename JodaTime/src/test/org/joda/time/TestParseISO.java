@@ -54,11 +54,9 @@
 package org.joda.time;
 
 import junit.framework.Assert;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.test.time.*;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MutableDateTime;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -68,7 +66,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * @author Guy Allard
  * @author Stephen Colebourne
  */
-public class TestParseISO extends BulkTest {
+public class TestParseISO extends TestCase {
     
     private static final int DEFAULT = 99999;
 
@@ -85,11 +83,11 @@ public class TestParseISO extends BulkTest {
      * @see org.joda.test.time.BulkTest
      */
     public static TestSuite suite() {
-        return BulkTest.makeSuite(TestParseISO.class);
+        return new TestSuite(TestParseISO.class);
     }
     
     /**
-     * TestConstructors constructor.
+     * Constructor.
      * @param name
      */
     public TestParseISO(String name) {

@@ -1,4 +1,4 @@
-# @(#)asia	7.73
+# @(#)asia	7.74
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -380,7 +380,7 @@ Zone	Asia/Dili	8:22:20 -	LMT	1912
 
 # India
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone	Asia/Calcutta	5:53:28 -	LMT	1880
+Zone	Asia/Calcutta	5:53:28 -	LMT	1880	# Kolkata
 			5:53:20	-	HMT	1941 Oct    # Howrah Mean Time?
 			6:30	-	BURT	1942 May 15 # Burma Time
 			5:30	-	IST	1942 Sep
@@ -1012,17 +1012,13 @@ Rule	NBorneo	1935	1941	-	Sep	14	0:00	0:20	TS # one-Third Summer
 Rule	NBorneo	1935	1941	-	Dec	14	0:00	0	-
 #
 # peninsular Malaysia
-# From Paul Eggert (2003-11-01):
 # The data here are taken from Mok Ly Yng (2003-10-30)
 # <http://www.math.nus.edu.sg/aslaksen/teaching/timezone.html>.
-# Before 1901, Penang, Malacca and Singapore each had their own time zone;
-# assume Kuala Lumpur used Malaccan time.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone Asia/Kuala_Lumpur	6:46:48 -	LMT	1880
-			6:49:00	-	MMT	1901 Jan  1 # Malacca Mean Time
+Zone Asia/Kuala_Lumpur	6:46:46 -	LMT	1901 Jan  1
 			6:55:25	-	SMT	1905 Jun  1 # Singapore M.T.
 			7:00	-	MALT	1933 Jan  1 # Malaya Time
-			7:00	0:20	MALST	1936
+			7:00	0:20	MALST	1936 Jan  1
 			7:20	-	MALT	1941 Sep  1
 			7:30	-	MALT	1942 Feb 16
 			9:00	-	JST	1945 Sep 12
@@ -1089,6 +1085,15 @@ Zone	Indian/Maldives	4:54:00 -	LMT	1880	# Male
 #
 # [The province of Selenge is omitted from the above lists.]
 
+# From Ganbold Ts., Ulaanbaatar <ganbold@micom.mng.net> (2004-04-17):
+# Daylight saving occurs at 02:00 local time last Saturday of March.
+# It will change back to normal at 02:00 local time last Saturday of
+# September.... As I remember this rule was changed in 2001.
+#
+# From Paul Eggert (2004-04-17):
+# For now, assume Rives McDow's informant got confused about Friday vs
+# Saturday, and that his 2001 dates should have 1 added to them.
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Mongol	1983	1984	-	Apr	1	0:00	1:00	S
 Rule	Mongol	1983	only	-	Oct	1	0:00	0	-
@@ -1098,8 +1103,9 @@ Rule	Mongol	1983	only	-	Oct	1	0:00	0	-
 Rule	Mongol	1985	1998	-	Mar	lastSun	2:00s	1:00	S
 Rule	Mongol	1984	1998	-	Sep	lastSun	2:00s	0	-
 # IATA SSIM (1999-09) says Mongolia no longer observes DST.
-Rule	Mongol	2001	only	-	Apr	27	2:00s	1:00	S
-Rule	Mongol	2001	only	-	Sep	28	2:00s	0	-
+Rule	Mongol	2001	only	-	Apr	lastSat	2:00	1:00	S
+Rule	Mongol	2001	max	-	Sep	lastSat	2:00	0	-
+Rule	Mongol	2002	max	-	Mar	lastSat	2:00	1:00	S
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 # Hovd, a.k.a. Chovd, Dund-Us, Dzhargalant, Khovd, Jirgalanta
@@ -1309,10 +1315,10 @@ Zone	Asia/Riyadh	3:06:52 -	LMT	1950
 # The data here are taken from Mok Ly Yng (2003-10-30)
 # <http://www.math.nus.edu.sg/aslaksen/teaching/timezone.html>.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone	Asia/Singapore	6:55:25 -	LMT	1880
+Zone	Asia/Singapore	6:55:25 -	LMT	1901 Jan  1
 			6:55:25	-	SMT	1905 Jun  1 # Singapore M.T.
 			7:00	-	MALT	1933 Jan  1 # Malaya Time
-			7:00	0:20	MALST	1936
+			7:00	0:20	MALST	1936 Jan  1
 			7:20	-	MALT	1941 Sep  1
 			7:30	-	MALT	1942 Feb 16
 			9:00	-	JST	1945 Sep 12

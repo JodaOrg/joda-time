@@ -1,4 +1,4 @@
-# @(#)backward	7.24
+# @(#)backward	7.25
 
 # This file provides links between current names for time zones
 # and their old names.  Many names changed in late 1993.
@@ -65,7 +65,7 @@ Link	Africa/Tripoli		Libya
 Link	America/Tijuana		Mexico/BajaNorte
 Link	America/Mazatlan	Mexico/BajaSur
 Link	America/Mexico_City	Mexico/General
-Link	America/Denver		Navajo
+Link	America/Shiprock	Navajo
 Link	Pacific/Auckland	NZ
 Link	Pacific/Chatham		NZ-CHAT
 Link	Pacific/Pago_Pago	Pacific/Samoa

@@ -1,4 +1,4 @@
-# @(#)southamerica	7.50
+# @(#)southamerica	7.51
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -141,6 +141,13 @@ Rule	Arg	2000	only	-	Mar	Sun>=1	0:00	0	-
 # This kind of things had always been done this way in Argentina.
 # We are still -03:00 all year round in all of the country.
 #
+# From Mariano Absatz (2004-05-21):
+# Today it was officially published that the Province of Mendoza is changing
+# its timezone this winter... starting tomorrow night....
+# http://www.gobernac.mendoza.gov.ar/boletin/pdf/20040521-27158-normas.pdf
+# From Paul Eggert (2004-05-24):
+# It's Law No. 7,210.  This change is due to a public power emergency, so for
+# now we'll assume it's for this year only.
 #
 # From Paul Eggert (2002-01-22):
 # <a href="http://www.spicasc.net/horvera.html">
@@ -232,6 +239,8 @@ Zone America/Mendoza	-4:35:16 -	LMT	1894 Oct 31
 			-4:00	-	WART	1992 Oct 18
 			-3:00	Arg	AR%sT	1999 Oct  3
 			-4:00	Arg	AR%sT	2000 Mar  3
+			-3:00	-	ART	2004 May 23
+			-4:00	-	WART	2004 Oct 17
 			-3:00	-	ART
 
 # Aruba
@@ -389,8 +398,8 @@ Rule	Brazil	1992	only	-	Oct	25	 0:00	1:00	S
 Rule	Brazil	1993	only	-	Jan	31	 0:00	0	-
 # Decree <a href="http://pcdsh01.on.br/HV942.htm">942</a> (1993-09-28)
 # adopted by same states, plus AM.
-# Decree <a href="http://pcdsh01.on.br/HV1252.htm">1,252</a> (1994-09-22)
-# adopted by same states, minus AM and MT.
+# Decree <a href="http://pcdsh01.on.br/HV1252.htm">1,252</a> (1994-09-22;
+# web page corrected 2004-01-07) adopted by same states, minus AM.
 # Decree <a href="http://pcdsh01.on.br/HV1636.htm">1,636</a> (1995-09-14)
 # adopted by same states, plus MT and TO.
 # Decree <a href="http://pcdsh01.on.br/HV1674.htm">1,674</a> (1995-10-13)
@@ -536,8 +545,6 @@ Zone America/Campo_Grande -3:38:28 -	LMT	1914
 #
 # Mato Grosso (MT)
 Zone America/Cuiaba	-3:44:20 -	LMT	1914
-			-4:00	Brazil	AM%sT	1994 Sep 22
-			-4:00	-	AMT	1995 Sep 14
 			-4:00	Brazil	AM%sT	2003 Sep 24
 			-4:00	-	AMT
 #

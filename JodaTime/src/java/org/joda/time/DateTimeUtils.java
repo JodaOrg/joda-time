@@ -158,55 +158,66 @@ public class DateTimeUtils {
         return instant.getMillis();
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Gets the millisecond instant from the specified instant object handling null.
+     * Gets the chronology from the specified instant object handling null.
      * <p>
-     * If the instant object is <code>null</code>, the <code>nullMillis</code>
-     * will be returned. Otherwise, the millis from the object are returned.
+     * If the instant object is <code>null</code>, or the instant's chronology is
+     * <code>null</code>, {@link ISOChronology#getInstance()} will be returned.
+     * Otherwise, the chronology from the object is returned.
      * 
-     * @param instant  the instant to examine, null means use nullMillis
-     * @param nullMillis  the millis to return if null
-     * @return the time in milliseconds from 1970-01-01T00:00:00Z
+     * @param instant  the instant to examine, null means ISO in the default zone
+     * @return the chronology, never null
      */
-    public static final long getInstantMillis(ReadableInstant instant, long nullMillis) {
+    public static final Chronology getInstantChronology(ReadableInstant instant) {
         if (instant == null) {
-            return nullMillis;
+            return ISOChronology.getInstance();
         }
-        return instant.getMillis();
+        Chronology chrono = instant.getChronology();
+        if (chrono == null) {
+            return ISOChronology.getInstance();
+        }
+        return chrono;
     }
 
     //-----------------------------------------------------------------------
     /**
      * Gets the chronology from the specified instant object handling null.
      * <p>
-     * If the instant object is <code>null</code>, {@link ISOChronology#getInstance()}
-     * will be returned. Otherwise, the chronology from the object is returned.
+     * If the instant object is <code>null</code>, or the instant's chronology is
+     * <code>null</code>, <code>nullChrono</code> will be returned.
+     * Otherwise, the chronology from the object is returned.
      * 
-     * @param instant  the instant to examine, null means ISO in the default zone
-     * @return the chronology
-     */
-    public static final Chronology getInstantChronology(ReadableInstant instant) {
-        if (instant == null) {
-            return ISOChronology.getInstance();
-        }
-        return instant.getChronology();
-    }
-
-    /**
-     * Gets the chronology from the specified instant object handling null.
-     * <p>
-     * If the instant object is <code>null</code>, <code>nullChrono</code>
-     * will be returned. Otherwise, the chronology from the object is returned.
-     * 
-     * @param instant  the instant to examine, null means use <code>nullChrono</code>
-     * @param nullChrono  the chronology to return if null
+     * @param instant  the instant to examine, null means returns use nullChrono
+     * @param nullChrono  the chronology to use in the case of finding null
      * @return the chronology
      */
     public static final Chronology getInstantChronology(ReadableInstant instant, Chronology nullChrono) {
         if (instant == null) {
             return nullChrono;
         }
-        return instant.getChronology();
+        Chronology chrono = instant.getChronology();
+        if (chrono == null) {
+            return nullChrono;
+        }
+        return chrono;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the chronology handling null.
+     * <p>
+     * If the chronology is <code>null</code>, {@link ISOChronology#getInstance()}
+     * will be returned. Otherwise, the chronology is returned.
+     * 
+     * @param chrono  the chronology to use, null means ISO in the default zone
+     * @return the chronology, or ISOChronology if null
+     */
+    public static final Chronology getChronology(Chronology chrono) {
+        if (chrono == null) {
+            return ISOChronology.getInstance();
+        }
+        return chrono;
     }
 
     //-----------------------------------------------------------------------
@@ -222,22 +233,6 @@ public class DateTimeUtils {
     public static final long getDurationMillis(ReadableDuration duration) {
         if (duration == null) {
             return 0L;
-        }
-        return duration.getMillis();
-    }
-
-    /**
-     * Gets the millisecond duration from the specified duration object handling null.
-     * <p>
-     * If the duration object is <code>null</code>, <code>nullDuration</code> will be returned.
-     * Otherwise, the millis from the object are returned.
-     * 
-     * @param duration  the duration to examine, null means use <code>nullDuration</code>
-     * @return the duration in milliseconds
-     */
-    public static final long getDurationMillis(ReadableDuration duration, long nullDuration) {
-        if (duration == null) {
-            return nullDuration;
         }
         return duration.getMillis();
     }

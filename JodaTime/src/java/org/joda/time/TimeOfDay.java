@@ -56,7 +56,7 @@ package org.joda.time;
 import java.io.Serializable;
 import java.util.Locale;
 
-import org.joda.time.base.*;
+import org.joda.time.base.BasePartial;
 import org.joda.time.field.AbstractPartialFieldProperty;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -306,32 +306,36 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Initialize the array of fields.
+     * Gets the number of fields in this partial.
      * 
-     * @param chrono  the chronology to use
+     * @return the field count
      */
-    protected DateTimeField[] initFields(Chronology chrono) {
-        return new DateTimeField[] {
-            chrono.hourOfDay(),
-            chrono.minuteOfHour(),
-            chrono.secondOfMinute(),
-            chrono.millisOfSecond(),
-        };
+    public int getFieldSize() {
+        return 4;
     }
 
     /**
-     * Initialize the array of values.
+     * Gets the field for a specific index in the chronology specified.
+     * <p>
+     * This method must not use any instance variables.
      * 
-     * @param instant  the instant to use
+     * @param index  the index to retrieve
      * @param chrono  the chronology to use
+     * @return the field
      */
-    protected int[] initValues(long instant, Chronology chrono) {
-        return new int[] {
-            chrono.hourOfDay().get(instant),
-            chrono.minuteOfHour().get(instant),
-            chrono.secondOfMinute().get(instant),
-            chrono.millisOfSecond().get(instant),
-        };
+    protected DateTimeField getField(int index, Chronology chrono) {
+        switch (index) {
+            case HOUR_OF_DAY:
+                return chrono.hourOfDay();
+            case MINUTE_OF_HOUR:
+                return chrono.minuteOfHour();
+            case SECOND_OF_MINUTE:
+                return chrono.secondOfMinute();
+            case MILLIS_OF_SECOND:
+                return chrono.millisOfSecond();
+            default:
+                throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
     }
 
     //-----------------------------------------------------------------------

@@ -53,8 +53,6 @@
  */
 package org.joda.time.base;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
@@ -88,7 +86,7 @@ public abstract class BasePartial
     private Chronology iChronology;
     /** The values of each field in this partial */
     private int[] iValues;
-    /** The values of each field in this partial */
+    /** A cached array of fields. */
     private transient DateTimeField[] iFields;
 
     //-----------------------------------------------------------------------
@@ -147,7 +145,6 @@ public abstract class BasePartial
         super();
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
         iValues = initValues(instant, chronology);
     }
 
@@ -168,7 +165,6 @@ public abstract class BasePartial
         Chronology chronology = converter.getChronology(instant);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
         iValues = initValues(millis, chronology);
     }
 
@@ -195,7 +191,6 @@ public abstract class BasePartial
         chronology = converter.getChronology(instant, chronology);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
         iValues = initValues(millis, chronology);
     }
 
@@ -213,7 +208,6 @@ public abstract class BasePartial
         super();
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        iFields = initFields(iChronology);
         chronology.validate(this, values);
         iValues = (int[]) values.clone();
     }
@@ -229,30 +223,12 @@ public abstract class BasePartial
      */
     protected BasePartial(BasePartial other, int[] values) {
         super();
-        iFields = other.iFields;
-        iValues = values;
         iChronology = other.iChronology;
+        iValues = values;
+        iFields = other.iFields;
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Recreates the state of this object after deserialization.
-     * 
-     * @param in  the input stream
-     */
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        iFields = initFields(iChronology);
-    }
-
-    /**
-     * Initialize the array of fields.
-     * The field and value arrays must match.
-     * 
-     * @param chrono  the chronology to use
-     */
-    protected abstract DateTimeField[] initFields(Chronology chrono);
-
     /**
      * Initialize the array of values.
      * The field and value arrays must match.
@@ -260,18 +236,15 @@ public abstract class BasePartial
      * @param instant  the instant to use
      * @param chrono  the chronology to use
      */
-    protected abstract int[] initValues(long instant, Chronology chrono);
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the number of fields in this partial.
-     * 
-     * @return the field count
-     */
-    public int getFieldSize() {
-        return iFields.length;
+    protected int[] initValues(long instant, Chronology chrono) {
+        int[] values = new int[getFieldSize()];
+        for (int i = 0; i < values.length; i++) {
+            values[i] = getField(i, chrono).get(instant);
+        }
+        return values;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets the field at the specifed index.
      * 
@@ -280,7 +253,28 @@ public abstract class BasePartial
      * @throws IndexOutOfBoundsException if the index is invalid
      */
     public DateTimeField getField(int index) {
-        return iFields[index];
+        DateTimeField[] fields = iFields;
+        if (fields != null) {
+            return fields[index];
+        } else {
+            return getField(index, getChronology());
+        }
+    }
+
+    /**
+     * Gets an array of the fields that this partial supports.
+     * <p>
+     * The fields are returned largest to smallest, for example Hour, Minute, Second.
+     *
+     * @return the fields supported in an array that may be altered, largest to smallest
+     */
+    public DateTimeField[] getFields() {
+        DateTimeField[] fields = iFields;
+        if (fields == null) {
+            fields = super.getFields();
+            iFields = fields;
+        }
+        return (DateTimeField[]) fields.clone();
     }
 
     /**
@@ -292,18 +286,6 @@ public abstract class BasePartial
      */
     public int getValue(int index) {
         return iValues[index];
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets an array of the fields that this partial supports.
-     * <p>
-     * The fields are returned largest to smallest, for example Hour, Minute, Second.
-     *
-     * @return the fields supported (cloned), largest to smallest
-     */
-    public DateTimeField[] getFields() {
-        return (DateTimeField[]) iFields.clone();
     }
 
     /**

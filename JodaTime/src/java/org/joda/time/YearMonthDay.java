@@ -238,30 +238,34 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Initialize the array of fields.
+     * Gets the number of fields in this partial.
      * 
-     * @param chrono  the chronology to use
+     * @return the field count
      */
-    protected DateTimeField[] initFields(Chronology chrono) {
-        return new DateTimeField[] {
-            chrono.year(),
-            chrono.monthOfYear(),
-            chrono.dayOfMonth(),
-        };
+    public int getFieldSize() {
+        return 3;
     }
 
     /**
-     * Initialize the array of values.
+     * Gets the field for a specific index in the chronology specified.
+     * <p>
+     * This method must not use any instance variables.
      * 
-     * @param instant  the instant to use
+     * @param index  the index to retrieve
      * @param chrono  the chronology to use
+     * @return the field
      */
-    protected int[] initValues(long instant, Chronology chrono) {
-        return new int[] {
-            chrono.year().get(instant),
-            chrono.monthOfYear().get(instant),
-            chrono.dayOfMonth().get(instant),
-        };
+    protected DateTimeField getField(int index, Chronology chrono) {
+        switch (index) {
+            case YEAR:
+                return chrono.year();
+            case MONTH_OF_YEAR:
+                return chrono.monthOfYear();
+            case DAY_OF_MONTH:
+                return chrono.dayOfMonth();
+            default:
+                throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
     }
 
     //-----------------------------------------------------------------------

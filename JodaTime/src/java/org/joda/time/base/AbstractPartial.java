@@ -90,6 +90,30 @@ public abstract class AbstractPartial implements ReadablePartial {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the field for a specific index in the chronology specified.
+     * <p>
+     * This method must not use any instance variables.
+     * 
+     * @param index  the index to retrieve
+     * @param chrono  the chronology to use
+     * @return the field
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    protected abstract DateTimeField getField(int index, Chronology chrono);
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the field at the specifed index.
+     * 
+     * @param index  the index
+     * @return the field
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public DateTimeField getField(int index) {
+        return getField(index, getChronology());
+    }
+
+    /**
      * Gets an array of the fields that this partial supports.
      * <p>
      * The fields are returned largest to smallest, for example Hour, Minute, Second.
@@ -221,7 +245,7 @@ public abstract class AbstractPartial implements ReadablePartial {
     protected long resolve(long baseInstant, Chronology chrono) {
         long millis = baseInstant;
         for (int i = 0, isize = getFieldSize(); i < isize; i++) {
-            millis = getField(i).set(millis, getValue(i));
+            millis = getField(i, chrono).set(millis, getValue(i));
         }
         return millis;
     }

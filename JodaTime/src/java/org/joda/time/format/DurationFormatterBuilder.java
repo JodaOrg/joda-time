@@ -1022,33 +1022,32 @@ public class DurationFormatterBuilder {
             }
 
             int value;
-            if (length == 3 && negative) {
-                value = -FormatUtils.parseTwoDigits(text, position + 1);
-            } else if (length == 2) {
-                if (negative) {
-                    value = text.charAt(position + 1) - '0';
-                    value = -value;
-                } else {
-                    value = FormatUtils.parseTwoDigits(text, position);
-                }
-            } else if (length == 1 && !negative) {
-                value = text.charAt(position) - '0';
+            if (length >= 9) {
+                // Since value may exceed max, use stock parser which checks
+                // for this.
+                value = Integer.parseInt
+                    (text.substring(position, position += length));
             } else {
-                String sub = text.substring(position, position + length);
-                try {
-                    value = Integer.parseInt(sub);
-                } catch (NumberFormatException e) {
-                    return ~position;
+                int i = position;
+                if (negative) {
+                    i++;
+                }
+                value = text.charAt(i++) - '0';
+                position += length;
+                while (i < position) {
+                    value = ((value << 3) + (value << 1)) + text.charAt(i++) - '0';
+                }
+                if (negative) {
+                    value = -value;
                 }
             }
-
+            
             setFieldValue(duration, value);
-            position += length;
-
+                
             if (position >= 0 && iSuffix != null) {
                 position = iSuffix.parse(text, position);
             }
-
+                
             return position;
         }
 

@@ -170,8 +170,7 @@ public class DateTimeFormatter {
      * @return the new formatter
      */
     public DateTimeFormatter withLocale(Locale locale) {
-        locale = (locale == null ? Locale.getDefault() : locale);
-        if (locale.equals(getLocale())) {
+        if (locale == getLocale() || (locale != null && locale.equals(getLocale()))) {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, locale, iOffsetParsed, iChrono, iZone);

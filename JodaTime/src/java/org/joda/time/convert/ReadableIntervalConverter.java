@@ -63,7 +63,8 @@ import org.joda.time.ReadableInterval;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class ReadableIntervalConverter extends AbstractConverter implements IntervalConverter, DurationConverter {
+class ReadableIntervalConverter extends AbstractConverter
+        implements IntervalConverter, DurationConverter, TimePeriodConverter {
 
     /**
      * Singleton instance.
@@ -77,15 +78,7 @@ class ReadableIntervalConverter extends AbstractConverter implements IntervalCon
         super();
     }
 
-    /**
-     * Returns true always.
-     * 
-     * @param object  the interval
-     */
-    public boolean isPrecise(Object object) {
-        return true;
-    }
-
+    //-----------------------------------------------------------------------
     /**
      * Gets the millisecond length of the interval.
      * 
@@ -95,17 +88,19 @@ class ReadableIntervalConverter extends AbstractConverter implements IntervalCon
         return (((ReadableInterval) object)).getDurationMillis();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the values of the mutable duration from the specified interval.
      * 
-     * @param writableDuration  the duration to set
+     * @param writablePeriod  the period to modify
      * @param object  the interval to set from
      */
-    public void setInto(ReadWritableTimePeriod writableDuration, Object object) {
+    public void setInto(ReadWritableTimePeriod writablePeriod, Object object) {
         ReadableInterval interval = (ReadableInterval) object;
-        writableDuration.setTimePeriod(interval.getStartMillis(), interval.getEndMillis());
+        writablePeriod.setTimePeriod(interval.getStartMillis(), interval.getEndMillis());
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the values of the mutable interval from the specified interval.
      * 
@@ -118,6 +113,7 @@ class ReadableIntervalConverter extends AbstractConverter implements IntervalCon
         writableInterval.setEndMillis(interval.getEndMillis());
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns ReadableInterval.class.
      */

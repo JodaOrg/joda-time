@@ -92,13 +92,6 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
     
     //-----------------------------------------------------------------------
     /**
-     * Returns true always.
-     */
-    public boolean isPrecise(Object object) {
-        return true;
-    }
-
-    /**
      * Gets the millisecond duration, which is the Long value.
      * 
      * @param object  the object to convert, must not be null
@@ -110,6 +103,7 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
         return ((Long) object).longValue();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Extracts duration values from an object of this converter's type, and
      * sets them into the given ReadWritableDuration.

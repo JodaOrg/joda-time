@@ -339,8 +339,8 @@ public class MutableTimePeriod
     }
 
     /**
-     * Adds an interval to this one by dividing the duration into
-     * fields and then adding each field in turn.
+     * Adds an interval to this one by converting it to a period using the same
+     * duration type and then adding each field in turn.
      * 
      * @param interval  the interval to add, null means add nothing
      * @throws ArithmeticException if the addition exceeds the capacity of the period

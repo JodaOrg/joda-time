@@ -63,7 +63,8 @@ import org.joda.time.ReadWritableTimePeriod;
  * @author Brian S O'Neill
  * @since 1.0
  */
-class NullConverter extends AbstractConverter implements InstantConverter, DurationConverter {
+class NullConverter extends AbstractConverter
+        implements InstantConverter, DurationConverter, TimePeriodConverter {
     
     /**
      * Singleton instance.
@@ -90,13 +91,6 @@ class NullConverter extends AbstractConverter implements InstantConverter, Durat
     
     //-----------------------------------------------------------------------
     /**
-     * Returns true always.
-     */
-    public boolean isPrecise(Object object) {
-        return true;
-    }
-
-    /**
      * Gets the millisecond duration, which is zero.
      * 
      * @param object  the object to convert
@@ -106,6 +100,7 @@ class NullConverter extends AbstractConverter implements InstantConverter, Durat
         return 0L;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the given ReadWritableDuration to zero milliseconds.
      *

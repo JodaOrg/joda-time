@@ -80,78 +80,78 @@ package org.joda.time;
 public interface ReadableTimePeriod {
 
     /**
-     * Returns the object which defines which fields this duration supports.
+     * Returns the object which defines which fields this period supports.
      */
     DurationType getDurationType();
 
     /**
-     * Is this duration a precise length of time, or descriptive.
+     * Is this period a precise length of time, or descriptive.
      * <p>
-     * A precise duration could include millis, seconds, minutes or hours.
+     * A precise period could include millis, seconds, minutes or hours.
      * However, days, weeks, months and years can vary in length, resulting in
-     * an imprecise duration.
+     * an imprecise period.
      * <p>
-     * An imprecise duration can be made precise by pairing it with a
+     * An imprecise period can be made precise by pairing it with a
      * date in a {@link ReadableInterval}.
      *
-     * @return true if the duration is precise
+     * @return true if the period is precise
      */
     boolean isPrecise();
 
     //-----------------------------------------------------------------------
     /**
-     * Adds this duration to the given instant, returning a new value.
+     * Adds this period to the given instant, returning a new value.
      * <p>
      * The addition uses the chronology of the DurationType.
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @return milliseconds value plus this duration times scalar
+     * period to
+     * @param scalar  the number of times to add the period, negative to subtract
+     * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
     long addTo(long instant, int scalar);
 
     /**
-     * Adds this duration to the given instant, returning a new value.
+     * Adds this period to the given instant, returning a new value.
      * <p>
      * The addition uses the chronology specified.
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @param chrono  override the chronology of the duration type, unless null is passed in
-     * @return milliseconds value plus this duration times scalar
+     * period to
+     * @param scalar  the number of times to add the period, negative to subtract
+     * @param chrono  override the chronology of the period type, unless null is passed in
+     * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
     long addTo(long instant, int scalar, Chronology chrono);
 
     /**
-     * Adds this duration to the given instant, returning a new Instant.
+     * Adds this period to the given instant, returning a new Instant.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the instant to add the duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @return instant with the original value plus this duration times scalar
+     * @param instant  the instant to add the period to
+     * @param scalar  the number of times to add the period, negative to subtract
+     * @return instant with the original value plus this period times scalar
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
     Instant addTo(ReadableInstant instant, int scalar);
 
     /**
-     * Adds this duration into the given mutable instant.
+     * Adds this period into the given mutable instant.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the instant to update with the added duration
-     * @param scalar  the number of times to add the duration, negative to subtract
+     * @param instant  the instant to update with the added period
+     * @param scalar  the number of times to add the period, negative to subtract
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
@@ -159,58 +159,58 @@ public interface ReadableTimePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the years field part of the duration.
+     * Gets the years field part of the period.
      * 
-     * @return the number of years in the duration, zero if unsupported
+     * @return the number of years in the period, zero if unsupported
      */
     int getYears();
 
     /**
-     * Gets the months field part of the duration.
+     * Gets the months field part of the period.
      * 
-     * @return the number of months in the duration, zero if unsupported
+     * @return the number of months in the period, zero if unsupported
      */
     int getMonths();
 
     /**
-     * Gets the weeks field part of the duration.
+     * Gets the weeks field part of the period.
      * 
-     * @return the number of weeks in the duration, zero if unsupported
+     * @return the number of weeks in the period, zero if unsupported
      */
     int getWeeks();
 
     /**
-     * Gets the days field part of the duration.
+     * Gets the days field part of the period.
      * 
-     * @return the number of days in the duration, zero if unsupported
+     * @return the number of days in the period, zero if unsupported
      */
     int getDays();
 
     /**
-     * Gets the hours field part of the duration.
+     * Gets the hours field part of the period.
      * 
-     * @return the number of hours in the duration, zero if unsupported
+     * @return the number of hours in the period, zero if unsupported
      */
     int getHours();
 
     /**
-     * Gets the minutes field part of the duration.
+     * Gets the minutes field part of the period.
      * 
-     * @return the number of minutes in the duration, zero if unsupported
+     * @return the number of minutes in the period, zero if unsupported
      */
     int getMinutes();
 
     /**
-     * Gets the seconds field part of the duration.
+     * Gets the seconds field part of the period.
      * 
-     * @return the number of seconds in the duration, zero if unsupported
+     * @return the number of seconds in the period, zero if unsupported
      */
     int getSeconds();
 
     /**
-     * Gets the millis field part of the duration.
+     * Gets the millis field part of the period.
      * 
-     * @return the number of millis in the duration, zero if unsupported
+     * @return the number of millis in the period, zero if unsupported
      */
     int getMillis();
 
@@ -233,7 +233,7 @@ public interface ReadableTimePeriod {
 
     /**
      * Gets the total length of this time period in milliseconds, 
-     * failing if the duration is imprecise.
+     * failing if the period is imprecise.
      *
      * @return the total length of the time period in milliseconds.
      * @throws IllegalStateException if this time period is imprecise
@@ -242,7 +242,7 @@ public interface ReadableTimePeriod {
 
     /**
      * Gets the total length of this time period,
-     * failing if the duration is imprecise.
+     * failing if the period is imprecise.
      *
      * @return the total length of the time period in milliseconds.
      * @throws IllegalStateException if this time period is imprecise
@@ -254,17 +254,17 @@ public interface ReadableTimePeriod {
      * Compares this object with the specified object for equality based
      * on the value of each field. All ReadableTimePeriod instances are accepted.
      * <p>
-     * To compare two durations for absolute duration (ie. millisecond duration
+     * To compare two periods for absolute duration (ie. millisecond duration
      * ignoring the fields), use {@link #toDurationMillis()} or {@link #toDuration()}.
      *
-     * @param readableDuration  a readable duration to check against
+     * @param readablePeriod  a readable period to check against
      * @return true if all the field values are equal, false if
-     *  not or the duration is null or of an incorrect type
+     *  not or the period is null or of an incorrect type
      */
-    boolean equals(Object readableTimePeriod);
+    boolean equals(Object readablePeriod);
 
     /**
-     * Gets a hash code for the duration that is compatable with the 
+     * Gets a hash code for the period that is compatable with the 
      * equals method. The hashcode must be calculated as follows:
      * <pre>
      *   int hash = getDurationType().hashCode();

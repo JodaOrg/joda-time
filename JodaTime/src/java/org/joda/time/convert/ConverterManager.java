@@ -60,8 +60,8 @@ import org.joda.time.JodaTimePermission;
  * <p>
  * This class enables additional conversion classes to be added via
  * {@link #addInstantConverter(InstantConverter)}, which may replace an
- * existing converter. Similar methods exist for duration and interval
- * converters.
+ * existing converter. Similar methods exist for duration, time period and
+ * interval converters.
  * <p>
  * This class is threadsafe, so adding/removing converters can be done at any
  * time. Updating the set of convertors is relatively expensive, and so should
@@ -76,6 +76,7 @@ import org.joda.time.JodaTimePermission;
  * <li>Long (milliseconds)
  * <li>null (now)
  * </ul>
+ * 
  * The default duration converters are:
  * <ul>
  * <li>ReadableDuration
@@ -85,6 +86,14 @@ import org.joda.time.JodaTimePermission;
  * <li>null (zero ms)
  * </ul>
  *
+ * The default time period converters are:
+ * <ul>
+ * <li>ReadableTimePeriod
+ * <li>ReadableInterval
+ * <li>String
+ * <li>null (zero)
+ * </ul>
+ * 
  * The default interval converters are:
  * <ul>
  * <li>ReadableInterval
@@ -111,6 +120,7 @@ public final class ConverterManager {
     
     private ConverterSet iInstantConverters;
     private ConverterSet iDurationConverters;
+    private ConverterSet iTimePeriodConverters;
     private ConverterSet iIntervalConverters;
     
     /**
@@ -136,12 +146,19 @@ public final class ConverterManager {
             NullConverter.INSTANCE,
         });
 
+        iTimePeriodConverters = new ConverterSet(new Converter[] {
+            ReadableTimePeriodConverter.INSTANCE,
+            ReadableIntervalConverter.INSTANCE,
+            StringConverter.INSTANCE,
+            NullConverter.INSTANCE,
+        });
+
         iIntervalConverters = new ConverterSet(new Converter[] {
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
         });
     }
-    
+
     //-----------------------------------------------------------------------
     /**
      * Gets the best converter for the object specified.
@@ -326,6 +343,93 @@ public final class ConverterManager {
      * @throws IllegalStateException if multiple converters match the type
      * equally well
      */
+    public TimePeriodConverter getTimePeriodConverter(Object object) {
+        TimePeriodConverter converter =
+            (TimePeriodConverter)iTimePeriodConverters.select(object == null ? null : object.getClass());
+        if (converter != null) {
+            return converter;
+        }
+        throw new IllegalArgumentException("No period converter found for type: " +
+            (object == null ? "null" : object.getClass().getName()));
+    }
+    
+    //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of the list of converters.
+     * 
+     * @return the converters, a copy of the real data, never null
+     */
+    public TimePeriodConverter[] getTimePeriodConverters() {
+        ConverterSet set = iTimePeriodConverters;
+        TimePeriodConverter[] converters = new TimePeriodConverter[set.size()];
+        set.copyInto(converters);
+        return converters;
+    }
+    
+    /**
+     * Adds a converter to the set of converters. If a matching converter is
+     * already in the set, the given converter replaces it. If the converter is
+     * exactly the same as one already in the set, no changes are made.
+     * <p>
+     * The order in which converters are added is not relevent. The best
+     * converter is selected by examining the object hierarchy.
+     * 
+     * @param converter  the converter to add, null ignored
+     * @return replaced converter, or null
+     */
+    public TimePeriodConverter addTimePeriodConverter(TimePeriodConverter converter)
+            throws SecurityException {
+        
+        checkAlterTimePeriodConverters();
+        if (converter == null) {
+            return null;
+        }
+        TimePeriodConverter[] removed = new TimePeriodConverter[1];
+        iTimePeriodConverters = iTimePeriodConverters.add(converter, removed);
+        return removed[0];
+    }
+    
+    /**
+     * Removes a converter from the set of converters. If the converter was
+     * not in the set, no changes are made.
+     * 
+     * @param converter  the converter to remove, null ignored
+     * @return replaced converter, or null
+     */
+    public TimePeriodConverter removeTimePeriodConverter(TimePeriodConverter converter)
+            throws SecurityException {
+        
+        checkAlterTimePeriodConverters();
+        if (converter == null) {
+            return null;
+        }
+        TimePeriodConverter[] removed = new TimePeriodConverter[1];
+        iTimePeriodConverters = iTimePeriodConverters.remove(converter, removed);
+        return removed[0];
+    }
+    
+    /**
+     * Checks whether the user has permission 'ConverterManager.alterInstantConverters'.
+     * 
+     * @throws SecurityException if the user does not have the permission
+     */
+    private void checkAlterTimePeriodConverters() throws SecurityException {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            sm.checkPermission(new JodaTimePermission("ConverterManager.alterTimePeriodConverters"));
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the best converter for the object specified.
+     * 
+     * @param object  the object to convert
+     * @return the converter to use
+     * @throws IllegalArgumentException if no suitable converter
+     * @throws IllegalStateException if multiple converters match the type
+     * equally well
+     */
     public IntervalConverter getIntervalConverter(Object object) {
         IntervalConverter converter =
             (IntervalConverter)iIntervalConverters.select(object == null ? null : object.getClass());
@@ -411,6 +515,7 @@ public final class ConverterManager {
         return "ConverterManager[" +
             iInstantConverters.size() + " instant," +
             iDurationConverters.size() + " duration," +
+            iTimePeriodConverters.size() + " period," +
             iIntervalConverters.size() + " interval]";
     }
 

@@ -53,9 +53,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.DurationType;
 import org.joda.time.ReadableDuration;
-import org.joda.time.ReadWritableTimePeriod;
 
 /**
  * ReadableDurationConverter extracts milliseconds and chronology from a ReadableDuration.
@@ -65,12 +63,12 @@ import org.joda.time.ReadWritableTimePeriod;
  * @since 1.0
  */
 class ReadableDurationConverter extends AbstractConverter implements DurationConverter {
-    
+
     /**
      * Singleton instance.
      */
     static final ReadableDurationConverter INSTANCE = new ReadableDurationConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -79,17 +77,6 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Returns true if the given support object represents a precice
-     * duration. If so, getDurationMillis can be called.
-     *
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
-     */
-    public boolean isPrecise(Object object) {
-        return true;
-    }
-
     /**
      * Extracts the millis from an object of this convertor's type.
      * 
@@ -102,34 +89,6 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
     public long getDurationMillis(Object object) {
         return ((ReadableDuration) object).getMillis();
     }
-    
-    /**
-     * Extracts duration values from an object of this converter's type, and
-     * sets them into the given ReadWritableDuration.
-     *
-     * @param duration duration to get modified
-     * @param object  the object to convert, must not be null
-     * @return the millisecond duration
-     * @throws NullPointerException if the duration or object is null
-     * @throws ClassCastException if the object is an invalid type
-     * @throws IllegalArgumentException if the object is invalid
-     */
-    public void setInto(ReadWritableTimePeriod duration, Object object) {
-        duration.setTimePeriod((ReadableDuration) object);
-    }
-
-    /**
-     * Selects a suitable duration type for the given object.
-     *
-     * @param object  the object to examine, must not be null
-     * @param precise  true if a precise type is required
-     * @return the duration type from the readable duration
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
-     */
-    public DurationType getDurationType(Object object, boolean precise) {
-        return DurationType.getPreciseAllType();
-    }
 
     //-----------------------------------------------------------------------
     /**
@@ -140,5 +99,5 @@ class ReadableDurationConverter extends AbstractConverter implements DurationCon
     public Class getSupportedType() {
         return ReadableDuration.class;
     }
-    
+
 }

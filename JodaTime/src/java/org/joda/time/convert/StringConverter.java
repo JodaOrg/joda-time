@@ -55,16 +55,17 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.ReadWritableTimePeriod;
+import org.joda.time.DurationType;
+import org.joda.time.MutableTimePeriod;
 import org.joda.time.ReadWritableInterval;
-import org.joda.time.ReadableDuration;
+import org.joda.time.ReadWritableTimePeriod;
 import org.joda.time.TimePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeParser;
-import org.joda.time.format.TimePeriodFormatter;
-import org.joda.time.format.TimePeriodParser;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISOTimePeriodFormat;
+import org.joda.time.format.TimePeriodFormatter;
+import org.joda.time.format.TimePeriodParser;
 
 /**
  * StringConverter converts a String to milliseconds in the ISOChronology.
@@ -74,13 +75,13 @@ import org.joda.time.format.ISOTimePeriodFormat;
  * @since 1.0
  */
 class StringConverter extends AbstractConverter
-    implements InstantConverter, DurationConverter, IntervalConverter {
-    
+        implements InstantConverter, DurationConverter, TimePeriodConverter, IntervalConverter {
+
     /**
      * Singleton instance.
      */
     static final StringConverter INSTANCE = new StringConverter();
-    
+
     /**
      * Restricted constructor.
      */
@@ -103,7 +104,7 @@ class StringConverter extends AbstractConverter
         DateTimeParser p = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
         return p.parseMillis(str);
     }
-    
+
     /**
      * Gets the millis, which is the ISO parsed string value.
      * 
@@ -118,44 +119,54 @@ class StringConverter extends AbstractConverter
         DateTimeParser p = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
         return p.parseMillis(str);
     }
-    
+
     //-----------------------------------------------------------------------
     /**
-     * Returns false always.
-     */
-    public boolean isPrecise(Object object) {
-        return false;
-    }
-
-    /**
-     * @throws UnsupportedOperationException always
+     * Gets the duration of the string using the PreciseAll type.
+     * This matches the toString() method of ReadableDuration.
+     * 
+     * @param object  the object to convert, must not be null
+     * @throws ClassCastException if the object is invalid
      */
     public long getDurationMillis(Object object) {
-        throw new UnsupportedOperationException();
+        String str = (String) object;
+        MutableTimePeriod period = new MutableTimePeriod(DurationType.getPreciseAllType());
+        TimePeriodParser parser = ISOTimePeriodFormat.getInstance().standard();
+        int pos = parser.parseInto(period, str, 0);
+        if (pos < str.length()) {
+            if (pos < 0) {
+                // Parse again to get a better exception thrown.
+                parser.parseMutableTimePeriod(period.getDurationType(), str);
+            }
+            throw new IllegalArgumentException("Invalid format: \"" + str + '"');
+        }
+        return period.toDurationMillis();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Extracts duration values from an object of this converter's type, and
      * sets them into the given ReadWritableDuration.
      *
-     * @param duration duration to get modified
+     * @param period  period to get modified
      * @param object  the object to convert, must not be null
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
-    public void setInto(ReadWritableTimePeriod duration, Object object) {
+    public void setInto(ReadWritableTimePeriod period, Object object) {
         String str = (String) object;
         TimePeriodParser parser = ISOTimePeriodFormat.getInstance().standard();
-        int pos = parser.parseInto(duration, str, 0);
+        int pos = parser.parseInto(period, str, 0);
         if (pos < str.length()) {
             if (pos < 0) {
                 // Parse again to get a better exception thrown.
-                parser.parseMutableTimePeriod(duration.getDurationType(), str);
+                parser.parseMutableTimePeriod(period.getDurationType(), str);
             }
             throw new IllegalArgumentException("Invalid format: \"" + str + '"');
         }
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Sets the value of the mutable interval from the string.
      * 

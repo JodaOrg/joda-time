@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.
+ * Copyright (c) 2001-2004 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -10,7 +10,7 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
+ *    notice, this list of conditions and the following disclaimer. 
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
@@ -18,7 +18,7 @@
  *    distribution.
  *
  * 3. The end-user documentation included with the redistribution,
- *    if any, must include the following acknowledgment:
+ *    if any, must include the following acknowledgment:  
  *       "This product includes software developed by the
  *        Joda project (http://www.joda.org/)."
  *    Alternately, this acknowledgment may appear in the software itself,
@@ -47,51 +47,42 @@
  * ====================================================================
  *
  * This software consists of voluntary contributions made by many
- * individuals on behalf of the Joda project and was originally
+ * individuals on behalf of the Joda project and was originally 
  * created by Stephen Colebourne <scolebourne@joda.org>. For more
  * information on the Joda project, please see <http://www.joda.org/>.
  */
-package org.joda.time;
+package org.joda.time.convert;
 
-import java.security.BasicPermission;
+import org.joda.time.DurationType;
+import org.joda.time.ReadWritableTimePeriod;
 
 /**
- * JodaTimePermission is used for securing global method calls in the Joda-Time
- * library. Since this class extends BasicPermission, asterisks may be used to
- * denote wildcard permissions. The following permissions are supported:
+ * TimePeriodConverter defines how an object is converted to a time period.
  *
- * <pre>
- * DateTimeZone
- *   .setDefault                 Allows a default DateTimeZone to be set
- *   .setProvider                Allows the DateTimeZone instance provider to be set
- *   .setNameProvider            Allows the DateTimeZone name provider to be set
- *
- * ConverterManager
- *   .alterInstantConverters     Allows an instant converter to be added or removed
- *   .alterDurationConverters    Allows a duration converter to be added or removed
- *   .alterTimePeriodConverters  Allows a time period converter to be added or removed
- *   .alterIntervalConverters    Allows an interval converter to be added or removed
- *
- * CurrentTime.setProvider       Allows the current time provider to be set
- * </pre>
- * <p>
- * JodaTimePermission is thread-safe and immutable.
- *
+ * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class JodaTimePermission extends BasicPermission {
-    
-    /** Serialization version */
-    private static final long serialVersionUID = 1408944367355875472L;
+public interface TimePeriodConverter extends Converter {
 
     /**
-     * Constructs a new permission object.
-     * 
-     * @param name  the permission name
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritableDuration.
+     *
+     * @param period  the period to modify
+     * @param object  the object to convert, must not be null
+     * @throws ClassCastException if the object is invalid
      */
-    public JodaTimePermission(String name) {
-        super(name);
-    }
+    void setInto(ReadWritableTimePeriod period, Object object);
+
+    /**
+     * Selects a suitable duration type for the given object.
+     *
+     * @param object  the object to examine, must not be null
+     * @param precise  true if the duration type must be precise
+     * @return the duration type, never null
+     * @throws ClassCastException if the object is invalid
+     */
+    DurationType getDurationType(Object object, boolean precise);
 
 }

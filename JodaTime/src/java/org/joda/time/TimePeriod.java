@@ -89,14 +89,11 @@ public class TimePeriod
         extends AbstractTimePeriod
         implements ReadableTimePeriod, Serializable {
 
-    /** Constant representing zero millisecond duration */
-    public static final TimePeriod ZERO = new TimePeriod(0L);
-
     /** Serialization version */
     private static final long serialVersionUID = 741052353876488155L;
 
     /**
-     * Creates a duration from the given millisecond duration using AllType.
+     * Creates a period from the given millisecond duration using AllType.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
      * the duration type. This ensures that there are no odd effects caused by
@@ -110,7 +107,7 @@ public class TimePeriod
     }
 
     /**
-     * Creates a duration from the given millisecond duration.
+     * Creates a period from the given millisecond duration.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
      * the duration type. This ensures that there are no odd effects caused by
@@ -118,36 +115,36 @@ public class TimePeriod
      * of the duration type.
      *
      * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this duration supports
+     * @param type  which set of fields this period supports
      */
     public TimePeriod(long duration, DurationType type) {
         super(duration, type);
     }
 
     /**
-     * Create a duration from a set of field values using AllType.
-     * This constructor creates a precise duration.
+     * Create a period from a set of field values using AllType.
+     * This constructor creates a precise period.
      *
-     * @param hours  amount of hours in this duration
-     * @param minutes  amount of minutes in this duration
-     * @param seconds  amount of seconds in this duration
-     * @param millis  amount of milliseconds in this duration
+     * @param hours  amount of hours in this period
+     * @param minutes  amount of minutes in this period
+     * @param seconds  amount of seconds in this period
+     * @param millis  amount of milliseconds in this period
      */
     public TimePeriod(int hours, int minutes, int seconds, int millis) {
         super(0, 0, 0, 0, hours, minutes, seconds, millis, null);
     }
 
     /**
-     * Create a duration from a set of field values using AllType.
+     * Create a period from a set of field values using AllType.
      *
-     * @param years  amount of years in this duration
-     * @param months  amount of months in this duration
-     * @param weeks  amount of weeks in this duration
-     * @param days  amount of days in this duration
-     * @param hours  amount of hours in this duration
-     * @param minutes  amount of minutes in this duration
-     * @param seconds  amount of seconds in this duration
-     * @param millis  amount of milliseconds in this duration
+     * @param years  amount of years in this period
+     * @param months  amount of months in this period
+     * @param weeks  amount of weeks in this period
+     * @param days  amount of days in this period
+     * @param hours  amount of hours in this period
+     * @param minutes  amount of minutes in this period
+     * @param seconds  amount of seconds in this period
+     * @param millis  amount of milliseconds in this period
      */
     public TimePeriod(int years, int months, int weeks, int days,
                     int hours, int minutes, int seconds, int millis) {
@@ -155,17 +152,17 @@ public class TimePeriod
     }
 
     /**
-     * Create a duration from a set of field values.
+     * Create a period from a set of field values.
      *
-     * @param years  amount of years in this duration, which must be zero if unsupported
-     * @param months  amount of months in this duration, which must be zero if unsupported
-     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
-     * @param days  amount of days in this duration, which must be zero if unsupported
-     * @param hours  amount of hours in this duration, which must be zero if unsupported
-     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
-     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
-     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param months  amount of months in this period, which must be zero if unsupported
+     * @param weeks  amount of weeks in this period, which must be zero if unsupported
+     * @param days  amount of days in this period, which must be zero if unsupported
+     * @param hours  amount of hours in this period, which must be zero if unsupported
+     * @param minutes  amount of minutes in this period, which must be zero if unsupported
+     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this period, which must be zero if unsupported
+     * @param type  which set of fields this period supports, null means AllType
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public TimePeriod(int years, int months, int weeks, int days,
@@ -174,8 +171,8 @@ public class TimePeriod
     }
 
     /**
-     * Creates a duration from the given interval endpoints using AllType.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints using AllType.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
@@ -185,20 +182,20 @@ public class TimePeriod
     }
 
     /**
-     * Creates a duration from the given interval endpoints.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this period supports, null means AllType
      */
     public TimePeriod(long startInstant, long endInstant, DurationType type) {
         super(startInstant, endInstant, type);
     }
 
     /**
-     * Creates a duration from the given interval endpoints using AllType.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints using AllType.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -208,40 +205,40 @@ public class TimePeriod
     }
 
     /**
-     * Creates a duration from the given interval endpoints.
-     * This constructor creates a precise duration.
+     * Creates a period from the given interval endpoints.
+     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this duration supports, null means AllType
+     * @param type  which set of fields this period supports, null means AllType
      */
     public TimePeriod(ReadableInstant startInstant, ReadableInstant endInstant, DurationType type) {
         super(startInstant, endInstant, type);
     }
 
     /**
-     * Creates a duration from the specified object using the
+     * Creates a period from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  duration to convert
-     * @throws IllegalArgumentException if duration is invalid
+     * @param period  period to convert
+     * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public TimePeriod(Object duration) {
-        super(duration, null);
+    public TimePeriod(Object period) {
+        super(period, null);
     }
 
     /**
-     * Creates a duration from the specified object using the
+     * Creates a period from the specified object using the
      * {@link org.joda.time.convert.ConverterManager ConverterManager}.
      *
-     * @param duration  duration to convert
-     * @param type  which set of fields this duration supports, null means use converter
-     * @throws IllegalArgumentException if duration is invalid
+     * @param period  period to convert
+     * @param type  which set of fields this period supports, null means use converter
+     * @throws IllegalArgumentException if period is invalid
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
-    public TimePeriod(Object duration, DurationType type) {
-        super(duration, type);
+    public TimePeriod(Object period, DurationType type) {
+        super(period, type);
     }
 
     //-----------------------------------------------------------------------
@@ -266,8 +263,8 @@ public class TimePeriod
      * different DurationType.
      * 
      * @param type  the duration type to use, null means AllType
-     * @return the new duration instance
-     * @throws IllegalArgumentException if the new duration won't accept all of the current fields
+     * @return the new period instance
+     * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
     public TimePeriod withDurationType(DurationType type) {
         if (type == null) {
@@ -285,8 +282,8 @@ public class TimePeriod
      * different DurationType.
      * 
      * @param type  the duration type to use, null means AllType
-     * @return the new duration instance
-     * @throws IllegalStateException if this duration is imprecise
+     * @return the new period instance
+     * @throws IllegalStateException if this period is imprecise
      */
     public TimePeriod withDurationTypeRetainDuration(DurationType type) {
         if (type == null) {
@@ -302,8 +299,8 @@ public class TimePeriod
      * Creates a new TimePeriod instance with the same millisecond duration but
      * all the fields normalized to be within their standard ranges.
      * 
-     * @return the new duration instance
-     * @throws IllegalStateException if this duration is imprecise
+     * @return the new period instance
+     * @throws IllegalStateException if this period is imprecise
      */
     public TimePeriod withFieldsNormalized() {
         return new TimePeriod(toDurationMillis(), getDurationType());

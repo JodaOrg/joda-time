@@ -55,8 +55,8 @@ package org.joda.time;
 
 import java.io.Serializable;
 
-import org.joda.time.convert.DurationConverter;
 import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.TimePeriodConverter;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOTimePeriodFormat;
 
@@ -109,13 +109,13 @@ public abstract class AbstractTimePeriod
     private int iMillis;
 
     /**
-     * Creates a duration from the given millisecond duration.
+     * Creates a period from the given millisecond duration.
      * <p>
      * The millisecond duration will be split to fields using a UTC version of
      * the duration type.
      *
      * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this duration supports
+     * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if duration type is invalid
      */
     public AbstractTimePeriod(long duration, DurationType type) {
@@ -127,17 +127,17 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Creates a duration from a set of field values.
+     * Creates a period from a set of field values.
      *
-     * @param years  amount of years in this duration, which must be zero if unsupported
-     * @param months  amount of months in this duration, which must be zero if unsupported
-     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
-     * @param days  amount of days in this duration, which must be zero if unsupported
-     * @param hours  amount of hours in this duration, which must be zero if unsupported
-     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
-     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
-     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
-     * @param type  which set of fields this duration supports
+     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param months  amount of months in this period, which must be zero if unsupported
+     * @param weeks  amount of weeks in this period, which must be zero if unsupported
+     * @param days  amount of days in this period, which must be zero if unsupported
+     * @param hours  amount of hours in this period, which must be zero if unsupported
+     * @param minutes  amount of minutes in this period, which must be zero if unsupported
+     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this period, which must be zero if unsupported
+     * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if duration type is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
@@ -152,11 +152,11 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Creates a duration from the given interval endpoints.
+     * Creates a period from the given interval endpoints.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this duration supports
+     * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if duration type is invalid
      */
     public AbstractTimePeriod(long startInstant, long endInstant, DurationType type) {
@@ -168,11 +168,11 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Creates a duration from the given interval endpoints.
+     * Creates a period from the given interval endpoints.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this duration supports
+     * @param type  which set of fields this period supports
      * @throws IllegalArgumentException if duration type is invalid
      */
     public AbstractTimePeriod(
@@ -191,27 +191,24 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Creates a new duration based on another using the {@link ConverterManager}.
+     * Creates a new period based on another using the {@link ConverterManager}.
      *
-     * @param duration  duration to convert
-     * @param type  which set of fields this duration supports, null means use type from object
-     * @throws IllegalArgumentException if duration is invalid
+     * @param period  the period to convert
+     * @param type  which set of fields this period supports, null means use type from object
+     * @throws IllegalArgumentException if period is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    public AbstractTimePeriod(Object duration, DurationType type) {
+    public AbstractTimePeriod(Object period, DurationType type) {
         super();
-        DurationConverter converter = ConverterManager.getInstance().getDurationConverter(duration);
-        type = (type == null ? converter.getDurationType(duration, false) : type);
+        TimePeriodConverter converter = ConverterManager.getInstance().getTimePeriodConverter(period);
+        type = (type == null ? converter.getDurationType(period, false) : type);
         type = checkDurationType(type);
         iType = type;
-        if (type.isPrecise() && converter.isPrecise(duration)) {
-            // Only call a private method
-            setTimePeriod(type, converter.getDurationMillis(duration));
-        } else if (this instanceof ReadWritableTimePeriod) {
-            converter.setInto((ReadWritableTimePeriod) this, duration);
+        if (this instanceof ReadWritableTimePeriod) {
+            converter.setInto((ReadWritableTimePeriod) this, period);
         } else {
             // Only call a private method
-            setTimePeriod(type, new MutableTimePeriod(duration, type));
+            setTimePeriod(type, new MutableTimePeriod(period, type));
         }
     }
 
@@ -228,23 +225,23 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Returns the object which defines which fields this duration supports.
+     * Returns the object which defines which fields this period supports.
      */
     public final DurationType getDurationType() {
         return iType;
     }
 
     /**
-     * Is this duration a precise length of time, or descriptive.
+     * Is this period a precise length of time, or descriptive.
      * <p>
-     * A typical precise duration could include millis, seconds, minutes or hours,
+     * A typical precise period could include millis, seconds, minutes or hours,
      * but days, weeks, months and years usually vary in length, resulting in
-     * an imprecise duration.
+     * an imprecise period.
      * <p>
-     * An imprecise duration can be made precise by pairing it with a
+     * An imprecise period can be made precise by pairing it with a
      * date in a {@link ReadableInterval}.
      *
-     * @return true if the duration is precise
+     * @return true if the period is precise
      */
     public final boolean isPrecise() {
         int state = iState;
@@ -256,16 +253,16 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Adds this duration to the given instant using the chronology of the duration
+     * Adds this period to the given instant using the chronology of the period
      * which typically ignores time zones.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @return milliseconds value plus this duration times scalar
+     * period to
+     * @param scalar  the number of times to add the period, negative to subtract
+     * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public final long addTo(long instant, int scalar) {
@@ -273,16 +270,16 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Adds this duration to the given instant using a specific chronology.
+     * Adds this period to the given instant using a specific chronology.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * duration to
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @param chrono  override the duration's chronology, unless null is passed in
-     * @return milliseconds value plus this duration times scalar
+     * period to
+     * @param scalar  the number of times to add the period, negative to subtract
+     * @param chrono  override the period's chronology, unless null is passed in
+     * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public final long addTo(long instant, int scalar, Chronology chrono) {
@@ -354,15 +351,15 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Adds this duration to the given instant using the chronology of the specified
+     * Adds this period to the given instant using the chronology of the specified
      * instant (if present), returning a new Instant.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the instant to add the duration to, null means now
-     * @param scalar  the number of times to add the duration, negative to subtract
-     * @return instant with the original value plus this duration times scalar
+     * @param instant  the instant to add the period to, null means now
+     * @param scalar  the number of times to add the period, negative to subtract
+     * @return instant with the original value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public final Instant addTo(ReadableInstant instant, int scalar) {
@@ -373,14 +370,14 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Adds this duration into the given mutable instant using the chronology of
+     * Adds this period into the given mutable instant using the chronology of
      * the specified mutable instant (if present).
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the instant to update with the added duration, must not be null
-     * @param scalar  the number of times to add the duration, negative to subtract
+     * @param instant  the instant to update with the added period, must not be null
+     * @param scalar  the number of times to add the period, negative to subtract
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
@@ -393,9 +390,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the years field part of the duration.
+     * Gets the years field part of the period.
      * 
-     * @return the number of years in the duration, zero if unsupported
+     * @return the number of years in the period, zero if unsupported
      */
     public final int getYears() {
         return iYears;
@@ -403,9 +400,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the months field part of the duration.
+     * Gets the months field part of the period.
      * 
-     * @return the number of months in the duration, zero if unsupported
+     * @return the number of months in the period, zero if unsupported
      */
     public final int getMonths() {
         return iMonths;
@@ -413,9 +410,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the weeks field part of the duration.
+     * Gets the weeks field part of the period.
      * 
-     * @return the number of weeks in the duration, zero if unsupported
+     * @return the number of weeks in the period, zero if unsupported
      */
     public final int getWeeks() {
         return iWeeks;
@@ -423,9 +420,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the days field part of the duration.
+     * Gets the days field part of the period.
      * 
-     * @return the number of days in the duration, zero if unsupported
+     * @return the number of days in the period, zero if unsupported
      */
     public final int getDays() {
         return iDays;
@@ -433,9 +430,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the hours field part of the duration.
+     * Gets the hours field part of the period.
      * 
-     * @return the number of hours in the duration, zero if unsupported
+     * @return the number of hours in the period, zero if unsupported
      */
     public final int getHours() {
         return iHours;
@@ -443,9 +440,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the minutes field part of the duration.
+     * Gets the minutes field part of the period.
      * 
-     * @return the number of minutes in the duration, zero if unsupported
+     * @return the number of minutes in the period, zero if unsupported
      */
     public final int getMinutes() {
         return iMinutes;
@@ -453,9 +450,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the seconds field part of the duration.
+     * Gets the seconds field part of the period.
      * 
-     * @return the number of seconds in the duration, zero if unsupported
+     * @return the number of seconds in the period, zero if unsupported
      */
     public final int getSeconds() {
         return iSeconds;
@@ -463,9 +460,9 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the millis field part of the duration.
+     * Gets the millis field part of the period.
      * 
-     * @return the number of millis in the duration, zero if unsupported
+     * @return the number of millis in the period, zero if unsupported
      */
     public final int getMillis() {
         return iMillis;
@@ -497,11 +494,11 @@ public abstract class AbstractTimePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the total length of this duration in milliseconds, 
-     * failing if the duration is imprecise.
+     * Gets the total millisecond duration of this period,
+     * failing if the period is imprecise.
      *
-     * @return the total length of the duration in milliseconds.
-     * @throws IllegalStateException if the duration is imprecise
+     * @return the total length of the period in milliseconds.
+     * @throws IllegalStateException if the period is imprecise
      * @throws ArithmeticException if the millis exceeds the capacity of the duration
      */
     public final long toDurationMillis() {
@@ -516,11 +513,11 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Gets the total length of this duration in milliseconds, 
-     * failing if the duration is imprecise.
+     * Gets the total millisecond duration of this period,
+     * failing if the period is imprecise.
      *
-     * @return the total length of the duration in milliseconds.
-     * @throws IllegalStateException if the duration is imprecise
+     * @return the total length of the period in milliseconds.
+     * @throws IllegalStateException if the period is imprecise
      * @throws ArithmeticException if the millis exceeds the capacity of the duration
      */
     public final Duration toDuration() {
@@ -532,21 +529,21 @@ public abstract class AbstractTimePeriod
      * Compares this object with the specified object for equality based
      * on the value of each field. All ReadableTimePeriod instances are accepted.
      * <p>
-     * To compare two durations for absolute duration (ie. millisecond duration
+     * To compare two periods for absolute duration (ie. millisecond duration
      * ignoring the fields), use {@link #toDurationMillis()} or {@link #toDuration()}.
      *
-     * @param readableDuration  a readable duration to check against
+     * @param readablePeriod  a readable period to check against
      * @return true if all the field values are equal, false if
-     *  not or the duration is null or of an incorrect type
+     *  not or the period is null or of an incorrect type
      */
-    public final boolean equals(Object readableTimePeriod) {
-        if (this == readableTimePeriod) {
+    public final boolean equals(Object readablePeriod) {
+        if (this == readablePeriod) {
             return true;
         }
-        if (readableTimePeriod instanceof ReadableTimePeriod == false) {
+        if (readablePeriod instanceof ReadableTimePeriod == false) {
             return false;
         }
-        ReadableTimePeriod other = (ReadableTimePeriod) readableTimePeriod;
+        ReadableTimePeriod other = (ReadableTimePeriod) readablePeriod;
         DurationType type = getDurationType();
         if (type.equals(other.getDurationType()) == false) {
             return false;
@@ -562,7 +559,7 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Gets a hash code for the duration that is compatable with the 
+     * Gets a hash code for the period that is compatable with the 
      * equals method.
      *
      * @return a hash code
@@ -649,14 +646,14 @@ public abstract class AbstractTimePeriod
      * empty implementation that is protected and final. This also ensures that
      * all lower subclasses are also immutable.
      * 
-     * @param years  amount of years in this duration, which must be zero if unsupported
-     * @param months  amount of months in this duration, which must be zero if unsupported
-     * @param weeks  amount of weeks in this duration, which must be zero if unsupported
-     * @param days  amount of days in this duration, which must be zero if unsupported
-     * @param hours  amount of hours in this duration, which must be zero if unsupported
-     * @param minutes  amount of minutes in this duration, which must be zero if unsupported
-     * @param seconds  amount of seconds in this duration, which must be zero if unsupported
-     * @param millis  amount of milliseconds in this duration, which must be zero if unsupported
+     * @param years  amount of years in this period, which must be zero if unsupported
+     * @param months  amount of months in this period, which must be zero if unsupported
+     * @param weeks  amount of weeks in this period, which must be zero if unsupported
+     * @param days  amount of days in this period, which must be zero if unsupported
+     * @param hours  amount of hours in this period, which must be zero if unsupported
+     * @param minutes  amount of minutes in this period, which must be zero if unsupported
+     * @param seconds  amount of seconds in this period, which must be zero if unsupported
+     * @param millis  amount of milliseconds in this period, which must be zero if unsupported
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void setTimePeriod(int years, int months, int weeks, int days,
@@ -908,10 +905,10 @@ public abstract class AbstractTimePeriod
     //-----------------------------------------------------------------------
     /**
      * Walks through the field values, determining total millis and whether
-     * this duration is precise.
+     * this period is precise.
      *
      * @return new state
-     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     * @throws ArithmeticException if the millis exceeds the capacity of the period
      */
     private int updateTotalMillis() {
         final DurationType type = iType;
@@ -1012,7 +1009,7 @@ public abstract class AbstractTimePeriod
      */
     protected void add(ReadableInterval interval) {
         if (interval != null) {
-            add(new TimePeriod(interval.getStartMillis(), interval.getEndMillis()));
+            add(interval.toTimePeriod(getDurationType()));
         }
     }
 
@@ -1041,11 +1038,11 @@ public abstract class AbstractTimePeriod
     }
 
     /**
-     * Normalizes all the field values in this duration.
+     * Normalizes all the field values in this period.
      * <p>
      * This method converts to a milliecond duration and back again.
      *
-     * @throws IllegalStateException if this duration is imprecise
+     * @throws IllegalStateException if this period is imprecise
      */
     protected void normalize() {
         setTimePeriod(toDurationMillis());

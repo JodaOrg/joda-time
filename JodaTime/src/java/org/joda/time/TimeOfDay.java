@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -443,7 +443,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Gets a copy of this date with the specified field set to a new value.
+     * Gets a copy of this time with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>minuteOfHour</code> then the day
      * would be changed in the returned instance.
@@ -461,23 +461,24 @@ public final class TimeOfDay
      * @throws IllegalArgumentException if the value is null or invalid
      */
     public TimeOfDay withField(DateTimeFieldType fieldType, int value) {
-        if (value == 0) {
+        int index = indexOfSupported(fieldType);
+        if (value == getValue(index)) {
             return this;
         }
-        int index = indexOfSupported(fieldType);
         int[] newValues = getValues();
         newValues = getField(index).set(this, index, newValues, value);
         return new TimeOfDay(this, newValues);
     }
 
     /**
-     * Gets a copy of this date with the value of the specified field increased.
+     * Gets a copy of this time with the value of the specified field increased,
+     * wrapping to what would be a new day if required.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * TimeOfDay added = tod.withField(DateTimeFieldType.minuteOfHour(), 6);
+     * TimeOfDay added = tod.withFieldAdded(DateTimeFieldType.minuteOfHour(), 6);
      * TimeOfDay added = tod.minuteOfHour().addToCopy(6);
      * TimeOfDay added = tod.property(DateTimeFieldType.minuteOfHour()).addToCopy(6);
      * </pre>
@@ -489,17 +490,18 @@ public final class TimeOfDay
      * @throws ArithmeticException if the new datetime exceeds the capacity
      */
     public TimeOfDay withFieldAdded(DurationFieldType fieldType, int amount) {
+        int index = indexOfSupported(fieldType);
         if (amount == 0) {
             return this;
         }
-        int index = indexOfSupported(fieldType);
         int[] newValues = getValues();
-        newValues = getField(index).add(this, index, newValues, amount);
+        newValues = getField(index).addWrapPartial(this, index, newValues, amount);
         return new TimeOfDay(this, newValues);
     }
 
     /**
-     * Gets a copy of this date with the specified period added.
+     * Gets a copy of this date with the specified period added,
+     * wrapping to what would be a new day if required.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * Fields in the period that aren't present in the partial are ignored.
@@ -521,7 +523,7 @@ public final class TimeOfDay
             DurationFieldType fieldType = period.getFieldType(i);
             int index = indexOf(fieldType);
             if (index >= 0) {
-                newValues = getField(index).add(this, index, newValues,
+                newValues = getField(index).addWrapPartial(this, index, newValues,
                         FieldUtils.safeMultiplyToInt(period.getValue(i), scalar));
             }
         }
@@ -529,7 +531,8 @@ public final class TimeOfDay
     }
 
     /**
-     * Gets a copy of this instance with the specified period added.
+     * Gets a copy of this instance with the specified period added,
+     * wrapping to what would be a new day if required.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -548,7 +551,8 @@ public final class TimeOfDay
     }
 
     /**
-     * Gets a copy of this instance with the specified period take away.
+     * Gets a copy of this instance with the specified period take away,
+     * wrapping to what would be a new day if required.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -761,14 +765,16 @@ public final class TimeOfDay
 
         //-----------------------------------------------------------------------
         /**
-         * Adds to the value of this field in a copy of this TimeOfDay.
+         * Adds to the value of this field in a copy of this TimeOfDay,
+         * wrapping to what would be the next day if necessary.
          * <p>
          * The value will be added to this field. If the value is too large to be
          * added solely to this field then it will affect larger fields.
          * Smaller fields are unaffected.
          * <p>
-         * If the result would be too large, beyond 23:59:59:999, then an
-         * IllegalArgumentException is thrown.
+         * If the result would be too large, beyond 23:59:59:999, then the
+         * calculation wraps to 00:00:00.000. For the alternate strict behaviour
+         * with no wrapping see {@link #addNoWrapToCopy(int)}.
          * <p>
          * The TimeOfDay attached to this property is unchanged by this call.
          * Instead, a new instance is returned.
@@ -778,6 +784,32 @@ public final class TimeOfDay
          * @throws IllegalArgumentException if the value isn't valid
          */
         public TimeOfDay addToCopy(int valueToAdd) {
+            int[] newValues = iTimeOfDay.getValues();
+            newValues = getField().addWrapPartial(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
+            return new TimeOfDay(iTimeOfDay, newValues);
+        }
+
+        /**
+         * Adds to the value of this field in a copy of this TimeOfDay,
+         * throwing an Exception if the bounds are exceeded.
+         * <p>
+         * The value will be added to this field. If the value is too large to be
+         * added solely to this field then it will affect larger fields.
+         * Smaller fields are unaffected.
+         * <p>
+         * If the result would be too large (beyond 23:59:59:999) or too
+         * small (less than 00:00:00.000) then an Execption is thrown.
+         * For the alternate behaviour which wraps to the next 'day',
+         * see {@link #addToCopy(int)}.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         * Instead, a new instance is returned.
+         * 
+         * @param valueToAdd  the value to add to the field in the copy
+         * @return a copy of the TimeOfDay with the field value changed
+         * @throws IllegalArgumentException if the value isn't valid
+         */
+        public TimeOfDay addNoWrapToCopy(int valueToAdd) {
             int[] newValues = iTimeOfDay.getValues();
             newValues = getField().add(iTimeOfDay, iFieldIndex, newValues, valueToAdd);
             return new TimeOfDay(iTimeOfDay, newValues);

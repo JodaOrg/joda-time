@@ -31,6 +31,12 @@ Incompatible changes since 0.98
   On YearMonthDay.Property, use getYearMonthDay().
   On TimeOfDay.Property, use getTimeOfDay().
 
+- TimeOfDay
+  - semantic change to TimeOfDay.Property.addToCopy()
+  Previously, add threw an exception if the 23:59/00:00 boundary was broken.
+  Now it wraps to the next 'day', as this is the more typical use case.
+  Change to the method TimeOfDay.Property.addNoWrapToCopy() to restore the old behaviour.
+
 
 Bug fixes since 0.98
 --------------------

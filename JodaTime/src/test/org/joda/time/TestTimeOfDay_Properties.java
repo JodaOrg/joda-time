@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -152,17 +152,39 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.hourOfDay().addToCopy(13);
         check(copy, 23, 20, 30, 40);
         
-        try {
-            test.hourOfDay().addToCopy(14);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        check(test, 10, 20, 30, 40);
+        copy = test.hourOfDay().addToCopy(14);
+        check(copy, 0, 20, 30, 40);
         
         copy = test.hourOfDay().addToCopy(-10);
         check(copy, 0, 20, 30, 40);
         
+        copy = test.hourOfDay().addToCopy(-11);
+        check(copy, 23, 20, 30, 40);
+    }
+
+    public void testPropertyAddNoWrapHour() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.hourOfDay().addNoWrapToCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 19, 20, 30, 40);
+        
+        copy = test.hourOfDay().addNoWrapToCopy(0);
+        check(copy, 10, 20, 30, 40);
+        
+        copy = test.hourOfDay().addNoWrapToCopy(13);
+        check(copy, 23, 20, 30, 40);
+        
         try {
-            test.hourOfDay().addToCopy(-11);
+            test.hourOfDay().addNoWrapToCopy(14);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.hourOfDay().addNoWrapToCopy(-10);
+        check(copy, 0, 20, 30, 40);
+        
+        try {
+            test.hourOfDay().addNoWrapToCopy(-11);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -274,11 +296,8 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.minuteOfHour().addToCopy(13 * 60 + 39);
         check(copy, 23, 59, 30, 40);
         
-        try {
-            test.minuteOfHour().addToCopy(13 * 60 + 40);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        check(test, 10, 20, 30, 40);
+        copy = test.minuteOfHour().addToCopy(13 * 60 + 40);
+        check(copy, 0, 0, 30, 40);
         
         copy = test.minuteOfHour().addToCopy(-9);
         check(copy, 10, 11, 30, 40);
@@ -295,8 +314,51 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.minuteOfHour().addToCopy(-(10 * 60 + 20));
         check(copy, 0, 0, 30, 40);
         
+        copy = test.minuteOfHour().addToCopy(-(10 * 60 + 21));
+        check(copy, 23, 59, 30, 40);
+    }
+
+    public void testPropertyAddNoWrapMinute() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.minuteOfHour().addNoWrapToCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 29, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(39);
+        check(copy, 10, 59, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(40);
+        check(copy, 11, 0, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(1 * 60 + 45);
+        check(copy, 12, 5, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(13 * 60 + 39);
+        check(copy, 23, 59, 30, 40);
+        
         try {
-            test.minuteOfHour().addToCopy(-(10 * 60 + 21));
+            test.minuteOfHour().addNoWrapToCopy(13 * 60 + 40);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(-9);
+        check(copy, 10, 11, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(-19);
+        check(copy, 10, 1, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(-20);
+        check(copy, 10, 0, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(-21);
+        check(copy, 9, 59, 30, 40);
+        
+        copy = test.minuteOfHour().addNoWrapToCopy(-(10 * 60 + 20));
+        check(copy, 0, 0, 30, 40);
+        
+        try {
+            test.minuteOfHour().addNoWrapToCopy(-(10 * 60 + 21));
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -405,11 +467,8 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.secondOfMinute().addToCopy(39 * 60 + 30);
         check(copy, 11, 0, 0, 40);
         
-        try {
-            test.secondOfMinute().addToCopy(13 * 60 * 60 + 39 * 60 + 30);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        check(test, 10, 20, 30, 40);
+        copy = test.secondOfMinute().addToCopy(13 * 60 * 60 + 39 * 60 + 30);
+        check(copy, 0, 0, 0, 40);
         
         copy = test.secondOfMinute().addToCopy(-9);
         check(copy, 10, 20, 21, 40);
@@ -423,8 +482,48 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.secondOfMinute().addToCopy(-(10 * 60 * 60 + 20 * 60 + 30));
         check(copy, 0, 0, 0, 40);
         
+        copy = test.secondOfMinute().addToCopy(-(10 * 60 * 60 + 20 * 60 + 31));
+        check(copy, 23, 59, 59, 40);
+    }
+
+    public void testPropertyAddNoWrapSecond() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.secondOfMinute().addNoWrapToCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 39, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(29);
+        check(copy, 10, 20, 59, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(30);
+        check(copy, 10, 21, 0, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(39 * 60 + 29);
+        check(copy, 10, 59, 59, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(39 * 60 + 30);
+        check(copy, 11, 0, 0, 40);
+        
         try {
-            test.secondOfMinute().addToCopy(-(10 * 60 * 60 + 20 * 60 + 31));
+            test.secondOfMinute().addNoWrapToCopy(13 * 60 * 60 + 39 * 60 + 30);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(-9);
+        check(copy, 10, 20, 21, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(-30);
+        check(copy, 10, 20, 0, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(-31);
+        check(copy, 10, 19, 59, 40);
+        
+        copy = test.secondOfMinute().addNoWrapToCopy(-(10 * 60 * 60 + 20 * 60 + 30));
+        check(copy, 0, 0, 0, 40);
+        
+        try {
+            test.secondOfMinute().addNoWrapToCopy(-(10 * 60 * 60 + 20 * 60 + 31));
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -530,11 +629,8 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.millisOfSecond().addToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
         check(copy, 23, 59, 59, 999);
         
-        try {
-            test.millisOfSecond().addToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
-            fail();
-        } catch (IllegalArgumentException ex) {}
-        check(test, 10, 20, 30, 40);
+        copy = test.millisOfSecond().addToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
+        check(copy, 0, 0, 0, 0);
         
         copy = test.millisOfSecond().addToCopy(-9);
         check(copy, 10, 20, 30, 31);
@@ -548,8 +644,45 @@ public class TestTimeOfDay_Properties extends TestCase {
         copy = test.millisOfSecond().addToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
         check(copy, 0, 0, 0, 0);
         
+        copy = test.millisOfSecond().addToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
+        check(copy, 23, 59, 59, 999);
+    }
+
+    public void testPropertyAddNoWrapMilli() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.millisOfSecond().addNoWrapToCopy(9);
+        check(test, 10, 20, 30, 40);
+        check(copy, 10, 20, 30, 49);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(959);
+        check(copy, 10, 20, 30, 999);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(960);
+        check(copy, 10, 20, 31, 0);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
+        check(copy, 23, 59, 59, 999);
+        
         try {
-            test.millisOfSecond().addToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
+            test.millisOfSecond().addNoWrapToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        check(test, 10, 20, 30, 40);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(-9);
+        check(copy, 10, 20, 30, 31);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(-40);
+        check(copy, 10, 20, 30, 0);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(-41);
+        check(copy, 10, 20, 29, 999);
+        
+        copy = test.millisOfSecond().addNoWrapToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
+        check(copy, 0, 0, 0, 0);
+        
+        try {
+            test.millisOfSecond().addNoWrapToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);

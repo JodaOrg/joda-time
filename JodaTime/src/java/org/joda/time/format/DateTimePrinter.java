@@ -79,30 +79,6 @@ import org.joda.time.ReadablePartial;
 public interface DateTimePrinter {
 
     /**
-     * Returns another printer instance that can only be used with the specified chronology.
-     * <p>
-     * The normal DateTimePrinter is a fast implementation of printing dates
-     * and times, well over twice as fast as the JDK. However, it is possible to
-     * go even faster by specifying in advance the chronology to use. Note that
-     * this optimisation should be rarely used, and only when you have identified a
-     * performance problem.
-     * <p>
-     * You should only use this method if you are going to use the printer for the
-     * returned chronology multiple times, typically storing it in an instance or
-     * static variable. You should not use this method if you will only use the
-     * printer once or a few times, as the setup cost will cause performance to be
-     * worse than using an ordinary printer.
-     * <p>
-     * It is the callers resposibility to ensure that the printer is then only
-     * used with instances of the correct chronology.
-     * 
-     * @param chrono  the chronology to use, null means ISO
-     * @return the chronology specific printer
-     */
-    BoundDateTimePrinter bindPrinter(Chronology chrono);
-
-    //-----------------------------------------------------------------------
-    /**
      * Prints a ReadableInstant, using the chronology supplied by the instant.
      *
      * @param buf  formatted instant is appended to this buffer

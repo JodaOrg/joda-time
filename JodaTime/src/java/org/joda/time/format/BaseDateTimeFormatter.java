@@ -92,11 +92,6 @@ import org.joda.time.chrono.ISOChronology;
  */
 public abstract class BaseDateTimeFormatter {
 
-    public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-        return (BoundDateTimePrinter) this;
-    }
-
-    //-----------------------------------------------------------------------
     public void printTo(StringBuffer buf, ReadableInstant instant) {
         long millis = DateTimeUtils.getInstantMillis(instant);
         Chronology chrono = DateTimeUtils.getInstantChronology(instant);

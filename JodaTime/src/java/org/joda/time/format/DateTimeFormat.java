@@ -641,10 +641,6 @@ public class DateTimeFormat {
             mPrinter = printer;
         }
 
-        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-            return mPrinter.bindPrinter(chrono);
-        }
-
         public void printTo(StringBuffer buf, ReadableInstant instant) {
             mPrinter.printTo(buf, instant);
         }
@@ -770,10 +766,6 @@ public class DateTimeFormat {
         FParser(DateTimeParser parser) {
             super();
             mParser = parser;
-        }
-
-        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-            throw unsupported();
         }
 
         public void printTo(StringBuffer buf, ReadableInstant instant) {

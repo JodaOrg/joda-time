@@ -63,7 +63,6 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.MillisDurationField;
@@ -1001,7 +1000,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class CharacterLiteral
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter, BoundDateTimePrinter {
+            implements DateTimeFormatter {
 
         private final char iValue;
 
@@ -1074,7 +1073,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class StringLiteral
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter, BoundDateTimePrinter {
+            implements DateTimeFormatter {
 
         private final String iValue;
 
@@ -1212,12 +1211,6 @@ public class DateTimeFormatterBuilder {
             super(fieldType, maxParsedDigits, signed);
         }
 
-        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-            chrono = DateTimeUtils.getChronology(chrono);
-            DateTimeField field = iFieldType.getField(chrono.withUTC());
-            return new BoundUnpaddedNumber(field, iMaxParsedDigits, iSigned);
-        }
-
         protected int estimatePrintedLength() {
             return iMaxParsedDigits;
         }
@@ -1270,39 +1263,6 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static class BoundUnpaddedNumber
-            extends UnpaddedNumber
-            implements BoundDateTimePrinter {
-
-        private final DateTimeField iField;
-
-        BoundUnpaddedNumber(DateTimeField field, int maxParsedDigits, boolean signed) {
-            super(field.getType(), maxParsedDigits, signed);
-            iField = field;
-        }
-
-        protected void printTo(StringBuffer buf,
-                               long instantLocal, Chronology chronoLocal,
-                               long instant, Chronology chrono) {
-            try {
-                FormatUtils.appendUnpaddedInteger(buf, iField.get(instantLocal));
-            } catch (RuntimeException e) {
-                buf.append('\ufffd');
-            }
-        }
-
-        protected void printTo(Writer out,
-                               long instantLocal, Chronology chronoLocal,
-                               long instant, Chronology chrono) throws IOException {
-            try {
-                FormatUtils.writeUnpaddedInteger(out, iField.get(instantLocal));
-            } catch (RuntimeException e) {
-                out.write('\ufffd');
-            }
-        }
-    }
-
-    //-----------------------------------------------------------------------
     static class PaddedNumber extends NumberFormatter {
 
         protected final int iMinPrintedDigits;
@@ -1312,12 +1272,6 @@ public class DateTimeFormatterBuilder {
         {
             super(fieldType, maxParsedDigits, signed);
             iMinPrintedDigits = minPrintedDigits;
-        }
-
-        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-            chrono = DateTimeUtils.getChronology(chrono);
-            DateTimeField field = iFieldType.getField(chrono.withUTC());
-            return new BoundPaddedNumber(field, iMaxParsedDigits, iSigned, iMinPrintedDigits);
         }
 
         protected int estimatePrintedLength() {
@@ -1372,44 +1326,9 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static class BoundPaddedNumber
-            extends PaddedNumber
-            implements BoundDateTimePrinter {
-
-        private final DateTimeField iField;
-
-        BoundPaddedNumber(DateTimeField field, int maxParsedDigits,
-                          boolean signed, int minPrintedDigits)
-        {
-            super(field.getType(), maxParsedDigits, signed, minPrintedDigits);
-            iField = field;
-        }
-
-        protected void printTo(StringBuffer buf,
-                               long instantLocal, Chronology chronoLocal,
-                               long instant, Chronology chrono) {
-            try {
-                FormatUtils.appendPaddedInteger(buf, iField.get(instantLocal), iMinPrintedDigits);
-            } catch (RuntimeException e) {
-                appendUnknownString(buf, iMinPrintedDigits);
-            }
-        }
-
-        protected void printTo(Writer out,
-                               long instantLocal, Chronology chronoLocal,
-                               long instant, Chronology chrono) throws IOException {
-            try {
-                FormatUtils.writePaddedInteger(out, iField.get(instantLocal), iMinPrintedDigits);
-            } catch (RuntimeException e) {
-                printUnknownString(out, iMinPrintedDigits);
-            }
-        }
-    }
-
-    //-----------------------------------------------------------------------
     static class TwoDigitYear
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter, BoundDateTimePrinter {
+            implements DateTimeFormatter {
 
         private final int iPivot;
 
@@ -1532,7 +1451,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class TextField
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter, BoundDateTimePrinter {
+            implements DateTimeFormatter {
 
         private final DateTimeFieldType iFieldType;
         private final Locale iLocale;
@@ -1654,12 +1573,6 @@ public class DateTimeFormatterBuilder {
             }
             iMinDigits = minDigits;
             iMaxDigits = maxDigits;
-        }
-
-        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-            chrono = DateTimeUtils.getChronology(chrono);
-            DateTimeField field = iFieldType.getField(chrono.withUTC());
-            return new BoundFraction(field, iMinDigits, iMaxDigits);
         }
 
         protected int estimatePrintedLength() {
@@ -1869,142 +1782,9 @@ public class DateTimeFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    static class BoundFraction
-            extends Fraction
-            implements BoundDateTimePrinter {
-
-        private final DateTimeField iField;
-        private final long iScalar;
-        private final long iRangeMillis;
-
-        BoundFraction(DateTimeField field, int minDigits, int maxDigits) {
-            super(field.getType(), minDigits, maxDigits);
-            iField = field;
-            iMinDigits = minDigits;
-            
-            long rangeMillis = field.getDurationField().getUnitMillis();
-            long scalar;
-            while (true) {
-                switch (maxDigits) {  // know this is 18 or less
-                default: scalar = 1L; break;
-                case 1:  scalar = 10L; break;
-                case 2:  scalar = 100L; break;
-                case 3:  scalar = 1000L; break;
-                case 4:  scalar = 10000L; break;
-                case 5:  scalar = 100000L; break;
-                case 6:  scalar = 1000000L; break;
-                case 7:  scalar = 10000000L; break;
-                case 8:  scalar = 100000000L; break;
-                case 9:  scalar = 1000000000L; break;
-                case 10: scalar = 10000000000L; break;
-                case 11: scalar = 100000000000L; break;
-                case 12: scalar = 1000000000000L; break;
-                case 13: scalar = 10000000000000L; break;
-                case 14: scalar = 100000000000000L; break;
-                case 15: scalar = 1000000000000000L; break;
-                case 16: scalar = 10000000000000000L; break;
-                case 17: scalar = 100000000000000000L; break;
-                case 18: scalar = 1000000000000000000L; break;
-                }
-                if (((rangeMillis * scalar) / scalar) == rangeMillis) {
-                    break;
-                }
-                // Overflowed: scale down.
-                maxDigits--;
-            }
-            iMaxDigits = maxDigits;
-            iScalar = scalar;
-            iRangeMillis = rangeMillis;
-        }
-
-        protected void printTo(StringBuffer buf, Writer out, long instantLocal, Chronology chronoLocal)
-            throws IOException
-        {
-            DateTimeField field = iField;
-            int minDigits = iMinDigits;
-
-            long fraction;
-            try {
-                fraction = field.remainder(instantLocal);
-            } catch (RuntimeException e) {
-                if (buf != null) {
-                    appendUnknownString(buf, minDigits);
-                } else {
-                    printUnknownString(out, minDigits);
-                }
-                return;
-            }
-
-            if (fraction == 0) {
-                if (buf != null) {
-                    while (--minDigits >= 0) {
-                        buf.append('0');
-                    }
-                } else {
-                    while (--minDigits >= 0) {
-                        out.write('0');
-                    }
-                }
-                return;
-            }
-
-            String str;
-            long scaled = fraction * iScalar / iRangeMillis;
-            int maxDigits = iMaxDigits;
-            
-            if ((scaled & 0x7fffffff) == scaled) {
-                str = Integer.toString((int) scaled);
-            } else {
-                str = Long.toString(scaled);
-            }
-
-            int length = str.length();
-            int digits = maxDigits;
-            while (length < digits) {
-                if (buf != null) {
-                    buf.append('0');
-                } else {
-                    out.write('0');
-                }
-                minDigits--;
-                digits--;
-            }
-
-            if (minDigits < digits) {
-                // Chop off as many trailing zero digits as necessary.
-                while (minDigits < digits) {
-                    if (length <= 1 || str.charAt(length - 1) != '0') {
-                        break;
-                    }
-                    digits--;
-                    length--;
-                }
-                if (length < str.length()) {
-                    if (buf != null) {
-                        for (int i=0; i<length; i++) {
-                            buf.append(str.charAt(i));
-                        }
-                    } else {
-                        for (int i=0; i<length; i++) {
-                            out.write(str.charAt(i));
-                        }
-                    }
-                    return;
-                }
-            }
-
-            if (buf != null) {
-                buf.append(str);
-            } else {
-                out.write(str);
-            }
-        }
-    }
-
-    //-----------------------------------------------------------------------
     static class TimeZoneOffsetFormatter
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter, BoundDateTimePrinter {
+            implements DateTimeFormatter {
 
         private final String iZeroOffsetText;
         private final boolean iShowSeparators;
@@ -2361,7 +2141,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class TimeZonePrinter
             extends BaseDateTimeFormatter
-            implements DateTimePrinter, BoundDateTimePrinter {
+            implements DateTimePrinter {
 
         private final Locale iLocale;
         private final boolean iShortFormat;
@@ -2410,7 +2190,7 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     static class Composite
             extends BaseDateTimeFormatter
-            implements DateTimeFormatter, BoundDateTimePrinter {
+            implements DateTimeFormatter {
 
         private final BaseDateTimeFormatter[] iPrinters;
         private final BaseDateTimeFormatter[] iParsers;
@@ -2464,25 +2244,10 @@ public class DateTimeFormatterBuilder {
             iParsedLengthEstimate = base.iParsedLengthEstimate;
         }
 
-        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
-            BaseDateTimeFormatter[] elements = iPrinters;
-            if (elements == null) {
-                throw new UnsupportedOperationException();
-            }
-
-            int len = elements.length;
-            BaseDateTimeFormatter[] array = new BaseDateTimeFormatter[len];
-            for (int i = 0; i < len; i++) {
-                BoundDateTimePrinter bound = ((DateTimePrinter) elements[i]).bindPrinter(chrono);
-                array[i] = (BaseDateTimeFormatter) bound;
-            }
-            return new Composite(this, array);
-        }
-
         protected int estimatePrintedLength() {
             return iPrintedLengthEstimate;
         }
-    
+
         protected void printTo(StringBuffer buf,
                                long instantLocal, Chronology chronoLocal,
                                long instant, Chronology chrono) {

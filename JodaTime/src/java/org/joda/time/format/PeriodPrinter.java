@@ -48,7 +48,7 @@ public interface PeriodPrinter {
      * @param locale  the locale to use
      * @return the estimated length
      */
-    int calculatePrintedLength(ReadablePeriod period, Locale iLocale);
+    int calculatePrintedLength(ReadablePeriod period, Locale locale);
 
     /**
      * Returns the amount of fields from the given period that this printer
@@ -59,7 +59,7 @@ public interface PeriodPrinter {
      * @param locale  the locale to use
      * @return amount of fields printed
      */
-    int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale iLocale);
+    int countFieldsToPrint(ReadablePeriod period, int stopAt, Locale locale);
 
     //-----------------------------------------------------------------------
     /**
@@ -69,7 +69,7 @@ public interface PeriodPrinter {
      * @param period  the period to format
      * @param locale  the locale to use
      */
-    void printTo(StringBuffer buf, ReadablePeriod period, Locale iLocale);
+    void printTo(StringBuffer buf, ReadablePeriod period, Locale locale);
 
     /**
      * Prints a ReadablePeriod to a Writer.
@@ -78,6 +78,6 @@ public interface PeriodPrinter {
      * @param period  the period to format
      * @param locale  the locale to use
      */
-    void printTo(Writer out, ReadablePeriod period, Locale iLocale) throws IOException;
+    void printTo(Writer out, ReadablePeriod period, Locale locale) throws IOException;
 
 }

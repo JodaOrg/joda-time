@@ -5,15 +5,15 @@
   <id>joda-time</id>
   <name>Joda time</name>
   <groupId>joda-time</groupId>
-  <currentVersion>0.91</currentVersion>
+  <currentVersion>0.95</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
-    <logo>http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2</logo>
+    <logo>/joda.png</logo>
   </organization>
-  <inceptionYear>2003</inceptionYear>
+  <inceptionYear>2002</inceptionYear>
   <package>org.joda.time.*</package>
-  <logo>http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2</logo>
+  <logo>/jodatime.png</logo>
 
   <description>
     Date and time library to replace JDK date handling.
@@ -32,14 +32,14 @@
     <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/</url>
   </repository>
   
-  <!--mailingLists>
+  <mailingLists>
     <mailingList>
-      <name>Interest list</name>
-      <subscribe></subscribe>
-      <unsubscribe></unsubscribe>
-      <archive></archive>
+      <name>Joda Interest list</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
     </mailingList>
-  </mailingLists-->
+  </mailingLists>
 
   <developers>
     <developer>
@@ -83,6 +83,9 @@
       <includes>
         <include>org/joda/time/**/Test*.java</include>
       </includes>
+      <excludes>
+        <exclude>org/joda/time/**/TestSuite*.java</exclude>
+      </excludes>
     </unitTest>
   </build>
 
@@ -91,7 +94,7 @@
      <report>maven-changes-plugin</report>
      <report>maven-checkstyle-plugin</report>
      <!-- <report>maven-clover-plugin</report> -->
-     <report>maven-jcoverage-plugin</report>
+     <!-- report>maven-jcoverage-plugin</report -->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>

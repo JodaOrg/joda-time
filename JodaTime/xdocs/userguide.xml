@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Users Guide</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Introduction">
+
+<p>
+Joda-Time provides a large API for managing date and time in Java.
+Most of these classes are internal to the design, and provided for flexibility and extension.
+This document outlines what you really need to know to use the API.
+</p>
+
+</section>
+
+<section name="Chronology">
+
+<p>
+The Joda-Time design is based around the <a href="apidocs\org\joda\time\Chronology.html">Chronology</a>.
+This is the calculation engine that defines the complex rules for a calendar system.
+It uses a number of <a href="apidocs\org\joda\time\DateTimeField.html">fields</a>
+to split the time, stored in milliseconds, into a recognisable fields like 'day of week'.
+</p>
+<p>
+The current chronologies supplied are:
+</p>
+<ul>
+<li>ISOChronology - Implements the ISO8601 standard, which is compatable with Gregorian in modern times.</li>
+<li>GJChronology - The Gregorian/Julian calendar system, for historical use.</li>
+<li>BuddhistChronology - Offset from Gregorian/Julian by 543 years.</li>
+</ul>
+<p>
+It is hoped that other chronologies will be added over time.
+</p>
+<p>
+Although the Chronology is key to the design, it is not key to using the API!
+For most usages, the Chronology can be ignored as it will default to the ISOChronology.
+This is suitable for most uses.
+You would change it if you need accurate dates before October 15, 1582 when the Julian calendar was used,
+or if you need a specific chronology like BuddhistChronology.
+</p>
+
+</section>
+
+<section name="Interfaces">
+
+<p>
+Joda-Time defines a number of new interfaces.
+The most important is <a href="apidocs\org\joda\time\ReadableInstant.html">ReadableInstant</a>.
+This defines an instant in time that can be read.
+Other interfaces are defined for datetimes and durations.
+</p>
+<p>
+These interfaces allow multiple implementations of the basic date and time functionality to interoperate.
+Where possible, your application should define dates in terms of these interfaces.
+The design principle is the same as the Java Collections Framework (List/Map/Set).
+</p>
+
+</section>
+
+<section name="DateTime">
+
+<p>
+The main date instance used is <a href="apidocs\org\joda\time\DateTime.html">DateTime</a>.
+This holds the millisecond time of the date and the chronology used to calculate the fields.
+DateTime is immutable, and once created the values do not change.
+Thus, this class can safely be passed around and used in multiple threads without serialization.
+</p>
+<p>
+A companion class to DateTime is <a href="apidocs\org\joda\time\MutableDateTime.html">MutableDateTime</a>.
+This class is mutable, and has a full set of set and add methods.
+When calculating a date, or making changes, this is the best class to use.
+</p>
+<p>
+These two classes, as with others, can be constructed in many ways.
+One constructor takes an Object as input, and by default this accepts a String, Date (JDK) and Calendar (JDK).
+Interoperability is also made simple via the <code>toDate()</code>, <code>toCalendar(Locale)</code> and <code>toGregorianCalendar()</code> methods.
+</p>
+
+</section>
+
+<section name="Properties">
+
+<p>
+The main API of DateTime has been kept small, limited to just get methods for each field.
+There is much more power available however through the use of <i>properties</i>.
+In addition to the <code>getDayOfYear()</code> method you will find <code>dayOfYear()</code>.
+This returns a <a href="apidocs\org\joda\time\DateTimeFieldProperty.html">property</a> with considerable functionality.
+</p>
+<p>
+The property has methods to:
+</p>
+<ul>
+<li>get the value of the field</li>
+<li>get the value of the field as text</li>
+<li>get the value of the field as text in another language</li>
+<li>get metadata about the field, such as min/max size and leap status</li>
+<li>obtain duration fields</li>
+<li>set the value of the field returning a new DateTime</li>
+<li>add a value to the field returning a new DateTime</li>
+<li>round the datetime returning a new DateTime</li>
+</ul>
+<p>
+Knowing the methods on the property is the secret to making the most of the API.
+</p>
+
+</section>
+
+</body>
+</document>

@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 
 <document>
 
@@ -12,7 +12,7 @@
 <section name="Joda Time">
 
 <p>
-<b>Joda Dates is a Java open-source project to rewrite the Java Date and Calendar classes.</b>
+<b>Joda-Time is an open-source project to provide a quality Java date and time API.</b>
 </p>
 
 <p>
@@ -27,7 +27,7 @@ Calendar also has some strange performance characteristics.
 <p>
 The Joda Dates project seeks to provide an implementation of dates and times for the Java community.
 The 'default' calendar system implemented will be the ISO8601 standard.
-This specifies a framework for date and time management independent of locale.
+This specifies a framework for date and time independent of locale.
 Thus, in the standard, the first day of the week is Monday, and this has the index 1.
 This avoids any ambiguity accross national boundaries.
 </p>
@@ -40,13 +40,16 @@ The design is flexible and pluggable, so adding additional calendar systems shou
 <p>
 Using a Joda date you can write:
 </p>
-<pre>
-  DateTime dt = new DateTime();
-  int year = dt.getYear();
-  String monthText = dt.monthOfYear().getAsText();
-</pre>
+<source>
+DateTime dt = new DateTime();
+int year = dt.getYear();
+String monthText = dt.monthOfYear().getAsText(Locale.ENGLISH);
+String monthInFrench = dt.monthOfYear().getAsText(Locale.FRENCH);
+String dateAsISO8601Format = dt.toString();
+</source>
 <p>
-And this is only a flavour of what is available, see the <a href="apidocs/index.html">API</a> for more detail.
+And this is only a flavour of what is available, see the <a href="api-0.9/index.html">API</a>
+or <a href="userguide.html">users guide</a> for more detail.
 </p>
 
 <p>
@@ -71,7 +74,9 @@ which is an Apache/BSD cloned licence.
 
 <section name="Documentation">
 <p>
-The <a href="apidocs/index.html">JavaDoc API documents</a> are available online.
+The JavaDoc API documents are available online for the
+<a href="api-0.9/index.html">current release</a> and the
+<a href="apidocs/index.html">latest CVS</a>.
 </p>
 <p>
 The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time">CVS repository</a> can be browsed.
@@ -93,9 +98,3 @@ If you have any questions, or want to volunteer to help, just email
 </section>
 </body>
 </document>
-
-
-
-
-
-

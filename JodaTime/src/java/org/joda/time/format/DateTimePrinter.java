@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,7 @@ import java.io.Writer;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
+import org.joda.time.ReadableLocal;
 import org.joda.time.ReadablePartial;
 
 /**
@@ -83,8 +84,9 @@ public interface DateTimePrinter {
      */
     int estimatePrintedLength();
 
+    //-----------------------------------------------------------------------
     /**
-     * Prints a ReadableInstant, using the chronology supplied by the instant.
+     * Prints a ReadableInstant, using the chronology supplied by the datetime.
      *
      * @param buf  formatted instant is appended to this buffer
      * @param instant  instant to format, null means now
@@ -92,12 +94,28 @@ public interface DateTimePrinter {
     void printTo(StringBuffer buf, ReadableInstant instant);
 
     /**
-     * Prints a ReadableInstant, using the chronology supplied by the instant.
+     * Prints a ReadableInstant, using the chronology supplied by the datetime.
      *
      * @param out  formatted instant is written out
      * @param instant  instant to format, null means now
      */
     void printTo(Writer out, ReadableInstant instant) throws IOException;
+
+    /**
+     * Prints a ReadableLocal, using the chronology supplied by the datetime.
+     *
+     * @param buf  formatted local is appended to this buffer
+     * @param local  local to format, null means now
+     */
+    void printTo(StringBuffer buf, ReadableLocal local);
+
+    /**
+     * Prints a ReadableLocal, using the chronology supplied by the datetime.
+     *
+     * @param out  formatted local is written out
+     * @param local  local to format, null means now
+     */
+    void printTo(Writer out, ReadableLocal local) throws IOException;
 
     //-----------------------------------------------------------------------
     /**
@@ -208,12 +226,20 @@ public interface DateTimePrinter {
 
     //-----------------------------------------------------------------------
     /**
-     * Prints a ReadableInstant to a new String, using the chronology of the instant.
+     * Prints a ReadableInstant to a new String, using the chronology of the datetime.
      *
      * @param instant  instant to format, null means now
      * @return the printed result
      */
     String print(ReadableInstant instant);
+
+    /**
+     * Prints a ReadableLocal to a new String, using the chronology of the datetime.
+     *
+     * @param local  local to format, null means now
+     * @return the printed result
+     */
+    String print(ReadableLocal local);
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,

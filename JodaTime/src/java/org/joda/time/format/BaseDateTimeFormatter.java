@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -63,6 +63,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
+import org.joda.time.ReadableLocal;
 import org.joda.time.ReadablePartial;
 import org.joda.time.chrono.ISOChronology;
 
@@ -106,6 +107,34 @@ public abstract class BaseDateTimeFormatter {
         ((DateTimePrinter) this).printTo(out, millis, chrono);
     }
 
+    public void printTo(StringBuffer buf, ReadableLocal local) {
+        long millis;
+        Chronology chrono;
+        if (local == null) {
+            millis = DateTimeUtils.currentTimeMillis();
+            millis = DateTimeZone.getDefault().getMillisKeepLocal(DateTimeZone.UTC, millis);
+            chrono = Chronology.getISOUTC();
+        } else {
+            millis = local.getLocalMillis();
+            chrono = local.getChronology();
+        }
+        ((DateTimePrinter) this).printTo(buf, millis, chrono, 0, null);
+    }
+
+    public void printTo(Writer out, ReadableLocal local) throws IOException {
+        long millis;
+        Chronology chrono;
+        if (local == null) {
+            millis = DateTimeUtils.currentTimeMillis();
+            millis = DateTimeZone.getDefault().getMillisKeepLocal(DateTimeZone.UTC, millis);
+            chrono = Chronology.getISOUTC();
+        } else {
+            millis = local.getLocalMillis();
+            chrono = local.getChronology();
+        }
+        ((DateTimePrinter) this).printTo(out, millis, chrono, 0, null);
+    }
+
     public void printTo(StringBuffer buf, long instant) {
         ((DateTimePrinter) this).printTo(buf, instant, ISOChronology.getInstance());
     }
@@ -146,6 +175,20 @@ public abstract class BaseDateTimeFormatter {
         long millis = DateTimeUtils.getInstantMillis(instant);
         Chronology chrono = DateTimeUtils.getInstantChronology(instant);
         return ((DateTimePrinter) this).print(millis, chrono);
+    }
+
+    public String print(ReadableLocal local) {
+        long millis;
+        Chronology chrono;
+        if (local == null) {
+            millis = DateTimeUtils.currentTimeMillis();
+            millis = DateTimeZone.getDefault().getMillisKeepLocal(DateTimeZone.UTC, millis);
+            chrono = Chronology.getISOUTC();
+        } else {
+            millis = local.getLocalMillis();
+            chrono = local.getChronology();
+        }
+        return ((DateTimePrinter) this).print(millis, chrono, 0, null);
     }
 
     public String print(long instant) {

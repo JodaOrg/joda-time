@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -70,6 +70,7 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
+import org.joda.time.ReadableLocal;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.RemainderDateTimeField;
 
@@ -653,6 +654,14 @@ public class DateTimeFormat {
             iPrinter.printTo(out, instant);
         }
 
+        public void printTo(StringBuffer buf, ReadableLocal local) {
+            iPrinter.printTo(buf, local);
+        }
+
+        public void printTo(Writer out, ReadableLocal local) throws IOException {
+            iPrinter.printTo(out, local);
+        }
+
         public void printTo(StringBuffer buf, long instant) {
             iPrinter.printTo(buf, instant);
         }
@@ -698,6 +707,10 @@ public class DateTimeFormat {
 
         public String print(ReadableInstant instant) {
             return iPrinter.print(instant);
+        }
+
+        public String print(ReadableLocal local) {
+            return iPrinter.print(local);
         }
 
         public String print(long instant) {
@@ -803,6 +816,14 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
+        public void printTo(StringBuffer buf, ReadableLocal local) {
+            throw unsupported();
+        }
+
+        public void printTo(Writer out, ReadableLocal local) throws IOException {
+            throw unsupported();
+        }
+
         public void printTo(StringBuffer buf, long instant) {
             throw unsupported();
         }
@@ -846,6 +867,10 @@ public class DateTimeFormat {
         }
 
         public String print(ReadableInstant instant) {
+            throw unsupported();
+        }
+
+        public String print(ReadableLocal local) {
             throw unsupported();
         }
 

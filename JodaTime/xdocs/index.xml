@@ -48,7 +48,7 @@ String monthInFrench = dt.monthOfYear().getAsText(Locale.FRENCH);
 String dateAsISO8601Format = dt.toString();
 </source>
 <p>
-And this is only a flavour of what is available, see the <a href="api-0.9/index.html">API</a>
+And this is only a flavour of what is available, see the <a href="api-0.95/index.html">API</a>
 or <a href="userguide.html">users guide</a> for more detail.
 </p>
 

@@ -1,4 +1,4 @@
-# @(#)asia	7.80
+# @(#)asia	7.81
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -137,8 +137,12 @@ Zone	Asia/Thimphu	5:58:36 -	LMT	1947 Aug 15 # or Thimbu
 # British Indian Ocean Territory
 # Whitman and the 1995 CIA time zone map say 5:00, but the
 # 1997 and later maps say 6:00.  Assume the switch occurred in 1996.
+# We have no information as to when standard time was introduced;
+# assume it occurred in 1907, the same year as Mauritius (which
+# then contained the Chagos Archipelago).
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone	Indian/Chagos	5:00	-	IOT	1996 # BIOT Time
+Zone	Indian/Chagos	4:49:40	-	LMT	1907
+			5:00	-	IOT	1996 # BIOT Time
 			6:00	-	IOT
 
 # Brunei
@@ -923,6 +927,13 @@ Zone	Asia/Amman	2:23:44 -	LMT	1931
 # - Qyzylorda switched from +5:00 to +6:00 on 1992-01-19 02:00.
 # - Oral switched from +5:00 to +4:00 in spring 1989.
 #
+# <a href="http://www.kazsociety.org.uk/news/2005/03/30.htm">
+# From Kazakhstan Embassy's News Bulletin #11 (2005-03-21):
+# </a>
+# The Government of Kazakhstan passed a resolution March 15 abolishing
+# daylight saving time citing lack of economic benefits and health
+# complications coupled with a decrease in productivity.
+#
 #
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 #
@@ -931,7 +942,8 @@ Zone	Asia/Almaty	5:07:48 -	LMT	1924 May  2 # or Alma-Ata
 			5:00	-	ALMT	1930 Jun 21 # Alma-Ata Time
 			6:00 RussiaAsia ALM%sT	1991
 			6:00	-	ALMT	1992
-			6:00 RussiaAsia	ALM%sT
+			6:00 RussiaAsia	ALM%sT	2005 Mar 15
+			6:00	-	ALMT
 # Qyzylorda (aka Kyzylorda, Kizilorda, Kzyl-Orda, etc.)
 Zone	Asia/Qyzylorda	4:21:52 -	LMT	1924 May  2
 			4:00	-	KIZT	1930 Jun 21 # Kizilorda Time
@@ -941,7 +953,8 @@ Zone	Asia/Qyzylorda	4:21:52 -	LMT	1924 May  2
 			5:00 RussiaAsia	KIZ%sT	1991
 			5:00	-	KIZT	1991 Dec 16 # independence
 			5:00	-	QYZT	1992 Jan 19 2:00
-			6:00 RussiaAsia	QYZ%sT
+			6:00 RussiaAsia	QYZ%sT	2005 Mar 15
+			6:00	-	QYZT
 # Aqtobe (aka Aktobe, formerly Akt'ubinsk)
 Zone	Asia/Aqtobe	3:48:40	-	LMT	1924 May  2
 			4:00	-	AKTT	1930 Jun 21 # Aktyubinsk Time
@@ -950,7 +963,8 @@ Zone	Asia/Aqtobe	3:48:40	-	LMT	1924 May  2
 			6:00	-	AKTT	1982 Apr  1
 			5:00 RussiaAsia	AKT%sT	1991
 			5:00	-	AKTT	1991 Dec 16 # independence
-			5:00 RussiaAsia	AQT%sT	# Aqtobe Time
+			5:00 RussiaAsia	AQT%sT	2005 Mar 15 # Aqtobe Time
+			5:00	-	AQTT
 # Mangghystau
 # Aqtau was not founded until 1963, but it represents an inhabited region,
 # so include time stamps before 1963.
@@ -962,7 +976,8 @@ Zone	Asia/Aqtau	3:21:04	-	LMT	1924 May  2
 			5:00 RussiaAsia	SHE%sT	1991
 			5:00	-	SHET	1991 Dec 16 # independence
 			5:00 RussiaAsia	AQT%sT	1995 Mar lastSun 2:00 # Aqtau Time
-			4:00 RussiaAsia	AQT%sT
+			4:00 RussiaAsia	AQT%sT	2005 Mar 15
+			4:00	-	AQTT
 # West Kazakhstan
 Zone	Asia/Oral	3:25:24	-	LMT	1924 May  2 # or Ural'sk
 			4:00	-	URAT	1930 Jun 21 # Ural'sk time
@@ -972,7 +987,8 @@ Zone	Asia/Oral	3:25:24	-	LMT	1924 May  2 # or Ural'sk
 			5:00 RussiaAsia	URA%sT	1989 Mar 26 2:00
 			4:00 RussiaAsia	URA%sT	1991
 			4:00	-	URAT	1991 Dec 16 # independence
-			4:00 RussiaAsia	ORA%sT	# Oral Time
+			4:00 RussiaAsia	ORA%sT	2005 Mar 15 # Oral Time
+			4:00	-	ORAT
 
 # Kyrgyzstan (Kirgizstan)
 # Transitions through 1991 are from Shanks.

@@ -1,4 +1,4 @@
-# @(#)australasia	7.70
+# @(#)australasia	7.71
 # This file also includes Pacific islands.
 
 # Notes are at the end of this file
@@ -199,9 +199,11 @@ Zone Pacific/Rarotonga	-10:39:04 -	LMT	1901		# Avarua
 			-10:00	Cook	CK%sT
 
 # Cocos
-# From USNO (1989):
+# These islands were ruled by the Ross family from about 1830 to 1978.
+# We don't know when standard time was introduced; for now, we guess 1900.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone	Indian/Cocos	6:30	-	CCT	# Cocos Islands Time
+Zone	Indian/Cocos	6:27:40	-	LMT	1900
+			6:30	-	CCT	# Cocos Islands Time
 
 # Fiji
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
@@ -381,11 +383,11 @@ Zone Pacific/Pago_Pago	 12:37:12 -	LMT	1879 Jul  5
 			-11:00	-	BST	1983 Nov 30	# B=Bering
 			-11:00	-	SST			# S=Samoa
 
-# W Samoa
+# Samoa
 Zone Pacific/Apia	 12:33:04 -	LMT	1879 Jul  5
 			-11:26:56 -	LMT	1911
 			-11:30	-	SAMT	1950		# Samoa Time
-			-11:00	-	WST			# W Samoa Time
+			-11:00	-	WST			# Samoa Time
 
 # Solomon Is
 # excludes Bougainville, for which see Papua New Guinea
@@ -1347,3 +1349,11 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # places as late as fourteen hours later than UTC.  And, since the IDL is not
 # an international standard, there are some places on the high seas where the
 # correct date is ambiguous.
+
+# From Paul Eggert, using references suggested by Oscar van Vlijmen
+# (2005-03-20):
+#
+# The American Practical Navigator (2002)
+# <http://pollux.nss.nima.mil/pubs/pubs_j_apn_sections.html?rid=187>
+# talks only about the 180-degree meridian with respect to ships in
+# international waters; it ignores the international date line.

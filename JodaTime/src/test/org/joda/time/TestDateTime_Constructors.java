@@ -70,25 +70,36 @@ import org.joda.time.convert.MockZeroNullIntegerConverter;
  * @author Stephen Colebourne
  */
 public class TestDateTime_Constructors extends TestCase {
+    // Test in 2002/03 as time zones are more well known
+    // (before the late 90's they were all over the place)
 
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     
-    // 1970-06-09
+    long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
+                     366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
+                     365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
+                     366 + 365;
+    long y2003days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
+                     366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
+                     365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
+                     366 + 365 + 365;
+    
+    // 2002-06-09
     private long TEST_TIME_NOW =
-            (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
+            (y2002days + 31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
-    // 1970-04-05
+    // 2002-04-05
     private long TEST_TIME1 =
-        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 12L * DateTimeConstants.MILLIS_PER_HOUR
-        + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
+            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
+            + 12L * DateTimeConstants.MILLIS_PER_HOUR
+            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
         
-    // 1971-05-06
+    // 2003-05-06
     private long TEST_TIME2 =
-        (365L + 31L + 28L + 31L + 30L + 7L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 14L * DateTimeConstants.MILLIS_PER_HOUR
-        + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
+            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
+            + 14L * DateTimeConstants.MILLIS_PER_HOUR
+            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
     private DateTimeZone zone = null;
     private Locale locale = null;
@@ -118,6 +129,13 @@ public class TestDateTime_Constructors extends TestCase {
         DateTimeZone.setDefault(zone);
         Locale.setDefault(locale);
         zone = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testTest() {
+        assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
+        assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
+        assertEquals("2003-05-06T14:28:00.000Z", new Instant(TEST_TIME2).toString());
     }
 
     //-----------------------------------------------------------------------
@@ -412,7 +430,7 @@ public class TestDateTime_Constructors extends TestCase {
      * Test constructor (int, int, int)
      */
     public void testConstructor_int_int_int_int_int_int_int() throws Throwable {
-        DateTime test = new DateTime(1970, 6, 9, 1, 0, 0, 0);  // +01:00
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, 0);  // +01:00
         assertEquals(ISOChronology.getInstance(), test.getChronology());
         assertEquals(LONDON, test.getZone());
         assertEquals(TEST_TIME_NOW, test.getMillis());
@@ -425,24 +443,24 @@ public class TestDateTime_Constructors extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 0, 9, 0, 0, 0, 0);
+            new DateTime(2002, 0, 9, 0, 0, 0, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 13, 9, 0, 0, 0, 0);
+            new DateTime(2002, 13, 9, 0, 0, 0, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 6, 0, 0, 0, 0, 0);
+            new DateTime(2002, 6, 0, 0, 0, 0, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 6, 31, 0, 0, 0, 0);
+            new DateTime(2002, 6, 31, 0, 0, 0, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
-        new DateTime(1970, 7, 31, 0, 0, 0, 0);
+        new DateTime(2002, 7, 31, 0, 0, 0, 0);
         try {
-            new DateTime(1970, 7, 32, 0, 0, 0, 0);
+            new DateTime(2002, 7, 32, 0, 0, 0, 0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -451,7 +469,7 @@ public class TestDateTime_Constructors extends TestCase {
      * Test constructor (int, int, int, DateTimeZone)
      */
     public void testConstructor_int_int_int_int_int_int_int_DateTimeZone() throws Throwable {
-        DateTime test = new DateTime(1970, 6, 9, 1, 0, 0, 0, PARIS);  // +01:00
+        DateTime test = new DateTime(2002, 6, 9, 2, 0, 0, 0, PARIS);  // +02:00
         assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
         assertEquals(TEST_TIME_NOW, test.getMillis());
         try {
@@ -463,24 +481,24 @@ public class TestDateTime_Constructors extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 0, 9, 0, 0, 0, 0, PARIS);
+            new DateTime(2002, 0, 9, 0, 0, 0, 0, PARIS);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 13, 9, 0, 0, 0, 0, PARIS);
+            new DateTime(2002, 13, 9, 0, 0, 0, 0, PARIS);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 6, 0, 0, 0, 0, 0, PARIS);
+            new DateTime(2002, 6, 0, 0, 0, 0, 0, PARIS);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 6, 31, 0, 0, 0, 0, PARIS);
+            new DateTime(2002, 6, 31, 0, 0, 0, 0, PARIS);
             fail();
         } catch (IllegalArgumentException ex) {}
-        new DateTime(1970, 7, 31, 0, 0, 0, 0, PARIS);
+        new DateTime(2002, 7, 31, 0, 0, 0, 0, PARIS);
         try {
-            new DateTime(1970, 7, 32, 0, 0, 0, 0, PARIS);
+            new DateTime(2002, 7, 32, 0, 0, 0, 0, PARIS);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -489,7 +507,7 @@ public class TestDateTime_Constructors extends TestCase {
      * Test constructor (int, int, int, DateTimeZone=null)
      */
     public void testConstructor_int_int_int_int_int_int_int_nullDateTimeZone() throws Throwable {
-        DateTime test = new DateTime(1970, 6, 9, 1, 0, 0, 0, (DateTimeZone) null);  // +01:00
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, 0, (DateTimeZone) null);  // +01:00
         assertEquals(ISOChronology.getInstance(), test.getChronology());
         assertEquals(TEST_TIME_NOW, test.getMillis());
     }
@@ -498,7 +516,7 @@ public class TestDateTime_Constructors extends TestCase {
      * Test constructor (int, int, int, Chronology)
      */
     public void testConstructor_int_int_int_int_int_int_int_Chronology() throws Throwable {
-        DateTime test = new DateTime(1970, 6, 9, 1, 0, 0, 0, GregorianChronology.getInstance());  // +01:00
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, 0, GregorianChronology.getInstance());  // +01:00
         assertEquals(GregorianChronology.getInstance(), test.getChronology());
         assertEquals(TEST_TIME_NOW, test.getMillis());
         try {
@@ -510,24 +528,24 @@ public class TestDateTime_Constructors extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 0, 9, 0, 0, 0, 0, GregorianChronology.getInstance());
+            new DateTime(2002, 0, 9, 0, 0, 0, 0, GregorianChronology.getInstance());
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 13, 9, 0, 0, 0, 0, GregorianChronology.getInstance());
+            new DateTime(2002, 13, 9, 0, 0, 0, 0, GregorianChronology.getInstance());
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 6, 0, 0, 0, 0, 0, GregorianChronology.getInstance());
+            new DateTime(2002, 6, 0, 0, 0, 0, 0, GregorianChronology.getInstance());
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            new DateTime(1970, 6, 31, 0, 0, 0, 0, GregorianChronology.getInstance());
+            new DateTime(2002, 6, 31, 0, 0, 0, 0, GregorianChronology.getInstance());
             fail();
         } catch (IllegalArgumentException ex) {}
-        new DateTime(1970, 7, 31, 0, 0, 0, 0, GregorianChronology.getInstance());
+        new DateTime(2002, 7, 31, 0, 0, 0, 0, GregorianChronology.getInstance());
         try {
-            new DateTime(1970, 7, 32, 0, 0, 0, 0, GregorianChronology.getInstance());
+            new DateTime(2002, 7, 32, 0, 0, 0, 0, GregorianChronology.getInstance());
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -536,7 +554,7 @@ public class TestDateTime_Constructors extends TestCase {
      * Test constructor (int, int, int, Chronology=null)
      */
     public void testConstructor_int_int_int_int_int_int_int_nullChronology() throws Throwable {
-        DateTime test = new DateTime(1970, 6, 9, 1, 0, 0, 0, (Chronology) null);  // +01:00
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, 0, (Chronology) null);  // +01:00
         assertEquals(ISOChronology.getInstance(), test.getChronology());
         assertEquals(TEST_TIME_NOW, test.getMillis());
     }

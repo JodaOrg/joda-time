@@ -76,25 +76,36 @@ import org.joda.time.chrono.ISOChronology;
  * @author Stephen Colebourne
  */
 public class TestInstant_Basics extends TestCase {
+    // Test in 2002/03 as time zones are more well known
+    // (before the late 90's they were all over the place)
 
     private static final DateTimeZone PARIS = DateTimeZone.getInstance("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.getInstance("Europe/London");
     
-    // 1970-06-09
+    long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
+                     366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
+                     365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
+                     366 + 365;
+    long y2003days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
+                     366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
+                     365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
+                     366 + 365 + 365;
+    
+    // 2002-06-09
     private long TEST_TIME_NOW =
-            (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
+            (y2002days + 31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
-    // 1970-04-05
+    // 2002-04-05
     private long TEST_TIME1 =
-        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 12L * DateTimeConstants.MILLIS_PER_HOUR
-        + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
+            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
+            + 12L * DateTimeConstants.MILLIS_PER_HOUR
+            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
         
-    // 1971-05-06
+    // 2003-05-06
     private long TEST_TIME2 =
-        (365L + 31L + 28L + 31L + 30L + 7L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 14L * DateTimeConstants.MILLIS_PER_HOUR
-        + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
+            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
+            + 14L * DateTimeConstants.MILLIS_PER_HOUR
+            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
     private DateTimeZone zone = null;
     private Locale locale = null;
@@ -127,18 +138,25 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testTest() {
+        assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
+        assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
+        assertEquals("2003-05-06T14:28:00.000Z", new Instant(TEST_TIME2).toString());
+    }
+
+    //-----------------------------------------------------------------------
     public void testGet() {
         Instant test = new Instant();
         assertEquals(1, test.get(ISOChronology.getInstance().era()));
-        assertEquals(19, test.get(ISOChronology.getInstance().centuryOfEra()));
-        assertEquals(70, test.get(ISOChronology.getInstance().yearOfCentury()));
-        assertEquals(1970, test.get(ISOChronology.getInstance().yearOfEra()));
-        assertEquals(1970, test.get(ISOChronology.getInstance().year()));
+        assertEquals(20, test.get(ISOChronology.getInstance().centuryOfEra()));
+        assertEquals(2, test.get(ISOChronology.getInstance().yearOfCentury()));
+        assertEquals(2002, test.get(ISOChronology.getInstance().yearOfEra()));
+        assertEquals(2002, test.get(ISOChronology.getInstance().year()));
         assertEquals(6, test.get(ISOChronology.getInstance().monthOfYear()));
         assertEquals(9, test.get(ISOChronology.getInstance().dayOfMonth()));
-        assertEquals(1970, test.get(ISOChronology.getInstance().weekyear()));
-        assertEquals(24, test.get(ISOChronology.getInstance().weekOfWeekyear()));
-        assertEquals(2, test.get(ISOChronology.getInstance().dayOfWeek()));
+        assertEquals(2002, test.get(ISOChronology.getInstance().weekyear()));
+        assertEquals(23, test.get(ISOChronology.getInstance().weekOfWeekyear()));
+        assertEquals(7, test.get(ISOChronology.getInstance().dayOfWeek()));
         assertEquals(160, test.get(ISOChronology.getInstance().dayOfYear()));
         assertEquals(0, test.get(ISOChronology.getInstance().halfdayOfDay()));
         assertEquals(1, test.get(ISOChronology.getInstance().hourOfHalfday()));
@@ -318,7 +336,7 @@ public class TestInstant_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testToString() {
         Instant test = new Instant(TEST_TIME_NOW);
-        assertEquals("1970-06-09T00:00:00.000Z", test.toString());
+        assertEquals("2002-06-09T00:00:00.000Z", test.toString());
     }
 
     //-----------------------------------------------------------------------

@@ -79,6 +79,41 @@ import org.joda.time.chrono.ISOChronology;
  * <p>
  * DateTimeZoneBuilder itself is mutable and not thread-safe, but the
  * DateTimeZone objects that it builds are thread-safe and immutable.
+ * <p>
+ * It is intended that {@link ZoneInfoCompiler} be used to read time zone data
+ * files, indirectly calling DateTimeZoneBuilder. The following complex
+ * example defines the America/Los_Angeles time zone, with all historical
+ * transitions:
+ * 
+ * <pre>
+ * DateTimeZone America_Los_Angeles = new DateTimeZoneBuilder()
+ *     .addCutover(-2147483648, 'w', 1, 1, 0, false, 0)
+ *     .setStandardOffset(-28378000)
+ *     .setFixedSavings("LMT", 0)
+ *     .addCutover(1883, 'w', 11, 18, 0, false, 43200000)
+ *     .setStandardOffset(-28800000)
+ *     .addRecurringSavings("PDT", 3600000, 1918, 1919, 'w',  3, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PST",       0, 1918, 1919, 'w', 10, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PWT", 3600000, 1942, 1942, 'w',  2,  9, 0, false, 7200000)
+ *     .addRecurringSavings("PPT", 3600000, 1945, 1945, 'u',  8, 14, 0, false, 82800000)
+ *     .addRecurringSavings("PST",       0, 1945, 1945, 'w',  9, 30, 0, false, 7200000)
+ *     .addCutover(1946, 'w', 1, 1, 0, false, 0)
+ *     .setStandardOffset(-28800000)
+ *     .addRecurringSavings("PDT", 3600000, 1948, 1948, 'w',  3, 14, 0, false, 7200000)
+ *     .addRecurringSavings("PST",       0, 1949, 1949, 'w',  1,  1, 0, false, 7200000)
+ *     .addRecurringSavings("PDT", 3600000, 1950, 1966, 'w',  4, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PST",       0, 1950, 1961, 'w',  9, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PST",       0, 1962, 1966, 'w', 10, -1, 7, false, 7200000)
+ *     .addCutover(1967, 'w', 1, 1, 0, false, 0)
+ *     .setStandardOffset(-28800000)
+ *     .addRecurringSavings("PST",       0, 1967, 2147483647, 'w', 10, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PDT", 3600000, 1967, 1973, 'w', 4, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PDT", 3600000, 1974, 1974, 'w', 1,  6, 0, false, 7200000)
+ *     .addRecurringSavings("PDT", 3600000, 1975, 1975, 'w', 2, 23, 0, false, 7200000)
+ *     .addRecurringSavings("PDT", 3600000, 1976, 1986, 'w', 4, -1, 7, false, 7200000)
+ *     .addRecurringSavings("PDT", 3600000, 1987, 2147483647, 'w', 4, 1, 7, true, 7200000)
+ *     .toDateTimeZone("America/Los_Angeles");
+ * </pre>
  *
  * @author Brian S O'Neill
  * @see ZoneInfoCompiler

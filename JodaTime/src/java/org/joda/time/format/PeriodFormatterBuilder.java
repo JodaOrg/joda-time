@@ -759,9 +759,19 @@ public class PeriodFormatterBuilder {
             String text = iText;
             int textLength = text.length();
             int sourceLength = periodStr.length();
+            search:
             for (int pos = position; pos < sourceLength; pos++) {
                 if (periodStr.regionMatches(true, pos, text, 0, textLength)) {
                     return pos;
+                }
+                // Only allow number characters to be skipped in search of suffix.
+                switch (periodStr.charAt(pos)) {
+                case '0': case '1': case '2': case '3': case '4':
+                case '5': case '6': case '7': case '8': case '9':
+                case '.': case ',': case '+': case '-':
+                    break;
+                default:
+                    break search;
                 }
             }
             return ~position;
@@ -911,7 +921,6 @@ public class PeriodFormatterBuilder {
         
         private final PeriodFieldAffix iPrefix;
         private final PeriodFieldAffix iSuffix;
-        
 
         FieldFormatter(int minPrintedDigits, int printZeroSetting,
                        int maxParsedDigits, boolean rejectSignedValues,

@@ -134,18 +134,18 @@ public interface ReadablePeriod {
     long addTo(long instant, int scalar, Chronology chrono);
 
     /**
-     * Adds this period to the given instant, returning a new Instant.
+     * Adds this period to the given instant, returning a new DateTime.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
      * @param instant  the instant to add the period to
      * @param scalar  the number of times to add the period, negative to subtract
-     * @return instant with the original value plus this period times scalar
+     * @return datetime with the original value plus this period times scalar
      * @throws IllegalArgumentException if the instant is null
      * @throws ArithmeticException if the result of the calculation is too large
      */
-    Instant addTo(ReadableInstant instant, int scalar);
+    DateTime addTo(ReadableInstant instant, int scalar);
 
     /**
      * Adds this period into the given mutable instant.

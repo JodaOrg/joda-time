@@ -344,8 +344,9 @@ public class TestPeriod_Basics extends TestCase {
         expected = ISOChronology.getInstance().millis().add(expected, 8);
         
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
-        Instant added = test.addTo(new Instant(), 1);  // Instant has no time zone, uses duration's zone (local)
+        DateTime added = test.addTo(new Instant(), 1);  // Instant has no time zone, uses duration's zone (local)
         assertEquals(expected, added.getMillis());
+        assertEquals(ISOChronology.getInstance(), added.getChronology());
     }
     
     public void testAddToRI2() {
@@ -360,8 +361,9 @@ public class TestPeriod_Basics extends TestCase {
         expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
         
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        Instant added = test.addTo(new Instant(), -2);  // Instant has no time zone, uses duration's zone (UTC)
+        DateTime added = test.addTo(new Instant(), -2);  // Instant has no time zone, uses duration's zone (UTC)
         assertEquals(expected, added.getMillis());
+        assertEquals(ISOChronology.getInstance(), added.getChronology());
     }
     
     public void testAddToRI3() {
@@ -376,11 +378,29 @@ public class TestPeriod_Basics extends TestCase {
         expected = ISOChronology.getInstance().millis().add(expected, -16);
         
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        Instant added = test.addTo(new DateTime(), -2);  // DateTime has local time zone
+        DateTime added = test.addTo(new DateTime(), -2);  // DateTime has local time zone
         assertEquals(expected, added.getMillis());
+        assertEquals(ISOChronology.getInstance(), added.getChronology());
     }
     
     public void testAddToRI4() {
+        long expected = TEST_TIME_NOW;
+        expected = ISOChronology.getInstance(PARIS).years().add(expected, -2);
+        expected = ISOChronology.getInstance(PARIS).months().add(expected, -4);
+        expected = ISOChronology.getInstance(PARIS).weeks().add(expected, -6);
+        expected = ISOChronology.getInstance(PARIS).days().add(expected, -8);
+        expected = ISOChronology.getInstance(PARIS).hours().add(expected, -10);
+        expected = ISOChronology.getInstance(PARIS).minutes().add(expected, -12);
+        expected = ISOChronology.getInstance(PARIS).seconds().add(expected, -14);
+        expected = ISOChronology.getInstance(PARIS).millis().add(expected, -16);
+        
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
+        DateTime added = test.addTo(new DateTime(PARIS), -2);  // DateTime has PARIS time zone
+        assertEquals(expected, added.getMillis());
+        assertEquals(ISOChronology.getInstance(PARIS), added.getChronology());
+    }
+    
+    public void testAddToRI5() {
         long expected = TEST_TIME_NOW;
         expected = ISOChronology.getInstanceUTC().years().add(expected, -2);
         expected = ISOChronology.getInstanceUTC().months().add(expected, -4);
@@ -392,8 +412,9 @@ public class TestPeriod_Basics extends TestCase {
         expected = ISOChronology.getInstanceUTC().millis().add(expected, -16);
         
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.getAllType(ISOChronology.getInstanceUTC()));
-        Instant added = test.addTo(null, -2);  // null has no time zone, uses duration's zone (UTC)
+        DateTime added = test.addTo(null, -2);  // null has no time zone, uses duration's zone (UTC)
         assertEquals(expected, added.getMillis());
+        assertEquals(ISOChronology.getInstance(), added.getChronology());
     }
     
     //-----------------------------------------------------------------------

@@ -56,9 +56,9 @@ package org.joda.time.base;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.Duration;
-import org.joda.time.Instant;
 import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -192,20 +192,20 @@ public abstract class AbstractPeriod
 
     /**
      * Adds this period to the given instant using the chronology of the specified
-     * instant (if present), returning a new Instant.
+     * instant (if present), returning a new DateTime.
      * <p>
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
      * @param instant  the instant to add the period to, null means now
      * @param scalar  the number of times to add the period, negative to subtract
-     * @return instant with the original value plus this period times scalar
+     * @return datetime with the original value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
-    public Instant addTo(ReadableInstant instant, int scalar) {
+    public DateTime addTo(ReadableInstant instant, int scalar) {
         long instantMillis = DateTimeUtils.getInstantMillis(instant);
         Chronology chrono = DateTimeUtils.getInstantChronology(instant, null);
-        return new Instant(addTo(instantMillis, scalar, chrono));
+        return new DateTime(addTo(instantMillis, scalar, chrono), chrono);
     }
 
     /**

@@ -18,7 +18,6 @@ The following tasks still need doing:
 <ul>
 <li>DateOnly/TimeOnly properties</li>
 <li>API consistency</li>
-<li>Interval</li>
 <li>Testing</li>
 <li>Release!</li>
 </ul>

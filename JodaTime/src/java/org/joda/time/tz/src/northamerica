@@ -1,4 +1,4 @@
-# @(#)northamerica	7.71
+# @(#)northamerica	7.72
 # also includes Central America and the Caribbean
 
 # This data is by no means authoritative; if you think you know better,
@@ -445,7 +445,7 @@ Link America/Denver America/Shiprock
 # Lemhi, Lincoln, Madison, Minidoka, Oneida, Owyhee, Payette, Power,
 # Teton, Twin Falls, Valley, Washington counties) and eastern Oregon
 # switched four weeks late in 1974.
-# 
+#
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:00
 			-8:00	US	P%sT	1923 May 13 2:00

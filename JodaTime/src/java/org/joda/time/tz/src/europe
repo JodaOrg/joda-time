@@ -1,4 +1,4 @@
-# @(#)europe	7.91
+# @(#)europe	7.92
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -254,6 +254,35 @@
 #
 #   "Timeball on the ballast office is down.  Dunsink time."
 #   -- James Joyce, Ulysses
+
+# From Joseph S. Myers (2005-01-26):
+# Irish laws are available online at www.irishstatutebook.ie.  These include 
+# various relating to legal time, for example:
+# 
+# ZZA13Y1923.html ZZA12Y1924.html ZZA8Y1925.html ZZSIV20PG1267.html
+# 
+# ZZSI71Y1947.html ZZSI128Y1948.html ZZSI23Y1949.html ZZSI41Y1950.html
+# ZZSI27Y1951.html ZZSI73Y1952.html
+# 
+# ZZSI11Y1961.html ZZSI232Y1961.html ZZSI182Y1962.html
+# ZZSI167Y1963.html ZZSI257Y1964.html ZZSI198Y1967.html
+# ZZA23Y1968.html ZZA17Y1971.html
+# 
+# ZZSI67Y1981.html ZZSI212Y1982.html ZZSI45Y1986.html
+# ZZSI264Y1988.html ZZSI52Y1990.html ZZSI371Y1992.html
+# ZZSI395Y1994.html ZZSI484Y1997.html ZZSI506Y2001.html
+#
+# [These are all relative to the root, e.g., the first is
+# <http://www.irishstatutebook.ie/ZZA13Y1923.html>.]
+# 
+# (These are those I found, but there could be more.  In any case these 
+# should allow various updates to the comments in the europe file to cover 
+# the laws applicable in Ireland.)
+# 
+# (Note that the time in the Republic of Ireland since 1968 has been defined 
+# in terms of standard time being GMT+1 with a period of winter time when it 
+# is GMT, rather than standard time being GMT with a period of summer time 
+# being GMT+1.)
 
 # From Paul Eggert (1999-03-28):
 # Clive Feather (<news:859845706.26043.0@office.demon.net>, 1997-03-31)

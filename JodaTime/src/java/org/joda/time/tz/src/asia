@@ -1,4 +1,4 @@
-# @(#)asia	7.78
+# @(#)asia	7.80
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -107,7 +107,7 @@ Zone	Asia/Baku	3:19:24 -	LMT	1924 May  2
 			3:00	-	BAKT	1957 Mar    # Baku Time
 			4:00 RussiaAsia BAK%sT	1991 Mar 31 2:00s
 			3:00	1:00	BAKST	1991 Aug 30 # independence
-			3:00 RussiaAsia	AZ%sT	1992 Sep lastSun 2:00s
+			3:00 RussiaAsia	AZ%sT	1992 Sep lastSat 23:00
 			4:00	-	AZT	1996 # Azerbaijan time
 			4:00	EUAsia	AZ%sT	1997
 			4:00	Azer	AZ%sT
@@ -337,7 +337,7 @@ Link	Asia/Nicosia	Europe/Nicosia
 # President Eduard Shevardnadze decreed Wednesday.
 #
 # From the BBC via Joseph S. Myers (2004-06-27):
-#  	
+#
 # Georgia moved closer to Western Europe on Sunday...  The former Soviet
 # republic has changed its time zone back to that of Moscow.  As a result it
 # is now just four hours ahead of Greenwich Mean Time, rather than five hours
@@ -639,7 +639,8 @@ Rule	Zion	1988	only	-	Apr	 9	0:00	1:00	D
 Rule	Zion	1988	only	-	Sep	 3	0:00	0	S
 
 # From Ephraim Silverberg <ephraim@cs.huji.ac.il>
-# (1997-03-04, 1998-03-16, 1998-12-28, 2000-01-17, 2000-07-25, and 2004-12-22):
+# (1997-03-04, 1998-03-16, 1998-12-28, 2000-01-17, 2000-07-25, 2004-12-22,
+# and 2005-02-17):
 
 # According to the Office of the Secretary General of the Ministry of
 # Interior, there is NO set rule for Daylight-Savings/Standard time changes.
@@ -735,91 +736,74 @@ Rule	Zion	2003	only	-	Oct	 3	1:00	0	S
 Rule	Zion	2004	only	-	Apr	 7	1:00	1:00	D
 Rule	Zion	2004	only	-	Sep	22	1:00	0	S
 
-# Yesterday, the Knesset Interior Committee passed a proposed (originally
-# in March 2004) change to the Time Setting Law that would make the dates
-# for DST from 2005 and beyond so that DST starts on the night _after_ the
-# first night of the Passover holiday at midnight until midnight of the
-# Saturday night _before_ the fast of Yom Kippur.
+# The proposed law agreed upon by the Knesset Interior Committee on
+# 2005-02-14 is that, for 2005 and beyond, DST starts at 02:00 the
+# last Friday before April 2nd (i.e. the last Friday in March or April
+# 1st itself if it falls on a Friday) and ends at 02:00 on the Saturday
+# night _before_ the fast of Yom Kippur.
 #
-# Those who can read Hebrew can view the proposal at:
+# Those who can read Hebrew can view the announcement at:
 #
-#	ftp://ftp.cs.huji.ac.il/pub/tz/announcements/2005+.ps
-#
-# The proposal still has to be passed by the Knesset (three readings) for
-# it to become law....
+#	ftp://ftp.cs.huji.ac.il/pub/tz/announcements/2005+beyond.ps
 
-# From Paul Eggert (2004-12-22):
-# For now, guess that the rules proposed on 2004-12-20 will be adopted.
-# This is quite possibly wrong, but it is more likely than no DST at all.
-# I used Ed Reingold's cal-hebrew in GNU Emacs 21.3, along with code
-# written by Ephraim Silverberg, to generate this list.
-# Rule	NAME    FROM    TO      TYPE    IN      ON      AT      SAVE    LETTER/S
-Rule	Zion	2005	only	-	Apr	25	0:00	1:00	D
-Rule	Zion	2005	only	-	Oct	 9	0:00	0	S
-Rule	Zion	2006	only	-	Apr	14	0:00	1:00	D
-Rule	Zion	2006	only	-	Oct	 1	0:00	0	S
-Rule	Zion	2007	only	-	Apr	 4	0:00	1:00	D
-Rule	Zion	2007	only	-	Sep	16	0:00	0	S
-Rule	Zion	2008	only	-	Apr	21	0:00	1:00	D
-Rule	Zion	2008	only	-	Oct	 5	0:00	0	S
-Rule	Zion	2009	only	-	Apr	10	0:00	1:00	D
-Rule	Zion	2009	only	-	Sep	27	0:00	0	S
-Rule	Zion	2010	only	-	Mar	31	0:00	1:00	D
-Rule	Zion	2010	only	-	Sep	12	0:00	0	S
-Rule	Zion	2011	only	-	Apr	20	0:00	1:00	D
-Rule	Zion	2011	only	-	Oct	 2	0:00	0	S
-Rule	Zion	2012	only	-	Apr	 8	0:00	1:00	D
-Rule	Zion	2012	only	-	Sep	23	0:00	0	S
-Rule	Zion	2013	only	-	Mar	27	0:00	1:00	D
-Rule	Zion	2013	only	-	Sep	 8	0:00	0	S
-Rule	Zion	2014	only	-	Apr	16	0:00	1:00	D
-Rule	Zion	2014	only	-	Sep	28	0:00	0	S
-Rule	Zion	2015	only	-	Apr	 5	0:00	1:00	D
-Rule	Zion	2015	only	-	Sep	20	0:00	0	S
-Rule	Zion	2016	only	-	Apr	24	0:00	1:00	D
-Rule	Zion	2016	only	-	Oct	 9	0:00	0	S
-Rule	Zion	2017	only	-	Apr	12	0:00	1:00	D
-Rule	Zion	2017	only	-	Sep	24	0:00	0	S
-Rule	Zion	2018	only	-	Apr	 1	0:00	1:00	D
-Rule	Zion	2018	only	-	Sep	16	0:00	0	S
-Rule	Zion	2019	only	-	Apr	21	0:00	1:00	D
-Rule	Zion	2019	only	-	Oct	 6	0:00	0	S
-Rule	Zion	2020	only	-	Apr	10	0:00	1:00	D
-Rule	Zion	2020	only	-	Sep	27	0:00	0	S
-Rule	Zion	2021	only	-	Mar	29	0:00	1:00	D
-Rule	Zion	2021	only	-	Sep	12	0:00	0	S
-Rule	Zion	2022	only	-	Apr	17	0:00	1:00	D
-Rule	Zion	2022	only	-	Oct	 2	0:00	0	S
-Rule	Zion	2023	only	-	Apr	 7	0:00	1:00	D
-Rule	Zion	2023	only	-	Sep	24	0:00	0	S
-Rule	Zion	2024	only	-	Apr	24	0:00	1:00	D
-Rule	Zion	2024	only	-	Oct	 6	0:00	0	S
-Rule	Zion	2025	only	-	Apr	14	0:00	1:00	D
-Rule	Zion	2025	only	-	Sep	28	0:00	0	S
-Rule	Zion	2026	only	-	Apr	 3	0:00	1:00	D
-Rule	Zion	2026	only	-	Sep	20	0:00	0	S
-Rule	Zion	2027	only	-	Apr	23	0:00	1:00	D
-Rule	Zion	2027	only	-	Oct	10	0:00	0	S
-Rule	Zion	2028	only	-	Apr	12	0:00	1:00	D
-Rule	Zion	2028	only	-	Sep	24	0:00	0	S
-Rule	Zion	2029	only	-	Apr	 1	0:00	1:00	D
-Rule	Zion	2029	only	-	Sep	16	0:00	0	S
-Rule	Zion	2030	only	-	Apr	19	0:00	1:00	D
-Rule	Zion	2030	only	-	Oct	 6	0:00	0	S
-Rule	Zion	2031	only	-	Apr	 9	0:00	1:00	D
-Rule	Zion	2031	only	-	Sep	21	0:00	0	S
-Rule	Zion	2032	only	-	Mar	28	0:00	1:00	D
-Rule	Zion	2032	only	-	Sep	12	0:00	0	S
-Rule	Zion	2033	only	-	Apr	15	0:00	1:00	D
-Rule	Zion	2033	only	-	Oct	 2	0:00	0	S
-Rule	Zion	2034	only	-	Apr	 5	0:00	1:00	D
-Rule	Zion	2034	only	-	Sep	17	0:00	0	S
-Rule	Zion	2035	only	-	Apr	25	0:00	1:00	D
-Rule	Zion	2035	only	-	Oct	 7	0:00	0	S
-Rule	Zion	2036	only	-	Apr	13	0:00	1:00	D
-Rule	Zion	2036	only	-	Sep	28	0:00	0	S
-Rule	Zion	2037	only	-	Apr	 1	0:00	1:00	D
-Rule	Zion	2037	only	-	Sep	13	0:00	0	S
+# From Paul Eggert (2005-02-22):
+# I used Ephraim Silverberg's dst-israel.el program
+# <ftp://ftp.cs.huji.ac.il/pub/tz/software/dst-israel.el> (2005-02-20)
+# along with Ed Reingold's cal-hebrew in GNU Emacs 21.4,
+# to generate the transitions in this list.
+# (I replaced "lastFri" with "Fri>=26" by hand.)
+# The spring transitions below all correspond to the following Rule:
+#
+# Rule	Zion	2005	max	-	Mar	Fri>=26	2:00	1:00	D
+#
+# but older zic implementations (e.g., Solaris 8) do not support
+# "Fri>=26" to mean April 1 in years like 2005, so for now we list the
+# springtime transitions explicitly.
+
+# Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
+Rule	Zion	2005	only	-	Apr	 1	2:00	1:00	D
+Rule	Zion	2005	only	-	Oct	 9	2:00	0	S
+Rule	Zion	2006	2010	-	Mar	Fri>=26	2:00	1:00	D
+Rule	Zion	2006	only	-	Oct	 1	2:00	0	S
+Rule	Zion	2007	only	-	Sep	16	2:00	0	S
+Rule	Zion	2008	only	-	Oct	 5	2:00	0	S
+Rule	Zion	2009	only	-	Sep	27	2:00	0	S
+Rule	Zion	2010	only	-	Sep	12	2:00	0	S
+Rule	Zion	2011	only	-	Apr	 1	2:00	1:00	D
+Rule	Zion	2011	only	-	Oct	 2	2:00	0	S
+Rule	Zion	2012	2015	-	Mar	Fri>=26	2:00	1:00	D
+Rule	Zion	2012	only	-	Sep	23	2:00	0	S
+Rule	Zion	2013	only	-	Sep	 8	2:00	0	S
+Rule	Zion	2014	only	-	Sep	28	2:00	0	S
+Rule	Zion	2015	only	-	Sep	20	2:00	0	S
+Rule	Zion	2016	only	-	Apr	 1	2:00	1:00	D
+Rule	Zion	2016	only	-	Oct	 9	2:00	0	S
+Rule	Zion	2017	2021	-	Mar	Fri>=26	2:00	1:00	D
+Rule	Zion	2017	only	-	Sep	24	2:00	0	S
+Rule	Zion	2018	only	-	Sep	16	2:00	0	S
+Rule	Zion	2019	only	-	Oct	 6	2:00	0	S
+Rule	Zion	2020	only	-	Sep	27	2:00	0	S
+Rule	Zion	2021	only	-	Sep	12	2:00	0	S
+Rule	Zion	2022	only	-	Apr	 1	2:00	1:00	D
+Rule	Zion	2022	only	-	Oct	 2	2:00	0	S
+Rule	Zion	2023	2032	-	Mar	Fri>=26	2:00	1:00	D
+Rule	Zion	2023	only	-	Sep	24	2:00	0	S
+Rule	Zion	2024	only	-	Oct	 6	2:00	0	S
+Rule	Zion	2025	only	-	Sep	28	2:00	0	S
+Rule	Zion	2026	only	-	Sep	20	2:00	0	S
+Rule	Zion	2027	only	-	Oct	10	2:00	0	S
+Rule	Zion	2028	only	-	Sep	24	2:00	0	S
+Rule	Zion	2029	only	-	Sep	16	2:00	0	S
+Rule	Zion	2030	only	-	Oct	 6	2:00	0	S
+Rule	Zion	2031	only	-	Sep	21	2:00	0	S
+Rule	Zion	2032	only	-	Sep	12	2:00	0	S
+Rule	Zion	2033	only	-	Apr	 1	2:00	1:00	D
+Rule	Zion	2033	only	-	Oct	 2	2:00	0	S
+Rule	Zion	2034	2037	-	Mar	Fri>=26	2:00	1:00	D
+Rule	Zion	2034	only	-	Sep	17	2:00	0	S
+Rule	Zion	2035	only	-	Oct	 7	2:00	0	S
+Rule	Zion	2036	only	-	Sep	28	2:00	0	S
+Rule	Zion	2037	only	-	Sep	13	2:00	0	S
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Jerusalem	2:20:56 -	LMT	1880

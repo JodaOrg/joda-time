@@ -1,4 +1,4 @@
-# @(#)australasia	7.69
+# @(#)australasia	7.70
 # This file also includes Pacific islands.
 
 # Notes are at the end of this file
@@ -434,6 +434,17 @@ Zone Pacific/Johnston	-10:00	-	HST
 # uninhabited
 
 # Midway
+#
+# From Mark Brader (2005-01-23):
+# [Fallacies and Fantasies of Air Transport History, by R.E.G. Davies,
+# published 1994 by Paladwr Press, McLean, VA, USA; ISBN 0-9626483-5-3]
+# reproduced a Pan American Airways timeables from 1936, for their weekly
+# "Orient Express" flights between San Francisco and Manila, and connecting
+# flights to Chicago and the US East Coast.  As it uses some time zone
+# designations that I've never seen before:....
+# Fri. 6:30A Lv. HONOLOLU (Pearl Harbor), H.I.   H.L.T. Ar. 5:30P Sun.
+#  "   3:00P Ar. MIDWAY ISLAND . . . . . . . . . M.L.T. Lv. 6:00A  "
+#
 Zone Pacific/Midway	-11:49:28 -	LMT	1901
 			-11:00	-	NST	1956 Jun  3
 			-11:00	1:00	NDT	1956 Sep  2

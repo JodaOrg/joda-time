@@ -287,17 +287,41 @@ public abstract class AbstractInterval implements ReadableInterval {
     /**
      * Gets the duration of this time interval.
      * <p>
-     * The duration returned will always be precise because it is relative to
-     * a known date.
+     * The duration returned will always be precise because it is relative to a
+     * known date. If this interval was not specified with a precise duration
+     * type, then the duration type defaults to ISO average-year-month type.
      *
      * @return the duration of the time interval
      */
     public final Duration getDuration() {
         if (iDuration == null) {
-            iDuration = new Duration(DurationType.getPreciseYearMonthType(),
-                                     getEndMillis() - getStartMillis());
+            return getDuration(null);
         }
         return iDuration;
+    }
+
+    /** 
+     * Gets the duration of this time interval.
+     *
+     * @param type the requested type of the duration
+     * @return the duration of the time interval
+     */
+    public final Duration getDuration(DurationType type) {
+        if (type == null) {
+            type = DurationType.getAverageYearMonthType();
+        }
+        Duration duration = iDuration;
+        if (duration == null) {
+            if (type.isPrecise()) {
+                duration = new Duration(type, getEndMillis() - getStartMillis());
+                if (type.equals(DurationType.getAverageYearMonthType())) {
+                    iDuration = duration;
+                }
+            } else {
+                duration = new Duration(type, getStartInstant(), getEndInstant());
+            }
+        }
+        return duration;
     }
 
     //-----------------------------------------------------------------------
@@ -501,9 +525,11 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      */
     protected void setStartMillis(long millisInstant) {
-        iStartMillis = millisInstant;
-        iStartInstant = null;
-        iDuration = null;
+        if (millisInstant != iStartMillis) {
+            iStartMillis = millisInstant;
+            iStartInstant = null;
+            iDuration = null;
+        }
     }
 
     /** 
@@ -517,9 +543,11 @@ public abstract class AbstractInterval implements ReadableInterval {
      *  millisecond instant from 1970-01-01T00:00:00Z
      */
     protected void setEndMillis(long millisInstant) {
-        iEndMillis = millisInstant;
-        iEndInstant = null;
-        iDuration = null;
+        if (millisInstant != iEndMillis) {
+            iEndMillis = millisInstant;
+            iEndInstant = null;
+            iDuration = null;
+        }
     }
 
     /**

@@ -1032,6 +1032,14 @@ public class PeriodFormatterBuilder {
                 return ~position;
             }
 
+            if (position + length != suffixPos) {
+                // If there are additional non-digit characters before the
+                // suffix is reached, then assume that the suffix found belongs
+                // to a field not yet reached. Return original position so that
+                // another parser can continue on.
+                return position;
+            }
+
             int value;
             if (length >= 9) {
                 // Since value may exceed max, use stock parser which checks

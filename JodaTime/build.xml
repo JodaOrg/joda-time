@@ -57,8 +57,6 @@
   <property name="build.tests"             value="${build}/tests"/>
   <property name="build.docs"              value="${build}/docs"/>
   <property name="build.dist"              value="${build}/dist"/>
-  <property name="build.jarname.full"      value="${build}/${component.name}-${component.version}.jar"/>
-  <property name="build.jarname.tzcompiler" value="${build}/${component.name}-tzcompiler-${component.version}.jar"/>
   <property name="build.fullname"          value="${build}/${component.fullname}"/>
   <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
 
@@ -271,18 +269,9 @@
              tofile="${build.classes}/META-INF/LICENSE.txt"/>
     <copy      file="NOTICE.txt"
              tofile="${build.classes}/META-INF/NOTICE.txt"/>
-    <jar    jarfile="${build.jarname.full}"
+    <jar    jarfile="${build.fullname}.jar"
             basedir="${build.classes}"
-           manifest="${build.conf}/MANIFEST.MF">
-      <exclude name="**/ZoneInfoCompiler*" />
-    </jar>
-    <jar    jarfile="${build.jarname.tzcompiler}"
-            basedir="${build.classes}"
-           manifest="${build.conf}/MANIFEST.MF">
-      <include name="**/LICENSE.txt" />
-      <include name="**/NOTICE.txt" />
-      <include name="**/ZoneInfoCompiler*" />
-    </jar>
+           manifest="${build.conf}/MANIFEST.MF"/>
   </target>
 
 <!-- ====================================================================== -->
@@ -296,7 +285,7 @@
     <copy      file="LICENSE.txt" todir="${build.dist.fullname}"/>
     <copy      file="NOTICE.txt" todir="${build.dist.fullname}"/>
     <copy      file="RELEASE-NOTES.txt" todir="${build.dist.fullname}"/>
-    <copy      file="${build.jarname.full}"
+    <copy      file="${build.fullname}.jar"
               todir="${build.dist.fullname}"/>
     <copy     todir="${build.dist.fullname}">
       <fileset  dir="${build}" includes="docs/**/*.*"/>
@@ -310,8 +299,6 @@
 	
 	<!-- source -->
 	<delete     dir="${build.dist.fullname}/docs"/>
-    <copy      file="${build.jarname.tzcompiler}"
-              todir="${build.dist.fullname}"/>
     <copy     todir="${build.dist.fullname}">
       <fileset  dir="." includes="${source}/**/*" excludes="CVS/**/*"/>
     </copy>
@@ -364,8 +351,7 @@
     <junit printsummary="yes" haltonfailure="yes">
       <formatter type="plain" usefile="false" />
       <classpath>
-        <pathelement location="${build.jarname.full}"/>
-        <pathelement location="${build.jarname.tzcompiler}"/>
+        <pathelement location="${build.fullname}.jar"/>
         <pathelement location="${build.tests}"/>
         <pathelement location="${junit.jar}"/>
         <pathelement path="${java.class.path}"/>

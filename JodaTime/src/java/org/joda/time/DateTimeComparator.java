@@ -55,17 +55,23 @@ package org.joda.time;
 
 import java.io.Serializable;
 import java.util.Comparator;
+
 import org.joda.time.convert.ConverterManager;
 
 /**
- * DateTimeComparator is the standard implementation of the Comparator
- * interface for various Joda and Java objects. The following types
- * are supported for comparison:
+ * DateTimeComparator provides comparators to compare one date with another.
+ * <p>
+ * Dates may be specified using any object recognised by the
+ * {@link org.joda.time.convert.ConverterManager ConverterManager} class.
+ * <p>
+ * The default objects recognised by the comparator are:
  * <ul>
  * <li>ReadableInstant
- * <li>java.util.Date
- * <li>java.util.Calendar
- * <li>java.util.Long (milliseconds)
+ * <li>PartialInstant
+ * <li>String
+ * <li>Calendar
+ * <li>Date
+ * <li>Long (milliseconds)
  * </ul>
  *
  * <p>
@@ -78,10 +84,18 @@ import org.joda.time.convert.ConverterManager;
  */
 public class DateTimeComparator implements Comparator, Serializable {
 
-    static final long serialVersionUID = -6097339773320178364L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -6097339773320178364L;
 
+    /** Singleton instance */
     private static final DateTimeComparator INSTANCE = new DateTimeComparator(null, null);
 
+    /** The lower limit of fields to compare, null if no limit */
+    private final DateTimeField iLowerLimit;
+    /** The upper limit of fields to compare, null if no limit */
+    private final DateTimeField iUpperLimit;
+
+    //-----------------------------------------------------------------------
     /**
      * Returns a DateTimeComparator the compares the entire date time value.
      */
@@ -131,23 +145,29 @@ public class DateTimeComparator implements Comparator, Serializable {
         return getInstance(null, chrono.dayOfYear());
     }
 
-    private final DateTimeField iLowerLimit;
-    private final DateTimeField iUpperLimit;
-
+    //-----------------------------------------------------------------------
+    /**
+     * Restricted constructor.
+     */
     private DateTimeComparator(DateTimeField lowerLimit, DateTimeField upperLimit) {
+        super();
         iLowerLimit = lowerLimit;
         iUpperLimit = upperLimit;
     }
 
     /**
-     * @return null if no lower limit
+     * Gets the field that represents the lower limit of comparison.
+     * 
+     * @return the field, null if no upper limit
      */
     public DateTimeField getLowerLimit() {
         return iLowerLimit;
     }
 
     /**
-     * @return null if no upper limit
+     * Gets the field that represents the upper limit of comparison.
+     * 
+     * @return the field, null if no upper limit
      */
     public DateTimeField getUpperLimit() {
         return iUpperLimit;
@@ -157,12 +177,10 @@ public class DateTimeComparator implements Comparator, Serializable {
      * Compare two objects against only the range of date time fields as
      * specified in the constructor.
      * 
-     * @param lhsObj The first object, logically on the left of a &lt;
-     * comparison
-     * @param rhsObj The second object, logically on the right of a &lt;
-     * comparison
+     * @param lhsObj The first object, logically on the left of a &lt; comparison
+     * @param rhsObj The second object, logically on the right of a &lt; comparison
      * @return zero if order does not matter, negative value if lhsObj &lt;
-     * rhsObj, positive value otherwise.
+     *  rhsObj, positive value otherwise.
      * @throws IllegalArgumentException if either argument is not supported
      */
     public int compare(Object lhsObj, Object rhsObj) {
@@ -213,26 +231,34 @@ public class DateTimeComparator implements Comparator, Serializable {
     }
 
     /**
-     * Support serialization singletons
+     * Gets the millisecond value from an object using the converter system.
+     * 
+     * @param obj  the object to convert
+     * @return millis since the epoch
+     */
+    private static long getMillisFromObject(Object obj) {
+        return ConverterManager.getInstance().getInstantConverter(obj).getInstantMillis(obj);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Support serialization singletons.
      */
     private Object readResolve() {
         return getInstance(iLowerLimit, iUpperLimit);
     }
 
-    /*
-     * Developer's note: The 'equals' method specified by the interface is not
-     * overridden here. It does not make sense to do so, since 'this' is a
-     * DateTimeComparator, and 'that' would (presumably) be one of the
-     * supported object types described elsewhere. The '==' logic provided by
-     * java.lang.Object for a DateTimeComparator object suffices.
+    /**
+     * Gets a debugging string.
+     * 
+     * @return a debugging string
      */
-
-    /*
-     * @param obj
-     * @return millis since the epoch
-     */
-    private static long getMillisFromObject(Object obj) {
-        return ConverterManager.getInstance().getInstantConverter(obj).getInstantMillis(obj);
+    public String toString() {
+        return "DateTimeComparator[lowerLimit:"
+            + (iLowerLimit == null ? "none" : iLowerLimit.getName())
+            + ",upperLimit:"
+            + (iUpperLimit == null ? "none" : iUpperLimit.getName())
+            + "]";
     }
 
 }

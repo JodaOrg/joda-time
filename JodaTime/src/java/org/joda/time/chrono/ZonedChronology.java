@@ -65,7 +65,7 @@ import org.joda.time.field.AbstractDateTimeField;
 import org.joda.time.field.AbstractDurationField;
 
 /**
- * Wraps another Chronology for supporting time zones.
+ * Wraps another Chronology to add support for time zones.
  * <p>
  * ZonedChronology is thread-safe and immutable.
  *
@@ -74,6 +74,9 @@ import org.joda.time.field.AbstractDurationField;
  * @since 1.0
  */
 public final class ZonedChronology extends AssembledChronology {
+
+    /** Serialization lock */
+    private static final long serialVersionUID = -1079258847191166848L;
 
     /**
      * Create a ZonedChronology for any chronology, overriding any time zone it
@@ -96,8 +99,6 @@ public final class ZonedChronology extends AssembledChronology {
         }
         return new ZonedChronology(base, zone);
     }
-
-    static final long serialVersionUID = -1079258847191166848L;
 
     static boolean useTimeArithmetic(DurationField field) {
         // Use time of day arithmetic rules for unit durations less than

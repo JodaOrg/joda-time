@@ -72,14 +72,14 @@ package org.joda.time.convert;
  * <li>String
  * <li>Calendar
  * <li>Date
- * <li>Long
+ * <li>Long (milliseconds)
  * </ul>
  * The default duration converters are:
  * <ul>
  * <li>ReadableDuration
  * <li>ReadableInterval
  * <li>String
- * <li>Long
+ * <li>Long (milliseconds)
  * </ul>
  *
  * The default interval converters are:

@@ -72,8 +72,9 @@ import org.joda.time.format.DateTimePrinter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * GJChronology provides access to the individual date time fields for the
- * Gregorian/Julian defined chronological calendar system.
+ * Implements the Gregorian/Julian calendar system which is the calendar system
+ * used in most of the world. Wherever possible, it is recommended to use the
+ * {@link ISOChronology} instead.
  * <p>
  * The Gregorian calendar replaced the Julian calendar, and the point in time
  * when this chronology switches can be controlled using the second parameter
@@ -87,10 +88,10 @@ import org.joda.time.format.ISODateTimeFormat;
  * However before 8 CE, Julian leap years were irregular, and before 45 BCE
  * there was no Julian calendar.
  * <p>
- * This chronology differs from {@link java.util.GregorianCalendar
- * java.util.GregorianCalendar} in that years in BCE are returned
- * correctly. Thus year 1 BCE is returned as -1 instead of 1. The yearOfEra
- * field produces results compatible with GregorianCalendar.
+ * This chronology differs from
+ * {@link java.util.GregorianCalendar GregorianCalendar} in that years
+ * in BCE are returned correctly. Thus year 1 BCE is returned as -1 instead of 1.
+ * The yearOfEra field produces results compatible with GregorianCalendar.
  * <p>
  * The Julian calendar does not have a year zero, and so year -1 is followed by
  * year 1. If the Gregorian cutover date is specified at or before year -1
@@ -109,7 +110,8 @@ import org.joda.time.format.ISODateTimeFormat;
  */
 public final class GJChronology extends AssembledChronology {
 
-    static final long serialVersionUID = -2545574827706931671L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -2545574827706931671L;
 
     /**
      * Convert a datetime from one chronology to another.

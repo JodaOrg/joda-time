@@ -53,10 +53,6 @@
  */
 package org.joda.time.chrono;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -73,9 +69,9 @@ import org.joda.time.format.DateTimePrinter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * Imposes limits on the range of instants that the fields within a Chronology
- * may support. The limits are applied to both DateTimeFields and
- * DurationFields.
+ * Wraps another Chronology to impose limits on the range of instants that
+ * the fields within a Chronology may support. The limits are applied to both
+ * DateTimeFields and DurationFields.
  * <p>
  * Methods in DateTimeField and DurationField throw an IllegalArgumentException
  * whenever given an input instant that is outside the limits or when an
@@ -89,14 +85,15 @@ import org.joda.time.format.ISODateTimeFormat;
  */
 public final class LimitChronology extends AssembledChronology {
 
-    static final long serialVersionUID = 7670866536893052522L;
+    /** Serialization lock */
+    private static final long serialVersionUID = 7670866536893052522L;
 
     /**
      * Wraps another chronology, with datetime limits. When withUTC or
      * withDateTimeZone is called, the returned LimitChronology instance has
      * the same limits, except they are time zone adjusted.
      *
-     * @param base base chronology to wrap
+     * @param base  base chronology to wrap
      * @param lowerLimit  inclusive lower limit, or null if none
      * @param upperLimit  exclusive upper limit, or null if none
      * @throws IllegalArgumentException if chronology is null or limits are invalid

@@ -61,16 +61,15 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
-import org.joda.time.DurationField;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.OffsetDateTimeField;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
- * <code>BuddhistChronology</code> provides access to the individual date
- * time fields for the Buddhist chronological calendar system.
+ * Implements the Buddhist calendar system, which is similar to Gregorian/Julian,
+ * except with the year offset by 543.
  * <p>
- * The Buddhist calendar differs from the GregorianJulian calendar only 
+ * The Buddhist calendar differs from the Gregorian/Julian calendar only 
  * in the year. This class is compatable with the BuddhistCalendar class 
  * supplied by Sun.
  * <p>
@@ -82,7 +81,8 @@ import org.joda.time.field.RemainderDateTimeField;
  */
 public final class BuddhistChronology extends AssembledChronology {
     
-    static final long serialVersionUID = -3474595157769370126L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -3474595157769370126L;
 
     /**
      * Constant value for 'Buddhist Era', equivalent to the value returned

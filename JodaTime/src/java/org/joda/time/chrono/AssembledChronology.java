@@ -62,11 +62,13 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 
 /**
- * Allows chronologies to be assembled from a container of fields.
+ * Abstract Chronology that enables chronologies to be assembled from
+ * a container of fields.
  * <p>
  * AssembledChronology is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public abstract class AssembledChronology extends AbstractChronology {
 

@@ -65,7 +65,7 @@ import org.joda.time.field.FieldUtils;
 import org.joda.time.field.PreciseDurationField;
 
 /**
- * Implements a Coptic calendar system, which defines every fourth year as
+ * Implements the Coptic calendar system, which defines every fourth year as
  * leap, much like the Julian calendar. The year is broken down into 12 months,
  * each 30 days in length. An extra period at the end of the year is either 5
  * or 6 days in length. In this implementation, it is considered a 13th month.
@@ -80,10 +80,12 @@ import org.joda.time.field.PreciseDurationField;
  * @see JulianChronology
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public final class CopticChronology extends AbstractGJChronology {
 
-    static final long serialVersionUID = -5972804258688333942L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -5972804258688333942L;
 
     /**
      * Constant value for 'Anno Martyrum' or 'Era of the Martyrs', equivalent

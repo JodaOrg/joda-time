@@ -59,17 +59,19 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.field.LenientDateTimeField;
 
 /**
- * Wraps another chronology, ensuring all the fields are lenient.
+ * Wraps another Chronology, ensuring all the fields are lenient.
  * <p>
  * LenientChronology is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  * @see LenientDateTimeField
  * @see StrictChronology
  */
 public final class LenientChronology extends AssembledChronology {
 
-    static final long serialVersionUID = -3148237568046877177L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -3148237568046877177L;
 
     /**
      * Create a LenientChronology for any chronology.

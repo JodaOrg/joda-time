@@ -70,7 +70,7 @@ import org.joda.time.field.PreciseDurationField;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
- * Base class for implementing chronologies based on Gregorian/Julian formulas.
+ * Abstract Chronology for implementing chronologies based on Gregorian/Julian formulae.
  * Most of the utility methods required by subclasses are package-private,
  * reflecting the intention that they be defined in the same package.
  * <p>
@@ -84,7 +84,8 @@ import org.joda.time.field.RemainderDateTimeField;
  */
 public abstract class AbstractGJChronology extends AssembledChronology {
 
-    static final long serialVersionUID = 8283225332206808863L;
+    /** Serialization lock */
+    private static final long serialVersionUID = 8283225332206808863L;
 
     static final long MILLIS_1970_TO_2000 = 946684800000L;
 

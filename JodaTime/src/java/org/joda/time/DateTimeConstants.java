@@ -67,40 +67,40 @@ package org.joda.time;
 public final class DateTimeConstants {
 
     // These are ints not enumerations as they represent genuine int values
-    /** Constant (1) representing January, the first month */
+    /** Constant (1) representing January, the first month (ISO) */
     public static final int JANUARY = 1;
 
-    /** Constant (2) representing February, the second month */
+    /** Constant (2) representing February, the second month (ISO) */
     public static final int FEBRUARY = 2;
 
-    /** Constant (3) representing March, the third month */
+    /** Constant (3) representing March, the third month (ISO) */
     public static final int MARCH = 3;
 
-    /** Constant (4) representing April, the fourth month */
+    /** Constant (4) representing April, the fourth month (ISO) */
     public static final int APRIL = 4;
 
-    /** Constant (5) representing May, the fifth month */
+    /** Constant (5) representing May, the fifth month (ISO) */
     public static final int MAY = 5;
 
-    /** Constant (6) representing June, the sixth month */
+    /** Constant (6) representing June, the sixth month (ISO) */
     public static final int JUNE = 6;
 
-    /** Constant (7) representing July, the seventh month */
+    /** Constant (7) representing July, the seventh month (ISO) */
     public static final int JULY = 7;
 
-    /** Constant (8) representing August, the eighth month */
+    /** Constant (8) representing August, the eighth month (ISO) */
     public static final int AUGUST = 8;
 
-    /** Constant (9) representing September, the nineth month */
+    /** Constant (9) representing September, the nineth month (ISO) */
     public static final int SEPTEMBER = 9;
 
-    /** Constant (10) representing October, the tenth month */
+    /** Constant (10) representing October, the tenth month (ISO) */
     public static final int OCTOBER = 10;
 
-    /** Constant (11) representing November, the eleventh month */
+    /** Constant (11) representing November, the eleventh month (ISO) */
     public static final int NOVEMBER = 11;
 
-    /** Constant (12) representing December, the twelfth month */
+    /** Constant (12) representing December, the twelfth month (ISO) */
     public static final int DECEMBER = 12;
 
     // These are ints not enumerations as they represent genuine int values
@@ -144,43 +144,46 @@ public final class DateTimeConstants {
     public static final int CE = 1;
 
 
-    /** Milliseconds in one second (1000) */
+    /** Milliseconds in one second (1000) (ISO) */
     public static final int MILLIS_PER_SECOND = 1000;
 
-    /** Seconds in one minute (60) */
+    /** Seconds in one minute (60) (ISO) */
     public static final int SECONDS_PER_MINUTE = 60;
+    /** Milliseconds in one minute (ISO) */
     public static final int MILLIS_PER_MINUTE = MILLIS_PER_SECOND * SECONDS_PER_MINUTE;
 
-    /** Minutes in one hour (60) */
+    /** Minutes in one hour (ISO) */
     public static final int MINUTES_PER_HOUR = 60;
+    /** Milliseconds in one hour (ISO) */
     public static final int SECONDS_PER_HOUR = SECONDS_PER_MINUTE * MINUTES_PER_HOUR;
+    /** Minutes in one hour (60) (ISO) */
     public static final int MILLIS_PER_HOUR = MILLIS_PER_MINUTE * MINUTES_PER_HOUR;
 
-    /** Hours in a typical day (24). Due to time zone offset changes, the
+    /** Hours in a typical day (24) (ISO). Due to time zone offset changes, the
      * number of hours per day can vary. */
     public static final int HOURS_PER_DAY = 24;
-    /** Minutes in a typical day. Due to time zone offset changes, the number
+    /** Minutes in a typical day (ISO). Due to time zone offset changes, the number
      * of minutes per day can vary. */
     public static final int MINUTES_PER_DAY = MINUTES_PER_HOUR * HOURS_PER_DAY;
-    /** Seconds in a typical day. Due to time zone offset changes, the number
+    /** Seconds in a typical day (ISO). Due to time zone offset changes, the number
      * of seconds per day can vary. */
     public static final int SECONDS_PER_DAY = SECONDS_PER_HOUR * HOURS_PER_DAY;
-    /** Milliseconds in a typical day. Due to time zone offset changes, the
+    /** Milliseconds in a typical day (ISO). Due to time zone offset changes, the
      * number of milliseconds per day can vary. */
     public static final int MILLIS_PER_DAY = MILLIS_PER_HOUR * HOURS_PER_DAY;
 
-    /** Days in one week (7) */
+    /** Days in one week (7) (ISO) */
     public static final int DAYS_PER_WEEK = 7;
     /** Hours in a typical week. Due to time zone offset changes, the number of
      * hours per week can vary. */
     public static final int HOURS_PER_WEEK = HOURS_PER_DAY * DAYS_PER_WEEK;
-    /** Minutes in a typical week. Due to time zone offset changes, the number
+    /** Minutes in a typical week (ISO). Due to time zone offset changes, the number
      * of minutes per week can vary. */
     public static final int MINUTES_PER_WEEK = MINUTES_PER_DAY * DAYS_PER_WEEK;
-    /** Seconds in a typical week. Due to time zone offset changes, the number
+    /** Seconds in a typical week (ISO). Due to time zone offset changes, the number
      * of seconds per week can vary. */
     public static final int SECONDS_PER_WEEK = SECONDS_PER_DAY * DAYS_PER_WEEK;
-    /** Milliseconds in a typical week. Due to time zone offset changes, the
+    /** Milliseconds in a typical week (ISO). Due to time zone offset changes, the
      * number of milliseconds per week can vary. */
     public static final int MILLIS_PER_WEEK = MILLIS_PER_DAY * DAYS_PER_WEEK;
 

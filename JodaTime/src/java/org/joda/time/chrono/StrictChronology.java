@@ -59,17 +59,19 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.field.StrictDateTimeField;
 
 /**
- * Wraps another chronology, ensuring all the fields are strict.
+ * Wraps another Chronology, ensuring all the fields are strict.
  * <p>
  * StrictChronology is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  * @see StrictDateTimeField
  * @see LenientChronology
  */
 public final class StrictChronology extends AssembledChronology {
 
-    static final long serialVersionUID = 6633006628097111960L;
+    /** Serialization lock */
+    private static final long serialVersionUID = 6633006628097111960L;
 
     /**
      * Create a StrictChronology for any chronology.

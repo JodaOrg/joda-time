@@ -83,10 +83,12 @@ import org.joda.time.field.FieldUtils;
  * @author Guy Allard
  * @author Brian S O'Neill
  * @author Stephen Colebourne
+ * @since 1.0
  */
 public final class JulianChronology extends AbstractGJChronology {
 
-    static final long serialVersionUID = -8731039522547897247L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -8731039522547897247L;
 
     private static final long MILLIS_PER_YEAR =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);

@@ -58,11 +58,7 @@ import java.util.Map;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
-import org.joda.time.field.DividedDateTimeField;
-import org.joda.time.field.OffsetDateTimeField;
-import org.joda.time.field.RemainderDateTimeField;
 
 /**
  * Implements a pure proleptic Gregorian calendar system, which defines every
@@ -82,10 +78,12 @@ import org.joda.time.field.RemainderDateTimeField;
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public final class GregorianChronology extends AbstractGJChronology {
 
-    static final long serialVersionUID = -861407383323710522L;
+    /** Serialization lock */
+    private static final long serialVersionUID = -861407383323710522L;
 
     private static final long MILLIS_PER_YEAR =
         (long) (365.2425 * DateTimeConstants.MILLIS_PER_DAY);

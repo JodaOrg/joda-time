@@ -280,7 +280,7 @@ public class DateTimeComparator implements Comparator, Serializable {
      */
     public int hashCode() {
         return (iLowerLimit == null ? 0 : iLowerLimit.hashCode()) +
-               (iUpperLimit == null ? 0 : iUpperLimit.hashCode());
+               (123 * (iUpperLimit == null ? 0 : iUpperLimit.hashCode()));
     }
 
     /**
@@ -289,11 +289,17 @@ public class DateTimeComparator implements Comparator, Serializable {
      * @return a debugging string
      */
     public String toString() {
-        return "DateTimeComparator["
-            + (iLowerLimit == null ? "" : iLowerLimit.getName())
-            + (iLowerLimit == null && iUpperLimit == null ? "" : "-")
-            + (iUpperLimit == null ? "" : iUpperLimit.getName())
-            + "]";
+        if (iLowerLimit == iUpperLimit) {
+            return "DateTimeComparator["
+                + (iLowerLimit == null ? "" : iLowerLimit.getName())
+                + "]";
+        } else {
+            return "DateTimeComparator["
+                + (iLowerLimit == null ? "" : iLowerLimit.getName())
+                + "-"
+                + (iUpperLimit == null ? "" : iUpperLimit.getName())
+                + "]";
+        }
     }
 
 }

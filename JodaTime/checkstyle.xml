@@ -68,8 +68,11 @@
     <module name="LineLength">
       <property name="max" value="120"/>
     </module>
-    <module name="JavadocVariable"/>
+    <module name="JavadocVariable">
+      <property name="excludeScope" value="private"/>
+    </module>
     <module name="JavadocMethod">
+      <property name="excludeScope" value="private"/>
       <property name="allowUndeclaredRTE" value="true"/>
     </module>
  </module>

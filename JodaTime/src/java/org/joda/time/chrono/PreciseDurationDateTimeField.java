@@ -68,7 +68,7 @@ public abstract class PreciseDurationDateTimeField extends AbstractDateTimeField
     static final long serialVersionUID = 5004523158306266035L;
 
     /** The fractional unit in millis */
-    private final long iUnitMillis;
+    final long iUnitMillis;
 
     private final DurationField iUnitField;
 
@@ -143,13 +143,8 @@ public abstract class PreciseDurationDateTimeField extends AbstractDateTimeField
      * @throws IllegalArgumentException if value is too large or too small.
      */
     public long set(long instant, int value) {
-        int max;
-        if (getRangeDurationField().isPrecise()) {
-            max = getMaximumValue();
-        } else {
-            max = getMaximumValueForSet(instant, value);
-        }
-        Utils.verifyValueBounds(this, value, getMinimumValue(), max);
+        Utils.verifyValueBounds(this, value, getMinimumValue(),
+                                getMaximumValueForSet(instant, value));
         return instant + (value - get(instant)) * iUnitMillis;
     }
 
@@ -228,8 +223,8 @@ public abstract class PreciseDurationDateTimeField extends AbstractDateTimeField
     }
 
     /**
-     * Called by the set method if the range duration field is imprecise. By
-     * default, returns getMaximumValue(instant). Override to provide a faster
+     * Called by the set method to get the maximum allowed value. By default,
+     * returns getMaximumValue(instant). Override to provide a faster
      * implementation.
      */
     protected int getMaximumValueForSet(long instant, int value) {

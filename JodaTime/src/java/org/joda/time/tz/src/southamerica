@@ -1,4 +1,4 @@
-# @(#)southamerica	7.58
+# @(#)southamerica	7.59
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -1063,8 +1063,12 @@ Rule	Uruguay	1993	only	-	Feb	28	 0:00	0	-
 # From Eduardo Cota (2004-09-20):
 # The uruguayan government has decreed a change in the local time....
 # http://www.presidencia.gub.uy/decretos/2004091502.htm
-Rule	Uruguay	2004	only	-	Sep	Sun>=15	 0:00	1:00	S
-Rule	Uruguay	2005	only	-	Mar	Sun>=8	 0:00	0	-
+Rule	Uruguay	2004	only	-	Sep	19	 0:00	1:00	S
+# From Steffen Thorsen (2005-03-11):
+# Uruguay's DST was scheduled to end on Sunday, 2005-03-13, but in order to
+# save energy ... it was postponed two weeks....
+# http://www.presidencia.gub.uy/_Web/noticias/2005/03/2005031005.htm
+Rule	Uruguay	2005	only	-	Mar	27	 2:00	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Montevideo	-3:44:44 -	LMT	1898 Jun 28
 			-3:44:44 -	MMT	1920 May  1	# Montevideo MT

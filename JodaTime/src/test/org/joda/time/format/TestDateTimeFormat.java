@@ -187,7 +187,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "Wed", f.print(dt));
         
         f = f.withLocale(Locale.FRENCH);
-        assertEquals(dt.toString(), "Mer.", f.print(dt));
+        assertEquals(dt.toString(), "mer.", f.print(dt));
     }
 
     //-----------------------------------------------------------------------
@@ -203,7 +203,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "Wednesday", f.print(dt));
         
         f = f.withLocale(Locale.FRENCH);
-        assertEquals(dt.toString(), "Mercredi", f.print(dt));
+        assertEquals(dt.toString(), "mercredi", f.print(dt));
     }
 
     //-----------------------------------------------------------------------
@@ -245,7 +245,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "Jun", f.print(dt));
         
         f = f.withLocale(Locale.FRENCH);
-        assertEquals(dt.toString(), "Juin", f.print(dt));
+        assertEquals(dt.toString(), "juin", f.print(dt));
     }
 
     //-----------------------------------------------------------------------
@@ -261,7 +261,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt.toString(), "June", f.print(dt));
         
         f = f.withLocale(Locale.FRENCH);
-        assertEquals(dt.toString(), "Juin", f.print(dt));
+        assertEquals(dt.toString(), "juin", f.print(dt));
     }
 
     //-----------------------------------------------------------------------

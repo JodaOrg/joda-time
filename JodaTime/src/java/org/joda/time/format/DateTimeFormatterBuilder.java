@@ -72,8 +72,8 @@ import org.joda.time.chrono.iso.ISOChronology;
  * formatters.
  *
  * <p>
- * For example, a formatter that prints month and year, like "January 1970", can
- * be constructed as follows:
+ * For example, a formatter that prints month and year, like "January 1970",
+ * can be constructed as follows:
  * <p>
  * <pre>
  * DateTimeFormatter monthAndYear = new DateTimeFormatterBuilder()
@@ -251,6 +251,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Appends another formatter.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if formatter is null
      */
     public DateTimeFormatterBuilder append(final DateTimeFormatter formatter)
@@ -266,6 +267,7 @@ public class DateTimeFormatterBuilder {
      * Appends just a printer. With no matching parser, a parser cannot be
      * built from this DateTimeFormatterBuilder.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if printer is null
      */
     public DateTimeFormatterBuilder append(final DateTimePrinter printer)
@@ -281,6 +283,7 @@ public class DateTimeFormatterBuilder {
      * Appends just a parser. With no matching printer, a printer cannot be
      * built from this builder.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if parser is null
      */
     public DateTimeFormatterBuilder append(final DateTimeParser parser) {
@@ -293,6 +296,7 @@ public class DateTimeFormatterBuilder {
     /**
      * Appends a printer/parser pair.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if printer or parser is null
      */
     public DateTimeFormatterBuilder append(final DateTimePrinter printer,
@@ -319,6 +323,7 @@ public class DateTimeFormatterBuilder {
      * null, this represents the empty parser. The presence of an empty parser
      * indicates that the entire array of parse formats is optional.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if any parser element but the last is null
      */
     public DateTimeFormatterBuilder append(final DateTimePrinter printer,
@@ -350,6 +355,7 @@ public class DateTimeFormatterBuilder {
      * Appends just a parser element which is optional. With no matching
      * printer, a printer cannot be built from this DateTimeFormatterBuilder.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if parser is null
      */
     public DateTimeFormatterBuilder appendOptional(final DateTimeParser parser) {
@@ -378,6 +384,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a specific character, and the parser to
      * expect it. The parser is case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendLiteral(final char c) {
         return append0(new CharacterLiteral(iChrono, c));
@@ -387,6 +395,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect
      * it. The parser is case-insensitive.
      *
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if text is null
      */
     public DateTimeFormatterBuilder appendLiteral(final String text) {
@@ -404,6 +413,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to <i>print</i>
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field is null
      */
     public DateTimeFormatterBuilder appendNumeric(
@@ -432,6 +442,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to <i>print</i>
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field is null
      */
     public DateTimeFormatterBuilder appendSignedNumeric(
@@ -457,6 +468,7 @@ public class DateTimeFormatterBuilder {
      * parser to expect text.
      *
      * @param field field should operate in UTC or be time zone agnostic
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendText(final DateTimeField field) {
         return append0(new TextField(iChrono, field, iLocale, false));
@@ -467,6 +479,7 @@ public class DateTimeFormatterBuilder {
      * parser to expect text.
      *
      * @param field field should operate in UTC or be time zone agnostic
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendShortText(final DateTimeField field) {
         return append0(new TextField(iChrono, field, iLocale, true));
@@ -482,6 +495,7 @@ public class DateTimeFormatterBuilder {
      * @param field field should operate in UTC or be time zone agnostic
      * @param minDigits minumum number of digits to print.
      * @param maxDigits maximum number of digits to print or parse.
+     * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field's duration is not precise
      */
     public DateTimeFormatterBuilder appendFraction(
@@ -501,6 +515,7 @@ public class DateTimeFormatterBuilder {
     /**
      * @param minDigits minumum number of digits to print
      * @param maxDigits maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendFractionOfSecond(final int minDigits, final int maxDigits) {
         return appendFraction(iChronoUTC.secondOfDay(), minDigits, maxDigits);
@@ -509,6 +524,7 @@ public class DateTimeFormatterBuilder {
     /**
      * @param minDigits minumum number of digits to print
      * @param maxDigits maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendFractionOfMinute(final int minDigits, final int maxDigits) {
         return appendFraction(iChronoUTC.minuteOfDay(), minDigits, maxDigits);
@@ -517,6 +533,7 @@ public class DateTimeFormatterBuilder {
     /**
      * @param minDigits minumum number of digits to print
      * @param maxDigits maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendFractionOfHour(final int minDigits, final int maxDigits) {
         return appendFraction(iChronoUTC.hourOfDay(), minDigits, maxDigits);
@@ -525,6 +542,7 @@ public class DateTimeFormatterBuilder {
     /**
      * @param minDigits minumum number of digits to print
      * @param maxDigits maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendFractionOfDay(final int minDigits, final int maxDigits) {
         return appendFraction(iChronoUTC.dayOfYear(), minDigits, maxDigits);
@@ -534,6 +552,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric millisOfSecond field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMillisOfSecond(final int minDigits) {
         return appendNumeric(iChronoUTC.millisOfSecond(), minDigits, 3);
@@ -543,6 +562,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric millisOfDay field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMillisOfDay(final int minDigits) {
         return appendNumeric(iChronoUTC.millisOfDay(), minDigits, 8);
@@ -552,6 +572,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric secondOfMinute field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendSecondOfMinute(final int minDigits) {
         return appendNumeric(iChronoUTC.secondOfMinute(), minDigits, 2);
@@ -561,6 +582,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric secondOfDay field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendSecondOfDay(final int minDigits) {
         return appendNumeric(iChronoUTC.secondOfDay(), minDigits, 5);
@@ -570,6 +592,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric minuteOfHour field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMinuteOfHour(final int minDigits) {
         return appendNumeric(iChronoUTC.minuteOfHour(), minDigits, 2);
@@ -579,6 +602,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric minuteOfDay field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMinuteOfDay(final int minDigits) {
         return appendNumeric(iChronoUTC.minuteOfDay(), minDigits, 4);
@@ -588,6 +612,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric hourOfDay field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendHourOfDay(final int minDigits) {
         return appendNumeric(iChronoUTC.hourOfDay(), minDigits, 2);
@@ -597,6 +622,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric clockhourOfDay field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendClockhourOfDay(final int minDigits) {
         return appendNumeric(iChronoUTC.clockhourOfDay(), minDigits, 2);
@@ -606,6 +632,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric hourOfHalfday field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendHourOfHalfday(final int minDigits) {
         return appendNumeric(iChronoUTC.hourOfHalfday(), minDigits, 2);
@@ -615,6 +642,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric clockhourOfHalfday field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendClockhourOfHalfday(final int minDigits) {
         return appendNumeric(iChronoUTC.clockhourOfHalfday(), minDigits, 2);
@@ -624,6 +652,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric dayOfWeek field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfWeek(final int minDigits) {
         return appendNumeric(iChronoUTC.dayOfWeek(), minDigits, 1);
@@ -633,6 +662,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric dayOfMonth field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfMonth(final int minDigits) {
         return appendNumeric(iChronoUTC.dayOfMonth(), minDigits, 2);
@@ -642,6 +672,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric dayOfYear field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfYear(final int minDigits) {
         return appendNumeric(iChronoUTC.dayOfYear(), minDigits, 3);
@@ -651,6 +682,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric weekOfWeekyear field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendWeekOfWeekyear(final int minDigits) {
         return appendNumeric(iChronoUTC.weekOfWeekyear(), minDigits, 2);
@@ -662,6 +694,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to <i>print</i>
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendWeekyear(final int minDigits, final int maxDigits) {
         return appendNumeric
@@ -672,6 +705,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a numeric monthOfYear field.
      *
      * @param minDigits minumum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMonthOfYear(final int minDigits) {
         return appendNumeric(iChronoUTC.monthOfYear(), minDigits, 2);
@@ -683,6 +717,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to <i>print</i>
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendYear(final int minDigits, final int maxDigits) {
         return appendSignedNumeric(iChronoUTC.year(), minDigits, maxDigits);
@@ -694,6 +729,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to <i>print</i>
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendYearOfEra(final int minDigits, final int maxDigits) {
         return appendNumeric(iChronoUTC.yearOfEra(), minDigits, maxDigits);
@@ -705,6 +741,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to print
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendYearOfCentury(final int minDigits, final int maxDigits) {
         return appendNumeric(iChronoUTC.yearOfCentury(), minDigits, maxDigits);
@@ -716,6 +753,7 @@ public class DateTimeFormatterBuilder {
      * @param minDigits minumum number of digits to print
      * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendCenturyOfEra(final int minDigits, final int maxDigits) {
         return appendSignedNumeric(iChronoUTC.centuryOfEra(), minDigits, maxDigits);
@@ -724,6 +762,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a locale-specific AM/PM text, and the
      * parser to expect it. The parser is case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendHalfdayOfDayText() {
         return appendText(iChronoUTC.halfdayOfDay());
@@ -732,6 +772,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a locale-specific dayOfWeek text. The
      * parser will accept a long or short dayOfWeek text, case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfWeekText() {
         return appendText(iChronoUTC.dayOfWeek());
@@ -741,6 +783,8 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a short locale-specific dayOfWeek
      * text. The parser will accept a long or short dayOfWeek text,
      * case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendDayOfWeekShortText() {
         return appendShortText(iChronoUTC.dayOfWeek());
@@ -750,6 +794,8 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a short locale-specific monthOfYear
      * text. The parser will accept a long or short monthOfYear text,
      * case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMonthOfYearText() { 
         return appendText(iChronoUTC.monthOfYear());
@@ -758,6 +804,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a locale-specific monthOfYear text. The
      * parser will accept a long or short monthOfYear text, case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendMonthOfYearShortText() {
         return appendShortText(iChronoUTC.monthOfYear());
@@ -766,6 +814,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a locale-specific era text (BC/AD), and
      * the parser to expect it. The parser is case-insensitive.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendEraText() {
         return appendText(iChronoUTC.era());
@@ -775,6 +825,8 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a locale-specific time zone name. A
      * parser cannot be created from this builder if a time zone name is
      * appended.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneName() {
         return append0(new TimeZonePrinter(iChrono, iLocale, false), null);
@@ -784,6 +836,8 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a short locale-specific time zone
      * name. A parser cannot be created from this builder if time zone
      * name is appended.
+     *
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName() {
         return append0(new TimeZonePrinter(iChrono, iLocale, true), null);
@@ -801,6 +855,7 @@ public class DateTimeFormatterBuilder {
      * @param minFields minimum number of fields to print, stopping when no
      * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
      * @param maxFields maximum number of fields to print
+     * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             final String zeroOffsetText, final boolean showSeparators,

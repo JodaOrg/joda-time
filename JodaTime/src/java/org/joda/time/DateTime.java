@@ -93,8 +93,6 @@ import org.joda.time.property.DateTimeFieldProperty;
  * @author Brian S O'Neill
  * @since 1.0
  * @see MutableDateTime
- * @see DateOnly
- * @see TimeOnly
  */
 public class DateTime extends AbstractDateTime
         implements ReadableDateTime, Serializable {
@@ -370,7 +368,7 @@ public class DateTime extends AbstractDateTime
      * the result from this method with Europe/Paris would be 12:30 (ie. 11:30Z).
      * <p>
      * The returned object will be a new instance of the same implementation type.
-     * This method changes alters the time zone and the millisecond instant to keep
+     * This method alters the time zone and the millisecond instant to keep
      * the field values the same.
      * The returned object will be either be a new instance or <code>this</code>.
      *

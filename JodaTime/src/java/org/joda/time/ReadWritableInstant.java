@@ -65,6 +65,51 @@ package org.joda.time;
  */
 public interface ReadWritableInstant extends ReadableInstant {
 
+    /** Rounding is disabled */
+    public static final int ROUND_NONE = 0;
+    /** Rounding mode as described by {@link DateTimeField#roundFloor} */
+    public static final int ROUND_FLOOR = 1;
+    /** Rounding mode as described by {@link DateTimeField#roundCeiling} */
+    public static final int ROUND_CEILING = 2;
+    /** Rounding mode as described by {@link DateTimeField#roundHalfFloor} */
+    public static final int ROUND_HALF_FLOOR = 3;
+    /** Rounding mode as described by {@link DateTimeField#roundHalfCeiling} */
+    public static final int ROUND_HALF_CEILING = 4;
+    /** Rounding mode as described by {@link DateTimeField#roundHalfEven} */
+    public static final int ROUND_HALF_EVEN = 5;
+
+    /**
+     * Returns the field used for rounding, which is ignored if rounding mode
+     * is ROUND_NONE or field is null.
+     */
+    DateTimeField getRoundingField();
+
+    /**
+     * Returns the rounding mode for this instant, or ROUND_NONE if rounding
+     * is not enabled.
+     */
+    int getRoundingMode();
+
+    /**
+     * Sets the field to use for rounding, or null to disable rounding. If the
+     * rounding field is non-null, and the rounding mode was ROUND_NONE, it is
+     * switched to ROUND_FLOOR. The instant is then rounded using the new field
+     * and mode.
+     *
+     * @param field rounding field or null to disable
+     */
+    void setRoundingField(DateTimeField field);
+
+    /**
+     * Sets the field to use for rounding, or null to disable rounding. The
+     * instant is then rounded using the new field and mode.
+     *
+     * @param field rounding field or null to disable
+     * @param mode rounding mode or ROUND_NONE to disable
+     * @throws IllegalArgumentException if mode is unknown
+     */
+    void setRoundingField(DateTimeField field, int mode);
+
     /**
      * Set the value as the number of milliseconds since
      * the epoch, 1970-01-01T00:00:00Z.

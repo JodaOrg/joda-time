@@ -346,29 +346,6 @@ public abstract class AbstractDateTime extends AbstractInstant
     }
 
     /**
-     * Gets the milliseconds of the datetime instant from the Java epoch
-     * of 1970-01-01T00:00:00Z.
-     * 
-     * @param base ignored
-     * @return the number of milliseconds since 1970-01-01T00:00:00Z
-     */
-    public final long getMillis(ReadableInstant base) {
-        return iMillis;
-    }
-
-    /**
-     * Gets the milliseconds of the datetime instant from the Java epoch
-     * of 1970-01-01T00:00:00Z.
-     * 
-     * @param base ignored
-     * @param zone ignored
-     * @return the number of milliseconds since 1970-01-01T00:00:00Z
-     */
-    public final long getMillis(ReadableInstant base, DateTimeZone zone) {
-        return iMillis;
-    }
-
-    /**
      * Gets the chronology of the datetime.
      * 
      * @return the Chronology that the datetime is using

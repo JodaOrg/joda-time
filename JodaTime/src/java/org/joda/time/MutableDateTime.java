@@ -105,6 +105,9 @@ public class MutableDateTime extends AbstractDateTime
     
     static final long serialVersionUID = 2852608688135209575L;
 
+    private DateTimeField iRoundingField;
+    private int iRoundingMode;
+
     // Constructors
     //-----------------------------------------------------------------------
     /**
@@ -310,8 +313,36 @@ public class MutableDateTime extends AbstractDateTime
         super(year, monthOfYear, dayOfMonth,
               hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond, chronology);
     }
-
     
+    public DateTimeField getRoundingField() {
+        return iRoundingField;
+    }
+
+    public int getRoundingMode() {
+        return iRoundingMode;
+    }
+
+    public void setRoundingField(DateTimeField field) {
+        iRoundingField = field;
+        if (field != null) {
+            if (iRoundingMode == ROUND_NONE) {
+                iRoundingMode = ROUND_FLOOR;
+            }
+            setMillis(getMillis());
+        }
+    }
+
+    public void setRoundingField(DateTimeField field, int mode) {
+        if (mode < ROUND_NONE || mode > ROUND_HALF_EVEN) {
+            throw new IllegalArgumentException("Illegal rounding mode: " + mode);
+        }
+        iRoundingField = field;
+        iRoundingMode = mode;
+        if (field != null && mode != ROUND_NONE) {
+            setMillis(getMillis());
+        }
+    }
+
     // Millis
     //-----------------------------------------------------------------------
     /**
@@ -322,6 +353,26 @@ public class MutableDateTime extends AbstractDateTime
      * @see #setDateTime(long)
      */
     public void setMillis(long instant) {
+        switch (iRoundingMode) {
+        case ROUND_NONE:
+            break;
+        case ROUND_FLOOR:
+            instant = iRoundingField.roundFloor(instant);
+            break;
+        case ROUND_CEILING:
+            instant = iRoundingField.roundCeiling(instant);
+            break;
+        case ROUND_HALF_FLOOR:
+            instant = iRoundingField.roundHalfFloor(instant);
+            break;
+        case ROUND_HALF_CEILING:
+            instant = iRoundingField.roundHalfCeiling(instant);
+            break;
+        case ROUND_HALF_EVEN:
+            instant = iRoundingField.roundHalfEven(instant);
+            break;
+        }
+
         super.setMillis(instant);
     }
 
@@ -1062,6 +1113,43 @@ public class MutableDateTime extends AbstractDateTime
      */
     public MutableDateTime copy() {
         return (MutableDateTime)clone();
+    }
+
+    // Basics
+    //-----------------------------------------------------------------------
+    /**
+     * Compares this object with the specified object for equality based on the
+     * millisecond instant, the Chronology, and known rounding behavior.
+     * <p>
+     * All ReadableInstant instances are accepted.
+     * <p>
+     * See {@link #isEqual(ReadableInstant)} for an equals method that
+     * ignores the Chronology and rounding behavior.
+     *
+     * @param readableInstant  a readable instant to check against
+     * @return true if millisecond, Chronology, and known rounding behavior are
+     * equal, false if not or the instant is null or of an incorrect type
+     */
+    public boolean equals(Object readableInstant) {
+        if (this == readableInstant) {
+            return true;
+        }
+        if (super.equals(readableInstant)) {
+            if (readableInstant instanceof ReadWritableInstant) {
+                ReadWritableInstant other = (ReadWritableInstant) readableInstant;
+                if (getRoundingMode() == other.getRoundingMode()) {
+                    DateTimeField field = getRoundingField();
+                    if (field == other.getRoundingField() ||
+                        field != null && field.equals(other.getRoundingField())) {
+                        
+                        return true;
+                    }
+                }
+            } else {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

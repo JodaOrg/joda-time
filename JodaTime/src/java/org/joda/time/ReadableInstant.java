@@ -78,38 +78,6 @@ public interface ReadableInstant extends Comparable {
     long getMillis();
 
     /**
-     * Get the value as the number of milliseconds since the epoch,
-     * 1970-01-01T00:00:00Z, with unsupported field values filled in by the
-     * given base instant.
-     * <p>
-     * This method is useful for ReadableInstants that only partially describe
-     * the instant. The base supplies missing information, including time
-     * zone. Instants that are complete simply return the same value as for
-     * getMillis(), ignoring the given base.
-     *
-     * @param base optional source of missing fields
-     * @return the value as milliseconds
-     */
-    long getMillis(ReadableInstant base);
-
-    /**
-     * Get the value as the number of milliseconds since the epoch,
-     * 1970-01-01T00:00:00Z, with unsupported field values filled in by the
-     * given base instant.
-     * <p>
-     * This method is useful for ReadableInstants that only partially describe
-     * the instant. The base supplies missing information, excluding time
-     * zone. Instants that are complete simply return the same value as for
-     * getMillis(), ignoring the given base.
-     *
-     * @param base source of missing fields
-     * @param zone override the base time zone, null implies override with no
-     * time zone
-     * @return the value as milliseconds
-     */
-    long getMillis(ReadableInstant base, DateTimeZone zone);
-
-    /**
      * Gets the chronology of the instant, null if not applicable.
      * <p>
      * The {@link Chronology} provides conversion from the millisecond

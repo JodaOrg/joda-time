@@ -67,7 +67,6 @@ import org.joda.time.convert.ConverterManager;
  * The default objects recognised by the comparator are:
  * <ul>
  * <li>ReadableInstant
- * <li>PartialInstant
  * <li>String
  * <li>Calendar
  * <li>Date
@@ -187,27 +186,15 @@ public class DateTimeComparator implements Comparator, Serializable {
         long lhsMillis, rhsMillis;
 
         if (lhsObj instanceof ReadableInstant) {
-            ReadableInstant lhsInstant = (ReadableInstant) lhsObj;
-
-            if (rhsObj instanceof ReadableInstant) {
-                ReadableInstant rhsInstant = (ReadableInstant) rhsObj;
-
-                // If instants are partial, then they can use each other to
-                // fill in missing fields.
-                lhsMillis = lhsInstant.getMillis(rhsInstant);
-                rhsMillis = rhsInstant.getMillis(lhsInstant);
-            } else {
-                lhsMillis = lhsInstant.getMillis();
-                rhsMillis = getMillisFromObject(rhsObj);
-            }
+            lhsMillis = ((ReadableInstant) lhsObj).getMillis();
         } else {
             lhsMillis = getMillisFromObject(lhsObj);
+        }
 
-            if (rhsObj instanceof ReadableInstant) {
-                rhsMillis = ((ReadableInstant) rhsObj).getMillis();
-            } else {
-                rhsMillis = getMillisFromObject(rhsObj);
-            }
+        if (rhsObj instanceof ReadableInstant) {
+            rhsMillis = ((ReadableInstant) rhsObj).getMillis();
+        } else {
+            rhsMillis = getMillisFromObject(rhsObj);
         }
 
         DateTimeField field;

@@ -124,7 +124,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Get this object as an Instant.
      * 
-     * @return an Instant using the same millis, unless partially specified
+     * @return an Instant using the same millis
      */
     public final Instant toInstant() {
         if (this instanceof Instant) {
@@ -134,20 +134,9 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get this object as an Instant, using the given base instant to supply
-     * missing field values.
-     * 
-     * @param base source of missing fields
-     * @return a new Instant
-     */
-    public final Instant toInstant(ReadableInstant base) {
-        return new Instant(getMillis(base, null));
-    }
-
-    /**
      * Get this object as a DateTime.
      * 
-     * @return a DateTime using the same millis, unless partially specified
+     * @return a DateTime using the same millis
      */
     public final DateTime toDateTime() {
         if (this instanceof DateTime) {
@@ -160,7 +149,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Get this object as a DateTime.
      * 
      * @param zone time zone to apply, or default if null
-     * @return a DateTime using the same millis, unless partially specified
+     * @return a DateTime using the same millis
      */
     public final DateTime toDateTime(DateTimeZone zone) {
         if (zone == null) {
@@ -176,7 +165,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Get this object as a DateTime.
      * 
      * @param chronology chronology to apply, or ISOChronology if null
-     * @return a DateTime using the same millis, unless partially specified
+     * @return a DateTime using the same millis
      */
     public final DateTime toDateTime(Chronology chronology) {
         if (chronology == null) {
@@ -189,60 +178,6 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Convert this object into a DateTime, using the given base instant to
-     * supply missing field values and time zone.
-     * 
-     * @param base source of missing fields
-     * @return a new DateTime
-     */
-    public final DateTime toDateTime(ReadableInstant base) {
-        if (base == null) {
-            return new DateTime(this);
-        }
-        DateTimeZone zone = base.getZone();
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
-        return new DateTime(getMillis(base), getChronology().withZone(zone));
-    }
-
-    /**
-     * Convert this object into a DateTime, using the given base instant to
-     * supply missing field values.
-     * 
-     * @param base source of missing fields
-     * @param zone  time zone to apply, or default if null
-     * @return a new DateTime
-     */
-    public final DateTime toDateTime(ReadableInstant base, DateTimeZone zone) {
-        if (base == null) {
-            return new DateTime(this, zone);
-        }
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
-        return new DateTime(getMillis(base, zone), getChronology().withZone(zone));
-    }
-
-    /**
-     * Convert this object into a DateTime, using the given base instant to
-     * supply missing field values.
-     * 
-     * @param base source of missing fields
-     * @param chronology  chronology to apply, or ISOChronology if null
-     * @return a new DateTime
-     */
-    public final DateTime toDateTime(ReadableInstant base, Chronology chronology) {
-        if (base == null) {
-            return new DateTime(this, chronology);
-        }
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        return new DateTime(getMillis(base, chronology.getZone()), chronology);
-    }
-
-    /**
      * Get this object as a trusted ISO immutable DateTime. The purpose of
      * this method is to guarantee that an externally received DateTime
      * object does not have any backdoors that allow it to be modified.
@@ -252,7 +187,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * {@link org.joda.time.tz.Provider provider}, then this object is cast to
      * a DateTime and returned. Otherwise, a new trusted DateTime is returned.
      * 
-     * @return a trusted ISO DateTime using the same millis, unless partially specified
+     * @return a trusted ISO DateTime using the same millis
      * @throws IllegalArgumentException if the time zone is not trusted, and
      * no matching trusted time zone can be found.
      */
@@ -280,7 +215,7 @@ public abstract class AbstractInstant implements ReadableInstant {
     /**
      * Get this object as a MutableDateTime.
      * 
-     * @return a MutableDateTime using the same millis, unless partially specified
+     * @return a MutableDateTime using the same millis
      */
     public final MutableDateTime toMutableDateTime() {
         return new MutableDateTime(this);
@@ -290,7 +225,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Get this object as a MutableDateTime.
      * 
      * @param zone time zone to apply, or default if null
-     * @return a MutableDateTime using the same millis, unless partially specified
+     * @return a MutableDateTime using the same millis
      */
     public final MutableDateTime toMutableDateTime(DateTimeZone zone) {
         if (zone == null) {
@@ -303,129 +238,13 @@ public abstract class AbstractInstant implements ReadableInstant {
      * Get this object as a MutableDateTime.
      * 
      * @param chronology chronology to apply, or ISOChronology if null
-     * @return a MutableDateTime using the same millis, unless partially specified
+     * @return a MutableDateTime using the same millis
      */
     public final MutableDateTime toMutableDateTime(Chronology chronology) {
         if (chronology == null) {
             chronology = ISOChronology.getInstance();
         }
         return new MutableDateTime(this, chronology);
-    }
-
-    /**
-     * Convert this object into a MutableDateTime, using the given base instant
-     * to supply missing field values and time zone.
-     * 
-     * @param base source of missing fields
-     * @return a new MutableDateTime
-     */
-    public final MutableDateTime toMutableDateTime(ReadableInstant base) {
-        if (base == null) {
-            return new MutableDateTime(this);
-        }
-        DateTimeZone zone = base.getZone();
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
-        return new MutableDateTime(getMillis(base), getChronology().withZone(zone));
-    }
-
-    /**
-     * Convert this object into a MutableDateTime, using the given base instant
-     * to supply missing field values.
-     * 
-     * @param base source of missing fields
-     * @param zone  time zone to apply, or default if null
-     * @return a new MutableDateTime
-     */
-    public final MutableDateTime toMutableDateTime(ReadableInstant base, DateTimeZone zone) {
-        if (base == null) {
-            return new MutableDateTime(this, zone);
-        }
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
-        return new MutableDateTime(getMillis(base, zone), getChronology().withZone(zone));
-    }
-
-    /**
-     * Convert this object into a MutableDateTime, using the given base instant
-     * to supply missing field values.
-     * 
-     * @param base source of missing fields
-     * @param chronology  chronology to apply, or ISOChronology if null
-     * @return a new MutableDateTime
-     */
-    public final MutableDateTime toMutableDateTime(ReadableInstant base, Chronology chronology) {
-        if (base == null) {
-            return new MutableDateTime(this, chronology);
-        }
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        return new MutableDateTime(getMillis(base, chronology.getZone()), chronology);
-    }
-
-    /**
-     * Get this object as a DateOnly.
-     * 
-     * @return a DateOnly using the same millis, unless partially specified
-     */
-    public final DateOnly toDateOnly() {
-        if (this instanceof DateOnly) {
-            return (DateOnly) this;
-        }
-        return new DateOnly(this);
-    }
-
-    /**
-     * Get this object as a DateOnly.
-     * 
-     * @param chronology chronology to apply, or ISOChronology if null
-     * @return a DateOnly using the same millis, unless partially specified
-     */
-    public final DateOnly toDateOnly(Chronology chronology) {
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        if (this instanceof DateOnly) {
-            DateOnly d = (DateOnly) this;
-            if (d.getChronology() == chronology.withUTC()) {
-                return d;
-            }
-        }
-        return new DateOnly(this, chronology);
-    }
-
-    /**
-     * Get this object as a TimeOnly.
-     * 
-     * @return a TimeOnly using the same millis, unless partially specified
-     */
-    public final TimeOnly toTimeOnly() {
-        if (this instanceof TimeOnly) {
-            return (TimeOnly) this;
-        }
-        return new TimeOnly(this);
-    }
-
-    /**
-     * Get this object as a TimeOnly.
-     * 
-     * @param chronology chronology to apply, or ISOChronology if null
-     * @return a TimeOnly using the same millis, unless partially specified
-     */
-    public final TimeOnly toTimeOnly(Chronology chronology) {
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
-        if (this instanceof TimeOnly) {
-            TimeOnly t = (TimeOnly) this;
-            if (t.getChronology() == chronology.withUTC()) {
-                return t;
-            }
-        }
-        return new TimeOnly(this, chronology);
     }
 
     /**
@@ -541,10 +360,8 @@ public abstract class AbstractInstant implements ReadableInstant {
 
         ReadableInstant otherInstant = (ReadableInstant) readableInstant;
 
-        // If instants are partial, then they can use each other to fill in
-        // missing fields.
-        long otherMillis = otherInstant.getMillis(this);
-        long thisMillis = getMillis(otherInstant);
+        long otherMillis = otherInstant.getMillis();
+        long thisMillis = getMillis();
 
         // cannot do (thisMillis - otherMillis) as can overflow
         if (thisMillis == otherMillis) {
@@ -568,9 +385,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (readableInstant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        // If instants are partial, then they can use each other to fill in
-        // missing fields.
-        return (getMillis(readableInstant) > readableInstant.getMillis(this));
+        return (getMillis() > readableInstant.getMillis());
     }
 
     /**
@@ -584,9 +399,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (readableInstant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        // If instants are partial, then they can use each other to fill in
-        // missing fields.
-        return (getMillis(readableInstant) < readableInstant.getMillis(this));
+        return (getMillis() < readableInstant.getMillis());
     }
 
     /**
@@ -600,9 +413,7 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (readableInstant == null) {
             throw new IllegalArgumentException("The instant must not be null");
         }
-        // If instants are partial, then they can use each other to fill in
-        // missing fields.
-        return (getMillis(readableInstant) == readableInstant.getMillis(this));
+        return (getMillis() == readableInstant.getMillis());
     }
 
     // Output    

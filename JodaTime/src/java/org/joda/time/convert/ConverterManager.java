@@ -70,7 +70,6 @@ import org.joda.time.JodaTimePermission;
  * The default instant converters are:
  * <ul>
  * <li>ReadableInstant
- * <li>PartialInstant
  * <li>String
  * <li>Calendar
  * <li>Date
@@ -120,7 +119,6 @@ public final class ConverterManager {
 
         iInstantConverters = new ConverterSet(new Converter[] {
             ReadableInstantConverter.INSTANCE,
-            PartialInstantConverter.INSTANCE,
             StringConverter.INSTANCE,
             CalendarConverter.INSTANCE,
             DateConverter.INSTANCE,

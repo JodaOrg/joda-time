@@ -207,7 +207,7 @@ public interface ReadableDateTime extends ReadableInstant {
      * <p>
      * If the implementation of the interface is a DateTime, it is returned directly.
      * 
-     * @return a DateTime using the same millis, unless partially specified
+     * @return a DateTime using the same millis
      */
     DateTime toDateTime();
 
@@ -218,7 +218,7 @@ public interface ReadableDateTime extends ReadableInstant {
      * it is returned directly.
      * 
      * @param zone  time zone to apply
-     * @return a DateTime using the same millis, unless partially specified
+     * @return a DateTime using the same millis
      * @throws IllegalArgumentException if the time zone is null
      */
     DateTime toDateTime(DateTimeZone zone);
@@ -230,7 +230,7 @@ public interface ReadableDateTime extends ReadableInstant {
      * it is returned directly.
      * 
      * @param chronology  chronology to apply
-     * @return a DateTime using the same millis, unless partially specified
+     * @return a DateTime using the same millis
      * @throws IllegalArgumentException if the chronology is null
      */
     DateTime toDateTime(Chronology chronology);
@@ -238,7 +238,7 @@ public interface ReadableDateTime extends ReadableInstant {
     /**
      * Get this object as a MutableDateTime, always returning a new instance.
      * 
-     * @return a MutableDateTime using the same millis, unless partially specified
+     * @return a MutableDateTime using the same millis
      */
     MutableDateTime toMutableDateTime();
 
@@ -246,7 +246,7 @@ public interface ReadableDateTime extends ReadableInstant {
      * Get this object as a MutableDateTime, always returning a new instance.
      * 
      * @param zone  time zone to apply
-     * @return a MutableDateTime using the same millis, unless partially specified
+     * @return a MutableDateTime using the same millis
      * @throws IllegalArgumentException if the time zone is null
      */
     MutableDateTime toMutableDateTime(DateTimeZone zone);
@@ -255,42 +255,10 @@ public interface ReadableDateTime extends ReadableInstant {
      * Get this object as a MutableDateTime, always returning a new instance.
      * 
      * @param chronology  chronology to apply
-     * @return a MutableDateTime using the same millis, unless partially specified
+     * @return a MutableDateTime using the same millis
      * @throws IllegalArgumentException if the chronology is null
      */
     MutableDateTime toMutableDateTime(Chronology chronology);
-
-    /**
-     * Get this object as a DateOnly.
-     * 
-     * @return a DateOnly using the same millis, unless partially specified
-     */
-    DateOnly toDateOnly();
-
-    /**
-     * Get this object as a DateOnly.
-     * 
-     * @param chronology chronology to apply
-     * @return a DateOnly using the same millis, unless partially specified
-     * @throws IllegalArgumentException if the chronology is null
-     */
-    DateOnly toDateOnly(Chronology chronology);
-
-    /**
-     * Get this object as a TimeOnly.
-     * 
-     * @return a TimeOnly using the same millis, unless partially specified
-     */
-    TimeOnly toTimeOnly();
-
-    /**
-     * Get this object as a TimeOnly.
-     * 
-     * @param chronology chronology to apply
-     * @return a TimeOnly using the same millis, unless partially specified
-     * @throws IllegalArgumentException if the chronology is null
-     */
-    TimeOnly toTimeOnly(Chronology chronology);
 
     /**
      * Output the instant using the specified format pattern.

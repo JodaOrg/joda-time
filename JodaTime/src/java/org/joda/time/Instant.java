@@ -76,7 +76,7 @@ public final class Instant extends AbstractInstant
         implements ReadableInstant, Serializable {
 
     /** Serialization lock */
-	private static final long serialVersionUID = 3299096530934209741L;
+    private static final long serialVersionUID = 3299096530934209741L;
 
     /** The millis from 1970-01-01T00:00:00Z */
     private final long iMillis;
@@ -148,27 +148,6 @@ public final class Instant extends AbstractInstant
      * @return the number of milliseconds since 1970-01-01T00:00:00Z
      */
     public long getMillis() {
-        return iMillis;
-    }
-
-    /**
-     * Gets the milliseconds of the instant.
-     *
-     * @param base ignored
-     * @return the number of milliseconds since 1970-01-01T00:00:00Z
-     */
-    public long getMillis(ReadableInstant base) {
-        return iMillis;
-    }
-
-    /**
-     * Gets the milliseconds of the instant.
-     *
-     * @param base ignored
-     * @param zone ignored
-     * @return the number of milliseconds since 1970-01-01T00:00:00Z
-     */
-    public long getMillis(ReadableInstant base, DateTimeZone zone) {
         return iMillis;
     }
 

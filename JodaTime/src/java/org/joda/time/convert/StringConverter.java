@@ -55,17 +55,21 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.ReadWritableDuration;
 import org.joda.time.chrono.iso.ISOChronology;
 import org.joda.time.format.DateTimeParser;
+import org.joda.time.format.DurationParser;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.format.ISODurationFormat;
 
 /**
  * StringConverter converts a String to milliseconds in the ISOChronology.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  * @since 1.0
  */
-class StringConverter extends AbstractConverter implements InstantConverter {
+class StringConverter extends AbstractConverter implements InstantConverter, DurationConverter {
     
     /**
      * Singleton instance.
@@ -110,6 +114,43 @@ class StringConverter extends AbstractConverter implements InstantConverter {
         return p.parseMillis(str);
     }
     
+    //-----------------------------------------------------------------------
+    /**
+     * Returns false always.
+     */
+    public boolean isPrecise(Object object) {
+        return false;
+    }
+
+    /**
+     * @throws UnsupportedOperationException always
+     */
+    public long getDurationMillis(Object object) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Extracts duration values from an object of this converter's type, and
+     * sets them into the given ReadWritableDuration.
+     *
+     * @param duration duration to get modified
+     * @param object  the object to convert, must not be null
+     * @return the millisecond duration
+     * @throws ClassCastException if the object is invalid
+     */
+    public void setInto(ReadWritableDuration duration, Object object) {
+        String str = (String) object;
+        DurationParser parser = ISODurationFormat.getInstance().standard();
+        int pos = parser.parseInto(duration, str, 0);
+        if (pos < str.length()) {
+            if (pos < 0) {
+                // Parse again to get a better exception thrown.
+                parser.parseMutableDuration(duration.getDurationType(), str);
+            }
+            throw new IllegalArgumentException("Invalid format: \"" + str + '"');
+        }
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns String.class.

@@ -80,6 +80,7 @@ import java.util.List;
  * The default duration converters are:
  * <ul>
  * <li>ReadableDuration
+ * <li>String
  * <li>Long
  * </ul>
  *
@@ -121,6 +122,7 @@ public final class ConverterManager {
 
         iDurationConverters = new ConverterSet(new Converter[] {
             ReadableDurationConverter.INSTANCE,
+            StringConverter.INSTANCE,
             LongConverter.INSTANCE,
         });
     }

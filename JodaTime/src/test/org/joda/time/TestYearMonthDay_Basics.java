@@ -60,6 +60,8 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
+import org.joda.time.chrono.BuddhistChronology;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -287,6 +289,90 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testWithField1() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        YearMonthDay result = test.withField(DateTimeFieldType.year(), 2006);
+        
+        assertEquals(new YearMonthDay(2004, 6, 9), test);
+        assertEquals(new YearMonthDay(2006, 6, 9), result);
+    }
+
+    public void testWithField2() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        try {
+            test.withField(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithField3() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        try {
+            test.withField(DateTimeFieldType.hourOfDay(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithFieldAdded1() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        YearMonthDay result = test.withFieldAdded(DurationFieldType.years(), 6);
+        
+        assertEquals(new YearMonthDay(2004, 6, 9), test);
+        assertEquals(new YearMonthDay(2010, 6, 9), result);
+    }
+
+    public void testWithFieldAdded2() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        try {
+            test.withFieldAdded(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded3() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        try {
+            test.withFieldAdded(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded4() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        YearMonthDay result = test.withFieldAdded(DurationFieldType.years(), 0);
+        assertSame(test, result);
+    }
+
+    public void testWithFieldAdded5() {
+        YearMonthDay test = new YearMonthDay(2004, 6, 9);
+        try {
+            test.withFieldAdded(DurationFieldType.hours(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testPlus_RP() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
+        YearMonthDay expected = new YearMonthDay(2003, 7, 7, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    public void testMinus_RP() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
+        YearMonthDay expected = new YearMonthDay(2001, 4, 2, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testToDateTimeAtMidnight() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         
@@ -504,6 +590,10 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(test.dayOfMonth(), test.property(DateTimeFieldType.dayOfMonth()));
         try {
             test.property(DateTimeFieldType.millisOfDay());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.property(null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

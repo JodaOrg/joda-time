@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -273,6 +273,20 @@ public class TestDateTimeUtils extends TestCase {
         long now = DateTimeUtils.currentTimeMillis();
         assertTrue((now >= nowSystem));
         assertTrue((now - nowSystem) < 10000L);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testOffsetMillisToZero() {
+        long now1 = 0L;
+        try {
+            // set time to one day ago
+            DateTimeUtils.setCurrentMillisOffset(0);
+            now1 = DateTimeUtils.currentTimeMillis();
+        } finally {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+        long now2 = DateTimeUtils.currentTimeMillis();
+        assertEquals(now1, now2);
     }
 
     //-----------------------------------------------------------------------

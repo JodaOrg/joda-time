@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
+
+import org.joda.time.chrono.BuddhistChronology;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -302,6 +304,140 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testWithField1() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay result = test.withField(DateTimeFieldType.hourOfDay(), 15);
+        
+        assertEquals(new TimeOfDay(10, 20, 30, 40), test);
+        assertEquals(new TimeOfDay(15, 20, 30, 40), result);
+    }
+
+    public void testWithField2() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        try {
+            test.withField(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithField3() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        try {
+            test.withField(DateTimeFieldType.dayOfMonth(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithField4() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay result = test.withField(DateTimeFieldType.hourOfDay(), 10);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithFieldAdded1() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay result = test.withFieldAdded(DurationFieldType.hours(), 6);
+        
+        assertEquals(new TimeOfDay(10, 20, 30, 40), test);
+        assertEquals(new TimeOfDay(16, 20, 30, 40), result);
+    }
+
+    public void testWithFieldAdded2() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        try {
+            test.withFieldAdded(null, 0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded3() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        try {
+            test.withFieldAdded(null, 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded4() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay result = test.withFieldAdded(DurationFieldType.hours(), 0);
+        assertSame(test, result);
+    }
+
+    public void testWithFieldAdded5() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        try {
+            test.withFieldAdded(DurationFieldType.days(), 6);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testWithFieldAdded6() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay result = test.withFieldAdded(DurationFieldType.hours(), 16);
+        
+        assertEquals(new TimeOfDay(10, 20, 30, 40), test);
+        assertEquals(new TimeOfDay(2, 20, 30, 40), result);
+    }
+
+    public void testWithFieldAdded7() {
+        TimeOfDay test = new TimeOfDay(23, 59, 59, 999);
+        TimeOfDay result = test.withFieldAdded(DurationFieldType.millis(), 1);
+        assertEquals(new TimeOfDay(0, 0, 0, 0), result);
+        
+        test = new TimeOfDay(23, 59, 59, 999);
+        result = test.withFieldAdded(DurationFieldType.seconds(), 1);
+        assertEquals(new TimeOfDay(0, 0, 0, 999), result);
+        
+        test = new TimeOfDay(23, 59, 59, 999);
+        result = test.withFieldAdded(DurationFieldType.minutes(), 1);
+        assertEquals(new TimeOfDay(0, 0, 59, 999), result);
+        
+        test = new TimeOfDay(23, 59, 59, 999);
+        result = test.withFieldAdded(DurationFieldType.hours(), 1);
+        assertEquals(new TimeOfDay(0, 59, 59, 999), result);
+    }
+
+    public void testWithFieldAdded8() {
+        TimeOfDay test = new TimeOfDay(0, 0, 0, 0);
+        TimeOfDay result = test.withFieldAdded(DurationFieldType.millis(), -1);
+        assertEquals(new TimeOfDay(23, 59, 59, 999), result);
+        
+        test = new TimeOfDay(0, 0, 0, 0);
+        result = test.withFieldAdded(DurationFieldType.seconds(), -1);
+        assertEquals(new TimeOfDay(23, 59, 59, 0), result);
+        
+        test = new TimeOfDay(0, 0, 0, 0);
+        result = test.withFieldAdded(DurationFieldType.minutes(), -1);
+        assertEquals(new TimeOfDay(23, 59, 0, 0), result);
+        
+        test = new TimeOfDay(0, 0, 0, 0);
+        result = test.withFieldAdded(DurationFieldType.hours(), -1);
+        assertEquals(new TimeOfDay(23, 0, 0, 0), result);
+    }
+
+    public void testPlus_RP() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40, BuddhistChronology.getInstance());
+        TimeOfDay result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
+        TimeOfDay expected = new TimeOfDay(15, 26, 37, 48, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    public void testMinus_RP() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40, BuddhistChronology.getInstance());
+        TimeOfDay result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
+        TimeOfDay expected = new TimeOfDay(9, 19, 29, 39, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testToDateTimeToday() {
         TimeOfDay base = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
@@ -530,6 +666,10 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
         try {
             test.property(DateTimeFieldType.millisOfDay());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.property(null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -398,6 +398,32 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToPeriodTo() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Period result = test.toPeriodTo(dt);
+        assertEquals(new Period(test, dt), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToPeriodTo_PeriodType() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Period result = test.toPeriodTo(dt, PeriodType.standard().withMillisRemoved());
+        assertEquals(new Period(test, dt, PeriodType.standard().withMillisRemoved()), result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testToIntervalFrom() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -408,6 +434,19 @@ public class TestDuration_Basics extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         Interval result = test.toIntervalFrom(dt);
         assertEquals(new Interval(dt, test), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToIntervalTo() {
+        long length =
+            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+            5L * DateTimeConstants.MILLIS_PER_HOUR +
+            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+        Duration test = new Duration(length);
+        DateTime dt = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Interval result = test.toIntervalTo(dt);
+        assertEquals(new Interval(test, dt), result);
     }
 
     //-----------------------------------------------------------------------

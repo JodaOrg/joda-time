@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -213,6 +213,33 @@ public class TestDateTime_Basics extends TestCase {
             test.get((DateTimeFieldType) null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testIsSupported_DateTimeFieldType() {
+        DateTime test = new DateTime();
+        assertEquals(true, test.isSupported(DateTimeFieldType.era()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.centuryOfEra()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.yearOfCentury()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.yearOfEra()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.year()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.monthOfYear()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.dayOfMonth()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.weekyear()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.weekOfWeekyear()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.dayOfWeek()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.dayOfYear()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.halfdayOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.hourOfHalfday()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.clockhourOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.clockhourOfHalfday()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.hourOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.minuteOfHour()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.minuteOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.secondOfMinute()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.secondOfDay()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.millisOfSecond()));
+        assertEquals(true, test.isSupported(DateTimeFieldType.millisOfDay()));
+        assertEquals(false, test.isSupported(null));
     }
 
     public void testGetMethods() {
@@ -984,6 +1011,10 @@ public class TestDateTime_Basics extends TestCase {
         };
         try {
             test.property(bad);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.property(null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

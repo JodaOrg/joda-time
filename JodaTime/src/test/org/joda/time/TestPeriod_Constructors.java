@@ -2,7 +2,7 @@
  * Joda Software License, Version 1.0
  *
  *
- * Copyright (c) 2001-2004 Stephen Colebourne.  
+ * Copyright (c) 2001-2005 Stephen Colebourne.  
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -821,6 +821,70 @@ public class TestPeriod_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         Duration dur = null;
         Period test = new Period(dt1, dur, (PeriodType) null);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_RD_RI1() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        Duration dur = new Interval(dt1, dt2).toDuration();
+        Period test = new Period(dur, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    public void testConstructor_RD_RI2() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Duration dur = null;
+        Period test = new Period(dur, dt1);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_RD_RI_PeriodType1() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        Duration dur = new Interval(dt1, dt2).toDuration();
+        Period test = new Period(dur, dt2, PeriodType.yearDayTime());
+        assertEquals(PeriodType.yearDayTime(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(31, test.getDays());
+        assertEquals(1, test.getHours());
+        assertEquals(1, test.getMinutes());
+        assertEquals(1, test.getSeconds());
+        assertEquals(1, test.getMillis());
+    }
+
+    public void testConstructor_RD_RI_PeriodType2() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        Duration dur = null;
+        Period test = new Period(dur, dt1, (PeriodType) null);
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());

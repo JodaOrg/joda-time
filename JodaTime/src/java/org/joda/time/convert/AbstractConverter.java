@@ -162,4 +162,13 @@ public abstract class AbstractConverter implements Converter {
         return chrono;
     }
     
+    /**
+     * Gets a debugging string version of this converter.
+     * 
+     * @return a debugging string
+     */
+    public String toString() {
+        return "Converter[" + getSupportedType() + "]";
+    }
+
 }

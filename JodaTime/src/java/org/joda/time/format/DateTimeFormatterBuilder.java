@@ -864,6 +864,19 @@ public class DateTimeFormatterBuilder {
                        (iChrono, zeroOffsetText, showSeparators, minFields, maxFields));
     }
 
+    /**
+     * Calls upon {@link DateTimeFormat} to parse the pattern and append the
+     * results into this builder.
+     *
+     * @param pattern  pattern specification
+     * @throws IllegalArgumentException if the pattern is invalid
+     * @see DateTimeFormat#appendPatternTo(DateTimeFormatterBuilder,String)
+     */
+    public DateTimeFormatterBuilder appendPattern(String pattern) {
+        DateTimeFormat.appendPatternTo(this, pattern);
+        return this;
+    }
+
     private Object getFormatter() {
         Object f = iFormatter;
 

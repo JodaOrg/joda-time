@@ -63,14 +63,15 @@ package org.joda.time;
  * Periods are split up into multiple fields, for example days and seconds.
  * Implementations are not required to evenly distribute the values across the fields.
  * The value for each field may be positive or negative.
- * The {@link PeriodType} defines the rules for dividing the fields and which fields
- * are supported. Unsupported fields always have a value of zero.
  * <p>
  * When a time period is added to an instant, the effect is to add each field in turn.
  * For example, a time period could be defined as 3 months, 2 days and -1 hours.
  * In most circumstances this would be the same as 3 months, 1 day, and 23 hours.
  * However, when adding across a daylight savings boundary, a day may be 23 or 25 hours long.
  * Thus, the time period is always added field by field to the datetime.
+ * <p>
+ * Periods are independent of chronology, and can only be treated as durations
+ * when paired with a time.
  *
  * @see ReadableDuration
  * @see ReadableInterval
@@ -81,53 +82,68 @@ package org.joda.time;
 public interface ReadablePeriod {
 
     /**
-     * Returns the period type which defines which fields this period supports.
-     * 
+     * Gets the period type that defines which fields are included in the period.
+     *
      * @return the period type
      */
     PeriodType getPeriodType();
 
     /**
-     * Is this period a precise length of time, or descriptive.
-     * <p>
-     * A precise period could include millis, seconds, minutes or hours.
-     * However, days, weeks, months and years can vary in length, resulting in
-     * an imprecise period.
-     * <p>
-     * An imprecise period can be made precise by pairing it with a
-     * date in a {@link ReadableInterval}.
+     * Gets the number of fields that this period supports.
      *
-     * @return true if the period is precise
+     * @return the number of fields supported
      */
-    boolean isPrecise();
+    int size();
+
+    /**
+     * Gets the field type at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    DurationFieldType getFieldType(int index);
+
+    /**
+     * Gets the value at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the value of the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    int getValue(int index);
+
+    /**
+     * Gets the value of one of the fields.
+     * <p>
+     * If the field type specified is not supported by the period then zero
+     * is returned.
+     *
+     * @param field  the field type to query, null returns zero
+     * @return the value of that field, zero if field not supported
+     */
+    int get(DurationFieldType field);
+
+    /**
+     * Checks whether the field type specified is supported by this period.
+     *
+     * @param field  the field to check, may be null which returns false
+     * @return true if the field is supported
+     */
+    boolean isSupported(DurationFieldType field);
 
     //-----------------------------------------------------------------------
     /**
      * Adds this period to the given instant, returning a new value.
      * <p>
-     * The addition uses the chronology of the PeriodType.
+     * The addition uses the chronology specified, or ISOChronology
+     * in the default zone if it is null.
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * period to
+     * @param instant  the millisecond instant to add the period to
      * @param scalar  the number of times to add the period, negative to subtract
-     * @return milliseconds value plus this period times scalar
-     * @throws ArithmeticException if the result of the calculation is too large
-     */
-    long addTo(long instant, int scalar);
-
-    /**
-     * Adds this period to the given instant, returning a new value.
-     * <p>
-     * The addition uses the chronology specified.
-     * To add just once, pass in a scalar of one. To subtract once, pass
-     * in a scalar of minus one.
-     *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * period to
-     * @param scalar  the number of times to add the period, negative to subtract
-     * @param chrono  override the chronology of the period type, unless null is passed in
+     * @param chrono  the chronology to use, null means ISO in the default zone
      * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
@@ -162,63 +178,6 @@ public interface ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the years field part of the period.
-     * 
-     * @return the number of years in the period, zero if unsupported
-     */
-    int getYears();
-
-    /**
-     * Gets the months field part of the period.
-     * 
-     * @return the number of months in the period, zero if unsupported
-     */
-    int getMonths();
-
-    /**
-     * Gets the weeks field part of the period.
-     * 
-     * @return the number of weeks in the period, zero if unsupported
-     */
-    int getWeeks();
-
-    /**
-     * Gets the days field part of the period.
-     * 
-     * @return the number of days in the period, zero if unsupported
-     */
-    int getDays();
-
-    /**
-     * Gets the hours field part of the period.
-     * 
-     * @return the number of hours in the period, zero if unsupported
-     */
-    int getHours();
-
-    /**
-     * Gets the minutes field part of the period.
-     * 
-     * @return the number of minutes in the period, zero if unsupported
-     */
-    int getMinutes();
-
-    /**
-     * Gets the seconds field part of the period.
-     * 
-     * @return the number of seconds in the period, zero if unsupported
-     */
-    int getSeconds();
-
-    /**
-     * Gets the millis field part of the period.
-     * 
-     * @return the number of millis in the period, zero if unsupported
-     */
-    int getMillis();
-
-    //-----------------------------------------------------------------------
-    /**
      * Get this period as an immutable <code>Period</code> object.
      * <p>
      * This will either typecast this instance, or create a new <code>Period</code>.
@@ -236,53 +195,28 @@ public interface ReadablePeriod {
      */
     MutablePeriod toMutablePeriod();
 
-    /**
-     * Gets the total length of this time period in milliseconds, 
-     * failing if the period is imprecise.
-     *
-     * @return the total length of the time period in milliseconds.
-     * @throws IllegalStateException if this time period is imprecise
-     */
-    long toDurationMillis();
-
-    /**
-     * Gets the total length of this time period,
-     * failing if the period is imprecise.
-     *
-     * @return the total length of the time period in milliseconds.
-     * @throws IllegalStateException if this time period is imprecise
-     */
-    Duration toDuration();
-
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on the value of each field. All ReadablePeriod instances are accepted.
-     * <p>
-     * To compare two periods for absolute duration (ie. millisecond duration
-     * ignoring the fields), use {@link #toDurationMillis()} or {@link #toDuration()}.
+     * on the value and type of each supported field.
+     * All ReadablePeriod instances are accepted.
      *
      * @param readablePeriod  a readable period to check against
-     * @return true if all the field values are equal, false if
+     * @return true if all the field values and types are equal, false if
      *  not or the period is null or of an incorrect type
      */
     boolean equals(Object readablePeriod);
 
     /**
-     * Gets a hash code for the period that is compatible with the 
-     * equals method. The hashcode is the period type hashcode plus
-     * each period value from largest to smallest calculated as follows:
+     * Gets a hash code for the period that is compatible with the equals method.
+     * The hashcode is calculated as follows:
      * <pre>
-     *   int hash = getPeriodType().hashCode();
-     *   hash = 53 * hash + getYears();
-     *   hash = 53 * hash + getMonths();
-     *   hash = 53 * hash + getWeeks();
-     *   hash = 53 * hash + getDays();
-     *   hash = 53 * hash + getHours();
-     *   hash = 53 * hash + getMinutes();
-     *   hash = 53 * hash + getSeconds();
-     *   hash = 53 * hash + getMillis();
-     *   return hash;
+     *  int total = 17;
+     *  for (int i = 0; i < fields.length; i++) {
+     *      total = 27 * total + getValue(i);
+     *      total = 27 * total + getFieldType(i).hashCode();
+     *  }
+     *  return total;
      * </pre>
      *
      * @return a hash code

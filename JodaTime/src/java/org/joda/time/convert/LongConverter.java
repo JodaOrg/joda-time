@@ -53,8 +53,6 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.ReadWritablePeriod;
-
 /**
  * LongConverter converts a Long to milliseconds in the ISOChronology.
  *
@@ -100,21 +98,6 @@ class LongConverter extends AbstractConverter implements InstantConverter, Durat
      */
     public long getDurationMillis(Object object) {
         return ((Long) object).longValue();
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Extracts duration values from an object of this converter's type, and
-     * sets them into the given ReadWritableDuration.
-     *
-     * @param duration duration to get modified
-     * @param object  the object to convert, must not be null
-     * @throws NullPointerException if the duration or object is null
-     * @throws ClassCastException if the object is an invalid type
-     * @throws IllegalArgumentException if the object is invalid
-     */
-    public void setInto(ReadWritablePeriod duration, Object object) {
-        duration.setPeriod(((Long) object).longValue());
     }
 
     //-----------------------------------------------------------------------

@@ -359,7 +359,7 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
-    private static int DURATION_SIZE = 6;
+    private static int DURATION_SIZE = 5;
     
     public void testGetDurationConverter() {
         DurationConverter c = ConverterManager.getInstance().getDurationConverter(new Long(0L));
@@ -367,9 +367,6 @@ public class TestConverterManager extends TestCase {
         
         c = ConverterManager.getInstance().getDurationConverter(new Duration(123L));
         assertEquals(ReadableDuration.class, c.getSupportedType());
-        
-        c = ConverterManager.getInstance().getDurationConverter(new Period(1, 2, 3, 4, 5, 6, 7, 8));
-        assertEquals(ReadablePeriod.class, c.getSupportedType());
         
         c = ConverterManager.getInstance().getDurationConverter(new Interval(0L, 1000L));
         assertEquals(ReadableInterval.class, c.getSupportedType());
@@ -550,8 +547,8 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     public void testAddPeriodConverter1() {
         PeriodConverter c = new PeriodConverter() {
-            public void setInto(ReadWritablePeriod duration, Object object) {}
-            public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
+            public void setInto(ReadWritablePeriod duration, Object object, Chronology c) {}
+            public PeriodType getPeriodType(Object object) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         try {
@@ -567,8 +564,8 @@ public class TestConverterManager extends TestCase {
 
     public void testAddPeriodConverter2() {
         PeriodConverter c = new PeriodConverter() {
-            public void setInto(ReadWritablePeriod duration, Object object) {}
-            public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
+            public void setInto(ReadWritablePeriod duration, Object object, Chronology c) {}
+            public PeriodType getPeriodType(Object object) {return null;}
             public Class getSupportedType() {return String.class;}
         };
         try {
@@ -617,8 +614,8 @@ public class TestConverterManager extends TestCase {
 
     public void testRemovePeriodConverter2() {
         PeriodConverter c = new PeriodConverter() {
-            public void setInto(ReadWritablePeriod duration, Object object) {}
-            public PeriodType getPeriodType(Object object, boolean tmm) {return null;}
+            public void setInto(ReadWritablePeriod duration, Object object, Chronology c) {}
+            public PeriodType getPeriodType(Object object) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
         PeriodConverter removed = ConverterManager.getInstance().removePeriodConverter(c);
@@ -774,7 +771,7 @@ public class TestConverterManager extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToString() {
-        assertEquals("ConverterManager[6 instant,6 duration,5 period,2 interval]", ConverterManager.getInstance().toString());
+        assertEquals("ConverterManager[6 instant,5 duration,5 period,2 interval]", ConverterManager.getInstance().toString());
     }
 
 }

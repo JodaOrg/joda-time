@@ -55,8 +55,10 @@ package org.joda.time.base;
 
 import java.io.Serializable;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
@@ -68,7 +70,7 @@ import org.joda.time.field.FieldUtils;
 
 /**
  * BasePeriod is an abstract implementation of ReadablePeriod that stores
- * data in a <code>int</code> and <code>PeriodType</code> fields.
+ * data in a <code>PeriodType</code> and an <code>int[]</code>.
  * <p>
  * This class should generally not be used directly by API users.
  * The {@link ReadablePeriod} interface should be used when different 
@@ -87,35 +89,10 @@ public abstract class BasePeriod
     /** Serialization version */
     private static final long serialVersionUID = -2110953284060001145L;
 
-    /** Millis cache is currently unknown */
-    private static final int STATE_UNKNOWN = 0;
-    /** Millis cache is not calculable */
-    private static final int STATE_NOT_CALCULABLE = 1;
-    /** Millis cache has been calculated and is valid */
-    private static final int STATE_CALCULATED = 2;
-
-    /** The period type that allocates the duration to fields */
-    private final PeriodType iType;
-    /** The object state */
-    private transient int iState;
-    /** The duration, if known */
-    private transient long iDuration;
-    /** Value for years */
-    private int iYears;
-    /** Value for months */
-    private int iMonths;
-    /** Value for weeks */
-    private int iWeeks;
-    /** Value for days */
-    private int iDays;
-    /** Value for hours */
-    private int iHours;
-    /** Value for minutes */
-    private int iMinutes;
-    /** Value for seconds */
-    private int iSeconds;
-    /** Value for millis */
-    private int iMillis;
+    /** The type of period */
+    private PeriodType iType;
+    /** The values */
+    private int[] iValues;
 
     //-----------------------------------------------------------------------
     /**
@@ -125,15 +102,15 @@ public abstract class BasePeriod
      * the period type.
      *
      * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this period supports
+     * @param type  which set of fields this period supports, null means standard
+     * @param chrono  the chronology to use, null means ISO default
      * @throws IllegalArgumentException if period type is invalid
      */
-    protected BasePeriod(long duration, PeriodType type) {
+    protected BasePeriod(long duration, PeriodType type, Chronology chrono) {
         super();
         type = checkPeriodType(type);
         iType = type;
-        // Only call a private method
-        setPeriod(type, duration);
+        setPeriodInternal(duration, chrono); // internal method
     }
 
     /**
@@ -157,8 +134,7 @@ public abstract class BasePeriod
         super();
         type = checkPeriodType(type);
         iType = type;
-        // Only call a private method
-        setPeriod(type, years, months, weeks, days, hours, minutes, seconds, millis);
+        setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis); // internal method
     }
 
     /**
@@ -166,15 +142,15 @@ public abstract class BasePeriod
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this period supports
+     * @param type  which set of fields this period supports, null means standard
+     * @param chrono  the chronology to use, null means ISO default
      * @throws IllegalArgumentException if period type is invalid
      */
-    protected BasePeriod(long startInstant, long endInstant, PeriodType type) {
+    protected BasePeriod(long startInstant, long endInstant, PeriodType type, Chronology chrono) {
         super();
         type = checkPeriodType(type);
         iType = type;
-        // Only call a private method
-        setPeriod(type, startInstant, endInstant);
+        setPeriodInternal(startInstant, endInstant, chrono); // internal method
     }
 
     /**
@@ -182,21 +158,21 @@ public abstract class BasePeriod
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
-     * @param type  which set of fields this period supports
+     * @param type  which set of fields this period supports, null means standard
      * @throws IllegalArgumentException if period type is invalid
      */
-    protected BasePeriod(
-            ReadableInstant startInstant, ReadableInstant  endInstant, PeriodType type) {
+    protected BasePeriod(ReadableInstant startInstant, ReadableInstant  endInstant, PeriodType type) {
         super();
         type = checkPeriodType(type);
         if (startInstant == null && endInstant == null) {
             iType = type;
+            iValues = new int[size()];
         } else {
-            long start = (startInstant == null ? DateTimeUtils.currentTimeMillis() : startInstant.getMillis());
-            long end = (endInstant == null ? DateTimeUtils.currentTimeMillis() : endInstant.getMillis());
+            long start = DateTimeUtils.getInstantMillis(startInstant);
+            long end = DateTimeUtils.getInstantMillis(endInstant);
+            Chronology chrono = (startInstant != null ? startInstant.getChronology() : endInstant.getChronology());
             iType = type;
-            // Only call a private method
-            setPeriod(type, start, end);
+            setPeriodInternal(start, end, chrono); // internal method
         }
     }
 
@@ -205,20 +181,22 @@ public abstract class BasePeriod
      *
      * @param period  the period to convert
      * @param type  which set of fields this period supports, null means use type from object
+     * @param chrono  the chronology to use, null means ISO default
      * @throws IllegalArgumentException if period is invalid
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
-    protected BasePeriod(Object period, PeriodType type) {
+    protected BasePeriod(Object period, PeriodType type, Chronology chrono) {
         super();
         PeriodConverter converter = ConverterManager.getInstance().getPeriodConverter(period);
-        type = (type == null ? converter.getPeriodType(period, false) : type);
+        type = (type == null ? converter.getPeriodType(period) : type);
         type = checkPeriodType(type);
         iType = type;
         if (this instanceof ReadWritablePeriod) {
-            converter.setInto((ReadWritablePeriod) this, period);
+            iValues = new int[size()];
+            chrono = DateTimeUtils.getChronology(chrono);
+            converter.setInto((ReadWritablePeriod) this, period, chrono);
         } else {
-            // Only call a private method
-            setPeriod(type, new MutablePeriod(period, type));
+            setPeriodInternal(new MutablePeriod(period, type, chrono));
         }
     }
 
@@ -237,166 +215,97 @@ public abstract class BasePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Returns the object which defines which fields this period supports.
+     * Gets the period type.
+     *
+     * @return the period type
      */
     public PeriodType getPeriodType() {
         return iType;
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Is this period a precise length of time, or descriptive.
-     * <p>
-     * A typical precise period could include millis, seconds, minutes or hours,
-     * but days, weeks, months and years usually vary in length, resulting in
-     * an imprecise period.
-     * <p>
-     * An imprecise period can be made precise by pairing it with a
-     * date in a {@link org.joda.time.ReadableInterval}.
+     * Gets the number of fields that this period supports.
      *
-     * @return true if the period is precise
+     * @return the number of fields supported
      */
-    public boolean isPrecise() {
-        int state = iState;
-        if (state == STATE_UNKNOWN) {
-            state = updateTotalMillis();
-        }
-        return (state == STATE_CALCULATED);
+    public int size() {
+        return iType.size();
     }
 
-    //-----------------------------------------------------------------------
     /**
-     * Gets the years field part of the period.
-     * 
-     * @return the number of years in the period, zero if unsupported
-     */
-    public int getYears() {
-        return iYears;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the months field part of the period.
-     * 
-     * @return the number of months in the period, zero if unsupported
-     */
-    public int getMonths() {
-        return iMonths;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the weeks field part of the period.
-     * 
-     * @return the number of weeks in the period, zero if unsupported
-     */
-    public int getWeeks() {
-        return iWeeks;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the days field part of the period.
-     * 
-     * @return the number of days in the period, zero if unsupported
-     */
-    public int getDays() {
-        return iDays;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the hours field part of the period.
-     * 
-     * @return the number of hours in the period, zero if unsupported
-     */
-    public int getHours() {
-        return iHours;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the minutes field part of the period.
-     * 
-     * @return the number of minutes in the period, zero if unsupported
-     */
-    public int getMinutes() {
-        return iMinutes;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the seconds field part of the period.
-     * 
-     * @return the number of seconds in the period, zero if unsupported
-     */
-    public int getSeconds() {
-        return iSeconds;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the millis field part of the period.
-     * 
-     * @return the number of millis in the period, zero if unsupported
-     */
-    public int getMillis() {
-        return iMillis;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the total millisecond duration of this period,
-     * failing if the period is imprecise.
+     * Gets the field type at the specified index.
      *
-     * @return the total length of the period in milliseconds.
-     * @throws IllegalStateException if the period is imprecise
-     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
      */
-    public long toDurationMillis() {
-        int state = iState;
-        if (state == STATE_UNKNOWN) {
-            state = updateTotalMillis();
-        }
-        if (state != STATE_CALCULATED) {
-            throw new IllegalStateException("Duration is imprecise");
-        }
-        return iDuration;
+    public DurationFieldType getFieldType(int index) {
+        return iType.getFieldType(index);
+    }
+
+    /**
+     * Gets the value at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the value of the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     */
+    public int getValue(int index) {
+        return iValues[index];
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Checks whether the field is supported.
+     * Checks whether a field type is supported, and if so adds the new value
+     * to the relevent index in the specified array.
+     * 
+     * @param type  the field type
+     * @param values  the array to update
+     * @param newValue  the new value to store if successful
      */
-    private static void checkArgument(DurationField field) {
-        if (!field.isSupported()) {
-            throw new IllegalArgumentException
-                ("Time period does not support field '" + field.getName() + "'");
+    private void checkAndUpdate(DurationFieldType type, int[] values, int newValue) {
+        int index = indexOf(type);
+        if (index == -1) {
+            if (newValue != 0) {
+                throw new IllegalArgumentException(
+                    "Period does not support field '" + type.getName() + "'");
+            }
+        } else {
+            values[index] = newValue;
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Sets all the fields of this period from another.
+     * 
+     * @param period  the period to copy from, not null
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     */
+    protected void setPeriod(ReadablePeriod period) {
+        if (period == null) {
+            setPeriodInternal(0L, null);
+        } else {
+            setPeriodInternal(period);
         }
     }
 
     /**
-     * Checks whether the field is supported.
+     * Private method called from constructor.
      */
-    private static void checkSupport(DurationField field) {
-        if (!field.isSupported()) {
-            throw new UnsupportedOperationException
-                ("Time period does not support field '" + field.getName() + "'");
+    private void setPeriodInternal(ReadablePeriod period) {
+        int[] newValues = new int[size()];
+        for (int i = 0, isize = period.size(); i < isize; i++) {
+            DurationFieldType type = period.getFieldType(i);
+            int value = period.getValue(i);
+            checkAndUpdate(type, newValues, value);
         }
+        iValues = newValues;
     }
 
     /**
-     * This method is private to prevent subclasses from overriding.
-     */
-    private void setPeriod(PeriodType type, ReadablePeriod period) {
-        setPeriod(type,
-            period.getYears(), period.getMonths(),
-            period.getWeeks(), period.getDays(),
-            period.getHours(), period.getMinutes(),
-            period.getSeconds(), period.getMillis());
-    }
-
-    /**
-     * Sets all the fields in one go.
+     * Sets the eight standard the fields in one go.
      * 
      * @param years  amount of years in this period, which must be zero if unsupported
      * @param months  amount of months in this period, which must be zero if unsupported
@@ -409,51 +318,25 @@ public abstract class BasePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     protected void setPeriod(int years, int months, int weeks, int days,
-                               int hours, int minutes, int seconds, int millis) {
-        setPeriod(iType, years, months, weeks, days, hours, minutes, seconds, millis);
+                             int hours, int minutes, int seconds, int millis) {
+        setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis);
     }
 
     /**
-     * This method is private to prevent subclasses from overriding.
+     * Private method called from constructor.
      */
-    private void setPeriod(PeriodType type,
-                             int years, int months, int weeks, int days,
-                             int hours, int minutes, int seconds, int millis) {
-        if (years != 0) {
-            checkArgument(type.years());
-        }
-        if (months != 0) {
-            checkArgument(type.months());
-        }
-        if (weeks != 0) {
-            checkArgument(type.weeks());
-        }
-        if (days != 0) {
-            checkArgument(type.days());
-        }
-        if (hours != 0) {
-            checkArgument(type.hours());
-        }
-        if (minutes != 0) {
-            checkArgument(type.minutes());
-        }
-        if (seconds != 0) {
-            checkArgument(type.seconds());
-        }
-        if (millis != 0) {
-            checkArgument(type.millis());
-        }
-        
-        // assign fields in one block to reduce threading issues
-        iYears = years;
-        iMonths = months;
-        iWeeks = weeks;
-        iDays = days;
-        iHours = hours;
-        iMinutes = minutes;
-        iSeconds = seconds;
-        iMillis = millis;
-        iState = STATE_UNKNOWN;
+    private void setPeriodInternal(int years, int months, int weeks, int days,
+                                   int hours, int minutes, int seconds, int millis) {
+        int[] newValues = new int[size()];
+        checkAndUpdate(DurationFieldType.years(), newValues, years);
+        checkAndUpdate(DurationFieldType.months(), newValues, months);
+        checkAndUpdate(DurationFieldType.weeks(), newValues, weeks);
+        checkAndUpdate(DurationFieldType.days(), newValues, days);
+        checkAndUpdate(DurationFieldType.hours(), newValues, hours);
+        checkAndUpdate(DurationFieldType.minutes(), newValues, minutes);
+        checkAndUpdate(DurationFieldType.seconds(), newValues, seconds);
+        checkAndUpdate(DurationFieldType.millis(), newValues, millis);
+        iValues = newValues;
     }
 
     /**
@@ -461,371 +344,129 @@ public abstract class BasePeriod
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
+     * @param chrono  the chronology to use, not null
      */
-    protected void setPeriod(long startInstant, long endInstant) {
-        setPeriod(iType, startInstant, endInstant);
+    protected void setPeriod(long startInstant, long endInstant, Chronology chrono) {
+        setPeriodInternal(startInstant, endInstant, chrono);
     }
 
     /**
-     * This method is private to prevent subclasses from overriding.
-     *
-     * @param startInstant  interval start, in milliseconds
-     * @param endInstant  interval end, in milliseconds
+     * Private method called from constructor.
      */
-    private void setPeriod(PeriodType type, long startInstant, long endInstant) {
-        long baseTotalMillis = (endInstant - startInstant);
-        int years = 0, months = 0, weeks = 0, days = 0;
-        int hours = 0, minutes = 0, seconds = 0, millis = 0;
-        DurationField field;
-        field = type.years();
-        if (field.isSupported()) {
-            years = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, years);
+    private void setPeriodInternal(long startInstant, long endInstant, Chronology chrono) {
+        int[] newValues = new int[size()];
+        if (startInstant == endInstant) {
+            iValues = newValues;
+        } else {
+            for (int i = 0, isize = size(); i < isize; i++) {
+                DurationField field = getFieldType(i).getField(chrono);
+                int value = field.getDifference(endInstant, startInstant);
+                startInstant = field.add(startInstant, value);
+                newValues[i] = value;
+            }
+            iValues = newValues;
         }
-        field = type.months();
-        if (field.isSupported()) {
-            months = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, months);
-        }
-        field = type.weeks();
-        if (field.isSupported()) {
-            weeks = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, weeks);
-        }
-        field = type.days();
-        if (field.isSupported()) {
-            days = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, days);
-        }
-        field = type.hours();
-        if (field.isSupported()) {
-            hours = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, hours);
-        }
-        field = type.minutes();
-        if (field.isSupported()) {
-            minutes = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, minutes);
-        }
-        field = type.seconds();
-        if (field.isSupported()) {
-            seconds = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, seconds);
-        }
-        field = type.millis();
-        if (field.isSupported()) {
-            millis = field.getDifference(endInstant, startInstant);
-            startInstant = field.add(startInstant, millis);
-        }
-        
-        // assign fields in one block to reduce threading issues
-        iYears = years;
-        iMonths = months;
-        iWeeks = weeks;
-        iDays = days;
-        iHours = hours;
-        iMinutes = minutes;
-        iSeconds = seconds;
-        iMillis = millis;
-        iState = STATE_UNKNOWN;
     }
 
     /**
      * Sets all the fields in one go from a millisecond duration.
+     * <p>
+     * This calculates the period relative to 1970-01-01 but only sets those
+     * fields which are precise.
      * 
      * @param duration  the duration, in milliseconds
      * @throws ArithmeticException if the set exceeds the capacity of the period
+     * @param chrono  the chronology to use, not null
      */
-    protected void setPeriod(long duration) {
-        setPeriod(iType, duration);
+    protected void setPeriod(long duration, Chronology chrono) {
+        setPeriodInternal(duration, chrono);
     }
 
     /**
-     * This method is private to prevent subclasses from overriding.
-     *
-     * @param duration  the duration, in milliseconds
+     * Private method called from constructor.
      */
-    private void setPeriod(PeriodType type, long duration) {
+    private void setPeriodInternal(long duration, Chronology chrono) {
+        int[] newValues = new int[size()];
         if (duration == 0) {
-            iDuration = duration;
-            iYears = 0;
-            iMonths = 0;
-            iWeeks = 0;
-            iDays = 0;
-            iHours = 0;
-            iMinutes = 0;
-            iSeconds = 0;
-            iMillis = 0;
-            iState = STATE_CALCULATED;
-            return;
-        }
-        
-        long startInstant = 0;
-        int years = 0, months = 0, weeks = 0, days = 0;
-        int hours = 0, minutes = 0, seconds = 0, millis = 0;
-        DurationField field;
-        
-        field = type.years();
-        if (field.isSupported() && field.isPrecise()) {
-            years = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, years);
-        }
-        field = type.months();
-        if (field.isSupported() && field.isPrecise()) {
-            months = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, months);
-        }
-        field = type.weeks();
-        if (field.isSupported() && field.isPrecise()) {
-            weeks = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, weeks);
-        }
-        field = type.days();
-        if (field.isSupported() && field.isPrecise()) {
-            days = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, days);
-        }
-        field = type.hours();
-        if (field.isSupported() && field.isPrecise()) {
-            hours = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, hours);
-        }
-        field = type.minutes();
-        if (field.isSupported() && field.isPrecise()) {
-            minutes = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, minutes);
-        }
-        field = type.seconds();
-        if (field.isSupported() && field.isPrecise()) {
-            seconds = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, seconds);
-        }
-        field = type.millis();
-        if (field.isSupported() && field.isPrecise()) {
-            millis = field.getDifference(duration, startInstant);
-            startInstant = field.add(startInstant, millis);
-        }
-        
-        // assign fields in one block to reduce threading issues
-        iYears = years;
-        iMonths = months;
-        iWeeks = weeks;
-        iDays = days;
-        iHours = hours;
-        iMinutes = minutes;
-        iSeconds = seconds;
-        iMillis = millis;
-        iState = STATE_UNKNOWN;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Walks through the field values, determining total millis and whether
-     * this period is precise.
-     *
-     * @return new state
-     * @throws ArithmeticException if the millis exceeds the capacity of the period
-     */
-    private int updateTotalMillis() {
-        PeriodType type = iType;
-
-        boolean isPrecise = true;
-        long totalMillis = 0;
-
-        DurationField field;
-        int years = iYears, months = iMonths, weeks = iWeeks, days = iDays;
-        int hours = iHours, minutes = iMinutes, seconds = iSeconds, millis = iMillis;
-        if (years != 0) {
-            field = type.years();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(years));
-            }
-        }
-        if (months != 0) {
-            field = type.months();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(months));
-            }
-        }
-        if (weeks != 0) {
-            field = type.weeks();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(weeks));
-            }
-        }
-        if (days != 0) {
-            field = type.days();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(days));
-            }
-        }
-        if (hours != 0) {
-            field = type.hours();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(hours));
-            }
-        }
-        if (minutes != 0) {
-            field = type.minutes();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(minutes));
-            }
-        }
-        if (seconds != 0) {
-            field = type.seconds();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(seconds));
-            }
-        }
-        if (millis != 0) {
-            field = type.millis();
-            if (isPrecise &= field.isPrecise()) {
-                totalMillis = FieldUtils.safeAdd(totalMillis, field.getMillis(millis));
-            }
-        }
-        
-        iDuration = totalMillis;
-        if (isPrecise) {
-            return iState = STATE_CALCULATED;
+            iValues = newValues;
         } else {
-            return iState = STATE_NOT_CALCULABLE;
+            long current = 0;
+            for (int i = 0, isize = size(); i < isize; i++) {
+                DurationField field = getFieldType(i).getField(chrono);
+                if (field.isPrecise()) {
+                    int value = field.getDifference(duration, current);
+                    current = field.add(current, value);
+                    newValues[i] = value;
+                }
+            }
+            iValues = newValues;
         }
     }
 
-    //-----------------------------------------------------------------------
     /**
-     * Sets the number of years of the period.
+     * Sets the value of a field in this period.
      * 
-     * @param years  the number of years
+     * @param field  the field to set
+     * @param value  the value to set
      * @throws UnsupportedOperationException if field is not supported.
      */
-    protected void setYears(int years) {
-        if (years != iYears) {
-            if (years != 0) {
-                checkSupport(iType.years());
+    protected void setField(DurationFieldType field, int value) {
+        int index = indexOf(field);
+        if (index == -1) {
+            if (value != 0) {
+                throw new UnsupportedOperationException(
+                    "Period does not support field '" + field.getName() + "'");
             }
-            iYears = years;
-            iState = STATE_UNKNOWN;
+        } else {
+            setValue(index, value);
         }
+    }
+
+    /**
+     * Adds the fields from another period.
+     * 
+     * @param period  the period to add from, not null
+     * @throws IllegalArgumentException if an unsupported field's value is non-zero
+     */
+    protected void addPeriod(ReadablePeriod period) {
+         int[] newValues = getValues(); // already cloned
+         for (int i = 0, isize = period.size(); i < isize; i++) {
+             DurationFieldType type = period.getFieldType(i);
+             int value = period.getValue(i);
+             int index = indexOf(type);
+             if (index == -1) {
+                 if (value != 0) {
+                     throw new IllegalArgumentException(
+                         "Period does not support field '" + type.getName() + "'");
+                 }
+             } else {
+                 newValues[index] = FieldUtils.safeAdd(getValue(index), value);
+             }
+         }
+         setValues(newValues);
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the number of months of the period.
+     * Sets the value of the field at the specifed index.
      * 
-     * @param months  the number of months
-     * @throws UnsupportedOperationException if field is not supported
+     * @param index  the index
+     * @param value  the value to set
+     * @throws IndexOutOfBoundsException if the index is invalid
      */
-    protected void setMonths(int months) {
-        if (months != iMonths) {
-            if (months != 0) {
-                checkSupport(iType.months());
-            }
-            iMonths = months;
-            iState = STATE_UNKNOWN;
+    protected void setValue(int index, int value) {
+        if (value != getValue(index)) {
+            iValues[index] = value;
         }
     }
 
-    //-----------------------------------------------------------------------
     /**
-     * Sets the number of weeks of the period.
+     * Sets the values of all fields.
      * 
-     * @param weeks  the number of weeks
-     * @throws UnsupportedOperationException if field is not supported
+     * @param values  the array of values
      */
-    protected void setWeeks(int weeks) {
-        if (weeks != iWeeks) {
-            if (weeks != 0) {
-                checkSupport(iType.weeks());
-            }
-            iWeeks = weeks;
-            iState = STATE_UNKNOWN;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets the number of days of the period.
-     * 
-     * @param days  the number of days
-     * @throws UnsupportedOperationException if field is not supported
-     */
-    protected void setDays(int days) {
-        if (days != iDays) {
-            if (days != 0) {
-                checkSupport(iType.days());
-            }
-            iDays = days;
-            iState = STATE_UNKNOWN;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets the number of hours of the period.
-     * 
-     * @param hours  the number of hours
-     * @throws UnsupportedOperationException if field is not supported
-     */
-    protected void setHours(int hours) {
-        if (hours != iHours) {
-            if (hours != 0) {
-                checkSupport(iType.hours());
-            }
-            iHours = hours;
-            iState = STATE_UNKNOWN;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets the number of minutes of the period.
-     * 
-     * @param minutes  the number of minutes
-     * @throws UnsupportedOperationException if field is not supported
-     */
-    protected void setMinutes(int minutes) {
-        if (minutes != iMinutes) {
-            if (minutes != 0) {
-                checkSupport(iType.minutes());
-            }
-            iMinutes = minutes;
-            iState = STATE_UNKNOWN;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets the number of seconds of the period.
-     * 
-     * @param seconds  the number of seconds
-     * @throws UnsupportedOperationException if field is not supported
-     */
-    protected void setSeconds(int seconds) {
-        if (seconds != iSeconds) {
-            if (seconds != 0) {
-                checkSupport(iType.seconds());
-            }
-            iSeconds = seconds;
-            iState = STATE_UNKNOWN;
-        }
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Sets the number of millis of the period.
-     * 
-     * @param millis  the number of millis
-     * @throws UnsupportedOperationException if field is not supported
-     */
-    protected void setMillis(int millis) {
-        if (millis != iMillis) {
-            if (millis != 0) {
-                checkSupport(iType.millis());
-            }
-            iMillis = millis;
-            iState = STATE_UNKNOWN;
-        }
+    protected void setValues(int[] values) {
+        iValues = values;
     }
 
 }

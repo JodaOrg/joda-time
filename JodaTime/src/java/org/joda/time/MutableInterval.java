@@ -329,32 +329,60 @@ public class MutableInterval
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the period of this time interval, preserving the start instant.
+     * Sets the period of this time interval, preserving the start instant
+     * and using the ISOChronology in the default zone for calculations.
      *
      * @param period  new period for interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
     public void setPeriodAfterStart(ReadablePeriod period) {
+        setPeriodAfterStart(period, null);
+    }
+
+    /**
+     * Sets the period of this time interval, preserving the start instant.
+     *
+     * @param period  new period for interval, null means zero length
+     * @param chrono  the chronology to add using, null means ISO default
+     * @throws IllegalArgumentException if the end is before the start
+     * @throws ArithmeticException if the end instant exceeds the capacity of a long
+     */
+    public void setPeriodAfterStart(ReadablePeriod period, Chronology chrono) {
         if (period == null) {
             setEndMillis(getStartMillis());
         } else {
-            setEndMillis(period.addTo(getStartMillis(), 1));
+            chrono = DateTimeUtils.getChronology(chrono);
+            setEndMillis(period.addTo(getStartMillis(), 1, chrono));
         }
     }
 
     /**
-     * Sets the period of this time interval, preserving the end instant.
+     * Sets the period of this time interval, preserving the end instant
+     * and using the ISOChronology in the default zone for calculations.
      *
      * @param period  new period for interval, null means zero length
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
     public void setPeriodBeforeEnd(ReadablePeriod period) {
+        setPeriodBeforeEnd(period, null);
+    }
+
+    /**
+     * Sets the period of this time interval, preserving the end instant.
+     *
+     * @param period  new period for interval, null means zero length
+     * @param chrono  the chronology to add using, null means ISO default
+     * @throws IllegalArgumentException if the end is before the start
+     * @throws ArithmeticException if the start instant exceeds the capacity of a long
+     */
+    public void setPeriodBeforeEnd(ReadablePeriod period, Chronology chrono) {
         if (period == null) {
             setStartMillis(getEndMillis());
         } else {
-            setStartMillis(period.addTo(getEndMillis(), -1));
+            chrono = DateTimeUtils.getChronology(chrono);
+            setStartMillis(period.addTo(getEndMillis(), -1, chrono));
         }
     }
 

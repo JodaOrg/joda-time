@@ -61,17 +61,7 @@ import org.joda.time.base.BasePeriod;
  * An immutable time period specifying a set of duration field values.
  * <p>
  * A time period is divided into a number of fields, such as hours and seconds.
- * The way in which that divide occurs is controlled by the PeriodType class.
- * <p>
- * <code>Period</code> can use any period type to split the milliseconds into fields.
- * The {@link PeriodType#getAllType() All} type is used by default.
- * <code>All</code> uses the ISO chronology and divides a duration into years, months,
- * weeks, days, hours, minutes, seconds and milliseconds as best it can.
- * <p>
- * This class performs calculations using the individual fields.
- * It <i>may</i> be possible to convert a <code>Period</code> to a <code>Duration</code>.
- * The conversion will succeed if the time period is precise.
- * A time period is precise if all of the populated fields have a fixed known duration.
+ * Which fields are supported is defined by the PeriodType class.
  * <p>
  * When this time period is added to an instant, the effect is of adding each field in turn.
  * As a result, this takes into account daylight savings time.
@@ -95,59 +85,7 @@ public final class Period
     private static final long serialVersionUID = 741052353876488155L;
 
     /**
-     * Creates a period from the given millisecond duration using AllType.
-     * <p>
-     * Only precise fields in the period type will be used.
-     * For AllType, this is the time fields only.
-     * The year, month, week and day fields will not be populated.
-     * The period constructed will always be precise.
-     * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly.
-     * <p>
-     * If the duration is larger than one day then all the remaining duration will
-     * be stored in the largest available precise field, hours in this case.
-     * <p>
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * ((365 + 60 + 5) * 24) hours by this constructor.
-     * <p>
-     * For more control over the conversion process, you have two options:
-     * <ul>
-     * <li>convert the duration to an {@link Interval}, and from there obtain the period
-     * <li>specify a period type that contains precise definitions of the day and larger
-     * fields, such as the UTC or precise types.
-     * </ul>
-     *
-     * @param duration  the duration, in milliseconds
-     */
-    public Period(long duration) {
-        super(duration, null);
-    }
-
-    /**
-     * Creates a period from the given millisecond duration.
-     * <p>
-     * Only precise fields in the period type will be used.
-     * Imprecise fields will not be populated.
-     * The period constructed will always be precise.
-     * <p>
-     * If the duration is small then this method will perform
-     * as you might expect and split the fields evenly.
-     * <p>
-     * If the duration is large then all the remaining duration will
-     * be stored in the largest available precise field.
-     * For details as to which fields are precise, review the period type javadoc.
-     *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this period supports
-     */
-    public Period(long duration, PeriodType type) {
-        super(duration, type);
-    }
-
-    /**
-     * Create a period from a set of field values using AllType.
-     * This constructor creates a precise period.
+     * Create a period from a set of field values using the time set of fields.
      *
      * @param hours  amount of hours in this period
      * @param minutes  amount of minutes in this period
@@ -155,11 +93,11 @@ public final class Period
      * @param millis  amount of milliseconds in this period
      */
     public Period(int hours, int minutes, int seconds, int millis) {
-        super(0, 0, 0, 0, hours, minutes, seconds, millis, null);
+        super(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.time());
     }
 
     /**
-     * Create a period from a set of field values using AllType.
+     * Create a period from a set of field values using the standard set of fields.
      *
      * @param years  amount of years in this period
      * @param months  amount of months in this period
@@ -171,8 +109,8 @@ public final class Period
      * @param millis  amount of milliseconds in this period
      */
     public Period(int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, null);
+                  int hours, int minutes, int seconds, int millis) {
+        super(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.standard());
     }
 
     /**
@@ -195,31 +133,146 @@ public final class Period
     }
 
     /**
-     * Creates a period from the given interval endpoints using AllType.
-     * This constructor creates a precise period.
+     * Creates a period from the given millisecond duration using the standard
+     * set of fields.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * For the standard period type this is the time fields only.
+     * Thus the year, month, week and day fields will not be populated.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is larger than one day then all the remaining duration will
+     * be stored in the largest available precise field, hours in this case.
+     * <p>
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * ((365 + 60 + 5) * 24) hours by this constructor.
+     * <p>
+     * For more control over the conversion process, you have two options:
+     * <ul>
+     * <li>convert the duration to an {@link Interval}, and from there obtain the period
+     * <li>specify a period type that contains precise definitions of the day and larger
+     * fields, such as the UTC or precise types.
+     * </ul>
+     *
+     * @param duration  the duration, in milliseconds
+     */
+    public Period(long duration) {
+        super(duration, null, null);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * <p>
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     */
+    public Period(long duration, PeriodType type) {
+        super(duration, type, null);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration using the standard
+     * set of fields.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * <p>
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param chronology  the chronology to use to split the duration, null means ISO default
+     */
+    public Period(long duration, Chronology chronology) {
+        super(duration, null, chronology);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * <p>
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     * @param chronology  the chronology to use to split the duration, null means ISO default
+     */
+    public Period(long duration, PeriodType type, Chronology chronology) {
+        super(duration, type, chronology);
+    }
+
+    /**
+     * Creates a period from the given interval endpoints using the standard
+     * set of fields.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
     public Period(long startInstant, long endInstant) {
-        super(startInstant, endInstant, null);
+        super(startInstant, endInstant, null, null);
     }
 
     /**
      * Creates a period from the given interval endpoints.
-     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this period supports, null means AllType
+     * @param type  which set of fields this period supports, null means standard
      */
     public Period(long startInstant, long endInstant, PeriodType type) {
-        super(startInstant, endInstant, type);
+        super(startInstant, endInstant, type, null);
     }
 
     /**
-     * Creates a period from the given interval endpoints using AllType.
-     * This constructor creates a precise period.
+     * Creates a period from the given interval endpoints using the standard
+     * set of fields.
+     *
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param chrono  the chronology to use, null means ISO in default zone
+     */
+    public Period(long startInstant, long endInstant, Chronology chrono) {
+        super(startInstant, endInstant, null, chrono);
+    }
+
+    /**
+     * Creates a period from the given interval endpoints.
+     *
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     * @param chrono  the chronology to use, null means ISO in default zone
+     */
+    public Period(long startInstant, long endInstant, PeriodType type, Chronology chrono) {
+        super(startInstant, endInstant, type, chrono);
+    }
+
+    /**
+     * Creates a period from the given interval endpoints using the standard
+     * set of fields.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -230,7 +283,6 @@ public final class Period
 
     /**
      * Creates a period from the given interval endpoints.
-     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -249,7 +301,7 @@ public final class Period
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public Period(Object period) {
-        super(period, null);
+        super(period, null, null);
     }
 
     /**
@@ -262,7 +314,34 @@ public final class Period
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public Period(Object period, PeriodType type) {
-        super(period, type);
+        super(period, type, null);
+    }
+
+    /**
+     * Creates a period from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     *
+     * @param period  period to convert
+     * @param chrono  the chronology to use, null means ISO in default zone
+     * @throws IllegalArgumentException if period is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     */
+    public Period(Object period, Chronology chrono) {
+        super(period, null, chrono);
+    }
+
+    /**
+     * Creates a period from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     *
+     * @param period  period to convert
+     * @param type  which set of fields this period supports, null means use converter
+     * @param chrono  the chronology to use, null means ISO in default zone
+     * @throws IllegalArgumentException if period is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     */
+    public Period(Object period, PeriodType type, Chronology chrono) {
+        super(period, type, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -278,6 +357,80 @@ public final class Period
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the years field part of the period.
+     * 
+     * @return the number of years in the period, zero if unsupported
+     */
+    public int getYears() {
+        return getPeriodType().getYears(this);
+    }
+
+    /**
+     * Gets the months field part of the period.
+     * 
+     * @return the number of months in the period, zero if unsupported
+     */
+    public int getMonths() {
+        return getPeriodType().getMonths(this);
+    }
+
+    /**
+     * Gets the weeks field part of the period.
+     * 
+     * @return the number of weeks in the period, zero if unsupported
+     */
+    public int getWeeks() {
+        return getPeriodType().getWeeks(this);
+    }
+
+    /**
+     * Gets the days field part of the period.
+     * 
+     * @return the number of days in the period, zero if unsupported
+     */
+    public int getDays() {
+        return getPeriodType().getDays(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the hours field part of the period.
+     * 
+     * @return the number of hours in the period, zero if unsupported
+     */
+    public int getHours() {
+        return getPeriodType().getHours(this);
+    }
+
+    /**
+     * Gets the minutes field part of the period.
+     * 
+     * @return the number of minutes in the period, zero if unsupported
+     */
+    public int getMinutes() {
+        return getPeriodType().getMinutes(this);
+    }
+
+    /**
+     * Gets the seconds field part of the period.
+     * 
+     * @return the number of seconds in the period, zero if unsupported
+     */
+    public int getSeconds() {
+        return getPeriodType().getSeconds(this);
+    }
+
+    /**
+     * Gets the millis field part of the period.
+     * 
+     * @return the number of millis in the period, zero if unsupported
+     */
+    public int getMillis() {
+        return getPeriodType().getMillis(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Creates a new Period instance with the same field values but
      * different PeriodType.
      * 
@@ -286,43 +439,11 @@ public final class Period
      * @throws IllegalArgumentException if the new period won't accept all of the current fields
      */
     public Period withPeriodType(PeriodType type) {
-        if (type == null) {
-            type = PeriodType.getAllType();
-        }
+        type = DateTimeUtils.getPeriodType(type);
         if (type.equals(getPeriodType())) {
             return this;
         }
-        return new Period(getYears(), getMonths(), getWeeks(), getDays(),
-                    getHours(), getMinutes(), getSeconds(), getMillis(), type);
-    }
-
-    /**
-     * Creates a new Period instance with the same millisecond duration but
-     * different PeriodType.
-     * 
-     * @param type  the period type to use, null means AllType
-     * @return the new period instance
-     * @throws IllegalStateException if this period is imprecise
-     */
-    public Period withPeriodTypeRetainDuration(PeriodType type) {
-        if (type == null) {
-            type = PeriodType.getAllType();
-        }
-        if (type.equals(getPeriodType())) {
-            return this;
-        }
-        return new Period(toDurationMillis(), type);
-    }
-
-    /**
-     * Creates a new Period instance with the same millisecond duration but
-     * all the fields normalized to be within their standard ranges.
-     * 
-     * @return the new period instance
-     * @throws IllegalStateException if this period is imprecise
-     */
-    public Period withFieldsNormalized() {
-        return new Period(toDurationMillis(), getPeriodType());
+        return new Period(this, type);
     }
 
 }

@@ -53,6 +53,7 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.Chronology;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 
@@ -71,18 +72,18 @@ public interface PeriodConverter extends Converter {
      *
      * @param period  the period to modify
      * @param object  the object to convert, must not be null
+     * @param chrono  the chronology to use, must not be null
      * @throws ClassCastException if the object is invalid
      */
-    void setInto(ReadWritablePeriod period, Object object);
+    void setInto(ReadWritablePeriod period, Object object, Chronology chrono);
 
     /**
      * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param precise  true if the period type must be precise
      * @return the period type, never null
      * @throws ClassCastException if the object is invalid
      */
-    PeriodType getPeriodType(Object object, boolean precise);
+    PeriodType getPeriodType(Object object);
 
 }

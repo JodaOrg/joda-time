@@ -55,12 +55,11 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.PeriodType;
-import org.joda.time.MutablePeriod;
+import org.joda.time.Period;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
-import org.joda.time.Period;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeParser;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISOPeriodFormat;
@@ -122,25 +121,55 @@ class StringConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the duration of the string using the PreciseAll type.
+     * Gets the duration of the string using the standard type.
      * This matches the toString() method of ReadableDuration.
      * 
      * @param object  the object to convert, must not be null
      * @throws ClassCastException if the object is invalid
      */
     public long getDurationMillis(Object object) {
-        String str = (String) object;
-        MutablePeriod period = new MutablePeriod(PeriodType.getPreciseAllType());
-        PeriodParser parser = ISOPeriodFormat.getInstance().standard();
-        int pos = parser.parseInto(period, str, 0);
-        if (pos < str.length()) {
-            if (pos < 0) {
-                // Parse again to get a better exception thrown.
-                parser.parseMutablePeriod(period.getPeriodType(), str);
-            }
-            throw new IllegalArgumentException("Invalid format: \"" + str + '"');
+        // parse here because duration could be bigger than the int supported
+        // by the period parser
+        String original = (String) object;
+        String str = original;
+        int len = str.length();
+        if (len >= 4 &&
+            (str.charAt(0) == 'P' || str.charAt(0) == 'p') &&
+            (str.charAt(1) == 'T' || str.charAt(1) == 't') &&
+            (str.charAt(len - 1) == 'S' || str.charAt(len - 1) == 's')) {
+            // ok
+        } else {
+            throw new IllegalArgumentException("Invalid format: \"" + original + '"');
         }
-        return period.toDurationMillis();
+        str = str.substring(2, len - 1);
+        int dot = -1;
+        for (int i = 0; i < str.length(); i++) {
+            if ((str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
+                (i == 0 && str.charAt(0) == '-')) {
+                // ok
+            } else if (i > 0 && str.charAt(i) == '.' && dot == -1) {
+                // ok
+                dot = i;
+            } else {
+                throw new IllegalArgumentException("Invalid format: \"" + original + '"');
+            }
+        }
+        long millis = 0, seconds = 0;
+        if (dot > 0) {
+            seconds = Long.parseLong(str.substring(0, dot));
+            str = str.substring(dot + 1);
+            if (str.length() != 3) {
+                str = (str + "000").substring(0, 3);
+            }
+            millis = Integer.parseInt(str);
+        } else {
+            seconds = Long.parseLong(str);
+        }
+        if (seconds < 0) {
+            return FieldUtils.safeAdd(FieldUtils.safeMultiply(seconds, 1000), -millis);
+        } else {
+            return FieldUtils.safeAdd(FieldUtils.safeMultiply(seconds, 1000), millis);
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -150,10 +179,11 @@ class StringConverter extends AbstractConverter
      *
      * @param period  period to get modified
      * @param object  the object to convert, must not be null
+     * @param chrono  the chronology to use
      * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
-    public void setInto(ReadWritablePeriod period, Object object) {
+    public void setInto(ReadWritablePeriod period, Object object, Chronology chrono) {
         String str = (String) object;
         PeriodParser parser = ISOPeriodFormat.getInstance().standard();
         int pos = parser.parseInto(period, str, 0);
@@ -221,7 +251,7 @@ class StringConverter extends AbstractConverter
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            period = periodParser.parsePeriod(getPeriodType(leftStr, false), leftStr);
+            period = periodParser.parsePeriod(getPeriodType(leftStr), leftStr);
         } else {
             startInstant = dateTimeParser.parseMillis(leftStr);
             period = null;
@@ -233,7 +263,7 @@ class StringConverter extends AbstractConverter
             if (period != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            period = periodParser.parsePeriod(getPeriodType(rightStr, false), rightStr);
+            period = periodParser.parsePeriod(getPeriodType(rightStr), rightStr);
             endInstant = period.addTo(startInstant, 1);
         } else {
             endInstant = dateTimeParser.parseMillis(rightStr);

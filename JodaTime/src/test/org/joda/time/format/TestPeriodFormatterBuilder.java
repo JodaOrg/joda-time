@@ -74,8 +74,8 @@ public class TestPeriodFormatterBuilder extends TestCase {
     
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);
-    private static final Period YEAR_DAY_PERIOD = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.getYearDayType());
-    private static final Period EMPTY_YEAR_DAY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.getYearDayType());
+    private static final Period YEAR_DAY_PERIOD = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
+    private static final Period EMPTY_YEAR_DAY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0, PeriodType.yearDayTime());
     private static final Period TIME_PERIOD = new Period(0, 0, 0, 0, 5, 6, 7, 8);
     private static final Period DATE_PERIOD = new Period(1, 2, 3, 4, 0, 0, 0, 0);
 

@@ -167,18 +167,20 @@ public interface ReadWritableInterval extends ReadableInterval {
      * Sets the period of this time interval, preserving the start instant.
      *
      * @param period  new period for interval, null means zero length
+     * @param chrono  the chronology to add using, null means ISO default
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the end instant exceeds the capacity of a long
      */
-    void setPeriodAfterStart(ReadablePeriod period);
+    void setPeriodAfterStart(ReadablePeriod period, Chronology chrono);
 
     /**
      * Sets the period of this time interval, preserving the end instant.
      *
      * @param period  new period for interval, null means zero length
+     * @param chrono  the chronology to add using, null means ISO default
      * @throws IllegalArgumentException if the end is before the start
      * @throws ArithmeticException if the start instant exceeds the capacity of a long
      */
-    void setPeriodBeforeEnd(ReadablePeriod period);
+    void setPeriodBeforeEnd(ReadablePeriod period, Chronology chrono);
 
 }

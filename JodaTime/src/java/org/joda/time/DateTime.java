@@ -503,15 +503,40 @@ public final class DateTime
      * would be changed in the returned instance.
      * If the partial is null, then <code>this</code> is returned.
      *
-     * @param partial  the partial set of fields to apply to this datetime
+     * @param partial  the partial set of fields to apply to this datetime, null ignored
      * @return a copy of this datetime with a different set of fields
-     * @throws IllegalArgumentException if any value if invalid
+     * @throws IllegalArgumentException if any value is invalid
      */
     public DateTime withFields(ReadablePartial partial) {
         if (partial == null) {
             return this;
         }
         return partial.resolveDateTime(this);
+    }
+
+    /**
+     * Gets a copy of this datetime with the specified field set to a new value.
+     * <p>
+     * For example, if the field type is <code>hourOfDay</code> then the hour of day
+     * field would be changed in the returned instance.
+     * If the field type is null, then <code>this</code> is returned.
+     * <p>
+     * An alternative to this method is to use the properties, for example:
+     * <pre>
+     * DateTime added = dt.hourOfDay().setCopy(6);
+     * </pre>
+     *
+     * @param fieldType  the field type to set, null ignored
+     * @param value  the value to set
+     * @return a copy of this datetime with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateTime withField(DateTimeFieldType fieldType, int value) {
+        if (fieldType == null) {
+            return this;
+        }
+        long instant = fieldType.getField(getChronology()).set(getMillis(), value);
+        return withMillis(instant);
     }
 
     //-----------------------------------------------------------------------
@@ -581,6 +606,29 @@ public final class DateTime
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Gets a copy of this datetime with the value of the specified field increased.
+     * <p>
+     * If the addition is zero or the field is null, then <code>this</code> is returned.
+     * <p>
+     * An alternative to this method is to use the properties, for example:
+     * <pre>
+     * DateTime added = dt.hourOfDay().addToCopy(6);
+     * </pre>
+     * 
+     * @param fieldType  the field type to add to, null ignored
+     * @param amount  the amount to add
+     * @return a copy of this datetime with the field updated
+     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     */
+    public DateTime withFieldAdded(DurationFieldType fieldType, int amount) {
+        if (fieldType == null || amount == 0) {
+            return this;
+        }
+        long instant = fieldType.getField(getChronology()).add(getMillis(), amount);
+        return withMillis(instant);
+    }
+
     /**
      * Gets a copy of this datetime with the specified period added.
      * <p>

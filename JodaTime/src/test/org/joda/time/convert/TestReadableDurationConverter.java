@@ -126,18 +126,16 @@ public class TestReadableDurationConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetPeriodType_Object() throws Exception {
-        assertEquals(PeriodType.getPreciseAllType(),
-            ReadableDurationConverter.INSTANCE.getPeriodType(new Duration(123L), false));
-        assertEquals(PeriodType.getPreciseAllType(),
-            ReadableDurationConverter.INSTANCE.getPeriodType(new Duration(123L), true));
+        assertEquals(PeriodType.standard(),
+            ReadableDurationConverter.INSTANCE.getPeriodType(new Duration(123L)));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutablePeriod m = new MutablePeriod(PeriodType.getYearMonthType());
+        MutablePeriod m = new MutablePeriod(PeriodType.yearMonthDayTime());
         ReadableDurationConverter.INSTANCE.setInto(m, new Duration(
             3L * DateTimeConstants.MILLIS_PER_DAY +
             4L * DateTimeConstants.MILLIS_PER_MINUTE + 5L
-        ));
+        ), null);
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());

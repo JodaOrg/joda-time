@@ -128,16 +128,14 @@ public class TestReadableIntervalConverter extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetPeriodType_Object() throws Exception {
         Interval i = new Interval(100L, 223L);
-        assertEquals(PeriodType.getAllType(),
-            ReadableIntervalConverter.INSTANCE.getPeriodType(i, false));
-        assertEquals(PeriodType.getPreciseAllType(),
-            ReadableIntervalConverter.INSTANCE.getPeriodType(i, true));
+        assertEquals(PeriodType.standard(),
+            ReadableIntervalConverter.INSTANCE.getPeriodType(i));
     }
 
     public void testSetIntoPeriod_Object() throws Exception {
         Interval i = new Interval(100L, 223L);
-        MutablePeriod m = new MutablePeriod(PeriodType.getMillisType());
-        ReadableIntervalConverter.INSTANCE.setInto(m, i);
+        MutablePeriod m = new MutablePeriod(PeriodType.millis());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());

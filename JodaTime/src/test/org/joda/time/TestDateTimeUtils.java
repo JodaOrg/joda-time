@@ -324,8 +324,8 @@ public class TestDateTimeUtils extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetPeriodType_PeriodType() {
-        assertEquals(PeriodType.getDayHourType(), DateTimeUtils.getPeriodType(PeriodType.getDayHourType()));
-        assertEquals(PeriodType.getAllType(), DateTimeUtils.getPeriodType(null));
+        assertEquals(PeriodType.dayTime(), DateTimeUtils.getPeriodType(PeriodType.dayTime()));
+        assertEquals(PeriodType.standard(), DateTimeUtils.getPeriodType(null));
     }
 
     //-----------------------------------------------------------------------

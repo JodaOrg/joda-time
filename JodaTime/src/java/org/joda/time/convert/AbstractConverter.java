@@ -168,15 +168,11 @@ public abstract class AbstractConverter implements Converter {
      * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param precise  true if a precise type is required
      * @return the period type, never null
      * @throws ClassCastException if the object is invalid
      */
-    public PeriodType getPeriodType(Object object, boolean precise) {
-        if (precise) {
-            return PeriodType.getPreciseAllType();
-        }
-        return PeriodType.getAllType();
+    public PeriodType getPeriodType(Object object) {
+        return PeriodType.standard();
     }
 
     //-----------------------------------------------------------------------

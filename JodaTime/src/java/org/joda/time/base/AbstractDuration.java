@@ -57,7 +57,7 @@ import org.joda.time.Duration;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadableDuration;
-import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.FormatUtils;
 
 /**
  * AbstractDuration provides the common behaviour for duration classes.
@@ -243,10 +243,10 @@ public abstract class AbstractDuration implements ReadableDuration {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the value as a String in the ISO8601 duration format.
+     * Gets the value as a String in the ISO8601 duration format including
+     * only seconds and milliseconds.
      * <p>
-     * For example, "P6H3M7S" represents 6 hours, 3 minutes, 7 seconds.
-     * The field values are determined using {@link #toPeriod()}.
+     * For example, "PT72.345S" represents 1 minute, 12 seconds and 345 milliseconds.
      * <p>
      * For more control over the output, see
      * {@link org.joda.time.format.PeriodFormatterBuilder PeriodFormatterBuilder}.
@@ -254,7 +254,17 @@ public abstract class AbstractDuration implements ReadableDuration {
      * @return the value as an ISO8601 string
      */
     public String toString() {
-        return ISOPeriodFormat.getInstance().standard().print(toPeriod());
+        long millis = getMillis();
+        StringBuffer buf = new StringBuffer();
+        buf.append("PT");
+        FormatUtils.appendUnpaddedInteger(buf, millis / 1000);
+        long part = Math.abs(millis % 1000);
+        if (part > 0) {
+            buf.append('.');
+            FormatUtils.appendPaddedInteger(buf, part, 3);
+        }
+        buf.append('S');
+        return buf.toString();
     }
 
 }

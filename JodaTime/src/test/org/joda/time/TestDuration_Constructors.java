@@ -193,9 +193,8 @@ public class TestDuration_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_Object1() throws Throwable {
-        Duration test = new Duration("P1Y2M3D");
-        assertEquals(
-            (365L + 2L * 30L + 3L) * DateTimeConstants.MILLIS_PER_DAY, test.getMillis());
+        Duration test = new Duration("P72.345S");
+        assertEquals(72345, test.getMillis());
     }
 
     public void testConstructor_Object2() throws Throwable {
@@ -225,14 +224,6 @@ public class TestDuration_Constructors extends TestCase {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         Interval base = new Interval(dt1, dt2);
-        Duration test = new Duration(base);
-        assertEquals(dt2.getMillis() - dt1.getMillis(), test.getMillis());
-    }
-
-    public void testConstructor_Object6() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Period base = new Period(dt2.getMillis() - dt1.getMillis());  // precise
         Duration test = new Duration(base);
         assertEquals(dt2.getMillis() - dt1.getMillis(), test.getMillis());
     }

@@ -119,25 +119,16 @@ public class TestReadablePeriodConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGetPeriodMillis_Object() throws Exception {
-        assertEquals(123L, ReadablePeriodConverter.INSTANCE.getDurationMillis(new Period(123L)));
-    }
-
-    //-----------------------------------------------------------------------
     public void testGetPeriodType_Object() throws Exception {
-        assertEquals(PeriodType.getAllType(),
-            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L), false));
-        assertEquals(PeriodType.getPreciseAllType(),
-            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L), true));
-        assertEquals(PeriodType.getPreciseAllType(),
-            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.getAllType()), true));
-        assertEquals(PeriodType.getPreciseYearDayType(),
-            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.getPreciseYearDayType()), true));
+        assertEquals(PeriodType.standard(),
+            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.standard())));
+        assertEquals(PeriodType.yearMonthDayTime(),
+            ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.yearMonthDayTime())));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutablePeriod m = new MutablePeriod(PeriodType.getYearMonthType());
-        ReadablePeriodConverter.INSTANCE.setInto(m, new Period(0, 0, 0, 3, 0, 4, 0, 5));
+        MutablePeriod m = new MutablePeriod(PeriodType.yearMonthDayTime());
+        ReadablePeriodConverter.INSTANCE.setInto(m, new Period(0, 0, 0, 3, 0, 4, 0, 5), null);
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());

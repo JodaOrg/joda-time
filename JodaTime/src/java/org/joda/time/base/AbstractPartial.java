@@ -286,6 +286,9 @@ public abstract class AbstractPartial implements ReadablePartial {
      * @return true if fields and values are equal
      */
     public boolean equals(Object partial) {
+        if (this == partial) {
+            return true;
+        }
         if (partial instanceof ReadablePartial == false) {
             return false;
         }

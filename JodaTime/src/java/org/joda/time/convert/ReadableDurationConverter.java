@@ -53,7 +53,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.PeriodType;
+import org.joda.time.Chronology;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadableDuration;
 
@@ -100,26 +100,13 @@ class ReadableDurationConverter extends AbstractConverter
      *
      * @param duration duration to get modified
      * @param object  the object to convert, must not be null
-     * @return the millisecond duration
+     * @param chrono  the chronology to use, must not be null
      * @throws NullPointerException if the duration or object is null
      * @throws ClassCastException if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
-    public void setInto(ReadWritablePeriod duration, Object object) {
-        duration.setPeriod((ReadableDuration) object);
-    }
-
-    /**
-     * Selects a suitable period type for the given object.
-     *
-     * @param object  the object to examine, must not be null
-     * @param precise  true if a precise type is required
-     * @return the period type from the readable duration
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
-     */
-    public PeriodType getPeriodType(Object object, boolean precise) {
-        return PeriodType.getPreciseAllType();
+    public void setInto(ReadWritablePeriod duration, Object object, Chronology chrono) {
+        duration.setPeriod((ReadableDuration) object, chrono);
     }
 
     //-----------------------------------------------------------------------

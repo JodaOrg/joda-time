@@ -57,9 +57,9 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.Duration;
+import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
-import org.joda.time.PeriodType;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePeriod;
@@ -90,14 +90,83 @@ public abstract class AbstractPeriod implements ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Adds this period to the given instant using the chronology of the period
-     * which typically ignores time zones.
+     * Gets an array of the field types that this period supports.
      * <p>
+     * The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+     *
+     * @return the fields supported in an array that may be altered, largest to smallest
+     */
+    public DurationFieldType[] getFieldTypes() {
+        DurationFieldType[] result = new DurationFieldType[size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getFieldType(i);
+        }
+        return result;
+    }
+
+    /**
+     * Gets an array of the value of each of the fields that this period supports.
+     * <p>
+     * The fields are returned largest to smallest, for example Hours, Minutes, Seconds.
+     * Each value corresponds to the same array index as <code>getFields()</code>
+     *
+     * @return the current values of each field in an array that may be altered, largest to smallest
+     */
+    public int[] getValues() {
+        int[] result = new int[size()];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getValue(i);
+        }
+        return result;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the value of one of the fields.
+     * <p>
+     * If the field type specified is not supported by the period then zero
+     * is returned.
+     *
+     * @param field  the field type to query, null returns zero
+     * @return the value of that field, zero if field not supported
+     */
+    public int get(DurationFieldType type) {
+        int index = indexOf(type);
+        if (index == -1) {
+            return 0;
+        }
+        return getValue(index);
+    }
+
+    /**
+     * Checks whether the field specified is supported by this period.
+     *
+     * @param type  the type to check, may be null which returns false
+     * @return true if the field is supported
+     */
+    public boolean isSupported(DurationFieldType type) {
+        return getPeriodType().isSupported(type);
+    }
+
+    /**
+     * Gets the index of the field in this period.
+     *
+     * @param type  the type to check, may be null which returns -1
+     * @return the index of -1 if not supported
+     */
+    public int indexOf(DurationFieldType type) {
+        return getPeriodType().indexOf(type);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Adds this period to the given instant, returning a new value.
+     * <p>
+     * The addition uses ISOChronology in the default zone.
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * period to
+     * @param instant  the millisecond instant to add the period to
      * @param scalar  the number of times to add the period, negative to subtract
      * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
@@ -107,84 +176,30 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     }
 
     /**
-     * Adds this period to the given instant using a specific chronology.
+     * Adds this period to the given instant, returning a new value.
      * <p>
+     * The addition uses the chronology specified, or ISOChronology
+     * in the default zone if it is null.
      * To add just once, pass in a scalar of one. To subtract once, pass
      * in a scalar of minus one.
      *
-     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to add the
-     * period to
+     * @param instant  the millisecond instant to add the period to
      * @param scalar  the number of times to add the period, negative to subtract
-     * @param chrono  override the period's chronology, unless null is passed in
+     * @param chrono  the chronology to use, null means ISO in the default zone
      * @return milliseconds value plus this period times scalar
      * @throws ArithmeticException if the result of the calculation is too large
      */
     public long addTo(long instant, int scalar, Chronology chrono) {
-        if (isPrecise()) {
-            return FieldUtils.safeAdd(instant, toDurationMillis() * scalar);
+        if (scalar != 0) {
+            chrono = DateTimeUtils.getChronology(chrono);
+            for (int i = 0, isize = size(); i < isize; i++) {
+                long value = getValue(i); // use long to allow for multiplication (fits OK)
+                if (value != 0) {
+                    instant = getFieldType(i).getField(chrono).add(instant, value * scalar);
+                }
+            }
         }
-        
-        PeriodType type = getPeriodType();
-        if (chrono != null) {
-            type = type.withChronology(chrono);
-        }
-        
-        long value; // used to lock fields against threading issues
-        value = scaleValue(getYears(), scalar);
-        if (value != 0) {
-            instant = type.years().add(instant, value);
-        }
-        value = scaleValue(getMonths(), scalar);
-        if (value != 0) {
-            instant = type.months().add(instant, value);
-        }
-        value = scaleValue(getWeeks(), scalar);
-        if (value != 0) {
-            instant = type.weeks().add(instant, value);
-        }
-        value = scaleValue(getDays(), scalar);
-        if (value != 0) {
-            instant = type.days().add(instant, value);
-        }
-        value = scaleValue(getHours(), scalar);
-        if (value != 0) {
-            instant = type.hours().add(instant, value);
-        }
-        value = scaleValue(getMinutes(), scalar);
-        if (value != 0) {
-            instant = type.minutes().add(instant, value);
-        }
-        value = scaleValue(getSeconds(), scalar);
-        if (value != 0) {
-            instant = type.seconds().add(instant, value);
-        }
-        value = scaleValue(getMillis(), scalar);
-        if (value != 0) {
-            instant = type.millis().add(instant, value);
-        }
-
         return instant;
-    }
-
-    /**
-     * Convert the scalar to a multiple efficiently.
-     * 
-     * @param value  the value
-     * @param scalar  the scalar
-     * @return the converted value
-     */
-    private static long scaleValue(int value, int scalar) {
-        long val = value;  // use long to avoid truncation
-        switch (scalar) {
-        case -1:
-            return -val;
-        case 0:
-            return 0;
-        case 1:
-            return val;
-        default:
-            return val * scalar;
-        }
     }
 
     /**
@@ -247,69 +262,79 @@ public abstract class AbstractPeriod implements ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the total millisecond duration of this period,
-     * failing if the period is imprecise.
+     * Gets the total millisecond duration of this period relative to a start
+     * instant and chronology.
+     * <p>
+     * This method adds the period to the specifed instant.
+     * The difference between the start instant and the result of the add is the duration
      *
-     * @return the total length of the period in milliseconds.
-     * @throws IllegalStateException if the period is imprecise
+     * @param startInstant  the instant to add the period to, thus obtaining the duration
+     * @param chrono  the chronology to use
+     * @return the total length of the period in milliseconds relative to the start instant
      * @throws ArithmeticException if the millis exceeds the capacity of the duration
      */
-    public Duration toDuration() {
-        return new Duration(toDurationMillis());
+    public long toDurationMillisFrom(long startInstant, Chronology chrono) {
+        long endInstant = addTo(startInstant, 1, chrono);
+        return FieldUtils.safeAdd(endInstant, -startInstant);
+    }
+
+    /**
+     * Gets the total millisecond duration of this period relative to a start
+     * instant and chronology.
+     * <p>
+     * This method adds the period to the specifed instant.
+     * The difference between the start instant and the result of the add is the duration
+     *
+     * @param startInstant  the instant to add the period to, thus obtaining the duration
+     * @return the total length of the period in milliseconds relative to the start instant
+     * @throws ArithmeticException if the millis exceeds the capacity of the duration
+     */
+    public Duration toDurationFrom(ReadableInstant startInstant) {
+        long millis = DateTimeUtils.getInstantMillis(startInstant);
+        Chronology chrono = DateTimeUtils.getInstantChronology(startInstant);
+        return new Duration(toDurationMillisFrom(millis, chrono));
     }
 
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
      * on the value of each field. All ReadablePeriod instances are accepted.
-     * <p>
-     * To compare two periods for absolute duration (ie. millisecond duration
-     * ignoring the fields), use {@link #toDurationMillis()} or {@link #toDuration()}.
      *
      * @param readablePeriod  a readable period to check against
      * @return true if all the field values are equal, false if
      *  not or the period is null or of an incorrect type
      */
-    public boolean equals(Object readablePeriod) {
-        if (this == readablePeriod) {
+    public boolean equals(Object period) {
+        if (this == period) {
             return true;
         }
-        if (readablePeriod instanceof ReadablePeriod == false) {
+        if (period instanceof ReadablePeriod == false) {
             return false;
         }
-        ReadablePeriod other = (ReadablePeriod) readablePeriod;
-        PeriodType type = getPeriodType();
-        if (type.equals(other.getPeriodType()) == false) {
+        ReadablePeriod other = (ReadablePeriod) period;
+        if (size() != other.size()) {
             return false;
         }
-        return getYears() == other.getYears()
-            && getMonths() == other.getMonths()
-            && getWeeks() == other.getWeeks()
-            && getDays() == other.getDays()
-            && getHours() == other.getHours()
-            && getMinutes() == other.getMinutes()
-            && getSeconds() == other.getSeconds()
-            && getMillis() == other.getMillis();
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getValue(i) != other.getValue(i) || getFieldType(i) != other.getFieldType(i)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
-     * Gets a hash code for the period that is compatible with the 
-     * equals method. The hashcode is the period type hashcode plus
-     * each period value from largest to smallest calculated as follows:
+     * Gets a hash code for the period as defined by ReadablePeriod.
      *
      * @return a hash code
      */
     public int hashCode() {
-        int hash = getPeriodType().hashCode();
-        hash = 53 * hash + getYears();
-        hash = 53 * hash + getMonths();
-        hash = 53 * hash + getWeeks();
-        hash = 53 * hash + getDays();
-        hash = 53 * hash + getHours();
-        hash = 53 * hash + getMinutes();
-        hash = 53 * hash + getSeconds();
-        hash = 53 * hash + getMillis();
-        return hash;
+        int total = 17;
+        for (int i = 0, isize = size(); i < isize; i++) {
+            total = 27 * total + getValue(i);
+            total = 27 * total + getFieldType(i).hashCode();
+        }
+        return total;
     }
 
     //-----------------------------------------------------------------------

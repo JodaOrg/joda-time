@@ -291,16 +291,18 @@ public class TestDuration_Basics extends TestCase {
         long length = (365L + 2L * 30L + 3L * 7L + 4L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
-            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        int total = (365 + 2 * 30 + 3 * 7 + 4) * 24 + 5;
+            7L * DateTimeConstants.MILLIS_PER_SECOND + 845L;
         Duration test = new Duration(length);
-        assertEquals("PT" + total + "H6M7.008S", test.toString());
+        assertEquals("PT" + (length / 1000) + "." + (length % 1000) + "S", test.toString());
         
         test = new Duration(0L);
         assertEquals("PT0S", test.toString());
         
         test = new Duration(12345L);
         assertEquals("PT12.345S", test.toString());
+        
+        test = new Duration(-12345L);
+        assertEquals("PT-12.345S", test.toString());
     }
 
     //-----------------------------------------------------------------------
@@ -326,7 +328,7 @@ public class TestDuration_Basics extends TestCase {
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
         Duration test = new Duration(length);
         Period result = test.toPeriod();
-        assertEquals(PeriodType.getAllType(), result.getPeriodType());
+        assertEquals(PeriodType.standard(), result.getPeriodType());
         // only time fields are precise in AllType
         assertEquals(0, result.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
         assertEquals(0, result.getMonths());
@@ -336,8 +338,6 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(6, result.getMinutes());
         assertEquals(7, result.getSeconds());
         assertEquals(8, result.getMillis());
-        assertEquals(true, result.isPrecise());
-        assertEquals(length, result.toDurationMillis());
     }
 
     public void testToPeriod_PeriodType1() {
@@ -348,7 +348,7 @@ public class TestDuration_Basics extends TestCase {
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
         Duration test = new Duration(length);
         Period result = test.toPeriod(null);
-        assertEquals(PeriodType.getAllType(), result.getPeriodType());
+        assertEquals(PeriodType.standard(), result.getPeriodType());
         // only time fields are precise in AllType
         assertEquals(0, result.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
         assertEquals(0, result.getMonths());
@@ -358,31 +358,29 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(6, result.getMinutes());
         assertEquals(7, result.getSeconds());
         assertEquals(8, result.getMillis());
-        assertEquals(true, result.isPrecise());
-        assertEquals(length, result.toDurationMillis());
     }
 
-    public void testToPeriod_PeriodType2() {
-        long length =
-            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
-            5L * DateTimeConstants.MILLIS_PER_HOUR +
-            6L * DateTimeConstants.MILLIS_PER_MINUTE +
-            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        Duration test = new Duration(length);
-        Period result = test.toPeriod(PeriodType.getPreciseAllType());
-        assertEquals(PeriodType.getPreciseAllType(), result.getPeriodType());
-        // only time fields are precise in AllType
-        assertEquals(1, result.getYears());
-        assertEquals(2, result.getMonths());
-        assertEquals(3, result.getWeeks());
-        assertEquals(4, result.getDays());
-        assertEquals(5, result.getHours());
-        assertEquals(6, result.getMinutes());
-        assertEquals(7, result.getSeconds());
-        assertEquals(8, result.getMillis());
-        assertEquals(true, result.isPrecise());
-        assertEquals(length, result.toDurationMillis());
-    }
+//    public void testToPeriod_PeriodType2() {
+//        long length =
+//            (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
+//            5L * DateTimeConstants.MILLIS_PER_HOUR +
+//            6L * DateTimeConstants.MILLIS_PER_MINUTE +
+//            7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
+//        Duration test = new Duration(length);
+//        Period result = test.toPeriod(PeriodType.getPreciseAllType());
+//        assertEquals(PeriodType.getPreciseAllType(), result.getPeriodType());
+//        // only time fields are precise in AllType
+//        assertEquals(1, result.getYears());
+//        assertEquals(2, result.getMonths());
+//        assertEquals(3, result.getWeeks());
+//        assertEquals(4, result.getDays());
+//        assertEquals(5, result.getHours());
+//        assertEquals(6, result.getMinutes());
+//        assertEquals(7, result.getSeconds());
+//        assertEquals(8, result.getMillis());
+//        assertEquals(true, result.isPrecise());
+//        assertEquals(length, result.toDurationMillis());
+//    }
 
     //-----------------------------------------------------------------------
     public void testWithMillis1() {

@@ -65,7 +65,17 @@ package org.joda.time;
  */
 public interface ReadWritablePeriod extends ReadablePeriod {
 
-    //-----------------------------------------------------------------------
+    /**
+     * Sets the value of one of the fields.
+     * <p>
+     * The field type specified must be one of those that is supported by the period.
+     *
+     * @param field  a DurationFieldType instance that is supported by this period
+     * @param value  the new value for the field
+     * @throws IllegalArgumentException if the field is null or not supported
+     */
+    void set(DurationFieldType field, int value);
+
     /**
      * Sets all the fields in one go from another ReadablePeriod.
      * 
@@ -95,8 +105,9 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * fields using the period type.
      * 
      * @param interval  the interval to set, null means zero length
+     * @param chrono  the chronology to use, null means ISO default
      */
-    void setPeriod(ReadableInterval interval);
+    void setPeriod(ReadableInterval interval, Chronology chrono);
 
     /**
      * Sets all the fields in one go from a millisecond interval dividing the
@@ -104,8 +115,9 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
+     * @param chrono  the chronology to use, null means ISO default
      */
-    void setPeriod(long startInstant, long endInstant);
+    void setPeriod(long startInstant, long endInstant, Chronology chrono);
 
     /**
      * Sets all the fields in one go from a duration dividing the
@@ -116,8 +128,9 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * available precise field.
      * 
      * @param duration  the duration to set, null means zero length
+     * @param chrono  the chronology to use, null means ISO default
      */
-    void setPeriod(ReadableDuration duration);
+    void setPeriod(ReadableDuration duration, Chronology chrono);
 
     /**
      * Sets all the fields in one go from a millisecond duration dividing the
@@ -128,10 +141,22 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * available precise field.
      * 
      * @param duration  the duration, in milliseconds
+     * @param chrono  the chronology to use, null means ISO default
      */
-    void setPeriod(long duration);
+    void setPeriod(long duration, Chronology chrono);
 
     //-----------------------------------------------------------------------
+    /**
+     * Adds to the value of one of the fields.
+     * <p>
+     * The field type specified must be one of those that is supported by the period.
+     *
+     * @param field  a DurationFieldType instance that is supported by this period
+     * @param value  the value to add to the field
+     * @throws IllegalArgumentException if the field is null or not supported
+     */
+    void add(DurationFieldType field, int value);
+
     /**
      * Adds a period to this one by adding each field in turn.
      * 
@@ -194,15 +219,6 @@ public interface ReadWritablePeriod extends ReadablePeriod {
      * @throws ArithmeticException if the addition exceeds the capacity of the period
      */
     void add(long duration);
-
-    /**
-     * Normalizes all the field values in this period.
-     * <p>
-     * This method converts to a milliecond duration and back again.
-     *
-     * @throws IllegalStateException if this period is imprecise
-     */
-    void normalize();
 
     //-----------------------------------------------------------------------
     /**

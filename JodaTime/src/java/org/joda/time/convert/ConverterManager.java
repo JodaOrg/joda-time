@@ -140,7 +140,6 @@ public final class ConverterManager {
 
         iDurationConverters = new ConverterSet(new Converter[] {
             ReadableDurationConverter.INSTANCE,
-            ReadablePeriodConverter.INSTANCE,
             ReadableIntervalConverter.INSTANCE,
             StringConverter.INSTANCE,
             LongConverter.INSTANCE,

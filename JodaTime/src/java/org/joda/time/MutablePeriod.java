@@ -77,10 +77,10 @@ public class MutablePeriod
     private static final long serialVersionUID = 3436451121567212165L;
 
     /**
-     * Creates a zero-length period using AllType.
+     * Creates a zero-length period using the standard period type.
      */
     public MutablePeriod() {
-        super(0L, null);
+        super(0L, null, null);
     }
 
     /**
@@ -89,63 +89,11 @@ public class MutablePeriod
      * @param type  which set of fields this period supports
      */
     public MutablePeriod(PeriodType type) {
-        super(0L, type);
+        super(0L, type, null);
     }
 
     /**
-     * Creates a period from the given millisecond duration using AllType.
-     * <p>
-     * Only precise fields in the period type will be used.
-     * For AllType, this is the time fields only.
-     * The year, month, week and day fields will not be populated.
-     * The period constructed will always be precise.
-     * <p>
-     * If the duration is small, less than one day, then this method will perform
-     * as you might expect and split the fields evenly.
-     * <p>
-     * If the duration is larger than one day then all the remaining duration will
-     * be stored in the largest available precise field, hours in this case.
-     * <p>
-     * For example, a duration equal to (365 + 60 + 5) days will be converted to
-     * ((365 + 60 + 5) * 24) hours by this constructor.
-     * <p>
-     * For more control over the conversion process, you have two options:
-     * <ul>
-     * <li>convert the duration to an {@link Interval}, and from there obtain the period
-     * <li>specify a period type that contains precise definitions of the day and larger
-     * fields, such as the UTC or precise types.
-     * </ul>
-     *
-     * @param duration  the duration, in milliseconds
-     */
-    public MutablePeriod(long duration) {
-        super(duration, null);
-    }
-
-    /**
-     * Creates a period from the given millisecond duration.
-     * <p>
-     * Only precise fields in the period type will be used.
-     * Imprecise fields will not be populated.
-     * The period constructed will always be precise.
-     * <p>
-     * If the duration is small then this method will perform
-     * as you might expect and split the fields evenly.
-     * <p>
-     * If the duration is large then all the remaining duration will
-     * be stored in the largest available precise field.
-     * For details as to which fields are precise, review the period type javadoc.
-     *
-     * @param duration  the duration, in milliseconds
-     * @param type  which set of fields this duration supports
-     */
-    public MutablePeriod(long duration, PeriodType type) {
-        super(duration, type);
-    }
-
-    /**
-     * Create a period from a set of field values using AllType.
-     * This constructor creates a precise period.
+     * Create a period from a set of field values using the time set of fields.
      *
      * @param hours  amount of hours in this period
      * @param minutes  amount of minutes in this period
@@ -153,11 +101,11 @@ public class MutablePeriod
      * @param millis  amount of milliseconds in this period
      */
     public MutablePeriod(int hours, int minutes, int seconds, int millis) {
-        super(0, 0, 0, 0, hours, minutes, seconds, millis, null);
+        super(0, 0, 0, 0, hours, minutes, seconds, millis, PeriodType.time());
     }
 
     /**
-     * Create a period from a set of field values using AllType.
+     * Create a period from a set of field values using the standard set of fields.
      *
      * @param years  amount of years in this period
      * @param months  amount of months in this period
@@ -169,8 +117,8 @@ public class MutablePeriod
      * @param millis  amount of milliseconds in this period
      */
     public MutablePeriod(int years, int months, int weeks, int days,
-                    int hours, int minutes, int seconds, int millis) {
-        super(years, months, weeks, days, hours, minutes, seconds, millis, null);
+                  int hours, int minutes, int seconds, int millis) {
+        super(years, months, weeks, days, hours, minutes, seconds, millis, PeriodType.standard());
     }
 
     /**
@@ -193,31 +141,146 @@ public class MutablePeriod
     }
 
     /**
-     * Creates a period from the given interval endpoints using AllType.
-     * This constructor creates a precise period.
+     * Creates a period from the given millisecond duration using the standard
+     * set of fields.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * For the standard period type this is the time fields only.
+     * Thus the year, month, week and day fields will not be populated.
+     * <p>
+     * If the duration is small, less than one day, then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is larger than one day then all the remaining duration will
+     * be stored in the largest available precise field, hours in this case.
+     * <p>
+     * For example, a duration equal to (365 + 60 + 5) days will be converted to
+     * ((365 + 60 + 5) * 24) hours by this constructor.
+     * <p>
+     * For more control over the conversion process, you have two options:
+     * <ul>
+     * <li>convert the duration to an {@link Interval}, and from there obtain the period
+     * <li>specify a period type that contains precise definitions of the day and larger
+     * fields, such as the UTC or precise types.
+     * </ul>
+     *
+     * @param duration  the duration, in milliseconds
+     */
+    public MutablePeriod(long duration) {
+        super(duration, null, null);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * <p>
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     */
+    public MutablePeriod(long duration, PeriodType type) {
+        super(duration, type, null);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration using the standard
+     * set of fields.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * <p>
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param chronology  the chronology to use to split the duration, null means ISO default
+     */
+    public MutablePeriod(long duration, Chronology chronology) {
+        super(duration, null, chronology);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration.
+     * <p>
+     * Only precise fields in the period type will be used.
+     * Imprecise fields will not be populated.
+     * <p>
+     * If the duration is small then this method will perform
+     * as you might expect and split the fields evenly.
+     * <p>
+     * If the duration is large then all the remaining duration will
+     * be stored in the largest available precise field.
+     * For details as to which fields are precise, review the period type javadoc.
+     *
+     * @param duration  the duration, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     * @param chronology  the chronology to use to split the duration, null means ISO default
+     */
+    public MutablePeriod(long duration, PeriodType type, Chronology chronology) {
+        super(duration, type, chronology);
+    }
+
+    /**
+     * Creates a period from the given interval endpoints using the standard
+     * set of fields.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
      */
     public MutablePeriod(long startInstant, long endInstant) {
-        super(startInstant, endInstant, null);
+        super(startInstant, endInstant, null, null);
     }
 
     /**
      * Creates a period from the given interval endpoints.
-     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param type  which set of fields this period supports, null means AllType
+     * @param type  which set of fields this period supports, null means standard
      */
     public MutablePeriod(long startInstant, long endInstant, PeriodType type) {
-        super(startInstant, endInstant, type);
+        super(startInstant, endInstant, type, null);
     }
 
     /**
-     * Creates a period from the given interval endpoints using AllType.
-     * This constructor creates a precise period.
+     * Creates a period from the given interval endpoints using the standard
+     * set of fields.
+     *
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param chrono  the chronology to use, null means ISO in default zone
+     */
+    public MutablePeriod(long startInstant, long endInstant, Chronology chrono) {
+        super(startInstant, endInstant, null, chrono);
+    }
+
+    /**
+     * Creates a period from the given interval endpoints.
+     *
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     * @param type  which set of fields this period supports, null means standard
+     * @param chrono  the chronology to use, null means ISO in default zone
+     */
+    public MutablePeriod(long startInstant, long endInstant, PeriodType type, Chronology chrono) {
+        super(startInstant, endInstant, type, chrono);
+    }
+
+    /**
+     * Creates a period from the given interval endpoints using the standard
+     * set of fields.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -228,7 +291,6 @@ public class MutablePeriod
 
     /**
      * Creates a period from the given interval endpoints.
-     * This constructor creates a precise period.
      *
      * @param startInstant  interval start, null means now
      * @param endInstant  interval end, null means now
@@ -247,7 +309,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public MutablePeriod(Object period) {
-        super(period, null);
+        super(period, null, null);
     }
 
     /**
@@ -260,10 +322,50 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if an unsupported field's value is non-zero
      */
     public MutablePeriod(Object period, PeriodType type) {
-        super(period, type);
+        super(period, type, null);
+    }
+
+    /**
+     * Creates a period from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     *
+     * @param period  period to convert
+     * @param chrono  the chronology to use, null means ISO in default zone
+     * @throws IllegalArgumentException if period is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     */
+    public MutablePeriod(Object period, Chronology chrono) {
+        super(period, null, chrono);
+    }
+
+    /**
+     * Creates a period from the specified object using the
+     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     *
+     * @param period  period to convert
+     * @param type  which set of fields this period supports, null means use converter
+     * @param chrono  the chronology to use, null means ISO in default zone
+     * @throws IllegalArgumentException if period is invalid
+     * @throws UnsupportedOperationException if an unsupported field's value is non-zero
+     */
+    public MutablePeriod(Object period, PeriodType type, Chronology chrono) {
+        super(period, type, chrono);
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Sets the value of one of the fields.
+     * <p>
+     * The field type specified must be one of those that is supported by the period.
+     *
+     * @param field  a DurationFieldType instance that is supported by this period
+     * @param value  the new value for the field
+     * @throws IllegalArgumentException if the field is null or not supported
+     */
+    public void set(DurationFieldType field, int value) {
+        super.setField(field, value);
+    }
+
     /**
      * Sets all the fields in one go from another ReadablePeriod.
      * 
@@ -271,15 +373,7 @@ public class MutablePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void setPeriod(ReadablePeriod period) {
-        if (period == null) {
-            setPeriod(0L);
-        } else {
-            setPeriod(
-                period.getYears(), period.getMonths(),
-                period.getWeeks(), period.getDays(),
-                period.getHours(), period.getMinutes(),
-                period.getSeconds(), period.getMillis());
-        }
+        super.setPeriod(period);
     }
 
     /**
@@ -296,9 +390,18 @@ public class MutablePeriod
      * @throws IllegalArgumentException if an unsupported field's value is non-zero
      */
     public void setPeriod(int years, int months, int weeks, int days,
-                            int hours, int minutes, int seconds, int millis) {
-        super.setPeriod(years, months, weeks, days,
-                          hours, minutes, seconds, millis);
+                          int hours, int minutes, int seconds, int millis) {
+        super.setPeriod(years, months, weeks, days, hours, minutes, seconds, millis);
+    }
+
+    /**
+     * Sets all the fields in one go from an interval using the ISO chronology
+     * and dividing the fields using the period type.
+     * 
+     * @param interval  the interval to set, null means zero length
+     */
+    public void setPeriod(ReadableInterval interval) {
+        setPeriod(interval, null);
     }
 
     /**
@@ -306,13 +409,25 @@ public class MutablePeriod
      * fields using the period type.
      * 
      * @param interval  the interval to set, null means zero length
+     * @param chrono  the chronology to use, null means ISO default
      */
-    public void setPeriod(ReadableInterval interval) {
+    public void setPeriod(ReadableInterval interval, Chronology chrono) {
         if (interval == null) {
             setPeriod(0L);
         } else {
-            setPeriod(interval.getStartMillis(), interval.getEndMillis());
+            setPeriod(interval.getStartMillis(), interval.getEndMillis(), chrono);
         }
+    }
+
+    /**
+     * Sets all the fields in one go from a millisecond interval using ISOChronology
+     * and dividing the fields using the period type.
+     * 
+     * @param startInstant  interval start, in milliseconds
+     * @param endInstant  interval end, in milliseconds
+     */
+    public void setPeriod(long startInstant, long endInstant) {
+        setPeriod(startInstant, endInstant, null);
     }
 
     /**
@@ -321,9 +436,10 @@ public class MutablePeriod
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
+     * @param chrono  the chronology to use, null means ISO default
      */
-    public void setPeriod(long startInstant, long endInstant) {
-        super.setPeriod(startInstant, endInstant);
+    public void setPeriod(long startInstant, long endInstant, Chronology chrono) {
+        super.setPeriod(startInstant, endInstant, chrono);
     }
 
     /**
@@ -337,8 +453,23 @@ public class MutablePeriod
      * @param duration  the duration to set, null means zero length
      */
     public void setPeriod(ReadableDuration duration) {
+        setPeriod(duration, null);
+    }
+
+    /**
+     * Sets all the fields in one go from a duration dividing the
+     * fields using the period type.
+     * <p>
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be stored in the largest
+     * available precise field.
+     * 
+     * @param duration  the duration to set, null means zero length
+     * @param chrono  the chronology to use, null means ISO default
+     */
+    public void setPeriod(ReadableDuration duration, Chronology chrono) {
         long durationMillis = DateTimeUtils.getDurationMillis(duration);
-        setPeriod(durationMillis);
+        setPeriod(durationMillis, chrono);
     }
 
     /**
@@ -352,10 +483,40 @@ public class MutablePeriod
      * @param duration  the duration, in milliseconds
      */
     public void setPeriod(long duration) {
-        super.setPeriod(duration);
+        setPeriod(duration, null);
     }
-    
+
+    /**
+     * Sets all the fields in one go from a millisecond duration dividing the
+     * fields using the period type.
+     * <p>
+     * When dividing the duration, only precise fields in the period type will be used.
+     * For large durations, all the remaining duration will be stored in the largest
+     * available precise field.
+     * 
+     * @param duration  the duration, in milliseconds
+     * @param chrono  the chronology to use, null means ISO default
+     */
+    public void setPeriod(long duration, Chronology chrono) {
+        super.setPeriod(duration, chrono);
+    }
+
     //-----------------------------------------------------------------------
+    /**
+     * Adds to the value of one of the fields.
+     * <p>
+     * The field type specified must be one of those that is supported by the period.
+     *
+     * @param field  a DurationFieldType instance that is supported by this period
+     * @param value  the value to add to the field
+     * @throws IllegalArgumentException if the field is null or not supported
+     */
+    public void add(DurationFieldType field, int value) {
+        if (value != 0) {
+            set(field, FieldUtils.safeAdd(get(field), value));
+        }
+    }
+
     /**
      * Adds a period to this one by adding each field in turn.
      * 
@@ -366,16 +527,7 @@ public class MutablePeriod
      */
     public void add(ReadablePeriod period) {
         if (period != null) {
-            setPeriod(
-                FieldUtils.safeAdd(getYears(), period.getYears()),
-                FieldUtils.safeAdd(getMonths(), period.getMonths()),
-                FieldUtils.safeAdd(getWeeks(), period.getWeeks()),
-                FieldUtils.safeAdd(getDays(), period.getDays()),
-                FieldUtils.safeAdd(getHours(), period.getHours()),
-                FieldUtils.safeAdd(getMinutes(), period.getMinutes()),
-                FieldUtils.safeAdd(getSeconds(), period.getSeconds()),
-                FieldUtils.safeAdd(getMillis(), period.getMillis())
-            );
+            addPeriod(period);
         }
     }
 
@@ -445,15 +597,78 @@ public class MutablePeriod
         add(new Period(duration, getPeriodType()));
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Normalizes all the field values in this period.
-     * <p>
-     * This method converts to a milliecond duration and back again.
-     *
-     * @throws IllegalStateException if this period is imprecise
+     * Gets the years field part of the period.
+     * 
+     * @return the number of years in the period, zero if unsupported
      */
-    public void normalize() {
-        setPeriod(toDurationMillis());
+    public int getYears() {
+        return getPeriodType().getYears(this);
+    }
+
+    /**
+     * Gets the months field part of the period.
+     * 
+     * @return the number of months in the period, zero if unsupported
+     */
+    public int getMonths() {
+        return getPeriodType().getMonths(this);
+    }
+
+    /**
+     * Gets the weeks field part of the period.
+     * 
+     * @return the number of weeks in the period, zero if unsupported
+     */
+    public int getWeeks() {
+        return getPeriodType().getWeeks(this);
+    }
+
+    /**
+     * Gets the days field part of the period.
+     * 
+     * @return the number of days in the period, zero if unsupported
+     */
+    public int getDays() {
+        return getPeriodType().getDays(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the hours field part of the period.
+     * 
+     * @return the number of hours in the period, zero if unsupported
+     */
+    public int getHours() {
+        return getPeriodType().getHours(this);
+    }
+
+    /**
+     * Gets the minutes field part of the period.
+     * 
+     * @return the number of minutes in the period, zero if unsupported
+     */
+    public int getMinutes() {
+        return getPeriodType().getMinutes(this);
+    }
+
+    /**
+     * Gets the seconds field part of the period.
+     * 
+     * @return the number of seconds in the period, zero if unsupported
+     */
+    public int getSeconds() {
+        return getPeriodType().getSeconds(this);
+    }
+
+    /**
+     * Gets the millis field part of the period.
+     * 
+     * @return the number of millis in the period, zero if unsupported
+     */
+    public int getMillis() {
+        return getPeriodType().getMillis(this);
     }
 
     //-----------------------------------------------------------------------
@@ -464,7 +679,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setYears(int years) {
-        super.setYears(years);
+        super.setField(DurationFieldType.years(), years);
     }
 
     /**
@@ -488,7 +703,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setMonths(int months) {
-        super.setMonths(months);
+        super.setField(DurationFieldType.months(), months);
     }
 
     /**
@@ -512,7 +727,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setWeeks(int weeks) {
-        super.setWeeks(weeks);
+        super.setField(DurationFieldType.weeks(), weeks);
     }
 
     /**
@@ -536,7 +751,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setDays(int days) {
-        super.setDays(days);
+        super.setField(DurationFieldType.days(), days);
     }
 
     /**
@@ -560,7 +775,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setHours(int hours) {
-        super.setHours(hours);
+        super.setField(DurationFieldType.hours(), hours);
     }
 
     /**
@@ -584,7 +799,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setMinutes(int minutes) {
-        super.setMinutes(minutes);
+        super.setField(DurationFieldType.minutes(), minutes);
     }
 
     /**
@@ -608,7 +823,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setSeconds(int seconds) {
-        super.setSeconds(seconds);
+        super.setField(DurationFieldType.seconds(), seconds);
     }
 
     /**
@@ -632,7 +847,7 @@ public class MutablePeriod
      * @throws UnsupportedOperationException if field is not supported.
      */
     public void setMillis(int millis) {
-        super.setMillis(millis);
+        super.setField(DurationFieldType.millis(), millis);
     }
 
     /**

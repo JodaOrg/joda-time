@@ -53,6 +53,7 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.Chronology;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
@@ -65,7 +66,7 @@ import org.joda.time.ReadablePeriod;
  * @since 1.0
  */
 class ReadablePeriodConverter extends AbstractConverter
-        implements PeriodConverter, DurationConverter {
+        implements PeriodConverter {
 
     /**
      * Singleton instance.
@@ -81,31 +82,17 @@ class ReadablePeriodConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
-     * Extracts the millis from an object of this convertor's type.
-     * 
-     * @param object  the object to convert, must not be null
-     * @return the millisecond value
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object is an invalid type
-     * @throws IllegalArgumentException if the object is invalid
-     */
-    public long getDurationMillis(Object object) {
-        return ((ReadablePeriod) object).toDurationMillis();
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Extracts duration values from an object of this converter's type, and
      * sets them into the given ReadWritablePeriod.
      *
      * @param duration duration to get modified
      * @param object  the object to convert, must not be null
-     * @return the millisecond duration
+     * @param chrono  the chronology to use
      * @throws NullPointerException if the duration or object is null
      * @throws ClassCastException if the object is an invalid type
      * @throws IllegalArgumentException if the object is invalid
      */
-    public void setInto(ReadWritablePeriod duration, Object object) {
+    public void setInto(ReadWritablePeriod duration, Object object, Chronology chrono) {
         duration.setPeriod((ReadablePeriod) object);
     }
 
@@ -113,20 +100,12 @@ class ReadablePeriodConverter extends AbstractConverter
      * Selects a suitable period type for the given object.
      *
      * @param object  the object to examine, must not be null
-     * @param precise  true if a precise type is required
      * @return the period type from the readable duration
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object is an invalid type
      */
-    public PeriodType getPeriodType(Object object, boolean precise) {
+    public PeriodType getPeriodType(Object object) {
         ReadablePeriod period = (ReadablePeriod) object;
-        if (precise) {
-            if (period.getPeriodType().isPrecise()) {
-                return period.getPeriodType();
-            } else {
-                return PeriodType.getPreciseAllType();
-            }
-        }
         return period.getPeriodType();
     }
 

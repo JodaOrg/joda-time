@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DurationFieldType;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
@@ -1182,32 +1183,34 @@ public class PeriodFormatterBuilder {
             default:
                 return Long.MAX_VALUE;
             case YEARS:
-                value = period.getYears();
+                value = period.get(DurationFieldType.years());
                 break;
             case MONTHS:
-                value = period.getMonths();
+                value = period.get(DurationFieldType.months());
                 break;
             case WEEKS:
-                value = period.getWeeks();
+                value = period.get(DurationFieldType.weeks());
                 break;
             case DAYS:
-                value = period.getDays();
+                value = period.get(DurationFieldType.days());
                 break;
             case HOURS:
-                value = period.getHours();
+                value = period.get(DurationFieldType.hours());
                 break;
             case MINUTES:
-                value = period.getMinutes();
+                value = period.get(DurationFieldType.minutes());
                 break;
             case SECONDS:
-                value = period.getSeconds();
+                value = period.get(DurationFieldType.seconds());
                 break;
             case MILLIS:
-                value = period.getMillis();
+                value = period.get(DurationFieldType.millis());
                 break;
             case SECONDS_MILLIS: // drop through
             case SECONDS_OPTIONAL_MILLIS:
-                value = period.getSeconds() * DateTimeConstants.MILLIS_PER_SECOND + period.getMillis();
+                int seconds = period.get(DurationFieldType.seconds());
+                int millis = period.get(DurationFieldType.millis());
+                value = seconds * DateTimeConstants.MILLIS_PER_SECOND + millis;
                 break;
             }
 
@@ -1245,10 +1248,12 @@ public class PeriodFormatterBuilder {
         }
 
         boolean isZero(ReadablePeriod period) {
-            return (period.getYears() == 0 && period.getMonths() == 0 &&
-                    period.getWeeks() == 0 && period.getDays() == 0 &&
-                    period.getHours() == 0 && period.getMinutes() == 0 &&
-                    period.getSeconds() == 0 && period.getMillis() == 0);
+            for (int i = 0, isize = period.size(); i < isize; i++) {
+                if (period.getValue(i) != 0) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         boolean isSupported(PeriodType type, int field) {
@@ -1256,24 +1261,25 @@ public class PeriodFormatterBuilder {
             default:
                 return false;
             case YEARS:
-                return type.years().isSupported();
+                return type.isSupported(DurationFieldType.years());
             case MONTHS:
-                return type.months().isSupported();
+                return type.isSupported(DurationFieldType.months());
             case WEEKS:
-                return type.weeks().isSupported();
+                return type.isSupported(DurationFieldType.weeks());
             case DAYS:
-                return type.days().isSupported();
+                return type.isSupported(DurationFieldType.days());
             case HOURS:
-                return type.hours().isSupported();
+                return type.isSupported(DurationFieldType.hours());
             case MINUTES:
-                return type.minutes().isSupported();
+                return type.isSupported(DurationFieldType.minutes());
             case SECONDS:
-                return type.seconds().isSupported();
+                return type.isSupported(DurationFieldType.seconds());
             case MILLIS:
-                return type.millis().isSupported();
+                return type.isSupported(DurationFieldType.millis());
             case SECONDS_MILLIS: // drop through
             case SECONDS_OPTIONAL_MILLIS:
-                return type.seconds().isSupported() ||  type.millis().isSupported();
+                return type.isSupported(DurationFieldType.seconds()) ||
+                       type.isSupported(DurationFieldType.millis());
             }
         }
 

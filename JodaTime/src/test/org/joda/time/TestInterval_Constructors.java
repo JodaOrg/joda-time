@@ -242,7 +242,7 @@ public class TestInterval_Constructors extends TestCase {
 
     public void testConstructor_RI_RP3() throws Throwable {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
-        Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.getAllTypeUTC());
+        Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.standard());
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstanceUTC().months().add(result, 6);
         result = ISOChronology.getInstanceUTC().days().add(result, 3);
@@ -326,7 +326,7 @@ public class TestInterval_Constructors extends TestCase {
 
     public void testConstructor_RP_RI3() throws Throwable {
         Instant dt = new Instant(new DateTime(TEST_TIME_NOW));
-        Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.getAllTypeUTC());
+        Period dur = new Period(0, 6, 0, 3, 1, 0, 0, 0, PeriodType.standard());
         long result = TEST_TIME_NOW;
         result = ISOChronology.getInstanceUTC().months().add(result, -6);
         result = ISOChronology.getInstanceUTC().days().add(result, -3);

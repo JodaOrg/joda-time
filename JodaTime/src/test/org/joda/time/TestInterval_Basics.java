@@ -422,7 +422,7 @@ public class TestInterval_Basics extends TestCase {
         Interval test = new Interval(dt1, dt2);
         
         Period result = test.toPeriod();
-        assertEquals(PeriodType.getAllType(), result.getPeriodType());
+        assertEquals(PeriodType.standard(), result.getPeriodType());
         assertEquals(1, result.getYears());
         assertEquals(2, result.getMonths());
         assertEquals(0, result.getWeeks());
@@ -440,7 +440,7 @@ public class TestInterval_Basics extends TestCase {
         Interval test = new Interval(dt1, dt2);
         
         Period result = test.toPeriod(null);
-        assertEquals(PeriodType.getAllType(), result.getPeriodType());
+        assertEquals(PeriodType.standard(), result.getPeriodType());
         assertEquals(1, result.getYears());
         assertEquals(2, result.getMonths());
         assertEquals(0, result.getWeeks());
@@ -456,8 +456,8 @@ public class TestInterval_Basics extends TestCase {
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
         Interval test = new Interval(dt1, dt2);
         
-        Period result = test.toPeriod(PeriodType.getYearWeekType());
-        assertEquals(PeriodType.getYearWeekType(), result.getPeriodType());
+        Period result = test.toPeriod(PeriodType.yearWeekDayTime());
+        assertEquals(PeriodType.yearWeekDayTime(), result.getPeriodType());
         assertEquals(1, result.getYears());
         assertEquals(0, result.getMonths());
         assertEquals(9, result.getWeeks());
@@ -473,8 +473,8 @@ public class TestInterval_Basics extends TestCase {
         DateTime dt2 = new DateTime(2005, 6, 9, 12, 14, 16, 18);
         Interval test = new Interval(dt1, dt2);
         
-        Period result = test.toPeriod(PeriodType.getYearWeekType());
-        assertEquals(PeriodType.getYearWeekType(), result.getPeriodType());
+        Period result = test.toPeriod(PeriodType.yearWeekDayTime());
+        assertEquals(PeriodType.yearWeekDayTime(), result.getPeriodType());
         assertEquals(1, result.getYears());
         assertEquals(0, result.getMonths());
         assertEquals(0, result.getWeeks());

@@ -170,16 +170,14 @@ public class TestNullConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetPeriodType_Object() throws Exception {
-        assertEquals(PeriodType.getAllType(),
-            NullConverter.INSTANCE.getPeriodType(null, false));
-        assertEquals(PeriodType.getPreciseAllType(),
-            NullConverter.INSTANCE.getPeriodType(null, true));
+        assertEquals(PeriodType.standard(),
+            NullConverter.INSTANCE.getPeriodType(null));
     }
 
     public void testSetInto_Object() throws Exception {
-        MutablePeriod m = new MutablePeriod(PeriodType.getMillisType());
-        NullConverter.INSTANCE.setInto(m, null);
-        assertEquals(0L, m.toDurationMillis());
+        MutablePeriod m = new MutablePeriod(PeriodType.millis());
+        NullConverter.INSTANCE.setInto(m, null, null);
+        assertEquals(0L, m.getMillis());
     }
 
     //-----------------------------------------------------------------------

@@ -350,27 +350,22 @@ public class DateMidnight extends AbstractDateTime
      * The returned object will have a local time of midnight in the new zone on
      * the same day as the original instant.
      *
-     * @param newDateTimeZone  the new time zone
+     * @param newDateTimeZone  the new time zone, null means default
      * @return a copy of this instant with a different time zone
      */
     public final DateMidnight withZoneRetainFields(DateTimeZone newDateTimeZone) {
-        final long originalMillis = getMillis();
-        final Chronology originalChrono = getChronology();
-        final DateTimeZone originalZone;
-        if (originalChrono == null || (originalZone = originalChrono.getZone()) == null) {
-            // Without an original chronology or time zone, no new time zone
-            // can be set. Call withMillis to let it decide if a clone should
-            // be made or not.
-            return withMillis(originalMillis);
+        newDateTimeZone = (newDateTimeZone == null ? DateTimeZone.getDefault() : newDateTimeZone);
+        DateTimeZone originalZone = getZone();
+        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
+        if (newDateTimeZone == originalZone) {
+            return this;
         }
-        if (newDateTimeZone == null) {
-            newDateTimeZone = DateTimeZone.getDefault();
-        }
-
+        
+        long originalMillis = getMillis();
         long newMillis = originalMillis + originalZone.getOffset(originalMillis);
         newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
 
-        return new DateMidnight(newMillis, originalChrono.withZone(newDateTimeZone));
+        return new DateMidnight(newMillis, getChronology().withZone(newDateTimeZone));
     }
 
     // Date properties

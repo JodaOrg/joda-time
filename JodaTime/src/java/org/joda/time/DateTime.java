@@ -372,33 +372,23 @@ public class DateTime extends AbstractDateTime
      * the field values the same.
      * The returned object will be either be a new instance or <code>this</code>.
      *
-     * @param newDateTimeZone  the new time zone
+     * @param newDateTimeZone  the new time zone, null means default
      * @return a copy of this instant with a different time zone
      * @see #withZone
      */
     public final DateTime withZoneRetainFields(DateTimeZone newDateTimeZone) {
-        final long originalMillis = getMillis();
-        final Chronology originalChrono = getChronology();
-        final DateTimeZone originalZone;
-        if (originalChrono == null || (originalZone = originalChrono.getZone()) == null) {
-            // Without an original chronology or time zone, no new time zone
-            // can be set. Call withMillis to let it decide if a clone should
-            // be made or not.
-            return withMillis(originalMillis);
+        newDateTimeZone = (newDateTimeZone == null ? DateTimeZone.getDefault() : newDateTimeZone);
+        DateTimeZone originalZone = getZone();
+        originalZone = (originalZone == null ? DateTimeZone.getDefault() : originalZone);
+        if (newDateTimeZone == originalZone) {
+            return this;
         }
-
-        DateTime newInstant = withChronology(originalChrono.withZone(newDateTimeZone));
-        newDateTimeZone = newInstant.getZone();
-
-        if (newDateTimeZone == null || newDateTimeZone == originalZone) {
-            // New time zone didn't stick or didn't change. Skip millis adjustment.
-            return newInstant;
-        }
-
+        
+        long originalMillis = getMillis();
         long newMillis = originalMillis + originalZone.getOffset(originalMillis);
         newMillis -= newDateTimeZone.getOffsetFromLocal(newMillis);
 
-        return newInstant.withMillis(newMillis);
+        return new DateTime(newMillis, getChronology().withZone(newDateTimeZone));
     }
 
     // Date properties

@@ -53,15 +53,39 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+
 /**
  * Chronology provides access to the individual date time fields for a
- * chronological calendar system. Various chronologies are supported by
- * subclasses including ISO and GregorianJulian.
+ * chronological calendar system.
  * <p>
- * This interface defines a number of fields with names from the ISO8601
- * standard. Chronology does not 'strongly' define these fields however, thus
- * implementations are free to interpret the field names as they wish. For
- * example, a week could be defined as 10 days and a month as 40 days in a
+ * Various chronologies are supported by subclasses including ISO and GregorianJulian.
+ * This class provides static factory methods to access these chronologies.
+ * For example, to obtain the current time in the coptic calendar system:
+ * <pre>
+ * DateTime dt = new DateTime(Chronology.getCoptic());
+ * </pre>
+ * <p>
+ * The provided chronology implementations are:
+ * <ul>
+ * <li>ISO - Based on the ISO8601 standard and suitable for use after about 1600
+ * <li>GJ - Historically accurate calendar with Julian followed by Gregorian
+ * <li>Gregorian - The Gregorian calendar system used for all time (proleptic)
+ * <li>Julian - The Julian calendar system used for all time (proleptic)
+ * <li>Buddhist - The Buddhist calendar system which is an offset in years from GJ
+ * <li>Coptic - The Coptic calendar system which defines 30 day months
+ * </ul>
+ * Hopefully future releases will contain more chronologies.
+ * <p>
+ * This class defines a number of fields with names from the ISO8601 standard.
+ * It does not 'strongly' define these fields however, thus implementations
+ * are free to interpret the field names as they wish.
+ * For example, a week could be defined as 10 days and a month as 40 days in a
  * special WeirdChronology implementation. Clearly the GJ and ISO
  * implementations provided use the field names as you would expect.
  * 
@@ -78,6 +102,321 @@ package org.joda.time;
  */
 public abstract class Chronology {
 
+    /**
+     * Gets an instance of the ISOChronology in the default zone.
+     * <p>
+     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
+     * This chronology is the default, and is suitable for all normal datetime processing.
+     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
+     * as it applies the modern Gregorian calendar rules before that date.
+     *
+     * @return the ISO chronology
+     */
+    public static Chronology getISO() {
+        return ISOChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the ISOChronology in the UTC zone.
+     * <p>
+     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
+     * This chronology is the default, and is suitable for all normal datetime processing.
+     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
+     * as it applies the modern Gregorian calendar rules before that date.
+     *
+     * @return the ISO chronology
+     */
+    public static Chronology getISOUTC() {
+        return ISOChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the ISOChronology in the specified zone.
+     * <p>
+     * {@link ISOChronology} defines all fields in line with the ISO8601 standard.
+     * This chronology is the default, and is suitable for all normal datetime processing.
+     * It is <i>unsuitable</i> for historical datetimes before October 15, 1582
+     * as it applies the modern Gregorian calendar rules before that date.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the ISO chronology
+     */
+    public static Chronology getISO(DateTimeZone zone) {
+        return ISOChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets an instance of the GJChronology in the default zone.
+     * <p>
+     * {@link GJChronology} defines all fields using standard meanings.
+     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
+     * The Gregorian calendar system is used after October 15, 1582, while the
+     * Julian calendar system is used before.
+     * <p>
+     * Unlike <code>GregorianCalendar</code>, this chronology returns a year of -1
+     * for 1 BCE, -2 for 2 BCE and so on. Thus there is no year zero.
+     * <p>
+     * This method uses the standard Julian to Gregorian cutover date of
+     * October 15th 1582. If you require a cutover on a different date, then use
+     * the factories on <code>GJChronology</code> itself.
+     * <p>
+     * When dealing solely with dates in the modern era, from 1600 onwards,
+     * we recommend using ISOChronology, which is the default.
+     *
+     * @return the GJ chronology
+     */
+    public static Chronology getGJ() {
+        return GJChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the GJChronology in the UTC zone.
+     * <p>
+     * {@link GJChronology} defines all fields using standard meanings.
+     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
+     * The Gregorian calendar system is used after October 15, 1582, while the
+     * Julian calendar system is used before.
+     * <p>
+     * Unlike <code>GregorianCalendar</code>, this chronology returns a year of -1
+     * for 1 BCE, -2 for 2 BCE and so on. Thus there is no year zero.
+     * <p>
+     * This method uses the standard Julian to Gregorian cutover date of
+     * October 15th 1582. If you require a cutover on a different date, then use
+     * the factories on <code>GJChronology</code> itself.
+     * <p>
+     * When dealing solely with dates in the modern era, from 1600 onwards,
+     * we recommend using ISOChronology, which is the default.
+     *
+     * @return the GJ chronology
+     */
+    public static Chronology getGJUTC() {
+        return GJChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the GJChronology in the specified zone.
+     * <p>
+     * {@link GJChronology} defines all fields using standard meanings.
+     * This chronology is intended to be used as a replacement for <code>GregorianCalendar</code>.
+     * The Gregorian calendar system is used after October 15, 1582, while the
+     * Julian calendar system is used before.
+     * <p>
+     * Unlike <code>GregorianCalendar</code>, this chronology returns a year of -1
+     * for 1 BCE, -2 for 2 BCE and so on. Thus there is no year zero.
+     * <p>
+     * This method uses the standard Julian to Gregorian cutover date of
+     * October 15th 1582. If you require a cutover on a different date, then use
+     * the factories on <code>GJChronology</code> itself.
+     * <p>
+     * When dealing solely with dates in the modern era, from 1600 onwards,
+     * we recommend using ISOChronology, which is the default.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the GJ chronology
+     */
+    public static Chronology getGJ(DateTimeZone zone) {
+        return GJChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets an instance of the GregorianChronology in the default zone.
+     * <p>
+     * {@link GregorianChronology} defines all fields using standard meanings.
+     * It uses the Gregorian calendar rules <i>for all time</i> (proleptic)
+     * thus it is NOT a replacement for <code>GregorianCalendar</code>.
+     * For that purpose, you should use {@link #getGJ()}.
+     * <p>
+     * The Gregorian calendar system defines a leap year every four years,
+     * except that every 100 years is not leap, but every 400 is leap.
+     * <p>
+     * Technically, this chronology is almost identical to the ISO chronology,
+     * thus we recommend using ISOChronology instead, which is the default.
+     *
+     * @return the Gregorian chronology
+     */
+    public static Chronology getGregorian() {
+        return GregorianChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the GregorianChronology in the UTC zone.
+     * <p>
+     * {@link GregorianChronology} defines all fields using standard meanings.
+     * It uses the Gregorian calendar rules <i>for all time</i> (proleptic)
+     * thus it is NOT a replacement for <code>GregorianCalendar</code>.
+     * For that purpose, you should use {@link #getGJ()}.
+     * <p>
+     * The Gregorian calendar system defines a leap year every four years,
+     * except that every 100 years is not leap, but every 400 is leap.
+     * <p>
+     * Technically, this chronology is almost identical to the ISO chronology,
+     * thus we recommend using ISOChronology instead, which is the default.
+     *
+     * @return the Gregorian chronology
+     */
+    public static Chronology getGregorianUTC() {
+        return GregorianChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the GregorianChronology in the specified zone.
+     * <p>
+     * {@link GregorianChronology} defines all fields using standard meanings.
+     * It uses the Gregorian calendar rules <i>for all time</i> (proleptic)
+     * thus it is NOT a replacement for <code>GregorianCalendar</code>.
+     * For that purpose, you should use {@link #getGJ()}.
+     * <p>
+     * The Gregorian calendar system defines a leap year every four years,
+     * except that every 100 years is not leap, but every 400 is leap.
+     * <p>
+     * Technically, this chronology is almost identical to the ISO chronology,
+     * thus we recommend using ISOChronology instead, which is the default.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the Gregorian chronology
+     */
+    public static Chronology getGregorian(DateTimeZone zone) {
+        return GregorianChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets an instance of the JulianChronology in the default zone.
+     * <p>
+     * {@link JulianChronology} defines all fields using standard meanings.
+     * It uses the Julian calendar rules <i>for all time</i> (proleptic).
+     * The Julian calendar system defines a leap year every four years.
+     *
+     * @return the Julian chronology
+     */
+    public static Chronology getJulian() {
+        return JulianChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the JulianChronology in the UTC zone.
+     * <p>
+     * {@link JulianChronology} defines all fields using standard meanings.
+     * It uses the Julian calendar rules <i>for all time</i> (proleptic).
+     * The Julian calendar system defines a leap year every four years.
+     *
+     * @return the Julian chronology
+     */
+    public static Chronology getJulianUTC() {
+        return JulianChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the JulianChronology in the specified zone.
+     * <p>
+     * {@link JulianChronology} defines all fields using standard meanings.
+     * It uses the Julian calendar rules <i>for all time</i> (proleptic).
+     * The Julian calendar system defines a leap year every four years.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the Julian chronology
+     */
+    public static Chronology getJulian(DateTimeZone zone) {
+        return JulianChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets an instance of the BuddhistChronology in the default zone.
+     * <p>
+     * {@link BuddhistChronology} defines all fields using standard meanings,
+     * however the year is offset by 543. The chronology cannot be used before
+     * year 1 in the Buddhist calendar.
+     *
+     * @return the Buddhist chronology
+     */
+    public static Chronology getBuddhist() {
+        return BuddhistChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the BuddhistChronology in the UTC zone.
+     * <p>
+     * {@link BuddhistChronology} defines all fields using standard meanings,
+     * however the year is offset by 543. The chronology cannot be used before
+     * year 1 in the Buddhist calendar.
+     *
+     * @return the Buddhist chronology
+     */
+    public static Chronology getBuddhistUTC() {
+        return BuddhistChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the BuddhistChronology in the specified zone.
+     * <p>
+     * {@link BuddhistChronology} defines all fields using standard meanings,
+     * however the year is offset by 543. The chronology cannot be used before
+     * year 1 in the Buddhist calendar.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the Buddhist chronology
+     */
+    public static Chronology getBuddhist(DateTimeZone zone) {
+        return BuddhistChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets an instance of the CopticChronology in the default zone.
+     * <p>
+     * {@link CopticChronology} defines fields sensibly for the Coptic calendar system.
+     * The Coptic calendar system defines every fourth year as leap.
+     * The year is broken down into 12 months, each 30 days in length.
+     * An extra period at the end of the year is either 5 or 6 days in length
+     * and is returned as a 13th month.
+     * Year 1 in the Coptic calendar began on August 29, 284 CE (Julian).
+     * The chronology cannot be used before the first Coptic year.
+     *
+     * @return the Coptic chronology
+     */
+    public static Chronology getCoptic() {
+        return CopticChronology.getInstance();
+    }
+
+    /**
+     * Gets an instance of the CopticChronology in the UTC zone.
+     * <p>
+     * {@link CopticChronology} defines fields sensibly for the Coptic calendar system.
+     * The Coptic calendar system defines every fourth year as leap.
+     * The year is broken down into 12 months, each 30 days in length.
+     * An extra period at the end of the year is either 5 or 6 days in length
+     * and is returned as a 13th month.
+     * Year 1 in the Coptic calendar began on August 29, 284 CE (Julian).
+     * The chronology cannot be used before the first Coptic year.
+     *
+     * @return the Coptic chronology
+     */
+    public static Chronology getCopticUTC() {
+        return CopticChronology.getInstanceUTC();
+    }
+
+    /**
+     * Gets an instance of the CopticChronology in the specified zone.
+     * <p>
+     * {@link CopticChronology} defines fields sensibly for the Coptic calendar system.
+     * The Coptic calendar system defines every fourth year as leap.
+     * The year is broken down into 12 months, each 30 days in length.
+     * An extra period at the end of the year is either 5 or 6 days in length
+     * and is returned as a 13th month.
+     * Year 1 in the Coptic calendar began on August 29, 284 CE (Julian).
+     * The chronology cannot be used before the first Coptic year.
+     *
+     * @param zone  the zone to use, null means default zone
+     * @return the Coptic chronology
+     */
+    public static Chronology getCoptic(DateTimeZone zone) {
+        return CopticChronology.getInstance(zone);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Returns the DateTimeZone that this Chronology operates in, or null if
      * unspecified.

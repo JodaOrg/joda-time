@@ -55,6 +55,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 import org.joda.time.chrono.MillisDurationField;
+import org.joda.time.chrono.PreciseDurationField;
 import org.joda.time.chrono.ScaledDurationField;
 import org.joda.time.chrono.UnsupportedDurationField;
 import org.joda.time.chrono.iso.ISOChronology;
@@ -69,8 +70,11 @@ import org.joda.time.chrono.iso.ISOChronology;
  * <li>DayHour - the duration is expressed in terms of days, hours, minutes, seconds
  *  and milliseconds
  * <li>YearMonth - the duration is expressed using all fields except weeks
- * <li>ISOYearMonth - as YearMonth, but with the month fixed at 30 days
  * <li>YearWeek - the duration is expressed using all fields except months
+ * <li>AverageYearMonth - as YearMonth, but years and months have fixed average lengths
+ * <li>PreciseYearMonth - as YearMonth, but years are fixed at 365 days,
+ *  and months are fixed at 30 days
+ * <li>PreciseYearWeek - as YearWeek, but years are fixed at 365 days
  * </ul>
  *
  * <p>
@@ -177,49 +181,6 @@ public abstract class DurationType implements Serializable {
      * Returns a DurationType of:
      *
      * <ul>
-     * <li>years
-     * <li>months (fixed at 30 days)
-     * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
-     * </ul>
-     */
-    public static DurationType getISOYearMonthType() {
-        return getISOYearMonthType(null);
-    }
-
-    /**
-     * Returns a DurationType of:
-     *
-     * <ul>
-     * <li>years
-     * <li>months (fixed at 30 days)
-     * <li>days
-     * <li>hours
-     * <li>minutes
-     * <li>seconds
-     * <li>milliseconds
-     * </ul>
-     *
-     * This factory method returns a DurationType that calculates using any
-     * Chronology. For best results, the Chronology's time zone should
-     * be UTC or have fixed offsets.
-     *
-     * @param chrono Chronology to use for calculations.
-     */
-    public static DurationType getISOYearMonthType(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstanceUTC();
-        }
-        return new ISOYearMonthType(chrono);
-    }
-
-    /**
-     * Returns a DurationType of:
-     *
-     * <ul>
      * <li>years (weekyears)
      * <li>weeks
      * <li>days
@@ -257,6 +218,89 @@ public abstract class DurationType implements Serializable {
             chrono = ISOChronology.getInstanceUTC();
         }
         return new YearWeekType(chrono);
+    }
+
+    /**
+     * Returns a precise DurationType of:
+     *
+     * <ul>
+     * <li>years (fixed at 365.2425 days)
+     * <li>months (fixed at 30.436875 days)
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     */
+    public static DurationType getAverageYearMonthType() {
+        return new AverageYearMonthType(ISOChronology.getInstanceUTC());
+    }
+
+    /**
+     * Returns a precise DurationType of:
+     *
+     * <ul>
+     * <li>years (fixed to chronology's average year)
+     * <li>months (fixed to chronology's average month)
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     *
+     * This factory method returns a DurationType that calculates using any
+     * Chronology. For best results, the Chronology's time zone should
+     * be UTC or have fixed offsets.
+     *
+     * @param chrono Chronology to use for calculations.
+     * @throws IllegalArgumentException if chronology produces an imprecise duration type
+     */
+    public static DurationType getAverageYearMonthType(Chronology chrono) {
+        if (chrono == null || chrono.equals(ISOChronology.getInstanceUTC())) {
+            return getAverageYearMonthType();
+        }
+        DurationType type = new AverageYearMonthType(chrono);
+        if (!type.isPrecise()) {
+            throw new IllegalArgumentException
+                ("Chronology produced an imprecise duration type");
+        }
+        return type;
+    }
+
+    /**
+     * Returns a precise DurationType of:
+     *
+     * <ul>
+     * <li>years (fixed at 365 days)
+     * <li>months (fixed at 30 days)
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     */
+    public static DurationType getPreciseYearMonthType() {
+        return new PreciseYearMonthType(ISOChronology.getInstanceUTC());
+    }
+
+    /**
+     * Returns a precise DurationType of:
+     *
+     * <ul>
+     * <li>years (fixed at 365 days)
+     * <li>weeks
+     * <li>days
+     * <li>hours
+     * <li>minutes
+     * <li>seconds
+     * <li>milliseconds
+     * </ul>
+     */
+    public static DurationType getPreciseYearWeekType() {
+        return new PreciseYearWeekType(ISOChronology.getInstanceUTC());
     }
 
     protected DurationType() {
@@ -591,42 +635,6 @@ public abstract class DurationType implements Serializable {
         }
     }
 
-    private static final class ISOYearMonthType extends DayHourType {
-        static final long serialVersionUID = 1203161678926193794L;
-
-        private final DurationField iMonths;
-        
-        public ISOYearMonthType(Chronology chrono) {
-            super(chrono);
-            iMonths = new ScaledDurationField(chrono.days(), "ISOMonths", 30);
-        }
-
-        public DurationType withChronology(Chronology chrono) {
-            if (chrono == iChronology) {
-                return this;
-            }
-            return new ISOYearMonthType(iChronology);
-        }
-
-        public boolean isPrecise() {
-            return years().isPrecise()
-                && months().isPrecise()
-                && super.isPrecise();
-        }
-
-        public DurationField years() {
-            return iChronology.years();
-        }
-
-        public DurationField months() {
-            return iMonths;
-        }
-
-        private Object readResolve() {
-            return getISOYearMonthType(iChronology);
-        }
-    }
-
     private static final class YearWeekType extends DayHourType {
         static final long serialVersionUID = 1347170237843447098L;
 
@@ -657,6 +665,106 @@ public abstract class DurationType implements Serializable {
 
         private Object readResolve() {
             return getYearWeekType(iChronology);
+        }
+    }
+
+    private static final class AverageYearMonthType extends DayHourType {
+        static final long serialVersionUID = -1629017135050918461L;
+
+        private final DurationField iYears;
+        private final DurationField iMonths;
+        
+        public AverageYearMonthType(Chronology chrono) {
+            super(chrono);
+            iYears = new PreciseDurationField("AverageYears", chrono.years().getUnitMillis());
+            iMonths = new PreciseDurationField("AverageMonths", chrono.months().getUnitMillis());
+        }
+
+        public DurationType withChronology(Chronology chrono) {
+            if (chrono == iChronology) {
+                return this;
+            }
+            return getAverageYearMonthType(chrono);
+        }
+
+        public DurationField years() {
+            return iYears;
+        }
+
+        public DurationField months() {
+            return iMonths;
+        }
+
+        private Object readResolve() {
+            return getAverageYearMonthType(iChronology);
+        }
+    }
+
+    private static final class PreciseYearMonthType extends DayHourType {
+        static final long serialVersionUID = 1203161678926193794L;
+
+        private final DurationField iYears;
+        private final DurationField iMonths;
+        
+        public PreciseYearMonthType(Chronology chrono) {
+            super(chrono);
+            iYears = new ScaledDurationField(chrono.days(), "PreciseYears", 365);
+            iMonths = new ScaledDurationField(chrono.days(), "PreciseMonths", 30);
+        }
+
+        public DurationType withChronology(Chronology chrono) {
+            return this;
+        }
+
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && months().isPrecise()
+                && super.isPrecise();
+        }
+
+        public DurationField years() {
+            return iYears;
+        }
+
+        public DurationField months() {
+            return iMonths;
+        }
+
+        private Object readResolve() {
+            return getPreciseYearMonthType();
+        }
+    }
+
+    private static final class PreciseYearWeekType extends DayHourType {
+        static final long serialVersionUID = -2040324323318740267L;
+
+        private final DurationField iYears;
+        
+        public PreciseYearWeekType(Chronology chrono) {
+            super(chrono);
+            iYears = new ScaledDurationField(chrono.days(), "PreciseYears", 365);
+        }
+
+        public DurationType withChronology(Chronology chrono) {
+            return this;
+        }
+
+        public boolean isPrecise() {
+            return years().isPrecise()
+                && weeks().isPrecise()
+                && super.isPrecise();
+        }
+
+        public DurationField years() {
+            return iYears;
+        }
+
+        public DurationField weeks() {
+            return iChronology.weeks();
+        }
+
+        private Object readResolve() {
+            return getPreciseYearWeekType();
         }
     }
 

@@ -352,6 +352,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
                     throw new IllegalArgumentException("Maximum value exceeded for add");
                 }
                 nextField = instant.getField(fieldIndex - 1);
+                // test only works if this field is UTC (ie. local)
                 if (getRangeDurationField() != nextField.getDurationField()) {
                     throw new IllegalArgumentException("Fields invalid for add");
                 }

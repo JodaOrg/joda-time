@@ -59,6 +59,7 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
@@ -139,13 +140,15 @@ public class TestBaseDateTimeField extends TestCase {
     }
 
     public void test_getAsText_RP_int_Locale() {
-        // ReadablePartial partial, int fieldValue, Locale locale
-        // TODO
+        BaseDateTimeField field = new MockBaseDateTimeField();
+        assertEquals("20", field.getAsText(new TimeOfDay(12, 30, 40, 50), 20, Locale.ENGLISH));
+        assertEquals("20", field.getAsText(new TimeOfDay(12, 30, 40, 50), 20, null));
     }
 
     public void test_getAsText_RP_Locale() {
-        // ReadablePartial partial, Locale locale
-        // TODO
+        BaseDateTimeField field = new MockBaseDateTimeField();
+        assertEquals("40", field.getAsText(new TimeOfDay(12, 30, 40, 50), Locale.ENGLISH));
+        assertEquals("40", field.getAsText(new TimeOfDay(12, 30, 40, 50), null));
     }
 
     public void test_getAsText_int_Locale() {
@@ -167,13 +170,15 @@ public class TestBaseDateTimeField extends TestCase {
     }
 
     public void test_getAsShortText_RP_int_Locale() {
-        // ReadablePartial partial, int fieldValue, Locale locale
-        // TODO
+        BaseDateTimeField field = new MockBaseDateTimeField();
+        assertEquals("20", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), 20, Locale.ENGLISH));
+        assertEquals("20", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), 20, null));
     }
 
     public void test_getAsShortText_RP_Locale() {
-        // ReadablePartial partial, Locale locale
-        // TODO
+        BaseDateTimeField field = new MockBaseDateTimeField();
+        assertEquals("40", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), Locale.ENGLISH));
+        assertEquals("40", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), null));
     }
 
     public void test_getAsShortText_int_Locale() {
@@ -200,7 +205,7 @@ public class TestBaseDateTimeField extends TestCase {
     public void test_add_RP_int_intarray_int() {
         int[] values = new int[] {10, 20, 30, 40};
         int[] expected = new int[] {10, 20, 30, 40};
-        BaseDateTimeField field = new MockBaseDateTimeField();
+        BaseDateTimeField field = new MockStandardBaseDateTimeField();
         int[] result = field.add(new TimeOfDay(), 2, values, 0);
         assertEquals(true, Arrays.equals(expected, result));
         
@@ -494,6 +499,18 @@ public class TestBaseDateTimeField extends TestCase {
         }
         public boolean isLenient() {
             return false;
+        }
+    }
+
+    static class MockStandardBaseDateTimeField extends MockBaseDateTimeField {
+        protected MockStandardBaseDateTimeField() {
+            super();
+        }
+        public DurationField getDurationField() {
+            return Chronology.getISOUTC().seconds();
+        }
+        public DurationField getRangeDurationField() {
+            return Chronology.getISOUTC().minutes();
         }
     }
 

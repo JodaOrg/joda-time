@@ -192,19 +192,18 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Appends just a printer. With no matching parser, a parser cannot be
-     * built from this DurationFormatterBuilder.
+     * Appends another formatter.
      *
      * @return this DurationFormatterBuilder
      */
-    public DurationFormatterBuilder append(DurationPrinter printer)
+    public DurationFormatterBuilder append(DurationFormatter formatter)
         throws IllegalArgumentException
     {
-        if (printer == null) {
-            throw new IllegalArgumentException("No printer supplied");
+        if (formatter == null) {
+            throw new IllegalArgumentException("No formatter supplied");
         }
         clearPrefix();
-        iFormatters.add(printer);
+        iFormatters.add(formatter);
         return this;
     }
 
@@ -353,7 +352,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric years field, if supported.
+     * Instruct the printer to emit a decimal years field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -363,7 +362,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric years field, if supported.
+     * Instruct the printer to emit a decimal years field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -373,7 +372,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric weeks field, if supported.
+     * Instruct the printer to emit a decimal weeks field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -383,7 +382,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric days field, if supported.
+     * Instruct the printer to emit a decimal days field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -393,7 +392,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric hours field, if supported.
+     * Instruct the printer to emit a decimal hours field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -403,7 +402,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric minutes field, if supported.
+     * Instruct the printer to emit a decimal minutes field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -413,7 +412,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric seconds field, if supported.
+     * Instruct the printer to emit a decimal seconds field, if supported.
      *
      * @return this DurationFormatterBuilder
      */
@@ -423,7 +422,7 @@ public class DurationFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit a numeric millis field, if supported.
+     * Instruct the printer to emit a decimal millis field, if supported.
      *
      * @return this DurationFormatterBuilder
      */

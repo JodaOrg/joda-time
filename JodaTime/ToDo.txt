@@ -1,10 +1,11 @@
 JodaTime ToDo list
 ==================
 
-1.0B1
------
+for 1.0
+-------
 
 Fix TODOs in code
+Review Formatter code changes
 
 
 

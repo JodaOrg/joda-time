@@ -5,7 +5,7 @@
   <id>joda-time</id>
   <name>Joda time</name>
   <groupId>joda-time</groupId>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>0.98</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>

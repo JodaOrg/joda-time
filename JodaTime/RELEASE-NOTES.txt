@@ -87,10 +87,16 @@ This should greatly simplify the task of implementing your own unusual date clas
 The final modifiers have also been removed in many places.
 
 
+Still under review for 1.0
+--------------------------
+
+The format package is still under final review for 1.0.
+The 0.98 release is being done in according to the Release Early mantra.
+
+
 Feedback
 --------
 
-Joda-time is now effectively feature complete for a 1.0 release.
 All feedback is welcomed at joda-interest@lists.sourceforge.net.
 
 The Joda team

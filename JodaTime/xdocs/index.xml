@@ -37,7 +37,7 @@ String monthInFrench = dt.monthOfYear().getAsText(Locale.FRENCH);
 String dateAsISO8601Format = dt.toString();
 </source>
 <p>
-And this is only a flavour of what is available, see the <a href="api-1.0/index.html">API</a>
+And this is only a flavour of what is available, see the <a href="api-0.98/index.html">API</a>
 or <a href="userguide.html">users guide</a> for more detail.
 </p>
 
@@ -72,7 +72,7 @@ Various documentation is available:
 <ul>
 <li>The <a href="userguide.html">user guide</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
-<li>The javadoc for the <a href="api-1.0/index.html">current release</a></li>
+<li>The javadoc for the <a href="api-0.98/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime">CVS repository</a></li>
@@ -82,10 +82,12 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.0</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 0.98</a>
 is the current latest release.
 This release is a stable release that has extensive testing suites.
-Our intention is to support the release as would be expected of a 1.0 release.
+As a result of these testing suites, the main API has been firmed up and should not change between 0.98 and 1.0.
+There is a small amount of work still to do in the format package, which may change the API.
+When the final 1.0 release is made, our intention is to support the release as would be expected.
 </p>
 </section>
 

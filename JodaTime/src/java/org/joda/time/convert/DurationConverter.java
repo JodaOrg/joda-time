@@ -88,7 +88,6 @@ public interface DurationConverter extends Converter {
      *
      * @param duration duration to get modified
      * @param object  the object to convert, must not be null
-     * @return the millisecond duration
      * @throws ClassCastException if the object is invalid
      */
     void setInto(ReadWritableDuration duration, Object object);

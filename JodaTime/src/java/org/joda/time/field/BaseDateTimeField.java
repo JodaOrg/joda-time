@@ -359,37 +359,69 @@ public abstract class BaseDateTimeField extends DateTimeField implements Seriali
      * 
      * @param instant  the partial instant
      * @param fieldIndex  the index of this field in the instant
-     * @param value  the value to set, in the units of the field
-     * @return the updated milliseconds
+     * @param values  the values to update
+     * @param newValue  the value to set, in the units of the field
+     * @return the updated values
      * @throws IllegalArgumentException if the value is invalid
      */
-    public int[] set(PartialInstant instant, int fieldIndex, int value) {
-        FieldUtils.verifyValueBounds(this, value, getMinimumValue(instant), getMaximumValue(instant));
-        int[] array = instant.getValues();
-        array[fieldIndex] = value;
-        return array;
+    public int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue) {
+        FieldUtils.verifyValueBounds(this, newValue, getMinimumValue(instant), getMaximumValue(instant));
+        values[fieldIndex] = newValue;
+        return values;
     }
 
     /**
-     * Sets a value in the milliseconds supplied from a human-readable, text
-     * value. If the specified locale is null, the default locale is used.
+     * Sets a value in the milliseconds supplied from a human-readable, text value.
+     * If the specified locale is null, the default locale is used.
      * <p>
-     * The default implementation returns set(instant,
-     * Integer.parseInt(instant)).
+     * This implementation uses {@link #convertText(String, Locale)} and
+     * {@link #set(long, int)}.
      * <p>
      * Note: subclasses that override this method should also override
      * getAsText.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to set in
      * @param text  the text value to set
-     * @param locale the locale to use for selecting a text symbol, null for
-     * default
+     * @param locale the locale to use for selecting a text symbol, null for default
      * @return the updated milliseconds
      * @throws IllegalArgumentException if the text value is invalid
      */
     public long set(long instant, String text, Locale locale) {
+        int value = convertText(text, locale);
+        return set(instant, value);
+    }
+
+    /**
+     * Sets a value in the milliseconds supplied from a human-readable, text value.
+     * If the specified locale is null, the default locale is used.
+     * <p>
+     * This implementation uses {@link #convertText(String, Locale)} and
+     * {@link #set(PartialInstant, int, int[], int)}.
+     *
+     * @param instant  the partial instant
+     * @param fieldIndex  the index of this field in the instant
+     * @param values  the values of the partial instant which should be updated
+     * @param text  the text value to set
+     * @param locale the locale to use for selecting a text symbol, null for default
+     * @return the passed in values
+     * @throws IllegalArgumentException if the text value is invalid
+     */
+    public int[] set(PartialInstant instant, int fieldIndex, int[] values, String text, Locale locale) {
+        int value = convertText(text, locale);
+        return set(instant, fieldIndex, values, value);
+    }
+
+    /**
+     * Convert the specified text and locale into a value.
+     * 
+     * @param text  the text to convert
+     * @param locale  the locale to convert using
+     * @return the value extracted from the text
+     * @throws IllegalArgumentException if the text is invalid
+     */
+    protected int convertText(String text, Locale locale) {
         try {
-            return set(instant, Integer.parseInt(text));
+            return Integer.parseInt(text);
         } catch (NumberFormatException ex) {
             throw new IllegalArgumentException("Invalid " + getName() + " text: " + text);
         }

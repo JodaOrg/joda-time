@@ -193,8 +193,12 @@ public class DelegatedDateTimeField extends DateTimeField implements Serializabl
         return iField.set(instant, text);
     }
 
-    public int[] set(PartialInstant instant, int fieldIndex, int value) {
-        return iField.set(instant, fieldIndex, value);
+    public int[] set(PartialInstant instant, int fieldIndex, int[] values, int newValue) {
+        return iField.set(instant, fieldIndex, values, newValue);
+    }
+
+    public int[] set(PartialInstant instant, int fieldIndex, int[] values, String text, Locale locale) {
+        return iField.set(instant, fieldIndex, values, text, locale);
     }
 
     public DurationField getDurationField() {

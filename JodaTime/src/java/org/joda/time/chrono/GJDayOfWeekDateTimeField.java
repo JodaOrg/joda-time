@@ -116,15 +116,15 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     }
 
     /**
-     * Set the value of the specified time instant from text.
+     * Convert the specified text and locale into a value.
      * 
-     * @param instant  the time instant in millis to update
-     * @param text  the text to set from
-     * @param locale  the locale to use
-     * @return the updated millis
+     * @param text  the text to convert
+     * @param locale  the locale to convert using
+     * @return the value extracted from the text
+     * @throws IllegalArgumentException if the text is invalid
      */
-    public long set(long instant, String text, Locale locale) {
-        return set(instant, GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text));
+    protected int convertText(String text, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).dayOfWeekTextToValue(text);
     }
 
     public DurationField getRangeDurationField() {

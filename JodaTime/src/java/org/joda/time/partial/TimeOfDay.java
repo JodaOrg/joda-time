@@ -55,6 +55,7 @@ package org.joda.time.partial;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Locale;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -744,41 +745,41 @@ public final class TimeOfDay implements PartialInstant, Serializable {
          * @throws IllegalArgumentException if the value isn't valid
          */
         public TimeOfDay setCopy(int value) {
-            int[] newValues = getField().set(iInstant, iFieldIndex, value);
+            int[] newValues = iInstant.getValues();
+            getField().set(iInstant, iFieldIndex, newValues, value);
             return new TimeOfDay(iInstant, newValues);
         }
 
-//        /**
-//         * Sets this field in a copy of the TimeOfDay to a parsed text value.
-//         * <p>
-//         * The TimeOfDay attached to this property is unchanged by this call.
-//         * 
-//         * @param text  the text value to set
-//         * @param locale  optional locale to use for selecting a text symbol
-//         * @return a copy of the TimeOfDay with the field value changed
-//         * @throws IllegalArgumentException if the text value isn't valid
-//         */
-//        public TimeOfDay setCopy(String text, Locale locale) {
-//            int[] newValues = getField().set(getInstant(), text, locale);
-//            return new TimeOfDay(getInstant(), newValues);
-//        }
-//
-//        /**
-//         * Sets this field in a copy of the TimeOfDay to a parsed text value.
-//         * <p>
-//         * The TimeOfDay attached to this property is unchanged by this call.
-//         * This operation is faster than converting a TimeOfDay to a MutableTimeOfDay
-//         * and back again when setting one field. When setting multiple fields,
-//         * it is generally quicker to make the conversion to MutableTimeOfDay.
-//         * 
-//         * @param text  the text value to set
-//         * @return a copy of the TimeOfDay with the field value changed
-//         * @throws IllegalArgumentException if the text value isn't valid
-//         */
-//        public final TimeOfDay setCopy(String text) {
-//            return setCopy(text, null);
-//        }
+        /**
+         * Sets this field in a copy of the TimeOfDay to a parsed text value.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         * 
+         * @param text  the text value to set
+         * @param locale  optional locale to use for selecting a text symbol
+         * @return a copy of the TimeOfDay with the field value changed
+         * @throws IllegalArgumentException if the text value isn't valid
+         */
+        public TimeOfDay setCopy(String text, Locale locale) {
+            int[] newValues = iInstant.getValues();
+            getField().set(iInstant, iFieldIndex, newValues, text, locale);
+            return new TimeOfDay(iInstant, newValues);
+        }
 
+        /**
+         * Sets this field in a copy of the TimeOfDay to a parsed text value.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         * 
+         * @param text  the text value to set
+         * @return a copy of the TimeOfDay with the field value changed
+         * @throws IllegalArgumentException if the text value isn't valid
+         */
+        public TimeOfDay setCopy(String text) {
+            return setCopy(text, null);
+        }
+
+// TODO
 //        //-----------------------------------------------------------------------
 //        /**
 //         * Rounds to the lowest whole unit of this field on a copy of this TimeOfDay.

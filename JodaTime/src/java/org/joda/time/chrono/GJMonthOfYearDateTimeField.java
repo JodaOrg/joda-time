@@ -319,8 +319,16 @@ final class GJMonthOfYearDateTimeField extends ImpreciseDateTimeField {
             iChronology.getMillisOfDay(instant);
     }
 
-    public long set(long instant, String text, Locale locale) {
-        return set(instant, GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text));
+    /**
+     * Convert the specified text and locale into a value.
+     * 
+     * @param text  the text to convert
+     * @param locale  the locale to convert using
+     * @return the value extracted from the text
+     * @throws IllegalArgumentException if the text is invalid
+     */
+    protected int convertText(String text, Locale locale) {
+        return GJLocaleSymbols.forLocale(locale).monthOfYearTextToValue(text);
     }
 
     public DurationField getRangeDurationField() {

@@ -308,7 +308,7 @@ public class PeriodFormatterBuilder {
         if (text == null) {
             throw new IllegalArgumentException();
         }
-        return appendPrefix(new SingularAffix(text));
+        return appendPrefix(new SimpleAffix(text));
     }
 
     /**
@@ -467,7 +467,7 @@ public class PeriodFormatterBuilder {
         if (text == null) {
             throw new IllegalArgumentException();
         }
-        return appendSuffix(new SingularAffix(text));
+        return appendSuffix(new SimpleAffix(text));
     }
 
     /**
@@ -643,8 +643,10 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Defines a formatted field's prefix or suffix text.
+     * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
     private static interface DurationFieldAffix {
         int calculatePrintedLength(int value);
@@ -664,10 +666,14 @@ public class PeriodFormatterBuilder {
         int scan(String durationStr, int position);
     }
 
-    private static final class SingularAffix implements DurationFieldAffix {
+    //-----------------------------------------------------------------------
+    /**
+     * Implements an affix where the text does not vary by the amount.
+     */
+    private static final class SimpleAffix implements DurationFieldAffix {
         private final String iText;
 
-        SingularAffix(String text) {
+        SimpleAffix(String text) {
             iText = text;
         }
 
@@ -705,6 +711,11 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Implements an affix where the text varies by the amount of the field.
+     * Only singular (1) and plural (not 1) are supported.
+     */
     private static final class PluralAffix implements DurationFieldAffix {
         private final String iSingularText;
         private final String iPluralText;
@@ -776,6 +787,10 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Builds a composite affix by merging two other affix implementations.
+     */
     private static final class CompositeAffix implements DurationFieldAffix {
         private final DurationFieldAffix iLeft;
         private final DurationFieldAffix iRight;
@@ -817,6 +832,10 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Formats the numeric value of a field, potentially with prefix/suffix.
+     */
     private static final class FieldFormatter extends AbstractPeriodFormatter
         implements PeriodFormatter
     {
@@ -1203,6 +1222,10 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Handles a simple literal piece of text.
+     */
     private static final class Literal extends AbstractPeriodFormatter
         implements PeriodFormatter
     {
@@ -1237,6 +1260,11 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Handles a separator, that splits the fields into multiple parts.
+     * For example, the 'T' in the ISO8601 standard.
+     */
     private static final class Separator extends AbstractPeriodFormatter
         implements PeriodFormatter
     {
@@ -1345,6 +1373,10 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Composite implementation that merges other fields to create a full pattern.
+     */
     private static final class Composite extends AbstractPeriodFormatter
         implements PeriodFormatter
     {
@@ -1405,6 +1437,10 @@ public class PeriodFormatterBuilder {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Selects between a number of choices based on which matches best.
+     */
     private static final class AlternateSelector extends AbstractPeriodFormatter
         implements PeriodFormatter
     {

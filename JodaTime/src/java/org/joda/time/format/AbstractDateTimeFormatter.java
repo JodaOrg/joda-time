@@ -225,7 +225,19 @@ public abstract class AbstractDateTimeFormatter {
     }
     
     public long parseMillis(final String text) {
-        return parseMillis(text, 0);
+        DateTimeParser p = (DateTimeParser)this;
+        DateTimeParserBucket bucket = createBucket(0);
+
+        int newPos = p.parseInto(bucket, text, 0);
+        if (newPos >= 0) {
+            if (newPos >= text.length()) {
+                return bucket.computeMillis(true);
+            }
+        } else {
+            newPos = ~newPos;
+        }
+
+        throw new IllegalArgumentException(createErrorMessage(text, newPos));
     }
 
     public long parseMillis(final String text, final long instantLocal) {

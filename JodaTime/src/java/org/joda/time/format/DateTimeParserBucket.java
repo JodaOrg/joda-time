@@ -209,6 +209,18 @@ public class DateTimeParserBucket {
      * @throws IllegalArgumentException if any field is out of range
      */
     public long computeMillis() {
+        return computeMillis(false);
+    }
+
+    /**
+     * Computes the parsed datetime by setting the saved fields. This method is
+     * idempotent, but it is not thread-safe.
+     *
+     * @param resetFields false by default, but when true, unsaved field values are cleared
+     * @return milliseconds since 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    public long computeMillis(boolean resetFields) {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
         if (iSavedFieldsShared) {
@@ -219,7 +231,7 @@ public class DateTimeParserBucket {
 
         long millis = iMillis;
         for (int i=0; i<count; i++) {
-            millis = savedFields[i].set(millis);
+            millis = savedFields[i].set(millis, resetFields);
         }
 
         if (iZone == null) {
@@ -288,12 +300,16 @@ public class DateTimeParserBucket {
             iLocale = locale;
         }
 
-        long set(long millis) {
+        long set(long millis, boolean reset) {
             if (iText == null) {
-                return iField.set(millis, iValue);
+                millis = iField.set(millis, iValue);
             } else {
-                return iField.set(millis, iText, iLocale);
+                millis = iField.set(millis, iText, iLocale);
             }
+            if (reset) {
+                millis = iField.roundFloor(millis);
+            }
+            return millis;
         }
 
         /**

@@ -354,7 +354,7 @@ public final class YearMonthDay
      */
     public YearMonthDay withField(DateTimeFieldType fieldType, int value) {
         int index = indexOfSupported(fieldType);
-        if (value == 0) {
+        if (value == getValue(index)) {
             return this;
         }
         int[] newValues = getValues();

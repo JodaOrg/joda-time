@@ -60,6 +60,7 @@ import org.joda.time.DateTimeZone;
  * Service provider factory for time zones.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public interface Provider {
     /**

@@ -63,6 +63,7 @@ import org.joda.time.field.FieldUtils;
  * Provides time calculations for the year of era component of time.
  * 
  * @author Brian S O'Neill
+ * @since 1.0
  */
 final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
 

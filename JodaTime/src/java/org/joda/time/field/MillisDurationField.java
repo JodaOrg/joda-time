@@ -65,6 +65,7 @@ import org.joda.time.DurationFieldType;
  * MillisDurationField is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public final class MillisDurationField extends DurationField implements Serializable {
 

@@ -96,6 +96,7 @@ import org.joda.time.chrono.ISOChronology;
  * may be safely invoked by multiple threads.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class ZoneInfoCompiler {
     static DateTimeOfYear cStartOfYear;

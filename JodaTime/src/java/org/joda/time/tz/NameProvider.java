@@ -59,6 +59,7 @@ import java.util.Locale;
  * Service provider factory for localized time zone names.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public interface NameProvider {
     /**

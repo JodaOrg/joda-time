@@ -63,6 +63,7 @@ import org.joda.time.DateTimeZone;
  * CachedDateTimeZone is thread-safe and immutable.
  * 
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class CachedDateTimeZone extends DateTimeZone {
 

@@ -65,7 +65,6 @@ import org.joda.time.field.ImpreciseDateTimeField;
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @version 1.0
  * @since 1.0
  * @see org.joda.time.DateTimeField
  */

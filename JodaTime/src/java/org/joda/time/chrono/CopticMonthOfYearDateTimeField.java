@@ -62,6 +62,7 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  * 
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 final class CopticMonthOfYearDateTimeField extends PreciseDurationDateTimeField {
 

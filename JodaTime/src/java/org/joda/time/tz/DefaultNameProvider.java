@@ -64,6 +64,7 @@ import java.util.Locale;
  * DefaultNameProvider is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class DefaultNameProvider implements NameProvider {
     // locale -> (id -> (nameKey -> [shortName, name]))

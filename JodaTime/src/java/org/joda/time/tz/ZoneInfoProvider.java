@@ -73,6 +73,7 @@ import org.joda.time.DateTimeZone;
  * ZoneInfoProvider is thread-safe and publicly immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class ZoneInfoProvider implements Provider {
     private static Map loadZoneInfoMap(InputStream in) throws IOException {

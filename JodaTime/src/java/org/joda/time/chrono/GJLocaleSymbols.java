@@ -62,6 +62,7 @@ import java.util.Locale;
  * Utility class used by a few of the GJDateTimeFields.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 class GJLocaleSymbols {
     private static final int FAST_CACHE_SIZE = 64;

@@ -61,6 +61,7 @@ import org.joda.time.DateTimeZone;
  * FixedDateTimeZone is thread-safe and immutable.
  * 
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public final class FixedDateTimeZone extends DateTimeZone {
 

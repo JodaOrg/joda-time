@@ -71,6 +71,7 @@ import org.joda.time.DurationFieldType;
  *
  * @author Brian S O'Neill
  * @see DelegatedDurationField
+ * @since 1.0
  */
 public class DecoratedDurationField extends BaseDurationField {
 

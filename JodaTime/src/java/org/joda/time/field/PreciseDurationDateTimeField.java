@@ -63,6 +63,7 @@ import org.joda.time.DurationField;
  * subclasses must be as well.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
 

@@ -74,6 +74,7 @@ import org.joda.time.DurationFieldType;
  *
  * @author Brian S O'Neill
  * @see PreciseDateTimeField
+ * @since 1.0
  */
 public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
 

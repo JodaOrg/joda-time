@@ -67,6 +67,7 @@ package org.joda.time;
  * instant that can be used to 'fill in the gaps' and specify a time zone.
  *
  * @author Stephen Colebourne
+ * @since 1.0
  */
 public interface ReadablePartial {
 

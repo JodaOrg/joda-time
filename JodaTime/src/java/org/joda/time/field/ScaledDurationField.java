@@ -65,6 +65,7 @@ import org.joda.time.DurationFieldType;
  * @see PreciseDurationField
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class ScaledDurationField extends DecoratedDurationField {
 

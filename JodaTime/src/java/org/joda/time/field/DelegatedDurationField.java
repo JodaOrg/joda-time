@@ -66,6 +66,7 @@ import org.joda.time.DurationFieldType;
  *
  * @author Brian S O'Neill
  * @see DecoratedDurationField
+ * @since 1.0
  */
 public class DelegatedDurationField extends DurationField implements Serializable {
 

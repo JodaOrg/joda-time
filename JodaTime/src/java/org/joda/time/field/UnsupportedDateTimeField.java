@@ -67,6 +67,7 @@ import org.joda.time.ReadablePartial;
  * UnsupportedDateTimeField is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public final class UnsupportedDateTimeField extends DateTimeField implements Serializable {
 

@@ -68,7 +68,6 @@ import org.joda.time.field.UnsupportedDurationField;
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @version 1.0
  * @since 1.0
  */
 final class GJEraDateTimeField extends BaseDateTimeField {

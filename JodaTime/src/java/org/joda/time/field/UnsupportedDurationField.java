@@ -64,6 +64,7 @@ import org.joda.time.DurationFieldType;
  * UnsupportedDurationField is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public final class UnsupportedDurationField extends DurationField implements Serializable {
 

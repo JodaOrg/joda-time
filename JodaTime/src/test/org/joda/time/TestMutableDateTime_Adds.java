@@ -231,6 +231,15 @@ public class TestMutableDateTime_Adds extends TestCase {
         assertEquals(2, test.getMonthOfYear());
     }
 
+    public void testAddWrapField_DateTimeField_int2() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        try {
+            test.addWrapField(null, 2010);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        assertEquals(TEST_TIME1, test.getMillis());
+    }
+
     //-----------------------------------------------------------------------
     public void testAddYears_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 5, 6, 7, 8);

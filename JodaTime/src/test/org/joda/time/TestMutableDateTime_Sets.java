@@ -374,6 +374,20 @@ public class TestMutableDateTime_Sets extends TestCase {
         assertEquals(new DateTime(TEST_TIME_NOW).getMillisOfSecond(), test.getMillisOfSecond());
     }
 
+    public void testSetTime_Object3() {
+        DateTime temp = new DateTime(2010, 12, 3, 5, 7, 9, 11);
+        DateTime setter = new DateTime(temp.getMillis(), new MockNullZoneChronology());
+        MutableDateTime test = new MutableDateTime(2002, 6, 9, 12, 24, 48, 501);
+        test.setTime(setter);
+        assertEquals(2002, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+        assertEquals(5, test.getHourOfDay());
+        assertEquals(7, test.getMinuteOfHour());
+        assertEquals(9, test.getSecondOfMinute());
+        assertEquals(11, test.getMillisOfSecond());
+    }
+
     //-----------------------------------------------------------------------
     public void testSetDateTime_int_int_int_int_int_int_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 12, 24, 48, 501);

@@ -794,82 +794,57 @@ public class TestDateTimeComparator extends BulkTest {
      * Test comparator operation with null object(s).
      */
     public void testNullDT() {
-        try
-        {
-            aDateTime = getADate( "2000-01-01T00:00:00" );
-            assertEquals("NULLDT Expected Fail", 0,     // should not matter
-                    cYear.compare( null, aDateTime ) );
-        }
-        catch(IllegalArgumentException iae)
-        {
-            return;
-        }
-        fail("null object failed");
-    } // end of testNullDT
+        // null means now
+        aDateTime = getADate("2000-01-01T00:00:00");
+        assertTrue(cYear.compare(null, aDateTime) > 0);
+        assertTrue(cYear.compare(aDateTime, null) < 0);
+    }
 
     /**
      * Test comparator operation with an invalid object type.
      */
     public void testInvalidObj() {
-        try
-        {
-            aDateTime = getADate( "2000-01-01T00:00:00" );
-            assertEquals("INVLO Expected Fail", 0,  // should not matter
-                    cYear.compare( "FreeBird" , aDateTime ) );
-        }
-        catch(ClassCastException cce)
-        {
-            return;
-        }
-        catch(IllegalArgumentException iae)
-        {
-            return;
-        }
-        fail("Invalid object failed");
-    } // end of testInvalidObj
+        aDateTime = getADate("2000-01-01T00:00:00");
+        try {
+            cYear.compare("FreeBird", aDateTime);
+            fail("Invalid object failed");
+        } catch (IllegalArgumentException cce) {}
+    }
 
-
-    /*
-     * -----------------------------------------
-     * private convenience methods
-     * -----------------------------------------
-     */
-    /*
-     * getADate
+    // private convenience methods
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a date to test with.
      */
     private DateTime getADate(String s) {
         DateTime retDT = null;
-        try
-        {
-            retDT = new DateTime( s, DateTimeZone.UTC );
-        }
-        catch(IllegalArgumentException pe)
-        {
+        try {
+            retDT = new DateTime(s, DateTimeZone.UTC);
+        } catch (IllegalArgumentException pe) {
             pe.printStackTrace();
         }
         return retDT;
-    } // end of getADate
-    /*
-     * loadAList
+    }
+
+    /**
+     * Load a string array.
      */
     private List loadAList(String[] someStrs) {
         List newList = new ArrayList();
-        try
-        {
+        try {
             for (int i = 0; i < someStrs.length; ++i) {
-                newList.add( new DateTime( someStrs[i], DateTimeZone.UTC ) );
+                newList.add(new DateTime(someStrs[i], DateTimeZone.UTC));
             } // end of the for
-        }
-        catch(IllegalArgumentException pe)
-        {
+        } catch (IllegalArgumentException pe) {
             pe.printStackTrace();
         }
         return newList;
-    } // end of loadAList
-    /*
-     * isListSorted
+    }
+
+    /**
+     * Check if the list is sorted.
      */
-    private boolean isListSorted( List tl ) {
+    private boolean isListSorted(List tl) {
         // tl must be populated with DateTime objects.
         DateTime lhDT = (DateTime)tl.get(0);
         DateTime rhDT = null;
@@ -882,8 +857,8 @@ public class TestDateTimeComparator extends BulkTest {
             //
             lhVal = rhVal;  // swap for next iteration
             lhDT = rhDT;    // swap for next iteration
-        } // end of the for
+        }
         return true;
-    } // end of isListSorted
+    }
 
-} // end of class TestDateTimeComparator
+}

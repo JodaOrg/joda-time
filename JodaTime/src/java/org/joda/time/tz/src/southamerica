@@ -1,4 +1,4 @@
-# @(#)southamerica	7.49
+# @(#)southamerica	7.50
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -390,9 +390,9 @@ Rule	Brazil	1993	only	-	Jan	31	 0:00	0	-
 # Decree <a href="http://pcdsh01.on.br/HV942.htm">942</a> (1993-09-28)
 # adopted by same states, plus AM.
 # Decree <a href="http://pcdsh01.on.br/HV1252.htm">1,252</a> (1994-09-22)
-# adopted by same states, minus AM.
+# adopted by same states, minus AM and MT.
 # Decree <a href="http://pcdsh01.on.br/HV1636.htm">1,636</a> (1995-09-14)
-# adopted by same states, plus TO.
+# adopted by same states, plus MT and TO.
 # Decree <a href="http://pcdsh01.on.br/HV1674.htm">1,674</a> (1995-10-13)
 # adds AL, SE.
 Rule	Brazil	1993	1995	-	Oct	Sun>=11	 0:00	1:00	S
@@ -455,11 +455,19 @@ Rule	Brazil	2003	max	-	Oct	Sun>=15	 0:00	1:00	S
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 #
-# Atlantic islands: Fernando de Noronha, Trindade, Martin Vaz,
-# Atol das Rocas, and Penedos de Sao Pedro e Sao Paulo
+# Fernando de Noronha (administratively part of PE)
 Zone America/Noronha	-2:09:40 -	LMT	1914
 			-2:00	Brazil	FN%sT	1990 Sep 17
+			-2:00	-	FNT	1999 Sep 30
+			-2:00	Brazil	FN%sT	2000 Oct 15
+			-2:00	-	FNT	2001 Sep 13
+			-2:00	Brazil	FN%sT	2002 Oct  1
 			-2:00	-	FNT
+# Other Atlantic islands have no permanent settlement.
+# These include Trindade and Martin Vaz (administratively part of ES),
+# Atol das Rocas (RN), and Penedos de Sao Pedro e Sao Paulo (PE).
+# Fernando de Noronha was a separate territory from 1942-09-02 to 1989-01-01;
+# it also included the Penedos.
 #
 # Amapa (AP), east Para (PA)
 # East Para includes Belem, Maraba, Serra Norte, and Sao Felix do Xingu.
@@ -528,6 +536,8 @@ Zone America/Campo_Grande -3:38:28 -	LMT	1914
 #
 # Mato Grosso (MT)
 Zone America/Cuiaba	-3:44:20 -	LMT	1914
+			-4:00	Brazil	AM%sT	1994 Sep 22
+			-4:00	-	AMT	1995 Sep 14
 			-4:00	Brazil	AM%sT	2003 Sep 24
 			-4:00	-	AMT
 #
@@ -811,13 +821,22 @@ Zone America/Asuncion	-3:50:40 -	LMT	1890
 			-4:00	Para	PY%sT
 
 # Peru
+#
+# <a href="news:xrGmb.39935$gA1.13896113@news4.srv.hcvlny.cv.net">
+# From Evelyn C. Leeper via Mark Brader (2003-10-26):</a>
+# When we were in Peru in 1985-1986, they apparently switched over 
+# sometime between December 29 and January 3 while we were on the Amazon.
+#
+# From Paul Eggert (2003-11-02):
+# Shanks doesn't have this transition.  Assume 1986 was like 1987.
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Peru	1938	only	-	Jan	 1	0:00	1:00	S
 Rule	Peru	1938	only	-	Apr	 1	0:00	0	-
 Rule	Peru	1938	1939	-	Sep	lastSun	0:00	1:00	S
 Rule	Peru	1939	1940	-	Mar	Sun>=24	0:00	0	-
-Rule	Peru	1987	only	-	Jan	 1	0:00	1:00	S
-Rule	Peru	1987	only	-	Apr	 1	0:00	0	-
+Rule	Peru	1986	1987	-	Jan	 1	0:00	1:00	S
+Rule	Peru	1986	1987	-	Apr	 1	0:00	0	-
 Rule	Peru	1990	only	-	Jan	 1	0:00	1:00	S
 Rule	Peru	1990	only	-	Apr	 1	0:00	0	-
 # IATA is ambiguous for 1993/1995; go with Shanks.

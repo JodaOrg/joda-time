@@ -1,4 +1,4 @@
-# @(#)asia	7.72
+# @(#)asia	7.73
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -1011,22 +1011,33 @@ Zone	Asia/Beirut	2:22:00 -	LMT	1880
 Rule	NBorneo	1935	1941	-	Sep	14	0:00	0:20	TS # one-Third Summer
 Rule	NBorneo	1935	1941	-	Dec	14	0:00	0	-
 #
-# Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 # peninsular Malaysia
+# From Paul Eggert (2003-11-01):
+# The data here are taken from Mok Ly Yng (2003-10-30)
+# <http://www.math.nus.edu.sg/aslaksen/teaching/timezone.html>.
+# Before 1901, Penang, Malacca and Singapore each had their own time zone;
+# assume Kuala Lumpur used Malaccan time.
+# Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone Asia/Kuala_Lumpur	6:46:48 -	LMT	1880
-			6:55:24	-	SMT	1905 Jun # Singapore Mean Time
-			7:00	-	MALT	1933	 # Malaya Time
-			7:20	-	MALT	1942 Feb 15
-			9:00	-	JST	1945 Sep 2
-			7:20	-	MALT	1950
-			7:30	-	MALT	1982 May
+			6:49:00	-	MMT	1901 Jan  1 # Malacca Mean Time
+			6:55:25	-	SMT	1905 Jun  1 # Singapore M.T.
+			7:00	-	MALT	1933 Jan  1 # Malaya Time
+			7:00	0:20	MALST	1936
+			7:20	-	MALT	1941 Sep  1
+			7:30	-	MALT	1942 Feb 16
+			9:00	-	JST	1945 Sep 12
+			7:30	-	MALT	1982 Jan  1
 			8:00	-	MYT	# Malaysia Time
 # Sabah & Sarawak
+# From Paul Eggert (2003-11-01):
+# The data here are mostly from Shanks, but the 1942, 1945 and 1982
+# transition dates are from Mok Ly Yng.
+# Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone Asia/Kuching	7:21:20	-	LMT	1926 Mar
 			7:30	-	BORT	1933	# Borneo Time
-			8:00	NBorneo	BOR%sT	1942
-			9:00	-	JST	1945 Sep 2
-			8:00	-	BORT	1982 May
+			8:00	NBorneo	BOR%sT	1942 Feb 16
+			9:00	-	JST	1945 Sep 12
+			8:00	-	BORT	1982 Jan  1
 			8:00	-	MYT
 
 # Maldives
@@ -1295,15 +1306,18 @@ Zone	Asia/Riyadh	3:06:52 -	LMT	1950
 			3:00	-	AST
 
 # Singapore
+# The data here are taken from Mok Ly Yng (2003-10-30)
+# <http://www.math.nus.edu.sg/aslaksen/teaching/timezone.html>.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone	Asia/Singapore	6:55:24 -	LMT	1880
-			6:55:24	-	SMT	1905 Jun # Singapore Mean Time
-			7:00	-	MALT	1933	 # Malaya Time
-			7:20	-	MALT	1942 Feb 15
-			9:00	-	JST	1945 Sep  2
-			7:20	-	MALT	1950
+Zone	Asia/Singapore	6:55:25 -	LMT	1880
+			6:55:25	-	SMT	1905 Jun  1 # Singapore M.T.
+			7:00	-	MALT	1933 Jan  1 # Malaya Time
+			7:00	0:20	MALST	1936
+			7:20	-	MALT	1941 Sep  1
+			7:30	-	MALT	1942 Feb 16
+			9:00	-	JST	1945 Sep 12
 			7:30	-	MALT	1965 Aug  9 # independence
-			7:30	-	SGT	1982 May # Singapore Time
+			7:30	-	SGT	1982 Jan  1 # Singapore Time
 			8:00	-	SGT
 
 # Spratly Is

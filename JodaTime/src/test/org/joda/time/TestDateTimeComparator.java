@@ -279,6 +279,30 @@ public class TestDateTimeComparator extends BulkTest {
     }
     
     //-----------------------------------------------------------------------
+    public void testEqualsHashCode() {
+        DateTimeComparator c1 = DateTimeComparator.getInstance();
+        assertEquals(true, c1.equals(c1));
+        assertEquals(false, c1.equals(null));
+        assertEquals(true, c1.hashCode() == c1.hashCode());
+        
+        DateTimeComparator c2 = DateTimeComparator.getTimeOnlyInstance(ISOChronology.getInstance());
+        assertEquals(true, c2.equals(c2));
+        assertEquals(false, c2.equals(c1));
+        assertEquals(false, c1.equals(c2));
+        assertEquals(false, c2.equals(null));
+        assertEquals(false, c1.hashCode() == c2.hashCode());
+        
+        DateTimeComparator c3 = DateTimeComparator.getTimeOnlyInstance(ISOChronology.getInstance());
+        assertEquals(true, c3.equals(c3));
+        assertEquals(false, c3.equals(c1));
+        assertEquals(true, c3.equals(c2));
+        assertEquals(false, c1.equals(c3));
+        assertEquals(true, c2.equals(c3));
+        assertEquals(false, c1.hashCode() == c3.hashCode());
+        assertEquals(true, c2.hashCode() == c3.hashCode());
+    }
+    
+    //-----------------------------------------------------------------------
     public void testSerialization1() throws Exception {
         DateTimeField f = ISO.dayOfYear();
         f.toString();

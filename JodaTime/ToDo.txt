@@ -4,9 +4,6 @@ JodaTime ToDo list
 1.0B1
 -----
 
-Fix bugs identified by tests
-- Formatting/parsing
-
 Fix TODOs in code
 
 

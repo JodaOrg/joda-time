@@ -444,14 +444,13 @@ public final class GJChronology extends AssembledChronology {
         
         if (iCutoverMillis != DEFAULT_CUTOVER.getMillis()) {
             sb.append(",cutover=");
-            ISODateTimeFormat format = ISODateTimeFormat.getInstance(withUTC());
             DateTimePrinter printer;
             if (withUTC().dayOfYear().remainder(iCutoverMillis) == 0) {
-                printer = format.date();
+                printer = ISODateTimeFormat.getInstance().date();
             } else {
-                printer = format.dateTime();
+                printer = ISODateTimeFormat.getInstance().dateTime();
             }
-            printer.printTo(sb, iCutoverMillis);
+            printer.printTo(sb, iCutoverMillis, withUTC());
         }
         
         if (getMinimumDaysInFirstWeek() != 4) {

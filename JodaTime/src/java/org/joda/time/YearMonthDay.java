@@ -490,7 +490,7 @@ public final class YearMonthDay
      * @return ISO8601 formatted string
      */
     public String toString() {
-        return ISODateTimeFormat.getInstanceUTC().yearMonthDay().print(this);
+        return ISODateTimeFormat.getInstance().yearMonthDay().print(this);
     }
 
     //-----------------------------------------------------------------------

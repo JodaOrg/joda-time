@@ -355,14 +355,14 @@ public final class LimitChronology extends AssembledChronology {
             }
             buf.append(" instant is ");
 
-            DateTimePrinter p = ISODateTimeFormat.getInstance(getBase()).dateTime();
+            DateTimePrinter p = ISODateTimeFormat.getInstance().dateTime();
 
             if (iIsLow) {
                 buf.append("below the supported minimum of ");
-                p.printTo(buf, getLowerLimit());
+                p.printTo(buf, getLowerLimit().getMillis(), getBase());
             } else {
                 buf.append("above the supported maximum of ");
-                p.printTo(buf, getUpperLimit());
+                p.printTo(buf, getUpperLimit().getMillis(), getBase());
             }
             
             buf.append(" (");

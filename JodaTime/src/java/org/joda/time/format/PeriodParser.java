@@ -60,12 +60,15 @@ import org.joda.time.ReadWritablePeriod;
 
 /**
  * Defines an interface for parsing textual representations of time periods.
+ * <p>
+ * Note: This interface represents a view onto {@link BasePeriodFormatter}.
+ * All implementations must extend <code>BasePeriodFormatter</code>.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  * @see PeriodFormatter
  * @see PeriodFormatterBuilder
  * @see PeriodFormat
- * @since 1.0
  */
 public interface PeriodParser {
 

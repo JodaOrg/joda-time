@@ -57,6 +57,9 @@ package org.joda.time.format;
  * Combined interface for printing and parsing.
  * <p>
  * See each extended interface for details of the methods.
+ * <p>
+ * Note: This interface represents a view onto {@link BaseDateTimeFormatter}.
+ * All implementations must extend <code>BaseDateTimeFormatter</code>.
  *
  * @author Brian S O'Neill
  * @since 1.0

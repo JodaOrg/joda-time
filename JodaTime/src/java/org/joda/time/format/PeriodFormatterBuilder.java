@@ -87,8 +87,9 @@ import org.joda.time.ReadablePeriod;
  * PeriodFormatterBuilder itself is mutable and not thread-safe, but the
  * formatters that it builds are thread-safe and immutable.
  *
- * @see PeriodFormat
  * @author Brian S O'Neill
+ * @since 1.0
+ * @see PeriodFormat
  */
 public class PeriodFormatterBuilder {
     private static final int PRINT_ZERO_RARELY_FIRST = 1;
@@ -161,9 +162,9 @@ public class PeriodFormatterBuilder {
         int size = formatters.size();
         if (size >= 1 && formatters.get(0) instanceof Separator) {
             Separator sep = (Separator) formatters.get(0);
-            return sep.finish(toFormatter(formatters.subList(1, size)));
+            return sep.finish((BasePeriodFormatter) toFormatter(formatters.subList(1, size)));
         }
-        return createComposite(formatters);
+        return (PeriodFormatter) createComposite(formatters);
     }
 
     /**
@@ -188,11 +189,12 @@ public class PeriodFormatterBuilder {
      *
      * @return this PeriodFormatterBuilder
      */
-    public PeriodFormatterBuilder append(PeriodFormatter formatter)
-        throws IllegalArgumentException
-    {
+    public PeriodFormatterBuilder append(PeriodFormatter formatter) {
         if (formatter == null) {
             throw new IllegalArgumentException("No formatter supplied");
+        }
+        if (formatter instanceof BasePeriodFormatter == false) {
+            throw new IllegalArgumentException("Formatter must extend BasePeriodFormatter");
         }
         clearPrefix();
         iFormatters.add(formatter);
@@ -672,7 +674,7 @@ public class PeriodFormatterBuilder {
         if (lastSeparator != null && formatters.size() == 0) {
             throw new IllegalStateException("Cannot have two adjacent separators");
         } else {
-            PeriodFormatter composite = createComposite(formatters);
+            BasePeriodFormatter composite = createComposite(formatters);
             formatters.clear();
             formatters.add(new Separator(text, finalText, composite, useBefore, useAfter));
         }
@@ -687,12 +689,12 @@ public class PeriodFormatterBuilder {
         iPrefix = null;
     }
 
-    private static PeriodFormatter createComposite(List formatters) {
+    private static BasePeriodFormatter createComposite(List formatters) {
         switch (formatters.size()) {
             case 0:
                 return Literal.EMPTY;
             case 1:
-                return (PeriodFormatter) formatters.get(0);
+                return (BasePeriodFormatter) formatters.get(0);
             default:
                 return new Composite(formatters);
         }
@@ -703,7 +705,7 @@ public class PeriodFormatterBuilder {
      * Defines a formatted field's prefix or suffix text.
      * This can be used for fields such as 'n hours' or 'nH' or 'Hour:n'.
      */
-    private static interface PeriodFieldAffix {
+    static interface PeriodFieldAffix {
         int calculatePrintedLength(int value);
         
         void printTo(StringBuffer buf, int value);
@@ -725,7 +727,7 @@ public class PeriodFormatterBuilder {
     /**
      * Implements an affix where the text does not vary by the amount.
      */
-    private static final class SimpleAffix implements PeriodFieldAffix {
+    static class SimpleAffix implements PeriodFieldAffix {
         private final String iText;
 
         SimpleAffix(String text) {
@@ -771,7 +773,7 @@ public class PeriodFormatterBuilder {
      * Implements an affix where the text varies by the amount of the field.
      * Only singular (1) and plural (not 1) are supported.
      */
-    private static final class PluralAffix implements PeriodFieldAffix {
+    static class PluralAffix implements PeriodFieldAffix {
         private final String iSingularText;
         private final String iPluralText;
 
@@ -846,7 +848,7 @@ public class PeriodFormatterBuilder {
     /**
      * Builds a composite affix by merging two other affix implementations.
      */
-    private static final class CompositeAffix implements PeriodFieldAffix {
+    static class CompositeAffix implements PeriodFieldAffix {
         private final PeriodFieldAffix iLeft;
         private final PeriodFieldAffix iRight;
 
@@ -891,9 +893,9 @@ public class PeriodFormatterBuilder {
     /**
      * Formats the numeric value of a field, potentially with prefix/suffix.
      */
-    private static final class FieldFormatter extends AbstractPeriodFormatter
-        implements PeriodFormatter
-    {
+    static class FieldFormatter
+            extends BasePeriodFormatter
+            implements PeriodFormatter {
         private final int iMinPrintedDigits;
         private final int iPrintZeroSetting;
         private final int iMaxParsedDigits;
@@ -1365,9 +1367,9 @@ public class PeriodFormatterBuilder {
     /**
      * Handles a simple literal piece of text.
      */
-    private static final class Literal extends AbstractPeriodFormatter
-        implements PeriodFormatter
-    {
+    static class Literal
+            extends BasePeriodFormatter
+            implements PeriodFormatter {
         static final Literal EMPTY = new Literal("");
         private final String iText;
 
@@ -1405,19 +1407,19 @@ public class PeriodFormatterBuilder {
      * Handles a separator, that splits the fields into multiple parts.
      * For example, the 'T' in the ISO8601 standard.
      */
-    private static final class Separator extends AbstractPeriodFormatter
-        implements PeriodFormatter
-    {
+    static class Separator
+            extends BasePeriodFormatter
+            implements PeriodFormatter {
         private final String iText;
         private final String iFinalText;
 
         private final boolean iUseBefore;
         private final boolean iUseAfter;
 
-        private PeriodFormatter iBefore;
-        private PeriodFormatter iAfter;
+        private BasePeriodFormatter iBefore;
+        private BasePeriodFormatter iAfter;
 
-        Separator(String text, String finalText, PeriodFormatter before, boolean useBefore, boolean useAfter) {
+        Separator(String text, String finalText, BasePeriodFormatter before, boolean useBefore, boolean useAfter) {
             iText = text;
             iFinalText = finalText;
             iBefore = before;
@@ -1434,8 +1436,8 @@ public class PeriodFormatterBuilder {
         }
 
         public int calculatePrintedLength(ReadablePeriod period) {
-            PeriodPrinter before = iBefore;
-            PeriodPrinter after = iAfter;
+            BasePeriodFormatter before = iBefore;
+            BasePeriodFormatter after = iAfter;
             
             int sum = before.calculatePrintedLength(period)
                     + after.calculatePrintedLength(period);
@@ -1459,8 +1461,8 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period) {
-            PeriodPrinter before = iBefore;
-            PeriodPrinter after = iAfter;
+            BasePeriodFormatter before = iBefore;
+            BasePeriodFormatter after = iAfter;
             
             before.printTo(buf, period);
             if (iUseBefore) {
@@ -1481,8 +1483,8 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period) throws IOException {
-            PeriodPrinter before = iBefore;
-            PeriodPrinter after = iAfter;
+            BasePeriodFormatter before = iBefore;
+            BasePeriodFormatter after = iAfter;
             
             before.printTo(out, period);
             if (iUseBefore) {
@@ -1524,7 +1526,7 @@ public class PeriodFormatterBuilder {
             return position;
         }
 
-        Separator finish(PeriodFormatter after) {
+        Separator finish(BasePeriodFormatter after) {
             iAfter = after;
             return this;
         }
@@ -1534,19 +1536,20 @@ public class PeriodFormatterBuilder {
     /**
      * Composite implementation that merges other fields to create a full pattern.
      */
-    private static final class Composite extends AbstractPeriodFormatter
-        implements PeriodFormatter
-    {
-        private final PeriodFormatter[] iFormatters;
+    static class Composite
+            extends BasePeriodFormatter
+            implements PeriodFormatter {
+        
+        private final BasePeriodFormatter[] iFormatters;
 
         Composite(List formatters) {
-            iFormatters = (PeriodFormatter[])formatters.toArray
-                (new PeriodFormatter[formatters.size()]);
+            iFormatters = (BasePeriodFormatter[]) formatters.toArray(
+                new BasePeriodFormatter[formatters.size()]);
         }
 
         public int countFieldsToPrint(ReadablePeriod period, int stopAt) {
             int sum = 0;
-            PeriodPrinter[] printers = iFormatters;
+            BasePeriodFormatter[] printers = iFormatters;
             for (int i=printers.length; sum < stopAt && --i>=0; ) {
                 sum += printers[i].countFieldsToPrint(period);
             }
@@ -1555,7 +1558,7 @@ public class PeriodFormatterBuilder {
 
         public int calculatePrintedLength(ReadablePeriod period) {
             int sum = 0;
-            PeriodPrinter[] printers = iFormatters;
+            BasePeriodFormatter[] printers = iFormatters;
             for (int i=printers.length; --i>=0; ) {
                 sum += printers[i].calculatePrintedLength(period);
             }
@@ -1563,7 +1566,7 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePeriod period) {
-            PeriodPrinter[] printers = iFormatters;
+            BasePeriodFormatter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
                 printers[i].printTo(buf, period);
@@ -1571,7 +1574,7 @@ public class PeriodFormatterBuilder {
         }
 
         public void printTo(Writer out, ReadablePeriod period) throws IOException {
-            PeriodPrinter[] printers = iFormatters;
+            BasePeriodFormatter[] printers = iFormatters;
             int len = printers.length;
             for (int i=0; i<len; i++) {
                 printers[i].printTo(out, period);
@@ -1580,8 +1583,7 @@ public class PeriodFormatterBuilder {
 
         public int parseInto(ReadWritablePeriod period,
                              String periodStr, int position) {
-            PeriodParser[] parsers = iFormatters;
-
+            BasePeriodFormatter[] parsers = iFormatters;
             if (parsers == null) {
                 throw new UnsupportedOperationException();
             }

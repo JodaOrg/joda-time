@@ -275,9 +275,7 @@ public class ZoneInfoCompiler {
     }
 
     static int parseTime(String str) {
-        DateTimeParser p = ISODateTimeFormat
-            .getInstance(getLenientISOChronology())
-            .hourMinuteSecondFraction();
+        DateTimeParser p = ISODateTimeFormat.getInstance().hourMinuteSecondFraction();
         MutableDateTime mdt = new MutableDateTime(0, getLenientISOChronology());
         int pos = 0;
         if (str.startsWith("-")) {

@@ -318,7 +318,7 @@ public abstract class AbstractDateTime
         if (pattern == null) {
             return toString();
         }
-        return DateTimeFormat.getInstance(getChronology()).forPattern(pattern).print(this);
+        return DateTimeFormat.getInstance().forPattern(pattern).print(this);
     }
 
     /**
@@ -332,7 +332,7 @@ public abstract class AbstractDateTime
         if (pattern == null) {
             return toString();
         }
-        return DateTimeFormat.getInstance(getChronology(), locale).forPattern(pattern).print(this);
+        return DateTimeFormat.getInstance(locale).forPattern(pattern).print(this);
     }
 
 }

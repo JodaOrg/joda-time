@@ -1157,7 +1157,7 @@ public class MutableDateTime
      * @return ISO8601 time formatted string.
      */
     public String toString() {
-        return ISODateTimeFormat.getInstance(getChronology()).dateTime().print(this);
+        return ISODateTimeFormat.getInstance().dateTime().print(this);
     }
 
     /**

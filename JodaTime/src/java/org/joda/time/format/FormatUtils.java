@@ -62,10 +62,15 @@ import java.io.Writer;
  * FormatUtils is thread-safe and immutable.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class FormatUtils {
+
     private static final double LOG_10 = Math.log(10);
 
+    /**
+     * Restricted constructor.
+     */
     private FormatUtils() {
     }
 
@@ -365,4 +370,26 @@ public class FormatUtils {
         int value = text.charAt(position) - '0';
         return ((value << 3) + (value << 1)) + text.charAt(position + 1) - '0';
     }
+
+    static String createErrorMessage(final String text, final int errorPos) {
+        int sampleLen = errorPos + 20;
+        String sampleText;
+        if (text.length() <= sampleLen + 3) {
+            sampleText = text;
+        } else {
+            sampleText = text.substring(0, sampleLen).concat("...");
+        }
+        
+        if (errorPos <= 0) {
+            return "Invalid format: \"" + sampleText + '"';
+        }
+        
+        if (errorPos >= text.length()) {
+            return "Invalid format: \"" + sampleText + "\" is too short";
+        }
+        
+        return "Invalid format: \"" + sampleText + "\" is malformed at \"" +
+            sampleText.substring(errorPos) + '"';
+    }
+
 }

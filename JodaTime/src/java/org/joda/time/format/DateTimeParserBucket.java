@@ -56,10 +56,15 @@ package org.joda.time.format;
 import java.util.Arrays;
 import java.util.Locale;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 
 /**
+ * Internal class used to build the state during parsing.
+ * <p>
  * Allows fields to be saved in any order, but be physically set in a
  * consistent order. This is useful for parsing against formats that allow
  * field values to contradict each other.
@@ -77,10 +82,12 @@ import org.joda.time.DateTimeZone;
  * DateTimeParserBucket is mutable and not thread-safe.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  */
 public class DateTimeParserBucket {
 
-    final long iMillis;
+    private final Chronology iChrono;
+    private final long iMillis;
 
     // TimeZone to switch to in computeMillis. If null, use offset.
     DateTimeZone iZone;
@@ -93,12 +100,28 @@ public class DateTimeParserBucket {
     private Object iSavedState;
 
     /**
+     * Constucts a bucket.
+     * 
      * @param instantLocal the initial millis from 1970-01-01T00:00:00, local time
+     * @param chrono  the chronology to use
      */
-    public DateTimeParserBucket(long instantLocal) {
+    public DateTimeParserBucket(long instantLocal, Chronology chrono) {
+        super();
+        chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
+        iChrono = chrono.withUTC();
+        setZone(chrono.getZone());
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the chronology of the bucket, which will be a local (UTC) chronology.
+     */
+    public Chronology getChronology() {
+        return iChrono;
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Returns the time zone used by computeMillis, or null if an offset is
      * used instead.
@@ -119,6 +142,7 @@ public class DateTimeParserBucket {
         iOffset = 0;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns the time zone offset used by computeMillis, unless
      * getZone doesn't return null.
@@ -137,18 +161,36 @@ public class DateTimeParserBucket {
         iZone = null;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Saves a datetime field value.
+     * 
+     * @param field  the field, whose chronology must match that of this bucket
+     * @param value  the value
      */
     public void saveField(DateTimeField field, int value) {
         saveField(new SavedField(field, value));
     }
 
     /**
-     * Saves a datetime field text value.
+     * Saves a datetime field value.
+     * 
+     * @param fieldType  the field type
+     * @param value  the value
      */
-    public void saveField(DateTimeField field, String text, Locale locale) {
-        saveField(new SavedField(field, text, locale));
+    public void saveField(DateTimeFieldType fieldType, int value) {
+        saveField(new SavedField(fieldType.getField(iChrono), value));
+    }
+
+    /**
+     * Saves a datetime field text value.
+     * 
+     * @param fieldType  the field type
+     * @param text  the text value
+     * @param locale  the locale to use
+     */
+    public void saveField(DateTimeFieldType fieldType, String text, Locale locale) {
+        saveField(new SavedField(fieldType.getField(iChrono), text, locale));
     }
 
     private void saveField(SavedField field) {
@@ -202,8 +244,8 @@ public class DateTimeParserBucket {
     }
 
     /**
-     * Computes the parsed datetime by setting the saved fields. This method is
-     * idempotent, but it is not thread-safe.
+     * Computes the parsed datetime by setting the saved fields.
+     * This method is idempotent, but it is not thread-safe.
      *
      * @return milliseconds since 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if any field is out of range
@@ -213,8 +255,8 @@ public class DateTimeParserBucket {
     }
 
     /**
-     * Computes the parsed datetime by setting the saved fields. This method is
-     * idempotent, but it is not thread-safe.
+     * Computes the parsed datetime by setting the saved fields.
+     * This method is idempotent, but it is not thread-safe.
      *
      * @param resetFields false by default, but when true, unsaved field values are cleared
      * @return milliseconds since 1970-01-01T00:00:00Z

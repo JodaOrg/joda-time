@@ -53,10 +53,14 @@
  */
 package org.joda.time.format;
 
-import org.joda.time.PeriodType;
+import java.io.IOException;
+import java.io.Writer;
+
 import org.joda.time.MutablePeriod;
-import org.joda.time.ReadablePeriod;
 import org.joda.time.Period;
+import org.joda.time.PeriodType;
+import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadablePeriod;
 
 /**
  * Abstract base class for implementing {@link PeriodPrinter}s,
@@ -75,17 +79,59 @@ import org.joda.time.Period;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class AbstractPeriodFormatter {
+public abstract class BasePeriodFormatter {
     
-    public int countFieldsToPrint(ReadablePeriod period) {
-        return ((PeriodPrinter) this).countFieldsToPrint(period, Integer.MAX_VALUE);
+    /**
+     * Returns the exact number of characters produced for the given period.
+     * 
+     * @param period  the period to use
+     * @return the estimated length
+     */
+    protected int calculatePrintedLength(ReadablePeriod period) {
+        throw new UnsupportedOperationException("Printing not supported");
+    }
+
+    /**
+     * Returns the amount of fields from the given period that this printer
+     * will print.
+     * 
+     * @param period  the period to use
+     * @return amount of fields printed
+     */
+    protected int countFieldsToPrint(ReadablePeriod period) {
+        return countFieldsToPrint(period, Integer.MAX_VALUE);
+    }
+
+    /**
+     * Returns the amount of fields from the given period that this printer
+     * will print.
+     * 
+     * @param period  the period to use
+     * @param stopAt stop counting at this value
+     * @return amount of fields printed
+     */
+    protected int countFieldsToPrint(ReadablePeriod period, int stopAt) {
+        throw new UnsupportedOperationException("Printing not supported");
+    }
+
+    //-----------------------------------------------------------------------
+    public void printTo(StringBuffer buf, ReadablePeriod period) {
+        throw new UnsupportedOperationException("Printing not supported");
+    }
+
+    public void printTo(Writer out, ReadablePeriod period) throws IOException {
+        throw new UnsupportedOperationException("Printing not supported");
     }
 
     public String print(ReadablePeriod period) {
-        PeriodPrinter p = (PeriodPrinter) this;
-        StringBuffer buf = new StringBuffer(p.calculatePrintedLength(period));
-        p.printTo(buf, period);
+        StringBuffer buf = new StringBuffer(calculatePrintedLength(period));
+        printTo(buf, period);
         return buf.toString();
+    }
+
+    //-----------------------------------------------------------------------
+    public int parseInto(ReadWritablePeriod period, String periodStr, int position) {
+        throw new UnsupportedOperationException("Parsing not supported");
     }
 
     public Period parsePeriod(PeriodType type, String text) {
@@ -105,8 +151,7 @@ public abstract class AbstractPeriodFormatter {
             newPos = ~newPos;
         }
 
-        throw new IllegalArgumentException(
-            AbstractDateTimeFormatter.createErrorMessage(text, newPos));
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
     }
 
 }

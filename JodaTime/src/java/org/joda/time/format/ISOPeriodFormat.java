@@ -60,10 +60,12 @@ package org.joda.time.format;
  * returns are as well.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  * @see PeriodFormat
  * @see PeriodFormatterBuilder
  */
 public class ISOPeriodFormat {
+
     private static final ISOPeriodFormat INSTANCE = new ISOPeriodFormat();
 
     /**

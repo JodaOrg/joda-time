@@ -533,7 +533,7 @@ public final class TimeOfDay
      * @return ISO8601 formatted string
      */
     public String toString() {
-        return ISODateTimeFormat.getInstanceUTC().tTime().print(this);
+        return ISODateTimeFormat.getInstance().tTime().print(this);
     }
 
     //-----------------------------------------------------------------------

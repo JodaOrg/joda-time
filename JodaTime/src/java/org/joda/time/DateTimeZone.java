@@ -68,6 +68,7 @@ import java.util.Set;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.format.FormatUtils;
 import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.FixedDateTimeZone;
 import org.joda.time.tz.NameProvider;
@@ -228,7 +229,8 @@ public abstract class DateTimeZone implements Serializable {
             if (offset == 0L) {
                 return DateTimeZone.UTC;
             } else {
-                id = offsetFormatter().print(0, UTC, offset);
+                StringBuffer buf = new StringBuffer();
+                id = printTimeZone(offset);
                 return fixedOffsetZone(id, offset);
             }
         }
@@ -237,6 +239,7 @@ public abstract class DateTimeZone implements Serializable {
 
     /**
      * Get the time zone by the number of hours difference from UTC.
+     * This method assumes standard length hours.
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
      * 
@@ -250,6 +253,7 @@ public abstract class DateTimeZone implements Serializable {
 
     /**
      * Get the time zone by the number of hours and minutes difference from UTC.
+     * This method assumes 60 minutes in an hour, and standard length minutes.
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
      * The minutes value is always positive and in the range 0 to 59.
@@ -279,7 +283,7 @@ public abstract class DateTimeZone implements Serializable {
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }
-        String id = offsetFormatter().print(0, UTC, offset);
+        String id = printTimeZone(offset);
         return fixedOffsetZone(id, offset);
     }
 
@@ -326,7 +330,7 @@ public abstract class DateTimeZone implements Serializable {
                 if (offset == 0L) {
                     return DateTimeZone.UTC;
                 } else {
-                    convId = offsetFormatter().print(0, UTC, offset);
+                    convId = printTimeZone(offset);
                     return fixedOffsetZone(convId, offset);
                 }
             }
@@ -591,11 +595,54 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static synchronized DateTimeFormatter offsetFormatter() {
         if (cOffsetFormatter == null) {
-            cOffsetFormatter = new DateTimeFormatterBuilder((Chronology)null, null)
+            cOffsetFormatter = new DateTimeFormatterBuilder()
                 .appendTimeZoneOffset(null, true, 2, 4)
                 .toFormatter();
         }
         return cOffsetFormatter;
+    }
+
+    /**
+     * Formats a timezone offset string.
+     * <p>
+     * This method is kept separate from the formatting classe to speed and
+     * simplify startup and classloading.
+     * 
+     * @param offset  the offset in milliseconds
+     * @return the time zone string
+     */
+    private static String printTimeZone(int offset) {
+        StringBuffer buf = new StringBuffer();
+        if (offset >= 0) {
+            buf.append('+');
+        } else {
+            buf.append('-');
+            offset = -offset;
+        }
+
+        int hours = offset / DateTimeConstants.MILLIS_PER_HOUR;
+        FormatUtils.appendPaddedInteger(buf, hours, 2);
+        offset -= hours * (int)DateTimeConstants.MILLIS_PER_HOUR;
+
+        int minutes = offset / DateTimeConstants.MILLIS_PER_MINUTE;
+        buf.append(':');
+        FormatUtils.appendPaddedInteger(buf, minutes, 2);
+        offset -= minutes * DateTimeConstants.MILLIS_PER_MINUTE;
+        if (offset == 0) {
+            return buf.toString();
+        }
+
+        int seconds = offset / DateTimeConstants.MILLIS_PER_SECOND;
+        buf.append(':');
+        FormatUtils.appendPaddedInteger(buf, seconds, 2);
+        offset -= seconds * DateTimeConstants.MILLIS_PER_SECOND;
+        if (offset == 0) {
+            return buf.toString();
+        }
+
+        buf.append('.');
+        FormatUtils.appendPaddedInteger(buf, offset, 3);
+        return buf.toString();
     }
 
     // Instance fields and methods
@@ -673,7 +720,7 @@ public abstract class DateTimeZone implements Serializable {
         if (name != null) {
             return name;
         }
-        return offsetFormatter().print(instant, this);
+        return printTimeZone(getOffset(instant));
     }
 
     /**
@@ -712,7 +759,7 @@ public abstract class DateTimeZone implements Serializable {
         if (name != null) {
             return name;
         }
-        return offsetFormatter().print(instant, this);
+        return printTimeZone(getOffset(instant));
     }
 
     /**

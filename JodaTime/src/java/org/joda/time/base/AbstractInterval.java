@@ -62,7 +62,6 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadableInterval;
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimePrinter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -438,13 +437,11 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return re-parsable string
      */
     public String toString() {
-        DateTimePrinter printer =
-            ISODateTimeFormat.getInstance(ISOChronology.getInstanceUTC())
-            .dateHourMinuteSecondFraction();
+        DateTimePrinter printer = ISODateTimeFormat.getInstance().dateHourMinuteSecondFraction();
         StringBuffer buf = new StringBuffer(48);
-        printer.printTo(buf, getStartMillis());
+        printer.printTo(buf, getStartMillis(), getChronology());
         buf.append('/');
-        printer.printTo(buf, getEndMillis());
+        printer.printTo(buf, getEndMillis(), getChronology());
         return buf.toString();
     }
 

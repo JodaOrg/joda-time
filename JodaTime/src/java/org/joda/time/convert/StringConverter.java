@@ -99,8 +99,8 @@ class StringConverter extends AbstractConverter
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         String str = (String) object;
-        DateTimeParser p = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
-        return p.parseMillis(str);
+        DateTimeParser p = ISODateTimeFormat.getInstance().dateTimeParser();
+        return p.parseMillis(str, chrono);
     }
 
     //-----------------------------------------------------------------------
@@ -206,7 +206,7 @@ class StringConverter extends AbstractConverter
             throw new IllegalArgumentException("Format invalid: " + str);
         }
 
-        DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance(chrono).dateTimeParser();
+        DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
         PeriodFormatter periodParser = ISOPeriodFormat.getInstance().standard();
         long startInstant = 0, endInstant = 0;
         Period period = null;
@@ -217,7 +217,7 @@ class StringConverter extends AbstractConverter
         if (c == 'P' || c == 'p') {
             period = periodParser.parsePeriod(getPeriodType(leftStr), leftStr);
         } else {
-            DateTime start = dateTimeParser.parseDateTime(leftStr);
+            DateTime start = dateTimeParser.parseDateTime(leftStr, chrono);
             startInstant = start.getMillis();
             parsedChrono = start.getChronology();
         }
@@ -232,7 +232,7 @@ class StringConverter extends AbstractConverter
             chrono = (chrono != null ? chrono : parsedChrono);
             endInstant = chrono.add(period, startInstant, 1);
         } else {
-            DateTime end = dateTimeParser.parseDateTime(rightStr);
+            DateTime end = dateTimeParser.parseDateTime(rightStr, chrono);
             endInstant = end.getMillis();
             parsedChrono = (parsedChrono != null ? parsedChrono : end.getChronology());
             chrono = (chrono != null ? chrono : parsedChrono);

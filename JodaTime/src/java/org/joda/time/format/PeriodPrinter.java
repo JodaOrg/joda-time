@@ -60,43 +60,18 @@ import org.joda.time.ReadablePeriod;
 
 /**
  * Defines an interface for creating textual representations of time periods.
+ * <p>
+ * Note: This interface represents a view onto {@link BasePeriodFormatter}.
+ * All implementations must extend <code>BasePeriodFormatter</code>.
  *
  * @author Brian S O'Neill
+ * @since 1.0
  * @see PeriodFormatter
  * @see PeriodFormatterBuilder
  * @see PeriodFormat
- * @since 1.0
  */
 public interface PeriodPrinter {
 
-    /**
-     * Returns the amount of fields from the given period that this printer
-     * will print.
-     * 
-     * @param period  the period to use
-     * @return amount of fields printed
-     */
-    int countFieldsToPrint(ReadablePeriod period);
-
-    /**
-     * Returns the amount of fields from the given period that this printer
-     * will print.
-     * 
-     * @param period  the period to use
-     * @param stopAt stop counting at this value
-     * @return amount of fields printed
-     */
-    int countFieldsToPrint(ReadablePeriod period, int stopAt);
-
-    /**
-     * Returns the exact number of characters produced for the given period.
-     * 
-     * @param period  the period to use
-     * @return the estimated length
-     */
-    int calculatePrintedLength(ReadablePeriod period);
-
-    //-----------------------------------------------------------------------
     /**
      * Prints a ReadablePeriod to a StringBuffer.
      *

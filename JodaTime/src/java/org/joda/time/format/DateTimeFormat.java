@@ -72,7 +72,6 @@ import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.RemainderDateTimeField;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * DateTimeFormat provides localized printing and parsing capabilities for all
@@ -168,88 +167,35 @@ public class DateTimeFormat {
      */
     private static Map cInstanceCache = new HashMap(7);
 
+    //-----------------------------------------------------------------------
     /**
-     * Gets a formatter provider that works using ISOChronology with UTC in the
-     * default locale.
-     * 
-     * @return a format provider
-     */
-    public static DateTimeFormat getInstanceUTC() {
-        return getInstance(ISOChronology.getInstanceUTC(), Locale.getDefault());
-    }
-
-    /**
-     * Gets a formatter provider that works using ISOChronology with the default
-     * time zone and the default locale.
+     * Gets an instance of the formatter provider that works with the default locale.
      * 
      * @return a format provider
      */
     public static DateTimeFormat getInstance() {
-        return getInstance(ISOChronology.getInstance(), Locale.getDefault());
+        return getInstance(Locale.getDefault());
     }
 
     /**
-     * Gets a formatter provider that works using ISOChronology with the
-     * specified time zone and the default locale.
+     * Gets an instance of the formatter provider that works with the given locale.
      * 
-     * @param zone  the time zone to use, null for default zone
-     * @return a format provider
-     */
-    public static DateTimeFormat getInstance(final DateTimeZone zone) {
-        return getInstance(ISOChronology.getInstance(zone), Locale.getDefault());
-    }
-
-    /**
-     * Gets a formatter provider that works using ISOChronology with the
-     * specified time zone and locale.
-     * 
-     * @param zone  the time zone to use, null for default zone
      * @param locale  the Locale to use, null for default locale
      * @return a format provider
      */
-    public static DateTimeFormat getInstance(final DateTimeZone zone, final Locale locale) {
-        return getInstance(ISOChronology.getInstance(zone), locale);
-    }
-
-    /**
-     * Gets a formatter provider that works using the specified chronology and
-     * the default locale.
-     * 
-     * @param chrono  the chronology to use, null means ISOChronology in the default time zone
-     * @return a format provider
-     */
-    public static DateTimeFormat getInstance(final Chronology chrono) {
-        return getInstance(chrono, Locale.getDefault());
-    }
-
-    /**
-     * Gets a formatter provider that works using the specified chronology and
-     * locale.
-     * 
-     * @param chrono  the chronology to use, null means ISOChronology in the default time zone
-     * @param locale  the Locale to use, null for default locale
-     * @return a format provider
-     */
-    public static synchronized DateTimeFormat getInstance(Chronology chrono, Locale locale) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstance();
-        }
+    public synchronized static DateTimeFormat getInstance(Locale locale) {
         if (locale == null) {
             locale = Locale.getDefault();
         }
-        Map map = (Map)cInstanceCache.get(chrono);
-        if (map == null) {
-            map = new HashMap(7);
-            cInstanceCache.put(chrono, map);
-        }
-        DateTimeFormat dtf = (DateTimeFormat)map.get(locale);
+        DateTimeFormat dtf = (DateTimeFormat) cInstanceCache.get(locale);
         if (dtf == null) {
-            dtf = new DateTimeFormat(chrono, locale);
-            map.put(locale, dtf);
+            dtf = new DateTimeFormat(locale);
+            cInstanceCache.put(locale, dtf);
         }
         return dtf;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Parses the given pattern and appends the rules to the given
      * DateTimeFormatterBuilder.
@@ -502,8 +448,6 @@ public class DateTimeFormat {
     }
 
     //-----------------------------------------------------------------------
-    /** The chronology to use */
-    private final Chronology iChrono;
     /** The locale to use */
     private final Locale iLocale;
 
@@ -516,12 +460,10 @@ public class DateTimeFormat {
     /**
      * Constructor.
      * 
-     * @param chrono  the chronology to use, must not be null
      * @param locale  the locale to use, must not be null
      */
-    private DateTimeFormat(final Chronology chrono, final Locale locale) {
+    private DateTimeFormat(final Locale locale) {
         super();
-        iChrono = chrono;
         iLocale = locale;
     }
 
@@ -543,7 +485,7 @@ public class DateTimeFormat {
             throw new IllegalArgumentException("Invalid pattern specification");
         }
 
-        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder(iChrono, iLocale);
+        DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder(iLocale);
         appendPatternTo(builder, pattern);
 
         if (builder.canBuildFormatter()) {
@@ -699,12 +641,8 @@ public class DateTimeFormat {
             mPrinter = printer;
         }
 
-        public Chronology getChronology() {
-            return mPrinter.getChronology();
-        }
-
-        public int estimatePrintedLength() {
-            return mPrinter.estimatePrintedLength();
+        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
+            return mPrinter.bindPrinter(chrono);
         }
 
         public void printTo(StringBuffer buf, ReadableInstant instant) {
@@ -732,15 +670,12 @@ public class DateTimeFormat {
             mPrinter.printTo(out, instant, zone);
         }
 
-        public void printTo(StringBuffer buf, long instant,
-                            DateTimeZone zone, long instantLocal) {
-            mPrinter.printTo(buf, instant, zone, instantLocal);
+        public void printTo(StringBuffer buf, long instant, Chronology chrono) {
+            mPrinter.printTo(buf, instant, chrono);
         }
 
-        public void printTo(Writer out, long instant,
-                            DateTimeZone zone, long instantLocal)
-            throws IOException {
-            mPrinter.printTo(out, instant, zone, instantLocal);
+        public void printTo(Writer out, long instant, Chronology chrono) throws IOException {
+            mPrinter.printTo(out, instant, chrono);
         }
 
         public void printTo(StringBuffer buf, ReadablePartial instant) {
@@ -763,8 +698,8 @@ public class DateTimeFormat {
             return mPrinter.print(instant, zone);
         }
 
-        public String print(long instant, DateTimeZone zone, long instantLocal) {
-            return mPrinter.print(instant, zone, instantLocal);
+        public String print(long instant, Chronology chrono) {
+            return mPrinter.print(instant, chrono);
         }
 
         public String print(ReadablePartial partial) {
@@ -775,10 +710,6 @@ public class DateTimeFormat {
             return 0;
         }
 
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            throw unsupported();
-        }
-
         public int parseInto(ReadWritableInstant instant, String text, int position) {
             throw unsupported();
         }
@@ -787,11 +718,23 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
+        public long parseMillis(String text, Chronology chrono) {
+            throw unsupported();
+        }
+
         public long parseMillis(String text, long instantLocal) {
             throw unsupported();
         }
 
+        public long parseMillis(String text, long instant, Chronology chrono) {
+            throw unsupported();
+        }
+
         public DateTime parseDateTime(String text) {
+            throw unsupported();
+        }
+
+        public DateTime parseDateTime(String text, Chronology chrono) {
             throw unsupported();
         }
 
@@ -800,6 +743,10 @@ public class DateTimeFormat {
         }
 
         public MutableDateTime parseMutableDateTime(String text) {
+            throw unsupported();
+        }
+
+        public MutableDateTime parseMutableDateTime(String text, Chronology chrono) {
             throw unsupported();
         }
 
@@ -825,12 +772,8 @@ public class DateTimeFormat {
             mParser = parser;
         }
 
-        public Chronology getChronology() {
-            return mParser.getChronology();
-        }
-
-        public int estimatePrintedLength() {
-            return 0;
+        public BoundDateTimePrinter bindPrinter(Chronology chrono) {
+            throw unsupported();
         }
 
         public void printTo(StringBuffer buf, ReadableInstant instant) {
@@ -857,13 +800,11 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
-        public void printTo(StringBuffer buf, long instant,
-                            DateTimeZone zone, long instantLocal) {
+        public void printTo(StringBuffer buf, long instant, Chronology chrono) {
             throw unsupported();
         }
 
-        public void printTo(Writer out, long instant,
-                            DateTimeZone zone, long instantLocal) {
+        public void printTo(Writer out, long instant, Chronology chrono) throws IOException {
             throw unsupported();
         }
 
@@ -887,20 +828,12 @@ public class DateTimeFormat {
             throw unsupported();
         }
 
-        public String print(long instant, DateTimeZone zone, long instantLocal) {
+        public String print(long instant, Chronology chrono) {
             throw unsupported();
         }
 
         public String print(ReadablePartial partial) {
             throw unsupported();
-        }
-
-        public int estimateParsedLength() {
-            return mParser.estimateParsedLength();
-        }
-
-        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            return mParser.parseInto(bucket, text, position);
         }
 
         public int parseInto(ReadWritableInstant instant, String text, int position) {
@@ -911,12 +844,24 @@ public class DateTimeFormat {
             return mParser.parseMillis(text);
         }
 
-        public long parseMillis(String text, long instantLocal) {
-            return mParser.parseMillis(text, instantLocal);
+        public long parseMillis(String text, Chronology chrono) {
+            return mParser.parseMillis(text, chrono);
+        }
+
+        public long parseMillis(String text, long instant) {
+            return mParser.parseMillis(text, instant);
+        }
+
+        public long parseMillis(String text, long instant, Chronology chrono) {
+            return mParser.parseMillis(text, instant, chrono);
         }
 
         public DateTime parseDateTime(String text) {
             return mParser.parseDateTime(text);
+        }
+
+        public DateTime parseDateTime(String text, Chronology chrono) {
+            return mParser.parseDateTime(text, chrono);
         }
 
         public DateTime parseDateTime(String text, ReadableInstant instant) {
@@ -927,8 +872,11 @@ public class DateTimeFormat {
             return mParser.parseMutableDateTime(text);
         }
 
-        public MutableDateTime parseMutableDateTime(String text,
-                                                    ReadableInstant instant) {
+        public MutableDateTime parseMutableDateTime(String text, Chronology chrono) {
+            return mParser.parseMutableDateTime(text, chrono);
+        }
+
+        public MutableDateTime parseMutableDateTime(String text, ReadableInstant instant) {
             return mParser.parseMutableDateTime(text, instant);
         }
 

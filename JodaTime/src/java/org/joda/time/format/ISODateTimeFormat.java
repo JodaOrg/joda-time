@@ -53,12 +53,6 @@
  */
 package org.joda.time.format;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeZone;
-import org.joda.time.chrono.ISOChronology;
 
 /**
  * ISODateTimeFormat provides factory methods for the ISO8601 standard.
@@ -85,61 +79,19 @@ import org.joda.time.chrono.ISOChronology;
  */
 public class ISODateTimeFormat {
 
-    /**
-     * Cache that maps Chronology instances to instances.
-     */
-    private static Map cCache = new HashMap(7);
+    /** The singleton instance. */
+    private static final ISODateTimeFormat INSTANCE = new ISODateTimeFormat();
 
     /**
-     * Gets an instance of a format provider that uses the ISOChronology in UTC.
-     * 
-     * @return a format provider
-     */
-    public static ISODateTimeFormat getInstanceUTC() {
-        return getInstance(ISOChronology.getInstanceUTC());
-    }
-
-    /**
-     * Gets an instance of a format provider that uses the ISOChronology
-     * in the default time zone.
+     * Gets an instance of a the format provider.
      * 
      * @return a format provider
      */
     public static ISODateTimeFormat getInstance() {
-        return getInstance(ISOChronology.getInstance());
-    }
-
-    /**
-     * Gets an instance of a format provider that uses the ISOChronology
-     * in the specified time zone.
-     * 
-     * @return a format provider
-     */
-    public static ISODateTimeFormat getInstance(final DateTimeZone zone) {
-        return getInstance(ISOChronology.getInstance(zone));
-    }
-
-    /**
-     * Gets an instance of a format provider that uses the specified chronology.
-     * 
-     * @param chrono  the chronology to use, null means default chronology
-     * @return a format provider
-     */
-    public static synchronized ISODateTimeFormat getInstance(Chronology chrono) {
-        if (chrono == null) {
-            chrono = ISOChronology.getInstance();
-        }
-        ISODateTimeFormat instance = (ISODateTimeFormat)cCache.get(chrono);
-        if (instance == null) {
-            instance = new ISODateTimeFormat(chrono);
-            cCache.put(chrono, instance);
-        }
-        return instance;
+        return INSTANCE;
     }
 
     //-----------------------------------------------------------------------
-    private final Chronology iChrono;
-
     private transient DateTimeFormatter
         ye,  // year element (yyyy)
         mye, // monthOfYear element (-MM)
@@ -212,8 +164,7 @@ public class ISODateTimeFormat {
      * 
      * @param chrono  the chronology to use, must not be null
      */
-    private ISODateTimeFormat(final Chronology chrono) {
-        iChrono = chrono;
+    private ISODateTimeFormat() {
     }
 
     //-----------------------------------------------------------------------
@@ -231,10 +182,10 @@ public class ISODateTimeFormat {
      */
     public DateTimeParser dateParser() {
         if (dp == null) {
-            dp = new DateTimeFormatterBuilder(iChrono)
+            dp = new DateTimeFormatterBuilder()
                 .append(dateElementParser())
                 .appendOptional
-                (new DateTimeFormatterBuilder(iChrono)
+                (new DateTimeFormatterBuilder()
                  .appendLiteral('T')
                  .append(offsetElement())
                  .toParser())
@@ -255,22 +206,22 @@ public class ISODateTimeFormat {
      */
     public DateTimeParser dateElementParser() {
         if (dpe == null) {
-            dpe = new DateTimeFormatterBuilder(iChrono)
+            dpe = new DateTimeFormatterBuilder()
                 .append(null, new DateTimeParser[] {
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .append(yearElement())
                     .appendOptional
-                    (new DateTimeFormatterBuilder(iChrono)
+                    (new DateTimeFormatterBuilder()
                      .append(monthElement())
                      .appendOptional(dayOfMonthElement())
                      .toParser())
                     .toParser(),
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .append(weekyearElement())
                     .append(weekElement())
                     .appendOptional(dayOfWeekElement())
                     .toParser(),
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .append(yearElement())
                     .append(dayOfYearElement())
                     .toParser()
@@ -294,9 +245,9 @@ public class ISODateTimeFormat {
      */
     public DateTimeParser timeParser() {
         if (tp == null) {
-            tp = new DateTimeFormatterBuilder(iChrono)
+            tp = new DateTimeFormatterBuilder()
                 .appendOptional
-                (new DateTimeFormatterBuilder(iChrono)
+                (new DateTimeFormatterBuilder()
                  .appendLiteral('T')
                  .toParser())
                 .append(timeElementParser())
@@ -319,38 +270,38 @@ public class ISODateTimeFormat {
     public DateTimeParser timeElementParser() {
         if (tpe == null) {
             // Decimal point can be either '.' or ','
-            DateTimeParser decimalPoint = new DateTimeFormatterBuilder(iChrono)
+            DateTimeParser decimalPoint = new DateTimeFormatterBuilder()
                 .append(null, new DateTimeParser[] {
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .appendLiteral('.')
                     .toParser(),
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .appendLiteral(',')
                     .toParser()
                 })
                 .toParser();
 
-            tpe = new DateTimeFormatterBuilder(iChrono)
+            tpe = new DateTimeFormatterBuilder()
                 // time-element
                 .append(hourElement())
                 .append
                 (null, new DateTimeParser[] {
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     // minute-element
                     .append(minuteElement())
                     .append
                     (null, new DateTimeParser[] {
-                        new DateTimeFormatterBuilder(iChrono)
+                        new DateTimeFormatterBuilder()
                         // second-element
                         .append(secondElement())
                         // second fraction
-                        .appendOptional(new DateTimeFormatterBuilder(iChrono)
+                        .appendOptional(new DateTimeFormatterBuilder()
                                         .append(decimalPoint)
                                         .appendFractionOfSecond(1, 9)
                                         .toParser())
                         .toParser(),
                         // minute fraction
-                        new DateTimeFormatterBuilder(iChrono)
+                        new DateTimeFormatterBuilder()
                         .append(decimalPoint)
                         .appendFractionOfMinute(1, 9)
                         .toParser(),
@@ -358,7 +309,7 @@ public class ISODateTimeFormat {
                     })
                     .toParser(),
                     // hour fraction
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .append(decimalPoint)
                     .appendFractionOfHour(1, 9)
                     .toParser(),
@@ -390,20 +341,20 @@ public class ISODateTimeFormat {
         if (dtp == null) {
             // This is different from the general time parser in that the 'T'
             // is required.
-            DateTimeParser time = new DateTimeFormatterBuilder(iChrono)
+            DateTimeParser time = new DateTimeFormatterBuilder()
                 .appendLiteral('T')
                 .append(timeElementParser())
                 .appendOptional(offsetElement())
                 .toParser();
 
-            dtp = new DateTimeFormatterBuilder(iChrono)
+            dtp = new DateTimeFormatterBuilder()
                 .append(null, new DateTimeParser[] {
                     time,
-                    new DateTimeFormatterBuilder(iChrono)
+                    new DateTimeFormatterBuilder()
                     .append(dateElementParser())
                     .append(null, new DateTimeParser[] {
                         time,
-                        new DateTimeFormatterBuilder(iChrono)
+                        new DateTimeFormatterBuilder()
                         .appendLiteral('T')
                         .append(offsetElement())
                         .toParser(),
@@ -437,7 +388,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter time() {
         if (t == null) {
-            t = new DateTimeFormatterBuilder(iChrono)
+            t = new DateTimeFormatterBuilder()
                 .append(hourMinuteSecondMillis())
                 .append(offsetElement())
                 .toFormatter();
@@ -454,7 +405,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter timeNoMillis() {
         if (tx == null) {
-            tx = new DateTimeFormatterBuilder(iChrono)
+            tx = new DateTimeFormatterBuilder()
                 .append(hourMinuteSecond())
                 .append(offsetElement())
                 .toFormatter();
@@ -472,7 +423,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter tTime() {
         if (tt == null) {
-            tt = new DateTimeFormatterBuilder(iChrono)
+            tt = new DateTimeFormatterBuilder()
                 .append(literalTElement())
                 .append(time())
                 .toFormatter();
@@ -490,7 +441,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter tTimeNoMillis() {
         if (ttx == null) {
-            ttx = new DateTimeFormatterBuilder(iChrono)
+            ttx = new DateTimeFormatterBuilder()
                 .append(literalTElement())
                 .append(timeNoMillis())
                 .toFormatter();
@@ -507,7 +458,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateTime() {
         if (dt == null) {
-            dt = new DateTimeFormatterBuilder(iChrono)
+            dt = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(tTime())
                 .toFormatter();
@@ -524,7 +475,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateTimeNoMillis() {
         if (dtx == null) {
-            dtx = new DateTimeFormatterBuilder(iChrono)
+            dtx = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(tTimeNoMillis())
                 .toFormatter();
@@ -551,7 +502,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter weekDateTime() {
         if (wdt == null) {
-            wdt = new DateTimeFormatterBuilder(iChrono)
+            wdt = new DateTimeFormatterBuilder()
                 .append(weekDate())
                 .append(tTime())
                 .toFormatter();
@@ -568,7 +519,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter weekDateTimeNoMillis() {
         if (wdtx == null) {
-            wdtx = new DateTimeFormatterBuilder(iChrono)
+            wdtx = new DateTimeFormatterBuilder()
                 .append(weekDate())
                 .append(tTimeNoMillis())
                 .toFormatter();
@@ -585,7 +536,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicDate() {
         if (bd == null) {
-            bd = new DateTimeFormatterBuilder(iChrono)
+            bd = new DateTimeFormatterBuilder()
                 .appendYear(4, 4)
                 .appendMonthOfYear(2)
                 .appendDayOfMonth(2)
@@ -604,7 +555,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicTime() {
         if (bt == null) {
-            bt = new DateTimeFormatterBuilder(iChrono)
+            bt = new DateTimeFormatterBuilder()
                 .appendHourOfDay(2)
                 .appendMinuteOfHour(2)
                 .appendSecondOfMinute(2)
@@ -625,7 +576,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicTimeNoMillis() {
         if (btx == null) {
-            btx = new DateTimeFormatterBuilder(iChrono)
+            btx = new DateTimeFormatterBuilder()
                 .appendHourOfDay(2)
                 .appendMinuteOfHour(2)
                 .appendSecondOfMinute(2)
@@ -645,7 +596,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicTTime() {
         if (btt == null) {
-            btt = new DateTimeFormatterBuilder(iChrono)
+            btt = new DateTimeFormatterBuilder()
                 .append(literalTElement())
                 .append(basicTime())
                 .toFormatter();
@@ -663,7 +614,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicTTimeNoMillis() {
         if (bttx == null) {
-            bttx = new DateTimeFormatterBuilder(iChrono)
+            bttx = new DateTimeFormatterBuilder()
                 .append(literalTElement())
                 .append(basicTimeNoMillis())
                 .toFormatter();
@@ -680,7 +631,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicDateTime() {
         if (bdt == null) {
-            bdt = new DateTimeFormatterBuilder(iChrono)
+            bdt = new DateTimeFormatterBuilder()
                 .append(basicDate())
                 .append(basicTTime())
                 .toFormatter();
@@ -697,7 +648,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicDateTimeNoMillis() {
         if (bdtx == null) {
-            bdtx = new DateTimeFormatterBuilder(iChrono)
+            bdtx = new DateTimeFormatterBuilder()
                 .append(basicDate())
                 .append(basicTTimeNoMillis())
                 .toFormatter();
@@ -713,7 +664,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicWeekDate() {
         if (bwd == null) {
-            bwd = new DateTimeFormatterBuilder(iChrono)
+            bwd = new DateTimeFormatterBuilder()
                 .appendWeekyear(4, 4)
                 .appendLiteral('W')
                 .appendWeekOfWeekyear(2)
@@ -732,7 +683,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicWeekDateTime() {
         if (bwdt == null) {
-            bwdt = new DateTimeFormatterBuilder(iChrono)
+            bwdt = new DateTimeFormatterBuilder()
                 .append(basicWeekDate())
                 .append(basicTTime())
                 .toFormatter();
@@ -749,7 +700,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter basicWeekDateTimeNoMillis() {
         if (bwdtx == null) {
-            bwdtx = new DateTimeFormatterBuilder(iChrono)
+            bwdtx = new DateTimeFormatterBuilder()
                 .append(basicWeekDate())
                 .append(basicTTimeNoMillis())
                 .toFormatter();
@@ -775,7 +726,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter yearMonth() {
         if (ym == null) {
-            ym = new DateTimeFormatterBuilder(iChrono)
+            ym = new DateTimeFormatterBuilder()
                 .append(yearElement())
                 .append(monthElement())
                 .toFormatter();
@@ -791,7 +742,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter yearMonthDay() {
         if (ymd == null) {
-            ymd = new DateTimeFormatterBuilder(iChrono)
+            ymd = new DateTimeFormatterBuilder()
                 .append(yearElement())
                 .append(monthElement())
                 .append(dayOfMonthElement())
@@ -817,7 +768,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter weekyearWeek() {
         if (ww == null) {
-            ww = new DateTimeFormatterBuilder(iChrono)
+            ww = new DateTimeFormatterBuilder()
                 .append(weekyearElement())
                 .append(weekElement())
                 .toFormatter();
@@ -833,7 +784,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter weekyearWeekDay() {
         if (wwd == null) {
-            wwd = new DateTimeFormatterBuilder(iChrono)
+            wwd = new DateTimeFormatterBuilder()
                 .append(weekyearElement())
                 .append(weekElement())
                 .append(dayOfWeekElement())
@@ -859,7 +810,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter hourMinute() {
         if (hm == null) {
-            hm = new DateTimeFormatterBuilder(iChrono)
+            hm = new DateTimeFormatterBuilder()
                 .append(hourElement())
                 .append(minuteElement())
                 .toFormatter();
@@ -875,7 +826,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter hourMinuteSecond() {
         if (hms == null) {
-            hms = new DateTimeFormatterBuilder(iChrono)
+            hms = new DateTimeFormatterBuilder()
                 .append(hourElement())
                 .append(minuteElement())
                 .append(secondElement())
@@ -893,7 +844,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter hourMinuteSecondMillis() {
         if (hmsl == null) {
-            hmsl = new DateTimeFormatterBuilder(iChrono)
+            hmsl = new DateTimeFormatterBuilder()
                 .append(hourElement())
                 .append(minuteElement())
                 .append(secondElement())
@@ -912,7 +863,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter hourMinuteSecondFraction() {
         if (hmsf == null) {
-            hmsf = new DateTimeFormatterBuilder(iChrono)
+            hmsf = new DateTimeFormatterBuilder()
                 .append(hourElement())
                 .append(minuteElement())
                 .append(secondElement())
@@ -930,7 +881,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateHour() {
         if (dh == null) {
-            dh = new DateTimeFormatterBuilder(iChrono)
+            dh = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(literalTElement())
                 .append(hour())
@@ -947,7 +898,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateHourMinute() {
         if (dhm == null) {
-            dhm = new DateTimeFormatterBuilder(iChrono)
+            dhm = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(literalTElement())
                 .append(hourMinute())
@@ -965,7 +916,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateHourMinuteSecond() {
         if (dhms == null) {
-            dhms = new DateTimeFormatterBuilder(iChrono)
+            dhms = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(literalTElement())
                 .append(hourMinuteSecond())
@@ -983,7 +934,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateHourMinuteSecondMillis() {
         if (dhmsl == null) {
-            dhmsl = new DateTimeFormatterBuilder(iChrono)
+            dhmsl = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(literalTElement())
                 .append(hourMinuteSecondMillis())
@@ -1001,7 +952,7 @@ public class ISODateTimeFormat {
      */
     public DateTimeFormatter dateHourMinuteSecondFraction() {
         if (dhmsf == null) {
-            dhmsf = new DateTimeFormatterBuilder(iChrono)
+            dhmsf = new DateTimeFormatterBuilder()
                 .append(date())
                 .append(literalTElement())
                 .append(hourMinuteSecondFraction())
@@ -1013,7 +964,7 @@ public class ISODateTimeFormat {
     //-----------------------------------------------------------------------
     private DateTimeFormatter yearElement() {
         if (ye == null) {
-            ye = new DateTimeFormatterBuilder(iChrono)
+            ye = new DateTimeFormatterBuilder()
                 .appendYear(4, 9)
                 .toFormatter();
         }
@@ -1022,7 +973,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter monthElement() {
         if (mye == null) {
-            mye = new DateTimeFormatterBuilder(iChrono)
+            mye = new DateTimeFormatterBuilder()
                 .appendLiteral('-')
                 .appendMonthOfYear(2)
                 .toFormatter();
@@ -1032,7 +983,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter dayOfMonthElement() {
         if (dme == null) {
-            dme = new DateTimeFormatterBuilder(iChrono)
+            dme = new DateTimeFormatterBuilder()
                 .appendLiteral('-')
                 .appendDayOfMonth(2)
                 .toFormatter();
@@ -1042,7 +993,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter weekyearElement() {
         if (we == null) {
-            we = new DateTimeFormatterBuilder(iChrono)
+            we = new DateTimeFormatterBuilder()
                 .appendWeekyear(4, 9)
                 .toFormatter();
         }
@@ -1051,7 +1002,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter weekElement() {
         if (wwe == null) {
-            wwe = new DateTimeFormatterBuilder(iChrono)
+            wwe = new DateTimeFormatterBuilder()
                 .appendLiteral("-W")
                 .appendWeekOfWeekyear(2)
                 .toFormatter();
@@ -1061,7 +1012,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter dayOfWeekElement() {
         if (dwe == null) {
-            dwe = new DateTimeFormatterBuilder(iChrono)
+            dwe = new DateTimeFormatterBuilder()
                 .appendLiteral('-')
                 .appendDayOfWeek(1)
                 .toFormatter();
@@ -1071,7 +1022,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter dayOfYearElement() {
         if (dye == null) {
-            dye = new DateTimeFormatterBuilder(iChrono)
+            dye = new DateTimeFormatterBuilder()
                 .appendLiteral('-')
                 .appendDayOfYear(3)
                 .toFormatter();
@@ -1081,7 +1032,7 @@ public class ISODateTimeFormat {
     
     private DateTimeFormatter literalTElement() {
         if (lte == null) {
-            lte = new DateTimeFormatterBuilder(iChrono)
+            lte = new DateTimeFormatterBuilder()
                 .appendLiteral('T')
                 .toFormatter();
         }
@@ -1090,7 +1041,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter hourElement() {
         if (hde == null) {
-            hde = new DateTimeFormatterBuilder(iChrono)
+            hde = new DateTimeFormatterBuilder()
                 .appendHourOfDay(2)
                 .toFormatter();
         }
@@ -1099,7 +1050,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter minuteElement() {
         if (mhe == null) {
-            mhe = new DateTimeFormatterBuilder(iChrono)
+            mhe = new DateTimeFormatterBuilder()
                 .appendLiteral(':')
                 .appendMinuteOfHour(2)
                 .toFormatter();
@@ -1109,7 +1060,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter secondElement() {
         if (sme == null) {
-            sme = new DateTimeFormatterBuilder(iChrono)
+            sme = new DateTimeFormatterBuilder()
                 .appendLiteral(':')
                 .appendSecondOfMinute(2)
                 .toFormatter();
@@ -1119,7 +1070,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter millisElement() {
         if (lse == null) {
-            lse = new DateTimeFormatterBuilder(iChrono)
+            lse = new DateTimeFormatterBuilder()
                 .appendLiteral('.')
                 .appendMillisOfSecond(3)
                 .toFormatter();
@@ -1129,7 +1080,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter fractionElement() {
         if (fse == null) {
-            fse = new DateTimeFormatterBuilder(iChrono)
+            fse = new DateTimeFormatterBuilder()
                 .appendLiteral('.')
                 // Support parsing up to nanosecond precision even though
                 // those extra digits will be dropped.
@@ -1141,7 +1092,7 @@ public class ISODateTimeFormat {
 
     private DateTimeFormatter offsetElement() {
         if (ze == null) {
-            ze = new DateTimeFormatterBuilder(iChrono)
+            ze = new DateTimeFormatterBuilder()
                 .appendTimeZoneOffset("Z", true, 2, 4)
                 .toFormatter();
         }

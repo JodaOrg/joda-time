@@ -57,41 +57,20 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
 /**
- * Defines an interface for creating textual representations of datetimes.
- * <p>
- * Instances of this interface are provided by the various builder classes.
- * <p>
- * Note: This interface represents a view onto {@link BaseDateTimeFormatter}.
- * All implementations must extend <code>BaseDateTimeFormatter</code>.
+ * Defines an interface, bound to a single chronology, for creating textual
+ * representations of datetimes.
  *
- * @author Brian S O'Neill
  * @author Stephen Colebourne
- * @see DateTimeFormatterBuilder
- * @see DateTimeFormat
- * @see ISODateTimeFormat
  * @since 1.0
  */
-public interface DateTimePrinter {
-
+public interface BoundDateTimePrinter {
+    
     /**
-     * Returns another printer instance that can only be used with the specified chronology.
-     * <p>
-     * The normal DateTimePrinter is a fast implementation of printing dates
-     * and times, well over twice as fast as the JDK. However, it is possible to
-     * go even faster by specifying in advance the chronology to use. Note that
-     * this optimisation should be rarely used, and only when you have identified a
-     * performance problem.
-     * <p>
-     * You should only use this method if you are going to use the printer for the
-     * returned chronology multiple times, typically storing it in an instance or
-     * static variable. You should not use this method if you will only use the
-     * printer once or a few times, as the setup cost will cause performance to be
-     * worse than using an ordinary printer.
+     * Returns another bound printer that uses the specified chronology.
      * <p>
      * It is the callers resposibility to ensure that the printer is then only
      * used with instances of the correct chronology.
@@ -103,7 +82,7 @@ public interface DateTimePrinter {
 
     //-----------------------------------------------------------------------
     /**
-     * Prints a ReadableInstant, using the chronology supplied by the instant.
+     * Prints a ReadableInstant, using the chronology of this printer.
      *
      * @param buf  formatted instant is appended to this buffer
      * @param instant  instant to format, null means now
@@ -111,7 +90,7 @@ public interface DateTimePrinter {
     void printTo(StringBuffer buf, ReadableInstant instant);
 
     /**
-     * Prints a ReadableInstant, using the chronology supplied by the instant.
+     * Prints a ReadableInstant, using the chronology of this printer.
      *
      * @param out  formatted instant is written out
      * @param instant  instant to format, null means now
@@ -121,7 +100,7 @@ public interface DateTimePrinter {
     //-----------------------------------------------------------------------
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the default DateTimeZone.
+     * using the chronology of this printer.
      *
      * @param buf  formatted instant is appended to this buffer
      * @param instant  millis since 1970-01-01T00:00:00Z
@@ -130,7 +109,7 @@ public interface DateTimePrinter {
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the default DateTimeZone.
+     * using the chronology of this printer.
      *
      * @param out  formatted instant is written out
      * @param instant  millis since 1970-01-01T00:00:00Z
@@ -139,49 +118,7 @@ public interface DateTimePrinter {
 
     //-----------------------------------------------------------------------
     /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the given DateTimeZone.
-     *
-     * @param buf  formatted instant is appended to this buffer
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param zone  the zone to use, null means default
-     */
-    void printTo(StringBuffer buf, long instant, DateTimeZone zone);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the given DateTimeZone.
-     *
-     * @param out  formatted instant is written out
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param zone  the zone to use, null means default
-     */
-    void printTo(Writer out, long instant, DateTimeZone zone) throws IOException;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given Chronology.
-     *
-     * @param buf  formatted instant is appended to this buffer
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void printTo(StringBuffer buf, long instant, Chronology chrono);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given Chronology.
-     *
-     * @param out  formatted instant is written out
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronology to use, null means ISO default
-     */
-    void printTo(Writer out, long instant, Chronology chrono) throws IOException;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Prints a ReadablePartial.
+     * Prints a ReadablePartial using the chronology of this printer.
      *
      * @param buf  formatted partial is appended to this buffer
      * @param partial  partial to format
@@ -189,7 +126,7 @@ public interface DateTimePrinter {
     void printTo(StringBuffer buf, ReadablePartial partial);
 
     /**
-     * Prints a ReadablePartial.
+     * Prints a ReadablePartial using the chronology of this printer.
      *
      * @param out  formatted partial is written out
      * @param partial  partial to format
@@ -198,7 +135,7 @@ public interface DateTimePrinter {
 
     //-----------------------------------------------------------------------
     /**
-     * Prints a ReadableInstant to a new String, using the chronology of the instant.
+     * Prints a ReadableInstant to a new String, using the chronology of this printer.
      *
      * @param instant  instant to format, null means now
      * @return the printed result
@@ -207,7 +144,7 @@ public interface DateTimePrinter {
 
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the default zone.
+     * using the chronology of this printer.
      *
      * @param instant  millis since 1970-01-01T00:00:00Z
      * @return the printed result
@@ -215,27 +152,7 @@ public interface DateTimePrinter {
     String print(long instant);
 
     /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using ISO chronology in the given zone.
-     *
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param zone  the zone to use, null means default
-     * @return the printed result
-     */
-    String print(long instant, DateTimeZone zone);
-
-    /**
-     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
-     * using the given chronology.
-     *
-     * @param instant  millis since 1970-01-01T00:00:00Z
-     * @param chrono  the chronoogy to use
-     * @return the printed result
-     */
-    String print(long instant, Chronology chrono);
-
-    /**
-     * Prints a ReadablePartial to a new String.
+     * Prints a ReadablePartial to a new String using the chronology of this printer.
      *
      * @param partial  partial to format
      * @return the printed result

@@ -564,7 +564,7 @@ public class TestTimeOfDay_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testToString_String() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
-        assertEquals(" 10", test.toString("yyyy HH"));
+        assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString("yyyy HH"));
         assertEquals("T10:20:30.040", test.toString(null));
     }
 

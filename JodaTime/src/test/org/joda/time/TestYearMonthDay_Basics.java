@@ -538,17 +538,17 @@ public class TestYearMonthDay_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testToString_String() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
-        assertEquals("2002 ", test.toString("yyyy HH"));
+        assertEquals("2002 \ufffd\ufffd", test.toString("yyyy HH"));
         assertEquals("2002-06-09", test.toString(null));
     }
 
     //-----------------------------------------------------------------------
     public void testToString_String_Locale() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
-        assertEquals("Sun 9/6", test.toString("EEE d/M", Locale.ENGLISH));
-        assertEquals("dim. 9/6", test.toString("EEE d/M", Locale.FRENCH));
+        assertEquals("\ufffd 9/6", test.toString("EEE d/M", Locale.ENGLISH));
+        assertEquals("\ufffd 9/6", test.toString("EEE d/M", Locale.FRENCH));
         assertEquals("2002-06-09", test.toString(null, Locale.ENGLISH));
-        assertEquals("Sun 9/6", test.toString("EEE d/M", null));
+        assertEquals("\ufffd 9/6", test.toString("EEE d/M", null));
         assertEquals("2002-06-09", test.toString(null, null));
     }
 

@@ -261,9 +261,12 @@ public class ISODateTimeFormat {
      * Returns a generic ISO time parser. It accepts formats described by
      * the following syntax:
      * <pre>
-     * time         = ['T'] time-element [offset]
-     * time-element = HH [':' mm [':' ss ['.' SSS]]]
-     * offset       = 'Z' | (('+' | '-') HH ':' mm)
+     * time           = ['T'] time-element [offset]
+     * time-element   = HH [minute-element] | [fraction]
+     * minute-element = ':' mm [second-element] | [fraction]
+     * second-element = ':' ss [fraction]
+     * fraction       = ('.' | ',') digit+
+     * offset         = 'Z' | (('+' | '-') HH ':' mm)
      * </pre>
      */
     public DateTimeParser timeParser() {
@@ -284,22 +287,60 @@ public class ISODateTimeFormat {
      * Returns a generic ISO time parser. It accepts formats described by
      * the following syntax:
      * <pre>
-     * time-element = HH [':' mm [':' ss ['.' SSS]]]
+     * time-element   = HH [minute-element] | [fraction]
+     * minute-element = ':' mm [second-element] | [fraction]
+     * second-element = ':' ss [fraction]
+     * fraction       = ('.' | ',') digit+
      * </pre>
      */
     public DateTimeParser timeElementParser() {
         if (tpe == null) {
+            // Decimal point can be either '.' or ','
+            DateTimeParser decimalPoint = new DateTimeFormatterBuilder(iChrono)
+                .append(null, new DateTimeParser[] {
+                    new DateTimeFormatterBuilder(iChrono)
+                    .appendLiteral('.')
+                    .toParser(),
+                    new DateTimeFormatterBuilder(iChrono)
+                    .appendLiteral(',')
+                    .toParser()
+                })
+                .toParser();
+
             tpe = new DateTimeFormatterBuilder(iChrono)
+                // time-element
                 .append(hourElement())
-                .appendOptional
-                (new DateTimeFormatterBuilder(iChrono)
-                 .append(minuteElement())
-                 .appendOptional
-                 (new DateTimeFormatterBuilder(iChrono)
-                  .append(secondElement())
-                  .appendOptional(fractionElement())
-                  .toParser())
-                 .toParser())
+                .append
+                (null, new DateTimeParser[] {
+                    new DateTimeFormatterBuilder(iChrono)
+                    // minute-element
+                    .append(minuteElement())
+                    .append
+                    (null, new DateTimeParser[] {
+                        new DateTimeFormatterBuilder(iChrono)
+                        // second-element
+                        .append(secondElement())
+                        // second fraction
+                        .appendOptional(new DateTimeFormatterBuilder(iChrono)
+                                        .append(decimalPoint)
+                                        .appendFractionOfSecond(1, 9)
+                                        .toParser())
+                        .toParser(),
+                        // minute fraction
+                        new DateTimeFormatterBuilder(iChrono)
+                        .append(decimalPoint)
+                        .appendFractionOfMinute(1, 9)
+                        .toParser(),
+                        null
+                    })
+                    .toParser(),
+                    // hour fraction
+                    new DateTimeFormatterBuilder(iChrono)
+                    .append(decimalPoint)
+                    .appendFractionOfHour(1, 9)
+                    .toParser(),
+                    null
+                })
                 .toParser();
         }
         return tpe;
@@ -313,7 +354,10 @@ public class ISODateTimeFormat {
      * time              = 'T' time-element [offset]
      * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
      * week-date-element = xxxx '-W' ww ['-' e]
-     * time-element      = HH [':' mm [':' ss ['.' SSS]]]
+     * time-element      = HH [minute-element] | [fraction]
+     * minute-element    = ':' mm [second-element] | [fraction]
+     * second-element    = ':' ss [fraction]
+     * fraction          = ('.' | ',') digit+
      * offset            = 'Z' | (('+' | '-') HH ':' mm)
      * </pre>
      */

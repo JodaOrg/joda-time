@@ -328,7 +328,7 @@ public class TestStringConverter extends TestCase {
             StringConverter.INSTANCE.getPeriodType("P2Y6M9D", true));
     }
 
-    public void testSetInto_Object() throws Exception {
+    public void testSetIntoPeriod_Object1() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.getYearMonthType());
         StringConverter.INSTANCE.setInto(m, "P2Y6M9DT12H24M48S");
         assertEquals(2, m.getYears());
@@ -338,8 +338,10 @@ public class TestStringConverter extends TestCase {
         assertEquals(24, m.getMinutes());
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
-        
-        m = new MutablePeriod(PeriodType.getYearWeekType());
+    }
+
+    public void testSetIntoPeriod_Object2() throws Exception {
+        MutablePeriod m = new MutablePeriod(PeriodType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3DT12H24M48S");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());
@@ -348,8 +350,10 @@ public class TestStringConverter extends TestCase {
         assertEquals(24, m.getMinutes());
         assertEquals(48, m.getSeconds());
         assertEquals(0, m.getMillis());
-        
-        m = new MutablePeriod(1, 0, 1, 1, 1, 1, 1, 1, PeriodType.getYearWeekType());
+    }        
+
+    public void testSetIntoPeriod_Object3() throws Exception {
+        MutablePeriod m = new MutablePeriod(1, 0, 1, 1, 1, 1, 1, 1, PeriodType.getYearWeekType());
         StringConverter.INSTANCE.setInto(m, "P2Y4W3D");
         assertEquals(2, m.getYears());
         assertEquals(4, m.getWeeks());
@@ -358,7 +362,10 @@ public class TestStringConverter extends TestCase {
         assertEquals(0, m.getMinutes());
         assertEquals(0, m.getSeconds());
         assertEquals(0, m.getMillis());
-        
+    }        
+
+    public void testSetIntoPeriod_Object4() throws Exception {
+        MutablePeriod m = new MutablePeriod();
         try {
             StringConverter.INSTANCE.setInto(m, "");
             fail();
@@ -371,6 +378,13 @@ public class TestStringConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetIntervalMillis_Object() throws Exception {
+        MutableInterval m = new MutableInterval(-1000L, 1000L);
+        long[] data = StringConverter.INSTANCE.getIntervalMillis("2004-06-09/P1Y2M");
+        assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0).getMillis(), data[0]);
+        assertEquals(new DateTime(2005, 8, 9, 0, 0, 0, 0).getMillis(), data[1]);
+    }
+
     public void testSetIntoInterval_Object1() throws Exception {
         MutableInterval m = new MutableInterval(-1000L, 1000L);
         StringConverter.INSTANCE.setInto(m, "2004-06-09/P1Y2M");

@@ -59,9 +59,19 @@ import org.joda.time.ReadWritableInterval;
  * IntervalConverter defines how an object is converted to an interval.
  *
  * @author Brian S O'Neill
+ * @author Stephen Colebourne
  * @since 1.0
  */
 public interface IntervalConverter extends Converter {
+
+    /**
+     * Extracts the start and end millisecond instants from the object.
+     *
+     * @param object  the object to convert, must not be null
+     * @return the start millis and end millis in an array of size two
+     * @throws ClassCastException if the object is invalid
+     */
+    long[] getIntervalMillis(Object object);
 
     /**
      * Extracts interval endpoint values from an object of this converter's

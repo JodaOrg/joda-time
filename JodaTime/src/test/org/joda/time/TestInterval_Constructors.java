@@ -57,6 +57,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.convert.ConverterManager;
+import org.joda.time.convert.IntervalConverter;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -460,6 +462,59 @@ public class TestInterval_Constructors extends TestCase {
         Interval test = new Interval(base);
         assertEquals(base.getStartMillis(), test.getStartMillis());
         assertEquals(base.getEndMillis(), test.getEndMillis());
+    }
+
+    public void testConstructor_Object5() throws Throwable {
+        IntervalConverter oldConv = ConverterManager.getInstance().getIntervalConverter("");
+        IntervalConverter conv = new IntervalConverter() {
+            public long[] getIntervalMillis(Object object) {
+                return new long[] {1234L, 5678L};
+            }
+            public void setInto(ReadWritableInterval interval, Object object) {
+            }
+            public Class getSupportedType() {
+                return String.class;
+            }
+        };
+        try {
+            ConverterManager.getInstance().addIntervalConverter(conv);
+            DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+            DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+            Interval test = new Interval(dt1.toString() + '/' + dt2.toString());
+            assertEquals(1234L, test.getStartMillis());
+            assertEquals(5678L, test.getEndMillis());
+        } finally {
+            ConverterManager.getInstance().addIntervalConverter(oldConv);
+        }
+    }
+
+    public void testConstructor_Object6() throws Throwable {
+        IntervalConverter oldConv = ConverterManager.getInstance().getIntervalConverter(new Interval(0L, 0L));
+        IntervalConverter conv = new IntervalConverter() {
+            public long[] getIntervalMillis(Object object) {
+                return new long[] {1234L, 5678L};
+            }
+            public void setInto(ReadWritableInterval interval, Object object) {
+            }
+            public Class getSupportedType() {
+                return ReadableInterval.class;
+            }
+        };
+        try {
+            ConverterManager.getInstance().addIntervalConverter(conv);
+            Interval base = new Interval(-1000L, 1000L);
+            Duration dur = base.getDuration();
+            Instant start = base.getStartInstant();
+            Instant end = base.getEndInstant();
+            Interval test = new Interval(base);
+            assertEquals(1234L, test.getStartMillis());
+            assertEquals(5678L, test.getEndMillis());
+            assertNotSame(dur, test.getDuration());
+            assertNotSame(start, test.getStartInstant());
+            assertNotSame(end, test.getEndInstant());
+        } finally {
+            ConverterManager.getInstance().addIntervalConverter(oldConv);
+        }
     }
 
     class MockInterval implements ReadableInterval {

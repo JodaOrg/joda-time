@@ -134,7 +134,7 @@ public class TestReadableIntervalConverter extends TestCase {
             ReadableIntervalConverter.INSTANCE.getPeriodType(i, true));
     }
 
-    public void testSetInto_Object() throws Exception {
+    public void testSetIntoPeriod_Object() throws Exception {
         Interval i = new Interval(100L, 223L);
         MutablePeriod m = new MutablePeriod(PeriodType.getMillisType());
         ReadableIntervalConverter.INSTANCE.setInto(m, i);
@@ -149,6 +149,13 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetIntervalMillis_Object() throws Exception {
+        Interval i = new Interval(1234L, 5678L);
+        long[] data = ReadableIntervalConverter.INSTANCE.getIntervalMillis(i);
+        assertEquals(1234L, data[0]);
+        assertEquals(5678L, data[1]);
+    }
+
     public void testSetIntoInterval_Object() throws Exception {
         Interval i = new Interval(0L, 123L);
         MutableInterval m = new MutableInterval(-1000L, 1000L);

@@ -102,6 +102,18 @@ class ReadableIntervalConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
+     * Extracts the start and end millisecond instants from the object.
+     *
+     * @param object  the object to convert, must not be null
+     * @return the start millis and end millis in an array of size two
+     * @throws ClassCastException if the object is invalid
+     */
+    public long[] getIntervalMillis(Object object) {
+        ReadableInterval interval = (ReadableInterval) object;
+        return new long[] {interval.getStartMillis(), interval.getEndMillis()};
+    }
+
+    /**
      * Sets the values of the mutable interval from the specified interval.
      * 
      * @param writableInterval  the interval to set

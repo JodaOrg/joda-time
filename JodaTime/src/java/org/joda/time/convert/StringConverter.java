@@ -168,12 +168,34 @@ class StringConverter extends AbstractConverter
 
     //-----------------------------------------------------------------------
     /**
+     * Extracts the start and end millisecond instants from the object.
+     *
+     * @param object  the object to convert, must not be null
+     * @return the start millis and end millis in an array
+     * @throws ClassCastException if the object is invalid
+     */
+    public long[] getIntervalMillis(Object object) {
+        return parseInterval(null, object);
+    }
+
+    /**
      * Sets the value of the mutable interval from the string.
      * 
      * @param writableInterval  the interval to set
      * @param object  the string to set from
      */
     public void setInto(ReadWritableInterval writableInterval, Object object) {
+        parseInterval(writableInterval, object);
+    }
+
+    /**
+     * Sets the value of the mutable interval from the string.
+     * 
+     * @param writableInterval  the interval to populate, may be null
+     * @param object  the string to set from
+     * @return an array of size two, containing the start and end millis if interval input is null
+     */
+    private long[] parseInterval(ReadWritableInterval writableInterval, Object object) {
         String str = (String) object;
 
         int separator = str.indexOf('/');
@@ -191,35 +213,42 @@ class StringConverter extends AbstractConverter
         }
 
         DateTimeParser dateTimeParser = ISODateTimeFormat.getInstance().dateTimeParser();
-        PeriodFormatter durationParser = ISOPeriodFormat.getInstance().standard();
-        long startInstant;
+        PeriodFormatter periodParser = ISOPeriodFormat.getInstance().standard();
+        long startInstant, endInstant;
         Period period;
-
+        
+        // before slash
         char c = leftStr.charAt(0);
         if (c == 'P' || c == 'p') {
             startInstant = 0;
-            period = durationParser.parsePeriod(getPeriodType(leftStr, false), leftStr);
+            period = periodParser.parsePeriod(getPeriodType(leftStr, false), leftStr);
         } else {
             startInstant = dateTimeParser.parseMillis(leftStr);
             period = null;
         }
-
+        
+        // after slash
         c = rightStr.charAt(0);
         if (c == 'P' || c == 'p') {
             if (period != null) {
                 throw new IllegalArgumentException("Interval composed of two durations: " + str);
             }
-            period = durationParser.parsePeriod(getPeriodType(rightStr, false), rightStr);
-            writableInterval.setStartMillis(startInstant);
-            writableInterval.setPeriodAfterStart(period);
+            period = periodParser.parsePeriod(getPeriodType(rightStr, false), rightStr);
+            endInstant = period.addTo(startInstant, 1);
         } else {
-            long endInstant = dateTimeParser.parseMillis(rightStr);
-            writableInterval.setEndMillis(endInstant);
-            if (period == null) {
-                writableInterval.setStartMillis(startInstant);
-            } else {
-                writableInterval.setPeriodBeforeEnd(period);
+            endInstant = dateTimeParser.parseMillis(rightStr);
+            if (period != null) {
+                startInstant = period.addTo(endInstant, -1);
             }
+        }
+        
+        // return data avoiding object creation and code duplication
+        if (writableInterval == null) {
+            return new long[] {startInstant, endInstant};
+        } else {
+            writableInterval.setStartMillis(startInstant);
+            writableInterval.setEndMillis(endInstant);
+            return null;
         }
     }
 

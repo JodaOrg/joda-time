@@ -95,29 +95,21 @@ public abstract class AbstractInterval implements ReadableInterval {
      */
     public AbstractInterval(Object interval) {
         super();
-        Period duration;
+        IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
+        if (this instanceof ReadWritableInterval) {
+            converter.setInto((ReadWritableInterval) this, interval);
+        } else {
+            long[] millis = converter.getIntervalMillis(interval);
+            iStartMillis = millis[0];
+            iEndMillis = millis[1];
+        }
         if (interval instanceof AbstractInterval) {
             AbstractInterval ri = (AbstractInterval) interval;
-            iStartMillis = ri.iStartMillis;
-            iStartInstant = ri.iStartInstant;
-            iEndMillis = ri.iEndMillis;
-            iEndInstant = ri.iEndInstant;
-            iDuration = ri.iDuration;
-            
-        } else if (interval instanceof ReadableInterval) {
-            ReadableInterval ri = (ReadableInterval) interval;
-            iStartMillis = ri.getStartMillis();
-            iEndMillis = ri.getEndMillis();
-            
-        } else {
-            IntervalConverter converter = ConverterManager.getInstance().getIntervalConverter(interval);
-            if (this instanceof ReadWritableInterval) {
-                converter.setInto((ReadWritableInterval) this, interval);
-            } else {
-                MutableInterval mi = new MutableInterval();
-                converter.setInto(mi, interval);
-                iStartMillis = mi.getStartMillis();
-                iEndMillis = mi.getEndMillis();
+            if (iStartMillis == ri.iStartMillis && iEndMillis == ri.iEndMillis) {
+                // this double checks against weird converters
+                iStartInstant = ri.iStartInstant;
+                iEndInstant = ri.iEndInstant;
+                iDuration = ri.iDuration;
             }
         }
     }

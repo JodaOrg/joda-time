@@ -675,6 +675,7 @@ public class TestConverterManager extends TestCase {
     //-----------------------------------------------------------------------
     public void testAddIntervalConverter1() {
         IntervalConverter c = new IntervalConverter() {
+            public long[] getIntervalMillis(Object object) {return null;}
             public void setInto(ReadWritableInterval interval, Object object) {}
             public Class getSupportedType() {return Boolean.class;}
         };
@@ -691,6 +692,7 @@ public class TestConverterManager extends TestCase {
 
     public void testAddIntervalConverter2() {
         IntervalConverter c = new IntervalConverter() {
+            public long[] getIntervalMillis(Object object) {return null;}
             public void setInto(ReadWritableInterval interval, Object object) {}
             public Class getSupportedType() {return String.class;}
         };
@@ -740,6 +742,7 @@ public class TestConverterManager extends TestCase {
 
     public void testRemoveIntervalConverter2() {
         IntervalConverter c = new IntervalConverter() {
+            public long[] getIntervalMillis(Object object) {return null;}
             public void setInto(ReadWritableInterval interval, Object object) {}
             public Class getSupportedType() {return Boolean.class;}
         };

@@ -61,6 +61,7 @@ import java.util.Locale;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
 import org.joda.time.MutableDateTime;
@@ -164,9 +165,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a DateTime using the same millis
      */
     public DateTime toDateTime(DateTimeZone zone) {
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
+        zone = DateTimeUtils.getZone(zone);
         if (this instanceof DateTime && getZone() == zone) {
             return (DateTime) this;
         }
@@ -180,9 +179,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a DateTime using the same millis
      */
     public DateTime toDateTime(Chronology chronology) {
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
+        chronology = DateTimeUtils.getChronology(chronology);
         if (this instanceof DateTime && getChronology() == chronology) {
             return (DateTime) this;
         }
@@ -241,9 +238,6 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a MutableDateTime using the same millis
      */
     public MutableDateTime toMutableDateTime(DateTimeZone zone) {
-        if (zone == null) {
-            zone = DateTimeZone.getDefault();
-        }
         return new MutableDateTime(this, zone);
     }
 
@@ -254,9 +248,6 @@ public abstract class AbstractInstant implements ReadableInstant {
      * @return a MutableDateTime using the same millis
      */
     public MutableDateTime toMutableDateTime(Chronology chronology) {
-        if (chronology == null) {
-            chronology = ISOChronology.getInstance();
-        }
         return new MutableDateTime(this, chronology);
     }
 
@@ -372,12 +363,12 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (this == instant) {
             return 0;
         }
-
+        
         ReadableInstant otherInstant = (ReadableInstant) instant;
-
+        
         long otherMillis = otherInstant.getMillis();
         long thisMillis = getMillis();
-
+        
         // cannot do (thisMillis - otherMillis) as can overflow
         if (thisMillis == otherMillis) {
             return 0;
@@ -389,43 +380,106 @@ public abstract class AbstractInstant implements ReadableInstant {
         }
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Is the millisecond value after the millisecond passed in.
+     * Is this instant after the millisecond instant passed in
+     * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null returns false
+     * @param instant  a millisecond instant to check against
+     * @return true if this instant is after the instant passed in
+     */
+    public boolean isAfter(long instant) {
+        return (getMillis() > instant);
+    }
+
+    /**
+     * Is this instant after the current instant
+     * comparing solely by millisecond.
+     * 
+     * @return true if this instant is after the current instant
+     */
+    public boolean isAfterNow() {
+        return isAfter(DateTimeUtils.currentTimeMillis());
+    }
+
+    /**
+     * Is this instant after the instant passed in
+     * comparing solely by millisecond.
+     *
+     * @param instant  an instant to check against, null means now
      * @return true if the instant is after the instant passed in
      */
     public boolean isAfter(ReadableInstant instant) {
-        if (instant == null) {
-            return false;
-        }
-        return (getMillis() > instant.getMillis());
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        return isAfter(instantMillis);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Is this instant before the millisecond instant passed in
+     * comparing solely by millisecond.
+     *
+     * @param instant  a millisecond instant to check against
+     * @return true if this instant is before the instant passed in
+     */
+    public boolean isBefore(long instant) {
+        return (getMillis() < instant);
     }
 
     /**
-     * Is the millisecond value before the millisecond passed in.
+     * Is this instant before the current instant
+     * comparing solely by millisecond.
+     * 
+     * @return true if this instant is before the current instant
+     */
+    public boolean isBeforeNow() {
+        return isBefore(DateTimeUtils.currentTimeMillis());
+    }
+
+    /**
+     * Is this instant before the instant passed in
+     * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null returns false
+     * @param instant  an instant to check against, null means now
      * @return true if the instant is before the instant passed in
      */
     public boolean isBefore(ReadableInstant instant) {
-        if (instant == null) {
-            return false;
-        }
-        return (getMillis() < instant.getMillis());
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        return isBefore(instantMillis);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Is this instant equal to the millisecond instant passed in
+     * comparing solely by millisecond.
+     *
+     * @param instant  a millisecond instant to check against
+     * @return true if this instant is before the instant passed in
+     */
+    public boolean isEqual(long instant) {
+        return (getMillis() == instant);
     }
 
     /**
-     * Is the millisecond value equal to the millisecond passed in.
+     * Is this instant equal to the current instant
+     * comparing solely by millisecond.
+     * 
+     * @return true if this instant is before the current instant
+     */
+    public boolean isEqualNow() {
+        return isEqual(DateTimeUtils.currentTimeMillis());
+    }
+
+    /**
+     * Is this instant equal to the instant passed in
+     * comparing solely by millisecond.
      *
-     * @param instant  an instant to check against, null returns false
+     * @param instant  an instant to check against, null means now
      * @return true if the instant is equal to the instant passed in
      */
     public boolean isEqual(ReadableInstant instant) {
-        if (instant == null) {
-            return false;
-        }
-        return (getMillis() == instant.getMillis());
+        long instantMillis = DateTimeUtils.getInstantMillis(instant);
+        return isEqual(instantMillis);
     }
 
     // Output    

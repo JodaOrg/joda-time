@@ -195,7 +195,7 @@ public interface ReadableInstant extends Comparable {
      * @return a copy of this instant with a different time zone
      * @see #withDateTimeZone
      */
-    public ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone);
+    ReadableInstant withDateTimeZoneMoved(DateTimeZone newDateTimeZone);
 
     //-----------------------------------------------------------------------
     /**

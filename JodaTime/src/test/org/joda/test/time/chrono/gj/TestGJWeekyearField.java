@@ -87,6 +87,18 @@ class TestGJWeekyearField extends TestGJDateTimeField {
         return set(millis, (int)(get(millis) + value));
     }
 
+    public boolean isLeap(long millis) {
+        return iChronology.weekOfWeekyear().getMaximumValue(millis) > 52;
+    }
+
+    public int getLeapAmount(long millis) {
+        return iChronology.weekOfWeekyear().getMaximumValue(millis) - 52;
+    } 
+
+    public DurationField getLeapDurationField() {
+        return iChronology.weeks();
+    }
+
     public DurationField getRangeDurationField() {
         return null;
     }

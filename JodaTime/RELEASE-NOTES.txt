@@ -1,0 +1,11 @@
+Joda-Time version 0.95
+----------------------
+
+This version of Joda-Time is the first released from the new home of joda-time.sourceforge.net.
+The API has had many details tidied up, and performance tweaked.
+It also has a Duration class again, complete with parser and formatter.
+
+The code is accurate as far as we know, however the tests could still do with work.
+So, if you would like to help out in any way, let us know.
+
+scolebourne@users.sourceforge.net

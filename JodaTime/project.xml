@@ -66,6 +66,15 @@
     <contributor>
       <name>Guy Allard</name>
     </contributor>
+    <contributor>
+      <name>Sean Geoghegan </name>
+    </contributor>
+    <contributor>
+      <name>Ashish Katyal </name>
+    </contributor>
+    <contributor>
+      <name>Kandarp Shah </name>
+    </contributor>
   </contributors>
 
   <dependencies>

@@ -342,7 +342,7 @@ public class MutableInterval
     /** 
      * Sets the end of this time interval as an Instant.
      *
-     * @param instant  the end of the time interval, null means now
+     * @param end  the end of the time interval, null means now
      * @throws IllegalArgumentException if the end is before the start
      */
     public void setEndInstant(ReadableInstant end) {

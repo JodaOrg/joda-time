@@ -58,6 +58,7 @@ import java.util.Date;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Instant;
@@ -106,16 +107,37 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get the value of the specified field.
+     * Get the value of one of the fields of a datetime using the chronology of the instant.
+     * <p>
+     * This method uses the chronology of the instant to obtain the value.
+     * For example:
+     * <pre>
+     * DateTime dt = new DateTime();
+     * int year = dt.get(DateTimeFieldType.year());
+     * </pre>
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType, not null
+     * @return the value of that field
+     * @throws IllegalArgumentException if the field type is null
+     */
+    public int get(DateTimeFieldType type) {
+        if (type == null) {
+            throw new IllegalArgumentException("The DateTimeFieldType must not be null");
+        }
+        return type.getField(getChronology()).get(getMillis());
+    }
+
+    /**
+     * Get the value of one of the fields of a datetime.
      * <p>
      * This could be used to get a field using a different Chronology.
      * For example:
      * <pre>
      * Instant dt = new Instant();
-     * int gjYear = dt.get(GJChronology.getInstance().year());
+     * int gjYear = dt.get(Chronology.getCoptic().year());
      * </pre>
      * 
-     * @param field  the DateTimeField subclass to use
+     * @param field  the DateTimeField to use, not null
      * @return the value
      * @throws IllegalArgumentException if the field is null
      */

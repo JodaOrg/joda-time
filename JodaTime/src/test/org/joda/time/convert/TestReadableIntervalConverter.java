@@ -180,6 +180,19 @@ public class TestReadableIntervalConverter extends TestCase {
         ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getGJ());
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
+        assertEquals(Chronology.getGJ(), m.getChronology());
+    }
+
+    public void testSetIntoInterval_Object4() throws Exception {
+        MutableInterval i = new MutableInterval(0L, 123L) {
+            public Chronology getChronology() {
+                return null; // bad
+            }
+        };
+        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
+        assertEquals(0L, m.getStartMillis());
+        assertEquals(123L, m.getEndMillis());
         assertEquals(Chronology.getISO(), m.getChronology());
     }
 

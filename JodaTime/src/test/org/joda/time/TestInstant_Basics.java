@@ -150,8 +150,38 @@ public class TestInstant_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testGet() {
-        Instant test = new Instant();
+    public void testGet_DateTimeFieldType() {
+        Instant test = new Instant();  // 2002-06-09
+        assertEquals(1, test.get(DateTimeFieldType.era()));
+        assertEquals(20, test.get(DateTimeFieldType.centuryOfEra()));
+        assertEquals(2, test.get(DateTimeFieldType.yearOfCentury()));
+        assertEquals(2002, test.get(DateTimeFieldType.yearOfEra()));
+        assertEquals(2002, test.get(DateTimeFieldType.year()));
+        assertEquals(6, test.get(DateTimeFieldType.monthOfYear()));
+        assertEquals(9, test.get(DateTimeFieldType.dayOfMonth()));
+        assertEquals(2002, test.get(DateTimeFieldType.weekyear()));
+        assertEquals(23, test.get(DateTimeFieldType.weekOfWeekyear()));
+        assertEquals(7, test.get(DateTimeFieldType.dayOfWeek()));
+        assertEquals(160, test.get(DateTimeFieldType.dayOfYear()));
+        assertEquals(0, test.get(DateTimeFieldType.halfdayOfDay()));
+        assertEquals(0, test.get(DateTimeFieldType.hourOfHalfday()));  // UTC zone
+        assertEquals(24, test.get(DateTimeFieldType.clockhourOfDay()));  // UTC zone
+        assertEquals(12, test.get(DateTimeFieldType.clockhourOfHalfday()));  // UTC zone
+        assertEquals(0, test.get(DateTimeFieldType.hourOfDay()));  // UTC zone
+        assertEquals(0, test.get(DateTimeFieldType.minuteOfHour()));
+        assertEquals(0, test.get(DateTimeFieldType.minuteOfDay()));
+        assertEquals(0, test.get(DateTimeFieldType.secondOfMinute()));
+        assertEquals(0, test.get(DateTimeFieldType.secondOfDay()));
+        assertEquals(0, test.get(DateTimeFieldType.millisOfSecond()));
+        assertEquals(0, test.get(DateTimeFieldType.millisOfDay()));
+        try {
+            test.get((DateTimeFieldType) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testGet_DateTimeField() {
+        Instant test = new Instant();  // 2002-06-09
         assertEquals(1, test.get(ISOChronology.getInstance().era()));
         assertEquals(20, test.get(ISOChronology.getInstance().centuryOfEra()));
         assertEquals(2, test.get(ISOChronology.getInstance().yearOfCentury()));
@@ -175,7 +205,7 @@ public class TestInstant_Basics extends TestCase {
         assertEquals(0, test.get(ISOChronology.getInstance().millisOfSecond()));
         assertEquals(60 * 60 * 1000, test.get(ISOChronology.getInstance().millisOfDay()));
         try {
-            test.get(null);
+            test.get((DateTimeField) null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

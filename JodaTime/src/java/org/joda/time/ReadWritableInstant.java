@@ -177,31 +177,21 @@ public interface ReadWritableInstant extends ReadableInstant {
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the value of one of the fields of a datetime.
-     * <p>
-     * DateTimeField instances are generally obtained from a {@link Chronology} subclass.
-     * However, an application can create its own DateTimeField to manipulate the
-     * date time millis in new ways.
+     * Sets the value of one of the fields of the instant, such as hourOfDay.
      *
-     * @param field  a DateTimeField instance, usually obtained from a Chronology
-     * @param value  the value of that field for the millis set in the implementation
-     * @throws IllegalArgumentException if the field is null
+     * @param type  a field type, usually obtained from DateTimeFieldType, null ignored
+     * @param value  the value to set the field to
      * @throws IllegalArgumentException if the value is invalid
      */
-    void set(DateTimeField field, int value);
+    void set(DateTimeFieldType type, int value);
 
     /**
-     * Adds to the instant specifying the duration and multiple.
-     * <p>
-     * DurationField instances are generally obtained from a {@link Chronology} subclass.
-     * However, an application can create its own DurationField to manipulate the
-     * date time millis in new ways.
+     * Adds to the instant specifying the duration and multiple to add.
      *
-     * @param field  a DurationField instance, usually obtained from a Chronology
-     * @param value  the number of times to add the duration
-     * @throws IllegalArgumentException if the field is null
+     * @param type  a field type, usually obtained from DateTimeFieldType, null ignored
+     * @param amount  the amount to add of this duration
      * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    void add(DurationField field, int value);
+    void add(DurationFieldType type, int amount);
 
 }

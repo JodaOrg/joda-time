@@ -564,45 +564,29 @@ public class MutableDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the value of the specified field.
-     * It is permitted to use a field from another Chronology.
-     * For example:
-     * <pre>
-     * MutableDateTime dt = new MutableDateTime();
-     * dt.set(GJChronology.getInstance().year(), 2002);
-     * </pre>
-     * 
-     * @param field  the DateTimeField to use
-     * @param value the value
-     * @throws IllegalArgumentException if the field is null
+     * Sets the value of one of the fields of the instant, such as hourOfDay.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType, null ignored
+     * @param value  the value to set the field to
      * @throws IllegalArgumentException if the value is invalid
      */
-    public void set(final DateTimeField field, final int value) {
-        if (field == null) {
-            throw new IllegalArgumentException("The DateTimeField must not be null");
+    public void set(DateTimeFieldType type, int value) {
+        if (type != null) {
+            setMillis(type.getField(getChronology()).set(getMillis(), value));
         }
-        setMillis(field.set(getMillis(), value));
     }
 
     /**
-     * Adds the to the datetime the amount represented by the duration multiplied by the value.
-     * It is permitted to use a field from another Chronology.
-     * For example:
-     * <pre>
-     * MutableDateTime dt = new MutableDateTime();
-     * dt.add(GJChronology.getInstance().years(), 2);
-     * </pre>
-     * 
-     * @param field  the DurationField to use
-     * @param value the value
-     * @throws IllegalArgumentException if the field is null
-     * @throws IllegalArgumentException if the value is invalid
+     * Adds to the instant specifying the duration and multiple to add.
+     *
+     * @param type  a field type, usually obtained from DateTimeFieldType, null ignored
+     * @param amount  the amount to add of this duration
+     * @throws ArithmeticException if the result exceeds the capacity of the instant
      */
-    public void add(final DurationField field, final int value) {
-        if (field == null) {
-            throw new IllegalArgumentException("The DurationField must not be null");
+    public void add(DurationFieldType type, int amount) {
+        if (type != null) {
+            setMillis(type.getField(getChronology()).add(getMillis(), amount));
         }
-        setMillis(field.add(getMillis(), value));
     }
 
     //-----------------------------------------------------------------------

@@ -72,18 +72,6 @@ import java.util.Locale;
 public interface ReadableDateTime extends ReadableInstant {
 
     /**
-     * Get the value of one of the fields of a datetime.
-     * <p>
-     * This method uses the chronology of the datetime to obtain the value.
-     * It is essentially a generic way of calling one of the get methods.
-     *
-     * @param type  a field type, usually obtained from DateTimeFieldType
-     * @return the value of that field
-     * @throws IllegalArgumentException if the field is null
-     */
-    int get(DateTimeFieldType type);
-
-    /**
      * Get the day of week field value.
      * <p>
      * The values for the day of week are defined in {@link DateTimeConstants}.
@@ -224,53 +212,11 @@ public interface ReadableDateTime extends ReadableInstant {
     DateTime toDateTime();
 
     /**
-     * Get this object as a DateTime.
-     * <p>
-     * If the implementation of the interface is a DateTime in the correct zone,
-     * it is returned directly.
-     * 
-     * @param zone  time zone to apply
-     * @return a DateTime using the same millis
-     * @throws IllegalArgumentException if the time zone is null
-     */
-    DateTime toDateTime(DateTimeZone zone);
-
-    /**
-     * Get this object as a DateTime.
-     * <p>
-     * If the implementation of the interface is a DateTime in the correct chronology,
-     * it is returned directly.
-     * 
-     * @param chronology  chronology to apply
-     * @return a DateTime using the same millis
-     * @throws IllegalArgumentException if the chronology is null
-     */
-    DateTime toDateTime(Chronology chronology);
-
-    /**
      * Get this object as a MutableDateTime, always returning a new instance.
      * 
      * @return a MutableDateTime using the same millis
      */
     MutableDateTime toMutableDateTime();
-
-    /**
-     * Get this object as a MutableDateTime, always returning a new instance.
-     * 
-     * @param zone  time zone to apply
-     * @return a MutableDateTime using the same millis
-     * @throws IllegalArgumentException if the time zone is null
-     */
-    MutableDateTime toMutableDateTime(DateTimeZone zone);
-
-    /**
-     * Get this object as a MutableDateTime, always returning a new instance.
-     * 
-     * @param chronology  chronology to apply
-     * @return a MutableDateTime using the same millis
-     * @throws IllegalArgumentException if the chronology is null
-     */
-    MutableDateTime toMutableDateTime(Chronology chronology);
 
     /**
      * Output the instant using the specified format pattern.

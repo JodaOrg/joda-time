@@ -75,7 +75,7 @@ import org.joda.time.DurationField;
  */
 public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
 
-    static final long serialVersionUID = 7190739608550251860L;
+    private static final long serialVersionUID = 7190739608550251860L;
 
     final long iUnitMillis;
     private final DurationField iDurationField;
@@ -182,7 +182,7 @@ public abstract class ImpreciseDateTimeField extends BaseDateTimeField {
     }
 
     private final class LinkedDurationField extends BaseDurationField {
-        static final long serialVersionUID = -203813474600094134L;
+        private static final long serialVersionUID = -203813474600094134L;
 
         LinkedDurationField(String name) {
             super(name);

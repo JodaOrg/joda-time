@@ -77,7 +77,8 @@ import org.joda.time.format.DateTimeFormat;
 public abstract class AbstractDateTime extends AbstractInstant
     implements ReadableDateTime, Serializable {
 
-    static final long serialVersionUID = 597501475466447837L;
+    /** Serialization version. */
+    private static final long serialVersionUID = 597501475466447837L;
 
     /**
      * Selects the correct chronology to use for the chronology based constructors

@@ -64,7 +64,7 @@ import org.joda.time.DateTimeZone;
  */
 public final class FixedDateTimeZone extends DateTimeZone {
 
-    static final long serialVersionUID = -3513011772763289092L;
+    private static final long serialVersionUID = -3513011772763289092L;
 
     private final String iNameKey;
     private final int iWallOffset;

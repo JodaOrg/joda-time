@@ -67,7 +67,7 @@ import org.joda.time.DurationField;
  */
 public class ScaledDurationField extends DecoratedDurationField {
 
-    static final long serialVersionUID = -3205227092378684157L;
+    private static final long serialVersionUID = -3205227092378684157L;
 
     private final int iScalar;
 

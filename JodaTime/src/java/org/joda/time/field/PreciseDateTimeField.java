@@ -71,7 +71,7 @@ import org.joda.time.DurationField;
  */
 public class PreciseDateTimeField extends PreciseDurationDateTimeField {
 
-    static final long serialVersionUID = -5586801265774496376L;
+    private static final long serialVersionUID = -5586801265774496376L;
 
     /** The maximum range in the correct units */
     private final int iRange;

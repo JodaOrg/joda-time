@@ -223,7 +223,7 @@ public final class ISOChronology extends AssembledChronology {
     }
 
     private static final class Stub implements Serializable {
-        static final long serialVersionUID = -6212696554273812441L;
+        private static final long serialVersionUID = -6212696554273812441L;
 
         private transient DateTimeZone iZone;
 

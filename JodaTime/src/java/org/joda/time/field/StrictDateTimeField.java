@@ -67,7 +67,7 @@ import org.joda.time.DateTimeField;
  */
 public class StrictDateTimeField extends DelegatedDateTimeField {
 
-    static final long serialVersionUID = 3154803964207950910L;
+    private static final long serialVersionUID = 3154803964207950910L;
 
     /**
      * Returns a strict version of the given field. If it is already strict,

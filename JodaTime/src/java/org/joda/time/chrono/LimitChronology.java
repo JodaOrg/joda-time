@@ -334,7 +334,7 @@ public final class LimitChronology extends AssembledChronology {
      * generated unless it is actually requested.
      */
     private class LimitException extends IllegalArgumentException {
-        static final long serialVersionUID = -5924689995607498581L;
+        private static final long serialVersionUID = -5924689995607498581L;
 
         private final boolean iIsLow;
 
@@ -376,7 +376,7 @@ public final class LimitChronology extends AssembledChronology {
     }
 
     private class LimitDurationField extends DecoratedDurationField {
-        static final long serialVersionUID = 8049297699408782284L;
+        private static final long serialVersionUID = 8049297699408782284L;
 
         LimitDurationField(DurationField field) {
             super(field, field.getName());
@@ -431,7 +431,7 @@ public final class LimitChronology extends AssembledChronology {
     }
 
     private class LimitDateTimeField extends DecoratedDateTimeField {
-        static final long serialVersionUID = -2435306746995699312L;
+        private static final long serialVersionUID = -2435306746995699312L;
 
         private final DurationField iDurationField;
         private final DurationField iRangeDurationField;

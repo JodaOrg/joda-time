@@ -65,7 +65,7 @@ import org.joda.time.DurationField;
  * @since 1.0
  */
 public class OffsetDateTimeField extends DecoratedDateTimeField {
-    static final long serialVersionUID = 3145790132623583142L;
+    private static final long serialVersionUID = 3145790132623583142L;
 
     private final int iOffset;
 

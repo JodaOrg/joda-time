@@ -65,7 +65,7 @@ import org.joda.time.field.FieldUtils;
  */
 final class CopticYearDateTimeField extends ImpreciseDateTimeField {
 
-    static final long serialVersionUID = 8990199361773280783L;
+    private static final long serialVersionUID = 8990199361773280783L;
 
     private final AbstractGJChronology iChronology;
 

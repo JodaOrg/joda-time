@@ -297,7 +297,7 @@ public final class JulianChronology extends AbstractGJChronology {
     }
 
     static class NoYearZeroField extends DelegatedDateTimeField {
-        static final long serialVersionUID = -8869148464118507846L;
+        private static final long serialVersionUID = -8869148464118507846L;
 
         final AbstractGJChronology iChronology;
         private transient int iMinYear;
@@ -338,7 +338,7 @@ public final class JulianChronology extends AbstractGJChronology {
     }
 
     static class NoWeekyearZeroField extends NoYearZeroField {
-        static final long serialVersionUID = -5013429014495501104L;
+        private static final long serialVersionUID = -5013429014495501104L;
 
         NoWeekyearZeroField(AbstractGJChronology chronology, DateTimeField field) {
             super(chronology, field);

@@ -81,7 +81,7 @@ import org.joda.time.ReadWritableInstant;
  */
 public class ReadWritableInstantFieldProperty extends AbstractReadableInstantFieldProperty {
 
-    static final long serialVersionUID = -4481126543819298617L;
+    private static final long serialVersionUID = -4481126543819298617L;
 
     /** The instant this property is working against */
     private final ReadWritableInstant iInstant;

@@ -64,7 +64,7 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  */
 final class CopticMonthOfYearDateTimeField extends PreciseDurationDateTimeField {
 
-    static final long serialVersionUID = 7741038885247700323L;
+    private static final long serialVersionUID = 7741038885247700323L;
 
     private final AbstractGJChronology iChronology;
 

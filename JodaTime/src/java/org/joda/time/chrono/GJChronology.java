@@ -59,8 +59,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.Chronology;
-// Import for @link support
-import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
@@ -151,8 +149,8 @@ public final class GJChronology extends AssembledChronology {
      * October 15, 1582 (Gregorian).
      *
      * <p>The first day of the week is designated to be
-     * {@link DateTimeConstants#MONDAY Monday}, and the minimum days in the
-     * first week of the year is 4.
+     * {@link org.joda.time.DateTimeConstants#MONDAY Monday},
+     * and the minimum days in the first week of the year is 4.
      *
      * <p>The time zone of the returned instance is UTC.
      */
@@ -167,8 +165,8 @@ public final class GJChronology extends AssembledChronology {
      * October 15, 1582 (Gregorian).
      *
      * <p>The first day of the week is designated to be
-     * {@link DateTimeConstants#MONDAY Monday}, and the minimum days in the
-     * first week of the year is 4.
+     * {@link org.joda.time.DateTimeConstants#MONDAY Monday},
+     * and the minimum days in the first week of the year is 4.
      *
      * <p>The returned chronology is in the default time zone.
      */
@@ -183,8 +181,8 @@ public final class GJChronology extends AssembledChronology {
      * (Gregorian).
      *
      * <p>The first day of the week is designated to be
-     * {@link DateTimeConstants#MONDAY Monday}, and the minimum days in the
-     * first week of the year is 4.
+     * {@link org.joda.time.DateTimeConstants#MONDAY Monday},
+     * and the minimum days in the first week of the year is 4.
      *
      * @param zone  the time zone to use, null is default
      */
@@ -197,8 +195,8 @@ public final class GJChronology extends AssembledChronology {
      * cutover date may be specified.
      *
      * <p>The first day of the week is designated to be
-     * {@link DateTimeConstants#MONDAY Monday}, and the minimum days in the
-     * first week of the year is 4.
+     * {@link org.joda.time.DateTimeConstants#MONDAY Monday},
+     * and the minimum days in the first week of the year is 4.
      *
      * @param zone  the time zone to use, null is default
      * @param gregorianCutover  the cutover to use, null means default
@@ -573,7 +571,7 @@ public final class GJChronology extends AssembledChronology {
      * assumes that calls to add and addWrapField are unaffected by the cutover.
      */
     private class CutoverField extends BaseDateTimeField {
-        static final long serialVersionUID = 3528501219481026402L;
+        private static final long serialVersionUID = 3528501219481026402L;
 
         final DateTimeField iJulianField;
         final DateTimeField iGregorianField;
@@ -856,7 +854,7 @@ public final class GJChronology extends AssembledChronology {
      * field requires specific knowledge of how the GJ fields are implemented.
      */
     private final class ImpreciseCutoverField extends CutoverField {
-        static final long serialVersionUID = 3410248757173576441L;
+        private static final long serialVersionUID = 3410248757173576441L;
 
         /**
          * Creates a duration field that links back to this.
@@ -1012,7 +1010,7 @@ public final class GJChronology extends AssembledChronology {
      * Links the duration back to a ImpreciseCutoverField.
      */
     private static class LinkedDurationField extends DecoratedDurationField {
-        static final long serialVersionUID = 4097975388007713084L;
+        private static final long serialVersionUID = 4097975388007713084L;
 
         private final ImpreciseCutoverField iField;
 

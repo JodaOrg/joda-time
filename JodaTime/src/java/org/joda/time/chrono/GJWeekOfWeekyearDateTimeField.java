@@ -70,7 +70,7 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  */
 final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
 
-    static final long serialVersionUID = -1587436826395135328L;
+    private static final long serialVersionUID = -1587436826395135328L;
 
     private final AbstractGJChronology iChronology;
 

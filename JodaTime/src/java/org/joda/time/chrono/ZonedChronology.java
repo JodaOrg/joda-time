@@ -268,7 +268,7 @@ public final class ZonedChronology extends AssembledChronology {
      */
 
     static class ZonedDurationField extends BaseDurationField {
-        static final long serialVersionUID = -485345310999208286L;
+        private static final long serialVersionUID = -485345310999208286L;
 
         final DurationField iField;
         final boolean iTimeField;
@@ -342,7 +342,7 @@ public final class ZonedChronology extends AssembledChronology {
      * versa on output.
      */
     static final class ZonedDateTimeField extends BaseDateTimeField {
-        static final long serialVersionUID = -3968986277775529794L;
+        private static final long serialVersionUID = -3968986277775529794L;
 
         final DateTimeField iField;
         final DateTimeZone iZone;

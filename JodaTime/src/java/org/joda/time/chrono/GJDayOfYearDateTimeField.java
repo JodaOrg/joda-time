@@ -68,7 +68,7 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  */
 final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
 
-    static final long serialVersionUID = -6821236822336841037L;
+    private static final long serialVersionUID = -6821236822336841037L;
 
     private final AbstractGJChronology iChronology;
 

@@ -71,7 +71,7 @@ import org.joda.time.field.FieldUtils;
  */
 final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
     
-    static final long serialVersionUID = 6215066916806820644L;
+    private static final long serialVersionUID = 6215066916806820644L;
 
     private static final long WEEK_53 = (53L - 1) * DateTimeConstants.MILLIS_PER_WEEK;
 

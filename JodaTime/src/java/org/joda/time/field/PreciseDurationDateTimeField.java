@@ -65,7 +65,7 @@ import org.joda.time.DurationField;
  */
 public abstract class PreciseDurationDateTimeField extends BaseDateTimeField {
 
-    static final long serialVersionUID = 5004523158306266035L;
+    private static final long serialVersionUID = 5004523158306266035L;
 
     /** The fractional unit in millis */
     final long iUnitMillis;

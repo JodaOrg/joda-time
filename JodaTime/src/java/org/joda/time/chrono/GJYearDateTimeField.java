@@ -68,7 +68,7 @@ import org.joda.time.field.FieldUtils;
  */
 final class GJYearDateTimeField extends ImpreciseDateTimeField {
 
-    static final long serialVersionUID = -679076949530018869L;
+    private static final long serialVersionUID = -679076949530018869L;
 
     private static final long FEB_29 = (31L + 29 - 1) * DateTimeConstants.MILLIS_PER_DAY;
 

@@ -68,7 +68,7 @@ import org.joda.time.field.FieldUtils;
  */
 class ISOYearOfEraDateTimeField extends DecoratedDateTimeField {
 
-    static final long serialVersionUID = 7037524068969447317L;
+    private static final long serialVersionUID = 7037524068969447317L;
 
     /**
      * Singleton instance

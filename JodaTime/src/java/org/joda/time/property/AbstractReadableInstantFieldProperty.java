@@ -77,7 +77,8 @@ import org.joda.time.ReadableInstant;
  */
 public abstract class AbstractReadableInstantFieldProperty implements Serializable {
     
-    static final long serialVersionUID = 1971226328211649661L;
+    /** Serialization version. */
+    private static final long serialVersionUID = 1971226328211649661L;
 
     /**
      * Constructor.

@@ -73,7 +73,7 @@ import org.joda.time.DurationField;
  */
 public class DecoratedDurationField extends BaseDurationField {
 
-    static final long serialVersionUID = 8019982251647420015L;
+    private static final long serialVersionUID = 8019982251647420015L;
 
     /** The DurationField being wrapped */
     private final DurationField iField;

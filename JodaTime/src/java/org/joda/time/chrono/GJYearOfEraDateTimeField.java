@@ -65,7 +65,7 @@ import org.joda.time.field.FieldUtils;
  */
 final class GJYearOfEraDateTimeField extends DecoratedDateTimeField {
 
-    static final long serialVersionUID = -5961050944769862059L;
+    private static final long serialVersionUID = -5961050944769862059L;
 
     private final AbstractGJChronology iChronology;
 

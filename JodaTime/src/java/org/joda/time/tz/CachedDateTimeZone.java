@@ -66,7 +66,7 @@ import org.joda.time.DateTimeZone;
  */
 public class CachedDateTimeZone extends DateTimeZone {
 
-    static final long serialVersionUID = 5472298452022250685L;
+    private static final long serialVersionUID = 5472298452022250685L;
 
     private static final int cInfoCacheMask;
 

@@ -119,7 +119,8 @@ import org.joda.time.tz.ZoneInfoProvider;
  */
 public abstract class DateTimeZone implements Serializable {
     
-    static final long serialVersionUID = 5546345482340108586L;
+    /** Serialization version. */
+    private static final long serialVersionUID = 5546345482340108586L;
 
     /** The time zone for Universal Coordinated Time */
     public static final DateTimeZone UTC = new FixedDateTimeZone("UTC", "UTC", 0, 0);
@@ -810,7 +811,7 @@ public abstract class DateTimeZone implements Serializable {
      * Used to serialize DateTimeZones by id.
      */
     private static final class Stub implements Serializable {
-        static final long serialVersionUID = -6471952376487863581L;
+        private static final long serialVersionUID = -6471952376487863581L;
 
         private transient String iID;
 

@@ -67,7 +67,7 @@ import org.joda.time.DateTimeField;
  */
 public class LenientDateTimeField extends DelegatedDateTimeField {
 
-    static final long serialVersionUID = 8714085824173290599L;
+    private static final long serialVersionUID = 8714085824173290599L;
 
     /**
      * Returns a lenient version of the given field. If it is already lenient,

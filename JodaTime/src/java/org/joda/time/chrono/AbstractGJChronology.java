@@ -815,7 +815,7 @@ public abstract class AbstractGJChronology extends AssembledChronology {
     }
 
     private static class HalfdayField extends PreciseDateTimeField {
-        static final long serialVersionUID = 581601443656929254L;
+        private static final long serialVersionUID = 581601443656929254L;
 
         HalfdayField() {
             super("halfdayOfDay", cHalfdaysField, cDaysField);

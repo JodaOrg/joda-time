@@ -69,7 +69,7 @@ import org.joda.time.ReadablePartial;
  */
 public final class NonZeroDateTimeField extends DecoratedDateTimeField {
 
-    static final long serialVersionUID = 961749798233026866L;
+    private static final long serialVersionUID = 961749798233026866L;
 
     /**
      * @param name  short, descriptive name, like "clockhourOfDay".

@@ -72,7 +72,7 @@ import org.joda.time.DurationField;
  */
 public abstract class AssembledChronology extends AbstractChronology {
 
-    static final long serialVersionUID = -6728465968995518215L;
+    private static final long serialVersionUID = -6728465968995518215L;
 
     private final Chronology iBase;
     private final Object iParam;

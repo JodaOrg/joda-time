@@ -70,7 +70,7 @@ import org.joda.time.DurationField;
  */
 public class RemainderDateTimeField extends DecoratedDateTimeField {
 
-    static final long serialVersionUID = 5708241235177666790L;
+    private static final long serialVersionUID = 5708241235177666790L;
 
     // Shared with DividedDateTimeField.
     final int iDivisor;

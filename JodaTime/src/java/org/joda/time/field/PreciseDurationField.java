@@ -64,7 +64,7 @@ package org.joda.time.field;
  */
 public class PreciseDurationField extends BaseDurationField {
     
-    static final long serialVersionUID = -8346152187724495365L;
+    private static final long serialVersionUID = -8346152187724495365L;
 
     /** The size of the unit */
     private final long iUnitMillis;

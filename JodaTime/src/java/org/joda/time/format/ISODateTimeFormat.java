@@ -147,6 +147,7 @@ public class ISODateTimeFormat {
         we,  // weekyear element (xxxx)
         wwe, // weekOfWeekyear element (-ww)
         dwe, // dayOfWeek element (-ee)
+        dye, // dayOfYear element (-ooo)
         hde, // hourOfDay element (HH)
         mhe, // minuteOfHour element (:mm)
         sme, // secondOfMinute element (:ss)
@@ -207,7 +208,9 @@ public class ISODateTimeFormat {
      * the following syntax:
      * <pre>
      * date              = date-element ['T' offset]
-     * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
+     * date-element      = std-date-element | ord-date-element | week-date-element
+     * std-date-element  = yyyy ['-' MM ['-' dd]]
+     * ord-date-element  = yyyy ['-' ddd]
      * week-date-element = xxxx '-W' ww ['-' e]
      * offset            = 'Z' | (('+' | '-') HH ':' mm)
      * </pre>
@@ -230,7 +233,9 @@ public class ISODateTimeFormat {
      * Returns a generic ISO date parser. It accepts formats described by
      * the following syntax:
      * <pre>
-     * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
+     * date-element      = std-date-element | ord-date-element | week-date-element
+     * std-date-element  = yyyy ['-' MM ['-' dd]]
+     * ord-date-element  = yyyy ['-' ddd]
      * week-date-element = xxxx '-W' ww ['-' e]
      * </pre>
      */
@@ -250,6 +255,10 @@ public class ISODateTimeFormat {
                     .append(weekyearElement())
                     .append(weekElement())
                     .appendOptional(dayOfWeekElement())
+                    .toParser(),
+                    new DateTimeFormatterBuilder(iChrono)
+                    .append(yearElement())
+                    .append(dayOfYearElement())
                     .toParser()
                 })
                 .toParser();
@@ -352,7 +361,9 @@ public class ISODateTimeFormat {
      * <pre>
      * datetime          = time | (date-element [time | ('T' offset)])
      * time              = 'T' time-element [offset]
-     * date-element      = (yyyy ['-' MM ['-' dd]]) | week-date-element
+     * date-element      = std-date-element | ord-date-element | week-date-element
+     * std-date-element  = yyyy ['-' MM ['-' dd]]
+     * ord-date-element  = yyyy ['-' ddd]
      * week-date-element = xxxx '-W' ww ['-' e]
      * time-element      = HH [minute-element] | [fraction]
      * minute-element    = ':' mm [second-element] | [fraction]
@@ -780,6 +791,16 @@ public class ISODateTimeFormat {
         return dwe;
     }
 
+    private DateTimeFormatter dayOfYearElement() {
+        if (dye == null) {
+            dye = new DateTimeFormatterBuilder(iChrono)
+                .appendLiteral('-')
+                .appendDayOfYear(3)
+                .toFormatter();
+        }
+        return dye;
+    }
+
     private DateTimeFormatter hourElement() {
         if (hde == null) {
             hde = new DateTimeFormatterBuilder(iChrono)
@@ -829,4 +850,5 @@ public class ISODateTimeFormat {
         }
         return ze;
     }
+    
 }

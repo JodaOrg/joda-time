@@ -150,7 +150,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly addToCopy(int value) {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.add(instant.getMillis(), value));
+        return instant.withMillis(iField.add(instant.getMillis(), value));
     }
 
     /**
@@ -167,7 +167,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly addToCopy(long value) {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.add(instant.getMillis(), value));
+        return instant.withMillis(iField.add(instant.getMillis(), value));
     }
 
     /**
@@ -186,7 +186,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly addWrappedToCopy(int value) {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.addWrapped(instant.getMillis(), value));
+        return instant.withMillis(iField.addWrapped(instant.getMillis(), value));
     }
 
     //-----------------------------------------------------------------------
@@ -204,7 +204,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly setCopy(int value) {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.set(instant.getMillis(), value));
+        return instant.withMillis(iField.set(instant.getMillis(), value));
     }
     
     /**
@@ -222,7 +222,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly setCopy(String text, Locale locale) {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.set(instant.getMillis(), text, locale));
+        return instant.withMillis(iField.set(instant.getMillis(), text, locale));
     }
 
     /**
@@ -249,7 +249,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly roundFloorCopy() {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.roundFloor(instant.getMillis()));
+        return instant.withMillis(iField.roundFloor(instant.getMillis()));
     }
 
     /**
@@ -259,7 +259,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly roundCeilingCopy() {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.roundCeiling(instant.getMillis()));
+        return instant.withMillis(iField.roundCeiling(instant.getMillis()));
     }
 
     /**
@@ -270,7 +270,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly roundHalfFloorCopy() {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.roundHalfFloor(instant.getMillis()));
+        return instant.withMillis(iField.roundHalfFloor(instant.getMillis()));
     }
 
     /**
@@ -281,7 +281,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly roundHalfCeilingCopy() {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.roundHalfCeiling(instant.getMillis()));
+        return instant.withMillis(iField.roundHalfCeiling(instant.getMillis()));
     }
 
     /**
@@ -292,7 +292,7 @@ public class DateOnlyFieldProperty extends AbstractReadableInstantFieldProperty 
      */
     public DateOnly roundHalfEvenCopy() {
         DateOnly instant = iInstant;
-        return (DateOnly)instant.withMillis(iField.roundHalfEven(instant.getMillis()));
+        return instant.withMillis(iField.roundHalfEven(instant.getMillis()));
     }
 
 }

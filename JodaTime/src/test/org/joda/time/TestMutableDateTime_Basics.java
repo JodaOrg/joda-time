@@ -331,7 +331,10 @@ public class TestMutableDateTime_Basics extends TestCase {
         
         assertEquals(false, test2.isEqual(new MockInstant()));
         assertEquals(true, test1.isEqual(new MockInstant()));
-        assertEquals(false, test1.isEqual(null));
+        
+        assertEquals(false, new MutableDateTime(TEST_TIME_NOW + 1).isEqual(null));
+        assertEquals(true, new MutableDateTime(TEST_TIME_NOW).isEqual(null));
+        assertEquals(false, new MutableDateTime(TEST_TIME_NOW - 1).isEqual(null));
     }
     
     public void testIsBefore() {
@@ -353,7 +356,10 @@ public class TestMutableDateTime_Basics extends TestCase {
         
         assertEquals(false, test2.isBefore(new MockInstant()));
         assertEquals(false, test1.isBefore(new MockInstant()));
-        assertEquals(false, test1.isBefore(null));
+        
+        assertEquals(false, new MutableDateTime(TEST_TIME_NOW + 1).isBefore(null));
+        assertEquals(false, new MutableDateTime(TEST_TIME_NOW).isBefore(null));
+        assertEquals(true, new MutableDateTime(TEST_TIME_NOW - 1).isBefore(null));
     }
     
     public void testIsAfter() {
@@ -375,7 +381,10 @@ public class TestMutableDateTime_Basics extends TestCase {
         
         assertEquals(true, test2.isAfter(new MockInstant()));
         assertEquals(false, test1.isAfter(new MockInstant()));
-        assertEquals(false, test1.isAfter(null));
+        
+        assertEquals(true, new MutableDateTime(TEST_TIME_NOW + 1).isAfter(null));
+        assertEquals(false, new MutableDateTime(TEST_TIME_NOW).isAfter(null));
+        assertEquals(false, new MutableDateTime(TEST_TIME_NOW - 1).isAfter(null));
     }
     
     //-----------------------------------------------------------------------

@@ -296,7 +296,20 @@ public class TestDateTime_Basics extends TestCase {
         } catch (ClassCastException ex) {}
     }
     
-    public void testIsEqual() {
+    //-----------------------------------------------------------------------
+    public void testIsEqual_long() {
+        assertEquals(false, new DateTime(TEST_TIME1).isEqual(TEST_TIME2));
+        assertEquals(true, new DateTime(TEST_TIME1).isEqual(TEST_TIME1));
+        assertEquals(false, new DateTime(TEST_TIME2).isEqual(TEST_TIME1));
+    }
+    
+    public void testIsEqualNow() {
+        assertEquals(false, new DateTime(TEST_TIME_NOW - 1).isEqualNow());
+        assertEquals(true, new DateTime(TEST_TIME_NOW).isEqualNow());
+        assertEquals(false, new DateTime(TEST_TIME_NOW + 1).isEqualNow());
+    }
+    
+    public void testIsEqual_RI() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
         assertEquals(true, test1.isEqual(test1a));
@@ -315,10 +328,26 @@ public class TestDateTime_Basics extends TestCase {
         
         assertEquals(false, test2.isEqual(new MockInstant()));
         assertEquals(true, test1.isEqual(new MockInstant()));
-        assertEquals(false, test1.isEqual(null));
+        
+        assertEquals(false, new DateTime(TEST_TIME_NOW + 1).isEqual(null));
+        assertEquals(true, new DateTime(TEST_TIME_NOW).isEqual(null));
+        assertEquals(false, new DateTime(TEST_TIME_NOW - 1).isEqual(null));
     }
     
-    public void testIsBefore() {
+    //-----------------------------------------------------------------------
+    public void testIsBefore_long() {
+        assertEquals(true, new DateTime(TEST_TIME1).isBefore(TEST_TIME2));
+        assertEquals(false, new DateTime(TEST_TIME1).isBefore(TEST_TIME1));
+        assertEquals(false, new DateTime(TEST_TIME2).isBefore(TEST_TIME1));
+    }
+    
+    public void testIsBeforeNow() {
+        assertEquals(true, new DateTime(TEST_TIME_NOW - 1).isBeforeNow());
+        assertEquals(false, new DateTime(TEST_TIME_NOW).isBeforeNow());
+        assertEquals(false, new DateTime(TEST_TIME_NOW + 1).isBeforeNow());
+    }
+    
+    public void testIsBefore_RI() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
         assertEquals(false, test1.isBefore(test1a));
@@ -337,10 +366,26 @@ public class TestDateTime_Basics extends TestCase {
         
         assertEquals(false, test2.isBefore(new MockInstant()));
         assertEquals(false, test1.isBefore(new MockInstant()));
-        assertEquals(false, test1.isBefore(null));
+        
+        assertEquals(false, new DateTime(TEST_TIME_NOW + 1).isBefore(null));
+        assertEquals(false, new DateTime(TEST_TIME_NOW).isBefore(null));
+        assertEquals(true, new DateTime(TEST_TIME_NOW - 1).isBefore(null));
     }
     
-    public void testIsAfter() {
+    //-----------------------------------------------------------------------
+    public void testIsAfter_long() {
+        assertEquals(false, new DateTime(TEST_TIME1).isAfter(TEST_TIME2));
+        assertEquals(false, new DateTime(TEST_TIME1).isAfter(TEST_TIME1));
+        assertEquals(true, new DateTime(TEST_TIME2).isAfter(TEST_TIME1));
+    }
+    
+    public void testIsAfterNow() {
+        assertEquals(false, new DateTime(TEST_TIME_NOW - 1).isAfterNow());
+        assertEquals(false, new DateTime(TEST_TIME_NOW).isAfterNow());
+        assertEquals(true, new DateTime(TEST_TIME_NOW + 1).isAfterNow());
+    }
+    
+    public void testIsAfter_RI() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test1a = new DateTime(TEST_TIME1);
         assertEquals(false, test1.isAfter(test1a));
@@ -359,7 +404,10 @@ public class TestDateTime_Basics extends TestCase {
         
         assertEquals(true, test2.isAfter(new MockInstant()));
         assertEquals(false, test1.isAfter(new MockInstant()));
-        assertEquals(false, test1.isAfter(null));
+        
+        assertEquals(true, new DateTime(TEST_TIME_NOW + 1).isAfter(null));
+        assertEquals(false, new DateTime(TEST_TIME_NOW).isAfter(null));
+        assertEquals(false, new DateTime(TEST_TIME_NOW - 1).isAfter(null));
     }
     
     //-----------------------------------------------------------------------

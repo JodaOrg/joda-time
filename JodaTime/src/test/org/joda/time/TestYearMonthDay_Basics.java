@@ -20,12 +20,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Locale;
-
-import org.joda.time.chrono.BuddhistChronology;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
+
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.GregorianChronology;
 
 /**
  * This class is a Junit unit test for YearMonthDay.
@@ -225,6 +227,109 @@ public class TestYearMonthDay_Basics extends TestCase {
         }
     }
 
+    //-----------------------------------------------------------------------
+    public void testCompareTo() {
+        YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
+        YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
+        assertEquals(0, test1.compareTo(test1a));
+        assertEquals(0, test1a.compareTo(test1));
+        assertEquals(0, test1.compareTo(test1));
+        assertEquals(0, test1a.compareTo(test1a));
+        
+        YearMonthDay test2 = new YearMonthDay(2005, 7, 2);
+        assertEquals(-1, test1.compareTo(test2));
+        assertEquals(+1, test2.compareTo(test1));
+        
+        YearMonthDay test3 = new YearMonthDay(2005, 7, 2, GregorianChronology.getInstanceUTC());
+        assertEquals(-1, test1.compareTo(test3));
+        assertEquals(+1, test3.compareTo(test1));
+        assertEquals(0, test3.compareTo(test2));
+        
+        assertEquals(+1, test2.compareTo(new MockInstant()));
+        assertEquals(0, new YearMonthDay(1970, 6, 9).compareTo(new MockInstant()));
+        
+        try {
+            test1.compareTo(null);
+            fail();
+        } catch (NullPointerException ex) {}
+        try {
+            test1.compareTo(new Date());
+            fail();
+        } catch (ClassCastException ex) {}
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testIsEqual_YMD() {
+        YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
+        YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
+        assertEquals(true, test1.isEqual(test1a));
+        assertEquals(true, test1a.isEqual(test1));
+        assertEquals(true, test1.isEqual(test1));
+        assertEquals(true, test1a.isEqual(test1a));
+        
+        YearMonthDay test2 = new YearMonthDay(2005, 7, 2);
+        assertEquals(false, test1.isEqual(test2));
+        assertEquals(false, test2.isEqual(test1));
+        
+        YearMonthDay test3 = new YearMonthDay(2005, 7, 2, GregorianChronology.getInstanceUTC());
+        assertEquals(false, test1.isEqual(test3));
+        assertEquals(false, test3.isEqual(test1));
+        assertEquals(true, test3.isEqual(test2));
+        
+        try {
+            new YearMonthDay(2005, 7, 2).isEqual(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testIsBefore_YMD() {
+        YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
+        YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
+        assertEquals(false, test1.isBefore(test1a));
+        assertEquals(false, test1a.isBefore(test1));
+        assertEquals(false, test1.isBefore(test1));
+        assertEquals(false, test1a.isBefore(test1a));
+        
+        YearMonthDay test2 = new YearMonthDay(2005, 7, 2);
+        assertEquals(true, test1.isBefore(test2));
+        assertEquals(false, test2.isBefore(test1));
+        
+        YearMonthDay test3 = new YearMonthDay(2005, 7, 2, GregorianChronology.getInstanceUTC());
+        assertEquals(true, test1.isBefore(test3));
+        assertEquals(false, test3.isBefore(test1));
+        assertEquals(false, test3.isBefore(test2));
+        
+        try {
+            new YearMonthDay(2005, 7, 2).isBefore(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
+    //-----------------------------------------------------------------------
+    public void testIsAfter_YMD() {
+        YearMonthDay test1 = new YearMonthDay(2005, 6, 2);
+        YearMonthDay test1a = new YearMonthDay(2005, 6, 2);
+        assertEquals(false, test1.isAfter(test1a));
+        assertEquals(false, test1a.isAfter(test1));
+        assertEquals(false, test1.isAfter(test1));
+        assertEquals(false, test1a.isAfter(test1a));
+        
+        YearMonthDay test2 = new YearMonthDay(2005, 7, 2);
+        assertEquals(false, test1.isAfter(test2));
+        assertEquals(true, test2.isAfter(test1));
+        
+        YearMonthDay test3 = new YearMonthDay(2005, 7, 2, GregorianChronology.getInstanceUTC());
+        assertEquals(false, test1.isAfter(test3));
+        assertEquals(true, test3.isAfter(test1));
+        assertEquals(false, test3.isAfter(test2));
+        
+        try {
+            new YearMonthDay(2005, 7, 2).isAfter(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+    
     //-----------------------------------------------------------------------
     public void testWithChronologyRetainFields_Chrono() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);

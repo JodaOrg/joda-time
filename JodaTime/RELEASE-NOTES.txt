@@ -31,6 +31,10 @@ None
 
 Enhancements since 1.0
 ----------------------
+- YearMonthDay/TimeOfDay
+  Enabled comparisons using Comparable interface
+  Added compareTo/isEqual/isAfter/isBefore methods
+
 - Period
   Added constructors to create a Period from two ReadablePartials, such as
   YearMonthDay or TimeOfDay

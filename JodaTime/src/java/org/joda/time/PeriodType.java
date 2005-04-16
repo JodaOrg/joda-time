@@ -27,8 +27,11 @@ import org.joda.time.field.FieldUtils;
  * <ul>
  * <li>Standard - years, months, weeks, days, hours, minutes, seconds, millis
  * <li>YearMonthDayTime - years, months, days, hours, minutes, seconds, millis
+ * <li>YearMonthDay - years, months, days
  * <li>YearWeekDayTime - years, weeks, days, hours, minutes, seconds, millis
+ * <li>YearWeekDay - years, weeks, days
  * <li>YearDayTime - years, days, hours, minutes, seconds, millis
+ * <li>YearDay - years, days, hours
  * <li>DayTime - days, hours, minutes, seconds, millis
  * <li>Time - hours, minutes, seconds, millis
  * <li>plus one for each single type
@@ -56,8 +59,11 @@ public class PeriodType implements Serializable {
     
     private static PeriodType cStandard;
     private static PeriodType cYMDTime;
+    private static PeriodType cYMD;
     private static PeriodType cYWDTime;
+    private static PeriodType cYWD;
     private static PeriodType cYDTime;
+    private static PeriodType cYD;
     private static PeriodType cDTime;
     private static PeriodType cTime;
     
@@ -136,6 +142,32 @@ public class PeriodType implements Serializable {
     }
 
     /**
+     * Gets a type that defines the year, month and day fields.
+     * <ul>
+     * <li>years
+     * <li>months
+     * <li>days
+     * </ul>
+     *
+     * @return the period type
+     */
+    public static PeriodType yearMonthDay() {
+        PeriodType type = cYMD;
+        if (type == null) {
+            type = new PeriodType(
+                "YearMonthDay",
+                new DurationFieldType[] {
+                    DurationFieldType.years(), DurationFieldType.months(),
+                    DurationFieldType.days(),
+                },
+                new int[] { 0, 1, -1, 2, -1, -1, -1, -1, }
+            );
+            cYMD = type;
+        }
+        return type;
+    }
+
+    /**
      * Gets a type that defines all standard fields except months.
      * <ul>
      * <li>years
@@ -168,6 +200,32 @@ public class PeriodType implements Serializable {
     }
 
     /**
+     * Gets a type that defines year, week and day fields.
+     * <ul>
+     * <li>years
+     * <li>weeks
+     * <li>days
+     * </ul>
+     *
+     * @return the period type
+     */
+    public static PeriodType yearWeekDay() {
+        PeriodType type = cYWD;
+        if (type == null) {
+            type = new PeriodType(
+                "YearWeekDay",
+                new DurationFieldType[] {
+                    DurationFieldType.years(),
+                    DurationFieldType.weeks(), DurationFieldType.days(),
+                },
+                new int[] { 0, -1, 1, 2, -1, -1, -1, -1, }
+            );
+            cYWD = type;
+        }
+        return type;
+    }
+
+    /**
      * Gets a type that defines all standard fields except months and weeks.
      * <ul>
      * <li>years
@@ -193,6 +251,30 @@ public class PeriodType implements Serializable {
                 new int[] { 0, -1, -1, 1, 2, 3, 4, 5, }
             );
             cYDTime = type;
+        }
+        return type;
+    }
+
+    /**
+     * Gets a type that defines the year and day fields.
+     * <ul>
+     * <li>years
+     * <li>days
+     * </ul>
+     *
+     * @return the period type
+     */
+    public static PeriodType yearDay() {
+        PeriodType type = cYD;
+        if (type == null) {
+            type = new PeriodType(
+                "YearDay",
+                new DurationFieldType[] {
+                    DurationFieldType.years(), DurationFieldType.days(),
+                },
+                new int[] { 0, -1, -1, 1, -1, -1, -1, -1, }
+            );
+            cYD = type;
         }
         return type;
     }

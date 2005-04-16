@@ -182,6 +182,24 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testYearMonthDay() throws Exception {
+        PeriodType type = PeriodType.yearMonthDay();
+        assertEquals(3, type.size());
+        assertEquals(DurationFieldType.years(), type.getFieldType(0));
+        assertEquals(DurationFieldType.months(), type.getFieldType(1));
+        assertEquals(DurationFieldType.days(), type.getFieldType(2));
+        assertEquals("YearMonthDay", type.getName());
+        assertEquals("PeriodType[YearMonthDay]", type.toString());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.yearMonthDay());
+        assertEquals(false, type.equals(PeriodType.millis()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.yearMonthDay().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
+        assertSameAfterSerialization(type);
+    }
+
+    //-----------------------------------------------------------------------
     public void testYearWeekDayTime() throws Exception {
         PeriodType type = PeriodType.yearWeekDayTime();
         assertEquals(7, type.size());
@@ -204,6 +222,24 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testYearWeekDay() throws Exception {
+        PeriodType type = PeriodType.yearWeekDay();
+        assertEquals(3, type.size());
+        assertEquals(DurationFieldType.years(), type.getFieldType(0));
+        assertEquals(DurationFieldType.weeks(), type.getFieldType(1));
+        assertEquals(DurationFieldType.days(), type.getFieldType(2));
+        assertEquals("YearWeekDay", type.getName());
+        assertEquals("PeriodType[YearWeekDay]", type.toString());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.yearWeekDay());
+        assertEquals(false, type.equals(PeriodType.millis()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.yearWeekDay().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
+        assertSameAfterSerialization(type);
+    }
+
+    //-----------------------------------------------------------------------
     public void testYearDayTime() throws Exception {
         PeriodType type = PeriodType.yearDayTime();
         assertEquals(6, type.size());
@@ -220,6 +256,23 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.equals(PeriodType.millis()));
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearDayTime().hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
+        assertSameAfterSerialization(type);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testYearDay() throws Exception {
+        PeriodType type = PeriodType.yearDay();
+        assertEquals(2, type.size());
+        assertEquals(DurationFieldType.years(), type.getFieldType(0));
+        assertEquals(DurationFieldType.days(), type.getFieldType(1));
+        assertEquals("YearDay", type.getName());
+        assertEquals("PeriodType[YearDay]", type.toString());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.yearDay());
+        assertEquals(false, type.equals(PeriodType.millis()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.yearDay().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertSameAfterSerialization(type);
     }

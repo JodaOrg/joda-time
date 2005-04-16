@@ -731,6 +731,140 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testConstructor_RP_RP1() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
+        YearMonthDay dt2 = new YearMonthDay(2005, 7, 10);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RP_RP2() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
+        YearMonthDay dt2 = new YearMonthDay(2005, 5, 17);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(11, test.getMonths());
+        assertEquals(1, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RP_RP3() throws Throwable {
+        YearMonthDay dt1 = null;
+        YearMonthDay dt2 = new YearMonthDay(2005, 7, 17);
+        try {
+            new Period(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP4() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
+        YearMonthDay dt2 = null;
+        try {
+            new Period(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP5() throws Throwable {
+        YearMonthDay dt1 = null;
+        YearMonthDay dt2 = null;
+        try {
+            new Period(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP6() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
+        TimeOfDay dt2 = new TimeOfDay(10, 20, 30, 40);
+        try {
+            new Period(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_RP_RP_PeriodType1() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
+        YearMonthDay dt2 = new YearMonthDay(2005, 7, 10);
+        Period test = new Period(dt1, dt2, PeriodType.standard());
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(1, test.getYears());
+        assertEquals(1, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RP_RP_PeriodType2() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
+        YearMonthDay dt2 = new YearMonthDay(2005, 5, 17);
+        Period test = new Period(dt1, dt2, PeriodType.yearMonthDay());
+        assertEquals(PeriodType.yearMonthDay(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(11, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(8, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RP_RP_PeriodType3() throws Throwable {
+        YearMonthDay dt1 = null;
+        YearMonthDay dt2 = new YearMonthDay(2005, 7, 17);
+        try {
+            new Period(dt1, dt2, PeriodType.standard());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP_PeriodType4() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
+        YearMonthDay dt2 = null;
+        try {
+            new Period(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP_PeriodType5() throws Throwable {
+        YearMonthDay dt1 = null;
+        YearMonthDay dt2 = null;
+        try {
+            new Period(dt1, dt2, PeriodType.standard());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP_PeriodType6() throws Throwable {
+        YearMonthDay dt1 = new YearMonthDay(2005, 7, 17);
+        TimeOfDay dt2 = new TimeOfDay(10, 20, 30, 40);
+        try {
+            new Period(dt1, dt2, PeriodType.standard());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_RI_RD1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);

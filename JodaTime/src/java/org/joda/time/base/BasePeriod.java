@@ -26,6 +26,7 @@ import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
+import org.joda.time.ReadablePartial;
 import org.joda.time.ReadablePeriod;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PeriodConverter;
@@ -121,6 +122,37 @@ public abstract class BasePeriod
             iType = type;
             iValues = chrono.get(this, startMillis, endMillis);
         }
+    }
+
+    /**
+     * Creates a period from the given duration and end point.
+     * The two partials must contain the same fields, thus you can
+     * specify two YearMonthDay objects, or two TimeOfDay objects,
+     * but not one of each.
+     * As these are Partial objects, time zones have no effect on
+     * the result.
+     *
+     * @param start  the start of the period, must not be null
+     * @param end  the end of the period, must not be null
+     * @param type  which set of fields this period supports, null means standard
+     * @throws IllegalArgumentException if the partials are null or invalid
+     */
+    protected BasePeriod(ReadablePartial start, ReadablePartial end, PeriodType type) {
+        super();
+        if (start == null || end == null) {
+            throw new IllegalArgumentException("ReadablePartial objects must not be null");
+        }
+        if (start.size() != end.size()) {
+            throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
+        }
+        for (int i = 0, isize = start.size(); i < isize; i++) {
+            if (start.getFieldType(i) != end.getFieldType(i)) {
+                throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
+            }
+        }
+        iType = checkPeriodType(type);
+        Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();
+        iValues = chrono.get(this, chrono.set(start, 0L), chrono.set(end, 0L));
     }
 
     /**

@@ -162,6 +162,8 @@ public final class Period
 
     /**
      * Create a period from a set of field values using the standard set of fields.
+     * Note that the parameters specify the time fields hours, minutes,
+     * seconds and millis, not the date fields.
      *
      * @param hours  amount of hours in this period
      * @param minutes  amount of minutes in this period
@@ -370,6 +372,39 @@ public final class Period
      */
     public Period(ReadableInstant startInstant, ReadableInstant endInstant, PeriodType type) {
         super(startInstant, endInstant, type);
+    }
+
+    /**
+     * Creates a period from two partially specified times.
+     * The two partials must contain the same fields, thus you can
+     * specify two YearMonthDay objects, or two TimeOfDay objects,
+     * but not one of each.
+     * As these are Partial objects, time zones have no effect on
+     * the result.
+     *
+     * @param start  the start of the period, must not be null
+     * @param end  the end of the period, must not be null
+     * @throws IllegalArgumentException if the partials are null or invalid
+     */
+    public Period(ReadablePartial start, ReadablePartial end) {
+        super(start, end, null);
+    }
+
+    /**
+     * Creates a period from the given duration and end point.
+     * The two partials must contain the same fields, thus you can
+     * specify two YearMonthDay objects, or two TimeOfDay objects,
+     * but not one of each.
+     * As these are Partial objects, time zones have no effect on
+     * the result.
+     *
+     * @param start  the start of the period, must not be null
+     * @param end  the end of the period, must not be null
+     * @param type  which set of fields this period supports, null means standard
+     * @throws IllegalArgumentException if the partials are null or invalid
+     */
+    public Period(ReadablePartial start, ReadablePartial end, PeriodType type) {
+        super(start, end, type);
     }
 
     /**

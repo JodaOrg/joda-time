@@ -31,6 +31,14 @@ None
 
 Enhancements since 1.0
 ----------------------
+- Period
+  Added constructors to create a Period from two ReadablePartials, such as
+  YearMonthDay or TimeOfDay
+
+- PeriodType
+  Added three new period types - YearMonthDay, YearWeekDay and YearDay
+  These complement the existing ones but exclude the time fields.
+
 - DateTimeFormatter
   Method withPivotYear added to allow the two digit pivot year to be controlled.
   This is most useful after creating a format from a string pattern.

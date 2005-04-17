@@ -718,7 +718,24 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTwoDigitYear(int pivot) {
-        return append0(new TwoDigitYear(DateTimeFieldType.year(), pivot));
+        return appendTwoDigitYear(pivot, false);
+    }
+
+    /**
+     * Instructs the printer to emit a numeric year field which always prints
+     * two digits. A pivot year is used during parsing to determine the range
+     * of supported years as <code>(pivot - 50) .. (pivot + 49)</code>. If
+     * parse is instructed to be lenient and the digit count is not two, it is
+     * treated as an absolute year. With lenient parsing, specifying a positive
+     * or negative sign before the year also makes it absolute.
+     *
+     * @param pivot  pivot year to use when parsing
+     * @param lenientParse  when true, if digit count is not two, it is treated
+     * as an absolute year
+     * @return this DateTimeFormatterBuilder
+     */
+    public DateTimeFormatterBuilder appendTwoDigitYear(int pivot, boolean lenientParse) {
+        return append0(new TwoDigitYear(DateTimeFieldType.year(), pivot, lenientParse));
     }
 
     /**
@@ -740,7 +757,24 @@ public class DateTimeFormatterBuilder {
      * @return this DateTimeFormatterBuilder
      */
     public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot) {
-        return append0(new TwoDigitYear(DateTimeFieldType.weekyear(), pivot));
+        return appendTwoDigitWeekyear(pivot, false);
+    }
+
+    /**
+     * Instructs the printer to emit a numeric weekyear field which always prints
+     * two digits. A pivot year is used during parsing to determine the range
+     * of supported years as <code>(pivot - 50) .. (pivot + 49)</code>. If
+     * parse is instructed to be lenient and the digit count is not two, it is
+     * treated as an absolute weekyear. With lenient parsing, specifying a positive
+     * or negative sign before the weekyear also makes it absolute.
+     *
+     * @param pivot  pivot weekyear to use when parsing
+     * @param lenientParse  when true, if digit count is not two, it is treated
+     * as an absolute weekyear
+     * @return this DateTimeFormatterBuilder
+     */
+    public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot, boolean lenientParse) {
+        return append0(new TwoDigitYear(DateTimeFieldType.weekyear(), pivot, lenientParse));
     }
 
     /**
@@ -1141,14 +1175,17 @@ public class DateTimeFormatterBuilder {
             if (length >= 9) {
                 // Since value may exceed integer limits, use stock parser
                 // which checks for this.
-                value = Integer.parseInt
-                    (text.substring(position, position += length));
+                value = Integer.parseInt(text.substring(position, position += length));
             } else {
                 int i = position;
                 if (negative) {
                     i++;
                 }
-                value = text.charAt(i++) - '0';
+                try {
+                    value = text.charAt(i++) - '0';
+                } catch (StringIndexOutOfBoundsException e) {
+                    return ~position;
+                }
                 position += length;
                 while (i < position) {
                     value = ((value << 3) + (value << 1)) + text.charAt(i++) - '0';
@@ -1294,27 +1331,83 @@ public class DateTimeFormatterBuilder {
         private final DateTimeFieldType iType;
         /** The pivot year. */
         private final int iPivot;
+        private final boolean iLenientParse;
 
-        TwoDigitYear(DateTimeFieldType type, int pivot) {
+        TwoDigitYear(DateTimeFieldType type, int pivot, boolean lenientParse) {
             super();
             iType = type;
             iPivot = pivot;
+            iLenientParse = lenientParse;
         }
 
         public int estimateParsedLength() {
-            return 2;
+            return iLenientParse ? 4 : 2;
         }
 
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            int pivot = iPivot;
-            // If the bucket pivot year is non-null, use that when parsing
-            if (bucket.getPivotYear() != null) {
-                pivot = bucket.getPivotYear().intValue();
-            }
+            int limit = text.length() - position;
 
-            int limit = Math.min(2, text.length() - position);
-            if (limit < 2) {
-                return ~position;
+            if (!iLenientParse) {
+                limit = Math.min(2, limit);
+                if (limit < 2) {
+                    return ~position;
+                }
+            } else {
+                boolean hasSignChar = false;
+                boolean negative = false;
+                int length = 0;
+                while (length < limit) {
+                    char c = text.charAt(position + length);
+                    if (length == 0 && (c == '-' || c == '+')) {
+                        hasSignChar = true;
+                        negative = c == '-';
+                        if (negative) {
+                            length++;
+                        } else {
+                            // Skip the '+' for parseInt to succeed.
+                            position++;
+                            limit--;
+                        }
+                        continue;
+                    }
+                    if (c < '0' || c > '9') {
+                        break;
+                    }
+                    length++;
+                }
+                
+                if (length == 0) {
+                    return ~position;
+                }
+
+                if (hasSignChar || length != 2) {
+                    int value;
+                    if (length >= 9) {
+                        // Since value may exceed integer limits, use stock
+                        // parser which checks for this.
+                        value = Integer.parseInt(text.substring(position, position += length));
+                    } else {
+                        int i = position;
+                        if (negative) {
+                            i++;
+                        }
+                        try {
+                            value = text.charAt(i++) - '0';
+                        } catch (StringIndexOutOfBoundsException e) {
+                            return ~position;
+                        }
+                        position += length;
+                        while (i < position) {
+                            value = ((value << 3) + (value << 1)) + text.charAt(i++) - '0';
+                        }
+                        if (negative) {
+                            value = -value;
+                        }
+                    }
+                    
+                    bucket.saveField(iType, value);
+                    return position;
+                }
             }
 
             int year;
@@ -1328,6 +1421,12 @@ public class DateTimeFormatterBuilder {
                 return ~position;
             }
             year = ((year << 3) + (year << 1)) + c - '0';
+
+            int pivot = iPivot;
+            // If the bucket pivot year is non-null, use that when parsing
+            if (bucket.getPivotYear() != null) {
+                pivot = bucket.getPivotYear().intValue();
+            }
 
             int low = pivot - 50;
 

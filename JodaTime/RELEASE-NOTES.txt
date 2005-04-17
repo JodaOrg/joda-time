@@ -26,8 +26,10 @@ None
 
 Bug fixes since 1.0
 -------------------
-None
-
+- DateTimeFormat
+  Parsing of two digit year by DateTimeFormat supports parsing of more or less
+  than two digits, for compatibility with java.text.SimpleDateFormat. If not
+  two digits or if sign character is present, then year is parsed as absolute.
 
 Enhancements since 1.0
 ----------------------
@@ -50,6 +52,9 @@ Enhancements since 1.0
 - DateTimeFormatter
   Method withPivotYear added to allow the two digit pivot year to be controlled.
   This is most useful after creating a format from a string pattern.
+
+- DateTimeFormatter
+  Added lenient parse option to appendTwoDigitYear and appendTwoDigitWeekyear.
 
 - DateTimeZone classes updated to latest data from the Olsen time zone database
 

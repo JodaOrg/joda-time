@@ -149,7 +149,18 @@ public class TestDateTimeFormat extends TestCase {
         expect = new DateTime(2021, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
 
-        /* Added tests for pivot year setting */
+        // Added tests to ensure single sign digit parse fails properly
+        try {
+            f.parseDateTime("-");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        try {
+            f.parseDateTime("+");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        // Added tests for pivot year setting
         f = f.withPivotYear(new Integer(2050));
         expect = new DateTime(2000, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("00"));
@@ -157,6 +168,13 @@ public class TestDateTimeFormat extends TestCase {
         expect = new DateTime(2099, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("99"));
 
+        // Added tests to ensure two digit parsing is lenient for DateTimeFormat
+        f = DateTimeFormat.forPattern("YY").withLocale(Locale.UK);
+        f = f.withZone(UTC);
+        f.parseDateTime("5");
+        f.parseDateTime("005");
+        f.parseDateTime("+50");
+        f.parseDateTime("-50");
     }
 
     //-----------------------------------------------------------------------
@@ -173,6 +191,17 @@ public class TestDateTimeFormat extends TestCase {
         
         dt = new DateTime(-123, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals(dt.toString(), "-123", f.print(dt));
+
+        // Added tests to ensure single sign digit parse fails properly
+        try {
+            f.parseDateTime("-");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        try {
+            f.parseDateTime("+");
+            fail();
+        } catch (IllegalArgumentException e) { }
     }
 
     public void testFormat_year_twoDigit() {
@@ -195,13 +224,99 @@ public class TestDateTimeFormat extends TestCase {
         expect = new DateTime(2021, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
 
-        /* Added tests for pivot year setting */
+        // Added tests to ensure single sign digit parse fails properly
+        try {
+            f.parseDateTime("-");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        try {
+            f.parseDateTime("+");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        // Added tests for pivot year setting
         f = f.withPivotYear(new Integer(2050));
         expect = new DateTime(2000, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("00"));
 
         expect = new DateTime(2099, 1, 1, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("99"));
+
+        // Added tests to ensure two digit parsing is strict by default for
+        // DateTimeFormatterBuilder
+        f = new DateTimeFormatterBuilder().appendTwoDigitYear(2000).toFormatter();
+        f = f.withZone(UTC);
+        try {
+            f.parseDateTime("5");
+            fail();
+        } catch (IllegalArgumentException e) { }
+        try {
+            f.parseDateTime("005");
+            fail();
+        } catch (IllegalArgumentException e) { }
+        try {
+            f.parseDateTime("+50");
+            fail();
+        } catch (IllegalArgumentException e) { }
+        try {
+            f.parseDateTime("-50");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        // Added tests to ensure two digit parsing is lenient for DateTimeFormat
+        f = DateTimeFormat.forPattern("yy").withLocale(Locale.UK);
+        f = f.withZone(UTC);
+        f.parseDateTime("5");
+        f.parseDateTime("005");
+        f.parseDateTime("+50");
+        f.parseDateTime("-50");
+
+        // Added tests for lenient two digit parsing
+        f = new DateTimeFormatterBuilder().appendTwoDigitYear(2000, true).toFormatter();
+        f = f.withZone(UTC);
+        expect = new DateTime(2004, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("04"));
+
+        expect = new DateTime(4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("+04"));
+
+        expect = new DateTime(-4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-04"));
+
+        expect = new DateTime(4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("4"));
+
+        expect = new DateTime(-4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-4"));
+
+        expect = new DateTime(4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("004"));
+
+        expect = new DateTime(4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("+004"));
+
+        expect = new DateTime(-4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-004"));
+
+        expect = new DateTime(3004, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("3004"));
+
+        expect = new DateTime(3004, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("+3004"));
+
+        expect = new DateTime(-3004, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-3004"));
+
+        try {
+            f.parseDateTime("-");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        try {
+            f.parseDateTime("+");
+            fail();
+        } catch (IllegalArgumentException e) { }
     }
 
     public void testFormat_year_long() {
@@ -254,13 +369,99 @@ public class TestDateTimeFormat extends TestCase {
         expect = new DateTime(2021, 1, 4, 0, 0, 0, 0, UTC);
         assertEquals(expect, f.parseDateTime("21"));
 
-        /* Added tests for pivot year setting */
+        // Added tests to ensure single sign digit parse fails properly
+        try {
+            f.parseDateTime("-");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        try {
+            f.parseDateTime("+");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        // Added tests for pivot year setting
         f = f.withPivotYear(new Integer(2050));
         expect = new DateTime(2000, 1, 3, 0, 0, 0, 0, DateTimeZone.UTC);
         assertEquals(expect, f.parseDateTime("00"));
 
         expect = new DateTime(2098, 12, 29, 0, 0, 0, 0, DateTimeZone.UTC);
         assertEquals(expect, f.parseDateTime("99"));
+
+        // Added tests to ensure two digit parsing is strict by default for
+        // DateTimeFormatterBuilder
+        f = new DateTimeFormatterBuilder().appendTwoDigitWeekyear(2000).toFormatter();
+        f = f.withZone(UTC);
+        try {
+            f.parseDateTime("5");
+            fail();
+        } catch (IllegalArgumentException e) { }
+        try {
+            f.parseDateTime("005");
+            fail();
+        } catch (IllegalArgumentException e) { }
+        try {
+            f.parseDateTime("+50");
+            fail();
+        } catch (IllegalArgumentException e) { }
+        try {
+            f.parseDateTime("-50");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        // Added tests to ensure two digit parsing is lenient for DateTimeFormat
+        f = DateTimeFormat.forPattern("xx").withLocale(Locale.UK);
+        f = f.withZone(UTC);
+        f.parseDateTime("5");
+        f.parseDateTime("005");
+        f.parseDateTime("+50");
+        f.parseDateTime("-50");
+
+        // Added tests for lenient two digit parsing
+        f = new DateTimeFormatterBuilder().appendTwoDigitWeekyear(2000, true).toFormatter();
+        f = f.withZone(UTC);
+        expect = new DateTime(2003, 12, 29, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("04"));
+
+        expect = new DateTime(3, 12, 29, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("+04"));
+
+        expect = new DateTime(-4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-04"));
+
+        expect = new DateTime(3, 12, 29, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("4"));
+
+        expect = new DateTime(-4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-4"));
+
+        expect = new DateTime(3, 12, 29, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("004"));
+
+        expect = new DateTime(3, 12, 29, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("+004"));
+
+        expect = new DateTime(-4, 1, 1, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-004"));
+
+        expect = new DateTime(3004, 1, 2, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("3004"));
+
+        expect = new DateTime(3004, 1, 2, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("+3004"));
+
+        expect = new DateTime(-3004, 1, 4, 0, 0, 0, 0, UTC);
+        assertEquals(expect, f.parseDateTime("-3004"));
+
+        try {
+            f.parseDateTime("-");
+            fail();
+        } catch (IllegalArgumentException e) { }
+
+        try {
+            f.parseDateTime("+");
+            fail();
+        } catch (IllegalArgumentException e) { }
     }
 
     //-----------------------------------------------------------------------

@@ -398,12 +398,12 @@ public class DateTimeFormat {
                     DateTimeFieldType type;
                     switch (c) {
                     case 'x':
-                        builder.appendTwoDigitWeekyear(new DateTime().getWeekyear() - 30);
+                        builder.appendTwoDigitWeekyear(new DateTime().getWeekyear() - 30, true);
                         break;
                     case 'y':
                     case 'Y':
                     default:
-                        builder.appendTwoDigitYear(new DateTime().getYear() - 30);
+                        builder.appendTwoDigitYear(new DateTime().getYear() - 30, true);
                         break;
                     }
                 } else {

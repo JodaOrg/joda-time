@@ -128,6 +128,21 @@ public final class TimeOfDay
     }
 
     /**
+     * Constructs a TimeOfDay with the current time, using ISOChronology in
+     * the specified zone to extract the fields.
+     * <p>
+     * The constructor uses the specified time zone to obtain the current time.
+     * Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
+     * 
+     * @param zone  the zone to use, null means default zone
+     * @since 1.1
+     */
+    public TimeOfDay(DateTimeZone zone) {
+        super(Chronology.getISO(zone));
+    }
+
+    /**
      * Constructs a TimeOfDay with the current time, using the specified chronology
      * and zone to extract the fields.
      * <p>

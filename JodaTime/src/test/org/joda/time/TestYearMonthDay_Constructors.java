@@ -87,6 +87,42 @@ public class TestYearMonthDay_Constructors extends TestCase {
     }
 
     /**
+     * Test constructor (DateTimeZone)
+     */
+    public void testConstructor_DateTimeZone() throws Throwable {
+        DateTime dt = new DateTime(2005, 6, 8, 23, 59, 0, 0, LONDON);
+        DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
+        // 23:59 in London is 00:59 the following day in Paris
+        
+        YearMonthDay test = new YearMonthDay(LONDON);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(2005, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(8, test.getDayOfMonth());
+        
+        test = new YearMonthDay(PARIS);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(2005, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    /**
+     * Test constructor (DateTimeZone=null)
+     */
+    public void testConstructor_nullDateTimeZone() throws Throwable {
+        DateTime dt = new DateTime(2005, 6, 8, 23, 59, 0, 0, LONDON);
+        DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
+        // 23:59 in London is 00:59 the following day in Paris
+        
+        YearMonthDay test = new YearMonthDay((DateTimeZone) null);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(2005, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(8, test.getDayOfMonth());
+    }
+
+    /**
      * Test constructor (Chronology)
      */
     public void testConstructor_Chronology() throws Throwable {
@@ -181,7 +217,7 @@ public class TestYearMonthDay_Constructors extends TestCase {
      * Test constructor (Object=null)
      */
     public void testConstructor_nullObject() throws Throwable {
-        YearMonthDay test = new YearMonthDay(null);
+        YearMonthDay test = new YearMonthDay((Object) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1970, test.getYear());
         assertEquals(6, test.getMonthOfYear());

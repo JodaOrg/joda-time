@@ -75,7 +75,7 @@ public final class YearMonthDay
     // Constructors
     //-----------------------------------------------------------------------
     /**
-     * Constructs a YearMonthDay with the current time, using ISOChronology in
+     * Constructs a YearMonthDay with the current date, using ISOChronology in
      * the default zone to extract the fields.
      * <p>
      * The constructor uses the default time zone, resulting in the local time
@@ -87,7 +87,22 @@ public final class YearMonthDay
     }
 
     /**
-     * Constructs a YearMonthDay with the current time, using the specified chronology
+     * Constructs a YearMonthDay with the current date, using ISOChronology in
+     * the specified zone to extract the fields.
+     * <p>
+     * The constructor uses the specified time zone to obtain the current date.
+     * Once the constructor is complete, all further calculations
+     * are performed without reference to a timezone (by switching to UTC).
+     * 
+     * @param zone  the zone to use, null means default zone
+     * @since 1.1
+     */
+    public YearMonthDay(DateTimeZone zone) {
+        super(Chronology.getISO(zone));
+    }
+
+    /**
+     * Constructs a YearMonthDay with the current date, using the specified chronology
      * and zone to extract the fields.
      * <p>
      * The constructor uses the time zone of the chronology specified.

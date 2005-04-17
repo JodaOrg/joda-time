@@ -733,6 +733,7 @@ public class DateTimeFormatterBuilder {
      * @param lenientParse  when true, if digit count is not two, it is treated
      * as an absolute year
      * @return this DateTimeFormatterBuilder
+     * @since 1.1
      */
     public DateTimeFormatterBuilder appendTwoDigitYear(int pivot, boolean lenientParse) {
         return append0(new TwoDigitYear(DateTimeFieldType.year(), pivot, lenientParse));
@@ -772,6 +773,7 @@ public class DateTimeFormatterBuilder {
      * @param lenientParse  when true, if digit count is not two, it is treated
      * as an absolute weekyear
      * @return this DateTimeFormatterBuilder
+     * @since 1.1
      */
     public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot, boolean lenientParse) {
         return append0(new TwoDigitYear(DateTimeFieldType.weekyear(), pivot, lenientParse));

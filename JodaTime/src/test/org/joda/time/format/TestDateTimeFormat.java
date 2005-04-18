@@ -153,12 +153,12 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("-");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         try {
             f.parseDateTime("+");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         // Added tests for pivot year setting
         f = f.withPivotYear(new Integer(2050));
@@ -196,12 +196,12 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("-");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         try {
             f.parseDateTime("+");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testFormat_year_twoDigit() {
@@ -228,12 +228,12 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("-");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         try {
             f.parseDateTime("+");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         // Added tests for pivot year setting
         f = f.withPivotYear(new Integer(2050));
@@ -250,19 +250,19 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("5");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
         try {
             f.parseDateTime("005");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
         try {
             f.parseDateTime("+50");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
         try {
             f.parseDateTime("-50");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         // Added tests to ensure two digit parsing is lenient for DateTimeFormat
         f = DateTimeFormat.forPattern("yy").withLocale(Locale.UK);
@@ -311,12 +311,12 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("-");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         try {
             f.parseDateTime("+");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
     }
 
     public void testFormat_year_long() {
@@ -373,12 +373,12 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("-");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         try {
             f.parseDateTime("+");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         // Added tests for pivot year setting
         f = f.withPivotYear(new Integer(2050));
@@ -395,19 +395,19 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("5");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
         try {
             f.parseDateTime("005");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
         try {
             f.parseDateTime("+50");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
         try {
             f.parseDateTime("-50");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         // Added tests to ensure two digit parsing is lenient for DateTimeFormat
         f = DateTimeFormat.forPattern("xx").withLocale(Locale.UK);
@@ -456,12 +456,12 @@ public class TestDateTimeFormat extends TestCase {
         try {
             f.parseDateTime("-");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
 
         try {
             f.parseDateTime("+");
             fail();
-        } catch (IllegalArgumentException e) { }
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -789,6 +789,24 @@ public class TestDateTimeFormat extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-dd HH.mm.ss");
         assertEquals("2004-06-09 10.20.30", f.print(dt));
+    }
+
+    public void testFormat_shortBasicParse() {
+        // Tests special two digit parse to make sure it properly switches
+        // between lenient and strict parsing.
+
+        DateTime dt = new DateTime(2004, 3, 9, 0, 0, 0, 0);
+
+        DateTimeFormatter f = DateTimeFormat.forPattern("yyMMdd");
+        assertEquals(dt, f.parseDateTime("040309"));
+        try {
+            assertEquals(dt, f.parseDateTime("20040309"));
+            fail();
+        } catch (IllegalArgumentException ex) {}
+
+        f = DateTimeFormat.forPattern("yy/MM/dd");
+        assertEquals(dt, f.parseDateTime("04/03/09"));
+        assertEquals(dt, f.parseDateTime("2004/03/09"));
     }
 
 }

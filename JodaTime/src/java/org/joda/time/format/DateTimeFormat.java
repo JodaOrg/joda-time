@@ -394,16 +394,31 @@ public class DateTimeFormat {
             case 'y': // year (number)
             case 'Y': // year of era (number)
                 if (tokenLen == 2) {
+                    boolean lenientParse = true;
+
+                    // Peek ahead to next token.
+                    if (i + 1 < length) {
+                        indexRef[0]++;
+                        if (isNumericToken(parseToken(pattern, indexRef))) {
+                            // If next token is a number, cannot support
+                            // lenient parse, because it will consume digits
+                            // that it should not.
+                            lenientParse = false;
+                        }
+                        indexRef[0]--;
+                    }
+
                     // Use pivots which are compatible with SimpleDateFormat.
                     DateTimeFieldType type;
                     switch (c) {
                     case 'x':
-                        builder.appendTwoDigitWeekyear(new DateTime().getWeekyear() - 30, true);
+                        builder.appendTwoDigitWeekyear
+                            (new DateTime().getWeekyear() - 30, lenientParse);
                         break;
                     case 'y':
                     case 'Y':
                     default:
-                        builder.appendTwoDigitYear(new DateTime().getYear() - 30, true);
+                        builder.appendTwoDigitYear(new DateTime().getYear() - 30, lenientParse);
                         break;
                     }
                 } else {

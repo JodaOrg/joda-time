@@ -385,6 +385,7 @@ public final class Period
      * @param start  the start of the period, must not be null
      * @param end  the end of the period, must not be null
      * @throws IllegalArgumentException if the partials are null or invalid
+     * @since 1.1
      */
     public Period(ReadablePartial start, ReadablePartial end) {
         super(start, end, null);
@@ -402,6 +403,7 @@ public final class Period
      * @param end  the end of the period, must not be null
      * @param type  which set of fields this period supports, null means standard
      * @throws IllegalArgumentException if the partials are null or invalid
+     * @since 1.1
      */
     public Period(ReadablePartial start, ReadablePartial end, PeriodType type) {
         super(start, end, type);

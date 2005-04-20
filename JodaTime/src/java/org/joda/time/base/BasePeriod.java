@@ -136,6 +136,7 @@ public abstract class BasePeriod
      * @param end  the end of the period, must not be null
      * @param type  which set of fields this period supports, null means standard
      * @throws IllegalArgumentException if the partials are null or invalid
+     * @since 1.1
      */
     protected BasePeriod(ReadablePartial start, ReadablePartial end, PeriodType type) {
         super();

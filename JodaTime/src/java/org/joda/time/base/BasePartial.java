@@ -258,6 +258,7 @@ public abstract class BasePartial
      * @throws ClassCastException if the partial is the wrong class
      *  or if it has field types that don't match
      * @throws NullPointerException if the partial is null
+     * @since 1.1
      */
     public int compareTo(Object partial) {
         if (this == partial) {

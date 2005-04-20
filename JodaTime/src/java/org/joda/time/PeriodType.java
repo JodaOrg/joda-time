@@ -150,6 +150,7 @@ public class PeriodType implements Serializable {
      * </ul>
      *
      * @return the period type
+     * @since 1.1
      */
     public static PeriodType yearMonthDay() {
         PeriodType type = cYMD;
@@ -208,6 +209,7 @@ public class PeriodType implements Serializable {
      * </ul>
      *
      * @return the period type
+     * @since 1.1
      */
     public static PeriodType yearWeekDay() {
         PeriodType type = cYWD;
@@ -263,6 +265,7 @@ public class PeriodType implements Serializable {
      * </ul>
      *
      * @return the period type
+     * @since 1.1
      */
     public static PeriodType yearDay() {
         PeriodType type = cYD;

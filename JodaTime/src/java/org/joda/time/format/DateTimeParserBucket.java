@@ -88,6 +88,7 @@ public class DateTimeParserBucket {
      * @param chrono  the chronology to use
      * @param locale  the locale to use
      * @param pivotYear  the pivot year to use when parsing two-digit years
+     * @since 1.1
      */
     public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale, Integer pivotYear) {
         super();

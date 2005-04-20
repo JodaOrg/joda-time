@@ -652,6 +652,7 @@ public final class YearMonthDay
      * @param date  an date to check against, null means now
      * @return true if this date is after the date passed in
      * @throws IllegalArgumentException if the specified YearMonthDay is null
+     * @since 1.1
      */
     public boolean isAfter(YearMonthDay date) {
         if (date == null) {
@@ -669,6 +670,7 @@ public final class YearMonthDay
      * @param date  an date to check against, null means now
      * @return true if this date is before the date passed in
      * @throws IllegalArgumentException if the specified YearMonthDay is null
+     * @since 1.1
      */
     public boolean isBefore(YearMonthDay date) {
         if (date == null) {
@@ -686,6 +688,7 @@ public final class YearMonthDay
      * @param date  an date to check against, null means now
      * @return true if this date is the same as the date passed in
      * @throws IllegalArgumentException if the specified YearMonthDay is null
+     * @since 1.1
      */
     public boolean isEqual(YearMonthDay date) {
         if (date == null) {

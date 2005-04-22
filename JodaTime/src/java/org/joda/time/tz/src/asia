@@ -1,4 +1,4 @@
-# @(#)asia	7.81
+# @(#)asia	7.82
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -476,12 +476,33 @@ Zone Asia/Jayapura	9:22:48 -	LMT	1932 Nov
 # Thursday night of Shahrivar, but I can't give exact dates....
 # I have also changed the abbreviations to what is considered correct
 # here in Iran, IRST for regular time and IRDT for daylight saving time.
-
-# From Paul Eggert (2003-03-15)
+#
+# From Roozbeh Pournader (2005-04-05):
+# The text of the Iranian law, in effect since 1925, clearly mentions
+# that the true solar year is the measure, and there is no arithmetic
+# leap year calculation involved.  There has never been any serious
+# plan to change that law....
+#
+# From Paul Eggert (2005-04-05):
 # Go with Shanks before September 1991, and with Pournader thereafter.
-# I used Ed Reingold's cal-persia in GNU Emacs 21.2 to check Persian dates.
-# The Persian calendar is based on the sun, and dates after around 2050
-# are approximate; stop after 2037 when 32-bit time_t's overflow.
+# I used Ed Reingold's cal-persia in GNU Emacs 21.2 to check Persian dates,
+# stopping after 2037 when 32-bit time_t's overflow.
+# That cal-persia used Birashk's approximation, which disagrees with the solar
+# calendar predictions for the year 2025, so I corrected those dates by hand.
+#
+# From Oscar van Vlijmen (2005-03-30), writing about future
+# discrepancies between cal-persia and the Iranian calendar:
+# For 2091 solar-longitude-after yields 2091-03-20 08:40:07.7 UT for
+# the vernal equinox and that gets so close to 12:00 some local
+# Iranian time that the definition of the correct location needs to be
+# known exactly, amongst other factors.  2157 is even closer:
+# 2157-03-20 08:37:15.5 UT.  But the Gregorian year 2025 should give
+# no interpretation problem whatsoever.  By the way, another instant
+# in the near future where there will be a discrepancy between
+# arithmetical and astronomical Iranian calendars will be in 2058:
+# vernal equinox on 2058-03-20 09:03:05.9 UT.  The Java version of
+# Reingold's/Dershowitz' calculator gives correctly the Gregorian date
+# 2058-03-21 for 1 Farvardin 1437 (astronomical).
 #
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Iran	1978	1980	-	Mar	21	0:00	1:00	D
@@ -519,10 +540,10 @@ Rule	Iran	2020	only	-	Mar	21	0:00	1:00	D
 Rule	Iran	2020	only	-	Sep	21	0:00	0	S
 Rule	Iran	2021	2023	-	Mar	22	0:00	1:00	D
 Rule	Iran	2021	2023	-	Sep	22	0:00	0	S
-Rule	Iran	2024	2025	-	Mar	21	0:00	1:00	D
-Rule	Iran	2024	2025	-	Sep	21	0:00	0	S
-Rule	Iran	2026	2027	-	Mar	22	0:00	1:00	D
-Rule	Iran	2026	2027	-	Sep	22	0:00	0	S
+Rule	Iran	2024	only	-	Mar	21	0:00	1:00	D
+Rule	Iran	2024	only	-	Sep	21	0:00	0	S
+Rule	Iran	2025	2027	-	Mar	22	0:00	1:00	D
+Rule	Iran	2025	2027	-	Sep	22	0:00	0	S
 Rule	Iran	2028	2029	-	Mar	21	0:00	1:00	D
 Rule	Iran	2028	2029	-	Sep	21	0:00	0	S
 Rule	Iran	2030	2031	-	Mar	22	0:00	1:00	D

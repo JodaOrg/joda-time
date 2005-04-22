@@ -1,11 +1,11 @@
-# @(#)northamerica	7.72
+# @(#)northamerica	7.74
 # also includes Central America and the Caribbean
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
 # tz@elsie.nci.nih.gov for general use in the future).
 
-# From Paul Eggert <eggert@twinsun.com> (1999-03-22):
+# From Paul Eggert (1999-03-22):
 # A reliable and entertaining source about time zones is
 # Derek Howse, Greenwich time and longitude, Philip Wilson Publishers (1997).
 
@@ -24,12 +24,16 @@
 # His proposal was adopted by the railroads on 1883-11-18 at 12:00,
 # and the most of the country soon followed suit.
 
-# From Paul Eggert <eggert@twinsun.com> (1995-12-19):
+# From Paul Eggert (2005-04-16):
+# That 1883 transition occurred at 12:00 new time, not at 12:00 old time.
+# See p 46 of David Prerau, Seize the daylight, Thunder's Mouth Press (2005).
+
+# From Paul Eggert (1995-12-19):
 # A good source for time zone historical data in the US is
 # Thomas G. Shanks, The American Atlas (5th edition),
 # San Diego: ACS Publications, Inc. (1991).
 # Make sure you have the errata sheet; the book is somewhat useless without it.
-# It is the source for the US and Puerto Rico entries below.
+# It is the source for most of the pre-1991 US and Puerto Rico entries below.
 
 # From Paul Eggert (2001-03-06):
 # Daylight Saving Time was first suggested as a joke by Benjamin Franklin
@@ -48,7 +52,8 @@
 #	to push people into bed earlier, and get them up earlier, to make
 #	them healthy, wealthy and wise in spite of themselves.
 #
-#	-- Robertson Davies, The Diary of Samuel Marchbanks (1947), XIX, Sunday
+#	-- Robertson Davies, The diary of Samuel Marchbanks,
+#	   Clarke, Irwin (1947), XIX, Sunday
 #
 # For more about the first ten years of DST in the United States, see
 # Robert Garland's <a href="http://www.clpgh.org/exhibit/dst.html">
@@ -222,7 +227,7 @@ Rule	NYC	1921	1966	-	Apr	lastSun	2:00	1:00	D
 Rule	NYC	1921	1954	-	Sep	lastSun	2:00	0	S
 Rule	NYC	1955	1966	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/New_York	-4:56:02 -	LMT	1883 Nov 18 12:00
+Zone America/New_York	-4:56:02 -	LMT	1883 Nov 18 12:03:58
 			-5:00	US	E%sT	1920
 			-5:00	NYC	E%sT	1942
 			-5:00	US	E%sT	1946
@@ -248,7 +253,7 @@ Rule	Chicago	1922	1966	-	Apr	lastSun	2:00	1:00	D
 Rule	Chicago	1922	1954	-	Sep	lastSun	2:00	0	S
 Rule	Chicago	1955	1966	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Chicago	-5:50:36 -	LMT	1883 Nov 18 12:00
+Zone America/Chicago	-5:50:36 -	LMT	1883 Nov 18 12:09:24
 			-6:00	US	C%sT	1920
 			-6:00	Chicago	C%sT	1936 Mar  1 2:00
 			-5:00	-	EST	1936 Nov 15 2:00
@@ -257,7 +262,7 @@ Zone America/Chicago	-5:50:36 -	LMT	1883 Nov 18 12:00
 			-6:00	Chicago	C%sT	1967
 			-6:00	US	C%sT
 # Oliver County, ND switched from mountain to central time on 1992-10-25.
-Zone America/North_Dakota/Center -6:45:12 - LMT	1883 Nov 18 12:00
+Zone America/North_Dakota/Center -6:45:12 - LMT	1883 Nov 18 12:14:48
 			-7:00	US	M%sT	1992 Oct 25 02:00
 			-6:00	US	C%sT
 
@@ -276,7 +281,7 @@ Rule	Denver	1921	only	-	May	22	2:00	0	S
 Rule	Denver	1965	1966	-	Apr	lastSun	2:00	1:00	D
 Rule	Denver	1965	1966	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Denver	-6:59:56 -	LMT	1883 Nov 18 12:00
+Zone America/Denver	-6:59:56 -	LMT	1883 Nov 18 12:00:04
 			-7:00	US	M%sT	1920
 			-7:00	Denver	M%sT	1942
 			-7:00	US	M%sT	1946
@@ -296,7 +301,7 @@ Rule	CA	1950	1966	-	Apr	lastSun	2:00	1:00	D
 Rule	CA	1950	1961	-	Sep	lastSun	2:00	0	S
 Rule	CA	1962	1966	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Los_Angeles -7:52:58 -	LMT	1883 Nov 18 12:00
+Zone America/Los_Angeles -7:52:58 -	LMT	1883 Nov 18 12:07:02
 			-8:00	US	P%sT	1946
 			-8:00	CA	P%sT	1967
 			-8:00	US	P%sT
@@ -423,7 +428,7 @@ Zone Pacific/Honolulu	-10:31:26 -	LMT	1900 Jan  1 12:00
 # Shanks says the 1944 experiment came to an end on 1944-03-17.
 # Go with the Arizona State Library instead.
 
-Zone America/Phoenix	-7:28:18 -	LMT	1883 Nov 18 12:00
+Zone America/Phoenix	-7:28:18 -	LMT	1883 Nov 18 11:31:42
 			-7:00	US	M%sT	1944 Jan  1 00:01
 			-7:00	-	MST	1944 Apr  1 00:01
 			-7:00	US	M%sT	1944 Oct  1 00:01
@@ -447,7 +452,7 @@ Link America/Denver America/Shiprock
 # switched four weeks late in 1974.
 #
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:00
+Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 			-8:00	US	P%sT	1923 May 13 2:00
 			-7:00	US	M%sT	1974
 			-7:00	-	MST	1974 Feb  3 2:00
@@ -491,7 +496,7 @@ Rule Indianapolis 1941	only	-	Jun	22	2:00	1:00	D
 Rule Indianapolis 1941	1954	-	Sep	lastSun	2:00	0	S
 Rule Indianapolis 1946	1954	-	Apr	lastSun	2:00	1:00	D
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Indianapolis -5:44:38 - LMT 1883 Nov 18 12:00
+Zone America/Indianapolis -5:44:38 - LMT 1883 Nov 18 12:15:22
 			-6:00	US	C%sT	1920
 			-6:00 Indianapolis C%sT	1942
 			-6:00	US	C%sT	1946
@@ -511,7 +516,7 @@ Rule	Marengo	1951	only	-	Sep	lastSun	2:00	0	S
 Rule	Marengo	1954	1960	-	Apr	lastSun	2:00	1:00	D
 Rule	Marengo	1954	1960	-	Sep	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Indiana/Marengo -5:45:23 -	LMT	1883 Nov 18 12:00
+Zone America/Indiana/Marengo -5:45:23 -	LMT	1883 Nov 18 12:14:37
 			-6:00	US	C%sT	1951
 			-6:00	Marengo	C%sT	1961 Apr 30 2:00
 			-5:00	-	EST	1969
@@ -532,7 +537,7 @@ Rule	Starke	1955	1956	-	Oct	lastSun	2:00	0	S
 Rule	Starke	1957	1958	-	Sep	lastSun	2:00	0	S
 Rule	Starke	1959	1961	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Indiana/Knox -5:46:30 -	LMT	1883 Nov 18 12:00
+Zone America/Indiana/Knox -5:46:30 -	LMT	1883 Nov 18 12:13:30
 			-6:00	US	C%sT	1947
 			-6:00	Starke	C%sT	1962 Apr 29 2:00
 			-5:00	-	EST	1963 Oct 27 2:00
@@ -541,7 +546,7 @@ Zone America/Indiana/Knox -5:46:30 -	LMT	1883 Nov 18 12:00
 #
 # Switzerland County, Indiana, last observed DST in 1972.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Indiana/Vevay -5:40:16 -	LMT	1883 Nov 18 12:00
+Zone America/Indiana/Vevay -5:40:16 -	LMT	1883 Nov 18 12:19:44
 			-6:00	US	C%sT	1954 Apr 25 2:00
 			-5:00	-	EST	1969
 			-5:00	US	E%sT	1973
@@ -558,7 +563,7 @@ Rule Louisville	1946	only	-	Jun	2	2:00	0	S
 Rule Louisville	1950	1955	-	Sep	lastSun	2:00	0	S
 Rule Louisville	1956	1960	-	Oct	lastSun	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Louisville	-5:43:02 -	LMT	1883 Nov 18 12:00
+Zone America/Louisville	-5:43:02 -	LMT	1883 Nov 18 12:16:58
 			-6:00	US	C%sT	1921
 			-6:00 Louisville C%sT	1942
 			-6:00	US	C%sT	1946
@@ -595,7 +600,7 @@ Link America/Louisville America/Kentucky/Louisville
 # Federal Register 65, 160 (2000-08-17), page 50154-50158.
 # </a>
 #
-Zone America/Kentucky/Monticello -5:39:24 - LMT	1883 Nov 18 12:00
+Zone America/Kentucky/Monticello -5:39:24 - LMT	1883 Nov 18 12:20:36
 			-6:00	US	C%sT	1946
 			-6:00	-	CST	1968
 			-6:00	US	C%sT	2000 Oct 29  2:00
@@ -704,7 +709,7 @@ Link	Pacific/Honolulu	HST
 ################################################################################
 
 
-# From Paul Eggert <eggert@twinsun.com> (1999-10-29):
+# From Paul Eggert (1999-10-29):
 # A good source for time zone historical data outside the US is
 # Thomas G. Shanks, The International Atlas (5th edition),
 # San Diego: ACS Publications, Inc. (1999).
@@ -761,7 +766,7 @@ Link	Pacific/Honolulu	HST
 #	T: de Terre-Neuve
 #	Y: du Yukon		Yukon
 #
-# From Paul Eggert <eggert@twinsun.com> (1994-11-22):
+# From Paul Eggert (1994-11-22):
 # Alas, this sort of thing must be handled by localization software.
 
 # Unless otherwise specified, the data for Canada are all from Shanks.
@@ -1427,7 +1432,7 @@ Zone America/Dawson	-9:17:40 -	LMT	1900 Aug 20
 # Shanks reports that Baja was at -8:00 in 1922/1923.
 # Shanks says the 1930 transition in Baja was 1930-11-16.
 # Shanks reports no DST during summer 1931.
-# Shanks reports a transition at 1032-03-30 23:00, not 1932-04-01.
+# Shanks reports a transition at 1932-03-30 23:00, not 1932-04-01.
 # Shanks does not report transitions for Baja in 1945 or 1948.
 # Shanks reports southern Mexico transitions on 1981-12-01, not 12-23.
 # Shanks says Quintana Roo switched to -6:00 on 1982-12-02, and to -5:00
@@ -1873,6 +1878,26 @@ Zone America/Guatemala	-6:02:04 -	LMT	1918 Oct 5
 			-6:00	Guat	C%sT
 
 # Haiti
+# From Gwillim Law (2005-04-15):
+# Risto O. Nykanen wrote me that Haiti is now on DST.
+# I searched for confirmation, and I found a
+# <a href="http://www.haitianconsulate.org/time.doc"> press release
+# on the Web page of the Haitian Consulate in Chicago (2005-03-31),
+# </a>.  Translated from French, it says:
+#
+#  "The Prime Minister's Communication Office notifies the public in general
+#   and the press in particular that, following a decision of the Interior
+#   Ministry and the Territorial Collectivities [I suppose that means the
+#   provinces], Haiti will move to Eastern Daylight Time in the night from next
+#   Saturday the 2nd to Sunday the 3rd.
+#
+#  "Consequently, the Prime Minister's Communication Office wishes to inform
+#   the population that the country's clocks will be set forward one hour
+#   starting at midnight.  This provision will hold until the last Saturday in
+#   October 2005.
+#
+#  "Port-au-Prince, March 31, 2005"
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Haiti	1983	only	-	May	8	0:00	1:00	D
 Rule	Haiti	1984	1987	-	Apr	lastSun	0:00	1:00	D
@@ -1880,6 +1905,8 @@ Rule	Haiti	1983	1987	-	Oct	lastSun	0:00	0	S
 # Shanks says AT is 2:00, but IATA SSIM (1991/1997) says 1:00s.  Go with IATA.
 Rule	Haiti	1988	1997	-	Apr	Sun>=1	1:00s	1:00	D
 Rule	Haiti	1988	1997	-	Oct	lastSun	1:00s	0	S
+Rule	Haiti	2005	only	-	Apr	Sun>=1	0:00	1:00	D
+Rule	Haiti	2005	only	-	Oct	lastSun	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Port-au-Prince -4:49:20 -	LMT	1890
 			-4:49	-	PPMT	1917 Jan 24 12:00 # P-a-P MT
@@ -1931,11 +1958,28 @@ Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Olveston
 # Nicaragua seems to be back at -6:00 but I have not been able to find when
 # they changed from -5:00.
 #
+# From Steffen Thorsen (2005-04-12):
+# I've got reports from 8 different people that Nicaragua just started
+# DST on Sunday 2005-04-10, in order to save energy because of
+# expensive petroleum.  The exact end date for DST is not yet
+# announced, only "September" but some sites also say "mid-September".
+# Some background information is available on the President's official site:
+# http://www.presidencia.gob.ni/Presidencia/Files_index/Secretaria/Notas%20de%20Prensa/Presidente/2005/ABRIL/Gobierno-de-nicaragua-adelanta-hora-oficial-06abril.htm
+# The Decree, no 23-2005 is available here:
+# http://www.presidencia.gob.ni/buscador_gaceta/BD/DECRETOS/2005/Decreto%2023-2005%20Se%20adelanta%20en%20una%20hora%20en%20todo%20el%20territorio%20nacional%20apartir%20de%20las%2024horas%20del%2009%20de%20Abril.pdf
+#
+# From Paul Eggert (2005-04-12):
+# The decree doesn't say anything about daylight saving, but for now let's
+# assume that it is daylight saving and that they'll switch back on the
+# 2nd Sunday in September.
+#
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Nic	1979	1980	-	Mar	Sun>=16	0:00	1:00	D
 Rule	Nic	1979	1980	-	Jun	Mon>=23	0:00	0	S
 Rule	Nic	1992	only	-	Jan	1	4:00	1:00	D
 Rule	Nic	1992	only	-	Sep	24	0:00	0	S
+Rule	Nic	2005	only	-	Apr	10	0:00	1:00	D
+Rule	Nic	2005	only	-	Sep	11	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Managua	-5:45:08 -	LMT	1890
 			-5:45:12 -	MMT	1934 Jun 23 # Managua Mean Time?
@@ -1943,7 +1987,7 @@ Zone	America/Managua	-5:45:08 -	LMT	1890
 			-5:00	-	EST	1975 Feb 16
 			-6:00	Nic	C%sT	1993 Jan 1 4:00
 			-5:00	-	EST	1998 Dec
-			-6:00	-	CST
+			-6:00	Nic	C%sT
 
 # Panama
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]

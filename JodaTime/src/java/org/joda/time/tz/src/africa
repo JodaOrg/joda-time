@@ -1,4 +1,4 @@
-# @(#)africa	7.36
+# @(#)africa	7.37
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -317,7 +317,7 @@ Rule	Libya	1985	only	-	Apr	 6	0:00	1:00	S
 Rule	Libya	1986	only	-	Apr	 4	0:00	1:00	S
 Rule	Libya	1986	only	-	Oct	 3	0:00	0	-
 Rule	Libya	1987	1989	-	Apr	 1	0:00	1:00	S
-Rule	Libya	1987	1990	-	Oct	 1	0:00	0	-
+Rule	Libya	1987	1989	-	Oct	 1	0:00	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Tripoli	0:52:44 -	LMT	1920
 			1:00	Libya	CE%sT	1959

@@ -59,10 +59,12 @@ Joda-Time supports multiple calendar systems via a pluggable system based on the
 functionality that is required for date-time calculations. It already provides
 out-of-the-box features, such as support for oddball date formats, which are difficult
 to replicate with the JDK.</li>
+
 <li><b>Up-to-date Time Zone calculations</b>. The timezone implementation is based on
-the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>. As these files are updated (several times a year),
-Joda-Time incorporates the changes. The user always has up-to-date timezone
-computations.</li>
+the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>, which is
+updated several times a year. New Joda-Time releases incorporate all changes
+made to this database. Should the changes be needed earlier, manually updating
+and building Joda-Time is easy.</li>
 <li><b>Calendar support</b>. The library currently provides 6 calendar systems. More
 will be added in the future.</li>
 <li><b>Easy interoperability</b>. The library internally uses a millisecond instant

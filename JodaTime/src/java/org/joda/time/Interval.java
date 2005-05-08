@@ -177,7 +177,7 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the interval where the this interval and that specified overlap.
+     * Gets the interval where this interval and that specified overlap.
      * 
      * @param interval  the interval to examine, null means now
      * @return the overlap interval, null if no overlap

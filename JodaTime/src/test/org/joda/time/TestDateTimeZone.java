@@ -791,4 +791,12 @@ public class TestDateTimeZone extends TestCase {
         assertSame(zone, result);
     }
 
+    public void testCommentParse() throws Exception {
+        // A bug in ZoneInfoCompiler's handling of comments broke Europe/Athens
+        // after 1980. This test is included to make sure it doesn't break again.
+
+        DateTimeZone zone = DateTimeZone.forID("Europe/Athens");
+        DateTime dt = new DateTime(2005, 5, 5, 20, 10, 15, 0, zone);
+        assertEquals(1115313015000L, dt.getMillis());
+    }
 }

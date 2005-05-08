@@ -31,6 +31,9 @@ Bug fixes since 1.0
   than two digits, for compatibility with java.text.SimpleDateFormat. If not
   two digits or if sign character is present, then year is parsed as absolute.
 
+- ZoneInfoCompiler
+  Comment parsing bug disabled DST for Europe/Athens after 1980.
+
 Enhancements since 1.0
 ----------------------
 - YearMonthDay/TimeOfDay

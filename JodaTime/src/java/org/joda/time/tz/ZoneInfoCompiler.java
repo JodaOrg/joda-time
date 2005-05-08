@@ -438,7 +438,8 @@ public class ZoneInfoCompiler {
         Zone zone = null;
         String line;
         while ((line = in.readLine()) != null) {
-            if (line.length() == 0 || line.charAt(0) == '#') {
+            String trimmed = line.trim();
+            if (trimmed.length() == 0 || trimmed.charAt(0) == '#') {
                 continue;
             }
 

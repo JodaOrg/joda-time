@@ -273,6 +273,57 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testOverlap_RInterval() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME1, TEST_TIME2)));
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
+        assertEquals(
+                new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2)));
+        assertEquals(
+                null,
+                test.overlap(new Interval(TEST_TIME2, TEST_TIME2)));
+        assertEquals(
+                new Interval(TEST_TIME2 - 1, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME2 - 1, TEST_TIME2)));
+        
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME1, TEST_TIME2 + 1)));
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME2 + 1)));
+        assertEquals(
+                new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2 + 1)));
+        assertEquals(
+                null,
+                test.overlap(new Interval(TEST_TIME2, TEST_TIME2 + 1)));
+        assertEquals(
+                new Interval(TEST_TIME2 - 1, TEST_TIME2),
+                test.overlap(new Interval(TEST_TIME2 - 1, TEST_TIME2 + 1)));
+        
+        assertEquals(
+                null,
+                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME1 - 1)));
+        assertEquals(
+                null,
+                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME1 + 1),
+                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
+        
+        assertEquals(
+                new Interval(TEST_TIME_NOW, TEST_TIME_NOW),
+                test.overlap((ReadableInterval) null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testIsBefore_long() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         

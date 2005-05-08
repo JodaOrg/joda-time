@@ -56,6 +56,9 @@ Enhancements since 1.0
 - DateTimeFormatter
   Added lenient parse option to appendTwoDigitYear and appendTwoDigitWeekyear.
 
+- Interval
+  Added overlap method that returns the actual overlap between two intervals.
+
 - DateTimeZone classes updated to latest data from the Olsen time zone database
 
 

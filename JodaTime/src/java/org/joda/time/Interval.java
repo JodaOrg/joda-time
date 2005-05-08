@@ -176,6 +176,27 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the interval where the this interval and that specified overlap.
+     * 
+     * @param interval  the interval to examine, null means now
+     * @return the overlap interval, null if no overlap
+     * @since 1.1
+     */
+    public Interval overlap(ReadableInterval interval) {
+        if (interval == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            interval = new Interval(now, now);
+        }
+        if (overlaps(interval) == false) {
+            return null;
+        }
+        long start = Math.max(getStartMillis(), interval.getStartMillis());
+        long end = Math.min(getEndMillis(), interval.getEndMillis());
+        return new Interval(start, end);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Creates a new interval with the same start and end, but a different chronology.
      *
      * @param chronology  the chronology to use, null means ISO default

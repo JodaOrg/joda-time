@@ -41,6 +41,7 @@ import org.joda.time.base.BaseInterval;
  * @author Brian S O'Neill
  * @author Sean Geoghegan
  * @author Stephen Colebourne
+ * @author Julen Parra
  * @since 1.0
  */
 public final class Interval

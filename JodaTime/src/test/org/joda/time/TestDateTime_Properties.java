@@ -102,6 +102,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[era]", test.era().toString());
         assertSame(test, test.era().getDateTime());
         assertEquals(1, test.era().get());
+        assertEquals("1", test.era().getAsString());
         assertEquals("AD", test.era().getAsText());
         assertEquals("ap. J.-C.", test.era().getAsText(Locale.FRENCH));
         assertEquals("AD", test.era().getAsShortText());
@@ -122,6 +123,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[yearOfEra]", test.yearOfEra().toString());
         assertSame(test, test.yearOfEra().getDateTime());
         assertEquals(2004, test.yearOfEra().get());
+        assertEquals("2004", test.yearOfEra().getAsString());
         assertEquals("2004", test.yearOfEra().getAsText());
         assertEquals("2004", test.yearOfEra().getAsText(Locale.FRENCH));
         assertEquals("2004", test.yearOfEra().getAsShortText());
@@ -140,6 +142,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[centuryOfEra]", test.centuryOfEra().toString());
         assertSame(test, test.centuryOfEra().getDateTime());
         assertEquals(20, test.centuryOfEra().get());
+        assertEquals("20", test.centuryOfEra().getAsString());
         assertEquals("20", test.centuryOfEra().getAsText());
         assertEquals("20", test.centuryOfEra().getAsText(Locale.FRENCH));
         assertEquals("20", test.centuryOfEra().getAsShortText());
@@ -158,6 +161,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[yearOfCentury]", test.yearOfCentury().toString());
         assertSame(test, test.yearOfCentury().getDateTime());
         assertEquals(4, test.yearOfCentury().get());
+        assertEquals("4", test.yearOfCentury().getAsString());
         assertEquals("4", test.yearOfCentury().getAsText());
         assertEquals("4", test.yearOfCentury().getAsText(Locale.FRENCH));
         assertEquals("4", test.yearOfCentury().getAsShortText());
@@ -176,6 +180,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[weekyear]", test.weekyear().toString());
         assertSame(test, test.weekyear().getDateTime());
         assertEquals(2004, test.weekyear().get());
+        assertEquals("2004", test.weekyear().getAsString());
         assertEquals("2004", test.weekyear().getAsText());
         assertEquals("2004", test.weekyear().getAsText(Locale.FRENCH));
         assertEquals("2004", test.weekyear().getAsShortText());
@@ -194,6 +199,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[year]", test.year().toString());
         assertSame(test, test.year().getDateTime());
         assertEquals(2004, test.year().get());
+        assertEquals("2004", test.year().getAsString());
         assertEquals("2004", test.year().getAsText());
         assertEquals("2004", test.year().getAsText(Locale.FRENCH));
         assertEquals("2004", test.year().getAsShortText());
@@ -325,6 +331,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[monthOfYear]", test.monthOfYear().toString());
         assertSame(test, test.monthOfYear().getDateTime());
         assertEquals(6, test.monthOfYear().get());
+        assertEquals("6", test.monthOfYear().getAsString());
         assertEquals("June", test.monthOfYear().getAsText());
         assertEquals("juin", test.monthOfYear().getAsText(Locale.FRENCH));
         assertEquals("Jun", test.monthOfYear().getAsShortText());
@@ -493,6 +500,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[dayOfMonth]", test.dayOfMonth().toString());
         assertSame(test, test.dayOfMonth().getDateTime());
         assertEquals(9, test.dayOfMonth().get());
+        assertEquals("9", test.dayOfMonth().getAsString());
         assertEquals("9", test.dayOfMonth().getAsText());
         assertEquals("9", test.dayOfMonth().getAsText(Locale.FRENCH));
         assertEquals("9", test.dayOfMonth().getAsShortText());
@@ -641,6 +649,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[dayOfYear]", test.dayOfYear().toString());
         assertSame(test, test.dayOfYear().getDateTime());
         assertEquals(161, test.dayOfYear().get());
+        assertEquals("161", test.dayOfYear().getAsString());
         assertEquals("161", test.dayOfYear().getAsText());
         assertEquals("161", test.dayOfYear().getAsText(Locale.FRENCH));
         assertEquals("161", test.dayOfYear().getAsShortText());
@@ -787,6 +796,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[weekOfWeekyear]", test.weekOfWeekyear().toString());
         assertSame(test, test.weekOfWeekyear().getDateTime());
         assertEquals(24, test.weekOfWeekyear().get());
+        assertEquals("24", test.weekOfWeekyear().getAsString());
         assertEquals("24", test.weekOfWeekyear().getAsText());
         assertEquals("24", test.weekOfWeekyear().getAsText(Locale.FRENCH));
         assertEquals("24", test.weekOfWeekyear().getAsShortText());
@@ -899,6 +909,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[dayOfWeek]", test.dayOfWeek().toString());
         assertSame(test, test.dayOfWeek().getDateTime());
         assertEquals(3, test.dayOfWeek().get());
+        assertEquals("3", test.dayOfWeek().getAsString());
         assertEquals("Wednesday", test.dayOfWeek().getAsText());
         assertEquals("mercredi", test.dayOfWeek().getAsText(Locale.FRENCH));
         assertEquals("Wed", test.dayOfWeek().getAsShortText());
@@ -1033,6 +1044,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[hourOfDay]", test.hourOfDay().toString());
         assertSame(test, test.hourOfDay().getDateTime());
         assertEquals(13, test.hourOfDay().get());
+        assertEquals("13", test.hourOfDay().getAsString());
         assertEquals("13", test.hourOfDay().getAsText());
         assertEquals("13", test.hourOfDay().getAsText(Locale.FRENCH));
         assertEquals("13", test.hourOfDay().getAsShortText());
@@ -1127,6 +1139,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[minuteOfHour]", test.minuteOfHour().toString());
         assertSame(test, test.minuteOfHour().getDateTime());
         assertEquals(23, test.minuteOfHour().get());
+        assertEquals("23", test.minuteOfHour().getAsString());
         assertEquals("23", test.minuteOfHour().getAsText());
         assertEquals("23", test.minuteOfHour().getAsText(Locale.FRENCH));
         assertEquals("23", test.minuteOfHour().getAsShortText());
@@ -1145,6 +1158,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[minuteOfDay]", test.minuteOfDay().toString());
         assertSame(test, test.minuteOfDay().getDateTime());
         assertEquals(803, test.minuteOfDay().get());
+        assertEquals("803", test.minuteOfDay().getAsString());
         assertEquals("803", test.minuteOfDay().getAsText());
         assertEquals("803", test.minuteOfDay().getAsText(Locale.FRENCH));
         assertEquals("803", test.minuteOfDay().getAsShortText());
@@ -1163,6 +1177,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[secondOfMinute]", test.secondOfMinute().toString());
         assertSame(test, test.secondOfMinute().getDateTime());
         assertEquals(43, test.secondOfMinute().get());
+        assertEquals("43", test.secondOfMinute().getAsString());
         assertEquals("43", test.secondOfMinute().getAsText());
         assertEquals("43", test.secondOfMinute().getAsText(Locale.FRENCH));
         assertEquals("43", test.secondOfMinute().getAsShortText());
@@ -1181,6 +1196,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[secondOfDay]", test.secondOfDay().toString());
         assertSame(test, test.secondOfDay().getDateTime());
         assertEquals(48223, test.secondOfDay().get());
+        assertEquals("48223", test.secondOfDay().getAsString());
         assertEquals("48223", test.secondOfDay().getAsText());
         assertEquals("48223", test.secondOfDay().getAsText(Locale.FRENCH));
         assertEquals("48223", test.secondOfDay().getAsShortText());
@@ -1199,6 +1215,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[millisOfSecond]", test.millisOfSecond().toString());
         assertSame(test, test.millisOfSecond().getDateTime());
         assertEquals(53, test.millisOfSecond().get());
+        assertEquals("53", test.millisOfSecond().getAsString());
         assertEquals("53", test.millisOfSecond().getAsText());
         assertEquals("53", test.millisOfSecond().getAsText(Locale.FRENCH));
         assertEquals("53", test.millisOfSecond().getAsShortText());
@@ -1217,6 +1234,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("Property[millisOfDay]", test.millisOfDay().toString());
         assertSame(test, test.millisOfDay().getDateTime());
         assertEquals(48223053, test.millisOfDay().get());
+        assertEquals("48223053", test.millisOfDay().getAsString());
         assertEquals("48223053", test.millisOfDay().getAsText());
         assertEquals("48223053", test.millisOfDay().getAsText(Locale.FRENCH));
         assertEquals("48223053", test.millisOfDay().getAsShortText());

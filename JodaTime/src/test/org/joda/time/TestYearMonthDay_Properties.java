@@ -77,6 +77,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertSame(test, test.year().getReadablePartial());
         assertSame(test, test.year().getYearMonthDay());
         assertEquals(1972, test.year().get());
+        assertEquals("1972", test.year().getAsString());
         assertEquals("1972", test.year().getAsText());
         assertEquals("1972", test.year().getAsText(Locale.FRENCH));
         assertEquals("1972", test.year().getAsShortText());
@@ -187,6 +188,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertSame(test, test.monthOfYear().getReadablePartial());
         assertSame(test, test.monthOfYear().getYearMonthDay());
         assertEquals(6, test.monthOfYear().get());
+        assertEquals("6", test.monthOfYear().getAsString());
         assertEquals("June", test.monthOfYear().getAsText());
         assertEquals("juin", test.monthOfYear().getAsText(Locale.FRENCH));
         assertEquals("Jun", test.monthOfYear().getAsShortText());
@@ -331,6 +333,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertSame(test, test.dayOfMonth().getReadablePartial());
         assertSame(test, test.dayOfMonth().getYearMonthDay());
         assertEquals(9, test.dayOfMonth().get());
+        assertEquals("9", test.dayOfMonth().getAsString());
         assertEquals("9", test.dayOfMonth().getAsText());
         assertEquals("9", test.dayOfMonth().getAsText(Locale.FRENCH));
         assertEquals("9", test.dayOfMonth().getAsShortText());

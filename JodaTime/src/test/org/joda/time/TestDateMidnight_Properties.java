@@ -216,6 +216,7 @@ public class TestDateMidnight_Properties extends TestCase {
         assertEquals("Property[monthOfYear]", test.monthOfYear().toString());
         assertSame(test, test.monthOfYear().getDateMidnight());
         assertEquals(6, test.monthOfYear().get());
+        assertEquals("6", test.monthOfYear().getAsString());
         assertEquals("June", test.monthOfYear().getAsText());
         assertEquals("juin", test.monthOfYear().getAsText(Locale.FRENCH));
         assertEquals("Jun", test.monthOfYear().getAsShortText());
@@ -433,6 +434,7 @@ public class TestDateMidnight_Properties extends TestCase {
         assertEquals("Property[dayOfWeek]", test.dayOfWeek().toString());
         assertSame(test, test.dayOfWeek().getDateMidnight());
         assertEquals(3, test.dayOfWeek().get());
+        assertEquals("3", test.dayOfWeek().getAsString());
         assertEquals("Wednesday", test.dayOfWeek().getAsText());
         assertEquals("mercredi", test.dayOfWeek().getAsText(Locale.FRENCH));
         assertEquals("Wed", test.dayOfWeek().getAsShortText());

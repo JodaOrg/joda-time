@@ -87,7 +87,13 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a value from the instant.
+     * Gets the value of this property from the instant.
+     * <p>
+     * For example, the following two lines of code are equivalent:
+     * <pre>
+     * datetime.getDayOfMonth();
+     * datetime.dayOfMonth().get();
+     * </pre>
      * 
      * @return the current value
      * @see DateTimeField#get
@@ -97,18 +103,27 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     /**
-     * Gets a text value from the instant.
+     * Gets the value of this property from the instant as a string.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * using <code>Integer.toString</code>. This method does NOT return
+     * textual descriptions such as 'Monday' or 'January'.
+     * See {@link #getAsText()} and {@link #getAsShortText()} for those.
      * 
-     * @param locale  optional locale to use for selecting a text symbol
-     * @return the current text value
-     * @see DateTimeField#getAsText
+     * @return the current value
+     * @see DateTimeField#get
      */
-    public String getAsText(Locale locale) {
-        return getField().getAsText(getMillis(), locale);
+    public String getAsString() {
+        return Integer.toString(get());
     }
 
     /**
-     * Gets a text value from the instant.
+     * Gets the textual value of this property from the instant as a
+     * string in the default locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Monday' in English.
      * 
      * @return the current text value
      * @see DateTimeField#getAsText
@@ -118,24 +133,50 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
     }
 
     /**
-     * Gets a short text value from the instant.
+     * Gets the textual value of this property from the instant as a
+     * string in the specified locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Monday' in English.
      * 
-     * @param locale  optional locale to use for selecting a text symbol
+     * @param locale  locale to use for selecting a text symbol, null means default
      * @return the current text value
-     * @see DateTimeField#getAsShortText
+     * @see DateTimeField#getAsText
      */
-    public String getAsShortText(Locale locale) {
-        return getField().getAsShortText(getMillis(), locale);
+    public String getAsText(Locale locale) {
+        return getField().getAsText(getMillis(), locale);
     }
 
     /**
-     * Gets a short text value from the instant.
+     * Gets the short textual value of this property from the instant as a
+     * string in the default locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Mon' in English.
      * 
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
     public final String getAsShortText() {
         return getAsShortText(null);
+    }
+
+    /**
+     * Gets the short textual value of this property from the instant as a
+     * string in the specified locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Mon' in English.
+     * 
+     * @param locale  locale to use for selecting a text symbol, null means default
+     * @return the current text value
+     * @see DateTimeField#getAsShortText
+     */
+    public String getAsShortText(Locale locale) {
+        return getField().getAsShortText(getMillis(), locale);
     }
 
     //-----------------------------------------------------------------------

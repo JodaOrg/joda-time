@@ -44,6 +44,10 @@ Enhancements since 1.0
   Extra time zone constructor
   Allows current date and time to be accurately obtained
 
+- DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay Property
+  Added new method to property class - getAsString()
+  Gets the value as a string, not using text values like 'Monday' or 'January'
+
 - Period
   Added constructors to create a Period from two ReadablePartials, such as
   YearMonthDay or TimeOfDay

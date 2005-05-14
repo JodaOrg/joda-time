@@ -84,6 +84,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertSame(test, test.hourOfDay().getReadablePartial());
         assertSame(test, test.hourOfDay().getTimeOfDay());
         assertEquals(10, test.hourOfDay().get());
+        assertEquals("10", test.hourOfDay().getAsString());
         assertEquals("10", test.hourOfDay().getAsText());
         assertEquals("10", test.hourOfDay().getAsText(Locale.FRENCH));
         assertEquals("10", test.hourOfDay().getAsShortText());
@@ -222,6 +223,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertSame(test, test.minuteOfHour().getReadablePartial());
         assertSame(test, test.minuteOfHour().getTimeOfDay());
         assertEquals(20, test.minuteOfHour().get());
+        assertEquals("20", test.minuteOfHour().getAsString());
         assertEquals("20", test.minuteOfHour().getAsText());
         assertEquals("20", test.minuteOfHour().getAsText(Locale.FRENCH));
         assertEquals("20", test.minuteOfHour().getAsShortText());
@@ -393,6 +395,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertSame(test, test.secondOfMinute().getReadablePartial());
         assertSame(test, test.secondOfMinute().getTimeOfDay());
         assertEquals(30, test.secondOfMinute().get());
+        assertEquals("30", test.secondOfMinute().getAsString());
         assertEquals("30", test.secondOfMinute().getAsText());
         assertEquals("30", test.secondOfMinute().getAsText(Locale.FRENCH));
         assertEquals("30", test.secondOfMinute().getAsShortText());
@@ -558,6 +561,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertSame(test, test.millisOfSecond().getReadablePartial());
         assertSame(test, test.millisOfSecond().getTimeOfDay());
         assertEquals(40, test.millisOfSecond().get());
+        assertEquals("40", test.millisOfSecond().getAsString());
         assertEquals("40", test.millisOfSecond().getAsText());
         assertEquals("40", test.millisOfSecond().getAsText(Locale.FRENCH));
         assertEquals("40", test.millisOfSecond().getAsShortText());

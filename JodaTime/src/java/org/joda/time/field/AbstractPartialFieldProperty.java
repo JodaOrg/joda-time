@@ -78,16 +78,57 @@ public abstract class AbstractPartialFieldProperty {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a value from the partial instant.
+     * Gets the value of this property from the instant.
+     * <p>
+     * For example, the following two lines of code are equivalent:
+     * <pre>
+     * partial.getDayOfMonth();
+     * partial.dayOfMonth().get();
+     * </pre>
      * 
      * @return the current value
      */
     public abstract int get();
 
     /**
-     * Gets a text value from the partial instant.
+     * Gets the value of this property from the instant as a string.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * using <code>Integer.toString</code>. This method does NOT return
+     * textual descriptions such as 'Monday' or 'January'.
+     * See {@link #getAsText()} and {@link #getAsShortText()} for those.
      * 
-     * @param locale  optional locale to use for selecting a text symbol
+     * @return the current value
+     * @see DateTimeField#get
+     */
+    public String getAsString() {
+        return Integer.toString(get());
+    }
+
+    /**
+     * Gets the textual value of this property from the instant as a
+     * string in the default locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Monday' in English.
+     * 
+     * @return the current text value
+     * @see DateTimeField#getAsText
+     */
+    public final String getAsText() {
+        return getAsText(null);
+    }
+
+    /**
+     * Gets the textual value of this property from the instant as a
+     * string in the specified locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Monday' in English.
+     * 
+     * @param locale  locale to use for selecting a text symbol, null means default
      * @return the current text value
      * @see DateTimeField#getAsText
      */
@@ -96,34 +137,34 @@ public abstract class AbstractPartialFieldProperty {
     }
 
     /**
-     * Gets a text value from the partial instant.
+     * Gets the short textual value of this property from the instant as a
+     * string in the default locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Mon' in English.
      * 
      * @return the current text value
-     * @see DateTimeField#getAsText
+     * @see DateTimeField#getAsShortText
      */
-    public String getAsText() {
-        return getAsText(null);
+    public final String getAsShortText() {
+        return getAsShortText(null);
     }
 
     /**
-     * Gets a short text value from the partial instant.
+     * Gets the short textual value of this property from the instant as a
+     * string in the specified locale.
+     * <p>
+     * This method returns the value converted to a <code>String</code>
+     * returning the appropriate textual description wherever possible.
+     * Thus, a day of week of 1 would return 'Mon' in English.
      * 
-     * @param locale  optional locale to use for selecting a text symbol
+     * @param locale  locale to use for selecting a text symbol, null means default
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
     public String getAsShortText(Locale locale) {
         return getField().getAsShortText(getReadablePartial(), get(), locale);
-    }
-
-    /**
-     * Gets a short text value from the partial instant.
-     * 
-     * @return the current text value
-     * @see DateTimeField#getAsShortText
-     */
-    public String getAsShortText() {
-        return getAsShortText(null);
     }
 
     //-----------------------------------------------------------------------

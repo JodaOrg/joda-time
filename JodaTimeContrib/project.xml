@@ -97,7 +97,63 @@
     <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>3.0rc1</version>
+      <version>3.0.1</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging-api</artifactId>
+      <version>1.0.4</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.1</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.7.3.3</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>1.1</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>dom4j</groupId>
+      <artifactId>dom4j</artifactId>
+      <version>1.6</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib</artifactId>
+      <version>full-2.0.2</version>
+    </dependency>
+  </dependencies>
+
+  <dependencies>
+    <dependency>
+      <groupId>jta</groupId>
+      <artifactId>jta</artifactId>
+      <jar>jta-1_0_1B-classes.zip</jar>
     </dependency>
   </dependencies>
 
@@ -106,7 +162,7 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>org/joda/time/contrib/**/TestAll.java</include>
+        <include>org/joda/time/contrib/**/Test*.java</include>
       </includes>
     </unitTest>
   </build>

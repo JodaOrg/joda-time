@@ -372,7 +372,7 @@ public final class DateTime
      * from this method with Europe/Paris would be 13:30.
      * <p>
      * The returned object will be a new instance of the same implementation type.
-     * This method changes alters the time zone, and does not change the
+     * This method changes the time zone, and does not change the
      * millisecond instant, with the effect that the field values usually change.
      * The returned object will be either be a new instance or <code>this</code>.
      *
@@ -393,7 +393,7 @@ public final class DateTime
      * the result from this method with Europe/Paris would be 12:30 (ie. 11:30Z).
      * <p>
      * The returned object will be a new instance of the same implementation type.
-     * This method alters the time zone and the millisecond instant to keep
+     * This method changes the time zone and the millisecond instant to keep
      * the field values the same.
      * The returned object will be either be a new instance or <code>this</code>.
      *

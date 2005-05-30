@@ -478,7 +478,6 @@ public final class GJChronology extends AssembledChronology {
         // These fields just require basic cutover support.
         {
             fields.era = new CutoverField(julian.era(), fields.era, iCutoverMillis);
-            fields.dayOfMonth = new CutoverField(julian.dayOfMonth(), fields.dayOfMonth, iCutoverMillis);
         }
 
         // DayOfYear and weekOfWeekyear require special handling since cutover
@@ -524,6 +523,15 @@ public final class GJChronology extends AssembledChronology {
                 julian.weekyearOfCentury(), fields.weekyearOfCentury, fields.weekyears, iCutoverMillis);
             fields.weekyears = fields.weekyear.getDurationField();
         }
+
+        // These fields require basic cutover support, except they must link to
+        // imprecise durations.
+        {
+            CutoverField cf = new CutoverField
+                (julian.dayOfMonth(), fields.dayOfMonth, iCutoverMillis);
+            cf.iRangeDurationField = fields.months;
+            fields.dayOfMonth = cf;
+        }
     }
 
     long julianToGregorianByYear(long instant) {
@@ -556,6 +564,7 @@ public final class GJChronology extends AssembledChronology {
         final boolean iConvertByWeekyear;
 
         protected DurationField iDurationField;
+        protected DurationField iRangeDurationField;
 
         /**
          * @param julianField field from the chronology used before the cutover instant
@@ -582,6 +591,12 @@ public final class GJChronology extends AssembledChronology {
             // Although average length of Julian and Gregorian years differ,
             // use the Gregorian duration field because it is more accurate.
             iDurationField = gregorianField.getDurationField();
+
+            DurationField rangeField = gregorianField.getRangeDurationField();
+            if (rangeField == null) {
+                rangeField = julianField.getRangeDurationField();
+            }
+            iRangeDurationField = rangeField;
         }
 
         public boolean isLenient() {
@@ -687,11 +702,7 @@ public final class GJChronology extends AssembledChronology {
         }
 
         public DurationField getRangeDurationField() {
-            DurationField rangeField = iGregorianField.getRangeDurationField();
-            if (rangeField == null) {
-                rangeField = iJulianField.getRangeDurationField();
-            }
-            return rangeField;
+            return iRangeDurationField;
         }
 
         public boolean isLeap(long instant) {

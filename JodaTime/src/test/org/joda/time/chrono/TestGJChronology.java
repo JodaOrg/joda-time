@@ -28,6 +28,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.Instant;
+import org.joda.time.Period;
+import org.joda.time.YearMonthDay;
 
 /**
  * This class is a Junit unit test for GJChronology.
@@ -405,6 +407,18 @@ public class TestGJChronology extends TestCase {
         testAdd("1582-09-30", DurationFieldType.days(), 10, "1582-10-20");
         testAdd("1582-10-04", DurationFieldType.days(), 10, "1582-10-24");
         testAdd("1582-10-15", DurationFieldType.days(), 10, "1582-10-25");
+    }
+
+    public void testSubtractDays() {
+        // This is a test for a bug in version 1.0. The dayOfMonth range
+        // duration field did not match the monthOfYear duration field. This
+        // caused an exception to be thrown when subtracting days.
+        DateTime dt = new DateTime
+            (1112306400000L, GJChronology.getInstance(DateTimeZone.forID("Europe/Berlin")));
+        YearMonthDay ymd = dt.toYearMonthDay();
+        while (ymd.toDateTimeAtMidnight().getDayOfWeek() != DateTimeConstants.MONDAY) { 
+            ymd = ymd.minus(Period.days(1));
+        }
     }
 
     private void testAdd(String start, DurationFieldType type, int amt, String end) {

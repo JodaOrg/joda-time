@@ -34,6 +34,10 @@ Bug fixes since 1.0
 - ZoneInfoCompiler
   Comment parsing bug disabled DST for Europe/Athens after 1980.
 
+- GJChronology
+  Range duration field of dayOfMonth was not consistent with monthOfYear. This
+  bug manifested itself when adding/subtracting periods to partials.
+
 Enhancements since 1.0
 ----------------------
 - YearMonthDay/TimeOfDay

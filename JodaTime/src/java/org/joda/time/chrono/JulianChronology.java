@@ -20,7 +20,9 @@ import java.util.Map;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.field.SkipDateTimeField;
 
 /**
@@ -69,7 +71,8 @@ public final class JulianChronology extends BaseGJChronology {
     static int adjustYearForSet(int year) {
         if (year <= 0) {
             if (year == 0) {
-                throw new IllegalArgumentException("Invalid year: " + year);
+                throw new IllegalFieldValueException
+                    (DateTimeFieldType.year(), new Integer(year), null, null);
             }
             year++;
         }

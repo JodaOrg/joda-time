@@ -25,6 +25,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.Instant;
 import org.joda.time.ReadableInstant;
 import org.joda.time.field.BaseDateTimeField;
@@ -653,8 +654,8 @@ public final class GJChronology extends AssembledChronology {
                     }
                     // Verify that new value stuck.
                     if (get(instant) != value) {
-                        throw new IllegalArgumentException
-                            ("Illegal value for " + iGregorianField.getName() + ": " + value);
+                        throw new IllegalFieldValueException
+                            (iGregorianField.getType(), new Integer(value), null, null);
                     }
                 }
             } else {
@@ -666,8 +667,8 @@ public final class GJChronology extends AssembledChronology {
                     }
                     // Verify that new value stuck.
                     if (get(instant) != value) {
-                        throw new IllegalArgumentException
-                            ("Illegal value for " + iJulianField.getName() + ": " + value);
+                       throw new IllegalFieldValueException
+                            (iJulianField.getType(), new Integer(value), null, null);
                     }
                 }
             }

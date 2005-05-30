@@ -21,6 +21,7 @@ import java.util.Map;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
@@ -203,11 +204,11 @@ public final class CopticChronology extends BaseGJChronology {
     long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
-        FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 13);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 13);
 
         int dayLimit = (monthOfYear != 13) ? 30 : (isLeapYear(year) ? 6 : 5);
-        FieldUtils.verifyValueBounds("dayOfMonth", dayOfMonth, 1, dayLimit);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, dayLimit);
 
         long instant = getYearMillis(year);
 

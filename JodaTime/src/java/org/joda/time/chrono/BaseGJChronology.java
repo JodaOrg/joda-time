@@ -211,7 +211,8 @@ public abstract class BaseGJChronology extends AssembledChronology {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
         }
 
-        FieldUtils.verifyValueBounds("millisOfDay", millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY);
+        FieldUtils.verifyValueBounds
+            (DateTimeFieldType.millisOfDay(), millisOfDay, 0, DateTimeConstants.MILLIS_PER_DAY);
         return getDateMidnightMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
     }
 
@@ -226,10 +227,10 @@ public abstract class BaseGJChronology extends AssembledChronology {
                                           hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         }
 
-        FieldUtils.verifyValueBounds("hourOfDay", hourOfDay, 0, 23);
-        FieldUtils.verifyValueBounds("minuteOfHour", minuteOfHour, 0, 59);
-        FieldUtils.verifyValueBounds("secondOfMinute", secondOfMinute, 0, 59);
-        FieldUtils.verifyValueBounds("millisOfSecond", millisOfSecond, 0, 999);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.hourOfDay(), hourOfDay, 0, 23);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.minuteOfHour(), minuteOfHour, 0, 59);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.secondOfMinute(), secondOfMinute, 0, 59);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.millisOfSecond(), millisOfSecond, 0, 999);
 
         return getDateMidnightMillis(year, monthOfYear, dayOfMonth)
             + hourOfDay * DateTimeConstants.MILLIS_PER_HOUR
@@ -727,12 +728,12 @@ public abstract class BaseGJChronology extends AssembledChronology {
     long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
         throws IllegalArgumentException
     {
-        FieldUtils.verifyValueBounds("year", year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds("monthOfYear", monthOfYear, 1, 12);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 12);
 
         boolean isLeap = isLeapYear(year);
 
-        FieldUtils.verifyValueBounds("dayOfMonth", dayOfMonth, 1,
+        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1,
                                      (isLeap ? MAX_DAYS_PER_MONTH_ARRAY : MIN_DAYS_PER_MONTH_ARRAY)
                                      [monthOfYear - 1]);
 

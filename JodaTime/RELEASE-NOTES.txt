@@ -70,6 +70,11 @@ Enhancements since 1.0
 - Interval
   Added overlap method that returns the actual overlap between two intervals.
 
+- IllegalFieldValueException
+  Added new exception subclass of IllegalArgumentException to capture more
+  context when a field is set to an illegal value. This can be helpful in
+  interactive applications.
+
 - DateTimeZone classes updated to latest data from the Olsen time zone database
 
 

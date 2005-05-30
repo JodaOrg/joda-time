@@ -23,6 +23,7 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.BaseDurationField;
 
@@ -375,8 +376,8 @@ public final class ZonedChronology extends AssembledChronology {
 
             if (offset != offsetFromLocal) {
                 if (get(instant) != value) {
-                    throw new IllegalArgumentException
-                        ("Illegal value for " + iField.getName() + ": " + value);
+                    throw new IllegalFieldValueException
+                        (iField.getType(), new Integer(value), null, null);
                 }
             }
 

@@ -17,6 +17,8 @@ package org.joda.time.field;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.IllegalFieldValueException;
 
 /**
  * Wraps another field such that a certain value is skipped.
@@ -86,7 +88,8 @@ public final class SkipDateTimeField extends DelegatedDateTimeField {
         FieldUtils.verifyValueBounds(this, value, iMinValue, getMaximumValue());
         if (value <= iSkip) {
             if (value == iSkip) {
-                throw new IllegalArgumentException("Invalid year: " + value);
+                throw new IllegalFieldValueException
+                    (DateTimeFieldType.year(), new Integer(value), null, null);
             }
             value++;
         }

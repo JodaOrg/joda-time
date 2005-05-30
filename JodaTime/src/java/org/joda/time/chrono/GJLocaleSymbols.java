@@ -20,6 +20,9 @@ import java.text.DateFormatSymbols;
 import java.util.WeakHashMap;
 import java.util.Locale;
 
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.IllegalFieldValueException;
+
 /**
  * Utility class used by a few of the GJDateTimeFields.
  *
@@ -131,7 +134,7 @@ class GJLocaleSymbols {
                 return i;
             }
         }
-        throw new IllegalArgumentException("Illegal era text: " + text);
+        throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
     }
 
     public int getEraMaxTextLength() {
@@ -167,7 +170,7 @@ class GJLocaleSymbols {
         } catch (NumberFormatException ex) {
             // ignore
         }
-        throw new IllegalArgumentException("Illegal monthOfYear text: " + text);
+        throw new IllegalFieldValueException(DateTimeFieldType.monthOfYear(), text);
     }
 
     public int getMonthMaxTextLength() {
@@ -207,7 +210,7 @@ class GJLocaleSymbols {
         } catch (NumberFormatException ex) {
             // ignore
         }
-        throw new IllegalArgumentException("Illegal dayOfWeek text: " + text);
+        throw new IllegalFieldValueException(DateTimeFieldType.dayOfWeek(), text);
     }
 
     public int getDayOfWeekMaxTextLength() {
@@ -229,7 +232,7 @@ class GJLocaleSymbols {
                 return i;
             }
         }
-        throw new IllegalArgumentException("Illegal halfday text: " + text);
+        throw new IllegalFieldValueException(DateTimeFieldType.halfdayOfDay(), text);
     }
 
     public int getHalfdayMaxTextLength() {

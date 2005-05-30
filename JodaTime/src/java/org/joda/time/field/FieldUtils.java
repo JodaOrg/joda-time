@@ -16,6 +16,8 @@
 package org.joda.time.field;
 
 import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeFieldType;
+import org.joda.time.IllegalFieldValueException;
 
 /**
  * General utilities that don't fit elsewhere.
@@ -134,21 +136,14 @@ public class FieldUtils {
      * @param value  the value to check
      * @param lowerBound  the lower bound allowed for value
      * @param upperBound  the upper bound allowed for value
-     * @throws IllegalArgumentException if value is not in the specified bounds
+     * @throws IllegalFieldValueException if value is not in the specified bounds
      */
     public static void verifyValueBounds(DateTimeField field, 
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
-            throw new IllegalArgumentException(
-                "Value "
-                    + value
-                    + " for "
-                    + field.getName()
-                    + " must be in the range ["
-                    + lowerBound
-                    + ','
-                    + upperBound
-                    + ']');
+            throw new IllegalFieldValueException
+                (field.getType(), new Integer(value),
+                 new Integer(lowerBound), new Integer(upperBound));
         }
     }
 
@@ -158,21 +153,31 @@ public class FieldUtils {
      * @param value  the value to check
      * @param lowerBound  the lower bound allowed for value
      * @param upperBound  the upper bound allowed for value
-     * @throws IllegalArgumentException if value is not in the specified bounds
+     * @throws IllegalFieldValueException if value is not in the specified bounds
+     */
+    public static void verifyValueBounds(DateTimeFieldType fieldType, 
+                                         int value, int lowerBound, int upperBound) {
+        if ((value < lowerBound) || (value > upperBound)) {
+            throw new IllegalFieldValueException
+                (fieldType, new Integer(value),
+                 new Integer(lowerBound), new Integer(upperBound));
+        }
+    }
+
+    /**
+     * Verify that input values are within specified bounds.
+     * 
+     * @param value  the value to check
+     * @param lowerBound  the lower bound allowed for value
+     * @param upperBound  the upper bound allowed for value
+     * @throws IllegalFieldValueException if value is not in the specified bounds
      */
     public static void verifyValueBounds(String fieldName,
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
-            throw new IllegalArgumentException(
-                "Value "
-                    + value
-                    + " for "
-                    + fieldName
-                    + " must be in the range ["
-                    + lowerBound
-                    + ','
-                    + upperBound
-                    + ']');
+            throw new IllegalFieldValueException
+                (fieldName, new Integer(value),
+                 new Integer(lowerBound), new Integer(upperBound));
         }
     }
 

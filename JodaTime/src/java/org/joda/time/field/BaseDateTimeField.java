@@ -20,6 +20,7 @@ import java.util.Locale;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.ReadablePartial;
 
 /**
@@ -666,7 +667,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
         try {
             return Integer.parseInt(text);
         } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException("Invalid " + getName() + " text: " + text);
+            throw new IllegalFieldValueException(getType(), text);
         }
     }
 

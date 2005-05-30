@@ -23,6 +23,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.ReadablePartial;
 import org.joda.time.ReadablePeriod;
 import org.joda.time.field.FieldUtils;
@@ -184,12 +185,14 @@ public abstract class BaseChronology
             int value = values[i];
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue()) {
-                throw new IllegalArgumentException("Value " + value +
-                        " for " + field.getName() + " is less than minimum");
+                throw new IllegalFieldValueException
+                    (field.getType(), new Integer(value),
+                     new Integer(field.getMinimumValue()), null);
             }
             if (value > field.getMaximumValue()) {
-                throw new IllegalArgumentException("Value " + value +
-                        " for " + field.getName() + " is greater than maximum");
+                throw new IllegalFieldValueException
+                    (field.getType(), new Integer(value),
+                     null, new Integer(field.getMaximumValue()));
             }
         }
         // check values in specific range, catching really odd cases like 30th Feb
@@ -197,12 +200,14 @@ public abstract class BaseChronology
             int value = values[i];
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue(partial, values)) {
-                throw new IllegalArgumentException("Value " + value +
-                        " for " + field.getName() + " is less than minimum");
+                throw new IllegalFieldValueException
+                    (field.getType(), new Integer(value),
+                     new Integer(field.getMinimumValue(partial, values)), null);
             }
             if (value > field.getMaximumValue(partial, values)) {
-                throw new IllegalArgumentException("Value " + value +
-                        " for " + field.getName() + " is greater than maximum");
+                throw new IllegalFieldValueException
+                    (field.getType(), new Integer(value),
+                     null, new Integer(field.getMaximumValue(partial, values)));
             }
         }
     }

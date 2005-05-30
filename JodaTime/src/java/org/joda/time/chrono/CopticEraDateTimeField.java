@@ -21,6 +21,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.UnsupportedDurationField;
@@ -88,7 +89,7 @@ final class CopticEraDateTimeField extends BaseDateTimeField {
      */
     public long set(long instant, String text, Locale locale) {
         if ("AM".equals(text) == false) {
-            throw new IllegalArgumentException("Invalid era text: " + text);
+            throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
         }
         return instant;
     }

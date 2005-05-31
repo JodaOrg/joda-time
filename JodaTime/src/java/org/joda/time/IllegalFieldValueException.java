@@ -16,7 +16,7 @@
 package org.joda.time;
 
 /**
- * Exception thrown when attempting to set a field outisde its supported range.
+ * Exception thrown when attempting to set a field outside its supported range.
  *
  * @author Brian S O'Neill
  * @since 1.1

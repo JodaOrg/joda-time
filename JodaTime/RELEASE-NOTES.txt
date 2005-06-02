@@ -79,6 +79,9 @@ Enhancements since 1.0
   context when a field is set to an illegal value. This can be helpful in
   interactive applications.
 
+- GJLocaleSymbols
+  Supports parsing "CE" and "BCE" as era if locale language is English.
+
 - DateTimeZone classes updated to latest data from the Olsen time zone database
 
 

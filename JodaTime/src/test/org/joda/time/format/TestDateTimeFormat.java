@@ -179,7 +179,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     public void testFormat_yearOfEraParse() {
-        Chronology chrono = Chronology.getGJ();
+        Chronology chrono = Chronology.getGJUTC();
 
         DateTimeFormatter f = DateTimeFormat
             .forPattern("YYYY-MM GG")
@@ -188,9 +188,11 @@ public class TestDateTimeFormat extends TestCase {
 
         DateTime dt = new DateTime(2005, 10, 1, 0, 0, 0, 0, chrono);
         assertEquals(dt, f.parseDateTime("2005-10 AD"));
+        assertEquals(dt, f.parseDateTime("2005-10 CE"));
 
         dt = new DateTime(-2005, 10, 1, 0, 0, 0, 0, chrono);
         assertEquals(dt, f.parseDateTime("2005-10 BC"));
+        assertEquals(dt, f.parseDateTime("2005-10 BCE"));
     }        
 
     //-----------------------------------------------------------------------

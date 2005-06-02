@@ -19,6 +19,7 @@ import java.lang.ref.WeakReference;
 import java.text.DateFormatSymbols;
 import java.util.WeakHashMap;
 import java.util.Locale;
+import java.util.TreeMap;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.IllegalFieldValueException;
@@ -69,6 +70,21 @@ class GJLocaleSymbols {
         return a;
     }
 
+    private static void addSymbols(TreeMap map, String[] symbols, Integer[] integers) {
+        for (int i=symbols.length; --i>=0; ) {
+            String symbol = symbols[i];
+            if (symbol != null) {
+                map.put(symbol, integers[i]);
+            }
+        }
+    }
+
+    private static void addNumerals(TreeMap map, int start, int end, Integer[] integers) {
+        for (int i=start; i<=end; i++) {
+            map.put(String.valueOf(i).intern(), integers[i]);
+        }
+    }
+
     private static int maxLength(String[] a) {
         int max = 0;
         for (int i=a.length; --i>=0; ) {
@@ -91,6 +107,11 @@ class GJLocaleSymbols {
     private final String[] iMonths;
     private final String[] iShortMonths;
     private final String[] iHalfday;
+
+    // These map Strings to Integers.
+    private final TreeMap iParseEras;
+    private final TreeMap iParseDaysOfWeek;
+    private final TreeMap iParseMonths;
 
     private final int iMaxEraLength;
     private final int iMaxDayOfWeekLength;
@@ -115,6 +136,31 @@ class GJLocaleSymbols {
         iShortMonths = realignMonths(dfs.getShortMonths());
         iHalfday = dfs.getAmPmStrings();
 
+        Integer[] integers = new Integer[13];
+        for (int i=0; i<13; i++) {
+            integers[i] = new Integer(i);
+        }
+
+        iParseEras = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+        addSymbols(iParseEras, iEras, integers);
+        if ("en".equals(locale.getLanguage())) {
+            // Include support for parsing "BCE" and "CE" if the language is
+            // English. At some point Joda-Time will need an independent set of
+            // localized symbols and not depend on java.text.DateFormatSymbols.
+            iParseEras.put("BCE", integers[0]);
+            iParseEras.put("CE", integers[1]);
+        }
+
+        iParseDaysOfWeek = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+        addSymbols(iParseDaysOfWeek, iDaysOfWeek, integers);
+        addSymbols(iParseDaysOfWeek, iShortDaysOfWeek, integers);
+        addNumerals(iParseDaysOfWeek, 1, 7, integers);
+
+        iParseMonths = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+        addSymbols(iParseMonths, iMonths, integers);
+        addSymbols(iParseMonths, iShortMonths, integers);
+        addNumerals(iParseMonths, 1, 12, integers);
+
         iMaxEraLength = maxLength(iEras);
         iMaxDayOfWeekLength = maxLength(iDaysOfWeek);
         iMaxShortDayOfWeekLength = maxLength(iShortDaysOfWeek);
@@ -128,11 +174,9 @@ class GJLocaleSymbols {
     }
 
     public int eraTextToValue(String text) {
-        String[] eras = iEras;
-        for (int i=eras.length; --i>=0; ) {
-            if (eras[i].equalsIgnoreCase(text)) {
-                return i;
-            }
+        Integer era = (Integer) iParseEras.get(text);
+        if (era != null) {
+            return era.intValue();
         }
         throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
     }
@@ -150,25 +194,9 @@ class GJLocaleSymbols {
     }
 
     public int monthOfYearTextToValue(String text) {
-        String[] months = iMonths;
-        for (int i=months.length; --i>=1; ) {
-            if (months[i].equalsIgnoreCase(text)) {
-                return i;
-            }
-        }
-        months = iShortMonths;
-        for (int i=months.length; --i>=1; ) {
-            if (months[i].equalsIgnoreCase(text)) {
-                return i;
-            }
-        }
-        try {
-            int month = Integer.parseInt(text);
-            if (month >= 1 && month <= 12) {
-                return month;
-            }
-        } catch (NumberFormatException ex) {
-            // ignore
+        Integer month = (Integer) iParseMonths.get(text);
+        if (month != null) {
+            return month.intValue();
         }
         throw new IllegalFieldValueException(DateTimeFieldType.monthOfYear(), text);
     }
@@ -190,25 +218,9 @@ class GJLocaleSymbols {
     }
 
     public int dayOfWeekTextToValue(String text) {
-        String[] daysOfWeek = iDaysOfWeek;
-        for (int i=daysOfWeek.length; --i>=1; ) {
-            if (daysOfWeek[i].equalsIgnoreCase(text)) {
-                return i;
-            }
-        }
-        daysOfWeek = iShortDaysOfWeek;
-        for (int i=daysOfWeek.length; --i>=1; ) {
-            if (daysOfWeek[i].equalsIgnoreCase(text)) {
-                return i;
-            }
-        }
-        try {
-            int day = Integer.parseInt(text);
-            if (day >= 1 && day <= 7) {
-                return day;
-            }
-        } catch (NumberFormatException ex) {
-            // ignore
+        Integer day = (Integer) iParseDaysOfWeek.get(text);
+        if (day != null) {
+            return day.intValue();
         }
         throw new IllegalFieldValueException(DateTimeFieldType.dayOfWeek(), text);
     }

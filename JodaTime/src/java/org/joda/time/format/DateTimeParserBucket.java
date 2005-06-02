@@ -23,6 +23,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
 
 /**
  * DateTimeParserBucket is an advanced class, intended mainly for parser
@@ -425,14 +426,14 @@ public class DateTimeParserBucket {
                 (iField.getDurationField(), other.getDurationField());
         }
         
-        private int compareReverse(Comparable a, Comparable b) {
-            if (a == null) {
-                if (b == null) {
+        private int compareReverse(DurationField a, DurationField b) {
+            if (a == null || !a.isSupported()) {
+                if (b == null || !b.isSupported()) {
                     return 0;
                 }
                 return -1;
             }
-            if (b == null) {
+            if (b == null || !b.isSupported()) {
                 return 1;
             }
             return -a.compareTo(b);

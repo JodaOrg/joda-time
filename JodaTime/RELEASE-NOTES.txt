@@ -38,6 +38,10 @@ Bug fixes since 1.0
   Range duration field of dayOfMonth was not consistent with monthOfYear. This
   bug manifested itself when adding/subtracting periods to partials.
 
+- DateTimeParserBucket
+  Fixed parsing date where format includes era. Era must be set and rounded
+  before any other fields.
+
 Enhancements since 1.0
 ----------------------
 - YearMonthDay/TimeOfDay

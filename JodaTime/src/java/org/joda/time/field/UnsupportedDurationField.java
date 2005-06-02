@@ -38,7 +38,6 @@ public final class UnsupportedDurationField extends DurationField implements Ser
 
     /**
      * Gets an instance of UnsupportedDurationField for a specific named field.
-     * Names should be plural, such as 'years' or 'hours'.
      * The returned instance is cached.
      * 
      * @param type  the type to obtain

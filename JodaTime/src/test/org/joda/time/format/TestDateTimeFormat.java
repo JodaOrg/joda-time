@@ -21,6 +21,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
@@ -176,6 +177,21 @@ public class TestDateTimeFormat extends TestCase {
         f.parseDateTime("+50");
         f.parseDateTime("-50");
     }
+
+    public void testFormat_yearOfEraParse() {
+        Chronology chrono = Chronology.getGJ();
+
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("YYYY-MM GG")
+            .withChronology(chrono)
+            .withLocale(Locale.UK);
+
+        DateTime dt = new DateTime(2005, 10, 1, 0, 0, 0, 0, chrono);
+        assertEquals(dt, f.parseDateTime("2005-10 AD"));
+
+        dt = new DateTime(-2005, 10, 1, 0, 0, 0, 0, chrono);
+        assertEquals(dt, f.parseDateTime("2005-10 BC"));
+    }        
 
     //-----------------------------------------------------------------------
     public void testFormat_year() {

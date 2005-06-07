@@ -28,6 +28,8 @@ import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for YearMonthDay.
@@ -426,6 +428,7 @@ public class TestYearMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    //-----------------------------------------------------------------------
     public void testPlus_RP() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -436,6 +439,37 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    public void testPlusYears_int() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.plusYears(1);
+        YearMonthDay expected = new YearMonthDay(2003, 5, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusYears(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMonths_int() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.plusMonths(1);
+        YearMonthDay expected = new YearMonthDay(2002, 6, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMonths(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusDays_int() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.plusDays(1);
+        YearMonthDay expected = new YearMonthDay(2002, 5, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusDays(0);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testMinus_RP() {
         YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
         YearMonthDay result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -443,6 +477,36 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
         
         result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    public void testMinusYears_int() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.minusYears(1);
+        YearMonthDay expected = new YearMonthDay(2001, 5, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusYears(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMonths_int() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.minusMonths(1);
+        YearMonthDay expected = new YearMonthDay(2002, 4, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMonths(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusDays_int() {
+        YearMonthDay test = new YearMonthDay(2002, 5, 3, BuddhistChronology.getInstance());
+        YearMonthDay result = test.minusDays(1);
+        YearMonthDay expected = new YearMonthDay(2002, 5, 2, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusDays(0);
         assertSame(test, result);
     }
 
@@ -703,7 +767,7 @@ public class TestYearMonthDay_Basics extends TestCase {
     public void testToString_String() {
         YearMonthDay test = new YearMonthDay(2002, 6, 9);
         assertEquals("2002 \ufffd\ufffd", test.toString("yyyy HH"));
-        assertEquals("2002-06-09", test.toString(null));
+        assertEquals("2002-06-09", test.toString((String) null));
     }
 
     //-----------------------------------------------------------------------
@@ -714,6 +778,13 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals("2002-06-09", test.toString(null, Locale.ENGLISH));
         assertEquals("\ufffd 9/6", test.toString("EEE d/M", null));
         assertEquals("2002-06-09", test.toString(null, null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_DTFormatter() {
+        YearMonthDay test = new YearMonthDay(2002, 6, 9);
+        assertEquals("2002 \ufffd\ufffd", test.toString(DateTimeFormat.forPattern("yyyy HH")));
+        assertEquals("2002-06-09", test.toString((DateTimeFormatter) null));
     }
 
     //-----------------------------------------------------------------------

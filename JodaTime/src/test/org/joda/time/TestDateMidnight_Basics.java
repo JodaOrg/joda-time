@@ -34,6 +34,8 @@ import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for DateMidnight.
@@ -406,7 +408,7 @@ public class TestDateMidnight_Basics extends TestCase {
     public void testToString_String() {
         DateMidnight test = new DateMidnight(TEST_TIME_NOW_UTC);
         assertEquals("2002 00", test.toString("yyyy HH"));
-        assertEquals("2002-06-09T00:00:00.000+01:00", test.toString(null));
+        assertEquals("2002-06-09T00:00:00.000+01:00", test.toString((String) null));
     }
 
     public void testToString_String_String() {
@@ -416,6 +418,12 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals("2002-06-09T00:00:00.000+01:00", test.toString(null, Locale.ENGLISH));
         assertEquals("Sun 9/6", test.toString("EEE d/M", null));
         assertEquals("2002-06-09T00:00:00.000+01:00", test.toString(null, null));
+    }
+
+    public void testToString_DTFormatter() {
+        DateMidnight test = new DateMidnight(TEST_TIME_NOW_UTC);
+        assertEquals("2002 00", test.toString(DateTimeFormat.forPattern("yyyy HH")));
+        assertEquals("2002-06-09T00:00:00.000+01:00", test.toString((DateTimeFormatter) null));
     }
 
     //-----------------------------------------------------------------------
@@ -821,6 +829,46 @@ public class TestDateMidnight_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    public void testPlusYears_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.plusYears(1);
+        DateMidnight expected = new DateMidnight(2003, 5, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusYears(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMonths_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.plusMonths(1);
+        DateMidnight expected = new DateMidnight(2002, 6, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMonths(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusWeeks_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.plusWeeks(1);
+        DateMidnight expected = new DateMidnight(2002, 5, 10, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusWeeks(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusDays_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.plusDays(1);
+        DateMidnight expected = new DateMidnight(2002, 5, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusDays(0);
+        assertSame(test, result);
+    }
+
     //-----------------------------------------------------------------------    
     public void testMinus_long() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
@@ -846,6 +894,46 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(expected, result);
         
         result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    public void testMinusYears_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.minusYears(1);
+        DateMidnight expected = new DateMidnight(2001, 5, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusYears(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMonths_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.minusMonths(1);
+        DateMidnight expected = new DateMidnight(2002, 4, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMonths(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusWeeks_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.minusWeeks(1);
+        DateMidnight expected = new DateMidnight(2002, 4, 26, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusWeeks(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusDays_int() {
+        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight result = test.minusDays(1);
+        DateMidnight expected = new DateMidnight(2002, 5, 2, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusDays(0);
         assertSame(test, result);
     }
 

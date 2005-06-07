@@ -32,6 +32,8 @@ import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a JUnit test for MutableDateTime.
@@ -409,7 +411,7 @@ public class TestMutableDateTime_Basics extends TestCase {
     public void testToString_String() {
         MutableDateTime test = new MutableDateTime(TEST_TIME_NOW);
         assertEquals("2002 01", test.toString("yyyy HH"));
-        assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null));
+        assertEquals("2002-06-09T01:00:00.000+01:00", test.toString((String) null));
     }
 
     public void testToString_String_String() {
@@ -419,6 +421,12 @@ public class TestMutableDateTime_Basics extends TestCase {
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null, Locale.ENGLISH));
         assertEquals("Sun 9/6", test.toString("EEE d/M", null));
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null, null));
+    }
+
+    public void testToString_DTFormatter() {
+        DateMidnight test = new DateMidnight(TEST_TIME_NOW);
+        assertEquals("2002 00", test.toString(DateTimeFormat.forPattern("yyyy HH")));
+        assertEquals("2002-06-09T00:00:00.000+01:00", test.toString((DateTimeFormatter) null));
     }
 
     //-----------------------------------------------------------------------

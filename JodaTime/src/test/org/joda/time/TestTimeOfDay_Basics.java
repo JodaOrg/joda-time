@@ -28,6 +28,8 @@ import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
@@ -484,6 +486,7 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(new TimeOfDay(23, 0, 0, 0), result);
     }
 
+    //-----------------------------------------------------------------------
     public void testPlus_RP() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40, BuddhistChronology.getInstance());
         TimeOfDay result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -494,6 +497,47 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+    public void testPlusHours_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.plusHours(1);
+        TimeOfDay expected = new TimeOfDay(2, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusHours(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMinutes_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.plusMinutes(1);
+        TimeOfDay expected = new TimeOfDay(1, 3, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMinutes(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusSeconds_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.plusSeconds(1);
+        TimeOfDay expected = new TimeOfDay(1, 2, 4, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusSeconds(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMillis_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.plusMillis(1);
+        TimeOfDay expected = new TimeOfDay(1, 2, 3, 5, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMillis(0);
+        assertSame(test, result);
+    }
+
+    //-----------------------------------------------------------------------
     public void testMinus_RP() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40, BuddhistChronology.getInstance());
         TimeOfDay result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -501,6 +545,46 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(expected, result);
         
         result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    public void testMinusHours_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.minusHours(1);
+        TimeOfDay expected = new TimeOfDay(0, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusHours(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMinutes_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.minusMinutes(1);
+        TimeOfDay expected = new TimeOfDay(1, 1, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMinutes(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusSeconds_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.minusSeconds(1);
+        TimeOfDay expected = new TimeOfDay(1, 2, 2, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusSeconds(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMillis_int() {
+        TimeOfDay test = new TimeOfDay(1, 2, 3, 4, BuddhistChronology.getInstance());
+        TimeOfDay result = test.minusMillis(1);
+        TimeOfDay expected = new TimeOfDay(1, 2, 3, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMillis(0);
         assertSame(test, result);
     }
 
@@ -772,7 +856,7 @@ public class TestTimeOfDay_Basics extends TestCase {
     public void testToString_String() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString("yyyy HH"));
-        assertEquals("T10:20:30.040", test.toString(null));
+        assertEquals("T10:20:30.040", test.toString((String) null));
     }
 
     //-----------------------------------------------------------------------
@@ -782,6 +866,13 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals("T10:20:30.040", test.toString(null, Locale.ENGLISH));
         assertEquals("10 20", test.toString("H m", null));
         assertEquals("T10:20:30.040", test.toString(null, null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_DTFormatter() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        assertEquals("\ufffd\ufffd\ufffd\ufffd 10", test.toString(DateTimeFormat.forPattern("yyyy HH")));
+        assertEquals("T10:20:30.040", test.toString((DateTimeFormatter) null));
     }
 
     //-----------------------------------------------------------------------

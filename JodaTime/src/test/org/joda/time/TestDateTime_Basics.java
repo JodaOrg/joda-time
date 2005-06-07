@@ -35,6 +35,8 @@ import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for DateTime.
@@ -461,7 +463,7 @@ public class TestDateTime_Basics extends TestCase {
     public void testToString_String() {
         DateTime test = new DateTime(TEST_TIME_NOW);
         assertEquals("2002 01", test.toString("yyyy HH"));
-        assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null));
+        assertEquals("2002-06-09T01:00:00.000+01:00", test.toString((String) null));
     }
 
     public void testToString_String_Locale() {
@@ -471,6 +473,12 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null, Locale.ENGLISH));
         assertEquals("Sun 9/6", test.toString("EEE d/M", null));
         assertEquals("2002-06-09T01:00:00.000+01:00", test.toString(null, null));
+    }
+
+    public void testToString_DTFormatter() {
+        DateMidnight test = new DateMidnight(TEST_TIME_NOW);
+        assertEquals("2002 00", test.toString(DateTimeFormat.forPattern("yyyy HH")));
+        assertEquals("2002-06-09T00:00:00.000+01:00", test.toString((DateTimeFormatter) null));
     }
 
     //-----------------------------------------------------------------------
@@ -924,7 +932,87 @@ public class TestDateTime_Basics extends TestCase {
         result = test.plus((ReadablePeriod) null);
         assertSame(test, result);
     }
-    
+
+    public void testPlusYears_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusYears(1);
+        DateTime expected = new DateTime(2003, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusYears(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMonths_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusMonths(1);
+        DateTime expected = new DateTime(2002, 6, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMonths(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusWeeks_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusWeeks(1);
+        DateTime expected = new DateTime(2002, 5, 10, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusWeeks(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusDays_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusDays(1);
+        DateTime expected = new DateTime(2002, 5, 4, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusDays(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusHours_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusHours(1);
+        DateTime expected = new DateTime(2002, 5, 3, 2, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusHours(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMinutes_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusMinutes(1);
+        DateTime expected = new DateTime(2002, 5, 3, 1, 3, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMinutes(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusSeconds_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusSeconds(1);
+        DateTime expected = new DateTime(2002, 5, 3, 1, 2, 4, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusSeconds(0);
+        assertSame(test, result);
+    }
+
+    public void testPlusMillis_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.plusMillis(1);
+        DateTime expected = new DateTime(2002, 5, 3, 1, 2, 3, 5, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.plusMillis(0);
+        assertSame(test, result);
+    }
+
     //-----------------------------------------------------------------------    
     public void testMinus_long() {
         DateTime test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());
@@ -950,6 +1038,86 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(expected, result);
         
         result = test.minus((ReadablePeriod) null);
+        assertSame(test, result);
+    }
+
+    public void testMinusYears_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusYears(1);
+        DateTime expected = new DateTime(2001, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusYears(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMonths_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusMonths(1);
+        DateTime expected = new DateTime(2002, 4, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMonths(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusWeeks_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusWeeks(1);
+        DateTime expected = new DateTime(2002, 4, 26, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusWeeks(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusDays_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusDays(1);
+        DateTime expected = new DateTime(2002, 5, 2, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusDays(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusHours_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusHours(1);
+        DateTime expected = new DateTime(2002, 5, 3, 0, 2, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusHours(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMinutes_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusMinutes(1);
+        DateTime expected = new DateTime(2002, 5, 3, 1, 1, 3, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMinutes(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusSeconds_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusSeconds(1);
+        DateTime expected = new DateTime(2002, 5, 3, 1, 2, 2, 4, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusSeconds(0);
+        assertSame(test, result);
+    }
+
+    public void testMinusMillis_int() {
+        DateTime test = new DateTime(2002, 5, 3, 1, 2, 3, 4, BuddhistChronology.getInstance());
+        DateTime result = test.minusMillis(1);
+        DateTime expected = new DateTime(2002, 5, 3, 1, 2, 3, 3, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+        
+        result = test.minusMillis(0);
         assertSame(test, result);
     }
 

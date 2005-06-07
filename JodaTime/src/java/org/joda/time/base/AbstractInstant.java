@@ -27,6 +27,7 @@ import org.joda.time.Instant;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -418,6 +419,20 @@ public abstract class AbstractInstant implements ReadableInstant {
      */
     public String toString() {
         return ISODateTimeFormat.dateTime().print(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Uses the specified formatter to convert this partial to a String.
+     *
+     * @param formatter  the formatter to use, null means use <code>toString()</code>.
+     * @return the formatted string
+     */
+    public String toString(DateTimeFormatter formatter) {
+        if (formatter == null) {
+            return toString();
+        }
+        return formatter.print(this);
     }
 
 }

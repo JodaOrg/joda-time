@@ -23,6 +23,7 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationFieldType;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * AbstractPartial provides a standard base implementation of most methods
@@ -31,9 +32,10 @@ import org.joda.time.ReadablePartial;
  * Calculations on are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
- * The methods on this class uses {@link ReadablePartial#size()},
- * {@link ReadablePartial#getField(int)} and {@link ReadablePartial#getValue(int)}
- * to calculate their results. Subclasses may have a better implementation.
+ * The methods on this class use {@link ReadablePartial#size()},
+ * {@link AbstractPartial#getField(int, Chronology)} and
+ * {@link ReadablePartial#getValue(int)} to calculate their results.
+ * Subclasses may have a better implementation.
  * <p>
  * AbstractPartial allows subclasses may be mutable and not thread-safe.
  *
@@ -280,6 +282,20 @@ public abstract class AbstractPartial implements ReadablePartial {
         }
         total += getChronology().hashCode();
         return total;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Uses the specified formatter to convert this partial to a String.
+     *
+     * @param formatter  the formatter to use, null means use <code>toString()</code>.
+     * @return the formatted string
+     */
+    public String toString(DateTimeFormatter formatter) {
+        if (formatter == null) {
+            return toString();
+        }
+        return formatter.print(this);
     }
 
 }

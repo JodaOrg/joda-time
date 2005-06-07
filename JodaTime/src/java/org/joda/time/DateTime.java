@@ -519,9 +519,9 @@ public final class DateTime
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * DateTime added = dt.withField(DateTimeFieldType.dayOfMonth(), 6);
-     * DateTime added = dt.dayOfMonth().addToCopy(6);
-     * DateTime added = dt.property(DateTimeFieldType.dayOfMonth()).addToCopy(6);
+     * DateTime added = dt.withFieldAdded(DurationFieldType.years(), 6);
+     * DateTime added = dt.plusYears(6);
+     * DateTime added = dt.plus(Period.years(6));
      * </pre>
      * 
      * @param fieldType  the field type to add to, not null
@@ -582,10 +582,10 @@ public final class DateTime
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
-     * To add or subtract on a single field use the properties, for example:
-     * <pre>
-     * DateTime added = dt.hourOfDay().addToCopy(6);
-     * </pre>
+     * This method is typically used to add multiple copies of complex
+     * period instances. Adding one field is best achieved using methods
+     * like {@link #withFieldAdded(DurationFieldType, int)}
+     * or {@link #plusYears(int)}.
      * 
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
@@ -606,7 +606,7 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
-     * @param duration  the duration to add to this one
+     * @param duration  the duration, in millis, to add to this one
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -632,11 +632,9 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
-     * The following two lines are identical in effect:
-     * <pre>
-     * DateTime added = dt.hourOfDay().addToCopy(6);
-     * DateTime added = dt.plus(Period.hours(6));
-     * </pre>
+     * This method is typically used to add complex period instances.
+     * Adding one field is best achieved using methods
+     * like {@link #plusYears(int)}.
      * 
      * @param period  the duration to add to this one, null means zero
      * @return a copy of this datetime with the period added
@@ -648,11 +646,204 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Returns a new datetime plus the specified number of years.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusYears(6);
+     * DateTime added = dt.plus(Period.years(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.years(), 6);
+     * </pre>
+     *
+     * @param years  the amount of years to add, may be negative
+     * @return the new datetime plus the increased years
+     * @since 1.1
+     */
+    public DateTime plusYears(int years) {
+        if (years == 0) {
+            return this;
+        }
+        long instant = getChronology().years().add(getMillis(), years);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of months.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusMonths(6);
+     * DateTime added = dt.plus(Period.months(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.months(), 6);
+     * </pre>
+     *
+     * @param months  the amount of months to add, may be negative
+     * @return the new datetime plus the increased months
+     * @since 1.1
+     */
+    public DateTime plusMonths(int months) {
+        if (months == 0) {
+            return this;
+        }
+        long instant = getChronology().months().add(getMillis(), months);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of weeks.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusWeeks(6);
+     * DateTime added = dt.plus(Period.weeks(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.weeks(), 6);
+     * </pre>
+     *
+     * @param weeks  the amount of weeks to add, may be negative
+     * @return the new datetime plus the increased weeks
+     * @since 1.1
+     */
+    public DateTime plusWeeks(int weeks) {
+        if (weeks == 0) {
+            return this;
+        }
+        long instant = getChronology().weeks().add(getMillis(), weeks);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of days.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusDays(6);
+     * DateTime added = dt.plus(Period.days(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.days(), 6);
+     * </pre>
+     *
+     * @param days  the amount of days to add, may be negative
+     * @return the new datetime plus the increased days
+     * @since 1.1
+     */
+    public DateTime plusDays(int days) {
+        if (days == 0) {
+            return this;
+        }
+        long instant = getChronology().days().add(getMillis(), days);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of hours.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusHours(6);
+     * DateTime added = dt.plus(Period.hours(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.hours(), 6);
+     * </pre>
+     *
+     * @param hours  the amount of hours to add, may be negative
+     * @return the new datetime plus the increased hours
+     * @since 1.1
+     */
+    public DateTime plusHours(int hours) {
+        if (hours == 0) {
+            return this;
+        }
+        long instant = getChronology().hours().add(getMillis(), hours);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of minutes.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusMinutes(6);
+     * DateTime added = dt.plus(Period.minutes(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.minutes(), 6);
+     * </pre>
+     *
+     * @param minutes  the amount of minutes to add, may be negative
+     * @return the new datetime plus the increased minutes
+     * @since 1.1
+     */
+    public DateTime plusMinutes(int minutes) {
+        if (minutes == 0) {
+            return this;
+        }
+        long instant = getChronology().minutes().add(getMillis(), minutes);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of seconds.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusSeconds(6);
+     * DateTime added = dt.plus(Period.seconds(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.seconds(), 6);
+     * </pre>
+     *
+     * @param seconds  the amount of seconds to add, may be negative
+     * @return the new datetime plus the increased seconds
+     * @since 1.1
+     */
+    public DateTime plusSeconds(int seconds) {
+        if (seconds == 0) {
+            return this;
+        }
+        long instant = getChronology().seconds().add(getMillis(), seconds);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime plus the specified number of millis.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime added = dt.plusMillis(6);
+     * DateTime added = dt.plus(Period.millis(6));
+     * DateTime added = dt.withFieldAdded(DurationFieldType.millis(), 6);
+     * </pre>
+     *
+     * @param millis  the amount of millis to add, may be negative
+     * @return the new datetime plus the increased millis
+     * @since 1.1
+     */
+    public DateTime plusMillis(int millis) {
+        if (millis == 0) {
+            return this;
+        }
+        long instant = getChronology().millis().add(getMillis(), millis);
+        return withMillis(instant);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets a copy of this datetime with the specified duration take away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
-     * @param duration  the duration to reduce this instant by
+     * @param duration  the duration, in millis, to reduce this instant by
      * @return a copy of this datetime with the duration taken away
      * @throws ArithmeticException if the new datetime exceeds the capacity of a long
      */
@@ -678,11 +869,9 @@ public final class DateTime
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
-     * The following two lines are identical in effect:
-     * <pre>
-     * DateTime added = dt.hourOfDay().addToCopy(-6);
-     * DateTime added = dt.minus(Period.hours(6));
-     * </pre>
+     * This method is typically used to subtract complex period instances.
+     * Subtracting one field is best achieved using methods
+     * like {@link #minusYears(int)}.
      * 
      * @param period  the period to reduce this instant by
      * @return a copy of this datetime with the period taken away
@@ -690,6 +879,199 @@ public final class DateTime
      */
     public DateTime minus(ReadablePeriod period) {
         return withPeriodAdded(period, -1);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new datetime minus the specified number of years.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusYears(6);
+     * DateTime subtracted = dt.minus(Period.years(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.years(), -6);
+     * </pre>
+     *
+     * @param years  the amount of years to subtract, may be negative
+     * @return the new datetime minus the increased years
+     * @since 1.1
+     */
+    public DateTime minusYears(int years) {
+        if (years == 0) {
+            return this;
+        }
+        long instant = getChronology().years().subtract(getMillis(), years);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of months.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusMonths(6);
+     * DateTime subtracted = dt.minus(Period.months(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
+     * </pre>
+     *
+     * @param months  the amount of months to subtract, may be negative
+     * @return the new datetime minus the increased months
+     * @since 1.1
+     */
+    public DateTime minusMonths(int months) {
+        if (months == 0) {
+            return this;
+        }
+        long instant = getChronology().months().subtract(getMillis(), months);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of weeks.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusWeeks(6);
+     * DateTime subtracted = dt.minus(Period.weeks(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.weeks(), -6);
+     * </pre>
+     *
+     * @param weeks  the amount of weeks to subtract, may be negative
+     * @return the new datetime minus the increased weeks
+     * @since 1.1
+     */
+    public DateTime minusWeeks(int weeks) {
+        if (weeks == 0) {
+            return this;
+        }
+        long instant = getChronology().weeks().subtract(getMillis(), weeks);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of days.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusDays(6);
+     * DateTime subtracted = dt.minus(Period.days(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.days(), -6);
+     * </pre>
+     *
+     * @param days  the amount of days to subtract, may be negative
+     * @return the new datetime minus the increased days
+     * @since 1.1
+     */
+    public DateTime minusDays(int days) {
+        if (days == 0) {
+            return this;
+        }
+        long instant = getChronology().days().subtract(getMillis(), days);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of hours.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusHours(6);
+     * DateTime subtracted = dt.minus(Period.hours(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.hours(), -6);
+     * </pre>
+     *
+     * @param hours  the amount of hours to subtract, may be negative
+     * @return the new datetime minus the increased hours
+     * @since 1.1
+     */
+    public DateTime minusHours(int hours) {
+        if (hours == 0) {
+            return this;
+        }
+        long instant = getChronology().hours().subtract(getMillis(), hours);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of minutes.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusMinutes(6);
+     * DateTime subtracted = dt.minus(Period.minutes(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.minutes(), -6);
+     * </pre>
+     *
+     * @param minutes  the amount of minutes to subtract, may be negative
+     * @return the new datetime minus the increased minutes
+     * @since 1.1
+     */
+    public DateTime minusMinutes(int minutes) {
+        if (minutes == 0) {
+            return this;
+        }
+        long instant = getChronology().minutes().subtract(getMillis(), minutes);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of seconds.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusSeconds(6);
+     * DateTime subtracted = dt.minus(Period.seconds(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.seconds(), -6);
+     * </pre>
+     *
+     * @param seconds  the amount of seconds to subtract, may be negative
+     * @return the new datetime minus the increased seconds
+     * @since 1.1
+     */
+    public DateTime minusSeconds(int seconds) {
+        if (seconds == 0) {
+            return this;
+        }
+        long instant = getChronology().seconds().subtract(getMillis(), seconds);
+        return withMillis(instant);
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of millis.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * DateTime subtracted = dt.minusMillis(6);
+     * DateTime subtracted = dt.minus(Period.millis(6));
+     * DateTime subtracted = dt.withFieldAdded(DurationFieldType.millis(), -6);
+     * </pre>
+     *
+     * @param millis  the amount of millis to subtract, may be negative
+     * @return the new datetime minus the increased millis
+     * @since 1.1
+     */
+    public DateTime minusMillis(int millis) {
+        if (millis == 0) {
+            return this;
+        }
+        long instant = getChronology().millis().subtract(getMillis(), millis);
+        return withMillis(instant);
     }
 
     //-----------------------------------------------------------------------

@@ -455,9 +455,9 @@ public final class TimeOfDay
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * TimeOfDay added = tod.withFieldAdded(DateTimeFieldType.minuteOfHour(), 6);
+     * TimeOfDay added = tod.withFieldAdded(DurationFieldType.minutes(), 6);
+     * TimeOfDay added = tod.plusMinutes(6);
      * TimeOfDay added = tod.minuteOfHour().addToCopy(6);
-     * TimeOfDay added = tod.property(DateTimeFieldType.minuteOfHour()).addToCopy(6);
      * </pre>
      * 
      * @param fieldType  the field type to add to, not null
@@ -483,8 +483,10 @@ public final class TimeOfDay
      * If the addition is zero, then <code>this</code> is returned.
      * Fields in the period that aren't present in the partial are ignored.
      * <p>
-     * To add or subtract on a single field see
-     * {@link #withFieldAdded(DurationFieldType, int)}.
+     * This method is typically used to add multiple copies of complex
+     * period instances. Adding one field is best achieved using methods
+     * like {@link #withFieldAdded(DurationFieldType, int)}
+     * or {@link #plusHours(int)}.
      * 
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
@@ -507,17 +509,16 @@ public final class TimeOfDay
         return new TimeOfDay(this, newValues);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this instance with the specified period added,
      * wrapping to what would be a new day if required.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
-     * The following two lines are identical in effect:
-     * <pre>
-     * TimeOfDay added = tod.minuteOfHour().addToCopy(6);
-     * TimeOfDay added = tod.plus(Period.days(6));
-     * </pre>
+     * This method is typically used to add complex period instances.
+     * Adding one field is best achieved using methods
+     * like {@link #plusHours(int)}.
      * 
      * @param period  the duration to add to this one, null means zero
      * @return a copy of this instance with the period added
@@ -527,27 +528,188 @@ public final class TimeOfDay
         return withPeriodAdded(period, 1);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new time plus the specified number of hours.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay added = dt.plusHours(6);
+     * TimeOfDay added = dt.plus(Period.hours(6));
+     * TimeOfDay added = dt.withFieldAdded(DurationFieldType.hours(), 6);
+     * </pre>
+     *
+     * @param hours  the amount of hours to add, may be negative
+     * @return the new time plus the increased hours
+     * @since 1.1
+     */
+    public TimeOfDay plusHours(int hours) {
+        return withFieldAdded(DurationFieldType.hours(), hours);
+    }
+
+    /**
+     * Returns a new time plus the specified number of minutes.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay added = dt.plusMinutes(6);
+     * TimeOfDay added = dt.plus(Period.minutes(6));
+     * TimeOfDay added = dt.withFieldAdded(DurationFieldType.minutes(), 6);
+     * </pre>
+     *
+     * @param minutes  the amount of minutes to add, may be negative
+     * @return the new time plus the increased minutes
+     * @since 1.1
+     */
+    public TimeOfDay plusMinutes(int minutes) {
+        return withFieldAdded(DurationFieldType.minutes(), minutes);
+    }
+
+    /**
+     * Returns a new time plus the specified number of seconds.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay added = dt.plusSeconds(6);
+     * TimeOfDay added = dt.plus(Period.seconds(6));
+     * TimeOfDay added = dt.withFieldAdded(DurationFieldType.seconds(), 6);
+     * </pre>
+     *
+     * @param seconds  the amount of seconds to add, may be negative
+     * @return the new time plus the increased seconds
+     * @since 1.1
+     */
+    public TimeOfDay plusSeconds(int seconds) {
+        return withFieldAdded(DurationFieldType.seconds(), seconds);
+    }
+
+    /**
+     * Returns a new time plus the specified number of millis.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay added = dt.plusMillis(6);
+     * TimeOfDay added = dt.plus(Period.millis(6));
+     * TimeOfDay added = dt.withFieldAdded(DurationFieldType.millis(), 6);
+     * </pre>
+     *
+     * @param millis  the amount of millis to add, may be negative
+     * @return the new time plus the increased millis
+     * @since 1.1
+     */
+    public TimeOfDay plusMillis(int millis) {
+        return withFieldAdded(DurationFieldType.millis(), millis);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this instance with the specified period take away,
      * wrapping to what would be a new day if required.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
-     * The following lines are identical in effect:
-     * <pre>
-     * TimeOfDay added = tod.minuteOfHour().addToCopy(-6);
-     * TimeOfDay added = tod.minus(Period.days(6));
-     * TimeOfDay added = tod.plus(Period.days(-6));
-     * </pre>
+     * This method is typically used to subtract complex period instances.
+     * Subtracting one field is best achieved using methods
+     * like {@link #minusHours(int)}.
      * 
      * @param period  the period to reduce this instant by
      * @return a copy of this instance with the period taken away
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the new time exceeds capacity
      */
     public TimeOfDay minus(ReadablePeriod period) {
         return withPeriodAdded(period, -1);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new time minus the specified number of hours.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay subtracted = dt.minusHours(6);
+     * TimeOfDay subtracted = dt.minus(Period.hours(6));
+     * TimeOfDay subtracted = dt.withFieldAdded(DurationFieldType.hours(), -6);
+     * </pre>
+     *
+     * @param hours  the amount of hours to subtract, may be negative
+     * @return the new time minus the increased hours
+     * @since 1.1
+     */
+    public TimeOfDay minusHours(int hours) {
+        return withFieldAdded(DurationFieldType.hours(), FieldUtils.safeNegate(hours));
+    }
+
+    /**
+     * Returns a new time minus the specified number of minutes.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay subtracted = dt.minusMinutes(6);
+     * TimeOfDay subtracted = dt.minus(Period.minutes(6));
+     * TimeOfDay subtracted = dt.withFieldAdded(DurationFieldType.minutes(), -6);
+     * </pre>
+     *
+     * @param minutes  the amount of minutes to subtract, may be negative
+     * @return the new time minus the increased minutes
+     * @since 1.1
+     */
+    public TimeOfDay minusMinutes(int minutes) {
+        return withFieldAdded(DurationFieldType.minutes(), FieldUtils.safeNegate(minutes));
+    }
+
+    /**
+     * Returns a new time minus the specified number of seconds.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay subtracted = dt.minusSeconds(6);
+     * TimeOfDay subtracted = dt.minus(Period.seconds(6));
+     * TimeOfDay subtracted = dt.withFieldAdded(DurationFieldType.seconds(), -6);
+     * </pre>
+     *
+     * @param seconds  the amount of seconds to subtract, may be negative
+     * @return the new time minus the increased seconds
+     * @since 1.1
+     */
+    public TimeOfDay minusSeconds(int seconds) {
+        return withFieldAdded(DurationFieldType.seconds(), FieldUtils.safeNegate(seconds));
+    }
+
+    /**
+     * Returns a new time minus the specified number of millis.
+     * <p>
+     * This time instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * TimeOfDay subtracted = dt.minusMillis(6);
+     * TimeOfDay subtracted = dt.minus(Period.millis(6));
+     * TimeOfDay subtracted = dt.withFieldAdded(DurationFieldType.millis(), -6);
+     * </pre>
+     *
+     * @param millis  the amount of millis to subtract, may be negative
+     * @return the new time minus the increased millis
+     * @since 1.1
+     */
+    public TimeOfDay minusMillis(int millis) {
+        return withFieldAdded(DurationFieldType.millis(), FieldUtils.safeNegate(millis));
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets the property object for the specified type, which contains many useful methods.
      *

@@ -38,11 +38,26 @@ public class FieldUtils {
     
     //------------------------------------------------------------------------
     /**
+     * Negates the input throwing an exception if it can't negate it.
+     * 
+     * @param value  the value to negate
+     * @return the negated value
+     * @throws ArithmeticException if the value is Integer.MIN_VALUE
+     */
+    public static int safeNegate(int value) {
+        if (value == Integer.MIN_VALUE) {
+            throw new ArithmeticException("Integer.MIN_VALUE cannoy be negated");
+        }
+        return -value;
+    }
+    
+    /**
      * Add two values throwing an exception if overflow occurs.
      * 
      * @param val1  the first value
      * @param val2  the second value
      * @return the new total
+     * @throws ArithmeticException if the value is too big or too small
      */
     public static int safeAdd(int val1, int val2) {
         long total = ((long) val1) + ((long) val2);
@@ -58,6 +73,7 @@ public class FieldUtils {
      * @param val1  the first value
      * @param val2  the second value
      * @return the new total
+     * @throws ArithmeticException if the value is too big or too small
      */
     public static long safeAdd(long val1, long val2) {
         long total = val1 + val2;
@@ -76,6 +92,7 @@ public class FieldUtils {
      * @param val1  the first value, to be taken away from
      * @param val2  the second value, the amount to take away
      * @return the new total
+     * @throws ArithmeticException if the value is too big or too small
      */
     public static long safeSubtract(long val1, long val2) {
         if (val2 == Long.MIN_VALUE) {
@@ -93,6 +110,7 @@ public class FieldUtils {
      * @param val1  the first value
      * @param val2  the second value
      * @return the new total
+     * @throws ArithmeticException if the value is too big or too small
      */
     public static long safeMultiply(long val1, long val2) {
         if (val1 == 0  || val2 == 0) {
@@ -110,6 +128,7 @@ public class FieldUtils {
      * 
      * @param value  the value
      * @return the value as an int
+     * @throws ArithmeticException if the value is too big or too small
      */
     public static int safeToInt(long value) {
         if (Integer.MIN_VALUE <= value && value <= Integer.MAX_VALUE) {
@@ -124,12 +143,14 @@ public class FieldUtils {
      * @param val1  the first value
      * @param val2  the second value
      * @return the new total
+     * @throws ArithmeticException if the value is too big or too small
      */
     public static int safeMultiplyToInt(long val1, long val2) {
         long val = FieldUtils.safeMultiply(val1, val2);
         return FieldUtils.safeToInt(val);
     }
-    
+
+    //-----------------------------------------------------------------------
     /**
      * Verify that input values are within specified bounds.
      * 

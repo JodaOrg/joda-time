@@ -198,6 +198,34 @@ public abstract class DurationField implements Comparable {
     public abstract long add(long instant, long value);
 
     /**
+     * Subtracts a duration value (which may be negative) from the instant.
+     * 
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to subtract from
+     * @param value  the value to subtract, in the units of the field
+     * @return the updated milliseconds
+     */
+    public long subtract(long instant, int value) {
+        if (value == Integer.MIN_VALUE) {
+            return subtract(instant, (long) value);
+        }
+        return add(instant, -value);
+    }
+
+    /**
+     * Subtracts a duration value (which may be negative) from the instant.
+     * 
+     * @param instant  the milliseconds from 1970-01-01T00:00:00Z to subtract from
+     * @param value  the value to subtract, in the units of the field
+     * @return the updated milliseconds
+     */
+    public long subtract(long instant, long value) {
+        if (value == Long.MIN_VALUE) {
+            throw new ArithmeticException("Long.MIN_VALUE cannot be negated");
+        }
+        return add(instant, -value);
+    }
+
+    /**
      * Computes the difference between two instants, as measured in the units
      * of this field. Any fractional units are dropped from the result. Calling
      * getDifference reverses the effect of calling add. In the following code:

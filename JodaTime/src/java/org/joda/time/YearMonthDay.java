@@ -346,9 +346,9 @@ public final class YearMonthDay
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * YearMonthDay added = ymd.withFieldAdded(DateTimeFieldType.dayOfMonth(), 6);
+     * YearMonthDay added = ymd.withFieldAdded(DurationFieldType.days(), 6);
+     * YearMonthDay added = ymd.plusDays(6);
      * YearMonthDay added = ymd.dayOfMonth().addToCopy(6);
-     * YearMonthDay added = ymd.property(DateTimeFieldType.dayOfMonth()).addToCopy(6);
      * </pre>
      * 
      * @param fieldType  the field type to add to, not null
@@ -373,8 +373,10 @@ public final class YearMonthDay
      * If the addition is zero, then <code>this</code> is returned.
      * Fields in the period that aren't present in the partial are ignored.
      * <p>
-     * To add or subtract on a single field see
-     * {@link #withFieldAdded(DurationFieldType, int)}.
+     * This method is typically used to add multiple copies of complex
+     * period instances. Adding one field is best achieved using methods
+     * like {@link #withFieldAdded(DurationFieldType, int)}
+     * or {@link #plusYears(int)}.
      * 
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
@@ -397,16 +399,15 @@ public final class YearMonthDay
         return new YearMonthDay(this, newValues);
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this instance with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
-     * The following two lines are identical in effect:
-     * <pre>
-     * YearMonthDay added = ymd.dayOfMonth().addToCopy(6);
-     * YearMonthDay added = ymd.plus(Period.days(6));
-     * </pre>
+     * This method is typically used to add complex period instances.
+     * Adding one field is best achieved using methods
+     * like {@link #plusYears(int)}.
      * 
      * @param period  the duration to add to this one, null means zero
      * @return a copy of this instance with the period added
@@ -416,17 +417,76 @@ public final class YearMonthDay
         return withPeriodAdded(period, 1);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new date plus the specified number of years.
+     * <p>
+     * This date instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * YearMonthDay added = dt.plusYears(6);
+     * YearMonthDay added = dt.plus(Period.years(6));
+     * YearMonthDay added = dt.withFieldAdded(DurationFieldType.years(), 6);
+     * </pre>
+     *
+     * @param years  the amount of years to add, may be negative
+     * @return the new date plus the increased years
+     * @since 1.1
+     */
+    public YearMonthDay plusYears(int years) {
+        return withFieldAdded(DurationFieldType.years(), years);
+    }
+
+    /**
+     * Returns a new date plus the specified number of months.
+     * <p>
+     * This date instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * YearMonthDay added = dt.plusMonths(6);
+     * YearMonthDay added = dt.plus(Period.months(6));
+     * YearMonthDay added = dt.withFieldAdded(DurationFieldType.months(), 6);
+     * </pre>
+     *
+     * @param months  the amount of months to add, may be negative
+     * @return the new date plus the increased months
+     * @since 1.1
+     */
+    public YearMonthDay plusMonths(int months) {
+        return withFieldAdded(DurationFieldType.months(), months);
+    }
+
+    /**
+     * Returns a new date plus the specified number of days.
+     * <p>
+     * This date instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * YearMonthDay added = dt.plusDays(6);
+     * YearMonthDay added = dt.plus(Period.days(6));
+     * YearMonthDay added = dt.withFieldAdded(DurationFieldType.days(), 6);
+     * </pre>
+     *
+     * @param days  the amount of days to add, may be negative
+     * @return the new date plus the increased days
+     * @since 1.1
+     */
+    public YearMonthDay plusDays(int days) {
+        return withFieldAdded(DurationFieldType.days(), days);
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets a copy of this instance with the specified period take away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
-     * The following lines are identical in effect:
-     * <pre>
-     * YearMonthDay added = ymd.dayOfMonth().addToCopy(-6);
-     * YearMonthDay added = ymd.minus(Period.days(6));
-     * YearMonthDay added = ymd.plus(Period.days(-6));
-     * </pre>
+     * This method is typically used to subtract complex period instances.
+     * Subtracting one field is best achieved using methods
+     * like {@link #minusYears(int)}.
      * 
      * @param period  the period to reduce this instant by
      * @return a copy of this instance with the period taken away
@@ -436,6 +496,68 @@ public final class YearMonthDay
         return withPeriodAdded(period, -1);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new datetime minus the specified number of years.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * YearMonthDay subtracted = dt.minusYears(6);
+     * YearMonthDay subtracted = dt.minus(Period.years(6));
+     * YearMonthDay subtracted = dt.withFieldAdded(DurationFieldType.years(), -6);
+     * </pre>
+     *
+     * @param years  the amount of years to subtract, may be negative
+     * @return the new datetime minus the increased years
+     * @since 1.1
+     */
+    public YearMonthDay minusYears(int years) {
+        return withFieldAdded(DurationFieldType.years(), FieldUtils.safeNegate(years));
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of months.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * YearMonthDay subtracted = dt.minusMonths(6);
+     * YearMonthDay subtracted = dt.minus(Period.months(6));
+     * YearMonthDay subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
+     * </pre>
+     *
+     * @param months  the amount of months to subtract, may be negative
+     * @return the new datetime minus the increased months
+     * @since 1.1
+     */
+    public YearMonthDay minusMonths(int months) {
+        return withFieldAdded(DurationFieldType.months(), FieldUtils.safeNegate(months));
+    }
+
+    /**
+     * Returns a new datetime minus the specified number of days.
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
+     * <p>
+     * The following three lines are identical in effect:
+     * <pre>
+     * YearMonthDay subtracted = dt.minusDays(6);
+     * YearMonthDay subtracted = dt.minus(Period.days(6));
+     * YearMonthDay subtracted = dt.withFieldAdded(DurationFieldType.days(), -6);
+     * </pre>
+     *
+     * @param days  the amount of days to subtract, may be negative
+     * @return the new datetime minus the increased days
+     * @since 1.1
+     */
+    public YearMonthDay minusDays(int days) {
+        return withFieldAdded(DurationFieldType.days(), FieldUtils.safeNegate(days));
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Gets the property object for the specified type, which contains many useful methods.
      *

@@ -89,9 +89,9 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateTimeZone.suite());
         suite.addTest(TestPeriodType.suite());
 //        suite.addTest(TestParseISO.suite());
-
+        
+        suite.addTest(TestSerialization.suite());
         suite.addTest(TestIllegalFieldValueException.suite());
-
         return suite;
     }
 

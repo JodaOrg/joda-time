@@ -47,7 +47,7 @@ import org.joda.time.ReadablePartial;
  * For example, to use a patterm:
  * <pre>
  * DateTime dt = new DateTime();
- * DateTimeFormatter fmt = DateTimeFormat.getInstance().forPattern("MMMM, yyyy");
+ * DateTimeFormatter fmt = DateTimeFormat.forPattern("MMMM, yyyy");
  * String str = fmt.print(dt);
  * </pre>
  *

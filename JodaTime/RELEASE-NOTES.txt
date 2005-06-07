@@ -44,10 +44,18 @@ Bug fixes since 1.0
 
 Enhancements since 1.0
 ----------------------
+- DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay
+  Added convenience plusXxx() and minusXxx() methods to add/subtract a period
+  For example, dt.plus(Period.days(6)) can now be replaced by dt.plusDays(6)
+
+- DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay
+  Added convenience toString() method that takes a DateTimeFormatter
+  For example, dt.toString(DateTimeFormat.shortDateTime())
+
 - YearMonthDay/TimeOfDay
   Enabled comparisons using Comparable interface
   Added compareTo/isEqual/isAfter/isBefore methods
-  
+
 - YearMonthDay/TimeOfDay
   Extra time zone constructor
   Allows current date and time to be accurately obtained

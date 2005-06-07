@@ -25,7 +25,7 @@ package org.joda.time;
  * not include a time zone.
  * <p>
  * A <code>ReadablePartial</code> can be converted to a <code>ReadableInstant</code>
- * using one of the <code>resolve</code> methods. These work by providing a full base
+ * using the <code>toDateTime</code> method. This works by providing a full base
  * instant that can be used to 'fill in the gaps' and specify a time zone.
  *
  * @author Stephen Colebourne

@@ -290,6 +290,7 @@ public abstract class AbstractPartial implements ReadablePartial {
      *
      * @param formatter  the formatter to use, null means use <code>toString()</code>.
      * @return the formatted string
+     * @since 1.1
      */
     public String toString(DateTimeFormatter formatter) {
         if (formatter == null) {

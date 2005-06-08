@@ -203,6 +203,7 @@ public abstract class DurationField implements Comparable {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to subtract from
      * @param value  the value to subtract, in the units of the field
      * @return the updated milliseconds
+     * @since 1.1
      */
     public long subtract(long instant, int value) {
         if (value == Integer.MIN_VALUE) {
@@ -217,6 +218,7 @@ public abstract class DurationField implements Comparable {
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to subtract from
      * @param value  the value to subtract, in the units of the field
      * @return the updated milliseconds
+     * @since 1.1
      */
     public long subtract(long instant, long value) {
         if (value == Long.MIN_VALUE) {

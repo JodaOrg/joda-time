@@ -43,6 +43,7 @@ public class FieldUtils {
      * @param value  the value to negate
      * @return the negated value
      * @throws ArithmeticException if the value is Integer.MIN_VALUE
+     * @since 1.1
      */
     public static int safeNegate(int value) {
         if (value == Integer.MIN_VALUE) {

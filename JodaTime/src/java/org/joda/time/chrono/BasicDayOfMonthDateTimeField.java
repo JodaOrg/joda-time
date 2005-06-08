@@ -28,7 +28,7 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
+final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 
     private static final long serialVersionUID = -4677223814028011723L;
 
@@ -37,17 +37,12 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Restricted constructor.
      */
-    GJDayOfMonthDateTimeField(BaseGJChronology chronology, DurationField days) {
+    BasicDayOfMonthDateTimeField(BaseGJChronology chronology, DurationField days) {
         super(DateTimeFieldType.dayOfMonth(), days);
         iChronology = chronology;
     }
 
-    /**
-     * Get the day of the month component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
-     * @return the day of the month extracted from the input.
-     */
+    //-----------------------------------------------------------------------
     public int get(long instant) {
         return iChronology.getDayOfMonth(instant);
     }
@@ -61,13 +56,11 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
     }
 
     public int getMaximumValue() {
-        return 31;
+        return iChronology.getDaysInMonthMax();
     }
 
     public int getMaximumValue(long instant) {
-        int thisYear = iChronology.getYear(instant);
-        int thisMonth = iChronology.getMonthOfYear(instant, thisYear);
-        return iChronology.getDaysInYearMonth(thisYear, thisMonth);
+        return iChronology.getDaysInMonthMax(instant);
     }
 
     public int getMaximumValue(ReadablePartial partial) {
@@ -79,7 +72,7 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
             }
             return iChronology.getDaysInMonthMax(month);
         }
-        return 31;
+        return getMaximumValue();
     }
 
     public int getMaximumValue(ReadablePartial partial, int[] values) {
@@ -96,11 +89,11 @@ final class GJDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
                 return iChronology.getDaysInMonthMax(month);
             }
         }
-        return 31;
+        return getMaximumValue();
     }
 
     protected int getMaximumValueForSet(long instant, int value) {
-        return value > 28 ? getMaximumValue(instant) : 28;
+        return iChronology.getDaysInMonthMaxForSet(instant, value);
     }
 
     /**

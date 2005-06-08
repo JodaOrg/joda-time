@@ -53,21 +53,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
 
     static final long MILLIS_1970_TO_2000 = 946684800000L;
 
-    // These arrays are NOT public. We trust ourselves not to alter the array.
-    // They use zero-based array indexes so the that valid range of months is
-    // automatically checked.
-
-    private static final int[] MIN_DAYS_PER_MONTH_ARRAY = {
-        31,28,31,30,31,30,31,31,30,31,30,31
-    };
-
-    private static final int[] MAX_DAYS_PER_MONTH_ARRAY = {
-        31,29,31,30,31,30,31,31,30,31,30,31
-    };
-
-    private static final long[] MIN_TOTAL_MILLIS_BY_MONTH_ARRAY;
-    private static final long[] MAX_TOTAL_MILLIS_BY_MONTH_ARRAY;
-
     private static final DurationField cMillisField;
     private static final DurationField cSecondsField;
     private static final DurationField cMinutesField;
@@ -89,23 +74,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
     private static final DateTimeField cHalfdayOfDayField;
 
     static {
-        MIN_TOTAL_MILLIS_BY_MONTH_ARRAY = new long[12];
-        MAX_TOTAL_MILLIS_BY_MONTH_ARRAY = new long[12];
-
-        long minSum = 0;
-        long maxSum = 0;
-        for (int i=0; i<12; i++) {
-            long millis = MIN_DAYS_PER_MONTH_ARRAY[i]
-                * (long)DateTimeConstants.MILLIS_PER_DAY;
-            minSum += millis;
-            MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[i] = minSum;
-
-            millis = MAX_DAYS_PER_MONTH_ARRAY[i]
-                * (long)DateTimeConstants.MILLIS_PER_DAY;
-            maxSum += millis;
-            MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[i] = maxSum;
-        }
-
         cMillisField = MillisDurationField.INSTANCE;
         cSecondsField = new PreciseDurationField
             (DurationFieldType.seconds(), DateTimeConstants.MILLIS_PER_SECOND);
@@ -202,10 +170,9 @@ public abstract class BaseGJChronology extends AssembledChronology {
         return DateTimeZone.UTC;
     }
 
-    public final long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                        int millisOfDay)
-        throws IllegalArgumentException
-    {
+    public long getDateTimeMillis(
+            int year, int monthOfYear, int dayOfMonth, int millisOfDay)
+            throws IllegalArgumentException {
         Chronology base;
         if ((base = getBase()) != null) {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth, millisOfDay);
@@ -216,11 +183,10 @@ public abstract class BaseGJChronology extends AssembledChronology {
         return getDateMidnightMillis(year, monthOfYear, dayOfMonth) + millisOfDay;
     }
 
-    public final long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
-                                        int hourOfDay, int minuteOfHour,
-                                        int secondOfMinute, int millisOfSecond)
-        throws IllegalArgumentException
-    {
+    public long getDateTimeMillis(
+            int year, int monthOfYear, int dayOfMonth,
+            int hourOfDay, int minuteOfHour, int secondOfMinute, int millisOfSecond)
+            throws IllegalArgumentException {
         Chronology base;
         if ((base = getBase()) != null) {
             return base.getDateTimeMillis(year, monthOfYear, dayOfMonth,
@@ -239,7 +205,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
             + millisOfSecond;
     }
 
-    public final int getMinimumDaysInFirstWeek() {
+    public int getMinimumDaysInFirstWeek() {
         return iMinDaysInFirstWeek;
     }
 
@@ -298,7 +264,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
         // Now create fields that have unique behavior for Gregorian and Julian
         // chronologies.
 
-        fields.year = new GJYearDateTimeField(this);
+        fields.year = new BasicYearDateTimeField(this);
         fields.yearOfEra = new GJYearOfEraDateTimeField(fields.year, this);
 
         // Define one-based centuryOfEra and yearOfCentury.
@@ -314,7 +280,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
 
         fields.era = new GJEraDateTimeField(this);
         fields.dayOfWeek = new GJDayOfWeekDateTimeField(this, fields.days);
-        fields.dayOfMonth = new GJDayOfMonthDateTimeField(this, fields.days);
+        fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);
         fields.dayOfYear = new GJDayOfYearDateTimeField(this, fields.days);
         fields.monthOfYear = new GJMonthOfYearDateTimeField(this);
         fields.weekyear = new GJWeekyearDateTimeField(this);
@@ -339,38 +305,8 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param year The year to use.
      * @return 366 if a leap year, otherwise 365.
      */
-    final int getDaysInYear(int year) {
+    int getDaysInYear(int year) {
         return isLeapYear(year) ? 366 : 365;
-    }
-
-    final int getDaysInYearMonth(int year, int month) {
-        if (isLeapYear(year)) {
-            return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
-        } else {
-            return MIN_DAYS_PER_MONTH_ARRAY[month - 1];
-        }
-    }
-
-    /**
-     * Gets the maximum days in the specified month.
-     * 
-     * @param month  the month
-     * @return the max days
-     */
-    final int getDaysInMonthMax(int month) {
-        return MAX_DAYS_PER_MONTH_ARRAY[month - 1];
-    }
-
-    /**
-     * Returns the total number of milliseconds elapsed in the year, by the end
-     * of the month.
-     */
-    final long getTotalMillisByYearMonth(int year, int month) {
-        if (isLeapYear(year)) {
-            return MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];
-        } else {
-            return MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];
-        }
     }
 
     /**
@@ -378,7 +314,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param year  the year to use.
      * @return number of weeks in the year.
      */
-    final int getWeeksInYear(int year) {
+    int getWeeksInYear(int year) {
         long firstWeekMillis1 = getFirstWeekOfYearMillis(year);
         long firstWeekMillis2 = getFirstWeekOfYearMillis(year + 1);
         return (int) ((firstWeekMillis2 - firstWeekMillis1) / DateTimeConstants.MILLIS_PER_WEEK);
@@ -389,7 +325,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param year  the year to use.
      * @return millis
      */
-    final long getFirstWeekOfYearMillis(int year) {
+    long getFirstWeekOfYearMillis(int year) {
         long jan1millis = getYearMillis(year);
         int jan1dayOfWeek = getDayOfWeek(jan1millis);
         
@@ -410,9 +346,8 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param year The year to use.
      * @return millis from 1970-01-01T00:00:00Z
      */
-    final long getYearMillis(int year) {
+    long getYearMillis(int year) {
         return getYearInfo(year).iFirstDayMillis;
-        //return calculateFirstDayOfYearMillis(year);
     }
 
     /**
@@ -422,7 +357,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param month The month to use
      * @return millis from 1970-01-01T00:00:00Z
      */
-    final long getYearMonthMillis(int year, int month) {
+    long getYearMonthMillis(int year, int month) {
         long millis = getYearMillis(year);
         // month
         if (month > 1) {
@@ -439,7 +374,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param dayOfMonth The day of the month to use
      * @return millis from 1970-01-01T00:00:00Z
      */
-    final long getYearMonthDayMillis(int year, int month, int dayOfMonth) {
+    long getYearMonthDayMillis(int year, int month, int dayOfMonth) {
         long millis = getYearMillis(year);
         // month
         if (month > 1) {
@@ -452,7 +387,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    final int getYear(long instant) {
+    int getYear(long instant) {
         // Get an initial estimate of the year, and the millis value that
         // represents the start of that year. Then verify estimate and fix if
         // necessary.
@@ -506,7 +441,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
         return year;
     }
 
-    private final int getYearOverflow(long instant) {
+    private int getYearOverflow(long instant) {
         if (instant > 0) {
             int year = getMaxYear();
             long yearStartMillis = getYearMillis(year);
@@ -536,39 +471,9 @@ public abstract class BaseGJChronology extends AssembledChronology {
     }
 
     /**
-     * @param instant millis from 1970-01-01T00:00:00Z
-     */
-    final long setYear(long instant, int year) {
-        int thisYear = getYear(instant);
-        int dayOfYear = getDayOfYear(instant, thisYear);
-        int millisOfDay = getMillisOfDay(instant);
-
-        if (dayOfYear > (31 + 28)) { // after Feb 28
-            if (isLeapYear(thisYear)) {
-                // Current date is Feb 29 or later.
-                if (!isLeapYear(year)) {
-                    // Moving to a non-leap year, Feb 29 does not exist.
-                    dayOfYear--;
-                }
-            } else {
-                // Current date is Mar 01 or later.
-                if (isLeapYear(year)) {
-                    // Moving to a leap year, account for Feb 29.
-                    dayOfYear++;
-                }
-            }
-        }
-
-        instant = getYearMonthDayMillis(year, 1, dayOfYear);
-        instant += millisOfDay;
-
-        return instant;
-    }
-
-    /**
      * @param millis from 1970-01-01T00:00:00Z
      */
-    final int getMonthOfYear(long millis) {
+    int getMonthOfYear(long millis) {
         return getMonthOfYear(millis, getYear(millis));
     }
 
@@ -576,42 +481,12 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
-    final int getMonthOfYear(long millis, int year) {
-        // Perform a binary search to get the month. To make it go even faster,
-        // compare using ints instead of longs. The number of milliseconds per
-        // year exceeds the limit of a 32-bit int's capacity, so divide by
-        // 1024. No precision is lost (except time of day) since the number of
-        // milliseconds per day contains 1024 as a factor. After the division,
-        // the instant isn't measured in milliseconds, but in units of
-        // (128/125)seconds.
-
-        int i = (int)((millis - getYearMillis(year)) >> 10);
-
-        // There are 86400000 milliseconds per day, but divided by 1024 is
-        // 84375. There are 84375 (128/125)seconds per day.
-
-        return
-            (isLeapYear(year))
-            ? ((i < 182 * 84375)
-               ? ((i < 91 * 84375)
-                  ? ((i < 31 * 84375) ? 1 : (i < 60 * 84375) ? 2 : 3)
-                  : ((i < 121 * 84375) ? 4 : (i < 152 * 84375) ? 5 : 6))
-               : ((i < 274 * 84375)
-                  ? ((i < 213 * 84375) ? 7 : (i < 244 * 84375) ? 8 : 9)
-                  : ((i < 305 * 84375) ? 10 : (i < 335 * 84375) ? 11 : 12)))
-            : ((i < 181 * 84375)
-               ? ((i < 90 * 84375)
-                  ? ((i < 31 * 84375) ? 1 : (i < 59 * 84375) ? 2 : 3)
-                  : ((i < 120 * 84375) ? 4 : (i < 151 * 84375) ? 5 : 6))
-               : ((i < 273 * 84375)
-                  ? ((i < 212 * 84375) ? 7 : (i < 243 * 84375) ? 8 : 9)
-                  : ((i < 304 * 84375) ? 10 : (i < 334 * 84375) ? 11 : 12)));
-    }
+    abstract int getMonthOfYear(long millis, int year);
 
     /**
      * @param millis from 1970-01-01T00:00:00Z
      */
-    final int getDayOfMonth(long millis) {
+    int getDayOfMonth(long millis) {
         int year = getYear(millis);
         int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
@@ -621,7 +496,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
-    final int getDayOfMonth(long millis, int year) {
+    int getDayOfMonth(long millis, int year) {
         int month = getMonthOfYear(millis, year);
         return getDayOfMonth(millis, year, month);
     }
@@ -631,7 +506,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param year precalculated year of millis
      * @param month precalculated month of millis
      */
-    final int getDayOfMonth(long millis, int year, int month) {
+    int getDayOfMonth(long millis, int year, int month) {
         long dateMillis = getYearMillis(year);
         if (month > 1) {
             dateMillis += getTotalMillisByYearMonth(year, month - 1);
@@ -642,7 +517,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    final int getDayOfYear(long instant) {
+    int getDayOfYear(long instant) {
         return getDayOfYear(instant, getYear(instant));
     }
 
@@ -650,7 +525,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param instant millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
-    final int getDayOfYear(long instant, int year) {
+    int getDayOfYear(long instant, int year) {
         long yearStart = getYearMillis(year);
         return (int) ((instant - yearStart) / DateTimeConstants.MILLIS_PER_DAY) + 1;
     }
@@ -658,7 +533,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    final int getWeekyear(long instant) {
+    int getWeekyear(long instant) {
         int year = getYear(instant);
         int week = getWeekOfWeekyear(instant, year);
         if (week == 1) {
@@ -673,7 +548,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    final int getWeekOfWeekyear(long instant) {
+    int getWeekOfWeekyear(long instant) {
         return getWeekOfWeekyear(instant, getYear(instant));
     }
 
@@ -681,7 +556,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
      * @param instant millis from 1970-01-01T00:00:00Z
      * @param year precalculated year of millis
      */
-    final int getWeekOfWeekyear(long instant, int year) {
+    int getWeekOfWeekyear(long instant, int year) {
         long firstWeekMillis1 = getFirstWeekOfYearMillis(year);
         if (instant < firstWeekMillis1) {
             return getWeeksInYear(year - 1);
@@ -696,7 +571,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    final int getDayOfWeek(long instant) {
+    int getDayOfWeek(long instant) {
         // 1970-01-01 is day of week 4, Thursday.
 
         long daysSince19700101;
@@ -716,7 +591,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /**
      * @param instant millis from 1970-01-01T00:00:00Z
      */
-    final int getMillisOfDay(long instant) {
+    int getMillisOfDay(long instant) {
         if (instant >= 0) {
             return (int) (instant % DateTimeConstants.MILLIS_PER_DAY);
         } else {
@@ -725,34 +600,94 @@ public abstract class BaseGJChronology extends AssembledChronology {
         }
     }
 
-    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 12);
-
-        boolean isLeap = isLeapYear(year);
-
-        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1,
-                                     (isLeap ? MAX_DAYS_PER_MONTH_ARRAY : MIN_DAYS_PER_MONTH_ARRAY)
-                                     [monthOfYear - 1]);
-
-        long instant = getYearMillis(year);
-
-        if (monthOfYear > 1) {
-            instant += 
-                (isLeap ? MAX_TOTAL_MILLIS_BY_MONTH_ARRAY : MIN_TOTAL_MILLIS_BY_MONTH_ARRAY)
-                [monthOfYear - 2];
-        }
-
-        if (dayOfMonth != 1) {
-            instant += (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
-        }
-
-        return instant;
+    /**
+     * Gets the maximum number of days in any month.
+     * 
+     * @return 31
+     */
+    int getDaysInMonthMax() {
+        return 31;
     }
 
+    /**
+     * Gets the maximum number of days in the month specified by the instant.
+     * 
+     * @param instant  millis from 1970-01-01T00:00:00Z
+     * @return the maximum number of days in the month
+     */
+    int getDaysInMonthMax(long instant) {
+        int thisYear = getYear(instant);
+        int thisMonth = getMonthOfYear(instant, thisYear);
+        return getDaysInYearMonth(thisYear, thisMonth);
+    }
+
+    /**
+     * Gets the maximum number of days in the month specified by the instant.
+     * The value represents what the user is trying to set, and can be
+     * used to optimise this method.
+     * 
+     * @param instant  millis from 1970-01-01T00:00:00Z
+     * @param value  the value being set
+     * @return the maximum number of days in the month
+     */
+    int getDaysInMonthMaxForSet(long instant, int value) {
+        return getDaysInMonthMax(instant);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the milliseconds for a date at midnight.
+     * 
+     * @param year  the year
+     * @param monthOfYear  the month
+     * @param dayOfMonth  the day
+     * @return the milliseconds
+     */
+    abstract long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth);
+
+    /**
+     * Gets the difference between the two instants in years.
+     * 
+     * @param minuendInstant  the first instant
+     * @param subtrahendInstant  the second instant
+     * @return the difference
+     */
+    abstract long getYearDifference(long minuendInstant, long subtrahendInstant);
+
+    /**
+     * Is the specified year a leap year?
+     * 
+     * @param year  the year to test
+     * @return true if leap
+     */
     abstract boolean isLeapYear(int year);
+
+    /**
+     * Gets the number of days in the specified month and year.
+     * 
+     * @param year  the year
+     * @param month  the month
+     * @return the number of days
+     */
+    abstract int getDaysInYearMonth(int year, int month);
+
+    /**
+     * Gets the maximum days in the specified month.
+     * 
+     * @param month  the month
+     * @return the max days
+     */
+    abstract int getDaysInMonthMax(int month);
+
+    /**
+     * Gets the total number of millis elapsed in this year at the end
+     * of the specified month.
+     * 
+     * @param year  the year
+     * @param month  the month
+     * @return the elapsed millis
+     */
+    abstract long getTotalMillisByYearMonth(int year, int month);
 
     abstract long calculateFirstDayOfYearMillis(int year);
 
@@ -775,6 +710,16 @@ public abstract class BaseGJChronology extends AssembledChronology {
      */
     abstract long getApproxMillisAtEpoch();
 
+    /**
+     * Sets the year from an instant and year.
+     * 
+     * @param instant  millis from 1970-01-01T00:00:00Z
+     * @param year  the year to set
+     * @return the updated millis
+     */
+    abstract long setYear(long instant, int year);
+
+    //-----------------------------------------------------------------------
     // Although accessed by multiple threads, this method doesn't need to be synchronized.
     private YearInfo getYearInfo(int year) {
         YearInfo[] cache = iYearInfoCache;

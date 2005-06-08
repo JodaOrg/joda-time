@@ -201,32 +201,88 @@ public final class CopticChronology extends BaseGJChronology {
         return getInstance(zone);
     }
 
-    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth)
-        throws IllegalArgumentException
-    {
-        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 13);
+    //-----------------------------------------------------------------------
+    long setYear(long instant, int year) {
+        // optimsed implementation of set, due to 30 day months
+        int thisYear = getYear(instant);
+        int dayOfYear = getDayOfYear(instant, thisYear);
+        int millisOfDay = getMillisOfDay(instant);
 
-        int dayLimit = (monthOfYear != 13) ? 30 : (isLeapYear(year) ? 6 : 5);
-        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, dayLimit);
-
-        long instant = getYearMillis(year);
-
-        if (monthOfYear > 1) {
-            instant += (monthOfYear - 1) * 30L * DateTimeConstants.MILLIS_PER_DAY;
+        if (dayOfYear > 365) {
+            // Current year is leap, and day is leap.
+            if (!isLeapYear(year)) {
+                // Moving to a non-leap year, leap day doesn't exist.
+                dayOfYear--;
+            }
         }
 
-        if (dayOfMonth != 1) {
-            instant += (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
-        }
-
+        instant = getYearMonthDayMillis(year, 1, dayOfYear);
+        instant += millisOfDay;
         return instant;
     }
 
+    //-----------------------------------------------------------------------
+    long getYearDifference(long minuendInstant, long subtrahendInstant) {
+        // optimsed implementation of getDifference, due to 30 day months
+        int minuendYear = getYear(minuendInstant);
+        int subtrahendYear = getYear(subtrahendInstant);
+
+        // Inlined remainder method to avoid duplicate calls to get.
+        long minuendRem = minuendInstant - getYearMillis(minuendYear);
+        long subtrahendRem = subtrahendInstant - getYearMillis(subtrahendYear);
+
+        int difference = minuendYear - subtrahendYear;
+        if (minuendRem < subtrahendRem) {
+            difference--;
+        }
+        return difference;
+    }
+
+    //-----------------------------------------------------------------------
+    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
+        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 13);
+        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
+        return getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
+    }
+
+    //-----------------------------------------------------------------------
+    long getTotalMillisByYearMonth(int year, int month) {
+        return (month * 30L * DateTimeConstants.MILLIS_PER_DAY);
+    }
+
+    //-----------------------------------------------------------------------
+    int getDayOfMonth(long millis) {
+        // optimised for 30 day months
+        return (getDayOfYear(millis) - 1) % 30 + 1;
+    }
+
+    //-----------------------------------------------------------------------
     boolean isLeapYear(int year) {
         return (year & 3) == 3;
     }
 
+    //-----------------------------------------------------------------------
+    int getDaysInYearMonth(int year, int month) {
+        return (month != 13) ? 30 : (isLeapYear(year) ? 6 : 5);
+    }
+
+    //-----------------------------------------------------------------------
+    int getDaysInMonthMax() {
+        return 30;
+    }
+
+    //-----------------------------------------------------------------------
+    int getDaysInMonthMax(int month) {
+        return (month != 13 ? 30 : 6);
+    }
+
+    //-----------------------------------------------------------------------
+    int getMonthOfYear(long millis, int year) {
+        return ((int) ((millis - getYearMillis(year)) / 30)) + 1;
+    }
+    
+    //-----------------------------------------------------------------------
     long calculateFirstDayOfYearMillis(int year) {
         // Java epoch is 1970-01-01 Gregorian which is 1686-04-23 Coptic.
         // Calculate relative to the nearest leap year and account for the
@@ -254,33 +310,39 @@ public final class CopticChronology extends BaseGJChronology {
         return millis + (365L - 112) * DateTimeConstants.MILLIS_PER_DAY;
     }
 
+    //-----------------------------------------------------------------------
     int getMinYear() {
         // The lowest year that can be fully supported.
         return -292269337;
     }
 
+    //-----------------------------------------------------------------------
     int getMaxYear() {
         // The highest year that can be fully supported.
         return 292271022;
     }
 
+    //-----------------------------------------------------------------------
     long getAverageMillisPerYear() {
         return MILLIS_PER_YEAR;
     }
 
+    //-----------------------------------------------------------------------
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }
 
+    //-----------------------------------------------------------------------
     long getApproxMillisAtEpoch() {
         return 1686L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY;
     }
 
+    //-----------------------------------------------------------------------
     protected void assemble(Fields fields) {
         if (getBase() == null) {
             super.assemble(fields);
 
-            fields.year = new CopticYearDateTimeField(this);
+            fields.year = new BasicYearDateTimeField(this);
             fields.years = fields.year.getDurationField();
 
             // Coptic, like Julian, has no year zero.
@@ -290,7 +352,7 @@ public final class CopticChronology extends BaseGJChronology {
             fields.era = CopticEraDateTimeField.INSTANCE;
             fields.months = cMonthsField;
             fields.monthOfYear = new CopticMonthOfYearDateTimeField(this, cMonthsField);
-            fields.dayOfMonth = new CopticDayOfMonthDateTimeField(this, fields.days);
+            fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);
         }
     }
 

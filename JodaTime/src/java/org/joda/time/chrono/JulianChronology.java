@@ -47,7 +47,7 @@ import org.joda.time.field.SkipDateTimeField;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public final class JulianChronology extends BaseGJChronology {
+public final class JulianChronology extends CommonGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -8731039522547897247L;

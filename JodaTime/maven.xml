@@ -25,9 +25,6 @@
       <arg value="etcetera" />
       <arg value="backward" />
       <arg value="systemv" />
-      <arg value="solar87" />
-      <arg value="solar88" />
-      <arg value="solar89" />
     </ant:java>
   </postGoal>
   

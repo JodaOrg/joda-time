@@ -42,6 +42,10 @@ Bug fixes since 1.0
   Fixed parsing date where format includes era. Era must be set and rounded
   before any other fields.
 
+- PeriodFormatterBuilder
+  Formatters that had fields which required a zero to be printed were not being
+  parsed.
+
 Enhancements since 1.0
 ----------------------
 - DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay

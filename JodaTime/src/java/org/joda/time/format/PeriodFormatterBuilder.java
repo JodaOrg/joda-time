@@ -532,7 +532,7 @@ public class PeriodFormatterBuilder {
      * @see #appendPrefix
      */
     public PeriodFormatterBuilder appendSuffix(String singularText,
-                                                 String pluralText) {
+                                               String pluralText) {
         if (singularText == null || pluralText == null) {
             throw new IllegalArgumentException();
         }
@@ -1169,7 +1169,7 @@ public class PeriodFormatterBuilder {
             } else {
                 limit = Math.min(iMaxParsedDigits, text.length() - position);
             }
-            
+
             // validate input number
             int length = 0;
             int fractPos = -1;
@@ -1212,7 +1212,7 @@ public class PeriodFormatterBuilder {
                 return ~position;
             }
 
-            if (position + length != suffixPos) {
+            if (suffixPos >= 0 && position + length != suffixPos) {
                 // If there are additional non-digit characters before the
                 // suffix is reached, then assume that the suffix found belongs
                 // to a field not yet reached. Return original position so that

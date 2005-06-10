@@ -16,7 +16,13 @@ of restrictions. If the license cause you problems please contact the mailing li
 
 Incompatible changes since 1.0
 ------------------------------
-None - source and binary compatible.
+Binary compatible - Yes
+Source compatible - Yes
+Serialization compatible - 95%
+  - DateTime.Property, DateMidnight.Property and MutableDateTime.Property
+   serialization formats have changed to fix a bug.
+   Please note that this only affects the property classes, and not DateTime etc.
+   It is unlikely that you serialized one of these classes
 
 
 Deprecations since 1.0
@@ -45,6 +51,12 @@ Bug fixes since 1.0
 - PeriodFormatterBuilder
   Formatters that had fields which required a zero to be printed were not being
   parsed.
+
+- DateTime.Property, DateMidnight.Property and MutableDateTime.Property
+  Could previously only be serialized in UTC.
+  The serialization format has been changed to be simpler and more reliable.
+  Unfortunately, this was an incompatible change to the serialization format.
+
 
 Enhancements since 1.0
 ----------------------

@@ -15,6 +15,9 @@
  */
 package org.joda.time;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -1323,9 +1326,9 @@ public final class DateTime
         private static final long serialVersionUID = -6983323811635733510L;
         
         /** The instant this property is working against */
-        private final DateTime iInstant;
+        private DateTime iInstant;
         /** The field this property is working against */
-        private final DateTimeField iField;
+        private DateTimeField iField;
         
         /**
          * Constructor.
@@ -1339,6 +1342,23 @@ public final class DateTime
             iField = field;
         }
         
+        /**
+         * Writes the property in a safe serialization format.
+         */
+        private void writeObject(ObjectOutputStream oos) throws IOException {
+            oos.writeObject(iInstant);
+            oos.writeObject(iField.getType());
+        }
+
+        /**
+         * Reads the property from a safe serialization format.
+         */
+        private void readObject(ObjectInputStream oos) throws IOException, ClassNotFoundException {
+            iInstant = (DateTime) oos.readObject();
+            DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
+            iField = type.getField(iInstant.getChronology());
+        }
+
         //-----------------------------------------------------------------------
         /**
          * Gets the field being used.

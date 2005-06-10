@@ -15,6 +15,9 @@
  */
 package org.joda.time;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -933,10 +936,10 @@ public final class DateMidnight
         private static final long serialVersionUID = 257629620L;
         
         /** The instant this property is working against */
-        private final DateMidnight iInstant;
+        private DateMidnight iInstant;
         /** The field this property is working against */
-        private final DateTimeField iField;
-
+        private DateTimeField iField;
+        
         /**
          * Constructor.
          * 
@@ -947,6 +950,23 @@ public final class DateMidnight
             super();
             iInstant = instant;
             iField = field;
+        }
+
+        /**
+         * Writes the property in a safe serialization format.
+         */
+        private void writeObject(ObjectOutputStream oos) throws IOException {
+            oos.writeObject(iInstant);
+            oos.writeObject(iField.getType());
+        }
+
+        /**
+         * Reads the property from a safe serialization format.
+         */
+        private void readObject(ObjectInputStream oos) throws IOException, ClassNotFoundException {
+            iInstant = (DateMidnight) oos.readObject();
+            DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
+            iField = type.getField(iInstant.getChronology());
         }
 
         //-----------------------------------------------------------------------

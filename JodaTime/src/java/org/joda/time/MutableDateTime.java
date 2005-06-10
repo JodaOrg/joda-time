@@ -15,6 +15,9 @@
  */
 package org.joda.time;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
 
@@ -1152,9 +1155,9 @@ public class MutableDateTime
         private static final long serialVersionUID = -4481126543819298617L;
         
         /** The instant this property is working against */
-        private final MutableDateTime iInstant;
+        private MutableDateTime iInstant;
         /** The field this property is working against */
-        private final DateTimeField iField;
+        private DateTimeField iField;
         
         /**
          * Constructor.
@@ -1168,6 +1171,23 @@ public class MutableDateTime
             iField = field;
         }
         
+        /**
+         * Writes the property in a safe serialization format.
+         */
+        private void writeObject(ObjectOutputStream oos) throws IOException {
+            oos.writeObject(iInstant);
+            oos.writeObject(iField.getType());
+        }
+
+        /**
+         * Reads the property from a safe serialization format.
+         */
+        private void readObject(ObjectInputStream oos) throws IOException, ClassNotFoundException {
+            iInstant = (MutableDateTime) oos.readObject();
+            DateTimeFieldType type = (DateTimeFieldType) oos.readObject();
+            iField = type.getField(iInstant.getChronology());
+        }
+
         //-----------------------------------------------------------------------
         /**
          * Gets the field being used.

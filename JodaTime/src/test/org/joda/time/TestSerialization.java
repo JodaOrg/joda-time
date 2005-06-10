@@ -27,9 +27,16 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.joda.time.field.DelegatedDurationField;
+import org.joda.time.field.MillisDurationField;
+import org.joda.time.field.UnsupportedDateTimeField;
+import org.joda.time.field.UnsupportedDurationField;
 
 /**
  * This class is a Junit unit test for serialization.
@@ -68,7 +75,14 @@ public class TestSerialization extends TestCase {
             (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
             + 14L * DateTimeConstants.MILLIS_PER_HOUR
             + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
+
+    private static class MockDelegatedDurationField extends DelegatedDurationField implements Serializable {
+        private static final long serialVersionUID = 1878496002811998493L;        
+        public MockDelegatedDurationField() {
+            super(MillisDurationField.INSTANCE);
+        }
+    }
+
     private DateTimeZone originalDateTimeZone = null;
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
@@ -115,79 +129,127 @@ public class TestSerialization extends TestCase {
     //-----------------------------------------------------------------------
     public void testSerializedInstant() throws Exception {
         Instant test = new Instant();
-        loadAndCompare(test, "Instant.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "Instant.dat", false);
+        inlineCompare(test, false);
     }
 
     public void testSerializedDateTime() throws Exception {
         DateTime test = new DateTime();
-        loadAndCompare(test, "DateTime.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "DateTime.dat", false);
+        inlineCompare(test, false);
+    }
+
+    public void testSerializedDateTimeProperty() throws Exception {
+        DateTime.Property test = new DateTime().hourOfDay();
+        loadAndCompare(test, "DateTimeProperty.dat", false);
+        inlineCompare(test, false);
     }
 
     public void testSerializedMutableDateTime() throws Exception {
         MutableDateTime test = new MutableDateTime();
-        loadAndCompare(test, "MutableDateTime.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "MutableDateTime.dat", false);
+        inlineCompare(test, false);
     }
 
     public void testSerializedDateMidnight() throws Exception {
         DateMidnight test = new DateMidnight();
-        loadAndCompare(test, "DateMidnight.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "DateMidnight.dat", false);
+        inlineCompare(test, false);
     }
 
     public void testSerializedYearMonthDay() throws Exception {
         YearMonthDay test = new YearMonthDay();
-        loadAndCompare(test, "YearMonthDay.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "YearMonthDay.dat", false);
+        inlineCompare(test, false);
     }
 
     public void testSerializedTimeOfDay() throws Exception {
         TimeOfDay test = new TimeOfDay();
-        loadAndCompare(test, "TimeOfDay.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "TimeOfDay.dat", false);
+        inlineCompare(test, false);
     }
 
     public void testSerializedDateTimeZoneUTC() throws Exception {
         DateTimeZone test = DateTimeZone.UTC;
-        loadAndCompare(test, "DateTimeZoneUTC.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "DateTimeZoneUTC.dat", true);
+        inlineCompare(test, true);
     }
 
     public void testSerializedDateTimeZone() throws Exception {
         DateTimeZone test = PARIS;
-        loadAndCompare(test, "DateTimeZone.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "DateTimeZone.dat", true);
+        inlineCompare(test, true);
     }
 
     public void testSerializedCopticChronology() throws Exception {
         CopticChronology test = CopticChronology.getInstance(LONDON);
-        loadAndCompare(test, "CopticChronology.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "CopticChronology.dat", true);
+        inlineCompare(test, true);
     }
 
     public void testSerializedISOChronology() throws Exception {
         ISOChronology test = ISOChronology.getInstance(PARIS);
-        loadAndCompare(test, "ISOChronology.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "ISOChronology.dat", true);
+        inlineCompare(test, true);
     }
 
     public void testSerializedGJChronology() throws Exception {
         GJChronology test = GJChronology.getInstance(TOKYO);
-        loadAndCompare(test, "GJChronology.dat");
-        inlineCompare(test);
+        loadAndCompare(test, "GJChronology.dat", true);
+        inlineCompare(test, true);
     }
 
-    private void loadAndCompare(Serializable test, String filename) throws Exception {
+    public void testSerializedGregorianChronology() throws Exception {
+        GregorianChronology test = GregorianChronology.getInstance(PARIS);
+        loadAndCompare(test, "GregorianChronology.dat", true);
+        inlineCompare(test, true);
+    }
+
+    public void testSerializedJulianChronology() throws Exception {
+        JulianChronology test = JulianChronology.getInstance(PARIS);
+        loadAndCompare(test, "JulianChronology.dat", true);
+        inlineCompare(test, true);
+    }
+
+    public void testSerializedBuddhistChronology() throws Exception {
+        BuddhistChronology test = BuddhistChronology.getInstance(PARIS);
+        loadAndCompare(test, "BuddhistChronology.dat", true);
+        inlineCompare(test, true);
+    }
+
+    public void testSerializedPeriodType() throws Exception {
+        PeriodType test = PeriodType.dayTime();
+        loadAndCompare(test, "PeriodType.dat", false);
+        inlineCompare(test, false);
+    }
+
+    public void testSerializedDateTimeFieldType() throws Exception {
+        DateTimeFieldType test = DateTimeFieldType.clockhourOfDay();
+        loadAndCompare(test, "DateTimeFieldType.dat", true);
+        inlineCompare(test, true);
+    }
+
+    public void testSerializedUnsupportedDateTimeField() throws Exception {
+        UnsupportedDateTimeField test = UnsupportedDateTimeField.getInstance(
+                DateTimeFieldType.year(),
+                UnsupportedDurationField.getInstance(DurationFieldType.years()));
+        loadAndCompare(test, "UnsupportedDateTimeField.dat", true);
+        inlineCompare(test, true);
+    }
+
+    private void loadAndCompare(Serializable test, String filename, boolean same) throws Exception {
         FileInputStream fis = new FileInputStream("src/testdata/" + filename);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object obj = ois.readObject();
         ois.close();
-        assertEquals(test, obj);
+        if (same) {
+            assertSame(test, obj);
+        } else {
+            assertEquals(test, obj);
+        }
     }
 
-    public void inlineCompare(Serializable test) throws Exception {
+    public void inlineCompare(Serializable test, boolean same) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(test);
@@ -198,7 +260,11 @@ public class TestSerialization extends TestCase {
         Object obj = ois.readObject();
         ois.close();
         
-        assertEquals(test, obj);
+        if (same) {
+            assertSame(test, obj);
+        } else {
+            assertEquals(test, obj);
+        }
     }
 
 //    //-----------------------------------------------------------------------
@@ -227,9 +293,19 @@ public class TestSerialization extends TestCase {
 //        store(test, "YearMonthDay.dat");
 //    }
 //
+//    public void testStoreSerializedYearMonthDayProperty() throws Exception {
+//        YearMonthDay.Property test = new YearMonthDay().monthOfYear();
+//        store(test, "YearMonthDayProperty.dat");
+//    }
+//
 //    public void testStoreSerializedTimeOfDay() throws Exception {
 //        TimeOfDay test = new TimeOfDay();
 //        store(test, "TimeOfDay.dat");
+//    }
+//
+//    public void testStoreSerializedTimeOfDayProperty() throws Exception {
+//        TimeOfDay.Property test = new TimeOfDay().hourOfDay();
+//        store(test, "TimeOfDayProperty.dat");
 //    }
 //
 //    public void testStoreSerializedDateTimeZoneUTC() throws Exception {
@@ -257,10 +333,72 @@ public class TestSerialization extends TestCase {
 //        store(test, "GJChronology.dat");
 //    }
 //
+//    public void testStoreSerializedGregorianChronology() throws Exception {
+//        GregorianChronology test = GregorianChronology.getInstance(PARIS);
+//        store(test, "GregorianChronology.dat");
+//    }
+//
+//    public void testStoreSerializedJulianChronology() throws Exception {
+//        JulianChronology test = JulianChronology.getInstance(PARIS);
+//        store(test, "JulianChronology.dat");
+//    }
+//
+//    public void testStoreSerializedBuddhistChronology() throws Exception {
+//        BuddhistChronology test = BuddhistChronology.getInstance(PARIS);
+//        store(test, "BuddhistChronology.dat");
+//    }
+//
+//    public void testStoreSerializedPeriodType() throws Exception {
+//        PeriodType test = PeriodType.dayTime();
+//        store(test, "PeriodType.dat");
+//    }
+//
+//    public void testStoreSerializedDateTimeFieldType() throws Exception {
+//        DateTimeFieldType test = DateTimeFieldType.clockhourOfDay();
+//        store(test, "DateTimeFieldType.dat");
+//    }
+//
+//    public void testStoreSerializedUnsupportedDateTimeField() throws Exception {
+//        UnsupportedDateTimeField test = UnsupportedDateTimeField.getInstance(
+//                DateTimeFieldType.year(),
+//                UnsupportedDurationField.getInstance(DurationFieldType.years()));
+//        store(test, "UnsupportedDateTimeField.dat");
+//    }
+//
+//    public void testStoreSerializedDurationFieldType() throws Exception {
+//        DurationFieldType test = DurationFieldType.MINUTES_TYPE;
+//        store(test, "DurationFieldType.dat");
+//    }
+//
+//    public void testStoreSerializedMillisDurationField() throws Exception {
+//        MillisDurationField test = (MillisDurationField) MillisDurationField.INSTANCE;
+//        store(test, "MillisDurationField.dat");
+//    }
+//
+//    public void testStoreSerializedDelegatedDurationField() throws Exception {
+//        DelegatedDurationField test = new MockDelegatedDurationField();
+//        store(test, "DelegatedDurationField.dat");
+//    }
+//
+//    public void testStoreSerializedUnsupportedDurationField() throws Exception {
+//        UnsupportedDurationField test = UnsupportedDurationField.getInstance(DurationFieldType.eras());
+//        store(test, "UnsupportedDurationField.dat");
+//    }
+//
+    // format changed (properly defined) in v1.1
+//    public void testStoreSerializedDateTimeProperty() throws Exception {
+//        DateTime.Property test = new DateTime().hourOfDay();
+//        store(test, "DateTimeProperty.dat");
+//    }
+//
 //    private void store(Serializable test, String filename) throws Exception {
 //        FileOutputStream fos = new FileOutputStream("src/testdata/" + filename);
 //        ObjectOutputStream oos = new ObjectOutputStream(fos);
-//        oos.writeObject(test);
+//        try {
+//            oos.writeObject(test);
+//        } finally {
+//            oos.close();
+//        }
 //        oos.close();
 //    }
 //

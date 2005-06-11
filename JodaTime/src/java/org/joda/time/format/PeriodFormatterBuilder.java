@@ -1178,7 +1178,16 @@ public class PeriodFormatterBuilder {
                 char c = text.charAt(position + length);
                 // leading sign
                 if (length == 0 && (c == '-' || c == '+') && !iRejectSignedValues) {
-                    if (c == '-') {
+                    boolean negative = c == '-';
+
+                    // Next character must be a digit.
+                    if (length + 1 >= limit || 
+                        (c = text.charAt(position + length + 1)) < '0' || c > '9')
+                    {
+                        break;
+                    }
+
+                    if (negative) {
                         length++;
                     } else {
                         // Skip the '+' for parseInt to succeed.

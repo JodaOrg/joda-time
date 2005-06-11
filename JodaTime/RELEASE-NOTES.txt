@@ -57,6 +57,8 @@ Bug fixes since 1.0
   The serialization format has been changed to be simpler and more reliable.
   Unfortunately, this was an incompatible change to the serialization format.
 
+- DateTimeFormatterBuilder/PeriodFormatterBuilder
+  Number parser would accept multiple sign characters as valid.
 
 Enhancements since 1.0
 ----------------------

@@ -1153,6 +1153,14 @@ public class DateTimeFormatterBuilder {
                 char c = text.charAt(position + length);
                 if (length == 0 && (c == '-' || c == '+') && iSigned) {
                     negative = c == '-';
+
+                    // Next character must be a digit.
+                    if (length + 1 >= limit || 
+                        (c = text.charAt(position + length + 1)) < '0' || c > '9')
+                    {
+                        break;
+                    }
+
                     if (negative) {
                         length++;
                     } else {

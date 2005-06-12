@@ -357,6 +357,16 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(ISO_UTC, test.getChronology());
     }
 
+    public void testWithChronologyRetainFields_invalidInNewChrono() {
+        YearMonthDay base = new YearMonthDay(2005, 1, 31, ISO_UTC);
+        try {
+            base.withChronologyRetainFields(COPTIC_UTC);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
     //-----------------------------------------------------------------------
     public void testWithField1() {
         YearMonthDay test = new YearMonthDay(2004, 6, 9);

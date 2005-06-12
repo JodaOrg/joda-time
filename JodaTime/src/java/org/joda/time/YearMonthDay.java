@@ -295,11 +295,12 @@ public final class YearMonthDay
      * This method retains the values of the fields, thus the result will
      * typically refer to a different instant.
      * <p>
-     * The time zone of the specified chronology is ignored, as TimeOfDay
+     * The time zone of the specified chronology is ignored, as YearMonthDay
      * operates without a time zone.
      *
      * @param newChronology  the new chronology, null means ISO
      * @return a copy of this datetime with a different chronology
+     * @throws IllegalArgumentException if the values are invalid for the new chronology
      */
     public YearMonthDay withChronologyRetainFields(Chronology newChronology) {
         newChronology = DateTimeUtils.getChronology(newChronology);
@@ -307,7 +308,9 @@ public final class YearMonthDay
         if (newChronology == getChronology()) {
             return this;
         } else {
-            return new YearMonthDay(this, newChronology);
+            YearMonthDay newYearMonthDay = new YearMonthDay(this, newChronology);
+            newChronology.validate(newYearMonthDay, getValues());
+            return newYearMonthDay;
         }
     }
 
@@ -559,9 +562,10 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the property object for the specified type, which contains many useful methods.
+     * Gets the property object for the specified type, which contains
+     * many useful methods.
      *
-     * @param type  the field type to get the chronology for
+     * @param type  the field type to get the property for
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */

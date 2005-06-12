@@ -18,7 +18,7 @@ Incompatible changes since 1.0
 ------------------------------
 Binary compatible - Yes
 Source compatible - Yes
-Serialization compatible - 95%
+Serialization compatible - Yes, except:
   - DateTime.Property, DateMidnight.Property and MutableDateTime.Property
    serialization formats have changed to fix a bug.
    Please note that this only affects the property classes, and not DateTime etc.
@@ -59,6 +59,13 @@ Bug fixes since 1.0
 
 - DateTimeFormatterBuilder/PeriodFormatterBuilder
   Number parser would accept multiple sign characters as valid.
+
+- YearMonthDay/TimeOfDay.withChronologyRetainFields
+  Previously, switching chronology did not validate the fields, so you could
+  end up with an object in an invalid state, such as a YearMonthDay where
+  dayOfMonth=31 with Coptic.
+  This method can now throw an IllegalArgumentException
+
 
 Enhancements since 1.0
 ----------------------

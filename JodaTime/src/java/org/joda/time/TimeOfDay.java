@@ -408,6 +408,7 @@ public final class TimeOfDay
      *
      * @param newChronology  the new chronology, null means ISO
      * @return a copy of this datetime with a different chronology
+     * @throws IllegalArgumentException if the values are invalid for the new chronology
      */
     public TimeOfDay withChronologyRetainFields(Chronology newChronology) {
         newChronology = DateTimeUtils.getChronology(newChronology);
@@ -415,7 +416,9 @@ public final class TimeOfDay
         if (newChronology == getChronology()) {
             return this;
         } else {
-            return new TimeOfDay(this, newChronology);
+            TimeOfDay newTimeOfDay = new TimeOfDay(this, newChronology);
+            newChronology.validate(newTimeOfDay, getValues());
+            return newTimeOfDay;
         }
     }
 
@@ -711,9 +714,10 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the property object for the specified type, which contains many useful methods.
+     * Gets the property object for the specified type, which contains
+     * many useful methods.
      *
-     * @param type  the field type to get the chronology for
+     * @param type  the field type to get the property for
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */

@@ -130,6 +130,14 @@
     <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
+      <resources>
+        <resource>
+          <directory>${basedir}/src/testdata</directory>
+          <includes>
+            <include>*.dat</include>
+          </includes>
+        </resource>
+      </resources>
       <includes>
         <include>org/joda/time/**/TestAll.java</include>
       </includes>

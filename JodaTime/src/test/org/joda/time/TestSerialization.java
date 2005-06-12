@@ -176,7 +176,9 @@ public class TestSerialization extends TestCase {
     }
 
     public void testSerializedDateTimeZone() throws Exception {
-        DateTimeZone test = PARIS;
+        // have to re-get the zone, as TestDateTimeZone may have
+        // changed the cache, or a SoftReference may have got cleared
+        DateTimeZone test = DateTimeZone.forID("Europe/Paris");
         loadAndCompare(test, "DateTimeZone.dat", true);
         inlineCompare(test, true);
     }

@@ -17,7 +17,7 @@ package org.joda.time.contrib.hibernate;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.usertype.UserType;
+import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.DateTime;
 
 import java.io.Serializable;
@@ -31,9 +31,11 @@ import java.sql.Types;
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */
-public class PersistentDateTime implements UserType
+public class PersistentDateTime implements EnhancedUserType
 {
-    private static final int[] SQL_TYPES = new int[]
+	public final static PersistentDateTime INSTANCE = new PersistentDateTime();
+
+	private static final int[] SQL_TYPES = new int[]
     {
         Types.TIMESTAMP,
     };
@@ -71,26 +73,32 @@ public class PersistentDateTime implements UserType
 
     public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException
     {
-        Object timestamp = Hibernate.TIMESTAMP.nullSafeGet(resultSet, strings[0]);
-        if (timestamp == null)
-        {
-            return null;
-        }
+		return nullSafeGet(resultSet, strings[0]);
 
-        return new DateTime(timestamp);
-    }
+	}
 
-    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
-    {
-        if (value == null)
-        {
-            Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
-        }
-        else
-        {
-            Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, ((DateTime) value).toDate(), index);
-        }
-    }
+	public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException
+	{
+		Object timestamp = Hibernate.TIMESTAMP.nullSafeGet(resultSet, string);
+		if (timestamp == null)
+		{
+			return null;
+		}
+
+		return new DateTime(timestamp);
+	}
+
+	public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
+	{
+		if (value == null)
+		{
+			Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
+		}
+		else
+		{
+			Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, ((DateTime) value).toDate(), index);
+		}
+	}
 
     public Object deepCopy(Object value) throws HibernateException
     {
@@ -121,4 +129,19 @@ public class PersistentDateTime implements UserType
     {
         return original;
     }
+
+	public String objectToSQLString(Object object)
+	{
+		throw new UnsupportedOperationException();
+	}
+
+	public String toXMLString(Object object)
+	{
+		return object.toString();
+	}
+
+	public Object fromXMLString(String string)
+	{
+		return new DateTime(string);
+	}
 }

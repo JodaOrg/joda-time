@@ -35,7 +35,9 @@ import java.sql.Types;
  */
 public class PersistentDateTimeTZ implements UserType
 {
-    private static final int[] SQL_TYPES = new int[]
+	public final static PersistentDateTimeTZ INSTANCE = new PersistentDateTimeTZ();
+
+	private static final int[] SQL_TYPES = new int[]
     {
         Types.TIMESTAMP,
         Types.VARCHAR,

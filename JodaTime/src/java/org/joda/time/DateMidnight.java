@@ -265,10 +265,7 @@ public final class DateMidnight
     }
 
     /**
-     * Rounds the specified instant as required by the subclass.
-     * This method must not access instance variables.
-     * <p>
-     * This implementation performs no rounding and returns the instant.
+     * Rounds the specified instant to midnight.
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z to round
      * @param chronology  the chronology to use, not null

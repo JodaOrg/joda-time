@@ -1,22 +1,17 @@
 package org.joda.time.contrib.hibernate;
 
-import junit.framework.TestCase;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 import java.io.File;
 import java.sql.SQLException;
 
-public class TestPersistentDateTime extends TestCase
+public class TestPersistentDateTime extends HibernateTestCase
 {
-    private SessionFactory factory;
-
-    private DateTime writeReadTimes[] = new DateTime[]
+    private DateTime[] writeReadTimes = new DateTime[]
     {
         new DateTime(2004, 2, 25, 17, 3, 45, 760),
         new DateTime(1980, 3, 11,  2, 3, 45,   0, DateTimeZone.forOffsetHours(2))
@@ -100,27 +95,9 @@ public class TestPersistentDateTime extends TestCase
         }
     }
 
-    private SessionFactory getSessionFactory()
-    {
-        if (this.factory == null)
-        {
-            Configuration cfg = new Configuration();
-
-            cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/event.hbm.xml"));
-            cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/eventTZ.hbm.xml"));
-
-            cfg.setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbcDriver");
-            cfg.setProperty("hibernate.connection.url", "jdbc:hsqldb:mem:hbmtest");
-            cfg.setProperty("hibernate.dialect", HSQLDialect.class.getName());
-
-            cfg.setProperty("hibernate.show_sql", "true");
-            SessionFactory factory = cfg.buildSessionFactory();
-
-            SchemaUpdate update = new SchemaUpdate(cfg);
-            update.execute(false, true);
-
-            this.factory = factory;
-        }
-        return factory;
-    }
+	protected void setupConfiguration(Configuration cfg)
+	{
+		cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/event.hbm.xml"));
+		cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/eventTZ.hbm.xml"));
+	}
 }

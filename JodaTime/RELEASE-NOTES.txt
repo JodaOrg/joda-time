@@ -66,6 +66,8 @@ Bug fixes since 1.0
   dayOfMonth=31 with Coptic.
   This method can now throw an IllegalArgumentException
 
+- Overflowed calculations involving year throw ArithmeticException rather than
+  produce a bogus result.
 
 Enhancements since 1.0
 ----------------------

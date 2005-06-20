@@ -21,9 +21,11 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.IllegalFieldValueException;
 
 /**
  * This class is a Junit unit test for ISOChronology.
@@ -235,6 +237,80 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstance().secondOfMinute().isSupported());
         assertEquals(true, ISOChronology.getInstance().millisOfDay().isSupported());
         assertEquals(true, ISOChronology.getInstance().millisOfSecond().isSupported());
+    }
+
+    public void testMaxYear() {
+        final ISOChronology chrono = ISOChronology.getInstanceUTC();
+        final int maxYear = chrono.year().getMaximumValue();
+
+        DateTime start = new DateTime(maxYear, 1, 1, 0, 0, 0, 0, chrono);
+        DateTime end = new DateTime(maxYear, 12, 31, 23, 59, 59, 999, chrono);
+        assertTrue(start.getMillis() > 0);
+        assertTrue(end.getMillis() > start.getMillis());
+        assertEquals(maxYear, start.getYear());
+        assertEquals(maxYear, end.getYear());
+        long delta = end.getMillis() - start.getMillis();
+        long expectedDelta = 
+            (start.year().isLeap() ? 366L : 365L) * DateTimeConstants.MILLIS_PER_DAY - 1;
+        assertEquals(expectedDelta, delta);
+
+        assertEquals(start, new DateTime(maxYear + "-01-01T00:00:00.000Z", chrono));
+        assertEquals(end, new DateTime(maxYear + "-12-31T23:59:59.999Z", chrono));
+
+        try {
+            start.plusYears(1);
+            fail();
+        } catch (IllegalFieldValueException e) {
+        }
+
+        try {
+            end.plusYears(1);
+            fail();
+        } catch (IllegalFieldValueException e) {
+        }
+
+        try {
+            chrono.year().get(Long.MAX_VALUE);
+            fail();
+        } catch (ArithmeticException e) {
+        }
+    }
+
+    public void testMinYear() {
+        final ISOChronology chrono = ISOChronology.getInstanceUTC();
+        final int minYear = chrono.year().getMinimumValue();
+
+        DateTime start = new DateTime(minYear, 1, 1, 0, 0, 0, 0, chrono);
+        DateTime end = new DateTime(minYear, 12, 31, 23, 59, 59, 999, chrono);
+        assertTrue(start.getMillis() < 0);
+        assertTrue(end.getMillis() > start.getMillis());
+        assertEquals(minYear, start.getYear());
+        assertEquals(minYear, end.getYear());
+        long delta = end.getMillis() - start.getMillis();
+        long expectedDelta = 
+            (start.year().isLeap() ? 366L : 365L) * DateTimeConstants.MILLIS_PER_DAY - 1;
+        assertEquals(expectedDelta, delta);
+
+        assertEquals(start, new DateTime(minYear + "-01-01T00:00:00.000Z", chrono));
+        assertEquals(end, new DateTime(minYear + "-12-31T23:59:59.999Z", chrono));
+
+        try {
+            start.minusYears(1);
+            fail();
+        } catch (IllegalFieldValueException e) {
+        }
+
+        try {
+            end.minusYears(1);
+            fail();
+        } catch (IllegalFieldValueException e) {
+        }
+
+        try {
+            chrono.year().get(Long.MIN_VALUE);
+            fail();
+        } catch (ArithmeticException e) {
+        }
     }
 
 }

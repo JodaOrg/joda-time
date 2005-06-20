@@ -51,8 +51,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
     /** Serialization lock */
     private static final long serialVersionUID = 8283225332206808863L;
 
-    static final long MILLIS_1970_TO_2000 = 946684800000L;
-
     private static final DurationField cMillisField;
     private static final DurationField cSecondsField;
     private static final DurationField cMinutesField;
@@ -399,20 +397,22 @@ public abstract class BaseGJChronology extends AssembledChronology {
         }
         int year = (int) (i2 / unitMillis);
 
-        long yearStart = getYearMillis(year);
+        long yearStart;
+        try {
+            yearStart = getYearMillis(year);
+        } catch (ArithmeticException e) {
+            if (instant > 0) {
+                throw new ArithmeticException("Instant too large: " + instant);
+            } else {
+                throw new ArithmeticException("Instant too small: " + instant);
+            }
+        }
+
         long diff = instant - yearStart;
 
         if (diff < 0) {
-            if (diff < -DateTimeConstants.MILLIS_PER_DAY * 2L) {
-                // Too much error, assume operation overflowed.
-                return getYearOverflow(instant);
-            }
             year--;
         } else if (diff >= DateTimeConstants.MILLIS_PER_DAY * 365L) {
-            if (diff >= DateTimeConstants.MILLIS_PER_DAY * 367L) {
-                // Too much error, assume operation overflowed.
-                return getYearOverflow(instant);
-            }
             // One year may need to be added to fix estimate.
             long oneYear;
             if (isLeapYear(year)) {
@@ -423,15 +423,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
 
             yearStart += oneYear;
 
-            if ((yearStart ^ instant) < 0) {
-                // Sign mismatch, operation may have overflowed.
-                if ((yearStart <  0 && (yearStart - oneYear) >= 0) ||
-                    (yearStart >= 0 && (yearStart - oneYear) <  0)   ) {
-                    // It overflowed.
-                    return getYearOverflow(instant);
-                }
-            }
-
             if (yearStart <= instant) {
                 // Didn't go too far, so actually add one year.
                 year++;
@@ -439,35 +430,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
         }
 
         return year;
-    }
-
-    private int getYearOverflow(long instant) {
-        if (instant > 0) {
-            int year = getMaxYear();
-            long yearStartMillis = getYearMillis(year);
-            if (isLeapYear(year)) {
-                yearStartMillis += DateTimeConstants.MILLIS_PER_DAY * 366L;
-            } else {
-                yearStartMillis += DateTimeConstants.MILLIS_PER_DAY * 365L;
-            }
-            long yearEndMillis = yearStartMillis - 1;
-
-            if (instant <= yearEndMillis) {
-                return year;
-            }
-
-            throw new IllegalArgumentException
-                ("Instant too large: " + instant + " > " + yearEndMillis);
-        } else {
-            int year = getMinYear();
-            long yearStartMillis = getYearMillis(year);
-            if (instant >= yearStartMillis) {
-                return year;
-            }
-
-            throw new IllegalArgumentException
-                ("Instant too small: " + instant + " < " + yearStartMillis);
-        }
     }
 
     /**

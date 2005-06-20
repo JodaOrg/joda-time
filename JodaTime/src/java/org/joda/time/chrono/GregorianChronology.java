@@ -53,6 +53,17 @@ public final class GregorianChronology extends CommonGJChronology {
     private static final long MILLIS_PER_MONTH =
         (long) (365.2425 * DateTimeConstants.MILLIS_PER_DAY / 12);
 
+    private static final int DAYS_0000_TO_1970 = 719527;
+
+    // The lowest year that can be fully supported.
+    private static final int MIN_YEAR = -292275054;
+
+    // The highest year that can be fully supported. Although
+    // calculateFirstDayOfYearMillis can operate on years up to 292278994
+    // without overflowing, the getYear method overflows when it adds the
+    // approximate millis at the epoch.
+    private static final int MAX_YEAR = 292277023;
+
     /** Singleton instance of a UTC GregorianChronology */
     private static final GregorianChronology INSTANCE_UTC;
 
@@ -186,44 +197,38 @@ public final class GregorianChronology extends CommonGJChronology {
     }
 
     long calculateFirstDayOfYearMillis(int year) {
-        // Calculate relative to 2000 as that is on a 400 year boundary
-        // and that makes the sum easier
-        int relativeYear = year - 2000;
+        if (year > MAX_YEAR) {
+            throw new ArithmeticException("Year is too large: " + year + " > " + MAX_YEAR);
+        }
+        if (year < MIN_YEAR) {
+            throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
+        }
+
         // Initial value is just temporary.
-        int leapYears = relativeYear / 100;
-        if (relativeYear <= 0) {
+        int leapYears = year / 100;
+        if (year < 0) {
             // Add 3 before shifting right since /4 and >>2 behave differently
             // on negative numbers. When the expression is written as
-            // (relativeYear / 4) - (relativeYear / 100) + (relativeYear / 400),
+            // (year / 4) - (year / 100) + (year / 400),
             // it works for both positive and negative values, except this optimization
             // eliminates two divisions.
-            leapYears = ((relativeYear + 3) >> 2) - leapYears + ((leapYears + 3) >> 2);
+            leapYears = ((year + 3) >> 2) - leapYears + ((leapYears + 3) >> 2) - 1;
         } else {
-            leapYears = (relativeYear >> 2) - leapYears + (leapYears >> 2);
-            // For post 2000 an adjustment is needed as jan1st is before leap day
-            if (!isLeapYear(year)) {
-                leapYears++;
+            leapYears = (year >> 2) - leapYears + (leapYears >> 2);
+            if (isLeapYear(year)) {
+                leapYears--;
             }
         }
-        
-        long millis = (relativeYear * 365L + leapYears)
-            * (long)DateTimeConstants.MILLIS_PER_DAY;
-        
-        // Previous line was reduced from this to eliminate a multiplication.
-        // millis = ((relativeYear - leapYears) * 365L + leapYears * 366) * MILLIS_PER_DAY;
-        // (x - y)*c + y*(c + 1) => x*c - y*c + y*c + y => x*c + y
-        
-        return millis + MILLIS_1970_TO_2000;
+
+        return (year * 365L + (leapYears - DAYS_0000_TO_1970)) * DateTimeConstants.MILLIS_PER_DAY;
     }
 
     int getMinYear() {
-        // The lowest year that can be fully supported.
-        return -292275054;
+        return MIN_YEAR;
     }
 
     int getMaxYear() {
-        // The highest year that can be fully supported.
-        return 292277023;
+        return MAX_YEAR;
     }
 
     long getAverageMillisPerYear() {

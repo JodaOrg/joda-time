@@ -69,6 +69,15 @@ public final class CopticChronology extends BaseGJChronology {
     private static final long MILLIS_PER_MONTH =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY / 12);
 
+    // The lowest year that can be fully supported.
+    private static final int MIN_YEAR = -292269337;
+
+    // The highest year that can be fully supported. Although
+    // calculateFirstDayOfYearMillis can go higher without overflowing, the
+    // getYear method overflows when it adds the approximate millis at the
+    // epoch.
+    private static final int MAX_YEAR = 292271022;
+
     private static final DurationField cMonthsField;
 
     /** Singleton instance of a UTC CopticChronology */
@@ -284,6 +293,13 @@ public final class CopticChronology extends BaseGJChronology {
     
     //-----------------------------------------------------------------------
     long calculateFirstDayOfYearMillis(int year) {
+        if (year > MAX_YEAR) {
+            throw new ArithmeticException("Year is too large: " + year + " > " + MAX_YEAR);
+        }
+        if (year < MIN_YEAR) {
+            throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
+        }
+
         // Java epoch is 1970-01-01 Gregorian which is 1686-04-23 Coptic.
         // Calculate relative to the nearest leap year and account for the
         // difference later.
@@ -312,14 +328,12 @@ public final class CopticChronology extends BaseGJChronology {
 
     //-----------------------------------------------------------------------
     int getMinYear() {
-        // The lowest year that can be fully supported.
-        return -292269337;
+        return MIN_YEAR;
     }
 
     //-----------------------------------------------------------------------
     int getMaxYear() {
-        // The highest year that can be fully supported.
-        return 292271022;
+        return MAX_YEAR;
     }
 
     //-----------------------------------------------------------------------

@@ -993,14 +993,7 @@ public class DateTimeFormatterBuilder {
     }
 
     private boolean isFormatter(Object f) {
-        if (f instanceof DateTimeFormatter) {
-            if (f instanceof Composite) {
-                return ((Composite)f).isPrinter()
-                    || ((Composite)f).isParser();
-            }
-            return true;
-        }
-        return false;
+        return (isPrinter(f) || isParser(f));
     }
 
     static void appendUnknownString(StringBuffer buf, int len) {

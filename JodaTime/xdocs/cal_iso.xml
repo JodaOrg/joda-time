@@ -9,9 +9,9 @@
 
  <body>
 
-<section name="ISO8601 calendar system">
+<section name="ISO8601 Java calendar system">
 <p>
-The ISO8601 calendar system is the default implementation within Joda-Time.
+The ISO 8601 calendar system is the default implementation within Joda-Time.
 The standard formalises the <a href="cal_gregorian.html">Gregorian</a> calendar
 system used by the modern business world.
 </p>

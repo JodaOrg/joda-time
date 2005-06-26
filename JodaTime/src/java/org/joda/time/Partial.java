@@ -846,7 +846,6 @@ public final class Partial
      * This class binds a <code>YearMonthDay</code> to a <code>DateTimeField</code>.
      * 
      * @author Stephen Colebourne
-     * @since 1.0
      */
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 

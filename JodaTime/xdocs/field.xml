@@ -466,7 +466,7 @@ For ISO this represents a straight split of a textual ISO8601 year.
 <subsection name="YearOfEra">
 <p>
 The year as generally known (always positive).
-Both the GJ and ISO chronologies return 1 for 1BC/BCE, 2 for 2BC/CBE etc.
+Both the GJ and ISO chronologies return 1 for 1BC/BCE, 2 for 2BC/BCE etc.
 In other words there is no year zero and no negative value for this field.
 </p>
 </subsection>

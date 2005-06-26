@@ -76,6 +76,12 @@ Bug fixes since 1.0
 
 Enhancements since 1.0
 ----------------------
+- Partial
+  New immutable implementation of ReadablePartial.
+  This implementation is flexible as to the fields that it stores.
+  Thus, if you want a partial holding just a year and monthOfYear (perhaps
+  for a credit card expiry date), then this class can be used.
+
 - DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay
   Added convenience plusXxx() and minusXxx() methods to add/subtract a period
   For example, dt.plus(Period.days(6)) can now be replaced by dt.plusDays(6)
@@ -121,6 +127,10 @@ Enhancements since 1.0
 
 - GJLocaleSymbols
   Supports parsing "CE" and "BCE" as era if locale language is English.
+
+- ISODateTimeFormat
+  New method, forFields(), which gets an ISO format for a set of fields.
+  This is useful for more unusual formats such as DayHour.
 
 - DateTimeZone classes updated to latest data from the Olsen time zone database
 

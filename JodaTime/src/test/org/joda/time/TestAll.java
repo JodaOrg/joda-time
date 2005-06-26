@@ -80,6 +80,10 @@ public class TestAll extends TestCase {
         suite.addTest(TestYearMonthDay_Constructors.suite());
         suite.addTest(TestYearMonthDay_Properties.suite());
         
+        suite.addTest(TestPartial_Basics.suite());
+        suite.addTest(TestPartial_Constructors.suite());
+        suite.addTest(TestPartial_Properties.suite());
+        
         suite.addTest(TestAbstractPartial.suite());
         suite.addTest(TestBasePartial.suite());
         

@@ -39,6 +39,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateTimeFormat.suite());
         suite.addTest(TestDateTimeFormatStyle.suite());
         suite.addTest(TestISODateTimeFormat.suite());
+        suite.addTest(TestISODateTimeFormat_Fields.suite());
         
         suite.addTest(TestPeriodFormatter.suite());
         suite.addTest(TestISOPeriodFormat.suite());

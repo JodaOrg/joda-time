@@ -15,6 +15,10 @@
  */
 package org.joda.time.format;
 
+import java.util.Collection;
+
+import org.joda.time.DateTimeFieldType;
+
 /**
  * Factory that creates instances of DateTimeFormatter for the ISO8601 standard.
  * <p>
@@ -33,6 +37,14 @@ package org.joda.time.format;
  * DateTimeFormatter fmt = DateTimeFormat.getInstance().dateTime();
  * String str = fmt.print(dt);
  * </pre>
+ * <p>
+ * It is important to understand that these formatters are not linked to
+ * the <code>ISOChronology</code>. These formatters may be used with any
+ * chronology, however there may be certain side effects with more unusual
+ * chronologies. For example, the ISO formatters rely on dayOfWeek being
+ * single digit, dayOfMonth being two digit and dayOfYear being three digit.
+ * A chronology with a ten day week would thus cause issues. However, in
+ * general, it is safe to use these formatters with other chronologies.
  * <p>
  * ISODateTimeFormat is thread-safe and immutable, and the formatters it
  * returns are as well.
@@ -117,6 +129,393 @@ public class ISODateTimeFormat {
      * @param chrono  the chronology to use, must not be null
      */
     private ISODateTimeFormat() {
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a formatter that outputs only those fields specified.
+     * <p>
+     * This method examines the fields provided and returns an ISO-style
+     * formatter that best fits. This can be useful for outputting
+     * less-common ISO styles, such as YearMonth (YYYY-MM) or MonthDay (--MM-DD).
+     * <p>
+     * The list provided may have overlapping fields, such as dayOfWeek and
+     * dayOfMonth. In this case, the style is chosen based on the following
+     * list, thus in the example, the calendar style is chosen as dayOfMonth
+     * is higher in priority than dayOfWeek:
+     * <ul>
+     * <li>monthOfYear - calendar date style
+     * <li>dayOfYear - ordinal date style
+     * <li>weekOfWeekYear - week date style
+     * <li>dayOfMonth - calendar date style
+     * <li>dayOfWeek - week date style
+     * <li>year
+     * <li>weekyear
+     * </ul>
+     * The supported formats are:
+     * <pre>
+     * Extended      Basic       Fields
+     * 2005-03-25    20050325    year/monthOfYear/dayOfMonth
+     * 2005-03       2005-03     year/monthOfYear
+     * 2005--25      2005--25    year/dayOfMonth *
+     * 2005          2005        year
+     * --03-25       --0325      monthOfYear/dayOfMonth
+     * --03          --03        monthOfYear
+     * ---03         ---03       dayOfMonth
+     * 2005-084      2005084     year/dayOfYear
+     * -084          -084        dayOfYear
+     * 2005-W12-5    2005W125    weekyear/weekOfWeekyear/dayOfWeek
+     * 2005-W-5      2005W-5     weekyear/dayOfWeek *
+     * 2005-W12      2005W12     weekyear/weekOfWeekyear
+     * -W12-5        -W125       weekOfWeekyear/dayOfWeek
+     * -W12          -W12        weekOfWeekyear
+     * -W-5          -W-5        dayOfWeek
+     * 10:20:30.040  102030.040  hour/minute/second/milli
+     * 10:20:30      102030      hour/minute/second
+     * 10:20         1020        hour/minute
+     * 10            10          hour
+     * -20:30.040    -2030.040   minute/second/milli
+     * -20:30        -2030       minute/second
+     * -20           -20         minute
+     * --30.040      --30.040    second/milli
+     * --30          --30        second
+     * ---.040       ---.040     milli *
+     * 10-30.040     10-30.040   hour/second/milli *
+     * 10:20-.040    1020-.040   hour/minute/milli *
+     * 10-30         10-30       hour/second *
+     * 10--.040      10--.040    hour/milli *
+     * -20-.040      -20-.040    minute/milli *
+     *   plus datetime formats like {date}T{time}
+     * </pre>
+     * * indiates that this is not an official ISO format and can be excluded
+     * by passing in <code>strictISO</code> as <code>true</code>.
+     *
+     * @param fields  the fields to get a formatter for, not null,
+     *  updated by the method call, which removes those fields built in the formatter
+     * @param extended  true to use the extended format (with separators)
+     * @param strictISO  true to stick exactly to ISO8601, false to include additional formats
+     * @return a suitable formatter
+     * @throws IllegalArgumentException if there is no format for the fields
+     * @since 1.1
+     */
+    public static DateTimeFormatter forFields(
+        Collection fields,
+        boolean extended,
+        boolean strictISO) {
+        
+        if (fields == null || fields.size() == 0) {
+            throw new IllegalArgumentException("The fields must not be null or empty");
+        }
+        int inputSize = fields.size();
+        boolean reducedPrec = false;
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        // date
+        if (fields.contains(DateTimeFieldType.monthOfYear())) {
+            reducedPrec = dateByMonth(bld, fields, extended, strictISO);
+        } else if (fields.contains(DateTimeFieldType.dayOfYear())) {
+            reducedPrec = dateByOrdinal(bld, fields, extended, strictISO);
+        } else if (fields.contains(DateTimeFieldType.weekOfWeekyear())) {
+            reducedPrec = dateByWeek(bld, fields, extended, strictISO);
+        } else if (fields.contains(DateTimeFieldType.dayOfMonth())) {
+            reducedPrec = dateByMonth(bld, fields, extended, strictISO);
+        } else if (fields.contains(DateTimeFieldType.dayOfWeek())) {
+            reducedPrec = dateByWeek(bld, fields, extended, strictISO);
+        } else if (fields.remove(DateTimeFieldType.year())) {
+            bld.append(yearElement());
+            reducedPrec = true;
+        } else if (fields.remove(DateTimeFieldType.weekyear())) {
+            bld.append(weekyearElement());
+            reducedPrec = true;
+        }
+        boolean datePresent = (fields.size() < inputSize);
+        
+        // time
+        time(bld, fields, extended, strictISO, reducedPrec, datePresent);
+        
+        // result
+        if (bld.canBuildFormatter() == false) {
+            throw new IllegalArgumentException("No valid format for fields: " + fields);
+        }
+        return bld.toFormatter();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a date using the calendar date format.
+     * Specification reference: 5.2.1.
+     *
+     * @param bld  the builder
+     * @param fields  the fields
+     * @param extended  true to use extended format
+     * @param strictISO  true to only allow ISO formats
+     * @return true if reduced precision
+     * @since 1.1
+     */
+    private static boolean dateByMonth(
+        DateTimeFormatterBuilder bld,
+        Collection fields,
+        boolean extended,
+        boolean strictISO) {
+        
+        boolean reducedPrec = false;
+        if (fields.remove(DateTimeFieldType.year())) {
+            bld.append(yearElement());
+            if (fields.remove(DateTimeFieldType.monthOfYear())) {
+                if (fields.remove(DateTimeFieldType.dayOfMonth())) {
+                    // YYYY-MM-DD/YYYYMMDD
+                    appendSeparator(bld, extended);
+                    bld.appendMonthOfYear(2);
+                    appendSeparator(bld, extended);
+                    bld.appendDayOfMonth(2);
+                } else {
+                    // YYYY-MM/YYYY-MM
+                    bld.appendLiteral('-');
+                    bld.appendMonthOfYear(2);
+                    reducedPrec = true;
+                }
+            } else {
+                if (fields.remove(DateTimeFieldType.dayOfMonth())) {
+                    // YYYY--DD/YYYY--DD (non-iso)
+                    checkNotStrictISO(fields, strictISO);
+                    bld.appendLiteral('-');
+                    bld.appendLiteral('-');
+                    bld.appendDayOfMonth(2);
+                } else {
+                    // YYYY/YYYY
+                    reducedPrec = true;
+                }
+            }
+            
+        } else if (fields.remove(DateTimeFieldType.monthOfYear())) {
+            bld.appendLiteral('-');
+            bld.appendLiteral('-');
+            bld.appendMonthOfYear(2);
+            if (fields.remove(DateTimeFieldType.dayOfMonth())) {
+                // --MM-DD/--MMDD
+                appendSeparator(bld, extended);
+                bld.appendDayOfMonth(2);
+            } else {
+                // --MM/--MM
+                reducedPrec = true;
+            }
+        } else if (fields.remove(DateTimeFieldType.dayOfMonth())) {
+            // ---DD/---DD
+            bld.appendLiteral('-');
+            bld.appendLiteral('-');
+            bld.appendLiteral('-');
+            bld.appendDayOfMonth(2);
+        }
+        return reducedPrec;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a date using the ordinal date format.
+     * Specification reference: 5.2.2.
+     *
+     * @param bld  the builder
+     * @param fields  the fields
+     * @param extended  true to use extended format
+     * @param strictISO  true to only allow ISO formats
+     * @since 1.1
+     */
+    private static boolean dateByOrdinal(
+        DateTimeFormatterBuilder bld,
+        Collection fields,
+        boolean extended,
+        boolean strictISO) {
+        
+        boolean reducedPrec = false;
+        if (fields.remove(DateTimeFieldType.year())) {
+            bld.append(yearElement());
+            if (fields.remove(DateTimeFieldType.dayOfYear())) {
+                // YYYY-DDD/YYYYDDD
+                appendSeparator(bld, extended);
+                bld.appendDayOfYear(3);
+            } else {
+                // YYYY/YYYY
+                reducedPrec = true;
+            }
+            
+        } else if (fields.remove(DateTimeFieldType.dayOfYear())) {
+            // -DDD/-DDD
+            bld.appendLiteral('-');
+            bld.appendDayOfYear(3);
+        }
+        return reducedPrec;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Creates a date using the calendar date format.
+     * Specification reference: 5.2.3.
+     *
+     * @param bld  the builder
+     * @param fields  the fields
+     * @param extended  true to use extended format
+     * @param strictISO  true to only allow ISO formats
+     * @since 1.1
+     */
+    private static boolean dateByWeek(
+        DateTimeFormatterBuilder bld,
+        Collection fields,
+        boolean extended,
+        boolean strictISO) {
+        
+        boolean reducedPrec = false;
+        if (fields.remove(DateTimeFieldType.weekyear())) {
+            bld.append(weekyearElement());
+            if (fields.remove(DateTimeFieldType.weekOfWeekyear())) {
+                appendSeparator(bld, extended);
+                bld.appendLiteral('W');
+                bld.appendWeekOfWeekyear(2);
+                if (fields.remove(DateTimeFieldType.dayOfWeek())) {
+                    // YYYY-WWW-D/YYYYWWWD
+                    appendSeparator(bld, extended);
+                    bld.appendDayOfWeek(1);
+                } else {
+                    // YYYY-WWW/YYYY-WWW
+                    reducedPrec = true;
+                }
+            } else {
+                if (fields.remove(DateTimeFieldType.dayOfWeek())) {
+                    // YYYY-W-D/YYYYW-D (non-iso)
+                    checkNotStrictISO(fields, strictISO);
+                    appendSeparator(bld, extended);
+                    bld.appendLiteral('W');
+                    bld.appendLiteral('-');
+                    bld.appendDayOfWeek(1);
+                } else {
+                    // YYYY/YYYY
+                    reducedPrec = true;
+                }
+            }
+            
+        } else if (fields.remove(DateTimeFieldType.weekOfWeekyear())) {
+            bld.appendLiteral('-');
+            bld.appendLiteral('W');
+            bld.appendWeekOfWeekyear(2);
+            if (fields.remove(DateTimeFieldType.dayOfWeek())) {
+                // -WWW-D/-WWWD
+                appendSeparator(bld, extended);
+                bld.appendDayOfWeek(1);
+            } else {
+                // -WWW/-WWW
+                reducedPrec = true;
+            }
+        } else if (fields.remove(DateTimeFieldType.dayOfWeek())) {
+            // -W-D/-W-D
+            bld.appendLiteral('-');
+            bld.appendLiteral('W');
+            bld.appendLiteral('-');
+            bld.appendDayOfWeek(1);
+        }
+        return reducedPrec;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Adds the time fields to the builder.
+     * Specification reference: 5.3.1.
+     * 
+     * @param bld  the builder
+     * @param fields  the fields
+     * @param extended  whether to use the extended format
+     * @param strictISO  whether to be strict
+     * @param reducedPrec  whether the date was reduced precision
+     * @param datePresent  whether there was a date
+     * @since 1.1
+     */
+    private static void time(
+        DateTimeFormatterBuilder bld,
+        Collection fields,
+        boolean extended,
+        boolean strictISO,
+        boolean reducedPrec,
+        boolean datePresent) {
+        
+        boolean hour = fields.remove(DateTimeFieldType.hourOfDay());
+        boolean minute = fields.remove(DateTimeFieldType.minuteOfHour());
+        boolean second = fields.remove(DateTimeFieldType.secondOfMinute());
+        boolean milli = fields.remove(DateTimeFieldType.millisOfSecond());
+        if (!hour && !minute && !second && !milli) {
+            return;
+        }
+        if (hour || minute || second || milli) {
+            if (strictISO && reducedPrec) {
+                throw new IllegalArgumentException("No valid ISO8601 format for fields because Date was reduced precision: " + fields);
+            }
+            if (datePresent) {
+                bld.appendLiteral('T');
+            }
+        }
+        if (hour && minute && second || (hour && !second && !milli)) {
+            // OK - HMSm/HMS/HM/H - valid in combination with date
+        } else {
+            if (strictISO && datePresent) {
+                throw new IllegalArgumentException("No valid ISO8601 format for fields because Time was truncated: " + fields);
+            }
+            if (!hour && (minute && second || (minute && !milli) || second)) {
+                // OK - MSm/MS/M/Sm/S - valid ISO formats
+            } else {
+                if (strictISO) {
+                    throw new IllegalArgumentException("No valid ISO8601 format for fields: " + fields);
+                }
+            }
+        }
+        if (hour) {
+            bld.appendHourOfDay(2);
+        } else if (minute || second || milli) {
+            bld.appendLiteral('-');
+        }
+        if (extended && hour && minute) {
+            bld.appendLiteral(':');
+        }
+        if (minute) {
+            bld.appendMinuteOfHour(2);
+        } else if (second || milli) {
+            bld.appendLiteral('-');
+        }
+        if (extended && minute && second) {
+            bld.appendLiteral(':');
+        }
+        if (second) {
+            bld.appendSecondOfMinute(2);
+        } else if (milli) {
+            bld.appendLiteral('-');
+        }
+        if (milli) {
+            bld.appendLiteral('.');
+            bld.appendMillisOfSecond(3);
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Checks that the iso only flag is not set, throwing an exception if it is.
+     * 
+     * @param fields  the fields
+     * @param strictISO  true if only ISO formats allowed
+     * @since 1.1
+     */
+    private static void checkNotStrictISO(Collection fields, boolean strictISO) {
+        if (strictISO) {
+            throw new IllegalArgumentException("No valid ISO8601 format for fields: " + fields);
+        }
+    }
+
+    /**
+     * Appends the separator if necessary.
+     *
+     * @param bld  the builder
+     * @param extended  whether to append the separator
+     * @param sep  the separator
+     * @since 1.1
+     */
+    private static void appendSeparator(DateTimeFormatterBuilder bld, boolean extended) {
+        if (extended) {
+            bld.appendLiteral('-');
+        }
     }
 
     //-----------------------------------------------------------------------

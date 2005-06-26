@@ -9,3 +9,4 @@ jcoverage.ser
 build
 junit*.properties
 lib
+.dj*

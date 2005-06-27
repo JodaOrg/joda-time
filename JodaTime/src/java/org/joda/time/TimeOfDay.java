@@ -192,6 +192,8 @@ public final class TimeOfDay
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
      * <p>
+     * The string format must begin with a 'T' to be recognised, such as 'T10:20'.
+     * <p>
      * The chronology used will be derived from the object, defaulting to ISO.
      *
      * @param instant  the datetime object, null means now
@@ -208,6 +210,8 @@ public final class TimeOfDay
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * <p>
+     * The string format must begin with a 'T' to be recognised, such as 'T10:20'.
      * <p>
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed

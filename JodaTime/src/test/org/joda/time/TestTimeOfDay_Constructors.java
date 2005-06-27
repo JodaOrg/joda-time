@@ -321,6 +321,22 @@ public class TestTimeOfDay_Constructors extends TestCase {
     }
 
     /**
+     * Test constructor (Object, Chronology)
+     */
+    public void testConstructor2_Object_Chronology() throws Throwable {
+        TimeOfDay test = new TimeOfDay("T10:20");
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+        
+        try {
+            new TimeOfDay("T1020");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    /**
      * Test constructor (Object=null, Chronology)
      */
     public void testConstructor_nullObject_Chronology() throws Throwable {

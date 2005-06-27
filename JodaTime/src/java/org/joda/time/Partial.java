@@ -109,7 +109,7 @@ public final class Partial
      * Note that, although this is a clean way to write code, it is fairly
      * inefficient internally.
      *
-     * @param chronology  the chronology, null means ISO
+     * @param chrono  the chronology, null means ISO
      */
     public Partial(Chronology chrono) {
         super();

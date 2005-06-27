@@ -125,8 +125,6 @@ public class ISODateTimeFormat {
 
     /**
      * Restricted constructor.
-     * 
-     * @param chrono  the chronology to use, must not be null
      */
     protected ISODateTimeFormat() {
         super();

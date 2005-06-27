@@ -86,6 +86,14 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testSubclassableConstructor() {
+        DateTimeFormat f = new DateTimeFormat() {
+            // test constructor is protected
+        };
+        assertNotNull(f);
+    }
+
+    //-----------------------------------------------------------------------
     public void testFormat_era() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         DateTimeFormatter f = DateTimeFormat.forPattern("G").withLocale(Locale.UK);

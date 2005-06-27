@@ -28,7 +28,7 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 
 /**
- * This class is a Junit unit test for PeriodFormatterBuilder.
+ * This class is a Junit unit test for ISOPeriodFormat.
  *
  * @author Stephen Colebourne
  */
@@ -87,6 +87,14 @@ public class TestISOPeriodFormat extends TestCase {
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testSubclassableConstructor() {
+        ISOPeriodFormat f = new ISOPeriodFormat() {
+            // test constructor is protected
+        };
+        assertNotNull(f);
     }
 
     //-----------------------------------------------------------------------

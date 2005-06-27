@@ -46,7 +46,8 @@ public class ISOPeriodFormat {
     /**
      * Constructor.
      */
-    private ISOPeriodFormat() {
+    protected ISOPeriodFormat() {
+        super();
     }
 
     //-----------------------------------------------------------------------

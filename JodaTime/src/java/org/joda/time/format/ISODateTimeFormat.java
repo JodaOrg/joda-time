@@ -128,7 +128,8 @@ public class ISODateTimeFormat {
      * 
      * @param chrono  the chronology to use, must not be null
      */
-    private ISODateTimeFormat() {
+    protected ISODateTimeFormat() {
+        super();
     }
 
     //-----------------------------------------------------------------------

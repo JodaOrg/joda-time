@@ -355,7 +355,7 @@ public class DateTimeFormat {
     /**
      * Constructor.
      */
-    private DateTimeFormat() {
+    protected DateTimeFormat() {
         super();
     }
 

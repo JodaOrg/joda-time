@@ -38,9 +38,11 @@ public class PeriodFormat {
     /**
      * Constructor.
      */
-    private PeriodFormat() {
+    protected PeriodFormat() {
+        super();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Gets the default PeriodFormatter.
      * <p>

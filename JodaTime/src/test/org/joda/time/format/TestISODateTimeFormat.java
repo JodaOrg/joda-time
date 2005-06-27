@@ -83,6 +83,14 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testSubclassableConstructor() {
+        ISODateTimeFormat f = new ISODateTimeFormat() {
+            // test constructor is protected
+        };
+        assertNotNull(f);
+    }
+
+    //-----------------------------------------------------------------------
     public void testFormat_date() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));

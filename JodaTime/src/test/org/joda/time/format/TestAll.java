@@ -40,8 +40,10 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateTimeFormatStyle.suite());
         suite.addTest(TestISODateTimeFormat.suite());
         suite.addTest(TestISODateTimeFormat_Fields.suite());
+        suite.addTest(TestDateTimeFormatterBuilder.suite());
         
         suite.addTest(TestPeriodFormatter.suite());
+        suite.addTest(TestPeriodFormat.suite());
         suite.addTest(TestISOPeriodFormat.suite());
         suite.addTest(TestISOPeriodFormatParsing.suite());
         suite.addTest(TestPeriodFormatParsing.suite());

@@ -258,6 +258,18 @@ public class TestYearMonthDay_Basics extends TestCase {
             test1.compareTo(new Date());
             fail();
         } catch (ClassCastException ex) {}
+        try {
+            test1.compareTo(new TimeOfDay());
+            fail();
+        } catch (ClassCastException ex) {}
+        Partial partial = new Partial()
+            .with(DateTimeFieldType.centuryOfEra(), 1)
+            .with(DateTimeFieldType.halfdayOfDay(), 0)
+            .with(DateTimeFieldType.dayOfMonth(), 9);
+        try {
+            new YearMonthDay(1970, 6, 9).compareTo(partial);
+            fail();
+        } catch (ClassCastException ex) {}
     }
     
     //-----------------------------------------------------------------------

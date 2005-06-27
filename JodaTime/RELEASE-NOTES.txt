@@ -132,6 +132,9 @@ Enhancements since 1.0
   New method, forFields(), which gets an ISO format for a set of fields.
   This is useful for more unusual formats such as DayHour.
 
+- ISODateTimeFormat
+  New methods to output ordinal style dates, such as 2005-161.
+
 - DateTimeZone classes updated to latest data from the Olsen time zone database
 
 

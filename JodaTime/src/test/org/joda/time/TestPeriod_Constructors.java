@@ -1105,4 +1105,174 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(4, test.getMillis());
     }
 
+    //-----------------------------------------------------------------------
+    public void testFactoryYears() throws Throwable {
+        Period test = Period.years(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(6, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryMonths() throws Throwable {
+        Period test = Period.months(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(6, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryWeeks() throws Throwable {
+        Period test = Period.weeks(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(6, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryDays() throws Throwable {
+        Period test = Period.days(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(6, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryHours() throws Throwable {
+        Period test = Period.hours(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(6, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryMinutes() throws Throwable {
+        Period test = Period.minutes(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactorySeconds() throws Throwable {
+        Period test = Period.seconds(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(6, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryMillis() throws Throwable {
+        Period test = Period.millis(6);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(6, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactoryFieldDifference1() throws Throwable {
+        YearMonthDay start = new YearMonthDay(2005, 4, 9);
+        YearMonthDay end = new YearMonthDay(2004, 6, 7);
+        Period test = Period.fieldDifference(start, end);
+        assertEquals(PeriodType.yearMonthDay(), test.getPeriodType());
+        assertEquals(-1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(-2, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testFactoryFieldDifference2() throws Throwable {
+        YearMonthDay ymd = new YearMonthDay(2005, 4, 9);
+        try {
+            Period.fieldDifference(ymd, (ReadablePartial) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            Period.fieldDifference((ReadablePartial) null, ymd);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testFactoryFieldDifference3() throws Throwable {
+        YearMonthDay start = new YearMonthDay(2005, 4, 9);
+        TimeOfDay endTime = new TimeOfDay(12, 30, 40, 0);
+        try {
+            Period.fieldDifference(start, endTime);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testFactoryFieldDifference4() throws Throwable {
+        YearMonthDay start = new YearMonthDay(2005, 4, 9);
+        DateTimeFieldType[] types = new DateTimeFieldType[] {
+            DateTimeFieldType.year(),
+            DateTimeFieldType.monthOfYear(),
+            DateTimeFieldType.dayOfWeek(),
+        };
+        Partial end = new Partial(types, new int[] {1, 2, 3});
+        try {
+            Period.fieldDifference(start, end);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testFactoryFieldDifference5() throws Throwable {
+        YearMonthDay start = new YearMonthDay(2005, 4, 9);
+        DateTimeFieldType[] types = new DateTimeFieldType[] {
+            DateTimeFieldType.year(),
+            DateTimeFieldType.dayOfMonth(),
+            DateTimeFieldType.dayOfWeek(),
+        };
+        Partial end = new Partial(types, new int[] {1, 2, 3});
+        try {
+            Period.fieldDifference(start, end);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
 }

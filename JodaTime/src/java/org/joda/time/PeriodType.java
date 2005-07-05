@@ -16,7 +16,11 @@
 package org.joda.time;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.joda.time.field.FieldUtils;
 
@@ -47,6 +51,9 @@ import org.joda.time.field.FieldUtils;
 public class PeriodType implements Serializable {
     /** Serialization version */
     private static final long serialVersionUID = 2274324892792009998L;
+
+    /** Cache of all the known types. */
+    private static final Map cTypes = new HashMap(32);
 
     static int YEAR_INDEX = 0;
     static int MONTH_INDEX = 1;
@@ -479,6 +486,92 @@ public class PeriodType implements Serializable {
             );
             cMillis = type;
         }
+        return type;
+    }
+
+    /**
+     * Gets a period type that contains the duration types of the array.
+     * <p>
+     * Only the 8 standard duration field types are supported.
+     *
+     * @param types  the types to include in the array.
+     * @return the period type
+     */
+    public static synchronized PeriodType forFields(DurationFieldType[] types) {
+        if (types == null || types.length == 0) {
+            throw new IllegalArgumentException("Types array must not be null or empty");
+        }
+        for (int i = 0; i < types.length; i++) {
+            if (types[i] == null) {
+                throw new IllegalArgumentException("Types array must not contain null");
+            }
+        }
+        Map cache = cTypes;
+        if (cTypes.isEmpty()) {
+            cache.put(standard(), standard());
+            cache.put(yearMonthDayTime(), yearMonthDayTime());
+            cache.put(yearMonthDay(), yearMonthDay());
+            cache.put(yearWeekDayTime(), yearWeekDayTime());
+            cache.put(yearWeekDay(), yearWeekDay());
+            cache.put(yearDayTime(), yearDayTime());
+            cache.put(yearDay(), yearDay());
+            cache.put(dayTime(), dayTime());
+            cache.put(time(), time());
+            cache.put(years(), years());
+            cache.put(months(), months());
+            cache.put(weeks(), weeks());
+            cache.put(days(), days());
+            cache.put(hours(), hours());
+            cache.put(minutes(), minutes());
+            cache.put(seconds(), seconds());
+            cache.put(millis(), millis());
+        }
+        PeriodType inPartType = new PeriodType(null, types, null);
+        Object cached = cache.get(inPartType);
+        if (cached instanceof PeriodType) {
+            return (PeriodType) cached;
+        }
+        if (cached != null) {
+            throw new IllegalArgumentException("PeriodType does not support fields: " + cached);
+        }
+        PeriodType type = standard();
+        List list = new ArrayList(Arrays.asList(types));
+        if (list.remove(DurationFieldType.years()) == false) {
+            type = type.withYearsRemoved();
+        }
+        if (list.remove(DurationFieldType.months()) == false) {
+            type = type.withMonthsRemoved();
+        }
+        if (list.remove(DurationFieldType.weeks()) == false) {
+            type = type.withWeeksRemoved();
+        }
+        if (list.remove(DurationFieldType.days()) == false) {
+            type = type.withDaysRemoved();
+        }
+        if (list.remove(DurationFieldType.hours()) == false) {
+            type = type.withHoursRemoved();
+        }
+        if (list.remove(DurationFieldType.minutes()) == false) {
+            type = type.withMinutesRemoved();
+        }
+        if (list.remove(DurationFieldType.seconds()) == false) {
+            type = type.withSecondsRemoved();
+        }
+        if (list.remove(DurationFieldType.millis()) == false) {
+            type = type.withMillisRemoved();
+        }
+        if (list.size() > 0) {
+            cache.put(inPartType, list);
+            throw new IllegalArgumentException("PeriodType does not support fields: " + list);
+        }
+        // recheck cache in case initial array order was wrong
+        PeriodType checkPartType = new PeriodType(null, type.iTypes, null);
+        PeriodType checkedType = (PeriodType) cache.get(checkPartType);
+        if (checkedType != null) {
+            cache.put(inPartType, checkedType);
+            return checkedType;
+        }
+        cache.put(inPartType, type);
         return type;
     }
 

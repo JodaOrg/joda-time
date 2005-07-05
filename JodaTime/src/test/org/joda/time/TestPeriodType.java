@@ -445,6 +445,155 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testForFields1() throws Exception {
+        PeriodType type = PeriodType.forFields(new DurationFieldType[] {
+            DurationFieldType.years(),
+        });
+        assertSame(PeriodType.years(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+            DurationFieldType.months(),
+        });
+        assertSame(PeriodType.months(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+                DurationFieldType.weeks(),
+        });
+        assertSame(PeriodType.weeks(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+                DurationFieldType.days(),
+        });
+        assertSame(PeriodType.days(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+                DurationFieldType.hours(),
+        });
+        assertSame(PeriodType.hours(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+                DurationFieldType.minutes(),
+        });
+        assertSame(PeriodType.minutes(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+                DurationFieldType.seconds(),
+        });
+        assertSame(PeriodType.seconds(), type);
+        type = PeriodType.forFields(new DurationFieldType[] {
+                DurationFieldType.millis(),
+        });
+        assertSame(PeriodType.millis(), type);
+    }
+
+    public void testForFields2() throws Exception {
+        DurationFieldType[] types = new DurationFieldType[] {
+            DurationFieldType.years(),
+            DurationFieldType.hours(),
+        };
+        PeriodType type = PeriodType.forFields(types);
+        assertEquals(2, type.size());
+        assertEquals(DurationFieldType.years(), type.getFieldType(0));
+        assertEquals(DurationFieldType.hours(), type.getFieldType(1));
+        assertEquals("StandardNoMonthsNoWeeksNoDaysNoMinutesNoSecondsNoMillis", type.getName());
+        assertEquals("PeriodType[StandardNoMonthsNoWeeksNoDaysNoMinutesNoSecondsNoMillis]", type.toString());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.forFields(types));
+        assertEquals(false, type.equals(PeriodType.millis()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.forFields(types).hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
+        assertSameAfterSerialization(type);
+    }
+
+    public void testForFields3() throws Exception {
+        DurationFieldType[] types = new DurationFieldType[] {
+            DurationFieldType.months(),
+            DurationFieldType.weeks(),
+        };
+        PeriodType type = PeriodType.forFields(types);
+        assertEquals(2, type.size());
+        assertEquals(DurationFieldType.months(), type.getFieldType(0));
+        assertEquals(DurationFieldType.weeks(), type.getFieldType(1));
+        assertEquals("StandardNoYearsNoDaysNoHoursNoMinutesNoSecondsNoMillis", type.getName());
+        assertEquals("PeriodType[StandardNoYearsNoDaysNoHoursNoMinutesNoSecondsNoMillis]", type.toString());
+        assertEquals(true, type.equals(type));
+        assertEquals(true, type == PeriodType.forFields(types));
+        assertEquals(false, type.equals(PeriodType.millis()));
+        assertEquals(true, type.hashCode() == type.hashCode());
+        assertEquals(true, type.hashCode() == PeriodType.forFields(types).hashCode());
+        assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
+        assertSameAfterSerialization(type);
+    }
+
+    public void testForFields4() throws Exception {
+        DurationFieldType[] types = new DurationFieldType[] {
+            DurationFieldType.weeks(),
+            DurationFieldType.months(),
+        };
+        DurationFieldType[] types2 = new DurationFieldType[] {
+            DurationFieldType.months(),
+            DurationFieldType.weeks(),
+        };
+        PeriodType type = PeriodType.forFields(types);
+        PeriodType type2 = PeriodType.forFields(types2);
+        assertEquals(true, type == type2);
+    }
+
+    public void testForFields5() throws Exception {
+        DurationFieldType[] types = new DurationFieldType[] {
+            DurationFieldType.centuries(),
+            DurationFieldType.months(),
+        };
+        try {
+            PeriodType.forFields(types);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+        try {
+            PeriodType.forFields(types);  // repeated for test coverage of cache
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testForFields6() throws Exception {
+        DurationFieldType[] types = null;
+        try {
+            PeriodType.forFields(types);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+        
+        types = new DurationFieldType[0];
+        try {
+            PeriodType.forFields(types);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+        
+        types = new DurationFieldType[] {
+            null,
+            DurationFieldType.months(),
+        };
+        try {
+            PeriodType.forFields(types);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+        
+        types = new DurationFieldType[] {
+            DurationFieldType.months(),
+            null,
+        };
+        try {
+            PeriodType.forFields(types);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
     public void testMaskYears() throws Exception {
         PeriodType type = PeriodType.standard().withYearsRemoved();
         assertEquals(7, type.size());

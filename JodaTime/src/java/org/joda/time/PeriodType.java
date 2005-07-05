@@ -496,6 +496,7 @@ public class PeriodType implements Serializable {
      *
      * @param types  the types to include in the array.
      * @return the period type
+     * @since 1.1
      */
     public static synchronized PeriodType forFields(DurationFieldType[] types) {
         if (types == null || types.length == 0) {

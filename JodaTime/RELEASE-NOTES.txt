@@ -106,6 +106,14 @@ Enhancements since 1.0
   Added constructors to create a Period from two ReadablePartials, such as
   YearMonthDay or TimeOfDay
 
+- Period
+  Added factory to create a Period from two ReadablePartials using an
+  alternative, field-based, calculation
+
+- PeriodType
+  Added factory method forFields() to allow a PeriodType to be obtained
+  from any set of DurationFieldType objects
+
 - PeriodType
   Added three new period types - YearMonthDay, YearWeekDay and YearDay
   These complement the existing ones but exclude the time fields.

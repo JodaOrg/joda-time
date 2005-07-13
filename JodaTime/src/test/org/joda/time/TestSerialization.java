@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -151,9 +152,21 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, false);
     }
 
+    public void testSerializedMutableDateTimeProperty() throws Exception {
+        MutableDateTime.Property test = new MutableDateTime().hourOfDay();
+        loadAndCompare(test, "MutableDateTimeProperty.dat", false);
+        inlineCompare(test, false);
+    }
+
     public void testSerializedDateMidnight() throws Exception {
         DateMidnight test = new DateMidnight();
         loadAndCompare(test, "DateMidnight.dat", false);
+        inlineCompare(test, false);
+    }
+
+    public void testSerializedDateMidnightProperty() throws Exception {
+        DateMidnight.Property test = new DateMidnight().monthOfYear();
+        loadAndCompare(test, "DateMidnightProperty.dat", false);
         inlineCompare(test, false);
     }
 
@@ -393,6 +406,16 @@ public class TestSerialization extends TestCase {
 //        store(test, "DateTimeProperty.dat");
 //    }
 //
+//    public void testStoreSerializedMutableDateTimeProperty() throws Exception {
+//        MutableDateTime.Property test = new MutableDateTime().hourOfDay();
+//        store(test, "MutableDateTimeProperty.dat");
+//    }
+//
+//    public void testStoreSerializedDateMidnightProperty() throws Exception {
+//        DateMidnight.Property test = new DateMidnight().monthOfYear();
+//        store(test, "DateMidnightProperty.dat");
+//    }
+
 //    private void store(Serializable test, String filename) throws Exception {
 //        FileOutputStream fos = new FileOutputStream("src/testdata/" + filename);
 //        ObjectOutputStream oos = new ObjectOutputStream(fos);

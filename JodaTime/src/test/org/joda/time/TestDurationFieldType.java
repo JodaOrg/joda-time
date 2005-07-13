@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Constructor;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -145,8 +146,31 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.millis());
     }
 
+    public void test_other() throws Exception {
+        assertEquals(1, DurationFieldType.class.getDeclaredClasses().length);
+        Class cls = DurationFieldType.class.getDeclaredClasses()[0];
+        assertEquals(1, cls.getDeclaredConstructors().length);
+        Constructor con = cls.getDeclaredConstructors()[0];
+        Object[] params = new Object[] {"other", new Byte((byte) 128)};
+        DurationFieldType type = (DurationFieldType) con.newInstance(params);
+        
+        assertEquals("other", type.getName());
+        try {
+            type.getField(Chronology.getCopticUTC());
+            fail();
+        } catch (InternalError ex) {}
+        DurationFieldType result = doSerialization(type);
+        assertEquals(type.getName(), result.getName());
+        assertNotSame(type, result);
+    }
+
     //-----------------------------------------------------------------------
-    public void assertSerialization(DurationFieldType type) throws Exception {
+    private void assertSerialization(DurationFieldType type) throws Exception {
+        DurationFieldType result = doSerialization(type);
+        assertSame(type, result);
+    }
+
+    private DurationFieldType doSerialization(DurationFieldType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(type);
@@ -157,8 +181,7 @@ public class TestDurationFieldType extends TestCase {
         ObjectInputStream ois = new ObjectInputStream(bais);
         DurationFieldType result = (DurationFieldType) ois.readObject();
         ois.close();
-        
-        assertSame(type, result);
+        return result;
     }
 
 }

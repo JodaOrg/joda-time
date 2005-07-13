@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Constructor;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -279,8 +280,34 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.millisOfSecond());
     }
 
+    public void test_other() throws Exception {
+        assertEquals(1, DateTimeFieldType.class.getDeclaredClasses().length);
+        Class cls = DateTimeFieldType.class.getDeclaredClasses()[0];
+        assertEquals(1, cls.getDeclaredConstructors().length);
+        Constructor con = cls.getDeclaredConstructors()[0];
+        Object[] params = new Object[] {
+            "other", new Byte((byte) 128), DurationFieldType.hours(), DurationFieldType.months()};
+        DateTimeFieldType type = (DateTimeFieldType) con.newInstance(params);
+        
+        assertEquals("other", type.getName());
+        assertSame(DurationFieldType.hours(), type.getDurationType());
+        assertSame(DurationFieldType.months(), type.getRangeDurationType());
+        try {
+            type.getField(Chronology.getCopticUTC());
+            fail();
+        } catch (InternalError ex) {}
+        DateTimeFieldType result = doSerialization(type);
+        assertEquals(type.getName(), result.getName());
+        assertNotSame(type, result);
+    }
+
     //-----------------------------------------------------------------------
-    public void assertSerialization(DateTimeFieldType type) throws Exception {
+    private void assertSerialization(DateTimeFieldType type) throws Exception {
+        DateTimeFieldType result = doSerialization(type);
+        assertSame(type, result);
+    }
+
+    private DateTimeFieldType doSerialization(DateTimeFieldType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(type);
@@ -291,8 +318,7 @@ public class TestDateTimeFieldType extends TestCase {
         ObjectInputStream ois = new ObjectInputStream(bais);
         DateTimeFieldType result = (DateTimeFieldType) ois.readObject();
         ois.close();
-        
-        assertSame(type, result);
+        return result;
     }
 
 }

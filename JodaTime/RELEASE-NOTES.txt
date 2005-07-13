@@ -32,13 +32,14 @@ None
 
 Bug fixes since 1.0
 -------------------
+- Date and Time (ZoneInfoCompiler)
+  Greek summer time was incorrect due to a comment parsing bug.
+  This disabled DST (summer time) for Europe/Athens after 1980.
+
 - DateTimeFormat
   Parsing of two digit year by DateTimeFormat supports parsing of more or less
   than two digits, for compatibility with java.text.SimpleDateFormat. If not
   two digits or if sign character is present, then year is parsed as absolute.
-
-- ZoneInfoCompiler
-  Comment parsing bug disabled DST for Europe/Athens after 1980.
 
 - GJChronology
   Range duration field of dayOfMonth was not consistent with monthOfYear. This

@@ -24,10 +24,10 @@ Ideas longer term
 - DateTimeField.setNext(instant, value, howManyNext)
     Allows questions like what is the date next Tuesday
 
-- Partial
-    A full implementation of partial, where any field may be present,
-    and any field may be substituted for. Thus you might define DayOfWeek=Friday
-    and DayOfMonth=13, and then resolve to find the next date.
+- Partial matching
+    Add code to allow full matching of partials. Thus you might define
+    DayOfWeek=Friday and DayOfMonth=13, and then resolve to find the
+    next matching Friday the 13th.
 
 - DateHourMinute/DateHourMinuteSecond
     More instant variations

@@ -29,8 +29,16 @@ import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * Partial is an immutable partial datetime where the fields supported
- * are defined by the constructor.
+ * Partial is an immutable partial datetime supporting any set of datetime fields.
+ * <p>
+ * A Partial instance can be used to hold any combination of fields.
+ * The instance does not contain a time zone, so any datetime is local.
+ * <p>
+ * A Partial can be matched against an instant using {@link #isMatch(ReadableInstant)}.
+ * This method compares each field on this partial with those of the instant
+ * and determines if the partial matches the instant.
+ * Given this definition, an empty Partial instance represents any datetime
+ * and always matches.
  * <p>
  * Calculations on Partial are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
@@ -681,9 +689,10 @@ public final class Partial
      *
      * @param date  an date to check against, null means now
      * @return true if this date is after the date passed in
-     * @throws IllegalArgumentException if the specified YearMonthDay is null
+     * @throws IllegalArgumentException if the specified partial is null
+     * @throws ClassCastException if the partial has field types that don't match
      */
-    public boolean isAfter(Partial date) {
+    public boolean isAfter(ReadablePartial date) {
         if (date == null) {
             throw new IllegalArgumentException("Partial cannot be null");
         }
@@ -698,9 +707,10 @@ public final class Partial
      *
      * @param date  an date to check against, null means now
      * @return true if this date is before the date passed in
-     * @throws IllegalArgumentException if the specified YearMonthDay is null
+     * @throws IllegalArgumentException if the specified partial is null
+     * @throws ClassCastException if the partial has field types that don't match
      */
-    public boolean isBefore(Partial date) {
+    public boolean isBefore(ReadablePartial date) {
         if (date == null) {
             throw new IllegalArgumentException("Partial cannot be null");
         }
@@ -715,13 +725,36 @@ public final class Partial
      *
      * @param date  an date to check against, null means now
      * @return true if this date is the same as the date passed in
-     * @throws IllegalArgumentException if the specified YearMonthDay is null
+     * @throws IllegalArgumentException if the specified partial is null
+     * @throws ClassCastException if the partial has field types that don't match
      */
-    public boolean isEqual(Partial date) {
+    public boolean isEqual(ReadablePartial date) {
         if (date == null) {
             throw new IllegalArgumentException("Partial cannot be null");
         }
         return compareTo(date) == 0;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Does this partial match the specified instant.
+     * <p>
+     * A match occurs when all the fields of this partial are the same as the
+     * corresponding fields on the specified instant.
+     *
+     * @param instant  an instant to check against, null means now in default zone
+     * @return true if this partial matches the specified instant
+     */
+    public boolean isMatch(ReadableInstant instant) {
+        long millis = DateTimeUtils.getInstantMillis(instant);
+        Chronology chrono = DateTimeUtils.getInstantChronology(instant);
+        for (int i = 0; i < iTypes.length; i++) {
+            int value = iTypes[i].getField(chrono).get(millis);
+            if (value != iValues[i]) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //-----------------------------------------------------------------------

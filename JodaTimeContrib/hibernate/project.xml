@@ -118,6 +118,7 @@
     <dependency>
       <groupId>jta</groupId>
       <artifactId>jta</artifactId>
+      <url>http://java.sun.com/products/jta</url>
       <jar>jta-1_0_1B-classes.zip</jar>
     </dependency>
   </dependencies>

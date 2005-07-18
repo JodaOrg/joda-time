@@ -1,17 +1,14 @@
 
-Additional setup for test cases
--------------------------------
+Joda-Time Contributions area
+============================
+Joda-Time is a date and time library that vastly improves on the JDK.
 
-Joda uses maven for the build process. Maven tries to download all dependencies from ibiblio.
-Some of them are not hosted due to their licensing.
+The Joda-Time contributions area hosts additional code that may be of
+use when working with the main Joda-Time library.
+Each of these contributions is licensed using the Apache License v2.0.
 
-Thus you have to download them and put them in your local maven repository.
-e.g. on Linux YOUR_HOME/.maven/respository
+Please note that this code is not supported in the same way as the main
+Joda-Time code. As such it is possible that methods and classes may come
+and go over time without warning - you have been warned!
 
-
-Java Transaction API:
-
-http://java.sun.com/products/jta
-
-# mkdir ~/.maven/repository/jta/jars
-# cp jta-1_0_1B-classes.zip ~/.maven/repository/jta/jars
+See the README in each subproject for more details.

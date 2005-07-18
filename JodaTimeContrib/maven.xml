@@ -1,5 +1,0 @@
-<project default="java:jar"
-  xmlns:j="jelly:core"
-  xmlns:ant="jelly:ant">
-
-</project>

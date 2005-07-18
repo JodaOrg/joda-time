@@ -18,16 +18,16 @@
 
 
   <!-- The name of this component -->
-  <property name="component.name"          value="joda-time-contrib"/>
+  <property name="component.name"          value="joda-time-hibernate"/>
 
   <!-- The primary package name of this component -->
   <property name="component.package"       value="org.joda.time.contrib"/>
 
   <!-- The title of this component -->
-  <property name="component.title"         value="Joda date and time contributions"/>
+  <property name="component.title"         value="Joda date and time hibernate contribution"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="1.0"/>
+  <property name="component.version"       value="0.1"/>
 
   <!-- The current version number of this component -->
   <property name="component.fullname"      value="${component.name}-${component.version}"/>

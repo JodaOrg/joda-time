@@ -2,10 +2,10 @@
 <!-- You are strongly recommended to use ant for compiling and building -->
 <!-- We only use and test maven for website construction -->
 
-<project>
+<maven:project xmlns:maven="http://maven.apache.org/maven-v3_0_0.xsd">
   <pomVersion>3</pomVersion>
-  <id>joda-time-contrib</id>
-  <name>Joda time</name>
+  <id>joda-time-hibernate</id>
+  <name>Joda time Hibernate support</name>
   <groupId>joda-time</groupId>
   <currentVersion>1.0</currentVersion>
   <organization>
@@ -14,24 +14,24 @@
     <logo>/images/joda.png</logo>
   </organization>
   <inceptionYear>2002</inceptionYear>
-  <package>org.joda.time.contrib</package>
+  <package>org.joda.time.contrib.hibernate</package>
   <logo>/images/jodatime.png</logo>
 
   <description>
-    User contributions to Joda-Time
+    Contribution to Joda-Time that adds Hibernate support
   </description>
-  <shortDescription>Joda time contrib</shortDescription>
+  <shortDescription>Joda time Hibernate support</shortDescription>
   <url>http://joda-time.sourceforge.net</url>
 
   <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
 
   <siteAddress>shell.sourceforge.net</siteAddress>
-  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/</siteDirectory>
+  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</siteDirectory>
   <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib</connection>
-    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/hibernate</connection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/hibernate/</url>
   </repository>
 
   <mailingLists>
@@ -45,45 +45,10 @@
 
   <developers>
     <developer>
-      <name>Stephen Colebourne</name>
-      <id>scolebourne</id>
-      <email>scolebourne@joda.org</email>
-      <organization>SITA ATS Ltd</organization>
-      <roles>
-        <role>Project Lead</role>
-      </roles>
-    </developer>
-    <developer>
-      <name>Brian S O'Neill</name>
-      <id>broneill</id>
-      <email>broneill@users.sourceforge.net</email>
-      <organization></organization>
-      <roles>
-        <role>Senior Developer</role>
-      </roles>
+      <name>Mario Ivankovits</name>
+      <id>imario</id>
     </developer>
   </developers>
-
-<!--  <contributors>
-    <contributor>
-      <name>Guy Allard</name>
-    </contributor>Fredrik Borgh
-    <contributor>
-      <name>Fredrik Borgh</name>
-    </contributor>
-    <contributor>
-      <name>Sean Geoghegan</name>
-    </contributor>
-    <contributor>
-      <name>Ashish Katyal</name>
-    </contributor>
-    <contributor>
-      <name>Al Major</name>
-    </contributor>
-    <contributor>
-      <name>Kandarp Shah</name>
-    </contributor>
-  </contributors>-->
 
   <dependencies>
     <dependency>
@@ -162,7 +127,7 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
     <unitTest>
       <includes>
-        <include>org/joda/time/contrib/**/Test*.java</include>
+        <include>org/joda/time/contrib/hibernate/**/Test*.java</include>
       </includes>
     </unitTest>
   </build>
@@ -185,4 +150,4 @@
      <!--report>maven-tasklist-plugin</report-->
   </reports>
 
-</project>
+</maven:project>

@@ -1,6 +1,5 @@
 package org.joda.time.contrib.hibernate;
 
-import org.joda.time.DateTime;
 import org.joda.time.YearMonthDay;
 
 import java.io.Serializable;

@@ -26,9 +26,9 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @since 1.0
+ * @since 1.1, refactored from GJDayOfYearDateTimeField
  */
-final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
+final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
 
     private static final long serialVersionUID = -6821236822336841037L;
 
@@ -37,7 +37,7 @@ final class GJDayOfYearDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Restricted constructor
      */
-    GJDayOfYearDateTimeField(BaseGJChronology chronology, DurationField days) {
+    BasicDayOfYearDateTimeField(BaseGJChronology chronology, DurationField days) {
         super(DateTimeFieldType.dayOfYear(), days);
         iChronology = chronology;
     }

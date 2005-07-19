@@ -27,9 +27,9 @@ import org.joda.time.field.PreciseDurationDateTimeField;
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @since 1.0
+ * @since 1.1, refactored from GJWeekOfWeekyearDateTimeField
  */
-final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
+final class BasicWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
 
     private static final long serialVersionUID = -1587436826395135328L;
 
@@ -38,7 +38,7 @@ final class GJWeekOfWeekyearDateTimeField extends PreciseDurationDateTimeField {
     /**
      * Restricted constructor
      */
-    GJWeekOfWeekyearDateTimeField(BaseGJChronology chronology, DurationField weeks) {
+    BasicWeekOfWeekyearDateTimeField(BaseGJChronology chronology, DurationField weeks) {
         super(DateTimeFieldType.weekOfWeekyear(), weeks);
         iChronology = chronology;
     }

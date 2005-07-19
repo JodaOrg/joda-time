@@ -27,10 +27,9 @@ import org.joda.time.field.ImpreciseDateTimeField;
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @since 1.0
- * @see org.joda.time.DateTimeField
+ * @since 1.1, refactored from GJWeekyearDateTimeField
  */
-final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
+final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
     
     private static final long serialVersionUID = 6215066916806820644L;
 
@@ -41,7 +40,7 @@ final class GJWeekyearDateTimeField extends ImpreciseDateTimeField {
     /**
      * Restricted constructor
      */
-    GJWeekyearDateTimeField(BaseGJChronology chronology) {
+    BasicWeekyearDateTimeField(BaseGJChronology chronology) {
         super(DateTimeFieldType.weekyear(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }

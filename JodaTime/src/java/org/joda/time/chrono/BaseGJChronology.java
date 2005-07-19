@@ -279,10 +279,10 @@ public abstract class BaseGJChronology extends AssembledChronology {
         fields.era = new GJEraDateTimeField(this);
         fields.dayOfWeek = new GJDayOfWeekDateTimeField(this, fields.days);
         fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);
-        fields.dayOfYear = new GJDayOfYearDateTimeField(this, fields.days);
+        fields.dayOfYear = new BasicDayOfYearDateTimeField(this, fields.days);
         fields.monthOfYear = new GJMonthOfYearDateTimeField(this);
-        fields.weekyear = new GJWeekyearDateTimeField(this);
-        fields.weekOfWeekyear = new GJWeekOfWeekyearDateTimeField(this, fields.weeks);
+        fields.weekyear = new BasicWeekyearDateTimeField(this);
+        fields.weekOfWeekyear = new BasicWeekOfWeekyearDateTimeField(this, fields.weeks);
         
         field = new RemainderDateTimeField(
             fields.weekyear, DateTimeFieldType.weekyearOfCentury(), 100);

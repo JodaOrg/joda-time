@@ -26,7 +26,7 @@ import org.joda.time.field.ImpreciseDateTimeField;
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @since 1.0
+ * @since 1.1, refactored from GJYearDateTimeField
  */
 class BasicYearDateTimeField extends ImpreciseDateTimeField {
 

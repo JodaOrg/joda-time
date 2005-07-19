@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name='jodatime-tags' default='dist'>
+ <property name="jodatime-tags.version" value="0.1"/>
+ <property name="build.dir" value="build"/>
+ <property name="lib.dir" value="lib"/>
+
+ <path id='compile-classpath'>
+  <fileset dir='${lib.dir}'>
+   <include name='*.jar'/>
+  </fileset>
+ </path>
+
+ <target name='compile'>
+  <mkdir dir='${build.dir}'/>
+  <javac srcdir='src/java' destdir='${build.dir}' 
+    classpathref='compile-classpath' debug='true'/>
+ </target>
+
+ <target name='clean'>
+  <delete dir='${build.dir}'/>
+ </target>
+
+ <target name='dist' depends='compile'>
+  <copy todir="${build.dir}">
+   <fileset dir="src/java">
+    <include name="**/*.properties"/>
+   </fileset>
+  </copy>
+
+  <mkdir dir='${build.dir}/META-INF'/>
+  <copy todir="${build.dir}/META-INF">
+   <fileset dir="src/conf">
+    <include name="*.tld"/>
+   </fileset>
+  </copy>
+
+  <jar jarfile="joda-time-tags.jar">
+   <fileset dir="${build.dir}"/>
+   <manifest>
+    <attribute name="Implementation-Title" value="Joda Time Tags"/>
+    <attribute name="Implementation-Version" value="${jodatime-tags.version}"/>
+   </manifest>         
+  </jar>        
+ </target>
+
+</project>
+    
+

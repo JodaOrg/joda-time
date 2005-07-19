@@ -209,6 +209,13 @@ public class TestDateTimeZone extends TestCase {
         assertEquals((-2L * DateTimeConstants.MILLIS_PER_HOUR),
                 zone.getOffset(TEST_TIME_SUMMER));
         
+        zone = DateTimeZone.forID("-07:05:34.0");
+        assertEquals("-07:05:34", zone.getID());
+        assertEquals((-7L * DateTimeConstants.MILLIS_PER_HOUR) +
+                    (-5L * DateTimeConstants.MILLIS_PER_MINUTE) +
+                    (-34L * DateTimeConstants.MILLIS_PER_SECOND),
+                    zone.getOffset(TEST_TIME_SUMMER));
+        
         try {
             DateTimeZone.forID("SST");
             fail();

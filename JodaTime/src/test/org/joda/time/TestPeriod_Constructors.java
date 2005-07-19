@@ -1213,7 +1213,12 @@ public class TestPeriod_Constructors extends TestCase {
     //-----------------------------------------------------------------------
     public void testFactoryFieldDifference1() throws Throwable {
         YearMonthDay start = new YearMonthDay(2005, 4, 9);
-        YearMonthDay end = new YearMonthDay(2004, 6, 7);
+        DateTimeFieldType[] types = new DateTimeFieldType[] {
+            DateTimeFieldType.year(),
+            DateTimeFieldType.monthOfYear(),
+            DateTimeFieldType.dayOfMonth(),
+        };
+        Partial end = new Partial(types, new int[] {2004, 6, 7});
         Period test = Period.fieldDifference(start, end);
         assertEquals(PeriodType.yearMonthDay(), test.getPeriodType());
         assertEquals(-1, test.getYears());
@@ -1248,12 +1253,12 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testFactoryFieldDifference4() throws Throwable {
-        YearMonthDay start = new YearMonthDay(2005, 4, 9);
         DateTimeFieldType[] types = new DateTimeFieldType[] {
             DateTimeFieldType.year(),
             DateTimeFieldType.monthOfYear(),
             DateTimeFieldType.dayOfWeek(),
         };
+        YearMonthDay start = new YearMonthDay(2005, 4, 9);
         Partial end = new Partial(types, new int[] {1, 2, 3});
         try {
             Period.fieldDifference(start, end);
@@ -1262,12 +1267,12 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testFactoryFieldDifference5() throws Throwable {
-        YearMonthDay start = new YearMonthDay(2005, 4, 9);
         DateTimeFieldType[] types = new DateTimeFieldType[] {
             DateTimeFieldType.year(),
             DateTimeFieldType.dayOfMonth(),
             DateTimeFieldType.dayOfWeek(),
         };
+        Partial start = new Partial(types, new int[] {1, 2, 3});
         Partial end = new Partial(types, new int[] {1, 2, 3});
         try {
             Period.fieldDifference(start, end);

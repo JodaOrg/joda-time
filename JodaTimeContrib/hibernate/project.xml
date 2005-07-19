@@ -131,6 +131,14 @@
         <include>org/joda/time/contrib/hibernate/**/Test*.java</include>
       </includes>
     </unitTest>
+    <resources>
+      <resource>
+        <targetPath>meta-inf</targetPath>
+        <includes>
+          <include>NOTICE.txt</include>
+        </includes>
+      </resource>
+    </resources>
   </build>
 
   <reports>

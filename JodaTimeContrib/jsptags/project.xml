@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You are strongly recommended to use ant for compiling and building -->
+<!-- We only use and test maven for website construction -->
+
+<project xmlns="http://maven.apache.org/maven-v3_0_0.xsd">
+  <pomVersion>3</pomVersion>
+  <id>joda-time-jsptags</id>
+  <groupId>joda-time</groupId>
+  <name>Joda time JSP tags support</name>
+  <currentVersion>0.5</currentVersion>
+  <shortDescription>Joda time JSP tags support</shortDescription>
+  <description>
+    Contribution to Joda-Time that adds JSP tags support
+  </description>
+
+  <url>http://joda-time.sourceforge.net/jsptags</url>
+  <logo>/images/jodatime.png</logo>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
+  <inceptionYear>2005</inceptionYear>
+
+  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/jsptags</siteDirectory>
+
+  <mailingLists>
+    <mailingList>
+      <name>Joda Interest list</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Jim Newsham</name>
+      <id>jimnewsham</id>
+      <email></email>
+      <roles>
+        <role>Lead developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Stephen Colebourne</name>
+      <id>scolebourne</id>
+      <email></email>
+      <roles>
+        <role>Website and Release manager</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/jsptags</connection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/jsptags/</url>
+  </repository>
+
+  <organization>
+    <name>Joda.org</name>
+    <url>http://www.joda.org</url>
+    <logo>/images/joda.png</logo>
+  </organization>
+  <package>org.joda.time.contrib.jsptags</package>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <unitTest>
+      <includes>
+        <include>org/joda/time/contrib/jsptags/**/Test*.java</include>
+      </includes>
+    </unitTest>
+    <resources>
+      <resource>
+        <targetPath>meta-inf</targetPath>
+        <includes>
+          <include>NOTICE.txt</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jspapi</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+  </dependencies>
+
+  <reports>
+     <report>maven-changelog-plugin</report>
+     <report>maven-changes-plugin</report>
+     <report>maven-checkstyle-plugin</report>
+     <!-- <report>maven-clover-plugin</report> -->
+     <report>maven-jcoverage-plugin</report>
+     <report>maven-developer-activity-plugin</report>
+     <report>maven-file-activity-plugin</report>
+     <report>maven-javadoc-plugin</report>
+     <!-- <report>maven-jellydoc-plugin</report> -->
+     <report>maven-junit-report-plugin</report>
+     <report>maven-jxr-plugin</report>
+     <report>maven-license-plugin</report>
+     <!--report>maven-linkcheck-plugin</report-->
+     <!--report>maven-statcvs-plugin</report-->
+     <!--report>maven-tasklist-plugin</report-->
+  </reports>
+
+</project>

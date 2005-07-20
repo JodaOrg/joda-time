@@ -127,7 +127,7 @@ public abstract class FormatSupport extends TagSupport {
     }
 
     if (var != null) {
-      pageContext.setAttribute(var, formatted, scope);	
+      pageContext.setAttribute(var, formatted, scope);
     } 
     else {
       try {

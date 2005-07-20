@@ -40,7 +40,7 @@ import org.joda.time.format.DateTimeFormatter;
 public abstract class ParseDateTimeSupport extends BodyTagSupport {
 
   protected String value;                      // 'value' attribute
-  protected boolean valueSpecified;	       // status
+  protected boolean valueSpecified;         // status
   protected String pattern;                    // 'pattern' attribute
   protected String style;                      // 'style' attribute
   protected DateTimeZone dateTimeZone;         // 'dateTimeZone' attribute
@@ -135,7 +135,7 @@ public abstract class ParseDateTimeSupport extends BodyTagSupport {
     }
 
     if (var != null) {
-      pageContext.setAttribute(var, parsed, scope);	
+      pageContext.setAttribute(var, parsed, scope);  
     }
     else {
       try {

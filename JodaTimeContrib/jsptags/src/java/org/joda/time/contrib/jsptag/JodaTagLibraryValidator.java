@@ -117,12 +117,12 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
   //*********************************************************************
   // Validation and configuration state (protected)
 
-  private String uri;		// our taglib's uri (as passed by JSP container on XML View)
-  private String prefix;	// our taglib's prefix
-  private Vector messageVector;	// temporary error messages
-  private Map config;		// configuration (Map of Sets)
-  private boolean failed;	// have we failed >0 times?
-  private String lastElementId;	// the last element we've seen
+  private String uri;    // our taglib's uri (as passed by JSP container on XML View)
+  private String prefix;  // our taglib's prefix
+  private Vector messageVector;  // temporary error messages
+  private Map config;    // configuration (Map of Sets)
+  private boolean failed;  // have we failed >0 times?
+  private String lastElementId;  // the last element we've seen
 
   //*********************************************************************
   // Constructor and lifecycle management
@@ -406,7 +406,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
     }
 
     public void characters(char[] ch, int start, int length) {
-      bodyNecessary = false;		// body is no longer necessary!
+      bodyNecessary = false;    // body is no longer necessary!
 
       // ignore strings that are just whitespace
       String s = new String(ch, start, length).trim();
@@ -430,7 +430,7 @@ public class JodaTagLibraryValidator extends TagLibraryValidator {
       if (bodyNecessary) {
         fail(Resources.getMessage("TLV_MISSING_BODY", lastElementName));
       }
-      bodyIllegal = false;	// reset: we've left the tag
+      bodyIllegal = false;  // reset: we've left the tag
 
       // update our depth
       depth--;

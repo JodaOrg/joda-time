@@ -17,9 +17,11 @@
 
 package org.joda.time.contrib.jsptag;
 
-import org.joda.time.DateTimeZone;
 import java.util.Locale;
+
 import javax.servlet.jsp.JspTagException;
+
+import org.joda.time.DateTimeZone;
 
 /**
  * <p>A handler for &lt;parseDate&gt; that supports rtexprvalue-based

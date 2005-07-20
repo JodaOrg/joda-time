@@ -17,16 +17,10 @@
 
 package org.joda.time.contrib.jsptag;
 
-import java.util.Set;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.StringTokenizer;
 import java.util.Vector;
-import javax.servlet.jsp.JspException;
+
 import javax.servlet.jsp.tagext.PageData;
 import javax.servlet.jsp.tagext.TagData;
 import javax.servlet.jsp.tagext.TagLibraryValidator;
@@ -34,6 +28,7 @@ import javax.servlet.jsp.tagext.ValidationMessage;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

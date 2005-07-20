@@ -17,18 +17,20 @@
 
 package org.joda.time.contrib.jsptag;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.util.Locale;
+
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.JspTagException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.TagSupport;
+
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.util.Locale;
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.JspTagException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.TagSupport;
 
 /**
  * Support for tag handlers for &lt;formatDate&gt;, the date and time

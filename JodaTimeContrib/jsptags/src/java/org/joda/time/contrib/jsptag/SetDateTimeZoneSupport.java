@@ -17,11 +17,12 @@
 
 package org.joda.time.contrib.jsptag;
 
-import org.joda.time.DateTimeZone;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.jstl.core.Config;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import org.joda.time.DateTimeZone;
 
 /**
  * Support for tag handlers for &lt;setDateTimeZone&gt;.

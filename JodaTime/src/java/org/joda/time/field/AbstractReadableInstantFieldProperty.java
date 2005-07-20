@@ -128,7 +128,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @return the current text value
      * @see DateTimeField#getAsText
      */
-    public final String getAsText() {
+    public String getAsText() {
         return getAsText(null);
     }
 
@@ -159,7 +159,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @return the current text value
      * @see DateTimeField#getAsShortText
      */
-    public final String getAsShortText() {
+    public String getAsShortText() {
         return getAsShortText(null);
     }
 

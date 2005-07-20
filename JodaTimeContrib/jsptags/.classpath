@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<classpath>
+  <classpathentry excluding="" kind="src" path="src/java">
+  </classpathentry>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+  </classpathentry>
+  <classpathentry kind="var" path="MAVEN_REPO/joda-time/jars/joda-time-1.0.jar">
+  </classpathentry>
+  <classpathentry kind="var" path="MAVEN_REPO/servletapi/jars/servlet-api-2.4.jar">
+  </classpathentry>
+  <classpathentry kind="var" path="MAVEN_REPO/jspapi/jars/jsp-api-2.0.jar">
+  </classpathentry>
+  <classpathentry kind="var" path="MAVEN_REPO/jstl/jars/jstl-1.1.2.jar">
+  </classpathentry>
+  <classpathentry kind="output" path="target/classes">
+  </classpathentry>
+</classpath>

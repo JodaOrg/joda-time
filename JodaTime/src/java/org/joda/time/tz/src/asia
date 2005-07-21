@@ -1,10 +1,10 @@
-# @(#)asia	7.82
+# @(#)asia	7.83
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
 # tz@elsie.nci.nih.gov for general use in the future).
 
-# From Paul Eggert <eggert@twinsun.com> (1999-03-22):
+# From Paul Eggert (1999-03-22):
 #
 # A good source for time zone historical data outside the U.S. is
 # Thomas G. Shanks, The International Atlas (5th edition),
@@ -190,7 +190,7 @@ Zone	Asia/Phnom_Penh	6:59:40 -	LMT	1906 Jun  9
 # CHINA               8 H  AHEAD OF UTC  ALL OF CHINA, INCL TAIWAN
 # CHINA               9 H  AHEAD OF UTC  APR 17 - SEP 10
 
-# From Paul Eggert <eggert@twinsun.com> (1995-12-19):
+# From Paul Eggert (1995-12-19):
 # Shanks writes that China has had a single time zone since 1980 May 1,
 # observing summer DST from 1986 through 1991; this contradicts Devine's
 # note about Time magazine, though apparently _something_ happened in 1986.
@@ -329,13 +329,13 @@ Zone	Asia/Nicosia	2:13:28 -	LMT	1921 Nov 14
 Link	Asia/Nicosia	Europe/Nicosia
 
 # Georgia
-# From Paul Eggert <eggert@twinsun.com> (1994-11-19):
+# From Paul Eggert (1994-11-19):
 # Today's _Economist_ (p 60) reports that Georgia moved its clocks forward
 # an hour recently, due to a law proposed by Zurab Murvanidze,
 # an MP who went on a hunger strike for 11 days to force discussion about it!
 # We have no details, but we'll guess they didn't move the clocks back in fall.
 #
-# From Mathew Englander <mathew@io.org>, quoting AP (1996-10-23 13:05-04):
+# From Mathew Englander, quoting AP (1996-10-23 13:05-04):
 # Instead of putting back clocks at the end of October, Georgia
 # will stay on daylight savings time this winter to save energy,
 # President Eduard Shevardnadze decreed Wednesday.
@@ -564,7 +564,7 @@ Zone	Asia/Tehran	3:25:44	-	LMT	1916
 
 # Iraq
 #
-# From Jonathan Lennox <lennox@cs.columbia.edu> (2000-06-12):
+# From Jonathan Lennox (2000-06-12):
 # An article in this week's Economist ("Inside the Saddam-free zone", p. 50 in
 # the U.S. edition) on the Iraqi Kurds contains a paragraph:
 # "The three northern provinces ... switched their clocks this spring and
@@ -663,7 +663,7 @@ Rule	Zion	1987	only	-	Sep	13	0:00	0	S
 Rule	Zion	1988	only	-	Apr	 9	0:00	1:00	D
 Rule	Zion	1988	only	-	Sep	 3	0:00	0	S
 
-# From Ephraim Silverberg <ephraim@cs.huji.ac.il>
+# From Ephraim Silverberg
 # (1997-03-04, 1998-03-16, 1998-12-28, 2000-01-17, 2000-07-25, 2004-12-22,
 # and 2005-02-17):
 
@@ -843,7 +843,7 @@ Zone	Asia/Jerusalem	2:20:56 -	LMT	1880
 
 # `9:00' and `JST' is from Guy Harris.
 
-# From Paul Eggert <eggert@twinsun.com> (1995-03-06):
+# From Paul Eggert (1995-03-06):
 # Today's _Asahi Evening News_ (page 4) reports that Japan had
 # daylight saving between 1948 and 1951, but ``the system was discontinued
 # because the public believed it would lead to longer working hours.''
@@ -932,7 +932,7 @@ Zone	Asia/Amman	2:23:44 -	LMT	1931
 
 # Kazakhstan
 # From Paul Eggert (1996-11-22):
-# Andrew Evtichov <evti@chevron.com> (1996-04-13) writes that Kazakhstan
+# Andrew Evtichov (1996-04-13) writes that Kazakhstan
 # stayed in sync with Moscow after 1990, and that Aqtobe (formerly Aktyubinsk)
 # and Aqtau (formerly Shevchenko) are the largest cities in their zones.
 # Guess that Aqtau and Aqtobe diverged in 1995, since that's the first time
@@ -1182,7 +1182,7 @@ Zone	Indian/Maldives	4:54:00 -	LMT	1880	# Male
 #
 # [The province of Selenge is omitted from the above lists.]
 
-# From Ganbold Ts., Ulaanbaatar <ganbold@micom.mng.net> (2004-04-17):
+# From Ganbold Ts., Ulaanbaatar (2004-04-17):
 # Daylight saving occurs at 02:00 local time last Saturday of March.
 # It will change back to normal at 02:00 local time last Saturday of
 # September.... As I remember this rule was changed in 2001.
@@ -1282,7 +1282,7 @@ Zone	Asia/Karachi	4:28:12 -	LMT	1907
 
 # Palestine
 
-# From Amos Shapir <amos@nsof.co.il> (1998-02-15):
+# From Amos Shapir (1998-02-15):
 #
 # From 1917 until 1948-05-15, all of Palestine, including the parts now
 # known as the Gaza Strip and the West Bank, was under British rule.
@@ -1544,7 +1544,7 @@ Zone	Asia/Tashkent	4:37:12 -	LMT	1924 May  2
 			5:00	-	UZT
 
 # Vietnam
-# From Paul Eggert <eggert@twinsun.com> (1993-11-18):
+# From Paul Eggert (1993-11-18):
 # Saigon's official name is Thanh-Pho Ho Chi Minh, but it's too long.
 # We'll stick with the traditional name for now.
 # From Shanks:

@@ -1,4 +1,4 @@
-# @(#)antarctica	7.24
+# @(#)antarctica	7.25
 
 # From Paul Eggert (1999-11-15):
 # To keep things manageable, we list only locations occupied year-round; see
@@ -157,7 +157,7 @@ Zone Antarctica/DumontDUrville 0 -	zzz	1947
 # From Hideyuki Suzuki (1999-02-06):
 # In all Japanese stations, +0300 is used as the standard time.  [See]
 # <a href="http://www.crl.go.jp/uk/uk201/basyo.htm">[reference in Japanese]</a>
-# and information from KAMO Hiroyasu <wd@ics.nara-wu.ac.jp>.
+# and information from KAMO Hiroyasu.
 #
 # Syowa station, which is the first antarctic station of Japan,
 # was established on 1957-01-29.  Since Syowa station is still the main
@@ -271,7 +271,7 @@ Zone Antarctica/Rothera	0	-	zzz	1976 Dec  1
 #
 # Palmer, Anvers Island, since 1965 (moved 2 miles in 1968)
 #
-# From Ethan Dicks <erd@mcmsun5.mcmurdo.gov> (1996-10-06):
+# From Ethan Dicks (1996-10-06):
 # It keeps the same time as Punta Arenas, Chile, because, just like us
 # and the South Pole, that's the other end of their supply line....
 # I verified with someone who was there that since 1980,

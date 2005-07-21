@@ -1,4 +1,4 @@
-# @(#)australasia	7.71
+# @(#)australasia	7.72
 # This file also includes Pacific islands.
 
 # Notes are at the end of this file
@@ -38,7 +38,7 @@ Zone Australia/Perth	 7:43:24 -	LMT	1895 Dec
 			 8:00	-	WST
 # Queensland
 #
-# From Alex Livingston <alex@agsm.unsw.edu.au> (1996-11-01):
+# From Alex Livingston (1996-11-01):
 # I have heard or read more than once that some resort islands off the coast
 # of Queensland chose to keep observing daylight-saving time even after
 # Queensland ceased to.
@@ -488,7 +488,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # go ahead and edit the file (and please send any changes to
 # tz@elsie.nci.nih.gov for general use in the future).
 
-# From Paul Eggert <eggert@twinsun.com> (1999-10-29):
+# From Paul Eggert (1999-10-29):
 # A good source for time zone historical data outside the U.S. is
 # Thomas G. Shanks, The International Atlas (5th edition),
 # San Diego: ACS Publications, Inc. (1999).
@@ -645,13 +645,13 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 
 # From Paul Eggert (1995-12-19):
 # Shanks reports 2:00 for all autumn changes in Australia and New Zealand.
-# Mark Prior <mrp@itd.adelaide.edu.au> writes that his newspaper
+# Mark Prior writes that his newspaper
 # reports that NSW's fall 1995 change will occur at 2:00,
 # but Robert Elz says it's been 3:00 in Victoria since 1970
 # and perhaps the newspaper's `2:00' is referring to standard time.
 # For now we'll continue to assume 2:00s for changes since 1960.
 
-# From Eric Ulevik <eau@zip.com.au> (1998-01-05):
+# From Eric Ulevik (1998-01-05):
 #
 # Here are some URLs to Australian time legislation. These URLs are stable,
 # and should probably be included in the data file. There are probably more
@@ -916,7 +916,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 
 # From Arthur David Olson:
 # New South Wales and subjurisdictions have their own ideas of a fun time.
-# Based on law library research by John Mackin (john@basser.cs.su.oz),
+# Based on law library research by John Mackin,
 # who notes:
 #	In Australia, time is not legislated federally, but rather by the
 #	individual states.  Thus, while such terms as ``Eastern Standard Time''
@@ -936,7 +936,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # Lawlink NSW: Daylight Saving in New South Wales
 # </a>
 
-# From Eric Ulevik <eau@ozemail.com.au> (1999-05-26):
+# From Eric Ulevik (1999-05-26):
 # DST will start in NSW on the last Sunday of August, rather than the usual
 # October in 2000.  [See: Matthew Moore,
 # <a href="http://www.smh.com.au/news/9905/26/pageone/pageone4.html">
@@ -1070,7 +1070,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 
 # From Paul Eggert (1995-12-19);
 # Shanks reports 2:00 for all autumn changes in Australia and New Zealand.
-# Robert Uzgalis <buz@cs.aukuni.ac.nz> writes that the New Zealand Daylight
+# Robert Uzgalis writes that the New Zealand Daylight
 # Savings Time Order in Council dated 1990-06-18 specifies 2:00 standard
 # time on both the first Sunday in October and the third Sunday in March.
 # As with Australia, we'll assume the tradition is 2:00s, not 2:00.
@@ -1149,7 +1149,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 
 # Micronesia
 
-# Alan Eugene Davis <adavis@kuentos.guam.net> writes (1996-03-16),
+# Alan Eugene Davis writes (1996-03-16),
 # ``I am certain, having lived there for the past decade, that "Truk"
 # (now properly known as Chuuk) ... is in the time zone GMT+10.''
 #
@@ -1257,10 +1257,10 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # October to March, which has won approval in principle from the Tongan
 # Government.
 
-# From Steffen Thorsen [straen@thorsen.priv.no] (1999-09-09):
+# From Steffen Thorsen (1999-09-09):
 # * Tonga will introduce DST in November
 #
-# I was given this link by John Letts <johnletts@earthlink.net>:
+# I was given this link by John Letts:
 # <a hef="http://news.bbc.co.uk/hi/english/world/asia-pacific/newsid_424000/424764.stm">
 # http://news.bbc.co.uk/hi/english/world/asia-pacific/newsid_424000/424764.stm
 # </a>
@@ -1270,7 +1270,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # of UTC as well, but as far as I know Fiji will only be 13 hours ahead
 # (12 + 1 hour DST).
 
-# From Arthur David Olson [arthur_david_olson@nih.gov] (1999-09-20):
+# From Arthur David Olson (1999-09-20):
 # According to <a href="http://www.tongaonline.com/news/sept1799.html>
 # http://www.tongaonline.com/news/sept1799.html
 # </a>:

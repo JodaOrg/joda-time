@@ -1,4 +1,4 @@
-# @(#)northamerica	7.74
+# @(#)northamerica	7.75
 # also includes Central America and the Caribbean
 
 # This data is by no means authoritative; if you think you know better,
@@ -83,7 +83,7 @@
 # Time' instead of the old familiar 'Eastern War Time.'  Peace is wonderful."
 # </a> (August 1945) by way of confirmation.
 
-# From Joseph Gallant <notquite@hotmail.com>, citing
+# From Joseph Gallant citing
 # George H. Douglas, _The Early Days of Radio Broadcasting_ (1987):
 # At 7 P.M. (Eastern War Time) [on 1945-08-14], the networks were set
 # to switch to London for Attlee's address, but the American people
@@ -737,7 +737,7 @@ Link	Pacific/Honolulu	HST
 
 # Canada
 
-# From Alain LaBont<e'> <ALB@immedia.ca> (1994-11-14):
+# From Alain LaBont<e'> (1994-11-14):
 # I post here the time zone abbreviations standardized in Canada
 # for both English and French in the CAN/CSA-Z234.4-89 standard....
 #
@@ -1151,7 +1151,7 @@ Zone America/Winnipeg	-6:28:36 -	LMT	1887 Jul 16
 # Matthews and Vincent (1998) write that Denare Beach and Creighton
 # are like Winnipeg, in violation of Saskatchewan law.
 
-# From W. Jones <jones@skdad.usask.ca> (1992-11-06):
+# From W. Jones (1992-11-06):
 # The. . .below is based on information I got from our law library, the
 # provincial archives, and the provincial Community Services department.
 # A precise history would require digging through newspaper archives, and
@@ -1269,7 +1269,7 @@ Zone America/Dawson_Creek -8:00:56 -	LMT	1884
 
 # From Paul Eggert (1999-10-29):
 # Dawson switched to PST in 1973.  Inuvik switched to MST in 1979.
-# Mathew Englander <mathew@io.org> (1996-10-07) gives the following refs:
+# Mathew Englander (1996-10-07) gives the following refs:
 #	* 1967. Paragraph 28(34)(g) of the Interpretation Act, S.C. 1967-68,
 #	c. 7 defines Yukon standard time as UTC-9.  This is still valid;
 #	see Interpretation Act, R.S.C. 1985, c. I-21, s. 35(1).
@@ -1448,7 +1448,7 @@ Zone America/Dawson	-9:17:40 -	LMT	1900 Aug 20
 # Shanks gives 1942-04-01 instead of 1942-04-24, and omits the 1981
 # and 1988 DST experiments.  Go with spin.com.mx.
 
-# From Alan Perry <alan.perry@eng.sun.com> (1996-02-15):
+# From Alan Perry (1996-02-15):
 # A guy from our Mexico subsidiary finally found the Presidential Decree
 # outlining the timezone changes in Mexico.
 #

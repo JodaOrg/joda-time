@@ -24,6 +24,8 @@ Serialization compatible - Yes, except:
    Please note that this only affects the property classes, and not DateTime etc.
    It is unlikely that you serialized one of these classes
 
+- Removed time zones Asia/Riyadh87, Asia/Riyadh88 and Asia/Riyadh89.
+
 
 Deprecations since 1.0
 ----------------------

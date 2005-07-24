@@ -25,6 +25,8 @@ Serialization compatible - Yes, except:
    It is unlikely that you serialized one of these classes
 
 - Removed time zones Asia/Riyadh87, Asia/Riyadh88 and Asia/Riyadh89.
+  These should not have been included in the 1.0 release, and do not represent
+  genuine time zones. It is unlikely that you used them.
 
 
 Deprecations since 1.0
@@ -112,6 +114,9 @@ Enhancements since 1.0
 - Period
   Added factory to create a Period from two ReadablePartials using an
   alternative, field-based, calculation
+
+- DateTimeUtils.isContiguous(ReadablePartial)
+  New method to test if a partial is contiguous (see the method for the definition)
 
 - PeriodType
   Added factory method forFields() to allow a PeriodType to be obtained

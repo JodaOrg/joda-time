@@ -426,11 +426,20 @@ public final class Period
 
     /**
      * Creates a period from two partially specified times.
+     * <p>
      * The two partials must contain the same fields, thus you can
      * specify two YearMonthDay objects, or two TimeOfDay objects,
      * but not one of each.
      * As these are Partial objects, time zones have no effect on
      * the result.
+     * <p>
+     * The two partials must also both be contiguous - see
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a
+     * definition. Both YearMonthDay and TimeOfDay are contiguous.
+     * <p>
+     * An alternative way of constructing a Period from two Partials
+     * is {@link #fieldDifference(ReadablePartial, ReadablePartial)}.
+     * That method handles all kinds of partials.
      *
      * @param start  the start of the period, must not be null
      * @param end  the end of the period, must not be null
@@ -443,11 +452,20 @@ public final class Period
 
     /**
      * Creates a period from two partially specified times.
+     * <p>
      * The two partials must contain the same fields, thus you can
      * specify two YearMonthDay objects, or two TimeOfDay objects,
      * but not one of each.
      * As these are Partial objects, time zones have no effect on
      * the result.
+     * <p>
+     * The two partials must also both be contiguous - see
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a
+     * definition. Both YearMonthDay and TimeOfDay are contiguous.
+     * <p>
+     * An alternative way of constructing a Period from two Partials
+     * is {@link #fieldDifference(ReadablePartial, ReadablePartial)}.
+     * That method handles all kinds of partials.
      *
      * @param start  the start of the period, must not be null
      * @param end  the end of the period, must not be null

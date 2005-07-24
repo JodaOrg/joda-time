@@ -126,11 +126,16 @@ public abstract class BasePeriod
 
     /**
      * Creates a period from the given duration and end point.
+     * <p>
      * The two partials must contain the same fields, thus you can
      * specify two YearMonthDay objects, or two TimeOfDay objects,
      * but not one of each.
      * As these are Partial objects, time zones have no effect on
      * the result.
+     * <p>
+     * The two partials must also both be contiguous - see
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a
+     * definition. Both YearMonthDay and TimeOfDay are contiguous.
      *
      * @param start  the start of the period, must not be null
      * @param end  the end of the period, must not be null
@@ -150,6 +155,9 @@ public abstract class BasePeriod
             if (start.getFieldType(i) != end.getFieldType(i)) {
                 throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
             }
+        }
+        if (DateTimeUtils.isContiguous(start) == false) {
+            throw new IllegalArgumentException("ReadablePartial objects must be contiguous");
         }
         iType = checkPeriodType(type);
         Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();

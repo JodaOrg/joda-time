@@ -57,9 +57,12 @@ Within Joda-Time a partial is represented by the
 There are two implementations of the interface provided:
 <ul>
 <li><a href="apidocs/org/joda/time/TimeOfDay.html">TimeOfDay</a> -
-An immutable implementation that stores the hour, minute, second and millisecond fields</li>
+An immutable implementation that stores the hour, minute, second and millisecond fields.</li>
 <li><a href="apidocs/org/joda/time/YearMonthDay.html">YearMonthDay</a> -
-An immutable implementation that stores the year, monthOfYear and dayOfMonth fields</li>
+An immutable implementation that stores the year, monthOfYear and dayOfMonth fields.</li>
+<li><a href="apidocs/org/joda/time/Partial.html">Partial</a> -
+An immutable implementation that can store any combination of datetime fields.
+For example, using this class you could create a YearMonth or DayOfWeekDayOfMonth partial.</li>
 </ul>
 </p>
 <p>

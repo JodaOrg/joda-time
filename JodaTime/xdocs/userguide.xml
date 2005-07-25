@@ -322,9 +322,21 @@ DateTimeZone zone = DateTimeZone.forID("Europe/London");
 </source>
 </p>
 <p>
+In addition to named time zones, Joda-Time also supports fixed time zones.
+The simplest of these is UTC, which is defined as a constant:
+<source>
+DateTimeZone zoneUTC = DateTimeZone.UTC;
+</source>
+Other fixed offset time zones can be obtained by a specialise factory method:
+<source>
+DateTimeZone zoneUTC = DateTimeZone.forOffsetHours(hours);
+</source>
+</p>
+<p>
 The TimeZone implementation is based on data provided by the public
 <a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>,
 otherwise known as the Olson database.
+A full list of timezone ids can be found <a href="timezones.html">here</a>
 </p>
 </section>
 
@@ -602,6 +614,11 @@ construction (they are immutable).
 Therefore, most simple manipulation of a datetime object involves
 construction of a new datetime as a modified copy of the original.
 </p>
+<p>
+WARNING: <i>A common mistake to make with immutable classes is to forget to assign
+the result to a variable. Remember that calling an add or set method on an
+immtable object has no effect on that object - only the result is updated.</i>
+</p>
 
 <subsection name="Modifying fields">
 <p>
@@ -610,7 +627,7 @@ return to our prior example, if we wish to modify the <code>dt</code> object
 by changing its day-of-week field to Monday we can do so by using the
 <code>setCopy</code> method of the property:
 <source>
-    DateTime dt1 = dt.dayOfWeek().setCopy(DateTimeConstants.MONDAY);
+    DateTime result = dt.dayOfWeek().setCopy(DateTimeConstants.MONDAY);
 </source>
 Note: If the <code>DateTime</code> object is already set to Monday then the same
 object will be returned.
@@ -618,7 +635,7 @@ object will be returned.
 <p>
 To add to a date you could use the <code>addToCopy</code> method.
 <source>
-    DateTime dt1 = dt.dayOfWeek().addToCopy(3);
+    DateTime result = dt.dayOfWeek().addToCopy(3);
 </source>
 </p>
 </subsection>
@@ -629,7 +646,7 @@ Another means of accomplishing similar calculations is to use methods on the
 <code>DateTime</code> object itself. Thus we could add 3 days to <code>dt</code>
 directly as follows:
 <source>
-    DateTime dt1 = dt.plus(Period.days(3));
+    DateTime result = dt.plusDays(3);
 </source>
 </p>
 </subsection>
@@ -644,7 +661,7 @@ finally create a new value datetime.
     MutableDateTime mdt = dt.toMutableDateTime();
     // perform various calculations on mdt
     ...
-    DateTime dt1 = mdt.toDateTime();
+    DateTime result = mdt.toDateTime();
 </source>
 <code>MutableDateTime</code> has a number of methods, including standard setters,
 for directly modifying the datetime.
@@ -886,6 +903,28 @@ range of the two digits, by specifying the mid point of the range. In this examp
 the range will be (1956 - 50) = 1906, to (1956 + 49) = 2005. Thus 04 will be 2004
 but 07 will be 1907. This kind of conversion is not possible with ordinary format
 strings, highlighting the power of the Joda time formatting architecture.
+</p>
+</subsection>
+
+<subsection name="Direct access">
+<p>
+To simplify the access to the formatter architecture, methods have been
+provided on the datetime classes such as DateTime.
+<source>
+    DateTime dt = new DateTime();
+    String a = dt.toString();
+    String b = dt.toString("dd:mm:yy");
+    String c = dt.toString("EEE", Locale.FRENCH);
+    DateTimeFormatter fmt = ...;
+    String d = dt.toString(fmt);
+</source>
+Each of the four results demonstrates a different way to use the formatters.
+Result <code>a</code> is the standard ISO8601 string for the DateTime.
+Result <code>b</code> will output using the pattern 'dd:mm:yy' (note that
+patterns are cached internally).
+Result <code>c</code> will output using the pattern 'EEE' in French.
+Result <code>d</code> will output using the specified formatter, and is thus
+the same as <code>fmt.print(dt)</code>.
 </p>
 </subsection>
 </section>

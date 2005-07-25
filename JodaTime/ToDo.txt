@@ -1,43 +1,55 @@
 JodaTime ToDo list
 ==================
 
-For 1.1
+For 1.2
 -------
 
-The TODO list for 1.1 has not been set yet, however I would hope that
-at least some of the items below will be included.
+The TODO list for 1.2 has not been set yet.
+Some of the following are likely targets, as they are interesting ideas.
 
 Join joda-interest@lists.sourceforge.net to help out!
 
 
 Ideas longer term
 -----------------
+- Pluggable text providers:
+   Allow all text output to be controlled and updated.
+   Probably use the CLDR files.
+
 - More chronologies:
    Implement more chronologies, like ChineseChronology, HebrewChronology,
    PersianChronology, etc. This may require more work in localization.
 
-- DateTimeFormatter.appendLocaleFormatterMap(map)
+- DateTimeFormatter.appendLocaleFormatterMap(map):
     Adds a map of Locale to Formatter, which picks the formatter to use
     based on the locale of the print/parse. Allows for the flexible insertion
     of any locale based text into a shared multi-language formatter.
 
-- DateTimeField.setNext(instant, value, howManyNext)
+- DateTimeField.setNext(instant, value, howManyNext):
     Allows questions like what is the date next Tuesday
 
-- Partial matching
+- Partial matching:
     Add code to allow full matching of partials. Thus you might define
     DayOfWeek=Friday and DayOfMonth=13, and then resolve to find the
     next matching Friday the 13th.
 
-- DateHourMinute/DateHourMinuteSecond
+- DateHourMinute/DateHourMinuteSecond/YearMonth?
     More instant variations
+    May be covered by Partial class now
 
-- DurationProperty on DateTime, Period and related
+- LocalDateTime/LocalDate/LocalTime?
+    Possible alternative implementation of contiguous partials
+
+- DurationProperty on DateTime, Period and related?
     Possibly a clear way to do duration stuff, however adding plusDays() type
     methods might be simpler.
 
 - Factories for DateTime classes?
     Perhaps, but the constructors cover this now.
+
+- ChronologyType:
+    An enumerated type for chronologies to replace the static methods on Chronology
+    This will also help with serialization
 
 - Chronology:
     Add daysFrom(year)

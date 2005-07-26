@@ -247,9 +247,14 @@ public class TestYearMonthDay_Basics extends TestCase {
         assertEquals(+1, test3.compareTo(test1));
         assertEquals(0, test3.compareTo(test2));
         
-        assertEquals(+1, test2.compareTo(new MockInstant()));
-        assertEquals(0, new YearMonthDay(1970, 6, 9).compareTo(new MockInstant()));
-        
+        DateTimeFieldType[] types = new DateTimeFieldType[] {
+            DateTimeFieldType.year(),
+            DateTimeFieldType.monthOfYear(),
+            DateTimeFieldType.dayOfMonth(),
+        };
+        int[] values = new int[] {2005, 6, 2};
+        Partial p = new Partial(types, values);
+        assertEquals(0, test1.compareTo(p));
         try {
             test1.compareTo(null);
             fail();

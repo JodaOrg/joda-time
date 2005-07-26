@@ -17,16 +17,27 @@ of restrictions. If the license cause you problems please contact the mailing li
 Incompatible changes since 1.0
 ------------------------------
 Binary compatible - Yes
+
 Source compatible - Yes
+
 Serialization compatible - Yes, except:
   - DateTime.Property, DateMidnight.Property and MutableDateTime.Property
    serialization formats have changed to fix a bug.
-   Please note that this only affects the property classes, and not DateTime etc.
-   It is unlikely that you serialized one of these classes
+    Please note that this only affects the property classes, and not DateTime,
+   DateMidnight or MutableDateTime themselves
+    It is unlikely that you serialized one of these classes
 
-- Removed time zones Asia/Riyadh87, Asia/Riyadh88 and Asia/Riyadh89.
-  These should not have been included in the 1.0 release, and do not represent
-  genuine time zones. It is unlikely that you used them.
+Data compatible - Yes, except:
+  - Removed time zones Asia/Riyadh87, Asia/Riyadh88 and Asia/Riyadh89.
+   These should not have been included in the 1.0 release, and do not represent
+   genuine time zones. It is unlikely that you used them.
+
+
+Warnings since 1.0
+------------------
+ReadablePartial now has a comment recommending that all implementations
+should also implement Comparable.
+This is most easily achieved by extending AbstractPartial.
 
 
 Deprecations since 1.0
@@ -86,6 +97,8 @@ Enhancements since 1.0
   This implementation is flexible as to the fields that it stores.
   Thus, if you want a partial holding just a year and monthOfYear (perhaps
   for a credit card expiry date), then this class can be used.
+  Full support for almost all truncated and reduced precision ISO output
+  formats is available via use of this class.
 
 - DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay
   Added convenience plusXxx() and minusXxx() methods to add/subtract a period
@@ -95,9 +108,11 @@ Enhancements since 1.0
   Added convenience toString() method that takes a DateTimeFormatter
   For example, dt.toString(DateTimeFormat.shortDateTime())
 
-- YearMonthDay/TimeOfDay
+- YearMonthDay/TimeOfDay/AbstractPartial
   Enabled comparisons using Comparable interface
   Added compareTo/isEqual/isAfter/isBefore methods
+  These methods were added to AbstractPartial, and are thus available to
+  all implementations of ReadablePartial
 
 - YearMonthDay/TimeOfDay
   Extra time zone constructor

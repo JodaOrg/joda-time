@@ -41,7 +41,7 @@ import org.joda.time.format.DateTimeFormat;
  */
 public abstract class BasePartial
         extends AbstractPartial
-        implements ReadablePartial, Comparable, Serializable {
+        implements ReadablePartial, Serializable {
 
     /** Serialization version */
     private static final long serialVersionUID = 2353678632973660L;
@@ -242,47 +242,6 @@ public abstract class BasePartial
     protected void setValues(int[] values) {
         getChronology().validate(this, values);
         iValues = values;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Compares this ReadablePartial with another returning an integer
-     * indicating the order.
-     * <p>
-     * The specified object must be a ReadablePartial whose field types
-     * match those of this partial. Normally that means that the partials
-     * must be the same class.
-     *
-     * @param partial  an object to check against
-     * @return negative if this is less, zero if equal, positive if greater
-     * @throws ClassCastException if the partial is the wrong class
-     *  or if it has field types that don't match
-     * @throws NullPointerException if the partial is null
-     * @since 1.1
-     */
-    public int compareTo(Object partial) {
-        if (this == partial) {
-            return 0;
-        }
-        ReadablePartial other = (ReadablePartial) partial;
-        if (size() != other.size()) {
-            throw new ClassCastException("ReadablePartial objects must have matching field types");
-        }
-        for (int i = 0, isize = size(); i < isize; i++) {
-            if (getFieldType(i) != other.getFieldType(i)) {
-                throw new ClassCastException("ReadablePartial objects must have matching field types");
-            }
-        }
-        // fields are ordered largest first
-        for (int i = 0, isize = size(); i < isize; i++) {
-            if (getValue(i) > other.getValue(i)) {
-                return 1;
-            }
-            if (getValue(i) < other.getValue(i)) {
-                return -1;
-            }
-        }
-        return 0;
     }
 
     //-----------------------------------------------------------------------

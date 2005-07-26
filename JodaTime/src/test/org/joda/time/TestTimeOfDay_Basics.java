@@ -226,7 +226,7 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(true, test1.equals(new MockInstant()));
         assertEquals(false, test1.equals(MockPartial.EMPTY_INSTANCE));
     }
-    
+
     class MockInstant extends MockPartial {
         public Chronology getChronology() {
             return Chronology.getCopticUTC();
@@ -262,9 +262,15 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertEquals(+1, test3.compareTo(test1));
         assertEquals(0, test3.compareTo(test2));
         
-        assertEquals(+1, test2.compareTo(new MockInstant()));
-        assertEquals(0, test1.compareTo(new MockInstant()));
-        
+        DateTimeFieldType[] types = new DateTimeFieldType[] {
+            DateTimeFieldType.hourOfDay(),
+            DateTimeFieldType.minuteOfHour(),
+            DateTimeFieldType.secondOfMinute(),
+            DateTimeFieldType.millisOfSecond(),
+        };
+        int[] values = new int[] {10, 20, 30, 40};
+        Partial p = new Partial(types, values);
+        assertEquals(0, test1.compareTo(p));
         try {
             test1.compareTo(null);
             fail();
@@ -274,7 +280,7 @@ public class TestTimeOfDay_Basics extends TestCase {
             fail();
         } catch (ClassCastException ex) {}
     }
-    
+
     //-----------------------------------------------------------------------
     public void testIsEqual_TOD() {
         TimeOfDay test1 = new TimeOfDay(10, 20, 30, 40);

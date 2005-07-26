@@ -770,61 +770,6 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Is this YearMonthDay later than the specified YearMonthDay.
-     * <p>
-     * You may not pass null into this method. This is because you need
-     * a time zone to accurately determine the current date.
-     *
-     * @param date  an date to check against, null means now
-     * @return true if this date is after the date passed in
-     * @throws IllegalArgumentException if the specified YearMonthDay is null
-     * @since 1.1
-     */
-    public boolean isAfter(YearMonthDay date) {
-        if (date == null) {
-            throw new IllegalArgumentException("YearMonthDay cannot be null");
-        }
-        return super.compareTo(date) > 0;
-    }
-
-    /**
-     * Is this YearMonthDay earlier than the specified YearMonthDay.
-     * <p>
-     * You may not pass null into this method. This is because you need
-     * a time zone to accurately determine the current date.
-     *
-     * @param date  an date to check against, null means now
-     * @return true if this date is before the date passed in
-     * @throws IllegalArgumentException if the specified YearMonthDay is null
-     * @since 1.1
-     */
-    public boolean isBefore(YearMonthDay date) {
-        if (date == null) {
-            throw new IllegalArgumentException("YearMonthDay cannot be null");
-        }
-        return super.compareTo(date) < 0;
-    }
-
-    /**
-     * Is this YearMonthDay the same as the specified YearMonthDay.
-     * <p>
-     * You may not pass null into this method. This is because you need
-     * a time zone to accurately determine the current date.
-     *
-     * @param date  an date to check against, null means now
-     * @return true if this date is the same as the date passed in
-     * @throws IllegalArgumentException if the specified YearMonthDay is null
-     * @since 1.1
-     */
-    public boolean isEqual(YearMonthDay date) {
-        if (date == null) {
-            throw new IllegalArgumentException("YearMonthDay cannot be null");
-        }
-        return super.compareTo(date) == 0;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Output the date in the ISO8601 format YYYY-MM-DD.
      * 
      * @return ISO8601 formatted string

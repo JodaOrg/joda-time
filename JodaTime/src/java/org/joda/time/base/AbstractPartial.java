@@ -42,7 +42,8 @@ import org.joda.time.format.DateTimeFormatter;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public abstract class AbstractPartial implements ReadablePartial {
+public abstract class AbstractPartial
+        implements ReadablePartial, Comparable {
 
     //-----------------------------------------------------------------------
     /**
@@ -282,6 +283,123 @@ public abstract class AbstractPartial implements ReadablePartial {
         }
         total += getChronology().hashCode();
         return total;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Compares this partial with another returning an integer
+     * indicating the order.
+     * <p>
+     * The fields are compared in order, from largest to smallest.
+     * The first field that is non-equal is used to determine the result.
+     * <p>
+     * The specified object must be a partial instance whose field types
+     * match those of this partial.
+     * <p>
+     * NOTE: This implementation violates the Comparable contract.
+     * This method will accept any instance of ReadablePartial as input.
+     * However, it is possible that some implementations of ReadablePartial
+     * exist that do not extend AbstractPartial, and thus will throw a
+     * ClassCastException if compared in the opposite direction.
+     * The cause of this problem is that ReadablePartial doesn't define
+     * the compareTo() method, however we can't change that until v2.0.
+     *
+     * @param partial  an object to check against
+     * @return negative if this is less, zero if equal, positive if greater
+     * @throws ClassCastException if the partial is the wrong class
+     *  or if it has field types that don't match
+     * @throws NullPointerException if the partial is null
+     * @since 1.1
+     */
+    public int compareTo(Object partial) {
+        if (this == partial) {
+            return 0;
+        }
+        ReadablePartial other = (ReadablePartial) partial;
+        if (size() != other.size()) {
+            throw new ClassCastException("ReadablePartial objects must have matching field types");
+        }
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getFieldType(i) != other.getFieldType(i)) {
+                throw new ClassCastException("ReadablePartial objects must have matching field types");
+            }
+        }
+        // fields are ordered largest first
+        for (int i = 0, isize = size(); i < isize; i++) {
+            if (getValue(i) > other.getValue(i)) {
+                return 1;
+            }
+            if (getValue(i) < other.getValue(i)) {
+                return -1;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * Is this partial later than the specified partial.
+     * <p>
+     * The fields are compared in order, from largest to smallest.
+     * The first field that is non-equal is used to determine the result.
+     * <p>
+     * You may not pass null into this method. This is because you need
+     * a time zone to accurately determine the current date.
+     *
+     * @param partial  a partial to check against, must not be null
+     * @return true if this date is after the date passed in
+     * @throws IllegalArgumentException if the specified partial is null
+     * @throws ClassCastException if the partial has field types that don't match
+     * @since 1.1
+     */
+    public boolean isAfter(ReadablePartial partial) {
+        if (partial == null) {
+            throw new IllegalArgumentException("Partial cannot be null");
+        }
+        return compareTo(partial) > 0;
+    }
+
+    /**
+     * Is this partial earlier than the specified partial.
+     * <p>
+     * The fields are compared in order, from largest to smallest.
+     * The first field that is non-equal is used to determine the result.
+     * <p>
+     * You may not pass null into this method. This is because you need
+     * a time zone to accurately determine the current date.
+     *
+     * @param partial  a partial to check against, must not be null
+     * @return true if this date is before the date passed in
+     * @throws IllegalArgumentException if the specified partial is null
+     * @throws ClassCastException if the partial has field types that don't match
+     * @since 1.1
+     */
+    public boolean isBefore(ReadablePartial partial) {
+        if (partial == null) {
+            throw new IllegalArgumentException("Partial cannot be null");
+        }
+        return compareTo(partial) < 0;
+    }
+
+    /**
+     * Is this partial the same as the specified partial.
+     * <p>
+     * The fields are compared in order, from largest to smallest.
+     * If all fields are equal, the result is true.
+     * <p>
+     * You may not pass null into this method. This is because you need
+     * a time zone to accurately determine the current date.
+     *
+     * @param partial  a partial to check against, must not be null
+     * @return true if this date is the same as the date passed in
+     * @throws IllegalArgumentException if the specified partial is null
+     * @throws ClassCastException if the partial has field types that don't match
+     * @since 1.1
+     */
+    public boolean isEqual(ReadablePartial partial) {
+        if (partial == null) {
+            throw new IllegalArgumentException("Partial cannot be null");
+        }
+        return compareTo(partial) == 0;
     }
 
     //-----------------------------------------------------------------------

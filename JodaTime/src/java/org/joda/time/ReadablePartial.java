@@ -144,6 +144,34 @@ public interface ReadablePartial {
      */
     int hashCode();
 
+// NOTE: This method should have existed in Joda-Time v1.0.
+// We STRONGLY recommend that all implementations of ReadablePartial
+// implement this method, as per AbstractPartial.
+// The simplest way to do this is to extend AbstractPartial.
+// v2.0 of Joda-Time will include this method in this interface.
+//    //-----------------------------------------------------------------------
+//    /**
+//     * Compares this partial with another returning an integer
+//     * indicating the order.
+//     * <p>
+//     * The fields are compared in order, from largest to smallest.
+//     * The first field that is non-equal is used to determine the result.
+//     * Thus a YearHour partial will first be compared on the year, and then
+//     * on the hour.
+//     * <p>
+//     * The specified object must be a partial instance whose field types
+//     * match those of this partial. If the parial instance has different
+//     * fields then a ClassCastException is thrown.
+//     *
+//     * @param partial  an object to check against
+//     * @return negative if this is less, zero if equal, positive if greater
+//     * @throws ClassCastException if the partial is the wrong class
+//     *  or if it has field types that don't match
+//     * @throws NullPointerException if the partial is null
+//     * @since 2.0
+//     */
+//    int compareTo(Object partial);
+
     //-----------------------------------------------------------------------
     /**
      * Get the value as a String in a recognisable ISO8601 format, only

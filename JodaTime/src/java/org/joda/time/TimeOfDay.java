@@ -835,61 +835,6 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Is this TimeOfDay later than the specified TimeOfDay.
-     * <p>
-     * You may not pass null into this method. This is because you need
-     * a time zone to accurately determine the current time.
-     *
-     * @param time  a time to check against, null means now
-     * @return true if this time is after the time passed in
-     * @throws IllegalArgumentException if the specified TimeOfDay is null
-     * @since 1.1
-     */
-    public boolean isAfter(TimeOfDay time) {
-        if (time == null) {
-            throw new IllegalArgumentException("TimeOfDay cannot be null");
-        }
-        return super.compareTo(time) > 0;
-    }
-
-    /**
-     * Is this TimeOfDay earlier than the specified TimeOfDay.
-     * <p>
-     * You may not pass null into this method. This is because you need
-     * a time zone to accurately determine the current time.
-     *
-     * @param time  a time to check against, null means now
-     * @return true if this time is before the time passed in
-     * @throws IllegalArgumentException if the specified TimeOfDay is null
-     * @since 1.1
-     */
-    public boolean isBefore(TimeOfDay time) {
-        if (time == null) {
-            throw new IllegalArgumentException("TimeOfDay cannot be null");
-        }
-        return super.compareTo(time) < 0;
-    }
-
-    /**
-     * Is this TimeOfDay the same as the specified TimeOfDay.
-     * <p>
-     * You may not pass null into this method. This is because you need
-     * a time zone to accurately determine the current time.
-     *
-     * @param time  a time to check against, null means now
-     * @return true if this time is the same as the time passed in
-     * @throws IllegalArgumentException if the specified TimeOfDay is null
-     * @since 1.1
-     */
-    public boolean isEqual(TimeOfDay time) {
-        if (time == null) {
-            throw new IllegalArgumentException("TimeOfDay cannot be null");
-        }
-        return super.compareTo(time) == 0;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Output the time in the ISO8601 format THH:mm:ss.SSS.
      * 
      * @return ISO8601 formatted string

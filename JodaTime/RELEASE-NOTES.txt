@@ -166,7 +166,7 @@ Enhancements since 1.0
 - ISODateTimeFormat
   New methods to output ordinal style dates, such as 2005-161.
 
-- DateTimeZone classes updated to latest data from the Olsen time zone database
+- DateTimeZone classes updated to latest data from the Olson time zone database
 
 
 Feedback

@@ -33,6 +33,14 @@ import org.joda.time.base.BasePeriod;
  * 23 hours rather than 24 to ensure that the time remains the same.
  * If this is not the behaviour you want, then see {@link Duration}.
  * <p>
+ * The definition of a period also affects the equals method. A period of 1
+ * day is not equal to a period of 24 hours, nor 1 hour equal to 60 minutes.
+ * This is because periods represent an abstracted definition of a time period
+ * (eg. a day may not actually be 24 hours, it might be 23 or 25 at daylight
+ * savings boundary). To compare the actual duration of two periods, convert
+ * both to durations using toDuration, an operation that emphasises that the
+ * result may differ according to the date you choose.
+ * <p>
  * Period is thread-safe and immutable, provided that the PeriodType is as well.
  * All standard PeriodType classes supplied are thread-safe and immutable.
  *

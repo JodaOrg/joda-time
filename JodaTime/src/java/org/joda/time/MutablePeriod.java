@@ -23,6 +23,25 @@ import org.joda.time.field.FieldUtils;
 /**
  * Standard mutable time period implementation.
  * <p>
+ * A time period is divided into a number of fields, such as hours and seconds.
+ * Which fields are supported is defined by the PeriodType class.
+ * The default is the standard period type, which supports years, months, weeks, days,
+ * hours, minutes, seconds and millis.
+ * <p>
+ * When this time period is added to an instant, the effect is of adding each field in turn.
+ * As a result, this takes into account daylight savings time.
+ * Adding a time period of 1 day to the day before daylight savings starts will only add
+ * 23 hours rather than 24 to ensure that the time remains the same.
+ * If this is not the behaviour you want, then see {@link Duration}.
+ * <p>
+ * The definition of a period also affects the equals method. A period of 1
+ * day is not equal to a period of 24 hours, nor 1 hour equal to 60 minutes.
+ * This is because periods represent an abstracted definition of a time period
+ * (eg. a day may not actually be 24 hours, it might be 23 or 25 at daylight
+ * savings boundary). To compare the actual duration of two periods, convert
+ * both to durations using toDuration, an operation that emphasises that the
+ * result may differ according to the date you choose.
+ * <p>
  * MutablePeriod is mutable and not thread-safe, unless concurrent threads
  * are not invoking mutator methods.
  *

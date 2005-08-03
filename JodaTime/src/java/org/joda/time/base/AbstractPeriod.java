@@ -138,6 +138,18 @@ public abstract class AbstractPeriod implements ReadablePeriod {
     /**
      * Compares this object with the specified object for equality based
      * on the value of each field. All ReadablePeriod instances are accepted.
+     * <p>
+     * Note that a period of 1 day is not equal to a period of 24 hours,
+     * nor is 1 hour equal to 60 minutes. Only periods with the same amount
+     * in each field are equal.
+     * <p>
+     * This is because periods represent an abstracted definition of a time
+     * period (eg. a day may not actually be 24 hours, it might be 23 or 25
+     * at daylight savings boundary).
+     * <p>
+     * To compare the actual duration of two periods, convert both to
+     * {@link org.joda.time.Duration Duration}s, an operation that emphasises
+     * that the result may differ according to the date you choose.
      *
      * @param period  a readable period to check against
      * @return true if all the field values are equal, false if

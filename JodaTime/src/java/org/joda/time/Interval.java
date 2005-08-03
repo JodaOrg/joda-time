@@ -177,23 +177,71 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the interval where this interval and that specified overlap.
-     * 
+     * Gets the overlap where this interval and that specified.
+     * <p>
+     * Any two intervals can overlap, abut, or have a gap between them.
+     * This method returns the amount of the overlap, only if the
+     * intervals do overlap.
+     * If the intervals do not overlap, then null is returned.
+     *
      * @param interval  the interval to examine, null means now
      * @return the overlap interval, null if no overlap
      * @since 1.1
      */
     public Interval overlap(ReadableInterval interval) {
-        if (interval == null) {
-            long now = DateTimeUtils.currentTimeMillis();
-            interval = new Interval(now, now);
-        }
+        interval = DateTimeUtils.getReadableInterval(interval);
         if (overlaps(interval) == false) {
             return null;
         }
         long start = Math.max(getStartMillis(), interval.getStartMillis());
         long end = Math.min(getEndMillis(), interval.getEndMillis());
         return new Interval(start, end);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the gap between this interval and that specified.
+     * <p>
+     * Any two intervals can overlap, abut, or have a gap between them.
+     * This method returns the amount of the gap only if the
+     * intervals do actually have a gap between them.
+     * If the intervals overlap or abut, then null is returned.
+     *
+     * @param interval  the interval to examine, null means now
+     * @return the gap interval, null if no gap
+     * @since 1.1
+     */
+    public Interval gap(ReadableInterval interval) {
+        interval = DateTimeUtils.getReadableInterval(interval);
+        if (overlaps(interval) || abuts(interval)) {
+            return null;
+        }
+        long otherStart = interval.getStartMillis();
+        long otherEnd = interval.getEndMillis();
+        long thisStart = getStartMillis();
+        long thisEnd = getEndMillis();
+        if (thisStart >= otherEnd) {
+            return new Interval(otherEnd, thisStart);
+        } else {
+            return new Interval(thisEnd, otherStart);
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Does this interval abut with the interval specified.
+     * <p>
+     * An interval abuts if it starts immediately after, or
+     * ends immediately before this interval without overlap.
+     *
+     * @param interval  the interval to examine, null means now
+     * @return true if the interval abuts
+     * @since 1.1
+     */
+    public boolean abuts(ReadableInterval interval) {
+        interval = DateTimeUtils.getReadableInterval(interval);
+        return (interval.getEndMillis() == getStartMillis() ||
+                getEndMillis() == interval.getStartMillis());
     }
 
     //-----------------------------------------------------------------------

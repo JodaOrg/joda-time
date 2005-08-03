@@ -199,6 +199,25 @@ public class DateTimeUtils {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the interval handling null.
+     * <p>
+     * If the interval is <code>null</code>, an interval representing now
+     * to now in the {@link ISOChronology#getInstance() ISOChronology}
+     * will be returned. Otherwise, the interval specified is returned.
+     * 
+     * @param interval  the interval to use, null means now to now
+     * @return the interval, never null
+     */
+    public static final ReadableInterval getReadableInterval(ReadableInterval interval) {
+        if (interval == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            interval = new Interval(now, now);
+        }
+        return interval;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets the chronology handling null.
      * <p>
      * If the chronology is <code>null</code>, {@link ISOChronology#getInstance()}

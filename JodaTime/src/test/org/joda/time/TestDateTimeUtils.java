@@ -332,6 +332,19 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetReadableInterval_ReadableInterval() {
+        ReadableInterval input = new Interval(0, 100L);
+        assertEquals(input, DateTimeUtils.getReadableInterval(input));
+        
+        try {
+            DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
+            assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME_NOW), DateTimeUtils.getReadableInterval(null));
+        } finally {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    //-----------------------------------------------------------------------
     public void testGetChronology_Chronology() {
         assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getChronology(BuddhistChronology.getInstance()));
         assertEquals(ISOChronology.getInstance(), DateTimeUtils.getChronology(null));

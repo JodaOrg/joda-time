@@ -324,6 +324,58 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGap_RInterval() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        assertEquals(
+                new Interval(TEST_TIME2, TEST_TIME2 + 2),
+                test.gap(new Interval(TEST_TIME2 + 2, TEST_TIME2 + 4)));
+        assertEquals(
+                null,
+                test.gap(new Interval(TEST_TIME2, TEST_TIME2)));
+
+        assertEquals(
+                new Interval(TEST_TIME1 - 2, TEST_TIME1),
+                test.gap(new Interval(TEST_TIME1 - 4, TEST_TIME1 - 2)));
+        assertEquals(
+                null,
+                test.gap(new Interval(TEST_TIME1 - 2, TEST_TIME1)));
+
+        assertEquals(
+                null,
+                test.gap(new Interval(TEST_TIME1, TEST_TIME2)));
+        assertEquals(
+                null,
+                test.gap(new Interval(TEST_TIME1 + 1, TEST_TIME2 - 1)));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testAbuts_RInterval() {
+        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        assertEquals(
+                false,
+                test.abuts(new Interval(TEST_TIME2 + 2, TEST_TIME2 + 4)));
+        assertEquals(
+                true,
+                test.abuts(new Interval(TEST_TIME2, TEST_TIME2)));
+
+        assertEquals(
+                false,
+                test.abuts(new Interval(TEST_TIME1 - 4, TEST_TIME1 - 2)));
+        assertEquals(
+                true,
+                test.abuts(new Interval(TEST_TIME1 - 2, TEST_TIME1)));
+
+        assertEquals(
+                false,
+                test.abuts(new Interval(TEST_TIME1, TEST_TIME2)));
+        assertEquals(
+                false,
+                test.abuts(new Interval(TEST_TIME1 + 1, TEST_TIME2 - 1)));
+    }
+
+    //-----------------------------------------------------------------------
     public void testIsBefore_long() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         

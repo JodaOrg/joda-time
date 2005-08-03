@@ -65,5 +65,8 @@ class MockUnknownCalendar extends Calendar {
     public int compareTo(Object arg0) {
         return 0;
     }
+    public int compareTo(Calendar arg0) {
+        return 0;
+    }
     
 }

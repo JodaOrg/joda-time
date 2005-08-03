@@ -798,6 +798,15 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_RP_RP7() throws Throwable {
+        Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.monthOfYear(), 12);
+        Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
+        try {
+            new Period(dt1, dt2);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP8() throws Throwable {
         Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 12);
         Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
         try {
@@ -874,6 +883,15 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     public void testConstructor_RP_RP_PeriodType7() throws Throwable {
+        Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.monthOfYear(), 12);
+        Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
+        try {
+            new Period(dt1, dt2, PeriodType.standard());
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_RP_RP_PeriodType8() throws Throwable {
         Partial dt1 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 12);
         Partial dt2 = new Partial().with(DateTimeFieldType.year(), 2005).with(DateTimeFieldType.hourOfDay(), 14);
         try {

@@ -22,6 +22,19 @@ package org.joda.time;
  * @since 1.1
  */
 public class IllegalFieldValueException extends IllegalArgumentException {
+    
+    /** Serialization lock. */
+    private static final long serialVersionUID = 6305711765985447737L;
+
+    /**
+     * Creates a message for the exception.
+     *
+     * @param fieldName  the field name
+     * @param value  the value rejected
+     * @param lowerBound  the lower bound allowed
+     * @param upperBound  the uppe bound allowed
+     * @return the message
+     */
     private static String createMessage(String fieldName, Number value,
                                         Number lowerBound, Number upperBound) {
         StringBuffer buf = new StringBuffer()
@@ -46,6 +59,13 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         return buf.toString();
     }
 
+    /**
+     * Creates a message for the exception.
+     *
+     * @param fieldName  the field name
+     * @param value  the value rejected
+     * @return the message
+     */
     private static String createMessage(String fieldName, String value) {
         StringBuffer buf = new StringBuffer().append("Value ");
 
@@ -61,7 +81,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         
         return buf.toString();
     }
-    
+
     private final DateTimeFieldType iDateTimeFieldType;
     private final DurationFieldType iDurationFieldType;
     private final String iFieldName;
@@ -71,10 +91,12 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     private final Number iUpperBound;
 
     /**
-     * @param fieldType type of field being set
-     * @param value illegal value being set
-     * @param lowerBound lower legal field value, or null if not applicable
-     * @param upperBound upper legal field value, or null if not applicable
+     * Constructor.
+     * 
+     * @param fieldType  type of field being set
+     * @param value  illegal value being set
+     * @param lowerBound  lower legal field value, or null if not applicable
+     * @param upperBound  upper legal field value, or null if not applicable
      */
     public IllegalFieldValueException(DateTimeFieldType fieldType,
                                       Number value, Number lowerBound, Number upperBound) {
@@ -89,10 +111,12 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     }
 
     /**
-     * @param fieldType type of field being set
-     * @param value illegal value being set
-     * @param lowerBound lower legal field value, or null if not applicable
-     * @param upperBound upper legal field value, or null if not applicable
+     * Constructor.
+     * 
+     * @param fieldType  type of field being set
+     * @param value  illegal value being set
+     * @param lowerBound  lower legal field value, or null if not applicable
+     * @param upperBound  upper legal field value, or null if not applicable
      */
     public IllegalFieldValueException(DurationFieldType fieldType,
                                       Number value, Number lowerBound, Number upperBound) {
@@ -107,10 +131,12 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     }
 
     /**
-     * @param fieldName name of field being set
-     * @param value illegal value being set
-     * @param lowerBound lower legal field value, or null if not applicable
-     * @param upperBound upper legal field value, or null if not applicable
+     * Constructor.
+     * 
+     * @param fieldName  name of field being set
+     * @param value  illegal value being set
+     * @param lowerBound  lower legal field value, or null if not applicable
+     * @param upperBound  upper legal field value, or null if not applicable
      */
     public IllegalFieldValueException(String fieldName,
                                       Number value, Number lowerBound, Number upperBound) {
@@ -125,8 +151,10 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     }
 
     /**
-     * @param fieldType type of field being set
-     * @param value illegal value being set
+     * Constructor.
+     * 
+     * @param fieldType  type of field being set
+     * @param value  illegal value being set
      */
     public IllegalFieldValueException(DateTimeFieldType fieldType, String value) {
         super(createMessage(fieldType.getName(), value));
@@ -140,8 +168,10 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     }
 
     /**
-     * @param fieldType type of field being set
-     * @param value illegal value being set
+     * Constructor.
+     * 
+     * @param fieldType  type of field being set
+     * @param value  illegal value being set
      */
     public IllegalFieldValueException(DurationFieldType fieldType, String value) {
         super(createMessage(fieldType.getName(), value));
@@ -155,8 +185,10 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     }
 
     /**
-     * @param fieldName name of field being set
-     * @param value illegal value being set
+     * Constructor.
+     * 
+     * @param fieldName  name of field being set
+     * @param value  illegal value being set
      */
     public IllegalFieldValueException(String fieldName, String value) {
         super(createMessage(fieldName, value));
@@ -169,8 +201,11 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iUpperBound = null;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Returns the DateTimeFieldType whose value was invalid, or null if not applicable.
+     * 
+     * @return the datetime field type
      */
     public DateTimeFieldType getDateTimeFieldType() {
         return iDateTimeFieldType;
@@ -178,6 +213,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the DurationFieldType whose value was invalid, or null if not applicable.
+     * 
+     * @return the duration field type
      */
     public DurationFieldType getDurationFieldType() {
         return iDurationFieldType;
@@ -185,6 +222,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the name of the field whose value was invalid.
+     * 
+     * @return the field name
      */
     public String getFieldName() {
         return iFieldName;
@@ -192,6 +231,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the illegal integer value assigned to the field, or null if not applicable.
+     * 
+     * @return the value
      */
     public Number getIllegalNumberValue() {
         return iNumberValue;
@@ -199,6 +240,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the illegal string value assigned to the field, or null if not applicable.
+     * 
+     * @return the value
      */
     public String getIllegalStringValue() {
         return iStringValue;
@@ -206,6 +249,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the illegal value assigned to the field as a non-null string.
+     * 
+     * @return the value
      */
     public String getIllegalValueAsString() {
         String value = iStringValue;
@@ -217,6 +262,8 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the lower bound of the legal value range, or null if not applicable.
+     * 
+     * @return the lower bound
      */
     public Number getLowerBound() {
         return iLowerBound;
@@ -224,8 +271,11 @@ public class IllegalFieldValueException extends IllegalArgumentException {
 
     /**
      * Returns the upper bound of the legal value range, or null if not applicable.
+     * 
+     * @return the upper bound
      */
     public Number getUpperBound() {
         return iUpperBound;
     }
+
 }

@@ -659,7 +659,6 @@ public class PeriodType implements Serializable {
      * @return a string
      */
     public String toString() {
-        String name = getName();
         return "PeriodType[" + getName() + "]";
     }
 

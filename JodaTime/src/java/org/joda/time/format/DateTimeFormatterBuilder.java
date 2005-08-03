@@ -2311,13 +2311,6 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        private Composite(Composite base, DateTimePrinter[] printers) {
-            iPrinters = printers;
-            iParsers = base.iParsers;
-            iPrintedLengthEstimate = base.iPrintedLengthEstimate;
-            iParsedLengthEstimate = base.iParsedLengthEstimate;
-        }
-
         public int estimatePrintedLength() {
             return iPrintedLengthEstimate;
         }

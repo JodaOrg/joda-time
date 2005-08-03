@@ -191,7 +191,6 @@ public abstract class DateTimeZone implements Serializable {
             if (offset == 0L) {
                 return DateTimeZone.UTC;
             } else {
-                StringBuffer buf = new StringBuffer();
                 id = printOffset(offset);
                 return fixedOffsetZone(id, offset);
             }

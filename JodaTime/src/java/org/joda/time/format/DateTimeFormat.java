@@ -25,7 +25,6 @@ import java.util.Map;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 
@@ -409,7 +408,6 @@ public class DateTimeFormat {
                     }
 
                     // Use pivots which are compatible with SimpleDateFormat.
-                    DateTimeFieldType type;
                     switch (c) {
                     case 'x':
                         builder.appendTwoDigitWeekyear

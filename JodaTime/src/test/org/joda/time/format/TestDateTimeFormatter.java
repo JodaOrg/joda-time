@@ -233,7 +233,7 @@ public class TestDateTimeFormatter extends TestCase {
                 f.withChronology(null).withZone(NEWYORK).print(dt));
     }
 
-    public void testWithGetMethods() {
+    public void testWithGetLocale() {
         DateTimeFormatter f2 = f.withLocale(Locale.FRENCH);
         assertEquals(Locale.FRENCH, f2.getLocale());
         assertSame(f2, f2.withLocale(Locale.FRENCH));
@@ -241,22 +241,40 @@ public class TestDateTimeFormatter extends TestCase {
         f2 = f.withLocale(null);
         assertEquals(null, f2.getLocale());
         assertSame(f2, f2.withLocale(null));
-        
-        f2 = f.withZone(PARIS);
+    }
+
+    public void testWithGetZone() {
+        DateTimeFormatter f2 = f.withZone(PARIS);
         assertEquals(PARIS, f2.getZone());
         assertSame(f2, f2.withZone(PARIS));
         
         f2 = f.withZone(null);
         assertEquals(null, f2.getZone());
         assertSame(f2, f2.withZone(null));
-        
-        f2 = f.withChronology(BUDDHIST_PARIS);
+    }
+
+    public void testWithGetChronology() {
+        DateTimeFormatter f2 = f.withChronology(BUDDHIST_PARIS);
         assertEquals(BUDDHIST_PARIS, f2.getChronolgy());
         assertSame(f2, f2.withChronology(BUDDHIST_PARIS));
         
         f2 = f.withChronology(null);
         assertEquals(null, f2.getChronolgy());
         assertSame(f2, f2.withChronology(null));
+    }
+
+    public void testWithGetPivotYear() {
+        DateTimeFormatter f2 = f.withPivotYear(13);
+        assertEquals(new Integer(13), f2.getPivotYear());
+        assertSame(f2, f2.withPivotYear(13));
+        
+        f2 = f.withPivotYear(new Integer(14));
+        assertEquals(new Integer(14), f2.getPivotYear());
+        assertSame(f2, f2.withPivotYear(new Integer(14)));
+        
+        f2 = f.withPivotYear(null);
+        assertEquals(null, f2.getPivotYear());
+        assertSame(f2, f2.withPivotYear(null));
     }
 
     public void testWithGetOffsetParsedMethods() {

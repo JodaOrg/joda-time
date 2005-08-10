@@ -17,8 +17,10 @@ of restrictions. If the license cause you problems please contact the mailing li
 Incompatible changes since 1.0
 ------------------------------
 Binary compatible - Yes
+  - v1.0 and v1.1 are binary compatible in their public and protected API
 
 Source compatible - Yes
+  - v1.0 and v1.1 are source compatible in their public and protected API
 
 Serialization compatible - Yes, except:
   - DateTime.Property, DateMidnight.Property and MutableDateTime.Property

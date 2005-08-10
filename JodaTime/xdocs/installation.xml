@@ -14,15 +14,6 @@ To use Joda-Time you need to
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">download the latest version</a>.
 The download will contain the joda-time-1.1.jar. Once you add this to your classpath you will be able to use Joda-Time.
 </p>
-<!--<p>
-As from v1.1 we release three versions:
-<ul>
-<li>ide - the recommended download for most Eclipse/IDEA/NetBeans users.
-  This contains the binary jar file and a zip of the java source files to attach within your IDE classpath.</li>
-<li>bin - the classic binary release, with the jar file and javadocs</li>
-<li>src - the classic source release, with the jar file and all source files</li>
-</ul>
-</p>-->
 <p>
 The release notes for upgraders can be found here:
 <ul>

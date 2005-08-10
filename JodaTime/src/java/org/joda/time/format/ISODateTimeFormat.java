@@ -132,7 +132,9 @@ public class ISODateTimeFormat {
         dtp; // date time parser
 
     /**
-     * Restricted constructor.
+     * Constructor.
+     *
+     * @since 1.1 (previously private)
      */
     protected ISODateTimeFormat() {
         super();

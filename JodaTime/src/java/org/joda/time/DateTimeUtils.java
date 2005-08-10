@@ -207,6 +207,7 @@ public class DateTimeUtils {
      * 
      * @param interval  the interval to use, null means now to now
      * @return the interval, never null
+     * @since 1.1
      */
     public static final ReadableInterval getReadableInterval(ReadableInterval interval) {
         if (interval == null) {

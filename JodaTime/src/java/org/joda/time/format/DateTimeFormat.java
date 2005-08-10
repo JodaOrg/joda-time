@@ -353,6 +353,8 @@ public class DateTimeFormat {
     //-----------------------------------------------------------------------
     /**
      * Constructor.
+     *
+     * @since 1.1 (previously private)
      */
     protected DateTimeFormat() {
         super();

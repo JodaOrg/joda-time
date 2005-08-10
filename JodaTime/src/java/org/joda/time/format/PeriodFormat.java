@@ -37,6 +37,8 @@ public class PeriodFormat {
 
     /**
      * Constructor.
+     *
+     * @since 1.1 (previously private)
      */
     protected PeriodFormat() {
         super();

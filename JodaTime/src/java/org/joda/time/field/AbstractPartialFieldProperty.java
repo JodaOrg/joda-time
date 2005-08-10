@@ -100,6 +100,7 @@ public abstract class AbstractPartialFieldProperty {
      * 
      * @return the current value
      * @see DateTimeField#get
+     * @since 1.1
      */
     public String getAsString() {
         return Integer.toString(get());

@@ -157,6 +157,7 @@
      <report>maven-changes-plugin</report>
      <report>maven-checkstyle-plugin</report>
      <!-- <report>maven-clover-plugin</report> -->
+     <report>maven-jdiff-plugin</report>
      <report>maven-jcoverage-plugin</report>
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>

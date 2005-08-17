@@ -13,8 +13,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
-
+ */
 package org.joda.time.contrib.jsptag;
 
 import java.io.IOException;
@@ -30,107 +29,108 @@ import org.joda.time.DateTimeZone;
 
 /**
  * Support for tag handlers for &lt;timeZone&gt;.
+ * 
  * @author Jan Luehe
  * @author Jim Newsham
  */
 public abstract class DateTimeZoneSupport extends BodyTagSupport {
-  public static final String FMT_TIME_ZONE = "org.joda.time.dateTimeZone";
 
-  protected Object value;                      // 'value' attribute
-  private DateTimeZone dateTimeZone;
+    /** The config key for the time zone. */
+    public static final String FMT_TIME_ZONE = "org.joda.time.dateTimeZone";
 
-  public DateTimeZoneSupport() {
-    super();
-    init();
-  }
+    /** The value attribute. */
+    protected Object value;
 
-  private void init() {
-    value = null;
-  }
+    /** The zone. */
+    private DateTimeZone dateTimeZone;
 
-  public DateTimeZone getDateTimeZone() {
-    return dateTimeZone;
-  }
-
-
-  public int doStartTag() throws JspException {
-    if (value == null) {
-      dateTimeZone = DateTimeZone.UTC;
-    } 
-    else if (value instanceof String) {
-      try {
-        dateTimeZone = DateTimeZone.forID((String) value);
-      }
-      catch(IllegalArgumentException iae) {
-        dateTimeZone = DateTimeZone.UTC;
-      }
+    /**
+     * Constructor.
+     */
+    public DateTimeZoneSupport() {
+        super();
+        init();
     }
-    else {
-      dateTimeZone = (DateTimeZone) value;
+
+    private void init() {
+        value = null;
     }
-    return EVAL_BODY_BUFFERED;
-  }
 
-  public int doEndTag() throws JspException {
-    try {
-      pageContext.getOut().print(bodyContent.getString());
-    } 
-    catch (IOException ioe) {
-      throw new JspTagException(ioe.toString(), ioe);
+    public DateTimeZone getDateTimeZone() {
+        return dateTimeZone;
     }
-    return EVAL_PAGE;
-  }
 
-  // Releases any resources we may have (or inherit)
-  public void release() {
-    init();
-  }
-
-  /*
-  * Determines and returns the time zone to be used by the given action.
-  *
-  * <p> If the given action is nested inside a &lt;dateTimeZone&gt; action,
-  * the time zone is taken from the enclosing &lt;dateTimeZone&gt; action.
-  *
-  * <p> Otherwise, the time zone configuration setting
-  * <tt>org.joda.time.FMT_TIME_ZONE</tt> is used.
-  *
-  * @param pageContext the page containing the action for which the
-  * time zone needs to be determined
-  * @param fromTag the action for which the time zone needs to be
-  * determined
-  *
-  * @return the time zone, or <tt>null</tt> if the given action is not 
-  * nested inside a &lt;dateTimeZone&gt; action and no time zone configuration
-  * setting exists
-  */
-  static DateTimeZone getDateTimeZone(PageContext pc, Tag fromTag) {
-    DateTimeZone tz = null;
-
-    Tag t = findAncestorWithClass(fromTag, DateTimeZoneSupport.class);
-    if (t != null) {
-      // use time zone from parent <timeZone> tag
-      DateTimeZoneSupport parent = (DateTimeZoneSupport) t;
-      tz = parent.getDateTimeZone();
-    } 
-    else {
-      // get time zone from configuration setting
-      Object obj = Config.find(pc, FMT_TIME_ZONE);
-      if (obj != null) {
-        if (obj instanceof DateTimeZone) {
-          tz = (DateTimeZone) obj;
-        } 
-        else {
-          try {
-            tz = DateTimeZone.forID((String) obj);
-          }
-          catch(IllegalArgumentException iae) {
-            tz = DateTimeZone.UTC;
-          }
+    public int doStartTag() throws JspException {
+        if (value == null) {
+            dateTimeZone = DateTimeZone.UTC;
+        } else if (value instanceof String) {
+            try {
+                dateTimeZone = DateTimeZone.forID((String) value);
+            } catch (IllegalArgumentException iae) {
+                dateTimeZone = DateTimeZone.UTC;
+            }
+        } else {
+            dateTimeZone = (DateTimeZone) value;
         }
-      }
+        return EVAL_BODY_BUFFERED;
     }
-    
-    return tz;
-  }
+
+    public int doEndTag() throws JspException {
+        try {
+            pageContext.getOut().print(bodyContent.getString());
+        } catch (IOException ioe) {
+            throw new JspTagException(ioe.toString(), ioe);
+        }
+        return EVAL_PAGE;
+    }
+
+    // Releases any resources we may have (or inherit)
+    public void release() {
+        init();
+    }
+
+    /**
+     * Determines and returns the time zone to be used by the given action.
+     * <p>
+     * If the given action is nested inside a &lt;dateTimeZone&gt; action,
+     * the time zone is taken from the enclosing &lt;dateTimeZone&gt; action.
+     * <p>
+     * Otherwise, the time zone configuration setting
+     * <tt>org.joda.time.FMT_TIME_ZONE</tt> is used.
+     * 
+     * @param pageContext  the page containing the action for which the time zone
+     *  needs to be determined
+     * @param fromTag  the action for which the time zone needs to be determined
+     * 
+     * @return the time zone, or <tt> null </tt> if the given action is not
+     * nested inside a &lt;dateTimeZone&gt; action and no time zone configuration
+     * setting exists
+     */
+    static DateTimeZone getDateTimeZone(PageContext pc, Tag fromTag) {
+        DateTimeZone tz = null;
+
+        Tag t = findAncestorWithClass(fromTag, DateTimeZoneSupport.class);
+        if (t != null) {
+            // use time zone from parent <timeZone> tag
+            DateTimeZoneSupport parent = (DateTimeZoneSupport) t;
+            tz = parent.getDateTimeZone();
+        } else {
+            // get time zone from configuration setting
+            Object obj = Config.find(pc, FMT_TIME_ZONE);
+            if (obj != null) {
+                if (obj instanceof DateTimeZone) {
+                    tz = (DateTimeZone) obj;
+                } else {
+                    try {
+                        tz = DateTimeZone.forID((String) obj);
+                    } catch (IllegalArgumentException iae) {
+                        tz = DateTimeZone.UTC;
+                    }
+                }
+            }
+        }
+
+        return tz;
+    }
+
 }

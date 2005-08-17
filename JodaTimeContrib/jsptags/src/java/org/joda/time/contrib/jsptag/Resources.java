@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */ 
-
 package org.joda.time.contrib.jsptag;
 
 import java.text.MessageFormat;
@@ -46,12 +45,10 @@ public class Resources {
     // Static data
 
     /** The location of our resources. */
-    private static final String RESOURCE_LOCATION
-  = "org.joda.time.contrib.jsptag.Resources";
+    private static final String RESOURCE_LOCATION = "org.joda.time.contrib.jsptag.Resources";
 
     /** Our class-wide ResourceBundle. */
-    private static ResourceBundle rb =
-  ResourceBundle.getBundle(RESOURCE_LOCATION);
+    private static ResourceBundle rb = ResourceBundle.getBundle(RESOURCE_LOCATION);
 
 
     //*********************************************************************
@@ -60,26 +57,26 @@ public class Resources {
     /** Retrieves a message with no arguments. */
     public static String getMessage(String name)
       throws MissingResourceException {
-  return rb.getString(name);
+        return rb.getString(name);
     }
 
     /** Retrieves a message with arbitrarily many arguments. */
     public static String getMessage(String name, Object[] a)
       throws MissingResourceException {
-  String res = rb.getString(name);
-  return MessageFormat.format(res, a);
+        String res = rb.getString(name);
+        return MessageFormat.format(res, a);
     }
 
     /** Retrieves a message with one argument. */
     public static String getMessage(String name, Object a1)
       throws MissingResourceException {
-  return getMessage(name, new Object[] { a1 });
+        return getMessage(name, new Object[] { a1 });
     }
 
     /** Retrieves a message with two arguments. */
     public static String getMessage(String name, Object a1, Object a2)
       throws MissingResourceException {
-  return getMessage(name, new Object[] { a1, a2 });
+        return getMessage(name, new Object[] { a1, a2 });
     }
 
     /** Retrieves a message with three arguments. */
@@ -88,7 +85,7 @@ public class Resources {
             Object a2,
             Object a3)
       throws MissingResourceException {
-  return getMessage(name, new Object[] { a1, a2, a3 });
+        return getMessage(name, new Object[] { a1, a2, a3 });
     }
 
     /** Retrieves a message with four arguments. */
@@ -98,7 +95,7 @@ public class Resources {
             Object a3,
             Object a4)
       throws MissingResourceException {
-  return getMessage(name, new Object[] { a1, a2, a3, a4 });
+        return getMessage(name, new Object[] { a1, a2, a3, a4 });
     }
 
     /** Retrieves a message with five arguments. */
@@ -109,7 +106,7 @@ public class Resources {
             Object a4,
             Object a5)
       throws MissingResourceException {
-  return getMessage(name, new Object[] { a1, a2, a3, a4, a5 });
+        return getMessage(name, new Object[] { a1, a2, a3, a4, a5 });
     }
 
     /** Retrieves a message with six arguments. */
@@ -121,7 +118,7 @@ public class Resources {
             Object a5,
             Object a6)
       throws MissingResourceException {
-  return getMessage(name, new Object[] { a1, a2, a3, a4, a5, a6 });
+        return getMessage(name, new Object[] { a1, a2, a3, a4, a5, a6 });
     }
 
 }

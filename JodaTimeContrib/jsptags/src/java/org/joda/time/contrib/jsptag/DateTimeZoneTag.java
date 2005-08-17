@@ -13,23 +13,22 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */ 
-
+ */
 package org.joda.time.contrib.jsptag;
 
 import javax.servlet.jsp.JspTagException;
 
 /**
- * <p>A handler for &lt;dateTimeZone&gt.
+ * A handler for &lt;dateTimeZone&gt.
+ * 
  * @author Jan Luehe
  * @author Jim Newsham
  */
-
 public class DateTimeZoneTag extends DateTimeZoneSupport {
 
-  // for tag attribute
-  public void setValue(Object value) throws JspTagException {
-    this.value = value;
-  }
-  
+    // for tag attribute
+    public void setValue(Object value) throws JspTagException {
+        this.value = value;
+    }
+
 }

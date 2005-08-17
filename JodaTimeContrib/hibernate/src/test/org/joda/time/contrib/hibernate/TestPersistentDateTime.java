@@ -90,9 +90,9 @@ public class TestPersistentDateTime extends HibernateTestCase
 
             assertEquals("get failed - returned different time",
                 writeReadTime, eventReread.getDateTime());
-
-            session.close();
         }
+		
+		session.close();
     }
 
 	protected void setupConfiguration(Configuration cfg)

@@ -19,7 +19,7 @@ public abstract class HibernateTestCase extends TestCase
 			setupConfiguration(cfg);
 
 			cfg.setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbcDriver");
-			cfg.setProperty("hibernate.connection.url", "jdbc:hsqldb:mem:hbmtest");
+			cfg.setProperty("hibernate.connection.url", "jdbc:hsqldb:mem:hbmtest" + getClass().getName());
 			cfg.setProperty("hibernate.dialect", HSQLDialect.class.getName());
 
 			cfg.setProperty("hibernate.show_sql", "true");
@@ -31,6 +31,12 @@ public abstract class HibernateTestCase extends TestCase
 			this.factory = factory;
 		}
 		return factory;
+	}
+
+	protected void tearDown() throws Exception
+	{
+		this.factory.close();
+		this.factory = null;
 	}
 
 	protected abstract void setupConfiguration(Configuration cfg);

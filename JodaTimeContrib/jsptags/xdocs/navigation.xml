@@ -6,6 +6,10 @@
   <organizationLogo href="">Joda.org</organizationLogo>
 
   <body>
+    <links>
+      <item name="Joda-Time" href="/index.html"/>
+      <item name="JSP tags" href="/contrib/jsptags/index.html"/>
+    </links>
     <menu name="Joda Time">
       <item name="Overview" href="index.html"/>
       <item name="Users guide" href="userguide.html"/>

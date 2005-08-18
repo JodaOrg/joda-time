@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project name='jodatime-tags' default='dist'>
- <property name="jodatime-tags.version" value="0.1"/>
+ <property name="jodatime-tags.version" value="0.8"/>
  <property name="build.dir" value="build"/>
  <property name="lib.dir" value="lib"/>
 

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - JSP tags - Home</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Joda Time - JSP tags">
+<p>
+<a href="/index.html">Joda-Time</a> provides a complete quality alternative
+to the JDK date and time classes.
+However, this causes issues when working with other libraries that expect
+a JDK object, such as the JSTL JSP tag library.
+</p>
+<p>
+To solve this problem, the Joda-Time JSP tags contributed project provides
+a JSTL-like set of tags that format and parse Joda-Time based date and time
+objects instead of JDK based objects.
+</p>
+<p>
+As a flavour of the tags, here's how to format a Joda-Time object in JSP:
+<source>
+  &lt;%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %&gt;
+  &lt;% pageContext.setAttribute("now", new org.joda.time.DateTime()); %&gt;
+  <b>&lt;joda:format value="${now}" style="SM" /&gt;</b>
+</source>
+Version 0.8 was released on 2005-nn-nn -
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
+</p>
+</section>
+
+
+<section name="Documentation">
+<p>
+Various documentation is available:
+<ul>
+<li>The user guide and tag description - <a href="userguide.html">user guide</a></li>
+<li>The javadoc for the <a href="api-release/index.html">current release</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
+<!--li>A <a href="faq.html">FAQ</a> list</li-->
+<li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/jsptags">CVS repository</a></li>
+</ul>
+</p>
+</section>
+
+
+<section name="Releases">
+<p>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 0.8</a>
+is the current latest release.
+This release is a beta release and may have bugs.
+</p>
+<p>
+The dependencies are Joda-Time 1.1, the Servlet 2.4 API, the JSP 2.0 API,
+and JSTL 1.1 API.
+We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+</p>
+<p>
+We will support the 1.x product line using standard Java mechanisms.
+The main public API will remain backwards compatible for both source and binary.
+The version number will change to 2.0 to indicate a change in compatibility.
+</p>
+</section>
+
+
+<section name="Support">
+<p>
+The Joda-Time JSP tags library was contributed to Joda-Time by Jim Newsham.
+It is based on the code at <a href="http://jakarta.apache.org/taglibs">Jakarta Taglibs</a>.
+</p>
+<p>
+For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>
+(or email direct to the list via <a href="mailto:joda-interest@lists.sourceforge.net">joda-interest@lists.sourceforge.net</a>).
+</p>
+</section>
+</body>
+</document>

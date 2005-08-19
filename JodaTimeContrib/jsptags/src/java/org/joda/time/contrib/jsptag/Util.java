@@ -174,7 +174,7 @@ public class Util {
      * form parameter values properly, since browsers typically encode form
      * field values using the response's charset).
      * 
-     * @param pageContext the page context whose response object is assigned the
+     * @param pc the page context whose response object is assigned the
      * given locale
      * @param locale the response locale
      */
@@ -470,7 +470,7 @@ public class Util {
      * <tt>javax.servlet.jsp.jstl.fmt.fallbackLocale</tt> configuration
      * setting) and the available locales, for the given base name.
      * 
-     * @param pageContext Page in which the resource bundle with the given base
+     * @param pc Page in which the resource bundle with the given base
      * name is requested
      * @param basename Resource bundle base name
      * 

@@ -91,8 +91,9 @@ public abstract class ParseDateTimeSupport extends BodyTagSupport {
             input = value;
         } else {
             // ... retrieving and trimming our body
-            if (bodyContent != null && bodyContent.getString() != null)
+            if (bodyContent != null && bodyContent.getString() != null) {
                 input = bodyContent.getString().trim();
+            }
         }
 
         if ((input == null) || input.equals("")) {

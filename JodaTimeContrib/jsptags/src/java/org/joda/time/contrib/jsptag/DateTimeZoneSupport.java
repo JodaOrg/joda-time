@@ -98,7 +98,7 @@ public abstract class DateTimeZoneSupport extends BodyTagSupport {
      * Otherwise, the time zone configuration setting
      * <tt>org.joda.time.FMT_TIME_ZONE</tt> is used.
      * 
-     * @param pageContext  the page containing the action for which the time zone
+     * @param pc  the page containing the action for which the time zone
      *  needs to be determined
      * @param fromTag  the action for which the time zone needs to be determined
      * 

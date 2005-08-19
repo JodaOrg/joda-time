@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- You are strongly recommended to use ant for compiling and building -->
-<!-- We only use and test maven for website construction -->
-
-<project xmlns="http://maven.apache.org/maven-v3_0_0.xsd">
+<project>
   <pomVersion>3</pomVersion>
   <id>joda-time-jsptags</id>
   <groupId>joda-time</groupId>
@@ -67,7 +64,7 @@
     <url>http://www.joda.org</url>
     <logo>/images/joda.png</logo>
   </organization>
-  <package>org.joda.time.contrib.jsptags</package>
+  <package>org.joda.time.contrib.jsptag</package>
 
   <build>
     <sourceDirectory>src/java</sourceDirectory>
@@ -81,6 +78,7 @@
       <resource>
         <targetPath>meta-inf</targetPath>
         <includes>
+          <include>LICENSE.txt</include>
           <include>NOTICE.txt</include>
         </includes>
       </resource>
@@ -118,12 +116,12 @@
      <report>maven-changes-plugin</report>
      <report>maven-checkstyle-plugin</report>
      <!-- <report>maven-clover-plugin</report> -->
-     <report>maven-jcoverage-plugin</report>
+     <!-- <report>maven-jcoverage-plugin</report> -->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>
      <!-- <report>maven-jellydoc-plugin</report> -->
-     <report>maven-junit-report-plugin</report>
+     <!-- <report>maven-junit-report-plugin</report> -->
      <report>maven-jxr-plugin</report>
      <report>maven-license-plugin</report>
      <!--report>maven-linkcheck-plugin</report-->

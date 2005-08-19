@@ -59,11 +59,6 @@ The dependencies are Joda-Time 1.1, the Servlet 2.4 API, the JSP 2.0 API,
 and JSTL 1.1 API.
 We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 </p>
-<p>
-We will support the 1.x product line using standard Java mechanisms.
-The main public API will remain backwards compatible for both source and binary.
-The version number will change to 2.0 to indicate a change in compatibility.
-</p>
 </section>
 
 

@@ -7,8 +7,8 @@
 
   <body>
     <links>
-      <item name="Joda-Time" href="/index.html"/>
-      <item name="JSP tags" href="/contrib/jsptags/index.html"/>
+      <item name="Joda-Time" href="../../index.html"/>
+      <item name="JSP tags" href="/index.html"/>
     </links>
     <menu name="Joda Time JSP tags">
       <item name="Overview" href="index.html"/>

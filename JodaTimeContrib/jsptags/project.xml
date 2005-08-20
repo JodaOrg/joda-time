@@ -81,6 +81,13 @@
           <include>NOTICE.txt</include>
         </includes>
       </resource>
+      <resource>
+        <targetPath>meta-inf</targetPath>
+        <directory>src/conf</directory>
+        <includes>
+          <include>joda.tld</include>
+        </includes>
+      </resource>
     </resources>
   </build>
 

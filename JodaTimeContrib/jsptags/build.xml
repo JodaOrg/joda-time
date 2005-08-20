@@ -77,9 +77,9 @@
       <classpath refid="build.classpath">
       </classpath>
     </javac>
-    <mkdir dir="${classesdir}/meta-inf">
+    <mkdir dir="${classesdir}/META-INF">
     </mkdir>
-    <copy todir="${classesdir}/meta-inf">
+    <copy todir="${classesdir}/META-INF">
       <fileset dir="${basedir}/.">
         <include name="LICENSE.txt">
         </include>

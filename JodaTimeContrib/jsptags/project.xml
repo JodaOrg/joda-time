@@ -10,7 +10,7 @@
     Contribution to Joda-Time that adds JSP tags support
   </description>
 
-  <url>http://joda-time.sourceforge.net/jsptags</url>
+  <url>http://joda-time.sourceforge.net/contrib/jsptags</url>
   <logo>/images/jodatime.png</logo>
   <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
   <inceptionYear>2005</inceptionYear>

@@ -78,7 +78,6 @@
       <resource>
         <targetPath>meta-inf</targetPath>
         <includes>
-          <include>LICENSE.txt</include>
           <include>NOTICE.txt</include>
         </includes>
       </resource>

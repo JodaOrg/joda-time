@@ -31,8 +31,8 @@ public boolean isJoinedInLastThreeMonths(<b>DateTime</b> datetimeJoined) {
   <b>Interval</b> last3Months = new Interval(Period.months(3), new DateTime());
   return last3Months.contains(datetimeJoined);
 }
-public boolean isBirthdayInLeapYear(<b>YearMonthDay</b> dateOfBirth) {
-  return dateOfBirth.year().isLeap();
+public String getBirthMonthText(<b>YearMonthDay</b> dateOfBirth) {
+  return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
 </source>
 Version 1.1 was released on 2005-08-10 -

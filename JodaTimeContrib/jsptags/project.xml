@@ -76,13 +76,13 @@
     </unitTest>
     <resources>
       <resource>
-        <targetPath>meta-inf</targetPath>
+        <targetPath>META-INF</targetPath>
         <includes>
           <include>NOTICE.txt</include>
         </includes>
       </resource>
       <resource>
-        <targetPath>meta-inf</targetPath>
+        <targetPath>META-INF</targetPath>
         <directory>src/conf</directory>
         <includes>
           <include>joda.tld</include>

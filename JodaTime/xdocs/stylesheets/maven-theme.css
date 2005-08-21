@@ -51,14 +51,16 @@ p, ul {
 }
 #banner {
   background-color: #eef;
+  border-bottom: 1px solid #aaa;
 }
 #organizationLogo img, #projectLogo img {
   border: 1px solid #999;
 }
 #breadcrumbs {
-  border-top: 1px solid #aaa;
+  padding-top: 1px;
+  padding-bottom: 2px;
   border-bottom: 1px solid #aaa;
-  background-color: #ccc;
+  background-color: #ddf;
 }
 #leftColumn {
   margin: 8px 0 8px 4px;

@@ -43,6 +43,15 @@
     <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTime</connection>
     <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime/</url>
   </repository>
+
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <versions>
     <version>
       <id>0.95</id>
@@ -147,6 +156,12 @@
         <directory>${basedir}/target/classes</directory>
         <includes>
           <include>org/joda/time/tz/data/**</include>
+        </includes>
+      </resource>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>NOTICE.txt</include>
         </includes>
       </resource>
     </resources>

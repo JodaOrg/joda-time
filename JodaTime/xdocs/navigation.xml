@@ -6,6 +6,11 @@
   <organizationLogo href="">Joda.org</organizationLogo>
 
   <body>
+    <links>
+      <item name="Joda-Time" href="/index.html"/>
+      <item name="JSP tags" href="/contrib/jsptags/index.html"/>
+    </links>
+
     <menu name="Joda Time">
       <item name="Overview" href="/index.html"/>
       <item name="Quick start guide" href="/quickstart.html"/>
@@ -13,7 +18,7 @@
       <item name="FAQ" href="/faq.html"/>
       <item name="Javadoc (Release)" href="/api-release/index.html"/>
       <item name="License" href="/license.html"/>
-      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=97367"/>
+      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212"/>
     </menu>
     
     <menu name="Key concepts">

@@ -22,7 +22,7 @@
   </property>
   <property name="javadocdir" value="${basedir}/dist/docs/api">
   </property>
-  <property name="final.name" value="joda-time-jsptags-0.8">
+  <property name="final.name" value="joda-time-jsptags-0.9">
   </property>
   <property name="proxy.host" value="">
   </property>
@@ -130,7 +130,7 @@
     </tstamp>
     <property name="copyright" value="Copyright &amp;copy;  Joda.org. All Rights Reserved.">
     </property>
-    <property name="title" value="Joda time JSP tags support 0.8 API">
+    <property name="title" value="Joda time JSP tags support 0.9 API">
     </property>
     <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="org.joda.time.contrib.jsptag.*">
       <classpath>

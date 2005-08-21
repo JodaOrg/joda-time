@@ -4,7 +4,7 @@
   <id>joda-time-jsptags</id>
   <groupId>joda-time</groupId>
   <name>Joda time JSP tags support</name>
-  <currentVersion>0.8</currentVersion>
+  <currentVersion>0.9-dev</currentVersion>
   <shortDescription>Joda time JSP tags support</shortDescription>
   <description>
     Contribution to Joda-Time that adds JSP tags support
@@ -53,6 +53,14 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <versions>
+    <version>
+      <id>0.8</id>
+      <name>0.8</name>
+      <tag>v0_8_000</tag>
+    </version>
+  </versions>
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/jsptags</connection>

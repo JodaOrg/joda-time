@@ -21,9 +21,12 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.Chronology;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.YearMonthDay;
 
 /**
  * This class is a Junit unit test for GregorianChronology.
@@ -251,6 +254,14 @@ public class TestGregorianChronology extends TestCase {
         assertEquals(true, GregorianChronology.getInstance().secondOfMinute().isSupported());
         assertEquals(true, GregorianChronology.getInstance().millisOfDay().isSupported());
         assertEquals(true, GregorianChronology.getInstance().millisOfSecond().isSupported());
+    }
+
+    public void testMaximumValue() {
+        YearMonthDay ymd1 = new YearMonthDay(1999, DateTimeConstants.FEBRUARY, 1);
+        DateMidnight dm1 = new DateMidnight(1999, DateTimeConstants.FEBRUARY, 1);
+        Chronology chrono = Chronology.getGregorian();
+        assertEquals(28, chrono.dayOfMonth().getMaximumValue(ymd1));
+        assertEquals(28, chrono.dayOfMonth().getMaximumValue(dm1.getMillis()));
     }
 
 }

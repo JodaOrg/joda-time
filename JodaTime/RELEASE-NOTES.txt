@@ -38,6 +38,9 @@ None
 
 Bug fixes since 1.1
 -------------------
+- ZonedChronology
+  getMaximumValue(ReadablePartial)/getMinimumValue(ReadablePartial)
+  Methods returned incorrect result
 
 
 Enhancements since 1.1

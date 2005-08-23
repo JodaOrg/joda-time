@@ -24,6 +24,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.BaseDurationField;
 
@@ -448,12 +449,28 @@ public final class ZonedChronology extends AssembledChronology {
             return iField.getMinimumValue(instant + this.iZone.getOffset(instant));
         }
 
+        public int getMinimumValue(ReadablePartial instant) {
+            return iField.getMinimumValue(instant);
+        }
+
+        public int getMinimumValue(ReadablePartial instant, int[] values) {
+            return iField.getMinimumValue(instant, values);
+        }
+
         public int getMaximumValue() {
             return iField.getMaximumValue();
         }
 
         public int getMaximumValue(long instant) {
             return iField.getMaximumValue(instant + this.iZone.getOffset(instant));
+        }
+
+        public int getMaximumValue(ReadablePartial instant) {
+            return iField.getMaximumValue(instant);
+        }
+
+        public int getMaximumValue(ReadablePartial instant, int[] values) {
+            return iField.getMaximumValue(instant, values);
         }
 
         public int getMaximumTextLength(Locale locale) {

@@ -1,4 +1,4 @@
-# @(#)southamerica	7.60
+# @(#)southamerica	7.61
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -293,7 +293,7 @@ Zone America/Argentina/Jujuy -4:21:12 -	LMT	1894 Oct 31
 			-4:00	Arg	AR%sT	2000 Mar  3
 			-3:00	-	ART
 #
-# Catamarca (CT)
+# Catamarca (CT), Chubut (CH)
 Zone America/Argentina/Catamarca -4:23:08 - LMT	1894 Oct 31
 			-4:16:48 -	CMT	1920 May
 			-4:00	-	ART	1930 Dec
@@ -321,20 +321,6 @@ Zone America/Argentina/Mendoza -4:35:16 - LMT	1894 Oct 31
 			-4:00	Arg	AR%sT	2000 Mar  3
 			-3:00	-	ART	2004 May 23
 			-4:00	-	WART	2004 Sep 26
-			-3:00	-	ART
-#
-# Chubut (CH)
-# The name "Comodoro Rivadavia" exceeds the 14-byte POSIX limit.
-Zone America/Argentina/ComodRivadavia -4:30:00 - LMT	1894 Oct 31
-			-4:16:48 -	CMT	1920 May
-			-4:00	-	ART	1930 Dec
-			-4:00	Arg	AR%sT	1969 Oct  5
-			-3:00	Arg	AR%sT	1991 Mar  3
-			-4:00	-	WART	1991 Oct 20
-			-3:00	Arg	AR%sT	1999 Oct  3
-			-4:00	Arg	AR%sT	2000 Mar  3
-			-3:00	-	ART	2004 Jun  1
-			-4:00	-	WART	2004 Jun 20
 			-3:00	-	ART
 #
 # Santa Cruz (SC)

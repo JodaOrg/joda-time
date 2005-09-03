@@ -17,7 +17,7 @@ package org.joda.time.chrono;
 
 import java.util.Locale;
 
-import org.joda.time.DateTimeField;
+import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
@@ -30,112 +30,105 @@ import org.joda.time.field.UnsupportedDurationField;
  * Provides time calculations for the coptic era component of time.
  *
  * @author Brian S O'Neill
- * @since 1.0
+ * @author Stephen Colebourne
+ * @since 1.2, refactored from CopticEraDateTimeField
  */
-final class CopticEraDateTimeField extends BaseDateTimeField {
-    
-    /** Serialization version */
-    private static final long serialVersionUID = 4090856468123006167L;
+final class BasicSingleEraDateTimeField extends BaseDateTimeField {
 
     /**
-     * Singleton instance
+     * Value of the era, which will be the same as DateTimeConstants.CE.
      */
-    static final DateTimeField INSTANCE = new CopticEraDateTimeField();
+    private static final int ERA_VALUE = DateTimeConstants.CE;
+    /**
+     * Text value of the era.
+     */
+    private final String iEraText;
 
     /**
-     * Restricted constructor
+     * Restricted constructor.
      */
-    private CopticEraDateTimeField() {
+    BasicSingleEraDateTimeField(String text) {
         super(DateTimeFieldType.era());
+        iEraText = text;
     }
 
-    /**
-     * Serialization singleton
-     */
-    private Object readResolve() {
-        return INSTANCE;
-    }
-
+    /** @inheritDoc */
     public boolean isLenient() {
         return false;
     }
 
-    /**
-     * Get the Era component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to query.
-     * @return the era extracted from the input.
-     */
+    /** @inheritDoc */
     public int get(long instant) {
-        return CopticChronology.AM;
+        return ERA_VALUE;
     }
 
-    /**
-     * Set the Era component of the specified time instant.
-     * 
-     * @param instant  the time instant in millis to update.
-     * @param era  the era (CopticChronology.AM) to update the time to.
-     * @return the updated time instant.
-     * @throws IllegalArgumentException  if era is invalid.
-     */
+    /** @inheritDoc */
     public long set(long instant, int era) {
-        FieldUtils.verifyValueBounds(this, era, getMinimumValue(), getMaximumValue());
-
+        FieldUtils.verifyValueBounds(this, era, ERA_VALUE, ERA_VALUE);
         return instant;
     }
 
-    /**
-     * @see org.joda.time.DateTimeField#set(long, String, Locale)
-     */
+    /** @inheritDoc */
     public long set(long instant, String text, Locale locale) {
-        if ("AM".equals(text) == false) {
+        if (iEraText.equals(text) == false && "1".equals(text) == false) {
             throw new IllegalFieldValueException(DateTimeFieldType.era(), text);
         }
         return instant;
     }
 
+    /** @inheritDoc */
     public long roundFloor(long instant) {
         return Long.MIN_VALUE;
     }
 
+    /** @inheritDoc */
     public long roundCeiling(long instant) {
         return Long.MAX_VALUE;
     }
 
+    /** @inheritDoc */
     public long roundHalfFloor(long instant) {
         return Long.MIN_VALUE;
     }
 
+    /** @inheritDoc */
     public long roundHalfCeiling(long instant) {
         return Long.MIN_VALUE;
     }
 
+    /** @inheritDoc */
     public long roundHalfEven(long instant) {
         return Long.MIN_VALUE;
     }
 
+    /** @inheritDoc */
     public DurationField getDurationField() {
         return UnsupportedDurationField.getInstance(DurationFieldType.eras());
     }
 
+    /** @inheritDoc */
     public DurationField getRangeDurationField() {
         return null;
     }
 
+    /** @inheritDoc */
     public int getMinimumValue() {
-        return CopticChronology.AM;
+        return ERA_VALUE;
     }
 
+    /** @inheritDoc */
     public int getMaximumValue() {
-        return CopticChronology.AM;
-    }
-    
-    public String getAsText(int fieldValue, Locale locale) {
-        return "AM";
+        return ERA_VALUE;
     }
 
+    /** @inheritDoc */
+    public String getAsText(int fieldValue, Locale locale) {
+        return iEraText;
+    }
+
+    /** @inheritDoc */
     public int getMaximumTextLength(Locale locale) {
-        return 2;
+        return iEraText.length();
     }
 
 }

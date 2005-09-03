@@ -21,6 +21,7 @@ import java.util.Map;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
@@ -63,21 +64,27 @@ public final class CopticChronology extends BaseGJChronology {
      */
     public static final int AM = DateTimeConstants.CE;
 
+    /** A singleton era field. */
+    private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("AM");
+
     private static final long MILLIS_PER_YEAR =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY);
 
     private static final long MILLIS_PER_MONTH =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY / 12);
 
-    // The lowest year that can be fully supported.
+    /** The lowest year that can be fully supported. */
     private static final int MIN_YEAR = -292269337;
 
-    // The highest year that can be fully supported. Although
-    // calculateFirstDayOfYearMillis can go higher without overflowing, the
-    // getYear method overflows when it adds the approximate millis at the
-    // epoch.
+    /**
+     * The highest year that can be fully supported.
+     * Although calculateFirstDayOfYearMillis can go higher without
+     * overflowing, the getYear method overflows when it adds the
+     * approximate millis at the epoch.
+     */
     private static final int MAX_YEAR = 292271022;
 
+    /** Singleton 30 day month field used to build the monthOfYear field. */
     private static final DurationField cMonthsField;
 
     /** Singleton instance of a UTC CopticChronology */
@@ -356,14 +363,11 @@ public final class CopticChronology extends BaseGJChronology {
         if (getBase() == null) {
             super.assemble(fields);
 
-            fields.year = new BasicYearDateTimeField(this);
-            fields.years = fields.year.getDurationField();
-
             // Coptic, like Julian, has no year zero.
             fields.year = new SkipDateTimeField(this, fields.year);
             fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
             
-            fields.era = CopticEraDateTimeField.INSTANCE;
+            fields.era = ERA_FIELD;
             fields.months = cMonthsField;
             fields.monthOfYear = new CopticMonthOfYearDateTimeField(this, cMonthsField);
             fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);

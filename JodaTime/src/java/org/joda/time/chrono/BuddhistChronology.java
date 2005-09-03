@@ -61,6 +61,9 @@ public final class BuddhistChronology extends AssembledChronology {
      */
     public static final int BE = DateTimeConstants.CE;
 
+    /** A singleton era field. */
+    private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("BE");
+
     /** Number of years difference in calendars. */
     private static final int BUDDHIST_OFFSET = 543;
 
@@ -207,7 +210,7 @@ public final class BuddhistChronology extends AssembledChronology {
             fields.weekyearOfCentury = new OffsetDateTimeField(
                 field, DateTimeFieldType.weekyearOfCentury(), 1);
             
-            fields.era = ThaiBuddhistEraDateTimeField.INSTANCE;
+            fields.era = ERA_FIELD;
         }
     }
    

@@ -45,6 +45,8 @@ Bug fixes since 1.1
 
 Enhancements since 1.1
 ----------------------
+- ChronologyType
+  New type that acts as a factory for creating Chronology instances
 
 
 Feedback

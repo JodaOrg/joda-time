@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.Chronology;
+import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.field.DividedDateTimeField;
@@ -120,6 +121,17 @@ public final class ISOChronology extends AssembledChronology {
      */
     private ISOChronology(Chronology base) {
         super(base, null);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns the ChronologyType constant for this Chronology.
+     *
+     * @return the chronology type
+     * @since 1.2
+     */
+    public ChronologyType getType() {
+        return ChronologyType.iso();
     }
 
     // Conversion

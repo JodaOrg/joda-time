@@ -29,6 +29,10 @@ Data compatible - Yes
 
 Warnings since 1.1
 ------------------
+- ChronologyType
+  If you have created your own subclass of Chronology, you should create
+  a ChronologyType subclass to define a type for your chronology, and
+  override the Chronology.getType() to return it.
 
 
 Deprecations since 1.1
@@ -47,6 +51,7 @@ Enhancements since 1.1
 ----------------------
 - ChronologyType
   New type that acts as a factory for creating Chronology instances
+  Chronology.getType() returns the type
 
 
 Feedback

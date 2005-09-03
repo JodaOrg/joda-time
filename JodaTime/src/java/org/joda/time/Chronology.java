@@ -380,10 +380,25 @@ public abstract class Chronology {
 
     //-----------------------------------------------------------------------
     /**
+     * Returns the ChronologyType constant for this Chronology.
+     * <p>
+     * This method should ideally never return null. However ChronologyType
+     * was only added in v1.2, and any chronology written before then
+     * will not correctly override this method to return the type.
+     *
+     * @return the chronology type, correct implementations never return null
+     * @since 1.2
+     */
+    public ChronologyType getType() {
+        // all subclasses should override this method
+        return null;
+    }
+
+    /**
      * Returns the DateTimeZone that this Chronology operates in, or null if
      * unspecified.
      *
-     * @return DateTimeZone null if unspecified
+     * @return the DateTimeZone, null if unspecified
      */
     public abstract DateTimeZone getZone();
 

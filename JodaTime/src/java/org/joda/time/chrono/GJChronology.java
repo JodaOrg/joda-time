@@ -21,6 +21,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.joda.time.Chronology;
+import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
@@ -293,6 +294,17 @@ public final class GJChronology extends AssembledChronology {
             return base.getZone();
         }
         return DateTimeZone.UTC;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns the ChronologyType constant for this Chronology.
+     *
+     * @return the chronology type
+     * @since 1.2
+     */
+    public ChronologyType getType() {
+        return ChronologyType.gj();
     }
 
     // Conversion

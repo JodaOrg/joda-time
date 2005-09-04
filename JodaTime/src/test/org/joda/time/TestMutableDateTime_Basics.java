@@ -32,6 +32,8 @@ import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.UnsupportedDateTimeField;
+import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -718,6 +720,34 @@ public class TestMutableDateTime_Basics extends TestCase {
         test.setRounding(null);
         assertEquals(MutableDateTime.ROUND_NONE, test.getRoundingMode());
         assertEquals(null, test.getRoundingField());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testProperty() {
+        MutableDateTime test = new MutableDateTime();
+        assertEquals(test.year(), test.property(DateTimeFieldType.year()));
+        assertEquals(test.dayOfWeek(), test.property(DateTimeFieldType.dayOfWeek()));
+        assertEquals(test.secondOfMinute(), test.property(DateTimeFieldType.secondOfMinute()));
+        assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
+        DateTimeFieldType bad = new DateTimeFieldType("bad") {
+            public DurationFieldType getDurationType() {
+                return DurationFieldType.weeks();
+            }
+            public DurationFieldType getRangeDurationType() {
+                return null;
+            }
+            public DateTimeField getField(Chronology chronology) {
+                return UnsupportedDateTimeField.getInstance(this, UnsupportedDurationField.getInstance(getDurationType()));
+            }
+        };
+        try {
+            test.property(bad);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.property(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
 }

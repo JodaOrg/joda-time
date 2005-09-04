@@ -53,6 +53,9 @@ Enhancements since 1.1
   New type that acts as a factory for creating Chronology instances
   Chronology.getType() returns the type
 
+- MutableDateTime.property(DateTimeFieldType)
+  Gets the property by type. Complements the method already on DateTime/DateMidnight.
+
 
 Feedback
 --------

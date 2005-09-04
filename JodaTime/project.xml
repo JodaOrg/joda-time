@@ -73,6 +73,11 @@
       <name>1.0</name>
       <tag>v1_0_000</tag>
     </version>
+    <version>
+      <id>1.1</id>
+      <name>1.1</name>
+      <tag>v1_1_000</tag>
+    </version>
   </versions>
   
   <mailingLists>

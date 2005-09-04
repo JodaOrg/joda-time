@@ -103,8 +103,8 @@ public class TestLongConverter extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = Chronology.getISO().get(tod, 12345678L);
-        int[] actual = LongConverter.INSTANCE.getPartialValues(tod, new Long(12345678L), Chronology.getISO());
+        int[] expected = ISOChronology.getInstance().get(tod, 12345678L);
+        int[] actual = LongConverter.INSTANCE.getPartialValues(tod, new Long(12345678L), ISOChronology.getInstance());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

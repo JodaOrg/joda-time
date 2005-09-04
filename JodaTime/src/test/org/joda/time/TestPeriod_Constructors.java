@@ -21,6 +21,9 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * This class is a JUnit test for Duration.
  *
@@ -237,7 +240,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Period test = new Period(length, Chronology.getISO());
+        Period test = new Period(length, ISOChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -254,7 +257,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Period test = new Period(length, Chronology.getISOUTC());
+        Period test = new Period(length, ISOChronology.getInstanceUTC());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -289,7 +292,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Period test = new Period(length, PeriodType.time().withMillisRemoved(), Chronology.getISO());
+        Period test = new Period(length, PeriodType.time().withMillisRemoved(), ISOChronology.getInstance());
         assertEquals(PeriodType.time().withMillisRemoved(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -306,7 +309,7 @@ public class TestPeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        Period test = new Period(length, PeriodType.standard(), Chronology.getISOUTC());
+        Period test = new Period(length, PeriodType.standard(), ISOChronology.getInstanceUTC());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -518,9 +521,9 @@ public class TestPeriod_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstructor_long_long_Chronology1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic());
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, Chronology.getCoptic());
-        Period test = new Period(dt1.getMillis(), dt2.getMillis(), Chronology.getCoptic());
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
+        Period test = new Period(dt1.getMillis(), dt2.getMillis(), CopticChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -549,9 +552,9 @@ public class TestPeriod_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstructor_long_long_PeriodType_Chronology1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic());
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, Chronology.getCoptic());
-        Period test = new Period(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, Chronology.getCoptic());
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
+        Period test = new Period(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, CopticChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());

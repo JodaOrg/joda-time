@@ -24,6 +24,8 @@ import java.lang.reflect.Constructor;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
+
 /**
  * This class is a Junit unit test for Chronology.
  *
@@ -55,8 +57,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("era", DateTimeFieldType.era().getName());
         assertEquals(DurationFieldType.eras(), DateTimeFieldType.era().getDurationType());
         assertEquals(null, DateTimeFieldType.era().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().era(), DateTimeFieldType.era().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().era().isSupported(), DateTimeFieldType.era().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().era(), DateTimeFieldType.era().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().era().isSupported(), DateTimeFieldType.era().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.era());
     }
 
@@ -65,8 +67,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("centuryOfEra", DateTimeFieldType.centuryOfEra().getName());
         assertEquals(DurationFieldType.centuries(), DateTimeFieldType.centuryOfEra().getDurationType());
         assertEquals(DurationFieldType.eras(), DateTimeFieldType.centuryOfEra().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().centuryOfEra(), DateTimeFieldType.centuryOfEra().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().centuryOfEra().isSupported(), DateTimeFieldType.centuryOfEra().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().centuryOfEra(), DateTimeFieldType.centuryOfEra().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().centuryOfEra().isSupported(), DateTimeFieldType.centuryOfEra().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.centuryOfEra());
     }
 
@@ -75,8 +77,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("yearOfCentury", DateTimeFieldType.yearOfCentury().getName());
         assertEquals(DurationFieldType.years(), DateTimeFieldType.yearOfCentury().getDurationType());
         assertEquals(DurationFieldType.centuries(), DateTimeFieldType.yearOfCentury().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().yearOfCentury(), DateTimeFieldType.yearOfCentury().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().yearOfCentury().isSupported(), DateTimeFieldType.yearOfCentury().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().yearOfCentury(), DateTimeFieldType.yearOfCentury().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().yearOfCentury().isSupported(), DateTimeFieldType.yearOfCentury().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.yearOfCentury());
     }
 
@@ -85,8 +87,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("yearOfEra", DateTimeFieldType.yearOfEra().getName());
         assertEquals(DurationFieldType.years(), DateTimeFieldType.yearOfEra().getDurationType());
         assertEquals(DurationFieldType.eras(), DateTimeFieldType.yearOfEra().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().yearOfEra(), DateTimeFieldType.yearOfEra().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().yearOfEra().isSupported(), DateTimeFieldType.yearOfEra().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().yearOfEra(), DateTimeFieldType.yearOfEra().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().yearOfEra().isSupported(), DateTimeFieldType.yearOfEra().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.yearOfEra());
     }
 
@@ -95,8 +97,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("year", DateTimeFieldType.year().getName());
         assertEquals(DurationFieldType.years(), DateTimeFieldType.year().getDurationType());
         assertEquals(null, DateTimeFieldType.year().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().year(), DateTimeFieldType.year().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().year().isSupported(), DateTimeFieldType.year().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().year(), DateTimeFieldType.year().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().year().isSupported(), DateTimeFieldType.year().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.year());
     }
 
@@ -105,8 +107,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("monthOfYear", DateTimeFieldType.monthOfYear().getName());
         assertEquals(DurationFieldType.months(), DateTimeFieldType.monthOfYear().getDurationType());
         assertEquals(DurationFieldType.years(), DateTimeFieldType.monthOfYear().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().monthOfYear(), DateTimeFieldType.monthOfYear().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().monthOfYear().isSupported(), DateTimeFieldType.monthOfYear().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().monthOfYear(), DateTimeFieldType.monthOfYear().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().monthOfYear().isSupported(), DateTimeFieldType.monthOfYear().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.monthOfYear());
     }
 
@@ -115,8 +117,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("weekyearOfCentury", DateTimeFieldType.weekyearOfCentury().getName());
         assertEquals(DurationFieldType.weekyears(), DateTimeFieldType.weekyearOfCentury().getDurationType());
         assertEquals(DurationFieldType.centuries(), DateTimeFieldType.weekyearOfCentury().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().weekyearOfCentury(), DateTimeFieldType.weekyearOfCentury().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().weekyearOfCentury().isSupported(), DateTimeFieldType.weekyearOfCentury().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekyearOfCentury(), DateTimeFieldType.weekyearOfCentury().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekyearOfCentury().isSupported(), DateTimeFieldType.weekyearOfCentury().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.weekyearOfCentury());
     }
 
@@ -125,8 +127,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("weekyear", DateTimeFieldType.weekyear().getName());
         assertEquals(DurationFieldType.weekyears(), DateTimeFieldType.weekyear().getDurationType());
         assertEquals(null, DateTimeFieldType.weekyear().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().weekyear(), DateTimeFieldType.weekyear().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().weekyear().isSupported(), DateTimeFieldType.weekyear().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekyear(), DateTimeFieldType.weekyear().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekyear().isSupported(), DateTimeFieldType.weekyear().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.weekyear());
     }
 
@@ -135,8 +137,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("weekOfWeekyear", DateTimeFieldType.weekOfWeekyear().getName());
         assertEquals(DurationFieldType.weeks(), DateTimeFieldType.weekOfWeekyear().getDurationType());
         assertEquals(DurationFieldType.weekyears(), DateTimeFieldType.weekOfWeekyear().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().weekOfWeekyear(), DateTimeFieldType.weekOfWeekyear().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().weekOfWeekyear().isSupported(), DateTimeFieldType.weekOfWeekyear().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekOfWeekyear(), DateTimeFieldType.weekOfWeekyear().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekOfWeekyear().isSupported(), DateTimeFieldType.weekOfWeekyear().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.weekOfWeekyear());
     }
 
@@ -145,8 +147,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("dayOfYear", DateTimeFieldType.dayOfYear().getName());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.dayOfYear().getDurationType());
         assertEquals(DurationFieldType.years(), DateTimeFieldType.dayOfYear().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().dayOfYear(), DateTimeFieldType.dayOfYear().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().dayOfYear().isSupported(), DateTimeFieldType.dayOfYear().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().dayOfYear(), DateTimeFieldType.dayOfYear().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().dayOfYear().isSupported(), DateTimeFieldType.dayOfYear().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.dayOfYear());
     }
 
@@ -155,8 +157,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("dayOfMonth", DateTimeFieldType.dayOfMonth().getName());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.dayOfMonth().getDurationType());
         assertEquals(DurationFieldType.months(), DateTimeFieldType.dayOfMonth().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().dayOfMonth(), DateTimeFieldType.dayOfMonth().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().dayOfMonth().isSupported(), DateTimeFieldType.dayOfMonth().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().dayOfMonth(), DateTimeFieldType.dayOfMonth().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().dayOfMonth().isSupported(), DateTimeFieldType.dayOfMonth().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.dayOfMonth());
     }
 
@@ -165,8 +167,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("dayOfWeek", DateTimeFieldType.dayOfWeek().getName());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.dayOfWeek().getDurationType());
         assertEquals(DurationFieldType.weeks(), DateTimeFieldType.dayOfWeek().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().dayOfWeek(), DateTimeFieldType.dayOfWeek().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().dayOfWeek().isSupported(), DateTimeFieldType.dayOfWeek().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().dayOfWeek(), DateTimeFieldType.dayOfWeek().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().dayOfWeek().isSupported(), DateTimeFieldType.dayOfWeek().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.dayOfWeek());
     }
 
@@ -175,8 +177,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("halfdayOfDay", DateTimeFieldType.halfdayOfDay().getName());
         assertEquals(DurationFieldType.halfdays(), DateTimeFieldType.halfdayOfDay().getDurationType());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.halfdayOfDay().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().halfdayOfDay(), DateTimeFieldType.halfdayOfDay().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().halfdayOfDay().isSupported(), DateTimeFieldType.halfdayOfDay().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().halfdayOfDay(), DateTimeFieldType.halfdayOfDay().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().halfdayOfDay().isSupported(), DateTimeFieldType.halfdayOfDay().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.halfdayOfDay());
     }
 
@@ -185,8 +187,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("clockhourOfDay", DateTimeFieldType.clockhourOfDay().getName());
         assertEquals(DurationFieldType.hours(), DateTimeFieldType.clockhourOfDay().getDurationType());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.clockhourOfDay().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().clockhourOfDay(), DateTimeFieldType.clockhourOfDay().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().clockhourOfDay().isSupported(), DateTimeFieldType.clockhourOfDay().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().clockhourOfDay(), DateTimeFieldType.clockhourOfDay().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().clockhourOfDay().isSupported(), DateTimeFieldType.clockhourOfDay().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.clockhourOfDay());
     }
 
@@ -195,8 +197,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("clockhourOfHalfday", DateTimeFieldType.clockhourOfHalfday().getName());
         assertEquals(DurationFieldType.hours(), DateTimeFieldType.clockhourOfHalfday().getDurationType());
         assertEquals(DurationFieldType.halfdays(), DateTimeFieldType.clockhourOfHalfday().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().clockhourOfHalfday(), DateTimeFieldType.clockhourOfHalfday().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().clockhourOfHalfday().isSupported(), DateTimeFieldType.clockhourOfHalfday().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().clockhourOfHalfday(), DateTimeFieldType.clockhourOfHalfday().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().clockhourOfHalfday().isSupported(), DateTimeFieldType.clockhourOfHalfday().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.clockhourOfHalfday());
     }
 
@@ -205,8 +207,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("hourOfHalfday", DateTimeFieldType.hourOfHalfday().getName());
         assertEquals(DurationFieldType.hours(), DateTimeFieldType.hourOfHalfday().getDurationType());
         assertEquals(DurationFieldType.halfdays(), DateTimeFieldType.hourOfHalfday().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().hourOfHalfday(), DateTimeFieldType.hourOfHalfday().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().hourOfHalfday().isSupported(), DateTimeFieldType.hourOfHalfday().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().hourOfHalfday(), DateTimeFieldType.hourOfHalfday().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().hourOfHalfday().isSupported(), DateTimeFieldType.hourOfHalfday().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.hourOfHalfday());
     }
 
@@ -215,8 +217,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("hourOfDay", DateTimeFieldType.hourOfDay().getName());
         assertEquals(DurationFieldType.hours(), DateTimeFieldType.hourOfDay().getDurationType());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.hourOfDay().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().hourOfDay(), DateTimeFieldType.hourOfDay().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().hourOfDay().isSupported(), DateTimeFieldType.hourOfDay().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().hourOfDay(), DateTimeFieldType.hourOfDay().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().hourOfDay().isSupported(), DateTimeFieldType.hourOfDay().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.hourOfDay());
     }
 
@@ -225,8 +227,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("minuteOfDay", DateTimeFieldType.minuteOfDay().getName());
         assertEquals(DurationFieldType.minutes(), DateTimeFieldType.minuteOfDay().getDurationType());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.minuteOfDay().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().minuteOfDay(), DateTimeFieldType.minuteOfDay().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().minuteOfDay().isSupported(), DateTimeFieldType.minuteOfDay().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().minuteOfDay(), DateTimeFieldType.minuteOfDay().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().minuteOfDay().isSupported(), DateTimeFieldType.minuteOfDay().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.minuteOfDay());
     }
 
@@ -235,8 +237,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("minuteOfHour", DateTimeFieldType.minuteOfHour().getName());
         assertEquals(DurationFieldType.minutes(), DateTimeFieldType.minuteOfHour().getDurationType());
         assertEquals(DurationFieldType.hours(), DateTimeFieldType.minuteOfHour().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().minuteOfHour(), DateTimeFieldType.minuteOfHour().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().minuteOfHour().isSupported(), DateTimeFieldType.minuteOfHour().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().minuteOfHour(), DateTimeFieldType.minuteOfHour().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().minuteOfHour().isSupported(), DateTimeFieldType.minuteOfHour().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.minuteOfHour());
     }
 
@@ -245,8 +247,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("secondOfDay", DateTimeFieldType.secondOfDay().getName());
         assertEquals(DurationFieldType.seconds(), DateTimeFieldType.secondOfDay().getDurationType());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.secondOfDay().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().secondOfDay(), DateTimeFieldType.secondOfDay().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().secondOfDay().isSupported(), DateTimeFieldType.secondOfDay().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().secondOfDay(), DateTimeFieldType.secondOfDay().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().secondOfDay().isSupported(), DateTimeFieldType.secondOfDay().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.secondOfDay());
     }
 
@@ -255,8 +257,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("secondOfMinute", DateTimeFieldType.secondOfMinute().getName());
         assertEquals(DurationFieldType.seconds(), DateTimeFieldType.secondOfMinute().getDurationType());
         assertEquals(DurationFieldType.minutes(), DateTimeFieldType.secondOfMinute().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().secondOfMinute(), DateTimeFieldType.secondOfMinute().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().secondOfMinute().isSupported(), DateTimeFieldType.secondOfMinute().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().secondOfMinute(), DateTimeFieldType.secondOfMinute().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().secondOfMinute().isSupported(), DateTimeFieldType.secondOfMinute().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.secondOfMinute());
     }
 
@@ -265,8 +267,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("millisOfDay", DateTimeFieldType.millisOfDay().getName());
         assertEquals(DurationFieldType.millis(), DateTimeFieldType.millisOfDay().getDurationType());
         assertEquals(DurationFieldType.days(), DateTimeFieldType.millisOfDay().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().millisOfDay(), DateTimeFieldType.millisOfDay().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().millisOfDay().isSupported(), DateTimeFieldType.millisOfDay().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().millisOfDay(), DateTimeFieldType.millisOfDay().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().millisOfDay().isSupported(), DateTimeFieldType.millisOfDay().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.millisOfDay());
     }
 
@@ -275,8 +277,8 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals("millisOfSecond", DateTimeFieldType.millisOfSecond().getName());
         assertEquals(DurationFieldType.millis(), DateTimeFieldType.millisOfSecond().getDurationType());
         assertEquals(DurationFieldType.seconds(), DateTimeFieldType.millisOfSecond().getRangeDurationType());
-        assertEquals(Chronology.getCopticUTC().millisOfSecond(), DateTimeFieldType.millisOfSecond().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().millisOfSecond().isSupported(), DateTimeFieldType.millisOfSecond().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().millisOfSecond(), DateTimeFieldType.millisOfSecond().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().millisOfSecond().isSupported(), DateTimeFieldType.millisOfSecond().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DateTimeFieldType.millisOfSecond());
     }
 
@@ -293,7 +295,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSame(DurationFieldType.hours(), type.getDurationType());
         assertSame(DurationFieldType.months(), type.getRangeDurationType());
         try {
-            type.getField(Chronology.getCopticUTC());
+            type.getField(CopticChronology.getInstanceUTC());
             fail();
         } catch (InternalError ex) {}
         DateTimeFieldType result = doSerialization(type);

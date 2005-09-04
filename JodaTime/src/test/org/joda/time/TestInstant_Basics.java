@@ -175,7 +175,7 @@ public class TestInstant_Basics extends TestCase {
     public void testGetMethods() {
         Instant test = new Instant();
         
-        assertEquals(Chronology.getISOUTC(), test.getChronology());
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
         assertEquals(DateTimeZone.UTC, test.getZone());
         assertEquals(TEST_TIME_NOW, test.getMillis());
     }
@@ -212,7 +212,7 @@ public class TestInstant_Basics extends TestCase {
             return TEST_TIME1;
         }
         public Chronology getChronology() {
-            return Chronology.getISOUTC();
+            return ISOChronology.getInstanceUTC();
         }
     }
 

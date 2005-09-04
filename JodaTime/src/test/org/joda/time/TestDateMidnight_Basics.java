@@ -30,6 +30,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
@@ -599,13 +600,13 @@ public class TestDateMidnight_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToYearMonthDay() {
-        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, Chronology.getCoptic());
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, CopticChronology.getInstance());
         YearMonthDay test = base.toYearMonthDay();
-        assertEquals(new YearMonthDay(TEST_TIME1_UTC, Chronology.getCoptic()), test);
+        assertEquals(new YearMonthDay(TEST_TIME1_UTC, CopticChronology.getInstance()), test);
     }
 
     public void testToInterval() {
-        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, Chronology.getCoptic());
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, CopticChronology.getInstance());
         Interval test = base.toInterval();
         DateMidnight end = base.plus(Period.days(1));
         assertEquals(new Interval(base, end), test);

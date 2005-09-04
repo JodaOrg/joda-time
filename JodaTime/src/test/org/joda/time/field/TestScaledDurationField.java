@@ -23,9 +23,9 @@ import java.io.ObjectOutputStream;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for PreciseDurationField.
@@ -233,7 +233,7 @@ public class TestScaledDurationField extends TestCase {
     //-----------------------------------------------------------------------
     public void test_equals() {
         assertEquals(true, iField.equals(iField));
-        assertEquals(false, iField.equals(Chronology.getISO().minutes()));
+        assertEquals(false, iField.equals(ISOChronology.getInstance().minutes()));
         DurationField dummy = new ScaledDurationField(MillisDurationField.INSTANCE, DurationFieldType.minutes(), 2);
         assertEquals(false, iField.equals(dummy));
         dummy = new ScaledDurationField(MillisDurationField.INSTANCE, DurationFieldType.minutes(), 90);
@@ -246,7 +246,7 @@ public class TestScaledDurationField extends TestCase {
 
     public void test_hashCode() {
         assertEquals(iField.hashCode(), iField.hashCode());
-        assertEquals(false, iField.hashCode() == Chronology.getISO().minutes().hashCode());
+        assertEquals(false, iField.hashCode() == ISOChronology.getInstance().minutes().hashCode());
         DurationField dummy = new ScaledDurationField(MillisDurationField.INSTANCE, DurationFieldType.minutes(), 2);
         assertEquals(false, iField.hashCode() == dummy.hashCode());
         dummy = new ScaledDurationField(MillisDurationField.INSTANCE, DurationFieldType.minutes(), 90);
@@ -258,7 +258,7 @@ public class TestScaledDurationField extends TestCase {
     //-----------------------------------------------------------------------
     public void test_compareTo() {
         assertEquals(0, iField.compareTo(iField));
-        assertEquals(-1, iField.compareTo(Chronology.getISO().minutes()));
+        assertEquals(-1, iField.compareTo(ISOChronology.getInstance().minutes()));
         DurationField dummy = new PreciseDurationField(DurationFieldType.minutes(), 0);
         assertEquals(1, iField.compareTo(dummy));
         try {

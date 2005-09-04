@@ -26,6 +26,9 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -40,18 +43,18 @@ public class TestPartial_Basics extends TestCase {
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final int OFFSET = 1;
-    private static final Chronology COPTIC_PARIS = Chronology.getCoptic(PARIS);
-    private static final Chronology COPTIC_LONDON = Chronology.getCoptic(LONDON);
-    private static final Chronology COPTIC_TOKYO = Chronology.getCoptic(TOKYO);
-    private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
-    private static final Chronology ISO_PARIS = Chronology.getISO(PARIS);
-    private static final Chronology ISO_LONDON = Chronology.getISO(LONDON);
-    private static final Chronology ISO_TOKYO = Chronology.getISO(TOKYO);
-    private static final Chronology ISO_UTC = Chronology.getISOUTC();
-    private static final Chronology BUDDHIST_PARIS = Chronology.getBuddhist(PARIS);
-    private static final Chronology BUDDHIST_LONDON = Chronology.getBuddhist(LONDON);
-    private static final Chronology BUDDHIST_TOKYO = Chronology.getBuddhist(TOKYO);
-    private static final Chronology BUDDHIST_UTC = Chronology.getBuddhistUTC();
+    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
+    private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
+    private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
+    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
+    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
+    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
+    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
+    private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
+    private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
+    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -141,8 +144,8 @@ public class TestPartial_Basics extends TestCase {
 
     public void testGetField() {
         Partial test = createHourMinPartial(COPTIC_PARIS);
-        assertSame(Chronology.getCopticUTC().hourOfDay(), test.getField(0));
-        assertSame(Chronology.getCopticUTC().minuteOfHour(), test.getField(1));
+        assertSame(CopticChronology.getInstanceUTC().hourOfDay(), test.getField(0));
+        assertSame(CopticChronology.getInstanceUTC().minuteOfHour(), test.getField(1));
         try {
             test.getField(-1);
         } catch (IndexOutOfBoundsException ex) {}
@@ -155,8 +158,8 @@ public class TestPartial_Basics extends TestCase {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         DateTimeField[] fields = test.getFields();
         assertEquals(2, fields.length);
-        assertSame(Chronology.getCopticUTC().hourOfDay(), fields[0]);
-        assertSame(Chronology.getCopticUTC().minuteOfHour(), fields[1]);
+        assertSame(CopticChronology.getInstanceUTC().hourOfDay(), fields[0]);
+        assertSame(CopticChronology.getInstanceUTC().minuteOfHour(), fields[1]);
         assertNotSame(test.getFields(), test.getFields());
     }
 

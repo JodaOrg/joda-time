@@ -162,11 +162,11 @@ public class TestISODateTimeFormat extends TestCase {
 //        dt = dt.withZone(LONDON);
 //        assertEquals("2004-06-09T12:20:30.040+02:00", ISODateTimeFormat.dateTime().print(dt.getMillis(), PARIS));
 //        
-//        dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, Chronology.getCoptic());
+//        dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, CopticChronology.getInstance());
 //        assertEquals("2288-02-19T10:20:30.040Z", ISODateTimeFormat.dateTime().print(dt));
 //        
-//        dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, Chronology.getCoptic());
-//        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.getInstance(Chronology.getCoptic()).dateTime().print(dt));
+//        dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, CopticChronology.getInstance());
+//        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.getInstance(CopticChronology.getInstance()).dateTime().print(dt));
     }
 
     public void testFormat_dateTimeNoMillis() {

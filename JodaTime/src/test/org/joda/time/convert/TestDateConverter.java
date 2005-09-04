@@ -27,6 +27,7 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
+import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -104,8 +105,8 @@ public class TestDateConverter extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = Chronology.getCoptic().get(tod, 12345678L);
-        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, new Date(12345678L), Chronology.getCoptic());
+        int[] expected = CopticChronology.getInstance().get(tod, 12345678L);
+        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, new Date(12345678L), CopticChronology.getInstance());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

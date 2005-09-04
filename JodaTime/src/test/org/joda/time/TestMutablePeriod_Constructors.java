@@ -21,6 +21,9 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * This class is a JUnit test for MutableDuration.
  *
@@ -270,7 +273,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MutablePeriod test = new MutablePeriod(length, Chronology.getISO());
+        MutablePeriod test = new MutablePeriod(length, ISOChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -287,7 +290,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MutablePeriod test = new MutablePeriod(length, Chronology.getISOUTC());
+        MutablePeriod test = new MutablePeriod(length, ISOChronology.getInstanceUTC());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -322,7 +325,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MutablePeriod test = new MutablePeriod(length, PeriodType.time().withMillisRemoved(), Chronology.getISO());
+        MutablePeriod test = new MutablePeriod(length, PeriodType.time().withMillisRemoved(), ISOChronology.getInstance());
         assertEquals(PeriodType.time().withMillisRemoved(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -339,7 +342,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
                 5 * DateTimeConstants.MILLIS_PER_HOUR +
                 6 * DateTimeConstants.MILLIS_PER_MINUTE +
                 7 * DateTimeConstants.MILLIS_PER_SECOND + 8;
-        MutablePeriod test = new MutablePeriod(length, PeriodType.standard(), Chronology.getISOUTC());
+        MutablePeriod test = new MutablePeriod(length, PeriodType.standard(), ISOChronology.getInstanceUTC());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
@@ -535,9 +538,9 @@ public class TestMutablePeriod_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstructor_long_long_Chronology1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic());
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, Chronology.getCoptic());
-        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), Chronology.getCoptic());
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
+        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), CopticChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -566,9 +569,9 @@ public class TestMutablePeriod_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstructor_long_long_PeriodType_Chronology1() throws Throwable {
-        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic());
-        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, Chronology.getCoptic());
-        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, Chronology.getCoptic());
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance());
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, CopticChronology.getInstance());
+        MutablePeriod test = new MutablePeriod(dt1.getMillis(), dt2.getMillis(), (PeriodType) null, CopticChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(1, test.getYears());
         assertEquals(1, test.getMonths());
@@ -931,7 +934,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutablePeriod test = new MutablePeriod(new Duration(length), Chronology.getISO());
+        MutablePeriod test = new MutablePeriod(new Duration(length), ISOChronology.getInstance());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
         assertEquals(0, test.getMonths());
@@ -949,7 +952,7 @@ public class TestMutablePeriod_Constructors extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        MutablePeriod test = new MutablePeriod(new Duration(length), Chronology.getISOUTC());
+        MutablePeriod test = new MutablePeriod(new Duration(length), ISOChronology.getInstanceUTC());
         assertEquals(PeriodType.standard(), test.getPeriodType());
         assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450
         assertEquals(0, test.getMonths());

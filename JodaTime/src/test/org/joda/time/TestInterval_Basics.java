@@ -26,6 +26,10 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInterval;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -38,7 +42,7 @@ public class TestInterval_Basics extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final Chronology COPTIC_PARIS = Chronology.getCoptic(PARIS);
+    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -149,7 +153,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test1.hashCode() == test3.hashCode());
         assertEquals(false, test2.hashCode() == test3.hashCode());
         
-        Interval test4 = new Interval(TEST_TIME1, TEST_TIME2, Chronology.getGJ());
+        Interval test4 = new Interval(TEST_TIME1, TEST_TIME2, GJChronology.getInstance());
         assertEquals(true, test4.equals(test4));
         assertEquals(false, test1.equals(test4));
         assertEquals(false, test2.equals(test4));
@@ -179,7 +183,7 @@ public class TestInterval_Basics extends TestCase {
             super();
         }
         public Chronology getChronology() {
-            return Chronology.getISO();
+            return ISOChronology.getInstance();
         }
         public long getStartMillis() {
             return TEST_TIME1;
@@ -554,14 +558,14 @@ public class TestInterval_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testWithChronology1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
-        Interval test = base.withChronology(Chronology.getBuddhist());
-        assertEquals(new Interval(TEST_TIME1, TEST_TIME2, Chronology.getBuddhist()), test);
+        Interval test = base.withChronology(BuddhistChronology.getInstance());
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME2, BuddhistChronology.getInstance()), test);
     }
 
     public void testWithChronology2() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withChronology(null);
-        assertEquals(new Interval(TEST_TIME1, TEST_TIME2, Chronology.getISO()), test);
+        assertEquals(new Interval(TEST_TIME1, TEST_TIME2, ISOChronology.getInstance()), test);
     }
 
     public void testWithChronology3() {

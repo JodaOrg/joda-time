@@ -27,6 +27,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractDuration;
 import org.joda.time.base.BaseDuration;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Duration.
@@ -315,9 +316,9 @@ public class TestDuration_Basics extends TestCase {
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
         Duration test = new Duration(length);
-        Period result = test.toPeriod(Chronology.getISOUTC());
-        assertEquals(new Period(test, Chronology.getISOUTC()), result);
-        assertEquals(new Period(test.getMillis(), Chronology.getISOUTC()), result);
+        Period result = test.toPeriod(ISOChronology.getInstanceUTC());
+        assertEquals(new Period(test, ISOChronology.getInstanceUTC()), result);
+        assertEquals(new Period(test.getMillis(), ISOChronology.getInstanceUTC()), result);
     }
 
     //-----------------------------------------------------------------------
@@ -328,9 +329,9 @@ public class TestDuration_Basics extends TestCase {
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
         Duration test = new Duration(length);
-        Period result = test.toPeriod(PeriodType.standard().withMillisRemoved(), Chronology.getISOUTC());
-        assertEquals(new Period(test, PeriodType.standard().withMillisRemoved(), Chronology.getISOUTC()), result);
-        assertEquals(new Period(test.getMillis(), PeriodType.standard().withMillisRemoved(), Chronology.getISOUTC()), result);
+        Period result = test.toPeriod(PeriodType.standard().withMillisRemoved(), ISOChronology.getInstanceUTC());
+        assertEquals(new Period(test, PeriodType.standard().withMillisRemoved(), ISOChronology.getInstanceUTC()), result);
+        assertEquals(new Period(test.getMillis(), PeriodType.standard().withMillisRemoved(), ISOChronology.getInstanceUTC()), result);
     }
 
     //-----------------------------------------------------------------------

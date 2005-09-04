@@ -107,7 +107,7 @@ public class TestReadablePartialConverter extends TestCase {
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = new int[] {1, 2, 3, 4};
-        int[] actual = ReadablePartialConverter.INSTANCE.getPartialValues(tod, new TimeOfDay(1, 2, 3, 4), Chronology.getISO(PARIS));
+        int[] actual = ReadablePartialConverter.INSTANCE.getPartialValues(tod, new TimeOfDay(1, 2, 3, 4), ISOChronology.getInstance(PARIS));
         assertEquals(true, Arrays.equals(expected, actual));
         
         try {

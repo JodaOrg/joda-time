@@ -31,6 +31,7 @@ import junit.framework.TestSuite;
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
@@ -661,21 +662,21 @@ public class TestDateTime_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToDateMidnight() {
-        DateTime base = new DateTime(TEST_TIME1, Chronology.getCoptic());
+        DateTime base = new DateTime(TEST_TIME1, CopticChronology.getInstance());
         DateMidnight test = base.toDateMidnight();
-        assertEquals(new DateMidnight(base, Chronology.getCoptic()), test);
+        assertEquals(new DateMidnight(base, CopticChronology.getInstance()), test);
     }
 
     public void testToYearMonthDay() {
-        DateTime base = new DateTime(TEST_TIME1, Chronology.getCoptic());
+        DateTime base = new DateTime(TEST_TIME1, CopticChronology.getInstance());
         YearMonthDay test = base.toYearMonthDay();
-        assertEquals(new YearMonthDay(TEST_TIME1, Chronology.getCoptic()), test);
+        assertEquals(new YearMonthDay(TEST_TIME1, CopticChronology.getInstance()), test);
     }
 
     public void testToTimeOfDay() {
-        DateTime base = new DateTime(TEST_TIME1, Chronology.getCoptic());
+        DateTime base = new DateTime(TEST_TIME1, CopticChronology.getInstance());
         TimeOfDay test = base.toTimeOfDay();
-        assertEquals(new TimeOfDay(TEST_TIME1, Chronology.getCoptic()), test);
+        assertEquals(new TimeOfDay(TEST_TIME1, CopticChronology.getInstance()), test);
     }
 
     //-----------------------------------------------------------------------

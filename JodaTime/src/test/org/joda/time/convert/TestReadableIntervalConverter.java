@@ -24,11 +24,14 @@ import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
-import org.joda.time.PeriodType;
 import org.joda.time.Interval;
-import org.joda.time.MutablePeriod;
 import org.joda.time.MutableInterval;
+import org.joda.time.MutablePeriod;
+import org.joda.time.PeriodType;
 import org.joda.time.ReadableInterval;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -116,7 +119,7 @@ public class TestReadableIntervalConverter extends TestCase {
     public void testSetIntoPeriod_Object2() throws Exception {
         Interval i = new Interval(100L, 223L);
         MutablePeriod m = new MutablePeriod(PeriodType.millis());
-        ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getCoptic());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, CopticChronology.getInstance());
         assertEquals(0, m.getYears());
         assertEquals(0, m.getMonths());
         assertEquals(0, m.getWeeks());
@@ -134,21 +137,21 @@ public class TestReadableIntervalConverter extends TestCase {
     }
 
     public void testSetIntoInterval_Object1() throws Exception {
-        Interval i = new Interval(0L, 123L, Chronology.getCoptic());
-        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
+        Interval i = new Interval(0L, 123L, CopticChronology.getInstance());
+        MutableInterval m = new MutableInterval(-1000L, 1000L, BuddhistChronology.getInstance());
         ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
-        assertEquals(Chronology.getCoptic(), m.getChronology());
+        assertEquals(CopticChronology.getInstance(), m.getChronology());
     }
 
     public void testSetIntoInterval_Object2() throws Exception {
-        Interval i = new Interval(0L, 123L, Chronology.getCoptic());
-        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
-        ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getGJ());
+        Interval i = new Interval(0L, 123L, CopticChronology.getInstance());
+        MutableInterval m = new MutableInterval(-1000L, 1000L, BuddhistChronology.getInstance());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, GJChronology.getInstance());
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
-        assertEquals(Chronology.getGJ(), m.getChronology());
+        assertEquals(GJChronology.getInstance(), m.getChronology());
     }
 
     public void testSetIntoInterval_Object3() throws Exception {
@@ -157,11 +160,11 @@ public class TestReadableIntervalConverter extends TestCase {
                 return null; // bad
             }
         };
-        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
-        ReadableIntervalConverter.INSTANCE.setInto(m, i, Chronology.getGJ());
+        MutableInterval m = new MutableInterval(-1000L, 1000L, BuddhistChronology.getInstance());
+        ReadableIntervalConverter.INSTANCE.setInto(m, i, GJChronology.getInstance());
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
-        assertEquals(Chronology.getGJ(), m.getChronology());
+        assertEquals(GJChronology.getInstance(), m.getChronology());
     }
 
     public void testSetIntoInterval_Object4() throws Exception {
@@ -170,11 +173,11 @@ public class TestReadableIntervalConverter extends TestCase {
                 return null; // bad
             }
         };
-        MutableInterval m = new MutableInterval(-1000L, 1000L, Chronology.getBuddhist());
+        MutableInterval m = new MutableInterval(-1000L, 1000L, BuddhistChronology.getInstance());
         ReadableIntervalConverter.INSTANCE.setInto(m, i, null);
         assertEquals(0L, m.getStartMillis());
         assertEquals(123L, m.getEndMillis());
-        assertEquals(Chronology.getISO(), m.getChronology());
+        assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
     //-----------------------------------------------------------------------

@@ -24,6 +24,8 @@ import java.lang.reflect.Constructor;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
+
 /**
  * This class is a Junit unit test for DurationFieldType.
  *
@@ -53,96 +55,96 @@ public class TestDurationFieldType extends TestCase {
     public void test_eras() throws Exception {
         assertEquals(DurationFieldType.eras(), DurationFieldType.eras());
         assertEquals("eras", DurationFieldType.eras().getName());
-        assertEquals(Chronology.getCopticUTC().eras(), DurationFieldType.eras().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().eras().isSupported(), DurationFieldType.eras().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().eras(), DurationFieldType.eras().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().eras().isSupported(), DurationFieldType.eras().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.eras());
     }
 
     public void test_centuries() throws Exception {
         assertEquals(DurationFieldType.centuries(), DurationFieldType.centuries());
         assertEquals("centuries", DurationFieldType.centuries().getName());
-        assertEquals(Chronology.getCopticUTC().centuries(), DurationFieldType.centuries().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().centuries().isSupported(), DurationFieldType.centuries().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().centuries(), DurationFieldType.centuries().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().centuries().isSupported(), DurationFieldType.centuries().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.centuries());
     }
 
     public void test_years() throws Exception {
         assertEquals(DurationFieldType.years(), DurationFieldType.years());
         assertEquals("years", DurationFieldType.years().getName());
-        assertEquals(Chronology.getCopticUTC().years(), DurationFieldType.years().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().years().isSupported(), DurationFieldType.years().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().years(), DurationFieldType.years().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().years().isSupported(), DurationFieldType.years().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.years());
     }
 
     public void test_months() throws Exception {
         assertEquals(DurationFieldType.months(), DurationFieldType.months());
         assertEquals("months", DurationFieldType.months().getName());
-        assertEquals(Chronology.getCopticUTC().months(), DurationFieldType.months().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().months().isSupported(), DurationFieldType.months().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().months(), DurationFieldType.months().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().months().isSupported(), DurationFieldType.months().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.months());
     }
 
     public void test_weekyears() throws Exception {
         assertEquals(DurationFieldType.weekyears(), DurationFieldType.weekyears());
         assertEquals("weekyears", DurationFieldType.weekyears().getName());
-        assertEquals(Chronology.getCopticUTC().weekyears(), DurationFieldType.weekyears().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().weekyears().isSupported(), DurationFieldType.weekyears().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekyears(), DurationFieldType.weekyears().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weekyears().isSupported(), DurationFieldType.weekyears().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.weekyears());
     }
 
     public void test_weeks() throws Exception {
         assertEquals(DurationFieldType.weeks(), DurationFieldType.weeks());
         assertEquals("weeks", DurationFieldType.weeks().getName());
-        assertEquals(Chronology.getCopticUTC().weeks(), DurationFieldType.weeks().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().weeks().isSupported(), DurationFieldType.weeks().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weeks(), DurationFieldType.weeks().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().weeks().isSupported(), DurationFieldType.weeks().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.weeks());
     }
 
     public void test_days() throws Exception {
         assertEquals(DurationFieldType.days(), DurationFieldType.days());
         assertEquals("days", DurationFieldType.days().getName());
-        assertEquals(Chronology.getCopticUTC().days(), DurationFieldType.days().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().days().isSupported(), DurationFieldType.days().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().days(), DurationFieldType.days().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().days().isSupported(), DurationFieldType.days().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.days());
     }
 
     public void test_halfdays() throws Exception {
         assertEquals(DurationFieldType.halfdays(), DurationFieldType.halfdays());
         assertEquals("halfdays", DurationFieldType.halfdays().getName());
-        assertEquals(Chronology.getCopticUTC().halfdays(), DurationFieldType.halfdays().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().halfdays().isSupported(), DurationFieldType.halfdays().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().halfdays(), DurationFieldType.halfdays().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().halfdays().isSupported(), DurationFieldType.halfdays().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.halfdays());
     }
 
     public void test_hours() throws Exception {
         assertEquals(DurationFieldType.hours(), DurationFieldType.hours());
         assertEquals("hours", DurationFieldType.hours().getName());
-        assertEquals(Chronology.getCopticUTC().hours(), DurationFieldType.hours().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().hours().isSupported(), DurationFieldType.hours().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().hours(), DurationFieldType.hours().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().hours().isSupported(), DurationFieldType.hours().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.hours());
     }
 
     public void test_minutes() throws Exception {
         assertEquals(DurationFieldType.minutes(), DurationFieldType.minutes());
         assertEquals("minutes", DurationFieldType.minutes().getName());
-        assertEquals(Chronology.getCopticUTC().minutes(), DurationFieldType.minutes().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().minutes().isSupported(), DurationFieldType.minutes().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().minutes(), DurationFieldType.minutes().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().minutes().isSupported(), DurationFieldType.minutes().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.minutes());
     }
 
     public void test_seconds() throws Exception {
         assertEquals(DurationFieldType.seconds(), DurationFieldType.seconds());
         assertEquals("seconds", DurationFieldType.seconds().getName());
-        assertEquals(Chronology.getCopticUTC().seconds(), DurationFieldType.seconds().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().seconds().isSupported(), DurationFieldType.seconds().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().seconds(), DurationFieldType.seconds().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().seconds().isSupported(), DurationFieldType.seconds().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.seconds());
     }
 
     public void test_millis() throws Exception {
         assertEquals(DurationFieldType.millis(), DurationFieldType.millis());
         assertEquals("millis", DurationFieldType.millis().getName());
-        assertEquals(Chronology.getCopticUTC().millis(), DurationFieldType.millis().getField(Chronology.getCopticUTC()));
-        assertEquals(Chronology.getCopticUTC().millis().isSupported(), DurationFieldType.millis().isSupported(Chronology.getCopticUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().millis(), DurationFieldType.millis().getField(CopticChronology.getInstanceUTC()));
+        assertEquals(CopticChronology.getInstanceUTC().millis().isSupported(), DurationFieldType.millis().isSupported(CopticChronology.getInstanceUTC()));
         assertSerialization(DurationFieldType.millis());
     }
 
@@ -156,7 +158,7 @@ public class TestDurationFieldType extends TestCase {
         
         assertEquals("other", type.getName());
         try {
-            type.getField(Chronology.getCopticUTC());
+            type.getField(CopticChronology.getInstanceUTC());
             fail();
         } catch (InternalError ex) {}
         DurationFieldType result = doSerialization(type);

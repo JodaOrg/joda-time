@@ -20,6 +20,7 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -297,9 +298,9 @@ public class TestTimeOfDay_Constructors extends TestCase {
      * Test constructor (Object)
      */
     public void testConstructor_todObject() throws Throwable {
-        TimeOfDay base = new TimeOfDay(10, 20, 30, 40, Chronology.getCoptic(PARIS));
+        TimeOfDay base = new TimeOfDay(10, 20, 30, 40, CopticChronology.getInstance(PARIS));
         TimeOfDay test = new TimeOfDay(base);
-        assertEquals(Chronology.getCopticUTC(), test.getChronology());
+        assertEquals(CopticChronology.getInstanceUTC(), test.getChronology());
         assertEquals(10, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());

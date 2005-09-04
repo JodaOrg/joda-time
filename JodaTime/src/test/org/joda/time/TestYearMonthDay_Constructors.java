@@ -20,6 +20,11 @@ import java.util.Date;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
@@ -29,11 +34,11 @@ public class TestYearMonthDay_Constructors extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
-    private static final Chronology ISO_UTC = Chronology.getISOUTC();
-    private static final Chronology BUDDHIST_UTC = Chronology.getBuddhistUTC();
-    private static final Chronology GREGORIAN_UTC = Chronology.getGregorianUTC();
-    private static final Chronology GREGORIAN_PARIS = Chronology.getGregorian(PARIS);
+    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
+    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
+    private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
+    private static final Chronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
     
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;

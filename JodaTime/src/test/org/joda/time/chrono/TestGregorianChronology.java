@@ -259,7 +259,7 @@ public class TestGregorianChronology extends TestCase {
     public void testMaximumValue() {
         YearMonthDay ymd1 = new YearMonthDay(1999, DateTimeConstants.FEBRUARY, 1);
         DateMidnight dm1 = new DateMidnight(1999, DateTimeConstants.FEBRUARY, 1);
-        Chronology chrono = Chronology.getGregorian();
+        Chronology chrono = GregorianChronology.getInstance();
         assertEquals(28, chrono.dayOfMonth().getMaximumValue(ymd1));
         assertEquals(28, chrono.dayOfMonth().getMaximumValue(dm1.getMillis()));
     }

@@ -171,8 +171,8 @@ public class TestCalendarConverter extends TestCase {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date(12345678L));
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = Chronology.getISO().get(tod, 12345678L);
-        int[] actual = CalendarConverter.INSTANCE.getPartialValues(tod, cal, Chronology.getISO());
+        int[] expected = ISOChronology.getInstance().get(tod, 12345678L);
+        int[] actual = CalendarConverter.INSTANCE.getPartialValues(tod, cal, ISOChronology.getInstance());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

@@ -21,11 +21,11 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for PreciseDateTimeField.
@@ -55,7 +55,7 @@ public class TestOffsetDateTimeField extends TestCase {
     //-----------------------------------------------------------------------
     public void test_constructor1() {
         OffsetDateTimeField field = new OffsetDateTimeField(
-            Chronology.getISO().secondOfMinute(), 3
+            ISOChronology.getInstance().secondOfMinute(), 3
         );
         assertEquals(DateTimeFieldType.secondOfMinute(), field.getType());
         assertEquals(3, field.getOffset());
@@ -66,7 +66,7 @@ public class TestOffsetDateTimeField extends TestCase {
         } catch (IllegalArgumentException ex) {}
         
         try {
-            field = new OffsetDateTimeField(Chronology.getISO().secondOfMinute(), 0);
+            field = new OffsetDateTimeField(ISOChronology.getInstance().secondOfMinute(), 0);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -79,7 +79,7 @@ public class TestOffsetDateTimeField extends TestCase {
 
     public void test_constructor2() {
         OffsetDateTimeField field = new OffsetDateTimeField(
-            Chronology.getISO().secondOfMinute(), DateTimeFieldType.secondOfDay(), 3
+            ISOChronology.getInstance().secondOfMinute(), DateTimeFieldType.secondOfDay(), 3
         );
         assertEquals(DateTimeFieldType.secondOfDay(), field.getType());
         assertEquals(3, field.getOffset());
@@ -90,33 +90,33 @@ public class TestOffsetDateTimeField extends TestCase {
         } catch (IllegalArgumentException ex) {}
         
         try {
-            field = new OffsetDateTimeField(Chronology.getISO().secondOfMinute(), null, 3);
+            field = new OffsetDateTimeField(ISOChronology.getInstance().secondOfMinute(), null, 3);
             fail();
         } catch (IllegalArgumentException ex) {}
         
         try {
-            field = new OffsetDateTimeField(Chronology.getISO().secondOfMinute(), DateTimeFieldType.secondOfDay(), 0);
+            field = new OffsetDateTimeField(ISOChronology.getInstance().secondOfMinute(), DateTimeFieldType.secondOfDay(), 0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void test_getType() {
         OffsetDateTimeField field = new OffsetDateTimeField(
-            Chronology.getISO().secondOfMinute(), 3
+            ISOChronology.getInstance().secondOfMinute(), 3
         );
         assertEquals(DateTimeFieldType.secondOfMinute(), field.getType());
     }
 
     public void test_getName() {
         OffsetDateTimeField field = new OffsetDateTimeField(
-            Chronology.getISO().secondOfMinute(), 3
+            ISOChronology.getInstance().secondOfMinute(), 3
         );
         assertEquals("secondOfMinute", field.getName());
     }
 
     public void test_toString() {
         OffsetDateTimeField field = new OffsetDateTimeField(
-            Chronology.getISO().secondOfMinute(), 3
+            ISOChronology.getInstance().secondOfMinute(), 3
         );
         assertEquals("DateTimeField[secondOfMinute]", field.toString());
     }
@@ -133,7 +133,7 @@ public class TestOffsetDateTimeField extends TestCase {
 
     public void test_getOffset() {
         OffsetDateTimeField field = new OffsetDateTimeField(
-            Chronology.getISO().secondOfMinute(), 5
+            ISOChronology.getInstance().secondOfMinute(), 5
         );
         assertEquals(5, field.getOffset());
     }
@@ -532,7 +532,7 @@ public class TestOffsetDateTimeField extends TestCase {
     //-----------------------------------------------------------------------
     static class MockOffsetDateTimeField extends OffsetDateTimeField {
         protected MockOffsetDateTimeField() {
-            super(Chronology.getISO().secondOfMinute(), 3);
+            super(ISOChronology.getInstance().secondOfMinute(), 3);
         }
     }
 
@@ -541,10 +541,10 @@ public class TestOffsetDateTimeField extends TestCase {
             super();
         }
         public DurationField getDurationField() {
-            return Chronology.getISOUTC().seconds();
+            return ISOChronology.getInstanceUTC().seconds();
         }
         public DurationField getRangeDurationField() {
-            return Chronology.getISOUTC().minutes();
+            return ISOChronology.getInstanceUTC().minutes();
         }
     }
 

@@ -21,11 +21,11 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for PreciseDurationDateTimeField.
@@ -554,10 +554,10 @@ public class TestPreciseDurationDateTimeField extends TestCase {
             super();
         }
         public DurationField getDurationField() {
-            return Chronology.getISOUTC().seconds();
+            return ISOChronology.getInstanceUTC().seconds();
         }
         public DurationField getRangeDurationField() {
-            return Chronology.getISOUTC().minutes();
+            return ISOChronology.getInstanceUTC().minutes();
         }
     }
 

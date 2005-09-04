@@ -40,9 +40,9 @@ public class TestCopticChronology extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final Chronology COPTIC_UTC = Chronology.getCopticUTC();
-    private static final Chronology JULIAN_UTC = Chronology.getJulianUTC();
-    private static final Chronology ISO_UTC = Chronology.getISOUTC();
+    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
+    private static final Chronology JULIAN_UTC = JulianChronology.getInstanceUTC();
+    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 

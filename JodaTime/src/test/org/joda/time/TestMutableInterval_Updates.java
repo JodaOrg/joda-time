@@ -22,6 +22,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInterval;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -174,7 +175,7 @@ public class TestMutableInterval_Updates extends TestCase {
     
     class MockBadInterval extends AbstractInterval {
         public Chronology getChronology() {
-            return Chronology.getISO();
+            return ISOChronology.getInstance();
         }
         public long getStartMillis() {
             return TEST_TIME1 - 1;

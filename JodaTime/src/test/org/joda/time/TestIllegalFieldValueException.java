@@ -18,6 +18,9 @@ package org.joda.time;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.SkipDateTimeField;
 
@@ -41,7 +44,7 @@ public class TestIllegalFieldValueException extends TestCase {
 
     public void testVerifyValueBounds() {
         try {
-            FieldUtils.verifyValueBounds(Chronology.getISO().monthOfYear(), -5, 1, 31);
+            FieldUtils.verifyValueBounds(ISOChronology.getInstance().monthOfYear(), -5, 1, 31);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.monthOfYear(), e.getDateTimeFieldType());
@@ -85,7 +88,7 @@ public class TestIllegalFieldValueException extends TestCase {
 
     public void testSkipDateTimeField() {
         DateTimeField field = new SkipDateTimeField
-            (Chronology.getISOUTC(), Chronology.getISOUTC().year(), 1970);
+            (ISOChronology.getInstanceUTC(), ISOChronology.getInstanceUTC().year(), 1970);
         try {
             field.set(0, 1970);
             fail();
@@ -103,7 +106,7 @@ public class TestIllegalFieldValueException extends TestCase {
 
     public void testSetText() {
         try {
-            Chronology.getISOUTC().year().set(0, null, java.util.Locale.US);
+            ISOChronology.getInstanceUTC().year().set(0, null, java.util.Locale.US);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.year(), e.getDateTimeFieldType());
@@ -117,7 +120,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
 
         try {
-            Chronology.getISOUTC().year().set(0, "nineteen seventy", java.util.Locale.US);
+            ISOChronology.getInstanceUTC().year().set(0, "nineteen seventy", java.util.Locale.US);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.year(), e.getDateTimeFieldType());
@@ -131,7 +134,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
 
         try {
-            Chronology.getISOUTC().era().set(0, "long ago", java.util.Locale.US);
+            ISOChronology.getInstanceUTC().era().set(0, "long ago", java.util.Locale.US);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.era(), e.getDateTimeFieldType());
@@ -145,7 +148,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
 
         try {
-            Chronology.getISOUTC().monthOfYear().set(0, "spring", java.util.Locale.US);
+            ISOChronology.getInstanceUTC().monthOfYear().set(0, "spring", java.util.Locale.US);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.monthOfYear(), e.getDateTimeFieldType());
@@ -159,7 +162,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
 
         try {
-            Chronology.getISOUTC().dayOfWeek().set(0, "yesterday", java.util.Locale.US);
+            ISOChronology.getInstanceUTC().dayOfWeek().set(0, "yesterday", java.util.Locale.US);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.dayOfWeek(), e.getDateTimeFieldType());
@@ -173,7 +176,7 @@ public class TestIllegalFieldValueException extends TestCase {
         }
 
         try {
-            Chronology.getISOUTC().halfdayOfDay().set(0, "morning", java.util.Locale.US);
+            ISOChronology.getInstanceUTC().halfdayOfDay().set(0, "morning", java.util.Locale.US);
             fail();
         } catch (IllegalFieldValueException e) {
             assertEquals(DateTimeFieldType.halfdayOfDay(), e.getDateTimeFieldType());
@@ -206,7 +209,7 @@ public class TestIllegalFieldValueException extends TestCase {
     }
 
     public void testJulianYearZero() {
-        DateTime dt = new DateTime(Chronology.getJulianUTC());
+        DateTime dt = new DateTime(JulianChronology.getInstanceUTC());
         try {
             dt.year().setCopy(0);
             fail();
@@ -223,7 +226,7 @@ public class TestIllegalFieldValueException extends TestCase {
     }
 
     public void testGJCutover() {
-        DateTime dt = new DateTime("1582-10-04", Chronology.getGJUTC());
+        DateTime dt = new DateTime("1582-10-04", GJChronology.getInstanceUTC());
         try {
             dt.dayOfMonth().setCopy(5);
             fail();
@@ -238,7 +241,7 @@ public class TestIllegalFieldValueException extends TestCase {
             assertEquals(null, e.getUpperBound());
         }
 
-        dt = new DateTime("1582-10-15", Chronology.getGJUTC());
+        dt = new DateTime("1582-10-15", GJChronology.getInstanceUTC());
         try {
             dt.dayOfMonth().setCopy(14);
             fail();

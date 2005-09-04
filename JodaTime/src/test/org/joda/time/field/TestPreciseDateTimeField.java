@@ -21,11 +21,11 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for PreciseDateTimeField.
@@ -56,8 +56,8 @@ public class TestPreciseDateTimeField extends TestCase {
     public void test_constructor() {
         BaseDateTimeField field = new PreciseDateTimeField(
             DateTimeFieldType.secondOfMinute(),
-            Chronology.getISOUTC().millis(),
-            Chronology.getISOUTC().hours()
+            ISOChronology.getInstanceUTC().millis(),
+            ISOChronology.getInstanceUTC().hours()
         );
         assertEquals(DateTimeFieldType.secondOfMinute(), field.getType());
         try {
@@ -68,28 +68,28 @@ public class TestPreciseDateTimeField extends TestCase {
             field = new PreciseDateTimeField(
                 DateTimeFieldType.minuteOfHour(),
                 new MockImpreciseDurationField(DurationFieldType.minutes()),
-                Chronology.getISOUTC().hours());
+                ISOChronology.getInstanceUTC().hours());
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
             field = new PreciseDateTimeField(
                 DateTimeFieldType.minuteOfHour(),
-                Chronology.getISOUTC().hours(),
+                ISOChronology.getInstanceUTC().hours(),
                 new MockImpreciseDurationField(DurationFieldType.minutes()));
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
             field = new PreciseDateTimeField(
                 DateTimeFieldType.minuteOfHour(),
-                Chronology.getISOUTC().hours(),
-                Chronology.getISOUTC().hours());
+                ISOChronology.getInstanceUTC().hours(),
+                ISOChronology.getInstanceUTC().hours());
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
             field = new PreciseDateTimeField(
                 DateTimeFieldType.minuteOfHour(),
                 new MockZeroDurationField(DurationFieldType.minutes()),
-                Chronology.getISOUTC().hours());
+                ISOChronology.getInstanceUTC().hours());
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -97,8 +97,8 @@ public class TestPreciseDateTimeField extends TestCase {
     public void test_getType() {
         BaseDateTimeField field = new PreciseDateTimeField(
             DateTimeFieldType.secondOfDay(),
-            Chronology.getISOUTC().millis(),
-            Chronology.getISOUTC().hours()
+            ISOChronology.getInstanceUTC().millis(),
+            ISOChronology.getInstanceUTC().hours()
         );
         assertEquals(DateTimeFieldType.secondOfDay(), field.getType());
     }
@@ -106,8 +106,8 @@ public class TestPreciseDateTimeField extends TestCase {
     public void test_getName() {
         BaseDateTimeField field = new PreciseDateTimeField(
             DateTimeFieldType.secondOfDay(),
-            Chronology.getISOUTC().millis(),
-            Chronology.getISOUTC().hours()
+            ISOChronology.getInstanceUTC().millis(),
+            ISOChronology.getInstanceUTC().hours()
         );
         assertEquals("secondOfDay", field.getName());
     }
@@ -115,8 +115,8 @@ public class TestPreciseDateTimeField extends TestCase {
     public void test_toString() {
         BaseDateTimeField field = new PreciseDateTimeField(
             DateTimeFieldType.secondOfDay(),
-            Chronology.getISOUTC().millis(),
-            Chronology.getISOUTC().hours()
+            ISOChronology.getInstanceUTC().millis(),
+            ISOChronology.getInstanceUTC().hours()
         );
         assertEquals("DateTimeField[secondOfDay]", field.toString());
     }
@@ -548,10 +548,10 @@ public class TestPreciseDateTimeField extends TestCase {
             super();
         }
         public DurationField getDurationField() {
-            return Chronology.getISOUTC().seconds();
+            return ISOChronology.getInstanceUTC().seconds();
         }
         public DurationField getRangeDurationField() {
-            return Chronology.getISOUTC().minutes();
+            return ISOChronology.getInstanceUTC().minutes();
         }
     }
 

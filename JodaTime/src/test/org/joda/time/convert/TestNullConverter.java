@@ -33,6 +33,8 @@ import org.joda.time.MutableInterval;
 import org.joda.time.MutablePeriod;
 import org.joda.time.PeriodType;
 import org.joda.time.TimeOfDay;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
@@ -139,7 +141,7 @@ public class TestNullConverter extends TestCase {
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = new int[] {10 + 1, 20, 30, 40}; // now
-        int[] actual = NullConverter.INSTANCE.getPartialValues(tod, null, Chronology.getISO());
+        int[] actual = NullConverter.INSTANCE.getPartialValues(tod, null, ISOChronology.getInstance());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 
@@ -166,19 +168,19 @@ public class TestNullConverter extends TestCase {
     }
 
     public void testSetInto_Object_Chronology1() throws Exception {
-        MutableInterval m = new MutableInterval(1000L, 2000L, Chronology.getGJ());
+        MutableInterval m = new MutableInterval(1000L, 2000L, GJChronology.getInstance());
         NullConverter.INSTANCE.setInto(m, null, null);
         assertEquals(TEST_TIME_NOW, m.getStartMillis());
         assertEquals(TEST_TIME_NOW, m.getEndMillis());
-        assertEquals(Chronology.getISO(), m.getChronology());
+        assertEquals(ISOChronology.getInstance(), m.getChronology());
     }
 
     public void testSetInto_Object_Chronology2() throws Exception {
-        MutableInterval m = new MutableInterval(1000L, 2000L, Chronology.getGJ());
-        NullConverter.INSTANCE.setInto(m, null, Chronology.getCoptic());
+        MutableInterval m = new MutableInterval(1000L, 2000L, GJChronology.getInstance());
+        NullConverter.INSTANCE.setInto(m, null, CopticChronology.getInstance());
         assertEquals(TEST_TIME_NOW, m.getStartMillis());
         assertEquals(TEST_TIME_NOW, m.getEndMillis());
-        assertEquals(Chronology.getCoptic(), m.getChronology());
+        assertEquals(CopticChronology.getInstance(), m.getChronology());
     }
 
     //-----------------------------------------------------------------------

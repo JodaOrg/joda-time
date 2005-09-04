@@ -20,6 +20,8 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
+
 /**
  * This class is a Junit unit test for DateTime.
  *
@@ -316,12 +318,12 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(true, test1.year().equals(test1.year()));
         assertEquals(true, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0).year()));
         assertEquals(false, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0).monthOfYear()));
-        assertEquals(false, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic()).year()));
+        assertEquals(false, test1.year().equals(new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance()).year()));
         
         assertEquals(true, test1.year().hashCode() == test1.year().hashCode());
         assertEquals(true, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0).year().hashCode());
         assertEquals(false, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0).monthOfYear().hashCode());
-        assertEquals(false, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0, Chronology.getCoptic()).year().hashCode());
+        assertEquals(false, test1.year().hashCode() == new DateTime(2004, 6, 9, 0, 0, 0, 0, CopticChronology.getInstance()).year().hashCode());
     }
 
     //-----------------------------------------------------------------------

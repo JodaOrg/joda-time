@@ -26,6 +26,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.chrono.GJChronology;
 
 /**
  * This class is a Junit unit test for DateTime Formating.
@@ -187,7 +188,7 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     public void testFormat_yearOfEraParse() {
-        Chronology chrono = Chronology.getGJUTC();
+        Chronology chrono = GJChronology.getInstanceUTC();
 
         DateTimeFormatter f = DateTimeFormat
             .forPattern("YYYY-MM GG")

@@ -28,6 +28,7 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
 import org.joda.time.base.BasePartial;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for BaseDateTimeField.
@@ -552,10 +553,10 @@ public class TestBaseDateTimeField extends TestCase {
             super();
         }
         public DurationField getDurationField() {
-            return Chronology.getISOUTC().seconds();
+            return ISOChronology.getInstanceUTC().seconds();
         }
         public DurationField getRangeDurationField() {
-            return Chronology.getISOUTC().minutes();
+            return ISOChronology.getInstanceUTC().minutes();
         }
     }
 
@@ -600,10 +601,10 @@ public class TestBaseDateTimeField extends TestCase {
     static class MockPartial extends BasePartial {
         protected DateTimeField getField(int index, Chronology chrono) {
             if (index == 0) {
-                return Chronology.getISOUTC().minuteOfHour();
+                return ISOChronology.getInstanceUTC().minuteOfHour();
             }
             if (index == 1) {
-                return Chronology.getISOUTC().millisOfSecond();
+                return ISOChronology.getInstanceUTC().millisOfSecond();
             }
             return null;
         }

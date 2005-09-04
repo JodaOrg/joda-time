@@ -21,6 +21,8 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.ISOChronology;
+
 /**
  * This class is a JUnit test for MutableDuration.
  *
@@ -1134,7 +1136,7 @@ public class TestMutablePeriod_Updates extends TestCase {
     //-----------------------------------------------------------------------
     public void testAdd_long_Chronology1() {
         MutablePeriod test = new MutablePeriod(100L);
-        test.add(100L, Chronology.getISO());
+        test.add(100L, ISOChronology.getInstance());
         assertEquals(0, test.getYears());
         assertEquals(0, test.getMonths());
         assertEquals(0, test.getWeeks());
@@ -1152,7 +1154,7 @@ public class TestMutablePeriod_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        test.add(ms, Chronology.getISO());
+        test.add(ms, ISOChronology.getInstance());
         // only time fields are precise
         assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450 days
         assertEquals(0, test.getMonths());
@@ -1171,7 +1173,7 @@ public class TestMutablePeriod_Updates extends TestCase {
             5L * DateTimeConstants.MILLIS_PER_HOUR +
             6L * DateTimeConstants.MILLIS_PER_MINUTE +
             7L * DateTimeConstants.MILLIS_PER_SECOND + 8L;
-        test.add(ms, Chronology.getISOUTC());
+        test.add(ms, ISOChronology.getInstanceUTC());
         // UTC, so weeks and day also precise
         assertEquals(0, test.getYears());  // (4 + (3 * 7) + (2 * 30) + 365) == 450 days
         assertEquals(0, test.getMonths());

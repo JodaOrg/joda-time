@@ -29,6 +29,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for Period Formating.
@@ -42,9 +44,9 @@ public class TestPeriodFormatter extends TestCase {
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
-    private static final Chronology ISO_UTC = Chronology.getISOUTC();
-    private static final Chronology ISO_PARIS = Chronology.getISO(PARIS);
-    private static final Chronology BUDDHIST_PARIS = Chronology.getBuddhist(PARIS);
+    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 

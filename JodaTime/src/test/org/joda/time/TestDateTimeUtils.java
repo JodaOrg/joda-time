@@ -29,6 +29,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -308,27 +309,27 @@ public class TestDateTimeUtils extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetIntervalChronology_RInterval() {
-        Interval dt = new Interval(123L, 456L, Chronology.getBuddhist());
-        assertEquals(Chronology.getBuddhist(), DateTimeUtils.getIntervalChronology(dt));
+        Interval dt = new Interval(123L, 456L, BuddhistChronology.getInstance());
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getIntervalChronology(dt));
         
-        assertEquals(Chronology.getISO(), DateTimeUtils.getIntervalChronology(null));
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getIntervalChronology(null));
         
         MutableInterval ai = new MutableInterval() {
             public Chronology getChronology() {
                 return null; // testing for this
             }
         };
-        assertEquals(Chronology.getISO(), DateTimeUtils.getIntervalChronology(ai));
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getIntervalChronology(ai));
     }
 
     //-----------------------------------------------------------------------
     public void testGetIntervalChronology_RI_RI() {
-        DateTime dt1 = new DateTime(123L, Chronology.getBuddhist());
-        DateTime dt2 = new DateTime(123L, Chronology.getCoptic());
-        assertEquals(Chronology.getBuddhist(), DateTimeUtils.getIntervalChronology(dt1, dt2));
-        assertEquals(Chronology.getBuddhist(), DateTimeUtils.getIntervalChronology(dt1, null));
-        assertEquals(Chronology.getCoptic(), DateTimeUtils.getIntervalChronology(null, dt2));
-        assertEquals(Chronology.getISO(), DateTimeUtils.getIntervalChronology(null, null));
+        DateTime dt1 = new DateTime(123L, BuddhistChronology.getInstance());
+        DateTime dt2 = new DateTime(123L, CopticChronology.getInstance());
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getIntervalChronology(dt1, dt2));
+        assertEquals(BuddhistChronology.getInstance(), DateTimeUtils.getIntervalChronology(dt1, null));
+        assertEquals(CopticChronology.getInstance(), DateTimeUtils.getIntervalChronology(null, dt2));
+        assertEquals(ISOChronology.getInstance(), DateTimeUtils.getIntervalChronology(null, null));
     }
 
     //-----------------------------------------------------------------------

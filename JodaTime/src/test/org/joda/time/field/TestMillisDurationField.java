@@ -23,9 +23,9 @@ import java.io.ObjectOutputStream;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.Chronology;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * This class is a Junit unit test for PeriodFormatterBuilder.
@@ -182,7 +182,7 @@ public class TestMillisDurationField extends TestCase {
     //-----------------------------------------------------------------------
     public void test_compareTo() {
         assertEquals(0, MillisDurationField.INSTANCE.compareTo(MillisDurationField.INSTANCE));
-        assertEquals(-1, MillisDurationField.INSTANCE.compareTo(Chronology.getISO().seconds()));
+        assertEquals(-1, MillisDurationField.INSTANCE.compareTo(ISOChronology.getInstance().seconds()));
         DurationField dummy = new PreciseDurationField(DurationFieldType.seconds(), 0);
         assertEquals(1, MillisDurationField.INSTANCE.compareTo(dummy));
         try {

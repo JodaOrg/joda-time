@@ -24,6 +24,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * Makes sure that text fields are correct for English.
@@ -110,7 +111,7 @@ public class TestTextFields extends TestCase {
     public void testMonthNames_monthEnd() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
-            Chronology chrono = Chronology.getISO(ZONES[i]);
+            Chronology chrono = ISOChronology.getInstance(ZONES[i]);
             for (int month=1; month<=12; month++) {
                 DateTime dt = new DateTime(2004, month, 1, 23, 20, 30, 40, chrono);
                 int lastDay = chrono.dayOfMonth().getMaximumValue(dt.getMillis());
@@ -137,7 +138,7 @@ public class TestTextFields extends TestCase {
     public void testHalfdayNames() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("a");
         for (int i=0; i<ZONES.length; i++) {
-            Chronology chrono = Chronology.getISO(ZONES[i]);
+            Chronology chrono = ISOChronology.getInstance(ZONES[i]);
             MutableDateTime mdt = new MutableDateTime(2004, 5, 30, 0, 20, 30, 40, chrono);
             for (int hour=0; hour<24; hour++) {
                 mdt.setHourOfDay(hour);

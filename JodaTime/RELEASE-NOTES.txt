@@ -17,10 +17,10 @@ of restrictions. If the license cause you problems please contact the mailing li
 Incompatible changes since 1.1
 ------------------------------
 Binary compatible - Yes
-  - v1.0 and v1.1 are binary compatible in their public and protected API
+  - v1.1 and v1.2 are binary compatible in their public and protected API
 
 Source compatible - Yes
-  - v1.0 and v1.1 are source compatible in their public and protected API
+  - v1.1 and v1.2 are source compatible in their public and protected API
 
 Serialization compatible - Yes
 
@@ -37,7 +37,12 @@ Warnings since 1.1
 
 Deprecations since 1.1
 ----------------------
-None
+- Chronology factory methods, such as getISO() and getCopticUTC()
+  The ChronologyType class contains suitable replacement methods
+    Chronology.getCoptic(zone)   is replaced by
+    ChronologyType.coptic().getChronology(zone)
+  These factory methods have been removed as they were a poor substitute
+  for a proper type class, and confused the role of the Chronology class
 
 
 Bug fixes since 1.1

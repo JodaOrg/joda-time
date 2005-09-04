@@ -24,12 +24,13 @@ import junit.framework.TestSuite;
  * This class is a Junit unit test for DateTime.
  *
  * @author Stephen Colebourne
+ * @author Mike Schrag
  */
 public class TestDateMidnight_Properties extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -452,6 +453,47 @@ public class TestDateMidnight_Properties extends TestCase {
         assertEquals(false, test.dayOfWeek().isLeap());
         assertEquals(0, test.dayOfWeek().getLeapAmount());
         assertEquals(null, test.dayOfWeek().getLeapDurationField());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyToIntervalYearOfEra() {
+      DateMidnight test = new DateMidnight(2004, 6, 9);
+      Interval testInterval = test.yearOfEra().toInterval();
+      assertEquals(new DateMidnight(2004, 1, 1), testInterval.getStart());
+      assertEquals(new DateMidnight(2005, 1, 1), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalYearOfCentury() {
+      DateMidnight test = new DateMidnight(2004, 6, 9);
+      Interval testInterval = test.yearOfCentury().toInterval();
+      assertEquals(new DateMidnight(2004, 1, 1), testInterval.getStart());
+      assertEquals(new DateMidnight(2005, 1, 1), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalYear() {
+      DateMidnight test = new DateMidnight(2004, 6, 9);
+      Interval testInterval = test.year().toInterval();
+      assertEquals(new DateMidnight(2004, 1, 1), testInterval.getStart());
+      assertEquals(new DateMidnight(2005, 1, 1), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalMonthOfYear() {
+      DateMidnight test = new DateMidnight(2004, 6, 9);
+      Interval testInterval = test.monthOfYear().toInterval();
+      assertEquals(new DateMidnight(2004, 6, 1), testInterval.getStart());
+      assertEquals(new DateMidnight(2004, 7, 1), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalDayOfMonth() {
+      DateMidnight test = new DateMidnight(2004, 6, 9);
+      Interval testInterval = test.dayOfMonth().toInterval();
+      assertEquals(new DateMidnight(2004, 6, 9), testInterval.getStart());
+      assertEquals(new DateMidnight(2004, 6, 10), testInterval.getEnd());
+
+      DateMidnight febTest = new DateMidnight(2004, 2, 29);
+      Interval febTestInterval = febTest.dayOfMonth().toInterval();
+      assertEquals(new DateMidnight(2004, 2, 29), febTestInterval.getStart());
+      assertEquals(new DateMidnight(2004, 3, 1), febTestInterval.getEnd());
     }
 
 }

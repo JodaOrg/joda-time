@@ -24,12 +24,13 @@ import junit.framework.TestSuite;
  * This class is a Junit unit test for DateTime.
  *
  * @author Stephen Colebourne
+ * @author Mike Schrag
  */
 public class TestMutableDateTime_Properties extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -685,6 +686,91 @@ public class TestMutableDateTime_Properties extends TestCase {
         assertEquals(test.getChronology().days(), test.millisOfDay().getRangeDurationField());
         assertEquals(8, test.millisOfDay().getMaximumTextLength(null));
         assertEquals(8, test.millisOfDay().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyToIntervalYearOfEra() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.yearOfEra().toInterval();
+      assertEquals(new MutableDateTime(2004, 1, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2005, 1, 1, 0, 0, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+    }
+
+    public void testPropertyToIntervalYearOfCentury() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.yearOfCentury().toInterval();
+      assertEquals(new MutableDateTime(2004, 1, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2005, 1, 1, 0, 0, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+    }
+
+    public void testPropertyToIntervalYear() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.year().toInterval();
+      assertEquals(new MutableDateTime(2004, 1, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2005, 1, 1, 0, 0, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+    }
+
+    public void testPropertyToIntervalMonthOfYear() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.monthOfYear().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 7, 1, 0, 0, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+    }
+
+    public void testPropertyToIntervalDayOfMonth() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.dayOfMonth().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 9, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 6, 10, 0, 0, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+
+      MutableDateTime febTest = new MutableDateTime(2004, 2, 29, 13, 23, 43, 53);
+      Interval febTestInterval = febTest.dayOfMonth().toInterval();
+      assertEquals(new MutableDateTime(2004, 2, 29, 0, 0, 0, 0), febTestInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 3, 1, 0, 0, 0, 0), febTestInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 2, 29, 13, 23, 43, 53), febTest);
+    }
+
+    public void testPropertyToIntervalHourOfDay() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.hourOfDay().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 0, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 6, 9, 14, 0, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+
+      MutableDateTime midnightTest = new MutableDateTime(2004, 6, 9, 23, 23, 43, 53);
+      Interval midnightTestInterval = midnightTest.hourOfDay().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 9, 23, 0, 0, 0), midnightTestInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 6, 10, 0, 0, 0, 0), midnightTestInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 23, 23, 43, 53), midnightTest);
+    }
+
+    public void testPropertyToIntervalMinuteOfHour() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.minuteOfHour().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 0, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 24, 0, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+    }
+
+    public void testPropertyToIntervalSecondOfMinute() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.secondOfMinute().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 0), testInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 44, 0), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
+    }
+
+    public void testPropertyToIntervalMillisOfSecond() {
+      MutableDateTime test = new MutableDateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.millisOfSecond().toInterval();
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), testInterval.getStart());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 54), testInterval.getEnd());
+      assertEquals(new MutableDateTime(2004, 6, 9, 13, 23, 43, 53), test);
     }
 
 }

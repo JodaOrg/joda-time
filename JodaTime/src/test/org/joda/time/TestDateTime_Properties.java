@@ -24,12 +24,13 @@ import junit.framework.TestSuite;
  * This class is a Junit unit test for DateTime.
  *
  * @author Stephen Colebourne
+ * @author Mike Schrag
  */
 public class TestDateTime_Properties extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -1243,6 +1244,80 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(test.getChronology().days(), test.millisOfDay().getRangeDurationField());
         assertEquals(8, test.millisOfDay().getMaximumTextLength(null));
         assertEquals(8, test.millisOfDay().getMaximumShortTextLength(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPropertyToIntervalYearOfEra() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.yearOfEra().toInterval();
+      assertEquals(new DateTime(2004, 1, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2005, 1, 1, 0, 0, 0, 0), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalYearOfCentury() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.yearOfCentury().toInterval();
+      assertEquals(new DateTime(2004, 1, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2005, 1, 1, 0, 0, 0, 0), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalYear() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.year().toInterval();
+      assertEquals(new DateTime(2004, 1, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2005, 1, 1, 0, 0, 0, 0), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalMonthOfYear() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.monthOfYear().toInterval();
+      assertEquals(new DateTime(2004, 6, 1, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2004, 7, 1, 0, 0, 0, 0), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalDayOfMonth() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.dayOfMonth().toInterval();
+      assertEquals(new DateTime(2004, 6, 9, 0, 0, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 10, 0, 0, 0, 0), testInterval.getEnd());
+
+      DateTime febTest = new DateTime(2004, 2, 29, 13, 23, 43, 53);
+      Interval febTestInterval = febTest.dayOfMonth().toInterval();
+      assertEquals(new DateTime(2004, 2, 29, 0, 0, 0, 0), febTestInterval.getStart());
+      assertEquals(new DateTime(2004, 3, 1, 0, 0, 0, 0), febTestInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalHourOfDay() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.hourOfDay().toInterval();
+      assertEquals(new DateTime(2004, 6, 9, 13, 0, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 9, 14, 0, 0, 0), testInterval.getEnd());
+
+      DateTime midnightTest = new DateTime(2004, 6, 9, 23, 23, 43, 53);
+      Interval midnightTestInterval = midnightTest.hourOfDay().toInterval();
+      assertEquals(new DateTime(2004, 6, 9, 23, 0, 0, 0), midnightTestInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 10, 0, 0, 0, 0), midnightTestInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalMinuteOfHour() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.minuteOfHour().toInterval();
+      assertEquals(new DateTime(2004, 6, 9, 13, 23, 0, 0), testInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 9, 13, 24, 0, 0), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalSecondOfMinute() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.secondOfMinute().toInterval();
+      assertEquals(new DateTime(2004, 6, 9, 13, 23, 43, 0), testInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 9, 13, 23, 44, 0), testInterval.getEnd());
+    }
+
+    public void testPropertyToIntervalMillisOfSecond() {
+      DateTime test = new DateTime(2004, 6, 9, 13, 23, 43, 53);
+      Interval testInterval = test.millisOfSecond().toInterval();
+      assertEquals(new DateTime(2004, 6, 9, 13, 23, 43, 53), testInterval.getStart());
+      assertEquals(new DateTime(2004, 6, 9, 13, 23, 43, 54), testInterval.getEnd());
     }
 
 }

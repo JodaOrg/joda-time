@@ -22,6 +22,7 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationField;
+import org.joda.time.Interval;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 
@@ -38,6 +39,7 @@ import org.joda.time.ReadablePartial;
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
+ * @author Mike Schrag
  * @since 1.0
  */
 public abstract class AbstractReadableInstantFieldProperty implements Serializable {
@@ -336,6 +338,24 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      */
     public long remainder() {
         return getField().remainder(getMillis());
+    }
+
+    /**
+     * Returns the interval that represents the range of the minimum
+     * and maximum values of this field.
+     * <p>
+     * For example, <code>datetime.monthOfYear().toInterval()</code>
+     * will return an interval over the whole month.
+     *
+     * @return the interval of this field
+     * @since 1.2
+     */
+    public Interval toInterval() {
+        DateTimeField field = getField();
+        long start = field.roundFloor(getMillis());
+        long end = field.add(start, 1);
+        Interval interval = new Interval(start, end);
+        return interval;
     }
 
     //-----------------------------------------------------------------------

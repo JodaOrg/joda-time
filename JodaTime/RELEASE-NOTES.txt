@@ -53,6 +53,11 @@ Enhancements since 1.1
   New type that acts as a factory for creating Chronology instances
   Chronology.getType() returns the type
 
+- DateTime.Property.toInterval() (also DateMidnight/MutableDateTime)
+  New method to convert return an Interval object over the span of the property
+  Thus dt.monthOfYear().toInterval() returns an interval from the start to
+  the end of the month
+
 - MutableDateTime.property(DateTimeFieldType)
   Gets the property by type. Complements the method already on DateTime/DateMidnight.
 

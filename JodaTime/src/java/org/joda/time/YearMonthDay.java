@@ -98,7 +98,7 @@ public final class YearMonthDay
      * @since 1.1
      */
     public YearMonthDay(DateTimeZone zone) {
-        super(Chronology.getISO(zone));
+        super(ChronologyType.iso().getChronology(zone));
     }
 
     /**

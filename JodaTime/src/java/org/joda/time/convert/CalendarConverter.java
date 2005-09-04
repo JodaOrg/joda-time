@@ -19,9 +19,12 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.joda.time.Chronology;
+import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.JulianChronology;
 
 /**
  * CalendarConverter converts a java util Calendar to an instant or partial.
@@ -94,14 +97,14 @@ final class CalendarConverter extends AbstractConverter
             GregorianCalendar gc = (GregorianCalendar) object;
             long cutover = gc.getGregorianChange().getTime();
             if (cutover == Long.MIN_VALUE) {
-                return Chronology.getGregorian(zone);
+                return GregorianChronology.getInstance(zone);
             } else if (cutover == Long.MAX_VALUE) {
-                return Chronology.getJulian(zone);
+                return JulianChronology.getInstance(zone);
             } else {
                 return GJChronology.getInstance(zone, cutover, 4);
             }
         } else {
-            return Chronology.getISO(zone);
+            return ChronologyType.iso().getChronology(zone);
         }
     }
 

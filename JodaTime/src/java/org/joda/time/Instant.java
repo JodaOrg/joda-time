@@ -86,7 +86,7 @@ public final class Instant
     public Instant(Object instant) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iMillis = converter.getInstantMillis(instant, Chronology.getISOUTC());
+        iMillis = converter.getInstantMillis(instant, ChronologyType.iso().getChronologyUTC());
     }
 
     //-----------------------------------------------------------------------
@@ -217,7 +217,7 @@ public final class Instant
      * @return ISO in the UTC zone
      */
     public Chronology getChronology() {
-        return Chronology.getISOUTC();
+        return ChronologyType.iso().getChronologyUTC();
     }
 
 }

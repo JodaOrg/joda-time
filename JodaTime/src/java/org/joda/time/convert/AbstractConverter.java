@@ -16,6 +16,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.Chronology;
+import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
@@ -62,7 +63,7 @@ public abstract class AbstractConverter implements Converter {
      * @return the chronology, never null
      */
     public Chronology getChronology(Object object, DateTimeZone zone) {
-        return Chronology.getISO(zone);
+        return ChronologyType.iso().getChronology(zone);
     }
 
     /**

@@ -18,6 +18,7 @@ package org.joda.time.base;
 import java.io.Serializable;
 
 import org.joda.time.Chronology;
+import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.MutableInterval;
 import org.joda.time.ReadWritableInterval;
@@ -85,7 +86,7 @@ public abstract class BaseInterval
         super();
         if (start == null && end == null) {
             iStartMillis = iEndMillis = DateTimeUtils.currentTimeMillis();
-            iChronology = Chronology.getISO();
+            iChronology = ChronologyType.iso().getChronology();
         } else {
             iChronology = DateTimeUtils.getInstantChronology(start);
             iStartMillis = DateTimeUtils.getInstantMillis(start);

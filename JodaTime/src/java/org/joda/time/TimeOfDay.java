@@ -139,7 +139,7 @@ public final class TimeOfDay
      * @since 1.1
      */
     public TimeOfDay(DateTimeZone zone) {
-        super(Chronology.getISO(zone));
+        super(ChronologyType.iso().getChronology(zone));
     }
 
     /**

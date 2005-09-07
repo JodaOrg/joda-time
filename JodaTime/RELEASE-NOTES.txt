@@ -51,6 +51,18 @@ Bug fixes since 1.1
   getMaximumValue(ReadablePartial)/getMinimumValue(ReadablePartial)
   Methods returned incorrect result
 
+- ZonedChronology
+  Better detection and handling of offset calculation overflow, throwing
+  an ArithmeticException.
+
+- DateTimeZone
+  Handles offset calculation overflow errors for instants near Long.MAX_VALUE,
+  ending the offset transition sequence.
+
+- DateTimeFormatter
+  Reverts to UTC if time zone offset calculation causes overflow. This allows at least
+  the time of day fields to be printed for instants near Long.MIN_VALUE or Long.MAX_VALUE.
+
 
 Enhancements since 1.1
 ----------------------

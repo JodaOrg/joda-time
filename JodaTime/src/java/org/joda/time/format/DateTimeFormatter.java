@@ -525,7 +525,13 @@ public class DateTimeFormatter {
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
         int offset = zone.getOffset(instant);
-        iPrinter.printTo(buf, instant + offset, chrono.withUTC(), offset, zone, iLocale);
+        long adjustedInstant = instant + offset;
+        if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
+            // Time zone offset overflow, so revert to UTC.
+            adjustedInstant = instant;
+            offset = 0;
+        }
+        iPrinter.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }
 
     private void printTo(Writer buf, long instant, Chronology chrono) throws IOException {
@@ -534,7 +540,13 @@ public class DateTimeFormatter {
         // calculations when printing multiple fields in a composite printer.
         DateTimeZone zone = chrono.getZone();
         int offset = zone.getOffset(instant);
-        iPrinter.printTo(buf, instant + offset, chrono.withUTC(), offset, zone, iLocale);
+        long adjustedInstant = instant + offset;
+        if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
+            // Time zone offset overflow, so revert to UTC.
+            adjustedInstant = instant;
+            offset = 0;
+        }
+        iPrinter.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }
 
     /**

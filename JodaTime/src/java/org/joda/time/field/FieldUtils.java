@@ -61,11 +61,13 @@ public class FieldUtils {
      * @throws ArithmeticException if the value is too big or too small
      */
     public static int safeAdd(int val1, int val2) {
-        long total = ((long) val1) + ((long) val2);
-        if (total < Integer.MIN_VALUE || total > Integer.MAX_VALUE) {
-            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" + " + val2);
+        int sum = val1 + val2;
+        // If there is a sign change, but the two values have the same sign...
+        if ((val1 ^ sum) < 0 && (val1 ^ val2) >= 0) {
+            throw new ArithmeticException
+                ("The calculation caused an overflow: " + val1 + " + " + val2);
         }
-        return (int) total;
+        return sum;
     }
     
     /**
@@ -77,14 +79,13 @@ public class FieldUtils {
      * @throws ArithmeticException if the value is too big or too small
      */
     public static long safeAdd(long val1, long val2) {
-        long total = val1 + val2;
-        if (val1 > 0 && val2 > 0 && total < 0) {
-            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" + " + val2);
+        long sum = val1 + val2;
+        // If there is a sign change, but the two values have the same sign...
+        if ((val1 ^ sum) < 0 && (val1 ^ val2) >= 0) {
+            throw new ArithmeticException
+                ("The calculation caused an overflow: " + val1 + " + " + val2);
         }
-        if (val1 < 0 && val2 < 0 && total > 0) {
-            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" + " + val2);
-        }
-        return total;
+        return sum;
     }
     
     /**
@@ -96,13 +97,13 @@ public class FieldUtils {
      * @throws ArithmeticException if the value is too big or too small
      */
     public static long safeSubtract(long val1, long val2) {
-        if (val2 == Long.MIN_VALUE) {
-            if (val1 <= 0L) {
-                return (val1 - val2);
-            }
-            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" - " + val2);
+        long diff = val1 - val2;
+        // If there is a sign change, but the two values have different signs...
+        if ((val1 ^ diff) < 0 && (val1 ^ val2) < 0) {
+            throw new ArithmeticException
+                ("The calculation caused an overflow: " + val1 + " - " + val2);
         }
-        return safeAdd(val1, -val2);
+        return diff;
     }
     
     /**
@@ -114,12 +115,13 @@ public class FieldUtils {
      * @throws ArithmeticException if the value is too big or too small
      */
     public static long safeMultiply(long val1, long val2) {
-        if (val1 == 0  || val2 == 0) {
+        if (val1 == 0 || val2 == 0) {
             return 0L;
         }
         long total = val1 * val2;
         if (total / val2 != val1) {
-            throw new ArithmeticException("The calculation caused an overflow: " + val1 +" * " + val2);
+            throw new ArithmeticException
+                ("The calculation caused an overflow: " + val1 + " * " + val2);
         }
         return total;
     }

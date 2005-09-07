@@ -1197,6 +1197,9 @@ public class DateTimeZoneBuilder {
             } catch (IllegalArgumentException e) {
                 // Overflowed.
                 start = instant;
+            } catch (ArithmeticException e) {
+                // Overflowed.
+                start = instant;
             }
 
             try {
@@ -1207,6 +1210,9 @@ public class DateTimeZoneBuilder {
                     end = instant;
                 }
             } catch (IllegalArgumentException e) {
+                // Overflowed.
+                end = instant;
+            } catch (ArithmeticException e) {
                 // Overflowed.
                 end = instant;
             }
@@ -1235,6 +1241,9 @@ public class DateTimeZoneBuilder {
             } catch (IllegalArgumentException e) {
                 // Overflowed.
                 start = instant;
+            } catch (ArithmeticException e) {
+                // Overflowed.
+                start = instant;
             }
 
             try {
@@ -1245,6 +1254,9 @@ public class DateTimeZoneBuilder {
                     end = instant;
                 }
             } catch (IllegalArgumentException e) {
+                // Overflowed.
+                end = instant;
+            } catch (ArithmeticException e) {
                 // Overflowed.
                 end = instant;
             }
@@ -1286,12 +1298,18 @@ public class DateTimeZoneBuilder {
             } catch (IllegalArgumentException e) {
                 // Overflowed.
                 start = instant;
+            } catch (ArithmeticException e) {
+                // Overflowed.
+                start = instant;
             }
 
             try {
                 end = endRecurrence.next
                     (instant, standardOffset, startRecurrence.getSaveMillis());
             } catch (IllegalArgumentException e) {
+                // Overflowed.
+                end = instant;
+            } catch (ArithmeticException e) {
                 // Overflowed.
                 end = instant;
             }

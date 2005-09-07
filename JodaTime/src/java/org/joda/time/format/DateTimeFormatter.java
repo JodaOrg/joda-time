@@ -528,8 +528,9 @@ public class DateTimeFormatter {
         long adjustedInstant = instant + offset;
         if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
             // Time zone offset overflow, so revert to UTC.
-            adjustedInstant = instant;
+            zone = DateTimeZone.UTC;
             offset = 0;
+            adjustedInstant = instant;
         }
         iPrinter.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }
@@ -543,8 +544,9 @@ public class DateTimeFormatter {
         long adjustedInstant = instant + offset;
         if ((instant ^ adjustedInstant) < 0 && (instant ^ offset) >= 0) {
             // Time zone offset overflow, so revert to UTC.
-            adjustedInstant = instant;
+            zone = DateTimeZone.UTC;
             offset = 0;
+            adjustedInstant = instant;
         }
         iPrinter.printTo(buf, adjustedInstant, chrono.withUTC(), offset, zone, iLocale);
     }

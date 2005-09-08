@@ -34,7 +34,7 @@ import org.joda.time.DateTimeFieldType;
  * For example, to format a date time in ISO format:
  * <pre>
  * DateTime dt = new DateTime();
- * DateTimeFormatter fmt = DateTimeFormat.getInstance().dateTime();
+ * DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
  * String str = fmt.print(dt);
  * </pre>
  * <p>

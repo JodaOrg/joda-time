@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- You are strongly recommended to use ant for compiling and building -->
-<!-- We only use and test maven for website construction -->
-
-<maven:project xmlns:maven="http://maven.apache.org/maven-v3_0_0.xsd">
+<project>
   <pomVersion>3</pomVersion>
   <id>joda-time-hibernate</id>
-  <name>Joda time Hibernate support</name>
   <groupId>joda-time</groupId>
-  <currentVersion>1.0</currentVersion>
+  <name>Joda time Hibernate support</name>
+  <currentVersion>0.8-dev</currentVersion>
+  <shortDescription>Joda time Hibernate support</shortDescription>
+  <description>
+    Contribution to Joda-Time that adds Hibernate support
+  </description>
+
+  <url>http://joda-time.sourceforge.net/contrib/hibernate</url>
+  <logo>/images/jodatime.png</logo>
+  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.joda.time.contrib.hibernate</package>
+
+  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</siteDirectory>
+  <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
+
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
     <logo>/images/joda.png</logo>
   </organization>
-  <inceptionYear>2002</inceptionYear>
-  <package>org.joda.time.contrib.hibernate</package>
-  <logo>/images/jodatime.png</logo>
-
-  <description>
-    Contribution to Joda-Time that adds Hibernate support
-  </description>
-  <shortDescription>Joda time Hibernate support</shortDescription>
-  <url>http://joda-time.sourceforge.net</url>
-
-  <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
-
-  <siteAddress>shell.sourceforge.net</siteAddress>
-  <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</siteDirectory>
-  <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/hibernate</connection>
@@ -47,6 +52,18 @@
     <developer>
       <name>Mario Ivankovits</name>
       <id>imario</id>
+      <email></email>
+      <roles>
+        <role>Lead developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Stephen Colebourne</name>
+      <id>scolebourne</id>
+      <email></email>
+      <roles>
+        <role>Website and Release manager</role>
+      </roles>
     </developer>
   </developers>
 
@@ -56,65 +73,41 @@
       <artifactId>joda-time</artifactId>
       <version>1.0</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>hibernate</groupId>
       <artifactId>hibernate</artifactId>
       <version>3.0.5</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging-api</artifactId>
       <version>1.0.4</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>commons-collections</groupId>
       <artifactId>commons-collections</artifactId>
       <version>3.1</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>1.7.3.3</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>ehcache</groupId>
       <artifactId>ehcache</artifactId>
       <version>1.1</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>dom4j</groupId>
       <artifactId>dom4j</artifactId>
       <version>1.6</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>cglib</groupId>
       <artifactId>cglib</artifactId>
       <version>full-2.0.2</version>
     </dependency>
-  </dependencies>
-
-  <dependencies>
     <dependency>
       <groupId>jta</groupId>
       <artifactId>jta</artifactId>
@@ -159,4 +152,4 @@
      <!--report>maven-tasklist-plugin</report-->
   </reports>
 
-</maven:project>
+</project>

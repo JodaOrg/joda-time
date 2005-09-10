@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Hibernate support - User Guide</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+<body>
+
+<!-- ========================================================================= -->
+
+<section name="Introduction">
+<p>
+<a href="/index.html">Joda-Time</a> Hibernate support provides classes to
+persist Joda-Time based date and time objects to a database using Hibernate.
+</p>
+
+<!-- ========================================================================= -->
+
+<subsection name="TODO">
+<p>
+TODO
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+</body>
+</document>

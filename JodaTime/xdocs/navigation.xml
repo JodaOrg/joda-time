@@ -9,6 +9,7 @@
     <links>
       <item name="Joda-Time" href="/index.html"/>
       <item name="JSP tags" href="/contrib/jsptags/index.html"/>
+      <item name="Hibernate" href="/contrib/hibernate/index.html"/>
     </links>
 
     <menu name="Joda Time">

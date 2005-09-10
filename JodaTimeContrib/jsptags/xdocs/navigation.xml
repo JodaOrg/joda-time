@@ -9,6 +9,7 @@
     <links>
       <item name="Joda-Time" href="../../index.html"/>
       <item name="JSP tags" href="/index.html"/>
+      <item name="Hibernate" href="../hibernate/index.html"/>
     </links>
     <menu name="Joda Time JSP tags">
       <item name="Overview" href="index.html"/>
@@ -31,7 +32,7 @@
       <item name="Beans" href="http://joda.sourceforge.net/beans.html"/>
       <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
     </menu>
-    
+
     <footer>
       <a href="http://sourceforge.net">
         <img src="http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" />

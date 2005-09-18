@@ -234,13 +234,13 @@ public abstract class DateTimeZone implements Serializable {
         }
         int offset = 0;
         try {
-            int hoursInMinutes = FieldUtils.safeMultiplyToInt(hoursOffset, 60);
+            int hoursInMinutes = FieldUtils.safeMultiply(hoursOffset, 60);
             if (hoursInMinutes < 0) {
                 minutesOffset = FieldUtils.safeAdd(hoursInMinutes, -minutesOffset);
             } else {
                 minutesOffset = FieldUtils.safeAdd(hoursInMinutes, minutesOffset);
             }
-            offset = FieldUtils.safeMultiplyToInt(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
+            offset = FieldUtils.safeMultiply(minutesOffset, DateTimeConstants.MILLIS_PER_MINUTE);
         } catch (ArithmeticException ex) {
             throw new IllegalArgumentException("Offset is too large");
         }

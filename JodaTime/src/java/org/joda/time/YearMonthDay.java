@@ -396,7 +396,7 @@ public final class YearMonthDay
             int index = indexOf(fieldType);
             if (index >= 0) {
                 newValues = getField(index).add(this, index, newValues,
-                        FieldUtils.safeMultiplyToInt(period.getValue(i), scalar));
+                        FieldUtils.safeMultiply(period.getValue(i), scalar));
             }
         }
         return new YearMonthDay(this, newValues);

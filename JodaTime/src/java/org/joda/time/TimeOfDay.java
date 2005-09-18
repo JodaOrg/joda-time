@@ -510,7 +510,7 @@ public final class TimeOfDay
             int index = indexOf(fieldType);
             if (index >= 0) {
                 newValues = getField(index).addWrapPartial(this, index, newValues,
-                        FieldUtils.safeMultiplyToInt(period.getValue(i), scalar));
+                        FieldUtils.safeMultiply(period.getValue(i), scalar));
             }
         }
         return new TimeOfDay(this, newValues);

@@ -63,6 +63,10 @@ Bug fixes since 1.1
   Reverts to UTC if time zone offset calculation causes overflow. This allows at least
   the time of day fields to be printed for instants near Long.MIN_VALUE or Long.MAX_VALUE.
 
+- CopticChronology
+  Fixed regression in month of year calculation which affected getMaximumValue
+  on dayOfMonth field.
+
 
 Enhancements since 1.1
 ----------------------
@@ -77,6 +81,11 @@ Enhancements since 1.1
 
 - MutableDateTime.property(DateTimeFieldType)
   Gets the property by type. Complements the method already on DateTime/DateMidnight.
+
+- FieldUtils
+  Performance optimization when adding by scalars of one or negative one. The
+  overflow detecting multiplication skips the multiply and divide check for
+  these values.
 
 
 Feedback

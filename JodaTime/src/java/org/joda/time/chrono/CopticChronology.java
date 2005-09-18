@@ -307,7 +307,8 @@ public final class CopticChronology extends BaseGJChronology {
 
     //-----------------------------------------------------------------------
     int getMonthOfYear(long millis, int year) {
-        return ((int) ((millis - getYearMillis(year)) / 30)) + 1;
+        return ((int) ((millis - getYearMillis(year))
+                       / (30L * DateTimeConstants.MILLIS_PER_DAY))) + 1;
     }
     
     //-----------------------------------------------------------------------

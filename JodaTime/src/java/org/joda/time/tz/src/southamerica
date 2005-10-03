@@ -1,4 +1,4 @@
-# @(#)southamerica	7.61
+# @(#)southamerica	7.62
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -1055,6 +1055,12 @@ Rule	Uruguay	2004	only	-	Sep	19	 0:00	1:00	S
 # save energy ... it was postponed two weeks....
 # http://www.presidencia.gub.uy/_Web/noticias/2005/03/2005031005.htm
 Rule	Uruguay	2005	only	-	Mar	27	 2:00	0	-
+# From Eduardo Cota (2005-09-27):
+# http://www.presidencia.gub.uy/_Web/decretos/2005/09/CM%20119_09%2009%202005_00001.PDF
+# This means that from 2005-10-09 at 02:00 local time, until 2006-03-12 at
+# 02:00 local time, official time in Uruguay will be at GMT -2.
+Rule	Uruguay	2005	only	-	Oct	 9	 2:00	1:00	S
+Rule	Uruguay	2006	only	-	Mar	12	 2:00	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Montevideo	-3:44:44 -	LMT	1898 Jun 28
 			-3:44:44 -	MMT	1920 May  1	# Montevideo MT

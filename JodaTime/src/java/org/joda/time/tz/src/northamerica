@@ -1,4 +1,4 @@
-# @(#)northamerica	7.79
+# @(#)northamerica	7.80
 # also includes Central America and the Caribbean
 
 # This data is by no means authoritative; if you think you know better,
@@ -243,6 +243,16 @@ Rule	US	2007	max	-	Nov	Sun>=1	2:00	0	S
 # One of the staff members said that the station was on Eastern Standard Time
 # and didn't change their clocks for Daylight Saving ... so that their
 # reports will always have times which are 5 hours behind UTC.
+
+# From Paul Eggert (2005-08-26):
+# According to today's Huntsville Times
+# <http://www.al.com/news/huntsvilletimes/index.ssf?/base/news/1125047783228320.xml&coll=1>
+# a few towns on Alabama's "eastern border with Georgia, such as Phenix City
+# in Russell County, Lanett in Chambers County and some towns in Lee County,
+# set their watches and clocks on Eastern time."  It quotes H.H. "Bubba"
+# Roberts, city administrator in Phenix City. as saying "We are in the Central
+# time zone, but we do go by the Eastern time zone because so many people work
+# in Columbus." 
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule	NYC	1920	only	-	Mar	lastSun	2:00	1:00	D

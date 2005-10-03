@@ -1,4 +1,4 @@
-# @(#)australasia	7.73
+# @(#)australasia	7.74
 # This file also includes Pacific islands.
 
 # Notes are at the end of this file
@@ -1375,15 +1375,25 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # mapmakers redrew the IDL following the boundary of Kiribati.  Even that line
 # has a rather arbitrary nature.  The straight-line boundaries between Pacific
 # island nations that are shown on many maps are based on an international
-# convention, but are not legally binding national borders.
-#
-# An Anglo-French Conference on Time-Keeping at Sea (June, 1917) agreed that
-# legal time on the high seas would be zone time, i.e., the standard time at
-# the nearest meridian that is a multiple of fifteen degrees.  The date is
+# convention, but are not legally binding national borders.... The date is
 # governed by the IDL; therefore, even on the high seas, there may be some
 # places as late as fourteen hours later than UTC.  And, since the IDL is not
 # an international standard, there are some places on the high seas where the
 # correct date is ambiguous.
+
+# From Wikipedia <http://en.wikipedia.org/wiki/Time_zone> (2005-08-31):
+# Before 1920, all ships kept local apparent time on the high seas by setting
+# their clocks at night or at the morning sight so that, given the ship's
+# speed and direction, it would be 12 o'clock when the Sun crossed the ship's
+# meridian (12 o'clock = local apparent noon).  During 1917, at the
+# Anglo-French Conference on Time-keeping at Sea, it was recommended that all
+# ships, both military and civilian, should adopt hourly standard time zones
+# on the high seas.  Whenever a ship was within the territorial waters of any
+# nation it would use that nation's standard time.  The captain was permitted
+# to change his ship's clocks at a time of his choice following his ship's
+# entry into another zone time--he often chose midnight.  These zones were
+# adopted by all major fleets between 1920 and 1925 but not by many
+# independent merchant ships until World War II.
 
 # From Paul Eggert, using references suggested by Oscar van Vlijmen
 # (2005-03-20):

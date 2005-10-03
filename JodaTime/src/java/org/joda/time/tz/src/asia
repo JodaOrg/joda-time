@@ -1,4 +1,4 @@
-# @(#)asia	7.85
+# @(#)asia	7.86
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -1044,18 +1044,22 @@ Zone	Asia/Oral	3:25:24	-	LMT	1924 May  2 # or Ural'sk
 # <http://eng.gateway.kg/cgi-bin/page.pl?id=1&story_name=doc9979.shtml>
 # Kyrgyzstan is canceling the daylight saving time system.  I take the article
 # to mean that they will leave their clocks at 6 hours ahead of UTC.
+# From Malik Abdugaliev (2005-09-21):
+# Our government cancels daylight saving time 6th of August 2005.
+# From 2005-08-12 our GMT-offset is +6, w/o any daylight saving.
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
-Rule	Kirgiz	1992	1996	-	Apr	Sun>=7	0:00s	1:00	S
-Rule	Kirgiz	1992	1996	-	Sep	lastSun	0:00	0	-
-Rule	Kirgiz	1997	max	-	Mar	lastSun	2:30	1:00	S
-Rule	Kirgiz	1997	max	-	Oct	lastSun	2:30	0	-
+Rule	Kyrgyz	1992	1996	-	Apr	Sun>=7	0:00s	1:00	S
+Rule	Kyrgyz	1992	1996	-	Sep	lastSun	0:00	0	-
+Rule	Kyrgyz	1997	2005	-	Mar	lastSun	2:30	1:00	S
+Rule	Kyrgyz	1997	2004	-	Oct	lastSun	2:30	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Bishkek	4:58:24 -	LMT	1924 May  2
 			5:00	-	FRUT	1930 Jun 21 # Frunze Time
 			6:00 RussiaAsia FRU%sT	1991 Mar 31 2:00s
 			5:00	1:00	FRUST	1991 Aug 31 2:00 # independence
-			5:00	Kirgiz	KG%sT		    # Kirgizstan Time
+			5:00	Kyrgyz	KG%sT	2005 Aug 12    # Kyrgyzstan Time
+			6:00	-	KGT
 
 ###############################################################################
 

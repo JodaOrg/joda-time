@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  -  Copyright 2001-2005 Stephen Colebourne
+  -
+  -  Licensed under the Apache License, Version 2.0 (the "License");
+  -  you may not use this file except in compliance with the License.
+  -  You may obtain a copy of the License at
+  -
+  -      http://www.apache.org/licenses/LICENSE-2.0
+  -
+  -  Unless required by applicable law or agreed to in writing, software
+  -  distributed under the License is distributed on an "AS IS" BASIS,
+  -  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  -  See the License for the specific language governing permissions and
+  -  limitations under the License.
+  -->
+<!--
+  - Holiday information for GB locale.
+  -
+  - This data is by no means authoritative, and has been collated from various
+  - sources. If you think you know better feel free to edit the file.
+  - Please send any changes or information to
+  - joda-time-holiday@lists.sourceforge.net to benefit other users.
+  -->
+<!DOCTYPE joda-holiday-information SYSTEM "joda-holiday.dtd">
+<joda-holiday-information>
+  <!-- GB -->
+  <!-- Source: http://www.dti.gov.uk/er/bankhol.htm -->
+  <!-- Source: http://www.dti.gov.uk/er/bankhis.htm -->
+  <locale-holiday-information visible="false">
+    <country>GB</country>
+    <week>
+      <weekendStart>6</weekendStart>
+      <weekendEnd>7</weekendEnd>
+    </week>
+    <days type="State">
+      <name lang="en">Bank Holiday</name>
+      <day type="GoodFriday">
+        <name lang="en">Good Friday</name>
+        <dayRule fromYear="1871" basedOn="GregorianEaster" relativeDays="-2" />
+      </day>
+      <day type="Easter">
+        <name lang="en">Easter Day</name>
+        <dayRule fromYear="1871" basedOn="GregorianEaster" />
+      </day>
+      <day type="ChristmasDay">
+        <name lang="en">Christmas Day</name>
+        <baseRule monthOfYear="12" dayOfMonth="25" />
+        <dayRule fromYear="1871" weekendAdjust="NextWeekday" />
+      </day>
+      <day type="MilleniumDay">
+        <name lang="en">Millenium Day</name>
+        <dayRule year="1999" monthOfYear="12" dayOfMonth="31" />
+      </day>
+      <day type="GoldenJubilee">
+        <name lang="en">Golden Jubilee Bank Holiday</name>
+        <dayRule year="2002" monthOfYear="6" dayOfMonth="3" />
+      </day>
+      <day type="RoyalWeddingOfCharlesAndDiana">
+        <name lang="en">Royal Wedding of Charles and Diana</name>
+        <dayRule year="1981" monthOfYear="7" dayOfMonth="29" />
+      </day>
+    </days>
+  </locale-holiday-information>
+  
+  <!-- GB/England -->
+  <locale-holiday-information>
+    <country>GB</country>
+    <region>England</region>
+    <days type="State">
+      <day type="NewYear">
+        <name lang="en">New Year's Day</name>
+        <baseRule monthOfYear="1" dayOfMonth="1" />
+        <dayRule fromYear="1974" weekendAdjust="NextWeekday" />
+      </day>
+      <day type="EasterMonday">
+        <name lang="en">Easter Monday</name>
+        <dayRule fromYear="1871" basedOn="GregorianEaster" relativeDays="1" />
+      </day>
+      <day type="MayDay">
+        <name lang="en">May Day Bank Holiday</name>
+        <dayRule fromYear="1978" monthOfYear="5" weekOfMonth="1" dayOfWeek="1" />
+        <dayRule year="1995" monthOfYear="5" dayOfMonth="8" />
+      </day>
+      <day type="WhitMonday">
+        <name lang="en">Whit Monday</name>
+        <dayRule fromYear="1871" toYear="1964" basedOn="GregorianEaster" relativeDays="50" />
+      </day>
+      <day type="Spring">
+        <name lang="en">Spring Bank Holiday</name>
+        <dayRule fromYear="1965" monthOfYear="5" weekOfMonth="-1" dayOfWeek="1" />
+        <dayRule year="2002" monthOfYear="6" dayOfMonth="4" />
+      </day>
+      <day type="Summer">
+        <name lang="en">Summer Bank Holiday</name>
+        <dayRule fromYear="1871" toYear="1964" monthOfYear="8" weekOfMonth="1" dayOfWeek="1" />
+        <dayRule fromYear="1965" monthOfYear="8" weekOfMonth="-1" dayOfWeek="1" />
+      </day>
+      <day type="BoxingDay">
+        <name lang="en">Boxing Day</name>
+        <dayRule fromYear="1871" basedOn="ChristmasDay" relativeDays="1" />
+      </day>
+    </days>
+  </locale-holiday-information>
+  
+  <!-- GB/Wales -->
+  <locale-holiday-information baseRegion="England">
+    <country>GB</country>
+    <region>Wales</region>
+  </locale-holiday-information>
+  
+  <!-- GB/Scotland -->
+  <locale-holiday-information>
+    <country>GB</country>
+    <region>Scotland</region>
+    <days type="State">
+      <day type="NewYear">
+        <name lang="en">New Year's Day</name>
+        <baseRule monthOfYear="1" dayOfMonth="1" />
+        <dayRule fromYear="1871" weekendAdjust="NextWeekday" />
+      </day>
+      <day type="MayDay">
+        <name lang="en">May Day Bank Holiday</name>
+        <dayRule fromYear="1871" monthOfYear="5" weekOfMonth="1" dayOfWeek="1" />
+        <dayRule year="1995" monthOfYear="5" dayOfMonth="8" />
+      </day>
+      <day type="Summer">
+        <name lang="en">Summer Bank Holiday</name>
+        <dayRule fromYear="1871" monthOfYear="8" weekOfMonth="1" dayOfWeek="1" />
+      </day>
+      <day type="Hogmanay">
+        <name lang="en">Hogmanay</name>
+        <baseRule monthOfYear="1" dayOfMonth="2" />
+        <dayRule fromYear="1973" basedOn="NewYear" relativeDays="1" />
+      </day>
+      <day type="BoxingDay">
+        <name lang="en">Boxing Day</name>
+        <dayRule fromYear="1974" basedOn="ChristmasDay" relativeDays="1" />
+      </day>
+      <day type="Spring">
+        <name lang="en">Spring Bank Holiday</name>
+        <dayRule fromYear="1978" monthOfYear="5" weekOfMonth="-1" dayOfWeek="1" />
+        <dayRule year="2002" monthOfYear="6" dayOfMonth="4" />
+      </day>
+    </days>
+  </locale-holiday-information>
+  
+  <!-- GB/NorthernIreland -->
+  <locale-holiday-information baseRegion="England">
+    <country>GB</country>
+    <region>NorthernIreland</region>
+    <days type="State">
+      <day type="StPatricksDay">
+        <name lang="en">St Patrick's Day</name>
+        <baseRule monthOfYear="3" dayOfMonth="17" />
+        <dayRule fromYear="1903" weekendAdjust="NextWeekday" />
+      </day>
+      <day type="BattleOfTheBoyne">
+        <name lang="en">Battle of the Boyne</name>
+        <baseRule monthOfYear="7" dayOfMonth="12" />
+        <dayRule fromYear="1926" weekendAdjust="NextWeekday" />
+      </day>
+    </days>
+  </locale-holiday-information>
+  
+</joda-holiday-information>

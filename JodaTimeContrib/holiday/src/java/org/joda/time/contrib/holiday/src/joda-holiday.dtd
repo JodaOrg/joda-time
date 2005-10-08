@@ -1,0 +1,42 @@
+<!ELEMENT joda-holiday-information (locale-holiday-information*)>
+<!ELEMENT locale-holiday-information (country,region?,week?,days*)>
+<!ATTLIST locale-holiday-information
+  visible (true|false) 'true'
+  baseRegion CDATA #IMPLIED>
+<!ELEMENT country (#PCDATA)>
+<!ELEMENT region (#PCDATA)>
+<!ELEMENT week (weekendStart,weekendEnd)>
+<!ELEMENT weekendStart (#PCDATA)>
+<!ELEMENT weekendEnd (#PCDATA)>
+<!ELEMENT days (name?,day*)>
+<!ATTLIST days type CDATA #REQUIRED>
+<!ELEMENT name (#PCDATA)>
+<!ATTLIST name lang CDATA #REQUIRED>
+<!ELEMENT day (name*,baseRule?,dayRule*)>
+<!ATTLIST day type CDATA #REQUIRED>
+<!ELEMENT baseRule EMPTY>
+<!ATTLIST baseRule
+  repeat CDATA 'P1Y'
+  fromYear CDATA #IMPLIED
+  toYear CDATA #IMPLIED
+  year CDATA #IMPLIED
+  basedOn CDATA #IMPLIED
+  relativeDays CDATA #IMPLIED
+  monthOfYear CDATA #IMPLIED
+  dayOfMonth CDATA #IMPLIED
+  weekOfMonth CDATA #IMPLIED
+  dayOfWeek CDATA #IMPLIED
+  weekendAdjust (NextWeekday|PreviousWeekday|NearestWeekday) #IMPLIED>
+<!ELEMENT dayRule EMPTY>
+<!ATTLIST dayRule
+  repeat CDATA 'P1Y'
+  fromYear CDATA #IMPLIED
+  toYear CDATA #IMPLIED
+  year CDATA #IMPLIED
+  basedOn CDATA #IMPLIED
+  relativeDays CDATA #IMPLIED
+  monthOfYear CDATA #IMPLIED
+  dayOfMonth CDATA #IMPLIED
+  weekOfMonth CDATA #IMPLIED
+  dayOfWeek CDATA #IMPLIED
+  weekendAdjust (NextWeekday|PreviousWeekday|NearestWeekday) #IMPLIED>

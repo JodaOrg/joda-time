@@ -10,3 +10,4 @@ build
 junit*.properties
 lib
 .dj*
+release

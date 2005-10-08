@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Holidays - Home</title>
+  <author>Al Major</author>
+ </properties>
+
+ <body>
+
+<section name="Joda Time - Holidays">
+<p>
+This is a contribution that provides a flexible framework for
+creating lists of holidays. The package itself is remarkably small, because
+it leverages the powerful field calculations provided by the core Joda
+time classes.
+</p>
+<p>
+Version 0.1 was released on ? -
+<a href="">Download now</a>
+</p>
+</section>
+
+
+<section name="Documentation">
+<p>
+There is currently very limited documentation. This will change over the next few weeks.
+</p>
+</section>
+
+
+<section name="Releases">
+<p>
+<a href="">Release 0.1</a>
+is the current latest release.
+This release is a prototype release and may have bugs. The API is likely to change.
+</p>
+<p>
+The current dependencies are Joda-Time 1.1 and JDK 5.
+</p>
+</section>
+
+
+<section name="Support">
+<p>
+The Joda-Time Holidays library was contributed to Joda-Time by Al Major.
+</p>
+<p>
+For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>
+(or email direct to the list via <a href="mailto:joda-interest@lists.sourceforge.net">joda-interest@lists.sourceforge.net</a>).
+</p>
+</section>
+</body>
+</document>

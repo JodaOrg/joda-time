@@ -21,34 +21,43 @@ import org.joda.time.DurationField;
 import org.joda.time.field.PreciseDurationDateTimeField;
 
 /**
- * 
+ * Month of year implementation where the month length is fixed.
  *
  * @author Brian S O'Neill
- * @since 1.0
+ * @author Stephen Colebourne
+ * @since 1.2, refactored from CopticMonthOfYearDateTimeField
  */
-final class CopticMonthOfYearDateTimeField extends PreciseDurationDateTimeField {
+final class BasicFixedMonthOfYearDateTimeField extends PreciseDurationDateTimeField {
 
+    /** Serialization version. */
     private static final long serialVersionUID = 7741038885247700323L;
 
+    /** The base chronology. */
     private final BaseGJChronology iChronology;
+
+    /** The fixed month length. */
+    private static final int MONTH_LENGTH = 30;
 
     /**
      * Restricted constructor.
+     *
+     * @param chronology  the base chronology
+     * @param months  the months duration field
      */
-    CopticMonthOfYearDateTimeField(BaseGJChronology chronology, DurationField months) {
+    BasicFixedMonthOfYearDateTimeField(BaseGJChronology chronology, DurationField months) {
         super(DateTimeFieldType.monthOfYear(), months);
         iChronology = chronology;
     }
 
     public int get(long instant) {
-        return (iChronology.getDayOfYear(instant) - 1) / 30 + 1;
+        return (iChronology.getDayOfYear(instant) - 1) / MONTH_LENGTH + 1;
     }
 
     public long set(long instant, int value) {
         instant = super.set(instant, value);
         if (value == 13) {
             int day = iChronology.getDayOfYear(instant);
-            if (day < 30) {
+            if (day < MONTH_LENGTH) {
                 // Move back a few days to the end of the 13th "month".
                 instant -= (long)DateTimeConstants.MILLIS_PER_DAY * day;
             }

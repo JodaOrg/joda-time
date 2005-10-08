@@ -27,41 +27,41 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.field.SkipDateTimeField;
 
 /**
- * Implements the Coptic calendar system, which defines every fourth year as
+ * Implements the Ethiopic calendar system, which defines every fourth year as
  * leap, much like the Julian calendar. The year is broken down into 12 months,
  * each 30 days in length. An extra period at the end of the year is either 5
  * or 6 days in length. In this implementation, it is considered a 13th month.
  * <p>
- * Year 1 in the Coptic calendar began on August 29, 284 CE (Julian), thus
- * Coptic years do not begin at the same time as Julian years. This chronology
- * is not proleptic, as it does not allow dates before the first Coptic year.
+ * Year 1 in the Ethiopic calendar began on August 29, 8 CE (Julian), thus
+ * Ethiopic years do not begin at the same time as Julian years. This chronology
+ * is not proleptic, as it does not allow dates before the first Ethiopic year.
  * <p>
  * This implementation defines a day as midnight to midnight exactly as per
  * the ISO chronology. Some references indicate that a coptic day starts at
  * sunset on the previous ISO day, but this has not been confirmed and is not
  * implemented.
  * <p>
- * CopticChronology is thread-safe and immutable.
+ * EthiopicChronology is thread-safe and immutable.
  *
- * @see <a href="http://en.wikipedia.org/wiki/Coptic_calendar">Wikipedia</a>
- * @see JulianChronology
+ * @see <a href="http://en.wikipedia.org/wiki/Ethiopian_calendar">Wikipedia</a>
  *
  * @author Brian S O'Neill
- * @since 1.0
+ * @author Stephen Colebourne
+ * @since 1.2
  */
-public final class CopticChronology extends CommonFixedMonthChronology {
+public final class EthiopicChronology extends CommonFixedMonthChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -5972804258688333942L;
 
     /**
-     * Constant value for 'Anno Martyrum' or 'Era of the Martyrs', equivalent
+     * Constant value for 'Ethiopean Era', equivalent
      * to the value returned for AD/CE.
      */
-    public static final int AM = DateTimeConstants.CE;
+    public static final int EE = DateTimeConstants.CE;
 
     /** A singleton era field. */
-    private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("AM");
+    private static final DateTimeField ERA_FIELD = new BasicSingleEraDateTimeField("EE");
 
     /** The lowest year that can be fully supported. */
     private static final int MIN_YEAR = -292269337;
@@ -77,8 +77,8 @@ public final class CopticChronology extends CommonFixedMonthChronology {
     /** Cache of zone to chronology arrays */
     private static final Map cCache = new HashMap();
 
-    /** Singleton instance of a UTC CopticChronology */
-    private static final CopticChronology INSTANCE_UTC;
+    /** Singleton instance of a UTC EthiopicChronology */
+    private static final EthiopicChronology INSTANCE_UTC;
     static {
         // init after static fields
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -86,50 +86,50 @@ public final class CopticChronology extends CommonFixedMonthChronology {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets an instance of the CopticChronology.
+     * Gets an instance of the EthiopicChronology.
      * The time zone of the returned instance is UTC.
      * 
      * @return a singleton UTC instance of the chronology
      */
-    public static CopticChronology getInstanceUTC() {
+    public static EthiopicChronology getInstanceUTC() {
         return INSTANCE_UTC;
     }
 
     /**
-     * Gets an instance of the CopticChronology in the default time zone.
+     * Gets an instance of the EthiopicChronology in the default time zone.
      * 
      * @return a chronology in the default time zone
      */
-    public static CopticChronology getInstance() {
+    public static EthiopicChronology getInstance() {
         return getInstance(DateTimeZone.getDefault(), 4);
     }
 
     /**
-     * Gets an instance of the CopticChronology in the given time zone.
+     * Gets an instance of the EthiopicChronology in the given time zone.
      * 
      * @param zone  the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
      */
-    public static CopticChronology getInstance(DateTimeZone zone) {
+    public static EthiopicChronology getInstance(DateTimeZone zone) {
         return getInstance(zone, 4);
     }
 
     /**
-     * Gets an instance of the CopticChronology in the given time zone.
+     * Gets an instance of the EthiopicChronology in the given time zone.
      * 
      * @param zone  the time zone to get the chronology in, null is default
      * @param minDaysInFirstWeek  minimum number of days in first week of the year; default is 4
      * @return a chronology in the specified time zone
      */
-    public static CopticChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
+    public static EthiopicChronology getInstance(DateTimeZone zone, int minDaysInFirstWeek) {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        CopticChronology chrono;
+        EthiopicChronology chrono;
         synchronized (cCache) {
-            CopticChronology[] chronos = (CopticChronology[]) cCache.get(zone);
+            EthiopicChronology[] chronos = (EthiopicChronology[]) cCache.get(zone);
             if (chronos == null) {
-                chronos = new CopticChronology[7];
+                chronos = new EthiopicChronology[7];
                 cCache.put(zone, chronos);
             }
             try {
@@ -141,15 +141,15 @@ public final class CopticChronology extends CommonFixedMonthChronology {
             if (chrono == null) {
                 if (zone == DateTimeZone.UTC) {
                     // First create without a lower limit.
-                    chrono = new CopticChronology(null, null, minDaysInFirstWeek);
-                    // Impose lower limit and make another CopticChronology.
+                    chrono = new EthiopicChronology(null, null, minDaysInFirstWeek);
+                    // Impose lower limit and make another EthiopicChronology.
                     DateTime lowerLimit = new DateTime(1, 1, 1, 0, 0, 0, 0, chrono);
-                    chrono = new CopticChronology
+                    chrono = new EthiopicChronology
                         (LimitChronology.getInstance(chrono, lowerLimit, null),
                          null, minDaysInFirstWeek);
                 } else {
                     chrono = getInstance(DateTimeZone.UTC, minDaysInFirstWeek);
-                    chrono = new CopticChronology
+                    chrono = new EthiopicChronology
                         (ZonedChronology.getInstance(chrono, zone), null, minDaysInFirstWeek);
                 }
                 chronos[minDaysInFirstWeek - 1] = chrono;
@@ -163,7 +163,7 @@ public final class CopticChronology extends CommonFixedMonthChronology {
     /**
      * Restricted constructor.
      */
-    CopticChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    EthiopicChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 
@@ -180,10 +180,9 @@ public final class CopticChronology extends CommonFixedMonthChronology {
      * Returns the ChronologyType constant for this Chronology.
      *
      * @return the chronology type
-     * @since 1.2
      */
     public ChronologyType getType() {
-        return ChronologyType.coptic();
+        return ChronologyType.ethiopic();
     }
 
     // Conversion
@@ -222,11 +221,11 @@ public final class CopticChronology extends CommonFixedMonthChronology {
             throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
         }
 
-        // Java epoch is 1970-01-01 Gregorian which is 1686-04-23 Coptic.
+        // Java epoch is 1970-01-01 Gregorian which is 1962-04-23 Ethiopic.
         // Calculate relative to the nearest leap year and account for the
         // difference later.
 
-        int relativeYear = year - 1687;
+        int relativeYear = year - 1963;
         int leapYears;
         if (relativeYear <= 0) {
             // Add 3 before shifting right since /4 and >>2 behave differently
@@ -234,7 +233,7 @@ public final class CopticChronology extends CommonFixedMonthChronology {
             leapYears = (relativeYear + 3) >> 2;
         } else {
             leapYears = relativeYear >> 2;
-            // For post 1687 an adjustment is needed as jan1st is before leap day
+            // For post 1963 an adjustment is needed as jan1st is before leap day
             if (!isLeapYear(year)) {
                 leapYears++;
             }
@@ -243,7 +242,7 @@ public final class CopticChronology extends CommonFixedMonthChronology {
         long millis = (relativeYear * 365L + leapYears)
             * (long)DateTimeConstants.MILLIS_PER_DAY;
 
-        // Adjust to account for difference between 1687-01-01 and 1686-04-23.
+        // Adjust to account for difference between 1963-01-01 and 1962-04-23.
 
         return millis + (365L - 112) * DateTimeConstants.MILLIS_PER_DAY;
     }
@@ -260,7 +259,7 @@ public final class CopticChronology extends CommonFixedMonthChronology {
 
     //-----------------------------------------------------------------------
     long getApproxMillisAtEpoch() {
-        return 1686L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY;
+        return 1962L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY;
     }
 
     //-----------------------------------------------------------------------
@@ -268,7 +267,7 @@ public final class CopticChronology extends CommonFixedMonthChronology {
         if (getBase() == null) {
             super.assemble(fields);
 
-            // Coptic, like Julian, has no year zero.
+            // Ethiopic, like Julian, has no year zero.
             fields.year = new SkipDateTimeField(this, fields.year);
             fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
             

@@ -35,7 +35,7 @@ import org.joda.time.DateTimeZone;
  */
 public class TestCopticChronology extends TestCase {
 
-    private static int SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
+    private static long SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -279,7 +279,7 @@ public class TestCopticChronology extends TestCase {
         DateTimeField year = COPTIC_UTC.year();
         DateTimeField yearOfEra = COPTIC_UTC.yearOfEra();
         DateTimeField era = COPTIC_UTC.era();
-        int expectedDOW = 5;
+        int expectedDOW = new DateTime(284, 8, 29, 0, 0, 0, 0, JULIAN_UTC).getDayOfWeek();
         int expectedDOY = 1;
         int expectedDay = 1;
         int expectedMonth = 1;
@@ -291,7 +291,6 @@ public class TestCopticChronology extends TestCase {
             int monthValue = monthOfYear.get(millis);
             int yearValue = year.get(millis);
             int yearOfEraValue = yearOfEra.get(millis);
-            int eraValue = era.get(millis);
             int monthLen = dayOfMonth.getMaximumValue(millis);
             if (monthValue < 1 || monthValue > 13) {
                 fail("Bad month: " + millis);

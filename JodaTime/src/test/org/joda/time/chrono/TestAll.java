@@ -29,7 +29,7 @@ import junit.textui.TestRunner;
  */
 public class TestAll extends TestCase {
 
-    public static boolean FAST = true;
+    public static boolean FAST = false;
 
     public TestAll(String testName) {
         super(testName);
@@ -40,6 +40,7 @@ public class TestAll extends TestCase {
         
         suite.addTest(TestBuddhistChronology.suite());
         suite.addTest(TestCopticChronology.suite());
+        suite.addTest(TestEthiopicChronology.suite());
         suite.addTest(TestGJChronology.suite());
         suite.addTest(TestGregorianChronology.suite());
         suite.addTest(TestJulianChronology.suite());

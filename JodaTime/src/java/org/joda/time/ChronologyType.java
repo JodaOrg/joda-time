@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.EthiopicChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
@@ -48,6 +49,7 @@ import org.joda.time.chrono.JulianChronology;
  * <li>Julian - The Julian calendar system used for all time (proleptic)
  * <li>Buddhist - The Buddhist calendar system which is an offset in years from GJ
  * <li>Coptic - The Coptic calendar system which defines 30 day months
+ * <li>Ethiopic - The Ethiopic calendar system which defines 30 day months
  * </ul>
  * Hopefully future releases will contain more chronologies.
  *
@@ -55,8 +57,9 @@ import org.joda.time.chrono.JulianChronology;
  * @see org.joda.time.chrono.GJChronology
  * @see org.joda.time.chrono.GregorianChronology
  * @see org.joda.time.chrono.JulianChronology
- * @see org.joda.time.chrono.CopticChronology
  * @see org.joda.time.chrono.BuddhistChronology
+ * @see org.joda.time.chrono.CopticChronology
+ * @see org.joda.time.chrono.EthiopicChronology
  *
  * @author Stephen Colebourne
  * @since 1.2
@@ -76,7 +79,8 @@ public abstract class ChronologyType implements Serializable {
         GREGORIAN = 3,
         JULIAN = 4,
         BUDDHIST = 5,
-        COPTIC = 6;
+        COPTIC = 6,
+        ETHIOPIC = 7;
 
     /** The iso chronology type. */
     private static final ChronologyType ISO_TYPE = new StandardChronologyType("ISO", ISO);
@@ -90,6 +94,8 @@ public abstract class ChronologyType implements Serializable {
     private static final ChronologyType BUDDHIST_TYPE = new StandardChronologyType("Buddhist", BUDDHIST);
     /** The iso chronology type. */
     private static final ChronologyType COPTIC_TYPE = new StandardChronologyType("Coptic", COPTIC);
+    /** The iso chronology type. */
+    private static final ChronologyType ETHIOPIC_TYPE = new StandardChronologyType("Ethiopic", ETHIOPIC);
 
     /** The id of the field. */
     private final String iID;
@@ -232,6 +238,23 @@ public abstract class ChronologyType implements Serializable {
         return COPTIC_TYPE;
     }
 
+    /**
+     * Get the Ethiopic chronology type.
+     * <p>
+     * {@link EthiopicChronology} defines fields sensibly for the Ethiopic calendar system.
+     * The Ethiopic calendar system defines every fourth year as leap.
+     * The year is broken down into 12 months, each 30 days in length.
+     * An extra period at the end of the year is either 5 or 6 days in length
+     * and is returned as a 13th month.
+     * Year 1 in the Coptic calendar began on August 29, 8 CE (Julian).
+     * The chronology cannot be used before the first Ethiopic year.
+     *
+     * @return the ChronologyType constant
+     */
+    public static ChronologyType ethiopic() {
+        return ETHIOPIC_TYPE;
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Get the id of the chronology.
@@ -307,6 +330,8 @@ public abstract class ChronologyType implements Serializable {
                     return BuddhistChronology.getInstance(zone);
                 case COPTIC:
                     return CopticChronology.getInstance(zone);
+                case ETHIOPIC:
+                    return EthiopicChronology.getInstance(zone);
                 default:
                     // Shouldn't happen.
                     throw new InternalError();

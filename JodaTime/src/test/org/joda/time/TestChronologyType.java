@@ -27,6 +27,7 @@ import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.EthiopicChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
@@ -70,13 +71,14 @@ public class TestChronologyType extends TestCase {
     //-----------------------------------------------------------------------
     public void test_getAvailableIDs() throws Exception {
         Set set = ChronologyType.getAvailableIDs();
-        assertEquals(6, set.size());
+        assertEquals(7, set.size());
         assertEquals(true, set.contains("ISO"));
         assertEquals(true, set.contains("GJ"));
         assertEquals(true, set.contains("Gregorian"));
         assertEquals(true, set.contains("Julian"));
         assertEquals(true, set.contains("Buddhist"));
         assertEquals(true, set.contains("Coptic"));
+        assertEquals(true, set.contains("Ethiopic"));
     }
 
     //-----------------------------------------------------------------------
@@ -138,6 +140,16 @@ public class TestChronologyType extends TestCase {
         assertEquals(CopticChronology.getInstance(PARIS), ChronologyType.coptic().getChronology(PARIS));
         assertEquals("Coptic", ChronologyType.coptic().toString());
         assertSerialization(ChronologyType.coptic());
+    }
+
+    public void test_ethiopic() throws Exception {
+        assertEquals(ChronologyType.ethiopic(), ChronologyType.ethiopic());
+        assertEquals("Ethiopic", ChronologyType.ethiopic().getID());
+        assertEquals(EthiopicChronology.getInstance(), ChronologyType.ethiopic().getChronology());
+        assertEquals(EthiopicChronology.getInstanceUTC(), ChronologyType.ethiopic().getChronologyUTC());
+        assertEquals(EthiopicChronology.getInstance(PARIS), ChronologyType.ethiopic().getChronology(PARIS));
+        assertEquals("Ethiopic", ChronologyType.ethiopic().toString());
+        assertSerialization(ChronologyType.ethiopic());
     }
 
     public void test_other() throws Exception {

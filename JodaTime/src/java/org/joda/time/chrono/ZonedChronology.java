@@ -380,6 +380,14 @@ public final class ZonedChronology extends AssembledChronology {
             return iField.getAsShortText(addOffset(instant), locale);
         }
 
+        public String getAsText(int fieldValue, Locale locale) {
+            return iField.getAsText(fieldValue, locale);
+        }
+
+        public String getAsShortText(int fieldValue, Locale locale) {
+            return iField.getAsShortText(fieldValue, locale);
+        }
+
         public long add(long instant, int value) {
             int offset = getOffsetToAdd(instant);
             instant = iField.add(instant + offset, value);

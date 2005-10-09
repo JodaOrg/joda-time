@@ -67,6 +67,8 @@ Bug fixes since 1.1
   Fixed regression in month of year calculation which affected getMaximumValue
   on dayOfMonth field.
 
+- ZonedChronology
+  Fixed getting text values for fields from getAs[Short]Text(int value, Locale locale).
 
 Enhancements since 1.1
 ----------------------

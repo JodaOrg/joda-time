@@ -119,8 +119,10 @@ public abstract class BaseGJChronology extends AssembledChronology {
         cHalfdayOfDayField = new HalfdayField();
     }
 
-    private transient YearInfo[] iYearInfoCache;
-    private transient int iYearInfoCacheMask;
+    private static final int CACHE_SIZE = 1;
+    private static final int CACHE_MASK = CACHE_SIZE - 1;
+
+    private final YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
 
     private final int iMinDaysInFirstWeek;
 
@@ -133,31 +135,6 @@ public abstract class BaseGJChronology extends AssembledChronology {
         }
 
         iMinDaysInFirstWeek = minDaysInFirstWeek;
-
-        Integer i;
-        try {
-            i = Integer.getInteger(getClass().getName().concat(".yearInfoCacheSize"));
-        } catch (SecurityException e) {
-            i = null;
-        }
-
-        int cacheSize;
-        if (i == null) {
-            cacheSize = 1024; // (1 << 10)
-        } else {
-            cacheSize = i.intValue();
-            // Ensure cache size is even power of 2.
-            cacheSize--;
-            int shift = 0;
-            while (cacheSize > 0) {
-                shift++;
-                cacheSize >>= 1;
-            }
-            cacheSize = 1 << shift;
-        }
-
-        iYearInfoCache = new YearInfo[cacheSize];
-        iYearInfoCacheMask = cacheSize - 1;
     }
 
     public DateTimeZone getZone() {
@@ -684,12 +661,10 @@ public abstract class BaseGJChronology extends AssembledChronology {
     //-----------------------------------------------------------------------
     // Although accessed by multiple threads, this method doesn't need to be synchronized.
     private YearInfo getYearInfo(int year) {
-        YearInfo[] cache = iYearInfoCache;
-        int index = year & iYearInfoCacheMask;
-        YearInfo info = cache[index];
+        YearInfo info = iYearInfoCache[year & CACHE_MASK];
         if (info == null || info.iYear != year) {
             info = new YearInfo(year, calculateFirstDayOfYearMillis(year));
-            cache[index] = info;
+            iYearInfoCache[year & CACHE_MASK] = info;
         }
         return info;
     }

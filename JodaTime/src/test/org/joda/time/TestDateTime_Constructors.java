@@ -83,12 +83,14 @@ public class TestDateTime_Constructors extends TestCase {
         zone = DateTimeZone.getDefault();
         locale = Locale.getDefault();
         DateTimeZone.setDefault(LONDON);
+        java.util.TimeZone.setDefault(LONDON.toTimeZone());
         Locale.setDefault(Locale.UK);
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        java.util.TimeZone.setDefault(zone.toTimeZone());
         Locale.setDefault(locale);
         zone = null;
     }

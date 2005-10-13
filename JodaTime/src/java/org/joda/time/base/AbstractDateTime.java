@@ -16,8 +16,10 @@
 package org.joda.time.base;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
@@ -240,6 +242,17 @@ public abstract class AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Get the date time as a <code>java.util.Date</code>.
+     * 
+     * @return a Date initialised with this datetime
+     */
+    public Date toDate() {
+        long millis = getMillis();
+        long millisLocal = millis - TimeZone.getDefault().getOffset(millis);
+        return new Date(millisLocal + getZone().getOffsetFromLocal(millisLocal));
+    }
+
+    /**
      * Get the date time as a <code>java.util.Calendar</code>.
      * The locale is passed in, enabling Calendar to select the correct
      * localized subclass.
@@ -253,7 +266,7 @@ public abstract class AbstractDateTime
         }
         DateTimeZone zone = getZone();
         Calendar cal = Calendar.getInstance(zone.toTimeZone(), locale);
-        cal.setTime(toDate());
+        cal.setTime(convertToDate(cal));
         return cal;
     }
 
@@ -265,8 +278,15 @@ public abstract class AbstractDateTime
     public GregorianCalendar toGregorianCalendar() {
         DateTimeZone zone = getZone();
         GregorianCalendar cal = new GregorianCalendar(zone.toTimeZone());
-        cal.setTime(toDate());
+        cal.setTime(convertToDate(cal));
         return cal;
+    }
+
+    private Date convertToDate(Calendar cal) {
+        long millis = getMillis();
+        long millisLocal = millis - cal.getTimeZone().getOffset(millis);
+        millis = millisLocal + getZone().getOffsetFromLocal(millisLocal);
+        return new Date(millis);
     }
 
     //-----------------------------------------------------------------------

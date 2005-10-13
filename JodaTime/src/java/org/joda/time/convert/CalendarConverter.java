@@ -118,7 +118,11 @@ final class CalendarConverter extends AbstractConverter
      * @throws ClassCastException if the object is an invalid type
      */
     public long getInstantMillis(Object object, Chronology chrono) {
-        return ((Calendar) object).getTime().getTime();
+        Calendar calendar = (Calendar) object;
+        long millisLocal = calendar.getTime().getTime() +
+            calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET);
+        DateTimeZone tz = DateTimeZone.forTimeZone(calendar.getTimeZone());
+        return millisLocal - tz.getOffsetFromLocal(millisLocal);
     }
 
     //-----------------------------------------------------------------------

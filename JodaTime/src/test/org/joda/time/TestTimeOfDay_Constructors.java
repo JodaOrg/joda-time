@@ -73,11 +73,13 @@ public class TestTimeOfDay_Constructors extends TestCase {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
+        java.util.TimeZone.setDefault(LONDON.toTimeZone());
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        java.util.TimeZone.setDefault(zone.toTimeZone());
         zone = null;
     }
 

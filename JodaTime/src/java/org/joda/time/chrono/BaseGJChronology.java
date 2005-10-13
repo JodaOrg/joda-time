@@ -122,7 +122,7 @@ public abstract class BaseGJChronology extends AssembledChronology {
     private static final int CACHE_SIZE = 1;
     private static final int CACHE_MASK = CACHE_SIZE - 1;
 
-    private final YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
+    private transient final YearInfo[] iYearInfoCache = new YearInfo[CACHE_SIZE];
 
     private final int iMinDaysInFirstWeek;
 

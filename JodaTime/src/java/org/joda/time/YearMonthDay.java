@@ -940,6 +940,37 @@ public final class YearMonthDay
         public YearMonthDay setCopy(String text) {
             return setCopy(text, null);
         }
+
+        //-----------------------------------------------------------------------
+        /**
+         * Returns a new YearMonthDay with this field set to the maximum value
+         * for this field.
+         * <p>
+         * This operation is useful for obtaining a DateTime on the last day
+         * of the month, as month lengths vary.
+         * <pre>
+         * YearMonthDay lastDayOfMonth = dt.dayOfMonth().withMaximumValue();
+         * </pre>
+         * <p>
+         * The YearMonthDay attached to this property is unchanged by this call.
+         *
+         * @return a copy of the YearMonthDay with this field set to its maximum
+         */
+        public YearMonthDay withMaximumValue() {
+            return setCopy(getMaximumValue());
+        }
+
+        /**
+         * Returns a new YearMonthDay with this field set to the minimum value
+         * for this field.
+         * <p>
+         * The YearMonthDay attached to this property is unchanged by this call.
+         *
+         * @return a copy of the YearMonthDay with this field set to its minimum
+         */
+        public YearMonthDay withMinimumValue() {
+            return setCopy(getMinimumValue());
+        }
     }
 
 }

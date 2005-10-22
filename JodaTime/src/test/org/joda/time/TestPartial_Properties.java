@@ -198,6 +198,20 @@ public class TestPartial_Properties extends TestCase {
         check(copy, 12, 20, 30, 40);
     }
 
+    public void testPropertyWithMaximumValueHour() {
+        Partial test = new Partial(TYPES, VALUES);
+        Partial copy = test.property(DateTimeFieldType.hourOfDay()).withMaximumValue();
+        check(test, 10, 20, 30, 40);
+        check(copy, 23, 20, 30, 40);
+    }
+
+    public void testPropertyWithMinimumValueHour() {
+        Partial test = new Partial(TYPES, VALUES);
+        Partial copy = test.property(DateTimeFieldType.hourOfDay()).withMinimumValue();
+        check(test, 10, 20, 30, 40);
+        check(copy, 0, 20, 30, 40);
+    }
+
     public void testPropertyCompareToHour() {
         Partial test1 = new Partial(TYPES, VALUES1);
         Partial test2 = new Partial(TYPES, VALUES2);

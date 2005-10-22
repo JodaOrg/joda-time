@@ -631,6 +631,20 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("2004-06-12T00:00:00.000+01:00", copy.toString());
     }
 
+    public void testPropertyWithMaximumValueDayOfMonth() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfMonth().withMaximumValue();
+        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyWithMinimumValueDayOfMonth() {
+        DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime copy = test.dayOfMonth().withMinimumValue();
+        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
+    }
+
     public void testPropertyCompareToDayOfMonth() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test2 = new DateTime(TEST_TIME2);

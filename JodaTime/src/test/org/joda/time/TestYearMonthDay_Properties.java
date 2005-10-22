@@ -444,6 +444,20 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1972, 6, 12);
     }
 
+    public void testPropertyWithMaximumValueDayOfMonth() {
+        YearMonthDay test = new YearMonthDay(1972, 6, 9);
+        YearMonthDay copy = test.dayOfMonth().withMaximumValue();
+        check(test, 1972, 6, 9);
+        check(copy, 1972, 6, 30);
+    }
+
+    public void testPropertyWithMinimumValueDayOfMonth() {
+        YearMonthDay test = new YearMonthDay(1972, 6, 9);
+        YearMonthDay copy = test.dayOfMonth().withMinimumValue();
+        check(test, 1972, 6, 9);
+        check(copy, 1972, 6, 1);
+    }
+
     public void testPropertyCompareToDay() {
         YearMonthDay test1 = new YearMonthDay(TEST_TIME1);
         YearMonthDay test2 = new YearMonthDay(TEST_TIME2);

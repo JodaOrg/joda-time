@@ -384,6 +384,20 @@ public class TestDateMidnight_Properties extends TestCase {
         assertEquals(null, test.dayOfMonth().getLeapDurationField());
     }
 
+    public void testPropertyWithMaximumValueDayOfMonth() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.dayOfMonth().withMaximumValue();
+        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyWithMinimumValueDayOfMonth() {
+        DateMidnight test = new DateMidnight(2004, 6, 9);
+        DateMidnight copy = test.dayOfMonth().withMinimumValue();
+        assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
+        assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
+    }
+
     //-----------------------------------------------------------------------
     public void testPropertyGetDayOfYear() {
         // 31+29+31+30+31+9 = 161

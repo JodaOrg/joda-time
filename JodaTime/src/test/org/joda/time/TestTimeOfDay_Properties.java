@@ -192,6 +192,20 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 12, 20, 30, 40);
     }
 
+    public void testPropertyWithMaximumValueHour() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.hourOfDay().withMaximumValue();
+        check(test, 10, 20, 30, 40);
+        check(copy, 23, 20, 30, 40);
+    }
+
+    public void testPropertyWithMinimumValueHour() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        TimeOfDay copy = test.hourOfDay().withMinimumValue();
+        check(test, 10, 20, 30, 40);
+        check(copy, 0, 20, 30, 40);
+    }
+
     public void testPropertyCompareToHour() {
         TimeOfDay test1 = new TimeOfDay(TEST_TIME1);
         TimeOfDay test2 = new TimeOfDay(TEST_TIME2);

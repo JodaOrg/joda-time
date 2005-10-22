@@ -1503,6 +1503,37 @@ public final class DateTime
         
         //-----------------------------------------------------------------------
         /**
+         * Returns a new DateTime with this field set to the maximum value
+         * for this field.
+         * <p>
+         * This operation is useful for obtaining a DateTime on the last day
+         * of the month, as month lengths vary.
+         * <pre>
+         * DateTime lastDayOfMonth = dt.dayOfMonth().withMaximumValue();
+         * </pre>
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         *
+         * @return a copy of the DateTime with this field set to its maximum
+         */
+        public DateTime withMaximumValue() {
+            return setCopy(getMaximumValue());
+        }
+        
+        /**
+         * Returns a new DateTime with this field set to the minimum value
+         * for this field.
+         * <p>
+         * The DateTime attached to this property is unchanged by this call.
+         *
+         * @return a copy of the DateTime with this field set to its minimum
+         */
+        public DateTime withMinimumValue() {
+            return setCopy(getMinimumValue());
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
          * Rounds to the lowest whole unit of this field on a copy of this DateTime.
          *
          * @return a copy of the DateTime with the field value changed

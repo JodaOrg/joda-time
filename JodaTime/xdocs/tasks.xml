@@ -17,7 +17,6 @@ The following tasks are on the possible TODO list - contact the mailing lists fo
 
 <ul>
 <li>Add more chronologies - Hebrew, Islamic, Persian, Hindu, Thai, Chinese, Japanese,...</li>
-<li>Consider methods to easily get to the last day in a month</li>
 <li>Consider formatting ordinal numbers, like 1st, 2nd, 3rd</li>
 <li>Consider allowing the text output to be altered</li>
 <li>Formatter switching by locale</li>

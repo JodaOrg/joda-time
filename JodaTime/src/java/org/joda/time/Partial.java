@@ -940,6 +940,31 @@ public final class Partial
         public Partial setCopy(String text) {
             return setCopy(text, null);
         }
+
+        //-----------------------------------------------------------------------
+        /**
+         * Returns a new Partial with this field set to the maximum value
+         * for this field.
+         * <p>
+         * The Partial attached to this property is unchanged by this call.
+         *
+         * @return a copy of the Partial with this field set to its maximum
+         */
+        public Partial withMaximumValue() {
+            return setCopy(getMaximumValue());
+        }
+
+        /**
+         * Returns a new Partial with this field set to the minimum value
+         * for this field.
+         * <p>
+         * The Partial attached to this property is unchanged by this call.
+         *
+         * @return a copy of the Partial with this field set to its minimum
+         */
+        public Partial withMinimumValue() {
+            return setCopy(getMinimumValue());
+        }
     }
 
 }

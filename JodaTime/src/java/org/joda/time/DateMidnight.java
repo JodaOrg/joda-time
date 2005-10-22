@@ -1124,6 +1124,37 @@ public final class DateMidnight
 
         //-----------------------------------------------------------------------
         /**
+         * Returns a new DateMidnight with this field set to the maximum value
+         * for this field.
+         * <p>
+         * This operation is useful for obtaining a DateTime on the last day
+         * of the month, as month lengths vary.
+         * <pre>
+         * DateMidnight lastDayOfMonth = dt.dayOfMonth().withMaximumValue();
+         * </pre>
+         * <p>
+         * The DateMidnight attached to this property is unchanged by this call.
+         *
+         * @return a copy of the DateMidnight with this field set to its maximum
+         */
+        public DateMidnight withMaximumValue() {
+            return setCopy(getMaximumValue());
+        }
+        
+        /**
+         * Returns a new DateMidnight with this field set to the minimum value
+         * for this field.
+         * <p>
+         * The DateMidnight attached to this property is unchanged by this call.
+         *
+         * @return a copy of the DateMidnight with this field set to its minimum
+         */
+        public DateMidnight withMinimumValue() {
+            return setCopy(getMinimumValue());
+        }
+        
+        //-----------------------------------------------------------------------
+        /**
          * Rounds to the lowest whole unit of this field on a copy of this DateMidnight.
          *
          * @return a copy of the DateMidnight with the field value changed

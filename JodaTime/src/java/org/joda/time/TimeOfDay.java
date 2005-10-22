@@ -1033,6 +1033,31 @@ public final class TimeOfDay
         public TimeOfDay setCopy(String text) {
             return setCopy(text, null);
         }
+
+        //-----------------------------------------------------------------------
+        /**
+         * Returns a new TimeOfDay with this field set to the maximum value
+         * for this field.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         *
+         * @return a copy of the TimeOfDay with this field set to its maximum
+         */
+        public TimeOfDay withMaximumValue() {
+            return setCopy(getMaximumValue());
+        }
+
+        /**
+         * Returns a new TimeOfDay with this field set to the minimum value
+         * for this field.
+         * <p>
+         * The TimeOfDay attached to this property is unchanged by this call.
+         *
+         * @return a copy of the TimeOfDay with this field set to its minimum
+         */
+        public TimeOfDay withMinimumValue() {
+            return setCopy(getMinimumValue());
+        }
     }
 
 }

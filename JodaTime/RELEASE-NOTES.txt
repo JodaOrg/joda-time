@@ -92,6 +92,12 @@ Enhancements since 1.1
 - MutableDateTime.setChronologyType
   Gets and sets the chronology type
 
+- DateTime.Property.withMaximumValue() (also DateMidnight/YearMonthDay etc)
+- DateTime.Property.withMinimumValue()
+  Returns a copy of the base datetime with the specified field set to
+  the maximum or minimum value. This is useful to get the last day of the month.
+  - DateTime lastDayOfMonth = dt.dayOfMonth().withMaximumValue();
+
 - DateTime.Property.toInterval() (also DateMidnight/MutableDateTime)
   New method to convert return an Interval object over the span of the property
   Thus dt.monthOfYear().toInterval() returns an interval from the start to

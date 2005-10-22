@@ -339,9 +339,8 @@ public final class DateTime
     /**
      * Gets a copy of this datetime with different millis.
      * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the millis will change, the chronology and time zone are kept.
      * The returned object will be either be a new instance or <code>this</code>.
+     * Only the millis will change, the chronology and time zone are kept.
      *
      * @param newMillis  the new millis, from 1970-01-01T00:00:00Z
      * @return a copy of this datetime with different millis
@@ -353,9 +352,8 @@ public final class DateTime
     /**
      * Gets a copy of this datetime with a different chronology.
      * <p>
-     * The returned object will be a new instance of the same implementation type.
-     * Only the chronology will change, the millis are kept.
      * The returned object will be either be a new instance or <code>this</code>.
+     * Only the chronology will change, the millis are kept.
      *
      * @param newChronology  the new chronology, null means ISO default
      * @return a copy of this datetime with a different chronology
@@ -363,6 +361,21 @@ public final class DateTime
     public DateTime withChronology(Chronology newChronology) {
         newChronology = DateTimeUtils.getChronology(newChronology);
         return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
+    }
+
+    /**
+     * Gets a copy of this datetime with a different chronology.
+     * <p>
+     * The returned object will be either be a new instance or <code>this</code>.
+     * Only the chronology will change, the millis and time zone are kept.
+     *
+     * @param newChronologyType  the new chronology type, null means ISO
+     * @return a copy of this datetime with a different chronology
+     */
+    public DateTime withChronologyType(ChronologyType newChronologyType) {
+        newChronologyType = DateTimeUtils.getChronologyType(newChronologyType);
+        return (newChronologyType == getChronologyType() ? this :
+            new DateTime(getMillis(), newChronologyType.getChronology(getZone())));
     }
 
     //-----------------------------------------------------------------------

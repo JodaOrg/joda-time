@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
@@ -52,6 +53,16 @@ public abstract class AbstractDateTime
      */
     protected AbstractDateTime() {
         super();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the type of the chronology.
+     *
+     * @return the type of the chronology
+     */
+    public ChronologyType getChronologyType() {
+        return getChronology().getType();
     }
 
     //-----------------------------------------------------------------------

@@ -490,6 +490,21 @@ public class MutableDateTime
         super.setChronology(chronology);
     }
 
+    /**
+     * Set the chronology of the datetime.
+     * <p>
+     * This method does not affect the millis or the zone.
+     * The chronology is only changed if the type is different.
+     *
+     * @param type  the type to use, null means ISO
+     */
+    public void setChronologyType(ChronologyType type) {
+        type = DateTimeUtils.getChronologyType(type);
+        if (type != getChronologyType()) {
+            setChronology(type.getChronology(getZone()));
+        }
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Sets the time zone of the datetime, changing the chronology and field values.

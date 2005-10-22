@@ -129,6 +129,21 @@ public class TestMutableDateTime_Sets extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testSetChronologyType_ChronologyType1() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, PARIS);
+        test.setChronologyType(ChronologyType.gregorian());
+        assertEquals(TEST_TIME1, test.getMillis());
+        assertEquals(GregorianChronology.getInstance(PARIS), test.getChronology());
+    }        
+
+    public void testSetChronologyType_ChronologyType2() {
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, PARIS);
+        test.setChronologyType(null);
+        assertEquals(TEST_TIME1, test.getMillis());
+        assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
+    }
+
+    //-----------------------------------------------------------------------
     public void testSetZone_DateTimeZone1() {
         MutableDateTime test = new MutableDateTime(TEST_TIME1);
         test.setZone(PARIS);

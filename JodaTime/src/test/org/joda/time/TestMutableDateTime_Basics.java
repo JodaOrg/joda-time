@@ -182,6 +182,7 @@ public class TestMutableDateTime_Basics extends TestCase {
         MutableDateTime test = new MutableDateTime();
         
         assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(ChronologyType.iso(), test.getChronologyType());
         assertEquals(LONDON, test.getZone());
         assertEquals(TEST_TIME_NOW, test.getMillis());
         

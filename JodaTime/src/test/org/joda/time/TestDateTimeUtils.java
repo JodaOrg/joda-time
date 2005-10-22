@@ -352,6 +352,12 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetChronologyType_ChronologyType() {
+        assertEquals(ChronologyType.buddhist(), DateTimeUtils.getChronologyType(ChronologyType.buddhist()));
+        assertEquals(ChronologyType.iso(), DateTimeUtils.getChronologyType(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testGetZone_Zone() {
         assertEquals(PARIS, DateTimeUtils.getZone(PARIS));
         assertEquals(DateTimeZone.getDefault(), DateTimeUtils.getZone(null));

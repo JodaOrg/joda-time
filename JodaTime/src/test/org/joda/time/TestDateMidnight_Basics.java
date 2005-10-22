@@ -65,8 +65,8 @@ public class TestDateMidnight_Basics extends TestCase {
             (y2002days + 31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
     private long TEST_TIME_NOW_LONDON =
             TEST_TIME_NOW_UTC - DateTimeConstants.MILLIS_PER_HOUR;
-    private long TEST_TIME_NOW_PARIS =
-            TEST_TIME_NOW_UTC - 2*DateTimeConstants.MILLIS_PER_HOUR;
+//    private long TEST_TIME_NOW_PARIS =
+//            TEST_TIME_NOW_UTC - 2*DateTimeConstants.MILLIS_PER_HOUR;
             
     // 2002-04-05
     private long TEST_TIME1_UTC =
@@ -200,6 +200,7 @@ public class TestDateMidnight_Basics extends TestCase {
         DateMidnight test = new DateMidnight();
         
         assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(ChronologyType.iso(), test.getChronologyType());
         assertEquals(LONDON, test.getZone());
         assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
         
@@ -650,6 +651,20 @@ public class TestDateMidnight_Basics extends TestCase {
         
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.withChronology(ISOChronology.getInstance());
+        assertSame(test, result);
+    }
+
+    public void testWithChronologyType_ChronologyType() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+        DateMidnight result = test.withChronologyType(ChronologyType.gregorian());
+        assertEquals(GregorianChronology.getInstance(LONDON), result.getChronology());
+        
+        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
+        result = test.withChronologyType(null);
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
+        
+        test = new DateMidnight(TEST_TIME1_UTC);
+        result = test.withChronologyType(ChronologyType.iso());
         assertSame(test, result);
     }
 

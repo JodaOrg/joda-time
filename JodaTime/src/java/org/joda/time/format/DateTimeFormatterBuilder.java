@@ -2229,13 +2229,13 @@ public class DateTimeFormatterBuilder {
         public void printTo(
                 StringBuffer buf, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) {
-            buf.append(print(instant, displayZone, locale));
+            buf.append(print(instant - displayOffset, displayZone, locale));
         }
 
         public void printTo(
                 Writer out, long instant, Chronology chrono,
                 int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
-            out.write(print(instant, displayZone, locale));
+            out.write(print(instant - displayOffset, displayZone, locale));
         }
 
         private String print(long instant, DateTimeZone displayZone, Locale locale) {

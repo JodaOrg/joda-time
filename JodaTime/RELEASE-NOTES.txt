@@ -74,6 +74,9 @@ Bug fixes since 1.1
   Fixed conversions to and from java.util.Date and java.util.Calendar where
   time zone rules differ between JDK and Joda-Time.
 
+- DateTimeFormatter
+  Fixed printing of time zone name near DST transition.
+
 Enhancements since 1.1
 ----------------------
 - ChronologyType

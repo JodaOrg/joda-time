@@ -660,4 +660,36 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+    // Ensure time zone name switches properly at the zone DST transition.
+    public void testZoneNameNearTransition() {
+        DateTime inDST_1  = new DateTime(2005, 10, 30, 1, 0, 0, 0, NEWYORK);
+        DateTime inDST_2  = new DateTime(2005, 10, 30, 1, 59, 59, 999, NEWYORK);
+        DateTime onDST    = new DateTime(2005, 10, 30, 2, 0, 0, 0, NEWYORK);
+        DateTime outDST   = new DateTime(2005, 10, 30, 2, 0, 0, 1, NEWYORK);
+        DateTime outDST_2 = new DateTime(2005, 10, 30, 2, 0, 1, 0, NEWYORK);
+
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyy-MM-dd HH:mm:ss.S zzzz");
+        assertEquals("2005-10-30 01:00:00.0 Eastern Daylight Time", fmt.print(inDST_1));
+        assertEquals("2005-10-30 01:59:59.9 Eastern Daylight Time", fmt.print(inDST_2));
+        assertEquals("2005-10-30 02:00:00.0 Eastern Standard Time", fmt.print(onDST));
+        assertEquals("2005-10-30 02:00:00.0 Eastern Standard Time", fmt.print(outDST));
+        assertEquals("2005-10-30 02:00:01.0 Eastern Standard Time", fmt.print(outDST_2));
+    }
+
+    // Ensure time zone name switches properly at the zone DST transition.
+    public void testZoneShortNameNearTransition() {
+        DateTime inDST_1  = new DateTime(2005, 10, 30, 1, 0, 0, 0, NEWYORK);
+        DateTime inDST_2  = new DateTime(2005, 10, 30, 1, 59, 59, 999, NEWYORK);
+        DateTime onDST    = new DateTime(2005, 10, 30, 2, 0, 0, 0, NEWYORK);
+        DateTime outDST   = new DateTime(2005, 10, 30, 2, 0, 0, 1, NEWYORK);
+        DateTime outDST_2 = new DateTime(2005, 10, 30, 2, 0, 1, 0, NEWYORK);
+
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("yyy-MM-dd HH:mm:ss.S z");
+        assertEquals("2005-10-30 01:00:00.0 EDT", fmt.print(inDST_1));
+        assertEquals("2005-10-30 01:59:59.9 EDT", fmt.print(inDST_2));
+        assertEquals("2005-10-30 02:00:00.0 EST", fmt.print(onDST));
+        assertEquals("2005-10-30 02:00:00.0 EST", fmt.print(outDST));
+        assertEquals("2005-10-30 02:00:01.0 EST", fmt.print(outDST_2));
+    }
+
 }

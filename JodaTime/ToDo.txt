@@ -47,10 +47,6 @@ Ideas longer term
 - Factories for DateTime classes?
     Perhaps, but the constructors cover this now.
 
-- ChronologyType:
-    An enumerated type for chronologies to replace the static methods on Chronology
-    This will also help with serialization
-
 - Chronology:
     Add daysFrom(year)
     This would be a DateTimeField that, given a base year, returns the number of

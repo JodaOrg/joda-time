@@ -32,7 +32,7 @@ Warnings since 1.1
 - ChronologyType
   If you have created your own subclass of Chronology, you should create
   a ChronologyType subclass to define a type for your chronology, and
-  override the Chronology.getType() to return it.
+  override Chronology.getType() to return it.
 
 
 Deprecations since 1.1
@@ -77,11 +77,20 @@ Bug fixes since 1.1
 - DateTimeFormatter
   Fixed printing of time zone name near DST transition.
 
+
 Enhancements since 1.1
 ----------------------
+- EthiopicChronology
+  New Chronology which implements similar rules to Coptic
+
 - ChronologyType
   New type that acts as a factory for creating Chronology instances
   Chronology.getType() returns the type
+
+- DateTime/DateMidnight/MutableDateTime.getChronologyType
+- DateTime/DateMidnight.withChronologyType
+- MutableDateTime.setChronologyType
+  Gets and sets the chronology type
 
 - DateTime.Property.toInterval() (also DateMidnight/MutableDateTime)
   New method to convert return an Interval object over the span of the property

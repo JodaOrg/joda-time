@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.base.AbstractInstant;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
 
@@ -86,7 +87,7 @@ public final class Instant
     public Instant(Object instant) {
         super();
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        iMillis = converter.getInstantMillis(instant, ChronologyType.iso().getChronologyUTC());
+        iMillis = converter.getInstantMillis(instant, ISOChronology.getInstanceUTC());
     }
 
     //-----------------------------------------------------------------------
@@ -217,7 +218,7 @@ public final class Instant
      * @return ISO in the UTC zone
      */
     public Chronology getChronology() {
-        return ChronologyType.iso().getChronologyUTC();
+        return ISOChronology.getInstanceUTC();
     }
 
 }

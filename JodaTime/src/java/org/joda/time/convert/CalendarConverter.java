@@ -19,11 +19,11 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import org.joda.time.Chronology;
-import org.joda.time.ChronologyType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 
 /**
@@ -104,7 +104,7 @@ final class CalendarConverter extends AbstractConverter
                 return GJChronology.getInstance(zone, cutover, 4);
             }
         } else {
-            return ChronologyType.iso().getChronology(zone);
+            return ISOChronology.getInstance(zone);
         }
     }
 

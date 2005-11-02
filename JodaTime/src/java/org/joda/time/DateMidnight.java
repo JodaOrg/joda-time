@@ -318,33 +318,6 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this instant with a different chronology, potentially
-     * changing the day in unexpected ways.
-     * <p>
-     * This method creates a new DateMidnight using the midnight millisecond value
-     * and the new chronology. If the same or similar chronology is specified, but
-     * with a different time zone, the day may change. This occurs because the new
-     * DateMidnight rounds down the millisecond value to get to midnight, and the
-     * time zone change may result in a rounding down to a different day.
-     * <p>
-     * For example, changing time zone from London (+00:00) to Paris (+01:00) will
-     * retain the same day, but changing from Paris to London will change the day.
-     * (When its midnight in London its the same day in Paris, but when its midnight
-     * in Paris its still the previous day in London)
-     * <p>
-     * To avoid these unusual effects, use {@link #withZoneRetainFields(DateTimeZone)}
-     * to change time zones.
-     *
-     * @param newChronologyType  the new chronology type, null means ISO
-     * @return a copy of this datetime with a different chronology
-     */
-    public DateMidnight withChronologyType(ChronologyType newChronologyType) {
-        newChronologyType = DateTimeUtils.getChronologyType(newChronologyType);
-        return (newChronologyType == getChronologyType() ? this :
-            new DateMidnight(getMillis(), newChronologyType.getChronology(getZone())));
-    }
-
-    /**
      * Gets a copy of this instant with a different time zone, preserving the day
      * The returned object will have a local time of midnight in the new zone on
      * the same day as the original instant.

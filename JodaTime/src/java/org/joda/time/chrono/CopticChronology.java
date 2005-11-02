@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.joda.time.Chronology;
-import org.joda.time.ChronologyType;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
@@ -173,17 +172,6 @@ public final class CopticChronology extends CommonFixedMonthChronology {
     private Object readResolve() {
         Chronology base = getBase();
         return base == null ? getInstanceUTC() : getInstance(base.getZone());
-    }
-
-    //-----------------------------------------------------------------------
-    /**
-     * Returns the ChronologyType constant for this Chronology.
-     *
-     * @return the chronology type
-     * @since 1.2
-     */
-    public ChronologyType getType() {
-        return ChronologyType.coptic();
     }
 
     // Conversion

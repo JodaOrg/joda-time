@@ -28,12 +28,11 @@ import org.joda.time.chrono.JulianChronology;
  * <p>
  * Various chronologies are supported by subclasses including ISO
  * and GregorianJulian. To construct a Chronology you should use the
- * factory methods on {@link ChronologyType}. If you require full
- * control of the factory, then you should use the method on each subclass.
+ * factory methods on the chronology subclass in the chrono package.
  * <p>
  * For example, to obtain the current time in the coptic calendar system:
  * <pre>
- * DateTime dt = new DateTime(ChronologyType.coptic().getChronology());
+ * DateTime dt = new DateTime(CopticChronology.getInstance());
  * </pre>
  * <p>
  * The provided chronology implementations are:
@@ -44,6 +43,7 @@ import org.joda.time.chrono.JulianChronology;
  * <li>Julian - The Julian calendar system used for all time (proleptic)
  * <li>Buddhist - The Buddhist calendar system which is an offset in years from GJ
  * <li>Coptic - The Coptic calendar system which defines 30 day months
+ * <li>Ethiopic - The Ethiopic calendar system which defines 30 day months
  * </ul>
  * Hopefully future releases will contain more chronologies.
  * <p>
@@ -60,6 +60,7 @@ import org.joda.time.chrono.JulianChronology;
  * @see org.joda.time.chrono.JulianChronology
  * @see org.joda.time.chrono.CopticChronology
  * @see org.joda.time.chrono.BuddhistChronology
+ * @see org.joda.time.chrono.EthiopicChronology
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
@@ -76,7 +77,7 @@ public abstract class Chronology {
      * as it applies the modern Gregorian calendar rules before that date.
      *
      * @return the ISO chronology
-     * @deprecated Use ChronologyType.iso().getChronology()
+     * @deprecated Use ISOChronology.getInstance()
      */
     public static Chronology getISO() {
         return ISOChronology.getInstance();
@@ -91,7 +92,7 @@ public abstract class Chronology {
      * as it applies the modern Gregorian calendar rules before that date.
      *
      * @return the ISO chronology
-     * @deprecated Use ChronologyType.iso().getChronologyUTC()
+     * @deprecated Use ISOChronology.getInstanceUTC()
      */
     public static Chronology getISOUTC() {
         return ISOChronology.getInstanceUTC();
@@ -107,7 +108,7 @@ public abstract class Chronology {
      *
      * @param zone  the zone to use, null means default zone
      * @return the ISO chronology
-     * @deprecated Use ChronologyType.iso().getChronology(zone)
+     * @deprecated Use ISOChronology.getInstance(zone)
      */
     public static Chronology getISO(DateTimeZone zone) {
         return ISOChronology.getInstance(zone);
@@ -133,7 +134,7 @@ public abstract class Chronology {
      * we recommend using ISOChronology, which is the default.
      *
      * @return the GJ chronology
-     * @deprecated Use ChronologyType.gj().getChronology()
+     * @deprecated Use GJChronology.getInstance()
      */
     public static Chronology getGJ() {
         return GJChronology.getInstance();
@@ -158,7 +159,7 @@ public abstract class Chronology {
      * we recommend using ISOChronology, which is the default.
      *
      * @return the GJ chronology
-     * @deprecated Use ChronologyType.gj().getChronologyUTC()
+     * @deprecated Use GJChronology.getInstanceUTC()
      */
     public static Chronology getGJUTC() {
         return GJChronology.getInstanceUTC();
@@ -184,7 +185,7 @@ public abstract class Chronology {
      *
      * @param zone  the zone to use, null means default zone
      * @return the GJ chronology
-     * @deprecated Use ChronologyType.gj().getChronology(zone)
+     * @deprecated Use GJChronology.getInstance(zone)
      */
     public static Chronology getGJ(DateTimeZone zone) {
         return GJChronology.getInstance(zone);
@@ -206,7 +207,7 @@ public abstract class Chronology {
      * thus we recommend using ISOChronology instead, which is the default.
      *
      * @return the Gregorian chronology
-     * @deprecated Use ChronologyType.gregorian().getChronology()
+     * @deprecated Use GregorianChronology.getInstance()
      */
     public static Chronology getGregorian() {
         return GregorianChronology.getInstance();
@@ -227,7 +228,7 @@ public abstract class Chronology {
      * thus we recommend using ISOChronology instead, which is the default.
      *
      * @return the Gregorian chronology
-     * @deprecated Use ChronologyType.gregorian().getChronologyUTC()
+     * @deprecated Use GregorianChronology.getInstanceUTC()
      */
     public static Chronology getGregorianUTC() {
         return GregorianChronology.getInstanceUTC();
@@ -249,7 +250,7 @@ public abstract class Chronology {
      *
      * @param zone  the zone to use, null means default zone
      * @return the Gregorian chronology
-     * @deprecated Use ChronologyType.gregorian().getChronology(zone)
+     * @deprecated Use GregorianChronology.getInstance(zone)
      */
     public static Chronology getGregorian(DateTimeZone zone) {
         return GregorianChronology.getInstance(zone);
@@ -264,7 +265,7 @@ public abstract class Chronology {
      * The Julian calendar system defines a leap year every four years.
      *
      * @return the Julian chronology
-     * @deprecated Use ChronologyType.julian().getChronology()
+     * @deprecated Use JulianChronology.getInstance()
      */
     public static Chronology getJulian() {
         return JulianChronology.getInstance();
@@ -278,7 +279,7 @@ public abstract class Chronology {
      * The Julian calendar system defines a leap year every four years.
      *
      * @return the Julian chronology
-     * @deprecated Use ChronologyType.julian().getChronologyUTC()
+     * @deprecated Use JulianChronology.getInstanceUTC()
      */
     public static Chronology getJulianUTC() {
         return JulianChronology.getInstanceUTC();
@@ -293,7 +294,7 @@ public abstract class Chronology {
      *
      * @param zone  the zone to use, null means default zone
      * @return the Julian chronology
-     * @deprecated Use ChronologyType.julian().getChronology(zone)
+     * @deprecated Use JulianChronology.getInstance(zone)
      */
     public static Chronology getJulian(DateTimeZone zone) {
         return JulianChronology.getInstance(zone);
@@ -308,7 +309,7 @@ public abstract class Chronology {
      * year 1 in the Buddhist calendar.
      *
      * @return the Buddhist chronology
-     * @deprecated Use ChronologyType.buddhist().getChronology()
+     * @deprecated Use BuddhistChronology.getInstance()
      */
     public static Chronology getBuddhist() {
         return BuddhistChronology.getInstance();
@@ -322,7 +323,7 @@ public abstract class Chronology {
      * year 1 in the Buddhist calendar.
      *
      * @return the Buddhist chronology
-     * @deprecated Use ChronologyType.buddhist().getChronologyUTC()
+     * @deprecated Use BuddhistChronology.getInstanceUTC()
      */
     public static Chronology getBuddhistUTC() {
         return BuddhistChronology.getInstanceUTC();
@@ -337,7 +338,7 @@ public abstract class Chronology {
      *
      * @param zone  the zone to use, null means default zone
      * @return the Buddhist chronology
-     * @deprecated Use ChronologyType.buddhist().getChronology(zone)
+     * @deprecated Use BuddhistChronology.getInstance(zone)
      */
     public static Chronology getBuddhist(DateTimeZone zone) {
         return BuddhistChronology.getInstance(zone);
@@ -356,7 +357,7 @@ public abstract class Chronology {
      * The chronology cannot be used before the first Coptic year.
      *
      * @return the Coptic chronology
-     * @deprecated Use ChronologyType.coptic().getChronology()
+     * @deprecated Use CopticChronology.getInstance()
      */
     public static Chronology getCoptic() {
         return CopticChronology.getInstance();
@@ -374,7 +375,7 @@ public abstract class Chronology {
      * The chronology cannot be used before the first Coptic year.
      *
      * @return the Coptic chronology
-     * @deprecated Use ChronologyType.coptic().getChronologyUTC()
+     * @deprecated Use CopticChronology.getInstanceUTC()
      */
     public static Chronology getCopticUTC() {
         return CopticChronology.getInstanceUTC();
@@ -393,28 +394,13 @@ public abstract class Chronology {
      *
      * @param zone  the zone to use, null means default zone
      * @return the Coptic chronology
-     * @deprecated Use ChronologyType.coptic().getChronology(zone)
+     * @deprecated Use CopticChronology.getInstance(zone)
      */
     public static Chronology getCoptic(DateTimeZone zone) {
         return CopticChronology.getInstance(zone);
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Returns the ChronologyType constant for this Chronology.
-     * <p>
-     * This method should ideally never return null. However ChronologyType
-     * was only added in v1.2, and any chronology written before then
-     * will not correctly override this method to return the type.
-     *
-     * @return the chronology type, correct implementations never return null
-     * @since 1.2
-     */
-    public ChronologyType getType() {
-        // all subclasses should override this method
-        return null;
-    }
-
     /**
      * Returns the DateTimeZone that this Chronology operates in, or null if
      * unspecified.

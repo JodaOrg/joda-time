@@ -43,7 +43,7 @@ References
 Within Joda-Time the Ethiopic calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/EthiopicChronology.html">EthiopicChronology</a>.
 This is normally created via the
-<a href="apidocs/org/joda/time/ChronologyType.html#ethiopic()">ChronologyType.ethiopic()</a> factory.
+<a href="apidocs/org/joda/time/chrono/EthiopicChronology.html#getInstance()">EthiopicChronology.getInstance()</a> factory.
 The chronology is then passed into the constructors of the main date and time classes.
 </p>
 <source>
@@ -51,7 +51,7 @@ The chronology is then passed into the constructors of the main date and time cl
 DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
 
 // find out what the same instant is using the Ethiopic Chronology
-DateTime dtEthiopic = dtISO.withChronology(ChronologyType.ethiopic());
+DateTime dtEthiopic = dtISO.withChronology(EthiopicChronology.getInstance());
 </source>
 
 </section>

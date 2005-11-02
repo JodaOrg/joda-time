@@ -200,7 +200,6 @@ public class TestDateMidnight_Basics extends TestCase {
         DateMidnight test = new DateMidnight();
         
         assertEquals(ISOChronology.getInstance(), test.getChronology());
-        assertEquals(ChronologyType.iso(), test.getChronologyType());
         assertEquals(LONDON, test.getZone());
         assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
         
@@ -651,20 +650,6 @@ public class TestDateMidnight_Basics extends TestCase {
         
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.withChronology(ISOChronology.getInstance());
-        assertSame(test, result);
-    }
-
-    public void testWithChronologyType_ChronologyType() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
-        DateMidnight result = test.withChronologyType(ChronologyType.gregorian());
-        assertEquals(GregorianChronology.getInstance(LONDON), result.getChronology());
-        
-        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
-        result = test.withChronologyType(null);
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
-        
-        test = new DateMidnight(TEST_TIME1_UTC);
-        result = test.withChronologyType(ChronologyType.iso());
         assertSame(test, result);
     }
 

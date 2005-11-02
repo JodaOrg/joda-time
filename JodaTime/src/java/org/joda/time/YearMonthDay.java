@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.Locale;
 
 import org.joda.time.base.BasePartial;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractPartialFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
@@ -98,7 +99,7 @@ public final class YearMonthDay
      * @since 1.1
      */
     public YearMonthDay(DateTimeZone zone) {
-        super(ChronologyType.iso().getChronology(zone));
+        super(ISOChronology.getInstance(zone));
     }
 
     /**

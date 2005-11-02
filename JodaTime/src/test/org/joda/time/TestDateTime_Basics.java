@@ -211,7 +211,6 @@ public class TestDateTime_Basics extends TestCase {
         DateTime test = new DateTime();
         
         assertEquals(ISOChronology.getInstance(), test.getChronology());
-        assertEquals(ChronologyType.iso(), test.getChronologyType());
         assertEquals(LONDON, test.getZone());
         assertEquals(TEST_TIME_NOW, test.getMillis());
         
@@ -715,22 +714,6 @@ public class TestDateTime_Basics extends TestCase {
         
         test = new DateTime(TEST_TIME1);
         result = test.withChronology(ISOChronology.getInstance());
-        assertSame(test, result);
-    }
-
-    public void testWithChronologyType_ChronologyType() {
-        DateTime test = new DateTime(TEST_TIME1, PARIS);
-        DateTime result = test.withChronologyType(ChronologyType.gregorian());
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(GregorianChronology.getInstance(PARIS), result.getChronology());
-        
-        test = new DateTime(TEST_TIME1, GregorianChronology.getInstance(PARIS));
-        result = test.withChronologyType(null);
-        assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
-        
-        test = new DateTime(TEST_TIME1);
-        result = test.withChronologyType(ChronologyType.iso());
         assertSame(test, result);
     }
 

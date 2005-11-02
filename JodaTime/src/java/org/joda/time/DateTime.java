@@ -363,21 +363,6 @@ public final class DateTime
         return (newChronology == getChronology() ? this : new DateTime(getMillis(), newChronology));
     }
 
-    /**
-     * Gets a copy of this datetime with a different chronology.
-     * <p>
-     * The returned object will be either be a new instance or <code>this</code>.
-     * Only the chronology will change, the millis and time zone are kept.
-     *
-     * @param newChronologyType  the new chronology type, null means ISO
-     * @return a copy of this datetime with a different chronology
-     */
-    public DateTime withChronologyType(ChronologyType newChronologyType) {
-        newChronologyType = DateTimeUtils.getChronologyType(newChronologyType);
-        return (newChronologyType == getChronologyType() ? this :
-            new DateTime(getMillis(), newChronologyType.getChronology(getZone())));
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Gets a copy of this datetime with a different time zone, preserving the

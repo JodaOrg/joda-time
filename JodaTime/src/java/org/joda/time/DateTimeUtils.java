@@ -236,23 +236,6 @@ public class DateTimeUtils {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the chronology type handling null.
-     * <p>
-     * If the chronology type is <code>null</code>, {@link ChronologyType#iso()}
-     * will be returned. Otherwise, the chronology type is returned.
-     * 
-     * @param type  the chronology type to use, null means ISO
-     * @return the chronology type, never null
-     */
-    public static final ChronologyType getChronologyType(ChronologyType type) {
-        if (type == null) {
-            return ChronologyType.iso();
-        }
-        return type;
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Gets the zone handling null.
      * <p>
      * If the zone is <code>null</code>, {@link DateTimeZone#getDefault()}

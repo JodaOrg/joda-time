@@ -27,22 +27,14 @@ Serialization compatible - Yes
 Data compatible - Yes
 
 
-Warnings since 1.1
-------------------
-- ChronologyType
-  If you have created your own subclass of Chronology, you should create
-  a ChronologyType subclass to define a type for your chronology, and
-  override Chronology.getType() to return it.
-
-
 Deprecations since 1.1
 ----------------------
 - Chronology factory methods, such as getISO() and getCopticUTC()
-  The ChronologyType class contains suitable replacement methods
+  You should now use the chrono package directly:
     Chronology.getCoptic(zone)   is replaced by
-    ChronologyType.coptic().getChronology(zone)
-  These factory methods have been removed as they were a poor substitute
-  for a proper type class, and confused the role of the Chronology class
+    CopticChronology.getInstance(zone)
+  These factory methods have been removed as they were unable to scale
+  suitably as more and more chronologies are added
 
 
 Bug fixes since 1.1
@@ -82,15 +74,6 @@ Enhancements since 1.1
 ----------------------
 - EthiopicChronology
   New Chronology which implements similar rules to Coptic
-
-- ChronologyType
-  New type that acts as a factory for creating Chronology instances
-  Chronology.getType() returns the type
-
-- DateTime/DateMidnight/MutableDateTime.getChronologyType
-- DateTime/DateMidnight.withChronologyType
-- MutableDateTime.setChronologyType
-  Gets and sets the chronology type
 
 - DateTime.Property.withMaximumValue() (also DateMidnight/YearMonthDay etc)
 - DateTime.Property.withMinimumValue()

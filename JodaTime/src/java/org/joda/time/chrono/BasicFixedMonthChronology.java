@@ -30,14 +30,14 @@ import org.joda.time.field.PreciseDurationField;
  * This implementation assumes any additional days after twelve
  * months fall into a thirteenth month.
  * <p>
- * CommonFixedMonthChronology is thread-safe and immutable, and all
+ * BasicFixedMonthChronology is thread-safe and immutable, and all
  * subclasses must be as well.
  *
  * @author Brian S O'Neill
  * @author Stephen Colebourne
  * @since 1.2, refactored from CopticChronology
  */
-public abstract class CommonFixedMonthChronology extends BaseGJChronology {
+abstract class BasicFixedMonthChronology extends BaseGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 261387371998L;
@@ -68,7 +68,7 @@ public abstract class CommonFixedMonthChronology extends BaseGJChronology {
      * @param param  the init parameter
      * @param minDaysInFirstWeek  the minimum days in the first week
      */
-    CommonFixedMonthChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BasicFixedMonthChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 

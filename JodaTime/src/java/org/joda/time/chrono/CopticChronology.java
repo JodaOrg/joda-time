@@ -48,7 +48,7 @@ import org.joda.time.field.SkipDateTimeField;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public final class CopticChronology extends CommonFixedMonthChronology {
+public final class CopticChronology extends BasicFixedMonthChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -5972804258688333942L;

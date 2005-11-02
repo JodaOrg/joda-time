@@ -48,7 +48,7 @@ import org.joda.time.field.SkipDateTimeField;
  * @author Stephen Colebourne
  * @since 1.2
  */
-public final class EthiopicChronology extends CommonFixedMonthChronology {
+public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -5972804258688333942L;

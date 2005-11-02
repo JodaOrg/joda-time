@@ -34,7 +34,8 @@ import org.joda.time.field.PreciseDurationField;
 import org.joda.time.field.RemainderDateTimeField;
 
 /**
- * Abstract Chronology for implementing chronologies based on Gregorian/Julian formulae.
+ * Abstract implementation for calendar systems that use a typical
+ * day/month/year/leapYear model.
  * Most of the utility methods required by subclasses are package-private,
  * reflecting the intention that they be defined in the same package.
  * <p>
@@ -46,7 +47,7 @@ import org.joda.time.field.RemainderDateTimeField;
  * @author Guy Allard
  * @since 1.0
  */
-public abstract class BaseGJChronology extends AssembledChronology {
+abstract class BaseGJChronology extends AssembledChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 8283225332206808863L;

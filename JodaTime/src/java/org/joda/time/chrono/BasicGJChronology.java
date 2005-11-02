@@ -25,15 +25,15 @@ import org.joda.time.field.FieldUtils;
  * Most of the utility methods required by subclasses are package-private,
  * reflecting the intention that they be defined in the same package.
  * <p>
- * CommonGJChronology is thread-safe and immutable, and all subclasses must
+ * BasicGJChronology is thread-safe and immutable, and all subclasses must
  * be as well.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @author Guy Allard
- * @since 1.0
+ * @since 1.2, refactored from CommonGJChronology
  */
-public abstract class CommonGJChronology extends BaseGJChronology {
+abstract class BasicGJChronology extends BaseGJChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 538276888268L;
@@ -73,7 +73,7 @@ public abstract class CommonGJChronology extends BaseGJChronology {
     /**
      * Constructor.
      */
-    CommonGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BasicGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param, minDaysInFirstWeek);
     }
 

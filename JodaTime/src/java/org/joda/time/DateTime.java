@@ -1500,6 +1500,7 @@ public final class DateTime
          * The DateTime attached to this property is unchanged by this call.
          *
          * @return a copy of the DateTime with this field set to its maximum
+         * @since 1.2
          */
         public DateTime withMaximumValue() {
             return setCopy(getMaximumValue());
@@ -1512,6 +1513,7 @@ public final class DateTime
          * The DateTime attached to this property is unchanged by this call.
          *
          * @return a copy of the DateTime with this field set to its minimum
+         * @since 1.2
          */
         public DateTime withMinimumValue() {
             return setCopy(getMinimumValue());

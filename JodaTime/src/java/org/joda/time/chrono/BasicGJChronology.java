@@ -137,14 +137,6 @@ abstract class BasicGJChronology extends BaseGJChronology {
     }
 
     //-----------------------------------------------------------------------
-    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
-        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 12);
-        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
-        return getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
-    }
-
-    //-----------------------------------------------------------------------
     long getTotalMillisByYearMonth(int year, int month) {
         if (isLeapYear(year)) {
             return MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[month - 1];

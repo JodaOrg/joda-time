@@ -583,7 +583,12 @@ abstract class BaseGJChronology extends AssembledChronology {
      * @param dayOfMonth  the day
      * @return the milliseconds
      */
-    abstract long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth);
+    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
+        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
+        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, getMaxMonth(year));
+        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
+        return getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
+    }
 
     /**
      * Gets the difference between the two instants in years.
@@ -629,14 +634,59 @@ abstract class BaseGJChronology extends AssembledChronology {
      */
     abstract long getTotalMillisByYearMonth(int year, int month);
 
+    /**
+     * Gets the millisecond value of the first day of the year.
+     * 
+     * @return the milliseconds for the first of the year
+     */
     abstract long calculateFirstDayOfYearMillis(int year);
 
+    /**
+     * Gets the minimum supported year.
+     * 
+     * @return the year
+     */
     abstract int getMinYear();
 
+    /**
+     * Gets the maximum supported year.
+     * 
+     * @return the year
+     */
     abstract int getMaxYear();
 
+    /**
+     * Gets the maximum month for the specified year.
+     * This implementation calls getMaxMonth().
+     * 
+     * @param year  the year
+     * @return the maximum month value
+     */
+    int getMaxMonth(int year) {
+        return getMaxMonth();
+    }
+
+    /**
+     * Gets the maximum number of months.
+     * 
+     * @return 12
+     */
+    int getMaxMonth() {
+        return 12;
+    }
+
+    /**
+     * Gets an average value for the milliseconds per year.
+     * 
+     * @return the millis per year
+     */
     abstract long getAverageMillisPerYear();
 
+    /**
+     * Gets an average value for the milliseconds per month.
+     * 
+     * @return the millis per month
+     */
     abstract long getAverageMillisPerMonth();
 
     /**

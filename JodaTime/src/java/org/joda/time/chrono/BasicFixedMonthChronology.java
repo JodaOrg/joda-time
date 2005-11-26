@@ -17,10 +17,8 @@ package org.joda.time.chrono;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
-import org.joda.time.field.FieldUtils;
 import org.joda.time.field.PreciseDurationField;
 
 /**
@@ -110,14 +108,6 @@ abstract class BasicFixedMonthChronology extends BaseGJChronology {
     }
 
     //-----------------------------------------------------------------------
-    long getDateMidnightMillis(int year, int monthOfYear, int dayOfMonth) {
-        FieldUtils.verifyValueBounds(DateTimeFieldType.year(), year, getMinYear(), getMaxYear());
-        FieldUtils.verifyValueBounds(DateTimeFieldType.monthOfYear(), monthOfYear, 1, 13);
-        FieldUtils.verifyValueBounds(DateTimeFieldType.dayOfMonth(), dayOfMonth, 1, getDaysInYearMonth(year, monthOfYear));
-        return getYearMonthDayMillis(year, monthOfYear, dayOfMonth);
-    }
-
-    //-----------------------------------------------------------------------
     long getTotalMillisByYearMonth(int year, int month) {
         return (month * MILLIS_PER_MONTH);
     }
@@ -152,6 +142,11 @@ abstract class BasicFixedMonthChronology extends BaseGJChronology {
     int getMonthOfYear(long millis, int year) {
         long monthZeroBased = (millis - getYearMillis(year)) / MILLIS_PER_MONTH;
         return ((int) monthZeroBased) + 1;
+    }
+
+    //-----------------------------------------------------------------------
+    int getMaxMonth() {
+        return 13;
     }
 
     //-----------------------------------------------------------------------

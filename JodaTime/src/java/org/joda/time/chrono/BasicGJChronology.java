@@ -17,8 +17,6 @@ package org.joda.time.chrono;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.field.FieldUtils;
 
 /**
  * Abstract Chronology for implementing chronologies based on Gregorian/Julian formulae.
@@ -57,16 +55,16 @@ abstract class BasicGJChronology extends BaseGJChronology {
 
         long minSum = 0;
         long maxSum = 0;
-        for (int i=0; i<12; i++) {
+        for (int i = 0; i < 11; i++) {
             long millis = MIN_DAYS_PER_MONTH_ARRAY[i]
                 * (long)DateTimeConstants.MILLIS_PER_DAY;
             minSum += millis;
-            MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[i] = minSum;
+            MIN_TOTAL_MILLIS_BY_MONTH_ARRAY[i + 1] = minSum;
 
             millis = MAX_DAYS_PER_MONTH_ARRAY[i]
                 * (long)DateTimeConstants.MILLIS_PER_DAY;
             maxSum += millis;
-            MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[i] = maxSum;
+            MAX_TOTAL_MILLIS_BY_MONTH_ARRAY[i + 1] = maxSum;
         }
     }
 

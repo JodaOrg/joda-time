@@ -109,7 +109,7 @@ abstract class BasicFixedMonthChronology extends BaseGJChronology {
 
     //-----------------------------------------------------------------------
     long getTotalMillisByYearMonth(int year, int month) {
-        return (month * MILLIS_PER_MONTH);
+        return ((month - 1) * MILLIS_PER_MONTH);
     }
 
     //-----------------------------------------------------------------------

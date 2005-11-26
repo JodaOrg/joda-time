@@ -61,7 +61,7 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
     }
 
     public int getMaximumValue() {
-        return 366;
+        return iChronology.getDaysInYearMax();
     }
 
     public int getMaximumValue(long instant) {
@@ -74,7 +74,7 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
             int year = partial.get(DateTimeFieldType.year());
             return iChronology.getDaysInYear(year);
         }
-        return 366;
+        return iChronology.getDaysInYearMax();
     }
 
     public int getMaximumValue(ReadablePartial partial, int[] values) {
@@ -85,11 +85,12 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
                 return iChronology.getDaysInYear(year);
             }
         }
-        return 366;
+        return iChronology.getDaysInYearMax();
     }
 
     protected int getMaximumValueForSet(long instant, int value) {
-        return value > 365 ? getMaximumValue(instant) : 365;
+        int maxLessOne = iChronology.getDaysInYearMax() - 1;
+        return value > maxLessOne ? getMaximumValue(instant) : maxLessOne;
     }
 
     /**

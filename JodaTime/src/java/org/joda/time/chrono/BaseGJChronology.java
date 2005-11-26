@@ -276,10 +276,21 @@ abstract class BaseGJChronology extends AssembledChronology {
         fields.weekyears = fields.weekyear.getDurationField();
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Get the number of days in the year.
-     * @param year The year to use.
-     * @return 366 if a leap year, otherwise 365.
+     *
+     * @return 366
+     */
+    int getDaysInYearMax() {
+        return 366;
+    }
+
+    /**
+     * Get the number of days in the year.
+     *
+     * @param year  the year to use
+     * @return 366 if a leap year, otherwise 365
      */
     int getDaysInYear(int year) {
         return isLeapYear(year) ? 366 : 365;
@@ -287,8 +298,9 @@ abstract class BaseGJChronology extends AssembledChronology {
 
     /**
      * Get the number of weeks in the year.
-     * @param year  the year to use.
-     * @return number of weeks in the year.
+     *
+     * @param year  the year to use
+     * @return number of weeks in the year
      */
     int getWeeksInYear(int year) {
         long firstWeekMillis1 = getFirstWeekOfYearMillis(year);
@@ -298,7 +310,8 @@ abstract class BaseGJChronology extends AssembledChronology {
 
     /**
      * Get the millis for the first week of a year.
-     * @param year  the year to use.
+     *
+     * @param year  the year to use
      * @return millis
      */
     long getFirstWeekOfYearMillis(int year) {
@@ -335,10 +348,7 @@ abstract class BaseGJChronology extends AssembledChronology {
      */
     long getYearMonthMillis(int year, int month) {
         long millis = getYearMillis(year);
-        // month
-        if (month > 1) {
-            millis += getTotalMillisByYearMonth(year, month - 1);
-        }
+        millis += getTotalMillisByYearMonth(year, month);
         return millis;
     }
 
@@ -352,11 +362,7 @@ abstract class BaseGJChronology extends AssembledChronology {
      */
     long getYearMonthDayMillis(int year, int month, int dayOfMonth) {
         long millis = getYearMillis(year);
-        // month
-        if (month > 1) {
-            millis += getTotalMillisByYearMonth(year, month - 1);
-        }
-        // day
+        millis += getTotalMillisByYearMonth(year, month);
         return millis + (dayOfMonth - 1) * (long)DateTimeConstants.MILLIS_PER_DAY;
     }
     
@@ -448,9 +454,7 @@ abstract class BaseGJChronology extends AssembledChronology {
      */
     int getDayOfMonth(long millis, int year, int month) {
         long dateMillis = getYearMillis(year);
-        if (month > 1) {
-            dateMillis += getTotalMillisByYearMonth(year, month - 1);
-        }
+        dateMillis += getTotalMillisByYearMonth(year, month);
         return (int) ((millis - dateMillis) / DateTimeConstants.MILLIS_PER_DAY) + 1;
     }
 
@@ -625,12 +629,12 @@ abstract class BaseGJChronology extends AssembledChronology {
     abstract int getDaysInMonthMax(int month);
 
     /**
-     * Gets the total number of millis elapsed in this year at the end
-     * of the specified month.
+     * Gets the total number of millis elapsed in this year at the start
+     * of the specified month, such as zero for month 1.
      * 
      * @param year  the year
      * @param month  the month
-     * @return the elapsed millis
+     * @return the elapsed millis at the start of the month
      */
     abstract long getTotalMillisByYearMonth(int year, int month);
 

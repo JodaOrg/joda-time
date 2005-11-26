@@ -43,6 +43,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestEthiopicChronology.suite());
         suite.addTest(TestGJChronology.suite());
         suite.addTest(TestGregorianChronology.suite());
+        suite.addTest(TestIslamicChronology.suite());
         suite.addTest(TestJulianChronology.suite());
         suite.addTest(TestISOChronology.suite());
         

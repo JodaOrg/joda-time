@@ -72,8 +72,9 @@ Bug fixes since 1.1
 
 Enhancements since 1.1
 ----------------------
+- IslamicChronology
 - EthiopicChronology
-  New Chronology which implements similar rules to Coptic
+  New Chronologies
 
 - DateTime.Property.withMaximumValue() (also DateMidnight/YearMonthDay etc)
 - DateTime.Property.withMinimumValue()

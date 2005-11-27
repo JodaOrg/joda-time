@@ -23,13 +23,11 @@ import org.joda.time.field.ImpreciseDateTimeField;
 
 /**
  * Provides time calculations for the month of the year component of time.
- * <p>
- * This implementation assumes 12 months at present.
  *
  * @author Guy Allard
  * @author Stephen Colebourne
  * @author Brian S O'Neill
- * @since 1.0
+ * @since 1.2, refactored from GJMonthOfYearDateTimeField
  */
 class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
 
@@ -37,9 +35,9 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     private static final long serialVersionUID = -8258715387168736L;
 
     private static final int MIN = DateTimeConstants.JANUARY;
-    private static final int MAX = DateTimeConstants.DECEMBER;
 
     private final BaseGJChronology iChronology;
+    private final int iMax;
     private final int iLeapMonth;
 
     /**
@@ -50,6 +48,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     BasicMonthOfYearDateTimeField(BaseGJChronology chronology, int leapMonth) {
         super(DateTimeFieldType.monthOfYear(), chronology.getAverageMillisPerMonth());
         iChronology = chronology;
+        iMax = iChronology.getMaxMonth();
         iLeapMonth = leapMonth;
     }
 
@@ -110,17 +109,17 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         // Initially, monthToUse is zero-based
         int monthToUse = thisMonth - 1 + months;
         if (monthToUse >= 0) {
-            yearToUse = thisYear + (monthToUse / MAX);
-            monthToUse = (monthToUse % MAX) + 1;
+            yearToUse = thisYear + (monthToUse / iMax);
+            monthToUse = (monthToUse % iMax) + 1;
         } else {
-            yearToUse = thisYear + (monthToUse / MAX) - 1;
+            yearToUse = thisYear + (monthToUse / iMax) - 1;
             monthToUse = Math.abs(monthToUse);
-            int remMonthToUse = monthToUse % MAX;
+            int remMonthToUse = monthToUse % iMax;
             // Take care of the boundary condition
             if (remMonthToUse == 0) {
-                remMonthToUse = MAX;
+                remMonthToUse = iMax;
             }
-            monthToUse = MAX - remMonthToUse + 1;
+            monthToUse = iMax - remMonthToUse + 1;
             // Take care of the boundary condition
             if (monthToUse == 1) {
                 yearToUse += 1;
@@ -162,16 +161,16 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         long yearToUse;
         long monthToUse = thisMonth - 1 + months;
         if (monthToUse >= 0) {
-            yearToUse = thisYear + (monthToUse / MAX);
-            monthToUse = (monthToUse % MAX) + 1;
+            yearToUse = thisYear + (monthToUse / iMax);
+            monthToUse = (monthToUse % iMax) + 1;
         } else {
-            yearToUse = thisYear + (monthToUse / MAX) - 1;
+            yearToUse = thisYear + (monthToUse / iMax) - 1;
             monthToUse = Math.abs(monthToUse);
-            int remMonthToUse = (int)(monthToUse % MAX);
+            int remMonthToUse = (int)(monthToUse % iMax);
             if (remMonthToUse == 0) {
-                remMonthToUse = MAX;
+                remMonthToUse = iMax;
             }
-            monthToUse = MAX - remMonthToUse + 1;
+            monthToUse = iMax - remMonthToUse + 1;
             if (monthToUse == 1) {
                 yearToUse += 1;
             }
@@ -209,7 +208,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @return the updated time instant.
      */
     public long addWrapField(long instant, int months) {
-        return set(instant, FieldUtils.getWrappedValue(get(instant), months, MIN, MAX));
+        return set(instant, FieldUtils.getWrappedValue(get(instant), months, MIN, iMax));
     }
 
     //-----------------------------------------------------------------------
@@ -223,7 +222,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         int subtrahendYear = iChronology.getYear(subtrahendInstant);
         int subtrahendMonth = iChronology.getMonthOfYear(subtrahendInstant, subtrahendYear);
 
-        long difference = (minuendYear - subtrahendYear) * 12L + minuendMonth - subtrahendMonth;
+        long difference = (minuendYear - subtrahendYear) * ((long) iMax) + minuendMonth - subtrahendMonth;
 
         // Before adjusting for remainder, account for special case of add
         // where the day-of-month is forced to the nearest sane value.
@@ -269,7 +268,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * @throws IllegalArgumentException  if month is invalid
      */
     public long set(long instant, int month) {
-        FieldUtils.verifyValueBounds(this, month, MIN, MAX);
+        FieldUtils.verifyValueBounds(this, month, MIN, iMax);
         //
         int thisYear = iChronology.getYear(instant);
         //
@@ -315,7 +314,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
 
     //-----------------------------------------------------------------------
     public int getMaximumValue() {
-        return MAX;
+        return iMax;
     }
 
     //-----------------------------------------------------------------------

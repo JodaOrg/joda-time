@@ -261,9 +261,8 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
             fields.weekyear = new SkipDateTimeField(this, fields.weekyear);
             
             fields.era = ERA_FIELD;
-            fields.months = MONTH_DURATION_FIELD;
-            fields.monthOfYear = new BasicFixedMonthOfYearDateTimeField(this, MONTH_DURATION_FIELD);
-            fields.dayOfMonth = new BasicDayOfMonthDateTimeField(this, fields.days);
+            fields.monthOfYear = new BasicMonthOfYearDateTimeField(this, 13);
+            fields.months = fields.monthOfYear.getDurationField();
         }
     }
 

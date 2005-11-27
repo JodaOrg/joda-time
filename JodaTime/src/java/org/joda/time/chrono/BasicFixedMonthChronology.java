@@ -17,9 +17,6 @@ package org.joda.time.chrono;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
-import org.joda.time.DurationField;
-import org.joda.time.DurationFieldType;
-import org.joda.time.field.PreciseDurationField;
 
 /**
  * Abstract implementation of a calendar system based around fixed length months.
@@ -49,14 +46,6 @@ abstract class BasicFixedMonthChronology extends BaseGJChronology {
 
     /** The length of the month in millis. */
     static final long MILLIS_PER_MONTH = ((long) MONTH_LENGTH) * DateTimeConstants.MILLIS_PER_DAY;
-
-    /** Singleton fixed length month field used to build the monthOfYear field. */
-    static final DurationField MONTH_DURATION_FIELD;
-    static {
-        // init after other static fields
-        MONTH_DURATION_FIELD =  new PreciseDurationField
-            (DurationFieldType.months(), MILLIS_PER_MONTH);
-    }
 
     //-----------------------------------------------------------------------
     /**
@@ -136,6 +125,11 @@ abstract class BasicFixedMonthChronology extends BaseGJChronology {
     //-----------------------------------------------------------------------
     int getDaysInMonthMax(int month) {
         return (month != 13 ? MONTH_LENGTH : 6);
+    }
+
+    //-----------------------------------------------------------------------
+    int getMonthOfYear(long millis) {
+        return (getDayOfYear(millis) - 1) / MONTH_LENGTH + 1;
     }
 
     //-----------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# @(#)southamerica	7.62
+# @(#)southamerica	7.63
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -565,11 +565,12 @@ Rule	Brazil	2003	only	-	Oct	19	 0:00	1:00	S
 # Decree 5,223 (2004-10-01) reestablishes DST in MT.
 # <a href="http://www.planalto.gov.br/ccivil_03/_Ato2004-2006/2004/Decreto/D5223.htm"></a>
 Rule	Brazil	2004	only	-	Nov	 2	 0:00	1:00	S
+# Decree <a href="http://pcdsh01.on.br/DecHV5539.gif">5,539</a> (2005-09-19),
+# adopted by the same states as before.
+Rule	Brazil	2005	max	-	Oct	Sun>=15	 0:00	1:00	S
 # The latest ruleset listed above says that the following states observe DST:
 # DF, ES, GO, MG, MS, MT, PR, RJ, RS, SC, SP.
-#
-Rule	Brazil	2005	max	-	Oct	Sun>=15	 0:00	1:00	S
-# For dates after mid-2005, the above rules with TO="max" are guesses
+# For dates after mid-2006, the above rules with TO="max" are guesses
 # and are quite possibly wrong, but are more likely than no DST at all.
 
 

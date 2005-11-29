@@ -463,7 +463,7 @@ public final class IslamicChronology extends BaseGJChronology {
     /**
      * Leap year patterns for the Islamic Chronology.
      */
-    public static class LeapYearPatternType implements Serializable {
+    static class LeapYearPatternType implements Serializable {
         /** Serialization lock */
         private static final long serialVersionUID = 26581275372698L;
 //        /** Leap year raw data encoded into bits. */
@@ -488,7 +488,7 @@ public final class IslamicChronology extends BaseGJChronology {
          * @param index  the index
          * @param pattern  the bit pattern
          */
-        protected LeapYearPatternType(int index, int pattern) {
+        LeapYearPatternType(int index, int pattern) {
             super();
             this.index = (byte) index;
             this.pattern = pattern;
@@ -499,7 +499,7 @@ public final class IslamicChronology extends BaseGJChronology {
          * @param year  the year to query
          * @return true if leap
          */
-        public boolean isLeapYear(int year) {
+        boolean isLeapYear(int year) {
             int key = 1 << (year % 30);
             return ((pattern & key) > 0);
         }

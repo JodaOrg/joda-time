@@ -15,6 +15,8 @@
  */
 package org.joda.time.base;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -45,6 +47,27 @@ import org.joda.time.format.DateTimeFormat;
 public abstract class AbstractDateTime
         extends AbstractInstant
         implements ReadableDateTime {
+
+    /** The method to call as TimeZone.getOffset is only from JDK 1.4. */
+    private static final Method OFFSET_METHOD;
+    static {
+        Method m = null;
+        try {
+            m = TimeZone.class.getDeclaredMethod("getOffset", new Class[] {Long.TYPE});
+        } catch (SecurityException ex) {
+            // ignore
+        } catch (NoSuchMethodException ex) {
+            try {
+                m = TimeZone.class.getDeclaredMethod("getOffsets", new Class[] {Long.TYPE, int[].class});
+                m.setAccessible(true);
+            } catch (SecurityException e) {
+                // ignore
+            } catch (NoSuchMethodException e) {
+                // ignore
+            }
+        }
+        OFFSET_METHOD = m;
+    }
 
     //-----------------------------------------------------------------------
     /**
@@ -248,8 +271,8 @@ public abstract class AbstractDateTime
      */
     public Date toDate() {
         long millis = getMillis();
-        long millisLocal = millis - TimeZone.getDefault().getOffset(millis);
-        return new Date(millisLocal + getZone().getOffsetFromLocal(millisLocal));
+        millis = fixMillisForTimeZone(millis, TimeZone.getDefault());
+        return new Date(millis);
     }
 
     /**
@@ -284,9 +307,31 @@ public abstract class AbstractDateTime
 
     private Date convertToDate(Calendar cal) {
         long millis = getMillis();
-        long millisLocal = millis - cal.getTimeZone().getOffset(millis);
-        millis = millisLocal + getZone().getOffsetFromLocal(millisLocal);
+        millis = fixMillisForTimeZone(millis, cal.getTimeZone());
         return new Date(millis);
+    }
+
+    private long fixMillisForTimeZone(long millis, TimeZone zone) {
+        if (OFFSET_METHOD == null) {
+            return millis;
+        }
+        Integer val;
+        try {
+            if ("getOffset".equals(OFFSET_METHOD.getName())) {
+                val = (Integer) OFFSET_METHOD.invoke(
+                        zone, new Object[] {new Long(millis)});
+            } else {
+                val = (Integer) OFFSET_METHOD.invoke(
+                        zone, new Object[] {new Long(millis), null});
+            }
+        } catch (IllegalAccessException ex) {
+            return millis;
+        } catch (InvocationTargetException ex) {
+            return millis;
+        }
+        
+        long millisLocal = millis - val.intValue();
+        return millisLocal + getZone().getOffsetFromLocal(millisLocal);
     }
 
     //-----------------------------------------------------------------------

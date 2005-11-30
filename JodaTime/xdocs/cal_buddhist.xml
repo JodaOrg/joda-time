@@ -40,7 +40,7 @@ References
 Within Joda-Time the Buddhist calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/BuddhistChronology.html">BuddhistChronology</a>.
 This is normally created using the factory method
-<a href="apidocs/org/joda/time/Chronology.html#getBuddhist()">Chronology.getBuddhist()</a>.
+<a href="apidocs/org/joda/time/chrono/BuddhistChronology.html#getInstance()">BuddhistChronology.getInstance()</a>.
 This is then passed into the constructors of the main date and time classes.
 </p>
 <source>
@@ -48,7 +48,7 @@ This is then passed into the constructors of the main date and time classes.
 DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
 
 // find out what the same instant is using the Buddhist Chronology
-DateTime dtBudd = dtISO.withChronology(Chronology.getBuddhist());
+DateTime dtBudd = dtISO.withChronology(BuddhistChronology.getInstance());
 </source>
 
 </section>

@@ -108,14 +108,14 @@ will default to ISO chronology.
 The actual chronology class is
 <a href="apidocs/org/joda/time/chrono/ISOChronology.html">ISOChronology</a>.
 This is normally created if required using the factory method
-<a href="apidocs/org/joda/time/Chronology.html#getISO()">Chronology.getISO()</a>.
+<a href="apidocs/org/joda/time/chrono/ISOChronology.html#getInstance()">ISOChronology.getInstance()</a>.
 </p>
 <source>
 // setup date object for midday on Christmas 2004 (default time zone)
 DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0);
 
 // or specify the chronology explicitly
-Chronology chrono = Chronology.getISO();
+Chronology chrono = ISOChronology.getInstance();
 DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, chrono);
 
 // or use the default null handling behaviour

@@ -37,12 +37,12 @@ References
 Within Joda-Time the Julian calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/JulianChronology.html">JulianChronology</a>.
 This is normally created using the factory method
-<a href="apidocs/org/joda/time/Chronology.html#getJulian()">Chronology.getJulian()</a>.
+<a href="apidocs/org/joda/time/chrono/JulianChronology.html#getInstance()">JulianChronology.getInstance()</a>.
 This is then passed into the constructors of the main date and time classes.
 </p>
 <source>
 // setup date object for the Battle of Hastings in 1066
-Chronology chrono = Chronology.getJulian();
+Chronology chrono = JulianChronology.getInstance();
 DateTime dt = new DateTime(1066, 10, 14, 10, 0, 0, 0, chrono);
 </source>
 

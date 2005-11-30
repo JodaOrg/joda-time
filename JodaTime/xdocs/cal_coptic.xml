@@ -44,7 +44,7 @@ References
 Within Joda-Time the Coptic calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/CopticChronology.html">CopticChronology</a>.
 This is normally created using the factory method
-<a href="apidocs/org/joda/time/Chronology.html#getCoptic()">Chronology.getCoptic()</a>.
+<a href="apidocs/org/joda/time/chrono/CopticChronology.html#getInstance()">CopticChronology.getInstance()</a>.
 This is then passed into the constructors of the main date and time classes.
 </p>
 <source>
@@ -52,7 +52,7 @@ This is then passed into the constructors of the main date and time classes.
 DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
 
 // find out what the same instant is using the Coptic Chronology
-DateTime dtCopt = dtISO.withChronology(Chronology.getCoptic());
+DateTime dtCopt = dtISO.withChronology(CopticChronology.getInstance());
 </source>
 
 </section>

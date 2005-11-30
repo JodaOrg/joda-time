@@ -43,12 +43,12 @@ References
 Within Joda-Time the Gregorian calendar system can be used by obtaining an
 instance of <a href="apidocs/org/joda/time/chrono/GregorianChronology.html">GregorianChronology</a>.
 This is normally created using the factory method
-<a href="apidocs/org/joda/time/Chronology.html#getGregorian()">Chronology.getGregorian()</a>.
+<a href="apidocs/org/joda/time/chrono/GregorianChronology.html#getInstance()">GregorianChronology.getInstance()</a>.
 This is then passed into the constructors of the main date and time classes.
 </p>
 <source>
 // setup date object for midday on Christmas 2004
-Chronology chrono = Chronology.getGregorian();
+Chronology chrono = GregorianChronology.getInstance();
 DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, chrono);
 </source>
 

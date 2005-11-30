@@ -461,9 +461,9 @@ public final class IslamicChronology extends BaseGJChronology {
 
     //-----------------------------------------------------------------------
     /**
-     * Leap year patterns for the Islamic Chronology.
+     * Opaque object describing a leap year pattern for the Islamic Chronology.
      */
-    static class LeapYearPatternType implements Serializable {
+    public static class LeapYearPatternType implements Serializable {
         /** Serialization lock */
         private static final long serialVersionUID = 26581275372698L;
 //        /** Leap year raw data encoded into bits. */

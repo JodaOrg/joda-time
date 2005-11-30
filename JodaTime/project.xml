@@ -18,11 +18,11 @@
   <packageGroups>
     <packageGroup>
       <title>User Packages</title>
-      <packages>org.joda.time:org.joda.time.format</packages>
+      <packages>org.joda.time:org.joda.time.format:org.joda.time.chrono</packages>
     </packageGroup>
     <packageGroup>
       <title>Implementation Packages</title>
-      <packages>org.joda.time.chrono:org.joda.time.base:org.joda.time.convert:org.joda.time.field:org.joda.time.tz</packages>
+      <packages>org.joda.time.base:org.joda.time.convert:org.joda.time.field:org.joda.time.tz</packages>
     </packageGroup>
   </packageGroups>  
   <logo>/images/jodatime.png</logo>

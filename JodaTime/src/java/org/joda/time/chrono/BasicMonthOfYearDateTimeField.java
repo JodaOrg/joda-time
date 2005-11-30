@@ -43,7 +43,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
     /**
      * Restricted constructor.
      * 
-     * @param the dayOfYear that is the leap day
+     * @param leapMonth the month of year that leaps
      */
     BasicMonthOfYearDateTimeField(BaseGJChronology chronology, int leapMonth) {
         super(DateTimeFieldType.monthOfYear(), chronology.getAverageMillisPerMonth());

@@ -26,9 +26,26 @@ Package containing the chronology classes which define the calendar systems.
 </p>
 <p>
 This package contains all of the chronology implementations within the library.
-It also contains all of the specialised field implementations.
+A chronology represents all the rules of a calendar system.
 Applications will create chronologies using the static factory methods on
 each specific Chronology class - getInstance.
+The currently provided chronology implementations are:
+<ul>
+  <li>ISO</li>
+  <li>GJ (GregorianJulian)</li>
+  <li>Gregorian</li>
+  <li>Julian</li>
+  <li>Buddhist</li>
+  <li>Coptic</li>
+  <li>Ethiopic</li>
+  <li>Islamic</li>
+</ul>
+</p>
+<p>
+The package also contains all of the specialised field implementations.
+These classes are package scoped, along with various other chronology helper classes.
+The package scoped classes do not form part of the public API of Joda-Time
+and may change at any time.
 </p>
 </body>
 </html>

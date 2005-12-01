@@ -266,7 +266,12 @@ public abstract class AbstractDateTime
     //-----------------------------------------------------------------------
     /**
      * Get the date time as a <code>java.util.Date</code>.
-     * 
+     * <p>
+     * Note that as from version 1.2, this method goes to extra effort to
+     * maintain the field values on the created Date object.
+     * This means that the differences in timezone data between Joda-Time
+     * and each JDK version are now handled correctly.
+     *
      * @return a Date initialised with this datetime
      */
     public Date toDate() {
@@ -279,6 +284,11 @@ public abstract class AbstractDateTime
      * Get the date time as a <code>java.util.Calendar</code>.
      * The locale is passed in, enabling Calendar to select the correct
      * localized subclass.
+     * <p>
+     * Note that as from version 1.2, this method goes to extra effort to
+     * maintain the field values on the created Calendar object.
+     * This means that the differences in timezone data between Joda-Time
+     * and each JDK version are now handled correctly.
      * 
      * @param locale  the locale to get the Calendar for, or default if null
      * @return a localized Calendar initialised with this datetime
@@ -295,7 +305,12 @@ public abstract class AbstractDateTime
 
     /**
      * Get the date time as a <code>java.util.GregorianCalendar</code>.
-     * 
+     * <p>
+     * Note that as from version 1.2, this method goes to extra effort to
+     * maintain the field values on the created Calendar object.
+     * This means that the differences in timezone data between Joda-Time
+     * and each JDK version are now handled correctly.
+     *
      * @return a GregorianCalendar initialised with this datetime
      */
     public GregorianCalendar toGregorianCalendar() {

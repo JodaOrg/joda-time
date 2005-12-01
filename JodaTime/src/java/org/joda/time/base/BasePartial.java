@@ -121,6 +121,11 @@ public abstract class BasePartial
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
+     * <p>
+     * Note that as from version 1.2, the default converters go to extra
+     * effort to maintain the field values of the input Date or Calendar.
+     * This means that the differences in timezone data between Joda-Time
+     * and each JDK version are now handled correctly.
      *
      * @param instant  the datetime object
      * @param chronology  the chronology, null means use converter

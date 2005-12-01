@@ -20,11 +20,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.CopticChronology;
@@ -87,8 +89,16 @@ public class TestDateConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_Object_Chronology() throws Exception {
-        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), JULIAN));
-        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(new Date(123L), (Chronology) null));
+        Date date = new Date(123L);
+        long millis = DateConverter.INSTANCE.getInstantMillis(date, JULIAN);
+        long expected = 123L - date.getTimezoneOffset() * 60000;
+        expected = expected - DateTimeZone.getDefault().getOffsetFromLocal(expected);
+        assertEquals(expected, millis);
+        assertEquals(date.getDate(), new DateTime(millis).getDayOfMonth());
+        assertEquals(date.getHours(), new DateTime(millis).getHourOfDay());
+        assertEquals(date.getMinutes(), new DateTime(millis).getMinuteOfHour());
+        
+        assertEquals(expected, DateConverter.INSTANCE.getInstantMillis(date, (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
@@ -104,9 +114,10 @@ public class TestDateConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
+        Date date = new Date(70, 2, 3, 4, 5, 6);
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = CopticChronology.getInstance().get(tod, 12345678L);
-        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, new Date(12345678L), CopticChronology.getInstance());
+        int[] expected = new int[] {4, 5, 6, 0};
+        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, date, ISOChronology.getInstance());
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

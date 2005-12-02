@@ -454,7 +454,7 @@ public final class IslamicChronology extends BaseGJChronology {
             super.assemble(fields);
 
             fields.era = ERA_FIELD;
-            fields.monthOfYear = new IslamicMonthOfYearDateTimeField(this);
+            fields.monthOfYear = new BasicMonthOfYearDateTimeField(this, 12);
             fields.months = fields.monthOfYear.getDurationField();
         }
     }

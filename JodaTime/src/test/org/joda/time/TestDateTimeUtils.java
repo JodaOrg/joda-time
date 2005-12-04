@@ -23,6 +23,10 @@ import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -31,6 +35,7 @@ import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.LenientChronology;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -389,6 +394,81 @@ public class TestDateTimeUtils extends TestCase {
         
         try {
             DateTimeUtils.isContiguous((ReadablePartial) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToGregorianCalendar() {
+        TimeZone jdkZone = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
+            DateTime dt = new DateTime(1970, 1, 1, 2, 30, 0, 0, PARIS);
+            Calendar cal = new GregorianCalendar(1970, 0, 1, 2, 30);  // same field values
+            
+            assertEquals(cal, DateTimeUtils.toGregorianCalendar(dt));
+            
+            TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+            dt = new DateTime(1970, 1, 1, 2, 30, 0, 0, LONDON);
+            cal = new GregorianCalendar(1970, 0, 1, 2, 30);  // same field values
+            
+            assertEquals(cal, DateTimeUtils.toGregorianCalendar(dt));
+            
+            dt = new DateTime(1800, 1, 1, 0, 30, 0, 0, LONDON);
+            int year = dt.getYear();
+            while (year < 2000) {
+                dt = dt.plusHours(1);
+                int hourOfDay = dt.getHourOfDay();
+                if (hourOfDay == 4) {
+                    dt = dt.plusHours(18);  // speed up test
+                } else {
+                    year = dt.getYear();
+                    cal.clear();
+                    cal.set(year, dt.getMonthOfYear() - 1, dt.getDayOfMonth(),
+                        hourOfDay, dt.getMinuteOfHour(), dt.getSecondOfMinute());
+                    //cal.get(Calendar.ERA);
+                    assertEquals(cal, DateTimeUtils.toGregorianCalendar(dt));
+                }
+            }
+            
+        } finally {
+            TimeZone.setDefault(jdkZone);
+        }
+        try {
+            DateTimeUtils.toGregorianCalendar(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToDateTime_Calendar() {
+        TimeZone jdkZone = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+            GregorianCalendar cal = new GregorianCalendar(1800, 0, 1, 0, 30, 0);
+            int year = cal.get(Calendar.YEAR);
+            while (year < 2000) {
+                cal.add(Calendar.HOUR_OF_DAY, 1);
+                int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
+                if (hourOfDay == 4) {
+                    cal.add(Calendar.HOUR_OF_DAY, 18);  // speed up test
+                } else {
+                    year = cal.get(Calendar.YEAR);
+                    DateTime dt = new DateTime(
+                        year, cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DAY_OF_MONTH),
+                        cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE),
+                        cal.get(Calendar.SECOND), 0,
+                        LenientChronology.getInstance(ISOChronology.getInstance(LONDON)))
+                        .withChronology(ISOChronology.getInstance(LONDON));
+                    assertEquals(dt, DateTimeUtils.toDateTime(cal));
+                }
+            }
+            
+        } finally {
+            TimeZone.setDefault(jdkZone);
+        }
+        try {
+            DateTimeUtils.toDateTime((Calendar) null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }

@@ -337,8 +337,17 @@ public class DateTimeUtils {
      * Converts the instant value to a <code>GregorianCalendar</code>
      * adjusting to take into account the different time zone rules.
      * <p>
-     * Note that this method may not be reversible if the zone rules differ
-     * around a daylight savings, or other, change.
+     * This method is the equivalent of creating a calendar object and
+     * calling set using each field in turn. The result is a calendar that
+     * reflects the fields of the instant, rather than millisecond value.
+     * <p>
+     * This method can 'lose' data depending on the date and zone rules.
+     * If a datetime exists in the specified instant that cannot be
+     * represented in a calendar (due to differences in the time zone rules)
+     * the JDK chooses to move the hour backwards. For example, 1972-03-26
+     * 01:30  in Europe/London cannot be represented in <code>Calendar</code>
+     * in JDK1.3 due to an incorrect time zone definition in the JDK.
+     * Instead, the JDK sets the time to 00:30.
      *
      * @param instant  the instant to convert
      * @return the offset to add to UTC
@@ -349,11 +358,16 @@ public class DateTimeUtils {
         if (instant == null) {
             throw new IllegalArgumentException("The zone must not be null");
         }
+        Chronology chrono = instant.getChronology();
         DateTimeZone zone = instant.getZone();
+        long millis = instant.getMillis();
         TimeZone jdkZone = zone.toTimeZone();
         GregorianCalendar cal = new GregorianCalendar(jdkZone);
-        long jdkMillis = zone.getMillisJDKKeepLocal(jdkZone, instant.getMillis());
-        cal.setTime(new Date(jdkMillis));
+        cal.clear();
+        cal.set(Calendar.YEAR, chrono.year().get(millis));
+        cal.set(Calendar.DAY_OF_YEAR, chrono.dayOfYear().get(millis));
+        cal.set(Calendar.MILLISECOND, chrono.millisOfDay().get(millis));
+        cal.get(Calendar.ERA);  // force calculation
         return cal;
     }
 

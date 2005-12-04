@@ -144,15 +144,7 @@ public abstract class DateTimeZone implements Serializable {
         } catch (SecurityException ex) {
             // ignore
         } catch (NoSuchMethodException ex) {
-            try {
-                Method[] ms = TimeZone.class.getDeclaredMethods();
-                m = TimeZone.class.getDeclaredMethod("getOffsets", new Class[] {Long.TYPE, int[].class});
-                m.setAccessible(true);
-            } catch (SecurityException e) {
-                // ignore
-            } catch (NoSuchMethodException e) {
-                // ignore
-            }
+            // ignore
         }
         OFFSET_METHOD = m;
     }
@@ -911,12 +903,9 @@ public abstract class DateTimeZone implements Serializable {
         if (OFFSET_METHOD == null) {
             if (jdkZone instanceof SimpleTimeZone) {
                 SimpleTimeZone zone = (SimpleTimeZone) jdkZone;
-                long offset = zone.getRawOffset();
-                if (zone.inDaylightTime(new Date(instant)))  {
-                    offset += zone.getDSTSavings();
-                }
-                long millisLocal = instant - offset;
-                return millisLocal + getOffsetFromLocal(millisLocal);
+                long millisLocal = instant + getOffset(instant);
+                long jdkOffset = getJDKOffset(zone, millisLocal - getJDKOffset(zone, millisLocal));
+                return millisLocal - jdkOffset;
             }
             return instant;
         } else {
@@ -929,8 +918,22 @@ public abstract class DateTimeZone implements Serializable {
                 return instant;
             }
         }
+        // TODO: this conversion is wrong
         long millisLocal = instant - val.intValue();
         return millisLocal + getOffsetFromLocal(millisLocal);
+    }
+
+    /**
+     * @param zone
+     * @param instant
+     * @return
+     */
+    private long getJDKOffset(SimpleTimeZone zone, long instant) {
+        long offset = zone.getRawOffset();
+        if (zone.inDaylightTime(new Date(instant)))  {
+            offset += zone.getDSTSavings();
+        }
+        return offset;
     }
 
     //-----------------------------------------------------------------------

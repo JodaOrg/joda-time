@@ -24,9 +24,11 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.Instant;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.BaseDurationField;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  * Wraps another Chronology to add support for time zones.
@@ -139,7 +141,8 @@ public final class ZonedChronology extends AssembledChronology {
         instant -= offset;
         if (offset != zone.getOffset(instant)) {
             throw new IllegalArgumentException
-                ("Illegal instant due to time zone offset transition");
+                ("Illegal instant due to time zone offset transition: " +
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(instant)));
         }
         return instant;
     }

@@ -22,14 +22,10 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import org.joda.time.chrono.BaseChronology;
@@ -133,20 +129,6 @@ public abstract class DateTimeZone implements Serializable {
         if (cDefault == null) {
             cDefault = UTC;
         }
-    }
-
-    /** The method to call as TimeZone.getOffset is only from JDK 1.4. */
-    private static final Method OFFSET_METHOD;
-    static {
-        Method m = null;
-        try {
-            m = TimeZone.class.getDeclaredMethod("getOffset", new Class[] {Long.TYPE});
-        } catch (SecurityException ex) {
-            // ignore
-        } catch (NoSuchMethodException ex) {
-            // ignore
-        }
-        OFFSET_METHOD = m;
     }
 
     //-----------------------------------------------------------------------
@@ -859,84 +841,6 @@ public abstract class DateTimeZone implements Serializable {
         return instantLocal - newZone.getOffsetFromLocal(instantLocal);
     }
 
-    /**
-     * Gets the millisecond instant in the equivalent JDK <code>TimeZone</code>
-     * keeping the same local time.
-     * <p>
-     * This method adjusts for time zone difference between the JDK and
-     * Joda-Time zone rules. The aim of this method is to keep the same
-     * local time but using the JDK time zone class. The result of this
-     * method should be used to pass into a <code>Date</code>,
-     * <code>Calendar</code> or other JDK class.
-     * See the <a href="http://joda-time.sourceforge.net/jdk_conversion.html">JDK conversion reference</a> for details.
-     *
-     * @param instant  the Joda-Time millisecond instant to convert
-     * @return the JDK millisecond instant with the same local time
-     * @since 1.2
-     */
-    public long getMillisJDKKeepLocal(long instant) {
-        return getMillisJDKKeepLocal(toTimeZone(), instant);
-    }
-
-    /**
-     * Gets the millisecond instant in the specified JDK <code>TimeZone</code>
-     * keeping the same local time. You should typically pass in the
-     * JDK zone that is returned by {@link #toTimeZone()}.
-     * <p>
-     * This method adjusts for time zone difference between the JDK and
-     * Joda-Time zone rules. The aim of this method is to keep the same
-     * local time but using the JDK time zone class. The result of this
-     * method should be used to pass into a <code>Date</code>,
-     * <code>Calendar</code> or other JDK class.
-     * See the <a href="http://joda-time.sourceforge.net/jdk_conversion.html">JDK conversion reference</a> for details.
-     *
-     * @param jdkZone  the JDK zone to convert to, normally as per toTimezone()
-     * @param instant  the Joda-Time millisecond instant to convert
-     * @return the JDK millisecond instant with the same local time
-     * @since 1.2
-     */
-    public long getMillisJDKKeepLocal(TimeZone jdkZone, long instant) {
-        if (jdkZone == null) {
-            jdkZone = toTimeZone();
-        }
-        Integer val;
-        if (OFFSET_METHOD == null) {
-            if (jdkZone instanceof SimpleTimeZone) {
-                SimpleTimeZone zone = (SimpleTimeZone) jdkZone;
-                long millisLocal = instant + getOffset(instant);
-                long jdkOffset = getJDKOffset(zone, millisLocal - getJDKOffset(zone, millisLocal));
-                return millisLocal - jdkOffset;
-            }
-            return instant;
-        } else {
-            try {
-                val = (Integer) OFFSET_METHOD.invoke(
-                        jdkZone, new Object[] {new Long(instant)});
-            } catch (IllegalAccessException ex) {
-                return instant;
-            } catch (InvocationTargetException ex) {
-                return instant;
-            }
-        }
-        // TODO: this conversion is wrong
-        long millisLocal = instant - val.intValue();
-        return millisLocal + getOffsetFromLocal(millisLocal);
-    }
-
-    /**
-     * @param zone
-     * @param instant
-     * @return
-     */
-    private long getJDKOffset(SimpleTimeZone zone, long instant) {
-        long offset = zone.getRawOffset();
-        if (zone.inDaylightTime(new Date(instant)))  {
-            offset += zone.getDSTSavings();
-        }
-        return offset;
-    }
-
-    //-----------------------------------------------------------------------
     /**
      * Returns true if this time zone has no transitions.
      *

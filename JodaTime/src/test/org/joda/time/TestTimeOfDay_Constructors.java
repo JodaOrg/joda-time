@@ -281,9 +281,7 @@ public class TestTimeOfDay_Constructors extends TestCase {
         Date date = new Date(TEST_TIME1);
         TimeOfDay test = new TimeOfDay(date);
         assertEquals(ISO_UTC, test.getChronology());
-        // JDK1.3 has no historical time zone, so hour differs from JDK1.4
-        // This method is now defined to copy the fields from the Date
-        assertEquals(date.getHours(), test.getHourOfDay());
+        assertEquals(1 + OFFSET, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
         assertEquals(3, test.getSecondOfMinute());
         assertEquals(4, test.getMillisOfSecond());
@@ -297,9 +295,7 @@ public class TestTimeOfDay_Constructors extends TestCase {
         cal.setTime(new Date(TEST_TIME1));
         TimeOfDay test = new TimeOfDay(cal);
         assertEquals(GJChronology.getInstanceUTC(), test.getChronology());
-        // JDK1.3 has no historical time zone, so hour differs from JDK1.4
-        // This method is now defined to copy the fields from the Date
-        assertEquals(cal.get(Calendar.HOUR_OF_DAY), test.getHourOfDay());
+        assertEquals(1 + OFFSET, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
         assertEquals(3, test.getSecondOfMinute());
         assertEquals(4, test.getMillisOfSecond());
@@ -338,9 +334,7 @@ public class TestTimeOfDay_Constructors extends TestCase {
         Date date = new Date(TEST_TIME1);
         TimeOfDay test = new TimeOfDay(date, JulianChronology.getInstance());
         assertEquals(JulianChronology.getInstanceUTC(), test.getChronology());
-        // JDK1.3 has no historical time zone, so hour differs from JDK1.4
-        // This method is now defined to copy the fields from the Date
-        assertEquals(date.getHours(), test.getHourOfDay());
+        assertEquals(1 + OFFSET, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
         assertEquals(3, test.getSecondOfMinute());
         assertEquals(4, test.getMillisOfSecond());
@@ -381,9 +375,7 @@ public class TestTimeOfDay_Constructors extends TestCase {
         Date date = new Date(TEST_TIME1);
         TimeOfDay test = new TimeOfDay(date, null);
         assertEquals(ISO_UTC, test.getChronology());
-        // JDK1.3 has no historical time zone, so hour differs from JDK1.4
-        // This method is now defined to copy the fields from the Date
-        assertEquals(date.getHours(), test.getHourOfDay());
+        assertEquals(1 + OFFSET, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
         assertEquals(3, test.getSecondOfMinute());
         assertEquals(4, test.getMillisOfSecond());

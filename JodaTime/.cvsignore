@@ -11,3 +11,4 @@ junit*.properties
 lib
 .dj*
 release
+.settings

@@ -15,13 +15,9 @@
  */
 package org.joda.time.base;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
@@ -48,28 +44,6 @@ public abstract class AbstractDateTime
         extends AbstractInstant
         implements ReadableDateTime {
 
-    /** The method to call as TimeZone.getOffset is only from JDK 1.4. */
-    private static final Method OFFSET_METHOD;
-    static {
-        Method m = null;
-        try {
-            m = TimeZone.class.getDeclaredMethod("getOffset", new Class[] {Long.TYPE});
-        } catch (SecurityException ex) {
-            // ignore
-        } catch (NoSuchMethodException ex) {
-            try {
-                m = TimeZone.class.getDeclaredMethod("getOffsets", new Class[] {Long.TYPE, int[].class});
-                m.setAccessible(true);
-            } catch (SecurityException e) {
-                // ignore
-            } catch (NoSuchMethodException e) {
-                // ignore
-            }
-        }
-        OFFSET_METHOD = m;
-    }
-
-    //-----------------------------------------------------------------------
     /**
      * Constructor.
      */
@@ -265,31 +239,19 @@ public abstract class AbstractDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Get the date time as a <code>java.util.Date</code>.
-     * <p>
-     * Note that as from version 1.2, this method goes to extra effort to
-     * maintain the field values on the created Date object.
-     * This means that the differences in timezone data between Joda-Time
-     * and each JDK version are now handled correctly.
-     *
-     * @return a Date initialised with this datetime
-     */
-    public Date toDate() {
-        long millis = getMillis();
-        millis = fixMillisForTimeZone(millis, TimeZone.getDefault());
-        return new Date(millis);
-    }
-
-    /**
-     * Get the date time as a <code>java.util.Calendar</code>.
+     * Get the date time as a <code>java.util.Calendar</code>, assigning
+     * exactly the same millisecond instant.
      * The locale is passed in, enabling Calendar to select the correct
      * localized subclass.
      * <p>
-     * Note that as from version 1.2, this method goes to extra effort to
-     * maintain the field values on the created Calendar object.
-     * This means that the differences in timezone data between Joda-Time
-     * and each JDK version are now handled correctly.
-     * 
+     * The JDK and Joda-Time both have time zone implementations and these
+     * differ in accuracy. Joda-Time's implementation is generally more up to
+     * date and thus more accurate - for example JDK1.3 has no historical data.
+     * The effect of this is that the field values of the <code>Calendar</code>
+     * may differ from those of this object, even though the milliseond value
+     * is the same. Most of the time this just means that the JDK field values
+     * are wrong, as our time zone information is more up to date.
+     *
      * @param locale  the locale to get the Calendar for, or default if null
      * @return a localized Calendar initialised with this datetime
      */
@@ -299,54 +261,29 @@ public abstract class AbstractDateTime
         }
         DateTimeZone zone = getZone();
         Calendar cal = Calendar.getInstance(zone.toTimeZone(), locale);
-        cal.setTime(convertToDate(cal));
+        cal.setTime(toDate());
         return cal;
     }
 
     /**
-     * Get the date time as a <code>java.util.GregorianCalendar</code>.
+     * Get the date time as a <code>java.util.GregorianCalendar</code>,
+     * assigning exactly the same millisecond instant.
      * <p>
-     * Note that as from version 1.2, this method goes to extra effort to
-     * maintain the field values on the created Calendar object.
-     * This means that the differences in timezone data between Joda-Time
-     * and each JDK version are now handled correctly.
+     * The JDK and Joda-Time both have time zone implementations and these
+     * differ in accuracy. Joda-Time's implementation is generally more up to
+     * date and thus more accurate - for example JDK1.3 has no historical data.
+     * The effect of this is that the field values of the <code>Calendar</code>
+     * may differ from those of this object, even though the milliseond value
+     * is the same. Most of the time this just means that the JDK field values
+     * are wrong, as our time zone information is more up to date.
      *
      * @return a GregorianCalendar initialised with this datetime
      */
     public GregorianCalendar toGregorianCalendar() {
         DateTimeZone zone = getZone();
         GregorianCalendar cal = new GregorianCalendar(zone.toTimeZone());
-        cal.setTime(convertToDate(cal));
+        cal.setTime(toDate());
         return cal;
-    }
-
-    private Date convertToDate(Calendar cal) {
-        long millis = getMillis();
-        millis = fixMillisForTimeZone(millis, cal.getTimeZone());
-        return new Date(millis);
-    }
-
-    private long fixMillisForTimeZone(long millis, TimeZone zone) {
-        if (OFFSET_METHOD == null) {
-            return millis;
-        }
-        Integer val;
-        try {
-            if ("getOffset".equals(OFFSET_METHOD.getName())) {
-                val = (Integer) OFFSET_METHOD.invoke(
-                        zone, new Object[] {new Long(millis)});
-            } else {
-                val = (Integer) OFFSET_METHOD.invoke(
-                        zone, new Object[] {new Long(millis), null});
-            }
-        } catch (IllegalAccessException ex) {
-            return millis;
-        } catch (InvocationTargetException ex) {
-            return millis;
-        }
-        
-        long millisLocal = millis - val.intValue();
-        return millisLocal + getZone().getOffsetFromLocal(millisLocal);
     }
 
     //-----------------------------------------------------------------------

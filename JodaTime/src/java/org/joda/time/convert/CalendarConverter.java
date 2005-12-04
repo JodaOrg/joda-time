@@ -119,10 +119,7 @@ final class CalendarConverter extends AbstractConverter
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         Calendar calendar = (Calendar) object;
-        long millisLocal = calendar.getTime().getTime() +
-            calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET);
-        DateTimeZone tz = DateTimeZone.forTimeZone(calendar.getTimeZone());
-        return millisLocal - tz.getOffsetFromLocal(millisLocal);
+        return calendar.getTime().getTime();
     }
 
     //-----------------------------------------------------------------------

@@ -18,7 +18,6 @@ package org.joda.time.convert;
 import java.util.Date;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTimeZone;
 
 /**
  * DateConverter converts a java util Date to an instant or partial.
@@ -54,8 +53,7 @@ final class DateConverter extends AbstractConverter
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         Date date = (Date) object;
-        long millisLocal = date.getTime() - date.getTimezoneOffset() * 60000;
-        return millisLocal - DateTimeZone.getDefault().getOffsetFromLocal(millisLocal);
+        return date.getTime();
     }
 
     //-----------------------------------------------------------------------

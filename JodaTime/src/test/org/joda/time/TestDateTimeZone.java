@@ -28,6 +28,7 @@ import java.security.PermissionCollection;
 import java.security.Permissions;
 import java.security.Policy;
 import java.security.ProtectionDomain;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -689,6 +690,37 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetMillisJDKKeepLocal() {
+        TimeZone jdkZone = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
+            DateTime dt = new DateTime(1970, 1, 1, 2, 30, 0, 0, PARIS);
+            Date date = new Date(70, 0, 1, 2, 30, 0);  // same field values
+            
+            System.out.println(dt.getMillis());
+            System.out.println(date.getTime());
+            
+            assertEquals(date.getTime(), PARIS.getMillisJDKKeepLocal(dt.getMillis()));
+            assertEquals(date.getTime(), PARIS.getMillisJDKKeepLocal(PARIS.toTimeZone(), dt.getMillis()));
+            assertEquals(date.getTime(), PARIS.getMillisJDKKeepLocal(null, dt.getMillis()));
+            
+            TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+            dt = new DateTime(1970, 1, 1, 2, 30, 0, 0, LONDON);
+            date = new Date(70, 0, 1, 2, 30, 0);  // same field values
+            
+            System.out.println(dt.getMillis());
+            System.out.println(date.getTime());
+            
+            assertEquals(date.getTime(), LONDON.getMillisJDKKeepLocal(dt.getMillis()));
+            assertEquals(date.getTime(), LONDON.getMillisJDKKeepLocal(LONDON.toTimeZone(), dt.getMillis()));
+            assertEquals(date.getTime(), LONDON.getMillisJDKKeepLocal(null, dt.getMillis()));
+            
+        } finally {
+            TimeZone.setDefault(jdkZone);
+        }
+    }
+
+    //-----------------------------------------------------------------------
     public void testIsFixed() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         assertEquals(false, zone.isFixed());
@@ -806,4 +838,5 @@ public class TestDateTimeZone extends TestCase {
         DateTime dt = new DateTime(2005, 5, 5, 20, 10, 15, 0, zone);
         assertEquals(1115313015000L, dt.getMillis());
     }
+
 }

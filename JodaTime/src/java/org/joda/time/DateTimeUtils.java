@@ -15,6 +15,11 @@
  */
 package org.joda.time;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -325,6 +330,90 @@ public class DateTimeUtils {
             lastType = loopField.getDurationField().getType();
         }
         return true;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts the instant value to a <code>GregorianCalendar</code>
+     * adjusting to take into account the different time zone rules.
+     * <p>
+     * Note that this method may not be reversible if the zone rules differ
+     * around a daylight savings, or other, change.
+     *
+     * @param instant  the instant to convert
+     * @return the offset to add to UTC
+     * @throws IllegalArgumentException if the instant is null
+     * @since 1.2
+     */
+    public static GregorianCalendar toGregorianCalendar(ReadableInstant instant) {
+        if (instant == null) {
+            throw new IllegalArgumentException("The zone must not be null");
+        }
+        DateTimeZone zone = instant.getZone();
+        TimeZone jdkZone = zone.toTimeZone();
+        GregorianCalendar cal = new GregorianCalendar(jdkZone);
+        long jdkMillis = zone.getMillisJDKKeepLocal(jdkZone, instant.getMillis());
+        cal.setTime(new Date(jdkMillis));
+        return cal;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts a <code>Calendar</code> to a <code>DateTime</code> adjusting
+     * the millisecond value to preserve the local time.
+     * <p>
+     * <code>DateTimeZone</code> and JDK <code>TimeZone</code> have
+     * different time zone rules. When converting to and from the JDK this
+     * can cause unexpected and undesired consequences. This method seeks
+     * to adjust for the differences in the rules by maintaining the same
+     * field values in the resultant <code>DateTime</code>.
+     * <p>
+     * Note that this method may not be reversible if the zone rules differ
+     * around a daylight savings, or other, change.
+     *
+     * @param calendar  the JDK calendar to convert
+     * @return the converted datetime
+     * @throws IllegalArgumentException if the calendar is null
+     * @since 1.2
+     */
+    public static DateTime toDateTime(Calendar calendar) {
+        if (calendar == null) {
+            throw new IllegalArgumentException("The calendar must not be null");
+        }
+        long millisLocal = calendar.getTime().getTime() +
+            calendar.get(Calendar.ZONE_OFFSET) + calendar.get(Calendar.DST_OFFSET);
+        DateTimeZone zone = DateTimeZone.forTimeZone(calendar.getTimeZone());
+        long millis = millisLocal - zone.getOffsetFromLocal(millisLocal);
+        return new DateTime(millis, zone);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts a <code>Date</code> to a <code>DateTime</code> adjusting
+     * the millisecond value to preserve the local time.
+     * <p>
+     * <code>DateTimeZone</code> and JDK <code>TimeZone</code> have
+     * different time zone rules. When converting to and from the JDK this
+     * can cause unexpected and undesired consequences. This method seeks
+     * to adjust for the differences in the rules by maintaining the same
+     * field values in the resultant <code>DateTime</code>.
+     * <p>
+     * Note that this method may not be reversible if the zone rules differ
+     * around a daylight savings, or other, change.
+     *
+     * @param date  the JDK date to convert
+     * @return the converted datetime
+     * @throws IllegalArgumentException if the calendar is null
+     * @since 1.2
+     */
+    public static DateTime toDateTime(Date date) {
+        if (date == null) {
+            throw new IllegalArgumentException("The date must not be null");
+        }
+        long millisLocal = date.getTime() - date.getTimezoneOffset() * 60000;
+        DateTimeZone zone = DateTimeZone.forTimeZone(TimeZone.getDefault());
+        long millis = millisLocal - zone.getOffsetFromLocal(millisLocal);
+        return new DateTime(millis, zone);
     }
 
     //-----------------------------------------------------------------------

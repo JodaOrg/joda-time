@@ -697,9 +697,6 @@ public class TestDateTimeZone extends TestCase {
             DateTime dt = new DateTime(1970, 1, 1, 2, 30, 0, 0, PARIS);
             Date date = new Date(70, 0, 1, 2, 30, 0);  // same field values
             
-            System.out.println(dt.getMillis());
-            System.out.println(date.getTime());
-            
             assertEquals(date.getTime(), PARIS.getMillisJDKKeepLocal(dt.getMillis()));
             assertEquals(date.getTime(), PARIS.getMillisJDKKeepLocal(PARIS.toTimeZone(), dt.getMillis()));
             assertEquals(date.getTime(), PARIS.getMillisJDKKeepLocal(null, dt.getMillis()));
@@ -707,9 +704,6 @@ public class TestDateTimeZone extends TestCase {
             TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
             dt = new DateTime(1970, 1, 1, 2, 30, 0, 0, LONDON);
             date = new Date(70, 0, 1, 2, 30, 0);  // same field values
-            
-            System.out.println(dt.getMillis());
-            System.out.println(date.getTime());
             
             assertEquals(date.getTime(), LONDON.getMillisJDKKeepLocal(dt.getMillis()));
             assertEquals(date.getTime(), LONDON.getMillisJDKKeepLocal(LONDON.toTimeZone(), dt.getMillis()));

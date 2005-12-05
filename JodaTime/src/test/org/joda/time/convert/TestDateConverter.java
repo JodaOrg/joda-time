@@ -20,13 +20,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.CopticChronology;
@@ -40,14 +38,12 @@ import org.joda.time.chrono.JulianChronology;
  */
 public class TestDateConverter extends TestCase {
 
-    private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static Chronology ISO;
     private static Chronology JULIAN;
+    private static Chronology COPTIC;
     
-    private DateTimeZone zone = null;
-
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
     }
@@ -62,6 +58,7 @@ public class TestDateConverter extends TestCase {
 
     protected void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
+        COPTIC = CopticChronology.getInstance();
         ISO = ISOChronology.getInstance();
     }
 
@@ -91,14 +88,8 @@ public class TestDateConverter extends TestCase {
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         Date date = new Date(123L);
         long millis = DateConverter.INSTANCE.getInstantMillis(date, JULIAN);
-        long expected = 123L - date.getTimezoneOffset() * 60000;
-        expected = expected - DateTimeZone.getDefault().getOffsetFromLocal(expected);
-        assertEquals(expected, millis);
-        assertEquals(date.getDate(), new DateTime(millis).getDayOfMonth());
-        assertEquals(date.getHours(), new DateTime(millis).getHourOfDay());
-        assertEquals(date.getMinutes(), new DateTime(millis).getMinuteOfHour());
-        
-        assertEquals(expected, DateConverter.INSTANCE.getInstantMillis(date, (Chronology) null));
+        assertEquals(123L, millis);
+        assertEquals(123L, DateConverter.INSTANCE.getInstantMillis(date, (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
@@ -114,10 +105,9 @@ public class TestDateConverter extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
-        Date date = new Date(70, 2, 3, 4, 5, 6);
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = new int[] {4, 5, 6, 0};
-        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, date, ISOChronology.getInstance());
+        int[] expected = COPTIC.get(tod, 12345678L);
+        int[] actual = DateConverter.INSTANCE.getPartialValues(tod, new Date(12345678L), COPTIC);
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

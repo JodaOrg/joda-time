@@ -28,7 +28,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.BuddhistChronology;
@@ -44,13 +43,10 @@ import org.joda.time.chrono.JulianChronology;
  */
 public class TestCalendarConverter extends TestCase {
 
-    private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");
     private static Chronology JULIAN;
     private static Chronology ISO;
-    
-    private DateTimeZone zone = null;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -95,14 +91,7 @@ public class TestCalendarConverter extends TestCase {
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date(123L));
-        long millis = CalendarConverter.INSTANCE.getInstantMillis(cal, JULIAN);
-        long expected = 123L + cal.get(Calendar.DST_OFFSET) + cal.get(Calendar.ZONE_OFFSET);
-        expected = expected - DateTimeZone.getDefault().getOffsetFromLocal(expected);
-        assertEquals(expected, millis);
-        assertEquals(cal.get(Calendar.DAY_OF_MONTH), new DateTime(millis).getDayOfMonth());
-        assertEquals(cal.get(Calendar.HOUR_OF_DAY), new DateTime(millis).getHourOfDay());
-        assertEquals(cal.get(Calendar.MINUTE), new DateTime(millis).getMinuteOfHour());
-        
+        assertEquals(123L, CalendarConverter.INSTANCE.getInstantMillis(cal, JULIAN));
         assertEquals(123L, cal.getTime().getTime());
     }
 
@@ -177,10 +166,10 @@ public class TestCalendarConverter extends TestCase {
     //-----------------------------------------------------------------------
     public void testGetPartialValues() throws Exception {
         GregorianCalendar cal = new GregorianCalendar();
-        cal.setTime(new Date(70, 2, 3, 4, 5, 6));
+        cal.setTime(new Date(12345678L));
         TimeOfDay tod = new TimeOfDay();
-        int[] expected = new int[] {4, 5, 6, 0};
-        int[] actual = CalendarConverter.INSTANCE.getPartialValues(tod, cal, ISOChronology.getInstance());
+        int[] expected = ISO.get(tod, 12345678L);
+        int[] actual = CalendarConverter.INSTANCE.getPartialValues(tod, cal, ISO);
         assertEquals(true, Arrays.equals(expected, actual));
     }
 

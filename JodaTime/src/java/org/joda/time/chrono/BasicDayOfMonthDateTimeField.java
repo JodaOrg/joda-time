@@ -32,12 +32,12 @@ final class BasicDayOfMonthDateTimeField extends PreciseDurationDateTimeField {
 
     private static final long serialVersionUID = -4677223814028011723L;
 
-    private final BaseGJChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    BasicDayOfMonthDateTimeField(BaseGJChronology chronology, DurationField days) {
+    BasicDayOfMonthDateTimeField(BasicChronology chronology, DurationField days) {
         super(DateTimeFieldType.dayOfMonth(), days);
         iChronology = chronology;
     }

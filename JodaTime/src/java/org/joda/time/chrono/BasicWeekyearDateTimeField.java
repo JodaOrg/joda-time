@@ -35,12 +35,12 @@ final class BasicWeekyearDateTimeField extends ImpreciseDateTimeField {
 
     private static final long WEEK_53 = (53L - 1) * DateTimeConstants.MILLIS_PER_WEEK;
 
-    private final BaseGJChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor
      */
-    BasicWeekyearDateTimeField(BaseGJChronology chronology) {
+    BasicWeekyearDateTimeField(BasicChronology chronology) {
         super(DateTimeFieldType.weekyear(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }

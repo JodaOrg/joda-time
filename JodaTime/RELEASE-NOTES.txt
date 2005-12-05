@@ -23,8 +23,11 @@ Source compatible - Yes
   - v1.1 and v1.2 are source compatible in their public and protected API
 
 Serialization compatible - Yes
+  - Chronology serialization has changed, however the two formats are compatible
+  - v1.1 did not serialize the Chronology minimum days in first week field properly, v1.2 does
 
 Data compatible - Yes
+  - DateTimeZone data updated to 2005o
 
 
 Deprecations since 1.1
@@ -64,6 +67,10 @@ Bug fixes since 1.1
 
 - ZonedChronology
   Fixed getting text values for fields from getAs[Short]Text(int value, Locale locale).
+
+- Gregorian, Julian, GJ and Coptic
+  These Chronology classes did not correctly store the minimum days in first week
+  during serialization
 
 - DateTimeFormatter
   Fixed printing of time zone name near DST transition.

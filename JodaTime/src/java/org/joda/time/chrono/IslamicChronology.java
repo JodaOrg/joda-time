@@ -63,7 +63,7 @@ import org.joda.time.DateTimeZone;
  * @author Stephen Colebourne
  * @since 1.2
  */
-public final class IslamicChronology extends BaseGJChronology {
+public final class IslamicChronology extends BasicChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = -3663823829888L;

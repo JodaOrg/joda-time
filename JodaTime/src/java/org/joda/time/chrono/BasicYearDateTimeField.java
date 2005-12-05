@@ -34,14 +34,14 @@ class BasicYearDateTimeField extends ImpreciseDateTimeField {
     private static final long serialVersionUID = -98628754872287L;
 
     /** The underlying basic chronology. */
-    protected final BaseGJChronology iChronology;
+    protected final BasicChronology iChronology;
 
     /**
      * Restricted constructor.
      * 
      * @param chronology  the chronology this field belogs to
      */
-    BasicYearDateTimeField(BaseGJChronology chronology) {
+    BasicYearDateTimeField(BasicChronology chronology) {
         super(DateTimeFieldType.year(), chronology.getAverageMillisPerYear());
         iChronology = chronology;
     }

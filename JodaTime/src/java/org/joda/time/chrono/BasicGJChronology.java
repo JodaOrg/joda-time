@@ -31,7 +31,7 @@ import org.joda.time.DateTimeConstants;
  * @author Guy Allard
  * @since 1.2, refactored from CommonGJChronology
  */
-abstract class BasicGJChronology extends BaseGJChronology {
+abstract class BasicGJChronology extends BasicChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 538276888268L;

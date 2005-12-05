@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -213,6 +214,12 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, true);
     }
 
+    public void testSerializedGJChronologyChangedInternals() throws Exception {
+        GJChronology test = GJChronology.getInstance(PARIS, 123L, 2);
+        loadAndCompare(test, "GJChronologyChangedInternals.dat", true);
+        inlineCompare(test, true);
+    }
+
     public void testSerializedGregorianChronology() throws Exception {
         GregorianChronology test = GregorianChronology.getInstance(PARIS);
         loadAndCompare(test, "GregorianChronology.dat", true);
@@ -347,6 +354,12 @@ public class TestSerialization extends TestCase {
 //        store(test, "GJChronology.dat");
 //    }
 //
+//    // Format changed in v1.2 - min days in first week not deserialized in v1.0/1.1
+//    public void testStoreSerializedGJChronologyChangedInternals() throws Exception {
+//        GJChronology test = GJChronology.getInstance(PARIS, 123L, 2);
+//        store(test, "GJChronologyChangedInternals.dat");
+//    }
+//
 //    public void testStoreSerializedGregorianChronology() throws Exception {
 //        GregorianChronology test = GregorianChronology.getInstance(PARIS);
 //        store(test, "GregorianChronology.dat");
@@ -415,15 +428,15 @@ public class TestSerialization extends TestCase {
 //        store(test, "DateMidnightProperty.dat");
 //    }
 
-//    private void store(Serializable test, String filename) throws Exception {
-//        FileOutputStream fos = new FileOutputStream("src/testdata/" + filename);
-//        ObjectOutputStream oos = new ObjectOutputStream(fos);
-//        try {
-//            oos.writeObject(test);
-//        } finally {
-//            oos.close();
-//        }
-//        oos.close();
-//    }
-//
+    private void store(Serializable test, String filename) throws Exception {
+        FileOutputStream fos = new FileOutputStream("src/testdata/" + filename);
+        ObjectOutputStream oos = new ObjectOutputStream(fos);
+        try {
+            oos.writeObject(test);
+        } finally {
+            oos.close();
+        }
+        oos.close();
+    }
+
 }

@@ -171,9 +171,11 @@ public final class CopticChronology extends BasicFixedMonthChronology {
      */
     private Object readResolve() {
         Chronology base = getBase();
+        int minDays = getMinimumDaysInFirstWeek();
+        minDays = (minDays == 0 ? 4 : minDays);  // handle rename of BaseGJChronology
         return base == null ?
-                getInstance(DateTimeZone.UTC, getMinimumDaysInFirstWeek()) :
-                    getInstance(base.getZone(), getMinimumDaysInFirstWeek());
+                getInstance(DateTimeZone.UTC, minDays) :
+                    getInstance(base.getZone(), minDays);
     }
 
     // Conversion

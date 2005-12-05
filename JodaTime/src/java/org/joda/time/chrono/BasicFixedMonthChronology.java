@@ -32,7 +32,7 @@ import org.joda.time.DateTimeConstants;
  * @author Stephen Colebourne
  * @since 1.2, refactored from CopticChronology
  */
-abstract class BasicFixedMonthChronology extends BaseGJChronology {
+abstract class BasicFixedMonthChronology extends BasicChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 261387371998L;

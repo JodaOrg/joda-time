@@ -39,15 +39,15 @@ import org.joda.time.field.RemainderDateTimeField;
  * Most of the utility methods required by subclasses are package-private,
  * reflecting the intention that they be defined in the same package.
  * <p>
- * BaseGJChronology is thread-safe and immutable, and all subclasses must
+ * BasicChronology is thread-safe and immutable, and all subclasses must
  * be as well.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @author Guy Allard
- * @since 1.0
+ * @since 1.2, renamed from BaseGJChronology
  */
-abstract class BaseGJChronology extends AssembledChronology {
+abstract class BasicChronology extends AssembledChronology {
 
     /** Serialization lock */
     private static final long serialVersionUID = 8283225332206808863L;
@@ -127,7 +127,7 @@ abstract class BaseGJChronology extends AssembledChronology {
 
     private final int iMinDaysInFirstWeek;
 
-    BaseGJChronology(Chronology base, Object param, int minDaysInFirstWeek) {
+    BasicChronology(Chronology base, Object param, int minDaysInFirstWeek) {
         super(base, param);
 
         if (minDaysInFirstWeek < 1 || minDaysInFirstWeek > 7) {

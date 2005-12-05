@@ -36,12 +36,12 @@ final class GJDayOfWeekDateTimeField extends PreciseDurationDateTimeField {
     /** Serialization version */
     private static final long serialVersionUID = -3857947176719041436L;
 
-    private final BaseGJChronology iChronology;
+    private final BasicChronology iChronology;
 
     /**
      * Restricted constructor.
      */
-    GJDayOfWeekDateTimeField(BaseGJChronology chronology, DurationField days) {
+    GJDayOfWeekDateTimeField(BasicChronology chronology, DurationField days) {
         super(DateTimeFieldType.dayOfWeek(), days);
         iChronology = chronology;
     }

@@ -33,7 +33,7 @@ final class GJMonthOfYearDateTimeField extends BasicMonthOfYearDateTimeField {
     /**
      * Restricted constructor
      */
-    GJMonthOfYearDateTimeField(BaseGJChronology chronology) {
+    GJMonthOfYearDateTimeField(BasicChronology chronology) {
         super(chronology, 2);
     }
 

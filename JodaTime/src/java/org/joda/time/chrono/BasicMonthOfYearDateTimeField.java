@@ -36,7 +36,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
 
     private static final int MIN = DateTimeConstants.JANUARY;
 
-    private final BaseGJChronology iChronology;
+    private final BasicChronology iChronology;
     private final int iMax;
     private final int iLeapMonth;
 
@@ -45,7 +45,7 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
      * 
      * @param leapMonth the month of year that leaps
      */
-    BasicMonthOfYearDateTimeField(BaseGJChronology chronology, int leapMonth) {
+    BasicMonthOfYearDateTimeField(BasicChronology chronology, int leapMonth) {
         super(DateTimeFieldType.monthOfYear(), chronology.getAverageMillisPerMonth());
         iChronology = chronology;
         iMax = iChronology.getMaxMonth();

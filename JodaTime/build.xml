@@ -28,6 +28,7 @@
 
   <!-- The current version number of this component -->
   <property name="component.version"       value="1.2-dev"/>
+  <property name="previous.version"        value="1.1"/>
 
   <!-- The current version number of this component -->
   <property name="component.fullname"      value="${component.name}-${component.version}"/>
@@ -60,6 +61,7 @@
   <property name="build.fullname"          value="${build}/${component.fullname}"/>
   <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
 
+  <property name="repo" value="${user.home}/.maven/repository" />
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -360,6 +362,18 @@
         </fileset>
       </batchtest>
     </junit>
+  </target>
+
+  <target name="clirr" depends="jar" description="clirr binary compatibility">
+  	<echo message="${repo}/clirr/jars/clirr-core-0.6-uber.jar"></echo>
+    <taskdef classpath="${repo}/clirr/jars/clirr-core-0.6-uber.jar"
+        resource="clirrtask.properties"/>
+
+    <clirr>
+      <origfiles dir="${repo}/${component.name}/jars" includes="${component.name}-${previous.version}.jar"/>
+      <newfiles dir="." includes="${build.fullname}.jar"/>
+      <formatter type="xml" outfile="build/clirr.xml" />
+    </clirr>
   </target>
 
 </project>

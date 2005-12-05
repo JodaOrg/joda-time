@@ -100,6 +100,30 @@ public class TestTimeOfDay_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testFactory_FromCalendarFields() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        TimeOfDay expected = new TimeOfDay(4, 5, 6, 7);
+        assertEquals(expected, TimeOfDay.fromCalendarFields(cal));
+        try {
+            TimeOfDay.fromCalendarFields(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactory_FromDateFields() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        TimeOfDay expected = new TimeOfDay(4, 5, 6, 7);
+        assertEquals(expected, TimeOfDay.fromDateFields(cal.getTime()));
+        try {
+            TimeOfDay.fromDateFields(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Test factory (long)
      */

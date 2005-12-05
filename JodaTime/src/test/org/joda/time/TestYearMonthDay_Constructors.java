@@ -15,7 +15,9 @@
  */
 package org.joda.time;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -77,6 +79,30 @@ public class TestYearMonthDay_Constructors extends TestCase {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactory_FromCalendarFields() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        YearMonthDay expected = new YearMonthDay(1970, 2, 3);
+        assertEquals(expected, YearMonthDay.fromCalendarFields(cal));
+        try {
+            YearMonthDay.fromCalendarFields(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactory_FromDateFields() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        YearMonthDay expected = new YearMonthDay(1970, 2, 3);
+        assertEquals(expected, YearMonthDay.fromDateFields(cal.getTime()));
+        try {
+            YearMonthDay.fromDateFields(null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

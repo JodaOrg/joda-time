@@ -89,6 +89,13 @@ Enhancements since 1.1
 - MutableDateTime.property(DateTimeFieldType)
   Gets the property by type. Complements the method already on DateTime/DateMidnight.
 
+- YearMonthDay.fromCalendarFields()
+- YearMonthDay.fromDateFields()
+- TimeOfDay.fromCalendarFields()
+- TimeOfDay.fromDateFields()
+  New factory methods to create a YearMonthDay/TimeOfDay using exactly the same
+  field values as the JDK objects, thus ignoring time zone effects
+
 - FieldUtils
   Performance optimization when adding by scalars of one or negative one. The
   overflow detecting multiplication skips the multiply and divide check for

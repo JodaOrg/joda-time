@@ -156,7 +156,9 @@ public final class GregorianChronology extends BasicGJChronology {
      */
     private Object readResolve() {
         Chronology base = getBase();
-        return base == null ? getInstanceUTC() : getInstance(base.getZone());
+        return base == null ?
+                getInstance(DateTimeZone.UTC, getMinimumDaysInFirstWeek()) :
+                    getInstance(base.getZone(), getMinimumDaysInFirstWeek());
     }
 
     // Conversion

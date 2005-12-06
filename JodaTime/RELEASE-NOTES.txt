@@ -32,7 +32,7 @@ Serialization compatible - Yes
   - v1.1 did not serialize the Chronology minimum days in first week field properly, v1.2 does
 
 Data compatible - Yes
-  - DateTimeZone data updated to 2005o
+  - DateTimeZone data updated to version 2005p
 
 
 Deprecations since 1.1

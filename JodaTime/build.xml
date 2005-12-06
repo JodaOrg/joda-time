@@ -57,9 +57,11 @@
   <property name="build.tz"                value="${build.classes}/org/joda/time/tz/data"/>
   <property name="build.tests"             value="${build}/tests"/>
   <property name="build.docs"              value="${build}/docs"/>
+  <property name="build.srcide"            value="${build}/srcide"/>
   <property name="build.dist"              value="${build}/dist"/>
   <property name="build.fullname"          value="${build}/${component.fullname}"/>
   <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
+  <property name="build.dist.src.fullname" value="${build.dist.fullname}-src"/>
 
   <property name="repo" value="${user.home}/.maven/repository" />
 
@@ -275,48 +277,76 @@
 
 <!-- ====================================================================== -->
 
-  <target name="dist" depends="compile,jar,test.jar,javadoc"
+  <target name="src.ide.zip">
+    <mkdir      dir="${build.srcide}"/>
+    <copy     todir="${build.srcide}">
+  	  <fileset dir="${source.home}" includes="**/*.java" />
+  	</copy>
+    <mkdir      dir="${build.srcide}/META-INF"/>
+    <copy      file="LICENSE.txt"
+             tofile="${build.srcide}/META-INF/LICENSE.txt"/>
+    <copy      file="NOTICE.txt"
+             tofile="${build.srcide}/META-INF/NOTICE.txt"/>
+    <jar    jarfile="${build.fullname}-src-ide.zip"
+            basedir="${build.srcide}" />
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="dist" depends="compile,jar,test.jar,javadoc,src.ide.zip"
           description="Create binary distribution">
-    <delete     dir="${build.dist.fullname}"/>
-    <mkdir      dir="${build.dist.fullname}"/>
     
 	<!-- binary -->
+    <delete     dir="${build.dist.fullname}"/>
+    <mkdir      dir="${build.dist.fullname}"/>
     <copy      file="LICENSE.txt" todir="${build.dist.fullname}"/>
     <copy      file="NOTICE.txt" todir="${build.dist.fullname}"/>
     <copy      file="RELEASE-NOTES.txt" todir="${build.dist.fullname}"/>
     <copy      file="${build.fullname}.jar"
               todir="${build.dist.fullname}"/>
+    <copy      file="${build.fullname}-src-ide.zip"
+              todir="${build.dist.fullname}"/>
     <copy     todir="${build.dist.fullname}">
       <fileset  dir="${build}" includes="docs/**/*.*"/>
     </copy>
     
+	<fixcrlf srcdir="${build.dist.fullname}" eol="lf" includes="*.txt"/>
 	<tar   destfile="${build.fullname}.tar" basedir="${build.dist}"/>
 	<gzip   zipfile="${build.fullname}.tar.gz" src="${build.fullname}.tar"/>
 	<delete    file="${build.fullname}.tar"/>
-	<fixcrlf srcdir="${build.dist}" eol="crlf" includes="**/*.txt"/>
+	<fixcrlf srcdir="${build.dist.fullname}" eol="crlf" includes="*.txt"/>
 	<zip   destfile="${build.fullname}.zip" basedir="${build.dist}"/>
+    <delete     dir="${build.dist.fullname}"/>
 	
 	<!-- source -->
-	<delete     dir="${build.dist.fullname}/docs"/>
-    <copy     todir="${build.dist.fullname}">
+    <delete     dir="${build.dist.src.fullname}"/>
+    <mkdir      dir="${build.dist.src.fullname}"/>
+    <copy      file="LICENSE.txt" todir="${build.dist.src.fullname}"/>
+    <copy      file="NOTICE.txt" todir="${build.dist.src.fullname}"/>
+    <copy      file="RELEASE-NOTES.txt" todir="${build.dist.src.fullname}"/>
+    <copy      file="${build.fullname}.jar"
+              todir="${build.dist.src.fullname}"/>
+    <copy     todir="${build.dist.src.fullname}">
       <fileset  dir="." includes="${source}/**/*" excludes="CVS/**/*"/>
     </copy>
-    <copy     todir="${build.dist.fullname}">
+    <copy     todir="${build.dist.src.fullname}">
       <fileset  dir="." includes="${xdocs}/**/*" excludes="CVS/**/*"/>
     </copy>
-	<delete     dir="${build.dist.fullname}/src/tzdata"/>
-    <copy      file="build.xml" todir="${build.dist.fullname}"/>
-    <copy      file="maven.xml" todir="${build.dist.fullname}"/>
-    <copy      file="project.xml" todir="${build.dist.fullname}"/>
-    <copy      file="project.properties" todir="${build.dist.fullname}"/>
-    <copy      file="checkstyle.xml" todir="${build.dist.fullname}"/>
-    <copy      file="ToDo.txt" todir="${build.dist.fullname}"/>
+	<delete     dir="${build.dist.src.fullname}/src/tzdata"/>
+    <copy      file="build.xml" todir="${build.dist.src.fullname}"/>
+    <copy      file="maven.xml" todir="${build.dist.src.fullname}"/>
+    <copy      file="project.xml" todir="${build.dist.src.fullname}"/>
+    <copy      file="project.properties" todir="${build.dist.src.fullname}"/>
+    <copy      file="checkstyle.xml" todir="${build.dist.src.fullname}"/>
+    <copy      file="ToDo.txt" todir="${build.dist.src.fullname}"/>
 	
+	<fixcrlf srcdir="${build.dist.src.fullname}" eol="lf" includes="*.txt,*.properties,*.xml"/>
 	<tar   destfile="${build.fullname}-src.tar" basedir="${build.dist}"/>
 	<gzip   zipfile="${build.fullname}-src.tar.gz" src="${build.fullname}-src.tar"/>
 	<delete    file="${build.fullname}-src.tar"/>
-	<fixcrlf srcdir="${build.dist}" eol="crlf" includes="**/*.txt"/>
+	<fixcrlf srcdir="${build.dist.src.fullname}" eol="crlf" includes="*.txt,*.properties,*.xml"/>
 	<zip   destfile="${build.fullname}-src.zip" basedir="${build.dist}"/>
+    <delete     dir="${build.dist.src.fullname}"/>
   </target>
 
 <!-- ====================================================================== -->

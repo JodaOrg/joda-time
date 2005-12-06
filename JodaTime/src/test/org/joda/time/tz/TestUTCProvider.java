@@ -50,7 +50,7 @@ public class TestUTCProvider extends TestCase {
         Class cls = UTCProvider.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
         
-        Constructor con = cls.getDeclaredConstructor(null);
+        Constructor con = cls.getDeclaredConstructor((Class[]) null);
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isPublic(con.getModifiers()));
     }

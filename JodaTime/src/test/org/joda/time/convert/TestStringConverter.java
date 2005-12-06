@@ -93,7 +93,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
         assertEquals(false, Modifier.isPrivate(cls.getModifiers()));
         
-        Constructor con = cls.getDeclaredConstructor(null);
+        Constructor con = cls.getDeclaredConstructor((Class[]) null);
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isProtected(con.getModifiers()));
         

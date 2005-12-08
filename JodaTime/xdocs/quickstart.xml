@@ -96,7 +96,7 @@ Joda-Time uses a pluggable mechanism for calendars. (The JDK uses subclasses
 such as <code>GregorianCalendar</code>.)
 To obtain a Joda-Time calendar, use one of the factory methods on <code>Chronology</code>.
 <source>
-  Chronology coptic = Chronology.getCoptic();
+  Chronology coptic = CopticChronology.getInstance();
 </source>
 </p>
 <p>
@@ -104,7 +104,7 @@ Time zones are implemented as part of the chronology.
 To obtain a Joda-Time chronology in the Tokyo time zone, you can use.
 <source>
   DateTimeZone zone = DateTimeZone.forID("Asia/Tokyo");
-  Chronology gregorianJuian = Chronology.getGJ(zone);
+  Chronology gregorianJuian = GJChronology.getInstance(zone);
 </source>
 </p>
 </subsection>

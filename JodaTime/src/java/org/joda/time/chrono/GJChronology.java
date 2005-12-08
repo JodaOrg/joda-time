@@ -28,6 +28,7 @@ import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
 import org.joda.time.Instant;
 import org.joda.time.ReadableInstant;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.DecoratedDurationField;
 import org.joda.time.format.DateTimeFormatter;
@@ -732,7 +733,15 @@ public final class GJChronology extends AssembledChronology {
             // identical. Choose Julian to tighten up the year limits.
             return iJulianField.getMinimumValue();
         }
-        
+
+        public int getMinimumValue(ReadablePartial partial) {
+            return iJulianField.getMinimumValue(partial);
+        }
+
+        public int getMinimumValue(ReadablePartial partial, int[] values) {
+            return iJulianField.getMinimumValue(partial, values);
+        }
+
         public int getMinimumValue(long instant) {
             if (instant < iCutover) {
                 return iJulianField.getMinimumValue(instant);
@@ -771,6 +780,14 @@ public final class GJChronology extends AssembledChronology {
             }
 
             return max;
+        }
+
+        public int getMaximumValue(ReadablePartial partial) {
+            return iGregorianField.getMaximumValue(partial);
+        }
+
+        public int getMaximumValue(ReadablePartial partial, int[] values) {
+            return iGregorianField.getMaximumValue(partial, values);
         }
 
         public long roundFloor(long instant) {

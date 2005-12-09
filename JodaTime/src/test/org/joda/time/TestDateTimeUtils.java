@@ -30,6 +30,7 @@ import junit.framework.TestSuite;
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -38,6 +39,8 @@ import org.joda.time.chrono.ISOChronology;
  * @author Stephen Colebourne
  */
 public class TestDateTimeUtils extends TestCase {
+
+    private static final GJChronology GJ = GJChronology.getInstance();
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");
@@ -379,6 +382,29 @@ public class TestDateTimeUtils extends TestCase {
         Partial year = new Partial(DateTimeFieldType.year(), 2005);
         assertEquals(true, DateTimeUtils.isContiguous(year));
         Partial hourOfDay = new Partial(DateTimeFieldType.hourOfDay(), 12);
+        assertEquals(true, DateTimeUtils.isContiguous(hourOfDay));
+        Partial yearHour = year.with(DateTimeFieldType.hourOfDay(), 12);
+        assertEquals(false, DateTimeUtils.isContiguous(yearHour));
+        Partial ymdd = new Partial(ymd).with(DateTimeFieldType.dayOfWeek(), 2);
+        assertEquals(false, DateTimeUtils.isContiguous(ymdd));
+        Partial dd = new Partial(DateTimeFieldType.dayOfMonth(), 13).with(DateTimeFieldType.dayOfWeek(), 5);
+        assertEquals(false, DateTimeUtils.isContiguous(dd));
+        
+        try {
+            DateTimeUtils.isContiguous((ReadablePartial) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testIsContiguous_RP_GJChronology() {
+        YearMonthDay ymd = new YearMonthDay(2005, 6, 9, GJ);
+        assertEquals(true, DateTimeUtils.isContiguous(ymd));
+        TimeOfDay tod = new TimeOfDay(12, 20, 30, 0, GJ);
+        assertEquals(true, DateTimeUtils.isContiguous(tod));
+        Partial year = new Partial(DateTimeFieldType.year(), 2005, GJ);
+        assertEquals(true, DateTimeUtils.isContiguous(year));
+        Partial hourOfDay = new Partial(DateTimeFieldType.hourOfDay(), 12, GJ);
         assertEquals(true, DateTimeUtils.isContiguous(hourOfDay));
         Partial yearHour = year.with(DateTimeFieldType.hourOfDay(), 12);
         assertEquals(false, DateTimeUtils.isContiguous(yearHour));

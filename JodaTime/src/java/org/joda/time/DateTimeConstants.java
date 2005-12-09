@@ -69,22 +69,22 @@ public class DateTimeConstants {
     /** Constant (1) representing Monday, the first day of the week (ISO) */
     public static final int MONDAY = 1;
 
-    /** Constant (2) representing Monday, the second day of the week (ISO) */
+    /** Constant (2) representing Tuesday, the second day of the week (ISO) */
     public static final int TUESDAY = 2;
 
-    /** Constant (3) representing Monday, the third day of the week (ISO) */
+    /** Constant (3) representing Wednesday, the third day of the week (ISO) */
     public static final int WEDNESDAY = 3;
 
-    /** Constant (4) representing Monday, the fourth day of the week (ISO) */
+    /** Constant (4) representing Thursday, the fourth day of the week (ISO) */
     public static final int THURSDAY = 4;
 
-    /** Constant (5) representing Monday, the fifth day of the week (ISO) */
+    /** Constant (5) representing Friday, the fifth day of the week (ISO) */
     public static final int FRIDAY = 5;
 
-    /** Constant (6) representing Monday, the sixth day of the week (ISO) */
+    /** Constant (6) representing Saturday, the sixth day of the week (ISO) */
     public static final int SATURDAY = 6;
 
-    /** Constant (7) representing Monday, the seventh day of the week (ISO) */
+    /** Constant (7) representing Sunday, the seventh day of the week (ISO) */
     public static final int SUNDAY = 7;
 
 
@@ -105,8 +105,8 @@ public class DateTimeConstants {
      * <p>
      * All new chronologies with differrent Era values should try to assign
      * eras as follows. The era that was in force at 1970-01-01 (ISO) is assigned
-     * the value 1. Earlier eras are assigned sequentially earlier numbers.
-     * Later eras are assigned sequentially later numbers.
+     * the value 1. Earlier eras are assigned sequentially smaller numbers.
+     * Later eras are assigned sequentially greater numbers.
      */
     public static final int AD = 1;
     /**
@@ -114,8 +114,8 @@ public class DateTimeConstants {
      * <p>
      * All new chronologies with differrent Era values should try to assign
      * eras as follows. The era that was in force at 1970-01-01 (ISO) is assigned
-     * the value 1. Earlier eras are assigned sequentially earlier numbers.
-     * Later eras are assigned sequentially later numbers.
+     * the value 1. Earlier eras are assigned sequentially smaller numbers.
+     * Later eras are assigned sequentially greater numbers.
      */
     public static final int CE = 1;
 

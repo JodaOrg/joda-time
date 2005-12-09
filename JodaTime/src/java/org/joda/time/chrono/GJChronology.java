@@ -637,6 +637,24 @@ public final class GJChronology extends AssembledChronology {
             return iGregorianField.add(instant, value);
         }
 
+        public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+            // overridden as superclass algorithm can't handle
+            // 2004-02-29 + 48 months -> 2008-02-29 type dates
+            if (valueToAdd == 0) {
+                return values;
+            }
+            if (DateTimeUtils.isContiguous(partial)) {
+                long instant = 0L;
+                for (int i = 0, isize = partial.size(); i < isize; i++) {
+                    instant = partial.getFieldType(i).getField(GJChronology.this).set(instant, values[i]);
+                }
+                instant = add(instant, valueToAdd);
+                return GJChronology.this.get(partial, instant);
+            } else {
+                return super.add(partial, fieldIndex, values, valueToAdd);
+            }
+        }
+
         public int getDifference(long minuendInstant, long subtrahendInstant) {
             return iGregorianField.getDifference(minuendInstant, subtrahendInstant);
         }
@@ -783,11 +801,20 @@ public final class GJChronology extends AssembledChronology {
         }
 
         public int getMaximumValue(ReadablePartial partial) {
-            return iGregorianField.getMaximumValue(partial);
+            long instant = GJChronology.getInstanceUTC().set(partial, 0L);
+            return getMaximumValue(instant);
         }
 
         public int getMaximumValue(ReadablePartial partial, int[] values) {
-            return iGregorianField.getMaximumValue(partial, values);
+            Chronology chrono = GJChronology.getInstanceUTC();
+            long instant = 0L;
+            for (int i = 0, isize = partial.size(); i < isize; i++) {
+                DateTimeField field = partial.getFieldType(i).getField(chrono);
+                if (values[i] <= field.getMaximumValue(instant)) {
+                    instant = field.set(instant, values[i]);
+                }
+            }
+            return getMaximumValue(instant);
         }
 
         public long roundFloor(long instant) {

@@ -21,6 +21,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
@@ -29,6 +30,7 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.Instant;
 import org.joda.time.Period;
+import org.joda.time.TimeOfDay;
 import org.joda.time.YearMonthDay;
 
 /**
@@ -409,6 +411,14 @@ public class TestGJChronology extends TestCase {
         testAdd("1582-10-15", DurationFieldType.days(), 10, "1582-10-25");
     }
 
+    public void testYearEndAddDays() {
+        testAdd("1582-11-05", DurationFieldType.days(), 28, "1582-12-03");
+        testAdd("1582-12-05", DurationFieldType.days(), 28, "1583-01-02");
+        
+        testAdd("2005-11-05", DurationFieldType.days(), 28, "2005-12-03");
+        testAdd("2005-12-05", DurationFieldType.days(), 28, "2006-01-02");
+    }
+
     public void testSubtractDays() {
         // This is a test for a bug in version 1.0. The dayOfMonth range
         // duration field did not match the monthOfYear duration field. This
@@ -430,5 +440,35 @@ public class TestGJChronology extends TestCase {
         DurationField field = type.getField(GJChronology.getInstance(DateTimeZone.UTC));
         int diff = field.getDifference(dtEnd.getMillis(), dtStart.getMillis());
         assertEquals(amt, diff);
+        
+        if (type == DurationFieldType.years() ||
+            type == DurationFieldType.months() ||
+            type == DurationFieldType.days()) {
+            YearMonthDay ymdStart = new YearMonthDay(start, GJChronology.getInstance(DateTimeZone.UTC));
+            YearMonthDay ymdEnd = new YearMonthDay(end, GJChronology.getInstance(DateTimeZone.UTC));
+            assertEquals(ymdEnd, ymdStart.withFieldAdded(type, amt));
+            assertEquals(ymdStart, ymdEnd.withFieldAdded(type, -amt));
+        }
     }
+
+    public void testTimeOfDayAdd() {
+        TimeOfDay start = new TimeOfDay(12, 30, GJChronology.getInstance());
+        TimeOfDay end = new TimeOfDay(10, 30, GJChronology.getInstance());
+        assertEquals(end, start.plusHours(22));
+        assertEquals(start, end.minusHours(22));
+        assertEquals(end, start.plusMinutes(22 * 60));
+        assertEquals(start, end.minusMinutes(22 * 60));
+    }
+
+    public void testMaximumValue() {
+        DateMidnight dt = new DateMidnight(1570, 1, 1, GJChronology.getInstance());
+        while (dt.getYear() < 1590) {
+            dt = dt.plusDays(1);
+            YearMonthDay ymd = dt.toYearMonthDay();
+            assertEquals(dt.year().getMaximumValue(), ymd.year().getMaximumValue());
+            assertEquals(dt.monthOfYear().getMaximumValue(), ymd.monthOfYear().getMaximumValue());
+            assertEquals(dt.dayOfMonth().getMaximumValue(), ymd.dayOfMonth().getMaximumValue());
+        }
+    }
+
 }

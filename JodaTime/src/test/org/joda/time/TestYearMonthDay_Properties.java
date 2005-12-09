@@ -27,8 +27,6 @@ import junit.framework.TestSuite;
  */
 public class TestYearMonthDay_Properties extends TestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
@@ -481,9 +479,9 @@ public class TestYearMonthDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    private void check(YearMonthDay test, int hour, int min, int sec) {
-        assertEquals(hour, test.getYear());
-        assertEquals(min, test.getMonthOfYear());
-        assertEquals(sec, test.getDayOfMonth());
+    private void check(YearMonthDay test, int year, int month, int day) {
+        assertEquals(year, test.getYear());
+        assertEquals(month, test.getMonthOfYear());
+        assertEquals(day, test.getDayOfMonth());
     }
 }

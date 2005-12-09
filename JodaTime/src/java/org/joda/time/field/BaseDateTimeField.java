@@ -316,7 +316,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
                 }
                 nextField = instant.getField(fieldIndex - 1);
                 // test only works if this field is UTC (ie. local)
-                if (getRangeDurationField() != nextField.getDurationField()) {
+                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
                     throw new IllegalArgumentException("Fields invalid for add");
                 }
             }
@@ -336,7 +336,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
                     throw new IllegalArgumentException("Maximum value exceeded for add");
                 }
                 nextField = instant.getField(fieldIndex - 1);
-                if (getRangeDurationField() != nextField.getDurationField()) {
+                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
                     throw new IllegalArgumentException("Fields invalid for add");
                 }
             }
@@ -399,7 +399,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
                 }
                 nextField = instant.getField(fieldIndex - 1);
                 // test only works if this field is UTC (ie. local)
-                if (getRangeDurationField() != nextField.getDurationField()) {
+                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
                     throw new IllegalArgumentException("Fields invalid for add");
                 }
             }
@@ -421,7 +421,7 @@ public abstract class BaseDateTimeField extends DateTimeField {
                     continue;
                 }
                 nextField = instant.getField(fieldIndex - 1);
-                if (getRangeDurationField() != nextField.getDurationField()) {
+                if (getRangeDurationField().getType() != nextField.getDurationField().getType()) {
                     throw new IllegalArgumentException("Fields invalid for add");
                 }
             }

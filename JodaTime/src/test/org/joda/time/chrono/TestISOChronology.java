@@ -21,11 +21,18 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.Partial;
+import org.joda.time.TimeOfDay;
+import org.joda.time.YearMonthDay;
 
 /**
  * This class is a Junit unit test for ISOChronology.
@@ -310,6 +317,88 @@ public class TestISOChronology extends TestCase {
             chrono.year().get(Long.MIN_VALUE);
             fail();
         } catch (ArithmeticException e) {
+        }
+    }
+
+    public void testCutoverAddYears() {
+        testAdd("1582-01-01", DurationFieldType.years(), 1, "1583-01-01");
+        testAdd("1582-02-15", DurationFieldType.years(), 1, "1583-02-15");
+        testAdd("1582-02-28", DurationFieldType.years(), 1, "1583-02-28");
+        testAdd("1582-03-01", DurationFieldType.years(), 1, "1583-03-01");
+        testAdd("1582-09-30", DurationFieldType.years(), 1, "1583-09-30");
+        testAdd("1582-10-01", DurationFieldType.years(), 1, "1583-10-01");
+        testAdd("1582-10-04", DurationFieldType.years(), 1, "1583-10-04");
+        testAdd("1582-10-15", DurationFieldType.years(), 1, "1583-10-15");
+        testAdd("1582-10-16", DurationFieldType.years(), 1, "1583-10-16");
+        testAdd("1580-01-01", DurationFieldType.years(), 4, "1584-01-01");
+        testAdd("1580-02-29", DurationFieldType.years(), 4, "1584-02-29");
+        testAdd("1580-10-01", DurationFieldType.years(), 4, "1584-10-01");
+        testAdd("1580-10-10", DurationFieldType.years(), 4, "1584-10-10");
+        testAdd("1580-10-15", DurationFieldType.years(), 4, "1584-10-15");
+        testAdd("1580-12-31", DurationFieldType.years(), 4, "1584-12-31");
+    }
+
+    public void testAddMonths() {
+        testAdd("1582-01-01", DurationFieldType.months(), 1, "1582-02-01");
+        testAdd("1582-01-01", DurationFieldType.months(), 6, "1582-07-01");
+        testAdd("1582-01-01", DurationFieldType.months(), 12, "1583-01-01");
+        testAdd("1582-11-15", DurationFieldType.months(), 1, "1582-12-15");
+        testAdd("1582-09-04", DurationFieldType.months(), 2, "1582-11-04");
+        testAdd("1582-09-05", DurationFieldType.months(), 2, "1582-11-05");
+        testAdd("1582-09-10", DurationFieldType.months(), 2, "1582-11-10");
+        testAdd("1582-09-15", DurationFieldType.months(), 2, "1582-11-15");
+        testAdd("1580-01-01", DurationFieldType.months(), 48, "1584-01-01");
+        testAdd("1580-02-29", DurationFieldType.months(), 48, "1584-02-29");
+        testAdd("1580-10-01", DurationFieldType.months(), 48, "1584-10-01");
+        testAdd("1580-10-10", DurationFieldType.months(), 48, "1584-10-10");
+        testAdd("1580-10-15", DurationFieldType.months(), 48, "1584-10-15");
+        testAdd("1580-12-31", DurationFieldType.months(), 48, "1584-12-31");
+    }
+
+    private void testAdd(String start, DurationFieldType type, int amt, String end) {
+        DateTime dtStart = new DateTime(start, ISOChronology.getInstanceUTC());
+        DateTime dtEnd = new DateTime(end, ISOChronology.getInstanceUTC());
+        assertEquals(dtEnd, dtStart.withFieldAdded(type, amt));
+        assertEquals(dtStart, dtEnd.withFieldAdded(type, -amt));
+
+        DurationField field = type.getField(ISOChronology.getInstanceUTC());
+        int diff = field.getDifference(dtEnd.getMillis(), dtStart.getMillis());
+        assertEquals(amt, diff);
+        
+        if (type == DurationFieldType.years() ||
+            type == DurationFieldType.months() ||
+            type == DurationFieldType.days()) {
+            YearMonthDay ymdStart = new YearMonthDay(start, ISOChronology.getInstanceUTC());
+            YearMonthDay ymdEnd = new YearMonthDay(end, ISOChronology.getInstanceUTC());
+            assertEquals(ymdEnd, ymdStart.withFieldAdded(type, amt));
+            assertEquals(ymdStart, ymdEnd.withFieldAdded(type, -amt));
+        }
+    }
+
+    public void testTimeOfDayAdd() {
+        TimeOfDay start = new TimeOfDay(12, 30);
+        TimeOfDay end = new TimeOfDay(10, 30);
+        assertEquals(end, start.plusHours(22));
+        assertEquals(start, end.minusHours(22));
+        assertEquals(end, start.plusMinutes(22 * 60));
+        assertEquals(start, end.minusMinutes(22 * 60));
+    }
+
+    public void testPartialDayOfYearAdd() {
+        Partial start = new Partial().with(DateTimeFieldType.year(), 2000).with(DateTimeFieldType.dayOfYear(), 366);
+        Partial end = new Partial().with(DateTimeFieldType.year(), 2004).with(DateTimeFieldType.dayOfYear(), 366);
+        assertEquals(end, start.withFieldAdded(DurationFieldType.days(), 365 + 365 + 365 + 366));
+        assertEquals(start, end.withFieldAdded(DurationFieldType.days(), -(365 + 365 + 365 + 366)));
+    }
+
+    public void testMaximumValue() {
+        DateMidnight dt = new DateMidnight(1570, 1, 1);
+        while (dt.getYear() < 1590) {
+            dt = dt.plusDays(1);
+            YearMonthDay ymd = dt.toYearMonthDay();
+            assertEquals(dt.year().getMaximumValue(), ymd.year().getMaximumValue());
+            assertEquals(dt.monthOfYear().getMaximumValue(), ymd.monthOfYear().getMaximumValue());
+            assertEquals(dt.dayOfMonth().getMaximumValue(), ymd.dayOfMonth().getMaximumValue());
         }
     }
 

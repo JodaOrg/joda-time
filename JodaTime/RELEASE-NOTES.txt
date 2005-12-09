@@ -80,6 +80,10 @@ Bug fixes since 1.1
 - DateTimeFormatter
   Fixed printing of time zone name near DST transition.
 
+- YearMonthDay
+  Fixed addition where date starts on a leap day
+  Fixed addition in the GJChronology
+
 
 Enhancements since 1.1
 ----------------------

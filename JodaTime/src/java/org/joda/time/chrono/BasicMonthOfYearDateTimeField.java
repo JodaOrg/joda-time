@@ -17,7 +17,9 @@ package org.joda.time.chrono;
 
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationField;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.ImpreciseDateTimeField;
 
@@ -195,6 +197,25 @@ class BasicMonthOfYearDateTimeField extends ImpreciseDateTimeField {
         long datePart =
             iChronology.getYearMonthDayMillis(i_yearToUse, i_monthToUse, dayToUse);
         return datePart + timePart;
+    }
+
+    //-----------------------------------------------------------------------
+    public int[] add(ReadablePartial partial, int fieldIndex, int[] values, int valueToAdd) {
+        // overridden as superclass algorithm can't handle
+        // 2004-02-29 + 48 months -> 2008-02-29 type dates
+        if (valueToAdd == 0) {
+            return values;
+        }
+        if (DateTimeUtils.isContiguous(partial)) {
+            long instant = 0L;
+            for (int i = 0, isize = partial.size(); i < isize; i++) {
+                instant = partial.getFieldType(i).getField(iChronology).set(instant, values[i]);
+            }
+            instant = add(instant, valueToAdd);
+            return iChronology.get(partial, instant);
+        } else {
+            return super.add(partial, fieldIndex, values, valueToAdd);
+        }
     }
 
     //-----------------------------------------------------------------------

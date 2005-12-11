@@ -1,7 +1,7 @@
 Extension-Name: @name@
 Specification-Title: Joda Time
 Specification-Vendor: Joda.org
-Specification-Version: 1.1
+Specification-Version: @version@
 Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time
 Implementation-Version: @version@

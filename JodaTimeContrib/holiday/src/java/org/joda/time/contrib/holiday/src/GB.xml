@@ -37,182 +37,181 @@
       <weekendStart>6</weekendStart>
       <weekendEnd>7</weekendEnd>
     </week>
-    <days type="Named">
-      <day type="NewYear">
-        <name lang="en">New Year's Day</name>
-        <dayRule monthOfYear="1" dayOfMonth="1" />
-      </day>
-      <day type="ValentinesDay">
-        <name lang="en">Valentines Day</name>
-        <dayRule monthOfYear="2" dayOfMonth="14" />
-      </day>
-      <day type="ShroveTuesday">
-        <name lang="en">Shrove Tuesday</name>
-        <dayRule basedOn="GregorianEaster" relativeDays="-47" />
-      </day>
-      <day type="MothersDay">
-        <name lang="en">Mother's Day</name>
-        <dayRule basedOn="GregorianEaster" relativeDays="-21" />
-      </day>
-      <day type="GoodFriday">
-        <name lang="en">Good Friday</name>
-        <dayRule basedOn="GregorianEaster" relativeDays="-2" />
-      </day>
-      <day type="Easter">
-        <name lang="en">Easter</name>
-        <dayRule basedOn="GregorianEaster" />
-      </day>
-      <day type="AprilFoolsDay">
-        <name lang="en">April Fool's Day</name>
-        <dayRule monthOfYear="4" dayOfMonth="1" />
-      </day>
-      <day type="MayDay">
-        <name lang="en">May Day</name>
-        <dayRule monthOfYear="5" dayOfMonth="1" />
-      </day>
-      <day type="Halloween">
-        <name lang="en">Halloween</name>
-        <dayRule monthOfYear="10" dayOfMonth="31" />
-      </day>
-      <day type="GuyFawkesNight">
-        <name lang="en">Guy Fawkes Night</name>
-        <dayRule monthOfYear="11" dayOfMonth="5" />
-      </day>
-      <day type="RemembranceSunday">
-        <name lang="en">Remembrance Sunday</name>
-        <dayRule monthOfYear="11" weekOfMonth="2" dayOfWeek="7" />
-      </day>
-      <day type="RemembranceDay">
-        <name lang="en">Remembrance Day</name>
-        <dayRule monthOfYear="11" dayOfMonth="11" />
-      </day>
-      <day type="ChristmasEve">
-        <name lang="en">Christmas Eve</name>
-        <dayRule monthOfYear="12" dayOfMonth="24" />
-      </day>
-      <day type="ChristmasDay">
-        <name lang="en">Christmas Day</name>
-        <dayRule monthOfYear="12" dayOfMonth="25" />
-      </day>
-      <day type="BoxingDay">
-        <name lang="en">Boxing Day</name>
-        <dayRule monthOfYear="12" dayOfMonth="26" />
-      </day>
-      <day type="NewYearsEve">
-        <name lang="en">New Year's Eve</name>
-        <dayRule monthOfYear="12" dayOfMonth="31" />
-      </day>
-    </days>
-    <days type="Public">
-      <name lang="en">Bank Holiday</name>
-      <day type="GoodFriday">
-        <name lang="en">Good Friday</name>
-        <dayRule fromYear="1871" basedOn="GregorianEaster" relativeDays="-2" />
-      </day>
-      <day type="ChristmasDay">
-        <name lang="en">Christmas Day</name>
-        <dayRule fromYear="1871" monthOfYear="12" dayOfMonth="25" weekendAdjust="NextWeekday" />
-      </day>
-      <day type="MilleniumDay">
-        <name lang="en">Millenium Day</name>
-        <dayRule year="1999" monthOfYear="12" dayOfMonth="31" />
-      </day>
-      <day type="GoldenJubilee">
-        <name lang="en">Golden Jubilee Bank Holiday</name>
-        <dayRule year="2002" monthOfYear="6" dayOfMonth="3" />
-      </day>
-      <day type="RoyalWeddingOfCharlesAndDiana">
-        <name lang="en">Royal Wedding of Charles and Diana</name>
-        <dayRule year="1981" monthOfYear="7" dayOfMonth="29" />
-      </day>
-    </days>
+    <day id="NewYear">
+      <name lang="en">New Year's Day</name>
+      <dayRule monthOfYear="1" dayOfMonth="1" />
+      <holidayRule fromYear="1974" monthOfYear="1" dayOfMonth="1" weekendAdjust="NextWeekday" />
+    </day>
+    <day id="ValentinesDay">
+      <name lang="en">Valentines Day</name>
+      <dayRule monthOfYear="2" dayOfMonth="14" />
+    </day>
+    <day id="ShroveTuesday">
+      <name lang="en">Shrove Tuesday</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="-47" />
+    </day>
+    <day id="AshWednesday">
+      <name lang="en">Ash Wednesday</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="-46" />
+    </day>
+    <day id="MothersDay">
+      <name lang="en">Mother's Day</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="-21" />
+    </day>
+    <day id="MaundyThursday">
+      <name lang="en">Maundy Thursday</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="-3" />
+    </day>
+    <day id="GoodFriday">
+      <name lang="en">Good Friday</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="-2" />
+      <holidayRule fromYear="1871" />
+    </day>
+    <day id="Easter">
+      <name lang="en">Easter</name>
+      <dayRule basedOn="GregorianEaster" />
+    </day>
+    <day id="EasterMonday">
+      <name lang="en">Easter Monday</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="1" />
+    </day>
+    <day id="WhitMonday">
+      <name lang="en">Whit Monday</name>
+      <dayRule basedOn="GregorianEaster" relativeDays="50" />
+    </day>
+    <day id="AprilFoolsDay">
+      <name lang="en">April Fool's Day</name>
+      <dayRule monthOfYear="4" dayOfMonth="1" />
+    </day>
+    <day id="MayDay">
+      <name lang="en">May Day</name>
+      <dayRule monthOfYear="5" dayOfMonth="1" />
+    </day>
+    <day id="EarlyMayBankHoliday">
+      <name lang="en">Early May Bank Holiday</name>
+      <holidayRule fromYear="1978" monthOfYear="5" weekOfMonth="1" dayOfWeek="1" />
+      <holidayRule year="1995" monthOfYear="5" dayOfMonth="8" />
+    </day>
+    <day id="SpringBankHoliday">
+      <name lang="en">Spring Bank Holiday</name>
+      <holidayRule fromYear="1978" monthOfYear="5" weekOfMonth="-1" dayOfWeek="1" />
+      <holidayRule year="2002" monthOfYear="6" dayOfMonth="4" />
+    </day>
+    <day id="SummerBankHoliday">
+      <name lang="en">Summer Bank Holiday</name>
+    </day>
+    <day id="Halloween">
+      <name lang="en">Halloween</name>
+      <dayRule monthOfYear="10" dayOfMonth="31" />
+    </day>
+    <day id="GuyFawkesNight">
+      <name lang="en">Guy Fawkes Night</name>
+      <dayRule monthOfYear="11" dayOfMonth="5" />
+    </day>
+    <day id="RemembranceSunday">
+      <name lang="en">Remembrance Sunday</name>
+      <dayRule monthOfYear="11" weekOfMonth="2" dayOfWeek="7" />
+    </day>
+    <day id="RemembranceDay">
+      <name lang="en">Remembrance Day</name>
+      <dayRule monthOfYear="11" dayOfMonth="11" />
+    </day>
+    <day id="ChristmasEve">
+      <name lang="en">Christmas Eve</name>
+      <dayRule monthOfYear="12" dayOfMonth="24" />
+    </day>
+    <day id="ChristmasDay">
+      <name lang="en">Christmas Day</name>
+      <dayRule monthOfYear="12" dayOfMonth="25" />
+      <holidayRule fromYear="1871" weekendAdjust="NextWeekday" />
+    </day>
+    <day id="BoxingDay">
+      <name lang="en">Boxing Day</name>
+      <dayRule monthOfYear="12" dayOfMonth="26" />
+      <holidayRule fromYear="1974" basedOn="ChristmasDay" relativeDays="1" weekendAdjust="NextWeekday" />
+    </day>
+    <day id="NewYearsEve">
+      <name lang="en">New Year's Eve</name>
+      <dayRule monthOfYear="12" dayOfMonth="31" />
+    </day>
+    <day id="MilleniumDay">
+      <name lang="en">Millenium Day</name>
+      <dayRule year="1999" monthOfYear="12" dayOfMonth="31" />
+    </day>
+    <day id="QueenElizabethGoldenJubilee">
+      <name lang="en">Queen Elizabeth II Golden Jubilee</name>
+      <dayRule year="2002" monthOfYear="6" dayOfMonth="3" />
+    </day>
+    <day id="RoyalWeddingOfCharlesAndDiana">
+      <name lang="en">Royal Wedding of Charles and Diana</name>
+      <dayRule year="1981" monthOfYear="7" dayOfMonth="29" />
+    </day>
   </holiday-information>
   
   <!-- GB/England -->
   <holiday-information id="GB-ENG" base="GB">
-    <days type="Public">
-      <day type="NewYear">
-        <name lang="en">New Year's Day</name>
-        <dayRule fromYear="1974" monthOfYear="1" dayOfMonth="1" weekendAdjust="NextWeekday" />
-      </day>
-      <day type="EasterMonday">
-        <name lang="en">Easter Monday</name>
-        <dayRule fromYear="1871" basedOn="GregorianEaster" relativeDays="1" />
-      </day>
-      <day type="EarlyMay">
-        <name lang="en">Early May Bank Holiday</name>
-        <dayRule fromYear="1978" monthOfYear="5" weekOfMonth="1" dayOfWeek="1" />
-        <dayRule year="1995" monthOfYear="5" dayOfMonth="8" />
-      </day>
-      <day type="WhitMonday">
-        <name lang="en">Whit Monday</name>
-        <dayRule fromYear="1871" toYear="1966" basedOn="GregorianEaster" relativeDays="50" />
-      </day>
-      <day type="Spring">
-        <name lang="en">Spring Bank Holiday</name>
-        <dayRule fromYear="1967" monthOfYear="5" weekOfMonth="-1" dayOfWeek="1" />
-        <dayRule year="2002" monthOfYear="6" dayOfMonth="4" />
-      </day>
-      <day type="Summer">
-        <name lang="en">Summer Bank Holiday</name>
-        <dayRule fromYear="1871" toYear="1964" monthOfYear="8" weekOfMonth="1" dayOfWeek="1" />
-        <dayRule fromYear="1965" monthOfYear="8" weekOfMonth="-1" dayOfWeek="1" />
-      </day>
-      <day type="BoxingDay">
-        <name lang="en">Boxing Day</name>
-        <dayRule fromYear="1871" basedOn="ChristmasDay" relativeDays="1" />
-      </day>
-    </days>
+    <day id="EasterMonday">
+      <holidayRule fromYear="1871" />
+    </day>
+    <day id="WhitMonday">
+      <holidayRule fromYear="1871" toYear="1966" />
+    </day>
+    <day id="StGeorgesDay">
+      <name lang="en">St George's Day</name>
+      <dayRule monthOfYear="4" dayOfMonth="23" />
+    </day>
+    <day id="SpringBankHoliday">
+      <holidayRule fromYear="1967" monthOfYear="5" weekOfMonth="-1" dayOfWeek="1" />
+      <holidayRule year="2002" monthOfYear="6" dayOfMonth="4" />
+    </day>
+    <day id="SummerBankHoliday">
+      <holidayRule fromYear="1871" toYear="1964" monthOfYear="8" weekOfMonth="1" dayOfWeek="1" />
+      <holidayRule fromYear="1965" monthOfYear="8" weekOfMonth="-1" dayOfWeek="1" />
+    </day>
+    <day id="BoxingDay">
+      <holidayRule fromYear="1871" basedOn="ChristmasDay" relativeDays="1" weekendAdjust="NextWeekday" />
+    </day>
   </holiday-information>
-  
+
   <!-- GB/Wales -->
   <holiday-information id="GB-WLS" base="GB-ENG">
+    <day id="StDavidsDay">
+      <name lang="en">St David's Day</name>
+      <dayRule monthOfYear="3" dayOfMonth="1" />
+    </day>
   </holiday-information>
-  
+
   <!-- GB/Scotland -->
   <holiday-information id="GB-SCT" base="GB">
-    <days type="Public">
-      <day type="NewYear">
-        <name lang="en">New Year's Day</name>
-        <dayRule fromYear="1871" monthOfYear="1" dayOfMonth="1" weekendAdjust="NextWeekday" />
-      </day>
-      <day type="Hogmanay">
-        <name lang="en">Hogmanay</name>
-        <dayRule fromYear="1973" basedOn="NewYear" relativeDays="1" />
-      </day>
-      <day type="EarlyMay">
-        <name lang="en">Early May Bank Holiday</name>
-        <dayRule fromYear="1871" monthOfYear="5" weekOfMonth="1" dayOfWeek="1" />
-        <dayRule year="1995" monthOfYear="5" dayOfMonth="8" />
-      </day>
-      <day type="Spring">
-        <name lang="en">Spring Bank Holiday</name>
-        <dayRule fromYear="1978" monthOfYear="5" weekOfMonth="-1" dayOfWeek="1" />
-        <dayRule year="2002" monthOfYear="6" dayOfMonth="4" />
-      </day>
-      <day type="Summer">
-        <name lang="en">Summer Bank Holiday</name>
-        <dayRule fromYear="1871" monthOfYear="8" weekOfMonth="1" dayOfWeek="1" />
-      </day>
-      <day type="BoxingDay">
-        <name lang="en">Boxing Day</name>
-        <dayRule fromYear="1974" basedOn="ChristmasDay" relativeDays="1" />
-      </day>
-    </days>
+    <day id="NewYear">
+      <holidayRule fromYear="1871" weekendAdjust="NextWeekday" />
+      <holidayRule fromYear="1973" weekendAdjust="NextWeekday" duration="P2D" />
+    </day>
+    <day id="EarlyMayBankHoliday">
+      <holidayRule fromYear="1871" monthOfYear="5" weekOfMonth="1" dayOfWeek="1" />
+      <holidayRule year="1995" monthOfYear="5" dayOfMonth="8" />
+    </day>
+    <day id="SummerBankHoliday">
+      <holidayRule fromYear="1871" monthOfYear="8" weekOfMonth="1" dayOfWeek="1" />
+    </day>
+    <day id="StAndrewsDay">
+      <name lang="en">St Andrew's Day</name>
+      <dayRule monthOfYear="11" dayOfMonth="30" />
+    </day>
   </holiday-information>
-  
+
   <!-- GB/NorthernIreland -->
   <holiday-information id="GB-NIR" base="GB-ENG">
-    <days type="Public">
-      <day type="StPatricksDay">
-        <name lang="en">St Patrick's Day</name>
-        <dayRule fromYear="1903" monthOfYear="3" dayOfMonth="17" weekendAdjust="NextWeekday" />
-      </day>
-      <day type="BattleOfTheBoyne">
-        <name lang="en">Battle of the Boyne</name>
-        <dayRule fromYear="1926" monthOfYear="7" dayOfMonth="12" weekendAdjust="NextWeekday" />
-      </day>
-    </days>
+    <day id="StPatricksDay">
+      <name lang="en">St Patrick's Day</name>
+      <dayRule monthOfYear="3" dayOfMonth="17" />
+      <holidayRule fromYear="1903" weekendAdjust="NextWeekday" />
+    </day>
+    <day id="BattleOfTheBoyne">
+      <name lang="en">Battle of the Boyne</name>
+      <dayRule monthOfYear="7" dayOfMonth="12" />
+      <holidayRule fromYear="1926" weekendAdjust="NextWeekday" />
+    </day>
   </holiday-information>
 
 </joda-holiday-information>

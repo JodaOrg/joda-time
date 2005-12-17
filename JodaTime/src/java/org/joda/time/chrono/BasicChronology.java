@@ -699,7 +699,7 @@ abstract class BasicChronology extends AssembledChronology {
      * defined as:
      * <pre>
      *    yearAtEpoch * averageMillisPerYear + millisOfYearAtEpoch
-     * <pre>
+     * </pre>
      * where epoch is 1970-01-01 (Gregorian).
      */
     abstract long getApproxMillisAtEpoch();

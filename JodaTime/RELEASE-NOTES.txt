@@ -78,11 +78,14 @@ Bug fixes since 1.1
   during serialization
 
 - DateTimeFormatter
-  Fixed printing of time zone name near DST transition.
+  Fixed printing of time zone name near DST transition
 
 - YearMonthDay
   Fixed addition where date starts on a leap day
   Fixed addition in the GJChronology
+
+- DateTimeFormat
+  Pattern letter 'K' was using the wrong underlying implementation
 
 
 Enhancements since 1.1

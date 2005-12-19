@@ -116,6 +116,7 @@ import org.joda.time.ReadablePartial;
  * are as well.
  *
  * @author Brian S O'Neill
+ * @author Maxim Zhao
  * @since 1.0
  * @see ISODateTimeFormat
  * @see DateTimeFormatterBuilder
@@ -462,11 +463,20 @@ public class DateTimeFormat {
             case 'd': // day of month (number)
                 builder.appendDayOfMonth(tokenLen);
                 break;
-            case 'h': // hour of day (number, 1..12)
+            case 'a': // am/pm marker (text)
+                builder.appendHalfdayOfDayText();
+                break;
+            case 'h': // clockhour of halfday (number, 1..12)
                 builder.appendClockhourOfHalfday(tokenLen);
                 break;
             case 'H': // hour of day (number, 0..23)
                 builder.appendHourOfDay(tokenLen);
+                break;
+            case 'k': // clockhour of day (1..24)
+                builder.appendClockhourOfDay(tokenLen);
+                break;
+            case 'K': // hour of halfday (0..11)
+                builder.appendHourOfHalfday(tokenLen);
                 break;
             case 'm': // minute of hour (number)
                 builder.appendMinuteOfHour(tokenLen);
@@ -492,15 +502,6 @@ public class DateTimeFormat {
                 break;
             case 'w': // week of weekyear (number)
                 builder.appendWeekOfWeekyear(tokenLen);
-                break;
-            case 'a': // am/pm marker (text)
-                builder.appendHalfdayOfDayText();
-                break;
-            case 'k': // hour of day (1..24)
-                builder.appendClockhourOfDay(tokenLen);
-                break;
-            case 'K': // hour of day (0..11)
-                builder.appendClockhourOfHalfday(tokenLen);
                 break;
             case 'z': // time zone (text)
                 if (tokenLen >= 4) {

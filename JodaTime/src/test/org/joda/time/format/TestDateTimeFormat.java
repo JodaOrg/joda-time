@@ -644,6 +644,9 @@ public class TestDateTimeFormat extends TestCase {
         
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "7", f.print(dt));
+        
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
+        assertEquals(dt.toString(), "0", f.print(dt));
     }
 
     //-----------------------------------------------------------------------
@@ -657,6 +660,9 @@ public class TestDateTimeFormat extends TestCase {
         
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "7", f.print(dt));
+        
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
+        assertEquals(dt.toString(), "12", f.print(dt));
     }
 
     //-----------------------------------------------------------------------
@@ -670,6 +676,9 @@ public class TestDateTimeFormat extends TestCase {
         
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "19", f.print(dt));
+        
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
+        assertEquals(dt.toString(), "0", f.print(dt));
     }
 
     //-----------------------------------------------------------------------
@@ -683,6 +692,9 @@ public class TestDateTimeFormat extends TestCase {
         
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "19", f.print(dt));
+        
+        dt = new DateTime(2004, 6, 9, 0, 0, 0, 0, UTC);
+        assertEquals(dt.toString(), "24", f.print(dt));
     }
 
     //-----------------------------------------------------------------------

@@ -2,11 +2,11 @@
 <!-- You are strongly recommended to use ant for compiling and building -->
 <!-- We only use and test maven for website construction -->
 
-<maven:project xmlns:maven="http://maven.apache.org/maven-v3_0_0.xsd">
+<project>
   <pomVersion>3</pomVersion>
-  <id>joda-time</id>
-  <name>Joda time</name>
   <groupId>joda-time</groupId>
+  <artifactId>joda-time</artifactId>
+  <name>Joda time</name>
   <currentVersion>1.2-dev</currentVersion>
   <organization>
     <name>Joda.org</name>
@@ -197,4 +197,4 @@
      <!--report>maven-tasklist-plugin</report-->
   </reports>
 
-</maven:project>
+</project>

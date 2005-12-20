@@ -1,10 +1,10 @@
-# @(#)systemv	7.4
+# @(#)systemv	7.5
 
 # Old rules, should the need arise.
 # No attempt is made to handle Newfoundland, since it cannot be expressed
 # using the System V "TZ" scheme (half-hour offset), or anything outside
 # North America (no support for non-standard DST start/end dates), nor
-# the change in the DST rules in the US in 1987 (which occurred before
+# the changes in the DST rules in the US after 1976 (which occurred after
 # the old rules were written).
 #
 # If you need the old rules, uncomment ## lines.

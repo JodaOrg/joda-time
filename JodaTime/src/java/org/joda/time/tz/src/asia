@@ -1,4 +1,4 @@
-# @(#)asia	7.88
+# @(#)asia	7.89
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -85,7 +85,7 @@ Zone	Asia/Kabul	4:36:48 -	LMT	1890
 # Shanks has Yerevan switching to 3:00 (with Russian DST) in spring 1991,
 # then to 4:00 with no DST in fall 1995, then readopting Russian DST in 1997.
 # Go with Shanks, even when he disagrees with others.  Edgar Der-Danieliantz
-# <edd@AIC.NET> reported (1996-05-04) that Yerevan probably wouldn't use DST
+# reported (1996-05-04) that Yerevan probably wouldn't use DST
 # in 1996, though it did use DST in 1995.  IATA SSIM (1991/1998) reports that
 # Armenia switched from 3:00 to 4:00 in 1998 and observed DST after 1991,
 # but started switching at 3:00s in 1998.

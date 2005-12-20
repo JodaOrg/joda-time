@@ -13,7 +13,7 @@
 <p>
 Time zone data is provided by the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz</a>
 database, otherwise known as the Olson database. The following table shows all the time zones
-supported by Joda-Time, using version 2005p of the tz database. This table can be rebuilt
+supported by Joda-Time, using version 2005q of the tz database. This table can be rebuilt
 by running <code>org.joda.example.time.TimeZoneTable</code>.
 </p>
 <p>

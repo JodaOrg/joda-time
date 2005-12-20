@@ -1,4 +1,4 @@
-# @(#)australasia	7.74
+# @(#)australasia	7.77
 # This file also includes Pacific islands.
 
 # Notes are at the end of this file
@@ -551,9 +551,15 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 
 # Australia
 
-# <a href="http://www.dstc.qut.edu.au/DST/marg/daylight.html">
-# Australia's Daylight Saving Times
-# </a>, by Margaret Turner, summarizes daylight saving issues in Australia.
+# From Paul Eggert (2005-12-08):
+# <a href="http://www.bom.gov.au/climate/averages/tables/dst_times.shtml">
+# Implementation Dates of Daylight Saving Time within Australia
+# </a> summarizes daylight saving issues in Australia.
+
+# From Arthur David Olson (2005-12-12):
+# <a href="http://www.lawlink.nsw.gov.au/lawlink/Corporate/ll_agdinfo.nsf/pages/community_relations_daylight_saving">
+# Lawlink NSW:Daylight Saving in New South Wales
+# </a> covers New South Wales in particular.
 
 # From John Mackin (1991-03-06):
 # We in Australia have _never_ referred to DST as `daylight' time.
@@ -960,17 +966,6 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 #	legislation.  This is very important to understand.
 #	I have researched New South Wales time only...
 
-# From Paul Eggert (1999-09-27):
-# The Information Service of the Australian National Standards Commission
-# <a href="http://www.nsc.gov.au/InfoServ/Ileaflet/il27.htm">
-# Daylight Saving
-# </a> page (1995-04) has an excellent overall history of Australian DST.
-# The Community Relations Division of the NSW Attorney General's Department
-# publishes a history of daylight saving in NSW.  See:
-# <a href="http://www.lawlink.nsw.gov.au/crd.nsf/pages/time2">
-# Lawlink NSW: Daylight Saving in New South Wales
-# </a>
-
 # From Eric Ulevik (1999-05-26):
 # DST will start in NSW on the last Sunday of August, rather than the usual
 # October in 2000.  [See: Matthew Moore,
@@ -1048,7 +1043,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # Lord Howe Island
 
 # From George Shepherd via Simon Woodhead via Robert Elz (1991-03-06):
-# LHI...		[ Courtesy of Pauline Van Winsen.. pauline@Aus ]
+# LHI...		[ Courtesy of Pauline Van Winsen ]
 #					[ Dec 1990 ]
 # Lord Howe Island is located off the New South Wales coast, and is half an
 # hour ahead of NSW time.
@@ -1088,7 +1083,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # From George Shepherd via Simon Woodhead via Robert Elz (1991-03-06):
 # # The Country of New Zealand   (Australia's east island -) Gee they hate that!
 # #				   or is Australia the west island of N.Z.
-# #	[ courtesy of Geoff Tribble.. Geofft@Aus.. Auckland N.Z. ]
+# #	[ courtesy of Geoff Tribble.. Auckland N.Z. ]
 # #				[ Nov 1990 ]
 # ...
 # Rule	NZ      1974    1988	-	Oct	lastSun	2:00	1:00	D

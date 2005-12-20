@@ -1,4 +1,4 @@
-# @(#)southamerica	7.63
+# @(#)southamerica	7.65
 
 # This data is by no means authoritative; if you think you know better,
 # go ahead and edit the file (and please send any changes to
@@ -524,12 +524,6 @@ Rule	Brazil	1997	only	-	Feb	16	 0:00	0	-
 # they bought the wrong times on satellite for coverage of Pope's visit.
 # This year, the ending date of DS was postponed to March 1
 # to help dealing with the shortages of electric power.
-#
-# From Paul Eggert (1998-02-25):
-# <a href="http://churchnet.ucsm.ac.uk/news/files2/news165.htm">
-# Brazil Prepares for Papal Visit
-# </a>,
-# Church Net UK (1997-10-02).
 #
 # Decree 2,317 (1997-09-04), adopted by same states.
 Rule	Brazil	1997	only	-	Oct	 6	 0:00	1:00	S

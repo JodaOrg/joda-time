@@ -260,13 +260,6 @@ public final class TimeOfDay
      * The string format must begin with a 'T' to be recognised, such as 'T10:20'.
      * <p>
      * The chronology used will be derived from the object, defaulting to ISO.
-     * <p>
-     * Note that as from version 1.2, the default converters go to extra
-     * effort to maintain the field values of the input Date or Calendar.
-     * This means that the differences in timezone data between Joda-Time
-     * and each JDK version are now handled correctly. If you just want to
-     * use the milliseconds value without conversion you must use
-     * {@link #TimeOfDay(long, Chronology)}.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid

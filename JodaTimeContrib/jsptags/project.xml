@@ -5,7 +5,7 @@
   <groupId>joda-time</groupId>
   <name>Joda time JSP tags support</name>
   <currentVersion>0.9-dev</currentVersion>
-  <shortDescription>Joda time JSP tags support</shortDescription>
+  <shortDescription>Joda-Time JSP tags support</shortDescription>
   <description>
     Contribution to Joda-Time that adds JSP tags support
   </description>

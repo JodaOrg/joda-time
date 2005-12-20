@@ -126,8 +126,12 @@ public abstract class FormatSupport extends TagSupport {
         String formatted;
         if (value instanceof ReadableInstant) {
             formatted = formatter.print((ReadableInstant) value);
-        } else {
+        } else if (value instanceof ReadablePartial) {
             formatted = formatter.print((ReadablePartial) value);
+        } else {
+            throw new JspException(
+                "value attribute of format tag must be a ReadableInstant or ReadablePartial," +
+                " was: " + value.getClass().getName()); 
         }
 
         if (var != null) {

@@ -7,7 +7,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
   <name>Joda time</name>
-  <currentVersion>1.2-dev</currentVersion>
+  <currentVersion>1.2</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>
@@ -187,7 +187,7 @@
      <report>maven-checkstyle-plugin</report>
      <!-- <report>maven-clover-plugin</report> -->
      <report>maven-jdiff-plugin</report>
-     <report>maven-jcoverage-plugin</report>
+     <!--report>maven-jcoverage-plugin</report-->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>

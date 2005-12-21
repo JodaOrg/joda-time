@@ -1114,6 +1114,7 @@ public final class TimeOfDay
          * The TimeOfDay attached to this property is unchanged by this call.
          *
          * @return a copy of the TimeOfDay with this field set to its maximum
+         * @since 1.2
          */
         public TimeOfDay withMaximumValue() {
             return setCopy(getMaximumValue());
@@ -1126,6 +1127,7 @@ public final class TimeOfDay
          * The TimeOfDay attached to this property is unchanged by this call.
          *
          * @return a copy of the TimeOfDay with this field set to its minimum
+         * @since 1.2
          */
         public TimeOfDay withMinimumValue() {
             return setCopy(getMinimumValue());

@@ -1015,6 +1015,7 @@ public final class YearMonthDay
          * The YearMonthDay attached to this property is unchanged by this call.
          *
          * @return a copy of the YearMonthDay with this field set to its maximum
+         * @since 1.2
          */
         public YearMonthDay withMaximumValue() {
             return setCopy(getMaximumValue());
@@ -1027,6 +1028,7 @@ public final class YearMonthDay
          * The YearMonthDay attached to this property is unchanged by this call.
          *
          * @return a copy of the YearMonthDay with this field set to its minimum
+         * @since 1.2
          */
         public YearMonthDay withMinimumValue() {
             return setCopy(getMinimumValue());

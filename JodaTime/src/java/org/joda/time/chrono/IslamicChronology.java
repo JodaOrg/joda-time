@@ -462,6 +462,8 @@ public final class IslamicChronology extends BasicChronology {
     //-----------------------------------------------------------------------
     /**
      * Opaque object describing a leap year pattern for the Islamic Chronology.
+     *
+     * @since 1.2
      */
     public static class LeapYearPatternType implements Serializable {
         /** Serialization lock */

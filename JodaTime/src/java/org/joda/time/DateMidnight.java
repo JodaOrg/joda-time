@@ -1109,6 +1109,7 @@ public final class DateMidnight
          * The DateMidnight attached to this property is unchanged by this call.
          *
          * @return a copy of the DateMidnight with this field set to its maximum
+         * @since 1.2
          */
         public DateMidnight withMaximumValue() {
             return setCopy(getMaximumValue());
@@ -1121,6 +1122,7 @@ public final class DateMidnight
          * The DateMidnight attached to this property is unchanged by this call.
          *
          * @return a copy of the DateMidnight with this field set to its minimum
+         * @since 1.2
          */
         public DateMidnight withMinimumValue() {
             return setCopy(getMinimumValue());

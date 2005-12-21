@@ -949,6 +949,7 @@ public final class Partial
          * The Partial attached to this property is unchanged by this call.
          *
          * @return a copy of the Partial with this field set to its maximum
+         * @since 1.2
          */
         public Partial withMaximumValue() {
             return setCopy(getMaximumValue());
@@ -961,6 +962,7 @@ public final class Partial
          * The Partial attached to this property is unchanged by this call.
          *
          * @return a copy of the Partial with this field set to its minimum
+         * @since 1.2
          */
         public Partial withMinimumValue() {
             return setCopy(getMinimumValue());

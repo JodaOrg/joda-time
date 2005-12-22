@@ -65,7 +65,7 @@ the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>, whic
 updated several times a year. New Joda-Time releases incorporate all changes
 made to this database. Should the changes be needed earlier, manually updating
 and building Joda-Time is easy.</li>
-<li><b>Calendar support</b>. The library currently provides 6 calendar systems. More
+<li><b>Calendar support</b>. The library currently provides 8 calendar systems. More
 will be added in the future.</li>
 <li><b>Easy interoperability</b>. The library internally uses a millisecond instant
 which is identical to the JDK and similar to other common time representations. This makes

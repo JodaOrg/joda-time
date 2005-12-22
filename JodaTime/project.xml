@@ -185,13 +185,14 @@
      <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
      <report>maven-checkstyle-plugin</report>
+     <!-- <report>maven-findbugs-plugin</report> -->
+     <!-- <report>maven-jdiff-plugin</report> -->
      <!-- <report>maven-clover-plugin</report> -->
-     <report>maven-jdiff-plugin</report>
-     <!--report>maven-jcoverage-plugin</report-->
+     <!-- <report>maven-jcoverage-plugin</report> -->
+     <!-- <report>maven-cobertura-plugin</report> -->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>
-     <!-- <report>maven-jellydoc-plugin</report> -->
      <report>maven-junit-report-plugin</report>
      <report>maven-jxr-plugin</report>
      <report>maven-license-plugin</report>

@@ -31,7 +31,7 @@ You will need a servlet container which supports Servlet 2.4, JSP 2.0, JSTL 1.1.
 One such container is <a href="http://tomcat.apache.org">Tomcat 5</a>.
 </p>
 <p>
-The simplest setup is to copy the joda-time-1.1.jar and joda-time-jsptags-0.8.jar
+The simplest setup is to copy the joda-time-1.2.jar and joda-time-jsptags-1.0.jar
 to the WEB-INF/lib directory of your web application.
 </p>
 <p>

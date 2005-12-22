@@ -28,14 +28,14 @@ Better error message in FormatSupport when object specified is of an incorrect t
 Build
 -----
 
-Build-time dependencies are Joda 1.1, the Servlet 2.4 API, the
+Build-time dependencies are Joda 1.0 or later, the Servlet 2.4 API, the
 JSP 2.0 API, and JSTL 1.1 API. A source build can be achieved from ant or maven.
 
 Setup
 -----
 
 You'll need a servlet container which supports Servlet 2.4, JSP 2.0, JSTL 1.1.
-Copy the joda-time-1.1.jar and joda-time-tags.jar to the WEB-INF/lib directory of
+Copy the joda-time-1.2.jar and joda-time-tags.jar to the WEB-INF/lib directory of
 your web application.  Declare the library as follows in your jsp pages:
 
 <%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags"%>

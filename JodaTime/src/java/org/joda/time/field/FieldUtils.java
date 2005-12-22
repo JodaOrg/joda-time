@@ -47,7 +47,7 @@ public class FieldUtils {
      */
     public static int safeNegate(int value) {
         if (value == Integer.MIN_VALUE) {
-            throw new ArithmeticException("Integer.MIN_VALUE cannoy be negated");
+            throw new ArithmeticException("Integer.MIN_VALUE cannot be negated");
         }
         return -value;
     }

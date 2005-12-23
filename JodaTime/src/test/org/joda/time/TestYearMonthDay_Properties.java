@@ -20,6 +20,8 @@ import java.util.Locale;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.CopticChronology;
+
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
@@ -476,6 +478,40 @@ public class TestYearMonthDay_Properties extends TestCase {
             test1.dayOfMonth().compareTo((ReadableInstant) null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testPropertyEquals() {
+        YearMonthDay test1 = new YearMonthDay(2005, 11, 8);
+        YearMonthDay test2 = new YearMonthDay(2005, 11, 9);
+        YearMonthDay test3 = new YearMonthDay(2005, 11, 8, CopticChronology.getInstanceUTC());
+        assertEquals(false, test1.dayOfMonth().equals(test1.year()));
+        assertEquals(false, test1.dayOfMonth().equals(test1.monthOfYear()));
+        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(false, test1.dayOfMonth().equals(test2.year()));
+        assertEquals(false, test1.dayOfMonth().equals(test2.monthOfYear()));
+        assertEquals(false, test1.dayOfMonth().equals(test2.dayOfMonth()));
+        
+        assertEquals(false, test1.monthOfYear().equals(test1.year()));
+        assertEquals(true, test1.monthOfYear().equals(test1.monthOfYear()));
+        assertEquals(false, test1.monthOfYear().equals(test1.dayOfMonth()));
+        assertEquals(false, test1.monthOfYear().equals(test2.year()));
+        assertEquals(true, test1.monthOfYear().equals(test2.monthOfYear()));
+        assertEquals(false, test1.monthOfYear().equals(test2.dayOfMonth()));
+        
+        assertEquals(false, test1.dayOfMonth().equals(null));
+        assertEquals(false, test1.dayOfMonth().equals("any"));
+        
+        // chrono
+        assertEquals(false, test1.dayOfMonth().equals(test3.dayOfMonth()));
+    }
+
+    public void testPropertyHashCode() {
+        YearMonthDay test1 = new YearMonthDay(2005, 11, 8);
+        YearMonthDay test2 = new YearMonthDay(2005, 11, 9);
+        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
+        assertEquals(false, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+        assertEquals(true, test1.monthOfYear().hashCode() == test1.monthOfYear().hashCode());
+        assertEquals(true, test1.monthOfYear().hashCode() == test2.monthOfYear().hashCode());
     }
 
     //-----------------------------------------------------------------------

@@ -335,6 +335,20 @@ public abstract class AbstractPartialFieldProperty {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets a suitable hashcode for the object.
+     * 
+     * @return the hashcode
+     */
+    public int hashCode() {
+        int hash = 19;
+        hash = 13 * hash + get();
+        hash = 13 * hash + getFieldType().hashCode();
+        hash = 13 * hash + getReadablePartial().getChronology().hashCode();
+        return hash;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Output a debugging string.
      * 
      * @return debugging string

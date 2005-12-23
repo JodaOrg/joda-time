@@ -39,6 +39,8 @@ Bug fixes since 1.2
 - DateTimeFormatterBuilder.MatchingParser
   Previously didn't estimate parsed length correctly
 
+- YearMonthDay/TimeOfDay/Partial.Property
+  Hashcode was not defined
 
 
 Enhancements since 1.2

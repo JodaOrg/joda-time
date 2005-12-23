@@ -36,6 +36,9 @@ Deprecations since 1.2
 
 Bug fixes since 1.2
 -------------------
+- DateTimeFormatterBuilder.MatchingParser
+  Previously didn't estimate parsed length correctly
+
 
 
 Enhancements since 1.2

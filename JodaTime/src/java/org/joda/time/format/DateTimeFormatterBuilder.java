@@ -2444,7 +2444,7 @@ public class DateTimeFormatterBuilder {
                 if (parser != null) {
                     int len = parser.estimateParsedLength();
                     if (len > est) {
-                        len = est;
+                        est = len;
                     }
                 }
             }

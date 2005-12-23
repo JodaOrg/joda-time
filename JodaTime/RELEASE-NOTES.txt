@@ -42,6 +42,9 @@ Bug fixes since 1.2
 - YearMonthDay/TimeOfDay/Partial.Property
   Hashcode was not defined
 
+- FixedDateTimeZone
+  Hashcode was not defined
+
 
 Enhancements since 1.2
 ----------------------

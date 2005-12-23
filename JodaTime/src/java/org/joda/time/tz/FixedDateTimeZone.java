@@ -82,4 +82,9 @@ public final class FixedDateTimeZone extends DateTimeZone {
         }
         return false;
     }
+
+    public int hashCode() {
+        return getID().hashCode() + 37 * iStandardOffset + 31 * iWallOffset;
+    }
+
 }

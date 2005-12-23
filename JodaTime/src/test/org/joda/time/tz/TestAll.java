@@ -37,6 +37,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestUTCProvider.suite());
         suite.addTest(TestBuilder.suite());
         suite.addTest(TestCompiler.suite());
+        suite.addTest(TestFixedDateTimeZone.suite());
         return suite;
     }
 

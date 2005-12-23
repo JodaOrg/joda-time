@@ -12,3 +12,4 @@ lib
 .dj*
 release
 .settings
+*.ser

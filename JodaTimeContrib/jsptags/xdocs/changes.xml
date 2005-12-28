@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+  <properties>
+    <title>Java date and time API - JSP tags - Changes</title>
+    <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+  </properties>
+  <body>
+
+    <!-- types are add, fix, remove, update -->
+    <release version="0.9" date="2005-12-24" description="Pre 1.0 version">
+      <action dev="scolebourne" type="fix" due-to="Robert Stevenson">
+        Better error message when unknown object type passed in.
+      </action>              
+    </release>
+
+    <release version="0.8" date="2005-08-21" description="Initial version">
+      <action dev="jimnewsham" type="add">
+        Initial version.
+      </action>              
+    </release>
+
+  </body>
+</document>

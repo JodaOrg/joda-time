@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <pomVersion>3</pomVersion>
-  <id>joda-time-jsptags</id>
   <groupId>joda-time</groupId>
+  <artifactId>joda-time-jsptags</artifactId>
   <name>Joda time JSP tags support</name>
-  <currentVersion>0.9-dev</currentVersion>
+  <currentVersion>0.9</currentVersion>
   <shortDescription>Joda-Time JSP tags support</shortDescription>
   <description>
     Contribution to Joda-Time that adds JSP tags support
@@ -43,6 +43,7 @@
       <roles>
         <role>Website and Release manager</role>
       </roles>
+      <timezone>0</timezone>
     </developer>
   </developers>
 
@@ -103,7 +104,10 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
+      <properties>
+        <comment>Compatible with v1.0 or later</comment>
+      </properties>
     </dependency>
 
     <dependency>

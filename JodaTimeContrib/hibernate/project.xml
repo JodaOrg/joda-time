@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
   <pomVersion>3</pomVersion>
-  <id>joda-time-hibernate</id>
   <groupId>joda-time</groupId>
-  <name>Joda time Hibernate support</name>
-  <currentVersion>0.8-dev</currentVersion>
+  <artifactId>joda-time-hibernate</artifactId>
+  <name>Joda time JSP tags support</name>
+  <currentVersion>0.8-SNAPSHOT</currentVersion>
   <shortDescription>Joda time Hibernate support</shortDescription>
   <description>
     Contribution to Joda-Time that adds Hibernate support
@@ -13,12 +13,11 @@
   <url>http://joda-time.sourceforge.net/contrib/hibernate</url>
   <logo>/images/jodatime.png</logo>
   <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
-  <inceptionYear>2002</inceptionYear>
+  <inceptionYear>2005</inceptionYear>
   <package>org.joda.time.contrib.hibernate</package>
 
   <siteAddress>shell.sourceforge.net</siteAddress>
   <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</siteDirectory>
-  <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
 
   <licenses>
     <license>
@@ -27,6 +26,15 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <mailingLists>
+    <mailingList>
+      <name>Joda Interest list</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+    </mailingList>
+  </mailingLists>
 
   <organization>
     <name>Joda.org</name>
@@ -39,14 +47,8 @@
     <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/hibernate/</url>
   </repository>
 
-  <mailingLists>
-    <mailingList>
-      <name>Joda Interest list</name>
-      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
-      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
-      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
-    </mailingList>
-  </mailingLists>
+  <versions>
+  </versions>
 
   <developers>
     <developer>
@@ -64,6 +66,7 @@
       <roles>
         <role>Website and Release manager</role>
       </roles>
+      <timezone>0</timezone>
     </developer>
   </developers>
 
@@ -71,7 +74,10 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.0</version>
+      <version>1.2</version>
+      <properties>
+        <comment>Compatible with v1.0 or later</comment>
+      </properties>
     </dependency>
     <dependency>
       <groupId>hibernate</groupId>

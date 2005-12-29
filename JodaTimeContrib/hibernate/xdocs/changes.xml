@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+  <properties>
+    <title>Java date and time API - JSP tags - Changes</title>
+    <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+  </properties>
+  <body>
+
+    <!-- types are add, fix, remove, update -->
+    <release version="0.8" date="2005-12-29" description="Initial version">
+      <action dev="imario" type="add">
+        Initial version.
+      </action>              
+    </release>
+
+  </body>
+</document>

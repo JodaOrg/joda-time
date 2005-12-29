@@ -143,7 +143,7 @@
   <reports>
      <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
-     <report>maven-checkstyle-plugin</report>
+     <!--report>maven-checkstyle-plugin</report-->
      <!-- <report>maven-clover-plugin</report> -->
      <report>maven-jcoverage-plugin</report>
      <report>maven-developer-activity-plugin</report>

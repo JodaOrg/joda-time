@@ -37,8 +37,8 @@ It aims to provide the classes necessary to persist Joda-Time objects.
 <p>
 Various documentation is available:
 <ul>
-<!--<li>The user guide - <a href="userguide.html">user guide</a></li>
-<li>The javadoc for the <a href="api-release/index.html">current release</a></li>-->
+<!--<li>The user guide - <a href="userguide.html">user guide</a></li>-->
+<li>The javadoc for the <a href="api-release/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest CVS</a></li>
 <!--li>A <a href="faq.html">FAQ</a> list</li-->
 <li>The <a href="http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/hibernate">CVS repository</a></li>
@@ -49,13 +49,12 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-None yet.
-<!--<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=xxxx">Release 0.8</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Release 0.8</a>
 is the current latest release.
-This release is a beta release and may have bugs.-->
+This release is a beta release and may have bugs.
 </p>
 <p>
-The dependencies are Joda-Time 1.1 and Hibernate 3.0 (plus associated dependencies).
+The dependencies are Joda-Time 1.0 or later and Hibernate 3.0 (plus associated dependencies).
 We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 </p>
 </section>

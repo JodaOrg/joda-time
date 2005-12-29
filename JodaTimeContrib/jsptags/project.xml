@@ -14,9 +14,18 @@
   <logo>/images/jodatime.png</logo>
   <issueTrackingUrl>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</issueTrackingUrl>
   <inceptionYear>2005</inceptionYear>
+  <package>org.joda.time.contrib.jsptag</package>
 
   <siteAddress>shell.sourceforge.net</siteAddress>
   <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/jsptags</siteDirectory>
+
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <mailingLists>
     <mailingList>
@@ -26,6 +35,30 @@
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
     </mailingList>
   </mailingLists>
+
+  <organization>
+    <name>Joda.org</name>
+    <url>http://www.joda.org</url>
+    <logo>/images/joda.png</logo>
+  </organization>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/jsptags</connection>
+    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/jsptags/</url>
+  </repository>
+
+  <versions>
+    <version>
+      <id>0.8</id>
+      <name>0.8</name>
+      <tag>v0_8_000</tag>
+    </version>
+    <version>
+      <id>0.9</id>
+      <name>0.9</name>
+      <tag>v0_9_000</tag>
+    </version>
+  </versions>
 
   <developers>
     <developer>
@@ -47,33 +80,31 @@
     </developer>
   </developers>
 
-  <licenses>
-    <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-
-  <versions>
-    <version>
-      <id>0.8</id>
-      <name>0.8</name>
-      <tag>v0_8_000</tag>
-    </version>
-  </versions>
-
-  <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/jsptags</connection>
-    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/jsptags/</url>
-  </repository>
-
-  <organization>
-    <name>Joda.org</name>
-    <url>http://www.joda.org</url>
-    <logo>/images/joda.png</logo>
-  </organization>
-  <package>org.joda.time.contrib.jsptag</package>
+  <dependencies>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.2</version>
+      <properties>
+        <comment>Compatible with v1.0 or later</comment>
+      </properties>
+    </dependency>
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4</version>
+    </dependency>
+    <dependency>
+      <groupId>jspapi</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>jstl</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+  </dependencies>
 
   <build>
     <sourceDirectory>src/java</sourceDirectory>
@@ -99,35 +130,6 @@
       </resource>
     </resources>
   </build>
-
-  <dependencies>
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>1.2</version>
-      <properties>
-        <comment>Compatible with v1.0 or later</comment>
-      </properties>
-    </dependency>
-
-    <dependency>
-      <groupId>servletapi</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.4</version>
-    </dependency>
-
-    <dependency>
-      <groupId>jspapi</groupId>
-      <artifactId>jsp-api</artifactId>
-      <version>2.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>jstl</groupId>
-      <artifactId>jstl</artifactId>
-      <version>1.1.2</version>
-    </dependency>
-  </dependencies>
 
   <reports>
      <report>maven-changelog-plugin</report>

@@ -27,8 +27,8 @@ It aims to provide the classes necessary to persist Joda-Time objects.
   &lt;% pageContext.setAttribute("now", new org.joda.time.DateTime()); %&gt;
   <b>&lt;joda:format value="${now}" style="SM" /&gt;</b>
 </source>-->
-<!--Version 0.8 was released on 2005-xxxx -
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=xxxx">Download now</a>-->
+Version 0.8 was released on 2005-12-29 -
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Download now</a>
 </p>
 </section>
 

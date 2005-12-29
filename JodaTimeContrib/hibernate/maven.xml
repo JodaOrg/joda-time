@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    default="java:jar"
+    xmlns:j="jelly:core"
+    xmlns:license="license"
+    xmlns:maven="jelly:maven"
+    xmlns:util="jelly:util"
+    xmlns:ant="jelly:ant">
+
+  <postGoal name="dist:prepare-bin-filesystem">
+    <j:set var="maven.dist.bin.assembly.dir" value="${pom.getPluginContext('maven-dist-plugin').getVariable('maven.dist.bin.assembly.dir')}" />
+    
+    <!-- Copy Files -->
+    <ant:copy todir="${maven.dist.bin.assembly.dir}">
+      <ant:fileset dir=".">
+        <ant:include name="NOTICE.txt"/>
+        <ant:include name="RELEASE-NOTES.txt"/>
+      </ant:fileset>
+    </ant:copy>
+  </postGoal>
+
+  <postGoal name="dist:prepare-src-filesystem">
+    <j:set var="maven.dist.src.assembly.dir" value="${pom.getPluginContext('maven-dist-plugin').getVariable('maven.dist.src.assembly.dir')}" />
+    
+    <!-- Copy Files -->
+    <ant:copy todir="${maven.dist.src.assembly.dir}">
+      <ant:fileset dir=".">
+        <ant:include name="NOTICE.txt"/>
+        <ant:include name="RELEASE-NOTES.txt"/>
+        <ant:include name="checkstyle.xml"/>
+      </ant:fileset>
+    </ant:copy>
+    
+    <!-- Copy Jars -->
+    <ant:copy todir="${maven.dist.src.assembly.dir}">
+      <ant:fileset dir="${maven.build.dir}">
+        <ant:include name="*.jar"/>
+      </ant:fileset>
+    </ant:copy>
+    
+    <!-- Copy XDocs -->
+    <ant:copy todir="${maven.dist.src.assembly.dir}/xdocs">
+      <ant:fileset dir="xdocs" />
+    </ant:copy>
+  </postGoal>
+
+</project>

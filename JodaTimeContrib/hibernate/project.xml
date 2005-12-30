@@ -3,7 +3,7 @@
   <pomVersion>3</pomVersion>
   <groupId>joda-time</groupId>
   <artifactId>joda-time-hibernate</artifactId>
-  <name>Joda time JSP tags support</name>
+  <name>Joda time Hibernate support</name>
   <currentVersion>0.8</currentVersion>
   <shortDescription>Joda time Hibernate support</shortDescription>
   <description>

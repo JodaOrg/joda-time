@@ -180,7 +180,7 @@
     </tstamp>
     <property name="copyright" value="Copyright &amp;copy;  Joda.org. All Rights Reserved.">
     </property>
-    <property name="title" value="Joda time JSP tags support 0.8 API">
+    <property name="title" value="Joda time Hibernate support 0.8 API">
     </property>
     <javadoc use="true" private="true" destdir="${javadocdir}" author="true" version="true" sourcepath="${basedir}/src/java" packagenames="org.joda.time.contrib.hibernate.*">
       <classpath>

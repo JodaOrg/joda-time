@@ -4,7 +4,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time-jsptags</artifactId>
   <name>Joda time JSP tags support</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.1-SNAPSHOT</currentVersion>
   <shortDescription>Joda-Time JSP tags support</shortDescription>
   <description>
     Contribution to Joda-Time that adds JSP tags support
@@ -57,6 +57,11 @@
       <id>0.9</id>
       <name>0.9</name>
       <tag>v0_9_000</tag>
+    </version>
+    <version>
+      <id>1.0</id>
+      <name>1.0</name>
+      <tag>v1_0_000</tag>
     </version>
   </versions>
 

@@ -40,6 +40,11 @@ You then need to declare the library as follows at the top of your jsp pages:
 &lt;%@taglib prefix="joda" uri="http://www.joda.org/joda/time/tags" %&gt;
 </source>
 </p>
+<p>
+In addition to these steps you should ensure that your application is using
+servlet specification 2.4. This is usually controlled by the web.xml file.
+If you do not do this then EL expressions will not work as expected.
+</p>
 </subsection>
 </section>
 

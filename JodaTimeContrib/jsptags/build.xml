@@ -22,7 +22,7 @@
   </property>
   <property name="javadocdir" value="${basedir}/dist/docs/api">
   </property>
-  <property name="final.name" value="joda-time-jsptags-1.0-SNAPSHOT">
+  <property name="final.name" value="joda-time-jsptags-1.0">
   </property>
   <property name="proxy.host" value="">
   </property>

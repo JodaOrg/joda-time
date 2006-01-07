@@ -23,7 +23,7 @@ and DateTimeZone objects.
 
 Changes since 0.9
 -----------------
-Better error message in FormatSupport when object specified is of an incorrect type
+Improved documentation about servlet specification required.
 
 Build
 -----

@@ -28,7 +28,7 @@ As a flavour of the tags, here's how to format a Joda-Time object in JSP:
   &lt;% pageContext.setAttribute("now", new org.joda.time.DateTime()); %&gt;
   <b>&lt;joda:format value="${now}" style="SM" /&gt;</b>
 </source>
-Version 0.9 was released on 2005-12-24 -
+Version 1.0 was released on 2005-07-01 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=161360">Download now</a>
 </p>
 </section>
@@ -50,7 +50,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=161360">Release 0.9</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=161360">Release 1.0</a>
 is the current latest release.
 This release is a beta and may have bugs.
 </p>

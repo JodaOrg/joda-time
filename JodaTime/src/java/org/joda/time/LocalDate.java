@@ -34,13 +34,13 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
- * LocalDate is an unmodifiable datetime class representing a
- * datetime without a time zone.
+ * LocalDate is an immutable datetime class representing a date
+ * without a time zone.
  * <p>
  * LocalDate implements the {@link ReadablePartial} interface.
  * To do this, the interface methods focus on the key fields -
  * Year, MonthOfYear and DayOfMonth.
- * However, <b>all</b> fields may in fact be queried.
+ * However, <b>all</b> date fields may in fact be queried.
  * <p>
  * LocalDate differs from DateMidnight in that this class does not
  * have a time zone and does not represent a single instant in time.
@@ -426,7 +426,7 @@ public final class LocalDate
 
     /**
      * Checks if the field type specified is supported by this
-     * local datetime and chronology.
+     * local date and chronology.
      * This can be used to avoid exceptions in {@link #get(DateTimeFieldType)}.
      *
      * @param type  a field type, usually obtained from DateTimeFieldType
@@ -436,17 +436,12 @@ public final class LocalDate
         if (type == null) {
             return false;
         }
-        DateTimeField field = type.getField(getChronology());
-        if (DATE_DURATION_TYPES.contains(type.getDurationType()) ||
-            field.getDurationField().getUnitMillis() >= getChronology().days().getUnitMillis()) {
-            return field.isSupported();
-        }
-        return false;
+        return isSupported(type.getDurationType());
     }
 
     /**
      * Checks if the duration type specified is supported by this
-     * local datetime and chronology.
+     * local date and chronology.
      *
      * @param type  a duration type, usually obtained from DurationFieldType
      * @return true if the field type is supported
@@ -465,7 +460,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the milliseconds of the datetime instant from the Java epoch
+     * Gets the local milliseconds from the Java epoch
      * of 1970-01-01T00:00:00 (not fixed to any specific time zone).
      * 
      * @return the number of milliseconds since 1970-01-01T00:00:00
@@ -475,9 +470,9 @@ public final class LocalDate
     }
 
     /**
-     * Gets the chronology of the datetime.
+     * Gets the chronology of the date.
      * 
-     * @return the Chronology that the datetime is using
+     * @return the Chronology that the date is using
      */
     public Chronology getChronology() {
         return iChronology;
@@ -589,8 +584,8 @@ public final class LocalDate
      * Unsupported fields are ignored.
      * If the partial is null, then <code>this</code> is returned.
      *
-     * @param partial  the partial set of fields to apply to this datetime, null ignored
-     * @return a copy of this datetime with a different set of fields
+     * @param partial  the partial set of fields to apply to this date, null ignored
+     * @return a copy of this date with a different set of fields
      * @throws IllegalArgumentException if any value is invalid
      */
     public LocalDate withFields(ReadablePartial partial) {
@@ -615,7 +610,7 @@ public final class LocalDate
      *
      * @param fieldType  the field type to set, not null
      * @param value  the value to set
-     * @return a copy of this datetime with the field set
+     * @return a copy of this date with the field set
      * @throws IllegalArgumentException if the field is null or unsupported
      */
     public LocalDate withField(DateTimeFieldType fieldType, int value) {
@@ -643,9 +638,9 @@ public final class LocalDate
      *
      * @param fieldType  the field type to add to, not null
      * @param amount  the amount to add
-     * @return a copy of this datetime with the field updated
+     * @return a copy of this date with the field updated
      * @throws IllegalArgumentException if the field is null or unsupported
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDate withFieldAdded(DurationFieldType fieldType, int amount) {
         if (fieldType == null) {
@@ -675,8 +670,8 @@ public final class LocalDate
      *
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
-     * @return a copy of this datetime with the period added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @return a copy of this date with the period added
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDate withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
@@ -697,9 +692,9 @@ public final class LocalDate
      * like {@link #plusYears(int)}.
      * Unsupported fields are ignored.
      *
-     * @param period  the duration to add to this one, null means zero
-     * @return a copy of this LocalDate with the period added
-     * @throws ArithmeticException if the new LocalDate exceeds the capacity of a long
+     * @param period  the period to add to this one, null means zero
+     * @return a copy of this date with the period added
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDate plus(ReadablePeriod period) {
         return withPeriodAdded(period, 1);
@@ -800,7 +795,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDate with the specified period take away.
+     * Gets a copy of this LocalDate with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -810,7 +805,7 @@ public final class LocalDate
      *
      * @param period  the period to reduce this instant by
      * @return a copy of this LocalDate with the period taken away
-     * @throws ArithmeticException if the new LocalDate exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDate minus(ReadablePeriod period) {
         return withPeriodAdded(period, -1);
@@ -1247,7 +1242,7 @@ public final class LocalDate
         }
         
         /**
-         * Gets the milliseconds of the datetime that this property is linked to.
+         * Gets the milliseconds of the date that this property is linked to.
          * 
          * @return the milliseconds
          */
@@ -1256,9 +1251,9 @@ public final class LocalDate
         }
         
         /**
-         * Gets the LocalDate being used.
+         * Gets the LocalDate object linked to this property.
          * 
-         * @return the LocalDate
+         * @return the linked LocalDate
          */
         public LocalDate getLocalDate() {
             return iInstant;
@@ -1280,7 +1275,7 @@ public final class LocalDate
         
         /**
          * Adds to this field, possibly wrapped, in a copy of this LocalDate.
-         * A wrapped operation only changes this field.
+         * A field wrapped operation only changes this field.
          * Thus 31st January plusWrapField one day goes to the 1st January.
          * <p>
          * The LocalDate attached to this property is unchanged by this call.

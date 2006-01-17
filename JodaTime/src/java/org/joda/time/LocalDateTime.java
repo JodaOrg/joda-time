@@ -555,20 +555,17 @@ public final class LocalDateTime
      * @return a LocalDate with the same date and chronology
      */
     public LocalDate getDate() {
-        return new LocalDate(
-                getYear(), getMonthOfYear(), getDayOfMonth(), getChronology());
+        return new LocalDate(getLocalMillis(), getChronology());
     }
 
-//    /**
-//     * Converts this object to a LocalTime with the same time and chronology.
-//     * 
-//     * @return a LocalTime with the same time and chronology
-//     */
-//    public LocalTime getTime() {
-//        return new LocalTime(
-//                getHourOfDay(), getMinuteOfHour(),
-//                getSecondOfMinute(), getMillisOfSecond(), getChronology());
-//    }
+    /**
+     * Converts this object to a LocalTime with the same time and chronology.
+     * 
+     * @return a LocalTime with the same time and chronology
+     */
+    public LocalTime getTime() {
+        return new LocalTime(getLocalMillis(), getChronology());
+    }
 
     //-----------------------------------------------------------------------
     /**
@@ -701,7 +698,7 @@ public final class LocalDateTime
      * @param amount  the amount to add
      * @return a copy of this datetime with the field updated
      * @throws IllegalArgumentException if the value is null or invalid
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime withFieldAdded(DurationFieldType fieldType, int amount) {
         if (fieldType == null) {
@@ -723,7 +720,7 @@ public final class LocalDateTime
      * @param durationToAdd  the duration to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime withDurationAdded(ReadableDuration durationToAdd, int scalar) {
         if (durationToAdd == null || scalar == 0) {
@@ -746,7 +743,7 @@ public final class LocalDateTime
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the period added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime withPeriodAdded(ReadablePeriod period, int scalar) {
         if (period == null || scalar == 0) {
@@ -764,7 +761,7 @@ public final class LocalDateTime
      * 
      * @param duration  the duration to add to this one, null means zero
      * @return a copy of this datetime with the duration added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime plus(ReadableDuration duration) {
         return withDurationAdded(duration, 1);
@@ -779,9 +776,9 @@ public final class LocalDateTime
      * Adding one field is best achieved using methods
      * like {@link #plusYears(int)}.
      * 
-     * @param period  the duration to add to this one, null means zero
+     * @param period  the period to add to this one, null means zero
      * @return a copy of this datetime with the period added
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime plus(ReadablePeriod period) {
         return withPeriodAdded(period, 1);
@@ -974,20 +971,20 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration take away.
+     * Gets a copy of this datetime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
      * @param duration  the duration to reduce this instant by
      * @return a copy of this datetime with the duration taken away
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime minus(ReadableDuration duration) {
         return withDurationAdded(duration, -1);
     }
 
     /**
-     * Gets a copy of this datetime with the specified period take away.
+     * Gets a copy of this datetime with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -997,7 +994,7 @@ public final class LocalDateTime
      * 
      * @param period  the period to reduce this instant by
      * @return a copy of this datetime with the period taken away
-     * @throws ArithmeticException if the new datetime exceeds the capacity of a long
+     * @throws ArithmeticException if the result exceeds the internal capacity
      */
     public LocalDateTime minus(ReadablePeriod period) {
         return withPeriodAdded(period, -1);
@@ -1608,9 +1605,9 @@ public final class LocalDateTime
         }
         
         /**
-         * Gets the datetime being used.
+         * Gets the LocalDateTime object linked to this property.
          * 
-         * @return the datetime
+         * @return the linked LocalDateTime
          */
         public LocalDateTime getLocalDateTime() {
             return iInstant;
@@ -1645,7 +1642,7 @@ public final class LocalDateTime
         
         /**
          * Adds to this field, possibly wrapped, in a copy of this LocalDateTime.
-         * A wrapped operation only changes this field.
+         * A field wrapped operation only changes this field.
          * Thus 31st January plusWrapField one day goes to the 1st January.
          * <p>
          * The LocalDateTime attached to this property is unchanged by this call.

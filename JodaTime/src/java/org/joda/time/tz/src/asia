@@ -1,4 +1,4 @@
-# @(#)asia	7.90
+# @(#)asia	7.91
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -934,6 +934,10 @@ Zone	Asia/Tokyo	9:18:59	-	LMT	1887 Dec 31 15:00u
 # From Paul Eggert (2005-11-22):
 # Starting 2003 transitions are from Steffen Thorsen's web site timeanddate.com.
 #
+# From Steffen Thorsen (2005-11-23):
+# For Jordan I have received multiple independent user reports every year
+# about DST end dates, as the end-rule is different every year.
+#
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Jordan	1973	only	-	Jun	6	0:00	1:00	S
 Rule	Jordan	1973	1975	-	Oct	1	0:00	0	-
@@ -1433,6 +1437,12 @@ Zone	Asia/Karachi	4:28:12 -	LMT	1907
 # From Paul Eggert (2005-11-22):
 # Starting 2004 transitions are from Steffen Thorsen's web site timeanddate.com.
 
+# From Steffen Thorsen (2005-11-23):
+# A user from Gaza reported that Gaza made the change early because of
+# the Ramadan.  Next year Ramadan will be even earlier, so I think
+# there is a good chance next year's end date will be around two weeks
+# earlier--the same goes for Jordan.
+
 # The rules for Egypt are stolen from the `africa' file.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule EgyptAsia	1957	only	-	May	10	0:00	1:00	S
@@ -1445,7 +1455,7 @@ Rule EgyptAsia	1966	only	-	Oct	 1	3:00	0	-
 Rule Palestine	1999	max	-	Apr	Fri>=15	0:00	1:00	S
 Rule Palestine	1999	2003	-	Oct	Fri>=15	0:00	0	-
 Rule Palestine	2004	only	-	Oct	 1	1:00	0	-
-Rule Palestine	2005	max	-	Oct	 4	1:00	0	-
+Rule Palestine	2005	max	-	Oct	 4	2:00	0	-
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Gaza	2:17:52	-	LMT	1900 Oct

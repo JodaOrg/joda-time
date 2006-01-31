@@ -103,4 +103,28 @@ public class TestPeriodFormat extends TestCase {
         assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat.getDefault().print(p));
     }
 
+    //-----------------------------------------------------------------------
+    public void testFormatOneField() {
+        Period p = Period.days(2);
+        assertEquals("2 days", PeriodFormat.getDefault().print(p));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatTwoFields() {
+        Period p = Period.days(2).withHours(5);
+        assertEquals("2 days and 5 hours", PeriodFormat.getDefault().print(p));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParseOneField() {
+        Period p = Period.days(2);
+        assertEquals(p, PeriodFormat.getDefault().parsePeriod("2 days"));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParseTwoFields() {
+        Period p = Period.days(2).withHours(5);
+        assertEquals(p, PeriodFormat.getDefault().parsePeriod("2 days and 5 hours"));
+    }
+
 }

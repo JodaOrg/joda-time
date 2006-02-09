@@ -505,7 +505,7 @@ public class TestDateTime_Basics extends TestCase {
         assertSame(DateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
         assertNotSame(test, result);
         
         test = new DateTime(TEST_TIME1, BuddhistChronology.getInstance());

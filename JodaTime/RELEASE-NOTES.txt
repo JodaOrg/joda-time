@@ -27,7 +27,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes
-  - DateTimeZone data updated to version 2005q
+  - DateTimeZone data updated to version 2006a
 
 
 Deprecations since 1.2
@@ -45,6 +45,9 @@ Bug fixes since 1.2
 - FixedDateTimeZone
   Hashcode was not defined
 
+- AbstractInstant
+  Conversion methods toDateTime, toDateTimeISO, toMutableDateTime, and
+  toMutableDateTimeISO did not preserve the time zone
 
 Enhancements since 1.2
 ----------------------

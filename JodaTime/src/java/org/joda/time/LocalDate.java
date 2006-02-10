@@ -30,6 +30,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.InstantConverter;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -482,6 +483,8 @@ public final class LocalDate
     /**
      * Converts this LocalDate to a full datetime at midnight using the
      * default time zone.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
      *
      * @return this date as a datetime at midnight
      */
@@ -495,6 +498,8 @@ public final class LocalDate
      * <p>
      * This method uses the chronology from this instance plus the time zone
      * specified.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
      *
      * @param zone  the zone to use, null means default zone
      * @return this date as a datetime at midnight
@@ -510,6 +515,8 @@ public final class LocalDate
      * Converts this LocalDate to a full datetime using the default time zone
      * setting the date fields from this instance and the time fields from
      * the current time.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
      *
      * @return this date as a datetime with the time as the current time
      */
@@ -524,6 +531,8 @@ public final class LocalDate
      * <p>
      * This method uses the chronology from this instance plus the time zone
      * specified.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
      *
      * @param zone  the zone to use, null means default zone
      * @return this date as a datetime with the time as the current time
@@ -539,6 +548,8 @@ public final class LocalDate
     //-----------------------------------------------------------------------
     /**
      * Converts this LocalDate to a DateMidnight in the default time zone.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
      *
      * @return the DateMidnight instance in the default zone
      */
@@ -548,6 +559,8 @@ public final class LocalDate
 
     /**
      * Converts this LocalDate to a DateMidnight.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
      *
      * @param zone  the zone to get the DateMidnight in, null means default zone
      * @return the DateMidnight instance
@@ -556,6 +569,80 @@ public final class LocalDate
         zone = DateTimeUtils.getZone(zone);
         Chronology chrono = getChronology().withZone(zone);
         return new DateMidnight(getYear(), getMonthOfYear(), getDayOfMonth(), chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this object to a DateTime using a LocalTime to fill in the
+     * missing fields and using the default time zone.
+     * <p>
+     * The resulting chronology is determined by the chronology of this
+     * LocalDate. The chronology of the time must match.
+     * If the time is null, the current time in the date's chronology is used.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param time  the time of day to use, null means current time
+     * @return the DateTime instance
+     * @throws IllegalArgumentException if the chronology of the time does not match
+     */
+    public DateTime toDateTimeDefaultZone(LocalTime time) {
+        return toDateTime(time, null);
+    }
+
+    /**
+     * Converts this object to a DateTime using a LocalTime to fill in the
+     * missing fields.
+     * This instance is immutable and unaffected by this method call.
+     * <p>
+     * The resulting chronology is determined by the chronology of this
+     * LocalDate plus the time zone. The chronology of the time must match.
+     * If the time is null, the current time in the date's chronology is used.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param time  the time of day to use, null means current time
+     * @param zone  the zone to get the DateTime in, null means default
+     * @return the DateTime instance
+     * @throws IllegalArgumentException if the chronology of the time does not match
+     */
+    public DateTime toDateTime(LocalTime time, DateTimeZone zone) {
+        if (time != null && getChronology() != time.getChronology()) {
+            throw new IllegalArgumentException("The chronology of the time does not match");
+        }
+        Chronology chrono = getChronology().withZone(zone);
+        long instant = DateTimeUtils.currentTimeMillis();
+        instant = chrono.set(this, instant);
+        if (time != null) {
+            instant = chrono.set(time, instant);
+        }
+        return new DateTime(instant, chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this object to an Interval representing the whole day
+     * in the default time zone.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @return a interval over the day
+     */
+    public Interval toIntervalDefaultZone() {
+        return toInterval(null);
+    }
+
+    /**
+     * Converts this object to an Interval representing the whole day.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param zone  the zone to get the Interval in, null means default
+     * @return a interval over the day
+     */
+    public Interval toInterval(DateTimeZone zone) {
+        zone = DateTimeUtils.getZone(zone);
+        return toDateMidnight(zone).toInterval();
     }
 
     //-----------------------------------------------------------------------
@@ -666,7 +753,9 @@ public final class LocalDate
      * period instances. Adding one field is best achieved using methods
      * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusYears(int)}.
-     * Unsupported fields are ignored.
+     * <p>
+     * Unsupported time fields are ignored, thus adding a period of 24 hours
+     * will not have any effect.
      *
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
@@ -677,7 +766,15 @@ public final class LocalDate
         if (period == null || scalar == 0) {
             return this;
         }
-        long instant = getChronology().add(period, getLocalMillis(), scalar);
+        long instant = getLocalMillis();
+        Chronology chrono = getChronology();
+        for (int i = 0; i < period.size(); i++) {
+            long value = FieldUtils.safeMultiply(period.getValue(i), scalar);
+            DurationFieldType type = period.getFieldType(i);
+            if (isSupported(type)) {
+                instant = type.getField(chrono).add(instant, value);
+            }
+        }
         return withLocalMillis(instant);
     }
 
@@ -690,7 +787,9 @@ public final class LocalDate
      * This method is typically used to add complex period instances.
      * Adding one field is best achieved using methods
      * like {@link #plusYears(int)}.
-     * Unsupported fields are ignored.
+     * <p>
+     * Unsupported time fields are ignored, thus adding a period of 24 hours
+     * will not have any effect.
      *
      * @param period  the period to add to this one, null means zero
      * @return a copy of this date with the period added
@@ -802,6 +901,9 @@ public final class LocalDate
      * This method is typically used to subtract complex period instances.
      * Subtracting one field is best achieved using methods
      * like {@link #minusYears(int)}.
+     * <p>
+     * Unsupported time fields are ignored, thus subtracting a period of 24 hours
+     * will not have any effect.
      *
      * @param period  the period to reduce this instant by
      * @return a copy of this LocalDate with the period taken away
@@ -971,8 +1073,14 @@ public final class LocalDate
 
     /**
      * Get the weekyear field value.
+     * <p>
+     * The weekyear is the year that matches with the weekOfWeekyear field.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
+     * The weekyear allows you to query the effective year for that day.
      *
-     * @return the year of a week based year
+     * @return the weekyear
      */
     public int getWeekyear() {
         return getChronology().weekyear().get(getLocalMillis());
@@ -1029,6 +1137,183 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
+     * Sets the era field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * era changed.
+     *
+     * @param era  the era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withEra(int era) {
+        return withLocalMillis(getChronology().era().set(getLocalMillis(), era));
+    }
+
+    /**
+     * Sets the century of era field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * century of era changed.
+     *
+     * @param centuryOfEra  the centurey of era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withCenturyOfEra(int centuryOfEra) {
+        return withLocalMillis(getChronology().centuryOfEra().set(getLocalMillis(), centuryOfEra));
+    }
+
+    /**
+     * Sets the year of era field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year of era changed.
+     *
+     * @param yearOfEra  the year of era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withYearOfEra(int yearOfEra) {
+        return withLocalMillis(getChronology().yearOfEra().set(getLocalMillis(), yearOfEra));
+    }
+
+    /**
+     * Sets the year of century field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year of century changed.
+     *
+     * @param year of century  the year of century to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withYearOfCentury(int yearOfCentury) {
+        return withLocalMillis(getChronology().yearOfCentury().set(getLocalMillis(), yearOfCentury));
+    }
+
+    /**
+     * Sets the year field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year changed.
+     *
+     * @param year  the year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withYear(int year) {
+        return withLocalMillis(getChronology().year().set(getLocalMillis(), year));
+    }
+
+    /**
+     * Sets the weekyear field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * weekyear changed.
+     *
+     * @param weekyear  the weekyear to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withWeekyear(int weekyear) {
+        return withLocalMillis(getChronology().weekyear().set(getLocalMillis(), weekyear));
+    }
+
+    /**
+     * Sets the month of year field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * month of year changed.
+     *
+     * @param monthOfYear  the month of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withMonthOfYear(int monthOfYear) {
+        return withLocalMillis(getChronology().monthOfYear().set(getLocalMillis(), monthOfYear));
+    }
+
+    /**
+     * Sets the week of weekyear field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * week of weekyear changed.
+     *
+     * @param weekOfWeekyear  the week of weekyear to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withWeekOfWeekyear(int weekOfWeekyear) {
+        return withLocalMillis(getChronology().weekOfWeekyear().set(getLocalMillis(), weekOfWeekyear));
+    }
+
+    /**
+     * Sets the day of year field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of year changed.
+     *
+     * @param dayOfYear  the day of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withDayOfYear(int dayOfYear) {
+        return withLocalMillis(getChronology().dayOfYear().set(getLocalMillis(), dayOfYear));
+    }
+
+    /**
+     * Sets the day of month field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of month changed.
+     *
+     * @param dayOfMonth  the day of month to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withDayOfMonth(int dayOfMonth) {
+        return withLocalMillis(getChronology().dayOfMonth().set(getLocalMillis(), dayOfMonth));
+    }
+
+    /**
+     * Sets the day of week field in a copy of this LocalDate, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDate is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of week changed.
+     *
+     * @param dayOfWeek  the day of week to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDate withDayOfWeek(int dayOfWeek) {
+        return withLocalMillis(getChronology().dayOfWeek().set(getLocalMillis(), dayOfWeek));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Get the era property.
      *
      * @return the era property
@@ -1074,9 +1359,9 @@ public final class LocalDate
     }
 
     /**
-     * Get the year of a week based year property.
+     * Get the weekyear property.
      *
-     * @return the year of a week based year property
+     * @return the weekyear property
      */
     public Property weekyear() {
         return new Property(this, getChronology().weekyear());

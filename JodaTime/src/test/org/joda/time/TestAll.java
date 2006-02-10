@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -60,6 +60,12 @@ public class TestAll extends TestCase {
         
         suite.addTest(TestInterval_Constructors.suite());
         suite.addTest(TestInterval_Basics.suite());
+        
+//        suite.addTest(TestLocalTime_Basics.suite());
+//        suite.addTest(TestLocalTime_Constructors.suite());
+//        suite.addTest(TestLocalTime_Properties.suite());
+        
+//        suite.addTest(TestLocalDate_Basics.suite());
         
         suite.addTest(TestMutableInterval_Constructors.suite());
         suite.addTest(TestMutableInterval_Basics.suite());

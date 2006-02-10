@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -395,6 +395,7 @@ public class TestInstant_Basics extends TestCase {
         Instant test = new Instant(TEST_TIME1);
         DateTime result = test.toDateTime();
         assertEquals(TEST_TIME1, result.getMillis());
+        assertEquals(ISOChronology.getInstance(), result.getChronology());
     }
 
     public void testToDateTimeISO() {

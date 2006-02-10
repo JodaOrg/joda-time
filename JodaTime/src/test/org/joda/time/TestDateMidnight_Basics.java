@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -434,21 +434,21 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(TEST_TIME1_LONDON, result.getMillis());
     }
 
-    public void testToDateMidnight() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+    public void testToDateTime() {
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         DateTime result = test.toDateTime();
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(TEST_TIME1_LONDON, result.getMillis());
-        assertEquals(LONDON, result.getZone());
+        assertEquals(TEST_TIME1_PARIS, result.getMillis());
+        assertEquals(PARIS, result.getZone());
     }
 
     public void testToDateTimeISO() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         DateTime result = test.toDateTimeISO();
         assertSame(DateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToDateTime_DateTimeZone() {
@@ -504,19 +504,19 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testToMutableDateTime() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         MutableDateTime result = test.toMutableDateTime();
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToMutableDateTimeISO() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         MutableDateTime result = test.toMutableDateTimeISO();
         assertSame(MutableDateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToMutableDateTime_DateTimeZone() {

@@ -32,10 +32,21 @@ Data compatible - Yes
 
 Deprecations since 1.2
 ----------------------
+- Instant.toDateTimeISO
+- Instant.toMutableDateTimeISO
+    These were identical to the methods without the ISO suffix
 
 
 Bug fixes since 1.2
 -------------------
+- DateTime/DateMidnight/MutableDateTime/AbstractInstant
+   Conversion methods toDateTime, toDateTimeISO, toMutableDateTime, and
+    toMutableDateTimeISO now preserve the time zone.
+    Previously calling any of these four methods would convert the result to
+    the default time zone. This was incorrect.
+    The methods have been changed to preserve the time zone.
+   The similarly named methods on Instant have not changed behaviour.
+
 - DateTimeFormatterBuilder.MatchingParser
   Previously didn't estimate parsed length correctly
 
@@ -45,9 +56,6 @@ Bug fixes since 1.2
 - FixedDateTimeZone
   Hashcode was not defined
 
-- AbstractInstant
-  Conversion methods toDateTime, toDateTimeISO, toMutableDateTime, and
-  toMutableDateTimeISO did not preserve the time zone
 
 Enhancements since 1.2
 ----------------------

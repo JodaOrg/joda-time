@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -136,8 +136,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get this object as a DateTime, in the same zone.
-     * 
+     * Get this object as a DateTime in the same zone.
+     *
      * @return a DateTime using the same millis
      */
     public DateTime toDateTime() {
@@ -145,8 +145,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get this object as a DateTime using ISOChronology, in the same zone.
-     * 
+     * Get this object as a DateTime using ISOChronology in the same zone.
+     *
      * @return a DateTime using the same millis with ISOChronology
      */
     public DateTime toDateTimeISO() {
@@ -181,8 +181,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     // returning a copy prevents this.
 
     /**
-     * Get this object as a MutableDateTime, in the same zone.
-     * 
+     * Get this object as a MutableDateTime in the same zone.
+     *
      * @return a MutableDateTime using the same millis
      */
     public MutableDateTime toMutableDateTime() {
@@ -190,8 +190,8 @@ public abstract class AbstractInstant implements ReadableInstant {
     }
 
     /**
-     * Get this object as a MutableDateTime using ISOChronology, in the same zone.
-     * 
+     * Get this object as a MutableDateTime using ISOChronology in the same zone.
+     *
      * @return a MutableDateTime using the same millis with ISOChronology
      */
     public MutableDateTime toMutableDateTimeISO() {

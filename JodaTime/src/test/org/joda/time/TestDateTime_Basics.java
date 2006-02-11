@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -566,19 +566,19 @@ public class TestDateTime_Basics extends TestCase {
     }
 
     public void testToMutableDateTime() {
-        DateTime test = new DateTime(TEST_TIME1);
+        DateTime test = new DateTime(TEST_TIME1, PARIS);
         MutableDateTime result = test.toMutableDateTime();
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToMutableDateTimeISO() {
-        DateTime test = new DateTime(TEST_TIME1);
+        DateTime test = new DateTime(TEST_TIME1, PARIS);
         MutableDateTime result = test.toMutableDateTimeISO();
         assertSame(MutableDateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToMutableDateTime_DateTimeZone() {

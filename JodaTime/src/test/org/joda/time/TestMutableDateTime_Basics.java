@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -439,19 +439,19 @@ public class TestMutableDateTime_Basics extends TestCase {
     }
 
     public void testToDateTime() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, PARIS);
         DateTime result = test.toDateTime();
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(test.getChronology(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToDateTimeISO() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, PARIS);
         DateTime result = test.toDateTimeISO();
         assertSame(DateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToDateTime_DateTimeZone() {
@@ -506,20 +506,20 @@ public class TestMutableDateTime_Basics extends TestCase {
     }
 
     public void testToMutableDateTime() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, PARIS);
         MutableDateTime result = test.toMutableDateTime();
         assertTrue(test != result);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
     }
 
     public void testToMutableDateTimeISO() {
-        MutableDateTime test = new MutableDateTime(TEST_TIME1);
+        MutableDateTime test = new MutableDateTime(TEST_TIME1, PARIS);
         MutableDateTime result = test.toMutableDateTimeISO();
         assertSame(MutableDateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
         assertNotSame(test, result);
     }
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -219,6 +219,87 @@ public final class Instant
      */
     public Chronology getChronology() {
         return ISOChronology.getInstanceUTC();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get this object as a DateTime using ISOChronology in the default zone.
+     * <p>
+     * This method returns a DateTime object in the default zone.
+     * This differs from the similarly named method on DateTime, DateMidnight
+     * or MutableDateTime which retains the time zone. The difference is
+     * because Instant really represents a time <i>without</i> a zone,
+     * thus calling this method we really have no zone to 'retain' and
+     * hence expect to switch to the default zone.
+     * <p>
+     * This method definition preserves compatability with earlier versions
+     * of Joda-Time.
+     *
+     * @return a DateTime using the same millis
+     */
+    public DateTime toDateTime() {
+        return new DateTime(getMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Get this object as a DateTime using ISOChronology in the default zone.
+     * This method is identical to <code>toDateTime()</code>.
+     * <p>
+     * This method returns a DateTime object in the default zone.
+     * This differs from the similarly named method on DateTime, DateMidnight
+     * or MutableDateTime which retains the time zone. The difference is
+     * because Instant really represents a time <i>without</i> a zone,
+     * thus calling this method we really have no zone to 'retain' and
+     * hence expect to switch to the default zone.
+     * <p>
+     * This method definition preserves compatability with earlier versions
+     * of Joda-Time.
+     *
+     * @return a DateTime using the same millis with ISOChronology
+     * @deprecated Use toDateTime() as it is identical
+     */
+    public DateTime toDateTimeISO() {
+        return toDateTime();
+    }
+
+    /**
+     * Get this object as a MutableDateTime using ISOChronology in the default zone.
+     * <p>
+     * This method returns a MutableDateTime object in the default zone.
+     * This differs from the similarly named method on DateTime, DateMidnight
+     * or MutableDateTime which retains the time zone. The difference is
+     * because Instant really represents a time <i>without</i> a zone,
+     * thus calling this method we really have no zone to 'retain' and
+     * hence expect to switch to the default zone.
+     * <p>
+     * This method definition preserves compatability with earlier versions
+     * of Joda-Time.
+     *
+     * @return a MutableDateTime using the same millis
+     */
+    public MutableDateTime toMutableDateTime() {
+        return new MutableDateTime(getMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Get this object as a MutableDateTime using ISOChronology in the default zone.
+     * This method is identical to <code>toMutableDateTime()</code>.
+     * <p>
+     * This method returns a MutableDateTime object in the default zone.
+     * This differs from the similarly named method on DateTime, DateMidnight
+     * or MutableDateTime which retains the time zone. The difference is
+     * because Instant really represents a time <i>without</i> a zone,
+     * thus calling this method we really have no zone to 'retain' and
+     * hence expect to switch to the default zone.
+     * <p>
+     * This method definition preserves compatability with earlier versions
+     * of Joda-Time.
+     *
+     * @return a MutableDateTime using the same millis with ISOChronology
+     * @deprecated Use toMutableDateTime() as it is identical
+     */
+    public MutableDateTime toMutableDateTimeISO() {
+        return toMutableDateTime();
     }
 
 }

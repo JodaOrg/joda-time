@@ -29,7 +29,6 @@ import junit.framework.TestSuite;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -47,14 +46,7 @@ public class TestLocalTime_Basics extends TestCase {
     private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
     private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
     private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
-    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
     private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
-    private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
 
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -62,11 +54,11 @@ public class TestLocalTime_Basics extends TestCase {
             + 30L * DateTimeConstants.MILLIS_PER_SECOND
             + 40L;
 
-    private long TEST_TIME1 =
-        1L * DateTimeConstants.MILLIS_PER_HOUR
-        + 2L * DateTimeConstants.MILLIS_PER_MINUTE
-        + 3L * DateTimeConstants.MILLIS_PER_SECOND
-        + 4L;
+//    private long TEST_TIME1 =
+//        1L * DateTimeConstants.MILLIS_PER_HOUR
+//        + 2L * DateTimeConstants.MILLIS_PER_MINUTE
+//        + 3L * DateTimeConstants.MILLIS_PER_SECOND
+//        + 4L;
 
     private long TEST_TIME2 =
         1L * DateTimeConstants.MILLIS_PER_DAY
@@ -232,6 +224,32 @@ public class TestLocalTime_Basics extends TestCase {
         
         assertEquals(false, test.isSupported(DateTimeFieldType.dayOfMonth()));
         assertEquals(false, test.isSupported((DateTimeFieldType) null));
+        
+        DateTimeFieldType d = new DateTimeFieldType("hours") {
+            public DurationFieldType getDurationType() {
+                return DurationFieldType.hours();
+            }
+            public DurationFieldType getRangeDurationType() {
+                return null;
+            }
+            public DateTimeField getField(Chronology chronology) {
+                return chronology.hourOfDay();
+            }
+        };
+        assertEquals(false, test.isSupported(d));
+        
+        d = new DateTimeFieldType("hourOfYear") {
+            public DurationFieldType getDurationType() {
+                return DurationFieldType.hours();
+            }
+            public DurationFieldType getRangeDurationType() {
+                return DurationFieldType.years();
+            }
+            public DateTimeField getField(Chronology chronology) {
+                return chronology.hourOfDay();
+            }
+        };
+        assertEquals(false, test.isSupported(d));
     }
 
     public void testIsSupported_DurationFieldType() {

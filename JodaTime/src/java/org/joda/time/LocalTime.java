@@ -522,7 +522,11 @@ public final class LocalTime
         if (type == null) {
             return false;
         }
-        return isSupported(type.getDurationType());
+        if (isSupported(type.getDurationType()) == false) {
+            return false;
+        }
+        DurationFieldType range = type.getRangeDurationType();
+        return (isSupported(range) || range == DurationFieldType.days());
     }
 
     /**

@@ -35,7 +35,7 @@ public String getBirthMonthText(<b>YearMonthDay</b> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
 </source>
-Version 1.2 was released on 2005-12-21 -
+Version 1.2.1 was released on 2006-02-12 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
 </p>
 </section>
@@ -105,7 +105,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.2</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.2.1</a>
 is the current latest release.
 This release is considered stable and worthy of the 1.x tag.
 It has extensive testing suites and has been used in production.

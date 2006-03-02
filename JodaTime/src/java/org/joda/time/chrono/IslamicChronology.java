@@ -141,7 +141,7 @@ public final class IslamicChronology extends BasicChronology {
     /** Cache of zone to chronology arrays */
     private static final Map cCache = new HashMap();
 
-    /** Singleton instance of a UTC CopticChronology */
+    /** Singleton instance of a UTC IslamicChronology */
     private static final IslamicChronology INSTANCE_UTC;
     static {
         // init after static fields
@@ -153,7 +153,7 @@ public final class IslamicChronology extends BasicChronology {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets an instance of the CopticChronology.
+     * Gets an instance of the IslamicChronology.
      * The time zone of the returned instance is UTC.
      * 
      * @return a singleton UTC instance of the chronology
@@ -163,7 +163,7 @@ public final class IslamicChronology extends BasicChronology {
     }
 
     /**
-     * Gets an instance of the CopticChronology in the default time zone.
+     * Gets an instance of the IslamicChronology in the default time zone.
      * 
      * @return a chronology in the default time zone
      */
@@ -172,7 +172,7 @@ public final class IslamicChronology extends BasicChronology {
     }
 
     /**
-     * Gets an instance of the CopticChronology in the given time zone.
+     * Gets an instance of the IslamicChronology in the given time zone.
      * 
      * @param zone  the time zone to get the chronology in, null is default
      * @return a chronology in the specified time zone
@@ -182,7 +182,7 @@ public final class IslamicChronology extends BasicChronology {
     }
 
     /**
-     * Gets an instance of the CopticChronology in the given time zone.
+     * Gets an instance of the IslamicChronology in the given time zone.
      * 
      * @param zone  the time zone to get the chronology in, null is default
      * @param leapYears  the type defining the leap year pattern

@@ -40,8 +40,10 @@
   <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
   
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTime</connection>
-    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTime/</url>
+    <!-- Does not appear to be supported in Maven-1.x
+    <connection>scm:svn:http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk</connection>
+    -->
+    <url>http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTime/</url>
   </repository>
 
   <licenses>

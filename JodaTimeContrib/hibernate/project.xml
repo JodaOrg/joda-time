@@ -43,8 +43,10 @@
   </organization>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.sourceforge.net:/cvsroot/joda-time:JodaTimeContrib/hibernate</connection>
-    <url>http://cvs.sourceforge.net/viewcvs.py/joda-time/JodaTimeContrib/hibernate/</url>
+    <!-- Does not appear to be supported in Maven-1.x
+    <connection>scm:svn:http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk</connection>
+    -->
+    <url>http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTimeContrib/hibernate/</url>
   </repository>
 
   <versions>

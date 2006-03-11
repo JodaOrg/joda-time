@@ -65,7 +65,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestLocalTime_Constructors.suite());
         suite.addTest(TestLocalTime_Properties.suite());
         
-//        suite.addTest(TestLocalDate_Basics.suite());
+        suite.addTest(TestLocalDate_Basics.suite());
         
         suite.addTest(TestMutableInterval_Constructors.suite());
         suite.addTest(TestMutableInterval_Basics.suite());

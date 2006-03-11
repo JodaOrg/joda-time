@@ -209,7 +209,7 @@ public class TestLocalDate_Basics extends TestCase {
 
     public void testIsSupported_DurationFieldType() {
         LocalDate test = new LocalDate(1970, 6, 9);
-        assertEquals(true, test.isSupported(DurationFieldType.eras()));
+        assertEquals(false, test.isSupported(DurationFieldType.eras()));
         assertEquals(true, test.isSupported(DurationFieldType.centuries()));
         assertEquals(true, test.isSupported(DurationFieldType.years()));
         assertEquals(true, test.isSupported(DurationFieldType.months()));

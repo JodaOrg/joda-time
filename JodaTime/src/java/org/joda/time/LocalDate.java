@@ -96,6 +96,7 @@ public final class LocalDate
         DATE_DURATION_TYPES.add(DurationFieldType.weekyears());
         DATE_DURATION_TYPES.add(DurationFieldType.years());
         DATE_DURATION_TYPES.add(DurationFieldType.centuries());
+        // eras are supported, although the DurationField generally isn't
         DATE_DURATION_TYPES.add(DurationFieldType.eras());
     }
 
@@ -437,7 +438,13 @@ public final class LocalDate
         if (type == null) {
             return false;
         }
-        return isSupported(type.getDurationType());
+        DurationFieldType durType = type.getDurationType();
+        if (DATE_DURATION_TYPES.contains(durType) ||
+                durType.getField(getChronology()).getUnitMillis() >=
+                    getChronology().days().getUnitMillis()) {
+            return type.getField(getChronology()).isSupported();
+        }
+        return false;
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -232,6 +232,13 @@ public class TestInterval_Basics extends TestCase {
     public void testContains_RInterval() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         
+        assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME1)));
+        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
+        
+        assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME1 + 1)));
+        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
+        assertEquals(true, test.contains(new Interval(TEST_TIME1 + 1, TEST_TIME1 + 1)));
+        
         assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME2)));
         assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
         assertEquals(true, test.contains(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2)));
@@ -257,6 +264,13 @@ public class TestInterval_Basics extends TestCase {
     public void testOverlaps_RInterval() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         
+        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1)));
+        assertEquals(false, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
+        
+        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1 + 1)));
+        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
+        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 + 1, TEST_TIME1 + 1)));
+        
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME2)));
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2)));
@@ -274,11 +288,23 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
         
         assertEquals(true, test.overlaps((ReadableInterval) null));
+        
+        Interval empty = new Interval(TEST_TIME1, TEST_TIME1);
+        assertEquals(true, empty.overlaps(empty));
+        assertEquals(true, empty.overlaps(test));
+        assertEquals(true, test.overlaps(empty));
     }
 
     //-----------------------------------------------------------------------
     public void testOverlap_RInterval() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME1),
+                test.overlap(new Interval(TEST_TIME1, TEST_TIME1)));
+        assertEquals(
+                new Interval(TEST_TIME1, TEST_TIME1),
+                new Interval(TEST_TIME1, TEST_TIME1).overlap(test));
         
         assertEquals(
                 new Interval(TEST_TIME1, TEST_TIME2),

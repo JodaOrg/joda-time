@@ -243,6 +243,26 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
+     * Constructs an instance from an Object that represents a datetime.
+     * The time zone will be retrieved from the object if possible,
+     * otherwise the default time zone will be used.
+     * <p>
+     * If the object contains no chronology, <code>ISOChronology</code> is used.
+     * Once the constructor is completed, the zone is no longer used.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     *
+     * @param instant  the datetime object
+     * @param zone  the time zone
+     * @throws IllegalArgumentException if the instant is invalid
+     */
+    public static LocalDate forInstant(Object instant) {
+        return forInstant(instant, (Chronology) null);
+    }
+
+    /**
      * Constructs an instance from an Object that represents a datetime,
      * forcing the time zone to that specified.
      * <p>

@@ -71,7 +71,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * All standard Chronology classes supplied are thread-safe and immutable.
  *
  * @author Stephen Colebourne
- * @since 1.0
+ * @since 1.3
  */
 public final class LocalDateTime
         extends AbstractPartial
@@ -91,43 +91,6 @@ public final class LocalDateTime
     private long iLocalMillis;
     /** The chronology to use in UTC */
     private Chronology iChronology;
-
-    //-----------------------------------------------------------------------
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * ISO chronology in the default zone.
-     * <p>
-     * Once the constructor is completed, the zone is no longer used.
-     */
-    public static LocalDateTime nowDefaultZone() {
-        return forInstant(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
-    }
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * ISO chronology in the specified zone.
-     * <p>
-     * If the specified time zone is null, the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param zone  the time zone, null means default zone
-     */
-    public static LocalDateTime now(DateTimeZone zone) {
-        return forInstant(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
-    }
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * specified chronology.
-     * <p>
-     * If the chronology is null, ISO chronology in the default time zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param chronology  the chronology, null means ISOChronology in default zone
-     */
-    public static LocalDateTime now(Chronology chronology) {
-        return forInstant(DateTimeUtils.currentTimeMillis(), chronology);
-    }
 
     //-----------------------------------------------------------------------
     /**
@@ -195,6 +158,43 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Constructs an instance set to the current local time evaluated using
+     * ISO chronology in the default zone.
+     * <p>
+     * Once the constructor is completed, the zone is no longer used.
+     */
+    public LocalDateTime() {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Constructs an instance set to the current local time evaluated using
+     * ISO chronology in the specified zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param zone  the time zone, null means default zone
+     */
+    public LocalDateTime(DateTimeZone zone) {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
+    }
+
+    /**
+     * Constructs an instance set to the current local time evaluated using
+     * specified chronology.
+     * <p>
+     * If the chronology is null, ISO chronology in the default time zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param chronology  the chronology, null means ISOChronology in default zone
+     */
+    public LocalDateTime(Chronology chronology) {
+        this(DateTimeUtils.currentTimeMillis(), chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Constructs an instance set to the local time defined by the specified
      * instant evaluated using ISO chronology in the default zone.
      * <p>
@@ -202,8 +202,8 @@ public final class LocalDateTime
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
-    public static LocalDateTime forInstantDefaultZone(long instant) {
-        return forInstant(instant, ISOChronology.getInstance());
+    public LocalDateTime(long instant) {
+        this(instant, ISOChronology.getInstance());
     }
 
     /**
@@ -216,8 +216,8 @@ public final class LocalDateTime
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param zone  the time zone, null means default zone
      */
-    public static LocalDateTime forInstant(long instant, DateTimeZone zone) {
-        return forInstant(instant, ISOChronology.getInstance(zone));
+    public LocalDateTime(long instant, DateTimeZone zone) {
+        this(instant, ISOChronology.getInstance(zone));
     }
 
     /**
@@ -230,10 +230,12 @@ public final class LocalDateTime
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public static LocalDateTime forInstant(long instant, Chronology chronology) {
+    public LocalDateTime(long instant, Chronology chronology) {
         chronology = DateTimeUtils.getChronology(chronology);
+        
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
-        return new LocalDateTime(localMillis, chronology.withUTC());
+        iLocalMillis = localMillis;
+        iChronology = chronology.withUTC();
     }
 
     //-----------------------------------------------------------------------
@@ -251,8 +253,8 @@ public final class LocalDateTime
      * @param instant  the datetime object
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public static LocalDateTime forInstant(Object instant) {
-        return forInstant(instant, (Chronology) null);
+    public LocalDateTime(Object instant) {
+        this(instant, (Chronology) null);
     }
 
     /**
@@ -271,12 +273,15 @@ public final class LocalDateTime
      * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public static LocalDateTime forInstant(Object instant, DateTimeZone zone) {
+    public LocalDateTime(Object instant, DateTimeZone zone) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology chrono = converter.getChronology(instant, zone);
-        long millis = converter.getInstantMillis(instant, chrono);
-        chrono = DateTimeUtils.getChronology(chrono);
-        return forInstant(millis, chrono);
+        Chronology chronology = converter.getChronology(instant, zone);
+        long millis = converter.getInstantMillis(instant, chronology);
+        chronology = DateTimeUtils.getChronology(chronology);
+        
+        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
+        iLocalMillis = localMillis;
+        iChronology = chronology.withUTC();
     }
 
     /**
@@ -294,24 +299,14 @@ public final class LocalDateTime
      * @param chronology  the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public static LocalDateTime forInstant(Object instant, Chronology chronology) {
+    public LocalDateTime(Object instant, Chronology chronology) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         Chronology chrono = DateTimeUtils.getChronology(converter.getChronology(instant, chronology));
-        long millis = converter.getInstantMillis(instant, chronology);
-        return forInstant(millis, chrono);
-    }
-
-    /**
-     * Constructs an instance set to the local time defined by the specified
-     * instant evaluated using the specified local (UTC) chronology.
-     *
-     * @param localMillis  the local milliseconds from 1970-01-01T00:00:00
-     * @param chronology  the UTC chronology, not null
-     */
-    LocalDateTime(long localMillis, Chronology chronology) {
-        super();
+        long millis = converter.getInstantMillis(instant, chrono);
+        
+        long localMillis = chrono.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
         iLocalMillis = localMillis;
-        iChronology = chronology;
+        iChronology = chrono.withUTC();
     }
 
     //-----------------------------------------------------------------------
@@ -506,11 +501,25 @@ public final class LocalDateTime
         return type.getField(getChronology()).isSupported();
     }
 
+    /**
+     * Checks if the duration type specified is supported by this
+     * local datetime and chronology.
+     *
+     * @param type  a duration type, usually obtained from DurationFieldType
+     * @return true if the field type is supported
+     */
+    public boolean isSupported(DurationFieldType type) {
+        if (type == null) {
+            return false;
+        }
+        return type.getField(getChronology()).isSupported();
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Gets the milliseconds of the datetime instant from the Java epoch
      * of 1970-01-01T00:00:00 (not fixed to any specific time zone).
-     * 
+     *
      * @return the number of milliseconds since 1970-01-01T00:00:00
      */
     long getLocalMillis() {
@@ -519,7 +528,7 @@ public final class LocalDateTime
 
     /**
      * Gets the chronology of the datetime.
-     * 
+     *
      * @return the Chronology that the datetime is using
      */
     public Chronology getChronology() {
@@ -528,16 +537,16 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Get this object as a DateTime using the default zone.
+     * Converts this object to a DateTime using the default zone.
      * 
      * @return <code>this</code>
      */
-    public DateTime toDateTimeDefaultZone() {
+    public DateTime toDateTime() {
         return toDateTime((DateTimeZone) null);
     }
 
     /**
-     * Get this object as a DateTime using the specified zone.
+     * Converts this object to a DateTime using the specified zone.
      * 
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis
@@ -551,19 +560,19 @@ public final class LocalDateTime
     //-----------------------------------------------------------------------
     /**
      * Converts this object to a LocalDate with the same date and chronology.
-     * 
+     *
      * @return a LocalDate with the same date and chronology
      */
-    public LocalDate getDate() {
+    public LocalDate toLocalDate() {
         return new LocalDate(getLocalMillis(), getChronology());
     }
 
     /**
      * Converts this object to a LocalTime with the same time and chronology.
-     * 
+     *
      * @return a LocalTime with the same time and chronology
      */
-    public LocalTime getTime() {
+    public LocalTime toLocalTime() {
         return new LocalTime(getLocalMillis(), getChronology());
     }
 
@@ -584,7 +593,8 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified date, retaining the time fields.
+     * Gets a copy of this LocalDateTime with the specified date,
+     * retaining the time fields.
      * <p>
      * If the date is already the date passed in, then <code>this</code> is returned.
      * <p>
@@ -609,7 +619,8 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified time, retaining the date fields.
+     * Gets a copy of this LocalDateTime with the specified time,
+     * retaining the date fields.
      * <p>
      * If the time is already the time passed in, then <code>this</code> is returned.
      * <p>
@@ -637,8 +648,8 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the partial set of fields replacing those
-     * from this instance.
+     * Gets a copy of this LocalDateTime with the partial set of fields
+     * replacing those from this instance.
      * <p>
      * For example, if the partial is a <code>TimeOfDay</code> then the time fields
      * would be changed in the returned instance.
@@ -656,7 +667,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified field set to a new value.
+     * Gets a copy of this LocalDateTime with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>hourOfDay</code> then the hour of day
      * field would be changed in the returned instance.
@@ -683,7 +694,8 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this datetime with the value of the specified field increased.
+     * Gets a copy of this LocalDateTime with the value of the specified
+     * field increased.
      * <p>
      * If the addition is zero or the field is null, then <code>this</code> is returned.
      * <p>
@@ -693,7 +705,7 @@ public final class LocalDateTime
      * LocalDateTime added = dt.plusYears(6);
      * LocalDateTime added = dt.plus(Period.years(6));
      * </pre>
-     * 
+     *
      * @param fieldType  the field type to add to, not null
      * @param amount  the amount to add
      * @return a copy of this datetime with the field updated
@@ -713,10 +725,10 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Gets a copy of this LocalDateTime with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
-     * 
+     *
      * @param durationToAdd  the duration to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the duration added
@@ -731,7 +743,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified period added.
+     * Gets a copy of this LocalDateTime with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -739,7 +751,7 @@ public final class LocalDateTime
      * period instances. Adding one field is best achieved using methods
      * like {@link #withFieldAdded(DurationFieldType, int)}
      * or {@link #plusYears(int)}.
-     * 
+     *
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
      * @return a copy of this datetime with the period added
@@ -755,10 +767,10 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Gets a copy of this LocalDateTime with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
-     * 
+     *
      * @param duration  the duration to add to this one, null means zero
      * @return a copy of this datetime with the duration added
      * @throws ArithmeticException if the result exceeds the internal capacity
@@ -768,14 +780,14 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified period added.
+     * Gets a copy of this LocalDateTime with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
      * This method is typically used to add complex period instances.
      * Adding one field is best achieved using methods
      * like {@link #plusYears(int)}.
-     * 
+     *
      * @param period  the period to add to this one, null means zero
      * @return a copy of this datetime with the period added
      * @throws ArithmeticException if the result exceeds the internal capacity
@@ -786,9 +798,9 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime plus the specified number of years.
+     * Returns a new LocalDateTime plus the specified number of years.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -798,7 +810,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param years  the amount of years to add, may be negative
-     * @return the new datetime plus the increased years
+     * @return the new LocalDateTime plus the increased years
      */
     public LocalDateTime plusYears(int years) {
         if (years == 0) {
@@ -809,9 +821,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of months.
+     * Returns a new LocalDateTime plus the specified number of months.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -821,7 +833,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param months  the amount of months to add, may be negative
-     * @return the new datetime plus the increased months
+     * @return the new LocalDateTime plus the increased months
      */
     public LocalDateTime plusMonths(int months) {
         if (months == 0) {
@@ -832,9 +844,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of weeks.
+     * Returns a new LocalDateTime plus the specified number of weeks.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -844,7 +856,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param weeks  the amount of weeks to add, may be negative
-     * @return the new datetime plus the increased weeks
+     * @return the new LocalDateTime plus the increased weeks
      */
     public LocalDateTime plusWeeks(int weeks) {
         if (weeks == 0) {
@@ -855,9 +867,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of days.
+     * Returns a new LocalDateTime plus the specified number of days.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -867,7 +879,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param days  the amount of days to add, may be negative
-     * @return the new datetime plus the increased days
+     * @return the new LocalDateTime plus the increased days
      */
     public LocalDateTime plusDays(int days) {
         if (days == 0) {
@@ -877,10 +889,11 @@ public final class LocalDateTime
         return withLocalMillis(instant);
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime plus the specified number of hours.
+     * Returns a new LocalDateTime plus the specified number of hours.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -890,7 +903,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param hours  the amount of hours to add, may be negative
-     * @return the new datetime plus the increased hours
+     * @return the new LocalDateTime plus the increased hours
      */
     public LocalDateTime plusHours(int hours) {
         if (hours == 0) {
@@ -901,9 +914,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of minutes.
+     * Returns a new LocalDateTime plus the specified number of minutes.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -913,7 +926,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param minutes  the amount of minutes to add, may be negative
-     * @return the new datetime plus the increased minutes
+     * @return the new LocalDateTime plus the increased minutes
      */
     public LocalDateTime plusMinutes(int minutes) {
         if (minutes == 0) {
@@ -924,9 +937,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of seconds.
+     * Returns a new LocalDateTime plus the specified number of seconds.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -936,7 +949,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param seconds  the amount of seconds to add, may be negative
-     * @return the new datetime plus the increased seconds
+     * @return the new LocalDateTime plus the increased seconds
      */
     public LocalDateTime plusSeconds(int seconds) {
         if (seconds == 0) {
@@ -947,9 +960,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of millis.
+     * Returns a new LocalDateTime plus the specified number of millis.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -959,7 +972,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param millis  the amount of millis to add, may be negative
-     * @return the new datetime plus the increased millis
+     * @return the new LocalDateTime plus the increased millis
      */
     public LocalDateTime plusMillis(int millis) {
         if (millis == 0) {
@@ -971,10 +984,10 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration taken away.
+     * Gets a copy of this LocalDateTime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
-     * 
+     *
      * @param duration  the duration to reduce this instant by
      * @return a copy of this datetime with the duration taken away
      * @throws ArithmeticException if the result exceeds the internal capacity
@@ -984,14 +997,14 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified period taken away.
+     * Gets a copy of this LocalDateTime with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
      * This method is typically used to subtract complex period instances.
      * Subtracting one field is best achieved using methods
      * like {@link #minusYears(int)}.
-     * 
+     *
      * @param period  the period to reduce this instant by
      * @return a copy of this datetime with the period taken away
      * @throws ArithmeticException if the result exceeds the internal capacity
@@ -1002,9 +1015,9 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime minus the specified number of years.
+     * Returns a new LocalDateTime minus the specified number of years.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1014,7 +1027,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param years  the amount of years to subtract, may be negative
-     * @return the new datetime minus the increased years
+     * @return the new LocalDateTime minus the increased years
      */
     public LocalDateTime minusYears(int years) {
         if (years == 0) {
@@ -1025,9 +1038,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of months.
+     * Returns a new LocalDateTime minus the specified number of months.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1037,7 +1050,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param months  the amount of months to subtract, may be negative
-     * @return the new datetime minus the increased months
+     * @return the new LocalDateTime minus the increased months
      */
     public LocalDateTime minusMonths(int months) {
         if (months == 0) {
@@ -1048,9 +1061,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of weeks.
+     * Returns a new LocalDateTime minus the specified number of weeks.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1060,7 +1073,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param weeks  the amount of weeks to subtract, may be negative
-     * @return the new datetime minus the increased weeks
+     * @return the new LocalDateTime minus the increased weeks
      */
     public LocalDateTime minusWeeks(int weeks) {
         if (weeks == 0) {
@@ -1071,9 +1084,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of days.
+     * Returns a new LocalDateTime minus the specified number of days.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1083,7 +1096,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param days  the amount of days to subtract, may be negative
-     * @return the new datetime minus the increased days
+     * @return the new LocalDateTime minus the increased days
      */
     public LocalDateTime minusDays(int days) {
         if (days == 0) {
@@ -1093,10 +1106,11 @@ public final class LocalDateTime
         return withLocalMillis(instant);
     }
 
+    //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime minus the specified number of hours.
+     * Returns a new LocalDateTime minus the specified number of hours.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1106,7 +1120,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param hours  the amount of hours to subtract, may be negative
-     * @return the new datetime minus the increased hours
+     * @return the new LocalDateTime minus the increased hours
      */
     public LocalDateTime minusHours(int hours) {
         if (hours == 0) {
@@ -1117,9 +1131,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of minutes.
+     * Returns a new LocalDateTime minus the specified number of minutes.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1129,7 +1143,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param minutes  the amount of minutes to subtract, may be negative
-     * @return the new datetime minus the increased minutes
+     * @return the new LocalDateTime minus the increased minutes
      */
     public LocalDateTime minusMinutes(int minutes) {
         if (minutes == 0) {
@@ -1140,9 +1154,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of seconds.
+     * Returns a new LocalDateTime minus the specified number of seconds.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1152,7 +1166,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param seconds  the amount of seconds to subtract, may be negative
-     * @return the new datetime minus the increased seconds
+     * @return the new LocalDateTime minus the increased seconds
      */
     public LocalDateTime minusSeconds(int seconds) {
         if (seconds == 0) {
@@ -1163,9 +1177,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of millis.
+     * Returns a new LocalDateTime minus the specified number of millis.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1175,7 +1189,7 @@ public final class LocalDateTime
      * </pre>
      *
      * @param millis  the amount of millis to subtract, may be negative
-     * @return the new datetime minus the increased millis
+     * @return the new LocalDateTime minus the increased millis
      */
     public LocalDateTime minusMillis(int millis) {
         if (millis == 0) {
@@ -1187,27 +1201,27 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the property object for the specified type, which contains many useful methods.
+     * Gets the property object for the specified type, which contains many
+     * useful methods.
      *
-     * @param type  the field type to get the chronology for
+     * @param fieldType  the field type to get the chronology for
      * @return the property object
      * @throws IllegalArgumentException if the field is null or unsupported
      */
-    public Property property(DateTimeFieldType type) {
-        if (type == null) {
+    public Property property(DateTimeFieldType fieldType) {
+        if (fieldType == null) {
             throw new IllegalArgumentException("The DateTimeFieldType must not be null");
         }
-        DateTimeField field = type.getField(getChronology());
-        if (field.isSupported() == false) {
-            throw new IllegalArgumentException("Field '" + type + "' is not supported");
+        if (isSupported(fieldType) == false) {
+            throw new IllegalArgumentException("Field '" + fieldType + "' is not supported");
         }
-        return new Property(this, field);
+        return new Property(this, fieldType.getField(getChronology()));
     }
 
     //-----------------------------------------------------------------------
     /**
      * Get the era field value.
-     * 
+     *
      * @return the era
      */
     public int getEra() {
@@ -1216,7 +1230,7 @@ public final class LocalDateTime
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     public int getCenturyOfEra() {
@@ -1225,7 +1239,7 @@ public final class LocalDateTime
 
     /**
      * Get the year of era field value.
-     * 
+     *
      * @return the year of era
      */
     public int getYearOfEra() {
@@ -1234,7 +1248,7 @@ public final class LocalDateTime
 
     /**
      * Get the year of century field value.
-     * 
+     *
      * @return the year of century
      */
     public int getYearOfCentury() {
@@ -1243,7 +1257,7 @@ public final class LocalDateTime
 
     /**
      * Get the year field value.
-     * 
+     *
      * @return the year
      */
     public int getYear() {
@@ -1252,8 +1266,14 @@ public final class LocalDateTime
 
     /**
      * Get the weekyear field value.
-     * 
-     * @return the year of a week based year
+     * <p>
+     * The weekyear is the year that matches with the weekOfWeekyear field.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
+     * The weekyear allows you to query the effective year for that day.
+     *
+     * @return the weekyear
      */
     public int getWeekyear() {
         return getChronology().weekyear().get(getLocalMillis());
@@ -1261,7 +1281,7 @@ public final class LocalDateTime
 
     /**
      * Get the month of year field value.
-     * 
+     *
      * @return the month of year
      */
     public int getMonthOfYear() {
@@ -1270,7 +1290,7 @@ public final class LocalDateTime
 
     /**
      * Get the week of weekyear field value.
-     * 
+     *
      * @return the week of a week based year
      */
     public int getWeekOfWeekyear() {
@@ -1279,7 +1299,7 @@ public final class LocalDateTime
 
     /**
      * Get the day of year field value.
-     * 
+     *
      * @return the day of year
      */
     public int getDayOfYear() {
@@ -1290,7 +1310,7 @@ public final class LocalDateTime
      * Get the day of month field value.
      * <p>
      * The values for the day of month are defined in {@link org.joda.time.DateTimeConstants}.
-     * 
+     *
      * @return the day of month
      */
     public int getDayOfMonth() {
@@ -1301,7 +1321,7 @@ public final class LocalDateTime
      * Get the day of week field value.
      * <p>
      * The values for the day of week are defined in {@link org.joda.time.DateTimeConstants}.
-     * 
+     *
      * @return the day of week
      */
     public int getDayOfWeek() {
@@ -1347,8 +1367,250 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Sets the era field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * era changed.
+     *
+     * @param era  the era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withEra(int era) {
+        return withLocalMillis(getChronology().era().set(getLocalMillis(), era));
+    }
+
+    /**
+     * Sets the century of era field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * century of era changed.
+     *
+     * @param centuryOfEra  the centurey of era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withCenturyOfEra(int centuryOfEra) {
+        return withLocalMillis(getChronology().centuryOfEra().set(getLocalMillis(), centuryOfEra));
+    }
+
+    /**
+     * Sets the year of era field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year of era changed.
+     *
+     * @param yearOfEra  the year of era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withYearOfEra(int yearOfEra) {
+        return withLocalMillis(getChronology().yearOfEra().set(getLocalMillis(), yearOfEra));
+    }
+
+    /**
+     * Sets the year of century field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year of century changed.
+     *
+     * @param year of century  the year of century to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withYearOfCentury(int yearOfCentury) {
+        return withLocalMillis(getChronology().yearOfCentury().set(getLocalMillis(), yearOfCentury));
+    }
+
+    /**
+     * Sets the year field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year changed.
+     *
+     * @param year  the year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withYear(int year) {
+        return withLocalMillis(getChronology().year().set(getLocalMillis(), year));
+    }
+
+    /**
+     * Sets the weekyear field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * weekyear changed.
+     *
+     * @param weekyear  the weekyear to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withWeekyear(int weekyear) {
+        return withLocalMillis(getChronology().weekyear().set(getLocalMillis(), weekyear));
+    }
+
+    /**
+     * Sets the month of year field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * month of year changed.
+     *
+     * @param monthOfYear  the month of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withMonthOfYear(int monthOfYear) {
+        return withLocalMillis(getChronology().monthOfYear().set(getLocalMillis(), monthOfYear));
+    }
+
+    /**
+     * Sets the week of weekyear field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * week of weekyear changed.
+     *
+     * @param weekOfWeekyear  the week of weekyear to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withWeekOfWeekyear(int weekOfWeekyear) {
+        return withLocalMillis(getChronology().weekOfWeekyear().set(getLocalMillis(), weekOfWeekyear));
+    }
+
+    /**
+     * Sets the day of year field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of year changed.
+     *
+     * @param dayOfYear  the day of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withDayOfYear(int dayOfYear) {
+        return withLocalMillis(getChronology().dayOfYear().set(getLocalMillis(), dayOfYear));
+    }
+
+    /**
+     * Sets the day of month field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of month changed.
+     *
+     * @param dayOfMonth  the day of month to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withDayOfMonth(int dayOfMonth) {
+        return withLocalMillis(getChronology().dayOfMonth().set(getLocalMillis(), dayOfMonth));
+    }
+
+    /**
+     * Sets the day of week field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of week changed.
+     *
+     * @param dayOfWeek  the day of week to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withDayOfWeek(int dayOfWeek) {
+        return withLocalMillis(getChronology().dayOfWeek().set(getLocalMillis(), dayOfWeek));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Sets the hour of day field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * hour of day changed.
+     *
+     * @param hour  the hour of day to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withHourOfDay(int hour) {
+        return withLocalMillis(getChronology().hourOfDay().set(getLocalMillis(), hour));
+    }
+
+    /**
+     * Sets the minute of hour field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * minute of hour changed.
+     *
+     * @param minute  the minute of hour to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withMinuteOfHour(int minute) {
+        return withLocalMillis(getChronology().minuteOfHour().set(getLocalMillis(), minute));
+    }
+
+    /**
+     * Sets the second of minute field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * second of minute changed.
+     *
+     * @param second  the second of minute to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withSecondOfMinute(int second) {
+        return withLocalMillis(getChronology().secondOfMinute().set(getLocalMillis(), second));
+    }
+
+    /**
+     * Sets the millis of second field in a copy of this LocalDateTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalDateTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * millis of second changed.
+     *
+     * @param millis  the millis of second to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalDateTime withMillisOfSecond(int millis) {
+        return withLocalMillis(getChronology().millisOfSecond().set(getLocalMillis(), millis));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Get the era property.
-     * 
+     *
      * @return the era property
      */
     public Property era() {
@@ -1357,7 +1619,7 @@ public final class LocalDateTime
 
     /**
      * Get the century of era property.
-     * 
+     *
      * @return the year of era property
      */
     public Property centuryOfEra() {
@@ -1366,7 +1628,7 @@ public final class LocalDateTime
 
     /**
      * Get the year of century property.
-     * 
+     *
      * @return the year of era property
      */
     public Property yearOfCentury() {
@@ -1375,7 +1637,7 @@ public final class LocalDateTime
 
     /**
      * Get the year of era property.
-     * 
+     *
      * @return the year of era property
      */
     public Property yearOfEra() {
@@ -1384,7 +1646,7 @@ public final class LocalDateTime
 
     /**
      * Get the year property.
-     * 
+     *
      * @return the year property
      */
     public Property year() {
@@ -1392,9 +1654,9 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the year of a week based year property.
-     * 
-     * @return the year of a week based year property
+     * Get the weekyear property.
+     *
+     * @return the weekyear property
      */
     public Property weekyear() {
         return new Property(this, getChronology().weekyear());
@@ -1402,7 +1664,7 @@ public final class LocalDateTime
 
     /**
      * Get the month of year property.
-     * 
+     *
      * @return the month of year property
      */
     public Property monthOfYear() {
@@ -1411,7 +1673,7 @@ public final class LocalDateTime
 
     /**
      * Get the week of a week based year property.
-     * 
+     *
      * @return the week of a week based year property
      */
     public Property weekOfWeekyear() {
@@ -1420,7 +1682,7 @@ public final class LocalDateTime
 
     /**
      * Get the day of year property.
-     * 
+     *
      * @return the day of year property
      */
     public Property dayOfYear() {
@@ -1429,7 +1691,7 @@ public final class LocalDateTime
 
     /**
      * Get the day of month property.
-     * 
+     *
      * @return the day of month property
      */
     public Property dayOfMonth() {
@@ -1438,7 +1700,7 @@ public final class LocalDateTime
 
     /**
      * Get the day of week property.
-     * 
+     *
      * @return the day of week property
      */
     public Property dayOfWeek() {
@@ -1484,7 +1746,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).
+     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSS).
      * 
      * @return ISO8601 time formatted string.
      */
@@ -1536,15 +1798,15 @@ public final class LocalDateTime
      * of DateTime - they do not modify the original. The example below yields two
      * independent immutable date objects 20 years apart.
      * <pre>
-     * DateTime dt = new DateTime(1972, 12, 3, 0, 0, 0, 0);
-     * DateTime dt1920 = dt.year().setCopy(1920);
+     * LocalDateTime dt = new LocalDateTime(1972, 12, 3, 0, 0, 0, 0);
+     * LocalDateTime dt1920 = dt.year().setCopy(1920);
      * <p>
      * LocalDateTime.Propery itself is thread-safe and immutable, as well as the
      * LocalDateTime being operated on.
      *
      * @author Stephen Colebourne
      * @author Brian S O'Neill
-     * @since 1.2
+     * @since 1.3
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
         
@@ -1738,7 +2000,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime withRoundedFloor() {
+        public LocalDateTime roundFloor() {
             return iInstant.withLocalMillis(iField.roundFloor(iInstant.getLocalMillis()));
         }
         
@@ -1752,7 +2014,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime withRoundedCeiling() {
+        public LocalDateTime roundCeiling() {
             return iInstant.withLocalMillis(iField.roundCeiling(iInstant.getLocalMillis()));
         }
         
@@ -1762,7 +2024,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime withRoundedHalfFloor() {
+        public LocalDateTime roundHalfFloor() {
             return iInstant.withLocalMillis(iField.roundHalfFloor(iInstant.getLocalMillis()));
         }
         
@@ -1772,7 +2034,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime withRoundedHalfCeiling() {
+        public LocalDateTime roundHalfCeiling() {
             return iInstant.withLocalMillis(iField.roundHalfCeiling(iInstant.getLocalMillis()));
         }
         
@@ -1783,7 +2045,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime withRoundedHalfEven() {
+        public LocalDateTime roundHalfEven() {
             return iInstant.withLocalMillis(iField.roundHalfEven(iInstant.getLocalMillis()));
         }
     }

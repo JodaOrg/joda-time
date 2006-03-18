@@ -664,7 +664,7 @@ public class TestLocalTime_Basics extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTimeTodayDefaultZone();
+        DateTime test = base.toDateTimeToday();
         check(base, 10, 20, 30, 40);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_LONDON);
         expected = expected.hourOfDay().setCopy(10);

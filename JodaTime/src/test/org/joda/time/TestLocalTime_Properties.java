@@ -95,32 +95,32 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyRoundHour() {
         LocalTime test = new LocalTime(10, 20);
-        check(test.hourOfDay().withRoundedCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfCeiling(), 10, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfEven(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundCeiling(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundFloor(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeiling(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloor(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEven(), 10, 0, 0, 0);
         
         test = new LocalTime(10, 40);
-        check(test.hourOfDay().withRoundedCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfFloor(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfEven(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundCeiling(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundFloor(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeiling(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloor(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEven(), 11, 0, 0, 0);
         
         test = new LocalTime(10, 30);
-        check(test.hourOfDay().withRoundedCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfEven(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundCeiling(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundFloor(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeiling(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloor(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEven(), 10, 0, 0, 0);
         
         test = new LocalTime(11, 30);
-        check(test.hourOfDay().withRoundedCeiling(), 12, 0, 0, 0);
-        check(test.hourOfDay().withRoundedFloor(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfCeiling(), 12, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfFloor(), 11, 0, 0, 0);
-        check(test.hourOfDay().withRoundedHalfEven(), 12, 0, 0, 0);
+        check(test.hourOfDay().roundCeiling(), 12, 0, 0, 0);
+        check(test.hourOfDay().roundFloor(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeiling(), 12, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloor(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEven(), 12, 0, 0, 0);
     }
 
     public void testPropertyGetMaxMinValuesHour() {
@@ -241,8 +241,8 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     public void testPropertyCompareToHour() {
-        LocalTime test1 = LocalTime.forInstantDefaultZone(TEST_TIME1);
-        LocalTime test2 = LocalTime.forInstantDefaultZone(TEST_TIME2);
+        LocalTime test1 = new LocalTime(TEST_TIME1);
+        LocalTime test2 = new LocalTime(TEST_TIME2);
         assertEquals(true, test1.hourOfDay().compareTo(test2) < 0);
         assertEquals(true, test2.hourOfDay().compareTo(test1) > 0);
         assertEquals(true, test1.hourOfDay().compareTo(test1) == 0);
@@ -418,8 +418,8 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     public void testPropertyCompareToMinute() {
-        LocalTime test1 = LocalTime.forInstantDefaultZone(TEST_TIME1);
-        LocalTime test2 = LocalTime.forInstantDefaultZone(TEST_TIME2);
+        LocalTime test1 = new LocalTime(TEST_TIME1);
+        LocalTime test2 = new LocalTime(TEST_TIME2);
         assertEquals(true, test1.minuteOfHour().compareTo(test2) < 0);
         assertEquals(true, test2.minuteOfHour().compareTo(test1) > 0);
         assertEquals(true, test1.minuteOfHour().compareTo(test1) == 0);
@@ -589,8 +589,8 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     public void testPropertyCompareToSecond() {
-        LocalTime test1 = LocalTime.forInstantDefaultZone(TEST_TIME1);
-        LocalTime test2 = LocalTime.forInstantDefaultZone(TEST_TIME2);
+        LocalTime test1 = new LocalTime(TEST_TIME1);
+        LocalTime test2 = new LocalTime(TEST_TIME2);
         assertEquals(true, test1.secondOfMinute().compareTo(test2) < 0);
         assertEquals(true, test2.secondOfMinute().compareTo(test1) > 0);
         assertEquals(true, test1.secondOfMinute().compareTo(test1) == 0);
@@ -754,8 +754,8 @@ public class TestLocalTime_Properties extends TestCase {
     }
 
     public void testPropertyCompareToMilli() {
-        LocalTime test1 = LocalTime.forInstantDefaultZone(TEST_TIME1);
-        LocalTime test2 = LocalTime.forInstantDefaultZone(TEST_TIME2);
+        LocalTime test1 = new LocalTime(TEST_TIME1);
+        LocalTime test2 = new LocalTime(TEST_TIME2);
         assertEquals(true, test1.millisOfSecond().compareTo(test2) < 0);
         assertEquals(true, test2.millisOfSecond().compareTo(test1) > 0);
         assertEquals(true, test1.millisOfSecond().compareTo(test1) == 0);

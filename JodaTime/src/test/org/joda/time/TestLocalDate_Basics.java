@@ -100,7 +100,7 @@ public class TestLocalDate_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGet_DateTimeFieldType() {
-        LocalDate test = LocalDate.nowDefaultZone();
+        LocalDate test = new LocalDate();
         assertEquals(1970, test.get(DateTimeFieldType.year()));
         assertEquals(6, test.get(DateTimeFieldType.monthOfYear()));
         assertEquals(9, test.get(DateTimeFieldType.dayOfMonth()));
@@ -119,12 +119,12 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testSize() {
-        LocalDate test = LocalDate.nowDefaultZone();
+        LocalDate test = new LocalDate();
         assertEquals(3, test.size());
     }
 
     public void testGetFieldType_int() {
-        LocalDate test = LocalDate.now(COPTIC_PARIS);
+        LocalDate test = new LocalDate(COPTIC_PARIS);
         assertSame(DateTimeFieldType.year(), test.getFieldType(0));
         assertSame(DateTimeFieldType.monthOfYear(), test.getFieldType(1));
         assertSame(DateTimeFieldType.dayOfMonth(), test.getFieldType(2));
@@ -137,7 +137,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testGetFieldTypes() {
-        LocalDate test = LocalDate.now(COPTIC_PARIS);
+        LocalDate test = new LocalDate(COPTIC_PARIS);
         DateTimeFieldType[] fields = test.getFieldTypes();
         assertSame(DateTimeFieldType.year(), fields[0]);
         assertSame(DateTimeFieldType.monthOfYear(), fields[1]);
@@ -146,7 +146,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testGetField_int() {
-        LocalDate test = LocalDate.now(COPTIC_PARIS);
+        LocalDate test = new LocalDate(COPTIC_PARIS);
         assertSame(COPTIC_UTC.year(), test.getField(0));
         assertSame(COPTIC_UTC.monthOfYear(), test.getField(1));
         assertSame(COPTIC_UTC.dayOfMonth(), test.getField(2));
@@ -159,7 +159,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testGetFields() {
-        LocalDate test = LocalDate.now(COPTIC_PARIS);
+        LocalDate test = new LocalDate(COPTIC_PARIS);
         DateTimeField[] fields = test.getFields();
         assertSame(COPTIC_UTC.year(), fields[0]);
         assertSame(COPTIC_UTC.monthOfYear(), fields[1]);
@@ -168,7 +168,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testGetValue_int() {
-        LocalDate test = LocalDate.nowDefaultZone();
+        LocalDate test = new LocalDate();
         assertEquals(1970, test.getValue(0));
         assertEquals(6, test.getValue(1));
         assertEquals(9, test.getValue(2));
@@ -181,7 +181,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testGetValues() {
-        LocalDate test = LocalDate.nowDefaultZone();
+        LocalDate test = new LocalDate();
         int[] values = test.getValues();
         assertEquals(1970, values[0]);
         assertEquals(6, values[1]);
@@ -190,7 +190,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     public void testIsSupported_DateTimeFieldType() {
-        LocalDate test = LocalDate.now(COPTIC_PARIS);
+        LocalDate test = new LocalDate(COPTIC_PARIS);
         assertEquals(true, test.isSupported(DateTimeFieldType.year()));
         assertEquals(true, test.isSupported(DateTimeFieldType.monthOfYear()));
         assertEquals(true, test.isSupported(DateTimeFieldType.dayOfMonth()));
@@ -604,7 +604,7 @@ public class TestLocalDate_Basics extends TestCase {
     public void testToDateTimeAtMidnight() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
         
-        DateTime test = base.toDateTimeAtMidnightDefaultZone();
+        DateTime test = base.toDateTimeAtMidnight();
         check(base, 2005, 6, 9);
         assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
     }
@@ -632,7 +632,7 @@ public class TestLocalDate_Basics extends TestCase {
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         
-        DateTime test = base.toDateTimeAtCurrentTimeDefaultZone();
+        DateTime test = base.toDateTimeAtCurrentTime();
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(dt.getMillis(), COPTIC_LONDON);
         expected = expected.year().setCopy(2005);
@@ -671,22 +671,22 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testToDateTimeDefaultZone_LocalTime() {
+    public void testToDateTime_LocalTime() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         LocalTime tod = new LocalTime(12, 13, 14, 15, COPTIC_TOKYO);
         
-        DateTime test = base.toDateTimeDefaultZone(tod);
+        DateTime test = base.toDateTime(tod);
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(2005, 6, 9, 12, 13, 14, 15, COPTIC_LONDON);
         assertEquals(expected, test);
     }
 
-    public void testToDateTimeDefaultZone_nullLocalTime() {
+    public void testToDateTime_nullLocalTime() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         long now = new DateTime(2004, 5, 8, 12, 13, 14, 15, COPTIC_LONDON).getMillis();
         DateTimeUtils.setCurrentMillisFixed(now);
         
-        DateTime test = base.toDateTimeDefaultZone((LocalTime) null);
+        DateTime test = base.toDateTime((LocalTime) null);
         check(base, 2005, 6, 9);
         DateTime expected = new DateTime(2005, 6, 9, 12, 13, 14, 15, COPTIC_LONDON);
         assertEquals(expected, test);
@@ -738,7 +738,7 @@ public class TestLocalDate_Basics extends TestCase {
     public void testToDateMidnight() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
         
-        DateMidnight test = base.toDateMidnightDefaultZone();
+        DateMidnight test = base.toDateMidnight();
         check(base, 2005, 6, 9);
         assertEquals(new DateMidnight(2005, 6, 9, COPTIC_LONDON), test);
     }
@@ -791,9 +791,9 @@ public class TestLocalDate_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testToInterval() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
-        Interval test = base.toIntervalDefaultZone();
+        Interval test = base.toInterval();
         check(base, 2005, 6, 9);
-        DateTime start = base.toDateTimeAtMidnightDefaultZone();
+        DateTime start = base.toDateTimeAtMidnight();
         DateTime end = start.plus(Period.days(1));
         Interval expected = new Interval(start, end);
         assertEquals(expected, test);

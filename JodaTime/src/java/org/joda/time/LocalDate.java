@@ -107,43 +107,6 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Constructs an instance set to the current local time evaluated using
-     * ISO chronology in the default zone.
-     * <p>
-     * Once the constructor is completed, the zone is no longer used.
-     */
-    public static LocalDate nowDefaultZone() {
-        return forInstant(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
-    }
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * ISO chronology in the specified zone.
-     * <p>
-     * If the specified time zone is null, the default zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param zone  the time zone, null means default zone
-     */
-    public static LocalDate now(DateTimeZone zone) {
-        return forInstant(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
-    }
-
-    /**
-     * Constructs an instance set to the current local time evaluated using
-     * specified chronology.
-     * <p>
-     * If the chronology is null, ISO chronology in the default time zone is used.
-     * Once the constructor is completed, the zone is no longer used.
-     *
-     * @param chronology  the chronology, null means ISOChronology in default zone
-     */
-    public static LocalDate now(Chronology chronology) {
-        return forInstant(DateTimeUtils.currentTimeMillis(), chronology);
-    }
-
-    //-----------------------------------------------------------------------
-    /**
      * Constructs a LocalDate from a <code>java.util.Calendar</code>
      * using exactly the same field values avoiding any time zone effects.
      * <p>
@@ -161,7 +124,7 @@ public final class LocalDate
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
-    public static LocalDate forFields(Calendar calendar) {
+    public static LocalDate fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
         }
@@ -187,7 +150,7 @@ public final class LocalDate
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
-    public static LocalDate forFields(Date date) {
+    public static LocalDate fromDateFields(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The date must not be null");
         }
@@ -200,6 +163,43 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
+     * Constructs an instance set to the current local time evaluated using
+     * ISO chronology in the default zone.
+     * <p>
+     * Once the constructor is completed, the zone is no longer used.
+     */
+    public LocalDate() {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
+    }
+
+    /**
+     * Constructs an instance set to the current local time evaluated using
+     * ISO chronology in the specified zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param zone  the time zone, null means default zone
+     */
+    public LocalDate(DateTimeZone zone) {
+        this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
+    }
+
+    /**
+     * Constructs an instance set to the current local time evaluated using
+     * specified chronology.
+     * <p>
+     * If the chronology is null, ISO chronology in the default time zone is used.
+     * Once the constructor is completed, the zone is no longer used.
+     *
+     * @param chronology  the chronology, null means ISOChronology in default zone
+     */
+    public LocalDate(Chronology chronology) {
+        this(DateTimeUtils.currentTimeMillis(), chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Constructs an instance set to the local time defined by the specified
      * instant evaluated using ISO chronology in the default zone.
      * <p>
@@ -207,8 +207,8 @@ public final class LocalDate
      *
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      */
-    public static LocalDate forInstantDefaultZone(long instant) {
-        return forInstant(instant, ISOChronology.getInstance());
+    public LocalDate(long instant) {
+        this(instant, ISOChronology.getInstance());
     }
 
     /**
@@ -221,8 +221,8 @@ public final class LocalDate
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param zone  the time zone, null means default zone
      */
-    public static LocalDate forInstant(long instant, DateTimeZone zone) {
-        return forInstant(instant, ISOChronology.getInstance(zone));
+    public LocalDate(long instant, DateTimeZone zone) {
+        this(instant, ISOChronology.getInstance(zone));
     }
 
     /**
@@ -235,10 +235,14 @@ public final class LocalDate
      * @param instant  the milliseconds from 1970-01-01T00:00:00Z
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
-    public static LocalDate forInstant(long instant, Chronology chronology) {
+    public LocalDate(long instant, Chronology chronology) {
         chronology = DateTimeUtils.getChronology(chronology);
+        
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
-        return new LocalDate(localMillis, chronology.withUTC());
+        chronology = chronology.withUTC();
+        chronology.dayOfMonth().roundFloor(localMillis);
+        iLocalMillis = localMillis;
+        iChronology = chronology;
     }
 
     //-----------------------------------------------------------------------
@@ -258,8 +262,8 @@ public final class LocalDate
      * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public static LocalDate forInstant(Object instant) {
-        return forInstant(instant, (Chronology) null);
+    public LocalDate(Object instant) {
+        this(instant, (Chronology) null);
     }
 
     /**
@@ -278,12 +282,16 @@ public final class LocalDate
      * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public static LocalDate forInstant(Object instant, DateTimeZone zone) {
+    public LocalDate(Object instant, DateTimeZone zone) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology chrono = converter.getChronology(instant, zone);
-        long millis = converter.getInstantMillis(instant, chrono);
-        chrono = DateTimeUtils.getChronology(chrono);
-        return forInstant(millis, chrono);
+        Chronology chronology = converter.getChronology(instant, zone);
+        long millis = converter.getInstantMillis(instant, chronology);
+        
+        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
+        chronology = chronology.withUTC();
+        chronology.dayOfMonth().roundFloor(localMillis);
+        iLocalMillis = localMillis;
+        iChronology = chronology;
     }
 
     /**
@@ -301,25 +309,16 @@ public final class LocalDate
      * @param chronology  the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
-    public static LocalDate forInstant(Object instant, Chronology chronology) {
+    public LocalDate(Object instant, Chronology chronology) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         Chronology chrono = DateTimeUtils.getChronology(converter.getChronology(instant, chronology));
         long millis = converter.getInstantMillis(instant, chronology);
-        return forInstant(millis, chrono);
-    }
-
-    /**
-     * Constructs an instance set to the local time defined by the specified
-     * instant evaluated using the specified local (UTC) chronology.
-     *
-     * @param localMillis  the local milliseconds from 1970-01-01T00:00:00
-     * @param chronology  the UTC chronology, not null
-     */
-    LocalDate(long localMillis, Chronology chronology) {
-        super();
-        chronology.dayOfMonth().roundFloor(localMillis);
+        
+        long localMillis = chrono.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
+        chrono = chrono.withUTC();
+        chrono.dayOfMonth().roundFloor(localMillis);
         iLocalMillis = localMillis;
-        iChronology = chronology;
+        iChronology = chrono;
     }
 
     //-----------------------------------------------------------------------
@@ -515,7 +514,7 @@ public final class LocalDate
      *
      * @return this date as a datetime at midnight
      */
-    public DateTime toDateTimeAtMidnightDefaultZone() {
+    public DateTime toDateTimeAtMidnight() {
         return toDateTimeAtMidnight(null);
     }
 
@@ -547,7 +546,7 @@ public final class LocalDate
      *
      * @return this date as a datetime with the time as the current time
      */
-    public DateTime toDateTimeAtCurrentTimeDefaultZone() {
+    public DateTime toDateTimeAtCurrentTime() {
         return toDateTimeAtCurrentTime(null);
     }
 
@@ -580,7 +579,7 @@ public final class LocalDate
      *
      * @return the DateMidnight instance in the default zone
      */
-    public DateMidnight toDateMidnightDefaultZone() {
+    public DateMidnight toDateMidnight() {
         return toDateMidnight(null);
     }
 
@@ -613,7 +612,7 @@ public final class LocalDate
      * @return the DateTime instance
      * @throws IllegalArgumentException if the chronology of the time does not match
      */
-    public DateTime toDateTimeDefaultZone(LocalTime time) {
+    public DateTime toDateTime(LocalTime time) {
         return toDateTime(time, null);
     }
 
@@ -655,7 +654,7 @@ public final class LocalDate
      *
      * @return a interval over the day
      */
-    public Interval toIntervalDefaultZone() {
+    public Interval toInterval() {
         return toInterval(null);
     }
 
@@ -1683,7 +1682,7 @@ public final class LocalDate
          *
          * @return a copy of the LocalDate with the field value changed
          */
-        public LocalDate withRoundedFloor() {
+        public LocalDate roundFloor() {
             return iInstant.withLocalMillis(iField.roundFloor(iInstant.getLocalMillis()));
         }
         
@@ -1697,7 +1696,7 @@ public final class LocalDate
          *
          * @return a copy of the LocalDate with the field value changed
          */
-        public LocalDate withRoundedCeiling() {
+        public LocalDate roundCeiling() {
             return iInstant.withLocalMillis(iField.roundCeiling(iInstant.getLocalMillis()));
         }
         
@@ -1707,7 +1706,7 @@ public final class LocalDate
          *
          * @return a copy of the LocalDate with the field value changed
          */
-        public LocalDate withRoundedHalfFloor() {
+        public LocalDate roundHalfFloor() {
             return iInstant.withLocalMillis(iField.roundHalfFloor(iInstant.getLocalMillis()));
         }
         
@@ -1717,7 +1716,7 @@ public final class LocalDate
          *
          * @return a copy of the LocalDate with the field value changed
          */
-        public LocalDate withRoundedHalfCeiling() {
+        public LocalDate roundHalfCeiling() {
             return iInstant.withLocalMillis(iField.roundHalfCeiling(iInstant.getLocalMillis()));
         }
         
@@ -1728,7 +1727,7 @@ public final class LocalDate
          *
          * @return a copy of the LocalDate with the field value changed
          */
-        public LocalDate withRoundedHalfEven() {
+        public LocalDate roundHalfEven() {
             return iInstant.withLocalMillis(iField.roundHalfEven(iInstant.getLocalMillis()));
         }
     }

@@ -103,25 +103,25 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_ForFields_Calendar() throws Exception {
+    public void testFactory_FromCalendarFields_Calendar() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
         LocalTime expected = new LocalTime(4, 5, 6, 7);
-        assertEquals(expected, LocalTime.forFields(cal));
+        assertEquals(expected, LocalTime.fromCalendarFields(cal));
         try {
-            LocalTime.forFields((Calendar) null);
+            LocalTime.fromCalendarFields((Calendar) null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_ForFields_Date() throws Exception {
+    public void testFactory_FromDateFields_Date() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
         LocalTime expected = new LocalTime(4, 5, 6, 7);
-        assertEquals(expected, LocalTime.forFields(cal.getTime()));
+        assertEquals(expected, LocalTime.fromDateFields(cal.getTime()));
         try {
-            LocalTime.forFields((Date) null);
+            LocalTime.fromDateFields((Date) null);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
@@ -156,8 +156,8 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_nowDefaultZone() throws Throwable {
-        LocalTime test = LocalTime.nowDefaultZone();
+    public void testConstructor() throws Throwable {
+        LocalTime test = new LocalTime();
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
@@ -166,19 +166,19 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_now_DateTimeZone() throws Throwable {
+    public void testConstructor_DateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2005, 6, 8, 23, 59, 30, 40, LONDON);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         // 23:59 in London is 00:59 the following day in Paris
         
-        LocalTime test = LocalTime.now(LONDON);
+        LocalTime test = new LocalTime(LONDON);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(23, test.getHourOfDay());
         assertEquals(59, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
         
-        test = LocalTime.now(PARIS);
+        test = new LocalTime(PARIS);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(0, test.getHourOfDay());
         assertEquals(59, test.getMinuteOfHour());
@@ -186,12 +186,12 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
-    public void testFactory_now_nullDateTimeZone() throws Throwable {
+    public void testConstructor_nullDateTimeZone() throws Throwable {
         DateTime dt = new DateTime(2005, 6, 8, 23, 59, 30, 40, LONDON);
         DateTimeUtils.setCurrentMillisFixed(dt.getMillis());
         // 23:59 in London is 00:59 the following day in Paris
         
-        LocalTime test = LocalTime.now((DateTimeZone) null);
+        LocalTime test = new LocalTime((DateTimeZone) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(23, test.getHourOfDay());
         assertEquals(59, test.getMinuteOfHour());
@@ -200,8 +200,8 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_now_Chronology() throws Throwable {
-        LocalTime test = LocalTime.now(JULIAN_LONDON);
+    public void testConstructor_Chronology() throws Throwable {
+        LocalTime test = new LocalTime(JULIAN_LONDON);
         assertEquals(JULIAN_UTC, test.getChronology());
         assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
@@ -209,8 +209,8 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
-    public void testFactory_now_nullChronology() throws Throwable {
-        LocalTime test = LocalTime.now((Chronology) null);
+    public void testConstructor_nullChronology() throws Throwable {
+        LocalTime test = new LocalTime((Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
@@ -219,8 +219,8 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_forInstantDefaultZone_long1() throws Throwable {
-        LocalTime test = LocalTime.forInstantDefaultZone(TEST_TIME1);
+    public void testConstructor_long1() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME1);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -228,8 +228,8 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstantDefaultZone_long2() throws Throwable {
-        LocalTime test = LocalTime.forInstantDefaultZone(TEST_TIME2);
+    public void testConstructor_long2() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME2);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(5 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(6, test.getMinuteOfHour());
@@ -238,8 +238,8 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_forInstant_long_DateTimeZone() throws Throwable {
-        LocalTime test = LocalTime.forInstant(TEST_TIME1, PARIS);
+    public void testConstructor_long_DateTimeZone() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME1, PARIS);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1 + OFFSET_PARIS, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -247,8 +247,8 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_long_nullDateTimeZone() throws Throwable {
-        LocalTime test = LocalTime.forInstant(TEST_TIME1, (DateTimeZone) null);
+    public void testConstructor_long_nullDateTimeZone() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME1, (DateTimeZone) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -257,8 +257,8 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_forInstant_long1_Chronology() throws Throwable {
-        LocalTime test = LocalTime.forInstant(TEST_TIME1, JULIAN_PARIS);
+    public void testConstructor_long1_Chronology() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME1, JULIAN_PARIS);
         assertEquals(JULIAN_UTC, test.getChronology());
         assertEquals(1 + OFFSET_PARIS, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -266,8 +266,8 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_long2_Chronology() throws Throwable {
-        LocalTime test = LocalTime.forInstant(TEST_TIME2, JULIAN_LONDON);
+    public void testConstructor_long2_Chronology() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME2, JULIAN_LONDON);
         assertEquals(JULIAN_UTC, test.getChronology());
         assertEquals(5 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(6, test.getMinuteOfHour());
@@ -275,8 +275,8 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(8, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_long_nullChronology() throws Throwable {
-        LocalTime test = LocalTime.forInstant(TEST_TIME1, (Chronology) null);
+    public void testConstructor_long_nullChronology() throws Throwable {
+        LocalTime test = new LocalTime(TEST_TIME1, (Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -285,9 +285,9 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_forInstant_Object1() throws Throwable {
+    public void testConstructor_Object1() throws Throwable {
         Date date = new Date(TEST_TIME1);
-        LocalTime test = LocalTime.forInstant(date);
+        LocalTime test = new LocalTime(date);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -295,10 +295,10 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_Object2() throws Throwable {
+    public void testConstructor_Object2() throws Throwable {
         Calendar cal = new GregorianCalendar();
         cal.setTime(new Date(TEST_TIME1));
-        LocalTime test = LocalTime.forInstant(cal);
+        LocalTime test = new LocalTime(cal);
         assertEquals(GJChronology.getInstanceUTC(), test.getChronology());
         assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -306,8 +306,8 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_nullObject() throws Throwable {
-        LocalTime test = LocalTime.forInstant((Object) null);
+    public void testConstructor_nullObject() throws Throwable {
+        LocalTime test = new LocalTime((Object) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
@@ -315,52 +315,42 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
-//    public void testFactory_forInstant_localTimeObject() throws Throwable {
-//        LocalTime base = new LocalTime(10, 20, 30, 40, CopticChronology.getInstance(PARIS));
-//        LocalTime test = LocalTime.forInstant(base);
-//        assertEquals(CopticChronology.getInstanceUTC(), test.getChronology());
-//        assertEquals(10, test.getHourOfDay());
-//        assertEquals(20, test.getMinuteOfHour());
-//        assertEquals(30, test.getSecondOfMinute());
-//        assertEquals(40, test.getMillisOfSecond());
-//    }
-
     //-----------------------------------------------------------------------
-    public void testFactory_forInstant_Object1_Chronology() throws Throwable {
+    public void testConstructor_Object1_DateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1);
-        LocalTime test = LocalTime.forInstant(date, JULIAN_LONDON);
-        assertEquals(JULIAN_UTC, test.getChronology());
-        assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
+        LocalTime test = new LocalTime(date, PARIS);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1 + OFFSET_PARIS, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
         assertEquals(3, test.getSecondOfMinute());
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_Object2_Chronology() throws Throwable {
-        LocalTime test = LocalTime.forInstant("T10:20");
+    public void testConstructor_Object2_DateTimeZone() throws Throwable {
+        LocalTime test = new LocalTime("T10:20");
         assertEquals(10, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(0, test.getSecondOfMinute());
         assertEquals(0, test.getMillisOfSecond());
         
         try {
-            LocalTime.forInstant("T1020");
+            new LocalTime("T1020");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testFactory_forInstant_nullObject_Chronology() throws Throwable {
-        LocalTime test = LocalTime.forInstant((Object) null, JULIAN_LONDON);
-        assertEquals(JULIAN_UTC, test.getChronology());
-        assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
+    public void testConstructor_nullObject_DateTimeZone() throws Throwable {
+        LocalTime test = new LocalTime((Object) null, PARIS);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10 + OFFSET_PARIS, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_Object_nullChronology() throws Throwable {
+    public void testConstructor_Object_nullDateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1);
-        LocalTime test = LocalTime.forInstant(date, (Chronology) null);
+        LocalTime test = new LocalTime(date, (DateTimeZone) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(2, test.getMinuteOfHour());
@@ -368,8 +358,60 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testFactory_forInstant_nullObject_nullChronology() throws Throwable {
-        LocalTime test = LocalTime.forInstant((Object) null, (Chronology) null);
+    public void testConstructor_nullObject_nullDateTimeZone() throws Throwable {
+        LocalTime test = new LocalTime((Object) null, (DateTimeZone) null);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_Object1_Chronology() throws Throwable {
+        Date date = new Date(TEST_TIME1);
+        LocalTime test = new LocalTime(date, JULIAN_LONDON);
+        assertEquals(JULIAN_UTC, test.getChronology());
+        assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
+        assertEquals(2, test.getMinuteOfHour());
+        assertEquals(3, test.getSecondOfMinute());
+        assertEquals(4, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_Object2_Chronology() throws Throwable {
+        LocalTime test = new LocalTime("T10:20");
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+        
+        try {
+            new LocalTime("T1020");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_nullObject_Chronology() throws Throwable {
+        LocalTime test = new LocalTime((Object) null, JULIAN_LONDON);
+        assertEquals(JULIAN_UTC, test.getChronology());
+        assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_Object_nullChronology() throws Throwable {
+        Date date = new Date(TEST_TIME1);
+        LocalTime test = new LocalTime(date, (Chronology) null);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1 + OFFSET_LONDON, test.getHourOfDay());
+        assertEquals(2, test.getMinuteOfHour());
+        assertEquals(3, test.getSecondOfMinute());
+        assertEquals(4, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_nullObject_nullChronology() throws Throwable {
+        LocalTime test = new LocalTime((Object) null, (Chronology) null);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(10 + OFFSET_LONDON, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());

@@ -58,14 +58,11 @@ public final class JulianChronology extends BasicGJChronology {
     private static final long MILLIS_PER_MONTH =
         (long) (365.25 * DateTimeConstants.MILLIS_PER_DAY / 12);
 
-    // The lowest year that can be fully supported.
+    /** The lowest year that can be fully supported. */
     private static final int MIN_YEAR = -292269054;
 
-    // The highest year that can be fully supported. Although
-    // calculateFirstDayOfYearMillis can go higher without overflowing, the
-    // getYear method overflows when it adds the approximate millis at the
-    // epoch.
-    private static final int MAX_YEAR = 292271022;
+    /** The highest year that can be fully supported. */
+    private static final int MAX_YEAR = 292272992;
 
     /** Singleton instance of a UTC JulianChronology */
     private static final JulianChronology INSTANCE_UTC;
@@ -215,13 +212,6 @@ public final class JulianChronology extends BasicGJChronology {
     }
 
     long calculateFirstDayOfYearMillis(int year) {
-        if (year > MAX_YEAR) {
-            throw new ArithmeticException("Year is too large: " + year + " > " + MAX_YEAR);
-        }
-        if (year < MIN_YEAR) {
-            throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
-        }
-
         // Java epoch is 1970-01-01 Gregorian which is 1969-12-19 Julian.
         // Calculate relative to the nearest leap year and account for the
         // difference later.
@@ -259,12 +249,16 @@ public final class JulianChronology extends BasicGJChronology {
         return MILLIS_PER_YEAR;
     }
 
+    long getAverageMillisPerYearDividedByTwo() {
+        return MILLIS_PER_YEAR / 2;
+    }
+
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }
 
-    long getApproxMillisAtEpoch() {
-        return 1969L * MILLIS_PER_YEAR + 352L * DateTimeConstants.MILLIS_PER_DAY;
+    long getApproxMillisAtEpochDividedByTwo() {
+        return (1969L * MILLIS_PER_YEAR + 352L * DateTimeConstants.MILLIS_PER_DAY) / 2;
     }
 
     protected void assemble(Fields fields) {

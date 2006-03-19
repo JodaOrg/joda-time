@@ -374,24 +374,15 @@ abstract class BasicChronology extends AssembledChronology {
         // represents the start of that year. Then verify estimate and fix if
         // necessary.
 
-        long unitMillis = getAverageMillisPerYear();
-        long i2 = instant + getApproxMillisAtEpoch();
+        // Initial estimate uses values divided by two to avoid overflow.
+        long unitMillis = getAverageMillisPerYearDividedByTwo();
+        long i2 = (instant >> 1) + getApproxMillisAtEpochDividedByTwo();
         if (i2 < 0) {
             i2 = i2 - unitMillis + 1;
         }
         int year = (int) (i2 / unitMillis);
 
-        long yearStart;
-        try {
-            yearStart = getYearMillis(year);
-        } catch (ArithmeticException e) {
-            if (instant > 0) {
-                throw new ArithmeticException("Instant too large: " + instant);
-            } else {
-                throw new ArithmeticException("Instant too small: " + instant);
-            }
-        }
-
+        long yearStart = getYearMillis(year);
         long diff = instant - yearStart;
 
         if (diff < 0) {
@@ -687,6 +678,13 @@ abstract class BasicChronology extends AssembledChronology {
     abstract long getAverageMillisPerYear();
 
     /**
+     * Gets an average value for the milliseconds per year, divided by two.
+     * 
+     * @return the millis per year divided by two
+     */
+    abstract long getAverageMillisPerYearDividedByTwo();
+
+    /**
      * Gets an average value for the milliseconds per month.
      * 
      * @return the millis per month
@@ -695,14 +693,14 @@ abstract class BasicChronology extends AssembledChronology {
 
     /**
      * Returns a constant representing the approximate number of milliseconds
-     * elapsed from year 0 of this chronology. This constant <em>must</em> be
-     * defined as:
+     * elapsed from year 0 of this chronology, divided by two. This constant
+     * <em>must</em> be defined as:
      * <pre>
-     *    yearAtEpoch * averageMillisPerYear + millisOfYearAtEpoch
+     *    (yearAtEpoch * averageMillisPerYear + millisOfYearAtEpoch) / 2
      * </pre>
      * where epoch is 1970-01-01 (Gregorian).
      */
-    abstract long getApproxMillisAtEpoch();
+    abstract long getApproxMillisAtEpochDividedByTwo();
 
     /**
      * Sets the year from an instant and year.

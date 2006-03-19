@@ -217,8 +217,8 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(9, test.year().getMaximumShortTextLength(null));
         assertEquals(-292275054, test.year().getMinimumValue());
         assertEquals(-292275054, test.year().getMinimumValueOverall());
-        assertEquals(292277023, test.year().getMaximumValue());
-        assertEquals(292277023, test.year().getMaximumValueOverall());
+        assertEquals(292278993, test.year().getMaximumValue());
+        assertEquals(292278993, test.year().getMaximumValueOverall());
     }
 
     public void testPropertyLeapYear() {
@@ -245,7 +245,7 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals(292277023, copy.getYear());
         
         try {
-            test.year().addToCopy(292277023 - 2004 + 1);
+            test.year().addToCopy(292278993 - 2004 + 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         
@@ -270,11 +270,11 @@ public class TestDateTime_Properties extends TestCase {
         copy = test.year().addWrapFieldToCopy(0);
         assertEquals(2004, copy.getYear());
         
-        copy = test.year().addWrapFieldToCopy(292277023 - 2004 + 1);
+        copy = test.year().addWrapFieldToCopy(292278993 - 2004 + 1);
         assertEquals(-292275054, copy.getYear());
         
         copy = test.year().addWrapFieldToCopy(-292275054 - 2004 - 1);
-        assertEquals(292277023, copy.getYear());
+        assertEquals(292278993, copy.getYear());
     }
 
     public void testPropertySetYear() {

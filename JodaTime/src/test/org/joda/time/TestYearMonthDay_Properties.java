@@ -92,8 +92,8 @@ public class TestYearMonthDay_Properties extends TestCase {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertEquals(-292275054, test.year().getMinimumValue());
         assertEquals(-292275054, test.year().getMinimumValueOverall());
-        assertEquals(292277023, test.year().getMaximumValue());
-        assertEquals(292277023, test.year().getMaximumValueOverall());
+        assertEquals(292278993, test.year().getMaximumValue());
+        assertEquals(292278993, test.year().getMaximumValueOverall());
     }
 
     public void testPropertyAddYear() {
@@ -109,7 +109,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 292277023, 6, 9);
         
         try {
-            test.year().addToCopy(292277023 - 1972 + 1);
+            test.year().addToCopy(292278993 - 1972 + 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 1972, 6, 9);
@@ -136,11 +136,11 @@ public class TestYearMonthDay_Properties extends TestCase {
         copy = test.year().addWrapFieldToCopy(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().addWrapFieldToCopy(292277023 - 1972 + 1);
+        copy = test.year().addWrapFieldToCopy(292278993 - 1972 + 1);
         check(copy, -292275054, 6, 9);
         
         copy = test.year().addWrapFieldToCopy(-292275054 - 1972 - 1);
-        check(copy, 292277023, 6, 9);
+        check(copy, 292278993, 6, 9);
     }
 
     public void testPropertySetYear() {

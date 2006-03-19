@@ -403,6 +403,11 @@ public final class IslamicChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    long getAverageMillisPerYearDividedByTwo() {
+        return MILLIS_PER_YEAR / 2;
+    }
+
+    //-----------------------------------------------------------------------
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }
@@ -443,9 +448,9 @@ public final class IslamicChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
-    long getApproxMillisAtEpoch() {
+    long getApproxMillisAtEpochDividedByTwo() {
         // Epoch 1970-01-01 ISO = 1389-10-22 Islamic
-        return -MILLIS_YEAR_1;
+        return (-MILLIS_YEAR_1) / 2;
     }
 
     //-----------------------------------------------------------------------

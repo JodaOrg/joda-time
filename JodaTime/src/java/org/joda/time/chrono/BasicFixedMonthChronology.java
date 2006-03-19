@@ -149,6 +149,11 @@ abstract class BasicFixedMonthChronology extends BasicChronology {
     }
 
     //-----------------------------------------------------------------------
+    long getAverageMillisPerYearDividedByTwo() {
+        return MILLIS_PER_YEAR / 2;
+    }
+
+    //-----------------------------------------------------------------------
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }

@@ -55,14 +55,11 @@ public final class GregorianChronology extends BasicGJChronology {
 
     private static final int DAYS_0000_TO_1970 = 719527;
 
-    // The lowest year that can be fully supported.
+    /** The lowest year that can be fully supported. */
     private static final int MIN_YEAR = -292275054;
 
-    // The highest year that can be fully supported. Although
-    // calculateFirstDayOfYearMillis can operate on years up to 292278994
-    // without overflowing, the getYear method overflows when it adds the
-    // approximate millis at the epoch.
-    private static final int MAX_YEAR = 292277023;
+    /** The highest year that can be fully supported. */
+    private static final int MAX_YEAR = 292278993;
 
     /** Singleton instance of a UTC GregorianChronology */
     private static final GregorianChronology INSTANCE_UTC;
@@ -201,13 +198,6 @@ public final class GregorianChronology extends BasicGJChronology {
     }
 
     long calculateFirstDayOfYearMillis(int year) {
-        if (year > MAX_YEAR) {
-            throw new ArithmeticException("Year is too large: " + year + " > " + MAX_YEAR);
-        }
-        if (year < MIN_YEAR) {
-            throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
-        }
-
         // Initial value is just temporary.
         int leapYears = year / 100;
         if (year < 0) {
@@ -239,12 +229,16 @@ public final class GregorianChronology extends BasicGJChronology {
         return MILLIS_PER_YEAR;
     }
 
+    long getAverageMillisPerYearDividedByTwo() {
+        return MILLIS_PER_YEAR / 2;
+    }
+
     long getAverageMillisPerMonth() {
         return MILLIS_PER_MONTH;
     }
 
-    long getApproxMillisAtEpoch() {
-        return 1970L * MILLIS_PER_YEAR;
+    long getApproxMillisAtEpochDividedByTwo() {
+        return (1970L * MILLIS_PER_YEAR) / 2;
     }
 
 }

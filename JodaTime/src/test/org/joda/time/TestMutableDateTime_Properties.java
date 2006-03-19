@@ -200,8 +200,8 @@ public class TestMutableDateTime_Properties extends TestCase {
         assertEquals(9, test.year().getMaximumShortTextLength(null));
         assertEquals(-292275054, test.year().getMinimumValue());
         assertEquals(-292275054, test.year().getMinimumValueOverall());
-        assertEquals(292277023, test.year().getMaximumValue());
-        assertEquals(292277023, test.year().getMaximumValueOverall());
+        assertEquals(292278993, test.year().getMaximumValue());
+        assertEquals(292278993, test.year().getMaximumValueOverall());
     }
 
     public void testPropertyAddYear() {

@@ -91,8 +91,8 @@ public class TestLocalDate_Properties extends TestCase {
         LocalDate test = new LocalDate(1972, 6, 9);
         assertEquals(-292275054, test.year().getMinimumValue());
         assertEquals(-292275054, test.year().getMinimumValueOverall());
-        assertEquals(292277023, test.year().getMaximumValue());
-        assertEquals(292277023, test.year().getMaximumValueOverall());
+        assertEquals(292278993, test.year().getMaximumValue());
+        assertEquals(292278993, test.year().getMaximumValueOverall());
     }
 
     public void testPropertyPlusYear() {
@@ -104,11 +104,11 @@ public class TestLocalDate_Properties extends TestCase {
         copy = test.year().plus(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().plus(292277023 - 1972);
-        check(copy, 292277023, 6, 9);
+        copy = test.year().plus(292278993 - 1972);
+        check(copy, 292278993, 6, 9);
         
         try {
-            test.year().plus(292277023 - 1972 + 1);
+            test.year().plus(292278993 - 1972 + 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 1972, 6, 9);
@@ -135,11 +135,11 @@ public class TestLocalDate_Properties extends TestCase {
         copy = test.year().plusWrapField(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().plusWrapField(292277023 - 1972 + 1);
+        copy = test.year().plusWrapField(292278993 - 1972 + 1);
         check(copy, -292275054, 6, 9);
         
         copy = test.year().plusWrapField(-292275054 - 1972 - 1);
-        check(copy, 292277023, 6, 9);
+        check(copy, 292278993, 6, 9);
     }
 
     public void testPropertyWithYear() {

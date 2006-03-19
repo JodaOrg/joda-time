@@ -65,13 +65,8 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     /** The lowest year that can be fully supported. */
     private static final int MIN_YEAR = -292269337;
 
-    /**
-     * The highest year that can be fully supported.
-     * Although calculateFirstDayOfYearMillis can go higher without
-     * overflowing, the getYear method overflows when it adds the
-     * approximate millis at the epoch.
-     */
-    private static final int MAX_YEAR = 292271022;
+    /** The highest year that can be fully supported. */
+    private static final int MAX_YEAR = 292272984;
 
     /** Cache of zone to chronology arrays */
     private static final Map cCache = new HashMap();
@@ -205,13 +200,6 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
 
     //-----------------------------------------------------------------------
     long calculateFirstDayOfYearMillis(int year) {
-        if (year > MAX_YEAR) {
-            throw new ArithmeticException("Year is too large: " + year + " > " + MAX_YEAR);
-        }
-        if (year < MIN_YEAR) {
-            throw new ArithmeticException("Year is too small: " + year + " < " + MIN_YEAR);
-        }
-
         // Java epoch is 1970-01-01 Gregorian which is 1962-04-23 Ethiopic.
         // Calculate relative to the nearest leap year and account for the
         // difference later.
@@ -249,8 +237,8 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     }
 
     //-----------------------------------------------------------------------
-    long getApproxMillisAtEpoch() {
-        return 1962L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY;
+    long getApproxMillisAtEpochDividedByTwo() {
+        return (1962L * MILLIS_PER_YEAR + 112L * DateTimeConstants.MILLIS_PER_DAY) / 2;
     }
 
     //-----------------------------------------------------------------------

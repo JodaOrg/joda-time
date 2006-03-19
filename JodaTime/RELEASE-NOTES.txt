@@ -60,6 +60,9 @@ Bug fixes since 1.2
 - FixedDateTimeZone
   Hashcode was not defined
 
+- ISO/Gregorian/Julian/Coptic/EthiopicChronology
+  Fixed overflow when getting year field from instants at Long.MAX_VALUE and
+  LONG.MIN_VALUE.
 
 Enhancements since 1.2
 ----------------------

@@ -276,11 +276,7 @@ public class TestISOChronology extends TestCase {
         } catch (IllegalFieldValueException e) {
         }
 
-        try {
-            chrono.year().get(Long.MAX_VALUE);
-            fail();
-        } catch (ArithmeticException e) {
-        }
+        assertEquals(maxYear + 1, chrono.year().get(Long.MAX_VALUE));
     }
 
     public void testMinYear() {
@@ -313,11 +309,7 @@ public class TestISOChronology extends TestCase {
         } catch (IllegalFieldValueException e) {
         }
 
-        try {
-            chrono.year().get(Long.MIN_VALUE);
-            fail();
-        } catch (ArithmeticException e) {
-        }
+        assertEquals(minYear - 1, chrono.year().get(Long.MIN_VALUE));
     }
 
     public void testCutoverAddYears() {

@@ -259,7 +259,6 @@ public final class LocalDate
      * include ReadableInstant, String, Calendar and Date.
      *
      * @param instant  the datetime object
-     * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDate(Object instant) {
@@ -1218,7 +1217,7 @@ public final class LocalDate
      * Instead, this method returns a new instance with the value of
      * year of century changed.
      *
-     * @param year of century  the year of century to set
+     * @param yearOfCentury  the year of century to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1495,6 +1494,7 @@ public final class LocalDate
      * <pre>
      * LocalDate dt = new LocalDate(1972, 12, 3);
      * LocalDate dt1920 = dt.year().withValue(1920);
+     * </pre>
      * <p>
      * LocalDate.Propery itself is thread-safe and immutable, as well as the
      * LocalDate being operated on.

@@ -702,7 +702,7 @@ public final class LocalTime
      * <p>
      * This method is typically used to add complex period instances.
      * Adding one field is best achieved using methods
-     * like {@link #plusYears(int)}.
+     * like {@link #plusHours(int)}.
      * 
      * @param period  the period to add to this one, null means zero
      * @return a copy of this time with the period added
@@ -813,7 +813,7 @@ public final class LocalTime
      * <p>
      * This method is typically used to subtract complex period instances.
      * Subtracting one field is best achieved using methods
-     * like {@link #minusYears(int)}.
+     * like {@link #minusHours(int)}.
      * 
      * @param period  the period to reduce this instant by
      * @return a copy of this time with the period taken away
@@ -1160,6 +1160,7 @@ public final class LocalTime
      * <pre>
      * DateTime dt = new DateTime(1972, 12, 3, 0, 0, 0, 0);
      * DateTime dt1920 = dt.year().setCopy(1920);
+     * </pre>
      * <p>
      * LocalTime.Propery itself is thread-safe and immutable, as well as the
      * LocalTime being operated on.

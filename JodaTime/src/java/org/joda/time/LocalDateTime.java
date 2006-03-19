@@ -1422,7 +1422,7 @@ public final class LocalDateTime
      * Instead, this method returns a new instance with the value of
      * year of century changed.
      *
-     * @param year of century  the year of century to set
+     * @param yearOfCentury  the year of century to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
      */
@@ -1800,6 +1800,7 @@ public final class LocalDateTime
      * <pre>
      * LocalDateTime dt = new LocalDateTime(1972, 12, 3, 0, 0, 0, 0);
      * LocalDateTime dt1920 = dt.year().setCopy(1920);
+     * </pre>
      * <p>
      * LocalDateTime.Propery itself is thread-safe and immutable, as well as the
      * LocalDateTime being operated on.

@@ -603,9 +603,10 @@ public class DateTimeFormatter {
         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
         chrono = selectChronology(chrono);
         
-        DateTimeParserBucket bucket = new DateTimeParserBucket(instantLocal, chrono, iLocale, iPivotYear);
+        DateTimeParserBucket bucket = new DateTimeParserBucket
+            (instantLocal, chrono, iLocale, iPivotYear);
         int newPos = iParser.parseInto(bucket, text, position);
-        instant.setMillis(bucket.computeMillis());
+        instant.setMillis(bucket.computeMillis(false, text));
         if (iOffsetParsed && bucket.getZone() == null) {
             int parsedOffset = bucket.getOffset();
             DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
@@ -635,7 +636,7 @@ public class DateTimeFormatter {
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
-                return bucket.computeMillis(true);
+                return bucket.computeMillis(true, text);
             }
         } else {
             newPos = ~newPos;
@@ -668,7 +669,7 @@ public class DateTimeFormatter {
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
-                long millis = bucket.computeMillis(true);
+                long millis = bucket.computeMillis(true, text);
                 if (iOffsetParsed && bucket.getZone() == null) {
                     int parsedOffset = bucket.getOffset();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
@@ -707,7 +708,7 @@ public class DateTimeFormatter {
         int newPos = iParser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
-                long millis = bucket.computeMillis(true);
+                long millis = bucket.computeMillis(true, text);
                 if (iOffsetParsed && bucket.getZone() == null) {
                     int parsedOffset = bucket.getOffset();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);

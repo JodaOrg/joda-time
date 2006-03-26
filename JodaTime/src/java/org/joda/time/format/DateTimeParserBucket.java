@@ -24,6 +24,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.IllegalFieldValueException;
 
 /**
  * DateTimeParserBucket is an advanced class, intended mainly for parser
@@ -275,7 +276,7 @@ public class DateTimeParserBucket {
      * @throws IllegalArgumentException if any field is out of range
      */
     public long computeMillis() {
-        return computeMillis(false);
+        return computeMillis(false, null);
     }
     
     /**
@@ -287,6 +288,19 @@ public class DateTimeParserBucket {
      * @throws IllegalArgumentException if any field is out of range
      */
     public long computeMillis(boolean resetFields) {
+        return computeMillis(resetFields, null);
+    }
+
+    /**
+     * Computes the parsed datetime by setting the saved fields.
+     * This method is idempotent, but it is not thread-safe.
+     *
+     * @param resetFields false by default, but when true, unsaved field values are cleared
+     * @param text optional text being parsed, to be included in any error message
+     * @return milliseconds since 1970-01-01T00:00:00Z
+     * @throws IllegalArgumentException if any field is out of range
+     */
+    public long computeMillis(boolean resetFields, String text) {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
         if (iSavedFieldsShared) {
@@ -294,10 +308,17 @@ public class DateTimeParserBucket {
             iSavedFieldsShared = false;
         }
         sort(savedFields, count);
-        
+
         long millis = iMillis;
-        for (int i=0; i<count; i++) {
-            millis = savedFields[i].set(millis, resetFields);
+        try {
+            for (int i=0; i<count; i++) {
+                millis = savedFields[i].set(millis, resetFields);
+            }
+        } catch (IllegalFieldValueException e) {
+            if (text != null) {
+                e.prependMessage("Cannot parse \"" + text + '"');
+            }
+            throw e;
         }
         
         if (iZone == null) {
@@ -306,8 +327,12 @@ public class DateTimeParserBucket {
             int offset = iZone.getOffsetFromLocal(millis);
             millis -= offset;
             if (offset != iZone.getOffset(millis)) {
-                throw new IllegalArgumentException
-                    ("Illegal instant due to time zone offset transition");
+                String message =
+                    "Illegal instant due to time zone offset transition (" + iZone + ')';
+                if (text != null) {
+                    message = "Cannot parse \"" + text + "\": " + message;
+                }
+                throw new IllegalArgumentException(message);
             }
         }
         

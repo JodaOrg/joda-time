@@ -89,6 +89,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     private final String iStringValue;
     private final Number iLowerBound;
     private final Number iUpperBound;
+    private String iMessage;
 
     /**
      * Constructor.
@@ -108,6 +109,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iStringValue = null;
         iLowerBound = lowerBound;
         iUpperBound = upperBound;
+        iMessage = super.getMessage();
     }
 
     /**
@@ -128,6 +130,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iStringValue = null;
         iLowerBound = lowerBound;
         iUpperBound = upperBound;
+        iMessage = super.getMessage();
     }
 
     /**
@@ -148,6 +151,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iStringValue = null;
         iLowerBound = lowerBound;
         iUpperBound = upperBound;
+        iMessage = super.getMessage();
     }
 
     /**
@@ -165,6 +169,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iNumberValue = null;
         iLowerBound = null;
         iUpperBound = null;
+        iMessage = super.getMessage();
     }
 
     /**
@@ -182,6 +187,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iNumberValue = null;
         iLowerBound = null;
         iUpperBound = null;
+        iMessage = super.getMessage();
     }
 
     /**
@@ -199,6 +205,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         iNumberValue = null;
         iLowerBound = null;
         iUpperBound = null;
+        iMessage = super.getMessage();
     }
 
     //-----------------------------------------------------------------------
@@ -278,4 +285,20 @@ public class IllegalFieldValueException extends IllegalArgumentException {
         return iUpperBound;
     }
 
+    public String getMessage() {
+        return iMessage;
+    }
+
+    /**
+     * Provide additional detail by prepending a message to the existing
+     * message. A colon is separator is automatically inserted between the
+     * messages.
+     */
+    public void prependMessage(String message) {
+        if (iMessage == null) {
+            iMessage = message;
+        } else if (message != null) {
+            iMessage = message + ": " + iMessage;
+        }
+    }
 }

@@ -37,7 +37,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * <p>
  * LocalDateTime implements the {@link ReadablePartial} interface.
  * To do this, certain methods focus on key fields Year, MonthOfYear,
- * DayOfYear, HourOfDay, MinuteOfHour, SecondOfMinute and MillisOfSecond.
+ * DayOfYear and MillisOfDay.
  * However, <b>all</b> fields may in fact be queried.
  * <p>
  * Internally, LocalDateTime holds the datetime as milliseconds
@@ -82,10 +82,12 @@ public final class LocalDateTime
 
     /** The index of the year field in the field array */
     private static final int YEAR = 0;
-    /** The index of the dayOfYear field in the field array */
-    private static final int DAY_OF_YEAR = 1;
+    /** The index of the monthOfYear field in the field array */
+    private static final int MONTH_OF_YEAR = 1;
+    /** The index of the dayOfMonth field in the field array */
+    private static final int DAY_OF_MONTH = 2;
     /** The index of the millis field in the field array */
-    private static final int MILLIS_OF_DAY = 2;
+    private static final int MILLIS_OF_DAY = 3;
 
     /** The local millis from 1970-01-01T00:00:00 */
     private long iLocalMillis;
@@ -411,12 +413,12 @@ public final class LocalDateTime
     //-----------------------------------------------------------------------
     /**
      * Gets the number of fields in this partial, which is three.
-     * The supported fields are Year, DayOfYear and MillisOfDay.
+     * The supported fields are Year, MonthOfDay, DayOfMonth and MillisOfDay.
      *
      * @return the field count, three
      */
     public int size() {
-        return 3;
+        return 4;
     }
 
     /**
@@ -432,8 +434,10 @@ public final class LocalDateTime
         switch (index) {
             case YEAR:
                 return chrono.year();
-            case DAY_OF_YEAR:
-                return chrono.dayOfYear();
+            case MONTH_OF_YEAR:
+                return chrono.monthOfYear();
+            case DAY_OF_MONTH:
+                return chrono.dayOfMonth();
             case MILLIS_OF_DAY:
                 return chrono.millisOfDay();
             default:
@@ -445,7 +449,7 @@ public final class LocalDateTime
      * Gets the value of the field at the specifed index.
      * <p>
      * This method is required to support the <code>ReadablePartial</code>
-     * interface. The supported fields are Year, DayOfYear and MillisOfDay.
+     * interface. The supported fields are Year, MonthOfDay, DayOfMonth and MillisOfDay.
      *
      * @param index  the index, zero to two
      * @return the value
@@ -455,8 +459,10 @@ public final class LocalDateTime
         switch (index) {
             case YEAR:
                 return getChronology().year().get(getLocalMillis());
-            case DAY_OF_YEAR:
-                return getChronology().dayOfYear().get(getLocalMillis());
+            case MONTH_OF_YEAR:
+                return getChronology().monthOfYear().get(getLocalMillis());
+            case DAY_OF_MONTH:
+                return getChronology().dayOfMonth().get(getLocalMillis());
             case MILLIS_OF_DAY:
                 return getChronology().millisOfDay().get(getLocalMillis());
             default:
@@ -554,7 +560,10 @@ public final class LocalDateTime
     public DateTime toDateTime(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
         Chronology chrono = iChronology.withZone(zone);
-        return new DateTime(getLocalMillis(), chrono);
+        return new DateTime(
+                getYear(), getMonthOfYear(), getDayOfMonth(),
+                getHourOfDay(), getMinuteOfHour(),
+                getSecondOfMinute(), getMillisOfSecond(), chrono);
     }
 
     //-----------------------------------------------------------------------

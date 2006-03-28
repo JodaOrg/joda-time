@@ -714,7 +714,7 @@ public final class LocalDate
      * month of year field will be changed in the returned instance.
      * If the field type is null, then <code>this</code> is returned.
      * <p>
-     * These three lines are equivalent:
+     * These two lines are equivalent:
      * <pre>
      * LocalDate updated = dt.withField(DateTimeFieldType.dayOfMonth(), 6);
      * LocalDate updated = dt.dayOfMonth().withValue(6);

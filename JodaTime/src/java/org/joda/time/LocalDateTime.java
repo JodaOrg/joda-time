@@ -412,10 +412,10 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the number of fields in this partial, which is three.
+     * Gets the number of fields in this partial, which is four.
      * The supported fields are Year, MonthOfDay, DayOfMonth and MillisOfDay.
      *
-     * @return the field count, three
+     * @return the field count, four
      */
     public int size() {
         return 4;

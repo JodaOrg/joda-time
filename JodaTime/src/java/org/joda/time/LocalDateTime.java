@@ -113,7 +113,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
-    public static LocalDateTime forFields(Calendar calendar) {
+    public static LocalDateTime fromCalendarFields(Calendar calendar) {
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
         }
@@ -143,7 +143,7 @@ public final class LocalDateTime
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
-    public static LocalDateTime forFields(Date date) {
+    public static LocalDateTime fromDateFields(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The date must not be null");
         }

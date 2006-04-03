@@ -1,4 +1,4 @@
-# @(#)northamerica	7.88
+# @(#)northamerica	8.3
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -30,12 +30,12 @@
 # That 1883 transition occurred at 12:00 new time, not at 12:00 old time.
 # See p 46 of David Prerau, Seize the daylight, Thunder's Mouth Press (2005).
 
-# From Paul Eggert (1995-12-19):
+# From Paul Eggert (2006-03-22):
 # A good source for time zone historical data in the US is
 # Thomas G. Shanks, The American Atlas (5th edition),
 # San Diego: ACS Publications, Inc. (1991).
 # Make sure you have the errata sheet; the book is somewhat useless without it.
-# It is the source for most of the pre-1991 US and Puerto Rico entries below.
+# It is the source for most of the pre-1991 US entries below.
 
 # From Paul Eggert (2001-03-06):
 # Daylight Saving Time was first suggested as a joke by Benjamin Franklin
@@ -229,7 +229,7 @@ Zone	PST8PDT		 -8:00	US	P%sT
 # Public law 106-564 (2000-12-23) introduced the abbreviation
 # "Chamorro Standard Time" for time in Guam and the Northern Marianas.
 # See the file "australasia".
- 
+
 # From Arthur David Olson, 2005-08-09
 # The following was signed into law on 2005-08-08.
 #
@@ -274,7 +274,7 @@ Zone	PST8PDT		 -8:00	US	P%sT
 # set their watches and clocks on Eastern time."  It quotes H.H. "Bubba"
 # Roberts, city administrator in Phenix City. as saying "We are in the Central
 # time zone, but we do go by the Eastern time zone because so many people work
-# in Columbus." 
+# in Columbus."
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule	NYC	1920	only	-	Mar	lastSun	2:00	1:00	D
@@ -321,14 +321,16 @@ Zone America/Chicago	-5:50:36 -	LMT	1883 Nov 18 12:09:24
 Zone America/North_Dakota/Center -6:45:12 - LMT	1883 Nov 18 12:14:48
 			-7:00	US	M%sT	1992 Oct 25 02:00
 			-6:00	US	C%sT
-# From Paul Eggert (2006-01-20):
-# The following is not implemented yet.
-# What is the most populous city in that area?
-# From http://www.statoids.com/tus.html (2006-01-20):
-# 2003-10-26 02:00: All of Morton County, ND, and the part of Sioux
-# County, ND east of ND route 31 moved from MT to CT.  (The area
-# around Fort Yates in Sioux County and the area around Mandan in
-# Morton County were already in CT.)
+# Morton County, ND, switched from mountain to central time on
+# 2003-10-26, except for the area around Mandan.
+# See <http://dmses.dot.gov/docimages/p63/135818.pdf>.
+# Officially this switch also included part of Sioux County, and
+# Jones, Mellette, and Todd Counties in South Dakota;
+# but in practice these other counties were already observing central time.
+# See <http://www.epa.gov/fedrgstr/EPA-IMPACT/2003/October/Day-28/i27056.htm>.
+Zone America/North_Dakota/New_Salem -6:45:39 - LMT 1883 Nov 18 12:14:21
+			-7:00	US	M%sT	2003 Oct 26 02:00
+			-6:00	US	C%sT
 
 # US mountain time, represented by Denver
 #
@@ -407,7 +409,8 @@ Zone America/Yakutat	 14:41:05 -	LMT	1867 Oct 18
 Zone America/Anchorage	 14:00:24 -	LMT	1867 Oct 18
 			 -9:59:36 -	LMT	1900 Aug 20 12:00
 			-10:00	-	CAT	1942
-			-10:00	US	CAT/CAWT 1946
+			-10:00	US	CAT/CAWT 1945 Aug 14 23:00u
+			-10:00	US	CAT/CAPT 1946 # Peace
 			-10:00	-	CAT	1967 Apr
 			-10:00	-	AHST	1969
 			-10:00	US	AH%sT	1983 Oct 30 2:00
@@ -527,9 +530,9 @@ Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 # For a map of Indiana's time zone regions, see:
 # <a href="http://www.mccsc.edu/time.html">
 # What time is it in Indiana?
-# </a> (2005-10-30)
+# </a> (2006-03-01)
 #
-# From Paul Eggert (2006-01-20):
+# From Paul Eggert (2006-03-22):
 # Since 1970, most of Indiana has been like America/Indiana/Indianapolis,
 # with the following exceptions:
 #
@@ -541,14 +544,23 @@ Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 # - Clark, Floyd, and Harrison counties have been like
 #   America/Kentucky/Louisville.
 #
-# - Daviess, Dubois, Knox, Martin, Perry, and Pulaski counties
+# - Daviess, Dubois, Knox, and Perry counties
 #   have been like America/Indiana/Vincennes.
+#
+# - Officially, Martin and Pulaski counties have also been like
+#   America/Indiana/Vincennes, but an AP article on Pulaski county
+#   <http://www.indystar.com/apps/pbcs.dll/article?AID=/20060207/NEWS01/602070408/1006>
+#   (2006-02-07) and an InsideINdianaBusiness.com report on Martin county
+#   <http://www.insideindianabusiness.com/newsitem.asp?ID=17202> (2006-03-15)
+#   say that the county commissioners have voted to stay on eastern time in
+#   2006, which means they are actually like America/Indiana/Indianopolis.
 #
 # - Crawford, Pike, Starke, and Switzerland counties have their own time zone
 #   histories as noted below.
 #
 # Shanks partitioned Indiana into 345 regions, each with its own time history,
 # and wrote ``Even newspaper reports present contradictory information.''
+# Those Hoosiers!  Such a flighty and changeable people!
 # Fortunately, most of the complexity occurred before our cutoff date of 1970.
 #
 # Other than Indianapolis, the Indiana place names are so nondescript
@@ -558,8 +570,10 @@ Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 # From Paul Eggert (2005-08-16):
 # http://www.mccsc.edu/time.html says that Indiana will use DST starting 2006.
 
+# From Nathan Stratton Treadway (2006-03-30):
+# http://www.dot.gov/affairs/dot0406.htm [3705 B]
 # From Deborah Goldsmith (2006-01-18):
-# http://dmses.dot.gov/docimages/pdf95/382329_web.pdf
+# http://dmses.dot.gov/docimages/pdf95/382329_web.pdf [2.9 MB]
 # From Paul Eggert (2006-01-20):
 # It says "DOT is relocating the time zone boundary in Indiana to move Starke,
 # Pulaski, Knox, Daviess, Martin, Pike, Dubois, and Perry Counties from the
@@ -605,7 +619,7 @@ Zone America/Indiana/Marengo -5:45:23 -	LMT	1883 Nov 18 12:14:37
 			-5:00	-	EST	2006
 			-5:00	US	E%sT
 #
-# Daviess, Dubois, Knox, Martin, Perry, and Pulaski Counties, Indiana,
+# Daviess, Dubois, Knox, and Perry Counties, Indiana,
 # switched from eastern to central time in April 2006.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule Vincennes	1946	only	-	Apr	lastSun	2:00	1:00	D
@@ -625,7 +639,7 @@ Zone America/Indiana/Vincennes -5:50:07 - LMT	1883 Nov 18 12:09:53
 			-5:00	US	E%sT	1971
 			-5:00	-	EST	2006 Apr  2 2:00
 			-6:00	US	C%sT
-# 
+#
 # Pike County, Indiana moved from central to eastern time in 1977,
 # then switched back in 2006.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
@@ -818,10 +832,10 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 ################################################################################
 
 
-# From Paul Eggert (1999-10-29):
-# A good source for time zone historical data outside the US is
-# Thomas G. Shanks, The International Atlas (5th edition),
-# San Diego: ACS Publications, Inc. (1999).
+# From Paul Eggert (2006-03-22):
+# A good source for time zone historical data outside the U.S. is
+# Thomas G. Shanks and Rique Pottenger, The International Atlas (6th edition),
+# San Diego: ACS Publications, Inc. (2003).
 #
 # Gwillim Law writes that a good source
 # for recent time zone data is the International Air Transport
@@ -829,8 +843,8 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # published semiannually.  Law sent in several helpful summaries
 # of the IATA's data after 1990.
 #
-# Except where otherwise noted, Shanks is the source for entries through 1990,
-# and IATA SSIM is the source for entries after 1990.
+# Except where otherwise noted, Shanks & Pottenger is the source for
+# entries through 1990, and IATA SSIM is the source for entries afterwards.
 #
 # Other sources occasionally used include:
 #
@@ -878,9 +892,10 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # From Paul Eggert (1994-11-22):
 # Alas, this sort of thing must be handled by localization software.
 
-# Unless otherwise specified, the data for Canada are all from Shanks.
+# Unless otherwise specified, the data for Canada are all from Shanks
+# & Pottenger.
 
-# From Paul Eggert (2005-12-21):
+# From Paul Eggert (2006-03-22):
 # H. David Matthews and Mary Vincent's map
 # <a href="http://www.canadiangeographic.ca/Magazine/SO98/geomap.asp">
 # "It's about TIME", _Canadian Geographic_ (September-October 1998)
@@ -899,17 +914,18 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # CBC news also reported that Prince Edward Island is the first
 # province in Atlantic Canada to follow the US change, and that Quebec
 # had agreed; see <http://www.cbc.ca/pei/story/pe_daylight_20051207.html>
-# (2005-12-07).
+# (2005-12-07).  It also reported that Alberta will fall into line; see
+# <http://www.cbc.ca/calgary/story/ca_daylight20060202.html> (2006-02-02).
 #
-# To reflect all this, the Canada and Winn rules have been adjusted to
-# agree with the 2007 US change.  This means we assume most of Canada
-# will fall into line.  However, Alberta, British Columbia,
+# To reflect all this, the Canada, Edm, and Winn rules have been
+# adjusted to agree with the 2007 US change.  This means we assume
+# most of Canada will fall into line.  However, British Columbia,
 # Newfoundland, Northwest Territories, and Yukon already have separate
 # rules in our database, so for now we'll leave them alone, which
 # means that we currently assume these regions will not change their
 # rules and will disagree with the US starting in 2007.  This
 # assumption is probably incorrect, with the possible exception of
-# Newfoundland.  We plan to adjust the Edm, Vanc, StJohns, and NT_YK
+# Newfoundland.  We plan to adjust the Vanc, StJohns, and NT_YK
 # rules as the corresponding provinces make their announcements.
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
@@ -936,20 +952,21 @@ Rule	Canada	2007	max	-	Nov	Sun>=1	2:00	0	S
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	StJohns	1917	only	-	Apr	 8	2:00	1:00	D
 Rule	StJohns	1917	only	-	Sep	17	2:00	0	S
-# Whitman gives 1919 Apr 5 and 1920 Apr 5; go with Shanks.
+# Whitman gives 1919 Apr 5 and 1920 Apr 5; go with Shanks & Pottenger.
 Rule	StJohns	1919	only	-	May	 5	23:00	1:00	D
 Rule	StJohns	1919	only	-	Aug	12	23:00	0	S
-# For 1931-1935 Whitman gives Apr same date; go with Shanks.
+# For 1931-1935 Whitman gives Apr same date; go with Shanks & Pottenger.
 Rule	StJohns	1920	1935	-	May	Sun>=1	23:00	1:00	D
 Rule	StJohns	1920	1935	-	Oct	lastSun	23:00	0	S
-# For 1936-1941 Whitman gives May Sun>=8 and Oct Sun>=1; go with Shanks.
+# For 1936-1941 Whitman gives May Sun>=8 and Oct Sun>=1; go with Shanks &
+# Pottenger.
 Rule	StJohns	1936	1941	-	May	Mon>=9	0:00	1:00	D
 Rule	StJohns	1936	1941	-	Oct	Mon>=2	0:00	0	S
 # Whitman gives the following transitions:
 # 1942 03-01/12-31, 1943 05-30/09-05, 1944 07-10/09-02, 1945 01-01/10-07
-# but go with Shanks and assume they used Canadian rules.
+# but go with Shanks & Pottenger and assume they used Canadian rules.
 # For 1946-9 Whitman gives May 5,4,9,1 - Oct 1,5,3,2, and for 1950 he gives
-# Apr 30 - Sep 24; go with Shanks.
+# Apr 30 - Sep 24; go with Shanks & Pottenger.
 Rule	StJohns	1946	1950	-	May	Sun>=8	2:00	1:00	D
 Rule	StJohns	1946	1950	-	Oct	Sun>=2	2:00	0	S
 Rule	StJohns	1951	1986	-	Apr	lastSun	2:00	1:00	D
@@ -989,12 +1006,13 @@ Zone America/Goose_Bay	-4:01:40 -	LMT	1884 # Happy Valley-Goose Bay
 
 # west Labrador, Nova Scotia, Prince Edward I
 
-# From Paul Eggert (1996-06-12):
-# Shanks writes that since 1970 most of this region has been like Halifax.
-# Many locales did not observe peacetime DST until 1972;
+# From Paul Eggert (2006-03-22):
+# Shanks & Pottenger write that since 1970 most of this region has been like
+# Halifax.  Many locales did not observe peacetime DST until 1972;
 # Glace Bay, NS is the largest that we know of.
-# Shanks also writes that Liverpool, NS was the only town in Canada to observe
-# DST in 1971 but not 1970; for now we'll assume this is a typo.
+# Shanks & Pottenger also write that Liverpool, NS was the only town
+# in Canada to observe DST in 1971 but not 1970; for now we'll assume
+# this is a typo.
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Halifax	1916	only	-	Apr	 1	0:00	1:00	D
@@ -1076,7 +1094,7 @@ Rule	Moncton	1940	only	-	May	19	1:00	1:00	D
 Rule	Moncton	1941	only	-	May	 4	1:00	1:00	D
 Rule	Moncton	1946	1972	-	Apr	lastSun	2:00	1:00	D
 Rule	Moncton	1946	1956	-	Sep	lastSun	2:00	0	S
-Rule	Moncton	1956	1972	-	Oct	lastSun	2:00	0	S
+Rule	Moncton	1957	1972	-	Oct	lastSun	2:00	0	S
 Rule	Moncton	1993	2006	-	Apr	Sun>=1	0:01	1:00	D
 Rule	Moncton	1993	2006	-	Oct	lastSun	0:01	0	S
 Rule	Moncton	2007	max	-	Mar	Sun>=8	0:01	1:00	D
@@ -1093,9 +1111,9 @@ Zone America/Moncton	-4:19:08 -	LMT	1883 Dec  9
 
 # Ontario, Quebec
 
-# From Paul Eggert (1996-06-12):
-# Shanks writes that since 1970 most of Ontario has been like Toronto,
-# and most of Quebec has been like Montreal.
+# From Paul Eggert (2006-03-22):
+# Shanks & Pottenger writes that since 1970 most of Ontario has been like
+# Toronto, and most of Quebec has been like Montreal.
 # Thunder Bay skipped DST in 1973.
 # Many smaller locales did not observe peacetime DST until 1974;
 # Nipigon (EST) and Rainy River (CST) are the largest that we know of.
@@ -1125,7 +1143,9 @@ Zone America/Moncton	-4:19:08 -	LMT	1883 Dec  9
 # says that Ontario east of 90W uses EST/EDT, and west of 90W uses CST/CDT.
 # Officially Atikokan is therefore on CST/CDT, and most likely this report
 # concerns a non-official time observed as a matter of local practice.
-# For what it's worth, Shanks says that Atikokan has agreed with
+#
+# From Paul Eggert (2006-03-22):
+# For what it's worth, Shanks & Pottenger say that Atikokan has agreed with
 # Rainy River ever since standard time was introduced.
 
 # From Paul Eggert (2000-10-02):
@@ -1176,7 +1196,8 @@ Rule	Toronto	1920	only	-	Sep	26	0:00	0	S
 Rule	Toronto	1921	only	-	May	15	2:00	1:00	D
 Rule	Toronto	1921	only	-	Sep	15	2:00	0	S
 Rule	Toronto	1922	1923	-	May	Sun>=8	2:00	1:00	D
-# Shanks says 1923-09-19; assume it's a typo and that "-16" was meant.
+# Shanks & Pottenger say 1923-09-19; assume it's a typo and that "-16"
+# was meant.
 Rule	Toronto	1922	1926	-	Sep	Sun>=15	2:00	0	S
 Rule	Toronto	1924	1927	-	May	Sun>=1	2:00	1:00	D
 # The 1927-to-1939 rules can be expressed more simply as
@@ -1200,9 +1221,10 @@ Rule	Toronto	1949	only	-	Nov	lastSun	0:00	0	S
 Rule	Toronto	1950	1973	-	Apr	lastSun	2:00	1:00	D
 Rule	Toronto	1950	only	-	Nov	lastSun	2:00	0	S
 Rule	Toronto	1951	1956	-	Sep	lastSun	2:00	0	S
-# Shanks says Toronto ended DST a week early in 1971, namely on 1971-10-24,
-# but Mark Brader wrote (2003-05-31) that he checked the 1971-10-30 issue
-# of the Toronto Star, and it said that DST ended 1971-10-31 as usual.
+# Shanks & Pottenger say Toronto ended DST a week early in 1971,
+# namely on 1971-10-24, but Mark Brader wrote (2003-05-31) that he
+# checked the 1971-10-30 issue of the Toronto Star, and it said that
+# DST ended 1971-10-31 as usual.
 Rule	Toronto	1957	1973	-	Oct	lastSun	2:00	0	S
 
 # From Paul Eggert (2003-07-27):
@@ -1308,8 +1330,8 @@ Zone America/Winnipeg	-6:28:36 -	LMT	1887 Jul 16
 # Willett (1914-03) notes that DST "has been in operation ... in the
 # City of Moose Jaw, Saskatchewan, for one year."
 
-# From Paul Eggert (2000-10-02):
-# Shanks writes that since 1970 most of this region has been like Regina.
+# From Paul Eggert (2006-03-22):
+# Shanks & Pottenger say that since 1970 this region has mostly been as Regina.
 # Some western towns (e.g. Swift Current) switched from MST/MDT to CST in 1972.
 # Other western towns (e.g. Lloydminster) are like Edmonton.
 # Matthews and Vincent (1998) write that Denare Beach and Creighton
@@ -1395,8 +1417,10 @@ Rule	Edm	1967	only	-	Oct	lastSun	2:00	0	S
 Rule	Edm	1969	only	-	Apr	lastSun	2:00	1:00	D
 Rule	Edm	1969	only	-	Oct	lastSun	2:00	0	S
 Rule	Edm	1972	1986	-	Apr	lastSun	2:00	1:00	D
-Rule	Edm	1972	max	-	Oct	lastSun	2:00	0	S
-Rule	Edm	1987	max	-	Apr	Sun>=1	2:00	1:00	D
+Rule	Edm	1972	2006	-	Oct	lastSun	2:00	0	S
+Rule	Edm	1987	2006	-	Apr	Sun>=1	2:00	1:00	D
+Rule	Edm	2007	max	-	Mar	Sun>=8	2:00	1:00	D
+Rule	Edm	2007	max	-	Nov	Sun>=1	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Edmonton	-7:33:52 -	LMT	1906 Sep
 			-7:00	Edm	M%sT
@@ -1404,8 +1428,9 @@ Zone America/Edmonton	-7:33:52 -	LMT	1906 Sep
 
 # British Columbia
 
-# From Paul Eggert (2000-10-02):
-# Shanks writes that since 1970 most of this region has been like Vancouver.
+# From Paul Eggert (2006-03-22):
+# Shanks & Pottenger write that since 1970 most of this region has
+# been like Vancouver.
 # Dawson Creek uses MST.  Much of east BC is like Edmonton.
 # Matthews and Vincent (1998) write that Creston is like Dawson Creek.
 
@@ -1431,7 +1456,7 @@ Zone America/Dawson_Creek -8:00:56 -	LMT	1884
 
 # Northwest Territories, Nunavut, Yukon
 
-# From Paul Eggert (1999-10-29):
+# From Paul Eggert (2006-03-22):
 # Dawson switched to PST in 1973.  Inuvik switched to MST in 1979.
 # Mathew Englander (1996-10-07) gives the following refs:
 #	* 1967. Paragraph 28(34)(g) of the Interpretation Act, S.C. 1967-68,
@@ -1440,7 +1465,8 @@ Zone America/Dawson_Creek -8:00:56 -	LMT	1884
 #	* C.O. 1973/214 switched Yukon to PST on 1973-10-28 00:00.
 #	* O.I.C. 1980/02 established DST.
 #	* O.I.C. 1987/056 changed DST to Apr firstSun 2:00 to Oct lastSun 2:00.
-# Shanks says Yukon's 1973-10-28 switch was at 2:00; go with Englander.
+# Shanks & Pottenger say Yukon's 1973-10-28 switch was at 2:00; go
+# with Englander.
 
 # From Rives McDow (1999-09-04):
 # Nunavut ... moved ... to incorporate the whole territory into one time zone.
@@ -1609,26 +1635,18 @@ Zone America/Dawson	-9:17:40 -	LMT	1900 Aug 20
 # history of Mexican local time (in Spanish)
 # </a>.
 #
-# Here are the discrepancies between Shanks and the MLoC.
+# Here are the discrepancies between Shanks & Pottenger (S&P) and the MLoC.
 # (In all cases we go with the MLoC.)
-# Shanks reports that Baja was at -8:00 in 1922/1923.
-# Shanks says the 1930 transition in Baja was 1930-11-16.
-# Shanks reports no DST during summer 1931.
-# Shanks reports a transition at 1932-03-30 23:00, not 1932-04-01.
-# Shanks does not report transitions for Baja in 1945 or 1948.
-# Shanks reports southern Mexico transitions on 1981-12-01, not 12-23.
-# Shanks says Quintana Roo switched to -6:00 on 1982-12-02, and to -5:00
-# on 1997-10-26 at 02:00.
+# S&P report that Baja was at -8:00 in 1922/1923.
+# S&P say the 1930 transition in Baja was 1930-11-16.
+# S&P report no DST during summer 1931.
+# S&P report a transition at 1932-03-30 23:00, not 1932-04-01.
 
 # From Gwillim Law (2001-02-20):
 # There are some other discrepancies between the Decrees page and the
 # tz database.  I think they can best be explained by supposing that
 # the researchers who prepared the Decrees page failed to find some of
 # the relevant documents.
-
-# From Paul Eggert (2000-07-26):
-# Shanks gives 1942-04-01 instead of 1942-04-24, and omits the 1981
-# and 1988 DST experiments.  Go with spin.com.mx.
 
 # From Alan Perry (1996-02-15):
 # A guy from our Mexico subsidiary finally found the Presidential Decree
@@ -1829,7 +1847,8 @@ Zone America/Tijuana	-7:48:04 -	LMT	1922 Jan  1  0:11:56
 			-8:00	-	PST	1931 Apr  1
 			-8:00	1:00	PDT	1931 Sep 30
 			-8:00	-	PST	1942 Apr 24
-			-8:00	1:00	PWT	1945 Nov 12
+			-8:00	1:00	PWT	1945 Aug 14 23:00u
+			-8:00	1:00	PPT	1945 Nov 12 # Peace
 			-8:00	-	PST	1948 Apr  5
 			-8:00	1:00	PDT	1949 Jan 14
 			-8:00	-	PST	1954
@@ -1839,12 +1858,13 @@ Zone America/Tijuana	-7:48:04 -	LMT	1922 Jan  1  0:11:56
 			-8:00	Mexico	P%sT	2001
 			-8:00	US	P%sT	2002 Feb 20
 			-8:00	Mexico	P%sT
-# From Paul Eggert (2001-03-05):
+# From Paul Eggert (2006-03-22):
 # Formerly there was an America/Ensenada zone, which differed from
 # America/Tijuana only in that it did not observe DST from 1976
-# through 1995.  This was as per Shanks.  However, Guy Harris reports
+# through 1995.  This was as per Shanks (1999).  But Shanks & Pottenger say
+# Ensenada did not observe DST from 1948 through 1975.  Guy Harris reports
 # that the 1987 OAG says "Only Ensenada, Mexicale, San Felipe and
-# Tijuana observe DST," which contradicts Shanks but does imply that
+# Tijuana observe DST," which agrees with Shanks & Pottenger but implies that
 # DST-observance was a town-by-town matter back then.  This concerns
 # data after 1970 so most likely there should be at least one Zone
 # other than America/Tijuana for Baja, but it's not clear yet what its
@@ -1888,7 +1908,7 @@ Zone America/Barbados	-3:58:28 -	LMT	1924		# Bridgetown
 			-4:00	Barb	A%sT
 
 # Belize
-# Whitman entirely disagrees with Shanks; go with Shanks.
+# Whitman entirely disagrees with Shanks; go with Shanks & Pottenger.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Belize	1918	1942	-	Oct	Sun>=2	0:00	0:30	HD
 Rule	Belize	1919	1943	-	Feb	Sun>=9	0:00	0	S
@@ -1917,7 +1937,8 @@ Zone	America/Cayman	-5:25:32 -	LMT	1890		# Georgetown
 Rule	CR	1979	1980	-	Feb	lastSun	0:00	1:00	D
 Rule	CR	1979	1980	-	Jun	Sun>=1	0:00	0	S
 Rule	CR	1991	1992	-	Jan	Sat>=15	0:00	1:00	D
-# IATA SSIM (1991-09) says the following was at 1:00; go with Shanks.
+# IATA SSIM (1991-09) says the following was at 1:00;
+# go with Shanks & Pottenger.
 Rule	CR	1991	only	-	Jul	 1	0:00	0	S
 Rule	CR	1992	only	-	Mar	15	0:00	0	S
 # There are too many San Joses elsewhere, so we'll use `Costa Rica'.
@@ -1943,12 +1964,12 @@ Zone America/Costa_Rica	-5:36:20 -	LMT	1890		# San Jose
 
 # From Evert van der Veer via Steffen Thorsen (2004-10-28):
 # Cuba is not going back to standard time this year.
-# From Paul Eggert (2004-10-28):
+# From Paul Eggert (2006-03-22):
 # http://www.granma.cu/ingles/2004/septiembre/juev30/41medid-i.html
 # says that it's due to a problem at the Antonio Guiteras
 # thermoelectric plant, and says "This October there will be no return
 # to normal hours (after daylight saving time)".
-# For now, let's assume that it's a one-year temporary measure.
+# For now, let's assume that it's a temporary measure.
 
 # From Carlos A. Carnero Delgado (2005-11-12):
 # This year (just like in 2004-2005) there's no change in time zone
@@ -2089,7 +2110,8 @@ Zone America/Guatemala	-6:02:04 -	LMT	1918 Oct 5
 Rule	Haiti	1983	only	-	May	8	0:00	1:00	D
 Rule	Haiti	1984	1987	-	Apr	lastSun	0:00	1:00	D
 Rule	Haiti	1983	1987	-	Oct	lastSun	0:00	0	S
-# Shanks says AT is 2:00, but IATA SSIM (1991/1997) says 1:00s.  Go with IATA.
+# Shanks & Pottenger say AT is 2:00, but IATA SSIM (1991/1997) says 1:00s.
+# Go with IATA.
 Rule	Haiti	1988	1997	-	Apr	Sun>=1	1:00s	1:00	D
 Rule	Haiti	1988	1997	-	Oct	lastSun	1:00s	0	S
 Rule	Haiti	2005	only	-	Apr	Sun>=1	0:00	1:00	D
@@ -2100,7 +2122,7 @@ Zone America/Port-au-Prince -4:49:20 -	LMT	1890
 			-5:00	Haiti	E%sT
 
 # Honduras
-# Shanks says 1921 Jan 1; go with Whitman's more precise Apr 1.
+# Shanks & Pottenger say 1921 Jan 1; go with Whitman's more precise Apr 1.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Tegucigalpa -5:48:52 -	LMT	1921 Apr
 			-6:00	Salv	C%sT
@@ -2115,7 +2137,7 @@ Zone America/Tegucigalpa -5:48:52 -	LMT	1921 Apr
 # From U. S. Naval Observatory (1989-01-19):
 # JAMAICA             5 H  BEHIND UTC
 
-# From Shanks:
+# From Shanks & Pottenger:
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Jamaica	-5:07:12 -	LMT	1890		# Kingston
 			-5:07:12 -	KMT	1912 Feb    # Kingston Mean Time
@@ -2132,11 +2154,11 @@ Zone America/Martinique	-4:04:20 -      LMT	1890		# Fort-de-France
 			-4:00	-	AST
 
 # Montserrat
-# From Paul Eggert (1997-08-31):
-# Recent volcanic eruptions have forced evacuation of Plymouth, the capital.
-# Luckily, Olveston, the current de facto capital, has the same longitude.
+# From Paul Eggert (2006-03-22):
+# In 1995 volcanic eruptions forced evacuation of Plymouth, the capital.
+# world.gazetteer.com says Cork Hill is the most populous location now.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
-Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Olveston
+Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Cork Hill
 			-4:00	-	AST
 
 # Nicaragua
@@ -2203,7 +2225,7 @@ Zone	America/Panama	-5:18:08 -	LMT	1890
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Puerto_Rico -4:24:25 -	LMT	1899 Mar 28 12:00    # San Juan
 			-4:00	-	AST	1942 May  3
-			-4:00	1:00	AWT	1945 Sep 30  2:00
+			-4:00	US	A%sT	1946
 			-4:00	-	AST
 
 # St Kitts-Nevis
@@ -2232,8 +2254,8 @@ Zone America/St_Vincent	-4:04:56 -	LMT	1890		# Kingstown
 			-4:00	-	AST
 
 # Turks and Caicos
-# From Paul Eggert (1998-08-06):
-# Shanks says they use US DST rules, but IATA SSIM (1991/1998)
+# From Paul Eggert (2006-03-22):
+# Shanks & Pottenger say they use US DST rules, but IATA SSIM (1991/1998)
 # says they switch at midnight.  Go with IATA SSIM.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	TC	1979	1986	-	Apr	lastSun	0:00	1:00	D

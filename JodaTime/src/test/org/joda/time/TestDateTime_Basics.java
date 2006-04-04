@@ -32,6 +32,7 @@ import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
@@ -207,7 +208,8 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(false, test.isSupported(null));
     }
 
-    public void testGetMethods() {
+    //-----------------------------------------------------------------------
+    public void testGetters() {
         DateTime test = new DateTime();
         
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -234,6 +236,36 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(60 * 60 * 1000, test.getMillisOfDay());
     }
 
+    public void testWithers() {
+        DateTime test = new DateTime(1970, 6, 9, 10, 20, 30, 40, GJChronology.getInstance());
+        check(test.withYear(2000), 2000, 6, 9, 10, 20, 30, 40);
+        check(test.withMonthOfYear(2), 1970, 2, 9, 10, 20, 30, 40);
+        check(test.withDayOfMonth(2), 1970, 6, 2, 10, 20, 30, 40);
+        check(test.withDayOfYear(6), 1970, 1, 6, 10, 20, 30, 40);
+        check(test.withDayOfWeek(6), 1970, 6, 13, 10, 20, 30, 40);
+        check(test.withWeekOfWeekyear(6), 1970, 2, 3, 10, 20, 30, 40);
+        check(test.withWeekyear(1971), 1971, 6, 15, 10, 20, 30, 40);
+        check(test.withYearOfCentury(60), 1960, 6, 9, 10, 20, 30, 40);
+        check(test.withCenturyOfEra(21), 2070, 6, 9, 10, 20, 30, 40);
+        check(test.withYearOfEra(1066), 1066, 6, 9, 10, 20, 30, 40);
+        check(test.withEra(DateTimeConstants.BC), -1970, 6, 9, 10, 20, 30, 40);
+        check(test.withHourOfDay(6), 1970, 6, 9, 6, 20, 30, 40);
+        check(test.withMinuteOfHour(6), 1970, 6, 9, 10, 6, 30, 40);
+        check(test.withSecondOfMinute(6), 1970, 6, 9, 10, 20, 6, 40);
+        check(test.withMillisOfSecond(6), 1970, 6, 9, 10, 20, 30, 6);
+        check(test.withMillisOfDay(61234), 1970, 6, 9, 0, 1, 1, 234);
+        
+        try {
+            test.withMonthOfYear(0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.withMonthOfYear(13);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testEqualsHashCode() {
         DateTime test1 = new DateTime(TEST_TIME1);
         DateTime test2 = new DateTime(TEST_TIME1);
@@ -1148,6 +1180,17 @@ public class TestDateTime_Basics extends TestCase {
             test.property(null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    private void check(DateTime test, int year, int month, int day, int hour, int min, int sec, int mil) {
+        assertEquals(year, test.getYear());
+        assertEquals(month, test.getMonthOfYear());
+        assertEquals(day, test.getDayOfMonth());
+        assertEquals(hour, test.getHourOfDay());
+        assertEquals(min, test.getMinuteOfHour());
+        assertEquals(sec, test.getSecondOfMinute());
+        assertEquals(mil, test.getMillisOfSecond());
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -795,6 +795,183 @@ public final class DateMidnight
         long start = getMillis();
         long end = DurationFieldType.days().getField(chrono).add(start, 1);
         return new Interval(start, end, chrono);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Sets the era field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * era changed.
+     *
+     * @param era  the era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withEra(int era) {
+        return withMillis(getChronology().era().set(getMillis(), era));
+    }
+
+    /**
+     * Sets the century of era field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * century of era changed.
+     *
+     * @param centuryOfEra  the centurey of era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withCenturyOfEra(int centuryOfEra) {
+        return withMillis(getChronology().centuryOfEra().set(getMillis(), centuryOfEra));
+    }
+
+    /**
+     * Sets the year of era field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year of era changed.
+     *
+     * @param yearOfEra  the year of era to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withYearOfEra(int yearOfEra) {
+        return withMillis(getChronology().yearOfEra().set(getMillis(), yearOfEra));
+    }
+
+    /**
+     * Sets the year of century field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year of century changed.
+     *
+     * @param yearOfCentury  the year of century to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withYearOfCentury(int yearOfCentury) {
+        return withMillis(getChronology().yearOfCentury().set(getMillis(), yearOfCentury));
+    }
+
+    /**
+     * Sets the year field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year changed.
+     *
+     * @param year  the year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withYear(int year) {
+        return withMillis(getChronology().year().set(getMillis(), year));
+    }
+
+    /**
+     * Sets the weekyear field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * weekyear changed.
+     *
+     * @param weekyear  the weekyear to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withWeekyear(int weekyear) {
+        return withMillis(getChronology().weekyear().set(getMillis(), weekyear));
+    }
+
+    /**
+     * Sets the month of year field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * month of year changed.
+     *
+     * @param monthOfYear  the month of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withMonthOfYear(int monthOfYear) {
+        return withMillis(getChronology().monthOfYear().set(getMillis(), monthOfYear));
+    }
+
+    /**
+     * Sets the week of weekyear field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * week of weekyear changed.
+     *
+     * @param weekOfWeekyear  the week of weekyear to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withWeekOfWeekyear(int weekOfWeekyear) {
+        return withMillis(getChronology().weekOfWeekyear().set(getMillis(), weekOfWeekyear));
+    }
+
+    /**
+     * Sets the day of year field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of year changed.
+     *
+     * @param dayOfYear  the day of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withDayOfYear(int dayOfYear) {
+        return withMillis(getChronology().dayOfYear().set(getMillis(), dayOfYear));
+    }
+
+    /**
+     * Sets the day of month field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of month changed.
+     *
+     * @param dayOfMonth  the day of month to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withDayOfMonth(int dayOfMonth) {
+        return withMillis(getChronology().dayOfMonth().set(getMillis(), dayOfMonth));
+    }
+
+    /**
+     * Sets the day of week field in a copy of this DateMidnight, leaving this
+     * instance unchanged.
+     * <p>
+     * DateMidnight is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of week changed.
+     *
+     * @param dayOfWeek  the day of week to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public DateMidnight withDayOfWeek(int dayOfWeek) {
+        return withMillis(getChronology().dayOfWeek().set(getMillis(), dayOfWeek));
     }
 
     // Date properties

@@ -31,6 +31,7 @@ import junit.framework.TestSuite;
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.UnsupportedDateTimeField;
@@ -196,7 +197,8 @@ public class TestDateMidnight_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testGetMethods() {
+    //-----------------------------------------------------------------------
+    public void testGetters() {
         DateMidnight test = new DateMidnight();
         
         assertEquals(ISOChronology.getInstance(), test.getChronology());
@@ -223,6 +225,31 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(0, test.getMillisOfDay());
     }
 
+    public void testWithers() {
+        DateMidnight test = new DateMidnight(1970, 6, 9, GJChronology.getInstance());
+        check(test.withYear(2000), 2000, 6, 9);
+        check(test.withMonthOfYear(2), 1970, 2, 9);
+        check(test.withDayOfMonth(2), 1970, 6, 2);
+        check(test.withDayOfYear(6), 1970, 1, 6);
+        check(test.withDayOfWeek(6), 1970, 6, 13);
+        check(test.withWeekOfWeekyear(6), 1970, 2, 3);
+        check(test.withWeekyear(1971), 1971, 6, 15);
+        check(test.withYearOfCentury(60), 1960, 6, 9);
+        check(test.withCenturyOfEra(21), 2070, 6, 9);
+        check(test.withYearOfEra(1066), 1066, 6, 9);
+        check(test.withEra(DateTimeConstants.BC), -1970, 6, 9);
+        
+        try {
+            test.withMonthOfYear(0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.withMonthOfYear(13);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testEqualsHashCode() {
         DateMidnight test1 = new DateMidnight(TEST_TIME1_UTC);
         DateMidnight test2 = new DateMidnight(TEST_TIME1_UTC);
@@ -964,6 +991,13 @@ public class TestDateMidnight_Basics extends TestCase {
             test.property(null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    private void check(DateMidnight test, int year, int month, int day) {
+        assertEquals(year, test.getYear());
+        assertEquals(month, test.getMonthOfYear());
+        assertEquals(day, test.getDayOfMonth());
     }
 
 }

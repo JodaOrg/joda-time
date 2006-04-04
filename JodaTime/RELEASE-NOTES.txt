@@ -5,7 +5,7 @@ Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
 
 This is the fourth full release of Joda-Time.
-This release focuses on bug fixes, with a few new features.
+This release focuses on new features, but also include some bug fixes.
 
 We recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
 
@@ -17,8 +17,34 @@ of restrictions. If the license causes you problems please contact the mailing l
 ** Please also check out the JSP and Hibernate contributed projects **
 
 
-Incompatible changes since 1.2
-------------------------------
+Enhancements since 1.2
+----------------------
+- LocalDate/LocalTime/LocalDateTime
+  New classes representing date, time and datetime without a time zone.
+  LocalDate is the recommended replacement for YearMonthDay.
+  LocalTime is the recommended replacement for TimeOfDay.
+  These classes are implemented more flexibly than YearMonthDay and TimeOfDay
+  and thus solve the problem where you couldn't query or format fields such
+  as dayOfWeek on a YearMonthDay or millisOfDay on a TimeOfDay.
+  Neither YearMonthDay or TimeOfDay will be immediately deprecated as they
+  are in widespread use.
+  The API of the new classes has been kept as similar to YearMonthDay/TimeOfDay
+  as possible to aid migration. The main difference is the method names on the
+  property class.
+
+- DateTime/DateMidnight.withXxx()
+  Add withXxx methods that allow an individul field to be changed, for example:
+  firstOfMonth = today.withDayOfMonth(1);
+  These methods are the immutable equivalent of set methods.
+  These are convenince methods for the methods on the property API.
+
+- DateTimeFormatter/DateTimeParserBucket
+  If a parsed datetime is illegal due to field range or time zone offset
+  transition, thrown exception includes text of datetime being parsed.
+
+
+Compatibility with 1.2
+----------------------
 Binary compatible - Yes
 
 Source compatible - Yes
@@ -27,7 +53,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes
-  - DateTimeZone data updated to version 2006a
+  - DateTimeZone data updated to version 2006c
 
 
 Deprecations since 1.2
@@ -63,26 +89,6 @@ Bug fixes since 1.2
 - ISO/Gregorian/Julian/Coptic/EthiopicChronology
   Fixed overflow when getting year field from instants at Long.MAX_VALUE and
   LONG.MIN_VALUE.
-
-
-Enhancements since 1.2
-----------------------
-- LocalDate/LocalTime/LocalDateTime
-  New classes representing date, time and datetime without a time zone.
-  LocalDate is the recommended replacement for YearMonthDay.
-  LocalTime is the recommended replacement for TimeOfDay.
-  These classes are implemented more flexibly than YearMonthDay and TimeOfDay
-  and thus solve the problem where you couldn't query or format fields such
-  as dayOfWeek on a YearMonthDay or millisOfDay on a TimeOfDay.
-  Neither YearMonthDay or TimeOfDay will be immediately deprecated as they
-  are in widespread use.
-  The API of the new classes has been kept as similar to YearMonthDay/TimeOfDay
-  as possible to aid migration. The main difference is the method names on the
-  property class.
-
-- DateTimeFormatter/DateTimeParserBucket
-  If a parsed datetime is illegal due to field range or time zone offset
-  transition, thrown exception includes text of datetime being parsed.
 
 
 Feedback

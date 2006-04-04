@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -798,6 +798,64 @@ public final class YearMonthDay
      */
     public int getDayOfMonth() {
         return getValue(DAY_OF_MONTH);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Sets the year field in a copy of this YearMonthDay, leaving this
+     * instance unchanged.
+     * <p>
+     * YearMonthDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * year changed.
+     *
+     * @param year  the year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public YearMonthDay withYear(int year) {
+        int[] newValues = getValues();
+        newValues = getChronology().year().set(this, YEAR, newValues, year);
+        return new YearMonthDay(this, newValues);
+    }
+
+    /**
+     * Sets the month of year field in a copy of this YearMonthDay, leaving this
+     * instance unchanged.
+     * <p>
+     * YearMonthDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * month of year changed.
+     *
+     * @param monthOfYear  the month of year to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public YearMonthDay withMonthOfYear(int monthOfYear) {
+        int[] newValues = getValues();
+        newValues = getChronology().monthOfYear().set(this, MONTH_OF_YEAR, newValues, monthOfYear);
+        return new YearMonthDay(this, newValues);
+    }
+
+    /**
+     * Sets the day of month field in a copy of this YearMonthDay, leaving this
+     * instance unchanged.
+     * <p>
+     * YearMonthDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * day of month changed.
+     *
+     * @param dayOfMonth  the day of month to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public YearMonthDay withDayOfMonth(int dayOfMonth) {
+        int[] newValues = getValues();
+        newValues = getChronology().dayOfMonth().set(this, DAY_OF_MONTH, newValues, dayOfMonth);
+        return new YearMonthDay(this, newValues);
     }
 
     //-----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -814,6 +814,23 @@ public class TestTimeOfDay_Basics extends TestCase {
         DateTime test = base.toDateTime((ReadableInstant) null);
         check(base, 1, 2, 3, 4);
         assertEquals("1970-01-02T01:02:03.004+01:00", test.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithers() {
+        TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
+        check(test.withHourOfDay(6), 6, 20, 30, 40);
+        check(test.withMinuteOfHour(6), 10, 6, 30, 40);
+        check(test.withSecondOfMinute(6), 10, 20, 6, 40);
+        check(test.withMillisOfSecond(6), 10, 20, 30, 6);
+        try {
+            test.withHourOfDay(-1);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.withHourOfDay(24);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

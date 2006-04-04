@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -747,6 +747,22 @@ public class TestYearMonthDay_Basics extends TestCase {
         DateTime end = start.plus(Period.days(1));
         Interval expected = new Interval(start, end);
         assertEquals(expected, test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testWithers() {
+        YearMonthDay test = new YearMonthDay(1970, 6, 9);
+        check(test.withYear(2000), 2000, 6, 9);
+        check(test.withMonthOfYear(2), 1970, 2, 9);
+        check(test.withDayOfMonth(2), 1970, 6, 2);
+        try {
+            test.withMonthOfYear(0);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            test.withMonthOfYear(13);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -866,6 +866,83 @@ public final class TimeOfDay
      */
     public int getMillisOfSecond() {
         return getValue(MILLIS_OF_SECOND);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Sets the hour of day field in a copy of this TimeOfDay, leaving this
+     * instance unchanged.
+     * <p>
+     * TimeOfDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * hour of day changed.
+     *
+     * @param hour  the hour of day to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public TimeOfDay withHourOfDay(int hour) {
+        int[] newValues = getValues();
+        newValues = getChronology().hourOfDay().set(this, HOUR_OF_DAY, newValues, hour);
+        return new TimeOfDay(this, newValues);
+    }
+
+    /**
+     * Sets the minute of hour field in a copy of this TimeOfDay, leaving this
+     * instance unchanged.
+     * <p>
+     * TimeOfDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * minute of hour changed.
+     *
+     * @param minute  the minute of hour to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public TimeOfDay withMinuteOfHour(int minute) {
+        int[] newValues = getValues();
+        newValues = getChronology().minuteOfHour().set(this, MINUTE_OF_HOUR, newValues, minute);
+        return new TimeOfDay(this, newValues);
+    }
+
+    /**
+     * Sets the second of minute field in a copy of this TimeOfDay, leaving this
+     * instance unchanged.
+     * <p>
+     * TimeOfDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * second of minute changed.
+     *
+     * @param second  the second of minute to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public TimeOfDay withSecondOfMinute(int second) {
+        int[] newValues = getValues();
+        newValues = getChronology().secondOfMinute().set(this, SECOND_OF_MINUTE, newValues, second);
+        return new TimeOfDay(this, newValues);
+    }
+
+    /**
+     * Sets the millis of second field in a copy of this TimeOfDay, leaving this
+     * instance unchanged.
+     * <p>
+     * TimeOfDay is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * millis of second changed.
+     *
+     * @param millis  the millis of second to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
+     */
+    public TimeOfDay withMillisOfSecond(int millis) {
+        int[] newValues = getValues();
+        newValues = getChronology().millisOfSecond().set(this, MILLIS_OF_SECOND, newValues, millis);
+        return new TimeOfDay(this, newValues);
     }
 
     //-----------------------------------------------------------------------

@@ -972,6 +972,15 @@ public final class LocalTime
         return getChronology().millisOfSecond().get(getLocalMillis());
     }
 
+    /**
+     * Get the millis of day field value.
+     *
+     * @return the millis of day
+     */
+    public int getMillisOfDay() {
+        return getChronology().millisOfDay().get(getLocalMillis());
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Sets the hour of day field in a copy of this LocalTime, leaving this
@@ -1037,6 +1046,22 @@ public final class LocalTime
         return withLocalMillis(getChronology().millisOfSecond().set(getLocalMillis(), millis));
     }
 
+    /**
+     * Sets the millis of day field in a copy of this LocalTime, leaving this
+     * instance unchanged.
+     * <p>
+     * LocalTime is immutable, so there are no set methods.
+     * Instead, this method returns a new instance with the value of
+     * millis of day changed.
+     *
+     * @param millis  the millis of day to set
+     * @return a copy of this object with the field set
+     * @throws IllegalArgumentException if the value is invalid
+     */
+    public LocalTime withMillisOfDay(int millis) {
+        return withLocalMillis(getChronology().millisOfDay().set(getLocalMillis(), millis));
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Get the hour of day field property
@@ -1072,6 +1097,15 @@ public final class LocalTime
      */
     public Property millisOfSecond() {
         return new Property(this, getChronology().millisOfSecond());
+    }
+
+    /**
+     * Get the millis of day property
+     * 
+     * @return the millis of day property
+     */
+    public Property millisOfDay() {
+        return new Property(this, getChronology().millisOfDay());
     }
 
     //-----------------------------------------------------------------------

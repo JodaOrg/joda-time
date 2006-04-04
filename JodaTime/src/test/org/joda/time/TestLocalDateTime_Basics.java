@@ -713,6 +713,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+        assertEquals(MILLIS_OF_DAY_UTC, test.getMillisOfDay());
     }
 
     //-----------------------------------------------------------------------
@@ -733,6 +734,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         check(test.withMinuteOfHour(6), 1970, 6, 9, 10, 6, 30, 40);
         check(test.withSecondOfMinute(6), 1970, 6, 9, 10, 20, 6, 40);
         check(test.withMillisOfSecond(6), 1970, 6, 9, 10, 20, 30, 6);
+        check(test.withMillisOfDay(61234), 1970, 6, 9, 0, 1, 1, 234);
         try {
             test.withMonthOfYear(0);
             fail();
@@ -823,6 +825,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(test.minuteOfHour(), test.property(DateTimeFieldType.minuteOfHour()));
         assertEquals(test.secondOfMinute(), test.property(DateTimeFieldType.secondOfMinute()));
         assertEquals(test.millisOfSecond(), test.property(DateTimeFieldType.millisOfSecond()));
+        assertEquals(test.millisOfDay(), test.property(DateTimeFieldType.millisOfDay()));
         
         try {
             test.property(null);

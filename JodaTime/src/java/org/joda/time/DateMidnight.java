@@ -774,12 +774,21 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this object to a YearMonthDay using the same millis and chronology.
+     * Converts this object to a YearMonthDay using the same date and chronology.
      * 
      * @return a YearMonthDay using the same millis and chronology
      */
     public YearMonthDay toYearMonthDay() {
         return new YearMonthDay(getMillis(), getChronology());
+    }
+
+    /**
+     * Converts this object to a LocalDate with the same date and chronology.
+     *
+     * @return a LocalDate with the same date and chronology
+     */
+    public LocalDate toLocalDate() {
+        return new LocalDate(getMillis(), getChronology());
     }
 
     /**

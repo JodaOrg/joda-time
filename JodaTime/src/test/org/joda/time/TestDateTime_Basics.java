@@ -720,6 +720,24 @@ public class TestDateTime_Basics extends TestCase {
         assertEquals(new TimeOfDay(TEST_TIME1, COPTIC_DEFAULT), test);
     }
 
+    public void testToLocalDateTime() {
+        DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
+        LocalDateTime test = base.toLocalDateTime();
+        assertEquals(new LocalDateTime(TEST_TIME1, COPTIC_DEFAULT), test);
+    }
+
+    public void testToLocalDate() {
+        DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
+        LocalDate test = base.toLocalDate();
+        assertEquals(new LocalDate(TEST_TIME1, COPTIC_DEFAULT), test);
+    }
+
+    public void testToLocalTime() {
+        DateTime base = new DateTime(TEST_TIME1, COPTIC_DEFAULT);
+        LocalTime test = base.toLocalTime();
+        assertEquals(new LocalTime(TEST_TIME1, COPTIC_DEFAULT), test);
+    }
+
     //-----------------------------------------------------------------------
     public void testWithMillis_long() {
         DateTime test = new DateTime(TEST_TIME1);

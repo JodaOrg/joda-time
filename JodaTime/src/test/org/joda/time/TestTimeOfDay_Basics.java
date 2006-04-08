@@ -597,6 +597,13 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToLocalTime() {
+        TimeOfDay base = new TimeOfDay(10, 20, 30, 40, COPTIC_UTC);
+        LocalTime test = base.toLocalTime();
+        assertEquals(new LocalTime(10, 20, 30, 40, COPTIC_UTC), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testToDateTimeToday() {
         TimeOfDay base = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);

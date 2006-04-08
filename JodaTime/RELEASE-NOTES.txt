@@ -32,8 +32,12 @@ Enhancements since 1.2
   as possible to aid migration. The main difference is the method names on the
   property class.
 
-- DateTime/DateMidnight/YearMonthDay/TimeOfDay.withXxx()
-  Add withXxx methods that allow an individul field to be changed, for example:
+- DateTime/DateMidnight/YearMonthDay/TimeOfDay
+  Add toLocalXxx() methods that allow conversion to the new classes, for example:
+  LocalDate date = today.toLocalDate();
+
+- DateTime/DateMidnight/YearMonthDay/TimeOfDay
+  Add withXxx() methods that allow an individul field to be changed, for example:
   firstOfMonth = today.withDayOfMonth(1);
   These methods are the immutable equivalent of set methods.
   These are convenince methods for the methods on the property API.

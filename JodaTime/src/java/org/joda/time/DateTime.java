@@ -1122,6 +1122,33 @@ public final class DateTime
         return new TimeOfDay(getMillis(), getChronology());
     }
 
+    /**
+     * Converts this object to a LocalDateTime with the same datetime and chronology.
+     *
+     * @return a LocalDateTime with the same datetime and chronology
+     */
+    public LocalDateTime toLocalDateTime() {
+        return new LocalDateTime(getMillis(), getChronology());
+    }
+
+    /**
+     * Converts this object to a LocalDate with the same date and chronology.
+     *
+     * @return a LocalDate with the same date and chronology
+     */
+    public LocalDate toLocalDate() {
+        return new LocalDate(getMillis(), getChronology());
+    }
+
+    /**
+     * Converts this object to a LocalTime with the same time and chronology.
+     *
+     * @return a LocalTime with the same time and chronology
+     */
+    public LocalTime toLocalTime() {
+        return new LocalTime(getMillis(), getChronology());
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Sets the era field in a copy of this DateTime, leaving this

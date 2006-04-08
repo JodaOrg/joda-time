@@ -639,6 +639,12 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(new YearMonthDay(TEST_TIME1_UTC, COPTIC_DEFAULT), test);
     }
 
+    public void testToLocalDate() {
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, COPTIC_DEFAULT);
+        LocalDate test = base.toLocalDate();
+        assertEquals(new LocalDate(TEST_TIME1_UTC, COPTIC_DEFAULT), test);
+    }
+
     public void testToInterval() {
         DateMidnight base = new DateMidnight(TEST_TIME1_UTC, COPTIC_DEFAULT);
         Interval test = base.toInterval();

@@ -540,6 +540,13 @@ public class TestYearMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToLocalDate() {
+        YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_UTC);
+        LocalDate test = base.toLocalDate();
+        assertEquals(new LocalDate(2005, 6, 9, COPTIC_UTC), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testToDateTimeAtMidnight() {
         YearMonthDay base = new YearMonthDay(2005, 6, 9, COPTIC_PARIS);
         

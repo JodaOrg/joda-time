@@ -803,6 +803,17 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
+     * Converts this object to a LocalTime with the same time and chronology.
+     *
+     * @return a LocalTime with the same time and chronology
+     */
+    public LocalTime toLocalTime() {
+        return new LocalTime(getHourOfDay(), getMinuteOfHour(),
+                getSecondOfMinute(), getMillisOfSecond(), getChronology());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Converts this partial to a full datetime using the default time zone
      * setting the time fields from this instance and the date fields from
      * the current time.

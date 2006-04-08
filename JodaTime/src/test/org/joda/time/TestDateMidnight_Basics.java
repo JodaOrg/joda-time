@@ -51,7 +51,14 @@ public class TestDateMidnight_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
-    
+    private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance();
+    private static final ISOChronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    private static final GJChronology GJ_DEFAULT = GJChronology.getInstance();
+    private static final GregorianChronology GREGORIAN_DEFAULT = GregorianChronology.getInstance();
+    private static final GregorianChronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
+    private static final BuddhistChronology BUDDHIST_DEFAULT = BuddhistChronology.getInstance();
+    private static final CopticChronology COPTIC_DEFAULT = CopticChronology.getInstance();
+
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
                      365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
@@ -139,28 +146,28 @@ public class TestDateMidnight_Basics extends TestCase {
     //-----------------------------------------------------------------------
     public void testGet_DateTimeField() {
         DateMidnight test = new DateMidnight();
-        assertEquals(1, test.get(ISOChronology.getInstance().era()));
-        assertEquals(20, test.get(ISOChronology.getInstance().centuryOfEra()));
-        assertEquals(2, test.get(ISOChronology.getInstance().yearOfCentury()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().yearOfEra()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().year()));
-        assertEquals(6, test.get(ISOChronology.getInstance().monthOfYear()));
-        assertEquals(9, test.get(ISOChronology.getInstance().dayOfMonth()));
-        assertEquals(2002, test.get(ISOChronology.getInstance().weekyear()));
-        assertEquals(23, test.get(ISOChronology.getInstance().weekOfWeekyear()));
-        assertEquals(7, test.get(ISOChronology.getInstance().dayOfWeek()));
-        assertEquals(160, test.get(ISOChronology.getInstance().dayOfYear()));
-        assertEquals(0, test.get(ISOChronology.getInstance().halfdayOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().hourOfHalfday()));
-        assertEquals(24, test.get(ISOChronology.getInstance().clockhourOfDay()));
-        assertEquals(12, test.get(ISOChronology.getInstance().clockhourOfHalfday()));
-        assertEquals(0, test.get(ISOChronology.getInstance().hourOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().minuteOfHour()));
-        assertEquals(0, test.get(ISOChronology.getInstance().minuteOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().secondOfMinute()));
-        assertEquals(0, test.get(ISOChronology.getInstance().secondOfDay()));
-        assertEquals(0, test.get(ISOChronology.getInstance().millisOfSecond()));
-        assertEquals(0, test.get(ISOChronology.getInstance().millisOfDay()));
+        assertEquals(1, test.get(ISO_DEFAULT.era()));
+        assertEquals(20, test.get(ISO_DEFAULT.centuryOfEra()));
+        assertEquals(2, test.get(ISO_DEFAULT.yearOfCentury()));
+        assertEquals(2002, test.get(ISO_DEFAULT.yearOfEra()));
+        assertEquals(2002, test.get(ISO_DEFAULT.year()));
+        assertEquals(6, test.get(ISO_DEFAULT.monthOfYear()));
+        assertEquals(9, test.get(ISO_DEFAULT.dayOfMonth()));
+        assertEquals(2002, test.get(ISO_DEFAULT.weekyear()));
+        assertEquals(23, test.get(ISO_DEFAULT.weekOfWeekyear()));
+        assertEquals(7, test.get(ISO_DEFAULT.dayOfWeek()));
+        assertEquals(160, test.get(ISO_DEFAULT.dayOfYear()));
+        assertEquals(0, test.get(ISO_DEFAULT.halfdayOfDay()));
+        assertEquals(0, test.get(ISO_DEFAULT.hourOfHalfday()));
+        assertEquals(24, test.get(ISO_DEFAULT.clockhourOfDay()));
+        assertEquals(12, test.get(ISO_DEFAULT.clockhourOfHalfday()));
+        assertEquals(0, test.get(ISO_DEFAULT.hourOfDay()));
+        assertEquals(0, test.get(ISO_DEFAULT.minuteOfHour()));
+        assertEquals(0, test.get(ISO_DEFAULT.minuteOfDay()));
+        assertEquals(0, test.get(ISO_DEFAULT.secondOfMinute()));
+        assertEquals(0, test.get(ISO_DEFAULT.secondOfDay()));
+        assertEquals(0, test.get(ISO_DEFAULT.millisOfSecond()));
+        assertEquals(0, test.get(ISO_DEFAULT.millisOfDay()));
         try {
             test.get((DateTimeField) null);
             fail();
@@ -201,7 +208,7 @@ public class TestDateMidnight_Basics extends TestCase {
     public void testGetters() {
         DateMidnight test = new DateMidnight();
         
-        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(ISO_DEFAULT, test.getChronology());
         assertEquals(LONDON, test.getZone());
         assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
         
@@ -226,7 +233,7 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testWithers() {
-        DateMidnight test = new DateMidnight(1970, 6, 9, GJChronology.getInstance());
+        DateMidnight test = new DateMidnight(1970, 6, 9, GJ_DEFAULT);
         check(test.withYear(2000), 2000, 6, 9);
         check(test.withMonthOfYear(2), 1970, 2, 9);
         check(test.withDayOfMonth(2), 1970, 6, 2);
@@ -271,7 +278,7 @@ public class TestDateMidnight_Basics extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInstant()));
-        assertEquals(false, test1.equals(new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance())));
+        assertEquals(false, test1.equals(new DateMidnight(TEST_TIME1_UTC, GREGORIAN_DEFAULT)));
     }
     
     class MockInstant extends AbstractInstant {
@@ -282,7 +289,7 @@ public class TestDateMidnight_Basics extends TestCase {
             return TEST_TIME1_LONDON;
         }
         public Chronology getChronology() {
-            return ISOChronology.getInstance();
+            return ISO_DEFAULT;
         }
     }
 
@@ -298,7 +305,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(-1, test1.compareTo(test2));
         assertEquals(+1, test2.compareTo(test1));
         
-        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GregorianChronology.getInstance(PARIS));
+        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GREGORIAN_PARIS);
         assertEquals(-1, test1.compareTo(test3));
         assertEquals(+1, test3.compareTo(test1));
         assertEquals(-1, test3.compareTo(test2));  // midnight paris before london
@@ -328,7 +335,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(false, test1.isEqual(test2));
         assertEquals(false, test2.isEqual(test1));
         
-        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GregorianChronology.getInstance(PARIS));
+        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GREGORIAN_PARIS);
         assertEquals(false, test1.isEqual(test3));
         assertEquals(false, test3.isEqual(test1));
         assertEquals(false, test3.isEqual(test2));  // midnight paris before london
@@ -357,7 +364,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(true, test1.isBefore(test2));
         assertEquals(false, test2.isBefore(test1));
         
-        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GregorianChronology.getInstance(PARIS));
+        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GREGORIAN_PARIS);
         assertEquals(true, test1.isBefore(test3));
         assertEquals(false, test3.isBefore(test1));
         assertEquals(true, test3.isBefore(test2));  // midnight paris before london
@@ -386,7 +393,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(false, test1.isAfter(test2));
         assertEquals(true, test2.isAfter(test1));
         
-        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GregorianChronology.getInstance(PARIS));
+        DateMidnight test3 = new DateMidnight(TEST_TIME2_UTC, GREGORIAN_PARIS);
         assertEquals(false, test1.isAfter(test3));
         assertEquals(true, test3.isAfter(test1));
         assertEquals(false, test3.isAfter(test2));  // midnight paris before london
@@ -475,7 +482,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertSame(DateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(ISO_PARIS, result.getChronology());
     }
 
     public void testToDateTime_DateTimeZone() {
@@ -506,35 +513,35 @@ public class TestDateMidnight_Basics extends TestCase {
 
     public void testToDateTime_Chronology() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
-        DateTime result = test.toDateTime(ISOChronology.getInstance());
+        DateTime result = test.toDateTime(ISO_DEFAULT);
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(TEST_TIME1_LONDON, result.getMillis());
         assertEquals(LONDON, result.getZone());
 
         test = new DateMidnight(TEST_TIME1_UTC);
-        result = test.toDateTime(GregorianChronology.getInstance(PARIS));
+        result = test.toDateTime(GREGORIAN_PARIS);
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(TEST_TIME1_LONDON, result.getMillis());
-        assertEquals(GregorianChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(GREGORIAN_PARIS, result.getChronology());
 
-        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
+        test = new DateMidnight(TEST_TIME1_UTC, GREGORIAN_PARIS);
         result = test.toDateTime((Chronology) null);
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(TEST_TIME1_PARIS, result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.toDateTime((Chronology) null);
         assertEquals(test.getMillis(), result.getMillis());
         assertEquals(TEST_TIME1_LONDON, result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
     }
 
     public void testToMutableDateTime() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         MutableDateTime result = test.toMutableDateTime();
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(ISO_PARIS, result.getChronology());
     }
 
     public void testToMutableDateTimeISO() {
@@ -543,51 +550,51 @@ public class TestDateMidnight_Basics extends TestCase {
         assertSame(MutableDateTime.class, result.getClass());
         assertSame(ISOChronology.class, result.getChronology().getClass());
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(ISO_PARIS, result.getChronology());
     }
 
     public void testToMutableDateTime_DateTimeZone() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
         MutableDateTime result = test.toMutableDateTime(LONDON);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.toMutableDateTime(PARIS);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(ISO_PARIS, result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC, PARIS);
         result = test.toMutableDateTime((DateTimeZone) null);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.toMutableDateTime((DateTimeZone) null);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
     }
 
     public void testToMutableDateTime_Chronology() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
-        MutableDateTime result = test.toMutableDateTime(ISOChronology.getInstance());
+        MutableDateTime result = test.toMutableDateTime(ISO_DEFAULT);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC);
-        result = test.toMutableDateTime(GregorianChronology.getInstance(PARIS));
+        result = test.toMutableDateTime(GREGORIAN_PARIS);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(GregorianChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(GREGORIAN_PARIS, result.getChronology());
 
-        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
+        test = new DateMidnight(TEST_TIME1_UTC, GREGORIAN_PARIS);
         result = test.toMutableDateTime((Chronology) null);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
 
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.toMutableDateTime((Chronology) null);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
     }
 
     public void testToDate() {
@@ -627,13 +634,13 @@ public class TestDateMidnight_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testToYearMonthDay() {
-        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, CopticChronology.getInstance());
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, COPTIC_DEFAULT);
         YearMonthDay test = base.toYearMonthDay();
-        assertEquals(new YearMonthDay(TEST_TIME1_UTC, CopticChronology.getInstance()), test);
+        assertEquals(new YearMonthDay(TEST_TIME1_UTC, COPTIC_DEFAULT), test);
     }
 
     public void testToInterval() {
-        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, CopticChronology.getInstance());
+        DateMidnight base = new DateMidnight(TEST_TIME1_UTC, COPTIC_DEFAULT);
         Interval test = base.toInterval();
         DateMidnight end = base.plus(Period.days(1));
         assertEquals(new Interval(base, end), test);
@@ -646,7 +653,7 @@ public class TestDateMidnight_Basics extends TestCase {
         assertEquals(TEST_TIME2_LONDON, result.getMillis());
         assertEquals(test.getChronology(), result.getChronology());
         
-        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
+        test = new DateMidnight(TEST_TIME1_UTC, GREGORIAN_PARIS);
         result = test.withMillis(TEST_TIME2_UTC);
         assertEquals(TEST_TIME2_PARIS, result.getMillis());
         assertEquals(test.getChronology(), result.getChronology());
@@ -658,25 +665,25 @@ public class TestDateMidnight_Basics extends TestCase {
 
     public void testWithChronology_Chronology() {
         DateMidnight test = new DateMidnight(TEST_TIME1_UTC);
-        DateMidnight result = test.withChronology(GregorianChronology.getInstance(PARIS));
+        DateMidnight result = test.withChronology(GREGORIAN_PARIS);
         assertEquals(TEST_TIME1_LONDON, test.getMillis());
         assertEquals(TEST_TIME1_PARIS, result.getMillis());
-        assertEquals(GregorianChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(GREGORIAN_PARIS, result.getChronology());
         
-        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
+        test = new DateMidnight(TEST_TIME1_UTC, GREGORIAN_PARIS);
         result = test.withChronology(null);
         assertEquals(TEST_TIME1_PARIS, test.getMillis());
         // midnight Paris is previous day in London
         assertEquals(TEST_TIME1_LONDON - DateTimeConstants.MILLIS_PER_DAY, result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
         
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.withChronology(null);
         assertEquals(test.getMillis(), result.getMillis());
-        assertEquals(ISOChronology.getInstance(), result.getChronology());
+        assertEquals(ISO_DEFAULT, result.getChronology());
         
         test = new DateMidnight(TEST_TIME1_UTC);
-        result = test.withChronology(ISOChronology.getInstance());
+        result = test.withChronology(ISO_DEFAULT);
         assertSame(test, result);
     }
 
@@ -685,13 +692,13 @@ public class TestDateMidnight_Basics extends TestCase {
         DateMidnight result = test.withZoneRetainFields(PARIS);
         assertEquals(TEST_TIME1_LONDON, test.getMillis());
         assertEquals(TEST_TIME1_PARIS, result.getMillis());
-        assertEquals(ISOChronology.getInstance(PARIS), result.getChronology());
+        assertEquals(ISO_PARIS, result.getChronology());
         
-        test = new DateMidnight(TEST_TIME1_UTC, GregorianChronology.getInstance(PARIS));
+        test = new DateMidnight(TEST_TIME1_UTC, GREGORIAN_PARIS);
         result = test.withZoneRetainFields(null);
         assertEquals(TEST_TIME1_PARIS, test.getMillis());
         assertEquals(TEST_TIME1_LONDON, result.getMillis());
-        assertEquals(GregorianChronology.getInstance(), result.getChronology());
+        assertEquals(GREGORIAN_DEFAULT, result.getChronology());
         
         test = new DateMidnight(TEST_TIME1_UTC);
         result = test.withZoneRetainFields(LONDON);
@@ -768,28 +775,28 @@ public class TestDateMidnight_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testWithDurationAdded_long_int() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BUDDHIST_DEFAULT);
         DateMidnight result = test.withDurationAdded(123456789L, 1);
-        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.withDurationAdded(123456789L, 0);
         assertSame(test, result);
         
         result = test.withDurationAdded(123456789L, 2);
-        expected = new DateMidnight(test.getMillis() + (2L * 123456789L), BuddhistChronology.getInstance());
+        expected = new DateMidnight(test.getMillis() + (2L * 123456789L), BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.withDurationAdded(123456789L, -3);
-        expected = new DateMidnight(test.getMillis() - (3L * 123456789L), BuddhistChronology.getInstance());
+        expected = new DateMidnight(test.getMillis() - (3L * 123456789L), BUDDHIST_DEFAULT);
         assertEquals(expected, result);
     }
     
     //-----------------------------------------------------------------------
     public void testWithDurationAdded_RD_int() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BUDDHIST_DEFAULT);
         DateMidnight result = test.withDurationAdded(new Duration(123456789L), 1);
-        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.withDurationAdded(null, 1);
@@ -799,19 +806,19 @@ public class TestDateMidnight_Basics extends TestCase {
         assertSame(test, result);
         
         result = test.withDurationAdded(new Duration(123456789L), 2);
-        expected = new DateMidnight(test.getMillis() + (2L * 123456789L), BuddhistChronology.getInstance());
+        expected = new DateMidnight(test.getMillis() + (2L * 123456789L), BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.withDurationAdded(new Duration(123456789L), -3);
-        expected = new DateMidnight(test.getMillis() - (3L * 123456789L), BuddhistChronology.getInstance());
+        expected = new DateMidnight(test.getMillis() - (3L * 123456789L), BUDDHIST_DEFAULT);
         assertEquals(expected, result);
     }
 
     //-----------------------------------------------------------------------
     public void testWithDurationAdded_RP_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.withPeriodAdded(new Period(1, 2, 3, 4, 5, 6, 7, 8), 1);
-        DateMidnight expected = new DateMidnight(2003, 7, 28, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2003, 7, 28, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.withPeriodAdded(null, 1);
@@ -821,26 +828,26 @@ public class TestDateMidnight_Basics extends TestCase {
         assertSame(test, result);
         
         result = test.withPeriodAdded(new Period(1, 2, 0, 4, 5, 6, 7, 8), 3);
-        expected = new DateMidnight(2005, 11, 15, BuddhistChronology.getInstance());
+        expected = new DateMidnight(2005, 11, 15, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.withPeriodAdded(new Period(1, 2, 0, 1, 1, 2, 3, 4), -1);
-        expected = new DateMidnight(2001, 3, 1, BuddhistChronology.getInstance());
+        expected = new DateMidnight(2001, 3, 1, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
     }
 
     //-----------------------------------------------------------------------    
     public void testPlus_long() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BUDDHIST_DEFAULT);
         DateMidnight result = test.plus(123456789L);
-        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
     }
     
     public void testPlus_RD() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BUDDHIST_DEFAULT);
         DateMidnight result = test.plus(new Duration(123456789L));
-        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(test.getMillis() + 123456789L, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.plus((ReadableDuration) null);
@@ -848,9 +855,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testPlus_RP() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
-        DateMidnight expected = new DateMidnight(2003, 7, 28, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2003, 7, 28, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.plus((ReadablePeriod) null);
@@ -858,9 +865,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testPlusYears_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.plusYears(1);
-        DateMidnight expected = new DateMidnight(2003, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2003, 5, 3, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.plusYears(0);
@@ -868,9 +875,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testPlusMonths_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.plusMonths(1);
-        DateMidnight expected = new DateMidnight(2002, 6, 3, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2002, 6, 3, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.plusMonths(0);
@@ -878,9 +885,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testPlusWeeks_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.plusWeeks(1);
-        DateMidnight expected = new DateMidnight(2002, 5, 10, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2002, 5, 10, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.plusWeeks(0);
@@ -888,9 +895,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testPlusDays_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.plusDays(1);
-        DateMidnight expected = new DateMidnight(2002, 5, 4, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2002, 5, 4, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.plusDays(0);
@@ -899,16 +906,16 @@ public class TestDateMidnight_Basics extends TestCase {
 
     //-----------------------------------------------------------------------    
     public void testMinus_long() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BUDDHIST_DEFAULT);
         DateMidnight result = test.minus(123456789L);
-        DateMidnight expected = new DateMidnight(test.getMillis() - 123456789L, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(test.getMillis() - 123456789L, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
     }
 
     public void testMinus_RD() {
-        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(TEST_TIME1_UTC, BUDDHIST_DEFAULT);
         DateMidnight result = test.minus(new Duration(123456789L));
-        DateMidnight expected = new DateMidnight(test.getMillis() - 123456789L, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(test.getMillis() - 123456789L, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.minus((ReadableDuration) null);
@@ -916,9 +923,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testMinus_RP() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
-        DateMidnight expected = new DateMidnight(2001, 3, 25, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2001, 3, 25, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.minus((ReadablePeriod) null);
@@ -926,9 +933,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testMinusYears_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.minusYears(1);
-        DateMidnight expected = new DateMidnight(2001, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2001, 5, 3, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.minusYears(0);
@@ -936,9 +943,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testMinusMonths_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.minusMonths(1);
-        DateMidnight expected = new DateMidnight(2002, 4, 3, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2002, 4, 3, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.minusMonths(0);
@@ -946,9 +953,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testMinusWeeks_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.minusWeeks(1);
-        DateMidnight expected = new DateMidnight(2002, 4, 26, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2002, 4, 26, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.minusWeeks(0);
@@ -956,9 +963,9 @@ public class TestDateMidnight_Basics extends TestCase {
     }
 
     public void testMinusDays_int() {
-        DateMidnight test = new DateMidnight(2002, 5, 3, BuddhistChronology.getInstance());
+        DateMidnight test = new DateMidnight(2002, 5, 3, BUDDHIST_DEFAULT);
         DateMidnight result = test.minusDays(1);
-        DateMidnight expected = new DateMidnight(2002, 5, 2, BuddhistChronology.getInstance());
+        DateMidnight expected = new DateMidnight(2002, 5, 2, BUDDHIST_DEFAULT);
         assertEquals(expected, result);
         
         result = test.minusDays(0);

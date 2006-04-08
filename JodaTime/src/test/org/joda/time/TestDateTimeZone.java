@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -675,6 +675,11 @@ public class TestDateTimeZone extends TestCase {
     public void testGetMillisKeepLocal() {
         long millisLondon = TEST_TIME_SUMMER;
         long millisParis = TEST_TIME_SUMMER - 1L * DateTimeConstants.MILLIS_PER_HOUR;
+        
+        assertEquals(millisLondon, LONDON.getMillisKeepLocal(LONDON, millisLondon));
+        assertEquals(millisParis, LONDON.getMillisKeepLocal(LONDON, millisParis));
+        assertEquals(millisLondon, PARIS.getMillisKeepLocal(PARIS, millisLondon));
+        assertEquals(millisParis, PARIS.getMillisKeepLocal(PARIS, millisParis));
         
         assertEquals(millisParis, LONDON.getMillisKeepLocal(PARIS, millisLondon));
         assertEquals(millisLondon, PARIS.getMillisKeepLocal(LONDON, millisParis));

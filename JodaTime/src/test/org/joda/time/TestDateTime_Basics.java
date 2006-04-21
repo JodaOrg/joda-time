@@ -51,6 +51,11 @@ public class TestDateTime_Basics extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+
+    static {
+        DateTimeZone.setDefault(LONDON);
+    }
+
     private static final ISOChronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance();
     private static final ISOChronology ISO_PARIS = ISOChronology.getInstance(PARIS);

@@ -51,6 +51,11 @@ public class TestDateMidnight_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
+
+    static {
+        DateTimeZone.setDefault(LONDON);
+    }
+
     private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance();
     private static final ISOChronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static final GJChronology GJ_DEFAULT = GJChronology.getInstance();

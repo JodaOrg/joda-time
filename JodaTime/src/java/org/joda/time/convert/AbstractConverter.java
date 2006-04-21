@@ -21,6 +21,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadablePartial;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * AbstractConverter simplifies the process of implementing a converter.
@@ -49,6 +50,21 @@ public abstract class AbstractConverter implements Converter {
      */
     public long getInstantMillis(Object object, Chronology chrono) {
         return DateTimeUtils.currentTimeMillis();
+    }
+
+    /**
+     * Extracts the millis from an object of this convertor's type.
+     * <p>
+     * This implementation returns the current time.
+     * 
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is always non-null
+     * @param parser  if converting from a String, the given parser is preferred
+     * @return the millisecond value
+     * @since 1.3
+     */
+    public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) {
+        return getInstantMillis(object, chrono);
     }
 
     //-----------------------------------------------------------------------

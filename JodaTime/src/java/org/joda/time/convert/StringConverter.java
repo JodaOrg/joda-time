@@ -64,6 +64,20 @@ class StringConverter extends AbstractConverter
         return p.withChronology(chrono).parseMillis(str);
     }
 
+    /**
+     * Gets the millis, which is the ISO parsed string value.
+     * 
+     * @param object  the String to convert, must not be null
+     * @param chrono  the chronology to use, non-null result of getChronology
+     * @param parser  the given parser is preferred
+     * @return the millisecond value
+     * @throws IllegalArgumentException if the value if invalid
+     * @since 1.3
+     */
+    public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) {
+        return parser.withChronology(chrono).parseMillis((String) object);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Gets the duration of the string using the standard type.

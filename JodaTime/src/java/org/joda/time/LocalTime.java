@@ -313,7 +313,8 @@ public final class LocalTime
     public LocalTime(Object instant, DateTimeZone zone) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
-        long millis = converter.getInstantMillis(instant, chronology);
+        long millis = converter.getInstantMillis
+            (instant, chronology, ISODateTimeFormat.timeParser());
         chronology = DateTimeUtils.getChronology(chronology);
         
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
@@ -340,8 +341,10 @@ public final class LocalTime
      */
     public LocalTime(Object instant, Chronology chronology) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology chrono = DateTimeUtils.getChronology(converter.getChronology(instant, chronology));
-        long millis = converter.getInstantMillis(instant, chronology);
+        Chronology chrono = DateTimeUtils.getChronology
+            (converter.getChronology(instant, chronology));
+        long millis = converter.getInstantMillis
+            (instant, chronology, ISODateTimeFormat.timeParser());
         
         long localMillis = chrono.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
         chrono = chrono.withUTC();

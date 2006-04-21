@@ -17,6 +17,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * InstantConverter defines how an object is converted to milliseconds/chronology.
@@ -65,7 +66,23 @@ public interface InstantConverter extends Converter {
      * @param chrono  the chronology to use, which is the non-null result of getChronology()
      * @return the millisecond instant
      * @throws ClassCastException if the object is invalid
+     * @throws IllegalArgumentException if object conversion fails
      */
     long getInstantMillis(Object object, Chronology chrono);
+
+    /**
+     * Extracts the millis from an object of this converter's type.
+     * <p>
+     * The chronology passed in is the result of the call to <code>getChronology</code>.
+     * 
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     * @param parser  if converting from a String, the given parser is preferred
+     * @return the millisecond instant
+     * @throws ClassCastException if the object is invalid
+     * @throws IllegalArgumentException if object conversion fails
+     * @since 1.3
+     */
+    long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser);
 
 }

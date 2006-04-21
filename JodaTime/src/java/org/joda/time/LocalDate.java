@@ -284,7 +284,8 @@ public final class LocalDate
     public LocalDate(Object instant, DateTimeZone zone) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
-        long millis = converter.getInstantMillis(instant, chronology);
+        long millis = converter.getInstantMillis
+            (instant, chronology, ISODateTimeFormat.dateParser());
         
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
         chronology = chronology.withUTC();
@@ -310,8 +311,10 @@ public final class LocalDate
      */
     public LocalDate(Object instant, Chronology chronology) {
         InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology chrono = DateTimeUtils.getChronology(converter.getChronology(instant, chronology));
-        long millis = converter.getInstantMillis(instant, chronology);
+        Chronology chrono = DateTimeUtils.getChronology
+            (converter.getChronology(instant, chronology));
+        long millis = converter.getInstantMillis
+            (instant, chronology, ISODateTimeFormat.dateParser());
         
         long localMillis = chrono.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
         chrono = chrono.withUTC();

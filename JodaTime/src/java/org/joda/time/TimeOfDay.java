@@ -265,7 +265,7 @@ public final class TimeOfDay
      * @throws IllegalArgumentException if the instant is invalid
      */
     public TimeOfDay(Object instant) {
-        super(instant, null);
+        super(instant, null, ISODateTimeFormat.timeParser());
     }
 
     /**
@@ -295,7 +295,7 @@ public final class TimeOfDay
      * @throws IllegalArgumentException if the instant is invalid
      */
     public TimeOfDay(Object instant, Chronology chronology) {
-        super(instant, DateTimeUtils.getChronology(chronology));
+        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.timeParser());
     }
 
     /**

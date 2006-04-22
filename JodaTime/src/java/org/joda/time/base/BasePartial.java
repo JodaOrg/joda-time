@@ -25,6 +25,7 @@ import org.joda.time.ReadablePartial;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PartialConverter;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * BasePartial is an abstract implementation of ReadablePartial that stores
@@ -133,6 +134,33 @@ public abstract class BasePartial
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
         iValues = converter.getPartialValues(this, instant, chronology);
+    }
+
+    /**
+     * Constructs a partial from an Object that represents a time, using the
+     * specified chronology.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadableInstant, String, Calendar and Date.
+     * <p>
+     * The constructor uses the time zone of the chronology specified.
+     * Once the constructor is complete, all further calculations are performed
+     * without reference to a timezone (by switching to UTC).
+     *
+     * @param instant  the datetime object
+     * @param chronology  the chronology, null means use converter
+     * @param parser  if converting from a String, the given parser is preferred
+     * @throws IllegalArgumentException if the date is invalid
+     * @since 1.3
+     */
+    protected BasePartial(Object instant, Chronology chronology, DateTimeFormatter parser) {
+        super();
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+        chronology = converter.getChronology(instant, chronology);
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        iValues = converter.getPartialValues(this, instant, chronology, parser);
     }
 
     /**

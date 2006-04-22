@@ -94,6 +94,10 @@ Bug fixes since 1.2
   Fixed overflow when getting year field from instants at Long.MAX_VALUE and
   LONG.MIN_VALUE.
 
+- TimeOfDay
+  Constructing with String value no longer accepts date fields, and 'T' prefix
+  is now optional.
+
 
 Feedback
 --------

@@ -17,6 +17,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.ReadablePartial;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * PartialConverter defines how an object is converted to a ReadablePartial.
@@ -54,5 +55,22 @@ public interface PartialConverter extends Converter {
      * @throws ClassCastException if the object is invalid
      */
     int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono);
+
+    /**
+     * Extracts the values of the partial from an object of this converter's type.
+     * The chrono parameter is a hint to the converter, should it require a
+     * chronology to aid in conversion.
+     * 
+     * @param fieldSource  a partial that provides access to the fields.
+     *  This partial may be incomplete and only getFieldType(int) should be used
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     * @param parser  if converting from a String, the given parser is preferred
+     * @return the array of field values that match the fieldSource, must be non-null valid
+     * @throws ClassCastException if the object is invalid
+     * @since 1.3
+     */
+    int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono,
+                           DateTimeFormatter parser);
 
 }

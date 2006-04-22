@@ -69,6 +69,7 @@
 
   <!-- Should Java compilations set the 'debug' compiler option? -->
   <property name="compile.debug"           value="true"/>
+  <property name="compile.debuglevel"      value="lines,source"/>
 
   <!-- Should Java compilations set the 'deprecation' compiler option? -->
   <property name="compile.deprecation"     value="true"/>
@@ -175,6 +176,7 @@
     <javac  srcdir="${source.home}"
            destdir="${build.classes}"
              debug="${compile.debug}"
+        debuglevel="${compile.debuglevel}"
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}">
       <classpath refid="compile.classpath"/>

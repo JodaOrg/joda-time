@@ -90,7 +90,7 @@ final class BasicDayOfYearDateTimeField extends PreciseDurationDateTimeField {
 
     protected int getMaximumValueForSet(long instant, int value) {
         int maxLessOne = iChronology.getDaysInYearMax() - 1;
-        return value > maxLessOne ? getMaximumValue(instant) : maxLessOne;
+        return (value > maxLessOne || value < 1) ? getMaximumValue(instant) : maxLessOne;
     }
 
     /**

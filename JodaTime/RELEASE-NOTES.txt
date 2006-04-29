@@ -49,10 +49,14 @@ Enhancements since 1.2
 
 Compatibility with 1.2
 ----------------------
-Binary compatible - Yes
+Binary compatible - Yes, except
+  - InstantConverter and PartialConverter interfaces have had a new method added.
+    These are mainly intended as internal interfaces and thus it is unlikely
+    that you have implementations that will break. If you did create your own
+    implementation and extended AbstractConverter then your code will not break.
 
-Source compatible - Yes
-  - v1.2 and v1.3 are source compatible in their public and protected API
+Source compatible - Yes, except
+  - InstantConverter and PartialConverter interfaces, see above
 
 Serialization compatible - Yes
 
@@ -92,11 +96,14 @@ Bug fixes since 1.2
 
 - ISO/Gregorian/Julian/Coptic/EthiopicChronology
   Fixed overflow when getting year field from instants at Long.MAX_VALUE and
-  LONG.MIN_VALUE.
+  LONG.MIN_VALUE
 
 - TimeOfDay
-  Constructing with String value no longer accepts date fields, and 'T' prefix
-  is now optional.
+  Constructing with String value no longer accepts date fields
+  Constructing with String now treats 'T' prefix as optional
+
+- DayOfYear field
+  Better error messages
 
 
 Feedback

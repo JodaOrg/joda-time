@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.joda.time.convert;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * A basic mock testing class for a converter.
@@ -29,6 +30,10 @@ public class MockZeroNullIntegerConverter implements InstantConverter {
     public static final InstantConverter INSTANCE = new MockZeroNullIntegerConverter();
 
     public long getInstantMillis(Object object, Chronology chrono) {
+        return 0;
+    }
+
+    public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) {
         return 0;
     }
 

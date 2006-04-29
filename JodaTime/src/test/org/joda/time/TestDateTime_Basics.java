@@ -52,19 +52,18 @@ public class TestDateTime_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
 
-    static {
-        DateTimeZone.setDefault(LONDON);
-    }
-
+    // the default time zone is set to LONDON in setUp()
+    // we have to hard code LONDON here (instead of ISOChronology.getInstance() etc.)
+    // as TestAll sets up a different time zone for better all-round testing
     private static final ISOChronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance();
+    private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance(LONDON);
     private static final ISOChronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final GJChronology GJ_DEFAULT = GJChronology.getInstance();
-    private static final GregorianChronology GREGORIAN_DEFAULT = GregorianChronology.getInstance();
+    private static final GJChronology GJ_DEFAULT = GJChronology.getInstance(LONDON);
+    private static final GregorianChronology GREGORIAN_DEFAULT = GregorianChronology.getInstance(LONDON);
     private static final GregorianChronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
     private static final BuddhistChronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
-    private static final BuddhistChronology BUDDHIST_DEFAULT = BuddhistChronology.getInstance();
-    private static final CopticChronology COPTIC_DEFAULT = CopticChronology.getInstance();
+    private static final BuddhistChronology BUDDHIST_DEFAULT = BuddhistChronology.getInstance(LONDON);
+    private static final CopticChronology COPTIC_DEFAULT = CopticChronology.getInstance(LONDON);
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 

@@ -46,6 +46,9 @@ Enhancements since 1.2
   If a parsed datetime is illegal due to field range or time zone offset
   transition, thrown exception includes text of datetime being parsed.
 
+- DateTimeFormat
+  Added method to retrieve the format pattern for a given style and locale.
+
 
 Compatibility with 1.2
 ----------------------

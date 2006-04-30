@@ -68,7 +68,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * All standard Chronology classes supplied are thread-safe and immutable.
  *
  * @author Stephen Colebourne
- * @since 1.0
+ * @since 1.3
  */
 public final class LocalTime
         extends AbstractPartial
@@ -1204,7 +1204,7 @@ public final class LocalTime
      *
      * @author Stephen Colebourne
      * @author Brian S O'Neill
-     * @since 1.2
+     * @since 1.3
      */
     public static final class Property extends AbstractReadableInstantFieldProperty {
         

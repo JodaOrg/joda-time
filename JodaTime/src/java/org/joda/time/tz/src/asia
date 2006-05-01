@@ -1,4 +1,4 @@
-# @(#)asia	8.3
+# @(#)asia	8.4
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -1467,6 +1467,20 @@ Zone	Asia/Gaza	2:17:52	-	LMT	1900 Oct
 # be immediately followed by 1845-01-01.  Robert H. van Gent has a
 # transcript of the decree in <http://www.phys.uu.nl/~vgent/idl/idl.htm>.
 # The rest of the data are from Shanks & Pottenger.
+
+# From Paul Eggert (2006-04-25):
+# Tomorrow's Manila Standard reports that the Philippines Department of
+# Trade and Industry is considering adopting DST this June when the
+# rainy season begins.  See
+# <http://www.manilastandardtoday.com/?page=politics02_april26_2006>.
+# For now, we'll ignore this, since it's not definite and we lack details.
+#
+# From Jesper Norgaard Welen (2006-04-26):
+# ... claims that Philippines had DST last time in 1990:
+# http://story.philippinetimes.com/p.x/ct/9/id/145be20cc6b121c0/cid/3e5bbccc730d258c/
+# [a story dated 2006-04-25 by Cris Larano of Dow Jones Newswires,
+# but no details]
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Phil	1936	only	-	Nov	1	0:00	1:00	S
 Rule	Phil	1937	only	-	Feb	1	0:00	0	-
@@ -1530,6 +1544,44 @@ Zone	Asia/Singapore	6:55:25 -	LMT	1901 Jan  1
 # <http://news.sinhalaya.com/wmview.php?ArtID=11002> (2006-04-13):
 # 0030 hrs on April 15, 2006 (midnight of April 14, 2006 +30 minutes)
 # at present, become 2400 hours of April 14, 2006 (midnight of April 14, 2006).
+
+# From Peter Apps and Ranga Sirila of Reuters (2006-04-12) in:
+# <http://today.reuters.co.uk/news/newsArticle.aspx?type=scienceNews&storyID=2006-04-12T172228Z_01_COL295762_RTRIDST_0_SCIENCE-SRILANKA-TIME-DC.XML>
+# [The Tamil Tigers] never accepted the original 1996 time change and simply
+# kept their clocks set five and a half hours ahead of Greenwich Mean
+# Time (GMT), in line with neighbor India.
+# From Paul Eggert (2006-04-18):
+# People who live in regions under Tamil control can use TZ='Asia/Calcutta',
+# as that zone has agreed with the Tamil areas since our cutoff date of 1970.
+
+# From K Sethu (2006-04-25):
+# I think the abbreviation LKT originated from the world of computers at
+# the time of or subsequent to the time zone changes by SL Government
+# twice in 1996 and probably SL Government or its standardization
+# agencies never declared an abbreviation as a national standard.
+#
+# I recollect before the recent change the government annoucemments
+# mentioning it as simply changing Sri Lanka Standard Time or Sri Lanka
+# Time and no mention was made about the abbreviation.
+#
+# If we look at Sri Lanka Department of Government's "Official News
+# Website of Sri Lanka" ... http://www.news.lk/ we can see that they
+# use SLT as abbreviation in time stamp at the beginning of each news
+# item....
+#
+# Within Sri Lanka I think LKT is well known among computer users and
+# adminsitrators.  In my opinion SLT may not be a good choice because the
+# nation's largest telcom / internet operator Sri Lanka Telcom is well
+# known by that abbreviation - simply as SLT (there IP domains are
+# slt.lk and sltnet.lk).
+#
+# But if indeed our government has adopted SLT as standard abbreviation
+# (that we have not known so far) then  it is better that it be used for
+# all computers.
+
+# From Paul Eggert (2006-04-25):
+# One possibility is that we wait for a bit for the dust to settle down
+# and then see what people actually say in practice.
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Colombo	5:19:24 -	LMT	1880

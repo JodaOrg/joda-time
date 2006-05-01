@@ -1,4 +1,4 @@
-# @(#)northamerica	8.4
+# @(#)northamerica	8.5
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -301,6 +301,13 @@ Zone America/New_York	-4:56:02 -	LMT	1883 Nov 18 12:03:58
 # Nebraska, eastern North Dakota, Oklahoma, eastern South Dakota,
 # western Tennessee, most of Texas, Wisconsin
 
+# From Larry M. Smith (2006-04-26) re Wisconsin:
+# http://www.legis.state.wi.us/statutes/Stat0175.pdf ...
+# is currently enforced at the 01:00 time of change.  Because the local
+# "bar time" in the state corresponds to 02:00, a number of citations
+# are issued for the "sale of class 'B' alcohol after prohibited
+# hours" within the deviated hour of this change every year....
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule	Chicago	1920	only	-	Jun	13	2:00	1:00	D
 Rule	Chicago	1920	1921	-	Oct	lastSun	2:00	0	S
@@ -322,7 +329,7 @@ Zone America/North_Dakota/Center -6:45:12 - LMT	1883 Nov 18 12:14:48
 			-7:00	US	M%sT	1992 Oct 25 02:00
 			-6:00	US	C%sT
 # Morton County, ND, switched from mountain to central time on
-# 2003-10-26, except for the area around Mandan.
+# 2003-10-26, except for the area around Mandan which was already central time.
 # See <http://dmses.dot.gov/docimages/p63/135818.pdf>.
 # Officially this switch also included part of Sioux County, and
 # Jones, Mellette, and Todd Counties in South Dakota;
@@ -544,16 +551,8 @@ Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 # - Clark, Floyd, and Harrison counties have been like
 #   America/Kentucky/Louisville.
 #
-# - Daviess, Dubois, Knox, and Perry counties
+# - Daviess, Dubois, Knox, Martin, Perry, and Pulaski counties
 #   have been like America/Indiana/Vincennes.
-#
-# - Officially, Martin and Pulaski counties have also been like
-#   America/Indiana/Vincennes, but an AP article on Pulaski county
-#   <http://www.indystar.com/apps/pbcs.dll/article?AID=/20060207/NEWS01/602070408/1006>
-#   (2006-02-07) and an InsideINdianaBusiness.com report on Martin county
-#   <http://www.insideindianabusiness.com/newsitem.asp?ID=17202> (2006-03-15)
-#   say that the county commissioners have voted to stay on eastern time in
-#   2006, which means they are actually like America/Indiana/Indianopolis.
 #
 # - Crawford, Pike, Starke, and Switzerland counties have their own time zone
 #   histories as noted below.
@@ -619,7 +618,7 @@ Zone America/Indiana/Marengo -5:45:23 -	LMT	1883 Nov 18 12:14:37
 			-5:00	-	EST	2006
 			-5:00	US	E%sT
 #
-# Daviess, Dubois, Knox, and Perry Counties, Indiana,
+# Daviess, Dubois, Knox, Martin, Perry, and Pulaski Counties, Indiana,
 # switched from eastern to central time in April 2006.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule Vincennes	1946	only	-	Apr	lastSun	2:00	1:00	D
@@ -901,7 +900,7 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # U.S. and the rest of Canada....
 # http://www2.news.gov.bc.ca/news_releases_2005-2009/2006AG0014-000330.htm
 
-# From Paul Eggert (2006-04-09):
+# From Paul Eggert (2006-04-25):
 # H. David Matthews and Mary Vincent's map
 # <a href="http://www.canadiangeographic.ca/Magazine/SO98/geomap.asp">
 # "It's about TIME", _Canadian Geographic_ (September-October 1998)
@@ -915,7 +914,7 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # Its unofficial information is often taken from Matthews and Vincent.
 #
 # CBC News reported that Ontario and Manitoba have announced plans to
-# follow the US change, and that Nova Scotia is considering it; see
+# follow the US change; see
 # <http://www.cbc.ca/news/background/daylightsavingtime/> (2005-10-21).
 # CBC news also reported that Prince Edward Island is the first
 # province in Atlantic Canada to follow the US change, and that Quebec
@@ -1015,6 +1014,11 @@ Zone America/Goose_Bay	-4:01:40 -	LMT	1884 # Happy Valley-Goose Bay
 # Shanks & Pottenger also write that Liverpool, NS was the only town
 # in Canada to observe DST in 1971 but not 1970; for now we'll assume
 # this is a typo.
+
+# From Chris Walton (2006-04-25):
+# Daylight saving time will be extended by four weeks starting in 2007....
+# Here is a news release which was issued today by the Nova Scotia government:
+# http://www.gov.ns.ca/news/details.asp?id=20060425004
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Halifax	1916	only	-	Apr	 1	0:00	1:00	D
@@ -1593,6 +1597,10 @@ Zone America/Dawson_Creek -8:00:56 -	LMT	1884
 # From Paul Eggert (2005-07-26):
 # For lack of better information, assume that Southampton Island observed
 # daylight saving only during wartime.
+#
+# From Chris Walton (2006-04-25):
+# Daylight saving time will be extended by four weeks starting in 2007....
+# http://www.cbc.ca/north/story/nor-nwt-time-change.html
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	NT_YK	1918	only	-	Apr	14	2:00	1:00	D
@@ -2097,6 +2105,14 @@ Zone America/Guadeloupe	-4:06:08 -	LMT	1911 Jun 8	# Pointe a Pitre
 			-4:00	-	AST
 
 # Guatemala
+#
+# From Gwillim Law (2006-04-22), after a heads-up from Oscar van Vlijmen:
+# Diario Co Latino, at
+# http://www.diariocolatino.com/internacionales/detalles.asp?NewsID=8079,
+# says in an article dated 2006-04-19 that the Guatemalan government had
+# decided on that date to advance official time by 60 minutes, to lessen the
+# impact of the elevated cost of oil....  Daylight saving time will last from
+# 2006-04-29 24:00 (Guatemalan standard time) to 2006-09-30 (time unspecified).
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Guat	1973	only	-	Nov	25	0:00	1:00	D
 Rule	Guat	1974	only	-	Feb	24	0:00	0	S
@@ -2104,6 +2120,8 @@ Rule	Guat	1983	only	-	May	21	0:00	1:00	D
 Rule	Guat	1983	only	-	Sep	22	0:00	0	S
 Rule	Guat	1991	only	-	Mar	23	0:00	1:00	D
 Rule	Guat	1991	only	-	Sep	 7	0:00	0	S
+Rule	Guat	2006	only	-	Apr	30	0:00	1:00	D
+Rule	Guat	2006	only	-	Oct	 1	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Guatemala	-6:02:04 -	LMT	1918 Oct 5
 			-6:00	Guat	C%sT
@@ -2198,9 +2216,7 @@ Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Cork Hill
 
 # Nicaragua
 #
-# From Steffen Thorsen (1998-12-29):
-# Nicaragua seems to be back at -6:00 but I have not been able to find when
-# they changed from -5:00.
+# This uses Shanks & Pottenger for times before 2005.
 #
 # From Steffen Thorsen (2005-04-12):
 # I've got reports from 8 different people that Nicaragua just started
@@ -2214,8 +2230,7 @@ Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Cork Hill
 #
 # From Paul Eggert (2005-05-01):
 # The decree doesn't say anything about daylight saving, but for now let's
-# assume that it is daylight saving and that they'll switch back on the
-# 3rd Sunday in September.
+# assume that it is daylight saving....
 #
 # From Gwillim Law (2005-04-21):
 # The Associated Press story on the time change, which can be found at
@@ -2233,20 +2248,32 @@ Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Cork Hill
 # http://www.presidencia.gob.ni/presidencia/files_index/secretaria/comunicados/2005/septiembre/26septiembre-cambio-hora.htm
 # (2005-09-26)
 #
+# From Jesper Norgaard Welen (2006-04-24):
+# http://www.elnuevodiario.com.ni/2006/04/26/nacionales/18036
+# It claims that DST will start 2006-04-30 at 2:00, and will last until the
+# end of august (without being more specific).
+# From Paul Eggert (2006-04-26):
+# Yesterday the president of Nicaragua announced that DST will begin
+# April 30 at 02:00.  No end date was announced.
+# http://www.presidencia.gob.ni/Presidencia/Files_index/Secretaria/Comunicados/2006/PRESIDENTE/250406-Que%20la%20Crisis%20originada%20por%20el%20alza%20constante%20de%20los%20precios%20internacionales.htm
+# For now, assume DST ends first Sunday in September at 02:00.
+#
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Nic	1979	1980	-	Mar	Sun>=16	0:00	1:00	D
 Rule	Nic	1979	1980	-	Jun	Mon>=23	0:00	0	S
-Rule	Nic	1992	only	-	Jan	 1	4:00	1:00	D
-Rule	Nic	1992	only	-	Sep	24	0:00	0	S
 Rule	Nic	2005	only	-	Apr	10	0:00	1:00	D
 Rule	Nic	2005	only	-	Oct	 2	0:00	0	S
+Rule	Nic	2006	only	-	Apr	30	2:00	1:00	D
+Rule	Nic	2006	only	-	Sep	Sun>=1	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Managua	-5:45:08 -	LMT	1890
 			-5:45:12 -	MMT	1934 Jun 23 # Managua Mean Time?
 			-6:00	-	CST	1973 May
 			-5:00	-	EST	1975 Feb 16
-			-6:00	Nic	C%sT	1993 Jan 1 4:00
-			-5:00	-	EST	1998 Dec
+			-6:00	Nic	C%sT	1992 Jan  1 4:00
+			-5:00	-	EST	1992 Sep 24
+			-6:00	-	CST	1993
+			-5:00	-	EST	1997
 			-6:00	Nic	C%sT
 
 # Panama

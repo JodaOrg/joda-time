@@ -64,7 +64,7 @@ Source compatible - Yes, except
 Serialization compatible - Yes
 
 Data compatible - Yes
-  - DateTimeZone data updated to version 2006e
+  - DateTimeZone data updated to version 2006f
 
 
 Deprecations since 1.2

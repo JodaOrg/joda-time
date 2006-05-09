@@ -1,4 +1,4 @@
-# @(#)northamerica	8.5
+# @(#)northamerica	8.6
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -2085,6 +2085,16 @@ Zone America/Santo_Domingo -4:39:36 -	LMT	1890
 			-4:00	-	AST
 
 # El Salvador
+
+# From Paul Eggert (2006-05-05):
+# worldtimezone.com reports a 2006-05-02 Spanish-language AP article
+# saying Honduras will start using DST midnight Saturday, effective 4
+# months until September, and a 2006-05-03 NACION article saying El
+# Salvador will follow suit.  However, ignore this for now, because:
+# From Jesper Norgaard Welen (2005-05-05):
+# Change of DST perhaps postponed in El Salvador:
+# http://www.laprensagrafica.com/lodeldia/883.asp
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Salv	1987	1988	-	May	Sun>=1	0:00	1:00	D
 Rule	Salv	1987	1988	-	Sep	lastSun	0:00	0	S
@@ -2176,9 +2186,23 @@ Zone America/Port-au-Prince -4:49:20 -	LMT	1890
 
 # Honduras
 # Shanks & Pottenger say 1921 Jan 1; go with Whitman's more precise Apr 1.
+
+# From Paul Eggert (2006-05-05):
+# worldtimezone.com reports a 2006-05-02 Spanish-language AP article
+# saying Honduras will start using DST midnight Saturday, effective 4
+# months until September.  La Tribuna reported today
+# <http://www.latribuna.hn/99299.html> that Manuel Zelaya, the president
+# of Honduras, refused to back down on this.  For lack of better info,
+# assume they'll use the same end-of-DST rules as in 1987 and 1988.
+
+# Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
+Rule	Hond	1987	1988	-	May	Sun>=1	0:00	1:00	D
+Rule	Hond	1987	1988	-	Sep	lastSun	0:00	0	S
+Rule	Hond	2006	only	-	May	Sun>=1	0:00	1:00	D
+Rule	Hond	2006	only	-	Sep	lastSun	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Tegucigalpa -5:48:52 -	LMT	1921 Apr
-			-6:00	Salv	C%sT
+			-6:00	Hond	C%sT
 #
 # Great Swan I ceded by US to Honduras in 1972
 
@@ -2248,23 +2272,19 @@ Zone America/Montserrat	-4:08:52 -	LMT	1911 Jul 1 0:01   # Cork Hill
 # http://www.presidencia.gob.ni/presidencia/files_index/secretaria/comunicados/2005/septiembre/26septiembre-cambio-hora.htm
 # (2005-09-26)
 #
-# From Jesper Norgaard Welen (2006-04-24):
-# http://www.elnuevodiario.com.ni/2006/04/26/nacionales/18036
-# It claims that DST will start 2006-04-30 at 2:00, and will last until the
-# end of august (without being more specific).
-# From Paul Eggert (2006-04-26):
-# Yesterday the president of Nicaragua announced that DST will begin
-# April 30 at 02:00.  No end date was announced.
-# http://www.presidencia.gob.ni/Presidencia/Files_index/Secretaria/Comunicados/2006/PRESIDENTE/250406-Que%20la%20Crisis%20originada%20por%20el%20alza%20constante%20de%20los%20precios%20internacionales.htm
-# For now, assume DST ends first Sunday in September at 02:00.
+# From Jesper Norgaard Welen (2006-05-05):
+# http://www.elnuevodiario.com.ni/2006/05/01/nacionales/18410
+# (my informal translation)
+# By order of the president of the republic, Enrique Bolanos, Nicaragua
+# advanced by sixty minutes their official time, yesterday at 2 in the
+# morning, and will stay that way until 30.th. of september.
 #
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Nic	1979	1980	-	Mar	Sun>=16	0:00	1:00	D
 Rule	Nic	1979	1980	-	Jun	Mon>=23	0:00	0	S
 Rule	Nic	2005	only	-	Apr	10	0:00	1:00	D
-Rule	Nic	2005	only	-	Oct	 2	0:00	0	S
+Rule	Nic	2005	2006	-	Oct	Sun>=1	0:00	0	S
 Rule	Nic	2006	only	-	Apr	30	2:00	1:00	D
-Rule	Nic	2006	only	-	Sep	Sun>=1	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Managua	-5:45:08 -	LMT	1890
 			-5:45:12 -	MMT	1934 Jun 23 # Managua Mean Time?

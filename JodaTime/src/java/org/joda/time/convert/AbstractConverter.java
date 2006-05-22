@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -52,21 +52,6 @@ public abstract class AbstractConverter implements Converter {
         return DateTimeUtils.currentTimeMillis();
     }
 
-    /**
-     * Extracts the millis from an object of this convertor's type.
-     * <p>
-     * This implementation returns the current time.
-     * 
-     * @param object  the object to convert
-     * @param chrono  the chronology to use, which is always non-null
-     * @param parser  if converting from a String, the given parser is preferred
-     * @return the millisecond value
-     * @since 1.3
-     */
-    public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) {
-        return getInstantMillis(object, chrono);
-    }
-
     //-----------------------------------------------------------------------
     /**
      * Extracts the chronology from an object of this convertor's type
@@ -102,6 +87,8 @@ public abstract class AbstractConverter implements Converter {
      * Extracts the values of the partial from an object of this converter's type.
      * The chrono parameter is a hint to the converter, should it require a
      * chronology to aid in conversion.
+     * <p>
+     * This implementation calls {@link #getInstantMillis(Object, Chronology)}.
      * 
      * @param fieldSource  a partial that provides access to the fields.
      *  This partial may be incomplete and only getFieldType(int) should be used
@@ -119,6 +106,8 @@ public abstract class AbstractConverter implements Converter {
      * Extracts the values of the partial from an object of this converter's type.
      * The chrono parameter is a hint to the converter, should it require a
      * chronology to aid in conversion.
+     * <p>
+     * This implementation calls {@link #getPartialValues(ReadablePartial, Object, Chronology)}.
      * 
      * @param fieldSource  a partial that provides access to the fields.
      *  This partial may be incomplete and only getFieldType(int) should be used
@@ -129,11 +118,9 @@ public abstract class AbstractConverter implements Converter {
      * @throws ClassCastException if the object is invalid
      * @since 1.3
      */
-    public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono,
-                                  DateTimeFormatter parser)
-    {
-        long instant = getInstantMillis(object, chrono, parser);
-        return chrono.get(fieldSource, instant);
+    public int[] getPartialValues(ReadablePartial fieldSource,
+            Object object, Chronology chrono, DateTimeFormatter parser) {
+        return getPartialValues(fieldSource, object, chrono);
     }
 
     //-----------------------------------------------------------------------

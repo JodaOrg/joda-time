@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
 import org.joda.time.Period;
 import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadWritablePeriod;
+import org.joda.time.ReadablePartial;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
@@ -65,17 +66,28 @@ class StringConverter extends AbstractConverter
     }
 
     /**
-     * Gets the millis, which is the ISO parsed string value.
+     * Extracts the values of the partial from an object of this converter's type.
+     * The chrono parameter is a hint to the converter, should it require a
+     * chronology to aid in conversion.
      * 
-     * @param object  the String to convert, must not be null
-     * @param chrono  the chronology to use, non-null result of getChronology
-     * @param parser  the given parser is preferred
-     * @return the millisecond value
+     * @param fieldSource  a partial that provides access to the fields.
+     *  This partial may be incomplete and only getFieldType(int) should be used
+     * @param object  the object to convert
+     * @param chrono  the chronology to use, which is the non-null result of getChronology()
+     * @return the array of field values that match the fieldSource, must be non-null valid
+     * @throws ClassCastException if the object is invalid
      * @throws IllegalArgumentException if the value if invalid
      * @since 1.3
      */
-    public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) {
-        return parser.withChronology(chrono).parseMillis((String) object);
+    public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono, DateTimeFormatter parser) {
+        long millis = parser.withChronology(chrono).parseMillis((String) object);
+        int size = fieldSource.size();
+        int[] values = new int[size];
+        for (int i = 0; i < size; i++) {
+            values[i] = fieldSource.getFieldType(i).getField(chrono).get(millis);
+        }
+        chrono.validate(fieldSource, values);
+        return values;
     }
 
     //-----------------------------------------------------------------------

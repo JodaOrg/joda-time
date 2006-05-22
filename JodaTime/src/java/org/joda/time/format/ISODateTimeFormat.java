@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -129,7 +129,8 @@ public class ISODateTimeFormat {
         tpe, // time parser element
         dp,  // date parser
         tp,  // time parser
-        dtp; // date time parser
+        dtp, // date time parser
+        dotp; // date optional time parser
 
     /**
      * Constructor.
@@ -681,8 +682,8 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a generic ISO datetime parser. It accepts formats described by
-     * the following syntax:
+     * Returns a generic ISO datetime parser which parses either a date or
+     * a time or both. It accepts formats described by the following syntax:
      * <pre>
      * datetime          = time | (date-element [time | ('T' offset)])
      * time              = 'T' time-element [offset]
@@ -725,6 +726,37 @@ public class ISODateTimeFormat {
                 .toFormatter();
         }
         return dtp;
+    }
+
+    /**
+     * Returns a generic ISO datetime parser where the date is mandatory and
+     * the time is optional. It accepts formats described by the following syntax:
+     * <pre>
+     * datetime          = date-element ['T' time-element [offset]])
+     * date-element      = std-date-element | ord-date-element | week-date-element
+     * std-date-element  = yyyy ['-' MM ['-' dd]]
+     * ord-date-element  = yyyy ['-' DDD]
+     * week-date-element = xxxx '-W' ww ['-' e]
+     * time-element      = HH [minute-element] | [fraction]
+     * minute-element    = ':' mm [second-element] | [fraction]
+     * second-element    = ':' ss [fraction]
+     * fraction          = ('.' | ',') digit+
+     * offset            = 'Z' | (('+' | '-') HH [':' mm [':' ss [('.' | ',') SSS]]])
+     * </pre>
+     */
+    public static DateTimeFormatter dateOptionalTimeParser() {
+        if (dotp == null) {
+            dotp = new DateTimeFormatterBuilder()
+                .append(dateElementParser())
+                .appendOptional(
+                    new DateTimeFormatterBuilder()
+                        .appendLiteral('T')
+                        .append(timeElementParser())
+                        .appendOptional(offsetElement().getParser())
+                        .toParser())
+                .toFormatter();
+        }
+        return dotp;
     }
 
     //-----------------------------------------------------------------------

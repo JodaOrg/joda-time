@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.joda.time.convert;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -30,6 +31,18 @@ import org.joda.time.format.DateTimeFormatter;
  * @since 1.0
  */
 public interface PartialConverter extends Converter {
+
+    /**
+     * Extracts the chronology from an object of this converter's type
+     * where the time zone is specified.
+     * 
+     * @param object  the object to convert
+     * @param zone  the specified zone to use, null means default zone
+     * @return the chronology, never null
+     * @throws ClassCastException if the object is invalid
+     * @since 1.3
+     */
+    Chronology getChronology(Object object, DateTimeZone zone);
 
     /**
      * Extracts the chronology from an object of this converter's type

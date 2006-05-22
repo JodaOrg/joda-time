@@ -169,7 +169,6 @@ public class TestConverterManager extends TestCase {
     public void testGetInstantConverterOKMultipleMatches() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
-            public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) { return 0; }
             public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return ReadableDateTime.class;}
@@ -188,7 +187,6 @@ public class TestConverterManager extends TestCase {
     public void testGetInstantConverterBadMultipleMatches() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
-            public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) { return 0; }
             public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return Serializable.class;}
@@ -217,7 +215,6 @@ public class TestConverterManager extends TestCase {
     public void testAddInstantConverter1() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
-            public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) { return 0; }
             public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return Boolean.class;}
@@ -236,7 +233,6 @@ public class TestConverterManager extends TestCase {
     public void testAddInstantConverter2() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
-            public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) { return 0; }
             public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return String.class;}
@@ -297,7 +293,6 @@ public class TestConverterManager extends TestCase {
     public void testRemoveInstantConverter2() {
         InstantConverter c = new InstantConverter() {
             public long getInstantMillis(Object object, Chronology chrono) {return 0;}
-            public long getInstantMillis(Object object, Chronology chrono, DateTimeFormatter parser) { return 0; }
             public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return Boolean.class;}
@@ -380,6 +375,7 @@ public class TestConverterManager extends TestCase {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono, DateTimeFormatter parser) {return null;}
+            public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return ReadableDateTime.class;}
         };
@@ -398,6 +394,7 @@ public class TestConverterManager extends TestCase {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono, DateTimeFormatter parser) {return null;}
+            public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return Serializable.class;}
         };
@@ -426,6 +423,7 @@ public class TestConverterManager extends TestCase {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono, DateTimeFormatter parser) {return null;}
+            public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };
@@ -444,6 +442,7 @@ public class TestConverterManager extends TestCase {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono, DateTimeFormatter parser) {return null;}
+            public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return String.class;}
         };
@@ -504,6 +503,7 @@ public class TestConverterManager extends TestCase {
         PartialConverter c = new PartialConverter() {
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono) {return null;}
             public int[] getPartialValues(ReadablePartial partial, Object object, Chronology chrono, DateTimeFormatter parser) {return null;}
+            public Chronology getChronology(Object object, DateTimeZone zone) {return null;}
             public Chronology getChronology(Object object, Chronology chrono) {return null;}
             public Class getSupportedType() {return Boolean.class;}
         };

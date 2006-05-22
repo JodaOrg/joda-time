@@ -243,6 +243,86 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(9, test.getDayOfMonth());
     }
 
+    public void testConstructor_ObjectString1() throws Throwable {
+        LocalDate test = new LocalDate("1972-04-06");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectString2() throws Throwable {
+        LocalDate test = new LocalDate("1972-037");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(2, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectStringEx1() throws Throwable {
+        try {
+            new LocalDate("1970-04-06T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx2() throws Throwable {
+        try {
+            new LocalDate("1970-04-06T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx3() throws Throwable {
+        try {
+            new LocalDate("T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx4() throws Throwable {
+        try {
+            new LocalDate("1970-04-06T+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectLocalDate() throws Throwable {
+        LocalDate date = new LocalDate(1970, 4, 6, BUDDHIST_UTC);
+        LocalDate test = new LocalDate(date);
+        assertEquals(BUDDHIST_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectLocalTime() throws Throwable {
+        LocalTime time = new LocalTime(10, 20, 30, 40, BUDDHIST_UTC);
+        try {
+            new LocalDate(time);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectLocalDateTime() throws Throwable {
+        LocalDateTime dt = new LocalDateTime(1970, 5, 6, 10, 20, 30, 40, BUDDHIST_UTC);
+        LocalDate test = new LocalDate(dt);
+        assertEquals(BUDDHIST_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(5, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectYearMonthDay() throws Throwable {
+        YearMonthDay date = new YearMonthDay(1970, 4, 6, BUDDHIST_UTC);
+        LocalDate test = new LocalDate(date);
+        assertEquals(BUDDHIST_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_Object_DateTimeZone() throws Throwable {
         Date date = new Date(TEST_TIME1);
         LocalDate test = new LocalDate(date, PARIS);

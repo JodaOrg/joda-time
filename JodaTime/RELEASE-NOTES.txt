@@ -53,13 +53,13 @@ Enhancements since 1.2
 Compatibility with 1.2
 ----------------------
 Binary compatible - Yes, except
-  - InstantConverter and PartialConverter interfaces have had a new method added.
-    These are mainly intended as internal interfaces and thus it is unlikely
+  - PartialConverter interface has had two new methods added.
+    This is mainly intended as an internal interface and thus it is unlikely
     that you have implementations that will break. If you did create your own
     implementation and extended AbstractConverter then your code will not break.
 
 Source compatible - Yes, except
-  - InstantConverter and PartialConverter interfaces, see above
+  - PartialConverter interface, see above
 
 Serialization compatible - Yes
 

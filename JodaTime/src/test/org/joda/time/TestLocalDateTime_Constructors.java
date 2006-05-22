@@ -22,6 +22,7 @@ import java.util.GregorianCalendar;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -38,6 +39,7 @@ public class TestLocalDateTime_Constructors extends TestCase {
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
+    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     private static final int OFFSET_PARIS = PARIS.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
     private static final int OFFSET_MOSCOW = MOSCOW.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
     
@@ -309,6 +311,116 @@ public class TestLocalDateTime_Constructors extends TestCase {
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString1() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1972-04-06");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(0, test.getHourOfDay());
+        assertEquals(0, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString2() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1972-037");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(2, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(0, test.getHourOfDay());
+        assertEquals(0, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString3() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1972-04-06T10:20:30.040");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString4() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1972-04-06T10:20");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString5() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1972-04-06T10:20:30.040+06:00");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(10 + OFFSET_MOSCOW - 6, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectStringEx1() throws Throwable {
+        try {
+            new LocalDateTime("T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx2() throws Throwable {
+        try {
+            new LocalDateTime("T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx3() throws Throwable {
+        try {
+            new LocalDateTime("1970-04-06T+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectLocalDateTime() throws Throwable {
+        LocalDateTime dt = new LocalDateTime(1970, 5, 6, 10, 20, 30, 40, BUDDHIST_UTC);
+        LocalDateTime test = new LocalDateTime(dt);
+        assertEquals(BUDDHIST_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(5, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectLocalDate() throws Throwable {
+        LocalDate date = new LocalDate(1970, 5, 6);
+        try {
+            new LocalDateTime(date);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectLocalTime() throws Throwable {
+        LocalTime time = new LocalTime(10, 20, 30, 40);
+        try {
+            new LocalDateTime(time);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

@@ -26,7 +26,7 @@ import java.util.Locale;
 import org.joda.time.base.AbstractPartial;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.InstantConverter;
+import org.joda.time.convert.PartialConverter;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.ISODateTimeFormat;
@@ -250,7 +250,8 @@ public final class LocalDateTime
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
      *
      * @param instant  the datetime object
      * @throws IllegalArgumentException if the instant is invalid
@@ -269,21 +270,20 @@ public final class LocalDateTime
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
      *
      * @param instant  the datetime object
      * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDateTime(Object instant, DateTimeZone zone) {
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
-        long millis = converter.getInstantMillis(instant, chronology);
         chronology = DateTimeUtils.getChronology(chronology);
-        
-        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
-        iLocalMillis = localMillis;
         iChronology = chronology.withUTC();
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.dateOptionalTimeParser());
+        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
     }
 
     /**
@@ -295,20 +295,20 @@ public final class LocalDateTime
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
      *
      * @param instant  the datetime object
      * @param chronology  the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDateTime(Object instant, Chronology chronology) {
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology chrono = DateTimeUtils.getChronology(converter.getChronology(instant, chronology));
-        long millis = converter.getInstantMillis(instant, chrono);
-        
-        long localMillis = chrono.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
-        iLocalMillis = localMillis;
-        iChronology = chrono.withUTC();
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+        chronology = converter.getChronology(instant, chronology);
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.dateOptionalTimeParser());
+        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], values[3]);
     }
 
     //-----------------------------------------------------------------------

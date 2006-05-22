@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -86,15 +86,9 @@ class ReadablePartialConverter extends AbstractConverter
     public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono) {
         ReadablePartial input = (ReadablePartial) object;
         int size = fieldSource.size();
-        if (input.size() != size) {
-            throw new IllegalArgumentException("Partial field type lists are different");
-        }
         int[] values = new int[size];
         for (int i = 0; i < size; i++) {
-            if (fieldSource.getFieldType(i) != input.getFieldType(i)) {
-                throw new IllegalArgumentException("Partial field type lists are different");
-            }
-            values[i] = input.getValue(i);
+            values[i] = input.get(fieldSource.getFieldType(i));
         }
         chrono.validate(fieldSource, values);
         return values;

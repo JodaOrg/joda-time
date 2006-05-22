@@ -28,7 +28,7 @@ import java.util.Set;
 import org.joda.time.base.AbstractPartial;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.InstantConverter;
+import org.joda.time.convert.PartialConverter;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -256,7 +256,8 @@ public final class LocalDate
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateElementParser()}.
      *
      * @param instant  the datetime object
      * @throws IllegalArgumentException if the instant is invalid
@@ -275,23 +276,20 @@ public final class LocalDate
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateElementParser()}.
      *
      * @param instant  the datetime object
      * @param zone  the time zone
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDate(Object instant, DateTimeZone zone) {
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
         Chronology chronology = converter.getChronology(instant, zone);
-        long millis = converter.getInstantMillis
-            (instant, chronology, ISODateTimeFormat.dateParser());
-        
-        long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
-        chronology = chronology.withUTC();
-        chronology.dayOfMonth().roundFloor(localMillis);
-        iLocalMillis = localMillis;
-        iChronology = chronology;
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.dateElementParser());
+        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], 0);
     }
 
     /**
@@ -303,24 +301,20 @@ public final class LocalDate
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
-     * include ReadableInstant, String, Calendar and Date.
+     * include ReadablePartial, ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateElementParser()}.
      *
      * @param instant  the datetime object
      * @param chronology  the chronology
      * @throws IllegalArgumentException if the instant is invalid
      */
     public LocalDate(Object instant, Chronology chronology) {
-        InstantConverter converter = ConverterManager.getInstance().getInstantConverter(instant);
-        Chronology chrono = DateTimeUtils.getChronology
-            (converter.getChronology(instant, chronology));
-        long millis = converter.getInstantMillis
-            (instant, chronology, ISODateTimeFormat.dateParser());
-        
-        long localMillis = chrono.getZone().getMillisKeepLocal(DateTimeZone.UTC, millis);
-        chrono = chrono.withUTC();
-        chrono.dayOfMonth().roundFloor(localMillis);
-        iLocalMillis = localMillis;
-        iChronology = chrono;
+        PartialConverter converter = ConverterManager.getInstance().getPartialConverter(instant);
+        chronology = converter.getChronology(instant, chronology);
+        chronology = DateTimeUtils.getChronology(chronology);
+        iChronology = chronology.withUTC();
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.dateElementParser());
+        iLocalMillis = iChronology.getDateTimeMillis(values[0], values[1], values[2], 0);
     }
 
     //-----------------------------------------------------------------------

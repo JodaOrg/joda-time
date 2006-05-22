@@ -115,7 +115,7 @@ Joda-Time provides support for intervals and time periods.
 </p>
 <p>
 An interval is represented by the
-<a href="api-release/org/joda/time/Interval.html"><code>Inteval</code></a> class.
+<a href="api-release/org/joda/time/Interval.html"><code>Interval</code></a> class.
 It holds a start and end datetime, and allows operations based around that
 range of time.
 </p>

@@ -1837,15 +1837,16 @@ public final class LocalDateTime
      * String monthStr = dt.month().getAsText();
      * </pre>
      * <p>
-     * Methods are also provided that allow date modification. These return new instances
-     * of DateTime - they do not modify the original. The example below yields two
-     * independent immutable date objects 20 years apart.
+     * Methods are also provided that allow date modification. These return
+     * new instances of LocalDateTime - they do not modify the original.
+     * The example below yields two independent immutable date objects
+     * 20 years apart.
      * <pre>
-     * LocalDateTime dt = new LocalDateTime(1972, 12, 3, 0, 0, 0, 0);
+     * LocalDateTime dt = new LocalDateTime(1972, 12, 3, 0, 0);
      * LocalDateTime dt1920 = dt.year().setCopy(1920);
      * </pre>
      * <p>
-     * LocalDateTime.Propery itself is thread-safe and immutable, as well as the
+     * LocalDateTime.Property itself is thread-safe and immutable, as well as the
      * LocalDateTime being operated on.
      *
      * @author Stephen Colebourne
@@ -1929,7 +1930,7 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public LocalDateTime plus(int value) {
+        public LocalDateTime addToCopy(int value) {
             return iInstant.withLocalMillis(iField.add(iInstant.getLocalMillis(), value));
         }
         
@@ -1942,14 +1943,14 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public LocalDateTime plus(long value) {
+        public LocalDateTime addToCopy(long value) {
             return iInstant.withLocalMillis(iField.add(iInstant.getLocalMillis(), value));
         }
         
         /**
          * Adds to this field, possibly wrapped, in a copy of this LocalDateTime.
          * A field wrapped operation only changes this field.
-         * Thus 31st January plusWrapField one day goes to the 1st January.
+         * Thus 31st January addWrapField one day goes to the 1st January.
          * <p>
          * The LocalDateTime attached to this property is unchanged by this call.
          *
@@ -1957,7 +1958,7 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public LocalDateTime plusWrapField(int value) {
+        public LocalDateTime addWrapFieldToCopy(int value) {
             return iInstant.withLocalMillis(iField.addWrapField(iInstant.getLocalMillis(), value));
         }
         
@@ -1971,7 +1972,7 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public LocalDateTime withValue(int value) {
+        public LocalDateTime setCopy(int value) {
             return iInstant.withLocalMillis(iField.set(iInstant.getLocalMillis(), value));
         }
         
@@ -1985,7 +1986,7 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        public LocalDateTime withValue(String text, Locale locale) {
+        public LocalDateTime setCopy(String text, Locale locale) {
             return iInstant.withLocalMillis(iField.set(iInstant.getLocalMillis(), text, locale));
         }
         
@@ -1998,8 +1999,8 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        public LocalDateTime withValue(String text) {
-            return withValue(text, null);
+        public LocalDateTime setCopy(String text) {
+            return setCopy(text, null);
         }
         
         //-----------------------------------------------------------------------
@@ -2018,7 +2019,7 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with this field set to its maximum
          */
         public LocalDateTime withMaximumValue() {
-            return withValue(getMaximumValue());
+            return setCopy(getMaximumValue());
         }
         
         /**
@@ -2030,7 +2031,7 @@ public final class LocalDateTime
          * @return a copy of the LocalDateTime with this field set to its minimum
          */
         public LocalDateTime withMinimumValue() {
-            return withValue(getMinimumValue());
+            return setCopy(getMinimumValue());
         }
         
         //-----------------------------------------------------------------------
@@ -2044,7 +2045,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime roundFloor() {
+        public LocalDateTime roundFloorCopy() {
             return iInstant.withLocalMillis(iField.roundFloor(iInstant.getLocalMillis()));
         }
         
@@ -2058,7 +2059,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime roundCeiling() {
+        public LocalDateTime roundCeilingCopy() {
             return iInstant.withLocalMillis(iField.roundCeiling(iInstant.getLocalMillis()));
         }
         
@@ -2068,7 +2069,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime roundHalfFloor() {
+        public LocalDateTime roundHalfFloorCopy() {
             return iInstant.withLocalMillis(iField.roundHalfFloor(iInstant.getLocalMillis()));
         }
         
@@ -2078,7 +2079,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime roundHalfCeiling() {
+        public LocalDateTime roundHalfCeilingCopy() {
             return iInstant.withLocalMillis(iField.roundHalfCeiling(iInstant.getLocalMillis()));
         }
         
@@ -2089,7 +2090,7 @@ public final class LocalDateTime
          *
          * @return a copy of the LocalDateTime with the field value changed
          */
-        public LocalDateTime roundHalfEven() {
+        public LocalDateTime roundHalfEvenCopy() {
             return iInstant.withLocalMillis(iField.roundHalfEven(iInstant.getLocalMillis()));
         }
     }

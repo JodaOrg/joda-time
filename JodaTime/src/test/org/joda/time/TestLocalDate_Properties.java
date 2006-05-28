@@ -95,63 +95,63 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(292278993, test.year().getMaximumValueOverall());
     }
 
-    public void testPropertyPlusYear() {
+    public void testPropertyAddToCopyYear() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.year().plus(9);
+        LocalDate copy = test.year().addToCopy(9);
         check(test, 1972, 6, 9);
         check(copy, 1981, 6, 9);
         
-        copy = test.year().plus(0);
+        copy = test.year().addToCopy(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().plus(292278993 - 1972);
+        copy = test.year().addToCopy(292278993 - 1972);
         check(copy, 292278993, 6, 9);
         
         try {
-            test.year().plus(292278993 - 1972 + 1);
+            test.year().addToCopy(292278993 - 1972 + 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 1972, 6, 9);
         
-        copy = test.year().plus(-1972);
+        copy = test.year().addToCopy(-1972);
         check(copy, 0, 6, 9);
         
-        copy = test.year().plus(-1973);
+        copy = test.year().addToCopy(-1973);
         check(copy, -1, 6, 9);
         
         try {
-            test.year().plus(-292275054 - 1972 - 1);
+            test.year().addToCopy(-292275054 - 1972 - 1);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 1972, 6, 9);
     }
 
-    public void testPropertyPlusWrapFieldYear() {
+    public void testPropertyAddWrapFieldToCopyYear() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.year().plusWrapField(9);
+        LocalDate copy = test.year().addWrapFieldToCopy(9);
         check(test, 1972, 6, 9);
         check(copy, 1981, 6, 9);
         
-        copy = test.year().plusWrapField(0);
+        copy = test.year().addWrapFieldToCopy(0);
         check(copy, 1972, 6, 9);
         
-        copy = test.year().plusWrapField(292278993 - 1972 + 1);
+        copy = test.year().addWrapFieldToCopy(292278993 - 1972 + 1);
         check(copy, -292275054, 6, 9);
         
-        copy = test.year().plusWrapField(-292275054 - 1972 - 1);
+        copy = test.year().addWrapFieldToCopy(-292275054 - 1972 - 1);
         check(copy, 292278993, 6, 9);
     }
 
-    public void testPropertyWithYear() {
+    public void testPropertySetCopyYear() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.year().withValue(12);
+        LocalDate copy = test.year().setCopy(12);
         check(test, 1972, 6, 9);
         check(copy, 12, 6, 9);
     }
 
-    public void testPropertyWithTextYear() {
+    public void testPropertySetCopyTextYear() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.year().withValue("12");
+        LocalDate copy = test.year().setCopy("12");
         check(test, 1972, 6, 9);
         check(copy, 12, 6, 9);
     }
@@ -208,94 +208,94 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(12, test.monthOfYear().getMaximumValueOverall());
     }
 
-    public void testPropertyPlusMonth() {
+    public void testPropertyAddToCopyMonth() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.monthOfYear().plus(6);
+        LocalDate copy = test.monthOfYear().addToCopy(6);
         check(test, 1972, 6, 9);
         check(copy, 1972, 12, 9);
         
-        copy = test.monthOfYear().plus(7);
+        copy = test.monthOfYear().addToCopy(7);
         check(copy, 1973, 1, 9);
         
-        copy = test.monthOfYear().plus(-5);
+        copy = test.monthOfYear().addToCopy(-5);
         check(copy, 1972, 1, 9);
         
-        copy = test.monthOfYear().plus(-6);
+        copy = test.monthOfYear().addToCopy(-6);
         check(copy, 1971, 12, 9);
         
         test = new LocalDate(1972, 1, 31);
-        copy = test.monthOfYear().plus(1);
+        copy = test.monthOfYear().addToCopy(1);
         check(copy, 1972, 2, 29);
         
-        copy = test.monthOfYear().plus(2);
+        copy = test.monthOfYear().addToCopy(2);
         check(copy, 1972, 3, 31);
         
-        copy = test.monthOfYear().plus(3);
+        copy = test.monthOfYear().addToCopy(3);
         check(copy, 1972, 4, 30);
         
         test = new LocalDate(1971, 1, 31);
-        copy = test.monthOfYear().plus(1);
+        copy = test.monthOfYear().addToCopy(1);
         check(copy, 1971, 2, 28);
     }
 
-    public void testPropertyPlusWrapFieldMonth() {
+    public void testPropertyAddWrapFieldToCopyMonth() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.monthOfYear().plusWrapField(4);
+        LocalDate copy = test.monthOfYear().addWrapFieldToCopy(4);
         check(test, 1972, 6, 9);
         check(copy, 1972, 10, 9);
         
-        copy = test.monthOfYear().plusWrapField(8);
+        copy = test.monthOfYear().addWrapFieldToCopy(8);
         check(copy, 1972, 2, 9);
         
-        copy = test.monthOfYear().plusWrapField(-8);
+        copy = test.monthOfYear().addWrapFieldToCopy(-8);
         check(copy, 1972, 10, 9);
         
         test = new LocalDate(1972, 1, 31);
-        copy = test.monthOfYear().plusWrapField(1);
+        copy = test.monthOfYear().addWrapFieldToCopy(1);
         check(copy, 1972, 2, 29);
         
-        copy = test.monthOfYear().plusWrapField(2);
+        copy = test.monthOfYear().addWrapFieldToCopy(2);
         check(copy, 1972, 3, 31);
         
-        copy = test.monthOfYear().plusWrapField(3);
+        copy = test.monthOfYear().addWrapFieldToCopy(3);
         check(copy, 1972, 4, 30);
         
         test = new LocalDate(1971, 1, 31);
-        copy = test.monthOfYear().plusWrapField(1);
+        copy = test.monthOfYear().addWrapFieldToCopy(1);
         check(copy, 1971, 2, 28);
     }
 
-    public void testPropertyWithMonth() {
+    public void testPropertySetCopyMonth() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.monthOfYear().withValue(12);
+        LocalDate copy = test.monthOfYear().setCopy(12);
         check(test, 1972, 6, 9);
         check(copy, 1972, 12, 9);
         
         test = new LocalDate(1972, 1, 31);
-        copy = test.monthOfYear().withValue(2);
+        copy = test.monthOfYear().setCopy(2);
         check(copy, 1972, 2, 29);
         
         try {
-            test.monthOfYear().withValue(13);
+            test.monthOfYear().setCopy(13);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.monthOfYear().withValue(0);
+            test.monthOfYear().setCopy(0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testPropertyWithTextMonth() {
+    public void testPropertySetCopyTextMonth() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.monthOfYear().withValue("12");
+        LocalDate copy = test.monthOfYear().setCopy("12");
         check(test, 1972, 6, 9);
         check(copy, 1972, 12, 9);
         
-        copy = test.monthOfYear().withValue("December");
+        copy = test.monthOfYear().setCopy("December");
         check(test, 1972, 6, 9);
         check(copy, 1972, 12, 9);
         
-        copy = test.monthOfYear().withValue("Dec");
+        copy = test.monthOfYear().setCopy("Dec");
         check(test, 1972, 6, 9);
         check(copy, 1972, 12, 9);
     }
@@ -355,88 +355,88 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(28, test.dayOfMonth().getMaximumValue());
     }
 
-    public void testPropertyPlusDay() {
+    public void testPropertyAddToCopyDay() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.dayOfMonth().plus(9);
+        LocalDate copy = test.dayOfMonth().addToCopy(9);
         check(test, 1972, 6, 9);
         check(copy, 1972, 6, 18);
         
-        copy = test.dayOfMonth().plus(21);
+        copy = test.dayOfMonth().addToCopy(21);
         check(copy, 1972, 6, 30);
         
-        copy = test.dayOfMonth().plus(22);
+        copy = test.dayOfMonth().addToCopy(22);
         check(copy, 1972, 7, 1);
         
-        copy = test.dayOfMonth().plus(22 + 30);
+        copy = test.dayOfMonth().addToCopy(22 + 30);
         check(copy, 1972, 7, 31);
         
-        copy = test.dayOfMonth().plus(22 + 31);
+        copy = test.dayOfMonth().addToCopy(22 + 31);
         check(copy, 1972, 8, 1);
 
-        copy = test.dayOfMonth().plus(21 + 31 + 31 + 30 + 31 + 30 + 31);
+        copy = test.dayOfMonth().addToCopy(21 + 31 + 31 + 30 + 31 + 30 + 31);
         check(copy, 1972, 12, 31);
         
-        copy = test.dayOfMonth().plus(22 + 31 + 31 + 30 + 31 + 30 + 31);
+        copy = test.dayOfMonth().addToCopy(22 + 31 + 31 + 30 + 31 + 30 + 31);
         check(copy, 1973, 1, 1);
         
-        copy = test.dayOfMonth().plus(-8);
+        copy = test.dayOfMonth().addToCopy(-8);
         check(copy, 1972, 6, 1);
         
-        copy = test.dayOfMonth().plus(-9);
+        copy = test.dayOfMonth().addToCopy(-9);
         check(copy, 1972, 5, 31);
         
-        copy = test.dayOfMonth().plus(-8 - 31 - 30 - 31 - 29 - 31);
+        copy = test.dayOfMonth().addToCopy(-8 - 31 - 30 - 31 - 29 - 31);
         check(copy, 1972, 1, 1);
         
-        copy = test.dayOfMonth().plus(-9 - 31 - 30 - 31 - 29 - 31);
+        copy = test.dayOfMonth().addToCopy(-9 - 31 - 30 - 31 - 29 - 31);
         check(copy, 1971, 12, 31);
     }
 
-    public void testPropertyPlusWrapFieldDay() {
+    public void testPropertyAddWrapFieldToCopyDay() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.dayOfMonth().plusWrapField(21);
+        LocalDate copy = test.dayOfMonth().addWrapFieldToCopy(21);
         check(test, 1972, 6, 9);
         check(copy, 1972, 6, 30);
         
-        copy = test.dayOfMonth().plusWrapField(22);
+        copy = test.dayOfMonth().addWrapFieldToCopy(22);
         check(copy, 1972, 6, 1);
         
-        copy = test.dayOfMonth().plusWrapField(-12);
+        copy = test.dayOfMonth().addWrapFieldToCopy(-12);
         check(copy, 1972, 6, 27);
         
         test = new LocalDate(1972, 7, 9);
-        copy = test.dayOfMonth().plusWrapField(21);
+        copy = test.dayOfMonth().addWrapFieldToCopy(21);
         check(copy, 1972, 7, 30);
     
-        copy = test.dayOfMonth().plusWrapField(22);
+        copy = test.dayOfMonth().addWrapFieldToCopy(22);
         check(copy, 1972, 7, 31);
     
-        copy = test.dayOfMonth().plusWrapField(23);
+        copy = test.dayOfMonth().addWrapFieldToCopy(23);
         check(copy, 1972, 7, 1);
     
-        copy = test.dayOfMonth().plusWrapField(-12);
+        copy = test.dayOfMonth().addWrapFieldToCopy(-12);
         check(copy, 1972, 7, 28);
     }
 
-    public void testPropertyWithDay() {
+    public void testPropertySetCopyDay() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.dayOfMonth().withValue(12);
+        LocalDate copy = test.dayOfMonth().setCopy(12);
         check(test, 1972, 6, 9);
         check(copy, 1972, 6, 12);
         
         try {
-            test.dayOfMonth().withValue(31);
+            test.dayOfMonth().setCopy(31);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.dayOfMonth().withValue(0);
+            test.dayOfMonth().setCopy(0);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testPropertyWithTextDay() {
+    public void testPropertySetCopyTextDay() {
         LocalDate test = new LocalDate(1972, 6, 9);
-        LocalDate copy = test.dayOfMonth().withValue("12");
+        LocalDate copy = test.dayOfMonth().setCopy("12");
         check(test, 1972, 6, 9);
         check(copy, 1972, 6, 12);
     }

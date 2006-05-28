@@ -95,32 +95,32 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyRoundHour() {
         LocalTime test = new LocalTime(10, 20);
-        check(test.hourOfDay().roundCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().roundHalfCeiling(), 10, 0, 0, 0);
-        check(test.hourOfDay().roundHalfFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().roundHalfEven(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundCeilingCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundFloorCopy(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeilingCopy(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloorCopy(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEvenCopy(), 10, 0, 0, 0);
         
         test = new LocalTime(10, 40);
-        check(test.hourOfDay().roundCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().roundHalfCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundHalfFloor(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundHalfEven(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundCeilingCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundFloorCopy(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeilingCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloorCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEvenCopy(), 11, 0, 0, 0);
         
         test = new LocalTime(10, 30);
-        check(test.hourOfDay().roundCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().roundHalfCeiling(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundHalfFloor(), 10, 0, 0, 0);
-        check(test.hourOfDay().roundHalfEven(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundCeilingCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundFloorCopy(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeilingCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloorCopy(), 10, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEvenCopy(), 10, 0, 0, 0);
         
         test = new LocalTime(11, 30);
-        check(test.hourOfDay().roundCeiling(), 12, 0, 0, 0);
-        check(test.hourOfDay().roundFloor(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundHalfCeiling(), 12, 0, 0, 0);
-        check(test.hourOfDay().roundHalfFloor(), 11, 0, 0, 0);
-        check(test.hourOfDay().roundHalfEven(), 12, 0, 0, 0);
+        check(test.hourOfDay().roundCeilingCopy(), 12, 0, 0, 0);
+        check(test.hourOfDay().roundFloorCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfCeilingCopy(), 12, 0, 0, 0);
+        check(test.hourOfDay().roundHalfFloorCopy(), 11, 0, 0, 0);
+        check(test.hourOfDay().roundHalfEvenCopy(), 12, 0, 0, 0);
     }
 
     public void testPropertyGetMaxMinValuesHour() {
@@ -139,49 +139,49 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.hourOfDay().plus(9);
+        LocalTime copy = test.hourOfDay().addCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 19, 20, 30, 40);
         
-        copy = test.hourOfDay().plus(0);
+        copy = test.hourOfDay().addCopy(0);
         check(copy, 10, 20, 30, 40);
         
-        copy = test.hourOfDay().plus(13);
+        copy = test.hourOfDay().addCopy(13);
         check(copy, 23, 20, 30, 40);
         
-        copy = test.hourOfDay().plus(14);
+        copy = test.hourOfDay().addCopy(14);
         check(copy, 0, 20, 30, 40);
         
-        copy = test.hourOfDay().plus(-10);
+        copy = test.hourOfDay().addCopy(-10);
         check(copy, 0, 20, 30, 40);
         
-        copy = test.hourOfDay().plus(-11);
+        copy = test.hourOfDay().addCopy(-11);
         check(copy, 23, 20, 30, 40);
     }
 
     public void testPropertyPlusNoWrapHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.hourOfDay().plusNoWrap(9);
+        LocalTime copy = test.hourOfDay().addNoWrapToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 19, 20, 30, 40);
         
-        copy = test.hourOfDay().plusNoWrap(0);
+        copy = test.hourOfDay().addNoWrapToCopy(0);
         check(copy, 10, 20, 30, 40);
         
-        copy = test.hourOfDay().plusNoWrap(13);
+        copy = test.hourOfDay().addNoWrapToCopy(13);
         check(copy, 23, 20, 30, 40);
         
         try {
-            test.hourOfDay().plusNoWrap(14);
+            test.hourOfDay().addNoWrapToCopy(14);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
         
-        copy = test.hourOfDay().plusNoWrap(-10);
+        copy = test.hourOfDay().addNoWrapToCopy(-10);
         check(copy, 0, 20, 30, 40);
         
         try {
-            test.hourOfDay().plusNoWrap(-11);
+            test.hourOfDay().addNoWrapToCopy(-11);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -189,39 +189,39 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusWrapFieldHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.hourOfDay().plusWrapField(9);
+        LocalTime copy = test.hourOfDay().addWrapFieldToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 19, 20, 30, 40);
         
-        copy = test.hourOfDay().plusWrapField(0);
+        copy = test.hourOfDay().addWrapFieldToCopy(0);
         check(copy, 10, 20, 30, 40);
         
-        copy = test.hourOfDay().plusWrapField(18);
+        copy = test.hourOfDay().addWrapFieldToCopy(18);
         check(copy, 4, 20, 30, 40);
         
-        copy = test.hourOfDay().plusWrapField(-15);
+        copy = test.hourOfDay().addWrapFieldToCopy(-15);
         check(copy, 19, 20, 30, 40);
     }
 
     public void testPropertySetHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.hourOfDay().withValue(12);
+        LocalTime copy = test.hourOfDay().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 12, 20, 30, 40);
         
         try {
-            test.hourOfDay().withValue(24);
+            test.hourOfDay().setCopy(24);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.hourOfDay().withValue(-1);
+            test.hourOfDay().setCopy(-1);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextHour() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.hourOfDay().withValue("12");
+        LocalTime copy = test.hourOfDay().setCopy("12");
         check(test, 10, 20, 30, 40);
         check(copy, 12, 20, 30, 40);
     }
@@ -297,85 +297,85 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.minuteOfHour().plus(9);
+        LocalTime copy = test.minuteOfHour().addCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 29, 30, 40);
         
-        copy = test.minuteOfHour().plus(39);
+        copy = test.minuteOfHour().addCopy(39);
         check(copy, 10, 59, 30, 40);
         
-        copy = test.minuteOfHour().plus(40);
+        copy = test.minuteOfHour().addCopy(40);
         check(copy, 11, 0, 30, 40);
         
-        copy = test.minuteOfHour().plus(1 * 60 + 45);
+        copy = test.minuteOfHour().addCopy(1 * 60 + 45);
         check(copy, 12, 5, 30, 40);
         
-        copy = test.minuteOfHour().plus(13 * 60 + 39);
+        copy = test.minuteOfHour().addCopy(13 * 60 + 39);
         check(copy, 23, 59, 30, 40);
         
-        copy = test.minuteOfHour().plus(13 * 60 + 40);
+        copy = test.minuteOfHour().addCopy(13 * 60 + 40);
         check(copy, 0, 0, 30, 40);
         
-        copy = test.minuteOfHour().plus(-9);
+        copy = test.minuteOfHour().addCopy(-9);
         check(copy, 10, 11, 30, 40);
         
-        copy = test.minuteOfHour().plus(-19);
+        copy = test.minuteOfHour().addCopy(-19);
         check(copy, 10, 1, 30, 40);
         
-        copy = test.minuteOfHour().plus(-20);
+        copy = test.minuteOfHour().addCopy(-20);
         check(copy, 10, 0, 30, 40);
         
-        copy = test.minuteOfHour().plus(-21);
+        copy = test.minuteOfHour().addCopy(-21);
         check(copy, 9, 59, 30, 40);
         
-        copy = test.minuteOfHour().plus(-(10 * 60 + 20));
+        copy = test.minuteOfHour().addCopy(-(10 * 60 + 20));
         check(copy, 0, 0, 30, 40);
         
-        copy = test.minuteOfHour().plus(-(10 * 60 + 21));
+        copy = test.minuteOfHour().addCopy(-(10 * 60 + 21));
         check(copy, 23, 59, 30, 40);
     }
 
     public void testPropertyPlusNoWrapMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.minuteOfHour().plusNoWrap(9);
+        LocalTime copy = test.minuteOfHour().addNoWrapToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 29, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(39);
+        copy = test.minuteOfHour().addNoWrapToCopy(39);
         check(copy, 10, 59, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(40);
+        copy = test.minuteOfHour().addNoWrapToCopy(40);
         check(copy, 11, 0, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(1 * 60 + 45);
+        copy = test.minuteOfHour().addNoWrapToCopy(1 * 60 + 45);
         check(copy, 12, 5, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(13 * 60 + 39);
+        copy = test.minuteOfHour().addNoWrapToCopy(13 * 60 + 39);
         check(copy, 23, 59, 30, 40);
         
         try {
-            test.minuteOfHour().plusNoWrap(13 * 60 + 40);
+            test.minuteOfHour().addNoWrapToCopy(13 * 60 + 40);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(-9);
+        copy = test.minuteOfHour().addNoWrapToCopy(-9);
         check(copy, 10, 11, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(-19);
+        copy = test.minuteOfHour().addNoWrapToCopy(-19);
         check(copy, 10, 1, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(-20);
+        copy = test.minuteOfHour().addNoWrapToCopy(-20);
         check(copy, 10, 0, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(-21);
+        copy = test.minuteOfHour().addNoWrapToCopy(-21);
         check(copy, 9, 59, 30, 40);
         
-        copy = test.minuteOfHour().plusNoWrap(-(10 * 60 + 20));
+        copy = test.minuteOfHour().addNoWrapToCopy(-(10 * 60 + 20));
         check(copy, 0, 0, 30, 40);
         
         try {
-            test.minuteOfHour().plusNoWrap(-(10 * 60 + 21));
+            test.minuteOfHour().addNoWrapToCopy(-(10 * 60 + 21));
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -383,36 +383,36 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusWrapFieldMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.minuteOfHour().plusWrapField(9);
+        LocalTime copy = test.minuteOfHour().addWrapFieldToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 29, 30, 40);
         
-        copy = test.minuteOfHour().plusWrapField(49);
+        copy = test.minuteOfHour().addWrapFieldToCopy(49);
         check(copy, 10, 9, 30, 40);
         
-        copy = test.minuteOfHour().plusWrapField(-47);
+        copy = test.minuteOfHour().addWrapFieldToCopy(-47);
         check(copy, 10, 33, 30, 40);
     }
 
     public void testPropertySetMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.minuteOfHour().withValue(12);
+        LocalTime copy = test.minuteOfHour().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 12, 30, 40);
         
         try {
-            test.minuteOfHour().withValue(60);
+            test.minuteOfHour().setCopy(60);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.minuteOfHour().withValue(-1);
+            test.minuteOfHour().setCopy(-1);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextMinute() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.minuteOfHour().withValue("12");
+        LocalTime copy = test.minuteOfHour().setCopy("12");
         check(test, 10, 20, 30, 40);
         check(copy, 10, 12, 30, 40);
     }
@@ -474,79 +474,79 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.secondOfMinute().plus(9);
+        LocalTime copy = test.secondOfMinute().addCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 39, 40);
         
-        copy = test.secondOfMinute().plus(29);
+        copy = test.secondOfMinute().addCopy(29);
         check(copy, 10, 20, 59, 40);
         
-        copy = test.secondOfMinute().plus(30);
+        copy = test.secondOfMinute().addCopy(30);
         check(copy, 10, 21, 0, 40);
         
-        copy = test.secondOfMinute().plus(39 * 60 + 29);
+        copy = test.secondOfMinute().addCopy(39 * 60 + 29);
         check(copy, 10, 59, 59, 40);
         
-        copy = test.secondOfMinute().plus(39 * 60 + 30);
+        copy = test.secondOfMinute().addCopy(39 * 60 + 30);
         check(copy, 11, 0, 0, 40);
         
-        copy = test.secondOfMinute().plus(13 * 60 * 60 + 39 * 60 + 30);
+        copy = test.secondOfMinute().addCopy(13 * 60 * 60 + 39 * 60 + 30);
         check(copy, 0, 0, 0, 40);
         
-        copy = test.secondOfMinute().plus(-9);
+        copy = test.secondOfMinute().addCopy(-9);
         check(copy, 10, 20, 21, 40);
         
-        copy = test.secondOfMinute().plus(-30);
+        copy = test.secondOfMinute().addCopy(-30);
         check(copy, 10, 20, 0, 40);
         
-        copy = test.secondOfMinute().plus(-31);
+        copy = test.secondOfMinute().addCopy(-31);
         check(copy, 10, 19, 59, 40);
         
-        copy = test.secondOfMinute().plus(-(10 * 60 * 60 + 20 * 60 + 30));
+        copy = test.secondOfMinute().addCopy(-(10 * 60 * 60 + 20 * 60 + 30));
         check(copy, 0, 0, 0, 40);
         
-        copy = test.secondOfMinute().plus(-(10 * 60 * 60 + 20 * 60 + 31));
+        copy = test.secondOfMinute().addCopy(-(10 * 60 * 60 + 20 * 60 + 31));
         check(copy, 23, 59, 59, 40);
     }
 
     public void testPropertyPlusNoWrapSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.secondOfMinute().plusNoWrap(9);
+        LocalTime copy = test.secondOfMinute().addNoWrapToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 39, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(29);
+        copy = test.secondOfMinute().addNoWrapToCopy(29);
         check(copy, 10, 20, 59, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(30);
+        copy = test.secondOfMinute().addNoWrapToCopy(30);
         check(copy, 10, 21, 0, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(39 * 60 + 29);
+        copy = test.secondOfMinute().addNoWrapToCopy(39 * 60 + 29);
         check(copy, 10, 59, 59, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(39 * 60 + 30);
+        copy = test.secondOfMinute().addNoWrapToCopy(39 * 60 + 30);
         check(copy, 11, 0, 0, 40);
         
         try {
-            test.secondOfMinute().plusNoWrap(13 * 60 * 60 + 39 * 60 + 30);
+            test.secondOfMinute().addNoWrapToCopy(13 * 60 * 60 + 39 * 60 + 30);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(-9);
+        copy = test.secondOfMinute().addNoWrapToCopy(-9);
         check(copy, 10, 20, 21, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(-30);
+        copy = test.secondOfMinute().addNoWrapToCopy(-30);
         check(copy, 10, 20, 0, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(-31);
+        copy = test.secondOfMinute().addNoWrapToCopy(-31);
         check(copy, 10, 19, 59, 40);
         
-        copy = test.secondOfMinute().plusNoWrap(-(10 * 60 * 60 + 20 * 60 + 30));
+        copy = test.secondOfMinute().addNoWrapToCopy(-(10 * 60 * 60 + 20 * 60 + 30));
         check(copy, 0, 0, 0, 40);
         
         try {
-            test.secondOfMinute().plusNoWrap(-(10 * 60 * 60 + 20 * 60 + 31));
+            test.secondOfMinute().addNoWrapToCopy(-(10 * 60 * 60 + 20 * 60 + 31));
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -554,36 +554,36 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusWrapFieldSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.secondOfMinute().plusWrapField(9);
+        LocalTime copy = test.secondOfMinute().addWrapFieldToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 39, 40);
         
-        copy = test.secondOfMinute().plusWrapField(49);
+        copy = test.secondOfMinute().addWrapFieldToCopy(49);
         check(copy, 10, 20, 19, 40);
         
-        copy = test.secondOfMinute().plusWrapField(-47);
+        copy = test.secondOfMinute().addWrapFieldToCopy(-47);
         check(copy, 10, 20, 43, 40);
     }
 
     public void testPropertySetSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.secondOfMinute().withValue(12);
+        LocalTime copy = test.secondOfMinute().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 12, 40);
         
         try {
-            test.secondOfMinute().withValue(60);
+            test.secondOfMinute().setCopy(60);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.secondOfMinute().withValue(-1);
+            test.secondOfMinute().setCopy(-1);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextSecond() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.secondOfMinute().withValue("12");
+        LocalTime copy = test.secondOfMinute().setCopy("12");
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 12, 40);
     }
@@ -645,73 +645,73 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.millisOfSecond().plus(9);
+        LocalTime copy = test.millisOfSecond().addCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 30, 49);
         
-        copy = test.millisOfSecond().plus(959);
+        copy = test.millisOfSecond().addCopy(959);
         check(copy, 10, 20, 30, 999);
         
-        copy = test.millisOfSecond().plus(960);
+        copy = test.millisOfSecond().addCopy(960);
         check(copy, 10, 20, 31, 0);
         
-        copy = test.millisOfSecond().plus(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
+        copy = test.millisOfSecond().addCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
         check(copy, 23, 59, 59, 999);
         
-        copy = test.millisOfSecond().plus(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
+        copy = test.millisOfSecond().addCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
         check(copy, 0, 0, 0, 0);
         
-        copy = test.millisOfSecond().plus(-9);
+        copy = test.millisOfSecond().addCopy(-9);
         check(copy, 10, 20, 30, 31);
         
-        copy = test.millisOfSecond().plus(-40);
+        copy = test.millisOfSecond().addCopy(-40);
         check(copy, 10, 20, 30, 0);
         
-        copy = test.millisOfSecond().plus(-41);
+        copy = test.millisOfSecond().addCopy(-41);
         check(copy, 10, 20, 29, 999);
         
-        copy = test.millisOfSecond().plus(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
+        copy = test.millisOfSecond().addCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
         check(copy, 0, 0, 0, 0);
         
-        copy = test.millisOfSecond().plus(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
+        copy = test.millisOfSecond().addCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
         check(copy, 23, 59, 59, 999);
     }
 
     public void testPropertyPlusNoWrapMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.millisOfSecond().plusNoWrap(9);
+        LocalTime copy = test.millisOfSecond().addNoWrapToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 30, 49);
         
-        copy = test.millisOfSecond().plusNoWrap(959);
+        copy = test.millisOfSecond().addNoWrapToCopy(959);
         check(copy, 10, 20, 30, 999);
         
-        copy = test.millisOfSecond().plusNoWrap(960);
+        copy = test.millisOfSecond().addNoWrapToCopy(960);
         check(copy, 10, 20, 31, 0);
         
-        copy = test.millisOfSecond().plusNoWrap(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
+        copy = test.millisOfSecond().addNoWrapToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 959);
         check(copy, 23, 59, 59, 999);
         
         try {
-            test.millisOfSecond().plusNoWrap(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
+            test.millisOfSecond().addNoWrapToCopy(13 * 60 * 60 * 1000 + 39 * 60 * 1000 + 29 * 1000 + 960);
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
         
-        copy = test.millisOfSecond().plusNoWrap(-9);
+        copy = test.millisOfSecond().addNoWrapToCopy(-9);
         check(copy, 10, 20, 30, 31);
         
-        copy = test.millisOfSecond().plusNoWrap(-40);
+        copy = test.millisOfSecond().addNoWrapToCopy(-40);
         check(copy, 10, 20, 30, 0);
         
-        copy = test.millisOfSecond().plusNoWrap(-41);
+        copy = test.millisOfSecond().addNoWrapToCopy(-41);
         check(copy, 10, 20, 29, 999);
         
-        copy = test.millisOfSecond().plusNoWrap(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
+        copy = test.millisOfSecond().addNoWrapToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 40));
         check(copy, 0, 0, 0, 0);
         
         try {
-            test.millisOfSecond().plusNoWrap(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
+            test.millisOfSecond().addNoWrapToCopy(-(10 * 60 * 60 * 1000 + 20 * 60 * 1000 + 30 * 1000 + 41));
             fail();
         } catch (IllegalArgumentException ex) {}
         check(test, 10, 20, 30, 40);
@@ -719,36 +719,36 @@ public class TestLocalTime_Properties extends TestCase {
 
     public void testPropertyPlusWrapFieldMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.millisOfSecond().plusWrapField(9);
+        LocalTime copy = test.millisOfSecond().addWrapFieldToCopy(9);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 30, 49);
         
-        copy = test.millisOfSecond().plusWrapField(995);
+        copy = test.millisOfSecond().addWrapFieldToCopy(995);
         check(copy, 10, 20, 30, 35);
         
-        copy = test.millisOfSecond().plusWrapField(-47);
+        copy = test.millisOfSecond().addWrapFieldToCopy(-47);
         check(copy, 10, 20, 30, 993);
     }
 
     public void testPropertySetMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.millisOfSecond().withValue(12);
+        LocalTime copy = test.millisOfSecond().setCopy(12);
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 30, 12);
         
         try {
-            test.millisOfSecond().withValue(1000);
+            test.millisOfSecond().setCopy(1000);
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
-            test.millisOfSecond().withValue(-1);
+            test.millisOfSecond().setCopy(-1);
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testPropertySetTextMilli() {
         LocalTime test = new LocalTime(10, 20, 30, 40);
-        LocalTime copy = test.millisOfSecond().withValue("12");
+        LocalTime copy = test.millisOfSecond().setCopy("12");
         check(test, 10, 20, 30, 40);
         check(copy, 10, 20, 30, 12);
     }

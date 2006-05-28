@@ -1177,22 +1177,21 @@ public final class LocalTime
      * powerful datetime functionality to be easily accessed.
      * <p>
      * The simplest use of this class is as an alternative get method, here used to
-     * get the year '1972' (as an int) and the month 'December' (as a String).
+     * get the minute '30'.
      * <pre>
-     * LocalTime dt = new LocalTime(1972, 12, 3, 0, 0);
-     * int year = dt.year().get();
-     * String monthStr = dt.month().getAsText();
+     * LocalTime dt = new LocalTime(12, 30);
+     * int year = dt.minuteOfHour().get();
      * </pre>
      * <p>
-     * Methods are also provided that allow date modification. These return new instances
-     * of DateTime - they do not modify the original. The example below yields two
-     * independent immutable date objects 20 years apart.
+     * Methods are also provided that allow time modification. These return
+     * new instances of LocalTime - they do not modify the original. The example
+     * below yields two independent immutable date objects 2 hours apart.
      * <pre>
-     * DateTime dt = new DateTime(1972, 12, 3, 0, 0, 0, 0);
-     * DateTime dt1920 = dt.year().setCopy(1920);
+     * LocalTime dt1230 = new LocalTime(12, 30);
+     * LocalTime dt1430 = dt1230.hourOfDay().setCopy(14);
      * </pre>
      * <p>
-     * LocalTime.Propery itself is thread-safe and immutable, as well as the
+     * LocalTime.Property itself is thread-safe and immutable, as well as the
      * LocalTime being operated on.
      *
      * @author Stephen Colebourne
@@ -1275,7 +1274,7 @@ public final class LocalTime
          * @param value  the value to add to the field in the copy
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime plus(int value) {
+        public LocalTime addCopy(int value) {
             return iInstant.withLocalMillis(iField.add(iInstant.getLocalMillis(), value));
         }
         
@@ -1289,7 +1288,7 @@ public final class LocalTime
          * @param value  the value to add to the field in the copy
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime plus(long value) {
+        public LocalTime addCopy(long value) {
             return iInstant.withLocalMillis(iField.add(iInstant.getLocalMillis(), value));
         }
         
@@ -1297,7 +1296,7 @@ public final class LocalTime
          * Adds to this field in a copy of this LocalTime.
          * If the addition exceeds the maximum value (eg. 23:59) then
          * an exception will be thrown.
-         * Contrast this behaviour to {@link #plus(int)}.
+         * Contrast this behaviour to {@link #addCopy(int)}.
          * <p>
          * The LocalTime attached to this property is unchanged by this call.
          *
@@ -1305,7 +1304,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          * @throws IllegalArgumentException if the result is invalid
          */
-        public LocalTime plusNoWrap(int value) {
+        public LocalTime addNoWrapToCopy(int value) {
             long millis = iField.add(iInstant.getLocalMillis(), value);
             long rounded = iInstant.getChronology().millisOfDay().get(millis);
             if (rounded != millis) {
@@ -1325,7 +1324,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public LocalTime plusWrapField(int value) {
+        public LocalTime addWrapFieldToCopy(int value) {
             return iInstant.withLocalMillis(iField.addWrapField(iInstant.getLocalMillis(), value));
         }
         
@@ -1339,7 +1338,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          * @throws IllegalArgumentException if the value isn't valid
          */
-        public LocalTime withValue(int value) {
+        public LocalTime setCopy(int value) {
             return iInstant.withLocalMillis(iField.set(iInstant.getLocalMillis(), value));
         }
         
@@ -1353,7 +1352,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        public LocalTime withValue(String text, Locale locale) {
+        public LocalTime setCopy(String text, Locale locale) {
             return iInstant.withLocalMillis(iField.set(iInstant.getLocalMillis(), text, locale));
         }
         
@@ -1366,8 +1365,8 @@ public final class LocalTime
          * @return a copy of the LocalTime with the field value changed
          * @throws IllegalArgumentException if the text value isn't valid
          */
-        public LocalTime withValue(String text) {
-            return withValue(text, null);
+        public LocalTime setCopy(String text) {
+            return setCopy(text, null);
         }
         
         //-----------------------------------------------------------------------
@@ -1380,7 +1379,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with this field set to its maximum
          */
         public LocalTime withMaximumValue() {
-            return withValue(getMaximumValue());
+            return setCopy(getMaximumValue());
         }
         
         /**
@@ -1392,7 +1391,7 @@ public final class LocalTime
          * @return a copy of the LocalTime with this field set to its minimum
          */
         public LocalTime withMinimumValue() {
-            return withValue(getMinimumValue());
+            return setCopy(getMinimumValue());
         }
         
         //-----------------------------------------------------------------------
@@ -1406,7 +1405,7 @@ public final class LocalTime
          *
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime roundFloor() {
+        public LocalTime roundFloorCopy() {
             return iInstant.withLocalMillis(iField.roundFloor(iInstant.getLocalMillis()));
         }
         
@@ -1420,7 +1419,7 @@ public final class LocalTime
          *
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime roundCeiling() {
+        public LocalTime roundCeilingCopy() {
             return iInstant.withLocalMillis(iField.roundCeiling(iInstant.getLocalMillis()));
         }
         
@@ -1430,7 +1429,7 @@ public final class LocalTime
          *
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime roundHalfFloor() {
+        public LocalTime roundHalfFloorCopy() {
             return iInstant.withLocalMillis(iField.roundHalfFloor(iInstant.getLocalMillis()));
         }
         
@@ -1440,7 +1439,7 @@ public final class LocalTime
          *
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime roundHalfCeiling() {
+        public LocalTime roundHalfCeilingCopy() {
             return iInstant.withLocalMillis(iField.roundHalfCeiling(iInstant.getLocalMillis()));
         }
         
@@ -1451,7 +1450,7 @@ public final class LocalTime
          *
          * @return a copy of the LocalTime with the field value changed
          */
-        public LocalTime roundHalfEven() {
+        public LocalTime roundHalfEvenCopy() {
             return iInstant.withLocalMillis(iField.roundHalfEven(iInstant.getLocalMillis()));
         }
     }

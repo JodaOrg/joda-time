@@ -30,6 +30,11 @@ import org.joda.time.format.ISODateTimeFormat;
  * TimeOfDay is an immutable partial supporting the hour, minute, second
  * and millisecond fields.
  * <p>
+ * NOTE: This class is effectively deprecated. New applications should
+ * use {@link LocalTime} which has a better internal implementation.
+ * This class has not yet been formally deprecated due to the large number
+ * of existing users.
+ * <p>
  * Calculations on TimeOfDay are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>

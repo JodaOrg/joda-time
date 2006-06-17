@@ -215,14 +215,18 @@ public final class YearMonthDay
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
      * <p>
      * The chronology used will be derived from the object, defaulting to ISO.
+     * <p>
+     * NOTE: Prior to v1.3 the string format was described by
+     * {@link ISODateTimeFormat#dateTimeParser()}. Time ony strings are now rejected.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonthDay(Object instant) {
-        super(instant, null);
+        super(instant, null, ISODateTimeFormat.dateOptionalTimeParser());
     }
 
     /**
@@ -232,18 +236,22 @@ public final class YearMonthDay
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
      * <p>
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
      * The specified chronology overrides that of the object.
+     * <p>
+     * NOTE: Prior to v1.3 the string format was described by
+     * {@link ISODateTimeFormat#dateTimeParser()}. Time only strings are now rejected.
      *
      * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISO default
      * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonthDay(Object instant, Chronology chronology) {
-        super(instant, DateTimeUtils.getChronology(chronology));
+        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.dateOptionalTimeParser());
     }
 
     /**

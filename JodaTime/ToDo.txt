@@ -37,12 +37,9 @@ Ideas
     More instant variations
     May be covered by Partial class now
 
-- LocalDateTime/LocalDate/LocalTime?
-    Possible alternative implementation of contiguous partials
-
 - DurationProperty on DateTime, Period and related?
-    Possibly a clear way to do duration stuff, however adding plusDays() type
-    methods might be simpler.
+    Possibly a clear way to do duration stuff, however plusDays() has
+    probably dealt with this
 
 - Factories for DateTime classes?
     Perhaps, but the constructors cover this now.

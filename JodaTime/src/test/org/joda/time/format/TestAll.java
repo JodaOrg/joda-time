@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestDateTimeFormatStyle.suite());
         suite.addTest(TestISODateTimeFormat.suite());
         suite.addTest(TestISODateTimeFormat_Fields.suite());
+        suite.addTest(TestISODateTimeFormatParsing.suite());
         suite.addTest(TestDateTimeFormatterBuilder.suite());
         
         suite.addTest(TestPeriodFormatter.suite());

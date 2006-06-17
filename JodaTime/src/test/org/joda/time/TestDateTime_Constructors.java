@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -265,6 +265,109 @@ public class TestDateTime_Constructors extends TestCase {
         }
     }
 
+    public void testConstructor_ObjectString1() throws Throwable {
+        DateTime test = new DateTime("1972-12-03");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(3, test.getDayOfMonth());
+        assertEquals(0, test.getHourOfDay());
+        assertEquals(0, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString2() throws Throwable {
+        DateTime test = new DateTime("2006-06-03T+14:00");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(2006, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(2, test.getDayOfMonth());  // timezone
+        assertEquals(11, test.getHourOfDay());  // test zone is +1, so shift back (14 - 1) hours from midnight
+        assertEquals(0, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString3() throws Throwable {
+        DateTime test = new DateTime("1972-12-03T10:20:30.040");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(3, test.getDayOfMonth());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString4() throws Throwable {
+        DateTime test = new DateTime("2006-06-03T10:20:30.040+14:00");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(2006, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(2, test.getDayOfMonth());  // timezone
+        assertEquals(21, test.getHourOfDay());  // test zone is +1, so shift back (14 - 1) hours from 10am
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString5() throws Throwable {
+        DateTime test = new DateTime("T10:20:30.040");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(1, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString6() throws Throwable {
+        DateTime test = new DateTime("T10:20:30.040+14:00");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(1969, test.getYear());  // timezone
+        assertEquals(12, test.getMonthOfYear());  // timezone
+        assertEquals(31, test.getDayOfMonth());  // timezone
+        assertEquals(21, test.getHourOfDay());  // test zone is +1, so shift back (14 - 1) hours from 10am
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString7() throws Throwable {
+        DateTime test = new DateTime("10");
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(10, test.getYear());
+        assertEquals(1, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+        assertEquals(0, test.getHourOfDay());
+        assertEquals(0, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectStringEx1() throws Throwable {
+        try {
+            new DateTime("10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_ObjectStringEx2() throws Throwable {
+        try {
+            new DateTime("10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Test constructor (Object, DateTimeZone)
      */

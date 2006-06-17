@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -232,9 +232,6 @@ public class TestYearMonthDay_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    /**
-     * Test constructor (Object)
-     */
     public void testConstructor_Object() throws Throwable {
         Date date = new Date(TEST_TIME1);
         YearMonthDay test = new YearMonthDay(date);
@@ -244,9 +241,6 @@ public class TestYearMonthDay_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
-    /**
-     * Test constructor (Object=null)
-     */
     public void testConstructor_nullObject() throws Throwable {
         YearMonthDay test = new YearMonthDay((Object) null);
         assertEquals(ISO_UTC, test.getChronology());
@@ -255,6 +249,83 @@ public class TestYearMonthDay_Constructors extends TestCase {
         assertEquals(9, test.getDayOfMonth());
     }
 
+    public void testConstructor_ObjectString1() throws Throwable {
+        YearMonthDay test = new YearMonthDay("1972-12-03");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(3, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectString2() throws Throwable {
+        YearMonthDay test = new YearMonthDay("1972-12-03T+14:00");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(2, test.getDayOfMonth());  // timezone
+    }
+
+    public void testConstructor_ObjectString3() throws Throwable {
+        YearMonthDay test = new YearMonthDay("1972-12-03T10:20:30.040");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(3, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectString4() throws Throwable {
+        YearMonthDay test = new YearMonthDay("1972-12-03T10:20:30.040+14:00");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(2, test.getDayOfMonth());  // timezone
+    }
+
+    public void testConstructor_ObjectString5() throws Throwable {
+        YearMonthDay test = new YearMonthDay("10");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getYear());
+        assertEquals(1, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+    }
+
+    public void testConstructor_ObjectStringEx1() throws Throwable {
+        try {
+            new YearMonthDay("T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_ObjectStringEx2() throws Throwable {
+        try {
+            new YearMonthDay("T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_ObjectStringEx3() throws Throwable {
+        try {
+            new YearMonthDay("10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testConstructor_ObjectStringEx4() throws Throwable {
+        try {
+            new YearMonthDay("10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Test constructor (Object, Chronology)
      */

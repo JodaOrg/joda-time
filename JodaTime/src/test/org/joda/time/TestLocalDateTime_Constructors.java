@@ -361,35 +361,44 @@ public class TestLocalDateTime_Constructors extends TestCase {
         assertEquals(0, test.getMillisOfSecond());
     }
 
-    public void testConstructor_ObjectString5() throws Throwable {
-        LocalDateTime test = new LocalDateTime("1972-04-06T10:20:30.040+06:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(1972, test.getYear());
-        assertEquals(4, test.getMonthOfYear());
-        assertEquals(6, test.getDayOfMonth());
-        assertEquals(10 + OFFSET_MOSCOW - 6, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(30, test.getSecondOfMinute());
-        assertEquals(40, test.getMillisOfSecond());
-    }
-
     public void testConstructor_ObjectStringEx1() throws Throwable {
         try {
-            new LocalDateTime("T10:20:30.040");
+            new LocalDateTime("1970-04-06T+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testConstructor_ObjectStringEx2() throws Throwable {
         try {
-            new LocalDateTime("T10:20:30.040+14:00");
+            new LocalDateTime("1970-04-06T10:20:30.040+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testConstructor_ObjectStringEx3() throws Throwable {
         try {
-            new LocalDateTime("1970-04-06T+14:00");
+            new LocalDateTime("T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx4() throws Throwable {
+        try {
+            new LocalDateTime("T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx5() throws Throwable {
+        try {
+            new LocalDateTime("10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx6() throws Throwable {
+        try {
+            new LocalDateTime("10:20:30.040+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

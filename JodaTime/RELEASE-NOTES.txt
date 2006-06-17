@@ -48,6 +48,10 @@ Enhancements since 1.2
 - DateTimeFormat
   Added method to retrieve the format pattern for a given style and locale.
 
+- ISODateTimeFormat
+  New formats for parsing a datetime/date/time without a time zone, and for
+  parsing a date (mandatory) with an optional time
+
 
 Compatibility with 1.2
 ----------------------
@@ -65,6 +69,10 @@ Serialization compatible - Yes
 Data compatible - Yes
   - DateTimeZone data updated to version 2006g
 
+Semantic compatible - Yes, except
+  - YearMonthDay constructor no longer accepts time only strings
+  - TimeOfDay constructor no longer accepts strings including a date
+
 
 Deprecations since 1.2
 ----------------------
@@ -75,6 +83,13 @@ Deprecations since 1.2
 
 Bug fixes since 1.2
 -------------------
+- YearMonthDay
+  Constructing with String value no longer accepts a time only string
+
+- TimeOfDay
+  Constructing with String value no longer accepts date fields
+  Constructing with String now treats 'T' prefix as optional
+
 - DateTime/DateMidnight/MutableDateTime/AbstractInstant
    Conversion methods toDateTime, toDateTimeISO, toMutableDateTime, and
     toMutableDateTimeISO now preserve the time zone.
@@ -99,10 +114,6 @@ Bug fixes since 1.2
 - ISO/Gregorian/Julian/Coptic/EthiopicChronology
   Fixed overflow when getting year field from instants at Long.MAX_VALUE and
   LONG.MIN_VALUE
-
-- TimeOfDay
-  Constructing with String value no longer accepts date fields
-  Constructing with String now treats 'T' prefix as optional
 
 - DayOfYear field
   Better error messages

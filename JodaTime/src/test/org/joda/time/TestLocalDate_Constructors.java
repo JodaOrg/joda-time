@@ -23,7 +23,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 
@@ -36,7 +35,6 @@ public class TestLocalDate_Constructors extends TestCase {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
@@ -259,30 +257,59 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+    public void testConstructor_ObjectString3() throws Throwable {
+        LocalDate test = new LocalDate("1972-02");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1972, test.getYear());
+        assertEquals(2, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+    }
+
     public void testConstructor_ObjectStringEx1() throws Throwable {
         try {
-            new LocalDate("1970-04-06T10:20:30.040");
+            new LocalDate("1970-04-06T+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testConstructor_ObjectStringEx2() throws Throwable {
         try {
-            new LocalDate("1970-04-06T10:20:30.040+14:00");
+            new LocalDate("1970-04-06T10:20:30.040");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testConstructor_ObjectStringEx3() throws Throwable {
         try {
-            new LocalDate("T10:20:30.040+14:00");
+            new LocalDate("1970-04-06T10:20:30.040+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testConstructor_ObjectStringEx4() throws Throwable {
         try {
-            new LocalDate("1970-04-06T+14:00");
+            new LocalDate("T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx5() throws Throwable {
+        try {
+            new LocalDate("T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx6() throws Throwable {
+        try {
+            new LocalDate("10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx7() throws Throwable {
+        try {
+            new LocalDate("10:20:30.040+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

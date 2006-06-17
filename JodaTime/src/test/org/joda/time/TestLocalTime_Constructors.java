@@ -327,15 +327,6 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     public void testConstructor_ObjectString2() throws Throwable {
-        LocalTime test = new LocalTime("10:20:30.040+04:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(10 + OFFSET_LONDON - 4, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(30, test.getSecondOfMinute());
-        assertEquals(40, test.getMillisOfSecond());
-    }
-
-    public void testConstructor_ObjectString3() throws Throwable {
         LocalTime test = new LocalTime("T10:20:30.040");
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(10, test.getHourOfDay());
@@ -344,20 +335,20 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
-    public void testConstructor_ObjectString4() throws Throwable {
-        LocalTime test = new LocalTime("T10:20:30.040+04:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(10 + OFFSET_LONDON - 4, test.getHourOfDay());
-        assertEquals(20, test.getMinuteOfHour());
-        assertEquals(30, test.getSecondOfMinute());
-        assertEquals(40, test.getMillisOfSecond());
-    }
-
-    public void testConstructor_ObjectString5() throws Throwable {
+    public void testConstructor_ObjectString3() throws Throwable {
         LocalTime test = new LocalTime("10:20");
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(10, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString4() throws Throwable {
+        LocalTime test = new LocalTime("10");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(0, test.getMinuteOfHour());
         assertEquals(0, test.getSecondOfMinute());
         assertEquals(0, test.getMillisOfSecond());
     }
@@ -371,14 +362,35 @@ public class TestLocalTime_Constructors extends TestCase {
 
     public void testConstructor_ObjectStringEx2() throws Throwable {
         try {
-            new LocalTime("1970-04-06T10:20:30.040+14:00");
+            new LocalTime("1970-04-06T+14:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }
 
     public void testConstructor_ObjectStringEx3() throws Throwable {
         try {
-            new LocalTime("1970-04-06T+14:00");
+            new LocalTime("1970-04-06T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx4() throws Throwable {
+        try {
+            new LocalTime("1970-04-06T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx5() throws Throwable {
+        try {
+            new LocalTime("T10:20:30.040+04:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx6() throws Throwable {
+        try {
+            new LocalTime("10:20:30.040+04:00");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -348,6 +348,88 @@ public class TestTimeOfDay_Constructors extends TestCase {
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString1() throws Throwable {
+        TimeOfDay test = new TimeOfDay("10:20:30.040");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString2() throws Throwable {
+        TimeOfDay test = new TimeOfDay("10:20:30.040+04:00");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10 + OFFSET - 4, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString3() throws Throwable {
+        TimeOfDay test = new TimeOfDay("T10:20:30.040");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString4() throws Throwable {
+        TimeOfDay test = new TimeOfDay("T10:20:30.040+04:00");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10 + OFFSET - 4, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString5() throws Throwable {
+        TimeOfDay test = new TimeOfDay("10:20");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString6() throws Throwable {
+        TimeOfDay test = new TimeOfDay("10");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(0, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectStringEx1() throws Throwable {
+        try {
+            new TimeOfDay("1970-04-06");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx2() throws Throwable {
+        try {
+            new TimeOfDay("1970-04-06T+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx3() throws Throwable {
+        try {
+            new TimeOfDay("1970-04-06T10:20:30.040");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectStringEx4() throws Throwable {
+        try {
+            new TimeOfDay("1970-04-06T10:20:30.040+14:00");
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

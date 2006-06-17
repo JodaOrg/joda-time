@@ -286,7 +286,7 @@ public final class LocalTime
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadablePartial, ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#timeParser()}.
+     * The String formats are described by {@link ISODateTimeFormat#localTimeParser()}.
      *
      * @param instant  the datetime object
      * @throws IllegalArgumentException if the instant is invalid
@@ -306,7 +306,7 @@ public final class LocalTime
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadablePartial, ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#timeParser()}.
+     * The String formats are described by {@link ISODateTimeFormat#localTimeParser()}.
      *
      * @param instant  the datetime object
      * @param zone  the time zone
@@ -317,7 +317,7 @@ public final class LocalTime
         Chronology chronology = converter.getChronology(instant, zone);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.timeParser());
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localTimeParser());
         iLocalMillis = iChronology.getDateTimeMillis(0L, values[0], values[1], values[2], values[3]);
     }
 
@@ -331,7 +331,7 @@ public final class LocalTime
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadablePartial, ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#timeParser()}.
+     * The String formats are described by {@link ISODateTimeFormat#localTimeParser()}.
      *
      * @param instant  the datetime object
      * @param chronology  the chronology
@@ -342,7 +342,7 @@ public final class LocalTime
         chronology = converter.getChronology(instant, chronology);
         chronology = DateTimeUtils.getChronology(chronology);
         iChronology = chronology.withUTC();
-        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.timeParser());
+        int[] values = converter.getPartialValues(this, instant, chronology, ISODateTimeFormat.localTimeParser());
         iLocalMillis = iChronology.getDateTimeMillis(0L, values[0], values[1], values[2], values[3]);
     }
 

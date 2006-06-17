@@ -261,10 +261,12 @@ public final class TimeOfDay
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
-     * <p>
-     * The string format must begin with a 'T' to be recognised, such as 'T10:20'.
+     * The String formats are described by {@link ISODateTimeFormat#timeParser()}.
      * <p>
      * The chronology used will be derived from the object, defaulting to ISO.
+     * <p>
+     * NOTE: Prior to v1.3 the string format was described by
+     * {@link ISODateTimeFormat#dateTimeParser()}. Dates are now rejected.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
@@ -280,20 +282,15 @@ public final class TimeOfDay
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
-     * <p>
-     * The string format must begin with a 'T' to be recognised, such as 'T10:20'.
+     * The String formats are described by {@link ISODateTimeFormat#timeParser()}.
      * <p>
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed
      * without reference to a timezone (by switching to UTC).
      * The specified chronology overrides that of the object.
      * <p>
-     * Note that as from version 1.2, the default converters go to extra
-     * effort to maintain the field values of the input Date or Calendar.
-     * This means that the differences in timezone data between Joda-Time
-     * and each JDK version are now handled correctly. If you just want to
-     * use the milliseconds value without conversion you must use
-     * {@link #TimeOfDay(long, Chronology)}.
+     * NOTE: Prior to v1.3 the string format was described by
+     * {@link ISODateTimeFormat#dateTimeParser()}. Dates are now rejected.
      *
      * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISO default

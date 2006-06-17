@@ -24,6 +24,7 @@ import java.util.Locale;
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.
@@ -152,6 +153,7 @@ public final class DateTime
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
@@ -174,6 +176,7 @@ public final class DateTime
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
      * @param instant  the datetime object, null means now
      * @param zone  the time zone, null means default time zone
@@ -194,6 +197,7 @@ public final class DateTime
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
      * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISO in default zone

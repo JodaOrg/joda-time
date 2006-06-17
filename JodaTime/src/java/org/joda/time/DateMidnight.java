@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
+import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * DateMidnight defines a date where the time component is fixed at midnight.
@@ -164,6 +165,7 @@ public final class DateMidnight
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
      * @param instant  the datetime object, null means now
      * @throws IllegalArgumentException if the instant is invalid
@@ -187,6 +189,7 @@ public final class DateMidnight
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
      * @param instant  the datetime object, null means now
      * @param zone  the time zone, null means default time zone
@@ -208,6 +211,7 @@ public final class DateMidnight
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}.
      *
      * @param instant  the datetime object, null means now
      * @param chronology  the chronology, null means ISOChronology in default zone

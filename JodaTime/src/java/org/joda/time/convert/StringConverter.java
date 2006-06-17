@@ -81,13 +81,7 @@ class StringConverter extends AbstractConverter
      */
     public int[] getPartialValues(ReadablePartial fieldSource, Object object, Chronology chrono, DateTimeFormatter parser) {
         long millis = parser.withChronology(chrono).parseMillis((String) object);
-        int size = fieldSource.size();
-        int[] values = new int[size];
-        for (int i = 0; i < size; i++) {
-            values[i] = fieldSource.getFieldType(i).getField(chrono).get(millis);
-        }
-        chrono.validate(fieldSource, values);
-        return values;
+        return chrono.get(fieldSource, millis);
     }
 
     //-----------------------------------------------------------------------

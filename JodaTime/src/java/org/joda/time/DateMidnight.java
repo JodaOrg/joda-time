@@ -281,7 +281,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instant with different millis.
+     * Returns a copy of this date with a different millisecond instant.
      * The returned object will have a local time of midnight.
      * <p>
      * Only the millis will change, the chronology and time zone are kept.
@@ -297,7 +297,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this instant with a different chronology, potentially
+     * Returns a copy of this date with a different chronology, potentially
      * changing the day in unexpected ways.
      * <p>
      * This method creates a new DateMidnight using the midnight millisecond value
@@ -322,7 +322,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this instant with a different time zone, preserving the day
+     * Returns a copy of this date with a different time zone, preserving the day
      * The returned object will have a local time of midnight in the new zone on
      * the same day as the original instant.
      *
@@ -342,7 +342,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the partial set of fields replacing those
+     * Returns a copy of this date with the partial set of fields replacing those
      * from this instance.
      * <p>
      * For example, if the partial is a <code>LocalDate</code> then the date fields
@@ -361,7 +361,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified field set to a new value.
+     * Returns a copy of this date with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>dayOfMonth</code> then the day of month
      * field would be changed in the returned instance.
@@ -388,7 +388,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the value of the specified field increased.
+     * Returns a copy of this date with the value of the specified field increased.
      * <p>
      * If the addition is zero or the field is null, then <code>this</code> is returned.
      * <p>
@@ -418,7 +418,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this date with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * 
@@ -436,7 +436,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this date with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * 
@@ -453,7 +453,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified period added.
+     * Returns a copy of this date with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -477,9 +477,9 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this date with the specified duration added.
      * <p>
-     * If the amount is zero or null, then <code>this</code> is returned.
+     * If the amount is zero, then <code>this</code> is returned.
      * 
      * @param duration  the duration, in millis, to add to this one
      * @return a copy of this datetime with the duration added
@@ -490,7 +490,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this date with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -503,7 +503,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified period added.
+     * Returns a copy of this date with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -521,7 +521,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime plus the specified number of years.
+     * Returns a copy of this date plus the specified number of years.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -545,7 +545,7 @@ public final class DateMidnight
     }
 
     /**
-     * Returns a new datetime plus the specified number of months.
+     * Returns a copy of this date plus the specified number of months.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -569,7 +569,7 @@ public final class DateMidnight
     }
 
     /**
-     * Returns a new datetime plus the specified number of weeks.
+     * Returns a copy of this date plus the specified number of weeks.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -593,7 +593,7 @@ public final class DateMidnight
     }
 
     /**
-     * Returns a new datetime plus the specified number of days.
+     * Returns a copy of this date plus the specified number of days.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -618,7 +618,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration take away.
+     * Returns a copy of this date with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -631,7 +631,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified duration take away.
+     * Returns a copy of this date with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -644,7 +644,7 @@ public final class DateMidnight
     }
 
     /**
-     * Gets a copy of this datetime with the specified period take away.
+     * Returns a copy of this date with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -662,7 +662,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime minus the specified number of years.
+     * Returns a copy of this date minus the specified number of years.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -686,7 +686,7 @@ public final class DateMidnight
     }
 
     /**
-     * Returns a new datetime minus the specified number of months.
+     * Returns a copy of this date minus the specified number of months.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -710,7 +710,7 @@ public final class DateMidnight
     }
 
     /**
-     * Returns a new datetime minus the specified number of weeks.
+     * Returns a copy of this date minus the specified number of weeks.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -734,7 +734,7 @@ public final class DateMidnight
     }
 
     /**
-     * Returns a new datetime minus the specified number of days.
+     * Returns a copy of this date minus the specified number of days.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -778,7 +778,8 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this object to a YearMonthDay using the same date and chronology.
+     * Converts this object to a <code>YearMonthDay</code> using the
+     * same date and chronology.
      * 
      * @return a YearMonthDay using the same millis and chronology
      */
@@ -787,7 +788,8 @@ public final class DateMidnight
     }
 
     /**
-     * Converts this object to a LocalDate with the same date and chronology.
+     * Converts this object to a <code>LocalDate</code> with the
+     * same date and chronology.
      *
      * @return a LocalDate with the same date and chronology
      */
@@ -796,7 +798,8 @@ public final class DateMidnight
     }
 
     /**
-     * Converts this object to an Interval encompassing the whole of this day.
+     * Converts this object to an <code>Interval</code> encompassing
+     * the whole of this day.
      * <p>
      * The interval starts at midnight 00:00 and ends at 00:00 the following day,
      * (which is not included in the interval, as intervals are half-open).
@@ -812,8 +815,7 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the era field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the era field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -828,8 +830,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the century of era field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the century of era field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -844,8 +845,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the year of era field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year of era field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -860,8 +860,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the year of century field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year of century field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -876,8 +875,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the year field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -892,8 +890,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the weekyear field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the weekyear field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -908,8 +905,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the month of year field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the month of year field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -924,8 +920,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the week of weekyear field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the week of weekyear field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -940,8 +935,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the day of year field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of year field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -956,8 +950,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the day of month field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of month field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -972,8 +965,7 @@ public final class DateMidnight
     }
 
     /**
-     * Sets the day of week field in a copy of this DateMidnight, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of week field updated.
      * <p>
      * DateMidnight is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -990,7 +982,7 @@ public final class DateMidnight
     // Date properties
     //-----------------------------------------------------------------------
     /**
-     * Get the era property.
+     * Get the era property which provides access to advanced functionality.
      * 
      * @return the era property
      */
@@ -999,7 +991,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the century of era property.
+     * Get the century of era property which provides access to advanced functionality.
      * 
      * @return the year of era property
      */
@@ -1008,7 +1000,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the year of century property.
+     * Get the year of century property which provides access to advanced functionality.
      * 
      * @return the year of era property
      */
@@ -1017,7 +1009,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the year of era property.
+     * Get the year of era property which provides access to advanced functionality.
      * 
      * @return the year of era property
      */
@@ -1026,7 +1018,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the year property.
+     * Get the year property which provides access to advanced functionality.
      * 
      * @return the year property
      */
@@ -1035,7 +1027,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the year of a week based year property.
+     * Get the year of a week based year property which provides access to advanced functionality.
      * 
      * @return the year of a week based year property
      */
@@ -1044,7 +1036,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the month of year property.
+     * Get the month of year property which provides access to advanced functionality.
      * 
      * @return the month of year property
      */
@@ -1053,7 +1045,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the week of a week based year property.
+     * Get the week of a week based year property which provides access to advanced functionality.
      * 
      * @return the week of a week based year property
      */
@@ -1062,7 +1054,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the day of year property.
+     * Get the day of year property which provides access to advanced functionality.
      * 
      * @return the day of year property
      */
@@ -1071,7 +1063,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the day of month property.
+     * Get the day of month property which provides access to advanced functionality.
      * 
      * @return the day of month property
      */
@@ -1080,7 +1072,7 @@ public final class DateMidnight
     }
 
     /**
-     * Get the day of week property.
+     * Get the day of week property which provides access to advanced functionality.
      * 
      * @return the day of week property
      */

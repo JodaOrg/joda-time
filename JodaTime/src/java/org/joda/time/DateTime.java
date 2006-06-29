@@ -341,7 +341,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with different millis.
+     * Returns a copy of this datetime with different millis.
      * <p>
      * The returned object will be either be a new instance or <code>this</code>.
      * Only the millis will change, the chronology and time zone are kept.
@@ -354,7 +354,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with a different chronology.
+     * Returns a copy of this datetime with a different chronology.
      * <p>
      * The returned object will be either be a new instance or <code>this</code>.
      * Only the chronology will change, the millis are kept.
@@ -369,7 +369,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with a different time zone, preserving the
+     * Returns a copy of this datetime with a different time zone, preserving the
      * millisecond instant.
      * <p>
      * This method is useful for finding the local time in another timezone.
@@ -390,7 +390,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with a different time zone, preserving the
+     * Returns a copy of this datetime with a different time zone, preserving the
      * field values.
      * <p>
      * This method is useful for finding the millisecond time in another timezone.
@@ -419,7 +419,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified date, retaining the time fields.
+     * Returns a copy of this datetime with the specified date, retaining the time fields.
      * <p>
      * If the date is already the date passed in, then <code>this</code> is returned.
      * <p>
@@ -444,7 +444,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified time, retaining the date fields.
+     * Returns a copy of this datetime with the specified time, retaining the date fields.
      * <p>
      * If the time is already the time passed in, then <code>this</code> is returned.
      * <p>
@@ -472,7 +472,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the partial set of fields replacing those
+     * Returns a copy of this datetime with the partial set of fields replacing those
      * from this instance.
      * <p>
      * For example, if the partial is a <code>TimeOfDay</code> then the time fields
@@ -491,7 +491,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified field set to a new value.
+     * Returns a copy of this datetime with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>hourOfDay</code> then the hour of day
      * field would be changed in the returned instance.
@@ -518,7 +518,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the value of the specified field increased.
+     * Returns a copy of this datetime with the value of the specified field increased.
      * <p>
      * If the addition is zero or the field is null, then <code>this</code> is returned.
      * <p>
@@ -548,7 +548,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * 
@@ -566,7 +566,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * 
@@ -583,7 +583,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified period added.
+     * Returns a copy of this datetime with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -607,7 +607,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -620,7 +620,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified duration added.
+     * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -633,7 +633,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified period added.
+     * Returns a copy of this datetime with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -651,7 +651,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime plus the specified number of years.
+     * Returns a copy of this datetime plus the specified number of years.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -675,7 +675,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of months.
+     * Returns a copy of this datetime plus the specified number of months.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -699,7 +699,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of weeks.
+     * Returns a copy of this datetime plus the specified number of weeks.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -723,7 +723,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of days.
+     * Returns a copy of this datetime plus the specified number of days.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -747,7 +747,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of hours.
+     * Returns a copy of this datetime plus the specified number of hours.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -771,7 +771,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of minutes.
+     * Returns a copy of this datetime plus the specified number of minutes.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -795,7 +795,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of seconds.
+     * Returns a copy of this datetime plus the specified number of seconds.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -819,7 +819,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime plus the specified number of millis.
+     * Returns a copy of this datetime plus the specified number of millis.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -844,7 +844,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with the specified duration take away.
+     * Returns a copy of this datetime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -857,7 +857,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified duration take away.
+     * Returns a copy of this datetime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * 
@@ -870,7 +870,7 @@ public final class DateTime
     }
 
     /**
-     * Gets a copy of this datetime with the specified period take away.
+     * Returns a copy of this datetime with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -888,7 +888,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime minus the specified number of years.
+     * Returns a copy of this datetime minus the specified number of years.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -912,7 +912,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of months.
+     * Returns a copy of this datetime minus the specified number of months.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -936,7 +936,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of weeks.
+     * Returns a copy of this datetime minus the specified number of weeks.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -960,7 +960,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of days.
+     * Returns a copy of this datetime minus the specified number of days.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -984,7 +984,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of hours.
+     * Returns a copy of this datetime minus the specified number of hours.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -1008,7 +1008,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of minutes.
+     * Returns a copy of this datetime minus the specified number of minutes.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -1032,7 +1032,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of seconds.
+     * Returns a copy of this datetime minus the specified number of seconds.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -1056,7 +1056,7 @@ public final class DateTime
     }
 
     /**
-     * Returns a new datetime minus the specified number of millis.
+     * Returns a copy of this datetime minus the specified number of millis.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -1100,7 +1100,8 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Converts this object to a DateMidnight using the same millis and chronology.
+     * Converts this object to a <code>DateMidnight</code> using the
+     * same millis and chronology.
      * 
      * @return a DateMidnight using the same millis and chronology
      */
@@ -1109,7 +1110,8 @@ public final class DateTime
     }
 
     /**
-     * Converts this object to a YearMonthDay using the same millis and chronology.
+     * Converts this object to a <code>YearMonthDay</code> using the
+     * same millis and chronology.
      * 
      * @return a YearMonthDay using the same millis and chronology
      */
@@ -1118,7 +1120,8 @@ public final class DateTime
     }
 
     /**
-     * Converts this object to a TimeOfDay using the same millis and chronology.
+     * Converts this object to a <code>TimeOfDay</code> using the
+     * same millis and chronology.
      * 
      * @return a TimeOfDay using the same millis and chronology
      */
@@ -1127,7 +1130,8 @@ public final class DateTime
     }
 
     /**
-     * Converts this object to a LocalDateTime with the same datetime and chronology.
+     * Converts this object to a <code>LocalDateTime</code> with
+     * the same datetime and chronology.
      *
      * @return a LocalDateTime with the same datetime and chronology
      */
@@ -1136,7 +1140,8 @@ public final class DateTime
     }
 
     /**
-     * Converts this object to a LocalDate with the same date and chronology.
+     * Converts this object to a <code>LocalDate</code> with the
+     * same date and chronology.
      *
      * @return a LocalDate with the same date and chronology
      */
@@ -1145,7 +1150,8 @@ public final class DateTime
     }
 
     /**
-     * Converts this object to a LocalTime with the same time and chronology.
+     * Converts this object to a <code>LocalTime</code> with the
+     * same time and chronology.
      *
      * @return a LocalTime with the same time and chronology
      */
@@ -1155,8 +1161,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the era field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the era field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1171,8 +1176,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the century of era field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the century of era field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1187,8 +1191,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the year of era field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the year of era field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1203,8 +1206,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the year of century field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the year of century field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1219,8 +1221,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the year field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the year field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1235,8 +1236,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the weekyear field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the weekyear field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1251,8 +1251,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the month of year field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the month of year field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1267,8 +1266,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the week of weekyear field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the week of weekyear field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1283,8 +1281,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the day of year field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the day of year field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1299,8 +1296,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the day of month field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the day of month field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1315,8 +1311,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the day of week field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the day of week field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1332,8 +1327,7 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the hour of day field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the hour of day field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1348,8 +1342,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the minute of hour field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the minute of hour updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1364,8 +1357,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the second of minute field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the second of minute field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1380,8 +1372,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the millis of second field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the millis of second field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1396,8 +1387,7 @@ public final class DateTime
     }
 
     /**
-     * Sets the millis of day field in a copy of this DateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the millis of day field updated.
      * <p>
      * DateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1414,7 +1404,7 @@ public final class DateTime
     // Date properties
     //-----------------------------------------------------------------------
     /**
-     * Get the era property.
+     * Get the era property which provides access to advanced functionality.
      * 
      * @return the era property
      */
@@ -1423,7 +1413,7 @@ public final class DateTime
     }
 
     /**
-     * Get the century of era property.
+     * Get the century of era property which provides access to advanced functionality.
      * 
      * @return the year of era property
      */
@@ -1432,7 +1422,7 @@ public final class DateTime
     }
 
     /**
-     * Get the year of century property.
+     * Get the year of century property which provides access to advanced functionality.
      * 
      * @return the year of era property
      */
@@ -1441,7 +1431,7 @@ public final class DateTime
     }
 
     /**
-     * Get the year of era property.
+     * Get the year of era property which provides access to advanced functionality.
      * 
      * @return the year of era property
      */
@@ -1450,7 +1440,7 @@ public final class DateTime
     }
 
     /**
-     * Get the year property.
+     * Get the year property which provides access to advanced functionality.
      * 
      * @return the year property
      */
@@ -1459,7 +1449,7 @@ public final class DateTime
     }
 
     /**
-     * Get the year of a week based year property.
+     * Get the year of a week based year property which provides access to advanced functionality.
      * 
      * @return the year of a week based year property
      */
@@ -1468,7 +1458,7 @@ public final class DateTime
     }
 
     /**
-     * Get the month of year property.
+     * Get the month of year property which provides access to advanced functionality.
      * 
      * @return the month of year property
      */
@@ -1477,7 +1467,7 @@ public final class DateTime
     }
 
     /**
-     * Get the week of a week based year property.
+     * Get the week of a week based year property which provides access to advanced functionality.
      * 
      * @return the week of a week based year property
      */
@@ -1486,7 +1476,7 @@ public final class DateTime
     }
 
     /**
-     * Get the day of year property.
+     * Get the day of year property which provides access to advanced functionality.
      * 
      * @return the day of year property
      */
@@ -1495,7 +1485,7 @@ public final class DateTime
     }
 
     /**
-     * Get the day of month property.
+     * Get the day of month property which provides access to advanced functionality.
      * 
      * @return the day of month property
      */
@@ -1504,7 +1494,7 @@ public final class DateTime
     }
 
     /**
-     * Get the day of week property.
+     * Get the day of week property which provides access to advanced functionality.
      * 
      * @return the day of week property
      */
@@ -1515,7 +1505,7 @@ public final class DateTime
     // Time properties
     //-----------------------------------------------------------------------
     /**
-     * Get the hour of day field property
+     * Get the hour of day field property which provides access to advanced functionality.
      * 
      * @return the hour of day property
      */
@@ -1524,7 +1514,7 @@ public final class DateTime
     }
 
     /**
-     * Get the minute of day property
+     * Get the minute of day property which provides access to advanced functionality.
      * 
      * @return the minute of day property
      */
@@ -1533,7 +1523,7 @@ public final class DateTime
     }
 
     /**
-     * Get the minute of hour field property
+     * Get the minute of hour field property which provides access to advanced functionality.
      * 
      * @return the minute of hour property
      */
@@ -1542,7 +1532,7 @@ public final class DateTime
     }
 
     /**
-     * Get the second of day property
+     * Get the second of day property which provides access to advanced functionality.
      * 
      * @return the second of day property
      */
@@ -1551,7 +1541,7 @@ public final class DateTime
     }
 
     /**
-     * Get the second of minute field property
+     * Get the second of minute field property which provides access to advanced functionality.
      * 
      * @return the second of minute property
      */
@@ -1560,7 +1550,7 @@ public final class DateTime
     }
 
     /**
-     * Get the millis of day property
+     * Get the millis of day property which provides access to advanced functionality.
      * 
      * @return the millis of day property
      */
@@ -1569,7 +1559,7 @@ public final class DateTime
     }
 
     /**
-     * Get the millis of second property
+     * Get the millis of second property which provides access to advanced functionality.
      * 
      * @return the millis of second property
      */

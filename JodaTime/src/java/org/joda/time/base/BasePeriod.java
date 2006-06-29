@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -128,14 +128,13 @@ public abstract class BasePeriod
      * Creates a period from the given duration and end point.
      * <p>
      * The two partials must contain the same fields, thus you can
-     * specify two YearMonthDay objects, or two TimeOfDay objects,
-     * but not one of each.
-     * As these are Partial objects, time zones have no effect on
-     * the result.
+     * specify two <code>LocalDate</code> objects, or two <code>LocalTime</code>
+     * objects, but not one of each.
+     * As these are Partial objects, time zones have no effect on the result.
      * <p>
      * The two partials must also both be contiguous - see
      * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a
-     * definition. Both YearMonthDay and TimeOfDay are contiguous.
+     * definition. Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
      *
      * @param start  the start of the period, must not be null
      * @param end  the end of the period, must not be null

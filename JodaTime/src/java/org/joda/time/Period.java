@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -150,8 +150,8 @@ public final class Period
      * Creates a period from two partially specified times, calculating
      * by field difference.
      * <p>
-     * The two partials must contain the same fields, thus you can
-     * specify two YearMonthDay objects, or two TimeOfDay objects,
+     * The two partials must contain the same fields, thus you can specify
+     * two <code>LocalDate</code> objects, or two <code>LocalTime</code> objects,
      * but not one of each. Also, the partial may not contain overlapping
      * fields, such as dayOfWeek and dayOfMonth.
      * <p>
@@ -434,15 +434,14 @@ public final class Period
     /**
      * Creates a period from two partially specified times.
      * <p>
-     * The two partials must contain the same fields, thus you can
-     * specify two YearMonthDay objects, or two TimeOfDay objects,
+     * The two partials must contain the same fields, thus you can specify
+     * two <code>LocalDate</code> objects, or two <code>LocalTime</code> objects,
      * but not one of each.
-     * As these are Partial objects, time zones have no effect on
-     * the result.
+     * As these are Partial objects, time zones have no effect on the result.
      * <p>
      * The two partials must also both be contiguous - see
-     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a
-     * definition. Both YearMonthDay and TimeOfDay are contiguous.
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
+     * Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
      * <p>
      * An alternative way of constructing a Period from two Partials
      * is {@link #fieldDifference(ReadablePartial, ReadablePartial)}.
@@ -460,15 +459,14 @@ public final class Period
     /**
      * Creates a period from two partially specified times.
      * <p>
-     * The two partials must contain the same fields, thus you can
-     * specify two YearMonthDay objects, or two TimeOfDay objects,
+     * The two partials must contain the same fields, thus you can specify
+     * two <code>LocalDate</code> objects, or two <code>LocalTime</code> objects,
      * but not one of each.
-     * As these are Partial objects, time zones have no effect on
-     * the result.
+     * As these are Partial objects, time zones have no effect on the result.
      * <p>
      * The two partials must also both be contiguous - see
-     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a
-     * definition. Both YearMonthDay and TimeOfDay are contiguous.
+     * {@link DateTimeUtils#isContiguous(ReadablePartial)} for a definition.
+     * Both <code>LocalDate</code> and <code>LocalTime</code> are contiguous.
      * <p>
      * An alternative way of constructing a Period from two Partials
      * is {@link #fieldDifference(ReadablePartial, ReadablePartial)}.

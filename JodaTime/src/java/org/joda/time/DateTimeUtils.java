@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -291,14 +291,13 @@ public class DateTimeUtils {
      * <p>
      * A partial is contiguous if one field starts where another ends.
      * <p>
-     * For example YearMonthDay is contiguous because DayOfMonth has the
-     * same range (Month) as the unit of the next field (MonthOfYear), and
-     * MonthOfYear has the same range (Year) as the unit of the next field
-     * (Year).
+     * For example <code>LocalDate</code> is contiguous because DayOfMonth has
+     * the same range (Month) as the unit of the next field (MonthOfYear), and
+     * MonthOfYear has the same range (Year) as the unit of the next field (Year).
      * <p>
-     * Similarly, TimeOfDay is contiguous, as it consists of MillisOfSecond,
-     * SecondOfMinute, MinuteOfHour and HourOfDay (note how the names of
-     * each field 'join up').
+     * Similarly, <code>LocalTime</code> is contiguous, as it consists of
+     * MillisOfSecond, SecondOfMinute, MinuteOfHour and HourOfDay (note how
+     * the names of each field 'join up').
      * <p>
      * However, a Year/HourOfDay partial is not contiguous because the range
      * field Day is not equal to the next field Year.

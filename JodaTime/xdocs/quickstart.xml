@@ -21,10 +21,10 @@ Its designed for those of you who are too impatient to read the full
 Joda-Time includes these key datetime classes:
 <ul>
 <li><a href="api-release/org/joda/time/DateTime.html"><code>DateTime</code></a> - Immutable replacement for JDK <code>Calendar</code></li>
-<li><a href="api-release/org/joda/time/MutableDateTime.html"><code>MutableDateTime</code></a> - Mutable replacement for JDK <code>Calendar</code></li>
 <li><a href="api-release/org/joda/time/DateMidnight.html"><code>DateMidnight</code></a> - Immutable class representing a date where the time is forced to midnight</li>
-<li><a href="api-release/org/joda/time/YearMonthDay.html"><code>YearMonthDay</code></a> - Immutable class representing a local date without a time</li>
-<li><a href="api-release/org/joda/time/TimeOfDay.html"><code>TimeOfDay</code></a> - Immutable class representing a time without a date</li>
+<li><a href="api-release/org/joda/time/LocalDate.html"><code>LocalDate</code></a> - Immutable class representing a local date without a time (no time zone)</li>
+<li><a href="api-release/org/joda/time/LocalTime.html"><code>LocalTime</code></a> - Immutable class representing a time without a date (no time zone)</li>
+<li><a href="api-release/org/joda/time/LocalDateTime.html"><code>LocalDateTime</code></a> - Immutable class representing a local date and time (no time zone)</li>
 </ul>
 </p>
 

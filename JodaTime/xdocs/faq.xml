@@ -107,9 +107,10 @@ Querying a field, such as year or hour, will calculate the value from the millis
 </p>
 <p>
 A secondary time interface is  <a href="apidocs/org/joda/time/ReadablePartial.html">ReadablePartial</a>.
-All classes that implement this interface, such as <code>YearMonthDay</code> and <code>TimeOfDay</code>,
+Classes implementing this interface store data in two ways. The 'local' classes, such as <code>LocalDate</code>
+and <code>LocalTime</code> store the number of milliseconds from 1970 without a time zone.
+All other implementations, such as <code>YearMonthDay</code> and <code>TimeOfDay</code>,
 store time as a one int value for each field.
-Thus, there is no additional calculation to return the field values.
 </p>
 </subsection>
 

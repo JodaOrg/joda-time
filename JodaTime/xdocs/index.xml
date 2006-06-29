@@ -31,7 +31,7 @@ public boolean isJoinedInLastThreeMonths(<b>DateTime</b> datetimeJoined) {
   <b>Interval</b> last3Months = new Interval(Period.months(3), new DateTime());
   return last3Months.contains(datetimeJoined);
 }
-public String getBirthMonthText(<b>YearMonthDay</b> dateOfBirth) {
+public String getBirthMonthText(<b>LocalDate</b> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
 </source>

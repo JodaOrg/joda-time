@@ -35,7 +35,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * <p>
  * This class does not represent a day, but the millisecond instant at midnight.
  * If you need a class that represents the whole day, then an {@link Interval} or
- * a {@link YearMonthDay} may be more suitable.
+ * a {@link LocalDate} may be more suitable.
  * <p>
  * This class uses a Chronology internally. The Chronology determines how the
  * millisecond instant value is converted into the date time fields.
@@ -345,7 +345,7 @@ public final class DateMidnight
      * Gets a copy of this datetime with the partial set of fields replacing those
      * from this instance.
      * <p>
-     * For example, if the partial is a <code>YearMonthDay</code> then the date fields
+     * For example, if the partial is a <code>LocalDate</code> then the date fields
      * would be changed in the returned instance.
      * If the partial is null, then <code>this</code> is returned.
      *

@@ -4,7 +4,7 @@
 <title>org.joda.time package</title>
 <!--
 
-    Copyright 2001-2005 Stephen Colebourne
+    Copyright 2001-2006 Stephen Colebourne
   
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -147,30 +147,21 @@ Most users will should not need to be concerned with the back-end implementation
 <h4>Partials</h4>
 <p>
 Partials are like instants, except they do not completely specify a point in
-time. The main interface is <code>ReadablePartial</code>, and implementations
-include <code>TimeOfDay</code> (contains hour, minute, second, and millis) and
-<code>YearMonthDay</code>.
+time. The main interface is <code>ReadablePartial</code>.
 </p>
 <p>
-The API of a partial is remarkably similar to an instant, however there are
-internal differences. <code>DateTime</code> and <code>Instant</code> store a
-long millisecond value internally and calculate field values on demand. The
-partial classes work the other way around, storing field values internally
-and providing a means to resolve to a millisecond value on demand.
+The main implementations are:
+<ul>
+<li><code>LocalTime</code> - A class storing a local time without a date</li>
+<li><code>LocalDate</code> - A class storing a local date without a time</li>
+<li><code>LocalDateTime</code> - A class storing a local datetime</li>
+<li><code>Partial</code> - A class storing any combination of datetime fields, such as dayOfMonth and dayOfWeek</li>
+</ul>
+For consistency, the API of each partial class is similar to that of an instant class.
 </p>
 <p>
-Since a partial does not represent a specific point in time, it must be
-<i>resolved</i> to create a full instant. For example, a <code>TimeOfDay</code>
-might represent 12:30. To convert to a <code>DateTime</code> you must specify
-the missing date fields via one of the <code>toDateTime</code> methods.
-For example,
-<pre>
-    <code>new TimeOfDay("12:30").toDateTime(new DateTime("2004-06-07T06:00"));</code>
-</pre>
-equals
-<pre>
-    <code>new DateTime("2004-06-07T12:30");</code>
-</pre>
+All partial implementations represent a local time, in other words without a time zone.
+Thus, to convert a partial to an instant (which does contain a time zone) requires adding a zone.
 </p>
 
 <h4>Formatting</h4>

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -780,9 +780,9 @@ public final class Partial
 
     //-----------------------------------------------------------------------
     /**
-     * The property class for <code>YearMonthDay</code>.
+     * The property class for <code>Partial</code>.
      * <p>
-     * This class binds a <code>YearMonthDay</code> to a <code>DateTimeField</code>.
+     * This class binds a <code>Partial</code> to a <code>DateTimeField</code>.
      * 
      * @author Stephen Colebourne
      * @since 1.1

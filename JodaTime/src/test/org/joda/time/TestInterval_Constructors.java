@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -53,17 +53,17 @@ public class TestInterval_Constructors extends TestCase {
     private long TEST_TIME_NOW =
             (y2002days + 31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
-    // 2002-04-05
-    private long TEST_TIME1 =
-            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
-            + 12L * DateTimeConstants.MILLIS_PER_HOUR
-            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
-    // 2003-05-06
-    private long TEST_TIME2 =
-            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-            + 14L * DateTimeConstants.MILLIS_PER_HOUR
-            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
+//    // 2002-04-05
+//    private long TEST_TIME1 =
+//            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
+//            + 12L * DateTimeConstants.MILLIS_PER_HOUR
+//            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
+//        
+//    // 2003-05-06
+//    private long TEST_TIME2 =
+//            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
+//            + 14L * DateTimeConstants.MILLIS_PER_HOUR
+//            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
     
     private DateTimeZone originalDateTimeZone = null;
     private TimeZone originalTimeZone = null;
@@ -86,9 +86,9 @@ public class TestInterval_Constructors extends TestCase {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
-        DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        DateTimeZone.setDefault(PARIS);
+        TimeZone.setDefault(PARIS.toTimeZone());
+        Locale.setDefault(Locale.FRANCE);
     }
 
     protected void tearDown() throws Exception {
@@ -200,7 +200,7 @@ public class TestInterval_Constructors extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
-    public void testConstructor_RI_RI8() throws Throwable {
+    public void testConstructor_RI_RI_chronoStart() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, GJChronology.getInstance());
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         Interval test = new Interval(dt1, dt2);
@@ -209,13 +209,31 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(GJChronology.getInstance(), test.getChronology());
     }
 
-    public void testConstructor_RI_RI9() throws Throwable {
+    public void testConstructor_RI_RI_chronoEnd() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, GJChronology.getInstance());
         Interval test = new Interval(dt1, dt2);
         assertEquals(dt1.getMillis(), test.getStartMillis());
         assertEquals(dt2.getMillis(), test.getEndMillis());
         assertEquals(ISOChronology.getInstance(), test.getChronology());
+    }
+
+    public void testConstructor_RI_RI_zones() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0, LONDON);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1, PARIS);
+        Interval test = new Interval(dt1, dt2);
+        assertEquals(dt1.getMillis(), test.getStartMillis());
+        assertEquals(dt2.getMillis(), test.getEndMillis());
+        assertEquals(ISOChronology.getInstance(LONDON), test.getChronology());
+    }
+
+    public void testConstructor_RI_RI_instant() throws Throwable {
+        Instant dt1 = new Instant(12345678L);
+        Instant dt2 = new Instant(22345678L);
+        Interval test = new Interval(dt1, dt2);
+        assertEquals(12345678L, test.getStartMillis());
+        assertEquals(22345678L, test.getEndMillis());
+        assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
     }
 
     //-----------------------------------------------------------------------

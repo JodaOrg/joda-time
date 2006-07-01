@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -177,12 +177,17 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the overlap where this interval and that specified.
+     * Gets the overlap between this interval and another interval.
      * <p>
      * Any two intervals can overlap, abut, or have a gap between them.
      * This method returns the amount of the overlap, only if the
      * intervals do overlap.
      * If the intervals do not overlap, then null is returned.
+     * <p>
+     * The chronology of the returned interval is the same as that of
+     * this interval (the chronology of the interval parameter is not used).
+     * Note that the use of the chronology was only correctly implemented
+     * in version 1.3.
      *
      * @param interval  the interval to examine, null means now
      * @return the overlap interval, null if no overlap
@@ -195,17 +200,23 @@ public final class Interval
         }
         long start = Math.max(getStartMillis(), interval.getStartMillis());
         long end = Math.min(getEndMillis(), interval.getEndMillis());
-        return new Interval(start, end);
+        return new Interval(start, end, getChronology());
     }
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the gap between this interval and that specified.
+     * Gets the gap between this interval and another interval.
+     * The other interval can be either before or after this interval.
      * <p>
      * Any two intervals can overlap, abut, or have a gap between them.
      * This method returns the amount of the gap only if the
      * intervals do actually have a gap between them.
      * If the intervals overlap or abut, then null is returned.
+     * <p>
+     * The chronology of the returned interval is the same as that of
+     * this interval (the chronology of the interval parameter is not used).
+     * Note that the use of the chronology was only correctly implemented
+     * in version 1.3.
      *
      * @param interval  the interval to examine, null means now
      * @return the gap interval, null if no gap
@@ -221,9 +232,9 @@ public final class Interval
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
         if (thisStart >= otherEnd) {
-            return new Interval(otherEnd, thisStart);
+            return new Interval(otherEnd, thisStart, getChronology());
         } else {
-            return new Interval(thisEnd, otherStart);
+            return new Interval(thisEnd, otherStart, getChronology());
         }
     }
 

@@ -98,6 +98,10 @@ Bug fixes since 1.2
     The methods have been changed to preserve the time zone.
    The similarly named methods on Instant have not changed behaviour.
 
+- Interval.overlap/Interval.gap
+  Previously these methods returned intervals in the default time zone
+  Now, they return intervals in the time zone of the original interval
+
 - Interval/MutableInterval.overlaps(ReadableInterval)
   Previously, this method didn't handle empty intervals correctly
   Now, an empty interval at the start of a larger interval does overlap

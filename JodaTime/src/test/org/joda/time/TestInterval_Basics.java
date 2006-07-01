@@ -40,6 +40,7 @@ public class TestInterval_Basics extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
+    private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
@@ -90,9 +91,9 @@ public class TestInterval_Basics extends TestCase {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
-        DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        DateTimeZone.setDefault(PARIS);
+        TimeZone.setDefault(PARIS.toTimeZone());
+        Locale.setDefault(Locale.FRANCE);
     }
 
     protected void tearDown() throws Exception {
@@ -261,6 +262,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, test.contains((ReadableInterval) null));
     }
 
+    //-----------------------------------------------------------------------
     public void testOverlaps_RInterval() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         
@@ -353,6 +355,31 @@ public class TestInterval_Basics extends TestCase {
                 test.overlap((ReadableInterval) null));
     }
 
+    public void testOverlap_RInterval_zone() {
+        Interval testA = new Interval(new DateTime(TEST_TIME1, LONDON), new DateTime(TEST_TIME2, LONDON));
+        assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
+        
+        Interval testB = new Interval(new DateTime(TEST_TIME1 + 1, MOSCOW), new DateTime(TEST_TIME2 + 1, MOSCOW));
+        assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
+        
+        Interval resultAB = testA.overlap(testB);
+        assertEquals(ISOChronology.getInstance(LONDON), resultAB.getChronology());
+        
+        Interval resultBA = testB.overlap(testA);
+        assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
+    }
+
+    public void testOverlap_RInterval_zoneUTC() {
+        Interval testA = new Interval(new Instant(TEST_TIME1), new Instant(TEST_TIME2));
+        assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
+        
+        Interval testB = new Interval(new Instant(TEST_TIME1 + 1), new Instant(TEST_TIME2 + 1));
+        assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
+        
+        Interval result = testA.overlap(testB);
+        assertEquals(ISOChronology.getInstanceUTC(), result.getChronology());
+    }
+
     //-----------------------------------------------------------------------
     public void testGap_RInterval() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
@@ -377,6 +404,31 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(
                 null,
                 test.gap(new Interval(TEST_TIME1 + 1, TEST_TIME2 - 1)));
+    }
+
+    public void testGap_RInterval_zone() {
+        Interval testA = new Interval(new DateTime(TEST_TIME1, LONDON), new DateTime(TEST_TIME2, LONDON));
+        assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
+        
+        Interval testB = new Interval(new DateTime(TEST_TIME1 - 100, MOSCOW), new DateTime(TEST_TIME1 - 50, MOSCOW));
+        assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
+        
+        Interval resultAB = testA.gap(testB);
+        assertEquals(ISOChronology.getInstance(LONDON), resultAB.getChronology());
+        
+        Interval resultBA = testB.gap(testA);
+        assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
+    }
+
+    public void testGap_RInterval_zoneUTC() {
+        Interval testA = new Interval(new Instant(TEST_TIME1), new Instant(TEST_TIME2));
+        assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
+        
+        Interval testB = new Interval(new Instant(TEST_TIME1 - 100), new Instant(TEST_TIME1 - 50));
+        assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
+        
+        Interval result = testA.gap(testB);
+        assertEquals(ISOChronology.getInstanceUTC(), result.getChronology());
     }
 
     //-----------------------------------------------------------------------

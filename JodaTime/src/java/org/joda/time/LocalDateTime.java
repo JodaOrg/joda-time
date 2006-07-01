@@ -587,7 +587,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this datetime with different local millis.
+     * Returns a copy of this datetime with different local millis.
      * <p>
      * The returned object will be a new instance of the same type.
      * Only the millis will change, the chronology is kept.
@@ -602,7 +602,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDateTime with the specified date,
+     * Returns a copy of this datetime with the specified date,
      * retaining the time fields.
      * <p>
      * If the date is already the date passed in, then <code>this</code> is returned.
@@ -628,7 +628,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this LocalDateTime with the specified time,
+     * Returns a copy of this datetime with the specified time,
      * retaining the date fields.
      * <p>
      * If the time is already the time passed in, then <code>this</code> is returned.
@@ -657,7 +657,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDateTime with the partial set of fields
+     * Returns a copy of this datetime with the partial set of fields
      * replacing those from this instance.
      * <p>
      * For example, if the partial is a <code>TimeOfDay</code> then the time fields
@@ -676,7 +676,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this LocalDateTime with the specified field set to a new value.
+     * Returns a copy of this datetime with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>hourOfDay</code> then the hour of day
      * field would be changed in the returned instance.
@@ -703,7 +703,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this LocalDateTime with the value of the specified
+     * Returns a copy of this datetime with the value of the specified
      * field increased.
      * <p>
      * If the addition is zero or the field is null, then <code>this</code> is returned.
@@ -734,7 +734,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDateTime with the specified duration added.
+     * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      *
@@ -752,7 +752,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this LocalDateTime with the specified period added.
+     * Returns a copy of this datetime with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -776,7 +776,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDateTime with the specified duration added.
+     * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      *
@@ -789,7 +789,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this LocalDateTime with the specified period added.
+     * Returns a copy of this datetime with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -807,7 +807,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalDateTime plus the specified number of years.
+     * Returns a copy of this datetime plus the specified number of years.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -830,7 +830,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime plus the specified number of months.
+     * Returns a copy of this datetime plus the specified number of months.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -853,7 +853,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime plus the specified number of weeks.
+     * Returns a copy of this datetime plus the specified number of weeks.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -876,7 +876,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime plus the specified number of days.
+     * Returns a copy of this datetime plus the specified number of days.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -900,7 +900,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalDateTime plus the specified number of hours.
+     * Returns a copy of this datetime plus the specified number of hours.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -923,7 +923,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime plus the specified number of minutes.
+     * Returns a copy of this datetime plus the specified number of minutes.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -946,7 +946,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime plus the specified number of seconds.
+     * Returns a copy of this datetime plus the specified number of seconds.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -969,7 +969,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime plus the specified number of millis.
+     * Returns a copy of this datetime plus the specified number of millis.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -993,7 +993,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDateTime with the specified duration taken away.
+     * Returns a copy of this datetime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      *
@@ -1006,7 +1006,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Gets a copy of this LocalDateTime with the specified period taken away.
+     * Returns a copy of this datetime with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -1024,7 +1024,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalDateTime minus the specified number of years.
+     * Returns a copy of this datetime minus the specified number of years.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1047,7 +1047,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime minus the specified number of months.
+     * Returns a copy of this datetime minus the specified number of months.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1070,7 +1070,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime minus the specified number of weeks.
+     * Returns a copy of this datetime minus the specified number of weeks.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1093,7 +1093,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime minus the specified number of days.
+     * Returns a copy of this datetime minus the specified number of days.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1117,7 +1117,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalDateTime minus the specified number of hours.
+     * Returns a copy of this datetime minus the specified number of hours.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1140,7 +1140,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime minus the specified number of minutes.
+     * Returns a copy of this datetime minus the specified number of minutes.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1163,7 +1163,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime minus the specified number of seconds.
+     * Returns a copy of this datetime minus the specified number of seconds.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1186,7 +1186,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Returns a new LocalDateTime minus the specified number of millis.
+     * Returns a copy of this datetime minus the specified number of millis.
      * <p>
      * This LocalDateTime instance is immutable and unaffected by this method call.
      * <p>
@@ -1385,8 +1385,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the era field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the era field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1401,8 +1400,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the century of era field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the century of era field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1417,8 +1415,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the year of era field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the year of era field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1433,8 +1430,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the year of century field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the year of century field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1449,8 +1445,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the year field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the year field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1465,8 +1460,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the weekyear field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the weekyear field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1481,8 +1475,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the month of year field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the month of year field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1497,8 +1490,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the week of weekyear field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the week of weekyear field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1513,8 +1505,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the day of year field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the day of year field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1529,8 +1520,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the day of month field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the day of month field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1545,8 +1535,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the day of week field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the day of week field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1562,8 +1551,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the hour of day field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the hour of day field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1578,8 +1566,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the minute of hour field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the minute of hour field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1594,8 +1581,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the second of minute field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the second of minute field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1610,8 +1596,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the millis of second field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the millis of second field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1626,8 +1611,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Sets the millis of day field in a copy of this LocalDateTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this datetime with the millis of day field updated.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1643,7 +1627,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Get the era property.
+     * Get the era property which provides access to advanced functionality.
      *
      * @return the era property
      */
@@ -1652,7 +1636,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the century of era property.
+     * Get the century of era property which provides access to advanced functionality.
      *
      * @return the year of era property
      */
@@ -1661,7 +1645,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the year of century property.
+     * Get the year of century property which provides access to advanced functionality.
      *
      * @return the year of era property
      */
@@ -1670,7 +1654,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the year of era property.
+     * Get the year of era property which provides access to advanced functionality.
      *
      * @return the year of era property
      */
@@ -1679,7 +1663,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the year property.
+     * Get the year property which provides access to advanced functionality.
      *
      * @return the year property
      */
@@ -1688,7 +1672,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the weekyear property.
+     * Get the weekyear property which provides access to advanced functionality.
      *
      * @return the weekyear property
      */
@@ -1697,7 +1681,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the month of year property.
+     * Get the month of year property which provides access to advanced functionality.
      *
      * @return the month of year property
      */
@@ -1706,7 +1690,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the week of a week based year property.
+     * Get the week of a week based year property which provides access to advanced functionality.
      *
      * @return the week of a week based year property
      */
@@ -1715,7 +1699,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the day of year property.
+     * Get the day of year property which provides access to advanced functionality.
      *
      * @return the day of year property
      */
@@ -1724,7 +1708,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the day of month property.
+     * Get the day of month property which provides access to advanced functionality.
      *
      * @return the day of month property
      */
@@ -1733,7 +1717,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the day of week property.
+     * Get the day of week property which provides access to advanced functionality.
      *
      * @return the day of week property
      */
@@ -1743,7 +1727,7 @@ public final class LocalDateTime
 
     //-----------------------------------------------------------------------
     /**
-     * Get the hour of day field property
+     * Get the hour of day field property which provides access to advanced functionality.
      * 
      * @return the hour of day property
      */
@@ -1752,7 +1736,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the minute of hour field property
+     * Get the minute of hour field property which provides access to advanced functionality.
      * 
      * @return the minute of hour property
      */
@@ -1761,7 +1745,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the second of minute field property
+     * Get the second of minute field property which provides access to advanced functionality.
      * 
      * @return the second of minute property
      */
@@ -1770,7 +1754,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the millis of second property
+     * Get the millis of second property which provides access to advanced functionality.
      * 
      * @return the millis of second property
      */
@@ -1779,7 +1763,7 @@ public final class LocalDateTime
     }
 
     /**
-     * Get the millis of day property
+     * Get the millis of day property which provides access to advanced functionality.
      * 
      * @return the millis of day property
      */

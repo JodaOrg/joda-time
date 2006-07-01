@@ -35,6 +35,10 @@ import org.joda.time.format.ISODateTimeFormat;
  * This class has not yet been formally deprecated due to the large number
  * of existing users.
  * <p>
+ * NOTE: This class only supports the three fields listed above. Thus, you
+ * cannot query the dayOfWeek or centuryOfEra fields for example.
+ * The new <code>LocalDate</code> class removes this restriction.
+ * <p>
  * Calculations on YearMonthDay are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
@@ -362,7 +366,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new YearMonthDay instance with the specified chronology.
+     * Returns a copy of this date with the specified chronology.
      * This instance is immutable and unaffected by this method call.
      * <p>
      * This method retains the values of the fields, thus the result will
@@ -388,7 +392,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Gets a copy of this date with the specified field set to a new value.
+     * Returns a copy of this date with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>dayOfMonth</code> then the day
      * would be changed in the returned instance.
@@ -416,7 +420,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Gets a copy of this date with the value of the specified field increased.
+     * Returns a copy of this date with the value of the specified field increased.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -444,7 +448,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Gets a copy of this date with the specified period added.
+     * Returns a copy of this date with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * Fields in the period that aren't present in the partial are ignored.
@@ -477,7 +481,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instance with the specified period added.
+     * Returns a copy of this date with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -495,7 +499,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new date plus the specified number of years.
+     * Returns a copy of this date plus the specified number of years.
      * <p>
      * This date instance is immutable and unaffected by this method call.
      * <p>
@@ -515,7 +519,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Returns a new date plus the specified number of months.
+     * Returns a copy of this date plus the specified number of months.
      * <p>
      * This date instance is immutable and unaffected by this method call.
      * <p>
@@ -535,7 +539,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Returns a new date plus the specified number of days.
+     * Returns a copy of this date plus the specified number of days.
      * <p>
      * This date instance is immutable and unaffected by this method call.
      * <p>
@@ -556,7 +560,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instance with the specified period take away.
+     * Returns a copy of this date with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -574,7 +578,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new datetime minus the specified number of years.
+     * Returns a copy of this date minus the specified number of years.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -594,7 +598,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Returns a new datetime minus the specified number of months.
+     * Returns a copy of this date minus the specified number of months.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -614,7 +618,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Returns a new datetime minus the specified number of days.
+     * Returns a copy of this date minus the specified number of days.
      * <p>
      * This datetime instance is immutable and unaffected by this method call.
      * <p>
@@ -825,8 +829,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the year field in a copy of this YearMonthDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year field updated.
      * <p>
      * YearMonthDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -844,8 +847,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Sets the month of year field in a copy of this YearMonthDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the month of year field updated.
      * <p>
      * YearMonthDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -863,8 +865,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Sets the day of month field in a copy of this YearMonthDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of month field updated.
      * <p>
      * YearMonthDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -883,7 +884,7 @@ public final class YearMonthDay
 
     //-----------------------------------------------------------------------
     /**
-     * Get the year field property
+     * Get the year field property which provides access to advanced functionality.
      * 
      * @return the year property
      */
@@ -892,7 +893,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Get the month of year field property
+     * Get the month of year field property which provides access to advanced functionality.
      * 
      * @return the month of year property
      */
@@ -901,7 +902,7 @@ public final class YearMonthDay
     }
 
     /**
-     * Get the day of month field property
+     * Get the day of month field property which provides access to advanced functionality.
      * 
      * @return the day of month property
      */

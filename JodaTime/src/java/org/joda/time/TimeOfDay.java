@@ -35,6 +35,10 @@ import org.joda.time.format.ISODateTimeFormat;
  * This class has not yet been formally deprecated due to the large number
  * of existing users.
  * <p>
+ * NOTE: This class only supports the four fields listed above. Thus, you
+ * cannot query the millisOfDay or secondOfDay fields for example.
+ * The new <code>LocalTime</code> class removes this restriction.
+ * <p>
  * Calculations on TimeOfDay are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
  * <p>
@@ -475,7 +479,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Creates a new TimeOfDay instance with the specified chronology.
+     * Returns a copy of this time with the specified chronology.
      * This instance is immutable and unaffected by this method call.
      * <p>
      * This method retains the values of the fields, thus the result will
@@ -501,7 +505,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Gets a copy of this time with the specified field set to a new value.
+     * Returns a copy of this time with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>minuteOfHour</code> then the day
      * would be changed in the returned instance.
@@ -529,7 +533,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Gets a copy of this time with the value of the specified field increased,
+     * Returns a copy of this time with the value of the specified field increased,
      * wrapping to what would be a new day if required.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
@@ -558,7 +562,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Gets a copy of this date with the specified period added,
+     * Returns a copy of this time with the specified period added,
      * wrapping to what would be a new day if required.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
@@ -592,7 +596,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instance with the specified period added,
+     * Returns a copy of this time with the specified period added,
      * wrapping to what would be a new day if required.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
@@ -611,7 +615,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new time plus the specified number of hours.
+     * Returns a copy of this time plus the specified number of hours.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -631,7 +635,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Returns a new time plus the specified number of minutes.
+     * Returns a copy of this time plus the specified number of minutes.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -651,7 +655,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Returns a new time plus the specified number of seconds.
+     * Returns a copy of this time plus the specified number of seconds.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -671,7 +675,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Returns a new time plus the specified number of millis.
+     * Returns a copy of this time plus the specified number of millis.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -692,7 +696,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this instance with the specified period take away,
+     * Returns a copy of this time with the specified period taken away,
      * wrapping to what would be a new day if required.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
@@ -711,7 +715,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new time minus the specified number of hours.
+     * Returns a copy of this time minus the specified number of hours.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -731,7 +735,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Returns a new time minus the specified number of minutes.
+     * Returns a copy of this time minus the specified number of minutes.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -751,7 +755,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Returns a new time minus the specified number of seconds.
+     * Returns a copy of this time minus the specified number of seconds.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -771,7 +775,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Returns a new time minus the specified number of millis.
+     * Returns a copy of this time minus the specified number of millis.
      * <p>
      * This time instance is immutable and unaffected by this method call.
      * <p>
@@ -883,8 +887,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the hour of day field in a copy of this TimeOfDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the hour of day field updated.
      * <p>
      * TimeOfDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -902,8 +905,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Sets the minute of hour field in a copy of this TimeOfDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the minute of hour field updated.
      * <p>
      * TimeOfDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -921,8 +923,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Sets the second of minute field in a copy of this TimeOfDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the second of minute field updated.
      * <p>
      * TimeOfDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -940,8 +941,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Sets the millis of second field in a copy of this TimeOfDay, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the millis of second field updated.
      * <p>
      * TimeOfDay is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -960,7 +960,7 @@ public final class TimeOfDay
 
     //-----------------------------------------------------------------------
     /**
-     * Get the hour of day (0-23) field property
+     * Get the hour of day field property which provides access to advanced functionality.
      * 
      * @return the hour of day property
      */
@@ -969,7 +969,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Get the minute of hour field property
+     * Get the minute of hour field property which provides access to advanced functionality.
      * 
      * @return the minute of hour property
      */
@@ -978,7 +978,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Get the second of minute field property
+     * Get the second of minute field property which provides access to advanced functionality.
      * 
      * @return the second of minute property
      */
@@ -987,7 +987,7 @@ public final class TimeOfDay
     }
 
     /**
-     * Get the millis of second property
+     * Get the millis of second property which provides access to advanced functionality.
      * 
      * @return the millis of second property
      */

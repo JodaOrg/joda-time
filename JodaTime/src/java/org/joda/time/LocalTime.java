@@ -566,7 +566,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalTime with different local millis.
+     * Returns a copy of this time with different local millis.
      * <p>
      * The returned object will be a new instance of the same type.
      * Only the millis will change, the chronology is kept.
@@ -581,7 +581,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalTime with the partial set of fields replacing
+     * Returns a copy of this time with the partial set of fields replacing
      * those from this instance.
      * <p>
      * For example, if the partial contains an hour and minute then those two
@@ -601,7 +601,7 @@ public final class LocalTime
     }
 
     /**
-     * Gets a copy of this LocalTime with the specified field set
+     * Returns a copy of this time with the specified field set
      * to a new value.
      * <p>
      * For example, if the field type is <code>hourOfDay</code> then the hour of day
@@ -631,7 +631,7 @@ public final class LocalTime
     }
 
     /**
-     * Gets a copy of this LocalTime with the value of the specified
+     * Returns a copy of this time with the value of the specified
      * field increased.
      * <p>
      * If the addition is zero or the field is null, then <code>this</code>
@@ -668,7 +668,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalTime with the specified period added.
+     * Returns a copy of this time with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -692,7 +692,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalTime with the specified period added.
+     * Returns a copy of this time with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -710,7 +710,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalTime plus the specified number of hours.
+     * Returns a copy of this time plus the specified number of hours.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -733,7 +733,7 @@ public final class LocalTime
     }
 
     /**
-     * Returns a new LocalTime plus the specified number of minutes.
+     * Returns a copy of this time plus the specified number of minutes.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -756,7 +756,7 @@ public final class LocalTime
     }
 
     /**
-     * Returns a new LocalTime plus the specified number of seconds.
+     * Returns a copy of this time plus the specified number of seconds.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -779,7 +779,7 @@ public final class LocalTime
     }
 
     /**
-     * Returns a new LocalTime plus the specified number of millis.
+     * Returns a copy of this time plus the specified number of millis.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -803,7 +803,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalTime with the specified period taken away.
+     * Returns a copy of this time with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -821,7 +821,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalTime minus the specified number of hours.
+     * Returns a copy of this time minus the specified number of hours.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -844,7 +844,7 @@ public final class LocalTime
     }
 
     /**
-     * Returns a new LocalTime minus the specified number of minutes.
+     * Returns a copy of this time minus the specified number of minutes.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -867,7 +867,7 @@ public final class LocalTime
     }
 
     /**
-     * Returns a new LocalTime minus the specified number of seconds.
+     * Returns a copy of this time minus the specified number of seconds.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -890,7 +890,7 @@ public final class LocalTime
     }
 
     /**
-     * Returns a new LocalTime minus the specified number of millis.
+     * Returns a copy of this time minus the specified number of millis.
      * <p>
      * This LocalTime instance is immutable and unaffected by this method call.
      * <p>
@@ -979,8 +979,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the hour of day field in a copy of this LocalTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the hour of day field updated.
      * <p>
      * LocalTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -995,8 +994,7 @@ public final class LocalTime
     }
 
     /**
-     * Sets the minute of hour field in a copy of this LocalTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the minute of hour field updated.
      * <p>
      * LocalTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1011,8 +1009,7 @@ public final class LocalTime
     }
 
     /**
-     * Sets the second of minute field in a copy of this LocalTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the second of minute field updated.
      * <p>
      * LocalTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1027,8 +1024,7 @@ public final class LocalTime
     }
 
     /**
-     * Sets the millis of second field in a copy of this LocalTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the millis of second field updated.
      * <p>
      * LocalTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1043,8 +1039,7 @@ public final class LocalTime
     }
 
     /**
-     * Sets the millis of day field in a copy of this LocalTime, leaving this
-     * instance unchanged.
+     * Returns a copy of this time with the millis of day field updated.
      * <p>
      * LocalTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1060,7 +1055,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Get the hour of day field property
+     * Get the hour of day field property which provides access to advanced functionality.
      * 
      * @return the hour of day property
      */
@@ -1069,7 +1064,7 @@ public final class LocalTime
     }
 
     /**
-     * Get the minute of hour field property
+     * Get the minute of hour field property which provides access to advanced functionality.
      * 
      * @return the minute of hour property
      */
@@ -1078,7 +1073,7 @@ public final class LocalTime
     }
 
     /**
-     * Get the second of minute field property
+     * Get the second of minute field property which provides access to advanced functionality.
      * 
      * @return the second of minute property
      */
@@ -1087,7 +1082,7 @@ public final class LocalTime
     }
 
     /**
-     * Get the millis of second property
+     * Get the millis of second property which provides access to advanced functionality.
      * 
      * @return the millis of second property
      */
@@ -1096,7 +1091,7 @@ public final class LocalTime
     }
 
     /**
-     * Get the millis of day property
+     * Get the millis of day property which provides access to advanced functionality.
      * 
      * @return the millis of day property
      */

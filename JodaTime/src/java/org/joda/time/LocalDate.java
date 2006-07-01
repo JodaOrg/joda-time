@@ -615,7 +615,6 @@ public final class LocalDate
     /**
      * Converts this object to a DateTime using a LocalTime to fill in the
      * missing fields.
-     * This instance is immutable and unaffected by this method call.
      * <p>
      * The resulting chronology is determined by the chronology of this
      * LocalDate plus the time zone. The chronology of the time must match.
@@ -669,7 +668,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this date with different local millis.
+     * Returns a copy of this date with different local millis.
      * <p>
      * The returned object will be a new instance of the same type.
      * Only the millis will change, the chronology is kept.
@@ -685,7 +684,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDate with the partial set of fields replacing
+     * Returns a copy of this date with the partial set of fields replacing
      * those from this instance.
      * <p>
      * For example, if the partial contains a year and a month then those two
@@ -705,7 +704,7 @@ public final class LocalDate
     }
 
     /**
-     * Gets a copy of this LocalDate with the specified field set to a new value.
+     * Returns a copy of this date with the specified field set to a new value.
      * <p>
      * For example, if the field type is <code>monthOfYear</code> then the
      * month of year field will be changed in the returned instance.
@@ -734,7 +733,7 @@ public final class LocalDate
     }
 
     /**
-     * Gets a copy of this LocalDate with the value of the specified field increased.
+     * Returns a copy of this date with the value of the specified field increased.
      * <p>
      * If the addition is zero or the field is null, then <code>this</code> is returned.
      * <p>
@@ -767,7 +766,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDate with the specified period added.
+     * Returns a copy of this date with the specified period added.
      * <p>
      * If the addition is zero, then <code>this</code> is returned.
      * <p>
@@ -802,7 +801,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDate with the specified period added.
+     * Returns a copy of this date with the specified period added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -823,7 +822,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalDate plus the specified number of years.
+     * Returns a copy of this date plus the specified number of years.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -846,7 +845,7 @@ public final class LocalDate
     }
 
     /**
-     * Returns a new LocalDate plus the specified number of months.
+     * Returns a copy of this date plus the specified number of months.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -869,7 +868,7 @@ public final class LocalDate
     }
 
     /**
-     * Returns a new LocalDate plus the specified number of weeks.
+     * Returns a copy of this date plus the specified number of weeks.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -892,7 +891,7 @@ public final class LocalDate
     }
 
     /**
-     * Returns a new LocalDate plus the specified number of days.
+     * Returns a copy of this date plus the specified number of days.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -916,7 +915,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Gets a copy of this LocalDate with the specified period taken away.
+     * Returns a copy of this date with the specified period taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
      * <p>
@@ -937,7 +936,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Returns a new LocalDate minus the specified number of years.
+     * Returns a copy of this date minus the specified number of years.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -960,7 +959,7 @@ public final class LocalDate
     }
 
     /**
-     * Returns a new LocalDate minus the specified number of months.
+     * Returns a copy of this date minus the specified number of months.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -983,7 +982,7 @@ public final class LocalDate
     }
 
     /**
-     * Returns a new LocalDate minus the specified number of weeks.
+     * Returns a copy of this date minus the specified number of weeks.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -1006,7 +1005,7 @@ public final class LocalDate
     }
 
     /**
-     * Returns a new LocalDate minus the specified number of days.
+     * Returns a copy of this date minus the specified number of days.
      * <p>
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
@@ -1159,8 +1158,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the era field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the era field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1175,8 +1173,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the century of era field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the century of era field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1191,8 +1188,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the year of era field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year of era field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1207,8 +1203,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the year of century field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year of century field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1223,8 +1218,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the year field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the year field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1239,8 +1233,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the weekyear field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the weekyear field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1255,8 +1248,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the month of year field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the month of year field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1271,8 +1263,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the week of weekyear field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the week of weekyear field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1287,8 +1278,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the day of year field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of year field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1303,8 +1293,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the day of month field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of month field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1319,8 +1308,7 @@ public final class LocalDate
     }
 
     /**
-     * Sets the day of week field in a copy of this LocalDate, leaving this
-     * instance unchanged.
+     * Returns a copy of this date with the day of week field updated.
      * <p>
      * LocalDate is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
@@ -1336,7 +1324,7 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
-     * Get the era property.
+     * Get the era property which provides access to advanced functionality.
      *
      * @return the era property
      */
@@ -1345,7 +1333,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the century of era property.
+     * Get the century of era property which provides access to advanced functionality.
      *
      * @return the year of era property
      */
@@ -1354,7 +1342,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the year of century property.
+     * Get the year of century property which provides access to advanced functionality.
      *
      * @return the year of era property
      */
@@ -1363,7 +1351,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the year of era property.
+     * Get the year of era property which provides access to advanced functionality.
      *
      * @return the year of era property
      */
@@ -1372,7 +1360,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the year property.
+     * Get the year property which provides access to advanced functionality.
      *
      * @return the year property
      */
@@ -1381,7 +1369,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the weekyear property.
+     * Get the weekyear property which provides access to advanced functionality.
      *
      * @return the weekyear property
      */
@@ -1390,7 +1378,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the month of year property.
+     * Get the month of year property which provides access to advanced functionality.
      *
      * @return the month of year property
      */
@@ -1399,7 +1387,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the week of a week based year property.
+     * Get the week of a week based year property which provides access to advanced functionality.
      *
      * @return the week of a week based year property
      */
@@ -1408,7 +1396,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the day of year property.
+     * Get the day of year property which provides access to advanced functionality.
      *
      * @return the day of year property
      */
@@ -1417,7 +1405,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the day of month property.
+     * Get the day of month property which provides access to advanced functionality.
      *
      * @return the day of month property
      */
@@ -1426,7 +1414,7 @@ public final class LocalDate
     }
 
     /**
-     * Get the day of week property.
+     * Get the day of week property which provides access to advanced functionality.
      *
      * @return the day of week property
      */

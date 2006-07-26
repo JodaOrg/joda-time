@@ -287,9 +287,13 @@ public final class Interval
      * @since 1.1
      */
     public boolean abuts(ReadableInterval interval) {
-        interval = DateTimeUtils.getReadableInterval(interval);
-        return (interval.getEndMillis() == getStartMillis() ||
-                getEndMillis() == interval.getStartMillis());
+        if (interval == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            return (getStartMillis() == now || getEndMillis() == now);
+        } else {
+            return (interval.getEndMillis() == getStartMillis() ||
+                    getEndMillis() == interval.getStartMillis());
+        }
     }
 
     //-----------------------------------------------------------------------

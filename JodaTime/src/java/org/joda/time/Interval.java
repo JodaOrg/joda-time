@@ -179,7 +179,6 @@ public final class Interval
     /**
      * Gets the overlap between this interval and another interval.
      * <p>
-     * Any two intervals can overlap, abut, or have a gap between them.
      * This method returns the amount of the overlap, only if the
      * intervals do overlap.
      * If the intervals do not overlap, then null is returned.
@@ -208,7 +207,6 @@ public final class Interval
      * Gets the gap between this interval and another interval.
      * The other interval can be either before or after this interval.
      * <p>
-     * Any two intervals can overlap, abut, or have a gap between them.
      * This method returns the amount of the gap only if the
      * intervals do actually have a gap between them.
      * If the intervals overlap or abut, then null is returned.
@@ -224,17 +222,16 @@ public final class Interval
      */
     public Interval gap(ReadableInterval interval) {
         interval = DateTimeUtils.getReadableInterval(interval);
-        if (overlaps(interval) || abuts(interval)) {
-            return null;
-        }
         long otherStart = interval.getStartMillis();
         long otherEnd = interval.getEndMillis();
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
-        if (thisStart >= otherEnd) {
+        if (thisStart > otherEnd) {
             return new Interval(otherEnd, thisStart, getChronology());
-        } else {
+        } else if (otherStart > thisEnd) {
             return new Interval(thisEnd, otherStart, getChronology());
+        } else {
+            return null;
         }
     }
 
@@ -244,6 +241,29 @@ public final class Interval
      * <p>
      * An interval abuts if it starts immediately after, or
      * ends immediately before this interval without overlap.
+     * Thus this method returns true if
+     * <code>thisStart == otherEnd || thisEnd == otherStart </code>.
+     * <p>
+     * A zero duration interval abuts with itself.
+     * <p>
+     * For example:
+     * <pre>
+     * [09:00 to 10:00) abuts [08:00 to 08:30)  = false (completely before)
+     * [09:00 to 10:00) abuts [08:00 to 09:00)  = true
+     * [09:00 to 10:00) abuts [08:00 to 09:01)  = false (overlaps)
+     * 
+     * [09:00 to 10:00) abuts [09:00 to 09:00)  = true
+     * [09:00 to 10:00) abuts [09:00 to 09:01)  = false (overlaps)
+     * 
+     * [09:00 to 10:00) abuts [10:00 to 10:00)  = true
+     * [09:00 to 10:00) abuts [10:00 to 10:30)  = true
+     * 
+     * [09:00 to 10:00) abuts [10:30 to 11:00)  = false (completely after)
+     * 
+     * [14:00 to 14:00) abuts [14:00 to 14:00)  = true
+     * [14:00 to 14:00) abuts [14:00 to 15:00)  = true
+     * [14:00 to 14:00) abuts [13:00 to 14:00)  = true
+     * </pre>
      *
      * @param interval  the interval to examine, null means now
      * @return true if the interval abuts

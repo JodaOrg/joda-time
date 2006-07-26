@@ -44,7 +44,9 @@ public class TestInterval_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
-    
+    private Interval interval37;
+    private Interval interval33;
+
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
                      365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 +
@@ -94,6 +96,8 @@ public class TestInterval_Basics extends TestCase {
         DateTimeZone.setDefault(PARIS);
         TimeZone.setDefault(PARIS.toTimeZone());
         Locale.setDefault(Locale.FRANCE);
+        interval37 = new Interval(3, 7);
+        interval33 = new Interval(3, 3);
     }
 
     protected void tearDown() throws Exception {
@@ -195,171 +199,454 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testContains_long() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        assertEquals(true, test.contains(TEST_TIME1));
-        assertEquals(false, test.contains(TEST_TIME1 - 1));
-        assertEquals(true, test.contains(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2));
-        assertEquals(false, test.contains(TEST_TIME2));
-        assertEquals(true, test.contains(TEST_TIME2 - 1));
-    }
-
-    public void testContainsNow() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+    public void test_useCase_ContainsOverlapAbutGap() {
+        // this is a simple test to ensure that the use case of these methods is OK
+        // when comparing any two intervals they can be in one and only one of these states
+        // (a) have a gap between them, (b) abut or (c) overlap
+        // contains is a subset of overlap
+        Interval test1020 = new Interval(10, 20);
         
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1);
-        assertEquals(true, test.containsNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 - 1);
-        assertEquals(false, test.containsNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2);
-        assertEquals(true, test.containsNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2);
-        assertEquals(false, test.containsNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2 - 1);
-        assertEquals(true, test.containsNow());
+        // [4,8) [10,20) - gap
+        Interval interval = new Interval(4, 8);
+        assertNotNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNotNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [6,10) [10,20) - abuts
+        interval = new Interval(6, 10);
+        assertNull(test1020.gap(interval));
+        assertEquals(true, test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(true, interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [8,12) [10,20) - overlaps
+        interval = new Interval(8, 12);
+        assertNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(true, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(true, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,14) [10,20) - overlaps and contains-one-way
+        interval = new Interval(10, 14);
+        assertNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(true, test1020.overlaps(interval));
+        assertEquals(true, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(true, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,20) [10,20) - overlaps and contains-both-ways
+        assertNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(test1020));
+        assertEquals(true, test1020.overlaps(test1020));
+        assertEquals(true, test1020.contains(test1020));
+        
+        // [10,20) [16,20) - overlaps and contains-one-way
+        interval = new Interval(16, 20);
+        assertNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(true, test1020.overlaps(interval));
+        assertEquals(true, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(true, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,20) [18,22) - overlaps
+        interval = new Interval(18, 22);
+        assertNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(true, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(true, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,20) [20,24) - abuts
+        interval = new Interval(20, 24);
+        assertNull(test1020.gap(interval));
+        assertEquals(true, test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(true, interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,20) [22,26) - gap
+        interval = new Interval(22, 26);
+        assertNotNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNotNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
     }
 
+    //-----------------------------------------------------------------------
+    public void test_useCase_ContainsOverlapAbutGap_zeroDuration() {
+        // this is a simple test to ensure that the use case of these methods
+        // is OK when considering a zero duration inerval
+        // when comparing any two intervals they can be in one and only one of these states
+        // (a) have a gap between them, (b) abut or (c) overlap
+        // contains is a subset of overlap
+        Interval test1020 = new Interval(10, 20);
+        
+        // [8,8) [10,20) - gap
+        Interval interval = new Interval(8, 8);
+        assertNotNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNotNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,10) [10,20) - abuts and contains-one-way and overlaps
+        interval = new Interval(10, 10);
+        assertNull(test1020.gap(interval));
+        assertEquals(true,  test1020.abuts(interval));
+        assertEquals(true,  test1020.overlaps(interval));
+        assertEquals(true,  test1020.contains(interval));  // normal contains zero-duration
+        assertNull(interval.gap(test1020));
+        assertEquals(true,  interval.abuts(test1020));
+        assertEquals(true,  interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));  // zero-duration does not contain normal
+        
+        // [12,12) [10,20) - contains-one-way and overlaps
+        interval = new Interval(12, 12);
+        assertNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(true,  test1020.overlaps(interval));
+        assertEquals(true,  test1020.contains(interval));  // normal contains zero-duration
+        assertNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(true,  interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));  // zero-duration does not contain normal
+        
+        // [10,20) [20,20) - abuts
+        interval = new Interval(20, 20);
+        assertNull(test1020.gap(interval));
+        assertEquals(true,  test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNull(interval.gap(test1020));
+        assertEquals(true,  interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+        
+        // [10,20) [22,22) - gap
+        interval = new Interval(22, 22);
+        assertNotNull(test1020.gap(interval));
+        assertEquals(false, test1020.abuts(interval));
+        assertEquals(false, test1020.overlaps(interval));
+        assertEquals(false, test1020.contains(interval));
+        assertNotNull(interval.gap(test1020));
+        assertEquals(false, interval.abuts(test1020));
+        assertEquals(false, interval.overlaps(test1020));
+        assertEquals(false, interval.contains(test1020));
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_useCase_ContainsOverlapAbutGap_bothZeroDuration() {
+        // this is a simple test to ensure that the use case of these methods
+        // is OK when considering two zero duration inervals
+        // this is the simplest case, as the two intervals either have a gap or not
+        // if not, then they are equal and abut
+        Interval test0808 = new Interval(8, 8);
+        Interval test1010 = new Interval(10, 10);
+        
+        // [8,8) [10,10) - gap
+        assertNotNull(test1010.gap(test0808));
+        assertEquals(false, test1010.abuts(test0808));
+        assertEquals(false, test1010.overlaps(test0808));
+        assertEquals(false, test1010.contains(test0808));
+        assertNotNull(test0808.gap(test1010));
+        assertEquals(false, test0808.abuts(test1010));
+        assertEquals(false, test0808.overlaps(test1010));
+        assertEquals(false, test0808.contains(test1010));
+        
+        // [10,10) [10,10) - abuts and overlaps
+        assertNull(test1010.gap(test1010));
+        assertEquals(true,  test1010.abuts(test1010));
+        assertEquals(true,  test1010.overlaps(test1010));
+        assertEquals(true,  test1010.contains(test1010));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testContains_long() {
+        assertEquals(false, interval37.contains(2));  // value before
+        assertEquals(true,  interval37.contains(3));
+        assertEquals(true,  interval37.contains(4));
+        assertEquals(true,  interval37.contains(5));
+        assertEquals(true,  interval37.contains(6));
+        assertEquals(false, interval37.contains(7));  // value after
+        assertEquals(false, interval37.contains(8));  // value after
+    }
+
+    public void testContains_long_zeroDuration() {
+        assertEquals(false, interval33.contains(2));  // value before
+        assertEquals(true,  interval33.contains(3));
+        assertEquals(false, interval33.contains(4));  // value after
+    }
+
+    //-----------------------------------------------------------------------
+    public void testContainsNow() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.containsNow());  // value before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval37.containsNow());
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(true,  interval37.containsNow());
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(true,  interval37.containsNow());
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.containsNow());  // value after
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.containsNow());  // value after
+        
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval33.containsNow());  // value before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval33.containsNow());
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval33.containsNow());  // value after
+    }
+
+    //-----------------------------------------------------------------------
     public void testContains_RI() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        assertEquals(true, test.contains(new Instant(TEST_TIME1)));
-        assertEquals(false, test.contains(new Instant(TEST_TIME1 - 1)));
-        assertEquals(true, test.contains(new Instant(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2)));
-        assertEquals(false, test.contains(new Instant(TEST_TIME2)));
-        assertEquals(true, test.contains(new Instant(TEST_TIME2 - 1)));
-        assertEquals(true, test.contains((ReadableInstant) null));
+        assertEquals(false, interval37.contains(new Instant(2)));  // value before
+        assertEquals(true,  interval37.contains(new Instant(3)));
+        assertEquals(true,  interval37.contains(new Instant(4)));
+        assertEquals(true,  interval37.contains(new Instant(5)));
+        assertEquals(true,  interval37.contains(new Instant(6)));
+        assertEquals(false, interval37.contains(new Instant(7)));  // value after
+        assertEquals(false, interval37.contains(new Instant(8)));  // value after
+    }
+
+    public void testContains_RI_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.contains((ReadableInstant) null));  // value before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval37.contains((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(true,  interval37.contains((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(true,  interval37.contains((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.contains((ReadableInstant) null));  // value after
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.contains((ReadableInstant) null));  // value after
+    }
+
+    public void testContains_RI_zeroDuration() {
+        assertEquals(false, interval33.contains(new Instant(2)));  // value before
+        assertEquals(true,  interval33.contains(new Instant(3)));
+        assertEquals(false, interval33.contains(new Instant(4)));  // value after
     }
 
     //-----------------------------------------------------------------------
     public void testContains_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(false, interval37.contains(new Interval(1, 2)));  // gap before
+        assertEquals(false, interval37.contains(new Interval(2, 2)));  // gap before
         
-        assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
+        assertEquals(false, interval37.contains(new Interval(2, 3)));  // abuts before
+        assertEquals(true,  interval37.contains(new Interval(3, 3)));
         
-        assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME1 + 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
-        assertEquals(true, test.contains(new Interval(TEST_TIME1 + 1, TEST_TIME1 + 1)));
+        assertEquals(false, interval37.contains(new Interval(2, 4)));  // starts before
+        assertEquals(true,  interval37.contains(new Interval(3, 4)));
+        assertEquals(true,  interval37.contains(new Interval(4, 4)));
         
-        assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME2)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
-        assertEquals(true, test.contains(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME2, TEST_TIME2)));
-        assertEquals(true, test.contains(new Interval(TEST_TIME2 - 1, TEST_TIME2)));
+        assertEquals(false, interval37.contains(new Interval(2, 6)));  // starts before
+        assertEquals(true,  interval37.contains(new Interval(3, 6)));
+        assertEquals(true,  interval37.contains(new Interval(4, 6)));
+        assertEquals(true,  interval37.contains(new Interval(5, 6)));
+        assertEquals(true,  interval37.contains(new Interval(6, 6)));
         
-        assertEquals(true, test.contains(new Interval(TEST_TIME1, TEST_TIME2 - 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME2 - 1)));
-        assertEquals(true, test.contains(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2 - 1)));
-        assertEquals(true, test.contains(new Interval(TEST_TIME2 - 1, TEST_TIME2 - 1)));
-        assertEquals(true, test.contains(new Interval(TEST_TIME2 - 2, TEST_TIME2 - 1)));
+        assertEquals(false, interval37.contains(new Interval(2, 7)));  // starts before
+        assertEquals(true,  interval37.contains(new Interval(3, 7)));
+        assertEquals(true,  interval37.contains(new Interval(4, 7)));
+        assertEquals(true,  interval37.contains(new Interval(5, 7)));
+        assertEquals(true,  interval37.contains(new Interval(6, 7)));
+        assertEquals(false, interval37.contains(new Interval(7, 7)));  // abuts after
         
-        assertEquals(false, test.contains(new Interval(TEST_TIME1, TEST_TIME2 + 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 1, TEST_TIME2 + 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2 + 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME2, TEST_TIME2 + 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME2 - 1, TEST_TIME2 + 1)));
-        assertEquals(false, test.contains(new Interval(TEST_TIME1 - 2, TEST_TIME1 - 1)));
+        assertEquals(false, interval37.contains(new Interval(2, 8)));  // ends after
+        assertEquals(false, interval37.contains(new Interval(3, 8)));  // ends after
+        assertEquals(false, interval37.contains(new Interval(4, 8)));  // ends after
+        assertEquals(false, interval37.contains(new Interval(5, 8)));  // ends after
+        assertEquals(false, interval37.contains(new Interval(6, 8)));  // ends after
+        assertEquals(false, interval37.contains(new Interval(7, 8)));  // abuts after
+        assertEquals(false, interval37.contains(new Interval(8, 8)));  // gap after
         
-        assertEquals(true, test.contains((ReadableInterval) null));
+        assertEquals(false, interval37.contains(new Interval(8, 9)));  // gap after
+        assertEquals(false, interval37.contains(new Interval(9, 9)));  // gap after
+    }
+
+    public void testContains_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.contains((ReadableInterval) null));  // gap before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval37.contains((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(true,  interval37.contains((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(true,  interval37.contains((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.contains((ReadableInterval) null));  // abuts after
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.contains((ReadableInterval) null));  // gap after
+    }
+
+    public void testContains_RInterval_zeroDuration() {
+        assertEquals(true,  interval33.contains(interval33));
+        assertEquals(false, interval33.contains(interval37));  // zero-duration cannot contain anything
+        assertEquals(true,  interval37.contains(interval33));
+        assertEquals(false, interval33.contains(new Interval(1, 2)));  // zero-duration cannot contain anything
+        assertEquals(false, interval33.contains(new Interval(8, 9)));  // zero-duration cannot contain anything
+        assertEquals(false, interval33.contains(new Interval(1, 9)));  // zero-duration cannot contain anything
+        
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval33.contains((ReadableInterval) null));  // gap before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval33.contains((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval33.contains((ReadableInterval) null));  // gap after
     }
 
     //-----------------------------------------------------------------------
     public void testOverlaps_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(false, interval37.overlaps(new Interval(1, 2)));  // gap before
+        assertEquals(false, interval37.overlaps(new Interval(2, 2)));  // gap before
         
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1)));
-        assertEquals(false, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
+        assertEquals(false, interval37.overlaps(new Interval(2, 3)));  // abuts before
+        assertEquals(true,  interval37.overlaps(new Interval(3, 3)));
         
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1 + 1)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 + 1, TEST_TIME1 + 1)));
+        assertEquals(true,  interval37.overlaps(new Interval(2, 4)));
+        assertEquals(true,  interval37.overlaps(new Interval(3, 4)));
+        assertEquals(true,  interval37.overlaps(new Interval(4, 4)));
         
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME2)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2)));
-        assertEquals(false, test.overlaps(new Interval(TEST_TIME2, TEST_TIME2)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME2 - 1, TEST_TIME2)));
+        assertEquals(true,  interval37.overlaps(new Interval(2, 6)));
+        assertEquals(true,  interval37.overlaps(new Interval(3, 6)));
+        assertEquals(true,  interval37.overlaps(new Interval(4, 6)));
+        assertEquals(true,  interval37.overlaps(new Interval(5, 6)));
+        assertEquals(true,  interval37.overlaps(new Interval(6, 6)));
         
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME2 + 1)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME2 + 1)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2 + 1)));
-        assertEquals(false, test.overlaps(new Interval(TEST_TIME2, TEST_TIME2 + 1)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME2 - 1, TEST_TIME2 + 1)));
+        assertEquals(true,  interval37.overlaps(new Interval(2, 7)));
+        assertEquals(true,  interval37.overlaps(new Interval(3, 7)));
+        assertEquals(true,  interval37.overlaps(new Interval(4, 7)));
+        assertEquals(true,  interval37.overlaps(new Interval(5, 7)));
+        assertEquals(true,  interval37.overlaps(new Interval(6, 7)));
+        assertEquals(false, interval37.overlaps(new Interval(7, 7)));  // abuts after
         
-        assertEquals(false, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1 - 1)));
-        assertEquals(false, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
+        assertEquals(true,  interval37.overlaps(new Interval(2, 8)));
+        assertEquals(true,  interval37.overlaps(new Interval(3, 8)));
+        assertEquals(true,  interval37.overlaps(new Interval(4, 8)));
+        assertEquals(true,  interval37.overlaps(new Interval(5, 8)));
+        assertEquals(true,  interval37.overlaps(new Interval(6, 8)));
+        assertEquals(false, interval37.overlaps(new Interval(7, 8)));  // abuts after
+        assertEquals(false, interval37.overlaps(new Interval(8, 8)));  // gap after
         
-        assertEquals(true, test.overlaps((ReadableInterval) null));
+        assertEquals(false, interval37.overlaps(new Interval(8, 9)));  // gap after
+        assertEquals(false, interval37.overlaps(new Interval(9, 9)));  // gap after
+    }
+
+    public void testOverlaps_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.overlaps((ReadableInterval) null));  // gap before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval37.overlaps((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(true,  interval37.overlaps((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(true,  interval37.overlaps((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.overlaps((ReadableInterval) null));  // abuts after
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.overlaps((ReadableInterval) null));  // gap after
         
-        Interval empty = new Interval(TEST_TIME1, TEST_TIME1);
-        assertEquals(true, empty.overlaps(empty));
-        assertEquals(true, empty.overlaps(test));
-        assertEquals(true, test.overlaps(empty));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval33.overlaps((ReadableInterval) null));
+    }
+
+    public void testOverlaps_RInterval_zeroDuration() {
+        assertEquals(true,  interval33.overlaps(interval33));
+        assertEquals(true,  interval33.overlaps(interval37));
+        assertEquals(true,  interval37.overlaps(interval33));
+        assertEquals(false, interval33.overlaps(new Interval(1, 2)));
+        assertEquals(false, interval33.overlaps(new Interval(8, 9)));
+        assertEquals(true,  interval33.overlaps(new Interval(1, 9)));
     }
 
     //-----------------------------------------------------------------------
     public void testOverlap_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(null, interval37.overlap(new Interval(1, 2)));  // gap before
+        assertEquals(null, interval37.overlap(new Interval(2, 2)));  // gap before
         
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME1),
-                test.overlap(new Interval(TEST_TIME1, TEST_TIME1)));
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME1),
-                new Interval(TEST_TIME1, TEST_TIME1).overlap(test));
+        assertEquals(null, interval37.overlap(new Interval(2, 3)));  // abuts before
+        assertEquals(new Interval(3, 3), interval37.overlap(new Interval(3, 3)));
         
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME1, TEST_TIME2)));
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME2)));
-        assertEquals(
-                new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2)));
-        assertEquals(
-                null,
-                test.overlap(new Interval(TEST_TIME2, TEST_TIME2)));
-        assertEquals(
-                new Interval(TEST_TIME2 - 1, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME2 - 1, TEST_TIME2)));
+        assertEquals(new Interval(3, 4), interval37.overlap(new Interval(2, 4)));  // truncated start
+        assertEquals(new Interval(3, 4), interval37.overlap(new Interval(3, 4)));
+        assertEquals(new Interval(4, 4), interval37.overlap(new Interval(4, 4)));
         
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME1, TEST_TIME2 + 1)));
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME2 + 1)));
-        assertEquals(
-                new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME1 + (TEST_TIME2 - TEST_TIME1) / 2, TEST_TIME2 + 1)));
-        assertEquals(
-                null,
-                test.overlap(new Interval(TEST_TIME2, TEST_TIME2 + 1)));
-        assertEquals(
-                new Interval(TEST_TIME2 - 1, TEST_TIME2),
-                test.overlap(new Interval(TEST_TIME2 - 1, TEST_TIME2 + 1)));
+        assertEquals(new Interval(3, 7), interval37.overlap(new Interval(2, 7)));  // truncated start
+        assertEquals(new Interval(3, 7), interval37.overlap(new Interval(3, 7)));
+        assertEquals(new Interval(4, 7), interval37.overlap(new Interval(4, 7)));
+        assertEquals(new Interval(5, 7), interval37.overlap(new Interval(5, 7)));
+        assertEquals(new Interval(6, 7), interval37.overlap(new Interval(6, 7)));
+        assertEquals(null, interval37.overlap(new Interval(7, 7)));  // abuts after
         
-        assertEquals(
-                null,
-                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME1 - 1)));
-        assertEquals(
-                null,
-                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
-        assertEquals(
-                new Interval(TEST_TIME1, TEST_TIME1 + 1),
-                test.overlap(new Interval(TEST_TIME1 - 1, TEST_TIME1 + 1)));
+        assertEquals(new Interval(3, 7), interval37.overlap(new Interval(2, 8)));  // truncated start and end
+        assertEquals(new Interval(3, 7), interval37.overlap(new Interval(3, 8)));  // truncated end
+        assertEquals(new Interval(4, 7), interval37.overlap(new Interval(4, 8)));  // truncated end
+        assertEquals(new Interval(5, 7), interval37.overlap(new Interval(5, 8)));  // truncated end
+        assertEquals(new Interval(6, 7), interval37.overlap(new Interval(6, 8)));  // truncated end
+        assertEquals(null, interval37.overlap(new Interval(7, 8)));  // abuts after
+        assertEquals(null, interval37.overlap(new Interval(8, 8)));  // gap after
+    }
+
+    public void testOverlap_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(null, interval37.overlap((ReadableInterval) null));  // gap before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(new Interval(3, 3), interval37.overlap((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(new Interval(4, 4), interval37.overlap((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(new Interval(6, 6), interval37.overlap((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(null, interval37.overlap((ReadableInterval) null));  // abuts after
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(null, interval37.overlap((ReadableInterval) null));  // gap after
         
-        assertEquals(
-                new Interval(TEST_TIME_NOW, TEST_TIME_NOW),
-                test.overlap((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(new Interval(3, 3), interval33.overlap((ReadableInterval) null));
     }
 
     public void testOverlap_RInterval_zone() {
-        Interval testA = new Interval(new DateTime(TEST_TIME1, LONDON), new DateTime(TEST_TIME2, LONDON));
+        Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
         assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
         
-        Interval testB = new Interval(new DateTime(TEST_TIME1 + 1, MOSCOW), new DateTime(TEST_TIME2 + 1, MOSCOW));
+        Interval testB = new Interval(new DateTime(4, MOSCOW), new DateTime(8, MOSCOW));
         assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
         
         Interval resultAB = testA.overlap(testB);
@@ -370,10 +657,10 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testOverlap_RInterval_zoneUTC() {
-        Interval testA = new Interval(new Instant(TEST_TIME1), new Instant(TEST_TIME2));
+        Interval testA = new Interval(new Instant(3), new Instant(7));
         assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
         
-        Interval testB = new Interval(new Instant(TEST_TIME1 + 1), new Instant(TEST_TIME2 + 1));
+        Interval testB = new Interval(new Instant(4), new Instant(8));
         assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
         
         Interval result = testA.overlap(testB);
@@ -382,35 +669,48 @@ public class TestInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testGap_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(new Interval(1, 3), interval37.gap(new Interval(0, 1)));
+        assertEquals(new Interval(1, 3), interval37.gap(new Interval(1, 1)));
         
-        assertEquals(
-                new Interval(TEST_TIME2, TEST_TIME2 + 2),
-                test.gap(new Interval(TEST_TIME2 + 2, TEST_TIME2 + 4)));
-        assertEquals(
-                null,
-                test.gap(new Interval(TEST_TIME2, TEST_TIME2)));
+        assertEquals(null, interval37.gap(new Interval(2, 3)));  // abuts before
+        assertEquals(null, interval37.gap(new Interval(3, 3)));  // abuts before
+        
+        assertEquals(null, interval37.gap(new Interval(4, 6)));  // overlaps
+        
+        assertEquals(null, interval37.gap(new Interval(3, 7)));  // overlaps
+        assertEquals(null, interval37.gap(new Interval(6, 7)));  // overlaps
+        assertEquals(null, interval37.gap(new Interval(7, 7)));  // abuts after
+        
+        assertEquals(null, interval37.gap(new Interval(6, 8)));  // overlaps
+        assertEquals(null, interval37.gap(new Interval(7, 8)));  // abuts after
+        assertEquals(new Interval(7, 8), interval37.gap(new Interval(8, 8)));
+        
+        assertEquals(null, interval37.gap(new Interval(6, 9)));  // overlaps
+        assertEquals(null, interval37.gap(new Interval(7, 9)));  // abuts after
+        assertEquals(new Interval(7, 8), interval37.gap(new Interval(8, 9)));
+        assertEquals(new Interval(7, 9), interval37.gap(new Interval(9, 9)));
+    }
 
-        assertEquals(
-                new Interval(TEST_TIME1 - 2, TEST_TIME1),
-                test.gap(new Interval(TEST_TIME1 - 4, TEST_TIME1 - 2)));
-        assertEquals(
-                null,
-                test.gap(new Interval(TEST_TIME1 - 2, TEST_TIME1)));
-
-        assertEquals(
-                null,
-                test.gap(new Interval(TEST_TIME1, TEST_TIME2)));
-        assertEquals(
-                null,
-                test.gap(new Interval(TEST_TIME1 + 1, TEST_TIME2 - 1)));
+    public void testGap_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(new Interval(2, 3),  interval37.gap((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(null,  interval37.gap((ReadableInterval) null));  // abuts before
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(null,  interval37.gap((ReadableInterval) null));  // overlaps
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(null,  interval37.gap((ReadableInterval) null));  // overlaps
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(null,  interval37.gap((ReadableInterval) null));  // abuts after
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(new Interval(7, 8),  interval37.gap((ReadableInterval) null));
     }
 
     public void testGap_RInterval_zone() {
-        Interval testA = new Interval(new DateTime(TEST_TIME1, LONDON), new DateTime(TEST_TIME2, LONDON));
+        Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
         assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
         
-        Interval testB = new Interval(new DateTime(TEST_TIME1 - 100, MOSCOW), new DateTime(TEST_TIME1 - 50, MOSCOW));
+        Interval testB = new Interval(new DateTime(1, MOSCOW), new DateTime(2, MOSCOW));
         assertEquals(ISOChronology.getInstance(MOSCOW), testB.getChronology());
         
         Interval resultAB = testA.gap(testB);
@@ -421,10 +721,10 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testGap_RInterval_zoneUTC() {
-        Interval testA = new Interval(new Instant(TEST_TIME1), new Instant(TEST_TIME2));
+        Interval testA = new Interval(new Instant(3), new Instant(7));
         assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
         
-        Interval testB = new Interval(new Instant(TEST_TIME1 - 100), new Instant(TEST_TIME1 - 50));
+        Interval testB = new Interval(new Instant(1), new Instant(2));
         assertEquals(ISOChronology.getInstanceUTC(), testB.getChronology());
         
         Interval result = testA.gap(testB);
@@ -433,132 +733,206 @@ public class TestInterval_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testAbuts_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(false, interval37.abuts(new Interval(1, 2)));  // gap before
+        assertEquals(false, interval37.abuts(new Interval(2, 2)));  // gap before
         
-        assertEquals(
-                false,
-                test.abuts(new Interval(TEST_TIME2 + 2, TEST_TIME2 + 4)));
-        assertEquals(
-                true,
-                test.abuts(new Interval(TEST_TIME2, TEST_TIME2)));
-
-        assertEquals(
-                false,
-                test.abuts(new Interval(TEST_TIME1 - 4, TEST_TIME1 - 2)));
-        assertEquals(
-                true,
-                test.abuts(new Interval(TEST_TIME1 - 2, TEST_TIME1)));
-
-        assertEquals(
-                false,
-                test.abuts(new Interval(TEST_TIME1, TEST_TIME2)));
-        assertEquals(
-                false,
-                test.abuts(new Interval(TEST_TIME1 + 1, TEST_TIME2 - 1)));
+        assertEquals(true,  interval37.abuts(new Interval(2, 3)));
+        assertEquals(true,  interval37.abuts(new Interval(3, 3)));
+        
+        assertEquals(false, interval37.abuts(new Interval(2, 4)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(3, 4)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(4, 4)));  // overlaps
+        
+        assertEquals(false, interval37.abuts(new Interval(2, 6)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(3, 6)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(4, 6)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(5, 6)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(6, 6)));  // overlaps
+        
+        assertEquals(false, interval37.abuts(new Interval(2, 7)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(3, 7)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(4, 7)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(5, 7)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(6, 7)));  // overlaps
+        assertEquals(true,  interval37.abuts(new Interval(7, 7)));
+        
+        assertEquals(false, interval37.abuts(new Interval(2, 8)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(3, 8)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(4, 8)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(5, 8)));  // overlaps
+        assertEquals(false, interval37.abuts(new Interval(6, 8)));  // overlaps
+        assertEquals(true,  interval37.abuts(new Interval(7, 8)));
+        assertEquals(false, interval37.abuts(new Interval(8, 8)));  // gap after
+        
+        assertEquals(false, interval37.abuts(new Interval(8, 9)));  // gap after
+        assertEquals(false, interval37.abuts(new Interval(9, 9)));  // gap after
     }
 
-    //-----------------------------------------------------------------------
+    public void testAbuts_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false,  interval37.abuts((ReadableInterval) null));  // gap before
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true,  interval37.abuts((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false,  interval37.abuts((ReadableInterval) null));  // overlaps
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false,  interval37.abuts((ReadableInterval) null));  // overlaps
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(true,  interval37.abuts((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false,  interval37.abuts((ReadableInterval) null));  // gap after
+    }
+
+    // -----------------------------------------------------------------------
     public void testIsBefore_long() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(false, test.isBefore(TEST_TIME1 - 1));
-        assertEquals(false, test.isBefore(TEST_TIME1));
-        assertEquals(false, test.isBefore(TEST_TIME1 + 1));
-        
-        assertEquals(false, test.isBefore(TEST_TIME2 - 1));
-        assertEquals(true, test.isBefore(TEST_TIME2));
-        assertEquals(true, test.isBefore(TEST_TIME2 + 1));
+        assertEquals(false, interval37.isBefore(2));
+        assertEquals(false, interval37.isBefore(3));
+        assertEquals(false, interval37.isBefore(4));
+        assertEquals(false, interval37.isBefore(5));
+        assertEquals(false, interval37.isBefore(6));
+        assertEquals(true,  interval37.isBefore(7));
+        assertEquals(true,  interval37.isBefore(8));
     }
 
     public void testIsBeforeNow() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2 - 1);
-        assertEquals(false, test.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2);
-        assertEquals(true, test.isBeforeNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME2 + 1);
-        assertEquals(true, test.isBeforeNow());
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.isBeforeNow());
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(false, interval37.isBeforeNow());
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval37.isBeforeNow());
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false, interval37.isBeforeNow());
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(true, interval37.isBeforeNow());
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(true, interval37.isBeforeNow());
     }
 
     public void testIsBefore_RI() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME1 - 1)));
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME1)));
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isBefore(new Instant(TEST_TIME2 - 1)));
-        assertEquals(true, test.isBefore(new Instant(TEST_TIME2)));
-        assertEquals(true, test.isBefore(new Instant(TEST_TIME2 + 1)));
-        
-        assertEquals(false, test.isBefore((ReadableInstant) null));
+        assertEquals(false, interval37.isBefore(new Instant(2)));
+        assertEquals(false, interval37.isBefore(new Instant(3)));
+        assertEquals(false, interval37.isBefore(new Instant(4)));
+        assertEquals(false, interval37.isBefore(new Instant(5)));
+        assertEquals(false, interval37.isBefore(new Instant(6)));
+        assertEquals(true,  interval37.isBefore(new Instant(7)));
+        assertEquals(true,  interval37.isBefore(new Instant(8)));
+    }
+
+    public void testIsBefore_RI_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.isBefore((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(false, interval37.isBefore((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval37.isBefore((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false, interval37.isBefore((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(true, interval37.isBefore((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(true, interval37.isBefore((ReadableInstant) null));
     }
 
     public void testIsBefore_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 2)));
+        assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 3)));
+        assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 4)));
         
-        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
-        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1)));
-        assertEquals(false, test.isBefore(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isBefore(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
-        assertEquals(true, test.isBefore(new Interval(TEST_TIME2, Long.MAX_VALUE)));
-        assertEquals(true, test.isBefore(new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
-        
-        assertEquals(false, test.isBefore((ReadableInterval) null));
+        assertEquals(false, interval37.isBefore(new Interval(6, Long.MAX_VALUE)));
+        assertEquals(true, interval37.isBefore(new Interval(7, Long.MAX_VALUE)));
+        assertEquals(true, interval37.isBefore(new Interval(8, Long.MAX_VALUE)));
+    }
+
+    public void testIsBefore_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(false, interval37.isBefore((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(false, interval37.isBefore((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval37.isBefore((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false, interval37.isBefore((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(true, interval37.isBefore((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(true, interval37.isBefore((ReadableInterval) null));
     }
 
     //-----------------------------------------------------------------------
     public void testIsAfter_long() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(true, test.isAfter(TEST_TIME1 - 1));
-        assertEquals(false, test.isAfter(TEST_TIME1));
-        assertEquals(false, test.isAfter(TEST_TIME1 + 1));
-        
-        assertEquals(false, test.isAfter(TEST_TIME2 - 1));
-        assertEquals(false, test.isAfter(TEST_TIME2));
-        assertEquals(false, test.isAfter(TEST_TIME2 + 1));
+        assertEquals(true,  interval37.isAfter(2));
+        assertEquals(false, interval37.isAfter(3));
+        assertEquals(false, interval37.isAfter(4));
+        assertEquals(false, interval37.isAfter(5));
+        assertEquals(false, interval37.isAfter(6));
+        assertEquals(false, interval37.isAfter(7));
+        assertEquals(false, interval37.isAfter(8));
     }
 
     public void testIsAfterNow() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 - 1);
-        assertEquals(true, test.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1);
-        assertEquals(false, test.isAfterNow());
-        DateTimeUtils.setCurrentMillisFixed(TEST_TIME1 + 1);
-        assertEquals(false, test.isAfterNow());
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(true, interval37.isAfterNow());
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(false, interval37.isAfterNow());
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval37.isAfterNow());
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false, interval37.isAfterNow());
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.isAfterNow());
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.isAfterNow());
     }
 
     public void testIsAfter_RI() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
-        
-        assertEquals(true, test.isAfter(new Instant(TEST_TIME1 - 1)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME1)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME2 - 1)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME2)));
-        assertEquals(false, test.isAfter(new Instant(TEST_TIME2 + 1)));
-        
-        assertEquals(false, test.isAfter((ReadableInstant) null));
+        assertEquals(true,  interval37.isAfter(new Instant(2)));
+        assertEquals(false, interval37.isAfter(new Instant(3)));
+        assertEquals(false, interval37.isAfter(new Instant(4)));
+        assertEquals(false, interval37.isAfter(new Instant(5)));
+        assertEquals(false, interval37.isAfter(new Instant(6)));
+        assertEquals(false, interval37.isAfter(new Instant(7)));
+        assertEquals(false, interval37.isAfter(new Instant(8)));
+    }
+
+    public void testIsAfter_RI_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(true, interval37.isAfter((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(false, interval37.isAfter((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval37.isAfter((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false, interval37.isAfter((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.isAfter((ReadableInstant) null));
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.isAfter((ReadableInstant) null));
     }
 
     public void testIsAfter_RInterval() {
-        Interval test = new Interval(TEST_TIME1, TEST_TIME2);
+        assertEquals(true, interval37.isAfter(new Interval(Long.MIN_VALUE, 2)));
+        assertEquals(true, interval37.isAfter(new Interval(Long.MIN_VALUE, 3)));
+        assertEquals(false, interval37.isAfter(new Interval(Long.MIN_VALUE, 4)));
         
-        assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 - 1)));
-        assertEquals(true, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1)));
-        assertEquals(false, test.isAfter(new Interval(Long.MIN_VALUE, TEST_TIME1 + 1)));
-        
-        assertEquals(false, test.isAfter(new Interval(TEST_TIME2 - 1, Long.MAX_VALUE)));
-        assertEquals(false, test.isAfter(new Interval(TEST_TIME2, Long.MAX_VALUE)));
-        assertEquals(false, test.isAfter(new Interval(TEST_TIME2 + 1, Long.MAX_VALUE)));
-        
-        assertEquals(false, test.isAfter((ReadableInterval) null));
+        assertEquals(false, interval37.isAfter(new Interval(6, Long.MAX_VALUE)));
+        assertEquals(false, interval37.isAfter(new Interval(7, Long.MAX_VALUE)));
+        assertEquals(false, interval37.isAfter(new Interval(8, Long.MAX_VALUE)));
+    }
+
+    public void testIsAfter_RInterval_null() {
+        DateTimeUtils.setCurrentMillisFixed(2);
+        assertEquals(true, interval37.isAfter((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(3);
+        assertEquals(true, interval37.isAfter((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(4);
+        assertEquals(false, interval37.isAfter((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(6);
+        assertEquals(false, interval37.isAfter((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(7);
+        assertEquals(false, interval37.isAfter((ReadableInterval) null));
+        DateTimeUtils.setCurrentMillisFixed(8);
+        assertEquals(false, interval37.isAfter((ReadableInterval) null));
     }
 
     //-----------------------------------------------------------------------

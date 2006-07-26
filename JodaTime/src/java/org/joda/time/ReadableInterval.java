@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -81,9 +81,27 @@ public interface ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Does this time interval contain the specified instant.
+     * Does this time interval contain or equal the specified instant.
      * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
+     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
+     * The instant is contained if it is at the start or middle of this interval
+     * but not at the end.
+     * <p>
+     * A zero duration interval represents the smallest possible interval
+     * and only contains the instant equal to its start and end.
+     * <p>
+     * For example:
+     * <pre>
+     * [09:00 to 10:00) contains 08:59  = false (before start)
+     * [09:00 to 10:00) contains 09:00  = true
+     * [09:00 to 10:00) contains 09:59  = true
+     * [09:00 to 10:00) contains 10:00  = false (equals end)
+     * [09:00 to 10:00) contains 10:01  = false (after end)
+     * 
+     * [14:00 to 14:00) contains 14:00  = true (equal)
+     * </pre>
+     * Passng in a <code>null</code> parameter will have the same effect as
+     * calling {@link #containsNow()}.
      * 
      * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
@@ -91,11 +109,34 @@ public interface ReadableInterval {
     boolean contains(ReadableInstant instant);
     
     /**
-     * Does this time interval contain the specified time interval completely.
+     * Does this time interval contain or equal the specified time interval.
      * <p>
-     * Intervals are inclusive of the start instant and exclusive of the end.
+     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
+     * The other interval is contained if this interval wholly contains, starts,
+     * finishes or equals it.
+     * <p>
+     * A zero duration interval represents the smallest possible interval
+     * and will contain itself (because it is equal to itself). It will also
+     * be contained by a larger interval at the start, middle but not the end.
+     * <p>
+     * For example:
+     * <pre>
+     * [09:00 to 10:00) contains [09:00 to 10:00)  = true
+     * [09:00 to 10:00) contains [09:00 to 09:30)  = true
+     * [09:00 to 10:00) contains [09:30 to 10:00)  = true
+     * [09:00 to 10:00) contains [09:15 to 09:45)  = true
+     * [09:00 to 10:00) contains [09:00 to 09:00)  = true
      * 
-     * @param interval  the time interval to compare to, null means now
+     * [09:00 to 10:00) contains [08:59 to 10:00)  = false (otherStart before thisStart)
+     * [09:00 to 10:00) contains [09:00 to 10:01)  = false (otherEnd after thisEnd)
+     * [09:00 to 10:00) contains [10:00 to 10:00)  = false (otherStart equals thisEnd)
+     * 
+     * [14:00 to 14:00) contains [14:00 to 14:00)  = true (equal)
+     * </pre>
+     * Passng in a <code>null</code> parameter will have the same effect as
+     * calling {@link #containsNow()}.
+     * 
+     * @param interval  the time interval to compare to, null means a zero length interval now
      * @return true if this time interval contains the time interval
      */
     boolean contains(ReadableInterval interval);
@@ -103,10 +144,40 @@ public interface ReadableInterval {
     /**
      * Does this time interval overlap the specified time interval.
      * <p>
+     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
      * The intervals overlap if at least some of the time interval is in common.
-     * Intervals are inclusive of the start instant and exclusive of the end.
+     * <p>
+     * A zero duration interval represents the smallest possible interval
+     * and will overlap itself and larger intervals. The size of the overlap will
+     * be a zero duration interval equal to the original zero duration interval.
+     * <p>
+     * For example:
+     * <pre>
+     * [09:00 to 10:00) overlaps [08:00 to 08:30)  = false (completely before)
+     * [09:00 to 10:00) overlaps [08:00 to 09:00)  = false (abuts before)
+     * [09:00 to 10:00) overlaps [08:00 to 09:30)  = true
+     * [09:00 to 10:00) overlaps [08:00 to 10:00)  = true
+     * [09:00 to 10:00) overlaps [08:00 to 11:00)  = true
      * 
-     * @param interval  the time interval to compare to, null means now
+     * [09:00 to 10:00) overlaps [09:00 to 09:00)  = true
+     * [09:00 to 10:00) overlaps [09:00 to 09:30)  = true
+     * [09:00 to 10:00) overlaps [09:00 to 10:00)  = true
+     * [09:00 to 10:00) overlaps [09:00 to 11:00)  = true
+     * 
+     * [09:00 to 10:00) overlaps [09:30 to 09:30)  = true
+     * [09:00 to 10:00) overlaps [09:30 to 10:00)  = true
+     * [09:00 to 10:00) overlaps [09:30 to 11:00)  = true
+     * 
+     * [09:00 to 10:00) overlaps [10:00 to 10:00)  = false (abuts after)
+     * [09:00 to 10:00) overlaps [10:00 to 11:00)  = false (abuts after)
+     * 
+     * [09:00 to 10:00) overlaps [10:30 to 11:00)  = false (completely after)
+     * 
+     * [14:00 to 14:00) overlaps [14:00 to 14:00)  = true
+     * [14:00 to 14:00) overlaps [13:00 to 15:00)  = true
+     * </pre>
+     * 
+     * @param interval  the time interval to compare to, null means a zero length interval now
      * @return true if the time intervals overlap
      */
     boolean overlaps(ReadableInterval interval);

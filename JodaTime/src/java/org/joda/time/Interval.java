@@ -179,9 +179,16 @@ public final class Interval
     /**
      * Gets the overlap between this interval and another interval.
      * <p>
-     * This method returns the amount of the overlap, only if the
-     * intervals do overlap.
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * An interval overlaps another if it shares some common part of the
+     * datetime continuum. This method returns the amount of the overlap,
+     * only if the intervals actually do overlap.
      * If the intervals do not overlap, then null is returned.
+     * <p>
+     * When two intervals are compared the result is one of three states:
+     * (a) they abut, (b) there is a gap between them, (c) they overlap.
+     * The abuts state takes precedence over the other two, thus a zero duration
+     * interval at the start of a larger interval abuts and does not overlap.
      * <p>
      * The chronology of the returned interval is the same as that of
      * this interval (the chronology of the interval parameter is not used).
@@ -207,9 +214,16 @@ public final class Interval
      * Gets the gap between this interval and another interval.
      * The other interval can be either before or after this interval.
      * <p>
-     * This method returns the amount of the gap only if the
-     * intervals do actually have a gap between them.
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * An interval has a gap to another interval if there is a non-zero
+     * duration between them. This method returns the amount of the gap only
+     * if the intervals do actually have a gap between them.
      * If the intervals overlap or abut, then null is returned.
+     * <p>
+     * When two intervals are compared the result is one of three states:
+     * (a) they abut, (b) there is a gap between them, (c) they overlap.
+     * The abuts state takes precedence over the other two, thus a zero duration
+     * interval at the start of a larger interval abuts and does not overlap.
      * <p>
      * The chronology of the returned interval is the same as that of
      * this interval (the chronology of the interval parameter is not used).
@@ -239,12 +253,15 @@ public final class Interval
     /**
      * Does this interval abut with the interval specified.
      * <p>
-     * An interval abuts if it starts immediately after, or
-     * ends immediately before this interval without overlap.
-     * Thus this method returns true if
-     * <code>thisStart == otherEnd || thisEnd == otherStart </code>.
-     * <p>
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * An interval abuts if it starts immediately after, or ends immediately
+     * before this interval without overlap.
      * A zero duration interval abuts with itself.
+     * <p>
+     * When two intervals are compared the result is one of three states:
+     * (a) they abut, (b) there is a gap between them, (c) they overlap.
+     * The abuts state takes precedence over the other two, thus a zero duration
+     * interval at the start of a larger interval abuts and does not overlap.
      * <p>
      * For example:
      * <pre>

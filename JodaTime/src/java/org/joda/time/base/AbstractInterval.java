@@ -85,13 +85,10 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
-     * Does this time interval contain or equal the specified millisecond instant.
+     * Does this time interval contain the specified millisecond instant.
      * <p>
-     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
-     * A zero duration intervals only contains the instant equal to its start and end.
-     * <p>
-     * NOTE: From v1.3, comparing a zero duration interval to an instant
-     * with the same value will return true because they are equal
+     * Non-zero duration intervals are inclusive of the start instant and
+     * exclusive of the end. A zero duration interval cannot contain anything.
      *
      * @param millisInstant  the instant to compare to,
      *  millisecond instant from 1970-01-01T00:00:00Z
@@ -100,18 +97,14 @@ public abstract class AbstractInterval implements ReadableInterval {
     public boolean contains(long millisInstant) {
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
-        return (millisInstant >= thisStart && millisInstant < thisEnd) ||
-            (thisStart == millisInstant && thisEnd == millisInstant);
+        return (millisInstant >= thisStart && millisInstant < thisEnd);
     }
 
     /**
-     * Does this time interval contain or equal the current instant.
+     * Does this time interval contain the current instant.
      * <p>
-     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
-     * A zero duration intervals only contains the instant equal to its start and end.
-     * <p>
-     * NOTE: From v1.3, comparing a zero duration interval to an instant
-     * with the same value will return true because they are equal
+     * Non-zero duration intervals are inclusive of the start instant and
+     * exclusive of the end. A zero duration interval cannot contain anything.
      *
      * @return true if this time interval contains the current instant
      */
@@ -120,14 +113,10 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     /**
-     * Does this time interval contain or equal the specified instant.
+     * Does this time interval contain the specified instant.
      * <p>
-     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
-     * The instant is contained if it is at the start or middle of this interval
-     * but not at the end.
-     * <p>
-     * A zero duration interval represents the smallest possible interval
-     * and only contains the instant equal to its start and end.
+     * Non-zero duration intervals are inclusive of the start instant and
+     * exclusive of the end. A zero duration interval cannot contain anything.
      * <p>
      * For example:
      * <pre>
@@ -137,13 +126,10 @@ public abstract class AbstractInterval implements ReadableInterval {
      * [09:00 to 10:00) contains 10:00  = false (equals end)
      * [09:00 to 10:00) contains 10:01  = false (after end)
      * 
-     * [14:00 to 14:00) contains 14:00  = true (equal)
+     * [14:00 to 14:00) contains 14:00  = false (zero duration contains nothing)
      * </pre>
      * Passng in a <code>null</code> parameter will have the same effect as
      * calling {@link #containsNow()}.
-     * <p>
-     * NOTE: From v1.3, comparing a zero duration interval to an instant
-     * with the same value will return true because they are equal
      *
      * @param instant  the instant, null means now
      * @return true if this time interval contains the instant
@@ -156,15 +142,18 @@ public abstract class AbstractInterval implements ReadableInterval {
     }
 
     /**
-     * Does this time interval contain or equal the specified time interval.
+     * Does this time interval contain the specified time interval.
      * <p>
-     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
-     * The other interval is contained if this interval wholly contains, starts,
-     * finishes or equals it.
+     * Non-zero duration intervals are inclusive of the start instant and
+     * exclusive of the end. The other interval is contained if this interval
+     * wholly contains, starts, finishes or equals it.
+     * A zero duration interval cannot contain anything.
      * <p>
-     * A zero duration interval represents the smallest possible interval
-     * and will contain itself (because it is equal to itself). It will also
-     * be contained by a larger interval at the start, middle but not the end.
+     * When two intervals are compared the result is one of three states:
+     * (a) they abut, (b) there is a gap between them, (c) they overlap.
+     * The <code>contains</code> method is not related to these states.
+     * In particular, a zero duration interval is contained at the start of
+     * a larger interval, but does not overlap (it abuts instead).
      * <p>
      * For example:
      * <pre>
@@ -178,13 +167,10 @@ public abstract class AbstractInterval implements ReadableInterval {
      * [09:00 to 10:00) contains [09:00 to 10:01)  = false (otherEnd after thisEnd)
      * [09:00 to 10:00) contains [10:00 to 10:00)  = false (otherStart equals thisEnd)
      * 
-     * [14:00 to 14:00) contains [14:00 to 14:00)  = true (equal)
+     * [14:00 to 14:00) contains [14:00 to 14:00)  = false (zero duration contains nothing)
      * </pre>
      * Passng in a <code>null</code> parameter will have the same effect as
      * calling {@link #containsNow()}.
-     * <p>
-     * NOTE: From v1.3, comparing a zero duration interval to itself
-     * will return true because they are equal
      *
      * @param interval  the time interval to compare to, null means a zero duration interval now
      * @return true if this time interval contains the time interval
@@ -197,19 +183,20 @@ public abstract class AbstractInterval implements ReadableInterval {
         long otherEnd = interval.getEndMillis();
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
-        return (thisStart <= otherStart && otherStart < thisEnd && otherEnd <= thisEnd) ||
-            (thisStart == otherStart && thisEnd == otherEnd);
+        return (thisStart <= otherStart && otherStart < thisEnd && otherEnd <= thisEnd);
     }
 
     /**
      * Does this time interval overlap the specified time interval.
      * <p>
-     * Non-zero duration intervals are inclusive of the start instant and exclusive of the end.
-     * The intervals overlap if at least some of the time interval is in common.
+     * Intervals are inclusive of the start instant and exclusive of the end.
+     * An interval overlaps another if it shares some common part of the
+     * datetime continuum. 
      * <p>
-     * A zero duration interval represents the smallest possible interval
-     * and will overlap itself and larger intervals. The size of the overlap will
-     * be a zero duration interval equal to the original zero duration interval.
+     * When two intervals are compared the result is one of three states:
+     * (a) they abut, (b) there is a gap between them, (c) they overlap.
+     * The abuts state takes precedence over the other two, thus a zero duration
+     * interval at the start of a larger interval abuts and does not overlap.
      * <p>
      * For example:
      * <pre>
@@ -219,7 +206,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * [09:00 to 10:00) overlaps [08:00 to 10:00)  = true
      * [09:00 to 10:00) overlaps [08:00 to 11:00)  = true
      * 
-     * [09:00 to 10:00) overlaps [09:00 to 09:00)  = true
+     * [09:00 to 10:00) overlaps [09:00 to 09:00)  = false (abuts before)
      * [09:00 to 10:00) overlaps [09:00 to 09:30)  = true
      * [09:00 to 10:00) overlaps [09:00 to 10:00)  = true
      * [09:00 to 10:00) overlaps [09:00 to 11:00)  = true
@@ -233,28 +220,24 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * [09:00 to 10:00) overlaps [10:30 to 11:00)  = false (completely after)
      * 
-     * [14:00 to 14:00) overlaps [14:00 to 14:00)  = true
+     * [14:00 to 14:00) overlaps [14:00 to 14:00)  = false (abuts before and after)
      * [14:00 to 14:00) overlaps [13:00 to 15:00)  = true
      * </pre>
-     * NOTE: From v1.3, comparing a zero duration interval at the start of
-     * another interval will now return true, and comparing a zero duration
-     * interval to itself will return true
-     * 
+     *
      * @param interval  the time interval to compare to, null means a zero length interval now
      * @return true if the time intervals overlap
      */
     public boolean overlaps(ReadableInterval interval) {
-        if (interval == null) {
-            return containsNow();
-        }
-        long otherStart = interval.getStartMillis();
-        long otherEnd = interval.getEndMillis();
         long thisStart = getStartMillis();
         long thisEnd = getEndMillis();
-        
-        return (thisStart < otherEnd && otherStart < thisEnd) ||
-            (thisStart == otherStart &&
-                    (thisStart == thisEnd || otherStart == otherEnd));
+        if (interval == null) {
+            long now = DateTimeUtils.currentTimeMillis();
+            return (thisStart < now && now < thisEnd);
+        }  else {
+            long otherStart = interval.getStartMillis();
+            long otherEnd = interval.getEndMillis();
+            return (thisStart < otherEnd && otherStart < thisEnd);
+        }
     }
 
     //-----------------------------------------------------------------------

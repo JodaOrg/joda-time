@@ -263,7 +263,7 @@ public class TestMutableInterval_Basics extends TestCase {
     public void testOverlaps_RInterval() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         
-        assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1)));
+        assertEquals(false, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1)));
         assertEquals(false, test.overlaps(new Interval(TEST_TIME1 - 1, TEST_TIME1)));
         
         assertEquals(true, test.overlaps(new Interval(TEST_TIME1, TEST_TIME1 + 1)));
@@ -289,9 +289,9 @@ public class TestMutableInterval_Basics extends TestCase {
         assertEquals(true, test.overlaps((ReadableInterval) null));
         
         MutableInterval empty = new MutableInterval(TEST_TIME1, TEST_TIME1);
-        assertEquals(true, empty.overlaps(empty));
-        assertEquals(true, empty.overlaps(test));
-        assertEquals(true, test.overlaps(empty));
+        assertEquals(false, empty.overlaps(empty));
+        assertEquals(false, empty.overlaps(test));
+        assertEquals(false, test.overlaps(empty));
     }
 
     //-----------------------------------------------------------------------

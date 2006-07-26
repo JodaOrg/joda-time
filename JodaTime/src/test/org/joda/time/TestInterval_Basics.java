@@ -321,15 +321,15 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval.overlaps(test1020));
         assertEquals(false, interval.contains(test1020));
         
-        // [10,10) [10,20) - abuts and contains-one-way and overlaps
+        // [10,10) [10,20) - abuts and contains-one-way
         interval = new Interval(10, 10);
         assertNull(test1020.gap(interval));
         assertEquals(true,  test1020.abuts(interval));
-        assertEquals(true,  test1020.overlaps(interval));
+        assertEquals(false, test1020.overlaps(interval));  // abuts, so can't overlap
         assertEquals(true,  test1020.contains(interval));  // normal contains zero-duration
         assertNull(interval.gap(test1020));
         assertEquals(true,  interval.abuts(test1020));
-        assertEquals(true,  interval.overlaps(test1020));
+        assertEquals(false, interval.overlaps(test1020));  // abuts, so can't overlap
         assertEquals(false, interval.contains(test1020));  // zero-duration does not contain normal
         
         // [12,12) [10,20) - contains-one-way and overlaps
@@ -385,11 +385,11 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, test0808.overlaps(test1010));
         assertEquals(false, test0808.contains(test1010));
         
-        // [10,10) [10,10) - abuts and overlaps
+        // [10,10) [10,10) - abuts
         assertNull(test1010.gap(test1010));
         assertEquals(true,  test1010.abuts(test1010));
-        assertEquals(true,  test1010.overlaps(test1010));
-        assertEquals(true,  test1010.contains(test1010));
+        assertEquals(false, test1010.overlaps(test1010));
+        assertEquals(false, test1010.contains(test1010));
     }
 
     //-----------------------------------------------------------------------
@@ -405,7 +405,7 @@ public class TestInterval_Basics extends TestCase {
 
     public void testContains_long_zeroDuration() {
         assertEquals(false, interval33.contains(2));  // value before
-        assertEquals(true,  interval33.contains(3));
+        assertEquals(false, interval33.contains(3));  // zero length duration contains nothing
         assertEquals(false, interval33.contains(4));  // value after
     }
 
@@ -427,7 +427,7 @@ public class TestInterval_Basics extends TestCase {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval33.containsNow());  // value before
         DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(true,  interval33.containsNow());
+        assertEquals(false, interval33.containsNow());  // zero length duration contains nothing
         DateTimeUtils.setCurrentMillisFixed(4);
         assertEquals(false, interval33.containsNow());  // value after
     }
@@ -460,7 +460,7 @@ public class TestInterval_Basics extends TestCase {
 
     public void testContains_RI_zeroDuration() {
         assertEquals(false, interval33.contains(new Instant(2)));  // value before
-        assertEquals(true,  interval33.contains(new Instant(3)));
+        assertEquals(false, interval33.contains(new Instant(3)));  // zero length duration contains nothing
         assertEquals(false, interval33.contains(new Instant(4)));  // value after
     }
 
@@ -517,7 +517,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     public void testContains_RInterval_zeroDuration() {
-        assertEquals(true,  interval33.contains(interval33));
+        assertEquals(false, interval33.contains(interval33));  // zero length duration contains nothing
         assertEquals(false, interval33.contains(interval37));  // zero-duration cannot contain anything
         assertEquals(true,  interval37.contains(interval33));
         assertEquals(false, interval33.contains(new Interval(1, 2)));  // zero-duration cannot contain anything
@@ -527,7 +527,7 @@ public class TestInterval_Basics extends TestCase {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval33.contains((ReadableInterval) null));  // gap before
         DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(true,  interval33.contains((ReadableInterval) null));
+        assertEquals(false, interval33.contains((ReadableInterval) null));  // zero length duration contains nothing
         DateTimeUtils.setCurrentMillisFixed(4);
         assertEquals(false, interval33.contains((ReadableInterval) null));  // gap after
     }
@@ -538,7 +538,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.overlaps(new Interval(2, 2)));  // gap before
         
         assertEquals(false, interval37.overlaps(new Interval(2, 3)));  // abuts before
-        assertEquals(true,  interval37.overlaps(new Interval(3, 3)));
+        assertEquals(false, interval37.overlaps(new Interval(3, 3)));  // abuts before
         
         assertEquals(true,  interval37.overlaps(new Interval(2, 4)));
         assertEquals(true,  interval37.overlaps(new Interval(3, 4)));
@@ -573,7 +573,7 @@ public class TestInterval_Basics extends TestCase {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.overlaps((ReadableInterval) null));  // gap before
         DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(true,  interval37.overlaps((ReadableInterval) null));
+        assertEquals(false, interval37.overlaps((ReadableInterval) null));  // abuts before
         DateTimeUtils.setCurrentMillisFixed(4);
         assertEquals(true,  interval37.overlaps((ReadableInterval) null));
         DateTimeUtils.setCurrentMillisFixed(6);
@@ -584,13 +584,13 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.overlaps((ReadableInterval) null));  // gap after
         
         DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(true,  interval33.overlaps((ReadableInterval) null));
+        assertEquals(false, interval33.overlaps((ReadableInterval) null));  // abuts before and after
     }
 
     public void testOverlaps_RInterval_zeroDuration() {
-        assertEquals(true,  interval33.overlaps(interval33));
-        assertEquals(true,  interval33.overlaps(interval37));
-        assertEquals(true,  interval37.overlaps(interval33));
+        assertEquals(false, interval33.overlaps(interval33));  // abuts before and after
+        assertEquals(false, interval33.overlaps(interval37));  // abuts before
+        assertEquals(false, interval37.overlaps(interval33));  // abuts before
         assertEquals(false, interval33.overlaps(new Interval(1, 2)));
         assertEquals(false, interval33.overlaps(new Interval(8, 9)));
         assertEquals(true,  interval33.overlaps(new Interval(1, 9)));
@@ -602,7 +602,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(null, interval37.overlap(new Interval(2, 2)));  // gap before
         
         assertEquals(null, interval37.overlap(new Interval(2, 3)));  // abuts before
-        assertEquals(new Interval(3, 3), interval37.overlap(new Interval(3, 3)));
+        assertEquals(null, interval37.overlap(new Interval(3, 3)));  // abuts before
         
         assertEquals(new Interval(3, 4), interval37.overlap(new Interval(2, 4)));  // truncated start
         assertEquals(new Interval(3, 4), interval37.overlap(new Interval(3, 4)));
@@ -628,7 +628,7 @@ public class TestInterval_Basics extends TestCase {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(null, interval37.overlap((ReadableInterval) null));  // gap before
         DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(new Interval(3, 3), interval37.overlap((ReadableInterval) null));
+        assertEquals(null, interval37.overlap((ReadableInterval) null));  // abuts before
         DateTimeUtils.setCurrentMillisFixed(4);
         assertEquals(new Interval(4, 4), interval37.overlap((ReadableInterval) null));
         DateTimeUtils.setCurrentMillisFixed(6);
@@ -639,7 +639,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(null, interval37.overlap((ReadableInterval) null));  // gap after
         
         DateTimeUtils.setCurrentMillisFixed(3);
-        assertEquals(new Interval(3, 3), interval33.overlap((ReadableInterval) null));
+        assertEquals(null, interval33.overlap((ReadableInterval) null));  // abuts before and after
     }
 
     public void testOverlap_RInterval_zone() {

@@ -70,8 +70,6 @@ Data compatible - Yes
   - DateTimeZone data updated to version 2006g
 
 Semantic compatible - Yes, except
-  - Zero duration interval definition has been tightened and slightly altered
-    If your application relies on zero duration intervals then please retest carefully
   - YearMonthDay constructor no longer accepts time only strings
   - TimeOfDay constructor no longer accepts strings including a date
 
@@ -104,16 +102,10 @@ Bug fixes since 1.2
   Previously these methods returned intervals in the default time zone
   Now, they return intervals in the time zone of the original interval
 
-- Interval/MutableInterval.contains/overlaps(ReadableInterval)
-  Previously, these methods were ill-defined with respect to zero duration intervals and nulls
-  These are the new rules:
-    A zero duration interval can be contained in a larger interval, at the start and middle, but not the end
-    A zero duration interval contains itself
-    A zero duration interval can overlap other intervals and be overlapped
-    A zero duration interval overlaps itself
-    A zero duration interval abuts itself and non-zero duration intervals on each side
-  Basically, a zero duration interval acts like an infinitely precise instant with the same value.
-  It represents both a point on the datetime continuum and the smallest possible interval.
+- Interval/MutableInterval.overlaps(ReadableInterval)
+  Previously, these methods did not handle null correctly
+  Now, if the current millisecond instant is at the start of the interval the
+  method returns false (as defined, even if its a little unexpected)
 
 - DateTimeFormatterBuilder.MatchingParser
   Previously didn't estimate parsed length correctly

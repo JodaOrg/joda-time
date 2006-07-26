@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -660,6 +660,15 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+    public void testParseMillis_fractionOfSecondLong() {
+        DateTimeFormatter f = new DateTimeFormatterBuilder()
+            .appendSecondOfDay(2).appendLiteral('.').appendFractionOfSecond(1, 9)
+                .toFormatter().withZone(DateTimeZone.UTC);
+        assertEquals(10512, f.parseMillis("10.5123456"));
+        assertEquals(10512, f.parseMillis("10.512999"));
+    }
+
+    //-----------------------------------------------------------------------
     // Ensure time zone name switches properly at the zone DST transition.
     public void testZoneNameNearTransition() {
         DateTime inDST_1  = new DateTime(2005, 10, 30, 1, 0, 0, 0, NEWYORK);

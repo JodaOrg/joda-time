@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -734,6 +734,19 @@ public class TestDateTimeFormat extends TestCase {
         
         dt = dt.withZone(TOKYO);
         assertEquals(dt.toString(), "040", f.print(dt));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormat_fractionOfSecondLong() {
+        DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
+        DateTimeFormatter f = DateTimeFormat.forPattern("SSSSSS").withLocale(Locale.UK);
+        assertEquals(dt.toString(), "040000", f.print(dt));
+        
+        dt = dt.withZone(NEWYORK);
+        assertEquals(dt.toString(), "040000", f.print(dt));
+        
+        dt = dt.withZone(TOKYO);
+        assertEquals(dt.toString(), "040000", f.print(dt));
     }
 
     //-----------------------------------------------------------------------

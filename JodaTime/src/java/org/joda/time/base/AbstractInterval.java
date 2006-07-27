@@ -128,7 +128,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * [14:00 to 14:00) contains 14:00  = false (zero duration contains nothing)
      * </pre>
-     * Passng in a <code>null</code> parameter will have the same effect as
+     * Passing in a <code>null</code> parameter will have the same effect as
      * calling {@link #containsNow()}.
      *
      * @param instant  the instant, null means now
@@ -169,7 +169,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * 
      * [14:00 to 14:00) contains [14:00 to 14:00)  = false (zero duration contains nothing)
      * </pre>
-     * Passng in a <code>null</code> parameter will have the same effect as
+     * Passing in a <code>null</code> parameter will have the same effect as
      * calling {@link #containsNow()}.
      *
      * @param interval  the time interval to compare to, null means a zero duration interval now

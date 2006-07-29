@@ -252,6 +252,7 @@ public final class LocalDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadablePartial, ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+     * The default String converter ignores the zone and only parses the field values.
      *
      * @param instant  the datetime object
      * @throws IllegalArgumentException if the instant is invalid
@@ -272,6 +273,7 @@ public final class LocalDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadablePartial, ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+     * The default String converter ignores the zone and only parses the field values.
      *
      * @param instant  the datetime object
      * @param zone  the time zone
@@ -297,6 +299,7 @@ public final class LocalDateTime
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadablePartial, ReadableInstant, String, Calendar and Date.
      * The String formats are described by {@link ISODateTimeFormat#localDateOptionalTimeParser()}.
+     * The default String converter ignores the zone and only parses the field values.
      *
      * @param instant  the datetime object
      * @param chronology  the chronology

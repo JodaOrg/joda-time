@@ -36,6 +36,8 @@ public class TestLocalTime_Constructors extends TestCase {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    private static final DateTimeZone NEW_YORK = DateTimeZone.forID("America/New_York");
     private static final ISOChronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final JulianChronology JULIAN_LONDON = JulianChronology.getInstance(LONDON);
     private static final JulianChronology JULIAN_PARIS = JulianChronology.getInstance(PARIS);
@@ -326,6 +328,26 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(40, test.getMillisOfSecond());
     }
 
+    public void testConstructor_ObjectString1Tokyo() throws Throwable {
+        DateTimeZone.setDefault(TOKYO);
+        LocalTime test = new LocalTime("10:20:30.040");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_ObjectString1NewYork() throws Throwable {
+        DateTimeZone.setDefault(NEW_YORK);
+        LocalTime test = new LocalTime("10:20:30.040");
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(10, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+        assertEquals(30, test.getSecondOfMinute());
+        assertEquals(40, test.getMillisOfSecond());
+    }
+
     public void testConstructor_ObjectString2() throws Throwable {
         LocalTime test = new LocalTime("T10:20:30.040");
         assertEquals(ISO_UTC, test.getChronology());
@@ -444,17 +466,24 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
-    public void testConstructor_Object2_DateTimeZone() throws Throwable {
-        LocalTime test = new LocalTime("T10:20");
-        assertEquals(10, test.getHourOfDay());
+    public void testConstructor_ObjectString_DateTimeZoneLondon() throws Throwable {
+        LocalTime test = new LocalTime("04:20", LONDON);
+        assertEquals(4, test.getHourOfDay());
         assertEquals(20, test.getMinuteOfHour());
-        assertEquals(0, test.getSecondOfMinute());
-        assertEquals(0, test.getMillisOfSecond());
-        
-        try {
-            new LocalTime("T1020");
-            fail();
-        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testConstructor_ObjectString_DateTimeZoneTokyo() throws Throwable {
+        LocalTime test = new LocalTime("04:20", TOKYO);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(4, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
+    }
+
+    public void testConstructor_ObjectString_DateTimeZoneNewYork() throws Throwable {
+        LocalTime test = new LocalTime("04:20", NEW_YORK);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(4, test.getHourOfDay());
+        assertEquals(20, test.getMinuteOfHour());
     }
 
     public void testConstructor_nullObject_DateTimeZone() throws Throwable {

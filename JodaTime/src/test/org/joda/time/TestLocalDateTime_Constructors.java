@@ -39,6 +39,7 @@ public class TestLocalDateTime_Constructors extends TestCase {
     private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_UTC = GregorianChronology.getInstanceUTC();
     private static final Chronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
+    private static final Chronology GREGORIAN_MOSCOW = GregorianChronology.getInstance(MOSCOW);
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     private static final int OFFSET_PARIS = PARIS.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
     private static final int OFFSET_MOSCOW = MOSCOW.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
@@ -446,6 +447,34 @@ public class TestLocalDateTime_Constructors extends TestCase {
         assertEquals(0, test.getMillisOfSecond());
     }
 
+    public void testConstructor_Object_DateTimeZoneMoscow() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1970-04-06T12:24:00", MOSCOW);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(12, test.getHourOfDay());
+        assertEquals(24, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_Object_DateTimeZoneMoscowBadDateTime() throws Throwable {
+        // 1981-03-31T23:59:59.999+03:00 followed by 1981-04-01T01:00:00.000+04:00
+        // 1981-09-30T23:59:59.999+04:00 followed by 1981-09-30T23:00:00.000+03:00
+        
+        // when a DST non-existing time is passed in, it should still work (ie. zone ignored)
+        LocalDateTime test = new LocalDateTime("1981-04-01T00:30:00", MOSCOW);  // doesnt exist
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1981, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+        assertEquals(0, test.getHourOfDay());
+        assertEquals(30, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
     public void testConstructor_nullObject_DateTimeZone() throws Throwable {
         LocalDateTime test = new LocalDateTime((Object) null, PARIS);
         assertEquals(ISO_UTC, test.getChronology());
@@ -493,6 +522,34 @@ public class TestLocalDateTime_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
         assertEquals(12 + OFFSET_PARIS, test.getHourOfDay());
         assertEquals(24, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_Object_ChronologyMoscow() throws Throwable {
+        LocalDateTime test = new LocalDateTime("1970-04-06T12:24:00", GREGORIAN_MOSCOW);
+        assertEquals(GREGORIAN_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(12, test.getHourOfDay());
+        assertEquals(24, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_Object_ChronologyMoscowBadDateTime() throws Throwable {
+        // 1981-03-31T23:59:59.999+03:00 followed by 1981-04-01T01:00:00.000+04:00
+        // 1981-09-30T23:59:59.999+04:00 followed by 1981-09-30T23:00:00.000+03:00
+        
+        // when a DST non-existing time is passed in, it should still work (ie. zone ignored)
+        LocalDateTime test = new LocalDateTime("1981-04-01T00:30:00", GREGORIAN_MOSCOW);  // doesnt exist
+        assertEquals(GREGORIAN_UTC, test.getChronology());
+        assertEquals(1981, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+        assertEquals(0, test.getHourOfDay());
+        assertEquals(30, test.getMinuteOfHour());
         assertEquals(0, test.getSecondOfMinute());
         assertEquals(0, test.getMillisOfSecond());
     }

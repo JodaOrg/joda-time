@@ -21,12 +21,7 @@ import java.util.TimeZone;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat parsing.
@@ -100,6 +95,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     //-----------------------------------------------------------------------
     public void test_localDateParser() {
         DateTimeFormatter parser = ISODateTimeFormat.localDateParser();
+        assertEquals(DateTimeZone.UTC, parser.getZone());
         assertParse(parser, true, "2006-06-09");
         assertParse(parser, true, "2006-W27-3");
         assertParse(parser, true, "2006-123");
@@ -184,6 +180,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     //-----------------------------------------------------------------------
     public void test_localTimeParser() {
         DateTimeFormatter parser = ISODateTimeFormat.localTimeParser();
+        assertEquals(DateTimeZone.UTC, parser.getZone());
         assertParse(parser, false, "2006-06-09");
         assertParse(parser, false, "2006-W27-3");
         assertParse(parser, false, "2006-123");
@@ -207,6 +204,9 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, true, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertParse(parser, true, "00:00:10.512345678");
+        assertEquals(10512, parser.parseMillis("00:00:10.512345678"));
     }
 
     //-----------------------------------------------------------------------
@@ -235,6 +235,10 @@ public class TestISODateTimeFormatParsing extends TestCase {
         assertParse(parser, true, "10.5");
         assertParse(parser, false, "10:20:30.040+02:00");
         assertParse(parser, false, "10.5+02:00");
+        
+        assertParse(parser, true, "00:00:10.512345678");
+        // result is offset by London DST in 1970-01-01
+        assertEquals(10512, parser.parseMillis("00:00:10.512345678") + DateTimeZone.getDefault().getOffset(0L));
     }
 
     //-----------------------------------------------------------------------
@@ -296,6 +300,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     //-----------------------------------------------------------------------
     public void test_localDateOptionalTimeParser() {
         DateTimeFormatter parser = ISODateTimeFormat.localDateOptionalTimeParser();
+        assertEquals(DateTimeZone.UTC, parser.getZone());
         assertParse(parser, true, "2006-06-09");
         assertParse(parser, true, "2006-W27-3");
         assertParse(parser, true, "2006-123");

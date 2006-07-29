@@ -18,6 +18,7 @@ package org.joda.time.format;
 import java.util.Collection;
 
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeZone;
 
 /**
  * Factory that creates instances of DateTimeFormatter for the ISO8601 standard.
@@ -128,6 +129,7 @@ public class ISODateTimeFormat {
         dpe, // date parser element
         tpe, // time parser element
         dp,  // date parser
+        ldp, // local date parser
         tp,  // time parser
         ltp, // local time parser
         dtp, // date time parser
@@ -558,6 +560,8 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a generic ISO date parser for parsing local dates.
+     * This parser is initialised with the local (UTC) time zone.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * date-element      = std-date-element | ord-date-element | week-date-element
@@ -568,7 +572,10 @@ public class ISODateTimeFormat {
      * @since 1.3
      */
     public static DateTimeFormatter localDateParser() {
-        return dateElementParser();
+        if (ldp == null) {
+            ldp = dateElementParser().withZone(DateTimeZone.UTC);
+        }
+        return ldp;
     }
 
     /**
@@ -633,6 +640,8 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a generic ISO time parser for parsing local times.
+     * This parser is initialised with the local (UTC) time zone.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * time           = ['T'] time-element
@@ -648,7 +657,7 @@ public class ISODateTimeFormat {
             ltp = new DateTimeFormatterBuilder()
                 .appendOptional(literalTElement().getParser())
                 .append(timeElementParser())
-                .toFormatter();
+                .toFormatter().withZone(DateTimeZone.UTC);
         }
         return ltp;
     }
@@ -785,6 +794,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a generic ISO datetime parser where the date is mandatory and
      * the time is optional. This parser only parses local datetimes.
+     * This parser is initialised with the local (UTC) time zone.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * datetime          = date-element ['T' time-element]
@@ -808,7 +819,7 @@ public class ISODateTimeFormat {
             ldotp = new DateTimeFormatterBuilder()
                 .append(dateElementParser())
                 .appendOptional(time)
-                .toFormatter();
+                .toFormatter().withZone(DateTimeZone.UTC);
         }
         return ldotp;
     }

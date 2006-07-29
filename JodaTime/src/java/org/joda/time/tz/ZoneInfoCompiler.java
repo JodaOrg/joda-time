@@ -260,7 +260,6 @@ public class ZoneInfoCompiler {
         long end = ISOChronology.getInstanceUTC().year().set(0, 2050);
 
         int offset = tz.getOffset(millis);
-        int standardOffset = tz.getStandardOffset(millis);
         String key = tz.getNameKey(millis);
 
         List transitions = new ArrayList();

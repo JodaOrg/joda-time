@@ -40,9 +40,7 @@
   <distributionDirectory>home/groups/j/jo/joda-time/htdocs/repository</distributionDirectory>
   
   <repository>
-    <!-- Does not appear to be supported in Maven-1.x
-    <connection>scm:svn:http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk</connection>
-    -->
+    <connection>scm:svn:https://svn.sourceforge.net/svnroot/joda-time/trunk/JodaTime/</connection>
     <url>http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTime/</url>
   </repository>
 
@@ -79,6 +77,16 @@
       <id>1.1</id>
       <name>1.1</name>
       <tag>v1_1_000</tag>
+    </version>
+    <version>
+      <id>1.2</id>
+      <name>1.2</name>
+      <tag>v1_2_000</tag>
+    </version>
+    <version>
+      <id>1.2.1</id>
+      <name>1.2.1</name>
+      <tag>v1_2_100</tag>
     </version>
   </versions>
   

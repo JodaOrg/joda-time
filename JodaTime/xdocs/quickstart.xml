@@ -57,6 +57,17 @@ the month you can use:
 </p>
 
 <p>
+All the main datetime classes are immutable (like String) and cannot be changed
+after creation. However, simple methods have been provided to alter field values
+in a newly created object. For example, to set the year, or add 2 hours you can use:
+<source>
+  DateTime dt = new DateTime();
+  DateTime year2000 = dt.withYear(2000);
+  DateTime twoHoursLater = dt.plusHours(2);
+</source>
+</p>
+
+<p>
 In addition to the basic get methods, each datetime class provides property
 methods for each field. These provide access to the full wealth of Joda-Time
 functionality. For example, to access details about a month or year:
@@ -65,15 +76,8 @@ functionality. For example, to access details about a month or year:
   String monthName = dt.monthOfYear().getAsText();
   String frenchShortName = dt.monthOfYear().getAsShortText(Locale.FRENCH);
   boolean isLeapYear = dt.year().isLeap();
+  DateTime rounded = dt.dayOfMonth().roundFloorCopy();
 </source>
-These property fields also allow you to get an updated copy with a field set,
-added to or rounded.
-<source>
-  DateTime dt = new DateTime();
-  DateTime tenthOfMonth = dt.monthOfYear().setCopy(10);
-  DateTime twoDaysLater = dt.monthOfYear().addToCopy(2);
-</source>
-In these examples, the original datetime is unaltered, because it is immutable.
 </p>
 </subsection>
 

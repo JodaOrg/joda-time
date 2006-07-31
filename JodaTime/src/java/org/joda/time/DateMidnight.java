@@ -792,6 +792,7 @@ public final class DateMidnight
      * same date and chronology.
      *
      * @return a LocalDate with the same date and chronology
+     * @since 1.3
      */
     public LocalDate toLocalDate() {
         return new LocalDate(getMillis(), getChronology());
@@ -824,6 +825,7 @@ public final class DateMidnight
      * @param era  the era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withEra(int era) {
         return withMillis(getChronology().era().set(getMillis(), era));
@@ -839,6 +841,7 @@ public final class DateMidnight
      * @param centuryOfEra  the centurey of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withCenturyOfEra(int centuryOfEra) {
         return withMillis(getChronology().centuryOfEra().set(getMillis(), centuryOfEra));
@@ -854,6 +857,7 @@ public final class DateMidnight
      * @param yearOfEra  the year of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withYearOfEra(int yearOfEra) {
         return withMillis(getChronology().yearOfEra().set(getMillis(), yearOfEra));
@@ -869,6 +873,7 @@ public final class DateMidnight
      * @param yearOfCentury  the year of century to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withYearOfCentury(int yearOfCentury) {
         return withMillis(getChronology().yearOfCentury().set(getMillis(), yearOfCentury));
@@ -884,6 +889,7 @@ public final class DateMidnight
      * @param year  the year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withYear(int year) {
         return withMillis(getChronology().year().set(getMillis(), year));
@@ -899,6 +905,7 @@ public final class DateMidnight
      * @param weekyear  the weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withWeekyear(int weekyear) {
         return withMillis(getChronology().weekyear().set(getMillis(), weekyear));
@@ -914,6 +921,7 @@ public final class DateMidnight
      * @param monthOfYear  the month of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withMonthOfYear(int monthOfYear) {
         return withMillis(getChronology().monthOfYear().set(getMillis(), monthOfYear));
@@ -929,6 +937,7 @@ public final class DateMidnight
      * @param weekOfWeekyear  the week of weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withWeekOfWeekyear(int weekOfWeekyear) {
         return withMillis(getChronology().weekOfWeekyear().set(getMillis(), weekOfWeekyear));
@@ -944,6 +953,7 @@ public final class DateMidnight
      * @param dayOfYear  the day of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withDayOfYear(int dayOfYear) {
         return withMillis(getChronology().dayOfYear().set(getMillis(), dayOfYear));
@@ -959,6 +969,7 @@ public final class DateMidnight
      * @param dayOfMonth  the day of month to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withDayOfMonth(int dayOfMonth) {
         return withMillis(getChronology().dayOfMonth().set(getMillis(), dayOfMonth));
@@ -974,6 +985,7 @@ public final class DateMidnight
      * @param dayOfWeek  the day of week to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateMidnight withDayOfWeek(int dayOfWeek) {
         return withMillis(getChronology().dayOfWeek().set(getMillis(), dayOfWeek));

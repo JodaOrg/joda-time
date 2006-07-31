@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -290,9 +290,9 @@ public class IllegalFieldValueException extends IllegalArgumentException {
     }
 
     /**
-     * Provide additional detail by prepending a message to the existing
-     * message. A colon is separator is automatically inserted between the
-     * messages.
+     * Provide additional detail by prepending a message to the existing message.
+     * A colon is separator is automatically inserted between the messages.
+     * @since 1.3
      */
     public void prependMessage(String message) {
         if (iMessage == null) {

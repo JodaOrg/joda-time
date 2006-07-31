@@ -812,6 +812,7 @@ public final class TimeOfDay
      * Converts this object to a LocalTime with the same time and chronology.
      *
      * @return a LocalTime with the same time and chronology
+     * @since 1.3
      */
     public LocalTime toLocalTime() {
         return new LocalTime(getHourOfDay(), getMinuteOfHour(),

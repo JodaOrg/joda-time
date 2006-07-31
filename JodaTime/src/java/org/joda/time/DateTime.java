@@ -1134,6 +1134,7 @@ public final class DateTime
      * the same datetime and chronology.
      *
      * @return a LocalDateTime with the same datetime and chronology
+     * @since 1.3
      */
     public LocalDateTime toLocalDateTime() {
         return new LocalDateTime(getMillis(), getChronology());
@@ -1144,6 +1145,7 @@ public final class DateTime
      * same date and chronology.
      *
      * @return a LocalDate with the same date and chronology
+     * @since 1.3
      */
     public LocalDate toLocalDate() {
         return new LocalDate(getMillis(), getChronology());
@@ -1154,6 +1156,7 @@ public final class DateTime
      * same time and chronology.
      *
      * @return a LocalTime with the same time and chronology
+     * @since 1.3
      */
     public LocalTime toLocalTime() {
         return new LocalTime(getMillis(), getChronology());
@@ -1170,6 +1173,7 @@ public final class DateTime
      * @param era  the era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withEra(int era) {
         return withMillis(getChronology().era().set(getMillis(), era));
@@ -1185,6 +1189,7 @@ public final class DateTime
      * @param centuryOfEra  the centurey of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withCenturyOfEra(int centuryOfEra) {
         return withMillis(getChronology().centuryOfEra().set(getMillis(), centuryOfEra));
@@ -1200,6 +1205,7 @@ public final class DateTime
      * @param yearOfEra  the year of era to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withYearOfEra(int yearOfEra) {
         return withMillis(getChronology().yearOfEra().set(getMillis(), yearOfEra));
@@ -1215,6 +1221,7 @@ public final class DateTime
      * @param yearOfCentury  the year of century to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withYearOfCentury(int yearOfCentury) {
         return withMillis(getChronology().yearOfCentury().set(getMillis(), yearOfCentury));
@@ -1230,6 +1237,7 @@ public final class DateTime
      * @param year  the year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withYear(int year) {
         return withMillis(getChronology().year().set(getMillis(), year));
@@ -1245,6 +1253,7 @@ public final class DateTime
      * @param weekyear  the weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withWeekyear(int weekyear) {
         return withMillis(getChronology().weekyear().set(getMillis(), weekyear));
@@ -1260,6 +1269,7 @@ public final class DateTime
      * @param monthOfYear  the month of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withMonthOfYear(int monthOfYear) {
         return withMillis(getChronology().monthOfYear().set(getMillis(), monthOfYear));
@@ -1275,6 +1285,7 @@ public final class DateTime
      * @param weekOfWeekyear  the week of weekyear to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withWeekOfWeekyear(int weekOfWeekyear) {
         return withMillis(getChronology().weekOfWeekyear().set(getMillis(), weekOfWeekyear));
@@ -1290,6 +1301,7 @@ public final class DateTime
      * @param dayOfYear  the day of year to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withDayOfYear(int dayOfYear) {
         return withMillis(getChronology().dayOfYear().set(getMillis(), dayOfYear));
@@ -1305,6 +1317,7 @@ public final class DateTime
      * @param dayOfMonth  the day of month to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withDayOfMonth(int dayOfMonth) {
         return withMillis(getChronology().dayOfMonth().set(getMillis(), dayOfMonth));
@@ -1320,6 +1333,7 @@ public final class DateTime
      * @param dayOfWeek  the day of week to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withDayOfWeek(int dayOfWeek) {
         return withMillis(getChronology().dayOfWeek().set(getMillis(), dayOfWeek));
@@ -1336,6 +1350,7 @@ public final class DateTime
      * @param hour  the hour of day to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withHourOfDay(int hour) {
         return withMillis(getChronology().hourOfDay().set(getMillis(), hour));
@@ -1351,6 +1366,7 @@ public final class DateTime
      * @param minute  the minute of hour to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withMinuteOfHour(int minute) {
         return withMillis(getChronology().minuteOfHour().set(getMillis(), minute));
@@ -1366,6 +1382,7 @@ public final class DateTime
      * @param second  the second of minute to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withSecondOfMinute(int second) {
         return withMillis(getChronology().secondOfMinute().set(getMillis(), second));
@@ -1381,6 +1398,7 @@ public final class DateTime
      * @param millis  the millis of second to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withMillisOfSecond(int millis) {
         return withMillis(getChronology().millisOfSecond().set(getMillis(), millis));
@@ -1396,6 +1414,7 @@ public final class DateTime
      * @param millis  the millis of day to set
      * @return a copy of this object with the field set
      * @throws IllegalArgumentException if the value is invalid
+     * @since 1.3
      */
     public DateTime withMillisOfDay(int millis) {
         return withMillis(getChronology().millisOfDay().set(getMillis(), millis));

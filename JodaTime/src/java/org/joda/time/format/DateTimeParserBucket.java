@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -299,6 +299,7 @@ public class DateTimeParserBucket {
      * @param text optional text being parsed, to be included in any error message
      * @return milliseconds since 1970-01-01T00:00:00Z
      * @throws IllegalArgumentException if any field is out of range
+     * @since 1.3
      */
     public long computeMillis(boolean resetFields, String text) {
         SavedField[] savedFields = iSavedFields;

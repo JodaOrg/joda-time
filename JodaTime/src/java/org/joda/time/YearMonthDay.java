@@ -655,6 +655,7 @@ public final class YearMonthDay
      * Converts this object to a LocalDate with the same date and chronology.
      *
      * @return a LocalDate with the same date and chronology
+     * @since 1.3
      */
     public LocalDate toLocalDate() {
         return new LocalDate(getYear(), getMonthOfYear(), getDayOfMonth(), getChronology());

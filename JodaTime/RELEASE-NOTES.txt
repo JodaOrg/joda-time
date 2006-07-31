@@ -32,12 +32,14 @@ Enhancements since 1.2
   as possible to aid migration, so this should be a search and replace change.
 
 - DateTime/DateMidnight/YearMonthDay/TimeOfDay
-  Add toLocalXxx() methods that allow conversion to the new classes, for example:
+  - toLocalXxx()
+  Added methods that allow conversion to the new classes, for example:
   LocalDate date = today.toLocalDate();
 
 - DateTime/DateMidnight/YearMonthDay/TimeOfDay
-  Add withXxx() methods that allow an individul field to be changed, for example:
-  firstOfMonth = today.withDayOfMonth(1);
+  - withXxx()
+  Added methods that allow an individul field to be changed, for example:
+  DateTime firstOfMonth = today.withDayOfMonth(1);
   These methods are the immutable equivalent of set methods.
   These are convenince methods for the methods on the property API.
 
@@ -46,9 +48,14 @@ Enhancements since 1.2
   transition, thrown exception includes text of datetime being parsed.
 
 - DateTimeFormat
+  - patternForStyle()
   Added method to retrieve the format pattern for a given style and locale.
 
 - ISODateTimeFormat
+  - localDateParser()
+  - localTimeParser()
+  - localDateOptionalTimeParser()
+  - dateOptionalTimeParser()
   New formats for parsing a datetime/date/time without a time zone, and for
   parsing a date (mandatory) with an optional time
 
@@ -57,9 +64,9 @@ Compatibility with 1.2
 ----------------------
 Binary compatible - Yes, except
   - PartialConverter interface has had two new methods added.
-    This is mainly intended as an internal interface and thus it is unlikely
-    that you have implementations that will break. If you did create your own
-    implementation and extended AbstractConverter then your code will not break.
+    This is an internal interface and thus it is unlikely that you have
+    implementations that will break. If you did create your own implementation
+    and extended AbstractConverter then your code will not break.
 
 Source compatible - Yes, except
   - PartialConverter interface, see above

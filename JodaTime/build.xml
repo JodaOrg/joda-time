@@ -253,7 +253,7 @@
              splitindex="yes"
                doctitle="&lt;h1&gt;${component.title}&lt;/h1&gt;"
             windowtitle="${component.title} (Version ${component.version})"
-                 bottom="Copyright (c) 2001-2005 - Joda.org"
+                 bottom="Copyright (c) 2001-2006 - Joda.org"
                Overview="${source.home}/org/joda/time/overview.html">
       <classpath refid="compile.classpath"/>
       <group title="User Packages" packages="org.joda.time:org.joda.time.format:org.joda.time.chrono">

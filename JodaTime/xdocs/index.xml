@@ -35,7 +35,7 @@ public String getBirthMonthText(<b>LocalDate</b> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
 </source>
-Version 1.2.1 was released on 2006-02-12 -
+Version 1.3 was released on 2006-08-02 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
 </p>
 </section>
@@ -95,7 +95,7 @@ Various documentation is available:
 <li>Two user guides - <a href="quickstart.html">quick</a> and <a href="userguide.html">full</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
 <li>The javadoc for the <a href="api-release/index.html">current release</a></li>
-<li>The javadoc for the <a href="apidocs/index.html">latest in development</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">latest code in development</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>
 <li>The <a href="http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTime/">Subversion repository</a></li>
@@ -105,7 +105,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.2.1</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.3</a>
 is the current latest release.
 This release is considered stable and worthy of the 1.x tag.
 It has extensive testing suites and has been used in production.

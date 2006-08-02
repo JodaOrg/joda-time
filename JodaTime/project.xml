@@ -7,7 +7,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
   <name>Joda time</name>
-  <currentVersion>1.3-SNAPSHOT</currentVersion>
+  <currentVersion>1.3</currentVersion>
   <organization>
     <name>Joda.org</name>
     <url>http://www.joda.org</url>

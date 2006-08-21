@@ -56,6 +56,7 @@ Various documentation is available:
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Release 0.1</a>
 is the current latest release.
 This release is a beta release and may have bugs.
+The API is liable to change without deprecation until version 1.0 is released.
 </p>
 <p>
 The dependencies are Joda-Time 1.0 or later.

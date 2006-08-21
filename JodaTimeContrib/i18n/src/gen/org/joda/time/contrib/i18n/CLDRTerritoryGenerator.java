@@ -71,7 +71,7 @@ public class CLDRTerritoryGenerator {
      * Writes the data to a file.
      */
     private void writeFile() {
-        File file = new File("C:/joda/time-i18n/src/java/org/joda/time/contrib/i18n/CLDRTerritoryData.dat");
+        File file = new File("src/java/org/joda/time/contrib/i18n/CLDRTerritoryData.dat");
         ObjectOutputStream oos = null;
         try {
             oos = new ObjectOutputStream(
@@ -145,7 +145,7 @@ public class CLDRTerritoryGenerator {
      * Reads the CLDR XML data.
      */
     private void readXML() {
-        File file = new File("C:/joda/time-i18n/src/java/org/joda/time/contrib/i18n/supplementalData.xml");
+        File file = new File("src/gen/org/joda/time/contrib/i18n/supplementalData.xml");
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - I18N support - License</title>
+  <author email="scolebourne@joda.org">Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="License information">
+<p>
+Joda-Time source code is released under the business-friendly
+<a href="license.html">Apache 2.0 license</a>.
+This is the same license as <a href="http://ant.apache.org">Ant</a>,
+<a href="http://www.springframework.org">Spring</a>,
+<a href="http://tomcat.apache.org">Tomcat</a> and
+<a href="http://jakarta.apache.org">Jakarta</a>.
+</p>
+<p>
+As is normal with the <a href="license.html">Apache 2.0 license</a>, a
+NOTICE file is used to express Joda-Time specifics:
+<source>
+=============================================================================
+= NOTICE file corresponding to section 4d of the Apache License Version 2.0 =
+=============================================================================
+This product includes software developed by
+Joda.org (http://www.joda.org/).
+</source>
+</p>
+</section>
+
+</body>
+</document>

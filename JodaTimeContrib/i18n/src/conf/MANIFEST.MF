@@ -1,0 +1,7 @@
+Extension-Name: @name@
+Specification-Title: Joda Time I18N support
+Specification-Vendor: Joda.org
+Specification-Version: 1.0
+Implementation-Vendor: Joda.org
+Implementation-Title: org.joda.time.contrib.i18n
+Implementation-Version: @version@

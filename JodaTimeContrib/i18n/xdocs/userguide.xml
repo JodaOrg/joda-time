@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - I18N support - User Guide</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+<body>
+
+<!-- ========================================================================= -->
+
+<section name="Introduction">
+<p>
+<a href="/index.html">Joda-Time</a> I18N support provides I18N classes.
+</p>
+
+<!-- ========================================================================= -->
+
+<subsection name="TODO">
+<p>
+TODO
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+</body>
+</document>

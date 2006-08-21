@@ -30,9 +30,8 @@ As a flavour of the functionality, here's how to find out what days are the week
   int weekendStartDay = t.getWeekendStart();
   int weekendEndDay = t.getWeekendEnd();
 </source>
-<!--Version 0.1 was released on 2006-xx-xx -
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Download now</a>
--->
+Version 0.1 was released on 2006-08-21 -
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=201487">Download now</a>
 </p>
 </section>
 
@@ -53,7 +52,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Release 0.1</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=201487">Release 0.1</a>
 is the current latest release.
 This release is a beta release and may have bugs.
 The API is liable to change without deprecation until version 1.0 is released.

@@ -80,6 +80,12 @@
     </unitTest>
     <resources>
       <resource>
+        <directory>src/java</directory>
+        <includes>
+          <include>org/joda/time/contrib/i18n/*.dat</include>
+        </includes>
+      </resource>
+      <resource>
         <targetPath>meta-inf</targetPath>
         <includes>
           <include>NOTICE.txt</include>

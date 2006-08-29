@@ -1,4 +1,4 @@
-# @(#)europe	8.4
+# @(#)europe	8.5
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -2012,7 +2012,9 @@ Zone Asia/Omsk		 4:53:36 -	LMT	1919 Nov 14
 			 5:00	Russia	OMS%sT	1992 Jan 19 2:00s
 			 6:00	Russia	OMS%sT
 #
-# Novosibirskaya oblast'.
+# From Paul Eggert (2006-08-19): I'm guessing about Tomsk here; it's
+# not clear when it switched from +7 to +6.
+# Novosibirskaya oblast', Tomskaya oblast'.
 Zone Asia/Novosibirsk	 5:31:40 -	LMT	1919 Dec 14 6:00
 			 6:00	-	NOVT	1930 Jun 21 # Novosibirsk Time
 			 7:00	Russia	NOV%sT	1991 Mar 31 2:00s
@@ -2022,7 +2024,7 @@ Zone Asia/Novosibirsk	 5:31:40 -	LMT	1919 Dec 14 6:00
 #
 # From Oscar van Vlijmen (2001-08-25): [This region consists of]
 # Kemerovskaya oblast', Krasnoyarskij kraj,
-# Tajmyrskij (Dolgano-Nenetskij) avtonomnyj okrug, Tomskaya oblast',
+# Tajmyrskij (Dolgano-Nenetskij) avtonomnyj okrug,
 # Respublika Tuva, Respublika Khakasiya, Evenkijskij avtonomnyj okrug.
 Zone Asia/Krasnoyarsk	 6:11:20 -	LMT	1920 Jan  6
 			 6:00	-	KRAT	1930 Jun 21 # Krasnoyarsk Time

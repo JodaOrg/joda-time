@@ -1,4 +1,4 @@
-# @(#)northamerica	8.7
+# @(#)northamerica	8.8
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -2096,6 +2096,11 @@ Zone America/Costa_Rica	-5:36:20 -	LMT	1890		# San Jose
 # adjustment in Cuba.  We will stay in daylight saving time:
 # http://www.granma.cu/espanol/2005/noviembre/mier9/horario.html
 
+# From Steffen Thorsen (2006-08-17):
+# It is likely that they are not reverting back to standard time this
+# year either, based on the number of responses I have got from users
+# (when my site claimed Cuba will end DST on lastSun/October)
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Cuba	1928	only	-	Jun	10	0:00	1:00	D
 Rule	Cuba	1928	only	-	Oct	10	0:00	0	S
@@ -2126,7 +2131,7 @@ Rule	Cuba	1997	only	-	Oct	12	0:00s	0	S
 Rule	Cuba	1998	1999	-	Mar	lastSun	0:00s	1:00	D
 Rule	Cuba	1998	2003	-	Oct	lastSun	0:00s	0	S
 Rule	Cuba	2000	max	-	Apr	Sun>=1	0:00s	1:00	D
-Rule	Cuba	2006	max	-	Oct	lastSun	0:00s	0	S
+Rule	Cuba	2007	max	-	Oct	lastSun	0:00s	0	S
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Havana	-5:29:28 -	LMT	1890
@@ -2289,11 +2294,16 @@ Zone America/Port-au-Prince -4:49:20 -	LMT	1890
 # <http://www.elheraldo.hn/nota.php?nid=54941&sec=12>.
 # It mentions executive decree 18-2006.
 
+# From Steffen Thorsen (2006-08-17):
+# Honduras will observe DST from 2007 to 2009, exact dates are not
+# published, I have located this authoritative source:
+# http://www.presidencia.gob.hn/noticia.aspx?nId=47
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Hond	1987	1988	-	May	Sun>=1	0:00	1:00	D
 Rule	Hond	1987	1988	-	Sep	lastSun	0:00	0	S
-Rule	Hond	2006	only	-	May	Sun>=1	0:00	1:00	D
-Rule	Hond	2006	only	-	Aug	Mon>=1	0:00	0	S
+Rule	Hond	2006	2009	-	May	Sun>=1	0:00	1:00	D
+Rule	Hond	2006	2009	-	Aug	Mon>=1	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Tegucigalpa -5:48:52 -	LMT	1921 Apr
 			-6:00	Hond	C%sT

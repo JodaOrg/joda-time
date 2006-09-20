@@ -621,12 +621,20 @@ public final class GJChronology extends AssembledChronology {
             }
         }
 
+        public String getAsText(int fieldValue, Locale locale) {
+            return iGregorianField.getAsText(fieldValue, locale);
+        }
+
         public String getAsShortText(long instant, Locale locale) {
             if (instant >= iCutover) {
                 return iGregorianField.getAsShortText(instant, locale);
             } else {
                 return iJulianField.getAsShortText(instant, locale);
             }
+        }
+
+        public String getAsShortText(int fieldValue, Locale locale) {
+            return iGregorianField.getAsShortText(fieldValue, locale);
         }
 
         public long add(long instant, int value) {

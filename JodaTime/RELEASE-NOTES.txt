@@ -1,5 +1,5 @@
-Joda-Time version 1.3
----------------------
+Joda-Time version 1.3.1
+-----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
@@ -129,6 +129,11 @@ Bug fixes since 1.2
 
 - DayOfYear field
   Better error messages
+
+Bug fixes since 1.3
+-------------------
+- GJChronology
+  Text value of ReadablePartial fields was always a decimal number.
 
 
 Feedback

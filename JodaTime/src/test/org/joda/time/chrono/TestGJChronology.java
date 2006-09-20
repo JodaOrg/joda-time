@@ -471,4 +471,9 @@ public class TestGJChronology extends TestCase {
         }
     }
 
+    public void testPartialGetAsText() {
+        GJChronology chrono = GJChronology.getInstance(TOKYO);
+        assertEquals("January", new YearMonthDay("2005-01-01", chrono).monthOfYear().getAsText());
+        assertEquals("Jan", new YearMonthDay("2005-01-01", chrono).monthOfYear().getAsShortText());
+    }
 }

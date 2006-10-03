@@ -74,7 +74,7 @@ Source compatible - Yes, except
 Serialization compatible - Yes
 
 Data compatible - Yes
-  - DateTimeZone data updated to version 2006g
+  - DateTimeZone data updated to version 2006m
 
 Semantic compatible - Yes, except
   - YearMonthDay constructor no longer accepts time only strings

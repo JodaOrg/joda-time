@@ -1,4 +1,4 @@
-# @(#)africa	8.4
+# @(#)africa	8.5
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -212,35 +212,13 @@ Rule	Egypt	1990	1994	-	May	 1	1:00	1:00	S
 # Go with IATA starting in 1995, except correct 1995 entry from 09-30 to 09-29.
 Rule	Egypt	1995	max	-	Apr	lastFri	 0:00s	1:00	S
 Rule	Egypt	1995	2005	-	Sep	lastThu	23:00s	0	-
-# From Hammad Hassan (2006-09-13), quoting The Egyptian Gazette (2006-09-10),
-# issue no. 41,083, page 1, column 1:
-# Egypt will switch back to the winter time on the eve of the first day of
-# the Muslim holy month of Ramadan, expected to start this year on Sept. 24....
-# "Clocks will be turned back starting from the night on which Darul Ifta ...
-# announces sighting the crescent of the month of Ramadan,..." Magdi Radi,
-# the Cabinet spokesman, said yesterday.
-# From Hammad Hassan (2006-09-17):
-# when we reach 1:00AM at Sep 25 the clocks will be turned back to 12:00AM.
-# I think also this change will be this year and may be the next couple of
-# years only.   (They just want to exclude Ramadan from the summer time; if
-# so, the change will be among 3 years only if my calculations are correct).
-# From Paul Eggert (2006-09-17):
-# For now, assume a similar rule will be followed in 2006/2008, and that
-# Ramadan will start as predicted by GNU Emacs 21.4.  Here's the code used
-# to generate the 2006/2008 lines:
-# (let ((year 1427))
-#   (while (< year (+ 1427 3))
-#     (let ((date (calendar-gregorian-from-absolute
-#		   (calendar-absolute-from-islamic (list 9 2 year)))))
-#	(insert (format "Rule\tEgypt\t%d\tonly\t-\t%s\t%2d\t 1:00\t0\t-\n"
-#			(extract-calendar-year date)
-#			(calendar-month-name (extract-calendar-month date) 3)
-#			(extract-calendar-day date))))
-#     (setq year (1+ year)))))
-Rule	Egypt	2006	only	-	Sep	25	 1:00	0	-
-Rule	Egypt	2007	only	-	Sep	14	 1:00	0	-
-Rule	Egypt	2008	only	-	Sep	 3	 1:00	0	-
-Rule	Egypt	2009	max	-	Sep	lastThu	23:00s	0	-
+# From Steffen Thorsen (2006-09-19):
+# The Egyptian Gazette, issue 41,090 (2006-09-18), page 1, reports:
+# Egypt will turn back clocks by one hour at the midnight of Thursday
+# after observing the daylight saving time since May.
+# http://news.gom.com.eg/gazette/pdf/2006/09/18/01.pdf
+Rule	Egypt	2006	only	-	Sep	21	23:00s	0	-
+Rule	Egypt	2007	max	-	Sep	lastThu	23:00s	0	-
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Africa/Cairo	2:05:00 -	LMT	1900 Oct

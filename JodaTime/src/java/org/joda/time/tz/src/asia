@@ -1,4 +1,4 @@
-# @(#)asia	8.6
+# @(#)asia	8.7
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -1476,6 +1476,15 @@ Zone	Asia/Karachi	4:28:12 -	LMT	1907
 # Gaza changed as well, but presumed Gaza to follow the same rules as
 # the West Bank.
 
+# From Steffen Thorsen (2006-09-26):
+# according to the Palestine News Network (2006-09-19):
+# http://english.pnn.ps/index.php?option=com_content&task=view&id=596&Itemid=5
+# > The Council of Ministers announced that this year its winter schedule
+# > will begin early, as of midnight Thursday.  It is also time to turn
+# > back the clocks for winter.  Friday will begin an hour late this week.
+# I guess it is likely that next year's date will be moved as well,
+# because of the Ramadan.
+
 # The rules for Egypt are stolen from the `africa' file.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule EgyptAsia	1957	only	-	May	10	0:00	1:00	S
@@ -1488,8 +1497,10 @@ Rule EgyptAsia	1966	only	-	Oct	 1	3:00	0	-
 Rule Palestine	1999	2005	-	Apr	Fri>=15	0:00	1:00	S
 Rule Palestine	1999	2003	-	Oct	Fri>=15	0:00	0	-
 Rule Palestine	2004	only	-	Oct	 1	1:00	0	-
-Rule Palestine	2005	max	-	Oct	 4	2:00	0	-
+Rule Palestine	2005	only	-	Oct	 4	2:00	0	-
 Rule Palestine	2006	max	-	Apr	 1	0:00	1:00	S
+Rule Palestine	2006	only	-	Sep	22	0:00	0	-
+Rule Palestine	2007	max	-	Oct	Fri>=15	0:00	0	-
 
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Gaza	2:17:52	-	LMT	1900 Oct
@@ -1668,11 +1679,18 @@ Rule	Syria	1993	only	-	Sep	25	0:00	0	-
 # IATA SSIM (1998-02) says 1998-04-02;
 # (1998-09) says 1999-03-29 and 1999-09-29; (1999-02) says 1999-04-02,
 # 2000-04-02, and 2001-04-02; (1999-09) says 2000-03-31 and 2001-03-31;
-# ignore all these claims and go with Shanks & Pottenger.
+# (2006) says 2006-03-31 and 2006-09-22;
+# for now ignore all these claims and go with Shanks & Pottenger,
+# except for the 2006-09-22 claim (which seems right for Ramadan).
 Rule	Syria	1994	1996	-	Apr	 1	0:00	1:00	S
-Rule	Syria	1994	max	-	Oct	 1	0:00	0	-
+Rule	Syria	1994	2005	-	Oct	 1	0:00	0	-
 Rule	Syria	1997	1998	-	Mar	lastMon	0:00	1:00	S
 Rule	Syria	1999	max	-	Apr	 1	0:00	1:00	S
+# From Stephen Colebourne (2006-09-18):
+# According to IATA data, Syria will change DST on 21st September [21:00 UTC]
+# this year [only]....  This is probably related to Ramadan, like Egypt.
+Rule	Syria	2006	only	-	Sep	22	0:00	0	-
+Rule	Syria	2007	max	-	Oct	 1	0:00	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Damascus	2:25:12 -	LMT	1920	# Dimashq
 			2:00	Syria	EE%sT

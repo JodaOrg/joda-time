@@ -19,6 +19,11 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.3
 ----------------------
+- Years/Months/Weeks/Days/Hours/Minutes/Seconds
+  New group of single field period classes
+  These allow applications to specify a specific field in method signatures and calculations
+  Methods are provided to convert between most of these based on standard length periods
+
 - Period.ZERO
   Add zero-length constant to Period
 

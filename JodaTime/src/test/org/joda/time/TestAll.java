@@ -84,6 +84,15 @@ public class TestAll extends TestCase {
         suite.addTest(TestMutablePeriod_Basics.suite());
         suite.addTest(TestMutablePeriod_Updates.suite());
         
+        suite.addTest(TestBaseSingleFieldPeriod.suite());
+        suite.addTest(TestYears.suite());
+        suite.addTest(TestMonths.suite());
+        suite.addTest(TestWeeks.suite());
+        suite.addTest(TestDays.suite());
+        suite.addTest(TestHours.suite());
+        suite.addTest(TestMinutes.suite());
+        suite.addTest(TestSeconds.suite());
+        
         suite.addTest(TestTimeOfDay_Basics.suite());
         suite.addTest(TestTimeOfDay_Constructors.suite());
         suite.addTest(TestTimeOfDay_Properties.suite());

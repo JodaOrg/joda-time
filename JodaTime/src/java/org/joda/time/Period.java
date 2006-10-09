@@ -53,6 +53,12 @@ public final class Period
         extends BasePeriod
         implements ReadablePeriod, Serializable {
 
+    /**
+     * A period of zero length and standard period type.
+     * @since 1.4
+     */
+    public static final Period ZERO = new Period();
+
     /** Serialization version */
     private static final long serialVersionUID = 741052353876488155L;
 

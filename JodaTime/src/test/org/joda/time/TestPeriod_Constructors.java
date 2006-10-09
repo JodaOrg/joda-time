@@ -33,7 +33,6 @@ public class TestPeriod_Constructors extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -49,18 +48,6 @@ public class TestPeriod_Constructors extends TestCase {
     private long TEST_TIME_NOW =
             (y2002days + 31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
-    // 2002-04-05
-    private long TEST_TIME1 =
-            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
-            + 12L * DateTimeConstants.MILLIS_PER_HOUR
-            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
-    // 2003-05-06
-    private long TEST_TIME2 =
-            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-            + 14L * DateTimeConstants.MILLIS_PER_HOUR
-            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
-    
     private DateTimeZone originalDateTimeZone = null;
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
@@ -95,6 +82,20 @@ public class TestPeriod_Constructors extends TestCase {
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstants() throws Throwable {
+        Period test = Period.ZERO;
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
     }
 
     //-----------------------------------------------------------------------

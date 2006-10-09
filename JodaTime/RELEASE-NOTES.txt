@@ -19,6 +19,8 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.3
 ----------------------
+- Period.ZERO
+  Add zero-length constant to Period
 
 
 Compatibility with 1.3

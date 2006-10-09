@@ -33,17 +33,6 @@ Ideas
     DayOfWeek=Friday and DayOfMonth=13, and then resolve to find the
     next matching Friday the 13th.
 
-- DateHourMinute/DateHourMinuteSecond/YearMonth?
-    More instant variations
-    May be covered by Partial class now
-
-- DurationProperty on DateTime, Period and related?
-    Possibly a clear way to do duration stuff, however plusDays() has
-    probably dealt with this
-
-- Factories for DateTime classes?
-    Perhaps, but the constructors cover this now.
-
 - Chronology:
     Add daysFrom(year)
     This would be a DateTimeField that, given a base year, returns the number of

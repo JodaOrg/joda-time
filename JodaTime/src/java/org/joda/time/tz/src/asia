@@ -1,4 +1,4 @@
-# @(#)asia	8.7
+# %W%
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -953,6 +953,10 @@ Zone	Asia/Tokyo	9:18:59	-	LMT	1887 Dec 31 15:00u
 # For Jordan I have received multiple independent user reports every year
 # about DST end dates, as the end-rule is different every year.
 #
+# From Steffen Thorsen (2006-10-01), after a heads-up from Hilal Malawi:
+# http://www.petranews.gov.jo/nepras/2006/Sep/05/4000.htm
+# "Jordan will switch to winter time on Friday, October 27".
+#
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Jordan	1973	only	-	Jun	6	0:00	1:00	S
 Rule	Jordan	1973	1975	-	Oct	1	0:00	0	-
@@ -979,7 +983,8 @@ Rule	Jordan	1999	2002	-	Sep	lastThu	0:00s	0	-
 Rule	Jordan	2000	max	-	Mar	lastThu	0:00s	1:00	S
 Rule	Jordan	2003	only	-	Oct	24	0:00s	0	-
 Rule	Jordan	2004	only	-	Oct	15	0:00s	0	-
-Rule	Jordan	2005	max	-	Sep	lastFri	0:00s	0	-
+Rule	Jordan	2005	only	-	Sep	lastFri	0:00s	0	-
+Rule	Jordan	2006	max	-	Oct	lastFri	0:00s	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Asia/Amman	2:23:44 -	LMT	1931
 			2:00	Jordan	EE%sT

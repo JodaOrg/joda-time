@@ -65,9 +65,13 @@ public final class Period
     //-----------------------------------------------------------------------
     /**
      * Create a period with a specified number of years.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as months or days using the <code>withXxx()</code> methods.
      * For example, <code>Period.years(2).withMonths(6);</code>
+     * <p>
+     * If you want a year-based period that cannot have other fields added,
+     * then you should consider using {@link Years}.
      *
      * @param years  the amount of years in this period
      * @return the period
@@ -78,9 +82,13 @@ public final class Period
 
     /**
      * Create a period with a specified number of months.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as years or days using the <code>withXxx()</code> methods.
      * For example, <code>Period.months(2).withDays(6);</code>
+     * <p>
+     * If you want a month-based period that cannot have other fields added,
+     * then you should consider using {@link Months}.
      *
      * @param months  the amount of months in this period
      * @return the period
@@ -91,9 +99,13 @@ public final class Period
 
     /**
      * Create a period with a specified number of weeks.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as months or days using the <code>withXxx()</code> methods.
      * For example, <code>Period.weeks(2).withDays(6);</code>
+     * <p>
+     * If you want a week-based period that cannot have other fields added,
+     * then you should consider using {@link Weeks}.
      *
      * @param weeks  the amount of weeks in this period
      * @return the period
@@ -104,9 +116,13 @@ public final class Period
 
     /**
      * Create a period with a specified number of days.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as months or weeks using the <code>withXxx()</code> methods.
      * For example, <code>Period.days(2).withHours(6);</code>
+     * <p>
+     * If you want a day-based period that cannot have other fields added,
+     * then you should consider using {@link Days}.
      *
      * @param days  the amount of days in this period
      * @return the period
@@ -117,9 +133,13 @@ public final class Period
 
     /**
      * Create a period with a specified number of hours.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as months or days using the <code>withXxx()</code> methods.
      * For example, <code>Period.hours(2).withMinutes(30);</code>
+     * <p>
+     * If you want a hour-based period that cannot have other fields added,
+     * then you should consider using {@link Hours}.
      *
      * @param hours  the amount of hours in this period
      * @return the period
@@ -130,9 +150,13 @@ public final class Period
 
     /**
      * Create a period with a specified number of minutes.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as days or hours using the <code>withXxx()</code> methods.
      * For example, <code>Period.minutes(2).withSeconds(30);</code>
+     * <p>
+     * If you want a minute-based period that cannot have other fields added,
+     * then you should consider using {@link Minutes}.
      *
      * @param minutes  the amount of minutes in this period
      * @return the period
@@ -143,9 +167,13 @@ public final class Period
 
     /**
      * Create a period with a specified number of seconds.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as days or hours using the <code>withXxx()</code> methods.
      * For example, <code>Period.seconds(2).withMillis(30);</code>
+     * <p>
+     * If you want a second-based period that cannot have other fields added,
+     * then you should consider using {@link Seconds}.
      *
      * @param seconds  the amount of seconds in this period
      * @return the period
@@ -156,6 +184,7 @@ public final class Period
 
     /**
      * Create a period with a specified number of millis.
+     * <p>
      * The standard period type is used, thus you can add other fields such
      * as days or hours using the <code>withXxx()</code> methods.
      * For example, <code>Period.millis(20).withSeconds(30);</code>

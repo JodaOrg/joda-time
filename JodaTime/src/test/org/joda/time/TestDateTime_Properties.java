@@ -21,6 +21,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.LenientChronology;
+import org.joda.time.chrono.StrictChronology;
 
 /**
  * This class is a Junit unit test for DateTime.
@@ -31,6 +33,9 @@ import org.joda.time.chrono.CopticChronology;
 public class TestDateTime_Properties extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
+
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
 
     //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -1348,6 +1353,30 @@ public class TestDateTime_Properties extends TestCase {
       Interval testInterval = test.millisOfSecond().toInterval();
       assertEquals(new DateTime(2004, 6, 9, 13, 23, 43, 53), testInterval.getStart());
       assertEquals(new DateTime(2004, 6, 9, 13, 23, 43, 54), testInterval.getEnd());
+    }
+
+    public void testPropertyEqualsHashCodeLenient() {
+        DateTime test1 = new DateTime(1970, 6, 9, 0, 0, 0, 0, LenientChronology.getInstance(COPTIC_PARIS));
+        DateTime test2 = new DateTime(1970, 6, 9, 0, 0, 0, 0, LenientChronology.getInstance(COPTIC_PARIS));
+        assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
+        assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+    }
+
+    public void testPropertyEqualsHashCodeStrict() {
+        DateTime test1 = new DateTime(1970, 6, 9, 0, 0, 0, 0, StrictChronology.getInstance(COPTIC_PARIS));
+        DateTime test2 = new DateTime(1970, 6, 9, 0, 0, 0, 0, StrictChronology.getInstance(COPTIC_PARIS));
+        assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
+        assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
     }
 
 }

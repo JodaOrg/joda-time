@@ -114,6 +114,41 @@ public final class LenientChronology extends AssembledChronology {
         return LenientDateTimeField.getInstance(field);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * A lenient chronology is only equal to a lenient chronology with the
+     * same base chronology.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.4
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof LenientChronology == false) {
+            return false;
+        }
+        LenientChronology chrono = (LenientChronology) obj;
+        return getBase().equals(chrono.getBase());
+    }
+
+    /**
+     * A suitable hashcode for the chronology.
+     * 
+     * @return the hashcode
+     * @since 1.4
+     */
+    public int hashCode() {
+        return 236548278 + getBase().hashCode() * 7;
+    }
+
+    /**
+     * A debugging string for the chronology.
+     * 
+     * @return the debugging string
+     */
     public String toString() {
         return "LenientChronology[" + getBase().toString() + ']';
     }

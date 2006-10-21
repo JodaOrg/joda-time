@@ -453,9 +453,10 @@ public abstract class AbstractInterval implements ReadableInterval {
             return false;
         }
         ReadableInterval other = (ReadableInterval) readableInterval;
-        return (getStartMillis() == other.getStartMillis() &&
-                getEndMillis() == other.getEndMillis() &&
-                getChronology() == other.getChronology());
+        return 
+            getStartMillis() == other.getStartMillis() &&
+            getEndMillis() == other.getEndMillis() &&
+            FieldUtils.equals(getChronology(), other.getChronology());
     }
 
     /**

@@ -322,15 +322,14 @@ public abstract class AbstractPartialFieldProperty {
         if (this == object) {
             return true;
         }
-        if (object instanceof AbstractPartialFieldProperty) {
-            AbstractPartialFieldProperty other = (AbstractPartialFieldProperty) object;
-            if (get() == other.get() &&
-                getFieldType() == other.getFieldType() &&
-                getReadablePartial().getChronology() == other.getReadablePartial().getChronology()) {
-                return true;
-            }
+        if (object instanceof AbstractPartialFieldProperty == false) {
+            return false;
         }
-        return false;
+        AbstractPartialFieldProperty other = (AbstractPartialFieldProperty) object;
+        return
+            get() == other.get() &&
+            getFieldType() == other.getFieldType() &&
+            FieldUtils.equals(getReadablePartial().getChronology(), other.getReadablePartial().getChronology());
     }
 
     //-----------------------------------------------------------------------

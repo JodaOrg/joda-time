@@ -1899,6 +1899,16 @@ public final class LocalDateTime
         }
         
         /**
+         * Gets the chronology of the datetime that this property is linked to.
+         * 
+         * @return the chronology
+         * @since 1.4
+         */
+        protected Chronology getChronology() {
+            return iInstant.getChronology();
+        }
+        
+        /**
          * Gets the LocalDateTime object linked to this property.
          * 
          * @return the linked LocalDateTime

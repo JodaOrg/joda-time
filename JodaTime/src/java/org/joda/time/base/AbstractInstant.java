@@ -27,6 +27,7 @@ import org.joda.time.Instant;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableInstant;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -252,19 +253,13 @@ public abstract class AbstractInstant implements ReadableInstant {
         if (this == readableInstant) {
             return true;
         }
-        if (readableInstant instanceof ReadableInstant) {
-            ReadableInstant otherInstant = (ReadableInstant) readableInstant;
-            if (getMillis() == otherInstant.getMillis()) {
-                Chronology chrono = getChronology();
-                if (chrono == otherInstant.getChronology()) {
-                    return true;
-                }
-                if (chrono != null && chrono.equals(otherInstant.getChronology())) {
-                    return true;
-                }
-            }
+        if (readableInstant instanceof ReadableInstant == false) {
+            return false;
         }
-        return false;
+        ReadableInstant otherInstant = (ReadableInstant) readableInstant;
+        return
+            getMillis() == otherInstant.getMillis() &&
+            FieldUtils.equals(getChronology(), otherInstant.getChronology());
     }
 
     /**

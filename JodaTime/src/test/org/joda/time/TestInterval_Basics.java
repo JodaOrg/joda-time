@@ -30,6 +30,7 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.LenientChronology;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -182,7 +183,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, test1.equals(new MockInterval()));
         assertEquals(false, test1.equals(new DateTime(TEST_TIME1)));
     }
-    
+
     class MockInterval extends AbstractInterval {
         public MockInterval() {
             super();
@@ -196,6 +197,38 @@ public class TestInterval_Basics extends TestCase {
         public long getEndMillis() {
             return TEST_TIME2;
         }
+    }
+
+    public void testEqualsHashCodeLenient() {
+        Interval test1 = new Interval(
+                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
+                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
+        Interval test2 = new Interval(
+                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
+                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
+        assertEquals(true, test1.equals(test2));
+        assertEquals(true, test2.equals(test1));
+        assertEquals(true, test1.equals(test1));
+        assertEquals(true, test2.equals(test2));
+        assertEquals(true, test1.hashCode() == test2.hashCode());
+        assertEquals(true, test1.hashCode() == test1.hashCode());
+        assertEquals(true, test2.hashCode() == test2.hashCode());
+    }
+
+    public void testEqualsHashCodeStrict() {
+        Interval test1 = new Interval(
+                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
+                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
+        Interval test2 = new Interval(
+                new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
+                new DateTime(TEST_TIME2, LenientChronology.getInstance(COPTIC_PARIS)));
+        assertEquals(true, test1.equals(test2));
+        assertEquals(true, test2.equals(test1));
+        assertEquals(true, test1.equals(test1));
+        assertEquals(true, test2.equals(test2));
+        assertEquals(true, test1.hashCode() == test2.hashCode());
+        assertEquals(true, test1.hashCode() == test1.hashCode());
+        assertEquals(true, test2.hashCode() == test2.hashCode());
     }
 
     //-----------------------------------------------------------------------

@@ -18,6 +18,7 @@ package org.joda.time.field;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
@@ -86,6 +87,21 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @return the milliseconds
      */
     protected abstract long getMillis();
+
+    /**
+     * Gets the chronology of the datetime that this property is linked to.
+     * <p>
+     * This implementation throws UnsupportedOperationException, and must be
+     * implemented by subclasses to enable the equals() and hashCode() methods.
+     * 
+     * @return the chronology
+     * @since 1.4
+     */
+    protected Chronology getChronology() {
+        throw new UnsupportedOperationException(
+                "The method getChronology() was added in v1.4 and needs " +
+                "to be implemented by subclasses of AbstractReadableInstantFieldProperty");
+    }
 
     //-----------------------------------------------------------------------
     /**
@@ -426,14 +442,14 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
         if (this == object) {
             return true;
         }
-        if (object instanceof AbstractReadableInstantFieldProperty) {
-            AbstractReadableInstantFieldProperty other = (AbstractReadableInstantFieldProperty) object;
-            if (get() == other.get() &&
-                getField().equals(other.getField())) {
-                return true;
-            }
+        if (object instanceof AbstractReadableInstantFieldProperty == false) {
+            return false;
         }
-        return false;
+        AbstractReadableInstantFieldProperty other = (AbstractReadableInstantFieldProperty) object;
+        return 
+            get() == other.get() &&
+            getFieldType().equals(other.getFieldType()) &&
+            FieldUtils.equals(getChronology(), other.getChronology());
     }
 
     /**
@@ -442,7 +458,7 @@ public abstract class AbstractReadableInstantFieldProperty implements Serializab
      * @return the hashcode
      */
     public int hashCode() {
-        return get() * 17 + getField().hashCode();
+        return get() * 17 + getFieldType().hashCode() + getChronology().hashCode();
     }
 
     //-----------------------------------------------------------------------

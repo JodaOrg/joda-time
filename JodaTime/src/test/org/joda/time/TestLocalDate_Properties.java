@@ -21,6 +21,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.LenientChronology;
+import org.joda.time.chrono.StrictChronology;
 
 /**
  * This class is a Junit unit test for YearMonthDay.
@@ -28,6 +30,9 @@ import org.joda.time.chrono.CopticChronology;
  * @author Stephen Colebourne
  */
 public class TestLocalDate_Properties extends TestCase {
+
+    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
 
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
@@ -509,6 +514,30 @@ public class TestLocalDate_Properties extends TestCase {
         assertEquals(false, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
         assertEquals(true, test1.monthOfYear().hashCode() == test1.monthOfYear().hashCode());
         assertEquals(true, test1.monthOfYear().hashCode() == test2.monthOfYear().hashCode());
+    }
+
+    public void testPropertyEqualsHashCodeLenient() {
+        LocalDate test1 = new LocalDate(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
+        LocalDate test2 = new LocalDate(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
+        assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
+        assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+    }
+
+    public void testPropertyEqualsHashCodeStrict() {
+        LocalDate test1 = new LocalDate(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
+        LocalDate test2 = new LocalDate(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
+        assertEquals(true, test1.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().equals(test1.dayOfMonth()));
+        assertEquals(true, test2.dayOfMonth().equals(test2.dayOfMonth()));
+        assertEquals(true, test1.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
+        assertEquals(true, test1.dayOfMonth().hashCode() == test1.dayOfMonth().hashCode());
+        assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
     }
 
     //-----------------------------------------------------------------------

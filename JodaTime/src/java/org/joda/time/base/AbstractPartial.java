@@ -23,6 +23,7 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DurationFieldType;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 
 /**
@@ -266,7 +267,7 @@ public abstract class AbstractPartial
                 return false;
             }
         }
-        return (getChronology() == other.getChronology());
+        return FieldUtils.equals(getChronology(), other.getChronology());
     }
 
     /**

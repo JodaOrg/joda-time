@@ -23,10 +23,16 @@ import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.EthiopicChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.IslamicChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.joda.time.chrono.LenientChronology;
+import org.joda.time.chrono.LimitChronology;
+import org.joda.time.chrono.StrictChronology;
+import org.joda.time.chrono.ZonedChronology;
 
 /**
  * This class is a Junit unit test for Chronology.
@@ -190,6 +196,138 @@ public class TestChronology extends TestCase {
     public void testGetCoptic_Zone() {
         assertEquals(CopticChronology.getInstance(PARIS), Chronology.getCoptic(PARIS));
         assertEquals(CopticChronology.getInstance(), Chronology.getCoptic(null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEqualsHashCode_ISO() {
+        Chronology chrono1 = ISOChronology.getInstanceUTC();
+        Chronology chrono2 = ISOChronology.getInstanceUTC();
+        Chronology chrono3 = ISOChronology.getInstance();
+        
+        assertEquals(true, chrono1.equals(chrono2));
+        assertEquals(false, chrono1.equals(chrono3));
+        
+        DateTime dt1 = new DateTime(0L, chrono1);
+        DateTime dt2 = new DateTime(0L, chrono2);
+        DateTime dt3 = new DateTime(0L, chrono3);
+        
+        assertEquals(true, dt1.equals(dt2));
+        assertEquals(false, dt1.equals(dt3));
+        
+        assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
+        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEqualsHashCode_Lenient() {
+        Chronology chrono1 = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
+        Chronology chrono2 = LenientChronology.getInstance(ISOChronology.getInstanceUTC());
+        Chronology chrono3 = LenientChronology.getInstance(ISOChronology.getInstance());
+        
+        assertEquals(true, chrono1.equals(chrono2));
+        assertEquals(false, chrono1.equals(chrono3));
+        
+        DateTime dt1 = new DateTime(0L, chrono1);
+        DateTime dt2 = new DateTime(0L, chrono2);
+        DateTime dt3 = new DateTime(0L, chrono3);
+        
+        assertEquals(true, dt1.equals(dt2));
+        assertEquals(false, dt1.equals(dt3));
+        
+        assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
+        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEqualsHashCode_Strict() {
+        Chronology chrono1 = StrictChronology.getInstance(ISOChronology.getInstanceUTC());
+        Chronology chrono2 = StrictChronology.getInstance(ISOChronology.getInstanceUTC());
+        Chronology chrono3 = StrictChronology.getInstance(ISOChronology.getInstance());
+        
+        assertEquals(true, chrono1.equals(chrono2));
+        assertEquals(false, chrono1.equals(chrono3));
+        
+        DateTime dt1 = new DateTime(0L, chrono1);
+        DateTime dt2 = new DateTime(0L, chrono2);
+        DateTime dt3 = new DateTime(0L, chrono3);
+        
+        assertEquals(true, dt1.equals(dt2));
+        assertEquals(false, dt1.equals(dt3));
+        
+        assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
+        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEqualsHashCode_Limit() {
+        DateTime lower = new DateTime(0L);
+        DateTime higherA = new DateTime(1000000L);
+        DateTime higherB = new DateTime(2000000L);
+        
+        Chronology chrono1 = LimitChronology.getInstance(ISOChronology.getInstanceUTC(), lower, higherA);
+        Chronology chrono2A = LimitChronology.getInstance(ISOChronology.getInstanceUTC(), lower, higherA);
+        Chronology chrono2B = LimitChronology.getInstance(ISOChronology.getInstanceUTC(), lower, higherB);
+        Chronology chrono3 = LimitChronology.getInstance(ISOChronology.getInstance(), lower, higherA);
+        
+        assertEquals(true, chrono1.equals(chrono2A));
+        assertEquals(false, chrono1.equals(chrono2B));
+        assertEquals(false, chrono1.equals(chrono3));
+        
+        DateTime dt1 = new DateTime(0L, chrono1);
+        DateTime dt2A = new DateTime(0L, chrono2A);
+        DateTime dt2B = new DateTime(0L, chrono2B);
+        DateTime dt3 = new DateTime(0L, chrono3);
+        
+        assertEquals(true, dt1.equals(dt2A));
+        assertEquals(false, dt1.equals(dt2B));
+        assertEquals(false, dt1.equals(dt3));
+        
+        assertEquals(true, chrono1.hashCode() == chrono2A.hashCode());
+        assertEquals(false, chrono1.hashCode() == chrono2B.hashCode());
+        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testEqualsHashCode_Zoned() {
+        DateTimeZone zoneA = DateTimeZone.forID("Europe/Paris");
+        DateTimeZone zoneB = DateTimeZone.forID("Asia/Tokyo");
+        
+        Chronology chrono1 = ZonedChronology.getInstance(ISOChronology.getInstanceUTC(), zoneA);
+        Chronology chrono2 = ZonedChronology.getInstance(ISOChronology.getInstanceUTC(), zoneA);
+        Chronology chrono3 = ZonedChronology.getInstance(ISOChronology.getInstanceUTC(), zoneB);
+        
+        assertEquals(true, chrono1.equals(chrono2));
+        assertEquals(false, chrono1.equals(chrono3));
+        
+        DateTime dt1 = new DateTime(0L, chrono1);
+        DateTime dt2 = new DateTime(0L, chrono2);
+        DateTime dt3 = new DateTime(0L, chrono3);
+        
+        assertEquals(true, dt1.equals(dt2));
+        assertEquals(false, dt1.equals(dt3));
+        
+        assertEquals(true, chrono1.hashCode() == chrono2.hashCode());
+        assertEquals(false, chrono1.hashCode() == chrono3.hashCode());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString() {
+        DateTimeZone paris = DateTimeZone.forID("Europe/Paris");
+        ISOChronology isoParis = ISOChronology.getInstance(paris);
+        
+        assertEquals("ISOChronology[Europe/Paris]", isoParis.toString());
+        assertEquals("GJChronology[Europe/Paris]", GJChronology.getInstance(paris).toString());
+        assertEquals("GregorianChronology[Europe/Paris]", GregorianChronology.getInstance(paris).toString());
+        assertEquals("JulianChronology[Europe/Paris]", JulianChronology.getInstance(paris).toString());
+        assertEquals("BuddhistChronology[Europe/Paris]", BuddhistChronology.getInstance(paris).toString());
+        assertEquals("CopticChronology[Europe/Paris]", CopticChronology.getInstance(paris).toString());
+        assertEquals("EthiopicChronology[Europe/Paris]", EthiopicChronology.getInstance(paris).toString());
+        assertEquals("IslamicChronology[Europe/Paris]", IslamicChronology.getInstance(paris).toString());
+        
+        assertEquals("LenientChronology[ISOChronology[Europe/Paris]]", LenientChronology.getInstance(isoParis).toString());
+        assertEquals("StrictChronology[ISOChronology[Europe/Paris]]", StrictChronology.getInstance(isoParis).toString());
+        assertEquals("LimitChronology[ISOChronology[Europe/Paris], NoLimit, NoLimit]", LimitChronology.getInstance(isoParis, null, null).toString());
+        assertEquals("ZonedChronology[ISOChronology[UTC], Europe/Paris]", ZonedChronology.getInstance(isoParis, paris).toString());
     }
 
 }

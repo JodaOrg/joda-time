@@ -32,7 +32,10 @@ Compatibility with 1.3
 ----------------------
 Binary compatible - Yes
 
-Source compatible - Yes
+Source compatible - Yes, except
+  If you subclassed AbstractReadableInstantFieldProperty (unlikely) then
+  you now need to override getChronology() to re-enable the equals() and
+  hashCode() methods.
 
 Serialization compatible - Yes
 
@@ -50,6 +53,14 @@ Bug fixes since 1.3
 -------------------
 - GJChronology
   Text value of ReadablePartial fields was always a decimal number.
+
+- Comparisons of Chronology instances by identity
+  Some comparisons of Chronology instances were performed using ==
+  This worked fine in most cases due to agressive caching, however it failed when
+  using LenientChronology and other wrapping chronologies which do not have caching
+  Comparison is now via equals(), and involved adding equals() methods to a number
+  of classes. In addition, subclasses of AbstractReadableInstantFieldProperty must
+  now implement getChronology().
 
 
 Feedback

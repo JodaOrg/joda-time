@@ -1228,6 +1228,16 @@ public class MutableDateTime
         }
         
         /**
+         * Gets the chronology of the datetime that this property is linked to.
+         * 
+         * @return the chronology
+         * @since 1.4
+         */
+        protected Chronology getChronology() {
+            return iInstant.getChronology();
+        }
+        
+        /**
          * Gets the mutable datetime being used.
          * 
          * @return the mutable datetime

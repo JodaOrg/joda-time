@@ -224,10 +224,48 @@ public final class ZonedChronology extends AssembledChronology {
         return zonedField;
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * A zoned chronology is only equal to a zoned chronology with the
+     * same base chronology and zone.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.4
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof ZonedChronology == false) {
+            return false;
+        }
+        ZonedChronology chrono = (ZonedChronology) obj;
+        return
+            getBase().equals(chrono.getBase()) &&
+            getZone().equals(chrono.getZone());
+    }
+
+    /**
+     * A suitable hashcode for the chronology.
+     * 
+     * @return the hashcode
+     * @since 1.4
+     */
+    public int hashCode() {
+        return 326565 + getZone().hashCode() * 11 + getBase().hashCode() * 7;
+    }
+
+    /**
+     * A debugging string for the chronology.
+     * 
+     * @return the debugging string
+     */
     public String toString() {
         return "ZonedChronology[" + getBase() + ", " + getZone().getID() + ']';
     }
 
+    //-----------------------------------------------------------------------
     /*
      * Because time durations are typically smaller than time zone offsets, the
      * arithmetic methods subtract the original offset. This produces a more
@@ -235,7 +273,6 @@ public final class ZonedChronology extends AssembledChronology {
      * the new offset is subtracted off. This behavior, if applied to time
      * fields, can nullify or reverse an add when crossing a transition.
      */
-
     static class ZonedDurationField extends BaseDurationField {
         private static final long serialVersionUID = -485345310999208286L;
 

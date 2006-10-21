@@ -27,6 +27,7 @@ import org.joda.time.MutableDateTime;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.field.DecoratedDateTimeField;
 import org.joda.time.field.DecoratedDurationField;
+import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
@@ -279,10 +280,6 @@ public final class LimitChronology extends AssembledChronology {
         return limitField;
     }
 
-    public String toString() {
-        return getBase().toString();
-    }
-
     void checkLimits(long instant, String desc) {
         DateTime limit;
         if ((limit = iLowerLimit) != null && instant < limit.getMillis()) {
@@ -293,6 +290,55 @@ public final class LimitChronology extends AssembledChronology {
         }
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * A limit chronology is only equal to a limit chronology with the
+     * same base chronology and limits.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.4
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof LimitChronology == false) {
+            return false;
+        }
+        LimitChronology chrono = (LimitChronology) obj;
+        return
+            getBase().equals(chrono.getBase()) &&
+            FieldUtils.equals(getLowerLimit(), chrono.getLowerLimit()) &&
+            FieldUtils.equals(getUpperLimit(), chrono.getUpperLimit());
+    }
+
+    /**
+     * A suitable hashcode for the chronology.
+     * 
+     * @return the hashcode
+     * @since 1.4
+     */
+    public int hashCode() {
+        int hash = 317351877;
+        hash += (getLowerLimit() != null ? getLowerLimit().hashCode() : 0);
+        hash += (getUpperLimit() != null ? getUpperLimit().hashCode() : 0);
+        hash += getBase().hashCode() * 7;
+        return hash;
+    }
+
+    /**
+     * A debugging string for the chronology.
+     * 
+     * @return the debugging string
+     */
+    public String toString() {
+        return "LimitChronology[" + getBase().toString() + ", " +
+            (getLowerLimit() == null ? "NoLimit" : getLowerLimit().toString()) + ", " +
+            (getUpperLimit() == null ? "NoLimit" : getUpperLimit().toString()) + ']';
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Extends IllegalArgumentException such that the exception message is not
      * generated unless it is actually requested.

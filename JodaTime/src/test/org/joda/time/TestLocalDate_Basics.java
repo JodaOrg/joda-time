@@ -31,6 +31,8 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.LenientChronology;
+import org.joda.time.chrono.StrictChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -245,7 +247,7 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals(true, test1.equals(new YearMonthDay(1970, 6, 9, COPTIC_PARIS)));
         assertEquals(false, test1.equals(MockPartial.EMPTY_INSTANCE));
     }
-    
+
     class MockInstant extends MockPartial {
         public Chronology getChronology() {
             return COPTIC_UTC;
@@ -260,6 +262,30 @@ public class TestLocalDate_Basics extends TestCase {
         public int[] getValues() {
             return new int[] {1970, 6, 9};
         }
+    }
+
+    public void testEqualsHashCodeLenient() {
+        LocalDate test1 = new LocalDate(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
+        LocalDate test2 = new LocalDate(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
+        assertEquals(true, test1.equals(test2));
+        assertEquals(true, test2.equals(test1));
+        assertEquals(true, test1.equals(test1));
+        assertEquals(true, test2.equals(test2));
+        assertEquals(true, test1.hashCode() == test2.hashCode());
+        assertEquals(true, test1.hashCode() == test1.hashCode());
+        assertEquals(true, test2.hashCode() == test2.hashCode());
+    }
+
+    public void testEqualsHashCodeStrict() {
+        LocalDate test1 = new LocalDate(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
+        LocalDate test2 = new LocalDate(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
+        assertEquals(true, test1.equals(test2));
+        assertEquals(true, test2.equals(test1));
+        assertEquals(true, test1.equals(test1));
+        assertEquals(true, test2.equals(test2));
+        assertEquals(true, test1.hashCode() == test2.hashCode());
+        assertEquals(true, test1.hashCode() == test1.hashCode());
+        assertEquals(true, test2.hashCode() == test2.hashCode());
     }
 
     //-----------------------------------------------------------------------

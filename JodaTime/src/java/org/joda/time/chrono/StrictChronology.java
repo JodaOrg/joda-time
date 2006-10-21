@@ -114,6 +114,41 @@ public final class StrictChronology extends AssembledChronology {
         return StrictDateTimeField.getInstance(field);
     }
 
+    //-----------------------------------------------------------------------
+    /**
+     * A strict chronology is only equal to a strict chronology with the
+     * same base chronology.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.4
+     */
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj instanceof StrictChronology == false) {
+            return false;
+        }
+        StrictChronology chrono = (StrictChronology) obj;
+        return getBase().equals(chrono.getBase());
+    }
+
+    /**
+     * A suitable hashcode for the chronology.
+     * 
+     * @return the hashcode
+     * @since 1.4
+     */
+    public int hashCode() {
+        return 352831696 + getBase().hashCode() * 7;
+    }
+
+    /**
+     * A debugging string for the chronology.
+     * 
+     * @return the debugging string
+     */
     public String toString() {
         return "StrictChronology[" + getBase().toString() + ']';
     }

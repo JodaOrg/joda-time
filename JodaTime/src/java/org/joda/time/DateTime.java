@@ -1675,6 +1675,16 @@ public final class DateTime
         }
         
         /**
+         * Gets the chronology of the datetime that this property is linked to.
+         * 
+         * @return the chronology
+         * @since 1.4
+         */
+        protected Chronology getChronology() {
+            return iInstant.getChronology();
+        }
+        
+        /**
          * Gets the datetime being used.
          * 
          * @return the datetime

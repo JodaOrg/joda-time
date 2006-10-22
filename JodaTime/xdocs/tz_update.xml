@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Time zone update</title>
+  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Time zone updates">
+<p>
+Time zones are a concept driven by the political situation in each country around the world.
+As such, they change frequently, and often at short notice.
+In order to manage this, Joda-Time uses the interationally recognised
+<a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>, which is also used
+in most operating systems and the JDK itself.
+</p>
+<p>
+Using JDK time zone data is a problem however, as the zones are only updated when the
+JDK is updated. This can cause issues if you are locked into an older version of the JDK.
+</p>
+<p>
+Joda-Time also compiles the time zone data into our jar file. However, the key difference is
+that you can update the raw data and recompile the jar at any time.
+</p>
+</section>
+
+<section name="Updating the time zone data">
+<p>
+Firstly, download the latest version of the data files from
+<a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>. At the time of writing,
+you need to pick the 'FTP distribution' or 'HTTP mirror' links.
+</p>
+<p>
+Secondly, you need a source code download of Joda-Time, available via
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">sourceforge</a>.
+</p>
+<p>
+Thirdly, you must take the time zone data files from step one, and replace those in the Joda-Time download.
+They are located at <code>{root}/src/java/org/joda/time/tz/src</code>.
+Note that only <i>some</i> of the files need to be copied across.
+</p>
+<p>
+Finally, recompile the Joda-Time jar file using ant.
+Simply type <code>ant jar</code> in the root directory.
+You may want to rename the produced jar file to remind you that it has been updated.
+</p>
+
+</section>
+
+</body>
+</document>

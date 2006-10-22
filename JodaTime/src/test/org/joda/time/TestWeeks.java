@@ -165,6 +165,23 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testIsGreaterThan() {
+        assertEquals(true, Weeks.THREE.isGreaterThan(Weeks.TWO));
+        assertEquals(false, Weeks.THREE.isGreaterThan(Weeks.THREE));
+        assertEquals(false, Weeks.TWO.isGreaterThan(Weeks.THREE));
+        assertEquals(true, Weeks.ONE.isGreaterThan(null));
+        assertEquals(false, Weeks.weeks(-1).isGreaterThan(null));
+    }
+
+    public void testIsLessThan() {
+        assertEquals(false, Weeks.THREE.isLessThan(Weeks.TWO));
+        assertEquals(false, Weeks.THREE.isLessThan(Weeks.THREE));
+        assertEquals(true, Weeks.TWO.isLessThan(Weeks.THREE));
+        assertEquals(false, Weeks.ONE.isLessThan(null));
+        assertEquals(true, Weeks.weeks(-1).isLessThan(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         Weeks test = Weeks.weeks(20);
         assertEquals("P20W", test.toString());

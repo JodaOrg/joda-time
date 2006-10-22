@@ -166,6 +166,23 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testIsGreaterThan() {
+        assertEquals(true, Months.THREE.isGreaterThan(Months.TWO));
+        assertEquals(false, Months.THREE.isGreaterThan(Months.THREE));
+        assertEquals(false, Months.TWO.isGreaterThan(Months.THREE));
+        assertEquals(true, Months.ONE.isGreaterThan(null));
+        assertEquals(false, Months.months(-1).isGreaterThan(null));
+    }
+
+    public void testIsLessThan() {
+        assertEquals(false, Months.THREE.isLessThan(Months.TWO));
+        assertEquals(false, Months.THREE.isLessThan(Months.THREE));
+        assertEquals(true, Months.TWO.isLessThan(Months.THREE));
+        assertEquals(false, Months.ONE.isLessThan(null));
+        assertEquals(true, Months.months(-1).isLessThan(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         Months test = Months.months(20);
         assertEquals("P20M", test.toString());

@@ -446,6 +446,33 @@ public final class Hours extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this hours instance greater than the specified number of hours.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this hours instance is greater than the specified one
+     */
+    public boolean isGreaterThan(Hours other) {
+        if (other == null) {
+            return getValue() > 0;
+        }
+        return getValue() > other.getValue();
+    }
+
+    /**
+     * Is this hours instance less than the specified number of hours.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this hours instance is less than the specified one
+     */
+    public boolean isLessThan(Hours other) {
+        if (other == null) {
+            return getValue() < 0;
+        }
+        return getValue() < other.getValue();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>
      * For example, "PT4H" represents 4 hours.

@@ -447,6 +447,33 @@ public final class Days extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this days instance greater than the specified number of days.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this days instance is greater than the specified one
+     */
+    public boolean isGreaterThan(Days other) {
+        if (other == null) {
+            return getValue() > 0;
+        }
+        return getValue() > other.getValue();
+    }
+
+    /**
+     * Is this days instance less than the specified number of days.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this days instance is less than the specified one
+     */
+    public boolean isLessThan(Days other) {
+        if (other == null) {
+            return getValue() < 0;
+        }
+        return getValue() < other.getValue();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>
      * For example, "P4D" represents 4 days.

@@ -353,6 +353,33 @@ public final class Months extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this months instance greater than the specified number of months.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this months instance is greater than the specified one
+     */
+    public boolean isGreaterThan(Months other) {
+        if (other == null) {
+            return getValue() > 0;
+        }
+        return getValue() > other.getValue();
+    }
+
+    /**
+     * Is this months instance less than the specified number of months.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this months instance is less than the specified one
+     */
+    public boolean isLessThan(Months other) {
+        if (other == null) {
+            return getValue() < 0;
+        }
+        return getValue() < other.getValue();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>
      * For example, "P4M" represents 4 months.

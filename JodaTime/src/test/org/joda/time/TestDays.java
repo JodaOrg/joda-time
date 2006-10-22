@@ -174,6 +174,23 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testIsGreaterThan() {
+        assertEquals(true, Days.THREE.isGreaterThan(Days.TWO));
+        assertEquals(false, Days.THREE.isGreaterThan(Days.THREE));
+        assertEquals(false, Days.TWO.isGreaterThan(Days.THREE));
+        assertEquals(true, Days.ONE.isGreaterThan(null));
+        assertEquals(false, Days.days(-1).isGreaterThan(null));
+    }
+
+    public void testIsLessThan() {
+        assertEquals(false, Days.THREE.isLessThan(Days.TWO));
+        assertEquals(false, Days.THREE.isLessThan(Days.THREE));
+        assertEquals(true, Days.TWO.isLessThan(Days.THREE));
+        assertEquals(false, Days.ONE.isLessThan(null));
+        assertEquals(true, Days.days(-1).isLessThan(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         Days test = Days.days(20);
         assertEquals("P20D", test.toString());

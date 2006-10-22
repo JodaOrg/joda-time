@@ -148,6 +148,23 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testIsGreaterThan() {
+        assertEquals(true, Years.THREE.isGreaterThan(Years.TWO));
+        assertEquals(false, Years.THREE.isGreaterThan(Years.THREE));
+        assertEquals(false, Years.TWO.isGreaterThan(Years.THREE));
+        assertEquals(true, Years.ONE.isGreaterThan(null));
+        assertEquals(false, Years.years(-1).isGreaterThan(null));
+    }
+
+    public void testIsLessThan() {
+        assertEquals(false, Years.THREE.isLessThan(Years.TWO));
+        assertEquals(false, Years.THREE.isLessThan(Years.THREE));
+        assertEquals(true, Years.TWO.isLessThan(Years.THREE));
+        assertEquals(false, Years.ONE.isLessThan(null));
+        assertEquals(true, Years.years(-1).isLessThan(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         Years test = Years.years(20);
         assertEquals("P20Y", test.toString());

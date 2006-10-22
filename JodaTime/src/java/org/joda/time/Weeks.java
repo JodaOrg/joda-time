@@ -433,6 +433,33 @@ public final class Weeks extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this weeks instance greater than the specified number of weeks.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this weeks instance is greater than the specified one
+     */
+    public boolean isGreaterThan(Weeks other) {
+        if (other == null) {
+            return getValue() > 0;
+        }
+        return getValue() > other.getValue();
+    }
+
+    /**
+     * Is this weeks instance less than the specified number of weeks.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this weeks instance is less than the specified one
+     */
+    public boolean isLessThan(Weeks other) {
+        if (other == null) {
+            return getValue() < 0;
+        }
+        return getValue() < other.getValue();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>
      * For example, "P4W" represents 4 weeks.

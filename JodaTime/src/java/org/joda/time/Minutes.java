@@ -427,6 +427,33 @@ public final class Minutes extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this minutes instance greater than the specified number of minutes.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this minutes instance is greater than the specified one
+     */
+    public boolean isGreaterThan(Minutes other) {
+        if (other == null) {
+            return getValue() > 0;
+        }
+        return getValue() > other.getValue();
+    }
+
+    /**
+     * Is this minutes instance less than the specified number of minutes.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this minutes instance is less than the specified one
+     */
+    public boolean isLessThan(Minutes other) {
+        if (other == null) {
+            return getValue() < 0;
+        }
+        return getValue() < other.getValue();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>
      * For example, "PT4M" represents 4 minutes.

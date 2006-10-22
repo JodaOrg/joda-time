@@ -317,6 +317,33 @@ public final class Years extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this years instance greater than the specified number of years.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this years instance is greater than the specified one
+     */
+    public boolean isGreaterThan(Years other) {
+        if (other == null) {
+            return getValue() > 0;
+        }
+        return getValue() > other.getValue();
+    }
+
+    /**
+     * Is this years instance less than the specified number of years.
+     *
+     * @param other  the other period, null means zero
+     * @return true if this years instance is less than the specified one
+     */
+    public boolean isLessThan(Years other) {
+        if (other == null) {
+            return getValue() < 0;
+        }
+        return getValue() < other.getValue();
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Gets this instance as a String in the ISO8601 duration format.
      * <p>
      * For example, "P4Y" represents 4 years.

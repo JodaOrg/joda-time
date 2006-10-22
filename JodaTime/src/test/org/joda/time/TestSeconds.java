@@ -163,6 +163,23 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testIsGreaterThan() {
+        assertEquals(true, Seconds.THREE.isGreaterThan(Seconds.TWO));
+        assertEquals(false, Seconds.THREE.isGreaterThan(Seconds.THREE));
+        assertEquals(false, Seconds.TWO.isGreaterThan(Seconds.THREE));
+        assertEquals(true, Seconds.ONE.isGreaterThan(null));
+        assertEquals(false, Seconds.seconds(-1).isGreaterThan(null));
+    }
+
+    public void testIsLessThan() {
+        assertEquals(false, Seconds.THREE.isLessThan(Seconds.TWO));
+        assertEquals(false, Seconds.THREE.isLessThan(Seconds.THREE));
+        assertEquals(true, Seconds.TWO.isLessThan(Seconds.THREE));
+        assertEquals(false, Seconds.ONE.isLessThan(null));
+        assertEquals(true, Seconds.seconds(-1).isLessThan(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         Seconds test = Seconds.seconds(20);
         assertEquals("PT20S", test.toString());

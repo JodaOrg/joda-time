@@ -176,6 +176,23 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testIsGreaterThan() {
+        assertEquals(true, Hours.THREE.isGreaterThan(Hours.TWO));
+        assertEquals(false, Hours.THREE.isGreaterThan(Hours.THREE));
+        assertEquals(false, Hours.TWO.isGreaterThan(Hours.THREE));
+        assertEquals(true, Hours.ONE.isGreaterThan(null));
+        assertEquals(false, Hours.hours(-1).isGreaterThan(null));
+    }
+
+    public void testIsLessThan() {
+        assertEquals(false, Hours.THREE.isLessThan(Hours.TWO));
+        assertEquals(false, Hours.THREE.isLessThan(Hours.THREE));
+        assertEquals(true, Hours.TWO.isLessThan(Hours.THREE));
+        assertEquals(false, Hours.ONE.isLessThan(null));
+        assertEquals(true, Hours.hours(-1).isLessThan(null));
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         Hours test = Hours.hours(20);
         assertEquals("PT20H", test.toString());

@@ -39,7 +39,7 @@ public boolean isRentalOverdue(<a href="api-release/index.html?org/joda/time/Dat
 }
 public boolean isDoubleShift(<a href="api-release/index.html?org/joda/time/LocalTime.html"><b>LocalTime</b></a> startTime, <a href="api-release/index.html?org/joda/time/LocalTime.html"><b>LocalTime</b></a> endTime) {
   <a href="api-release/index.html?org/joda/time/Hours.html"><b>Hours</b></a> hoursBetween = <a href="api-release/index.html?org/joda/time/Hours.html"><b>Hours</b></a>.hoursBetween(time1, time2);
-  return hoursBetween.getHours() > 8;
+  return hoursBetween.isGreaterThan(<a href="api-release/index.html?org/joda/time/Hours.html"><b>Hours</b></a>.EIGHT);
 }
 public String getBirthMonthText(<a href="api-release/index.html?org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);

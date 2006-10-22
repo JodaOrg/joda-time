@@ -23,6 +23,9 @@ a.newWindow, a.newWindow:link, a.newWindow:visited, a.newWindow:active, a.newWin
   background: url(../images/newwindow.png) right center no-repeat;
   padding-right: 18px;
 }
+.source a {
+  color:black;
+}
 h2 {
   font-family: Verdana, Helvetica, Arial, sans-serif;
   padding: 4px 4px 4px 6px;

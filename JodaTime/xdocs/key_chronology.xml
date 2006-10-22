@@ -27,10 +27,10 @@ think about their actual requirements, which we believe is a Good Thing.
 </p>
 <p>
 The actual calculations of the chronology are split between the
-<a href="apidocs/org/joda/time/Chronology.html">Chronology</a> class itself
+<a href="api-release/index.html?org/joda/time/Chronology.html">Chronology</a> class itself
 and the field classes -
-<a href="apidocs/org/joda/time/DateTimeField.html">DateTimeField</a> and
-<a href="apidocs/org/joda/time/DurationField.html">DurationField</a>.
+<a href="api-release/index.html?org/joda/time/DateTimeField.html">DateTimeField</a> and
+<a href="api-release/index.html?org/joda/time/DurationField.html">DurationField</a>.
 Together, the subclasses of these three classes form the bulk of the code in the library.
 However, most users will never need to use or refer directly to the subclasses.
 Instead, most applications will simply obtain the chronology and use it as a singleton.
@@ -38,7 +38,7 @@ Instead, most applications will simply obtain the chronology and use it as a sin
 <p>
 The chronology class also supports the time zone functionality.
 This is applied to the underlying chronology via the decorator design pattern.
-The <a href="apidocs/org/joda/time/DateTimeZone.html">DateTimeZone</a> class provides
+The <a href="api-release/index.html?org/joda/time/DateTimeZone.html">DateTimeZone</a> class provides
 access to the zones via factories, and also supports a default zone concept.
 A full list of time zones can be found <a href="timezones.html">here</a>.
 It is also possible to <a href="tz_update.html">update the zone data</a> yourself.

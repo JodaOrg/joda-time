@@ -56,21 +56,21 @@ It can be thought of as a local date that covers the whole of the day from 00:00
 <section name="Using Partials in Joda-Time">
 <p>
 Within Joda-Time a partial is represented by the
-<a href="apidocs/org/joda/time/ReadablePartial.html">ReadablePartial</a> interface.
+<a href="api-release/index.html?org/joda/time/ReadablePartial.html">ReadablePartial</a> interface.
 There are six implementations of the interface provided:
 <ul>
-<li><a href="apidocs/org/joda/time/LocalDate.html">LocalDate</a> -
+<li><a href="api-release/index.html?org/joda/time/LocalDate.html">LocalDate</a> -
 An immutable implementation that represents a date without a time or time zone.</li>
-<li><a href="apidocs/org/joda/time/LocalTime.html">LocalTime</a> -
+<li><a href="api-release/index.html?org/joda/time/LocalTime.html">LocalTime</a> -
 An immutable implementation that represents a time without a date or time zone.</li>
-<li><a href="apidocs/org/joda/time/LocalDateTime.html">LocalDateTime</a> -
+<li><a href="api-release/index.html?org/joda/time/LocalDateTime.html">LocalDateTime</a> -
 An immutable implementation that represents a datetime without a time zone.</li>
-<li><a href="apidocs/org/joda/time/Partial.html">Partial</a> -
+<li><a href="api-release/index.html?org/joda/time/Partial.html">Partial</a> -
 An immutable implementation that can store any combination of datetime fields.
 For example, using this class you could create a YearMonth or DayOfWeekDayOfMonth partial.</li>
-<li><a href="apidocs/org/joda/time/YearMonthDay.html">YearMonthDay</a> -
+<li><a href="api-release/index.html?org/joda/time/YearMonthDay.html">YearMonthDay</a> -
 Effectively deprecated - only supports the year, monthOfYear and dayOfMonth fields.</li>
-<li><a href="apidocs/org/joda/time/TimeOfDay.html">TimeOfDay</a> -
+<li><a href="api-release/index.html?org/joda/time/TimeOfDay.html">TimeOfDay</a> -
 Effectively deprecated - only supports the hour, minute, second and millisecond fields.</li>
 </ul>
 </p>

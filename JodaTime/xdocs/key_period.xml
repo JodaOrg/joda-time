@@ -32,7 +32,7 @@ If you had created a duration equal to 24 hours, then you would end up with the 
 <p>
 Periods are implemented as a set of <code>int</code> fields.
 The standard set of fields in a period are years, months, weeks, days, hours, minutes, seconds and millis.
-The <a href="apidocs/org/joda/time/PeriodType.html">PeriodType</a> class allows this set
+The <a href="api-release/index.html?org/joda/time/PeriodType.html">PeriodType</a> class allows this set
 of fields to be restricted, for example to elimate weeks.
 This is significant when converting a duration or interval to a period, as the calculation
 needs to know which period fields it should populate.
@@ -56,13 +56,27 @@ In datetime maths you could say:
 <section name="Using Periods in Joda-Time">
 <p>
 Within Joda-Time a period is represented by the
-<a href="apidocs/org/joda/time/ReadablePeriod.html">ReadablePeriod</a> interface.
-There are two implementations of the interface provided:
+<a href="api-release/index.html?org/joda/time/ReadablePeriod.html">ReadablePeriod</a> interface.
+There are nine implementations of the interface provided:
 <ul>
-<li><a href="apidocs/org/joda/time/Period.html">Period</a> -
+<li><a href="api-release/index.html?org/joda/time/Period.html">Period</a> -
 An immutable implementation</li>
-<li><a href="apidocs/org/joda/time/MutablePeriod.html">MutablePeriod</a> -
+<li><a href="api-release/index.html?org/joda/time/MutablePeriod.html">MutablePeriod</a> -
 A mutable implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Years.html">Years</a> -
+An immutable years-only implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Months.html">Months</a> -
+An immutable months-only implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Weeks.html">Weeks</a> -
+An immutable weeks-only implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Days.html">Days</a> -
+An immutable days-only implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Hours.html">Hours</a> -
+An immutable hours-only implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Minutes.html">Minutes</a> -
+An immutable minutes-only implementation</li>
+<li><a href="api-release/index.html?org/joda/time/Seconds.html">Seconds</a> -
+An immutable seconds-only implementation</li>
 </ul>
 We recommend the immutable implementation for general usage.
 </p>
@@ -77,6 +91,9 @@ Period period = new Period(start, end);
 
 // calc will equal end
 DateTime calc = start.plus(period);
+
+// able to calculate whole days between two dates easily
+Days days = Days.daysBetween(start, end);
 </source>
 </p>
 <p>

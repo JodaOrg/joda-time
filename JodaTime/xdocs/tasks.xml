@@ -4,7 +4,7 @@
 
  <properties>
   <title>Java date and time API - Tasks outstanding</title>
-  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
  </properties>
 
  <body>
@@ -24,7 +24,8 @@ The following tasks are on the possible TODO list - contact the mailing lists fo
 </ul>
 
 <p>
-Would you like to <a href="mailto:scolebourne@users.sourceforge.net">volunteer</a>?
+Would you like to volunteer?
+Please contact scolebourne.at.users.sourceforge.net or the <a href="mail-lists.html>mailing list</a>".
 </p>
 </section>
 

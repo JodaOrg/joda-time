@@ -4,8 +4,8 @@
 
  <properties>
   <title>Java date and time API - FAQ</title>
-  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
-  <author email="broneill@users.sourceforge.net">Brian S O'Neill</author>
+  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
+  <author email="broneill.at.users.sourceforge.net">Brian S O'Neill</author>
  </properties>
 
  <body>
@@ -28,7 +28,7 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#tzreimplement">Why reimplement TimeZone?</a></li>
 <li><a href="#joda">What is with the name 'joda'?</a></li>
 </ul>
-Question not answered? <a href="mailto:joda-interest@lists.sourceforge.net">Suggest another FAQ</a>
+Question not answered? Suggest one via the <a href="mail-lists.html">mailing list</a>.
 </p>
 
 

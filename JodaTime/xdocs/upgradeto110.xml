@@ -3,7 +3,7 @@
 <document>
  <properties>
   <title>Java date and time API - Upgrade from 1.0 to 1.1</title>
-  <author email="scolebourne@joda.org">Stephen Colebourne</author>
+  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
  </properties>
 
 <body>
@@ -48,7 +48,7 @@ Data compatible - Yes, except:
   - Removed time zones Asia/Riyadh87, Asia/Riyadh88 and Asia/Riyadh89.
    These should not have been included in the 1.0 release, and do not represent
    genuine time zones. It is unlikely that you used them.
-   If you do want to use them, please contact joda-interest@lists.sourceforge.net
+   If you do want to use them, please contact the joda-interest mailing list
 
 
 Warnings since 1.0

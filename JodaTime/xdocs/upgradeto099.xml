@@ -3,7 +3,7 @@
 <document>
  <properties>
   <title>Java date and time API - Upgrade from 0.98 to 0.99</title>
-  <author email="scolebourne@joda.org">Stephen Colebourne</author>
+  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
  </properties>
 
 <body>
@@ -36,7 +36,7 @@ same intent - that is to make the code freely available with a minimum of restri
 
 Incompatible changes since 0.98
 -------------------------------
-Please contact joda-interest@lists.sourceforge.net if you have difficulties upgrading
+Please contact the joda-interest mailing list if you have difficulties upgrading
 This release is both source and binary incompatible with 0.98
 
 - Formatting package reworked
@@ -105,7 +105,7 @@ This release is both source and binary incompatible with 0.98
 Deprecations since 0.98
 -----------------------
 ** ALL deprecated methods will be removed in 1.0 **
-Please contact joda-interest@lists.sourceforge.net if you have difficulties upgrading
+Please contact the joda-interest mailing list if you have difficulties upgrading
 
 - Formatting package reworked
   Factory classes now no longer have a static getInstance() method.

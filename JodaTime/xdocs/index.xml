@@ -4,8 +4,8 @@
 
  <properties>
   <title>Java date and time API - Home</title>
-  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
-  <author email="almajor@boxspoon.com">Al Major</author>
+  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
+  <author email="almajor.at.boxspoon.com">Al Major</author>
  </properties>
 
  <body>
@@ -148,12 +148,11 @@ The version number will change to 2.0 to indicate a change in compatibility.
 
 <section name="Support">
 <p>
-For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>
-(or email direct to the list via <a href="mailto:joda-interest@lists.sourceforge.net">joda-interest@lists.sourceforge.net</a>).
+For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>.
+Due to spam, you must be subscribed to post to the mailing list.
 </p>
 <p>
-Alternatively, you can contact the project lead, Stephen Colebourne via
-<a href="mailto:scolebourne@users.sourceforge.net">scolebourne@users.sourceforge.net</a>.
+Alternatively, you can contact the project lead, Stephen Colebourne via scolebourne.at.users.sourceforge.net.
 </p>
 </section>
 </body>

@@ -68,9 +68,9 @@ and have odd performance effects.
 Here are some of our reasons for developing and using Joda-Time:
 <ul>
 <li><b>Easy to Use</b>.
-Calendar makes accessing 'normal' dates difficult, due to the
-lack of simple methods. Joda-Time has straightforward field accessors
-such as <code>getYear()</code> or <code>getDayOfWeek()</code>.</li>
+Calendar makes accessing 'normal' dates difficult, due to the lack of simple methods.
+Joda-Time has straightforward <a href="field.html">field accessors</a> such as
+<code>getYear()</code> or <code>getDayOfWeek()</code>.</li>
 
 <li><b>Easy to Extend</b>.
 The JDK supports multiple calendar systems via subclasses of <code>Calendar</code>.

@@ -19,6 +19,15 @@ A period can only be resolved to an exact number of milliseconds by specifying t
 <a href="key_instant.html">instant</a> (including chronology and time zone) it is relative to.
 </p>
 <p>
+Periods do not have a <a href="key_chronology.html">chronology</a> or time zone.
+They can be added to an <a href="key_instant.html">instant</a>, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  period  =  instant
+</source>
+</p>
+<p>
 For example, consider a period of 1 month.
 If you add this period to the 1st February (ISO) then you will get the 1st March.
 If you add the same period to the 1st March you will get the 1st April.
@@ -30,7 +39,56 @@ If you use a period to do the addition then either 23 or 25 hours will be added 
 If you had created a duration equal to 24 hours, then you would end up with the wrong result.
 </p>
 <p>
-Periods are implemented as a set of <code>int</code> fields.
+The Joda-Time library defines two types of implementation of the period concept.
+The first type can only store a single-field, such as days or hours, but not both.
+The second type can store any-field, expressing a value such as 5 months 8 days and 7 hours.
+</p>
+
+<subsection name="Single field Periods">
+<p>
+The first type, single-field periods, is new to version 1.4 of Joda-Time.
+These classes - <code>Years</code>, <code>Months</code>, <code>Weeks</code>,
+<code>Days</code>, <code>Hours</code>, <code>Minutes</code>, <code>Seconds</code> -
+all follow a very similar design, and only store the single field as implied by
+their name. Thus a <code>Days</code> object can only store a number of days.
+</p>
+<p>
+These classes can be useful when you want to write an API that must specifically take
+in a period measured in a particular unit. For example, a travel website where you are
+given the option of travelling &#177;1 days or &#177;3 days could store this
+information in a <code>Days</code> object.
+</p>
+<p>
+These classes provide static factory methods rather than constructors.
+For <code>Days</code> these include <code>daysBetween(startDate, endDate)</code> to
+obtain the number of whole days between two dates or datetimes, and 
+<code>daysIn(interval)</code> to obtain the number of whole days in an interval.
+In addition, there are a range of constants, such as <code>Days.ZERO</code> and
+<code>Days.ONE</code>. The factory method <code>days(int)</code> either returns
+a constant, or creates a new instance as appropriate.
+</p>
+<p>
+The single-field classes include basic mathemaical operator support.
+For <code>Days</code> this includes <code>plus(int)</code>, <code>plus(Days)</code>,
+<code>multipliedBy(int)</code>, <code>dividedBy(int)</code> and <code>negated()</code>.
+All operations return a new instance, as <code>Days</code> is immutable.
+The single-field classes are also comparable.
+</p>
+<p>
+Converting between different types of period is a difficult problem.
+One day is not always equal to 24 hours. (It might be 23 or 25 at daylight savings time change.)
+However, many applications have business rules that assume a 24 hour day and so on.
+To support this, <code>Days</code> has methods named <code>toStandardHours()</code> and
+so on which convert the number of days to a number of hours assuming a 24 hour day.
+The word 'standard' is being specifically used in the method name to remind users of the assumption.
+</p>
+</subsection>
+
+<subsection name="Any field Periods">
+<p>
+The second type of period is the any-field period.
+These are implemented by the <code>Period</code> and <code>MutablePeriod</code> classes.
+Internally, they store a set of <code>int</code> fields, one for each field.
 The standard set of fields in a period are years, months, weeks, days, hours, minutes, seconds and millis.
 The <a href="api-release/index.html?org/joda/time/PeriodType.html">PeriodType</a> class allows this set
 of fields to be restricted, for example to elimate weeks.
@@ -38,18 +96,23 @@ This is significant when converting a duration or interval to a period, as the c
 needs to know which period fields it should populate.
 </p>
 <p>
-Methods exist on periods to obtain each field value.
-Periods do not have a <a href="key_chronology.html">chronology</a> or time zone.
-You cannot compare periods for order (ie. they do not implement <code>Comparable</code>).
+The <code>Period</code> class is useful when you want to write an API that can take
+a period that probably contains more than one field. However, to be even more general,
+your API could define itself to accept a <code>ReadablePeriod</code>, and then the
+calling code could pass in either a <code>Period</code> or a single field period like
+<code>Days</code>.
 </p>
 <p>
-Periods can be added to an <a href="key_instant.html">instant</a>, or to either
-end of an interval to change those objects.
-In datetime maths you could say:
-<source>
-      instant  +  period  =  instant
-</source>
+Methods exist on <code>Period</code> to obtain each field value.
+There are also methods to change a field value, such as <code>withDays(int)</code>.
+They are named 'with' as they return a new <code>Period</code> object, due to immutability.
 </p>
+<p>
+You cannot compare any-field periods for order, as there is no sensible comparison strategy.
+Instead, you need to convert the period to a <code>Duration</code> based on a specific date
+and then compare the duration.
+</p>
+</subsection>
 
 </section>
 

@@ -422,12 +422,12 @@ public final class Weeks extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of weeks in this period.
+     * Returns a new instance with the weeks value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Weeks negate() {
+    public Weeks negated() {
         return Weeks.weeks(FieldUtils.safeNegate(getValue()));
     }
 

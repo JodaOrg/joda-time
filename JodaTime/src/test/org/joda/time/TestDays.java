@@ -377,13 +377,13 @@ public class TestDays extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Days test = Days.days(12);
-        assertEquals(-12, test.negate().getDays());
+        assertEquals(-12, test.negated().getDays());
         assertEquals(12, test.getDays());
         
         try {
-            Days.MIN_VALUE.negate();
+            Days.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

@@ -416,12 +416,12 @@ public final class Minutes extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of minutes in this period.
+     * Returns a new instance with the minutes value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Minutes negate() {
+    public Minutes negated() {
         return Minutes.minutes(FieldUtils.safeNegate(getValue()));
     }
 

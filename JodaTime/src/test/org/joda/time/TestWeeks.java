@@ -375,13 +375,13 @@ public class TestWeeks extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Weeks test = Weeks.weeks(12);
-        assertEquals(-12, test.negate().getWeeks());
+        assertEquals(-12, test.negated().getWeeks());
         assertEquals(12, test.getWeeks());
         
         try {
-            Weeks.MIN_VALUE.negate();
+            Weeks.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

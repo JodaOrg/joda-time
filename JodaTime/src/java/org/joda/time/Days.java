@@ -436,12 +436,12 @@ public final class Days extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of days in this period.
+     * Returns a new instance with the days value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Days negate() {
+    public Days negated() {
         return Days.days(FieldUtils.safeNegate(getValue()));
     }
 

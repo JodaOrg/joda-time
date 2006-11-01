@@ -372,13 +372,13 @@ public class TestHours extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Hours test = Hours.hours(12);
-        assertEquals(-12, test.negate().getHours());
+        assertEquals(-12, test.negated().getHours());
         assertEquals(12, test.getHours());
         
         try {
-            Hours.MIN_VALUE.negate();
+            Hours.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

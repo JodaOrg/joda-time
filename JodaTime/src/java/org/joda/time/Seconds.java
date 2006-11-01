@@ -416,12 +416,12 @@ public final class Seconds extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of seconds in this period.
+     * Returns a new instance with the seconds value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Seconds negate() {
+    public Seconds negated() {
         return Seconds.seconds(FieldUtils.safeNegate(getValue()));
     }
 

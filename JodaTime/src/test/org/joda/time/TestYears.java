@@ -296,13 +296,13 @@ public class TestYears extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Years test = Years.years(12);
-        assertEquals(-12, test.negate().getYears());
+        assertEquals(-12, test.negated().getYears());
         assertEquals(12, test.getYears());
         
         try {
-            Years.MIN_VALUE.negate();
+            Years.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

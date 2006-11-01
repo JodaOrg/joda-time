@@ -306,12 +306,12 @@ public final class Years extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of years in this period.
+     * Returns a new instance with the years value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Years negate() {
+    public Years negated() {
         return Years.years(FieldUtils.safeNegate(getValue()));
     }
 

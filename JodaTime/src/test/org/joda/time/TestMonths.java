@@ -314,13 +314,13 @@ public class TestMonths extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Months test = Months.months(12);
-        assertEquals(-12, test.negate().getMonths());
+        assertEquals(-12, test.negated().getMonths());
         assertEquals(12, test.getMonths());
         
         try {
-            Months.MIN_VALUE.negate();
+            Months.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

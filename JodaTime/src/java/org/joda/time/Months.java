@@ -342,12 +342,12 @@ public final class Months extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of months in this period.
+     * Returns a new instance with the months value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Months negate() {
+    public Months negated() {
         return Months.months(FieldUtils.safeNegate(getValue()));
     }
 

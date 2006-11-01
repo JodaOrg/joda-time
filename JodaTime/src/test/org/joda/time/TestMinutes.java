@@ -355,13 +355,13 @@ public class TestMinutes extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Minutes test = Minutes.minutes(12);
-        assertEquals(-12, test.negate().getMinutes());
+        assertEquals(-12, test.negated().getMinutes());
         assertEquals(12, test.getMinutes());
         
         try {
-            Minutes.MIN_VALUE.negate();
+            Minutes.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

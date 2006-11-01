@@ -435,12 +435,12 @@ public final class Hours extends BaseSingleFieldPeriod {
 
     //-----------------------------------------------------------------------
     /**
-     * Negates the number of hours in this period.
+     * Returns a new instance with the hours value negated.
      *
      * @return the new period with a negated value
      * @throws ArithmeticException if the result overflows an int
      */
-    public Hours negate() {
+    public Hours negated() {
         return Hours.hours(FieldUtils.safeNegate(getValue()));
     }
 

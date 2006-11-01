@@ -345,13 +345,13 @@ public class TestSeconds extends TestCase {
         }
     }
 
-    public void testNegate() {
+    public void testNegated() {
         Seconds test = Seconds.seconds(12);
-        assertEquals(-12, test.negate().getSeconds());
+        assertEquals(-12, test.negated().getSeconds());
         assertEquals(12, test.getSeconds());
         
         try {
-            Seconds.MIN_VALUE.negate();
+            Seconds.MIN_VALUE.negated();
             fail();
         } catch (ArithmeticException ex) {
             // expected

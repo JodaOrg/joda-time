@@ -94,6 +94,9 @@ DateTime calc = start.plus(period);
 
 // able to calculate whole days between two dates easily
 Days days = Days.daysBetween(start, end);
+
+// able to calculate whole months between two dates easily
+Months months = Months.monthsBetween(start, end);
 </source>
 </p>
 <p>

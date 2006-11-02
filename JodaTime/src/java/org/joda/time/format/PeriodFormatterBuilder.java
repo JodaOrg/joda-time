@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2006 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -329,6 +329,7 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Append a field prefix which applies only to the next appended field. If
      * the field is not printed, neither is the prefix.
@@ -383,8 +384,12 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Instruct the printer to emit an integer years field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -394,7 +399,10 @@ public class PeriodFormatterBuilder {
     }
 
     /**
-     * Instruct the printer to emit an integer years field, if supported.
+     * Instruct the printer to emit an integer months field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -405,6 +413,9 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer weeks field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -415,6 +426,9 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer days field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -425,6 +439,9 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer hours field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -435,6 +452,9 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer minutes field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -445,6 +465,9 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer seconds field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -479,6 +502,9 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer millis field, if supported.
+     * <p>
+     * The number of printed and parsed digits can be controlled using
+     * {@link #minimumPrintedDigits(int)} and {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -489,6 +515,8 @@ public class PeriodFormatterBuilder {
 
     /**
      * Instruct the printer to emit an integer millis field, if supported.
+     * <p>
+     * The number of arsed digits can be controlled using {@link #maximumParsedDigits(int)}.
      *
      * @return this PeriodFormatterBuilder
      */
@@ -509,6 +537,7 @@ public class PeriodFormatterBuilder {
         iPrefix = null;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Append a field suffix which applies only to the last appended field. If
      * the field is not printed, neither is the suffix.
@@ -581,6 +610,7 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
     /**
      * Append a separator, which is output if fields are printed both before
      * and after the separator.
@@ -743,6 +773,7 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
+    //-----------------------------------------------------------------------
     private void clearPrefix() throws IllegalStateException {
         if (iPrefix != null) {
             throw new IllegalStateException("Prefix not followed by field");

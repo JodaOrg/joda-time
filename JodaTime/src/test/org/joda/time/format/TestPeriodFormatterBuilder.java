@@ -41,9 +41,9 @@ public class TestPeriodFormatterBuilder extends TestCase {
     private static final Period TIME_PERIOD = new Period(0, 0, 0, 0, 5, 6, 7, 8);
     private static final Period DATE_PERIOD = new Period(1, 2, 3, 4, 0, 0, 0, 0);
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    //private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -91,6 +91,14 @@ public class TestPeriodFormatterBuilder extends TestCase {
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToFormatterPrinterParser() {
+        builder.appendYears();
+        assertNotNull(builder.toFormatter());
+        assertNotNull(builder.toPrinter());
+        assertNotNull(builder.toParser());
     }
 
     //-----------------------------------------------------------------------
@@ -611,6 +619,79 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("---", f.print(EMPTY_PERIOD));
         assertEquals(3, f.getPrinter().calculatePrintedLength(EMPTY_PERIOD, null));
         assertEquals(0, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatAppend_PrinterParser_null_null() {
+        try {
+            new PeriodFormatterBuilder().append(null, null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testFormatAppend_PrinterParser_Printer_null() {
+        PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
+        PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(printer, null).appendMonths();
+        assertNotNull(bld.toPrinter());
+        assertNull(bld.toParser());
+        
+        PeriodFormatter f = bld.toFormatter();
+        assertEquals("1-2", f.print(PERIOD));
+        try {
+            f.parsePeriod("1-2");
+            fail();
+        } catch (UnsupportedOperationException ex) {}
+    }
+
+    public void testFormatAppend_PrinterParser_null_Parser() {
+        PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
+        PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(null, parser).appendMonths();
+        assertNull(bld.toPrinter());
+        assertNotNull(bld.toParser());
+        
+        PeriodFormatter f = bld.toFormatter();
+        try {
+            f.print(PERIOD);
+            fail();
+        } catch (UnsupportedOperationException ex) {}
+        assertEquals(new Period(0, 2, 1, 0, 0, 0, 0, 0), f.parsePeriod("1-2"));
+    }
+
+    public void testFormatAppend_PrinterParser_PrinterParser() {
+        PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
+        PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
+        PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(printer, parser).appendMonths();
+        assertNotNull(bld.toPrinter());
+        assertNotNull(bld.toParser());
+        
+        PeriodFormatter f = bld.toFormatter();
+        assertEquals("1-2", f.print(PERIOD));
+        assertEquals(new Period(0, 2, 1, 0, 0, 0, 0, 0), f.parsePeriod("1-2"));
+    }
+
+    public void testFormatAppend_PrinterParser_Printer_null_null_Parser() {
+        PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
+        PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
+        PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(printer, null).append(null, parser);
+        assertNull(bld.toPrinter());
+        assertNull(bld.toParser());
+        
+        try {
+            bld.toFormatter();
+            fail();
+        } catch (IllegalStateException ex) {}
+    }
+
+    public void testFormatAppend_PrinterParserThenClear() {
+        PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
+        PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
+        PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(printer, null).append(null, parser);
+        assertNull(bld.toPrinter());
+        assertNull(bld.toParser());
+        bld.clear();
+        bld.appendMonths();
+        assertNotNull(bld.toPrinter());
+        assertNotNull(bld.toParser());
     }
 
 }

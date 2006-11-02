@@ -89,6 +89,10 @@ public class PeriodFormatterBuilder {
 
     // List of Printers and Parsers used to build a final formatter.
     private List iElementPairs;
+    /** Set to true if the formatter is not a printer. */
+    private boolean iNotPrinter;
+    /** Set to true if the formatter is not a parser. */
+    private boolean iNotParser;
 
     // Last PeriodFormatter appended of each field type.
     private FieldFormatter[] iFieldFormatters;
@@ -112,9 +116,10 @@ public class PeriodFormatterBuilder {
      * of the formatter.
      * 
      * @return the newly created formatter
+     * @throws IllegalStateException if the builder can produce neither a printer nor a parser
      */
     public PeriodFormatter toFormatter() {
-        PeriodFormatter formatter = toFormatter(iElementPairs);
+        PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser);
         iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
         return formatter;
     }
@@ -129,9 +134,12 @@ public class PeriodFormatterBuilder {
      * <p>
      * Subsequent changes to this builder do not affect the returned printer.
      * 
-     * @return the newly created printer
+     * @return the newly created printer, null if builder cannot create a printer
      */
     public PeriodPrinter toPrinter() {
+        if (iNotPrinter) {
+            return null;
+        }
         return toFormatter().getPrinter();
     }
 
@@ -145,22 +153,13 @@ public class PeriodFormatterBuilder {
      * <p>
      * Subsequent changes to this builder do not affect the returned parser.
      * 
-     * @return the newly created parser
+     * @return the newly created parser, null if builder cannot create a parser
      */
     public PeriodParser toParser() {
-        return toFormatter().getParser();
-    }
-
-    private static PeriodFormatter toFormatter(List elementPairs) {
-        int size = elementPairs.size();
-        if (size >= 2 && elementPairs.get(0) instanceof Separator) {
-            Separator sep = (Separator) elementPairs.get(0);
-            PeriodFormatter f = toFormatter(elementPairs.subList(2, size));
-            sep = sep.finish(f.getPrinter(), f.getParser());
-            return new PeriodFormatter(sep, sep);
+        if (iNotParser) {
+            return null;
         }
-        Object[] comp = createComposite(elementPairs);
-        return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+        return toFormatter().getParser();
     }
 
     //-----------------------------------------------------------------------
@@ -178,6 +177,8 @@ public class PeriodFormatterBuilder {
         } else {
             iElementPairs.clear();
         }
+        iNotPrinter = false;
+        iNotParser = false;
         iFieldFormatters = new FieldFormatter[10];
     }
 
@@ -195,19 +196,25 @@ public class PeriodFormatterBuilder {
         return this;
     }
 
-//    /**
-//     * Appends a printer parser pair.
-//     *
-//     * @return this PeriodFormatterBuilder
-//     */
-//    public PeriodFormatterBuilder append(PeriodPrinter printer, PeriodParser parser) {
-//        if (printer == null && parser == null) {
-//            throw new IllegalArgumentException("No printer or parser supplied");
-//        }
-//        clearPrefix();
-//        append0(printer, parser);
-//        return this;
-//    }
+    /**
+     * Appends a printer parser pair.
+     * <p>
+     * Either the printer or the parser may be null, in which case the builder will
+     * be unable to produce a parser or printer repectively.
+     *
+     * @param printer  appends a printer to the builder, null if printing is not supported
+     * @param parser  appends a parser to the builder, null if parsing is not supported
+     * @return this PeriodFormatterBuilder
+     * @throw IllegalArgumentException if both the printer and parser are null
+     */
+    public PeriodFormatterBuilder append(PeriodPrinter printer, PeriodParser parser) {
+        if (printer == null && parser == null) {
+            throw new IllegalArgumentException("No printer or parser supplied");
+        }
+        clearPrefix();
+        append0(printer, parser);
+        return this;
+    }
 
     /**
      * Instructs the printer to emit specific text, and the parser to expect it.
@@ -746,7 +753,31 @@ public class PeriodFormatterBuilder {
     private PeriodFormatterBuilder append0(PeriodPrinter printer, PeriodParser parser) {
         iElementPairs.add(printer);
         iElementPairs.add(parser);
+        iNotPrinter |= (printer == null);
+        iNotParser |= (parser == null);
         return this;
+    }
+
+    //-----------------------------------------------------------------------
+    private static PeriodFormatter toFormatter(List elementPairs, boolean notPrinter, boolean notParser) {
+        if (notPrinter && notParser) {
+            throw new IllegalStateException("Builder has created neither a printer nor a parser");
+        }
+        int size = elementPairs.size();
+        if (size >= 2 && elementPairs.get(0) instanceof Separator) {
+            Separator sep = (Separator) elementPairs.get(0);
+            PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+            sep = sep.finish(f.getPrinter(), f.getParser());
+            return new PeriodFormatter(sep, sep);
+        }
+        Object[] comp = createComposite(elementPairs);
+        if (notPrinter) {
+            return new PeriodFormatter(null, (PeriodParser) comp[1]);
+        } else if (notParser) {
+            return new PeriodFormatter((PeriodPrinter) comp[0], null);
+        } else {
+            return new PeriodFormatter((PeriodPrinter) comp[0], (PeriodParser) comp[1]);
+        }
     }
 
     private static Object[] createComposite(List elementPairs) {

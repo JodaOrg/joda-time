@@ -38,7 +38,7 @@ import org.joda.time.ReadablePeriod;
  * <p>
  * PeriodFormatterBuilder is used for constructing formatters which are then
  * used to print or parse. The formatters are built by appending specific fields
- * or other formatters to an instanece of this builder.
+ * or other formatters to an instance of this builder.
  * <p>
  * For example, a formatter that prints years and months, like "15 years and 8 months",
  * can be constructed as follows:

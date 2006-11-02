@@ -39,7 +39,7 @@ import org.joda.time.field.PreciseDateTimeField;
  * <p>
  * DateTimeFormatterBuilder is used for constructing formatters which are then
  * used to print or parse. The formatters are built by appending specific fields
- * or other formatters to an instanece of this builder.
+ * or other formatters to an instance of this builder.
  * <p>
  * For example, a formatter that prints month and year, like "January 1970",
  * can be constructed as follows:

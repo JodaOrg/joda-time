@@ -323,6 +323,8 @@ public abstract class BaseSingleFieldPeriod
      *
      * @param other  the other period, must not be null
      * @return zero if equal, positive if greater, negative if less
+     * @throws NullPointerException if the other period is null
+     * @throws ClassCastException if the other period is of a different type
      */
     public int compareTo(Object other) {
         if (other.getClass() != getClass()) {

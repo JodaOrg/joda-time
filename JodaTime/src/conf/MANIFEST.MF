@@ -2,7 +2,7 @@ Package: org.joda.time
 Extension-Name: @name@
 Specification-Title: Joda-Time
 Specification-Vendor: Joda.org
-Specification-Version: 1.3
+Specification-Version: 1.4
 Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time
 Implementation-Version: @version@

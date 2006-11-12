@@ -54,7 +54,7 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/index.html?org/jod
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 1.3 was released on 2006-08-02 -
+Version 1.4 was released on 2006-11-12 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
 </p>
 </section>
@@ -113,7 +113,8 @@ is extremely detailed and covers the rest of the API.</li>
 <li><b>Maturity</b>.
 The library has been under active development since 2002.
 Although it continues to be improved with the addition of new features and
-bug-fixes, it is a mature and reliable code base.</li>
+bug-fixes, it is a mature and reliable code base.
+A number of <a href="related.html">related projects</a> are now available.</li>
 
 <li><b>Open Source</b>.
 Joda-Time is licenced under the business friendly <a href="license.html">Apache License Version 2.0</a>.</li>
@@ -138,7 +139,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.3</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.4</a>
 is the current latest release.
 This release is considered stable and worthy of the 1.x tag.
 It has extensive testing suites and has been used in production.

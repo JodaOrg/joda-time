@@ -1,13 +1,13 @@
 JodaTime ToDo list
 ==================
 
-For 1.4
+For 1.5
 -------
 
-The TODO list for 1.4 has not been set yet.
+The TODO list for 1.5 has not been set yet.
 Some of the following are likely targets, as they are interesting ideas.
 
-Join joda-interest@lists.sourceforge.net to help out!
+Join joda-interest.at.lists.sourceforge.net to help out!
 
 
 Ideas

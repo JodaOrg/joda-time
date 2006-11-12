@@ -205,7 +205,7 @@ public class PeriodFormatterBuilder {
      * @param printer  appends a printer to the builder, null if printing is not supported
      * @param parser  appends a parser to the builder, null if parsing is not supported
      * @return this PeriodFormatterBuilder
-     * @throw IllegalArgumentException if both the printer and parser are null
+     * @throws IllegalArgumentException if both the printer and parser are null
      */
     public PeriodFormatterBuilder append(PeriodPrinter printer, PeriodParser parser) {
         if (printer == null && parser == null) {

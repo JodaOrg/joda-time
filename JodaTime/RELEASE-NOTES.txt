@@ -14,7 +14,8 @@ This is the same license as all of Apache, plus other open source projects such 
 The intent is to make the code available to the Java community with the minimum
 of restrictions. If the license causes you problems please contact the mailing list.
 
-** Please also check out the JSP, Hibernate and I18N contributed projects **
+*  Please also check out our related projects   *
+* http://joda-time.sourceforge.net/related.html *
 
 
 Enhancements since 1.3

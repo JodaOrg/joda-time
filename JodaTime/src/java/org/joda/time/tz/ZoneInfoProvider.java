@@ -21,10 +21,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.joda.time.DateTimeZone;
 
@@ -166,7 +166,10 @@ public class ZoneInfoProvider implements Provider {
      * @return the zone ids
      */
     public synchronized Set getAvailableIDs() {
-        return Collections.unmodifiableSet(iZoneInfoMap.keySet());
+        // Return a copy of the keys rather than an umodifiable collection.
+        // This prevents ConcurrentModificationExceptions from being thrown by
+        // some JVMs if zones are opened while this set is iterated over.
+        return new TreeSet(iZoneInfoMap.keySet());
     }
 
     /**

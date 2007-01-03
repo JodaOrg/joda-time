@@ -12,8 +12,8 @@ import org.hibernate.cfg.Configuration;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
 
-public class TestPersistentInterval extends HibernateTestCase {
-
+public class TestPersistentInterval extends HibernateTestCase
+{
     private SessionFactory factory;
     private Session session;
     private DateTime beginDateTime;

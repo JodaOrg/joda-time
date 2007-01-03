@@ -104,12 +104,14 @@ public class TestPersistentInterval extends HibernateTestCase
         cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/plan.hbm.xml"));
     }
     
-    protected void tearDown() throws Exception {
+    protected void tearDown() throws Exception
+    {
         remove();
         super.tearDown();
     }
 
-    private void remove() {
+    private void remove()
+    {
         openAndBegin();
         session.delete(queryPlan());
         commitAndClose();

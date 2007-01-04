@@ -119,9 +119,9 @@ public class PersistentInterval implements CompositeUserType
             return null;
         }
         PersistentDateTime pst = new PersistentDateTime();
-        DateTime begin = (DateTime) pst.nullSafeGet(resultSet, names[0]);
+        DateTime start = (DateTime) pst.nullSafeGet(resultSet, names[0]);
         DateTime end = (DateTime) pst.nullSafeGet(resultSet, names[1]);
-        return new Interval(begin, end);
+        return new Interval(start, end);
     }
 
     public void nullSafeSet(PreparedStatement statement, Object value,

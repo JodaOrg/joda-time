@@ -1,4 +1,4 @@
-# @(#)northamerica	8.10
+# @(#)northamerica	8.11
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -1997,13 +1997,19 @@ Zone	America/Antigua	-4:07:12 -	LMT	1912 Mar 2
 			-4:00	-	AST
 
 # Bahamas
+#
+# From Sue Williams (2006-12-07):
+# The Bahamas announced about a month ago that they plan to change their DST 
+# rules to sync with the U.S. starting in 2007....
+# http://www.jonesbahamas.com/?c=45&a=10412
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
-Rule	Bahamas	1964	max	-	Oct	lastSun	2:00	0	S
+Rule	Bahamas	1964	2006	-	Oct	lastSun	2:00	0	S
 Rule	Bahamas	1964	1986	-	Apr	lastSun	2:00	1:00	D
-Rule	Bahamas	1987	max	-	Apr	Sun>=1	2:00	1:00	D
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Nassau	-5:09:24 -	LMT	1912 Mar 2
-			-5:00	Bahamas	E%sT
+			-5:00	Bahamas	E%sT	1976
+			-5:00	US	E%sT
 
 # Barbados
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S

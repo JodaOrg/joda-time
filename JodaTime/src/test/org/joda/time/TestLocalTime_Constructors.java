@@ -251,6 +251,19 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(4, test.getMillisOfSecond());
     }
 
+    public void testConstructor_long_DateTimeZone_2() throws Throwable {
+        DateTime dt = new DateTime(2007, 6, 9, 1, 2, 3, 4, PARIS);
+        DateTime dtUTC = new DateTime(1970, 1, 1, 1, 2, 3, 4, DateTimeZone.UTC);
+        
+        LocalTime test = new LocalTime(dt.getMillis(), PARIS);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(1, test.getHourOfDay());
+        assertEquals(2, test.getMinuteOfHour());
+        assertEquals(3, test.getSecondOfMinute());
+        assertEquals(4, test.getMillisOfSecond());
+        assertEquals(dtUTC.getMillis(), test.getLocalMillis());
+    }
+
     public void testConstructor_long_nullDateTimeZone() throws Throwable {
         LocalTime test = new LocalTime(TEST_TIME1, (DateTimeZone) null);
         assertEquals(ISO_UTC, test.getChronology());

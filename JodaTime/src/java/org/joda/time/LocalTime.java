@@ -270,8 +270,7 @@ public final class LocalTime
         
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
         chronology = chronology.withUTC();
-        chronology.millisOfDay().get(localMillis);
-        iLocalMillis = localMillis;
+        iLocalMillis = chronology.millisOfDay().get(localMillis);
         iChronology = chronology;
     }
 

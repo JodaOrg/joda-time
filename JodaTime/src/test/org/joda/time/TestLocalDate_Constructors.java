@@ -47,12 +47,13 @@ public class TestLocalDate_Constructors extends TestCase {
         (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
         + 12L * DateTimeConstants.MILLIS_PER_HOUR
         + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
+    private long TEST_TIME1_ROUNDED =
+        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY;
     private long TEST_TIME2 =
         (365L + 31L + 28L + 31L + 30L + 7L -1L) * DateTimeConstants.MILLIS_PER_DAY
         + 14L * DateTimeConstants.MILLIS_PER_HOUR
         + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
+
     private DateTimeZone zone = null;
 
     public static void main(String[] args) {
@@ -181,6 +182,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(1970, test.getYear());
         assertEquals(4, test.getMonthOfYear());
         assertEquals(6, test.getDayOfMonth());
+        assertEquals(TEST_TIME1_ROUNDED, test.getLocalMillis());
     }
 
     public void testConstructor_long2_DateTimeZone() throws Throwable {
@@ -189,6 +191,30 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(1971, test.getYear());
         assertEquals(5, test.getMonthOfYear());
         assertEquals(7, test.getDayOfMonth());
+    }
+
+    public void testConstructor_long3_DateTimeZone() throws Throwable {
+        DateTime dt = new DateTime(2006, 6, 9, 0, 0, 0, 0, PARIS);
+        DateTime dtUTC = new DateTime(2006, 6, 9, 0, 0, 0, 0, DateTimeZone.UTC);
+        
+        LocalDate test = new LocalDate(dt.getMillis(), PARIS);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(2006, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+        assertEquals(dtUTC.getMillis(), test.getLocalMillis());
+    }
+
+    public void testConstructor_long4_DateTimeZone() throws Throwable {
+        DateTime dt = new DateTime(2006, 6, 9, 23, 59, 59, 999, PARIS);
+        DateTime dtUTC = new DateTime(2006, 6, 9, 0, 0, 0, 0, DateTimeZone.UTC);
+        
+        LocalDate test = new LocalDate(dt.getMillis(), PARIS);
+        assertEquals(ISO_UTC, test.getChronology());
+        assertEquals(2006, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+        assertEquals(dtUTC.getMillis(), test.getLocalMillis());
     }
 
     public void testConstructor_long_nullDateTimeZone() throws Throwable {

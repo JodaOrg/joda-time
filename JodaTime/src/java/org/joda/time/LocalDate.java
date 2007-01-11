@@ -240,8 +240,7 @@ public final class LocalDate
         
         long localMillis = chronology.getZone().getMillisKeepLocal(DateTimeZone.UTC, instant);
         chronology = chronology.withUTC();
-        chronology.dayOfMonth().roundFloor(localMillis);
-        iLocalMillis = localMillis;
+        iLocalMillis = chronology.dayOfMonth().roundFloor(localMillis);
         iChronology = chronology;
     }
 

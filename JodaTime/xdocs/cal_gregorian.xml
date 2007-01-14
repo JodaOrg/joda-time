@@ -13,7 +13,7 @@
 <p>
 The Gregorian calendar system is calendar system used by most of the modern business world.
 It was first introduced on 1582-10-15 replacing the <a href="cal_julian.html">Julian</a> calendar.
-Gregorian rules define a leap year as once every four years, expect every 100, but including every 400.
+Gregorian rules define a leap year as once every four years, except every 100, but including every 400.
 </p>
 <p>
 The Gregorian chronology in Joda-Time is equivalent* to the ISO chronology, and uses

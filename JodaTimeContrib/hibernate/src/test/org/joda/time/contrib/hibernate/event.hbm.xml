@@ -11,6 +11,13 @@
 
                 <property type="org.joda.time.contrib.hibernate.PersistentDateTime" name="dateTime"/>
 
+				<property type="org.joda.time.contrib.hibernate.PersistentLocalDate" name="localDate"/>
+
+				<property type="org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime" name="localTime"/>
+
+				<property type="org.joda.time.contrib.hibernate.PersistentLocalTimeExact" name="localTime2"/>
+
+				<property type="org.joda.time.contrib.hibernate.PersistentLocalTimeAsString" name="localTime3"/>
         </class>
 
 </hibernate-mapping>

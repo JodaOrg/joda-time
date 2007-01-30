@@ -35,8 +35,11 @@ public abstract class HibernateTestCase extends TestCase
 
 	protected void tearDown() throws Exception
 	{
-		this.factory.close();
-		this.factory = null;
+		if (this.factory != null)
+		{
+			this.factory.close();
+			this.factory = null;
+		}
 	}
 
 	protected abstract void setupConfiguration(Configuration cfg);

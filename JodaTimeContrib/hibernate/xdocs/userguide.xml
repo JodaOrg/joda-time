@@ -17,10 +17,112 @@ persist Joda-Time based date and time objects to a database using Hibernate.
 
 <!-- ========================================================================= -->
 
-<subsection name="TODO">
+<subsection name="Documentation">
 <p>
-TODO
+	Its fairly easy to use this package in your Hibernate environment.
 </p>
+<p>
+	We have a couple of classes you simply have to configure in your hibernate mapping file or through
+	hibernate-annotations.
+</p>
+	<subsection name="Hibernate mapping">
+		<p>
+		Add the <code>type</code> attribute to your property configuration. e.g.:
+		</p>
+		<pre><![CDATA[
+<property type="org.joda.time.contrib.hibernate.PersistentDateTime" name="dateTime"/>
+		]]></pre>
+	</subsection>
+
+	<subsection name="Hibernate annotations">
+		<p>
+		Set the type using the <code>@org.hibernate.annotations.Type</code> annotation. e.g.:
+		</p>
+		<pre><![CDATA[
+@Column
+@Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
+private DateTime fromDate;
+		]]></pre>
+	</subsection>
+	<subsection name="Available Types">
+		<p>
+			The main types usable to persist Joda-Time objects
+		</p>
+		<table>
+			<tr>
+				<th>Class</th>
+				<th>SQL Column Type(s)</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentDateTime</td>
+				<td>TIMESTAMP</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentDateTimeTZ</td>
+				<td>TIMESTAMP, VARCHAR</td>
+				<td>This persister uses two columns, to separately store the time value and its timezone</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentInterval</td>
+				<td>TIMESTAMP, TIMESTAMP</td>
+				<td>This persister uses two columns, to store the start and end of the interval</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentLocalDate</td>
+				<td>TIMESTAMP</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentLocalTimeAsTime</td>
+				<td>TIME</td>
+				<td>Depending on your Database you might loose the millisecond part</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentLocalTimeExact</td>
+				<td>INTEGER</td>
+				<td>The milliseconds are stored as simple integer value, no information loss</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentLocalTimeAsString</td>
+				<td>VARCHAR</td>
+				<td>Same as above, just uses a human readable representation. ISO8601 format - HH:mm:ss.SSSZ</td>
+			</tr>
+		</table>
+
+	</subsection>
+
+	<subsection name="Outdated Types">
+		<p>
+			These types are somehow in a "pre deprecation" state. Joda-Time provides
+			the more sophisticated types LocalDate and LocalTime and you should use them
+			where possible.
+		</p>
+		<table>
+			<tr>
+				<th>Class</th>
+				<th>SQL Column Type(s)</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentTimeOfDay</td>
+				<td>TIME</td>
+				<td>Depending on your Database you might loose the millisecond part</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentTimeOfDayExact</td>
+				<td>INTEGER</td>
+				<td>The milliseconds are stored as simple integer value, no information loss</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentYearMonthDay</td>
+				<td>DATE</td>
+				<td></td>
+			</tr>
+		</table>
+	</subsection>
+
 </subsection>
 </section>
 

@@ -76,7 +76,7 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.2</version>
+      <version>1.4</version>
       <properties>
         <comment>Compatible with v1.0 or later</comment>
       </properties>

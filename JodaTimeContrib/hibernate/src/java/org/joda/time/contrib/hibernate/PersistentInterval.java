@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,7 +28,6 @@ import org.hibernate.type.Type;
 import org.hibernate.usertype.CompositeUserType;
 import org.joda.time.DateTime;
 import org.joda.time.Interval;
-import org.joda.time.contrib.hibernate.PersistentDateTime;
 
 /**
  * Persist {@link org.joda.time.Interval} via hibernate. Internally, this class

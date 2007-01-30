@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,17 +15,17 @@
  */
 package org.joda.time.contrib.hibernate;
 
-import org.hibernate.Hibernate;
-import org.hibernate.HibernateException;
-import org.hibernate.usertype.UserType;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-
 import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.usertype.UserType;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 /**
  * Persist {@link org.joda.time.DateTime} via hibernate.<br />

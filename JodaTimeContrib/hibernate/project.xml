@@ -43,9 +43,7 @@
   </organization>
 
   <repository>
-    <!-- Does not appear to be supported in Maven-1.x
-    <connection>scm:svn:http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk</connection>
-    -->
+    <connection>scm:svn:https://svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/hibernate/</connection>
     <url>http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTimeContrib/hibernate/</url>
   </repository>
 
@@ -147,7 +145,7 @@
      <report>maven-changes-plugin</report>
      <!--report>maven-checkstyle-plugin</report-->
      <!-- <report>maven-clover-plugin</report> -->
-     <report>maven-jcoverage-plugin</report>
+     <!--report>maven-jcoverage-plugin</report-->
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>

@@ -11,7 +11,7 @@
 
 <section name="Introduction">
 <p>
-<a href="/index.html">Joda-Time</a> Hibernate support provides classes to
+Joda-Time Hibernate support provides classes to
 persist Joda-Time based date and time objects to a database using Hibernate.
 </p>
 
@@ -19,12 +19,10 @@ persist Joda-Time based date and time objects to a database using Hibernate.
 
 <subsection name="Documentation">
 <p>
-	Its fairly easy to use this package in your Hibernate environment.
+	It is fairly easy to use this package in your Hibernate environment.
+	There are two main options for the configuration - the hibernate mapping file or annotations.
 </p>
-<p>
-	We have a couple of classes you simply have to configure in your hibernate mapping file or through
-	hibernate-annotations.
-</p>
+
 	<subsection name="Hibernate mapping">
 		<p>
 		Add the <code>type</code> attribute to your property configuration. e.g.:
@@ -46,7 +44,7 @@ private DateTime fromDate;
 	</subsection>
 	<subsection name="Available Types">
 		<p>
-			The main types usable to persist Joda-Time objects
+			The main types which can be persisted:
 		</p>
 		<table>
 			<tr>
@@ -95,9 +93,7 @@ private DateTime fromDate;
 
 	<subsection name="Outdated Types">
 		<p>
-			These types are somehow in a "pre deprecation" state. Joda-Time provides
-			the more sophisticated types LocalDate and LocalTime and you should use them
-			where possible.
+			The following types are now effectively deprecated, however persistence is still available:
 		</p>
 		<table>
 			<tr>

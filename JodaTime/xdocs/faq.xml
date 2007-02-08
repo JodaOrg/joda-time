@@ -14,6 +14,7 @@
 <p>
 Some common questions about Joda-Time are answered here.
 <ul>
+<li><a href="#newzonerules">Does Joda-Time support the new US and Canada time zone rules?</a></li>
 <li><a href="#datediff">How do I calculate the difference between two dates?</a></li>
 <li><a href="#iso">What is ISO8601?</a></li>
 <li><a href="#default">Why is ISO8601 the default?</a></li>
@@ -28,9 +29,19 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#tzreimplement">Why reimplement TimeZone?</a></li>
 <li><a href="#joda">What is with the name 'joda'?</a></li>
 </ul>
-Question not answered? Suggest one via the <a href="mail-lists.html">mailing list</a>.
+Question not answered? Suggest one via the <a href="mail-lists.html">mailing list</a>.<br></br>
 </p>
 
+
+<a name="newzonerules" />
+<subsection name="Does Joda-Time support the new US and Canada time zone rules?">
+<p>
+The new US time zone rules appeared in version 1.2.0, released on
+2005-12-21. Canada is also changing its time zone rules to match, and those
+rules appeard in version 1.2.1, released on 2006-02-12. If you wish to manually
+update the rules, follow the instructions <a href="tz_update.html">here</a>.
+</p>
+</subsection>
 
 <a name="datediff" />
 <subsection name="How do I calculate the difference between two dates?">

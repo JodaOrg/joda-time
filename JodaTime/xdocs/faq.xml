@@ -36,10 +36,24 @@ Question not answered? Suggest one via the <a href="mail-lists.html">mailing lis
 <a name="newzonerules" />
 <subsection name="Does Joda-Time support the new US and Canada time zone rules?">
 <p>
-The new US time zone rules appeared in version 1.2.0, released on
-2005-12-21. Canada is also changing its time zone rules to match, and those
-rules appeard in version 1.2.1, released on 2006-02-12. If you wish to manually
-update the rules, follow the instructions <a href="tz_update.html">here</a>.
+The US has decided to introduce new daylight savings rules for 2007.
+This is a frequent occurance in many parts of the world, but is an unusual experience for many US based developers.
+</p>
+<p>
+The time zone rules occur in three key places, your operating system, the JDK and Joda-Time.
+To be sure of hitting no issues, you should ensure that all three of these have been updated.
+</p>
+<p>
+As a general rule, using Joda-Time 1.4 is best - however here are the specific details:
+If your application only uses the major time zones of the US, then you need Joda-Time 1.2 or later.
+If your application also uses the major time zones of the Canada, then you need Joda-Time 1.2.1 or later.
+If your application uses the minor time zones of the US or Canada, then you need Joda-Time 1.4.
+For Bermuda (Atlantic/Bermuda) you need Joda-Time 1.4.
+For the Bahamas (America/Nassau) you need the tz rules file 2007a which you must <a href="tz_update.html">manually compile</a>.
+</p>
+<p>
+If you are unwilling to upgrade the version of your Joda-Time jar, you can compile the latest tz rules file 2007a into
+any version of Joda-Time following <a href="tz_update.html">these instructions</a>.
 </p>
 </subsection>
 

@@ -20,6 +20,10 @@ is used by XML. The Gregorian, Julian, Buddhist, Coptic and Ethiopic systems are
 included, and we welcome further additions. Supporting classes include time zone,
 duration, format and parsing.
 </p>
+<p style="color:red; margin-left:20px;">
+The US, Canada and related countries are changing Daylight Savings Time rules in 2007.
+<a href="faq.html#newzonerules">More information</a>.
+</p>
 <p>
 As a flavour of Joda-Time, here's some example code:
 <source>

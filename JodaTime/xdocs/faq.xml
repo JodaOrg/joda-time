@@ -52,7 +52,7 @@ For Bermuda (Atlantic/Bermuda) you need Joda-Time 1.4.
 For the Bahamas (America/Nassau) you need the tz rules file 2007a which you must <a href="tz_update.html">manually compile</a>.
 </p>
 <p>
-If you are unwilling to upgrade the version of your Joda-Time jar, you can compile the latest tz rules file 2007a into
+If you are unwilling to upgrade the version of your Joda-Time jar, you can compile the latest tz rules file 2007b into
 any version of Joda-Time following <a href="tz_update.html">these instructions</a>.
 </p>
 </subsection>

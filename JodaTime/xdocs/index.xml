@@ -24,6 +24,10 @@ duration, format and parsing.
 The US, Canada and related countries are changing Daylight Savings Time rules in 2007.
 <a href="faq.html#newzonerules">More information</a>.
 </p>
+<p style="color:red; margin-left:20px;">
+JSR 310 has now been launched. It aims to build upon Joda-Time and include it in the JDK.
+<a href="https://jsr-310.dev.java.net/">More information</a>.
+</p>
 <p>
 As a flavour of Joda-Time, here's some example code:
 <source>
@@ -66,7 +70,7 @@ Version 1.4 was released on 2006-11-12 -
 
 <section name="Why Joda Time?">
 <p>
-Joda-Time has been created to radically change date and time handling is Java.
+Joda-Time has been created to radically change date and time handling in Java.
 The JDK classes Date and Calendar are very badly designed, have had numerous bugs
 and have odd performance effects.
 Here are some of our reasons for developing and using Joda-Time:

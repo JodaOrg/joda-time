@@ -50,7 +50,7 @@ public final class TestGregorianChronology extends TestGJChronology {
     boolean isLeapYear(int year) {
         if (mod(year, 4) == 0) {
             int t = (int)mod(year, 400);
-            if (t != 100 && t != 200 & t != 300) {
+            if (t != 100 && t != 200 && t != 300) {
                 return true;
             }
         }

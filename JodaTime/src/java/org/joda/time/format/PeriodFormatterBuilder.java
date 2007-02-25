@@ -1090,11 +1090,16 @@ public class PeriodFormatterBuilder {
 
             int sum = Math.max(FormatUtils.calculateDigitCount(valueLong), iMinPrintedDigits);
             if (iFieldType >= SECONDS_MILLIS) {
-                sum++; // decimal point
+                // valueLong contains the seconds and millis fields
+                // the minimum output is 0.000, which is 4 digits
+                sum = Math.max(sum, 4);
+                // plus one for the decimal point
+                sum++;
                 if (iFieldType == SECONDS_OPTIONAL_MILLIS &&
-                    (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND) == 0) {
+                        (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND) == 0) {
                     sum -= 4; // remove three digits and decimal point
                 }
+                // reset valueLong to refer to the seconds part for the prefic/suffix calculation
                 valueLong = valueLong / DateTimeConstants.MILLIS_PER_SECOND;
             }
             int value = (int) valueLong;

@@ -43,12 +43,15 @@ None
 
 Bug fixes since 1.4
 -------------------
-- LocalDate/LocalTime conostructors did not set internal state correctly
+- LocalDate/LocalTime constructors did not set internal state correctly
   This problem was exposed when Days.daysBetween() and similar methods
   failed to give the right results
 
 - ZoneInfoProvider now returns a copy of its internal state on getAvailableIDs
   This avoids race conditions on some JVMs
+
+- Period formating threw NegativeArraySizeException during formatting
+  This happened for certain period values, notably zero
 
 
 Feedback

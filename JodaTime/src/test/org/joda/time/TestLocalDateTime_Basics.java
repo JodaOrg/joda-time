@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -293,7 +293,13 @@ public class TestLocalDateTime_Basics extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new MockInstant()));
-        assertEquals(false, test1.equals(new YearMonthDay(1970, 6, 9, COPTIC_PARIS)));
+        Partial partial = new Partial(
+                new DateTimeFieldType[] {
+                        DateTimeFieldType.year(), DateTimeFieldType.monthOfYear(),
+                        DateTimeFieldType.dayOfMonth(), DateTimeFieldType.millisOfDay()},
+                new int[] {1970, 6, 9, MILLIS_OF_DAY_UTC}, COPTIC_PARIS);
+        assertEquals(true, test1.equals(partial));
+        assertEquals(true, test1.hashCode() == partial.hashCode());
         assertEquals(false, test1.equals(MockPartial.EMPTY_INSTANCE));
     }
     

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -542,6 +542,68 @@ public final class LocalDateTime
      */
     public Chronology getChronology() {
         return iChronology;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Compares this ReadablePartial with another returning true if the chronology,
+     * field types and values are equal.
+     *
+     * @param partial  an object to check against
+     * @return true if fields and values are equal
+     */
+    public boolean equals(Object partial) {
+        // override to perform faster
+        if (this == partial) {
+            return true;
+        }
+        if (partial instanceof LocalDateTime) {
+            LocalDateTime other = (LocalDateTime) partial;
+            if (iChronology.equals(other.iChronology)) {
+                return iLocalMillis == other.iLocalMillis;
+            }
+        }
+        return super.equals(partial);
+    }
+
+    /**
+     * Compares this partial with another returning an integer
+     * indicating the order.
+     * <p>
+     * The fields are compared in order, from largest to smallest.
+     * The first field that is non-equal is used to determine the result.
+     * <p>
+     * The specified object must be a partial instance whose field types
+     * match those of this partial.
+     * <p>
+     * NOTE: This implementation violates the Comparable contract.
+     * This method will accept any instance of ReadablePartial as input.
+     * However, it is possible that some implementations of ReadablePartial
+     * exist that do not extend AbstractPartial, and thus will throw a
+     * ClassCastException if compared in the opposite direction.
+     * The cause of this problem is that ReadablePartial doesn't define
+     * the compareTo() method, however we can't change that until v2.0.
+     *
+     * @param partial  an object to check against
+     * @return negative if this is less, zero if equal, positive if greater
+     * @throws ClassCastException if the partial is the wrong class
+     *  or if it has field types that don't match
+     * @throws NullPointerException if the partial is null
+     */
+    public int compareTo(Object partial) {
+        // override to perform faster
+        if (this == partial) {
+            return 0;
+        }
+        if (partial instanceof LocalDateTime) {
+            LocalDateTime other = (LocalDateTime) partial;
+            if (iChronology.equals(other.iChronology)) {
+                return (iLocalMillis < other.iLocalMillis ? -1 :
+                            (iLocalMillis == other.iLocalMillis ? 0 : 1));
+
+            }
+        }
+        return super.compareTo(partial);
     }
 
     //-----------------------------------------------------------------------

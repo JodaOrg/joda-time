@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -285,6 +285,7 @@ public class TestLocalTime_Basics extends TestCase {
         
         assertEquals(false, test1.equals("Hello"));
         assertEquals(true, test1.equals(new TimeOfDay(10, 20, 30, 40, COPTIC_UTC)));
+        assertEquals(true, test1.hashCode() == new TimeOfDay(10, 20, 30, 40, COPTIC_UTC).hashCode());
         assertEquals(true, test1.equals(new MockInstant()));
         assertEquals(false, test1.equals(MockPartial.EMPTY_INSTANCE));
     }

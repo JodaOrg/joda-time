@@ -1,4 +1,4 @@
-# @(#)northamerica	8.11
+# @(#)northamerica	8.12
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -583,6 +583,11 @@ Zone America/Boise	-7:44:49 -	LMT	1883 Nov 18 12:15:11
 # clocks twice that night, but this obviously is in error.  The intent
 # is that 01:59:59 EST be followed by 02:00:00 CDT.
 
+# From Gwillim Law (2007-02-10):
+# The Associated Press has been reporting that Pulaski County, Indiana is
+# going to switch from Central to Eastern Time on March 11, 2007....
+# http://www.indystar.com/apps/pbcs.dll/article?AID=/20070207/LOCAL190108/702070524/0/LOCAL
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule Indianapolis 1941	only	-	Jun	22	2:00	1:00	D
 Rule Indianapolis 1941	1954	-	Sep	lastSun	2:00	0	S
@@ -618,7 +623,7 @@ Zone America/Indiana/Marengo -5:45:23 -	LMT	1883 Nov 18 12:14:37
 			-5:00	-	EST	2006
 			-5:00	US	E%sT
 #
-# Daviess, Dubois, Knox, Martin, Perry, and Pulaski Counties, Indiana,
+# Daviess, Dubois, Knox, Martin, and Perry Counties, Indiana,
 # switched from eastern to central time in April 2006.
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
 Rule Vincennes	1946	only	-	Apr	lastSun	2:00	1:00	D
@@ -675,6 +680,23 @@ Zone America/Indiana/Knox -5:46:30 -	LMT	1883 Nov 18 12:13:30
 			-6:00	US	C%sT	1991 Oct 27 2:00
 			-5:00	-	EST	2006 Apr  2 2:00
 			-6:00	US	C%sT
+#
+# Pulaski County, Indiana, switched from eastern to central time in
+# April 2006 and then switched back in March 2007.
+# Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER
+Rule	Pulaski	1946	1960	-	Apr	lastSun	2:00	1:00	D
+Rule	Pulaski	1946	1954	-	Sep	lastSun	2:00	0	S
+Rule	Pulaski	1955	1956	-	Oct	lastSun	2:00	0	S
+Rule	Pulaski	1957	1960	-	Sep	lastSun	2:00	0	S
+# Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
+Zone America/Indiana/Winamac -5:46:25 - LMT	1883 Nov 18 12:13:35
+			-6:00	US	C%sT	1946
+			-6:00	Pulaski	C%sT	1961 Apr 30 2:00
+			-5:00	-	EST	1969
+			-5:00	US	E%sT	1971
+			-5:00	-	EST	2006 Apr  2 2:00
+			-6:00	US	C%sT	2007 Mar 11 2:00
+			-5:00	US	E%sT
 #
 # Switzerland County, Indiana, did not observe DST from 1973 through 2005.
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
@@ -894,18 +916,16 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # Unless otherwise specified, the data for Canada are all from Shanks
 # & Pottenger.
 
-# From Chris Walton (2006-04-01):
+# From Chris Walton (2006-04-01, 2006-04-25, 2006-06-26, 2007-01-31):
 # The British Columbia government announced yesterday that it will
 # adjust daylight savings next year to align with changes in the
 # U.S. and the rest of Canada....
 # http://www2.news.gov.bc.ca/news_releases_2005-2009/2006AG0014-000330.htm
-
-# From Chris Walton (2006-04-25):
+# ...
+# Nova Scotia
 # Daylight saving time will be extended by four weeks starting in 2007....
-# Here is a news release which was issued today by the Nova Scotia government:
-# http://www.gov.ns.ca/news/details.asp?id=20060425004
-
-# From Chris Walton (2006-06-26):
+# http://www.gov.ns.ca/just/regulations/rg2/2006/ma1206.pdf
+#
 # [For New Brunswick] the new legislation dictates that the time change is to
 # be done at 02:00 instead of 00:01.
 # http://www.gnb.ca/0062/acts/BBA-2006/Chap-19.pdf
@@ -915,16 +935,18 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # http://web2.gov.mb.ca/laws/statutes/ccsm/o030e.php
 # ...
 # [Alberta, Ontario, Quebec] will follow US rules.
-# http://www.qp.gov.ab.ca/documents/Acts/2006CH03_UNPR.cfm?frm_isbn=0779744934
+# http://www.qp.gov.ab.ca/documents/spring/CH03_06.CFM
 # http://www.e-laws.gov.on.ca/DBLaws/Source/Regs/English/2006/R06111_e.htm
-# http://www.assnat.qc.ca/eng/37legislature2/Projets-loi/Publics/06-a002.htm
+# http://www2.publicationsduquebec.gouv.qc.ca/dynamicSearch/telecharge.php?type=5&file=2006C39A.PDF
 # ...
-# P.E.I. will follow US rules.  The new legislation is not law yet.
-# It passed first reading on April 20....
-# http://www.assembly.pe.ca/bills/pdf_first/62/3/bill-101.pdf
+# P.E.I. will follow US rules....
+# http://www.assembly.pe.ca/bills/pdf_chapter/62/3/chapter-41.pdf
 # ...
-# Province of Newfoundland and Labrador.... The change is being considered.
-# http://www.releases.gov.nl.ca/releases/2006/mpa/0331n01.htm
+# Province of Newfoundland and Labrador....
+# http://www.hoa.gov.nl.ca/hoa/bills/Bill0634.htm
+# ...
+# Yukon
+# http://www.gov.yk.ca/legislation/regs/oic2006_127.pdf
 # ...
 # N.W.T. will follow US rules.  Whoever maintains the government web site
 # does not seem to believe in bookmarks.  To see the news release, click the
@@ -932,7 +954,14 @@ Zone America/Menominee	-5:50:27 -	LMT	1885 Sep 18 12:00
 # "Daylight Savings Time Change" link; it will fire off a popup using
 # JavaScript.
 # http://www.exec.gov.nt.ca/currentnews/currentPR.asp?mode=archive
-
+# ...
+# No formal announcement has been made from the Nunavut Government.
+# The premier of Nunavut claimed in August of 2005 that he did not
+# want to touch the issue; nothing more has been heard since.  It is
+# likely Nunavut will eventually follow the rest of the country but
+# there will certainly be confusion on March 11/2007 if no formal
+# announcement is made.  Currently the TZ database and Microsoft make
+# assumptions that Nunavut will follow the rest of the country.
 
 
 # From Paul Eggert (2006-04-25):
@@ -1100,11 +1129,11 @@ Zone America/Glace_Bay	-3:59:48 -	LMT	1902 Jun 15
 
 # New Brunswick
 
-# From Paul Eggert (2006-01-20):
-# New Brunswick's Time Definition Act
-# <http://www.gnb.ca/0062/PDF-acts/t-06.pdf> says they change at 00:01, and
+# From Paul Eggert (2007-01-31):
+# The Time Definition Act <http://www.gnb.ca/0062/PDF-acts/t-06.pdf>
+# says they changed at 00:01 through 2006, and
 # <http://www.canlii.org/nb/laws/sta/t-6/20030127/whole.html> makes it
-# clear that this has been the case since at least 1993.
+# clear that this was the case since at least 1993.
 # For now, assume it started in 1993.
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
@@ -1675,10 +1704,6 @@ Zone America/Dawson_Creek -8:00:56 -	LMT	1884
 # From Paul Eggert (2005-07-26):
 # For lack of better information, assume that Southampton Island observed
 # daylight saving only during wartime.
-
-# From Chris Walton (2006-07-19):
-# The government of Yukon Territory ... recently announced it will extend
-# daylight saving in 2007....  http://www.gov.yk.ca/news/2006/06-164.html
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	NT_YK	1918	only	-	Apr	14	2:00	1:00	D

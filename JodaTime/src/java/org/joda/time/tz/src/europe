@@ -1,4 +1,4 @@
-# @(#)europe	8.7
+# @(#)europe	8.8
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -2278,6 +2278,24 @@ Zone	Europe/Zurich	0:34:08 -	LMT	1848 Sep 12
 			1:00	EU	CE%sT
 
 # Turkey
+
+# From Amar Devegowda (2007-01-03):
+# The time zone rules for Istanbul, Turkey have not been changed for years now.
+# ... The latest rules are available at -
+# http://www.timeanddate.com/worldclock/timezone.html?n=107
+# From Steffen Thorsen (2007-01-03):
+# I have been able to find press records back to 1996 which all say that
+# DST started 01:00 local time and end at 02:00 local time.  I am not sure
+# what happened before that.  One example for each year from 1996 to 2001:
+# http://newspot.byegm.gov.tr/arsiv/1996/21/N4.htm
+# http://www.byegm.gov.tr/YAYINLARIMIZ/CHR/ING97/03/97X03X25.TXT
+# http://www.byegm.gov.tr/YAYINLARIMIZ/CHR/ING98/03/98X03X02.HTM
+# http://www.byegm.gov.tr/YAYINLARIMIZ/CHR/ING99/10/99X10X26.HTM#%2016
+# http://www.byegm.gov.tr/YAYINLARIMIZ/CHR/ING2000/03/00X03X06.HTM#%2021
+# http://www.byegm.gov.tr/YAYINLARIMIZ/CHR/ING2001/03/23x03x01.HTM#%2027
+# From Paul Eggert (2007-01-03):
+# Prefer the above source to Shanks & Pottenger for time stamps after 1990.
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Turkey	1916	only	-	May	 1	0:00	1:00	S
 Rule	Turkey	1916	only	-	Oct	 1	0:00	0	-
@@ -2332,14 +2350,17 @@ Rule	Turkey	1983	only	-	Jul	31	0:00	1:00	S
 Rule	Turkey	1983	only	-	Oct	 2	0:00	0	-
 Rule	Turkey	1985	only	-	Apr	20	0:00	1:00	S
 Rule	Turkey	1985	only	-	Sep	28	0:00	0	-
+Rule	Turkey	1986	1990	-	Mar	lastSun	2:00s	1:00	S
+Rule	Turkey	1986	1990	-	Sep	lastSun	2:00s	0	-
+Rule	Turkey	1991	max	-	Mar	lastSun	1:00s	1:00	S
+Rule	Turkey	1991	1995	-	Sep	lastSun	1:00s	0	-
+Rule	Turkey	1996	max	-	Oct	lastSun	1:00s	0	-
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	Europe/Istanbul	1:55:52 -	LMT	1880
 			1:56:56	-	IMT	1910 Oct # Istanbul Mean Time?
 			2:00	Turkey	EE%sT	1978 Oct 15
 			3:00	Turkey	TR%sT	1985 Apr 20 # Turkey Time
-			2:00	Turkey	EE%sT	1986
-			2:00	C-Eur	EE%sT	1991
-			2:00	EU	EE%sT
+			2:00	Turkey	EE%sT
 Link	Europe/Istanbul	Asia/Istanbul	# Istanbul is in both continents.
 
 # Ukraine

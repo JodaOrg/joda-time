@@ -1,4 +1,4 @@
-# @(#)southamerica	8.8
+# @(#)southamerica	8.9
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -765,7 +765,7 @@ Zone America/Santiago	-4:42:46 -	LMT	1890
 			-5:00	Chile	CL%sT	1947 May 22 # Chile Time
 			-4:00	Chile	CL%sT
 Zone Pacific/Easter	-7:17:44 -	LMT	1890
-			-7:17:44 -	EMT	1932 Sep    # Easter Mean Time
+			-7:17:28 -	EMT	1932 Sep    # Easter Mean Time
 			-7:00	Chile	EAS%sT	1982 Mar 13 21:00 # Easter I Time
 			-6:00	Chile	EAS%sT
 #

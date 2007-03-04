@@ -861,4 +861,30 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt, f.parseDateTime("2004/03/09"));
     }
 
+    public void testParse_pivotYear() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yy").withPivotYear(2050).withZone(DateTimeZone.UTC);
+        
+        DateTime date = dateFormatter.parseDateTime("25.12.15");
+        assertEquals(date.getYear(), 2015);
+        
+        date = dateFormatter.parseDateTime("25.12.00");
+        assertEquals(date.getYear(), 2000);
+        
+        date = dateFormatter.parseDateTime("25.12.99");
+        assertEquals(date.getYear(), 2099);
+    }
+
+    public void testParse_pivotYear_ignored4DigitYear() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yyyy").withPivotYear(2050).withZone(DateTimeZone.UTC);
+        
+        DateTime date = dateFormatter.parseDateTime("25.12.15");
+        assertEquals(date.getYear(), 15);
+        
+        date = dateFormatter.parseDateTime("25.12.00");
+        assertEquals(date.getYear(), 0);
+        
+        date = dateFormatter.parseDateTime("25.12.99");
+        assertEquals(date.getYear(), 99);
+    }
+
 }

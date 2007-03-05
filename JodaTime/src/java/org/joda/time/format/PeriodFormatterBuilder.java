@@ -79,6 +79,7 @@ public class PeriodFormatterBuilder {
     private static final int MILLIS = 7;
     private static final int SECONDS_MILLIS = 8;
     private static final int SECONDS_OPTIONAL_MILLIS = 9;
+    private static final int MAX_FIELD = SECONDS_OPTIONAL_MILLIS;
 
     private int iMinPrintedDigits;
     private int iPrintZeroSetting;
@@ -1429,7 +1430,7 @@ public class PeriodFormatterBuilder {
                     return Long.MAX_VALUE;
                 case PRINT_ZERO_RARELY_LAST:
                     if (isZero(period) && iFieldFormatters[iFieldType] == this) {
-                        for (int i = iFieldType + 1; i < 10; i++) {
+                        for (int i = iFieldType + 1; i <= MAX_FIELD; i++) {
                             if (isSupported(type, i) && iFieldFormatters[i] != null) {
                                 return Long.MAX_VALUE;
                             }
@@ -1440,7 +1441,9 @@ public class PeriodFormatterBuilder {
                     break;
                 case PRINT_ZERO_RARELY_FIRST:
                     if (isZero(period) && iFieldFormatters[iFieldType] == this) {
-                        for (int i = Math.min(iFieldType, 8) - 1; i >= 0; i++) {
+                        int i = Math.min(iFieldType, 8);  // line split out for IBM JDK
+                        i--;                              // see bug 1660490
+                        for (; i >= 0 && i <= MAX_FIELD; i++) {
                             if (isSupported(type, i) && iFieldFormatters[i] != null) {
                                 return Long.MAX_VALUE;
                             }

@@ -54,6 +54,10 @@ Bug fixes since 1.4
 - Period formating threw NegativeArraySizeException during formatting
   This happened for certain period values, notably zero
 
+- Period formatting could end up in an infinite loop on IBM JDK 1.4.2
+  This appears to be an IBM JDK issue, not a Joda-Time issue, but we should
+  not have ended up in an infinite loop whatever happens
+
 
 Feedback
 --------

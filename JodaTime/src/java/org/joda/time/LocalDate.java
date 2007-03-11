@@ -570,6 +570,11 @@ public final class LocalDate
      * Converts this LocalDate to a full datetime at midnight using the default
      * time zone.
      * <p>
+     * This method will throw an exception if the default time zone switches
+     * to Daylight Savings Time at midnight and this LocalDate represents
+     * that switchover date. The problem is that there is no such time as
+     * midnight on the required date, and as such an exception is thrown.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      * 
      * @return this date as a datetime at midnight
@@ -581,6 +586,11 @@ public final class LocalDate
     /**
      * Converts this LocalDate to a full datetime at midnight using the
      * specified time zone.
+     * <p>
+     * This method will throw an exception if the time zone switches
+     * to Daylight Savings Time at midnight and this LocalDate represents
+     * that switchover date. The problem is that there is no such time as
+     * midnight on the required date, and as such an exception is thrown.
      * <p>
      * This method uses the chronology from this instance plus the time zone
      * specified.
@@ -602,6 +612,9 @@ public final class LocalDate
      * setting the date fields from this instance and the time fields from
      * the current time.
      * <p>
+     * This method will throw an exception if the datetime that would be
+     * created does not exist when the time zone is taken into account.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @return this date as a datetime with the time as the current time
@@ -617,6 +630,9 @@ public final class LocalDate
      * <p>
      * This method uses the chronology from this instance plus the time zone
      * specified.
+     * <p>
+     * This method will throw an exception if the datetime that would be
+     * created does not exist when the time zone is taken into account.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
@@ -635,6 +651,11 @@ public final class LocalDate
     /**
      * Converts this LocalDate to a DateMidnight in the default time zone.
      * <p>
+     * This method will throw an exception if the default time zone switches
+     * to Daylight Savings Time at midnight and this LocalDate represents
+     * that switchover date. The problem is that there is no such time as
+     * midnight on the required date, and as such an exception is thrown.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @return the DateMidnight instance in the default zone
@@ -645,6 +666,11 @@ public final class LocalDate
 
     /**
      * Converts this LocalDate to a DateMidnight.
+     * <p>
+     * This method will throw an exception if the time zone switches
+     * to Daylight Savings Time at midnight and this LocalDate represents
+     * that switchover date. The problem is that there is no such time as
+     * midnight on the required date, and as such an exception is thrown.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *
@@ -666,6 +692,9 @@ public final class LocalDate
      * LocalDate. The chronology of the time must match.
      * If the time is null, the current time in the date's chronology is used.
      * <p>
+     * This method will throw an exception if the datetime that would be
+     * created does not exist when the time zone is taken into account.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @param time  the time of day to use, null means current time
@@ -683,6 +712,9 @@ public final class LocalDate
      * The resulting chronology is determined by the chronology of this
      * LocalDate plus the time zone. The chronology of the time must match.
      * If the time is null, the current time in the date's chronology is used.
+     * <p>
+     * This method will throw an exception if the datetime that would be
+     * created does not exist when the time zone is taken into account.
      * <p>
      * This instance is immutable and unaffected by this method call.
      *

@@ -609,6 +609,9 @@ public final class LocalDateTime
     //-----------------------------------------------------------------------
     /**
      * Converts this object to a DateTime using the default zone.
+     * <p>
+     * This method will throw an exception if the datetime that would be
+     * created does not exist when the time zone is taken into account.
      * 
      * @return <code>this</code>
      */
@@ -618,6 +621,9 @@ public final class LocalDateTime
 
     /**
      * Converts this object to a DateTime using the specified zone.
+     * <p>
+     * This method will throw an exception if the datetime that would be
+     * created does not exist when the time zone is taken into account.
      * 
      * @param zone time zone to apply, or default if null
      * @return a DateTime using the same millis

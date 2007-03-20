@@ -1,4 +1,4 @@
-# @(#)australasia	8.5
+# @(#)australasia	8.6
 # <pre>
 
 # This file also includes Pacific islands.
@@ -818,7 +818,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 
 # From Christopher Hunt (2006-11-21), after an advance warning
 # from Jesper Norgaard Welen (2006-11-01):
-# WA are trialing DST for three years. 
+# WA are trialing DST for three years.
 # <http://www.parliament.wa.gov.au/parliament/bills.nsf/9A1B183144403DA54825721200088DF1/$File/Bill175-1B.pdf>
 
 # From Rives McDow (2002-04-09):
@@ -850,7 +850,7 @@ Zone	Pacific/Wallis	12:15:20 -	LMT	1901
 # question arose whether this part of the state would follow suit. I
 # just called the border village and confirmed that indeed they have,
 # meaning that they are now observing UTC+09:45.
-# 
+#
 # (2006-12-09):
 # I personally doubt that either experimentation with daylight saving
 # in WA or its introduction in SA had anything to do with the genesis

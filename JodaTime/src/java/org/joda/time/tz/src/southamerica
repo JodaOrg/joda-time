@@ -1,4 +1,4 @@
-# @(#)southamerica	8.9
+# @(#)southamerica	8.11
 # <pre>
 
 # This data is by no means authoritative; if you think you know better,
@@ -786,26 +786,33 @@ Zone	America/Bogota	-4:56:20 -	LMT	1884 Mar 13
 
 # Curacao
 #
-# From Paul Eggert (2006-03-22): 
+# From Paul Eggert (2006-03-22):
 # Shanks & Pottenger say that The Bottom and Philipsburg have been at
 # -4:00 since standard time was introduced on 1912-03-02; and that
 # Kralendijk and Rincon used Kralendijk Mean Time (-4:33:08) from
 # 1912-02-02 to 1965-01-01.  The former is dubious, since S&P also say
 # Saba Island has been like Curacao.
-# This all predates our 1970 cutoff, though.  
+# This all predates our 1970 cutoff, though.
 #
 # By July 2007 Curacao and St Maarten are planned to become
 # associated states within the Netherlands, much like Aruba;
 # Bonaire, Saba and St Eustatius would become directly part of the
 # Netherlands as Kingdom Islands.  This won't affect their time zones
 # though, as far as we know.
-# 
+#
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone	America/Curacao	-4:35:44 -	LMT	1912 Feb 12	# Willemstad
 			-4:30	-	ANT	1965 # Netherlands Antilles Time
 			-4:00	-	AST
 
 # Ecuador
+#
+# From Paul Eggert (2007-03-04):
+# Apparently Ecuador had a failed experiment with DST in 1992.
+# <http://midena.gov.ec/content/view/1261/208/> (2007-02-27) and
+# <http://www.hoy.com.ec/NoticiaNue.asp?row_id=249856> (2006-11-06) both
+# talk about "hora Sixto".  Leave this alone for now, as we have no data.
+#
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Guayaquil	-5:19:20 -	LMT	1890
 			-5:14:00 -	QMT	1931 # Quito Mean Time

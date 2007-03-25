@@ -69,6 +69,10 @@ public final class FixedDateTimeZone extends DateTimeZone {
         return instant;
     }
 
+    public java.util.TimeZone toTimeZone() {
+        return new java.util.SimpleTimeZone(iWallOffset, getID());
+    }
+
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;

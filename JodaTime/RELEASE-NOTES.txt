@@ -58,6 +58,8 @@ Bug fixes since 1.4
   This appears to be an IBM JDK issue, not a Joda-Time issue, but we should
   not have ended up in an infinite loop whatever happens
 
+- DateTimeZone did not properly convert fixed offset zones to java.util.TimeZone
+
 
 Feedback
 --------

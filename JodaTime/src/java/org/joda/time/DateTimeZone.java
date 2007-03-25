@@ -877,7 +877,7 @@ public abstract class DateTimeZone implements Serializable {
     /**
      * Get the datetime zone as a {@link java.util.TimeZone}.
      * 
-     * @return the equivalent TimeZone object
+     * @return the closest matching TimeZone object
      */
     public java.util.TimeZone toTimeZone() {
         return java.util.TimeZone.getTimeZone(iID);

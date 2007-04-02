@@ -1,4 +1,4 @@
-# @(#)northamerica	8.15
+# @(#)northamerica	8.16
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -2366,11 +2366,15 @@ Zone America/Port-au-Prince -4:49:20 -	LMT	1890
 # published, I have located this authoritative source:
 # http://www.presidencia.gob.hn/noticia.aspx?nId=47
 
+# From Steffen Thorsen (2007-03-30):
+# http://www.laprensahn.com/pais_nota.php?id04962=7386
+# So it seems that Honduras will not enter DST this year....
+
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Hond	1987	1988	-	May	Sun>=1	0:00	1:00	D
 Rule	Hond	1987	1988	-	Sep	lastSun	0:00	0	S
-Rule	Hond	2006	2009	-	May	Sun>=1	0:00	1:00	D
-Rule	Hond	2006	2009	-	Aug	Mon>=1	0:00	0	S
+Rule	Hond	2006	only	-	May	Sun>=1	0:00	1:00	D
+Rule	Hond	2006	only	-	Aug	Mon>=1	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Tegucigalpa -5:48:52 -	LMT	1921 Apr
 			-6:00	Hond	C%sT

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -118,7 +118,6 @@ public abstract class BasePeriod
             long startMillis = DateTimeUtils.getInstantMillis(startInstant);
             long endMillis = DateTimeUtils.getInstantMillis(endInstant);
             Chronology chrono = DateTimeUtils.getIntervalChronology(startInstant, endInstant);
-            chrono = DateTimeUtils.getChronology(chrono);
             iType = type;
             iValues = chrono.get(this, startMillis, endMillis);
         }
@@ -147,20 +146,31 @@ public abstract class BasePeriod
         if (start == null || end == null) {
             throw new IllegalArgumentException("ReadablePartial objects must not be null");
         }
-        if (start.size() != end.size()) {
-            throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
-        }
-        for (int i = 0, isize = start.size(); i < isize; i++) {
-            if (start.getFieldType(i) != end.getFieldType(i)) {
+        if (start instanceof BaseLocal && end instanceof BaseLocal && start.getClass() == end.getClass()) {
+            // for performance
+            type = checkPeriodType(type);
+            long startMillis = ((BaseLocal) start).getLocalMillis();
+            long endMillis = ((BaseLocal) end).getLocalMillis();
+            Chronology chrono = start.getChronology();
+            chrono = DateTimeUtils.getChronology(chrono);
+            iType = type;
+            iValues = chrono.get(this, startMillis, endMillis);
+        } else {
+            if (start.size() != end.size()) {
                 throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
             }
+            for (int i = 0, isize = start.size(); i < isize; i++) {
+                if (start.getFieldType(i) != end.getFieldType(i)) {
+                    throw new IllegalArgumentException("ReadablePartial objects must have the same set of fields");
+                }
+            }
+            if (DateTimeUtils.isContiguous(start) == false) {
+                throw new IllegalArgumentException("ReadablePartial objects must be contiguous");
+            }
+            iType = checkPeriodType(type);
+            Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();
+            iValues = chrono.get(this, chrono.set(start, 0L), chrono.set(end, 0L));
         }
-        if (DateTimeUtils.isContiguous(start) == false) {
-            throw new IllegalArgumentException("ReadablePartial objects must be contiguous");
-        }
-        iType = checkPeriodType(type);
-        Chronology chrono = DateTimeUtils.getChronology(start.getChronology()).withUTC();
-        iValues = chrono.get(this, chrono.set(start, 0L), chrono.set(end, 0L));
     }
 
     /**

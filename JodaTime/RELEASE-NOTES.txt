@@ -20,7 +20,8 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.4
 ----------------------
-- Performance enhancement to comparison of LocalDate, LocalTime and LocalDateTime
+- Performance enhancement for LocalDate, LocalTime and LocalDateTime
+  - equals, compareTo, Period construction
 
 
 Compatibility with 1.4

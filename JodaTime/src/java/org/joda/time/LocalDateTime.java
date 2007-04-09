@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import org.joda.time.base.AbstractPartial;
+import org.joda.time.base.BaseLocal;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PartialConverter;
@@ -74,7 +74,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * @since 1.3
  */
 public final class LocalDateTime
-        extends AbstractPartial
+        extends BaseLocal
         implements ReadablePartial, Serializable {
 
     /** Serialization lock */
@@ -531,7 +531,7 @@ public final class LocalDateTime
      *
      * @return the number of milliseconds since 1970-01-01T00:00:00
      */
-    long getLocalMillis() {
+    protected long getLocalMillis() {
         return iLocalMillis;
     }
 

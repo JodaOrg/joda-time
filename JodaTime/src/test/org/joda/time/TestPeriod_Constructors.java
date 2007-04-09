@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -765,6 +765,21 @@ public class TestPeriod_Constructors extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+    public void testConstructor_RP_RP2Local() throws Throwable {
+        LocalDate dt1 = new LocalDate(2004, 6, 9);
+        LocalDate dt2 = new LocalDate(2005, 5, 17);
+        Period test = new Period(dt1, dt2);
+        assertEquals(PeriodType.standard(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(11, test.getMonths());
+        assertEquals(1, test.getWeeks());
+        assertEquals(1, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
     public void testConstructor_RP_RP3() throws Throwable {
         YearMonthDay dt1 = null;
         YearMonthDay dt2 = new YearMonthDay(2005, 7, 17);
@@ -838,6 +853,21 @@ public class TestPeriod_Constructors extends TestCase {
     public void testConstructor_RP_RP_PeriodType2() throws Throwable {
         YearMonthDay dt1 = new YearMonthDay(2004, 6, 9);
         YearMonthDay dt2 = new YearMonthDay(2005, 5, 17);
+        Period test = new Period(dt1, dt2, PeriodType.yearMonthDay());
+        assertEquals(PeriodType.yearMonthDay(), test.getPeriodType());
+        assertEquals(0, test.getYears());
+        assertEquals(11, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(8, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+    }
+
+    public void testConstructor_RP_RP_PeriodType2Local() throws Throwable {
+        LocalDate dt1 = new LocalDate(2004, 6, 9);
+        LocalDate dt2 = new LocalDate(2005, 5, 17);
         Period test = new Period(dt1, dt2, PeriodType.yearMonthDay());
         assertEquals(PeriodType.yearMonthDay(), test.getPeriodType());
         assertEquals(0, test.getYears());

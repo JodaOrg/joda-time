@@ -61,6 +61,8 @@ Bug fixes since 1.4
 
 - DateTimeZone did not properly convert fixed offset zones to java.util.TimeZone
 
+- Avoid compilation issue reported by Apache Harmony [1699760]
+
 
 Feedback
 --------

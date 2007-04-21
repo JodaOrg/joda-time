@@ -78,12 +78,22 @@ public class TestFixedDateTimeZone extends TestCase {
         assertEquals(false, zone1.hashCode() == zone4.hashCode());
     }
 
-    public void testToTimeZone() throws Exception {
+    public void testToTimeZone1() throws Exception {
+        FixedDateTimeZone zone = new FixedDateTimeZone("+00:01", "+00:01", 60000, 60000);
+        java.util.TimeZone tz = zone.toTimeZone();
+        
+        assertEquals(60000, tz.getRawOffset());
+        assertEquals(60000, tz.getOffset(1167638400000L));
+        assertEquals(60000, tz.getOffset(1185951600000L));
+    }
+
+    public void testToTimeZone2() throws Exception {
         FixedDateTimeZone zone = new FixedDateTimeZone("A", "B", 1, 5);
         java.util.TimeZone tz = zone.toTimeZone();
-
+        
         assertEquals(1, tz.getRawOffset());
         assertEquals(1, tz.getOffset(1167638400000L));
         assertEquals(1, tz.getOffset(1185951600000L));
     }
+
 }

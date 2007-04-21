@@ -316,6 +316,21 @@ public class TestDateTimeZone extends TestCase {
         assertEquals("America/New_York", zone.getID());
     }
 
+    public void testTimeZoneConversion() {
+        TimeZone jdkTimeZone = TimeZone.getTimeZone("GMT-10");
+        assertEquals("GMT-10:00", jdkTimeZone.getID());
+        
+        DateTimeZone jodaTimeZone = DateTimeZone.forTimeZone(jdkTimeZone);
+        assertEquals("-10:00", jodaTimeZone.getID());
+        assertEquals(jdkTimeZone.getRawOffset(), jodaTimeZone.getOffset(0L));
+        
+        TimeZone convertedTimeZone = jodaTimeZone.toTimeZone();
+        assertEquals("GMT-10:00", jdkTimeZone.getID());
+        
+        assertEquals(jdkTimeZone.getID(), convertedTimeZone.getID());
+        assertEquals(jdkTimeZone.getRawOffset(), convertedTimeZone.getRawOffset());
+    }
+
     //-----------------------------------------------------------------------
     public void testGetAvailableIDs() {
         assertTrue(DateTimeZone.getAvailableIDs().contains("UTC"));

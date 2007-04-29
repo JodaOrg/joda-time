@@ -685,6 +685,34 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
+     * Converts this object to a LocalDateTime using a LocalTime to fill in
+     * the missing fields.
+     * <p>
+     * The resulting chronology is determined by the chronology of this
+     * LocalDate. The chronology of the time must also match.
+     * If the time is null an exception is thrown.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @param time  the time of day to use, must not be null
+     * @return the LocalDateTime instance
+     * @throws IllegalArgumentException if the time is null
+     * @throws IllegalArgumentException if the chronology of the time does not match
+     * @since 1.5
+     */
+    public LocalDateTime toLocalDateTime(LocalTime time) {
+        if (time == null) {
+            throw new IllegalArgumentException("The time must not be null");
+        }
+        if (getChronology() != time.getChronology()) {
+            throw new IllegalArgumentException("The chronology of the time does not match");
+        }
+        long localMillis = getLocalMillis() + time.getLocalMillis();
+        return new LocalDateTime(localMillis, getChronology());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Converts this object to a DateTime using a LocalTime to fill in the
      * missing fields and using the default time zone.
      * <p>

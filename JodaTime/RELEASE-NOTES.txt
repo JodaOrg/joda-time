@@ -20,6 +20,9 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.4
 ----------------------
+- LocalDate.toLocalDateTime
+  - provide mechanism to create LocalDateTime from LocalDate and LocalTime
+
 - Performance enhancement for LocalDate, LocalTime and LocalDateTime
   - equals, compareTo, Period construction
 

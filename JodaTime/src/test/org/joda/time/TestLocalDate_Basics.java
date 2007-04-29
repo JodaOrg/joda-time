@@ -698,6 +698,40 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToLocalDateTime_LocalTime() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
+        LocalTime tod = new LocalTime(12, 13, 14, 15, COPTIC_TOKYO);
+        
+        LocalDateTime test = base.toLocalDateTime(tod);
+        check(base, 2005, 6, 9);
+        LocalDateTime expected = new LocalDateTime(2005, 6, 9, 12, 13, 14, 15, COPTIC_UTC);
+        assertEquals(expected, test);
+    }
+
+    public void testToLocalDateTime_nullLocalTime() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
+        
+        try {
+            base.toLocalDateTime((LocalTime) null);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testToLocalDateTime_wrongChronologyLocalTime() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
+        LocalTime tod = new LocalTime(12, 13, 14, 15, BUDDHIST_PARIS); // PARIS irrelevant
+        
+        try {
+            base.toLocalDateTime(tod);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
     public void testToDateTime_LocalTime() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         LocalTime tod = new LocalTime(12, 13, 14, 15, COPTIC_TOKYO);

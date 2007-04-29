@@ -20,6 +20,7 @@ import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
 import org.joda.time.ReadablePeriod;
 import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.PeriodFormatter;
 
 /**
  * AbstractPeriod provides the common behaviour for period classes.
@@ -201,6 +202,21 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      */
     public String toString() {
         return ISOPeriodFormat.standard().print(this);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Uses the specified formatter to convert this period to a String.
+     *
+     * @param formatter  the formatter to use, null means use <code>toString()</code>.
+     * @return the formatted string
+     * @since 1.5
+     */
+    public String toString(PeriodFormatter formatter) {
+        if (formatter == null) {
+            return toString();
+        }
+        return formatter.print(this);
     }
 
 }

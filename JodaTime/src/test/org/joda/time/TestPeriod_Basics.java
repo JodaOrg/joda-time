@@ -27,6 +27,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.joda.time.base.BasePeriod;
+import org.joda.time.format.PeriodFormat;
+import org.joda.time.format.PeriodFormatter;
 
 /**
  * This class is a Junit unit test for Duration.
@@ -472,6 +474,20 @@ public class TestPeriod_Basics extends TestCase {
         
         test = new Period(12345L);
         assertEquals("PT12.345S", test.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToString_PeriodFormatter() {
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        assertEquals("1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", test.toString(PeriodFormat.getDefault()));
+        
+        test = new Period(0, 0, 0, 0, 0, 0, 0, 0);
+        assertEquals("0 milliseconds", test.toString(PeriodFormat.getDefault()));
+    }
+
+    public void testToString_nullPeriodFormatter() {
+        Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString((PeriodFormatter) null));
     }
 
     //-----------------------------------------------------------------------

@@ -26,6 +26,9 @@ Enhancements since 1.4
 - Performance enhancement for LocalDate, LocalTime and LocalDateTime
   - equals, compareTo, Period construction
 
+- Period.toString(PeriodFormatter), MutablePeriod.toString(PeriodFormatter)
+  - allow periods to be directly formatted, as with datetimes
+
 
 Compatibility with 1.4
 ----------------------

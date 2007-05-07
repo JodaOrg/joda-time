@@ -115,6 +115,11 @@
       <version>full-2.0.2</version>
     </dependency>
     <dependency>
+      <groupId>antlr</groupId>
+      <artifactId>antlr</artifactId>
+      <version>2.7.2</version>
+    </dependency>
+    <dependency>
       <groupId>jta</groupId>
       <artifactId>jta</artifactId>
       <url>http://java.sun.com/products/jta</url>

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.joda.time.contrib.hibernate.testmodel">
+    <class name="SomethingThatHappens" table="happening">
+        <id name="id" type="long"/>
+        <property name="name" type="string"/>
+        <property name="thePeriod" type="org.joda.time.contrib.hibernate.PeriodType"/>
+    </class>
+</hibernate-mapping>

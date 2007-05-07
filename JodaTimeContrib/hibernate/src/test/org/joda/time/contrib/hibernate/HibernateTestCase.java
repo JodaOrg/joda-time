@@ -22,17 +22,21 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.tool.hbm2ddl.SchemaUpdate;
 
+import java.sql.Connection;
+import java.sql.Statement;
+
 public abstract class HibernateTestCase extends TestCase
 {
 	private SessionFactory factory;
+    private Configuration cfg;
 
-	protected SessionFactory getSessionFactory()
+    protected SessionFactory getSessionFactory()
 	{
 		if (this.factory == null)
 		{
-			Configuration cfg = new Configuration();
+                    cfg = new Configuration();
 
-			setupConfiguration(cfg);
+                    setupConfiguration(cfg);
 
 			cfg.setProperty("hibernate.connection.driver_class", "org.hsqldb.jdbcDriver");
 			cfg.setProperty("hibernate.connection.url", "jdbc:hsqldb:mem:hbmtest" + getClass().getName());
@@ -51,7 +55,19 @@ public abstract class HibernateTestCase extends TestCase
 
 	protected void tearDown() throws Exception
 	{
-		if (this.factory != null)
+            final String[] dropSQLs = cfg.generateDropSchemaScript(new HSQLDialect());
+            final Connection connection = getSessionFactory().openSession().connection();
+            try {
+                Statement stmt = connection.createStatement();
+                for (int i = 0; i < dropSQLs.length; i++) {
+                    //System.out.println("dropSQLs[i] = " + dropSQLs[i]);
+                    stmt.executeUpdate(dropSQLs[i]);
+                }
+            } finally {
+                connection.close();
+            }
+
+            if (this.factory != null)
 		{
 			this.factory.close();
 			this.factory = null;

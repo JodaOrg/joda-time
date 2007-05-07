@@ -15,7 +15,7 @@ import java.sql.SQLException;
  * @author $Author: $ (last edit)
  * @version $Revision: $
  */
-public class TestPeriodType extends HibernateTestCase {
+public class TestPersistentPeriod extends HibernateTestCase {
     protected void setupConfiguration(Configuration cfg) {
         cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/testmodel/SomethingThatHappens.hbm.xml"));
     }

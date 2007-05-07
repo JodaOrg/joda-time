@@ -5,6 +5,6 @@
     <class name="SomethingThatHappens" table="happening">
         <id name="id" type="long"/>
         <property name="name" type="string"/>
-        <property name="thePeriod" type="org.joda.time.contrib.hibernate.PeriodType"/>
+        <property name="thePeriod" type="org.joda.time.contrib.hibernate.PersistentPeriod"/>
     </class>
 </hibernate-mapping>

@@ -15,7 +15,7 @@ import org.joda.time.format.PeriodFormat;
  * @author $Author: $ (last edit)
  * @version $Revision: $
  */
-public class PeriodType extends AbstractStringBasedJodaType {
+public class PersistentPeriod extends AbstractStringBasedJodaType {
 
     public Class returnedClass() {
         return Period.class;

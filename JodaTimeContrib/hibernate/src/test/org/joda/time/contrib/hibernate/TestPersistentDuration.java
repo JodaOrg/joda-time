@@ -17,7 +17,7 @@ import java.sql.SQLException;
  * @author $Author: $ (last edit)
  * @version $Revision: $
  */
-public class TestDurationType extends HibernateTestCase {
+public class TestPersistentDuration extends HibernateTestCase {
     protected void setupConfiguration(Configuration cfg) {
         cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/testmodel/SomethingThatLasts.hbm.xml"));
     }

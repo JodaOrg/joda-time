@@ -14,7 +14,7 @@ import org.joda.time.convert.DurationConverter;
  * @author $Author: $ (last edit)
  * @version $Revision: $
  */
-public class DurationType extends AbstractStringBasedJodaType {
+public class PersistentDuration extends AbstractStringBasedJodaType {
 
     public Class returnedClass() {
         return Duration.class;

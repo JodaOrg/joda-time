@@ -46,6 +46,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestIslamicChronology.suite());
         suite.addTest(TestJulianChronology.suite());
         suite.addTest(TestISOChronology.suite());
+        suite.addTest(TestLenientChronology.suite());
         
         return suite;
     }

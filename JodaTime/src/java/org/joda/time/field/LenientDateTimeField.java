@@ -65,7 +65,7 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
      */
     public long set(long instant, int value) {
         int min = getMinimumValue(instant);
-        if (value >= min && value < getMaximumValue(instant)) {
+        if (value >= min && value <= getMaximumValue(instant)) {
             return super.set(instant, value);
         }
         return add(super.set(instant, min), value - min);

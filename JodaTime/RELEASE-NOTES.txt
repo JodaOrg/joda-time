@@ -69,6 +69,8 @@ Bug fixes since 1.4
 
 - Avoid compilation issue reported by Apache Harmony [1699760]
 
+- LenientChronology might incorrectly adjust a valid hour field near DST transition
+
 
 Feedback
 --------

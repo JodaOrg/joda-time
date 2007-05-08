@@ -1,4 +1,4 @@
-# @(#)northamerica	8.16
+# @(#)northamerica	8.17
 # <pre>
 
 # also includes Central America and the Caribbean
@@ -2325,6 +2325,9 @@ Zone America/Guatemala	-6:02:04 -	LMT	1918 Oct 5
 #
 # The reason seems to be an energy crisis.
 
+# From Stephen Colebourne (2007-02-22):
+# Some IATA info: Haiti won't be having DST in 2007.
+
 
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
 Rule	Haiti	1983	only	-	May	8	0:00	1:00	D
@@ -2334,8 +2337,8 @@ Rule	Haiti	1983	1987	-	Oct	lastSun	0:00	0	S
 # Go with IATA.
 Rule	Haiti	1988	1997	-	Apr	Sun>=1	1:00s	1:00	D
 Rule	Haiti	1988	1997	-	Oct	lastSun	1:00s	0	S
-Rule	Haiti	2005	max	-	Apr	Sun>=1	0:00	1:00	D
-Rule	Haiti	2005	max	-	Oct	lastSun	0:00	0	S
+Rule	Haiti	2005	2006	-	Apr	Sun>=1	0:00	1:00	D
+Rule	Haiti	2005	2006	-	Oct	lastSun	0:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Port-au-Prince -4:49:20 -	LMT	1890
 			-4:49	-	PPMT	1917 Jan 24 12:00 # P-a-P MT
@@ -2518,13 +2521,31 @@ Zone America/St_Vincent	-4:04:56 -	LMT	1890		# Kingstown
 			-4:00	-	AST
 
 # Turks and Caicos
-# From Paul Eggert (2006-03-22):
+#
+# From Chris Dunn in
+# <http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=415007>
+# (2007-03-15): In the Turks & Caicos Islands (America/Grand_Turk) the
+# daylight saving dates for time changes have been adjusted to match
+# the recent U.S. change of dates.
+#
+# From Brian Inglis (2007-04-28):
+# http://www.turksandcaicos.tc/calendar/index.htm [2007-04-26]
+# there is an entry for Nov 4 "Daylight Savings Time Ends 2007" and three
+# rows before that there is an out of date entry for Oct:
+# "Eastern Standard Times Begins 2007
+# Clocks are set back one hour at 2:00 a.m. local Daylight Saving Time"
+# indicating that the normal ET rules are followed.
+#
+# From Paul Eggert (2006-05-01):
 # Shanks & Pottenger say they use US DST rules, but IATA SSIM (1991/1998)
-# says they switch at midnight.  Go with IATA SSIM.
+# says they switch at midnight.  Go with Shanks & Pottenger.
+#
 # Rule	NAME	FROM	TO	TYPE	IN	ON	AT	SAVE	LETTER/S
-Rule	TC	1979	1986	-	Apr	lastSun	0:00	1:00	D
-Rule	TC	1979	max	-	Oct	lastSun	0:00	0	S
-Rule	TC	1987	max	-	Apr	Sun>=1	0:00	1:00	D
+Rule	TC	1979	1986	-	Apr	lastSun	2:00	1:00	D
+Rule	TC	1979	2006	-	Oct	lastSun	2:00	0	S
+Rule	TC	1987	2006	-	Apr	Sun>=1	2:00	1:00	D
+Rule	TC	2007	max	-	Mar	Sun>=8	2:00	1:00	D
+Rule	TC	2007	max	-	Nov	Sun>=1	2:00	0	S
 # Zone	NAME		GMTOFF	RULES	FORMAT	[UNTIL]
 Zone America/Grand_Turk	-4:44:32 -	LMT	1890
 			-5:07:12 -	KMT	1912 Feb    # Kingston Mean Time

@@ -188,7 +188,7 @@ public class TestBuilder extends TestCase {
     }
 
     static DateTimeZone buildAmericaLosAngeles() {
-        return buildAmericaLosAngelesBuilder().toDateTimeZone("America/Los_Angeles");
+        return buildAmericaLosAngelesBuilder().toDateTimeZone("America/Los_Angeles", true);
     }
 
     private DateTimeZone originalDateTimeZone = null;
@@ -287,7 +287,7 @@ public class TestBuilder extends TestCase {
         throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        builder.writeTo(out);
+        builder.writeTo("America/Los_Angeles", out);
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
         DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
         assertEquals(id, tz.getID());
@@ -298,7 +298,7 @@ public class TestBuilder extends TestCase {
         DateTimeZoneBuilder builder = new DateTimeZoneBuilder()
             .setStandardOffset(3600000)
             .setFixedSavings("LMT", 0);
-        DateTimeZone tz = builder.toDateTimeZone("Test");
+        DateTimeZone tz = builder.toDateTimeZone("Test", true);
 
         for (int i=0; i<2; i++) {
             assertEquals("Test", tz.getID());

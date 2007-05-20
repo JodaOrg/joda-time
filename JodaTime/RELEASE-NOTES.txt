@@ -38,7 +38,9 @@ Source compatible - Yes
 
 Serialization compatible - Yes
 
-Data compatible - Yes
+Data compatible - Yes, except
+  - Format of time zone data files changed slightly to fix bug
+    This mainly affects Australia
   - DateTimeZone data updated to version 2007f
 
 Semantic compatible - Yes
@@ -66,6 +68,9 @@ Bug fixes since 1.4
   not have ended up in an infinite loop whatever happens
 
 - DateTimeZone did not properly convert fixed offset zones to java.util.TimeZone [1682152]
+
+- DateTimeZone names were incorrect when abbreviation is the same in winter
+  and summer, notably in Australia [1716305]
 
 - Avoid compilation issue reported by Apache Harmony [1699760]
 

@@ -371,7 +371,7 @@ public class ZoneInfoCompiler {
             Zone zone = (Zone)iZones.get(i);
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             zone.addToBuilder(builder, iRuleSets);
-            final DateTimeZone original = builder.toDateTimeZone(zone.iName);
+            final DateTimeZone original = builder.toDateTimeZone(zone.iName, true);
             DateTimeZone tz = original;
             if (test(tz.getID(), tz)) {
                 map.put(tz.getID(), tz);
@@ -382,7 +382,7 @@ public class ZoneInfoCompiler {
                         file.getParentFile().mkdirs();
                     }
                     OutputStream out = new FileOutputStream(file);
-                    builder.writeTo(out);
+                    builder.writeTo(zone.iName, out);
                     out.close();
 
                     // Test if it can be read back.

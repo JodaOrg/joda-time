@@ -63,7 +63,15 @@ public class DefaultNameProvider implements NameProvider {
                 String[] set = zoneStrings[i];
                 if (set != null && set.length == 5 && id.equals(set[0])) {
                     byNameKeyCache.put(set[2], new String[] {set[2], set[1]});
-                    byNameKeyCache.put(set[4], new String[] {set[4], set[3]});
+                    // need to handle case where summer and winter have the same
+                    // abbreviation, such as EST in Australia [1716305]
+                    // we handle this by appending "-Summer", cf ZoneInfoCompiler
+                    if (set[2].equals(set[4])) {
+                        byNameKeyCache.put(set[4] + "-Summer", new String[] {set[4], set[3]});
+                    } else {
+                        byNameKeyCache.put(set[4], new String[] {set[4], set[3]});
+                    }
+                    break;
                 }
             }
         }

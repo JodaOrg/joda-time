@@ -22,15 +22,20 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 
 import org.joda.time.Chronology;
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -320,9 +325,10 @@ public class DateTimeZoneBuilder {
     /**
      * Processes all the rules and builds a DateTimeZone.
      *
-     * @param id time zone id to assign
+     * @param id  time zone id to assign
+     * @param outputID  true if the zone id should be output
      */
-    public DateTimeZone toDateTimeZone(String id) {
+    public DateTimeZone toDateTimeZone(String id, boolean outputID) {
         if (id == null) {
             throw new IllegalArgumentException();
         }
@@ -386,7 +392,7 @@ public class DateTimeZoneBuilder {
                                   tr.getWallOffset(), tr.getStandardOffset());
         }
 
-        PrecalculatedZone zone = new PrecalculatedZone(id, transitions, tailZone);
+        PrecalculatedZone zone = PrecalculatedZone.create(id, outputID, transitions, tailZone);
         if (zone.isCachable()) {
             return CachedDateTimeZone.forZone(zone);
         }
@@ -431,11 +437,11 @@ public class DateTimeZoneBuilder {
      *
      * @param out output stream to receive encoded DateTimeZone.
      */
-    public void writeTo(OutputStream out) throws IOException {
+    public void writeTo(String zoneID, OutputStream out) throws IOException {
         if (out instanceof DataOutput) {
-            writeTo((DataOutput)out);
+            writeTo(zoneID, (DataOutput)out);
         } else {
-            writeTo((DataOutput)new DataOutputStream(out));
+            writeTo(zoneID, (DataOutput)new DataOutputStream(out));
         }
     }
 
@@ -445,9 +451,9 @@ public class DateTimeZoneBuilder {
      *
      * @param out output stream to receive encoded DateTimeZone.
      */
-    public void writeTo(DataOutput out) throws IOException {
-        // The zone id is not written out, so the empty string is okay.
-        DateTimeZone zone = toDateTimeZone("");
+    public void writeTo(String zoneID, DataOutput out) throws IOException {
+        // pass false so zone id is not written out
+        DateTimeZone zone = toDateTimeZone(zoneID, false);
 
         if (zone instanceof FixedDateTimeZone) {
             out.writeByte('F'); // 'F' for fixed
@@ -1152,9 +1158,9 @@ public class DateTimeZoneBuilder {
                                Recurrence.readFrom(in), Recurrence.readFrom(in));
         }
 
-        private final int iStandardOffset;
-        private final Recurrence iStartRecurrence;
-        private final Recurrence iEndRecurrence;
+        final int iStandardOffset;
+        final Recurrence iStartRecurrence;
+        final Recurrence iEndRecurrence;
 
         DSTZone(String id, int standardOffset,
                 Recurrence startRecurrence, Recurrence endRecurrence) {
@@ -1361,6 +1367,104 @@ public class DateTimeZoneBuilder {
                 (id, transitions, wallOffsets, standardOffsets, nameKeys, tailZone);
         }
 
+        /**
+         * Factory to create instance from builder.
+         * 
+         * @param id  the zone id
+         * @param outputID  true if the zone id should be output
+         * @param transitions  the list of Transition objects
+         * @param tailZone  optional zone for getting info beyond precalculated tables
+         */
+        static PrecalculatedZone create(String id, boolean outputID, ArrayList transitions, DSTZone tailZone) {
+            int size = transitions.size();
+            if (size == 0) {
+                throw new IllegalArgumentException();
+            }
+
+            long[] trans = new long[size];
+            int[] wallOffsets = new int[size];
+            int[] standardOffsets = new int[size];
+            String[] nameKeys = new String[size];
+
+            Transition last = null;
+            for (int i=0; i<size; i++) {
+                Transition tr = (Transition)transitions.get(i);
+
+                if (!tr.isTransitionFrom(last)) {
+                    throw new IllegalArgumentException(id);
+                }
+
+                trans[i] = tr.getMillis();
+                wallOffsets[i] = tr.getWallOffset();
+                standardOffsets[i] = tr.getStandardOffset();
+                nameKeys[i] = tr.getNameKey();
+
+                last = tr;
+            }
+
+            // Some timezones (Australia) have the same name key for
+            // summer and winter which messes everything up. Fix it here.
+            String[] zoneNameData = new String[5];
+            String[][] zoneStrings = new DateFormatSymbols(Locale.ENGLISH).getZoneStrings();
+            for (int j = 0; j < zoneStrings.length; j++) {
+                String[] set = zoneStrings[j];
+                if (set != null && set.length == 5 && id.equals(set[0])) {
+                    zoneNameData = set;
+                }
+            }
+            for (int i = 0; i < nameKeys.length - 1; i++) {
+                String curNameKey = nameKeys[i];
+                String nextNameKey = nameKeys[i + 1];
+                long curOffset = wallOffsets[i];
+                long nextOffset = wallOffsets[i + 1];
+                long curStdOffset = standardOffsets[i];
+                long nextStdOffset = standardOffsets[i + 1];
+                Period p = new Period(trans[i], trans[i + 1], PeriodType.yearMonthDay());
+                if (curOffset != nextOffset &&
+                        curStdOffset == nextStdOffset &&
+                        curNameKey.equals(nextNameKey) &&
+                        p.getYears() == 0 && p.getMonths() > 4 && p.getMonths() < 8 &&
+                        curNameKey.equals(zoneNameData[2]) &&
+                        curNameKey.equals(zoneNameData[4])) {
+                    
+                    System.out.println("Fixing duplicate name key - " + nextNameKey);
+                    System.out.println("     - " + new DateTime(trans[i]) + " - " + new DateTime(trans[i + 1]));
+                    if (curOffset > nextOffset) {
+                        nameKeys[i] = (curNameKey + "-Summer").intern();
+                    } else if (curOffset < nextOffset) {
+                        nameKeys[i + 1] = (nextNameKey + "-Summer").intern();
+                        i++;
+                    }
+                }
+            }
+            if (tailZone != null) {
+                if (tailZone.iStartRecurrence.getNameKey().equals(tailZone.iEndRecurrence.getNameKey())) {
+                    System.out.println("Fixing duplicate recurrent name key - " + tailZone.iStartRecurrence.getNameKey());
+                    if (tailZone.iStartRecurrence.getSaveMillis() > 0) {
+                        Recurrence r = new Recurrence(
+                            tailZone.iStartRecurrence.iOfYear,
+                            tailZone.iStartRecurrence.iNameKey + "-Summer",
+                            tailZone.iStartRecurrence.iSaveMillis);
+                        tailZone = new DSTZone(
+                            tailZone.getID(),
+                            tailZone.iStandardOffset,
+                            r, tailZone.iEndRecurrence);
+                    } else {
+                        Recurrence r = new Recurrence(
+                            tailZone.iEndRecurrence.iOfYear,
+                            tailZone.iEndRecurrence.iNameKey + "-Summer",
+                            tailZone.iEndRecurrence.iSaveMillis);
+                        tailZone = new DSTZone(
+                            tailZone.getID(),
+                            tailZone.iStandardOffset,
+                            tailZone.iEndRecurrence, r);
+                    }
+                }
+            }
+            
+            return new PrecalculatedZone((outputID ? id : ""), trans, wallOffsets, standardOffsets, nameKeys, tailZone);
+        }
+
         // All array fields have the same length.
 
         private final long[] iTransitions;
@@ -1371,7 +1475,10 @@ public class DateTimeZoneBuilder {
 
         private final DSTZone iTailZone;
 
-        PrecalculatedZone(String id, long[] transitions, int[] wallOffsets,
+        /**
+         * Constructor used ONLY for valid input, loaded via static methods.
+         */
+        private PrecalculatedZone(String id, long[] transitions, int[] wallOffsets,
                           int[] standardOffsets, String[] nameKeys, DSTZone tailZone)
         {
             super(id);
@@ -1379,42 +1486,6 @@ public class DateTimeZoneBuilder {
             iWallOffsets = wallOffsets;
             iStandardOffsets = standardOffsets;
             iNameKeys = nameKeys;
-            iTailZone = tailZone;
-        }
-
-        /**
-         * @param tailZone optional zone for getting info beyond precalculated
-         * tables.
-         */
-        PrecalculatedZone(String id, ArrayList transitions, DSTZone tailZone) {
-            super(id);
-
-            int size = transitions.size();
-            if (size == 0) {
-                throw new IllegalArgumentException();
-            }
-
-            iTransitions = new long[size];
-            iWallOffsets = new int[size];
-            iStandardOffsets = new int[size];
-            iNameKeys = new String[size];
-
-            Transition last = null;
-            for (int i=0; i<size; i++) {
-                Transition tr = (Transition)transitions.get(i);
-
-                if (!tr.isTransitionFrom(last)) {
-                    throw new IllegalArgumentException(id);
-                }
-
-                iTransitions[i] = tr.getMillis();
-                iWallOffsets[i] = tr.getWallOffset();
-                iStandardOffsets[i] = tr.getStandardOffset();
-                iNameKeys[i] = tr.getNameKey();
-
-                last = tr;
-            }
-
             iTailZone = tailZone;
         }
 

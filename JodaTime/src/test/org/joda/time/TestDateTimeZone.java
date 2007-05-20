@@ -827,4 +827,44 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(1115313015000L, dt.getMillis());
     }
 
+    public void testPatchedNameKeysLondon() throws Exception {
+        // the tz database does not have unique name keys [1716305]
+        DateTimeZone zone = DateTimeZone.forID("Europe/London");
+        
+        DateTime now = new DateTime();
+        String str1 = zone.getName(now.getMillis());
+        String str2 = zone.getName(now.plusMonths(6).getMillis());
+        assertEquals(false, str1.equals(str2));
+    }
+
+    public void testPatchedNameKeysSydney() throws Exception {
+        // the tz database does not have unique name keys [1716305]
+        DateTimeZone zone = DateTimeZone.forID("Australia/Sydney");
+        
+        DateTime now = new DateTime();
+        String str1 = zone.getName(now.getMillis());
+        String str2 = zone.getName(now.plusMonths(6).getMillis());
+        assertEquals(false, str1.equals(str2));
+    }
+
+    public void testPatchedNameKeysSydneyHistoric() throws Exception {
+        // the tz database does not have unique name keys [1716305]
+        DateTimeZone zone = DateTimeZone.forID("Australia/Sydney");
+        
+        DateTime now = new DateTime(1996, 1, 1, 0, 0, 0, 0);
+        String str1 = zone.getName(now.getMillis());
+        String str2 = zone.getName(now.plusMonths(6).getMillis());
+        assertEquals(false, str1.equals(str2));
+    }
+
+    public void testPatchedNameKeysGazaHistoric() throws Exception {
+        // the tz database does not have unique name keys [1716305]
+        DateTimeZone zone = DateTimeZone.forID("Asia/Gaza");
+        
+        DateTime now = new DateTime(1944, 1, 1, 0, 0, 0, 0);
+        String str1 = zone.getName(now.getMillis());
+        String str2 = zone.getName(now.plusMonths(6).getMillis());
+        assertEquals(false, str1.equals(str2));
+    }
+
 }

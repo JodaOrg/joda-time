@@ -17,18 +17,14 @@ package org.joda.time.field;
 
 import java.util.Locale;
 
-import org.joda.time.Chronology;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeZone;
 import org.joda.time.DurationFieldType;
 import org.joda.time.LocalTime;
 import org.joda.time.ReadablePartial;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.IslamicChronology;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * This class is a JUnit test to test only the UnsupportedDateTimeField class.
@@ -570,12 +566,10 @@ public class TestUnsupportedDateTimeField extends TestCase {
             assertTrue(true);
         }
         try {
-                long currentTime = System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
             long firstComputation = hoursDuration.add(currentTime, 100);
             long secondComputation = fieldTwo.add(currentTime,
                     100);
-            System.out.println(firstComputation);
-            System.out.println(secondComputation);
             assertEquals(firstComputation,secondComputation);
         } catch (UnsupportedOperationException e) {
             assertTrue(false);
@@ -594,7 +588,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
         }
 
         try {
-                long currentTime = System.currentTimeMillis();
+            long currentTime = System.currentTimeMillis();
             long firstComputation = hoursDuration.add(currentTime, 1000L);
             long secondComputation = fieldTwo.add(currentTime,
                     1000L);
@@ -610,7 +604,6 @@ public class TestUnsupportedDateTimeField extends TestCase {
         // not support the operation, otherwise return the result from the
         // delegated call.
         try {
-
             fieldOne.getDifference(100000L, 1000L);
             assertTrue(false);
         } catch (UnsupportedOperationException e) {
@@ -631,7 +624,6 @@ public class TestUnsupportedDateTimeField extends TestCase {
         // not support the operation, otherwise return the result from the
         // delegated call.
         try {
-
             fieldOne.getDifferenceAsLong(100000L, 1000L);
             assertTrue(false);
         } catch (UnsupportedOperationException e) {

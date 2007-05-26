@@ -84,17 +84,17 @@ public class TestDateTimeZone extends TestCase {
     private long TEST_TIME_WINTER =
             (y2002days + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
-    // 2002-04-05 Fri
-    private long TEST_TIME1 =
-            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
-            + 12L * DateTimeConstants.MILLIS_PER_HOUR
-            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
-    // 2003-05-06 Tue
-    private long TEST_TIME2 =
-            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-            + 14L * DateTimeConstants.MILLIS_PER_HOUR
-            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
+//    // 2002-04-05 Fri
+//    private long TEST_TIME1 =
+//            (y2002days + 31L + 28L + 31L + 5L -1L) * DateTimeConstants.MILLIS_PER_DAY
+//            + 12L * DateTimeConstants.MILLIS_PER_HOUR
+//            + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
+//        
+//    // 2003-05-06 Tue
+//    private long TEST_TIME2 =
+//            (y2003days + 31L + 28L + 31L + 30L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
+//            + 14L * DateTimeConstants.MILLIS_PER_HOUR
+//            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
     
     private static final Policy RESTRICT;
     private static final Policy ALLOW;
@@ -859,9 +859,9 @@ public class TestDateTimeZone extends TestCase {
 
     public void testPatchedNameKeysGazaHistoric() throws Exception {
         // the tz database does not have unique name keys [1716305]
-        DateTimeZone zone = DateTimeZone.forID("Asia/Gaza");
+        DateTimeZone zone = DateTimeZone.forID("Africa/Johannesburg");
         
-        DateTime now = new DateTime(1944, 1, 1, 0, 0, 0, 0);
+        DateTime now = new DateTime(1943, 1, 1, 0, 0, 0, 0);
         String str1 = zone.getName(now.getMillis());
         String str2 = zone.getName(now.plusMonths(6).getMillis());
         assertEquals(false, str1.equals(str2));

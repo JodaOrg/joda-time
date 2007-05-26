@@ -93,9 +93,9 @@
   <mailingLists>
     <mailingList>
       <name>Joda Interest list</name>
-      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
-      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
-      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+      <subscribe>https://lists.sourceforge.net/lists/listinfo/joda-interest</subscribe>
+      <unsubscribe>https://lists.sourceforge.net/lists/listinfo/joda-interest</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=joda-interest</archive>
     </mailingList>
   </mailingLists>
 

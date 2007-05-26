@@ -21,10 +21,6 @@ included, and we welcome further additions. Supporting classes include time zone
 duration, format and parsing.
 </p>
 <p style="color:red; margin-left:20px;">
-The US, Canada and related countries are changing Daylight Savings Time rules in 2007.
-<a href="faq.html#newzonerules">More information</a>.
-</p>
-<p style="color:red; margin-left:20px;">
 JSR 310 has now been launched. It aims to build upon Joda-Time and include it in the JDK.
 <a href="https://jsr-310.dev.java.net/">More information</a>.
 </p>

@@ -22,7 +22,7 @@ duration, format and parsing.
 </p>
 <p style="color:red; margin-left:20px;">
 JSR 310 has now been launched. It aims to build upon Joda-Time and include it in the JDK.
-<a href="https://jsr-310.dev.java.net/">More information</a>.
+<a href="https://jsr-310.dev.java.net/" class="externalLink" title="External Link">More information</a>.
 </p>
 <p>
 As a flavour of Joda-Time, here's some example code:

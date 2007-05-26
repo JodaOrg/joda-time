@@ -76,6 +76,8 @@ Bug fixes since 1.4
 
 - LenientChronology might incorrectly adjust a valid hour field near DST transition
 
+- DateTimeFormat javadoc now explains time zone parsing restriction better [OpenDiscussion 1721909]
+
 
 Feedback
 --------

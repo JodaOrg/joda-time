@@ -38,7 +38,7 @@ import org.joda.time.ReadablePartial;
  * This class provides two types of factory:
  * <ul>
  * <li>{@link #forPattern(String) Pattern} provides a DateTimeFormatter based on
- * a pattern string that is compatible with the JDK date patterns.
+ * a pattern string that is mostly compatible with the JDK date patterns.
  * <li>{@link #forStyle(String) Style} provides a DateTimeFormatter based on a
  * two character style, representing short, medium, long and full.
  * </ul>
@@ -50,9 +50,9 @@ import org.joda.time.ReadablePartial;
  * String str = fmt.print(dt);
  * </pre>
  *
- * The pattern syntax is compatible with java.text.SimpleDateFormat, but a few
- * more symbols are also supported. All ASCII letters are reserved as pattern
- * letters, which are defined as the following:
+ * The pattern syntax is mostly compatible with java.text.SimpleDateFormat -
+ * time zone names cannot be parsed and a few more symbols are supported.
+ * All ASCII letters are reserved as pattern letters, which are defined as follows:
  * <blockquote>
  * <pre>
  * Symbol  Meaning                      Presentation  Examples
@@ -107,6 +107,8 @@ import org.joda.time.ReadablePartial;
  * <strong>Zone</strong>: 'Z' outputs offset without a colon, 'ZZ' outputs
  * the offset with a colon, 'ZZZ' or more outputs the zone id.
  * <p>
+ * <strong>Zone names</strong>: Time zone names ('z') cannot be parsed.
+ * <p>
  * Any characters in the pattern that are not in the ranges of ['a'..'z']
  * and ['A'..'Z'] will be treated as quoted text. For instance, characters
  * like ':', '.', ' ', '#' and '?' will appear in the resulting time text
@@ -149,7 +151,8 @@ public class DateTimeFormat {
     //-----------------------------------------------------------------------
     /**
      * Factory to create a formatter from a pattern string.
-     * The pattern string is described above, and is similar to SimpleDateFormat.
+     * The pattern string is described above in the class level javadoc.
+     * It is very similar to SimpleDateFormat patterns.
      * <p>
      * The format may contain locale specific output, and this will change as
      * you change the locale of the formatter.

@@ -803,6 +803,25 @@ public abstract class DateTimeZone implements Serializable {
     public abstract int getStandardOffset(long instant);
 
     /**
+     * Checks whether, at a particular instant, the offset is standard or not.
+     * <p>
+     * This method can be used to determine whether Summer Time (DST) applies.
+     * As a general rule, if the offset at the specified instant is standard,
+     * then either Winter time applies, or there is no Summer Time. If the
+     * instant is not standard, then Summer Time applies.
+     * <p>
+     * The implementation of the method is simply whether {@link #getOffset(long)}
+     * equals {@link #getStandardOffset(long)} at the specified instant.
+     * 
+     * @param instant  milliseconds from 1970-01-01T00:00:00Z to get the offset for
+     * @return true if the offset at the given instant is the standard offset
+     * @since 1.5
+     */
+    public boolean isStandardOffset(long instant) {
+        return getOffset(instant) == getStandardOffset(instant);
+    }
+
+    /**
      * Gets the millisecond offset to subtract from local time to get UTC time.
      * This offset can be used to undo adding the offset obtained by getOffset.
      *

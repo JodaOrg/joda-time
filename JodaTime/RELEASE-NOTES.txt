@@ -29,6 +29,9 @@ Enhancements since 1.4
 - Period.toString(PeriodFormatter), MutablePeriod.toString(PeriodFormatter)
   - allow periods to be directly formatted, as with datetimes
 
+- DateTimeZone
+  - add isStandardOffset() to assist in determining if DST applies
+
 
 Compatibility with 1.4
 ----------------------

@@ -136,7 +136,7 @@ Various documentation is available:
 <li>The javadoc for the <a href="apidocs/index.html">latest code in development</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>
-<li>The <a href="http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTime/">Subversion repository</a></li>
+<li>The <a href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/">Subversion repository</a></li>
 </ul>
 </p>
 </section>

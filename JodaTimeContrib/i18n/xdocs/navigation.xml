@@ -24,7 +24,7 @@
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
       <item name="Mailing lists" href="mail-lists.html"/>
       <item name="Tasks" href="tasks.html"/>
-      <item name="Subversion" href="http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTimeContrib/i18n/"/>
+      <item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/i18n/"/>
       <item name="Javadoc (Development)" href="apidocs/index.html"/>
     </menu>
 

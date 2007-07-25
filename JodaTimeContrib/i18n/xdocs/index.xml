@@ -44,7 +44,7 @@ Various documentation is available:
 <li>The javadoc for the <a href="api-release/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest in development</a></li>
 <!--li>A <a href="faq.html">FAQ</a> list</li-->
-<li>The <a href="http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTimeContrib/i18n/">Subversion repository</a></li>
+<li>The <a href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/i18n/">Subversion repository</a></li>
 </ul>
 </p>
 </section>

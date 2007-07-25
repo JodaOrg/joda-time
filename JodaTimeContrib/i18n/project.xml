@@ -43,8 +43,8 @@
   </organization>
 
   <repository>
-    <connection>scm:svn:https://svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/i18n/</connection>
-    <url>http://svn.sourceforge.net/viewcvs.cgi/joda-time/trunk/JodaTimeContrib/i18n/</url>
+    <connection>scm:svn:https://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/i18n/</connection>
+    <url>http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/i18n/</url>
   </repository>
 
   <versions>

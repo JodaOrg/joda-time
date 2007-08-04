@@ -31,6 +31,7 @@ import java.util.TimeZone;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.FormatUtils;
@@ -830,16 +831,117 @@ public abstract class DateTimeZone implements Serializable {
      * millisUTC   == millisLocal - getOffsetFromLocal(millisLocal)
      * </pre>
      *
-     * Note: After calculating millisLocal, some error may be introduced. At
+     * NOTE: After calculating millisLocal, some error may be introduced. At
      * offset transitions (due to DST or other historical changes), ranges of
      * local times may map to different UTC times.
+     * <p>
+     * This method will return an offset suitable for calculating an instant
+     * after any DST gap. For example, consider a zone with a cutover
+     * from 01:00 to 01:59:<br />
+     * Input: 00:00  Output: 00:00<br />
+     * Input: 00:30  Output: 00:30<br />
+     * Input: 01:00  Output: 02:00<br />
+     * Input: 01:30  Output: 02:30<br />
+     * Input: 02:00  Output: 02:00<br />
+     * Input: 02:30  Output: 02:30<br />
+     * <p>
+     * NOTE: The behaviour of this method changed in v1.5, with the emphasis
+     * on returning a consistent result later along the time-line (shown above).
      *
      * @param instantLocal  the millisecond instant, relative to this time zone, to
      * get the offset for
      * @return the millisecond offset to subtract from local time to get UTC time
      */
     public int getOffsetFromLocal(long instantLocal) {
-        return getOffset(instantLocal - getOffset(instantLocal));
+        // get the offset at instantLocal (first estimate)
+        int offsetLocal = getOffset(instantLocal);
+        // adjust instantLocal using the estimate and recalc the offset
+        int offsetAdjusted = getOffset(instantLocal - offsetLocal);
+        // if the offsets differ, we must be near a DST boundary
+        if (offsetLocal != offsetAdjusted) {
+            // we need to ensure that time is always after the DST gap
+            // this happens naturally for positive offsets, but not for negative
+            if (offsetLocal < 0) {
+                // if we just return offsetAdjusted then the time is pushed
+                // back before the transition, whereas it should be
+                // on or after the transition
+                long nextLocal = nextTransition(instantLocal - offsetLocal);
+                long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);
+                if (nextLocal != nextAdjusted) {
+                    return offsetLocal;
+                }
+            }
+        }
+        return offsetAdjusted;
+    }
+
+    /**
+     * Converts a standard UTC instant to a local instant with the same
+     * local time. This conversion is used before performing a calculation
+     * so that the calculation can be done using a simple local zone.
+     *
+     * @param instantUTC  the UTC instant to convert to local
+     * @return the local instant with the same local time
+     * @throws ArithmeticException if the result overflows a long
+     */
+    public long convertUTCToLocal(long instantUTC) {
+        int offset = getOffset(instantUTC);
+        long instantLocal = instantUTC + offset;
+        // If there is a sign change, but the two values have the same sign...
+        if ((instantUTC ^ instantLocal) < 0 && (instantUTC ^ offset) >= 0) {
+            throw new ArithmeticException("Adding time zone offset caused overflow");
+        }
+        return instantLocal;
+    }
+
+    /**
+     * Converts a local instant to a standard UTC instant with the same
+     * local time. This conversion is used after performing a calculation
+     * where the calculation was done using a simple local zone.
+     *
+     * @param instantLocal  the local instant to convert to UTC
+     * @param strict  whether the conversion should reject non-existent local times
+     * @return the UTC instant with the same local time, 
+     * @throws ArithmeticException if the result overflows a long
+     * @throws IllegalArgumentException if the zone has no eqivalent local time
+     */
+    public long convertLocalToUTC(long instantLocal, boolean strict) {
+        // get the offset at instantLocal (first estimate)
+        int offsetLocal = getOffset(instantLocal);
+        // adjust instantLocal using the estimate and recalc the offset
+        int offset = getOffset(instantLocal - offsetLocal);
+        // if the offsets differ, we must be near a DST boundary
+        if (offsetLocal != offset) {
+            // if strict then always check if in DST gap
+            // otherwise only check if zone in Western hemisphere (as the
+            // value of offset is already correct for Eastern hemisphere)
+            if (strict || offsetLocal < 0) {
+                // determine if we are in the DST gap
+                long nextLocal = nextTransition(instantLocal - offsetLocal);
+                long nextAdjusted = nextTransition(instantLocal - offset);
+                if (nextLocal != nextAdjusted) {
+                    // yes we are in the DST gap
+                    if (strict) {
+                        // DST gap is not acceptable
+                        throw new IllegalArgumentException("Illegal instant due to time zone offset transition: " +
+                                DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(instantLocal)) +
+                                " (" + getID() + ")");
+                    } else {
+                        // DST gap is acceptable, but for the Western hemisphere
+                        // the offset is wrong and will result in local times
+                        // before the cutover so use the offsetLocal instead
+                        offset = offsetLocal;
+                    }
+                }
+            }
+        }
+        // check for overflow
+        long instantUTC = instantLocal - offset;
+        // If there is a sign change, but the two values have different signs...
+        if ((instantLocal ^ instantUTC) < 0 && (instantLocal ^ offset) < 0) {
+            throw new ArithmeticException("Subtracting time zone offset caused overflow");
+        }
+        return instantUTC;
     }
 
     /**

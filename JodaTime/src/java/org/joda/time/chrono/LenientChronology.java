@@ -110,8 +110,8 @@ public final class LenientChronology extends AssembledChronology {
         fields.halfdayOfDay = convertField(fields.halfdayOfDay);
     }
 
-    private static final DateTimeField convertField(DateTimeField field) {
-        return LenientDateTimeField.getInstance(field);
+    private final DateTimeField convertField(DateTimeField field) {
+        return LenientDateTimeField.getInstance(field, getBase());
     }
 
     //-----------------------------------------------------------------------

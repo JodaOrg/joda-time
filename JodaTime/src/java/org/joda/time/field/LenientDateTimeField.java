@@ -15,6 +15,7 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
 
 /**
@@ -32,12 +33,14 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
 
     private static final long serialVersionUID = 8714085824173290599L;
 
+    private final Chronology iBase;
+
     /**
      * Returns a lenient version of the given field. If it is already lenient,
      * then it is returned as-is. Otherwise, a new LenientDateTimeField is
      * returned.
      */
-    public static DateTimeField getInstance(DateTimeField field) {
+    public static DateTimeField getInstance(DateTimeField field, Chronology base) {
         if (field == null) {
             return null;
         }
@@ -47,11 +50,12 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
         if (field.isLenient()) {
             return field;
         }
-        return new LenientDateTimeField(field);
+        return new LenientDateTimeField(field, base);
     }
 
-    protected LenientDateTimeField(DateTimeField field) {
+    protected LenientDateTimeField(DateTimeField field, Chronology base) {
         super(field);
+        iBase = base;
     }
 
     public final boolean isLenient() {
@@ -63,7 +67,11 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
      * the new value and the current value.
      */
     public long set(long instant, int value) {
+        // lenient needs to handle time zone chronologies
+        // so we do the calculation using local milliseconds
+        long localInstant = iBase.getZone().convertUTCToLocal(instant);
         long difference = FieldUtils.safeSubtract(value, get(instant));
-        return add(instant, difference);
+        localInstant = getType().getField(iBase.withUTC()).add(localInstant, difference);
+        return iBase.getZone().convertLocalToUTC(localInstant, false);
     }
 }

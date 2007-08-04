@@ -361,13 +361,7 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         private long addOffset(long instant) {
-            int offset = this.iZone.getOffset(instant);
-            long sum = instant + offset;
-            // If there is a sign change, but the two values have the same sign...
-            if ((instant ^ sum) < 0 && (instant ^ offset) >= 0) {
-                throw new ArithmeticException("Adding time zone offset caused overflow");
-            }
-            return sum;
+            return iZone.convertUTCToLocal(instant);
         }
     }
 
@@ -409,15 +403,18 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public int get(long instant) {
-            return iField.get(addOffset(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.get(localInstant);
         }
 
         public String getAsText(long instant, Locale locale) {
-            return iField.getAsText(addOffset(instant), locale);
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.getAsText(localInstant, locale);
         }
 
         public String getAsShortText(long instant, Locale locale) {
-            return iField.getAsShortText(addOffset(instant), locale);
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.getAsShortText(localInstant, locale);
         }
 
         public String getAsText(int fieldValue, Locale locale) {
@@ -429,44 +426,59 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public long add(long instant, int value) {
-            int offset = getOffsetToAdd(instant);
-            instant = iField.add(instant + offset, value);
-            return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
+            if (iTimeField) {
+                int offset = getOffsetToAdd(instant);
+                long localInstant = iField.add(instant + offset, value);
+                return localInstant - offset;
+            } else {
+               long localInstant = iZone.convertUTCToLocal(instant);
+               localInstant = iField.add(localInstant, value);
+               return iZone.convertLocalToUTC(localInstant, false);
+            }
         }
 
         public long add(long instant, long value) {
-            int offset = getOffsetToAdd(instant);
-            instant = iField.add(instant + offset, value);
-            return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
+            if (iTimeField) {
+                int offset = getOffsetToAdd(instant);
+                long localInstant = iField.add(instant + offset, value);
+                return localInstant - offset;
+            } else {
+               long localInstant = iZone.convertUTCToLocal(instant);
+               localInstant = iField.add(localInstant, value);
+               return iZone.convertLocalToUTC(localInstant, false);
+            }
         }
 
         public long addWrapField(long instant, int value) {
-            int offset = getOffsetToAdd(instant);
-            instant = iField.addWrapField(instant + offset, value);
-            return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
+            if (iTimeField) {
+                int offset = getOffsetToAdd(instant);
+                long localInstant = iField.addWrapField(instant + offset, value);
+                return localInstant - offset;
+            } else {
+                long localInstant = iZone.convertUTCToLocal(instant);
+                localInstant = iField.addWrapField(localInstant, value);
+                return iZone.convertLocalToUTC(localInstant, false);
+            }
         }
 
         public long set(long instant, int value) {
-            long offset = getOffsetToAdd(instant);
-
-            instant = iField.set(instant + offset, value);
-            long offsetFromLocal = getOffsetFromLocalToSubtract(instant);
-            instant -= offsetFromLocal;
-
-            if (offset != offsetFromLocal) {
-                if (get(instant) != value) {
-                    throw new IllegalFieldValueException
-                        (iField.getType(), new Integer(value), null, null);
-                }
+            long localInstant = iZone.convertUTCToLocal(instant);
+            localInstant = iField.set(localInstant, value);
+            long result = iZone.convertLocalToUTC(localInstant, false);
+            if (get(result) != value) {
+                throw new IllegalFieldValueException(iField.getType(), new Integer(value),
+                    "Illegal instant due to time zone offset transition: " +
+                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(localInstant)) +
+                    " (" + iZone.getID() + ")");
             }
-
-            return instant;
+            return result;
         }
 
         public long set(long instant, String text, Locale locale) {
-            instant = iField.set(addOffset(instant), text, locale);
-            // Cannot verify that new value stuck because set may be lenient.
-            return instant - getOffsetFromLocalToSubtract(instant);
+            // cannot verify that new value stuck because set may be lenient
+            long localInstant = iZone.convertUTCToLocal(instant);
+            localInstant = iField.set(localInstant, text, locale);
+            return iZone.convertLocalToUTC(localInstant, false);
         }
 
         public int getDifference(long minuendInstant, long subtrahendInstant) {
@@ -492,11 +504,13 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public boolean isLeap(long instant) {
-            return iField.isLeap(addOffset(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.isLeap(localInstant);
         }
 
         public int getLeapAmount(long instant) {
-            return iField.getLeapAmount(addOffset(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.getLeapAmount(localInstant);
         }
 
         public final DurationField getLeapDurationField() {
@@ -504,19 +518,20 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public long roundFloor(long instant) {
-            int offset = getOffsetToAdd(instant);
-            instant = iField.roundFloor(instant + offset);
-            return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            localInstant = iField.roundFloor(localInstant);
+            return iZone.convertLocalToUTC(localInstant, false);
         }
 
         public long roundCeiling(long instant) {
-            int offset = getOffsetToAdd(instant);
-            instant = iField.roundCeiling(instant + offset);
-            return instant - (iTimeField ? offset : getOffsetFromLocalToSubtract(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            localInstant = iField.roundCeiling(localInstant);
+            return iZone.convertLocalToUTC(localInstant, false);
         }
 
         public long remainder(long instant) {
-            return iField.remainder(addOffset(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.remainder(localInstant);
         }
 
         public int getMinimumValue() {
@@ -524,7 +539,8 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public int getMinimumValue(long instant) {
-            return iField.getMinimumValue(addOffset(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.getMinimumValue(localInstant);
         }
 
         public int getMinimumValue(ReadablePartial instant) {
@@ -540,7 +556,8 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public int getMaximumValue(long instant) {
-            return iField.getMaximumValue(addOffset(instant));
+            long localInstant = iZone.convertUTCToLocal(instant);
+            return iField.getMaximumValue(localInstant);
         }
 
         public int getMaximumValue(ReadablePartial instant) {
@@ -567,26 +584,6 @@ public final class ZonedChronology extends AssembledChronology {
                 throw new ArithmeticException("Adding time zone offset caused overflow");
             }
             return offset;
-        }
-
-        private int getOffsetFromLocalToSubtract(long instant) {
-            int offset = this.iZone.getOffsetFromLocal(instant);
-            long diff = instant - offset;
-            // If there is a sign change, but the two values have different signs...
-            if ((instant ^ diff) < 0 && (instant ^ offset) < 0) {
-                throw new ArithmeticException("Subtracting time zone offset caused overflow");
-            }
-            return offset;
-        }
-
-        private long addOffset(long instant) {
-            int offset = this.iZone.getOffset(instant);
-            long sum = instant + offset;
-            // If there is a sign change, but the two values have the same sign...
-            if ((instant ^ sum) < 0 && (instant ^ offset) >= 0) {
-                throw new ArithmeticException("Adding time zone offset caused overflow");
-            }
-            return sum;
         }
     }
 

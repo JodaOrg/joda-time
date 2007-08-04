@@ -33,10 +33,11 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param value  the value rejected
      * @param lowerBound  the lower bound allowed
      * @param upperBound  the uppe bound allowed
+     * @param explain  an explanation
      * @return the message
      */
     private static String createMessage(String fieldName, Number value,
-                                        Number lowerBound, Number upperBound) {
+                                        Number lowerBound, Number upperBound, String explain) {
         StringBuffer buf = new StringBuffer()
             .append("Value ").append(value).append(" for ").append(fieldName).append(' ');
 
@@ -54,6 +55,9 @@ public class IllegalFieldValueException extends IllegalArgumentException {
                 .append(',')
                 .append(upperBound)
                 .append(']');
+        }
+        if (explain != null) {
+            buf.append(": ").append(explain);
         }
 
         return buf.toString();
@@ -101,7 +105,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      */
     public IllegalFieldValueException(DateTimeFieldType fieldType,
                                       Number value, Number lowerBound, Number upperBound) {
-        super(createMessage(fieldType.getName(), value, lowerBound, upperBound));
+        super(createMessage(fieldType.getName(), value, lowerBound, upperBound, null));
         iDateTimeFieldType = fieldType;
         iDurationFieldType = null;
         iFieldName = fieldType.getName();
@@ -117,12 +121,32 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * 
      * @param fieldType  type of field being set
      * @param value  illegal value being set
+     * @param explain  an explanation
+     */
+    public IllegalFieldValueException(DateTimeFieldType fieldType,
+                                      Number value, String explain) {
+        super(createMessage(fieldType.getName(), value, null, null, explain));
+        iDateTimeFieldType = fieldType;
+        iDurationFieldType = null;
+        iFieldName = fieldType.getName();
+        iNumberValue = value;
+        iStringValue = null;
+        iLowerBound = null;
+        iUpperBound = null;
+        iMessage = super.getMessage();
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param fieldType  type of field being set
+     * @param value  illegal value being set
      * @param lowerBound  lower legal field value, or null if not applicable
      * @param upperBound  upper legal field value, or null if not applicable
      */
     public IllegalFieldValueException(DurationFieldType fieldType,
                                       Number value, Number lowerBound, Number upperBound) {
-        super(createMessage(fieldType.getName(), value, lowerBound, upperBound));
+        super(createMessage(fieldType.getName(), value, lowerBound, upperBound, null));
         iDateTimeFieldType = null;
         iDurationFieldType = fieldType;
         iFieldName = fieldType.getName();
@@ -143,7 +167,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      */
     public IllegalFieldValueException(String fieldName,
                                       Number value, Number lowerBound, Number upperBound) {
-        super(createMessage(fieldName, value, lowerBound, upperBound));
+        super(createMessage(fieldName, value, lowerBound, upperBound, null));
         iDateTimeFieldType = null;
         iDurationFieldType = null;
         iFieldName = fieldName;

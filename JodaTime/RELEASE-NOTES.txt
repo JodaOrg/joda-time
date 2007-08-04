@@ -35,9 +35,13 @@ Enhancements since 1.4
 
 Compatibility with 1.4
 ----------------------
-Binary compatible - Yes
+Binary compatible - Yes, except
+  Internal class LenientDateTimeField has an incompatible change to
+  getInstance() and the constructor
 
-Source compatible - Yes
+Source compatible - Yes, except
+  Internal class LenientDateTimeField has an incompatible change to
+  getInstance() and the constructor
 
 Serialization compatible - Yes
 
@@ -56,6 +60,13 @@ None
 
 Bug fixes since 1.4
 -------------------
+- Daylight savings cutover in Spring incorrect
+  A problem with DST cutover in Spring meant that the result of many
+  methods would be different depending on whether the time zone was in the
+  Eastern or Western hemisphere. Now, the DST cutover is consistent, such
+  that if a time is requested within the cutover, it will be pushed forwards
+  into summer time. [1710316, 1747219, 1755158]
+
 - LenientChronology and time zones
   LenientChronology could throw exceptions when the time being created
   didn't exist dies to the time zone [1755161]

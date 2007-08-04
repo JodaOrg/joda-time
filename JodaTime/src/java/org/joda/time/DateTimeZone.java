@@ -266,6 +266,9 @@ public abstract class DateTimeZone implements Serializable {
      * excluded IDs are the short three letter form (except UTC). This 
      * method will attempt to convert between time zones created using the
      * short IDs and the full version.
+     * <p>
+     * This method is not designed to parse time zones with rules created by
+     * applications using <code>SimpleTimeZone</code> directly.
      * 
      * @param zone  the zone to convert, null means default
      * @return the DateTimeZone object for the zone

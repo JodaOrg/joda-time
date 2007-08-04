@@ -98,6 +98,10 @@ Bug fixes since 1.4
 
 - DateTime/Instant/LocalDateTime javadoc improved
 
+- DateTimeZone
+  Clarify javadoc of forTimeZone to indicate that application created
+  SimpleTimeZone rules are not parsed [1705180]
+
 
 Feedback
 --------

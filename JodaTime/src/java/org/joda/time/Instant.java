@@ -24,18 +24,21 @@ import org.joda.time.convert.InstantConverter;
 
 /**
  * Instant is the standard implementation of a fully immutable instant in time.
- * It holds the instant as milliseconds from the Java Epoch of 1970-01-01T00:00:00Z.
  * <p>
- * The chronology used is always ISO in the UTC time zone.
- * This corresponds to the definition of the Java Epoch.
+ * <code>Instant</code> is an implementation of {@link ReadableInstant}.
+ * As with all instants, it represents an exact point on the time-line,
+ * but limited to the precision of milliseconds. An <code>Instant</code>
+ * should be used to represent a point in time irrespective of any other
+ * factor, such as chronology or time zone.
  * <p>
- * An Instant can be used to compare two <code>DateTime</code> objects:
+ * Internally, the class holds one piece of data, the instant as milliseconds
+ * from the Java epoch of 1970-01-01T00:00:00Z.
+ * <p>
+ * For example, an Instant can be used to compare two <code>DateTime</code>
+ * objects irrespective of chronology or time zone.
  * <pre>
  * boolean sameInstant = dt1.toInstant().equals(dt2.toInstant());
  * </pre>
- * This code will return true if the two <code>DateTime</code> objects represent
- * the same instant regardless of chronology or time zone.
- * <p>
  * Note that the following code will also perform the same check:
  * <pre>
  * boolean sameInstant = dt1.isEqual(dt2);
@@ -214,6 +217,9 @@ public final class Instant
 
     /**
      * Gets the chronology of the instant, which is ISO in the UTC zone.
+     * <p>
+     * This method returns {@link ISOChronology#getInstanceUTC()} which
+     * corresponds to the definition of the Java epoch 1970-01-01T00:00:00Z.
      * 
      * @return ISO in the UTC zone
      */

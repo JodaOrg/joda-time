@@ -40,10 +40,9 @@ import org.joda.time.format.ISODateTimeFormat;
  * DayOfYear and MillisOfDay.
  * However, <b>all</b> fields may in fact be queried.
  * <p>
- * Internally, LocalDateTime holds the datetime as milliseconds
- * from 1970-01-01T00:00:00. This represents the <i>local</i> millisecond
- * count which differs from the epoch-based millisecond value in a
- * <code>ReadableInstant</code> implementation by the amount of the zone offset.
+ * Internally, LocalDateTime uses a single millisecond-based value to
+ * represent the local datetime. This value is only used internally and
+ * is not exposed to applications.
  * <p>
  * Calculations on LocalDateTime are performed using a {@link Chronology}.
  * This chronology will be set internally to be in the UTC time zone

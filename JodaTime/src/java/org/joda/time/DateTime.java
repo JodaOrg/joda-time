@@ -28,14 +28,21 @@ import org.joda.time.format.ISODateTimeFormat;
 
 /**
  * DateTime is the standard implementation of an unmodifiable datetime class.
- * It holds the datetime as milliseconds from the Java epoch of 1970-01-01T00:00:00Z.
  * <p>
- * This class uses a Chronology internally. The Chronology determines how the
+ * <code>DateTime</code> is the most widely used implementation of
+ * {@link ReadableInstant}. As with all instants, it represents an exact
+ * point on the time-line, but limited to the precision of milliseconds.
+ * A <code>DateTime</code> calculates its fields with respect to a
+ * {@link DateTimeZone time zone}.
+ * <p>
+ * Internally, the class holds two pieces of data. Firstly, it holds the
+ * datetime as milliseconds from the Java epoch of 1970-01-01T00:00:00Z.
+ * Secondly, it holds a {@link Chronology} which determines how the
  * millisecond instant value is converted into the date time fields.
- * The default Chronology is <code>ISOChronology</code> which is the agreed
- * international standard and compatable with the modern Gregorian calendar.
- *
- * <p>Each individual field can be queried in two ways:
+ * The default Chronology is {@link ISOChronology} which is the agreed
+ * international standard and compatible with the modern Gregorian calendar.
+ * <p>
+ * Each individual field can be queried in two ways:
  * <ul>
  * <li><code>getHourOfDay()</code>
  * <li><code>hourOfDay().get()</code>
@@ -51,7 +58,6 @@ import org.joda.time.format.ISODateTimeFormat;
  * <li>set
  * <li>rounding
  * </ul>
- *
  * <p>
  * DateTime is thread-safe and immutable, provided that the Chronology is as well.
  * All standard Chronology classes supplied are thread-safe and immutable.
@@ -610,6 +616,7 @@ public final class DateTime
      * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
+     * This datetime instance is immutable and unaffected by this method call.
      * 
      * @param duration  the duration, in millis, to add to this one
      * @return a copy of this datetime with the duration added
@@ -623,6 +630,7 @@ public final class DateTime
      * Returns a copy of this datetime with the specified duration added.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
+     * This datetime instance is immutable and unaffected by this method call.
      * 
      * @param duration  the duration to add to this one, null means zero
      * @return a copy of this datetime with the duration added
@@ -635,11 +643,20 @@ public final class DateTime
     /**
      * Returns a copy of this datetime with the specified period added.
      * <p>
-     * If the amount is zero or null, then <code>this</code> is returned.
+     * This method will add each element of the period one by one, from largest
+     * to smallest, adjusting the datetime to be accurate between each.
+     * <p>
+     * Thus, adding a period of one month and one day to 2007-03-31 will
+     * work as follows:
+     * First add one month and adjust, resulting in 2007-04-30
+     * Then add one day and adjust, resulting in 2007-05-01.
      * <p>
      * This method is typically used to add complex period instances.
      * Adding one field is best achieved using methods
      * like {@link #plusYears(int)}.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * This datetime instance is immutable and unaffected by this method call.
      * 
      * @param period  the duration to add to this one, null means zero
      * @return a copy of this datetime with the period added
@@ -653,7 +670,11 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of years.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will do its best to only change the year field
+     * retaining the same month of year.
+     * However, in certain circumstances, it may be necessary to alter
+     * smaller fields. For example, 2008-02-29 plus one year cannot result
+     * in 2009-02-29, so the day of month is adjusted to 2009-02-28.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -661,6 +682,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.years(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.years(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param years  the amount of years to add, may be negative
      * @return the new datetime plus the increased years
@@ -677,7 +700,11 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of months.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will do its best to only change the month field
+     * retaining the same day of month.
+     * However, in certain circumstances, it may be necessary to alter
+     * smaller fields. For example, 2007-03-31 plus one month cannot result
+     * in 2007-04-31, so the day of month is adjusted to 2007-04-30.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -685,6 +712,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.months(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.months(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param months  the amount of months to add, may be negative
      * @return the new datetime plus the increased months
@@ -701,7 +730,7 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of weeks.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation operates as if it were adding the equivalent in days.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -709,6 +738,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.weeks(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.weeks(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param weeks  the amount of weeks to add, may be negative
      * @return the new datetime plus the increased weeks
@@ -725,7 +756,16 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of days.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will do its best to only change the day field
+     * retaining the same time of day.
+     * However, in certain circumstances, typically daylight savings cutover,
+     * it may be necessary to alter the time fields.
+     * <p>
+     * In spring an hour is typically removed. If adding one day results in
+     * the time being within the cutover then the time is adjusted to be
+     * within summer time. For example, if the cutover is from 01:59 to 03:00
+     * and the result of this method would have been 02:30, then the result
+     * will be adjusted to 03:30.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -733,6 +773,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.days(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.days(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param days  the amount of days to add, may be negative
      * @return the new datetime plus the increased days
@@ -749,7 +791,12 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of hours.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will add a duration equivalent to the number of hours
+     * expressed in milliseconds.
+     * <p>
+     * For example, if a spring daylight savings cutover is from 01:59 to 03:00
+     * then adding one hour to 01:30 will result in 03:30. This is a duration
+     * of one hour later, even though the hour field value changed from 1 to 3.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -757,6 +804,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.hours(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.hours(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param hours  the amount of hours to add, may be negative
      * @return the new datetime plus the increased hours
@@ -773,7 +822,8 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of minutes.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will add a duration equivalent to the number of minutes
+     * expressed in milliseconds.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -781,6 +831,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.minutes(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.minutes(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param minutes  the amount of minutes to add, may be negative
      * @return the new datetime plus the increased minutes
@@ -797,7 +849,8 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of seconds.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will add a duration equivalent to the number of seconds
+     * expressed in milliseconds.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -805,6 +858,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.seconds(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.seconds(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param seconds  the amount of seconds to add, may be negative
      * @return the new datetime plus the increased seconds
@@ -821,7 +876,7 @@ public final class DateTime
     /**
      * Returns a copy of this datetime plus the specified number of millis.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will add a duration equivalent to the number of milliseconds.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -829,6 +884,8 @@ public final class DateTime
      * DateTime added = dt.plus(Period.millis(6));
      * DateTime added = dt.withFieldAdded(DurationFieldType.millis(), 6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param millis  the amount of millis to add, may be negative
      * @return the new datetime plus the increased millis
@@ -847,6 +904,7 @@ public final class DateTime
      * Returns a copy of this datetime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
+     * This datetime instance is immutable and unaffected by this method call.
      * 
      * @param duration  the duration, in millis, to reduce this instant by
      * @return a copy of this datetime with the duration taken away
@@ -860,6 +918,7 @@ public final class DateTime
      * Returns a copy of this datetime with the specified duration taken away.
      * <p>
      * If the amount is zero or null, then <code>this</code> is returned.
+     * This datetime instance is immutable and unaffected by this method call.
      * 
      * @param duration  the duration to reduce this instant by
      * @return a copy of this datetime with the duration taken away
@@ -872,11 +931,21 @@ public final class DateTime
     /**
      * Returns a copy of this datetime with the specified period taken away.
      * <p>
-     * If the amount is zero or null, then <code>this</code> is returned.
+     * This method will subtract each element of the period one by one, from
+     * largest to smallest, adjusting the datetime to be accurate between each.
+     * <p>
+     * Thus, subtracting a period of one month and one day from 2007-05-31 will
+     * work as follows:
+     * First subtract one month and adjust, resulting in 2007-04-30
+     * Then subtract one day and adjust, resulting in 2007-04-29.
+     * Note that the day has been adjusted by two.
      * <p>
      * This method is typically used to subtract complex period instances.
      * Subtracting one field is best achieved using methods
      * like {@link #minusYears(int)}.
+     * <p>
+     * If the amount is zero or null, then <code>this</code> is returned.
+     * This datetime instance is immutable and unaffected by this method call.
      * 
      * @param period  the period to reduce this instant by
      * @return a copy of this datetime with the period taken away
@@ -890,7 +959,11 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of years.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will do its best to only change the year field
+     * retaining the same month of year.
+     * However, in certain circumstances, it may be necessary to alter
+     * smaller fields. For example, 2008-02-29 minus one year cannot result
+     * in 2007-02-29, so the day of month is adjusted to 2007-02-28.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -898,6 +971,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.years(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.years(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param years  the amount of years to subtract, may be negative
      * @return the new datetime minus the increased years
@@ -914,7 +989,11 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of months.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will do its best to only change the month field
+     * retaining the same day of month.
+     * However, in certain circumstances, it may be necessary to alter
+     * smaller fields. For example, 2007-05-31 minus one month cannot result
+     * in 2007-04-31, so the day of month is adjusted to 2007-04-30.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -922,6 +1001,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.months(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.months(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param months  the amount of months to subtract, may be negative
      * @return the new datetime minus the increased months
@@ -938,7 +1019,7 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of weeks.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation operates as if it were subtracting the equivalent in days.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -946,6 +1027,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.weeks(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.weeks(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param weeks  the amount of weeks to subtract, may be negative
      * @return the new datetime minus the increased weeks
@@ -962,7 +1045,16 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of days.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will do its best to only change the day field
+     * retaining the same time of day.
+     * However, in certain circumstances, typically daylight savings cutover,
+     * it may be necessary to alter the time fields.
+     * <p>
+     * In spring an hour is typically removed. If subtracting one day results
+     * in the time being within the cutover then the time is adjusted to be
+     * within summer time. For example, if the cutover is from 01:59 to 03:00
+     * and the result of this method would have been 02:30, then the result
+     * will be adjusted to 03:30.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -970,6 +1062,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.days(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.days(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param days  the amount of days to subtract, may be negative
      * @return the new datetime minus the increased days
@@ -986,7 +1080,13 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of hours.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will subtract a duration equivalent to the number of
+     * hours expressed in milliseconds.
+     * <p>
+     * For example, if a spring daylight savings cutover is from 01:59 to 03:00
+     * then subtracting one hour from 03:30 will result in 01:30. This is a
+     * duration of one hour earlier, even though the hour field value changed
+     * from 3 to 1.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -994,6 +1094,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.hours(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.hours(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param hours  the amount of hours to subtract, may be negative
      * @return the new datetime minus the increased hours
@@ -1010,7 +1112,8 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of minutes.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will subtract a duration equivalent to the number of
+     * minutes expressed in milliseconds.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1018,6 +1121,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.minutes(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.minutes(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param minutes  the amount of minutes to subtract, may be negative
      * @return the new datetime minus the increased minutes
@@ -1034,7 +1139,8 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of seconds.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will subtract a duration equivalent to the number of
+     * seconds expressed in milliseconds.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1042,6 +1148,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.seconds(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.seconds(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param seconds  the amount of seconds to subtract, may be negative
      * @return the new datetime minus the increased seconds
@@ -1058,7 +1166,8 @@ public final class DateTime
     /**
      * Returns a copy of this datetime minus the specified number of millis.
      * <p>
-     * This datetime instance is immutable and unaffected by this method call.
+     * The calculation will subtract a duration equivalent to the number of
+     * milliseconds.
      * <p>
      * The following three lines are identical in effect:
      * <pre>
@@ -1066,6 +1175,8 @@ public final class DateTime
      * DateTime subtracted = dt.minus(Period.millis(6));
      * DateTime subtracted = dt.withFieldAdded(DurationFieldType.millis(), -6);
      * </pre>
+     * <p>
+     * This datetime instance is immutable and unaffected by this method call.
      *
      * @param millis  the amount of millis to subtract, may be negative
      * @return the new datetime minus the increased millis

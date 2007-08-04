@@ -237,12 +237,17 @@ public abstract class AbstractInstant implements ReadableInstant {
     //-----------------------------------------------------------------------
     /**
      * Compares this object with the specified object for equality based
-     * on the millisecond instant and the Chronology.
+     * on the millisecond instant, chronology and time zone.
      * <p>
-     * All ReadableInstant instances are accepted.
+     * Two objects which represent the same instant in time, but are in
+     * different time zones (based on time zone id), will be considered to
+     * be different. Only two objects with the same {@link DateTimeZone},
+     * {@link Chronology} and instant are equal.
      * <p>
      * See {@link #isEqual(ReadableInstant)} for an equals method that
-     * ignores the Chronology.
+     * ignores the Chronology and time zone.
+     * <p>
+     * All ReadableInstant instances are accepted.
      *
      * @param readableInstant  a readable instant to check against
      * @return true if millisecond and chronology are equal, false if

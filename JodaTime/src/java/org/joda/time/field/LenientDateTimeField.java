@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2007 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -59,15 +59,11 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
     }
 
     /**
-     * Set values which may be out of bounds. If the value is out of bounds,
-     * the instant is first set to the minimum allowed value, and then the
-     * difference is added.
+     * Set values which may be out of bounds by adding the difference between
+     * the new value and the current value.
      */
     public long set(long instant, int value) {
-        int min = getMinimumValue(instant);
-        if (value >= min && value <= getMaximumValue(instant)) {
-            return super.set(instant, value);
-        }
-        return add(super.set(instant, min), value - min);
+        long difference = FieldUtils.safeSubtract(value, get(instant));
+        return add(instant, difference);
     }
 }

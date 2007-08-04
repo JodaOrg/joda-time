@@ -56,6 +56,10 @@ None
 
 Bug fixes since 1.4
 -------------------
+- LenientChronology and time zones
+  LenientChronology could throw exceptions when the time being created
+  didn't exist dies to the time zone [1755161]
+
 - LocalDate/LocalTime constructors did not set internal state correctly
   This problem was exposed when Days.daysBetween() and similar methods
   failed to give the right results

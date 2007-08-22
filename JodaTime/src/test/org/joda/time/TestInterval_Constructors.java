@@ -129,7 +129,26 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testConstructor_long_long_Chronology1() throws Throwable {
+    public void testConstructor_long_long_Zone() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        Interval test = new Interval(dt1.getMillis(), dt2.getMillis(), LONDON);
+        assertEquals(dt1.getMillis(), test.getStartMillis());
+        assertEquals(dt2.getMillis(), test.getEndMillis());
+        assertEquals(ISOChronology.getInstance(LONDON), test.getChronology());
+    }
+
+    public void testConstructor_long_long_nullZone() throws Throwable {
+        DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
+        DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
+        Interval test = new Interval(dt1.getMillis(), dt2.getMillis(), (DateTimeZone) null);
+        assertEquals(dt1.getMillis(), test.getStartMillis());
+        assertEquals(dt2.getMillis(), test.getEndMillis());
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testConstructor_long_long_Chronology() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
         Interval test = new Interval(dt1.getMillis(), dt2.getMillis(), GJChronology.getInstance());
@@ -138,10 +157,10 @@ public class TestInterval_Constructors extends TestCase {
         assertEquals(GJChronology.getInstance(), test.getChronology());
     }
 
-    public void testConstructor_long_long_Chronology2() throws Throwable {
+    public void testConstructor_long_long_nullChronology() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
-        Interval test = new Interval(dt1.getMillis(), dt2.getMillis(), null);
+        Interval test = new Interval(dt1.getMillis(), dt2.getMillis(), (Chronology) null);
         assertEquals(dt1.getMillis(), test.getStartMillis());
         assertEquals(dt2.getMillis(), test.getEndMillis());
         assertEquals(ISOChronology.getInstance(), test.getChronology());

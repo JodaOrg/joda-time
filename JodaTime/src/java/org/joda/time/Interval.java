@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.base.BaseInterval;
+import org.joda.time.chrono.ISOChronology;
 
 /**
  * Interval is the standard implementation of an immutable time interval.
@@ -53,7 +54,8 @@ public final class Interval
 
     //-----------------------------------------------------------------------
     /**
-     * Constructs an interval from a start and end instant with the ISO default chronology.
+     * Constructs an interval from a start and end instant with the ISO
+     * default chronology in the default time zone.
      * 
      * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
      * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
@@ -64,7 +66,22 @@ public final class Interval
     }
 
     /**
-     * Constructs an interval from a start and end instant with a chronology.
+     * Constructs an interval from a start and end instant with the ISO
+     * default chronology in the specified time zone.
+     * 
+     * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param endInstant  end of this interval, as milliseconds from 1970-01-01T00:00:00Z.
+     * @param zone  the time zone to use, null means default zone
+     * @throws IllegalArgumentException if the end is before the start
+     * @since 1.5
+     */
+    public Interval(long startInstant, long endInstant, DateTimeZone zone) {
+        super(startInstant, endInstant, ISOChronology.getInstance(zone));
+    }
+
+    /**
+     * Constructs an interval from a start and end instant with the
+     * specified chronology.
      * 
      * @param chronology  the chronology to use, null is ISO default
      * @param startInstant  start of this interval, as milliseconds from 1970-01-01T00:00:00Z.

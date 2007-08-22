@@ -32,6 +32,10 @@ Enhancements since 1.4
 - DateTimeZone
   - add isStandardOffset() to assist in determining if DST applies
 
+- Interval
+  - add (long,long,DateTimeZone) constructor, emphasising that intervals
+    include a time zone
+
 
 Compatibility with 1.4
 ----------------------

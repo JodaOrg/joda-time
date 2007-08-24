@@ -824,13 +824,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardWeeks();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(-1);
         try {
             test.toStandardWeeks();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(0);
         assertEquals(0, test.toStandardWeeks().getWeeks());
@@ -841,13 +841,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardWeeks();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(-1);
         try {
             test.toStandardWeeks();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(0);
         assertEquals(0, test.toStandardWeeks().getWeeks());
@@ -889,13 +889,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardDays();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(-1);
         try {
             test.toStandardDays();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(0);
         assertEquals(0, test.toStandardDays().getDays());
@@ -906,13 +906,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardDays();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(-1);
         try {
             test.toStandardDays();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(0);
         assertEquals(0, test.toStandardDays().getDays());
@@ -953,13 +953,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardHours();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(-1);
         try {
             test.toStandardHours();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(0);
         assertEquals(0, test.toStandardHours().getHours());
@@ -970,13 +970,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardHours();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(-1);
         try {
             test.toStandardHours();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(0);
         assertEquals(0, test.toStandardHours().getHours());
@@ -1016,13 +1016,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardMinutes();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(-1);
         try {
             test.toStandardMinutes();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(0);
         assertEquals(0, test.toStandardMinutes().getMinutes());
@@ -1033,13 +1033,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardMinutes();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(-1);
         try {
             test.toStandardMinutes();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(0);
         assertEquals(0, test.toStandardMinutes().getMinutes());
@@ -1076,13 +1076,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardSeconds();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(-1);
         try {
             test.toStandardSeconds();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(0);
         assertEquals(0, test.toStandardSeconds().getSeconds());
@@ -1093,13 +1093,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardSeconds();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(-1);
         try {
             test.toStandardSeconds();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(0);
         assertEquals(0, test.toStandardSeconds().getSeconds());
@@ -1143,13 +1143,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardDuration();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(-1);
         try {
             test.toStandardDuration();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.years(0);
         assertEquals(0, test.toStandardDuration().getMillis());
@@ -1160,13 +1160,13 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.toStandardDuration();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(-1);
         try {
             test.toStandardDuration();
             fail();
-        } catch (IllegalStateException ex) {}
+        } catch (UnsupportedOperationException ex) {}
         
         test = Period.months(0);
         assertEquals(0, test.toStandardDuration().getMillis());

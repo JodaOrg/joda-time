@@ -60,7 +60,12 @@ public class TestLocalDate_Basics extends TestCase {
     private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
     private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
     private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
-    
+
+    /** Mock zone simulating Asia/Gaza cutover at midnight 2007-04-01 */
+    private static long CUTOVER_GAZA = 1175378400000L;
+    private static int OFFSET_GAZA = 7200000;  // +02:00
+    private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA);
+
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
@@ -625,6 +630,49 @@ public class TestLocalDate_Basics extends TestCase {
             test.withMonthOfYear(13);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToDateTimeAtStartOfDay() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtStartOfDay();
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
+    }
+
+    public void testToDateTimeAtStartOfDay_avoidDST() {
+        LocalDate base = new LocalDate(2007, 4, 1);
+        
+        DateTimeZone.setDefault(MOCK_GAZA);
+        DateTime test = base.toDateTimeAtStartOfDay();
+        check(base, 2007, 4, 1);
+        assertEquals(new DateTime(2007, 4, 1, 1, 0, 0, 0, MOCK_GAZA), test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToDateTimeAtStartOfDay_Zone() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtStartOfDay(TOKYO);
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_TOKYO), test);
+    }
+
+    public void testToDateTimeAtStartOfDay_Zone_avoidDST() {
+        LocalDate base = new LocalDate(2007, 4, 1);
+        
+        DateTime test = base.toDateTimeAtStartOfDay(MOCK_GAZA);
+        check(base, 2007, 4, 1);
+        assertEquals(new DateTime(2007, 4, 1, 1, 0, 0, 0, MOCK_GAZA), test);
+    }
+
+    public void testToDateTimeAtStartOfDay_nullZone() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtStartOfDay((DateTimeZone) null);
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
     }
 
     //-----------------------------------------------------------------------

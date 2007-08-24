@@ -36,8 +36,14 @@ Enhancements since 1.4
   methods to normalize the period back to standard field ranges, such as
   normalizing 1 year 15 months to 2 years 3 months
 
-- LocalDate.toLocalDateTime
-  - provide mechanism to create LocalDateTime from LocalDate and LocalTime
+- LocalDate
+  - add toDateTimeAtStartOfDay(), toDateTimeAtStartOfDay(DateTimeZone)
+  methods to replace toDateTimeAtMidnight() which avoid issues with time zones
+  that do not have midnight at spring DST cutover
+
+- LocalDate
+  - add toLocalDateTime()
+    provide mechanism to create LocalDateTime from LocalDate and LocalTime
 
 - Performance enhancement for LocalDate, LocalTime and LocalDateTime
   - equals, compareTo, Period construction
@@ -46,11 +52,12 @@ Enhancements since 1.4
   - allow periods to be directly formatted, as with datetimes
 
 - DateTimeZone
-  - add isStandardOffset() to assist in determining if DST applies
+  - add isStandardOffset()
+  assists in determining if DST applies
 
 - Interval
-  - add (long,long,DateTimeZone) constructor, emphasising that intervals
-    include a time zone
+  - add (long,long,DateTimeZone) constructor
+  constructor emphasises that intervals include a time zone
 
 
 Compatibility with 1.4
@@ -75,7 +82,9 @@ Semantic compatible - Yes
 
 Deprecations since 1.4
 ----------------------
-None
+- LocalDate
+  - toDateTimeAtMidnight(), toDateTimeAtMidnight(DateTimeZone)
+    use toDateTimeAtStartOfDay() instead because it avoids exceptions
 
 
 Bug fixes since 1.4

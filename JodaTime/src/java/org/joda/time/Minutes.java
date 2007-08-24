@@ -303,7 +303,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * However, the method is included as it is a useful operation for many
      * applications and business rules.
      *
-     * @return a period representing the number of minutes for this number of minutes
+     * @return a duration equivalent to this number of minutes
      */
     public Duration toStandardDuration() {
         long minutes = getValue();  // assign to a long

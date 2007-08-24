@@ -322,7 +322,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * However, the method is included as it is a useful operation for many
      * applications and business rules.
      *
-     * @return a period representing the number of hours for this number of hours
+     * @return a duration equivalent to this number of hours
      */
     public Duration toStandardDuration() {
         long hours = getValue();  // assign to a long

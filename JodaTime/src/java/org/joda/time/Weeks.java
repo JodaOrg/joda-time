@@ -309,7 +309,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * not be true for some unusual chronologies. However, it is included as it
      * is a useful operation for many applications and business rules.
      * 
-     * @return a period representing the number of hours for this number of weeks
+     * @return a duration equivalent to this number of weeks
      */
     public Duration toStandardDuration() {
         long weeks = getValue();  // assign to a long

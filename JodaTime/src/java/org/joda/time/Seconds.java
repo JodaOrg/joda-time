@@ -303,7 +303,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * not be true for some unusual chronologies. However, it is included as it
      * is a useful operation for many applications and business rules.
      * 
-     * @return a period representing the number of hours for this number of seconds
+     * @return a duration equivalent to this number of seconds
      */
     public Duration toStandardDuration() {
         long seconds = getValue();  // assign to a long

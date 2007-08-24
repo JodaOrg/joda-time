@@ -323,7 +323,7 @@ public final class Days extends BaseSingleFieldPeriod {
      * not be true for some unusual chronologies. However, it is included as it
      * is a useful operation for many applications and business rules.
      * 
-     * @return a period representing the number of hours for this number of days
+     * @return a duration equivalent to this number of days
      */
     public Duration toStandardDuration() {
         long days = getValue();  // assign to a long

@@ -19,6 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -39,7 +40,7 @@ public class TestPeriod_Basics extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    //private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -784,6 +785,391 @@ public class TestPeriod_Basics extends TestCase {
             test.minusYears(1);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardWeeks() {
+        Period test = new Period(0, 0, 3, 4, 5, 6, 7, 8);
+        assertEquals(3, test.toStandardWeeks().getWeeks());
+        
+        test = new Period(0, 0, 3, 7, 0, 0, 0, 0);
+        assertEquals(4, test.toStandardWeeks().getWeeks());
+        
+        test = new Period(0, 0, 0, 6, 23, 59, 59, 1000);
+        assertEquals(1, test.toStandardWeeks().getWeeks());
+        
+        test = new Period(0, 0, Integer.MAX_VALUE, 0, 0, 0, 0, 0);
+        assertEquals(Integer.MAX_VALUE, test.toStandardWeeks().getWeeks());
+        
+        test = new Period(0, 0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        long intMax = Integer.MAX_VALUE;
+        BigInteger expected = BigInteger.valueOf(intMax);
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_SECOND));
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_MINUTE));
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_HOUR));
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_DAY));
+        expected = expected.divide(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_WEEK));
+        assertTrue(expected.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0);
+        assertEquals(expected.longValue(), test.toStandardWeeks().getWeeks());
+        
+        test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
+        try {
+            test.toStandardWeeks();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testToStandardWeeks_years() {
+        Period test = Period.years(1);
+        try {
+            test.toStandardWeeks();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(-1);
+        try {
+            test.toStandardWeeks();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(0);
+        assertEquals(0, test.toStandardWeeks().getWeeks());
+    }
+
+    public void testToStandardWeeks_months() {
+        Period test = Period.months(1);
+        try {
+            test.toStandardWeeks();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(-1);
+        try {
+            test.toStandardWeeks();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(0);
+        assertEquals(0, test.toStandardWeeks().getWeeks());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardDays() {
+        Period test = new Period(0, 0, 0, 4, 5, 6, 7, 8);
+        assertEquals(4, test.toStandardDays().getDays());
+        
+        test = new Period(0, 0, 1, 4, 0, 0, 0, 0);
+        assertEquals(11, test.toStandardDays().getDays());
+        
+        test = new Period(0, 0, 0, 0, 23, 59, 59, 1000);
+        assertEquals(1, test.toStandardDays().getDays());
+        
+        test = new Period(0, 0, 0, Integer.MAX_VALUE, 0, 0, 0, 0);
+        assertEquals(Integer.MAX_VALUE, test.toStandardDays().getDays());
+        
+        test = new Period(0, 0, 0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        long intMax = Integer.MAX_VALUE;
+        BigInteger expected = BigInteger.valueOf(intMax);
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_SECOND));
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_MINUTE));
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_HOUR));
+        expected = expected.divide(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_DAY));
+        assertTrue(expected.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0);
+        assertEquals(expected.longValue(), test.toStandardDays().getDays());
+        
+        test = new Period(0, 0, 0, Integer.MAX_VALUE, 24, 0, 0, 0);
+        try {
+            test.toStandardDays();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testToStandardDays_years() {
+        Period test = Period.years(1);
+        try {
+            test.toStandardDays();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(-1);
+        try {
+            test.toStandardDays();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(0);
+        assertEquals(0, test.toStandardDays().getDays());
+    }
+
+    public void testToStandardDays_months() {
+        Period test = Period.months(1);
+        try {
+            test.toStandardDays();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(-1);
+        try {
+            test.toStandardDays();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(0);
+        assertEquals(0, test.toStandardDays().getDays());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardHours() {
+        Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8);
+        assertEquals(5, test.toStandardHours().getHours());
+        
+        test = new Period(0, 0, 0, 1, 5, 0, 0, 0);
+        assertEquals(29, test.toStandardHours().getHours());
+        
+        test = new Period(0, 0, 0, 0, 0, 59, 59, 1000);
+        assertEquals(1, test.toStandardHours().getHours());
+        
+        test = new Period(0, 0, 0, 0, Integer.MAX_VALUE, 0, 0, 0);
+        assertEquals(Integer.MAX_VALUE, test.toStandardHours().getHours());
+        
+        test = new Period(0, 0, 0, 0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        long intMax = Integer.MAX_VALUE;
+        BigInteger expected = BigInteger.valueOf(intMax);
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_SECOND));
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_MINUTE));
+        expected = expected.divide(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_HOUR));
+        assertTrue(expected.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0);
+        assertEquals(expected.longValue(), test.toStandardHours().getHours());
+        
+        test = new Period(0, 0, 0, 0, Integer.MAX_VALUE, 60, 0, 0);
+        try {
+            test.toStandardHours();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testToStandardHours_years() {
+        Period test = Period.years(1);
+        try {
+            test.toStandardHours();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(-1);
+        try {
+            test.toStandardHours();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(0);
+        assertEquals(0, test.toStandardHours().getHours());
+    }
+
+    public void testToStandardHours_months() {
+        Period test = Period.months(1);
+        try {
+            test.toStandardHours();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(-1);
+        try {
+            test.toStandardHours();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(0);
+        assertEquals(0, test.toStandardHours().getHours());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardMinutes() {
+        Period test = new Period(0, 0, 0, 0, 0, 6, 7, 8);
+        assertEquals(6, test.toStandardMinutes().getMinutes());
+        
+        test = new Period(0, 0, 0, 0, 1, 6, 0, 0);
+        assertEquals(66, test.toStandardMinutes().getMinutes());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, 59, 1000);
+        assertEquals(1, test.toStandardMinutes().getMinutes());
+        
+        test = new Period(0, 0, 0, 0, 0, Integer.MAX_VALUE, 0, 0);
+        assertEquals(Integer.MAX_VALUE, test.toStandardMinutes().getMinutes());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+        long intMax = Integer.MAX_VALUE;
+        BigInteger expected = BigInteger.valueOf(intMax);
+        expected = expected.add(BigInteger.valueOf(intMax * DateTimeConstants.MILLIS_PER_SECOND));
+        expected = expected.divide(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_MINUTE));
+        assertTrue(expected.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0);
+        assertEquals(expected.longValue(), test.toStandardMinutes().getMinutes());
+        
+        test = new Period(0, 0, 0, 0, 0, Integer.MAX_VALUE, 60, 0);
+        try {
+            test.toStandardMinutes();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testToStandardMinutes_years() {
+        Period test = Period.years(1);
+        try {
+            test.toStandardMinutes();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(-1);
+        try {
+            test.toStandardMinutes();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(0);
+        assertEquals(0, test.toStandardMinutes().getMinutes());
+    }
+
+    public void testToStandardMinutes_months() {
+        Period test = Period.months(1);
+        try {
+            test.toStandardMinutes();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(-1);
+        try {
+            test.toStandardMinutes();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(0);
+        assertEquals(0, test.toStandardMinutes().getMinutes());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardSeconds() {
+        Period test = new Period(0, 0, 0, 0, 0, 0, 7, 8);
+        assertEquals(7, test.toStandardSeconds().getSeconds());
+        
+        test = new Period(0, 0, 0, 0, 0, 1, 3, 0);
+        assertEquals(63, test.toStandardSeconds().getSeconds());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, 0, 1000);
+        assertEquals(1, test.toStandardSeconds().getSeconds());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, Integer.MAX_VALUE, 0);
+        assertEquals(Integer.MAX_VALUE, test.toStandardSeconds().getSeconds());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, 20, Integer.MAX_VALUE);
+        long expected = 20;
+        expected += ((long) Integer.MAX_VALUE) / DateTimeConstants.MILLIS_PER_SECOND;
+        assertEquals(expected, test.toStandardSeconds().getSeconds());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, Integer.MAX_VALUE, 1000);
+        try {
+            test.toStandardSeconds();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testToStandardSeconds_years() {
+        Period test = Period.years(1);
+        try {
+            test.toStandardSeconds();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(-1);
+        try {
+            test.toStandardSeconds();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(0);
+        assertEquals(0, test.toStandardSeconds().getSeconds());
+    }
+
+    public void testToStandardSeconds_months() {
+        Period test = Period.months(1);
+        try {
+            test.toStandardSeconds();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(-1);
+        try {
+            test.toStandardSeconds();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(0);
+        assertEquals(0, test.toStandardSeconds().getSeconds());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardDuration() {
+        Period test = new Period(0, 0, 0, 0, 0, 0, 0, 8);
+        assertEquals(8, test.toStandardDuration().getMillis());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, 1, 20);
+        assertEquals(1020, test.toStandardDuration().getMillis());
+        
+        test = new Period(0, 0, 0, 0, 0, 0, 0, Integer.MAX_VALUE);
+        assertEquals(Integer.MAX_VALUE, test.toStandardDuration().getMillis());
+        
+        test = new Period(0, 0, 0, 0, 0, 10, 20, Integer.MAX_VALUE);
+        long expected = Integer.MAX_VALUE;
+        expected += 10L * ((long) DateTimeConstants.MILLIS_PER_MINUTE);
+        expected += 20L * ((long) DateTimeConstants.MILLIS_PER_SECOND);
+        assertEquals(expected, test.toStandardDuration().getMillis());
+        
+        // proof that overflow does not occur
+        BigInteger intMax = BigInteger.valueOf(Integer.MAX_VALUE);
+        BigInteger exp = intMax;
+        exp = exp.add(intMax.multiply(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_SECOND)));
+        exp = exp.add(intMax.multiply(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_MINUTE)));
+        exp = exp.add(intMax.multiply(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_HOUR)));
+        exp = exp.add(intMax.multiply(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_DAY)));
+        exp = exp.add(intMax.multiply(BigInteger.valueOf(DateTimeConstants.MILLIS_PER_WEEK)));
+        assertTrue(exp.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) < 0);
+//        test = new Period(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE);
+//        try {
+//            test.toStandardDuration();
+//            fail();
+//        } catch (ArithmeticException ex) {}
+    }
+
+    public void testToStandardDuration_years() {
+        Period test = Period.years(1);
+        try {
+            test.toStandardDuration();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(-1);
+        try {
+            test.toStandardDuration();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.years(0);
+        assertEquals(0, test.toStandardDuration().getMillis());
+    }
+
+    public void testToStandardDuration_months() {
+        Period test = Period.months(1);
+        try {
+            test.toStandardDuration();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(-1);
+        try {
+            test.toStandardDuration();
+            fail();
+        } catch (IllegalStateException ex) {}
+        
+        test = Period.months(0);
+        assertEquals(0, test.toStandardDuration().getMillis());
     }
 
 }

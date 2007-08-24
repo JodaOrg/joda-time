@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.base.BasePeriod;
+import org.joda.time.field.FieldUtils;
 
 /**
  * An immutable time period specifying a set of duration field values.
@@ -1171,6 +1172,204 @@ public final class Period
      */
     public Period minusMillis(int millis) {
         return plusMillis(-millis);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this period to a period in weeks assuming a
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all
+     * weeks are 7 days, all days are 24 hours, all hours are 60 minutes and
+     * all minutes are 60 seconds. This is not true when daylight savings time
+     * is considered, and may also not be true for some unusual chronologies.
+     * However, it is included as it is a useful operation for many
+     * applications and business rules.
+     * <p>
+     * If the period contains years or months, an exception will be thrown.
+     * 
+     * @return a period representing the number of standard weeks in this period
+     * @throws IllegalStateException if the period contains years or months
+     * @throws ArithmeticException if the number of weeks is too large to be represented
+     * @since 1.5
+     */
+    public Weeks toStandardWeeks() {
+        checkYearsAndMonths("Weeks");
+        long millis = getMillis();  // assign to a long
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
+        millis += ((long) getHours()) * DateTimeConstants.MILLIS_PER_HOUR;
+        millis += ((long) getDays()) * DateTimeConstants.MILLIS_PER_DAY;
+        long weeks = ((long) getWeeks()) + millis / DateTimeConstants.MILLIS_PER_WEEK;
+        return Weeks.weeks(FieldUtils.safeToInt(weeks));
+    }
+
+    /**
+     * Converts this period to a period in days assuming a
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all
+     * weeks are 7 days, all days are 24 hours, all hours are 60 minutes and
+     * all minutes are 60 seconds. This is not true when daylight savings time
+     * is considered, and may also not be true for some unusual chronologies.
+     * However, it is included as it is a useful operation for many
+     * applications and business rules.
+     * <p>
+     * If the period contains years or months, an exception will be thrown.
+     * 
+     * @return a period representing the number of standard days in this period
+     * @throws IllegalStateException if the period contains years or months
+     * @throws ArithmeticException if the number of days is too large to be represented
+     * @since 1.5
+     */
+    public Days toStandardDays() {
+        checkYearsAndMonths("Days");
+        long millis = getMillis();  // assign to a long
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
+        millis += ((long) getHours()) * DateTimeConstants.MILLIS_PER_HOUR;
+        long days = millis / DateTimeConstants.MILLIS_PER_DAY;
+        days = FieldUtils.safeAdd(days, getDays());
+        days = FieldUtils.safeAdd(days, ((long) getWeeks()) * ((long) DateTimeConstants.DAYS_PER_WEEK));
+        return Days.days(FieldUtils.safeToInt(days));
+    }
+
+    /**
+     * Converts this period to a period in hours assuming a
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all
+     * weeks are 7 days, all days are 24 hours, all hours are 60 minutes and
+     * all minutes are 60 seconds. This is not true when daylight savings time
+     * is considered, and may also not be true for some unusual chronologies.
+     * However, it is included as it is a useful operation for many
+     * applications and business rules.
+     * <p>
+     * If the period contains years or months, an exception will be thrown.
+     * 
+     * @return a period representing the number of standard hours in this period
+     * @throws IllegalStateException if the period contains years or months
+     * @throws ArithmeticException if the number of hours is too large to be represented
+     * @since 1.5
+     */
+    public Hours toStandardHours() {
+        checkYearsAndMonths("Hours");
+        long millis = getMillis();  // assign to a long
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        millis += ((long) getMinutes()) * DateTimeConstants.MILLIS_PER_MINUTE;
+        long hours = millis / DateTimeConstants.MILLIS_PER_HOUR;
+        hours = FieldUtils.safeAdd(hours, getHours());
+        hours = FieldUtils.safeAdd(hours, ((long) getDays()) * ((long) DateTimeConstants.HOURS_PER_DAY));
+        hours = FieldUtils.safeAdd(hours, ((long) getWeeks()) * ((long) DateTimeConstants.HOURS_PER_WEEK));
+        return Hours.hours(FieldUtils.safeToInt(hours));
+    }
+
+    /**
+     * Converts this period to a period in minutes assuming a
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all
+     * weeks are 7 days, all days are 24 hours, all hours are 60 minutes and
+     * all minutes are 60 seconds. This is not true when daylight savings time
+     * is considered, and may also not be true for some unusual chronologies.
+     * However, it is included as it is a useful operation for many
+     * applications and business rules.
+     * <p>
+     * If the period contains years or months, an exception will be thrown.
+     * 
+     * @return a period representing the number of standard minutes in this period
+     * @throws IllegalStateException if the period contains years or months
+     * @throws ArithmeticException if the number of minutes is too large to be represented
+     * @since 1.5
+     */
+    public Minutes toStandardMinutes() {
+        checkYearsAndMonths("Minutes");
+        long millis = getMillis();  // assign to a long
+        millis += ((long) getSeconds()) * DateTimeConstants.MILLIS_PER_SECOND;
+        long minutes = millis / DateTimeConstants.MILLIS_PER_MINUTE;
+        minutes = FieldUtils.safeAdd(minutes, getMinutes());
+        minutes = FieldUtils.safeAdd(minutes, ((long) getHours()) * ((long) DateTimeConstants.MINUTES_PER_HOUR));
+        minutes = FieldUtils.safeAdd(minutes, ((long) getDays()) * ((long) DateTimeConstants.MINUTES_PER_DAY));
+        minutes = FieldUtils.safeAdd(minutes, ((long) getWeeks()) * ((long) DateTimeConstants.MINUTES_PER_WEEK));
+        return Minutes.minutes(FieldUtils.safeToInt(minutes));
+    }
+
+    /**
+     * Converts this period to a period in seconds assuming a
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert between different types of period.
+     * However to achieve this it makes the assumption that all
+     * weeks are 7 days, all days are 24 hours, all hours are 60 minutes and
+     * all minutes are 60 seconds. This is not true when daylight savings time
+     * is considered, and may also not be true for some unusual chronologies.
+     * However, it is included as it is a useful operation for many
+     * applications and business rules.
+     * <p>
+     * If the period contains years or months, an exception will be thrown.
+     * 
+     * @return a period representing the number of standard seconds in this period
+     * @throws IllegalStateException if the period contains years or months
+     * @throws ArithmeticException if the number of seconds is too large to be represented
+     * @since 1.5
+     */
+    public Seconds toStandardSeconds() {
+        checkYearsAndMonths("Seconds");
+        long seconds = getMillis() / DateTimeConstants.MILLIS_PER_SECOND;
+        seconds = FieldUtils.safeAdd(seconds, getSeconds());
+        seconds = FieldUtils.safeAdd(seconds, ((long) getMinutes()) * ((long) DateTimeConstants.SECONDS_PER_MINUTE));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getHours()) * ((long) DateTimeConstants.SECONDS_PER_HOUR));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getDays()) * ((long) DateTimeConstants.SECONDS_PER_DAY));
+        seconds = FieldUtils.safeAdd(seconds, ((long) getWeeks()) * ((long) DateTimeConstants.SECONDS_PER_WEEK));
+        return Seconds.seconds(FieldUtils.safeToInt(seconds));
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Converts this period to a duration assuming a
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to convert from a period to a duration.
+     * However to achieve this it makes the assumption that all
+     * weeks are 7 days, all days are 24 hours, all hours are 60 minutes and
+     * all minutes are 60 seconds. This is not true when daylight savings time
+     * is considered, and may also not be true for some unusual chronologies.
+     * However, it is included as it is a useful operation for many
+     * applications and business rules.
+     * <p>
+     * If the period contains years or months, an exception will be thrown.
+     * 
+     * @return a duration equivalent to this period
+     * @throws IllegalStateException if the period contains years or months
+     * @since 1.5
+     */
+    public Duration toStandardDuration() {
+        checkYearsAndMonths("Duration");
+        long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
+        millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
+        millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
+        millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+        millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+        millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
+        return new Duration(millis);
+    }
+
+    /**
+     * Check that there are no years or months in the period.
+     * 
+     * @param destintionType  the destination type, not null
+     */
+    private void checkYearsAndMonths(String destintionType) {
+        if (getMonths() != 0) {
+            throw new IllegalStateException("Cannot convert to " + destintionType + " as this period contains months and months vary in length");
+        }
+        if (getYears() != 0) {
+            throw new IllegalStateException("Cannot convert to " + destintionType + " as this period contains years and years vary in length");
+        }
     }
 
 }

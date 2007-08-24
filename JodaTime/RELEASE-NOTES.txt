@@ -20,6 +20,13 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.4
 ----------------------
+- Period
+  - add toStandardDuration()
+  - add toStandardWeeks(), toStandardDays(), toStandardHours(),
+    toStandardMinutes(), toStandardSeconds()
+  methods to convert a period to other types using the standard
+  conversions (7 day week, 24 hour day, ...)
+
 - LocalDate.toLocalDateTime
   - provide mechanism to create LocalDateTime from LocalDate and LocalTime
 

@@ -100,6 +100,8 @@ Bug fixes since 1.4
 
 - DateTimeFormat javadoc now explains time zone parsing restriction better [OpenDiscussion 1721909]
 
+- Period javadoc now explains toDurationFrom() and toDurationTo() better
+
 - DateTime/Instant/LocalDateTime javadoc improved
 
 - DateTimeZone

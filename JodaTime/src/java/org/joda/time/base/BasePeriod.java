@@ -325,8 +325,14 @@ public abstract class BasePeriod
     /**
      * Gets the total millisecond duration of this period relative to a start instant.
      * <p>
-     * This method adds the period to the specifed instant.
-     * The difference between the start instant and the result of the add is the duration
+     * This method adds the period to the specifed instant in order to
+     * calculate the duration.
+     * <p>
+     * An instant must be supplied as the duration of a period varies.
+     * For example, a period of 1 month could vary between the equivalent of
+     * 28 and 31 days in milliseconds due to different length months.
+     * Similarly, a day can vary at Daylight Savings cutover, typically between
+     * 23 and 25 hours.
      *
      * @param startInstant  the instant to add the period to, thus obtaining the duration
      * @return the total length of the period as a duration relative to the start instant
@@ -340,9 +346,17 @@ public abstract class BasePeriod
     }
 
     /**
-     * Gets the total millisecond duration of this period relative to an end instant.
+     * Gets the total millisecond duration of this period relative to an
+     * end instant.
      * <p>
-     * This method subtracts the period from the specifed instant.
+     * This method subtracts the period from the specified instant in order
+     * to calculate the duration.
+     * <p>
+     * An instant must be supplied as the duration of a period varies.
+     * For example, a period of 1 month could vary between the equivalent of
+     * 28 and 31 days in milliseconds due to different length months.
+     * Similarly, a day can vary at Daylight Savings cutover, typically between
+     * 23 and 25 hours.
      *
      * @param endInstant  the instant to subtract the period from, thus obtaining the duration
      * @return the total length of the period as a duration relative to the end instant

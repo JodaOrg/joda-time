@@ -682,12 +682,12 @@ public class PeriodType implements Serializable {
      * @param index  the index to use
      * @param values  the array to populate
      * @param newValue  the value to set
-     * @throws IllegalArgumentException if not supported
+     * @throws UnsupportedOperationException if not supported
      */
     boolean setIndexedField(ReadablePeriod period, int index, int[] values, int newValue) {
         int realIndex = iIndices[index];
         if (realIndex == -1) {
-            throw new IllegalArgumentException("Field is not supported");
+            throw new UnsupportedOperationException("Field is not supported");
         }
         values[realIndex] = newValue;
         return true;

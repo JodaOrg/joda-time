@@ -703,7 +703,7 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.withYears(1);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (UnsupportedOperationException ex) {}
     }
 
     //-----------------------------------------------------------------------
@@ -1318,6 +1318,125 @@ public class TestPeriod_Basics extends TestCase {
         
         test = Period.months(0);
         assertEquals(0, test.toStandardDuration().getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testNormalizedStandard_yearMonth1() {
+        Period test = new Period(1, 15, 0, 0, 0, 0, 0, 0);
+        Period result = test.normalizedStandard();
+        assertEquals(new Period(1, 15, 0, 0, 0, 0, 0, 0), test);
+        assertEquals(new Period(2, 3, 0, 0, 0, 0, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_yearMonth2() {
+        Period test = new Period(Integer.MAX_VALUE, 15, 0, 0, 0, 0, 0, 0);
+        try {
+            test.normalizedStandard();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testNormalizedStandard_weekDay1() {
+        Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
+        Period result = test.normalizedStandard();
+        assertEquals(new Period(0, 0, 1, 12, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, 0, 2, 5, 0, 0, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_weekDay2() {
+        Period test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
+        try {
+            test.normalizedStandard();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testNormalizedStandard_yearMonthWeekDay() {
+        Period test = new Period(1, 15, 1, 12, 0, 0, 0, 0);
+        Period result = test.normalizedStandard();
+        assertEquals(new Period(1, 15, 1, 12, 0, 0, 0, 0), test);
+        assertEquals(new Period(2, 3, 2, 5, 0, 0, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_yearMonthDay() {
+        Period test = new Period(1, 15, 0, 36, 0, 0, 0, 0);
+        Period result = test.normalizedStandard();
+        assertEquals(new Period(1, 15, 0, 36, 0, 0, 0, 0), test);
+        assertEquals(new Period(2, 3, 5, 1, 0, 0, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_negative() {
+        Period test = new Period(0, 0, 0, 0, 2, -10, 0, 0);
+        Period result = test.normalizedStandard();
+        assertEquals(new Period(0, 0, 0, 0, 2, -10, 0, 0), test);
+        assertEquals(new Period(0, 0, 0, 0, 1, 50, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_fullNegative() {
+        Period test = new Period(0, 0, 0, 0, 1, -70, 0, 0);
+        Period result = test.normalizedStandard();
+        assertEquals(new Period(0, 0, 0, 0, 1, -70, 0, 0), test);
+        assertEquals(new Period(0, 0, 0, 0, 0, -10, 0, 0), result);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testNormalizedStandard_periodType_yearMonth1() {
+        Period test = new Period(1, 15, 0, 0, 0, 0, 0, 0);
+        Period result = test.normalizedStandard((PeriodType) null);
+        assertEquals(new Period(1, 15, 0, 0, 0, 0, 0, 0), test);
+        assertEquals(new Period(2, 3, 0, 0, 0, 0, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_periodType_yearMonth2() {
+        Period test = new Period(Integer.MAX_VALUE, 15, 0, 0, 0, 0, 0, 0);
+        try {
+            test.normalizedStandard((PeriodType) null);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testNormalizedStandard_periodType_yearMonth3() {
+        Period test = new Period(1, 15, 3, 4, 0, 0, 0, 0);
+        try {
+            test.normalizedStandard(PeriodType.dayTime());
+            fail();
+        } catch (UnsupportedOperationException ex) {}
+    }
+
+    public void testNormalizedStandard_periodType_weekDay1() {
+        Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
+        Period result = test.normalizedStandard((PeriodType) null);
+        assertEquals(new Period(0, 0, 1, 12, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, 0, 2, 5, 0, 0, 0, 0), result);
+    }
+
+    public void testNormalizedStandard_periodType_weekDay2() {
+        Period test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
+        try {
+            test.normalizedStandard((PeriodType) null);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    public void testNormalizedStandard_periodType_weekDay3() {
+        Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
+        Period result = test.normalizedStandard(PeriodType.dayTime());
+        assertEquals(new Period(0, 0, 1, 12, 0, 0, 0, 0), test);
+        assertEquals(new Period(0, 0, 0, 19, 0, 0, 0, 0, PeriodType.dayTime()), result);
+    }
+
+    public void testNormalizedStandard_periodType_yearMonthWeekDay() {
+        Period test = new Period(1, 15, 1, 12, 0, 0, 0, 0);
+        Period result = test.normalizedStandard(PeriodType.yearMonthDayTime());
+        assertEquals(new Period(1, 15, 1, 12, 0, 0, 0, 0), test);
+        assertEquals(new Period(2, 3, 0, 19, 0, 0, 0, 0, PeriodType.yearMonthDayTime()), result);
+    }
+
+    public void testNormalizedStandard_periodType_yearMonthDay() {
+        Period test = new Period(1, 15, 0, 36, 27, 0, 0, 0);
+        Period result = test.normalizedStandard(PeriodType.yearMonthDayTime());
+        assertEquals(new Period(1, 15, 0, 36, 27, 0, 0, 0), test);
+        assertEquals(new Period(2, 3, 0, 37, 3, 0, 0, 0, PeriodType.yearMonthDayTime()), result);
     }
 
 }

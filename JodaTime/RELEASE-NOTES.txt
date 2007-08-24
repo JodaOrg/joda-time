@@ -31,6 +31,11 @@ Enhancements since 1.4
   - add plus(ReadablePeriod), minus(ReadablePeriod)
   methods to add and subtract whole periods rather than just single fields
 
+- Period
+  - add normalizedStandard(), normalizedStandard(PeriodType)
+  methods to normalize the period back to standard field ranges, such as
+  normalizing 1 year 15 months to 2 years 3 months
+
 - LocalDate.toLocalDateTime
   - provide mechanism to create LocalDateTime from LocalDate and LocalTime
 
@@ -90,9 +95,9 @@ Bug fixes since 1.4
   This problem was exposed when Days.daysBetween() and similar methods
   failed to give the right results
 
-- Period.plusXxx(), minusXxx()
+- Period.plusXxx(), minusXxx(), withXxx()
   Fix to throw correct exception as per javadoc (UnsupportedOperationException) when
-  adding to an unsupported field
+  changing an unsupported field
 
 - ZoneInfoProvider now returns a copy of its internal state on getAvailableIDs
   This avoids race conditions on some JVMs

@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.Serializable;
 
 import org.joda.time.base.BasePeriod;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 
 /**
@@ -930,7 +931,7 @@ public final class Period
      * <p>
      * Each field of the period is added separately. Thus a period of
      * 2 hours 30 minutes plus 3 hours 40 minutes will produce a result
-     * of 5 hours 70 minutes.
+     * of 5 hours 70 minutes - see {@link #normalizedStandard()}.
      * <p>
      * If the period being added contains a non-zero amount for a field that
      * is not supported in this period then an exception is thrown.
@@ -1109,7 +1110,7 @@ public final class Period
      * <p>
      * Each field of the period is subtracted separately. Thus a period of
      * 3 hours 30 minutes minus 2 hours 40 minutes will produce a result
-     * of 1 hour and -10 minutes.
+     * of 1 hour and -10 minutes - see {@link #normalizedStandard()}.
      * <p>
      * If the period being added contains a non-zero amount for a field that
      * is not supported in this period then an exception is thrown.
@@ -1439,6 +1440,91 @@ public final class Period
         if (getYears() != 0) {
             throw new UnsupportedOperationException("Cannot convert to " + destintionType + " as this period contains years and years vary in length");
         }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Normalizes this period using standard rules, assuming a 12 month year,
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
+     * <p>
+     * This method allows you to normalize a period.
+     * However to achieve this it makes the assumption that all years are
+     * 12 months, all weeks are 7 days, all days are 24 hours,
+     * all hours are 60 minutes and all minutes are 60 seconds. This is not
+     * true when daylight savings time is considered, and may also not be true
+     * for some chronologies. However, it is included as it is a useful operation
+     * for many applications and business rules.
+     * <p>
+     * If the period contains years or months, then the months will be
+     * normalized to be between 0 and 11. The days field and below will be
+     * normalized as necessary, however this will not overflow into the months
+     * field. Thus a period of 1 year 15 months will normalize to 2 years 3 months.
+     * But a period of 1 month 40 days will remain as 1 month 40 days.
+     * <p>
+     * The result will always have a <code>PeriodType</code> of standard, thus
+     * days will be grouped into weeks.
+     * 
+     * @return a normalized period equivalent to this period
+     * @throws ArithmeticException if any field is too large to be represented
+     * @since 1.5
+     */
+    public Period normalizedStandard() {
+        return normalizedStandard(PeriodType.standard());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Normalizes this period using standard rules, assuming a 12 month year,
+     * 7 day week, 24 hour day, 60 minute hour and 60 second minute,
+     * providing control over how the result is split into fields.
+     * <p>
+     * This method allows you to normalize a period.
+     * However to achieve this it makes the assumption that all years are
+     * 12 months, all weeks are 7 days, all days are 24 hours,
+     * all hours are 60 minutes and all minutes are 60 seconds. This is not
+     * true when daylight savings time is considered, and may also not be true
+     * for some chronologies. However, it is included as it is a useful operation
+     * for many applications and business rules.
+     * <p>
+     * If the period contains years or months, then the months will be
+     * normalized to be between 0 and 11. The days field and below will be
+     * normalized as necessary, however this will not overflow into the months
+     * field. Thus a period of 1 year 15 months will normalize to 2 years 3 months.
+     * But a period of 1 month 40 days will remain as 1 month 40 days.
+     * <p>
+     * The PeriodType parameter controls how the result is created. It allows
+     * you to omit certain fields from the result if desired. For example,
+     * you may not want the result to include weeks, in which case you pass
+     * in <code>PeriodType.yearMonthDayTime()</code>.
+     * 
+     * @param type  the period type of the new period, null means standard type
+     * @return a normalized period equivalent to this period
+     * @throws ArithmeticException if any field is too large to be represented
+     * @throws UnsupportedOperationException if this period contains non-zero
+     *  years or months but the specified period type does not support them
+     * @since 1.5
+     */
+    public Period normalizedStandard(PeriodType type) {
+        long millis = getMillis();  // no overflow can happen, even with Integer.MAX_VALUEs
+        millis += (((long) getSeconds()) * ((long) DateTimeConstants.MILLIS_PER_SECOND));
+        millis += (((long) getMinutes()) * ((long) DateTimeConstants.MILLIS_PER_MINUTE));
+        millis += (((long) getHours()) * ((long) DateTimeConstants.MILLIS_PER_HOUR));
+        millis += (((long) getDays()) * ((long) DateTimeConstants.MILLIS_PER_DAY));
+        millis += (((long) getWeeks()) * ((long) DateTimeConstants.MILLIS_PER_WEEK));
+        Period result = new Period(millis, DateTimeUtils.getPeriodType(type), ISOChronology.getInstanceUTC());
+        int years = getYears();
+        int months = getMonths();
+        if (years != 0 || months != 0) {
+            years = FieldUtils.safeAdd(years, months / 12);
+            months = months % 12;
+            if (years != 0) {
+                result = result.withYears(years);
+            }
+            if (months != 0) {
+                result = result.withMonths(months);
+            }
+        }
+        return result;
     }
 
 }

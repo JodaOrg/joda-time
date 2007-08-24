@@ -1190,7 +1190,7 @@ public final class Period
      * If the period contains years or months, an exception will be thrown.
      * 
      * @return a period representing the number of standard weeks in this period
-     * @throws IllegalStateException if the period contains years or months
+     * @throws UnsupportedOperationException if the period contains years or months
      * @throws ArithmeticException if the number of weeks is too large to be represented
      * @since 1.5
      */
@@ -1220,7 +1220,7 @@ public final class Period
      * If the period contains years or months, an exception will be thrown.
      * 
      * @return a period representing the number of standard days in this period
-     * @throws IllegalStateException if the period contains years or months
+     * @throws UnsupportedOperationException if the period contains years or months
      * @throws ArithmeticException if the number of days is too large to be represented
      * @since 1.5
      */
@@ -1251,7 +1251,7 @@ public final class Period
      * If the period contains years or months, an exception will be thrown.
      * 
      * @return a period representing the number of standard hours in this period
-     * @throws IllegalStateException if the period contains years or months
+     * @throws UnsupportedOperationException if the period contains years or months
      * @throws ArithmeticException if the number of hours is too large to be represented
      * @since 1.5
      */
@@ -1282,7 +1282,7 @@ public final class Period
      * If the period contains years or months, an exception will be thrown.
      * 
      * @return a period representing the number of standard minutes in this period
-     * @throws IllegalStateException if the period contains years or months
+     * @throws UnsupportedOperationException if the period contains years or months
      * @throws ArithmeticException if the number of minutes is too large to be represented
      * @since 1.5
      */
@@ -1313,7 +1313,7 @@ public final class Period
      * If the period contains years or months, an exception will be thrown.
      * 
      * @return a period representing the number of standard seconds in this period
-     * @throws IllegalStateException if the period contains years or months
+     * @throws UnsupportedOperationException if the period contains years or months
      * @throws ArithmeticException if the number of seconds is too large to be represented
      * @since 1.5
      */
@@ -1344,7 +1344,7 @@ public final class Period
      * If the period contains years or months, an exception will be thrown.
      * 
      * @return a duration equivalent to this period
-     * @throws IllegalStateException if the period contains years or months
+     * @throws UnsupportedOperationException if the period contains years or months
      * @since 1.5
      */
     public Duration toStandardDuration() {
@@ -1362,13 +1362,14 @@ public final class Period
      * Check that there are no years or months in the period.
      * 
      * @param destintionType  the destination type, not null
+     * @throws UnsupportedOperationException if the period contains years or months
      */
     private void checkYearsAndMonths(String destintionType) {
         if (getMonths() != 0) {
-            throw new IllegalStateException("Cannot convert to " + destintionType + " as this period contains months and months vary in length");
+            throw new UnsupportedOperationException("Cannot convert to " + destintionType + " as this period contains months and months vary in length");
         }
         if (getYears() != 0) {
-            throw new IllegalStateException("Cannot convert to " + destintionType + " as this period contains years and years vary in length");
+            throw new UnsupportedOperationException("Cannot convert to " + destintionType + " as this period contains years and years vary in length");
         }
     }
 

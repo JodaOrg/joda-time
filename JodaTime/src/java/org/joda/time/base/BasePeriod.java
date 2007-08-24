@@ -325,7 +325,7 @@ public abstract class BasePeriod
     /**
      * Gets the total millisecond duration of this period relative to a start instant.
      * <p>
-     * This method adds the period to the specifed instant in order to
+     * This method adds the period to the specified instant in order to
      * calculate the duration.
      * <p>
      * An instant must be supplied as the duration of a period varies.

@@ -86,6 +86,10 @@ Bug fixes since 1.4
   This problem was exposed when Days.daysBetween() and similar methods
   failed to give the right results
 
+- Period.plusXxx(), minusXxx()
+  Fix to throw correct exception as per javadoc (UnsupportedOperationException) when
+  adding to an unsupported field
+
 - ZoneInfoProvider now returns a copy of its internal state on getAvailableIDs
   This avoids race conditions on some JVMs
 

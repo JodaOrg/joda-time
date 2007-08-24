@@ -730,7 +730,7 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.plusYears(1);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (UnsupportedOperationException ex) {}
     }
 
     public void testPlusZero() {
@@ -784,7 +784,7 @@ public class TestPeriod_Basics extends TestCase {
         try {
             test.minusYears(1);
             fail();
-        } catch (IllegalArgumentException ex) {}
+        } catch (UnsupportedOperationException ex) {}
     }
 
     //-----------------------------------------------------------------------

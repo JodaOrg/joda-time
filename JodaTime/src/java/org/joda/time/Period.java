@@ -926,6 +926,40 @@ public final class Period
 
     //-----------------------------------------------------------------------
     /**
+     * Returns a new period with the specified period added.
+     * <p>
+     * Each field of the period is added separately. Thus a period of
+     * 2 hours 30 minutes plus 3 hours 40 minutes will produce a result
+     * of 5 hours 70 minutes.
+     * <p>
+     * If the period being added contains a non-zero amount for a field that
+     * is not supported in this period then an exception is thrown.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param period  the period to add, null adds zero and returns this
+     * @return the new updated period
+     * @throws UnsupportedOperationException if any field is not supported
+     * @since 1.5
+     */
+    public Period plus(ReadablePeriod period) {
+        if (period == null) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, period.get(DurationFieldType.YEARS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, period.get(DurationFieldType.MONTHS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, period.get(DurationFieldType.WEEKS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, period.get(DurationFieldType.DAYS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, period.get(DurationFieldType.HOURS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, period.get(DurationFieldType.MINUTES_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, period.get(DurationFieldType.SECONDS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, period.get(DurationFieldType.MILLIS_TYPE));
+        return new Period(values, getPeriodType());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Returns a new period with the specified number of years added.
      * <p>
      * This period instance is immutable and unaffected by this method call.
@@ -1066,6 +1100,40 @@ public final class Period
         }
         int[] values = getValues();  // cloned
         getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, millis);
+        return new Period(values, getPeriodType());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new period with the specified period subtracted.
+     * <p>
+     * Each field of the period is subtracted separately. Thus a period of
+     * 3 hours 30 minutes minus 2 hours 40 minutes will produce a result
+     * of 1 hour and -10 minutes.
+     * <p>
+     * If the period being added contains a non-zero amount for a field that
+     * is not supported in this period then an exception is thrown.
+     * <p>
+     * This period instance is immutable and unaffected by this method call.
+     *
+     * @param period  the period to add, null adds zero and returns this
+     * @return the new updated period
+     * @throws UnsupportedOperationException if any field is not supported
+     * @since 1.5
+     */
+    public Period minus(ReadablePeriod period) {
+        if (period == null) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        getPeriodType().addIndexedField(this, PeriodType.YEAR_INDEX, values, -period.get(DurationFieldType.YEARS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MONTH_INDEX, values, -period.get(DurationFieldType.MONTHS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.WEEK_INDEX, values, -period.get(DurationFieldType.WEEKS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.DAY_INDEX, values, -period.get(DurationFieldType.DAYS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.HOUR_INDEX, values, -period.get(DurationFieldType.HOURS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MINUTE_INDEX, values, -period.get(DurationFieldType.MINUTES_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.SECOND_INDEX, values, -period.get(DurationFieldType.SECONDS_TYPE));
+        getPeriodType().addIndexedField(this, PeriodType.MILLI_INDEX, values, -period.get(DurationFieldType.MILLIS_TYPE));
         return new Period(values, getPeriodType());
     }
 

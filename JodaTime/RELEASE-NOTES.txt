@@ -27,6 +27,10 @@ Enhancements since 1.4
   methods to convert a period to other types using the standard
   conversions (7 day week, 24 hour day, ...)
 
+- Period
+  - add plus(ReadablePeriod), minus(ReadablePeriod)
+  methods to add and subtract whole periods rather than just single fields
+
 - LocalDate.toLocalDateTime
   - provide mechanism to create LocalDateTime from LocalDate and LocalTime
 

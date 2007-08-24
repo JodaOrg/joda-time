@@ -708,6 +708,154 @@ public class TestPeriod_Basics extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testPlus() {
+        Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
+        
+        Period test = base.plus((ReadablePeriod) null);
+        assertSame(base, test);
+        
+        test = base.plus(Period.years(10));
+        assertEquals(11, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        
+        test = base.plus(Years.years(10));
+        assertEquals(11, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        
+        test = base.plus(Period.days(10));
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(14, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        
+        test = baseDaysOnly.plus(Period.years(0));
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(10, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+        
+        test = baseDaysOnly.plus(baseDaysOnly);
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(20, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+        
+        try {
+            baseDaysOnly.plus(Period.years(1));
+            fail();
+        } catch (UnsupportedOperationException ex) {}
+        
+        try {
+            Period.days(Integer.MAX_VALUE).plus(Period.days(1));
+            fail();
+        } catch (ArithmeticException ex) {}
+        
+        try {
+            Period.days(Integer.MIN_VALUE).plus(Period.days(-1));
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMinus() {
+        Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
+        
+        Period test = base.minus((ReadablePeriod) null);
+        assertSame(base, test);
+        
+        test = base.minus(Period.years(10));
+        assertEquals(-9, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        
+        test = base.minus(Years.years(10));
+        assertEquals(-9, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(4, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        
+        test = base.minus(Period.days(10));
+        assertEquals(1, test.getYears());
+        assertEquals(2, test.getMonths());
+        assertEquals(3, test.getWeeks());
+        assertEquals(-6, test.getDays());
+        assertEquals(5, test.getHours());
+        assertEquals(6, test.getMinutes());
+        assertEquals(7, test.getSeconds());
+        assertEquals(8, test.getMillis());
+        
+        test = baseDaysOnly.minus(Period.years(0));
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(10, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+        
+        test = baseDaysOnly.minus(baseDaysOnly);
+        assertEquals(0, test.getYears());
+        assertEquals(0, test.getMonths());
+        assertEquals(0, test.getWeeks());
+        assertEquals(0, test.getDays());
+        assertEquals(0, test.getHours());
+        assertEquals(0, test.getMinutes());
+        assertEquals(0, test.getSeconds());
+        assertEquals(0, test.getMillis());
+        
+        try {
+            baseDaysOnly.minus(Period.years(1));
+            fail();
+        } catch (UnsupportedOperationException ex) {}
+        
+        try {
+            Period.days(Integer.MAX_VALUE).minus(Period.days(-1));
+            fail();
+        } catch (ArithmeticException ex) {}
+        
+        try {
+            Period.days(Integer.MIN_VALUE).minus(Period.days(1));
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testPlusFields() {
         Period test;
         test = Period.years(1).plusYears(1);
         assertEquals(new Period(2, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()), test);
@@ -733,7 +881,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (UnsupportedOperationException ex) {}
     }
 
-    public void testPlusZero() {
+    public void testPlusFieldsZero() {
         Period test, result;
         test = Period.years(1);
         result = test.plusYears(0);
@@ -761,7 +909,7 @@ public class TestPeriod_Basics extends TestCase {
         assertSame(test, result);
     }
 
-    public void testMinus() {
+    public void testMinusFields() {
         Period test;
         test = Period.years(3).minusYears(1);
         assertEquals(new Period(2, 0, 0, 0, 0, 0, 0, 0, PeriodType.standard()), test);

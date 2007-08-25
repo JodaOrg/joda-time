@@ -18,10 +18,14 @@ package org.joda.time.format;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
+
 /**
  * This class is a Junit unit test for DateTimeFormatterBuilder.
  *
  * @author Stephen Colebourne
+ * @author Brian S O'Neill
  */
 public class TestDateTimeFormatterBuilder extends TestCase {
 
@@ -122,4 +126,83 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals("XYZ", bld2.toFormatter().print(0L));
     }
 
+    //-----------------------------------------------------------------------
+    public void test_appendFixedDecimal() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        bld.appendFixedDecimal(DateTimeFieldType.year(), 4);
+        DateTimeFormatter f = bld.toFormatter();
+
+        assertEquals("2007", f.print(new DateTime("2007-01-01")));
+        assertEquals("0123", f.print(new DateTime("123-01-01")));
+        assertEquals("0001", f.print(new DateTime("1-2-3")));
+        assertEquals("99999", f.print(new DateTime("99999-2-3")));
+        assertEquals("-0099", f.print(new DateTime("-99-2-3")));
+        assertEquals("0000", f.print(new DateTime("0-2-3")));
+
+        assertEquals(2001, f.parseDateTime("2001").getYear());
+        try {
+            f.parseDateTime("-2001");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            f.parseDateTime("200");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            f.parseDateTime("20016");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+
+        bld = new DateTimeFormatterBuilder();
+        bld.appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2);
+        bld.appendLiteral(':');
+        bld.appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2);
+        bld.appendLiteral(':');
+        bld.appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2);
+        f = bld.toFormatter();
+
+        assertEquals("01:02:34", f.print(new DateTime("T1:2:34")));
+
+        DateTime dt = f.parseDateTime("01:02:34");
+        assertEquals(1, dt.getHourOfDay());
+        assertEquals(2, dt.getMinuteOfHour());
+        assertEquals(34, dt.getSecondOfMinute());
+
+        try {
+            f.parseDateTime("0145:02:34");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+        try {
+            f.parseDateTime("01:0:34");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_appendFixedSignedDecimal() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        bld.appendFixedSignedDecimal(DateTimeFieldType.year(), 4);
+        DateTimeFormatter f = bld.toFormatter();
+
+        assertEquals("2007", f.print(new DateTime("2007-01-01")));
+        assertEquals("0123", f.print(new DateTime("123-01-01")));
+        assertEquals("0001", f.print(new DateTime("1-2-3")));
+        assertEquals("99999", f.print(new DateTime("99999-2-3")));
+        assertEquals("-0099", f.print(new DateTime("-99-2-3")));
+        assertEquals("0000", f.print(new DateTime("0-2-3")));
+
+        assertEquals(2001, f.parseDateTime("2001").getYear());
+        assertEquals(-2001, f.parseDateTime("-2001").getYear());
+        assertEquals(2001, f.parseDateTime("+2001").getYear());
+        try {
+            f.parseDateTime("20016");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+    }
 }

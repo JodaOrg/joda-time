@@ -59,6 +59,11 @@ Enhancements since 1.4
   - add (long,long,DateTimeZone) constructor
   constructor emphasises that intervals include a time zone
 
+- DateTimeFormatterBuilder
+  - add appendFixedDecimal(DateTimeFieldType,int),
+        appendFixedSignedDecimal(DateTimeFieldType,int)
+  methods for printing and parsing fields which must have a fixed number of digits
+
 
 Compatibility with 1.4
 ----------------------

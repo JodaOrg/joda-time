@@ -404,6 +404,29 @@ public class DateTimeFormatterBuilder {
     }
 
     /**
+     * Instructs the printer to emit a field value as a fixed-width decimal
+     * number (smaller numbers will be left-padded with zeros), and the parser
+     * to expect an unsigned decimal number with the same fixed width.
+     * 
+     * @param fieldType type of field to append
+     * @param numDigits the exact number of digits to parse or print, except if
+     * printed value requires more digits
+     * @return this DateTimeFormatterBuilder
+     * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
+     * @since 1.4
+     */
+    public DateTimeFormatterBuilder appendFixedDecimal(
+            DateTimeFieldType fieldType, int numDigits) {
+        if (fieldType == null) {
+            throw new IllegalArgumentException("Field type must not be null");
+        }
+        if (numDigits <= 0) {
+            throw new IllegalArgumentException("Illegal number of digits: " + numDigits);
+        }
+        return append0(new FixedNumber(fieldType, numDigits, false));
+    }
+
+    /**
      * Instructs the printer to emit a field value as a decimal number, and the
      * parser to expect a signed decimal number.
      *
@@ -430,6 +453,29 @@ public class DateTimeFormatterBuilder {
         } else {
             return append0(new PaddedNumber(fieldType, maxDigits, true, minDigits));
         }
+    }
+
+    /**
+     * Instructs the printer to emit a field value as a fixed-width decimal
+     * number (smaller numbers will be left-padded with zeros), and the parser
+     * to expect an signed decimal number with the same fixed width.
+     * 
+     * @param fieldType type of field to append
+     * @param numDigits the exact number of digits to parse or print, except if
+     * printed value requires more digits
+     * @return this DateTimeFormatterBuilder
+     * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
+     * @since 1.4
+     */
+    public DateTimeFormatterBuilder appendFixedSignedDecimal(
+            DateTimeFieldType fieldType, int numDigits) {
+        if (fieldType == null) {
+            throw new IllegalArgumentException("Field type must not be null");
+        }
+        if (numDigits <= 0) {
+            throw new IllegalArgumentException("Illegal number of digits: " + numDigits);
+        }
+        return append0(new FixedNumber(fieldType, numDigits, true));
     }
 
     /**
@@ -1323,6 +1369,38 @@ public class DateTimeFormatterBuilder {
             } else {
                 printUnknownString(out, iMinPrintedDigits);
             }
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    static class FixedNumber extends PaddedNumber {
+
+        protected FixedNumber(DateTimeFieldType fieldType, int numDigits, boolean signed) {
+            super(fieldType, numDigits, signed, numDigits);
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            int newPos = super.parseInto(bucket, text, position);
+            if (newPos < 0) {
+                return newPos;
+            }
+            int expectedPos = position + iMaxParsedDigits;
+            if (newPos != expectedPos) {
+                if (iSigned) {
+                    char c = text.charAt(position);
+                    if (c == '-' || c == '+') {
+                        expectedPos++;
+                    }
+                }
+                if (newPos > expectedPos) {
+                    // The failure is at the position of the first extra digit.
+                    return ~(expectedPos + 1);
+                } else if (newPos < expectedPos) {
+                    // The failure is at the position where the next digit should be.
+                    return ~newPos;
+                }
+            }
+            return newPos;
         }
     }
 

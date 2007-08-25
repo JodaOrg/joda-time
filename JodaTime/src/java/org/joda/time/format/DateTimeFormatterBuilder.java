@@ -413,7 +413,7 @@ public class DateTimeFormatterBuilder {
      * printed value requires more digits
      * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
-     * @since 1.4
+     * @since 1.5
      */
     public DateTimeFormatterBuilder appendFixedDecimal(
             DateTimeFieldType fieldType, int numDigits) {
@@ -465,7 +465,7 @@ public class DateTimeFormatterBuilder {
      * printed value requires more digits
      * @return this DateTimeFormatterBuilder
      * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
-     * @since 1.4
+     * @since 1.5
      */
     public DateTimeFormatterBuilder appendFixedSignedDecimal(
             DateTimeFieldType fieldType, int numDigits) {

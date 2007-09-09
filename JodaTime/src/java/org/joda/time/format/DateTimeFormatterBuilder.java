@@ -2401,6 +2401,11 @@ public class DateTimeFormatterBuilder {
                 throw new UnsupportedOperationException();
             }
 
+            if (locale == null) {
+                // Guard against default locale changing concurrently.
+                locale = Locale.getDefault();
+            }
+
             int len = elements.length;
             for (int i = 0; i < len; i++) {
                 elements[i].printTo(buf, instant, chrono, displayOffset, displayZone, locale);
@@ -2415,6 +2420,11 @@ public class DateTimeFormatterBuilder {
                 throw new UnsupportedOperationException();
             }
 
+            if (locale == null) {
+                // Guard against default locale changing concurrently.
+                locale = Locale.getDefault();
+            }
+
             int len = elements.length;
             for (int i = 0; i < len; i++) {
                 elements[i].printTo(out, instant, chrono, displayOffset, displayZone, locale);
@@ -2427,6 +2437,11 @@ public class DateTimeFormatterBuilder {
                 throw new UnsupportedOperationException();
             }
 
+            if (locale == null) {
+                // Guard against default locale changing concurrently.
+                locale = Locale.getDefault();
+            }
+
             int len = elements.length;
             for (int i=0; i<len; i++) {
                 elements[i].printTo(buf, partial, locale);
@@ -2437,6 +2452,11 @@ public class DateTimeFormatterBuilder {
             DateTimePrinter[] elements = iPrinters;
             if (elements == null) {
                 throw new UnsupportedOperationException();
+            }
+
+            if (locale == null) {
+                // Guard against default locale changing concurrently.
+                locale = Locale.getDefault();
             }
 
             int len = elements.length;

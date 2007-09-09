@@ -145,6 +145,8 @@ Bug fixes since 1.4
 - Defect in localized Gregorian/Julian symbol cache severely impacted formatting
   performance when using null (default) locale.
 
+- DateTimeFormatter specified with locale of null could produce mismatched
+  symbols if default locale changed concurrently.
 
 Feedback
 --------

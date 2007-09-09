@@ -792,6 +792,14 @@ public class DateTimeZoneBuilder {
             out.writeUTF(iNameKey);
             writeMillis(out, iSaveMillis);
         }
+
+        Recurrence rename(String nameKey) {
+            return new Recurrence(iOfYear, nameKey, iSaveMillis);
+        }
+
+        Recurrence renameAppend(String appendNameKey) {
+            return rename((iNameKey + appendNameKey).intern());
+        }
     }
 
     /**
@@ -1441,23 +1449,17 @@ public class DateTimeZoneBuilder {
                 if (tailZone.iStartRecurrence.getNameKey().equals(tailZone.iEndRecurrence.getNameKey())) {
                     System.out.println("Fixing duplicate recurrent name key - " + tailZone.iStartRecurrence.getNameKey());
                     if (tailZone.iStartRecurrence.getSaveMillis() > 0) {
-                        Recurrence r = new Recurrence(
-                            tailZone.iStartRecurrence.iOfYear,
-                            tailZone.iStartRecurrence.iNameKey + "-Summer",
-                            tailZone.iStartRecurrence.iSaveMillis);
                         tailZone = new DSTZone(
                             tailZone.getID(),
                             tailZone.iStandardOffset,
-                            r, tailZone.iEndRecurrence);
+                            tailZone.iStartRecurrence.renameAppend("-Summer"),
+                            tailZone.iEndRecurrence);
                     } else {
-                        Recurrence r = new Recurrence(
-                            tailZone.iEndRecurrence.iOfYear,
-                            tailZone.iEndRecurrence.iNameKey + "-Summer",
-                            tailZone.iEndRecurrence.iSaveMillis);
                         tailZone = new DSTZone(
                             tailZone.getID(),
                             tailZone.iStandardOffset,
-                            tailZone.iEndRecurrence, r);
+                            tailZone.iStartRecurrence,
+                            tailZone.iEndRecurrence.renameAppend("-Summer"));
                     }
                 }
             }

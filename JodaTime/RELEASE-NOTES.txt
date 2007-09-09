@@ -142,6 +142,9 @@ Bug fixes since 1.4
   Clarify javadoc of forTimeZone to indicate that application created
   SimpleTimeZone rules are not parsed [1705180]
 
+- Defect in localized Gregorian/Julian symbol cache severely impacted formatting
+  performance when using null (default) locale.
+
 
 Feedback
 --------

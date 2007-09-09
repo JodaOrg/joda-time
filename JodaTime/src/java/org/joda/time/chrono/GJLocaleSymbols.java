@@ -38,6 +38,9 @@ class GJLocaleSymbols {
     private static WeakHashMap cCache = new WeakHashMap();
 
     public static GJLocaleSymbols forLocale(Locale locale) {
+        if (locale == null) {
+            locale = Locale.getDefault();
+        }
         int index = System.identityHashCode(locale) & (FAST_CACHE_SIZE - 1);
         GJLocaleSymbols symbols = cFastCache[index];
         if (symbols != null && symbols.iLocale.get() == locale) {
@@ -120,11 +123,10 @@ class GJLocaleSymbols {
     private final int iMaxShortMonthLength;
     private final int iMaxHalfdayLength;
 
+    /**
+     * @param locale must not be null
+     */
     private GJLocaleSymbols(Locale locale) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-
         iLocale = new WeakReference(locale);
 
         DateFormatSymbols dfs = new DateFormatSymbols(locale);

@@ -51,9 +51,9 @@
       <classpath refid="build.classpath">
       </classpath>
     </javac>
-    <mkdir dir="${classesdir}/meta-inf">
+    <mkdir dir="${classesdir}/META-INF">
     </mkdir>
-    <copy todir="${classesdir}/meta-inf">
+    <copy todir="${classesdir}/META-INF">
       <fileset dir=".">
         <include name="NOTICE.txt">
         </include>

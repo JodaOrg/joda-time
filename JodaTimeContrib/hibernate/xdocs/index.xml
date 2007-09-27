@@ -27,7 +27,7 @@ It aims to provide the classes necessary to persist Joda-Time objects.
   &lt;% pageContext.setAttribute("now", new org.joda.time.DateTime()); %&gt;
   <b>&lt;joda:format value="${now}" style="SM" /&gt;</b>
 </source>-->
-Version 0.8 was released on 2005-12-29 -
+Version 1.0 was released on 2007-09-27 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Download now</a>
 </p>
 </section>
@@ -49,12 +49,12 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Release 0.8</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357">Release 1.0</a>
 is the current latest release.
-This release is a beta release and may have bugs.
+Please bear in mind that this project is separate from Joda-Time itself.
 </p>
 <p>
-The dependencies are Joda-Time 1.0 or later and Hibernate 3.0 (plus associated dependencies).
+The dependencies are Joda-Time 1.3 or later and Hibernate 3.0 (plus associated dependencies).
 We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 </p>
 </section>
@@ -62,12 +62,20 @@ We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 
 <section name="Support">
 <p>
-The Joda-Time Hibernate support library was contributed to Joda-Time by Mario Ivankovits.
+The Joda-Time Hibernate support library was contributed to Joda-Time by Mario Ivankovits and Gregory Joseph.
+Support on bugs, library usage or enhancement requests is available via:
+</p>
+<ul>
+<li>the joda-interest <a href="mail-lists.html">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
+<li>the joda-time sourceforge <a href="http://sourceforge.net/forum/forum.php?forum_id=337835">forum</a>.</li>
+</ul>
+<p>
+<br />
 </p>
 <p>
-For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>
-(or email direct to the list via <a href="mailto:joda-interest@lists.sourceforge.net">joda-interest@lists.sourceforge.net</a>).
+<br />
 </p>
 </section>
+
 </body>
 </document>

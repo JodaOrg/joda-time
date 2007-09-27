@@ -1,11 +1,11 @@
 
-Joda-Time Contributions area - Hibernate support  v0.8
+Joda-Time Contributions area - Hibernate support  v1.0
 ======================================================
 Joda-Time is a date and time library that vastly improves on the JDK.
 This release provides additional support for Hibernate database persistence.
 See http://www.hibernate.org/ for more details on Hibernate.
 
-This library is a user contribution by Mario Ivankovits, thank you.
+This library is a user contribution by Mario Ivankovits and Gregory Joseph, thank you.
 
 The Joda-Time contributions area hosts additional code that may be of
 use when working with the main Joda-Time library.
@@ -17,6 +17,10 @@ in your own application according to the terms of the LGPL license.
 Please note that this code is not supported in the same way as the main
 Joda-Time code. As such it is possible that methods and classes may come
 and go over time without warning - you have been warned!
+
+v1.0
+----
+Added persistence for LocalDate, LocalTime, LocalDateTime, Period and Duration.
 
 
 Feedback

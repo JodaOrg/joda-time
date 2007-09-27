@@ -4,7 +4,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time-hibernate</artifactId>
   <name>Joda time Hibernate support</name>
-  <currentVersion>0.8</currentVersion>
+  <currentVersion>1.0</currentVersion>
   <shortDescription>Joda time Hibernate support</shortDescription>
   <description>
     Contribution to Joda-Time that adds Hibernate support
@@ -60,6 +60,14 @@
       </roles>
     </developer>
     <developer>
+      <name>Gregory Joseph</name>
+      <id>gjoseph</id>
+      <email></email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
       <name>Stephen Colebourne</name>
       <id>scolebourne</id>
       <email></email>
@@ -75,9 +83,6 @@
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
       <version>1.4</version>
-      <properties>
-        <comment>Compatible with v1.0 or later</comment>
-      </properties>
     </dependency>
     <dependency>
       <groupId>hibernate</groupId>

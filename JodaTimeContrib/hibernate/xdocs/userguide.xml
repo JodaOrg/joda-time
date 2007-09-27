@@ -87,6 +87,16 @@ private DateTime fromDate;
 				<td>VARCHAR</td>
 				<td>Same as above, just uses a human readable representation. ISO8601 format - HH:mm:ss.SSSZ</td>
 			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentDuration</td>
+				<td>VARCHAR</td>
+				<td>The format is PTnS where n is the value</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentPeriod</td>
+				<td>VARCHAR</td>
+				<td>The format is PnYnMnDTnHnMnS where n is the value</td>
+			</tr>
 		</table>
 
 	</subsection>

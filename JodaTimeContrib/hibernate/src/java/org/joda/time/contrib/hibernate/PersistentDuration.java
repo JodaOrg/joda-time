@@ -1,14 +1,10 @@
 package org.joda.time.contrib.hibernate;
 
 import org.joda.time.Duration;
-import org.joda.time.convert.ConverterManager;
-import org.joda.time.convert.DurationConverter;
 
 /**
  * Converts a org.joda.time.Duration to and from Sql for Hibernate.
- * It simply stores the value as a varchar (using Duration.toString),
- * and retrieves it using a DurationConverter.
- * TODO : are we persisting Chronologies ? is it any relevant ?
+ * It simply stores the value as a varchar using Duration.toString.
  *
  * @author gjoseph
  * @author $Author: $ (last edit)
@@ -21,9 +17,7 @@ public class PersistentDuration extends AbstractStringBasedJodaType {
     }
 
     protected Object fromNonNullString(String s) {
-        final DurationConverter converter = ConverterManager.getInstance().getDurationConverter(s);
-        final long durationMillis = converter.getDurationMillis(s);
-        return new Duration(durationMillis);
+        return new Duration(s);
     }
 
     protected String toNonNullString(Object value) {

@@ -80,7 +80,7 @@ Serialization compatible - Yes
 Data compatible - Yes, except
   - Format of time zone data files changed slightly to fix bug
     This mainly affects Australia
-  - DateTimeZone data updated to version 2007g
+  - DateTimeZone data updated to version 2007h
 
 Semantic compatible - Yes
 

@@ -24,6 +24,7 @@ import junit.framework.TestSuite;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.chrono.GJChronology;
@@ -861,6 +862,7 @@ public class TestDateTimeFormat extends TestCase {
         assertEquals(dt, f.parseDateTime("2004/03/09"));
     }
 
+    //-----------------------------------------------------------------------
     public void testParse_pivotYear() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd.MM.yy").withPivotYear(2050).withZone(DateTimeZone.UTC);
         
@@ -885,6 +887,221 @@ public class TestDateTimeFormat extends TestCase {
         
         date = dateFormatter.parseDateTime("25.12.99");
         assertEquals(date.getYear(), 99);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatParse_textMonthJanShort_UK() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 1, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals(str, "23 Jan 2007");
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 1, 23);
+    }
+
+    public void testParse_textMonthJanLong_UK() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        DateTime date = dateFormatter.parseDateTime("23 January 2007");
+        check(date, 2007, 1, 23);
+    }
+
+    public void testFormatParse_textMonthJanShort_France() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 1, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("23 janv. 2007", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 1, 23);
+    }
+
+    public void testFormatParse_textMonthJanLong_France() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        DateTime date = dateFormatter.parseDateTime("23 janvier 2007");
+        check(date, 2007, 1, 23);
+    }
+
+    public void testFormatParse_textMonthApr_France() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 2, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("23 f\u00E9vr. 2007", str);  // e acute
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 2, 23);
+    }
+
+    public void testFormatParse_textMonthAtEnd_France() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM")
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("23 juin", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 1970, 6, 23);
+    }
+
+    public void testFormatParse_textMonthApr_Korean() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("EEEE, d MMMM yyyy HH:mm")
+            .withLocale(Locale.KOREAN).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 3, 8, 22, 0, 0, 0, UTC).toString(dateFormatter);
+        DateTime date = dateFormatter.parseDateTime(str);
+        assertEquals(new DateTime(2007, 3, 8, 22, 0, 0, 0, UTC), date);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatParse_textHalfdayAM_UK() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendClockhourOfHalfday(2)
+            .appendLiteral('-')
+            .appendHalfdayOfDayText()
+            .appendLiteral('-')
+            .appendYear(4, 4)
+            .toFormatter()
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 18, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$06-PM-2007", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 1, 1);
+    }
+
+    public void testFormatParse_textHalfdayAM_France() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendClockhourOfHalfday(2)
+            .appendLiteral('-')
+            .appendHalfdayOfDayText()
+            .appendLiteral('-')
+            .appendYear(4, 4)
+            .toFormatter()
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 18, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$06-PM-2007", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 1, 1);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatParse_textEraAD_UK() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendEraText()
+            .appendYear(4, 4)
+            .toFormatter()
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$AD2007", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 1, 1);
+    }
+
+    public void testFormatParse_textEraAD_France() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendEraText()
+            .appendYear(4, 4)
+            .toFormatter()
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$ap. J.-C.2007", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 2007, 1, 1);
+    }
+
+    public void testFormatParse_textEraBC_France() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendEraText()
+            .appendYear(4, 4)
+            .toFormatter()
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(-1, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$BC-0001", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, -1, 1, 1);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatParse_textYear_UK() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendText(DateTimeFieldType.year())
+            .toFormatter()
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$2007", str);
+        try {
+            dateFormatter.parseDateTime(str);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void testFormatParse_textYear_France() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendText(DateTimeFieldType.year())
+            .toFormatter()
+            .withLocale(Locale.FRANCE).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$2007", str);
+        try {
+            dateFormatter.parseDateTime(str);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFormatParse_textAdjoiningHelloWorld_UK() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendDayOfMonth(2)
+            .appendMonthOfYearShortText()
+            .appendLiteral("HelloWorld")
+            .toFormatter()
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$23JunHelloWorld", str);
+        dateFormatter.parseDateTime(str);
+    }
+
+    public void testFormatParse_textAdjoiningMonthDOW_UK() {
+        DateTimeFormatter dateFormatter = new DateTimeFormatterBuilder()
+            .appendLiteral('$')
+            .appendDayOfMonth(2)
+            .appendMonthOfYearShortText()
+            .appendDayOfWeekShortText()
+            .toFormatter()
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("$23JunSat", str);
+        dateFormatter.parseDateTime(str);
+    }
+
+    //-----------------------------------------------------------------------
+    private void check(DateTime test, int hour, int min, int sec) {
+        assertEquals(hour, test.getYear());
+        assertEquals(min, test.getMonthOfYear());
+        assertEquals(sec, test.getDayOfMonth());
     }
 
 }

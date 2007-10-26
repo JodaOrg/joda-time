@@ -148,6 +148,16 @@ Bug fixes since 1.4
 - DateTimeFormatter specified with locale of null could produce mismatched
   symbols if default locale changed concurrently.
 
+- DateTime parsing of text failed when the text for the locale contained characters
+  other than letters. [1788282]
+  For French, the short text for months ends with '.'.
+  For Korean, the text for months contains a number.
+  The parser was also too greedy, and would absorb all letters it found, preventing
+  parsing a format such as '23JunSat' (month followed by day of week, or any other text).
+  The parser has been rewritten to only match the text that can be produced by the
+  formatter.
+
+
 Feedback
 --------
 All feedback is welcomed via the joda-interest mailing list.

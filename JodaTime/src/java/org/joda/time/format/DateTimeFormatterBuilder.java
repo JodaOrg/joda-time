@@ -18,15 +18,21 @@ package org.joda.time.format;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
+import org.joda.time.MutableDateTime;
 import org.joda.time.ReadablePartial;
+import org.joda.time.MutableDateTime.Property;
 import org.joda.time.field.MillisDurationField;
 import org.joda.time.field.PreciseDateTimeField;
 
@@ -1602,6 +1608,7 @@ public class DateTimeFormatterBuilder {
     static class TextField
             implements DateTimePrinter, DateTimeParser {
 
+        private static Map cParseCache = new HashMap();
         private final DateTimeFieldType iFieldType;
         private final boolean iShort;
 
@@ -1678,27 +1685,56 @@ public class DateTimeFormatterBuilder {
         }
 
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
-            int limit = text.length();
-            int i = position;
-            for (; i<limit; i++) {
-                char c = text.charAt(i);
-                if (c < 'A') {
-                    break;
-                }
-                if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || Character.isLetter(c)) {
-                    continue;
-                }
-                break;
-            }
-
-            if (i == position) {
-                return ~position;
-            }
-
             Locale locale = bucket.getLocale();
-            bucket.saveField(iFieldType, text.substring(position, i), locale);
-
-            return i;
+            // handle languages which might have non ASCII A-Z or punctuation
+            // bug 1788282
+            Set validValues = null;
+            int maxLength = 0;
+            synchronized (cParseCache) {
+                Map innerMap = (Map) cParseCache.get(locale);
+                if (innerMap == null) {
+                    innerMap = new HashMap();
+                    cParseCache.put(locale, innerMap);
+                }
+                Object[] array = (Object[]) innerMap.get(iFieldType);
+                if (array == null) {
+                    validValues = new HashSet(32);
+                    MutableDateTime dt = new MutableDateTime(0L, DateTimeZone.UTC);
+                    Property property = dt.property(iFieldType);
+                    int min = property.getMinimumValueOverall();
+                    int max = property.getMaximumValueOverall();
+                    if (max - min > 32) {  // protect against invalid fields
+                        return ~position;
+                    }
+                    maxLength = property.getMaximumTextLength(locale);
+                    for (int i = min; i <= max; i++) {
+                        property.set(i);
+                        validValues.add(property.getAsShortText(locale));
+                        validValues.add(property.getAsText(locale));
+                    }
+                    if ("en".equals(locale.getLanguage()) && iFieldType == DateTimeFieldType.era()) {
+                        // hack to support for parsing "BCE" and "CE" if the language is English
+                        validValues.add("BCE");
+                        validValues.add("CE");
+                        maxLength = 3;
+                    }
+                    array = new Object[] {validValues, new Integer(maxLength)};
+                    innerMap.put(iFieldType, array);
+                } else {
+                    validValues = (Set) array[0];
+                    maxLength = ((Integer) array[1]).intValue();
+                }
+            }
+            // match the longest string first using our knowledge of the max length
+            int limit = Math.min(text.length(), position + maxLength);
+            for (int i = limit; i > position; i--) {
+                String match = text.substring(position, i);
+                if (validValues.contains(match)) {
+                    bucket.saveField(iFieldType, match, locale);
+                    return i;
+                }
+            }
+            return ~position;
         }
     }
 

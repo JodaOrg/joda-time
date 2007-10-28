@@ -2,8 +2,22 @@
 
 <project name="Joda Time">
 
-  <title>Joda Time</title>
-  <organizationLogo href="">Joda.org</organizationLogo>
+  <bannerLeft>
+    <name>Joda.org</name>
+    <src>images/joda.png</src>
+    <href>http://joda-time.sourceforge.net/</href>
+  </bannerLeft>
+  <bannerRight>
+    <name>Joda-Time</name>
+    <src>images/jodatime.png</src>
+    <href>http://joda-time.sourceforge.net/</href>
+  </bannerRight>
+
+  <poweredBy>
+    <logo name="Joda-Time, hosted at Sourceforge" href="http://sourceforge.net"
+          img="http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2"/>
+  </poweredBy>
+  <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
 
   <body>
     <links>
@@ -54,16 +68,24 @@
       <item name="Javadoc (Development)" href="/apidocs/index.html"/>
     </menu>
     
+    <menu ref="reports"/>
+    
     <menu name="Joda">
       <item name="Joda home" href="http://joda.sourceforge.net"/>
       <item name="Beans" href="http://joda.sourceforge.net/beans.html"/>
       <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
     </menu>
     
-    <footer>
+    <!--footer>
       <a href="http://sourceforge.net">
         <img src="http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" />
       </a>
-    </footer>
+    </footer-->
   </body>
+
+  <skin>
+    <groupId>org.apache.maven.skins</groupId>
+    <artifactId>maven-classic-skin</artifactId>
+  </skin>
+
 </project>

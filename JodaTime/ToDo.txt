@@ -1,10 +1,10 @@
 JodaTime ToDo list
 ==================
 
-For 1.5
+For 1.6
 -------
 
-The TODO list for 1.5 has not been set yet.
+The TODO list for 1.6 has not been set yet.
 Some of the following are likely targets, as they are interesting ideas.
 
 Join joda-interest.at.lists.sourceforge.net to help out!

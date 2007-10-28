@@ -16,9 +16,9 @@ Joda-Time provides a quality replacement for the Java <em>date</em>
 and <em>time</em> classes. The design allows for multiple <em>calendar</em>
 systems, while still providing a simple API.
 The 'default' calendar is the <a href="cal_iso.html">ISO8601</a> standard which
-is used by XML. The Gregorian, Julian, Buddhist, Coptic and Ethiopic systems are also
-included, and we welcome further additions. Supporting classes include time zone,
-duration, format and parsing.
+is used by XML. The Gregorian, Julian, Buddhist, Coptic, Ethiopic and Islamic systems
+are also included, and we welcome further additions. Supporting classes include
+time zone, duration, format and parsing.
 </p>
 <!--p style="color:red; margin-left:20px;">
 JSR 310 has now been launched. It aims to build upon Joda-Time and include it in the JDK.

@@ -92,9 +92,19 @@ Semantic compatible - Yes
 
 Deprecations since 1.4
 ----------------------
-- LocalDate
-  - toDateTimeAtMidnight(), toDateTimeAtMidnight(DateTimeZone)
-    use toDateTimeAtStartOfDay() instead because it avoids exceptions
+- YearMonthDay
+  - use LocalDate
+- TimeOfDay
+  - use LocalTime
+  - LocalDate and LocalTime have a much better internal implementation and have
+    been available since v1.3. Both have been effectively deprecated in the javadoc
+    for over a year to enable a gentle transition. In this release, they are now
+    formally deprecated, however they won't be removed until a v2.0 which won't
+    occur until 2009 at the earliest.
+
+- LocalDate.toDateTimeAtMidnight()
+  LocalDate.toDateTimeAtMidnight(DateTimeZone)
+  - use toDateTimeAtStartOfDay() instead because it avoids exceptions
 
 
 Bug fixes since 1.4

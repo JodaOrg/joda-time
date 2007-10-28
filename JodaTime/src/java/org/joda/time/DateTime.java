@@ -1225,6 +1225,7 @@ public final class DateTime
      * same millis and chronology.
      * 
      * @return a YearMonthDay using the same millis and chronology
+     * @deprecated Use LocalDate instead of YearMonthDay
      */
     public YearMonthDay toYearMonthDay() {
         return new YearMonthDay(getMillis(), getChronology());
@@ -1235,6 +1236,7 @@ public final class DateTime
      * same millis and chronology.
      * 
      * @return a TimeOfDay using the same millis and chronology
+     * @deprecated Use LocalTime instead of TimeOfDay
      */
     public TimeOfDay toTimeOfDay() {
         return new TimeOfDay(getMillis(), getChronology());

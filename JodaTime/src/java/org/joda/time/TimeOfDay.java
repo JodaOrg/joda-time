@@ -30,11 +30,6 @@ import org.joda.time.format.ISODateTimeFormat;
  * TimeOfDay is an immutable partial supporting the hour, minute, second
  * and millisecond fields.
  * <p>
- * NOTE: This class is effectively deprecated. New applications should
- * use {@link LocalTime} which has a better internal implementation.
- * This class has not yet been formally deprecated due to the large number
- * of existing users.
- * <p>
  * NOTE: This class only supports the four fields listed above. Thus, you
  * cannot query the millisOfDay or secondOfDay fields for example.
  * The new <code>LocalTime</code> class removes this restriction.
@@ -64,6 +59,8 @@ import org.joda.time.format.ISODateTimeFormat;
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  * @since 1.0
+ * @deprecated Use LocalTime which has a much better internal implementation and
+ *  has been available since 1.3
  */
 public final class TimeOfDay
         extends BasePartial
@@ -1014,6 +1011,7 @@ public final class TimeOfDay
      * 
      * @author Stephen Colebourne
      * @since 1.0
+     * @deprecated Use LocalTime which has a much better internal implementation
      */
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 

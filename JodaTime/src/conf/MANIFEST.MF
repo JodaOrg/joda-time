@@ -1,9 +1,9 @@
 Package: org.joda.time
-Extension-Name: @name@
+Extension-Name: joda-time
 Specification-Title: Joda-Time
 Specification-Vendor: Joda.org
-Specification-Version: 1.4
+Specification-Version: 1.5
 Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time
-Implementation-Version: @version@
+Implementation-Version: 1.5
 Implementation-Vendor-Id: org.joda

@@ -16,7 +16,7 @@ The download will contain the joda-time-1.5.jar.
 Once you add this to your classpath you will be able to use Joda-Time.
 </p>
 <p>
-The binary download also includes joda-time-1.5-src-ide.zip, which is a zip file
+The binary download also includes joda-time-1.5-sources.jar, which is a jar file
 of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 </p>
 <p>

@@ -20,6 +20,23 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.4
 ----------------------
+- LocalDate
+  - add toDateTimeAtStartOfDay(), toDateTimeAtStartOfDay(DateTimeZone)
+  methods to replace toDateTimeAtMidnight() which avoid issues with time zones
+  that do not have midnight at spring DST cutover
+
+- LocalDate
+  - add toLocalDateTime()
+    provide mechanism to create LocalDateTime from LocalDate and LocalTime
+
+- Performance enhancement for LocalDate, LocalTime and LocalDateTime
+  - equals, compareTo, Period construction
+
+- Partial
+  - add isMatch(ReadablePartial)
+    provide mechanism to match a Partial, such as 'Friday the thirteenth' to
+    another partial, such as a LocalDate
+
 - Period
   - add toStandardDuration()
   - add toStandardWeeks(), toStandardDays(), toStandardHours(),
@@ -35,18 +52,6 @@ Enhancements since 1.4
   - add normalizedStandard(), normalizedStandard(PeriodType)
   methods to normalize the period back to standard field ranges, such as
   normalizing 1 year 15 months to 2 years 3 months
-
-- LocalDate
-  - add toDateTimeAtStartOfDay(), toDateTimeAtStartOfDay(DateTimeZone)
-  methods to replace toDateTimeAtMidnight() which avoid issues with time zones
-  that do not have midnight at spring DST cutover
-
-- LocalDate
-  - add toLocalDateTime()
-    provide mechanism to create LocalDateTime from LocalDate and LocalTime
-
-- Performance enhancement for LocalDate, LocalTime and LocalDateTime
-  - equals, compareTo, Period construction
 
 - Period.toString(PeriodFormatter), MutablePeriod.toString(PeriodFormatter)
   - allow periods to be directly formatted, as with datetimes

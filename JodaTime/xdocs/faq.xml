@@ -34,13 +34,13 @@ Question not answered? Suggest one via the <a href="mail-lists.html">mailing lis
 
 
 <a name="newzonerules" />
-<subsection name="Does Joda-Time support the new US and Canada time zone rules?">
+<subsection name="Does Joda-Time support the 2007 US and Canada time zone rules?">
 <p>
 The time zone rules occur in three key places, your operating system, the JDK and Joda-Time.
 To be sure of hitting no issues, you should ensure that all three of these have been updated.
 </p>
 <p>
-Version 1.5 of Joda-Time contains all the daylight savings rule updates.
+Version 1.5 of Joda-Time contains all the daylight savings rule updates for the 2007 US change.
 For earlier versions of Joda-Time the situation is more complex:
 </p>
 <p>

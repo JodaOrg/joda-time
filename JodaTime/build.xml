@@ -382,7 +382,7 @@
 	          todir="${build.dist.bundle}"/>
     
 	<fixcrlf srcdir="${build.dist.bundle}" eol="crlf" includes="*.txt"/>
-	<jar    jarfile="${build.fullname}-bundle.zip" basedir="${build.dist.bundle}"/>
+	<jar    jarfile="${build.fullname}-bundle.jar" basedir="${build.dist.bundle}"/>
     <delete     dir="${build.dist.bundle}"/>
 	
   </target>

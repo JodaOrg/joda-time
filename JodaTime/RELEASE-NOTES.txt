@@ -34,7 +34,7 @@ Enhancements since 1.4
 
 - Partial
   - add isMatch(ReadablePartial)
-    provide mechanism to match a Partial, such as 'Friday the thirteenth' to
+    provide mechanism to match a Partial, such as 'Friday the Thirteenth' to
     another partial, such as a LocalDate
 
 - Period
@@ -73,12 +73,16 @@ Enhancements since 1.4
 Compatibility with 1.4
 ----------------------
 Binary compatible - Yes, except
-  Internal class LenientDateTimeField has an incompatible change to
-  getInstance() and the constructor
+  - Internal class LenientDateTimeField has an incompatible change to
+    getInstance() and the constructor
+  - Internal class DateTimeZoneBuilder has an incompatible change to
+    toDateTime() and writeTo()
 
 Source compatible - Yes, except
-  Internal class LenientDateTimeField has an incompatible change to
-  getInstance() and the constructor
+  - Internal class LenientDateTimeField has an incompatible change to
+    getInstance() and the constructor
+  - Internal class DateTimeZoneBuilder has an incompatible change to
+    toDateTime() and writeTo()
 
 Serialization compatible - Yes
 

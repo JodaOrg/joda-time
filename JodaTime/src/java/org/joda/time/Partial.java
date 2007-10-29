@@ -673,6 +673,7 @@ public final class Partial
      * @return true if this partial matches the specified partial
      * @throws IllegalArgumentException if the partial is null
      * @throws IllegalArgumentException if the fields of the two partials do not match
+     * @since 1.5
      */
     public boolean isMatch(ReadablePartial partial) {
         if (partial == null) {

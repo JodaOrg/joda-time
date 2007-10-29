@@ -122,6 +122,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      * @param fieldType  type of field being set
      * @param value  illegal value being set
      * @param explain  an explanation
+     * @since 1.5
      */
     public IllegalFieldValueException(DateTimeFieldType fieldType,
                                       Number value, String explain) {

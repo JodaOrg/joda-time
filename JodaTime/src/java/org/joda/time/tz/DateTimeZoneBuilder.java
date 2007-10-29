@@ -436,6 +436,7 @@ public class DateTimeZoneBuilder {
      * decode the data into a DateTimeZone object.
      *
      * @param out output stream to receive encoded DateTimeZone.
+     * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, OutputStream out) throws IOException {
         if (out instanceof DataOutput) {
@@ -450,6 +451,7 @@ public class DateTimeZoneBuilder {
      * decode the data into a DateTimeZone object.
      *
      * @param out output stream to receive encoded DateTimeZone.
+     * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, DataOutput out) throws IOException {
         // pass false so zone id is not written out

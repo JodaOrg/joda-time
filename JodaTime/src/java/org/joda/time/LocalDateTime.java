@@ -529,6 +529,7 @@ public final class LocalDateTime
      * of 1970-01-01T00:00:00 (not fixed to any specific time zone).
      *
      * @return the number of milliseconds since 1970-01-01T00:00:00
+     * @since 1.5 (previously private)
      */
     protected long getLocalMillis() {
         return iLocalMillis;

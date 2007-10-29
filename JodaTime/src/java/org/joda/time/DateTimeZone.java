@@ -886,6 +886,7 @@ public abstract class DateTimeZone implements Serializable {
      * @param instantUTC  the UTC instant to convert to local
      * @return the local instant with the same local time
      * @throws ArithmeticException if the result overflows a long
+     * @since 1.5
      */
     public long convertUTCToLocal(long instantUTC) {
         int offset = getOffset(instantUTC);
@@ -907,6 +908,7 @@ public abstract class DateTimeZone implements Serializable {
      * @return the UTC instant with the same local time, 
      * @throws ArithmeticException if the result overflows a long
      * @throws IllegalArgumentException if the zone has no eqivalent local time
+     * @since 1.5
      */
     public long convertLocalToUTC(long instantLocal, boolean strict) {
         // get the offset at instantLocal (first estimate)

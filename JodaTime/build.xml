@@ -57,11 +57,13 @@
   <property name="build.tz"                value="${build.classes}/org/joda/time/tz/data"/>
   <property name="build.tests"             value="${build}/tests"/>
   <property name="build.docs"              value="${build}/docs"/>
-  <property name="build.srcide"            value="${build}/srcide"/>
+  <property name="build.sources"           value="${build}/sources"/>
+  <property name="build.javadoc"           value="${build}/javadoc"/>
   <property name="build.dist"              value="${build}/dist"/>
   <property name="build.fullname"          value="${build}/${component.fullname}"/>
   <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
   <property name="build.dist.src.fullname" value="${build.dist.fullname}-src"/>
+  <property name="build.dist.bundle"       value="${build.dist.fullname}-bundle"/>
 
   <property name="repo" value="${user.home}/.maven/repository" />
 
@@ -178,7 +180,8 @@
              debug="${compile.debug}"
         debuglevel="${compile.debuglevel}"
        deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+          optimize="${compile.optimize}"
+    	    source="1.3" target="1.3">
       <classpath refid="compile.classpath"/>
     </javac>
   </target>
@@ -279,23 +282,39 @@
 
 <!-- ====================================================================== -->
 
-  <target name="src.ide.zip">
-    <mkdir      dir="${build.srcide}"/>
-    <copy     todir="${build.srcide}">
-  	  <fileset dir="${source.home}" includes="**/*.java" />
+  <target name="javadoc.jar">
+    <mkdir      dir="${build.javadoc}"/>
+    <copy     todir="${build.javadoc}">
+  	  <fileset dir="${build.docs}" includes="**/*" />
   	</copy>
-    <mkdir      dir="${build.srcide}/META-INF"/>
+    <mkdir      dir="${build.javadoc}/META-INF"/>
     <copy      file="LICENSE.txt"
-             tofile="${build.srcide}/META-INF/LICENSE.txt"/>
+             tofile="${build.javadoc}/META-INF/LICENSE.txt"/>
     <copy      file="NOTICE.txt"
-             tofile="${build.srcide}/META-INF/NOTICE.txt"/>
-    <jar    jarfile="${build.fullname}-src-ide.zip"
-            basedir="${build.srcide}" />
+             tofile="${build.javadoc}/META-INF/NOTICE.txt"/>
+    <jar    jarfile="${build.fullname}-javadoc.jar"
+            basedir="${build.javadoc}" />
   </target>
 
 <!-- ====================================================================== -->
 
-  <target name="dist" depends="compile,jar,test.jar,javadoc,src.ide.zip"
+  <target name="sources.jar">
+    <mkdir      dir="${build.sources}"/>
+    <copy     todir="${build.sources}">
+  	  <fileset dir="${source.home}" includes="**/*.java" />
+  	</copy>
+    <mkdir      dir="${build.sources}/META-INF"/>
+    <copy      file="LICENSE.txt"
+             tofile="${build.sources}/META-INF/LICENSE.txt"/>
+    <copy      file="NOTICE.txt"
+             tofile="${build.sources}/META-INF/NOTICE.txt"/>
+    <jar    jarfile="${build.fullname}-sources.jar"
+            basedir="${build.sources}" />
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="dist" depends="compile,jar,test.jar,javadoc,javadoc.jar,sources.jar"
           description="Create binary distribution">
     
 	<!-- binary -->
@@ -306,11 +325,10 @@
     <copy      file="RELEASE-NOTES.txt" todir="${build.dist.fullname}"/>
     <copy      file="${build.fullname}.jar"
               todir="${build.dist.fullname}"/>
-    <copy      file="${build.fullname}-src-ide.zip"
+    <copy      file="${build.fullname}-sources.jar"
               todir="${build.dist.fullname}"/>
-    <copy     todir="${build.dist.fullname}">
-      <fileset  dir="${build}" includes="docs/**/*.*"/>
-    </copy>
+    <copy      file="${build.fullname}-javadoc.jar"
+              todir="${build.dist.fullname}"/>
     
 	<fixcrlf srcdir="${build.dist.fullname}" eol="lf" includes="*.txt"/>
 	<tar   destfile="${build.fullname}.tar" basedir="${build.dist}"/>
@@ -349,6 +367,24 @@
 	<fixcrlf srcdir="${build.dist.src.fullname}" eol="crlf" includes="*.txt,*.properties,*.xml"/>
 	<zip   destfile="${build.fullname}-src.zip" basedir="${build.dist}"/>
     <delete     dir="${build.dist.src.fullname}"/>
+  	
+	<!-- bundle -->
+    <delete     dir="${build.dist.bundle}"/>
+    <mkdir      dir="${build.dist.bundle}"/>
+    <copy      file="LICENSE.txt" todir="${build.dist.bundle}"/>
+    <copy      file="NOTICE.txt" todir="${build.dist.bundle}"/>
+    <copy      file="project.xml" todir="${build.dist.bundle}"/>
+    <copy      file="${build.fullname}.jar"
+              todir="${build.dist.bundle}"/>
+    <copy      file="${build.fullname}-sources.jar"
+              todir="${build.dist.bundle}"/>
+	<copy      file="${build.fullname}-javadoc.jar"
+	          todir="${build.dist.bundle}"/>
+    
+	<fixcrlf srcdir="${build.dist.bundle}" eol="crlf" includes="*.txt"/>
+	<jar    jarfile="${build.fullname}-bundle.zip" basedir="${build.dist.bundle}"/>
+    <delete     dir="${build.dist.bundle}"/>
+	
   </target>
 
 <!-- ====================================================================== -->
@@ -408,4 +444,13 @@
     </clirr>
   </target>
 
+  <!--property name="emma.dir" value="${lib}" />
+  <path id="emma.lib" >
+    <pathelement location="${emma.dir}/emma.jar" />
+    <pathelement location="${emma.dir}/emma_ant.jar" />
+  </path>
+  <target name="emma" description="turns on EMMA's on-the-fly instrumentation mode" >
+  	<taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+    <property name="emma.enabled" value="true" />
+  </target-->
 </project>

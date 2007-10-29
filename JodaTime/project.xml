@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<project>
 <!-- You are strongly recommended to use ant for compiling and building -->
 <!-- We only use and test maven for website construction -->
 
-<project>
   <pomVersion>3</pomVersion>
   <groupId>joda-time</groupId>
   <artifactId>joda-time</artifactId>
@@ -104,7 +104,7 @@
       <name>Stephen Colebourne</name>
       <id>scolebourne</id>
       <email>scolebourne@joda.org</email>
-      <organization>SITA ATS Ltd</organization>
+      <organization></organization>
       <roles>
         <role>Project Lead</role>
       </roles>
@@ -123,9 +123,6 @@
   <contributors>
     <contributor>
       <name>Guy Allard</name>
-    </contributor>
-    <contributor>
-      <name>Blair Martin</name>
     </contributor>
     <contributor>
       <name>Fredrik Borgh</name>
@@ -150,6 +147,9 @@
     </contributor>
     <contributor>
       <name>Al Major</name>
+    </contributor>
+    <contributor>
+      <name>Blair Martin</name>
     </contributor>
     <contributor>
       <name>Julen Parra</name>
@@ -209,12 +209,13 @@
   <reports>
      <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
-     <report>maven-checkstyle-plugin</report>
-     <!-- <report>maven-findbugs-plugin</report> -->
-     <!-- <report>maven-jdiff-plugin</report> -->
-     <!-- <report>maven-clover-plugin</report> -->
-     <!-- <report>maven-jcoverage-plugin</report> -->
-     <!-- <report>maven-cobertura-plugin</report> -->
+     <!--report>maven-checkstyle-plugin</report-->
+     <!--report>maven-findbugs-plugin</report-->
+     <!--report>maven-jdiff-plugin</report-->
+     <!--report>maven-clover-plugin</report-->
+     <!--report>maven-jcoverage-plugin</report-->
+     <!--report>maven-cobertura-plugin</report-->
+     <report>maven-emma-plugin</report>
      <report>maven-developer-activity-plugin</report>
      <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>
@@ -225,5 +226,10 @@
      <!--report>maven-statcvs-plugin</report-->
      <!--report>maven-tasklist-plugin</report-->
   </reports>
+  
+  <!-- To install Emma, run:
+   maven plugin:download -DgroupId=emma -DartifactId=maven-emma-plugin -Dversion=0.6 -->
+  <!-- To run Jdiff:
+   copy the src folder from the previous version to target/jdiff/{tag} -->
 
 </project>

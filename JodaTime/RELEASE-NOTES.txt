@@ -7,7 +7,7 @@ Date and Calendar classes.
 This is the sixth full release of Joda-Time.
 This release focuses on new features, but also include some bug fixes.
 
-We recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.

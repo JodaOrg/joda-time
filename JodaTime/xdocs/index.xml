@@ -58,7 +58,7 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/index.html?org/jod
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 1.5 was released on 2007-10-28 -
+Version 1.5 was released on 2007-10-29 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
 </p>
 </section>
@@ -147,7 +147,7 @@ Various documentation is available:
 is the current latest release.
 This release is considered stable and worthy of the 1.x tag.
 It has extensive testing suites and has been used in production.
-We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+We now recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 </p>
 <p>
 We will support the 1.x product line using standard Java mechanisms.

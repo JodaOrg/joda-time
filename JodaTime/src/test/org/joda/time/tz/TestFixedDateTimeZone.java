@@ -15,6 +15,9 @@
  */
 package org.joda.time.tz;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
@@ -83,8 +86,8 @@ public class TestFixedDateTimeZone extends TestCase {
         java.util.TimeZone tz = zone.toTimeZone();
         
         assertEquals(60000, tz.getRawOffset());
-        assertEquals(60000, tz.getOffset(1167638400000L));
-        assertEquals(60000, tz.getOffset(1185951600000L));
+        assertEquals(60000, getOffset(tz, 1167638400000L));
+        assertEquals(60000, getOffset(tz, 1185951600000L));
     }
 
     public void testToTimeZone2() throws Exception {
@@ -92,8 +95,17 @@ public class TestFixedDateTimeZone extends TestCase {
         java.util.TimeZone tz = zone.toTimeZone();
         
         assertEquals(1, tz.getRawOffset());
-        assertEquals(1, tz.getOffset(1167638400000L));
-        assertEquals(1, tz.getOffset(1185951600000L));
+        assertEquals(1, getOffset(tz, 1167638400000L));
+        assertEquals(1, getOffset(tz, 1185951600000L));
+    }
+
+    /** Make test compile on JDK 1.3. */
+    private int getOffset(TimeZone zone, long millis) {
+        Date date = new Date(millis);
+        if (zone.inDaylightTime(date)) {
+            return zone.getRawOffset() + 3600000;
+        }
+        return zone.getRawOffset();
     }
 
 }

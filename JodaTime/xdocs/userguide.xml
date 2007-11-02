@@ -338,6 +338,16 @@ The TimeZone implementation is based on data provided by the public
 otherwise known as the Olson database.
 A full list of timezone ids can be found <a href="timezones.html">here</a>
 </p>
+<p>
+Joda-Time provides a default time zone which is used in many operations when a
+time zone is not specified. This is similar in concept to the default time zone
+of the <code>java.util.TimeZone</code> class. The value can be accessed and updated
+via static methods:
+<source>
+DateTimeZone defaultZone = DateTimeZone.getDefault();
+DateTimeZone.setDefault(myZone);
+</source>
+</p>
 </section>
 
 <!-- ========================================================================= -->
@@ -581,7 +591,7 @@ As you would expect, all the methods we showed above in the day-of-week example
 can be applied to any of these properties. For example, to extract the standard
 month, day and year fields from a datetime, we can write
 <source>
-    String month = dt.monthOfYear().getText();
+    String month = dt.monthOfYear().getAsText();
     int maxDay = dt.dayOfMonth().getMaximumValue();
     boolean leapYear = dt.yearOfEra().isLeap();
 </source>
@@ -913,14 +923,14 @@ provided on the datetime classes such as DateTime.
 <source>
     DateTime dt = new DateTime();
     String a = dt.toString();
-    String b = dt.toString("dd:mm:yy");
+    String b = dt.toString("dd:MM:yy");
     String c = dt.toString("EEE", Locale.FRENCH);
     DateTimeFormatter fmt = ...;
     String d = dt.toString(fmt);
 </source>
 Each of the four results demonstrates a different way to use the formatters.
 Result <code>a</code> is the standard ISO8601 string for the DateTime.
-Result <code>b</code> will output using the pattern 'dd:mm:yy' (note that
+Result <code>b</code> will output using the pattern 'dd:MM:yy' (note that
 patterns are cached internally).
 Result <code>c</code> will output using the pattern 'EEE' in French.
 Result <code>d</code> will output using the specified formatter, and is thus

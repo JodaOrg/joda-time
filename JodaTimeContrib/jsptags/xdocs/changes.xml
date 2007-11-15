@@ -8,6 +8,12 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="1.0.1" date="2007-11-15" description="Release 1.0.1">
+      <action dev="scolebourne" type="fix">
+        Fix missing directory tag in project.xml.
+      </action>              
+    </release>
+
     <release version="1.0" date="2006-07-01" description="First full release">
       <action dev="scolebourne" type="add">
         Add documentation about servlet specification needed.

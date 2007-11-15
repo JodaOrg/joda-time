@@ -10,6 +10,7 @@
       <item name="Joda-Time" href="../../index.html"/>
       <item name="JSP tags" href="/index.html"/>
       <item name="Hibernate" href="../hibernate/index.html"/>
+      <item name="I18N" href="../i18n/index.html"/>
     </links>
     <menu name="Joda Time JSP tags">
       <item name="Overview" href="index.html"/>

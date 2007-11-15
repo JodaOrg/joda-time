@@ -1,10 +1,10 @@
-Joda-Time JSP tags contributed project version 1.1
---------------------------------------------------
+Joda-Time JSP tags contributed project version 1.0.1
+----------------------------------------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
 
-This is the 1.1 release of the JSP tag library support classes.
+This is the 1.0.1 release of the JSP tag library support classes.
 These classes were converted from code at Jakarta Taglibs by Jim Newsham.
 Please check the NOTICE.txt for the Apache credit.
 
@@ -23,6 +23,7 @@ and DateTimeZone objects.
 
 Changes since 1.0
 -----------------
+Fix missing directory tag in project.xml
 
 
 Build
@@ -49,7 +50,10 @@ Example:
   <% pageContext.setAttribute("now", new org.joda.time.DateTime()); %>
   <joda:format value="${now}" style="SM"/>
 
-Formats ReadableInstant (including DateTime) and ReadablePartial (including YearMonthDay and TimeOfDay) objects.  The var and scope attributes can be used to set the value of a variable instead of printing the result.  The time zone may be specified using an attribute, en enclosing <joda:dateTimeZone/> tag,  preceding <joda:timeZone/> tag, or via the "org.joda.time.dateTimeZone" scoped variable.
+Formats ReadableInstant (including DateTime) and ReadablePartial (including LocalDateTime, LocalDate and LocalTime) objects.
+The var and scope attributes can be used to set the value of a variable instead of printing the result.
+The time zone may be specified using an attribute, en enclosing <joda:dateTimeZone/> tag,
+preceding <joda:timeZone/> tag, or via the "org.joda.time.dateTimeZone" scoped variable.
 
 Attributes:
 
@@ -68,11 +72,15 @@ Example:
   <joda:parseDateTime var="parsed" pattern="yy/M/d" value="05/11/19"/>
   <joda:format value="${parsed}" style="L-"/>
 
-Parses a string into a DateTime object.  The var and scope attributes can be used to set the value of a variable instead of printing the result.  The time zone may be specified using an attribute, en enclosing <joda:dateTimeZone/> tag,  preceding <joda:timeZone/> tag, or via the "org.joda.time.dateTimeZone" scoped variable.
+Parses a string into a DateTime object.
+The var and scope attributes can be used to set the value of a variable instead of printing the result.
+The time zone may be specified using an attribute, en enclosing <joda:dateTimeZone/> tag,
+preceding <joda:timeZone/> tag, or via the "org.joda.time.dateTimeZone" scoped variable.
 
 Attributes:
 
-value (required; unless value is nested within tag).  Must be a string which can be parsed into a DateTime according to the parsing options specified.
+value (required; unless value is nested within tag).
+ Must be a string which can be parsed into a DateTime according to the parsing options specified.
 var.  The scoped variable to set.
 scope.  The scope of the variable to set.
 locale.  The locale to use for parsing.
@@ -90,7 +98,8 @@ Example:
     <joda:format value="${datetime}"/>
   </joda:dateTimeZone>
 
-Provides a default time zone to all <joda:format/> tags which are nested within it.  The <joda:format/> tag may override this value with an explicit dateTimeZone attribute.
+Provides a default time zone to all <joda:format/> tags which are nested within it.
+The <joda:format/> tag may override this value with an explicit dateTimeZone attribute.
 
 Attributes:
 
@@ -105,7 +114,10 @@ Example.
   <joda:dateTimeZone value="${bkk}"/>
   <joda:format value="${datetime}"/>
 
-Sets the time zone object in the given scoped variable.  If var is not specified, it will be stored in a scoped variable called "org.joda.time.dateTimeZone".  The <joda:format/> tag will default to using a time zone stored under this name if it does not have a dateTimeZone attribute and is not nested within a <joda:dateTimeZone/> tag.
+Sets the time zone object in the given scoped variable.
+If var is not specified, it will be stored in a scoped variable called "org.joda.time.dateTimeZone".
+The <joda:format/> tag will default to using a time zone stored under this name if it does not have
+a dateTimeZone attribute and is not nested within a <joda:dateTimeZone/> tag.
 
 Attributes:
 

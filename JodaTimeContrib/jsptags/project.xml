@@ -4,7 +4,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time-jsptags</artifactId>
   <name>Joda time JSP tags support</name>
-  <currentVersion>1.1-SNAPSHOT</currentVersion>
+  <currentVersion>1.0.1</currentVersion>
   <shortDescription>Joda-Time JSP tags support</shortDescription>
   <description>
     Contribution to Joda-Time that adds JSP tags support
@@ -32,7 +32,7 @@
       <name>Joda Interest list</name>
       <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
       <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
-      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=joda-interest</archive>
     </mailingList>
   </mailingLists>
 
@@ -51,19 +51,14 @@
 
   <versions>
     <version>
-      <id>0.8</id>
-      <name>0.8</name>
-      <tag>v0_8_000</tag>
-    </version>
-    <version>
-      <id>0.9</id>
-      <name>0.9</name>
-      <tag>v0_9_000</tag>
-    </version>
-    <version>
       <id>1.0</id>
       <name>1.0</name>
-      <tag>v1_0_000</tag>
+      <tag>JSPTAGS_v1_0_0</tag>
+    </version>
+    <version>
+      <id>1.0.1</id>
+      <name>1.0.1</name>
+      <tag>JSPTAGS_v1_0_1</tag>
     </version>
   </versions>
 
@@ -91,7 +86,7 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.2</version>
+      <version>1.5</version>
       <properties>
         <comment>Compatible with v1.0 or later</comment>
       </properties>
@@ -124,6 +119,7 @@
     <resources>
       <resource>
         <targetPath>META-INF</targetPath>
+        <directory>.</directory>
         <includes>
           <include>NOTICE.txt</include>
         </includes>
@@ -139,18 +135,18 @@
   </build>
 
   <reports>
-     <report>maven-changelog-plugin</report>
      <report>maven-changes-plugin</report>
-     <report>maven-checkstyle-plugin</report>
-     <!-- <report>maven-clover-plugin</report> -->
-     <!-- <report>maven-jcoverage-plugin</report> -->
-     <report>maven-developer-activity-plugin</report>
-     <report>maven-file-activity-plugin</report>
      <report>maven-javadoc-plugin</report>
-     <!-- <report>maven-jellydoc-plugin</report> -->
-     <!-- <report>maven-junit-report-plugin</report> -->
      <report>maven-jxr-plugin</report>
      <report>maven-license-plugin</report>
+     <!-- report>maven-changelog-plugin</report-->
+     <!-- report>maven-checkstyle-plugin</report-->
+     <!-- <report>maven-clover-plugin</report> -->
+     <!-- <report>maven-jcoverage-plugin</report> -->
+     <!-- report>maven-developer-activity-plugin</report-->
+     <!-- report>maven-file-activity-plugin</report-->
+     <!-- <report>maven-jellydoc-plugin</report> -->
+     <!-- <report>maven-junit-report-plugin</report> -->
      <!--report>maven-linkcheck-plugin</report-->
      <!--report>maven-statcvs-plugin</report-->
      <!--report>maven-tasklist-plugin</report-->

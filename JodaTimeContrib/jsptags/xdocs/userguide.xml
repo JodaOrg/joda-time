@@ -31,7 +31,7 @@ You will need a servlet container which supports Servlet 2.4, JSP 2.0, JSTL 1.1.
 One such container is <a href="http://tomcat.apache.org">Tomcat 5</a>.
 </p>
 <p>
-The simplest setup is to copy the joda-time-1.2.jar and joda-time-jsptags-1.0.jar
+The simplest setup is to copy the joda-time-1.2.jar and joda-time-jsptags-1.0.1.jar
 to the WEB-INF/lib directory of your web application.
 </p>
 <p>
@@ -53,7 +53,7 @@ If you do not do this then EL expressions will not work as expected.
 <section name="Format tag">
 <p>
 This tag formats ReadableInstant (including DateTime) and ReadablePartial
-(including YearMonthDay and TimeOfDay) objects.
+(including LocalDateTime, LocalDate and LocalTime) objects.
 The time zone may be specified using an attribute, an enclosing &lt;joda:dateTimeZone/&gt; tag,
 preceding &lt;joda:timeZone/&gt; tag, or via the "org.joda.time.dateTimeZone" scoped variable.
 </p>

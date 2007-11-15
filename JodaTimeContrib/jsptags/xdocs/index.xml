@@ -28,7 +28,7 @@ As a flavour of the tags, here's how to format a Joda-Time object in JSP:
   &lt;% pageContext.setAttribute("now", new org.joda.time.DateTime()); %&gt;
   <b>&lt;joda:format value="${now}" style="SM" /&gt;</b>
 </source>
-Version 1.0 was released on 2005-07-01 -
+Version 1.0.1 was released on 2005-11-15 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=161360">Download now</a>
 </p>
 </section>
@@ -50,9 +50,9 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=161360">Release 1.0</a>
+<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=161360">Release 1.0.1</a>
 is the current latest release.
-This release is a beta and may have bugs.
+This release is a very minor patch to 1.0, simply to fix a maven issue.
 </p>
 <p>
 The dependencies are Joda-Time 1.0 or later, the Servlet 2.4 API, the JSP 2.0 API,
@@ -68,8 +68,8 @@ The Joda-Time JSP tags library was contributed to Joda-Time by Jim Newsham.
 It is based on the code at <a href="http://jakarta.apache.org/taglibs">Jakarta Taglibs</a>.
 </p>
 <p>
-For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>
-(or email direct to the list via <a href="mailto:joda-interest@lists.sourceforge.net">joda-interest@lists.sourceforge.net</a>).
+For support on bugs, using the library or to volunteer please contact the <a href="mail-lists.html">mailing list</a>.
+Due to spam, you must be subscribed to post to the mailing list.
 </p>
 </section>
 </body>

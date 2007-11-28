@@ -42,6 +42,8 @@ Deprecations since 1.5
 
 Bug fixes since 1.5
 -------------------
+- Parsing (regression)
+  Support parsing all upper-case and all lower-case text
 
 
 Feedback

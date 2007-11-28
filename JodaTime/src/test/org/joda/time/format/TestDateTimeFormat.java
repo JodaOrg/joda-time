@@ -900,11 +900,39 @@ public class TestDateTimeFormat extends TestCase {
         check(date, 2007, 1, 23);
     }
 
+    public void testFormatParse_textMonthJanShortLowerCase_UK() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        DateTime date = dateFormatter.parseDateTime("23 jan 2007");
+        check(date, 2007, 1, 23);
+    }
+
+    public void testFormatParse_textMonthJanShortUpperCase_UK() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        DateTime date = dateFormatter.parseDateTime("23 JAN 2007");
+        check(date, 2007, 1, 23);
+    }
+
     public void testParse_textMonthJanLong_UK() {
         DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
             .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
         
         DateTime date = dateFormatter.parseDateTime("23 January 2007");
+        check(date, 2007, 1, 23);
+    }
+
+    public void testFormatParse_textMonthJanLongLowerCase_UK() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        DateTime date = dateFormatter.parseDateTime("23 january 2007");
+        check(date, 2007, 1, 23);
+    }
+
+    public void testFormatParse_textMonthJanLongUpperCase_UK() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM yyyy")
+            .withLocale(Locale.UK).withZone(DateTimeZone.UTC);
+        DateTime date = dateFormatter.parseDateTime("23 JANUARY 2007");
         check(date, 2007, 1, 23);
     }
 

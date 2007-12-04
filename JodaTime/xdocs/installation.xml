@@ -12,16 +12,17 @@
 <p>
 To use Joda-Time you need to
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">download the latest version</a>.
-The download will contain the joda-time-1.5.jar.
+The download will contain the joda-time-1.5.1.jar.
 Once you add this to your classpath you will be able to use Joda-Time.
 </p>
 <p>
-The binary download also includes joda-time-1.5-sources.jar, which is a jar file
+The binary download also includes joda-time-1.5.1-sources.jar, which is a jar file
 of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 </p>
 <p>
 The release notes for upgraders can be found here:
 <ul>
+<li><a href="upgradeto151.html">Version 1.5 to Version 1.5.1</a></li>
 <li><a href="upgradeto150.html">Version 1.4 to Version 1.5</a></li>
 <li><a href="upgradeto140.html">Version 1.3 to Version 1.4</a></li>
 <li><a href="upgradeto130.html">Version 1.2 to Version 1.3</a></li>

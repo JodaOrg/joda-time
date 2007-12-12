@@ -65,9 +65,9 @@ public final class Months extends BaseSingleFieldPeriod {
     public static final Months ELEVEN = new Months(11);
     /** Constant representing twelve months. */
     public static final Months TWELVE = new Months(12);
-    /** Constant representing the maximum nuber of months that can be stored in this object. */
+    /** Constant representing the maximum number of months that can be stored in this object. */
     public static final Months MAX_VALUE = new Months(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of months that can be stored in this object. */
+    /** Constant representing the minimum number of months that can be stored in this object. */
     public static final Months MIN_VALUE = new Months(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

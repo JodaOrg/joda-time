@@ -47,9 +47,9 @@ public final class Seconds extends BaseSingleFieldPeriod {
     public static final Seconds TWO = new Seconds(2);
     /** Constant representing three seconds. */
     public static final Seconds THREE = new Seconds(3);
-    /** Constant representing the maximum nuber of seconds that can be stored in this object. */
+    /** Constant representing the maximum number of seconds that can be stored in this object. */
     public static final Seconds MAX_VALUE = new Seconds(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of seconds that can be stored in this object. */
+    /** Constant representing the minimum number of seconds that can be stored in this object. */
     public static final Seconds MIN_VALUE = new Seconds(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

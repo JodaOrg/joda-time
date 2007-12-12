@@ -41,15 +41,15 @@ public final class Years extends BaseSingleFieldPeriod {
 
     /** Constant representing zero years. */
     public static final Years ZERO = new Years(0);
-    /** Constant representing one day. */
+    /** Constant representing one year. */
     public static final Years ONE = new Years(1);
     /** Constant representing two years. */
     public static final Years TWO = new Years(2);
     /** Constant representing three years. */
     public static final Years THREE = new Years(3);
-    /** Constant representing the maximum nuber of years that can be stored in this object. */
+    /** Constant representing the maximum number of years that can be stored in this object. */
     public static final Years MAX_VALUE = new Years(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of years that can be stored in this object. */
+    /** Constant representing the minimum number of years that can be stored in this object. */
     public static final Years MIN_VALUE = new Years(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

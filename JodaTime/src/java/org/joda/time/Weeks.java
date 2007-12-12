@@ -47,9 +47,9 @@ public final class Weeks extends BaseSingleFieldPeriod {
     public static final Weeks TWO = new Weeks(2);
     /** Constant representing three weeks. */
     public static final Weeks THREE = new Weeks(3);
-    /** Constant representing the maximum nuber of weeks that can be stored in this object. */
+    /** Constant representing the maximum number of weeks that can be stored in this object. */
     public static final Weeks MAX_VALUE = new Weeks(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of weeks that can be stored in this object. */
+    /** Constant representing the minimum number of weeks that can be stored in this object. */
     public static final Weeks MIN_VALUE = new Weeks(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

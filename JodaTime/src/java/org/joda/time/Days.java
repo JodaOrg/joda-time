@@ -55,9 +55,9 @@ public final class Days extends BaseSingleFieldPeriod {
     public static final Days SIX = new Days(6);
     /** Constant representing seven days. */
     public static final Days SEVEN = new Days(7);
-    /** Constant representing the maximum nuber of days that can be stored in this object. */
+    /** Constant representing the maximum number of days that can be stored in this object. */
     public static final Days MAX_VALUE = new Days(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of days that can be stored in this object. */
+    /** Constant representing the minimum number of days that can be stored in this object. */
     public static final Days MIN_VALUE = new Days(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

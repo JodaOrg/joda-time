@@ -55,11 +55,11 @@ public final class Hours extends BaseSingleFieldPeriod {
     public static final Hours SIX = new Hours(6);
     /** Constant representing seven hours. */
     public static final Hours SEVEN = new Hours(7);
-    /** Constant representing seven hours. */
+    /** Constant representing eight hours. */
     public static final Hours EIGHT = new Hours(8);
-    /** Constant representing the maximum nuber of hours that can be stored in this object. */
+    /** Constant representing the maximum number of hours that can be stored in this object. */
     public static final Hours MAX_VALUE = new Hours(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of hours that can be stored in this object. */
+    /** Constant representing the minimum number of hours that can be stored in this object. */
     public static final Hours MIN_VALUE = new Hours(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

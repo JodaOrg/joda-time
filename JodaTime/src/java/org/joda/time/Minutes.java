@@ -47,9 +47,9 @@ public final class Minutes extends BaseSingleFieldPeriod {
     public static final Minutes TWO = new Minutes(2);
     /** Constant representing three minutes. */
     public static final Minutes THREE = new Minutes(3);
-    /** Constant representing the maximum nuber of minutes that can be stored in this object. */
+    /** Constant representing the maximum number of minutes that can be stored in this object. */
     public static final Minutes MAX_VALUE = new Minutes(Integer.MAX_VALUE);
-    /** Constant representing the minimum nuber of minutes that can be stored in this object. */
+    /** Constant representing the minimum number of minutes that can be stored in this object. */
     public static final Minutes MIN_VALUE = new Minutes(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */

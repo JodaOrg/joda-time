@@ -20,6 +20,7 @@ import java.io.Serializable;
 import org.joda.time.base.BasePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.format.ISOPeriodFormat;
 
 /**
  * An immutable time period specifying a set of duration field values.
@@ -578,8 +579,12 @@ public final class Period
     }
 
     /**
-     * Creates a period from the specified object using the
-     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * Creates a period by converting or copying from another object.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadablePeriod, ReadableInterval and String.
+     * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
      * @param period  period to convert
      * @throws IllegalArgumentException if period is invalid
@@ -590,8 +595,12 @@ public final class Period
     }
 
     /**
-     * Creates a period from the specified object using the
-     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * Creates a period by converting or copying from another object.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadablePeriod, ReadableInterval and String.
+     * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
      * @param period  period to convert
      * @param type  which set of fields this period supports, null means use converter
@@ -603,8 +612,12 @@ public final class Period
     }
 
     /**
-     * Creates a period from the specified object using the
-     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * Creates a period by converting or copying from another object.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadablePeriod, ReadableInterval and String.
+     * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
      * @param period  period to convert
      * @param chrono  the chronology to use, null means ISO in default zone
@@ -616,8 +629,12 @@ public final class Period
     }
 
     /**
-     * Creates a period from the specified object using the
-     * {@link org.joda.time.convert.ConverterManager ConverterManager}.
+     * Creates a period by converting or copying from another object.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadablePeriod, ReadableInterval and String.
+     * The String formats are described by {@link ISOPeriodFormat#standard()}.
      *
      * @param period  period to convert
      * @param type  which set of fields this period supports, null means use converter

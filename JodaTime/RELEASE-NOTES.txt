@@ -1,12 +1,11 @@
-Joda-Time version 1.5.1
------------------------
+Joda-Time version 1.6
+---------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
 
-This is a patch release for Joda-Time 1.5.
-This release contains one bug fix and a time zone update.
-We recommend all users of 1.5 upgrade to 1.5.1.
+This is the seventh full release of Joda-Time.
+This release contains various bug fixes and enhancements.
 
 We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 
@@ -45,6 +44,10 @@ Bug fixes since 1.5
 -------------------
 - Parsing (regression) [1839440]
   Support parsing all upper-case and all lower-case text
+
+- Javadoc clarity enhancements
+  - Constants in Years/Months/Weeks/Days/Hours/Minutes/Seconds etc.
+  - Period/Interval Object constructors
 
 
 Feedback

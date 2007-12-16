@@ -19,6 +19,8 @@ import java.io.Serializable;
 
 import org.joda.time.base.BaseInterval;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.format.ISOPeriodFormat;
 
 /**
  * Interval is the standard implementation of an immutable time interval.
@@ -161,6 +163,13 @@ public final class Interval
 
     /**
      * Constructs a time interval by converting or copying from another object.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadableInterval and String.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
+     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
+     * 'datetime/period' or 'period/datetime'.
      * 
      * @param interval  the time interval to copy
      * @throws IllegalArgumentException if the interval is invalid
@@ -172,6 +181,13 @@ public final class Interval
     /**
      * Constructs a time interval by converting or copying from another object,
      * overriding the chronology.
+     * <p>
+     * The recognised object types are defined in
+     * {@link org.joda.time.convert.ConverterManager ConverterManager} and
+     * include ReadableInterval and String.
+     * The String formats are described by {@link ISODateTimeFormat#dateTimeParser()}
+     * and {@link ISOPeriodFormat#standard()}, and may be 'datetime/datetime',
+     * 'datetime/period' or 'period/datetime'.
      * 
      * @param interval  the time interval to copy
      * @param chronology  the chronology to use, null means ISO default

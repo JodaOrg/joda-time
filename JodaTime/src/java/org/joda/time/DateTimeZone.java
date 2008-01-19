@@ -864,7 +864,7 @@ public abstract class DateTimeZone implements Serializable {
         if (offsetLocal != offsetAdjusted) {
             // we need to ensure that time is always after the DST gap
             // this happens naturally for positive offsets, but not for negative
-            if (offsetLocal < 0) {
+            if ((offsetLocal - offsetAdjusted) < 0) {
                 // if we just return offsetAdjusted then the time is pushed
                 // back before the transition, whereas it should be
                 // on or after the transition

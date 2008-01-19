@@ -594,7 +594,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         doTest_getOffsetFromLocal(11, 4, 8, 0, "2007-11-04T08:00:00.000-05:00", ZONE_NEW_YORK);
     }
 
-    public void test_DateTime_plusHour_NewYork_Autumm() {
+    public void test_DateTime_plusHour_NewYork_Autumn() {
         DateTime dt = new DateTime(2007, 11, 3, 18, 0, 0, 0, ZONE_NEW_YORK);
         assertEquals("2007-11-03T18:00:00.000-04:00", dt.toString());
         
@@ -608,7 +608,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2007-11-04T02:00:00.000-05:00", plus9.toString());
     }
 
-    public void test_DateTime_minusHour_NewYork_Autumm() {
+    public void test_DateTime_minusHour_NewYork_Autumn() {
         DateTime dt = new DateTime(2007, 11, 4, 8, 0, 0, 0, ZONE_NEW_YORK);
         assertEquals("2007-11-04T08:00:00.000-05:00", dt.toString());
         
@@ -721,7 +721,7 @@ public class TestDateTimeZoneCutover extends TestCase {
 //        doTest_getOffsetFromLocal(10, 28, 8, 0, "2007-10-28T08:00:00.000+03:00", ZONE_MOSCOW);
 //    }
 
-    public void test_DateTime_plusHour_Moscow_Autumm() {
+    public void test_DateTime_plusHour_Moscow_Autumn() {
         DateTime dt = new DateTime(2007, 10, 27, 19, 0, 0, 0, ZONE_MOSCOW);
         assertEquals("2007-10-27T19:00:00.000+04:00", dt.toString());
         
@@ -735,7 +735,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2007-10-28T03:00:00.000+03:00", plus9.toString());
     }
 
-    public void test_DateTime_minusHour_Moscow_Autumm() {
+    public void test_DateTime_minusHour_Moscow_Autumn() {
         DateTime dt = new DateTime(2007, 10, 28, 9, 0, 0, 0, ZONE_MOSCOW);
         assertEquals("2007-10-28T09:00:00.000+03:00", dt.toString());
         
@@ -752,6 +752,113 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+    /** America/Guatemala cutover from 23:59 to 00:00 on 2006-09-30 to 2006-10-01 */
+    private static long CUTOVER_GUATEMALA_AUTUMN = 1159682400000L; // 2006-10-01T00:00:00.000-06:00
+    private static final DateTimeZone ZONE_GUATEMALA = DateTimeZone.forID("America/Guatemala");
+
+    //-----------------------------------------------------------------------
+    public void test_GuatemataIsCorrect_Autumn() {
+        /*
+        long millis = new DateTime("2006-09-30T20:00:00.000", ZONE_GUATEMALA).getMillis();
+        for (int i=0; i<30; i++) {
+            System.out.println(new DateTime(millis, ZONE_GUATEMALA));
+            millis += 15 * 60 * 1000;
+        }
+        */
+
+        DateTime pre = new DateTime(CUTOVER_GUATEMALA_AUTUMN - 1L, ZONE_GUATEMALA);
+        assertEquals("2006-09-30T23:59:59.999-06:00", pre.toString());
+        DateTime at = new DateTime(CUTOVER_GUATEMALA_AUTUMN, ZONE_GUATEMALA);
+        assertEquals("2006-10-01T00:00:00.000-06:00", at.toString());
+        DateTime post = new DateTime(CUTOVER_GUATEMALA_AUTUMN + 1L, ZONE_GUATEMALA);
+        assertEquals("2006-10-01T00:00:00.001-06:00", post.toString());
+    }
+
+    public void test_getOffsetFromLocal_Guatemata_Autumn() {
+        doTest_getOffsetFromLocal( 2006, 9,30,23, 0,
+                                  "2006-09-30T23:00:00.000-05:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006, 9,30,23,30,
+                                  "2006-09-30T23:30:00.000-05:00", ZONE_GUATEMALA);
+        
+        doTest_getOffsetFromLocal( 2006, 9,30,23, 0,
+                                  "2006-09-30T23:00:00.000-05:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006, 9,30,23,30,
+                                  "2006-09-30T23:30:00.000-05:00", ZONE_GUATEMALA);
+        
+        doTest_getOffsetFromLocal( 2006,10, 1, 0, 0,
+                                  "2006-10-01T00:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 0,30,
+                                  "2006-10-01T00:30:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 1, 0,
+                                  "2006-10-01T01:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 1,30,
+                                  "2006-10-01T01:30:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 2, 0,
+                                  "2006-10-01T02:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 2,30,
+                                  "2006-10-01T02:30:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 3, 0,
+                                  "2006-10-01T03:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 3,30,
+                                  "2006-10-01T03:30:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 4, 0,
+                                  "2006-10-01T04:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 4,30,
+                                  "2006-10-01T04:30:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 5, 0,
+                                  "2006-10-01T05:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 5,30,
+                                  "2006-10-01T05:30:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 6, 0,
+                                  "2006-10-01T06:00:00.000-06:00", ZONE_GUATEMALA);
+        doTest_getOffsetFromLocal( 2006,10, 1, 6,30,
+                                  "2006-10-01T06:30:00.000-06:00", ZONE_GUATEMALA);
+    }
+
+    public void test_DateTime_plusHour_Guatemata_Autumn() {
+        DateTime dt = new DateTime(2006, 9, 30, 20, 0, 0, 0, ZONE_GUATEMALA);
+        assertEquals("2006-09-30T20:00:00.000-05:00", dt.toString());
+        
+        DateTime plus1 = dt.plusHours(1);
+        assertEquals("2006-09-30T21:00:00.000-05:00", plus1.toString());
+        DateTime plus2 = dt.plusHours(2);
+        assertEquals("2006-09-30T22:00:00.000-05:00", plus2.toString());
+        DateTime plus3 = dt.plusHours(3);
+        assertEquals("2006-09-30T23:00:00.000-05:00", plus3.toString());
+        DateTime plus4 = dt.plusHours(4);
+        assertEquals("2006-09-30T23:00:00.000-06:00", plus4.toString());
+        DateTime plus5 = dt.plusHours(5);
+        assertEquals("2006-10-01T00:00:00.000-06:00", plus5.toString());
+        DateTime plus6 = dt.plusHours(6);
+        assertEquals("2006-10-01T01:00:00.000-06:00", plus6.toString());
+        DateTime plus7 = dt.plusHours(7);
+        assertEquals("2006-10-01T02:00:00.000-06:00", plus7.toString());
+    }
+
+    public void test_DateTime_minusHour_Guatemata_Autumn() {
+        DateTime dt = new DateTime(2006, 10, 1, 2, 0, 0, 0, ZONE_GUATEMALA);
+        assertEquals("2006-10-01T02:00:00.000-06:00", dt.toString());
+        
+        DateTime minus1 = dt.minusHours(1);
+        assertEquals("2006-10-01T01:00:00.000-06:00", minus1.toString());
+        DateTime minus2 = dt.minusHours(2);
+        assertEquals("2006-10-01T00:00:00.000-06:00", minus2.toString());
+        DateTime minus3 = dt.minusHours(3);
+        assertEquals("2006-09-30T23:00:00.000-06:00", minus3.toString());
+        DateTime minus4 = dt.minusHours(4);
+        assertEquals("2006-09-30T23:00:00.000-05:00", minus4.toString());
+        DateTime minus5 = dt.minusHours(5);
+        assertEquals("2006-09-30T22:00:00.000-05:00", minus5.toString());
+        DateTime minus6 = dt.minusHours(6);
+        assertEquals("2006-09-30T21:00:00.000-05:00", minus6.toString());
+        DateTime minus7 = dt.minusHours(7);
+        assertEquals("2006-09-30T20:00:00.000-05:00", minus7.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+
 //    public void test_toDateMidnight_SaoPaolo() {
 //        // RFE: 1684259
 //        DateTimeZone zone = DateTimeZone.forID("America/Sao_Paulo");
@@ -765,8 +872,16 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
-    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, String expected, DateTimeZone zone) {
-        DateTime dt = new DateTime(2007, month, day, hour, min, 0, 0, DateTimeZone.UTC);
+    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min,
+                                           String expected, DateTimeZone zone)
+    {
+        doTest_getOffsetFromLocal(2007, month, day, hour, min, expected, zone);
+    }
+
+    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min,
+                                           String expected, DateTimeZone zone)
+    {
+        DateTime dt = new DateTime(year, month, day, hour, min, 0, 0, DateTimeZone.UTC);
         int offset = zone.getOffsetFromLocal(dt.getMillis());
         DateTime res = new DateTime(dt.getMillis() - offset, zone);
         assertEquals(res.toString(), expected, res.toString());

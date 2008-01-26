@@ -5,5 +5,5 @@ Specification-Vendor: Joda.org
 Specification-Version: 1.5
 Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time
-Implementation-Version: 1.5.1
+Implementation-Version: 1.5.2
 Implementation-Vendor-Id: org.joda

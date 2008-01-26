@@ -12,16 +12,17 @@
 <p>
 To use Joda-Time you need to
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">download the latest version</a>.
-The download will contain the joda-time-1.5.1.jar.
+The download will contain the joda-time-1.5.2.jar.
 Once you add this to your classpath you will be able to use Joda-Time.
 </p>
 <p>
-The binary download also includes joda-time-1.5.1-sources.jar, which is a jar file
+The binary download also includes joda-time-1.5.2-sources.jar, which is a jar file
 of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 </p>
 <p>
 The release notes for upgraders can be found here:
 <ul>
+<li><a href="upgradeto152.html">Version 1.5.1 to Version 1.5.2</a></li>
 <li><a href="upgradeto151.html">Version 1.5 to Version 1.5.1</a></li>
 <li><a href="upgradeto150.html">Version 1.4 to Version 1.5</a></li>
 <li><a href="upgradeto140.html">Version 1.3 to Version 1.4</a></li>
@@ -44,28 +45,5 @@ Maven is intended to be used primarily as a website generation tool.
 Ant is our preferred build tool.
 </p>
 </section>
-<!--
-<section name="Eclipse Support">
-<p>
-If you use Eclipse as your IDE and want to integrate the Joda-Time help files
-into the eclipse documentation tree, you need to download and install the
-<a href="">Joda-Time documentation plugin</a>.
-</p>
-<p>
-In addition, if you <em>are developing Eclipse plugins</em> (i.e. using the PDE),
-you may choose to use the <a href="">Joda-Time plugin</a>. This is a wrapper
-around
-the Joda-Time jar which allows a single copy of the Joda-Time jar to be used
-by all installed plugins. It needs to be available on both the development
-and the run-time machine.
-</p>
-<p>
-In addition you may also want the <a href="">Joda-Time source plugin</a>.
-This is a wrapper for the joda time sources to make them visible to the Eclipse
-PDE. It only needs to be made available on the development machine.
-</p>
-</section>
--->
-
 </body>
 </document>

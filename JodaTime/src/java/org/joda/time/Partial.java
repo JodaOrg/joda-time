@@ -727,9 +727,9 @@ public final class Partial
      * <p>
      * This method will output the partial in one of two ways.
      * If {@link #getFormatter()}
-     * 
+     * <p>
      * If there is no appropriate ISO format a dump of the fields is output
-     * via {@link #toStringList()}. An appropr
+     * via {@link #toStringList()}.
      * 
      * @return ISO8601 formatted string
      */

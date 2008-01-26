@@ -18,10 +18,6 @@ package org.joda.time;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.LenientChronology;
-import org.joda.time.chrono.StrictChronology;
-
 /**
  * This class is a JUnit test for DateTimeZone.
  *
@@ -752,26 +748,18 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
-    /** America/Guatemala cutover from 23:59 to 00:00 on 2006-09-30 to 2006-10-01 */
-    private static long CUTOVER_GUATEMALA_AUTUMN = 1159682400000L; // 2006-10-01T00:00:00.000-06:00
+    /** America/Guatemala cutover from 23:59 to 23:00 on 2006-09-30 */
+    private static long CUTOVER_GUATEMALA_AUTUMN = 1159678800000L; // 2006-09-30T23:00:00.000-06:00
     private static final DateTimeZone ZONE_GUATEMALA = DateTimeZone.forID("America/Guatemala");
 
     //-----------------------------------------------------------------------
     public void test_GuatemataIsCorrect_Autumn() {
-        /*
-        long millis = new DateTime("2006-09-30T20:00:00.000", ZONE_GUATEMALA).getMillis();
-        for (int i=0; i<30; i++) {
-            System.out.println(new DateTime(millis, ZONE_GUATEMALA));
-            millis += 15 * 60 * 1000;
-        }
-        */
-
         DateTime pre = new DateTime(CUTOVER_GUATEMALA_AUTUMN - 1L, ZONE_GUATEMALA);
-        assertEquals("2006-09-30T23:59:59.999-06:00", pre.toString());
+        assertEquals("2006-09-30T23:59:59.999-05:00", pre.toString());
         DateTime at = new DateTime(CUTOVER_GUATEMALA_AUTUMN, ZONE_GUATEMALA);
-        assertEquals("2006-10-01T00:00:00.000-06:00", at.toString());
+        assertEquals("2006-09-30T23:00:00.000-06:00", at.toString());
         DateTime post = new DateTime(CUTOVER_GUATEMALA_AUTUMN + 1L, ZONE_GUATEMALA);
-        assertEquals("2006-10-01T00:00:00.001-06:00", post.toString());
+        assertEquals("2006-09-30T23:00:00.001-06:00", post.toString());
     }
 
     public void test_getOffsetFromLocal_Guatemata_Autumn() {

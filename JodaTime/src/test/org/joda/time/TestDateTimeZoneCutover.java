@@ -559,6 +559,92 @@ public class TestDateTimeZoneCutover extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void test_DateTime_roundFloor_day_NewYork_Spring_preCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundFloorCopy();
+        assertEquals("2007-03-11T00:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_day_NewYork_Spring_postCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 3, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T03:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundFloorCopy();
+        assertEquals("2007-03-11T00:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_hour_NewYork_Spring_preCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundFloorCopy();
+        assertEquals("2007-03-11T01:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_hour_NewYork_Spring_postCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 3, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T03:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundFloorCopy();
+        assertEquals("2007-03-11T03:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_minute_NewYork_Spring_preCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, 40, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T01:30:40.000-05:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundFloorCopy();
+        assertEquals("2007-03-11T01:30:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_minute_NewYork_Spring_postCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 3, 30, 40, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T03:30:40.000-04:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundFloorCopy();
+        assertEquals("2007-03-11T03:30:00.000-04:00", rounded.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_DateTime_roundCeiling_day_NewYork_Spring_preCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundCeilingCopy();
+        assertEquals("2007-03-12T00:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_day_NewYork_Spring_postCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 3, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T03:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundCeilingCopy();
+        assertEquals("2007-03-12T00:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_hour_NewYork_Spring_preCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundCeilingCopy();
+        assertEquals("2007-03-11T03:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_hour_NewYork_Spring_postCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 3, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T03:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundCeilingCopy();
+        assertEquals("2007-03-11T04:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_minute_NewYork_Spring_preCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 1, 30, 40, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T01:30:40.000-05:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundCeilingCopy();
+        assertEquals("2007-03-11T01:31:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_minute_NewYork_Spring_postCutover() {
+        DateTime dt = new DateTime(2007, 3, 11, 3, 30, 40, 0, ZONE_NEW_YORK);
+        assertEquals("2007-03-11T03:30:40.000-04:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundCeilingCopy();
+        assertEquals("2007-03-11T03:31:00.000-04:00", rounded.toString());
+    }
+
+    //-----------------------------------------------------------------------
     /** America/New_York cutover from 01:59 to 01:00 on 2007-11-04 */
     private static long CUTOVER_NEW_YORK_AUTUMN = 1194156000000L;  // 2007-11-04T01:00:00.000-05:00
 
@@ -616,6 +702,120 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2007-11-04T01:00:00.000-04:00", minus8.toString());
         DateTime minus9 = dt.minusHours(9);
         assertEquals("2007-11-04T00:00:00.000-04:00", minus9.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_DateTime_roundFloor_day_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundFloorCopy();
+        assertEquals("2007-11-04T00:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_day_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundFloorCopy();
+        assertEquals("2007-11-04T00:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_hourOfDay_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundFloorCopy();
+        assertEquals("2007-11-04T01:00:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_hourOfDay_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundFloorCopy();
+        assertEquals("2007-11-04T01:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_minuteOfHour_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 0, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:40.000-04:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundFloorCopy();
+        assertEquals("2007-11-04T01:30:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_minuteOfHour_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 0, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:40.000-05:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundFloorCopy();
+        assertEquals("2007-11-04T01:30:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_secondOfMinute_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 500, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:40.500-04:00", dt.toString());
+        DateTime rounded = dt.secondOfMinute().roundFloorCopy();
+        assertEquals("2007-11-04T01:30:40.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundFloor_secondOfMinute_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 500, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:40.500-05:00", dt.toString());
+        DateTime rounded = dt.secondOfMinute().roundFloorCopy();
+        assertEquals("2007-11-04T01:30:40.000-05:00", rounded.toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_DateTime_roundCeiling_day_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundCeilingCopy();
+        assertEquals("2007-11-05T00:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_day_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.dayOfMonth().roundCeilingCopy();
+        assertEquals("2007-11-05T00:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_hourOfDay_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.000-04:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundCeilingCopy();
+        assertEquals("2007-11-04T01:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_hourOfDay_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 0, 0, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:00.000-05:00", dt.toString());
+        DateTime rounded = dt.hourOfDay().roundCeilingCopy();
+        assertEquals("2007-11-04T02:00:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_minuteOfHour_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 0, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:40.000-04:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundCeilingCopy();
+        assertEquals("2007-11-04T01:31:00.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_minuteOfHour_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 0, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:40.000-05:00", dt.toString());
+        DateTime rounded = dt.minuteOfHour().roundCeilingCopy();
+        assertEquals("2007-11-04T01:31:00.000-05:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_secondOfMinute_NewYork_Autumn_preCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 500, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:40.500-04:00", dt.toString());
+        DateTime rounded = dt.secondOfMinute().roundCeilingCopy();
+        assertEquals("2007-11-04T01:30:41.000-04:00", rounded.toString());
+    }
+
+    public void test_DateTime_roundCeiling_secondOfMinute_NewYork_Autumn_postCutover() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, 40, 500, ZONE_NEW_YORK).plusHours(1);
+        assertEquals("2007-11-04T01:30:40.500-05:00", dt.toString());
+        DateTime rounded = dt.secondOfMinute().roundCeilingCopy();
+        assertEquals("2007-11-04T01:30:41.000-05:00", rounded.toString());
     }
 
     //-----------------------------------------------------------------------

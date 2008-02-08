@@ -518,15 +518,27 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public long roundFloor(long instant) {
-            long localInstant = iZone.convertUTCToLocal(instant);
-            localInstant = iField.roundFloor(localInstant);
-            return iZone.convertLocalToUTC(localInstant, false);
+            if (iTimeField) {
+                int offset = getOffsetToAdd(instant);
+                instant = iField.roundFloor(instant + offset);
+                return instant - offset;
+            } else {
+                long localInstant = iZone.convertUTCToLocal(instant);
+                localInstant = iField.roundFloor(localInstant);
+                return iZone.convertLocalToUTC(localInstant, false);
+            }
         }
 
         public long roundCeiling(long instant) {
-            long localInstant = iZone.convertUTCToLocal(instant);
-            localInstant = iField.roundCeiling(localInstant);
-            return iZone.convertLocalToUTC(localInstant, false);
+            if (iTimeField) {
+                int offset = getOffsetToAdd(instant);
+                instant = iField.roundCeiling(instant + offset);
+                return instant - offset;
+            } else {
+                long localInstant = iZone.convertUTCToLocal(instant);
+                localInstant = iField.roundCeiling(localInstant);
+                return iZone.convertLocalToUTC(localInstant, false);
+            }
         }
 
         public long remainder(long instant) {

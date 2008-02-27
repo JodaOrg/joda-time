@@ -838,10 +838,10 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, three digit fraction of second, and
-     * time zone offset (HH:mm:ss.SSSZ).
+     * time zone offset (HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for HH:mm:ss.SSSZ
+     * @return a formatter for HH:mm:ss.SSSZZ
      */
     public static DateTimeFormatter time() {
         if (t == null) {
@@ -855,10 +855,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
-     * hour, two digit second of minute, and time zone offset (HH:mm:ssZ).
+     * hour, two digit second of minute, and time zone offset (HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for HH:mm:ssZ
+     * @return a formatter for HH:mm:ssZZ
      */
     public static DateTimeFormatter timeNoMillis() {
         if (tx == null) {
@@ -873,10 +873,10 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, three digit fraction of second, and
-     * time zone offset prefixed by 'T' ('T'HH:mm:ss.SSSZ).
+     * time zone offset prefixed by 'T' ('T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for 'T'HH:mm:ss.SSSZ
+     * @return a formatter for 'T'HH:mm:ss.SSSZZ
      */
     public static DateTimeFormatter tTime() {
         if (tt == null) {
@@ -891,10 +891,10 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, and time zone offset prefixed
-     * by 'T' ('T'HH:mm:ssZ).
+     * by 'T' ('T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for 'T'HH:mm:ssZ
+     * @return a formatter for 'T'HH:mm:ssZZ
      */
     public static DateTimeFormatter tTimeNoMillis() {
         if (ttx == null) {
@@ -908,10 +908,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full date and time, separated by a 'T'
-     * (yyyy-MM-dd'T'HH:mm:ss.SSSZ).
+     * (yyyy-MM-dd'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSSZ
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSSZZ
      */
     public static DateTimeFormatter dateTime() {
         if (dt == null) {
@@ -925,10 +925,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full date and time without millis,
-     * separated by a 'T' (yyyy-MM-dd'T'HH:mm:ssZ).
+     * separated by a 'T' (yyyy-MM-dd'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for yyyy-MM-dd'T'HH:mm:ssZ
+     * @return a formatter for yyyy-MM-dd'T'HH:mm:ssZZ
      */
     public static DateTimeFormatter dateTimeNoMillis() {
         if (dtx == null) {
@@ -959,10 +959,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a full ordinal date and time, using a four
-     * digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZ).
+     * digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for yyyy-DDD'T'HH:mm:ss.SSSZ
+     * @return a formatter for yyyy-DDD'T'HH:mm:ss.SSSZZ
      * @since 1.1
      */
     public static DateTimeFormatter ordinalDateTime() {
@@ -977,10 +977,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter for a full ordinal date and time without millis,
-     * using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ssZ).
+     * using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for yyyy-DDD'T'HH:mm:ssZ
+     * @return a formatter for yyyy-DDD'T'HH:mm:ssZZ
      * @since 1.1
      */
     public static DateTimeFormatter ordinalDateTimeNoMillis() {
@@ -1005,10 +1005,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full weekyear date and time,
-     * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ss.SSSZ).
+     * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ss.SSSZ
+     * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ
      */
     public static DateTimeFormatter weekDateTime() {
         if (wdt == null) {
@@ -1022,10 +1022,10 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a formatter that combines a full weekyear date and time without millis,
-     * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ssZ).
+     * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
      * 
-     * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ssZ
+     * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ssZZ
      */
     public static DateTimeFormatter weekDateTimeNoMillis() {
         if (wdtx == null) {
@@ -1059,7 +1059,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter for a two digit hour of day, two digit minute
      * of hour, two digit second of minute, three digit millis, and time zone
      * offset (HHmmss.SSSZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for HHmmss.SSSZ
      */
@@ -1080,7 +1080,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a basic formatter for a two digit hour of day, two digit minute
      * of hour, two digit second of minute, and time zone offset (HHmmssZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for HHmmssZ
      */
@@ -1100,7 +1100,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter for a two digit hour of day, two digit minute
      * of hour, two digit second of minute, three digit millis, and time zone
      * offset prefixed by 'T' ('T'HHmmss.SSSZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for 'T'HHmmss.SSSZ
      */
@@ -1118,7 +1118,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter for a two digit hour of day, two digit minute
      * of hour, two digit second of minute, and time zone offset prefixed by 'T'
      * ('T'HHmmssZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for 'T'HHmmssZ
      */
@@ -1135,7 +1135,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a basic formatter that combines a basic date and time, separated
      * by a 'T' (yyyyMMdd'T'HHmmss.SSSZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for yyyyMMdd'T'HHmmss.SSSZ
      */
@@ -1152,7 +1152,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a basic formatter that combines a basic date and time without millis,
      * separated by a 'T' (yyyyMMdd'T'HHmmssZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for yyyyMMdd'T'HHmmssZ
      */
@@ -1186,7 +1186,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a full ordinal date and time, using a four
      * digit year and three digit dayOfYear (yyyyDDD'T'HHmmss.SSSZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for yyyyDDD'T'HHmmss.SSSZ
      * @since 1.1
@@ -1204,7 +1204,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a full ordinal date and time without millis,
      * using a four digit year and three digit dayOfYear (yyyyDDD'T'HHmmssZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for yyyyDDD'T'HHmmssZ
      * @since 1.1
@@ -1240,7 +1240,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a basic formatter that combines a basic weekyear date and time,
      * separated by a 'T' (xxxx'W'wwe'T'HHmmss.SSSZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for xxxx'W'wwe'T'HHmmss.SSSZ
      */
@@ -1257,7 +1257,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a basic formatter that combines a basic weekyear date and time
      * without millis, separated by a 'T' (xxxx'W'wwe'T'HHmmssZ).
-     * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
      * 
      * @return a formatter for xxxx'W'wwe'T'HHmmssZ
      */

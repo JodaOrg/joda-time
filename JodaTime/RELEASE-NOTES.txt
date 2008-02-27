@@ -46,6 +46,10 @@ Bug fixes since 1.5.2
 - ZonedChronology (regression from 1.4) [1887104]
   Fix to roundFloor/roundCeiling
   Bug affected DST cutover in Autumn for time fields (not date fields)
+  
+- Clarify Javadoc time zone formats
+  Time zone formats were incorrectly documented as 'Z' instead of 'ZZ'
+  Javadoc only change
 
 Bug fixes since 1.5.1
 ---------------------

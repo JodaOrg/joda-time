@@ -416,7 +416,7 @@ public abstract class AbstractInstant implements ReadableInstant {
 
     //-----------------------------------------------------------------------
     /**
-     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZ).
+     * Output the date time in ISO8601 format (yyyy-MM-ddTHH:mm:ss.SSSZZ).
      * 
      * @return ISO8601 time formatted string.
      */

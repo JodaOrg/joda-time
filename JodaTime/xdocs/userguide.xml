@@ -850,7 +850,7 @@ Support for standard formats based on ISO8601 is provided by the
 </p>
 <p>
 For example, if you wanted to use the ISO standard format for <em>datetime</em>,
-which is <code>yyyy-MM-dd'T'HH:mm:ss.SSSZ</code>, you would initialize
+which is <code>yyyy-MM-dd'T'HH:mm:ss.SSSZZ</code>, you would initialize
 <code>fmt</code> as
 <source>
     DateTimeFormatter fmt = ISODateTimeFormat.dateTime();

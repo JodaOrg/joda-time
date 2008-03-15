@@ -23,12 +23,14 @@ and DateTimeZone objects.
 
 Changes since 1.0.1
 -------------------
-Changed maven definition for servlet jars [1841568]
+- Include .properties files in jar
+
+- Changed maven definition for servlet jars [1841568]
 
 
 Changes since 1.0
 -----------------
-Fix missing directory tag in project.xml [1827409]
+- Fix missing directory tag in project.xml [1827409]
 
 
 Build

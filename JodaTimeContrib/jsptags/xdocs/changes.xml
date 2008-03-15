@@ -8,6 +8,15 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="1.0.2" date="2008-03-15" description="Release 1.0.2">
+      <action dev="scolebourne" type="fix">
+        Fix missing properties files in jar.
+      </action>              
+      <action dev="scolebourne" type="fix">
+        Fix maven definition for servlet-api to be provided.
+      </action>              
+    </release>
+
     <release version="1.0.1" date="2007-11-15" description="Release 1.0.1">
       <action dev="scolebourne" type="fix">
         Fix missing directory tag in project.xml.

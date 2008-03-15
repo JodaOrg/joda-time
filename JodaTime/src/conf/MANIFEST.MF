@@ -2,8 +2,8 @@ Package: org.joda.time
 Extension-Name: joda-time
 Specification-Title: Joda-Time
 Specification-Vendor: Joda.org
-Specification-Version: 1.5
+Specification-Version: 1.6
 Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time
-Implementation-Version: 1.5.2
+Implementation-Version: 1.6
 Implementation-Vendor-Id: org.joda

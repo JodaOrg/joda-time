@@ -30,8 +30,8 @@
   <mailingLists>
     <mailingList>
       <name>Joda Interest list</name>
-      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
-      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
+      <subscribe>https://lists.sourceforge.net/lists/listinfo/joda-interest</subscribe>
+      <unsubscribe>https://lists.sourceforge.net/lists/listinfo/joda-interest</unsubscribe>
       <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=joda-interest</archive>
     </mailingList>
   </mailingLists>
@@ -43,9 +43,7 @@
   </organization>
 
   <repository>
-    <!-- Does not appear to be supported in Maven-1.x
-    <connection>scm:svn:http://joda-time.svn.sourceforge.net/viewcvs.cgi/joda-time/trunk</connection>
-    -->
+    <connection>scm:svn:https://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/jsptags/</connection>
     <url>http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/jsptags/</url>
   </repository>
 
@@ -59,6 +57,11 @@
       <id>1.0.1</id>
       <name>1.0.1</name>
       <tag>JSPTAGS_v1_0_1</tag>
+    </version>
+    <version>
+      <id>1.0.2</id>
+      <name>1.0.2</name>
+      <tag>JSPTAGS_v1_0_2</tag>
     </version>
   </versions>
 
@@ -120,6 +123,12 @@
       </includes>
     </unitTest>
     <resources>
+      <resource>
+        <directory>${basedir}/src/java</directory>
+        <includes>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
       <resource>
         <targetPath>META-INF</targetPath>
         <directory>.</directory>

@@ -60,6 +60,7 @@ public final class Duration
      * @param days  the number of standard days in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the days value is too large
+     * @since 1.6
      */
     public static Duration standardDays(long days) {
         if (days == 0) {
@@ -82,6 +83,7 @@ public final class Duration
      * @param hours  the number of standard hours in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the hours value is too large
+     * @since 1.6
      */
     public static Duration standardHours(long hours) {
         if (hours == 0) {
@@ -104,6 +106,7 @@ public final class Duration
      * @param minutes  the number of standard minutes in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the minutes value is too large
+     * @since 1.6
      */
     public static Duration standardMinutes(long minutes) {
         if (minutes == 0) {
@@ -125,6 +128,7 @@ public final class Duration
      * @param seconds  the number of standard seconds in this duration
      * @return the duration, never null
      * @throws ArithmeticException if the seconds value is too large
+     * @since 1.6
      */
     public static Duration standardSeconds(long seconds) {
         if (seconds == 0) {

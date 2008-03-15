@@ -16,6 +16,8 @@
 package org.joda.time.format;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
@@ -203,9 +205,19 @@ public class ISODateTimeFormat {
      * </pre>
      * * indiates that this is not an official ISO format and can be excluded
      * by passing in <code>strictISO</code> as <code>true</code>.
+     * <p>
+     * This method can side effect the input collection of fields.
+     * If the input collection is modifiable, then each field that was added to
+     * the formatter will be removed from the collection, including any duplicates.
+     * If the input collection is unmodifiable then no side effect occurs.
+     * <p>
+     * This side effect processing is useful if you need to know whether all
+     * the fields were converted into the formatter or not. To achieve this,
+     * pass in a modifiable list, and check that it is empty on exit.
      *
      * @param fields  the fields to get a formatter for, not null,
-     *  updated by the method call, which removes those fields built in the formatter
+     *  updated by the method call unless unmodifiable,
+     *  removing those fields built in the formatter
      * @param extended  true to use the extended format (with separators)
      * @param strictISO  true to stick exactly to ISO8601, false to include additional formats
      * @return a suitable formatter
@@ -220,35 +232,44 @@ public class ISODateTimeFormat {
         if (fields == null || fields.size() == 0) {
             throw new IllegalArgumentException("The fields must not be null or empty");
         }
-        int inputSize = fields.size();
+        Set workingFields = new HashSet(fields);
+        int inputSize = workingFields.size();
         boolean reducedPrec = false;
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
         // date
-        if (fields.contains(DateTimeFieldType.monthOfYear())) {
-            reducedPrec = dateByMonth(bld, fields, extended, strictISO);
-        } else if (fields.contains(DateTimeFieldType.dayOfYear())) {
-            reducedPrec = dateByOrdinal(bld, fields, extended, strictISO);
-        } else if (fields.contains(DateTimeFieldType.weekOfWeekyear())) {
-            reducedPrec = dateByWeek(bld, fields, extended, strictISO);
-        } else if (fields.contains(DateTimeFieldType.dayOfMonth())) {
-            reducedPrec = dateByMonth(bld, fields, extended, strictISO);
-        } else if (fields.contains(DateTimeFieldType.dayOfWeek())) {
-            reducedPrec = dateByWeek(bld, fields, extended, strictISO);
-        } else if (fields.remove(DateTimeFieldType.year())) {
+        if (workingFields.contains(DateTimeFieldType.monthOfYear())) {
+            reducedPrec = dateByMonth(bld, workingFields, extended, strictISO);
+        } else if (workingFields.contains(DateTimeFieldType.dayOfYear())) {
+            reducedPrec = dateByOrdinal(bld, workingFields, extended, strictISO);
+        } else if (workingFields.contains(DateTimeFieldType.weekOfWeekyear())) {
+            reducedPrec = dateByWeek(bld, workingFields, extended, strictISO);
+        } else if (workingFields.contains(DateTimeFieldType.dayOfMonth())) {
+            reducedPrec = dateByMonth(bld, workingFields, extended, strictISO);
+        } else if (workingFields.contains(DateTimeFieldType.dayOfWeek())) {
+            reducedPrec = dateByWeek(bld, workingFields, extended, strictISO);
+        } else if (workingFields.remove(DateTimeFieldType.year())) {
             bld.append(yearElement());
             reducedPrec = true;
-        } else if (fields.remove(DateTimeFieldType.weekyear())) {
+        } else if (workingFields.remove(DateTimeFieldType.weekyear())) {
             bld.append(weekyearElement());
             reducedPrec = true;
         }
-        boolean datePresent = (fields.size() < inputSize);
+        boolean datePresent = (workingFields.size() < inputSize);
         
         // time
-        time(bld, fields, extended, strictISO, reducedPrec, datePresent);
+        time(bld, workingFields, extended, strictISO, reducedPrec, datePresent);
         
         // result
         if (bld.canBuildFormatter() == false) {
             throw new IllegalArgumentException("No valid format for fields: " + fields);
+        }
+        
+        // side effect the input collection to indicate the processed fields
+        // handling unmodifiable collections with no side effect
+        try {
+            fields.retainAll(workingFields);
+        } catch (UnsupportedOperationException ex) {
+            // ignore, so we can handle unmodifiable collections
         }
         return bld.toFormatter();
     }

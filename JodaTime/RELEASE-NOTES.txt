@@ -42,6 +42,10 @@ Deprecations since 1.5
 
 Bug fixes since 1.5
 -------------------
+- DateTimeFormat.forFields(List) method can't handle immutable [1877843]
+  Fix so that the method does not throw an exception when an unmodifiable
+  list is passed in
+
 - Fixed offset time zones calculated incorrect periods
   ZonedChronology.ZonedDuration.isPrecise() did not take into account
   the decorated isPrecise() value. This meant that date fields for fixed

@@ -18,6 +18,7 @@ package org.joda.time.format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import junit.framework.TestCase;
@@ -96,6 +97,50 @@ public class TestISODateTimeFormat_Fields extends TestCase {
         f = ISODateTimeFormat.forFields(types, false, false);
         assertEquals("20050625", f.print(new Partial(fields, values)));
         assertEquals(0, types.size());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testForFields_calBased_YMD_unmodifiable() {
+        DateTimeFieldType[] fields = new DateTimeFieldType[] {
+                DateTimeFieldType.year(),
+                DateTimeFieldType.monthOfYear(),
+                DateTimeFieldType.dayOfMonth(),
+        };
+        int[] values = new int[] {2005, 6, 25};
+        List types = Collections.unmodifiableList(new ArrayList(Arrays.asList(fields)));
+        DateTimeFormatter f = ISODateTimeFormat.forFields(types, true, true);
+        assertEquals("2005-06-25", f.print(new Partial(fields, values)));
+        assertEquals(3, types.size());
+        
+        types = Arrays.asList(fields);
+        f = ISODateTimeFormat.forFields(types, true, true);
+        assertEquals("2005-06-25", f.print(new Partial(fields, values)));
+        assertEquals(3, types.size());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testForFields_calBased_YMD_duplicates() {
+        DateTimeFieldType[] fields = new DateTimeFieldType[] {
+                DateTimeFieldType.year(),
+                DateTimeFieldType.monthOfYear(),
+                DateTimeFieldType.dayOfMonth(),
+        };
+        DateTimeFieldType[] dupFields = new DateTimeFieldType[] {
+                DateTimeFieldType.year(),
+                DateTimeFieldType.monthOfYear(),
+                DateTimeFieldType.dayOfMonth(),
+                DateTimeFieldType.monthOfYear(),
+        };
+        int[] values = new int[] {2005, 6, 25};
+        List types = new ArrayList(Arrays.asList(dupFields));
+        DateTimeFormatter f = ISODateTimeFormat.forFields(types, true, true);
+        assertEquals("2005-06-25", f.print(new Partial(fields, values)));
+        assertEquals(0, types.size());
+        
+        types = Arrays.asList(dupFields);
+        f = ISODateTimeFormat.forFields(types, true, true);
+        assertEquals("2005-06-25", f.print(new Partial(fields, values)));
+        assertEquals(4, types.size());
     }
 
     //-----------------------------------------------------------------------

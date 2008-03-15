@@ -41,7 +41,13 @@ Deprecations since 1.5
 
 
 Bug fixes since 1.5
----------------------
+-------------------
+- Fixed offset time zones calculated incorrect periods
+  ZonedChronology.ZonedDuration.isPrecise() did not take into account
+  the decorated isPrecise() value. This meant that date fields for fixed
+  offset time zones were always considered precise. The result was periods
+  containing months and years when they should not have done.
+
 - ZonedChronology (regression from 1.4) [1887104]
   Fix to roundFloor/roundCeiling
   Bug affected DST cutover in Autumn for time fields (not date fields)

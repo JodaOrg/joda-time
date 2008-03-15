@@ -197,6 +197,19 @@ public class TestJulianChronology extends TestCase {
         assertEquals(true, JulianChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, JulianChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, JulianChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, JulianChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, JulianChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, JulianChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, JulianChronology.getInstance(gmt).millis().isPrecise());
     }
 
     public void testDateFields() {

@@ -243,6 +243,19 @@ public class TestGJChronology extends TestCase {
         assertEquals(true, GJChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, GJChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, GJChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, GJChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, GJChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, GJChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, GJChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, GJChronology.getInstance(gmt).millis().isPrecise());
     }
 
     public void testDateFields() {

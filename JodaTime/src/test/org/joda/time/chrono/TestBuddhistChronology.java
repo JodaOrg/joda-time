@@ -193,6 +193,19 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, BuddhistChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, BuddhistChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, BuddhistChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, BuddhistChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, BuddhistChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, BuddhistChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, BuddhistChronology.getInstance(gmt).millis().isPrecise());
     }
 
     public void testDateFields() {

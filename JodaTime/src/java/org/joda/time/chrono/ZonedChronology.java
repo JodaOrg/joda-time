@@ -291,7 +291,7 @@ public final class ZonedChronology extends AssembledChronology {
         }
 
         public boolean isPrecise() {
-            return iTimeField ? iField.isPrecise() : this.iZone.isFixed();
+            return iTimeField ? iField.isPrecise() : iField.isPrecise() && this.iZone.isFixed();
         }
 
         public long getUnitMillis() {

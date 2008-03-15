@@ -195,6 +195,19 @@ public class TestCopticChronology extends TestCase {
         assertEquals(true, CopticChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, CopticChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, CopticChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, CopticChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, CopticChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, CopticChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, CopticChronology.getInstance(gmt).millis().isPrecise());
     }
 
     public void testDateFields() {

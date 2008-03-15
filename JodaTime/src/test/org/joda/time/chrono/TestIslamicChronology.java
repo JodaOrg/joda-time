@@ -192,6 +192,19 @@ public class TestIslamicChronology extends TestCase {
         assertEquals(true, IslamicChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, IslamicChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, IslamicChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, IslamicChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, IslamicChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, IslamicChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, IslamicChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, IslamicChronology.getInstance(gmt).millis().isPrecise());
     }
 
     public void testDateFields() {

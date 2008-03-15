@@ -190,6 +190,32 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, ISOChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, ISOChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, ISOChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, ISOChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, ISOChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(gmt).millis().isPrecise());
+        
+        DateTimeZone offset = DateTimeZone.forOffsetHours(1);
+        assertEquals(false, ISOChronology.getInstance(offset).centuries().isPrecise());
+        assertEquals(false, ISOChronology.getInstance(offset).years().isPrecise());
+        assertEquals(false, ISOChronology.getInstance(offset).weekyears().isPrecise());
+        assertEquals(false, ISOChronology.getInstance(offset).months().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).weeks().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).days().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).halfdays().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).hours().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).minutes().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).seconds().isPrecise());
+        assertEquals(true, ISOChronology.getInstance(offset).millis().isPrecise());
     }
 
     public void testDateFields() {

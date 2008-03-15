@@ -195,6 +195,19 @@ public class TestEthiopicChronology extends TestCase {
         assertEquals(true, EthiopicChronology.getInstanceUTC().minutes().isPrecise());
         assertEquals(true, EthiopicChronology.getInstanceUTC().seconds().isPrecise());
         assertEquals(true, EthiopicChronology.getInstanceUTC().millis().isPrecise());
+        
+        DateTimeZone gmt = DateTimeZone.forID("Etc/GMT");
+        assertEquals(false, EthiopicChronology.getInstance(gmt).centuries().isPrecise());
+        assertEquals(false, EthiopicChronology.getInstance(gmt).years().isPrecise());
+        assertEquals(false, EthiopicChronology.getInstance(gmt).weekyears().isPrecise());
+        assertEquals(false, EthiopicChronology.getInstance(gmt).months().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).weeks().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).days().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).halfdays().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).hours().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).minutes().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).seconds().isPrecise());
+        assertEquals(true, EthiopicChronology.getInstance(gmt).millis().isPrecise());
     }
 
     public void testDateFields() {

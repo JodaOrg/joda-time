@@ -104,6 +104,54 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testFactory_standardDays_long() throws Throwable {
+        Duration test = Duration.standardDays(1);
+        assertEquals(24L * 60L * 60L * 1000L, test.getMillis());
+        
+        test = Duration.standardDays(2);
+        assertEquals(2L * 24L * 60L * 60L * 1000L, test.getMillis());
+        
+        test = Duration.standardDays(0);
+        assertSame(Duration.ZERO, test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactory_standardHours_long() throws Throwable {
+        Duration test = Duration.standardHours(1);
+        assertEquals(60L * 60L * 1000L, test.getMillis());
+        
+        test = Duration.standardHours(2);
+        assertEquals(2L * 60L * 60L * 1000L, test.getMillis());
+        
+        test = Duration.standardHours(0);
+        assertSame(Duration.ZERO, test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactory_standardMinutes_long() throws Throwable {
+        Duration test = Duration.standardMinutes(1);
+        assertEquals(60L * 1000L, test.getMillis());
+        
+        test = Duration.standardMinutes(2);
+        assertEquals(2L * 60L * 1000L, test.getMillis());
+        
+        test = Duration.standardMinutes(0);
+        assertSame(Duration.ZERO, test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testFactory_standardSeconds_long() throws Throwable {
+        Duration test = Duration.standardSeconds(1);
+        assertEquals(1000L, test.getMillis());
+        
+        test = Duration.standardSeconds(2);
+        assertEquals(2L * 1000L, test.getMillis());
+        
+        test = Duration.standardSeconds(0);
+        assertSame(Duration.ZERO, test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_long1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +

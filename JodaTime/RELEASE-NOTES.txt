@@ -20,6 +20,10 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.5
 ----------------------
+- Add static factory methods to Duration [1909376]
+  Duration now has four factory methods, standardDays(), standardHours(),
+  standardMinutes() and standardSeconds(). These create durations of the
+  length normally associated with a day/hour/minute/second
 
 
 Compatibility with 1.5

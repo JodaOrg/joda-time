@@ -44,6 +44,96 @@ public final class Duration
     /** Serialization version */
     private static final long serialVersionUID = 2471658376918L;
 
+    //-----------------------------------------------------------------------
+    /**
+     * Create a duration with the specified number of days assuming that
+     * there are the standard number of milliseconds in a day.
+     * <p>
+     * This method assumes that there are 24 hours in a day,
+     * 60 minutes in an hour, 60 seconds in a minute and 1000 milliseconds in
+     * a second. This will be true for most days, however days with Daylight
+     * Savings changes will not have 24 hours, so use this method with care.
+     * <p>
+     * A Duration is a representation of an amount of time. If you want to express
+     * the concepts of 'days' you should consider using the {@link Days} class.
+     *
+     * @param days  the number of standard days in this duration
+     * @return the duration, never null
+     * @throws ArithmeticException if the days value is too large
+     */
+    public static Duration standardDays(long days) {
+        if (days == 0) {
+            return ZERO;
+        }
+        return new Duration(FieldUtils.safeMultiply(days, DateTimeConstants.MILLIS_PER_DAY));
+    }
+
+    /**
+     * Create a duration with the specified number of hours assuming that
+     * there are the standard number of milliseconds in an hour.
+     * <p>
+     * This method assumes that there are 60 minutes in an hour,
+     * 60 seconds in a minute and 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * <p>
+     * A Duration is a representation of an amount of time. If you want to express
+     * the concepts of 'hours' you should consider using the {@link Hours} class.
+     *
+     * @param hours  the number of standard hours in this duration
+     * @return the duration, never null
+     * @throws ArithmeticException if the hours value is too large
+     */
+    public static Duration standardHours(long hours) {
+        if (hours == 0) {
+            return ZERO;
+        }
+        return new Duration(FieldUtils.safeMultiply(hours, DateTimeConstants.MILLIS_PER_HOUR));
+    }
+
+    /**
+     * Create a duration with the specified number of minutes assuming that
+     * there are the standard number of milliseconds in a minute.
+     * <p>
+     * This method assumes that there are 60 seconds in a minute and
+     * 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * <p>
+     * A Duration is a representation of an amount of time. If you want to express
+     * the concepts of 'minutes' you should consider using the {@link Minutes} class.
+     *
+     * @param minutes  the number of standard minutes in this duration
+     * @return the duration, never null
+     * @throws ArithmeticException if the minutes value is too large
+     */
+    public static Duration standardMinutes(long minutes) {
+        if (minutes == 0) {
+            return ZERO;
+        }
+        return new Duration(FieldUtils.safeMultiply(minutes, DateTimeConstants.MILLIS_PER_MINUTE));
+    }
+
+    /**
+     * Create a duration with the specified number of seconds assuming that
+     * there are the standard number of milliseconds in a second.
+     * <p>
+     * This method assumes that there are 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * <p>
+     * A Duration is a representation of an amount of time. If you want to express
+     * the concepts of 'seconds' you should consider using the {@link Seconds} class.
+     *
+     * @param seconds  the number of standard seconds in this duration
+     * @return the duration, never null
+     * @throws ArithmeticException if the seconds value is too large
+     */
+    public static Duration standardSeconds(long seconds) {
+        if (seconds == 0) {
+            return ZERO;
+        }
+        return new Duration(FieldUtils.safeMultiply(seconds, DateTimeConstants.MILLIS_PER_SECOND));
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Creates a duration from the given millisecond duration.
      *

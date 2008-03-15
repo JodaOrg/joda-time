@@ -1,0 +1,74 @@
+<project name="joda-time-jsptags" default="bundle" basedir=".">
+<!-- ========== Properties ================================================ -->
+
+  <property file="build.properties"/>
+
+<!-- ========== Component Declarations ==================================== -->
+
+  <property name="component.name"          value="joda-time-jsptags"/>
+  <property name="component.version"       value="1.0.2"/>
+  <property name="component.fullname"      value="${component.name}-${component.version}"/>
+
+  <property name="source.home"              value="src/java"/>
+  <property name="target"                   value="target"/>
+  <property name="target.docs"              value="${target}/docs/apidocs"/>
+  <property name="target.sources"           value="${target}/sources"/>
+  <property name="target.javadoc"           value="${target}/javadoc"/>
+  <property name="target.dist"              value="${target}/distributions"/>
+  <property name="target.fullname"          value="${target}/${component.fullname}"/>
+  <property name="target.dist.fullname"     value="${target.dist}/${component.fullname}"/>
+  <property name="target.dist.bundle"       value="${target.dist.fullname}-bundle"/>
+
+<!-- ========== Targets =================================================== -->
+
+  <target name="javadoc.jar">
+    <mkdir      dir="${target.javadoc}"/>
+    <copy     todir="${target.javadoc}">
+  	  <fileset dir="${target.docs}" includes="**/*" />
+  	</copy>
+    <mkdir      dir="${target.javadoc}/META-INF"/>
+    <copy      file="LICENSE.txt"
+             tofile="${target.javadoc}/META-INF/LICENSE.txt"/>
+    <copy      file="NOTICE.txt"
+             tofile="${target.javadoc}/META-INF/NOTICE.txt"/>
+    <jar    jarfile="${target.fullname}-javadoc.jar"
+            basedir="${target.javadoc}" />
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="sources.jar">
+    <mkdir      dir="${target.sources}"/>
+    <copy     todir="${target.sources}">
+  	  <fileset dir="${source.home}" includes="**/*.java" />
+  	</copy>
+    <mkdir      dir="${target.sources}/META-INF"/>
+    <copy      file="LICENSE.txt"
+             tofile="${target.sources}/META-INF/LICENSE.txt"/>
+    <copy      file="NOTICE.txt"
+             tofile="${target.sources}/META-INF/NOTICE.txt"/>
+    <jar    jarfile="${target.fullname}-sources.jar"
+            basedir="${target.sources}" />
+  </target>
+
+<!-- ====================================================================== -->
+
+  <target name="bundle" depends="sources.jar,javadoc.jar" description="Create maven upload bundle">
+    <delete     dir="${target.dist.bundle}"/>
+    <mkdir      dir="${target.dist.bundle}"/>
+    <copy      file="LICENSE.txt" todir="${target.dist.bundle}"/>
+    <copy      file="NOTICE.txt" todir="${target.dist.bundle}"/>
+    <copy      file="project.xml" todir="${target.dist.bundle}"/>
+    <copy      file="${target.fullname}.jar"
+              todir="${target.dist.bundle}"/>
+    <copy      file="${target.fullname}-sources.jar"
+              todir="${target.dist.bundle}"/>
+	<copy      file="${target.fullname}-javadoc.jar"
+	          todir="${target.dist.bundle}"/>
+    
+	<fixcrlf srcdir="${target.dist.bundle}" eol="crlf" includes="*.txt"/>
+	<jar    jarfile="${target.fullname}-bundle.jar" basedir="${target.dist.bundle}"/>
+    <delete     dir="${target.dist.bundle}"/>
+  </target>
+
+</project>

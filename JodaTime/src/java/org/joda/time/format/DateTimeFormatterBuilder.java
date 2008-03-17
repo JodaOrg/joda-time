@@ -579,6 +579,13 @@ public class DateTimeFormatterBuilder {
 
     /**
      * Instructs the printer to emit a numeric millisOfSecond field.
+     * <p>
+     * This method will append a field that prints a three digit value.
+     * During parsing the value that is parsed is assumed to be three digits.
+     * If less than three digits are present then they will be counted as the
+     * smallest parts of the millisecond. This is probably not what you want
+     * if you are using the field as a fraction. Instead, a fractional
+     * millisecond should be produced using {@link #appendFractionOfSecond}.
      *
      * @param minDigits minumum number of digits to print
      * @return this DateTimeFormatterBuilder
@@ -1784,25 +1791,21 @@ public class DateTimeFormatterBuilder {
         }
 
         public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
-            if (partial.isSupported(iFieldType)) {
-                long millis = partial.getChronology().set(partial, 0L);
-                try {
-                    printTo(buf, null, millis, partial.getChronology());
-                } catch (IOException e) {
-                    // Not gonna happen.
-                }
-            } else {
-                buf.append('\ufffd');
+            // removed check whether field is supported, as input field is typically
+            // secondOfDay which is unsupported by TimeOfDay
+            long millis = partial.getChronology().set(partial, 0L);
+            try {
+                printTo(buf, null, millis, partial.getChronology());
+            } catch (IOException e) {
+                // Not gonna happen.
             }
         }
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
-            if (partial.isSupported(iFieldType)) {
-                long millis = partial.getChronology().set(partial, 0L);
-                printTo(null, out, millis, partial.getChronology());
-            } else {
-                out.write('\ufffd');
-            }
+            // removed check whether field is supported, as input field is typically
+            // secondOfDay which is unsupported by TimeOfDay
+            long millis = partial.getChronology().set(partial, 0L);
+            printTo(null, out, millis, partial.getChronology());
         }
 
         protected void printTo(StringBuffer buf, Writer out, long instant, Chronology chrono)

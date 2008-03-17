@@ -46,6 +46,15 @@ Deprecations since 1.5
 
 Bug fixes since 1.5
 -------------------
+- ISODateTimeFormat millisecond parsing broken
+  Millisecond parsing would parse 12:00:00.4 as 4 milliseconds rather
+  than 400 milliseconds
+
+- ISODateTimeFormat basic field parsing too lenient
+  The basic parsers in ISODateTimeFormat were too lenient
+  They have been changed to only accept the correct number of digits as
+  per the ISO-8601 standard. The non basic parsers are unaffected
+
 - DateTimeFormat.forFields(List) method can't handle immutable [1877843]
   Fix so that the method does not throw an exception when an unmodifiable
   list is passed in

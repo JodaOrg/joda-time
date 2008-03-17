@@ -71,7 +71,6 @@ public class ISODateTimeFormat {
         hde, // hourOfDay element (HH)
         mhe, // minuteOfHour element (:mm)
         sme, // secondOfMinute element (:ss)
-        lse, // millisOfSecond element (.SSS)
         fse, // fractionOfSecond element (.SSSSSSSSS)
         ze,  // zone offset element
         lte, // literal 'T' element
@@ -867,7 +866,7 @@ public class ISODateTimeFormat {
     public static DateTimeFormatter time() {
         if (t == null) {
             t = new DateTimeFormatterBuilder()
-                .append(hourMinuteSecondMillis())
+                .append(hourMinuteSecondFraction())
                 .append(offsetElement())
                 .toFormatter();
         }
@@ -1069,8 +1068,8 @@ public class ISODateTimeFormat {
         if (bd == null) {
             bd = new DateTimeFormatterBuilder()
                 .appendYear(4, 4)
-                .appendMonthOfYear(2)
-                .appendDayOfMonth(2)
+                .appendFixedDecimal(DateTimeFieldType.monthOfYear(), 2)
+                .appendFixedDecimal(DateTimeFieldType.dayOfMonth(), 2)
                 .toFormatter();
         }
         return bd;
@@ -1087,11 +1086,11 @@ public class ISODateTimeFormat {
     public static DateTimeFormatter basicTime() {
         if (bt == null) {
             bt = new DateTimeFormatterBuilder()
-                .appendHourOfDay(2)
-                .appendMinuteOfHour(2)
-                .appendSecondOfMinute(2)
+                .appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2)
+                .appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2)
+                .appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2)
                 .appendLiteral('.')
-                .appendMillisOfSecond(3)
+                .appendFractionOfSecond(3, 9)
                 .appendTimeZoneOffset("Z", false, 2, 2)
                 .toFormatter();
         }
@@ -1108,9 +1107,9 @@ public class ISODateTimeFormat {
     public static DateTimeFormatter basicTimeNoMillis() {
         if (btx == null) {
             btx = new DateTimeFormatterBuilder()
-                .appendHourOfDay(2)
-                .appendMinuteOfHour(2)
-                .appendSecondOfMinute(2)
+                .appendFixedDecimal(DateTimeFieldType.hourOfDay(), 2)
+                .appendFixedDecimal(DateTimeFieldType.minuteOfHour(), 2)
+                .appendFixedDecimal(DateTimeFieldType.secondOfMinute(), 2)
                 .appendTimeZoneOffset("Z", false, 2, 2)
                 .toFormatter();
         }
@@ -1198,7 +1197,7 @@ public class ISODateTimeFormat {
         if (bod == null) {
             bod = new DateTimeFormatterBuilder()
                 .appendYear(4, 4)
-                .appendDayOfYear(3)
+                .appendFixedDecimal(DateTimeFieldType.dayOfYear(), 3)
                 .toFormatter();
         }
         return bod;
@@ -1251,8 +1250,8 @@ public class ISODateTimeFormat {
             bwd = new DateTimeFormatterBuilder()
                 .appendWeekyear(4, 4)
                 .appendLiteral('W')
-                .appendWeekOfWeekyear(2)
-                .appendDayOfWeek(1)
+                .appendFixedDecimal(DateTimeFieldType.weekOfWeekyear(), 2)
+                .appendFixedDecimal(DateTimeFieldType.dayOfWeek(), 1)
                 .toFormatter();
         }
         return bwd;
@@ -1422,7 +1421,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, and three digit fraction of
-     * second. (HH:mm:ss.SSS)
+     * second (HH:mm:ss.SSS). Parsing will parse up to 3 fractional second
+     * digits.
      * 
      * @return a formatter for HH:mm:ss.SSS
      */
@@ -1432,7 +1432,8 @@ public class ISODateTimeFormat {
                 .append(hourElement())
                 .append(minuteElement())
                 .append(secondElement())
-                .append(millisElement())
+                .appendLiteral('.')
+                .appendFractionOfSecond(3, 3)
                 .toFormatter();
         }
         return hmsl;
@@ -1441,7 +1442,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, and three digit fraction of
-     * second. (HH:mm:ss.SSS)
+     * second (HH:mm:ss.SSS). Parsing will parse up to 9 fractional second
+     * digits, throwing away all except the first three.
      * 
      * @return a formatter for HH:mm:ss.SSS
      */
@@ -1512,7 +1514,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, two digit second of minute, and three digit
-     * fraction of second. (yyyy-MM-dd'T'HH:mm:ss.SSS)
+     * fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
+     * to 3 fractional second digits.
      * 
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSS
      */
@@ -1530,7 +1533,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a formatter that combines a full date, two digit hour of day,
      * two digit minute of hour, two digit second of minute, and three digit
-     * fraction of second. (yyyy-MM-dd'T'HH:mm:ss.SSS)
+     * fraction of second (yyyy-MM-dd'T'HH:mm:ss.SSS). Parsing will parse up
+     * to 9 fractional second digits, throwing away all except the first three.
      * 
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSS
      */
@@ -1650,16 +1654,6 @@ public class ISODateTimeFormat {
                 .toFormatter();
         }
         return sme;
-    }
-
-    private static DateTimeFormatter millisElement() {
-        if (lse == null) {
-            lse = new DateTimeFormatterBuilder()
-                .appendLiteral('.')
-                .appendMillisOfSecond(3)
-                .toFormatter();
-        }
-        return lse;
     }
 
     private static DateTimeFormatter fractionElement() {

@@ -23,8 +23,10 @@ import junit.framework.TestSuite;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.Partial;
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat.
@@ -102,6 +104,13 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
     }
 
+    public void testFormat_date_partial() {
+        Partial dt = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.year(), DateTimeFieldType.monthOfYear(), DateTimeFieldType.dayOfMonth()},
+                new int[] {2004, 6, 9});
+        assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
+    }
+
     public void testFormat_time() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30.040Z", ISODateTimeFormat.time().print(dt));
@@ -113,6 +122,14 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12:20:30.040+02:00", ISODateTimeFormat.time().print(dt));
     }
 
+    public void testFormat_time_partial() {
+        Partial dt = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
+                        DateTimeFieldType.secondOfMinute(), DateTimeFieldType.millisOfSecond()},
+                new int[] {10, 20, 30, 40});
+        assertEquals("10:20:30.040", ISODateTimeFormat.time().print(dt));
+    }
+
     public void testFormat_timeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30Z", ISODateTimeFormat.timeNoMillis().print(dt));
@@ -122,6 +139,14 @@ public class TestISODateTimeFormat extends TestCase {
         
         dt = dt.withZone(PARIS);
         assertEquals("12:20:30+02:00", ISODateTimeFormat.timeNoMillis().print(dt));
+    }
+
+    public void testFormat_timeNoMillis_partial() {
+        Partial dt = new Partial(
+                new DateTimeFieldType[] {DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
+                        DateTimeFieldType.secondOfMinute(), DateTimeFieldType.millisOfSecond()},
+                new int[] {10, 20, 30, 40});
+        assertEquals("10:20:30", ISODateTimeFormat.timeNoMillis().print(dt));
     }
 
     public void testFormat_tTime() {

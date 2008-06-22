@@ -385,8 +385,8 @@ For maximum flexibility however, you might choose to declare your method
 parameters using the Joda-Time interface.
 A method on the interface can obtain the concrete class for use within the method.
 <source>
-    public void process(ReadableInstant instant) {
-        DateTime dt = instant.toDateTime();
+    public void process(ReadableDateTime dateTime) {
+        DateTime dt = dateTime.toDateTime();
     }
 </source>
 </p>

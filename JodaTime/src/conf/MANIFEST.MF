@@ -7,3 +7,12 @@ Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time
 Implementation-Version: 1.6
 Implementation-Vendor-Id: org.joda
+Bundle-ManifestVersion: 2
+Export-Package: org.joda.time;version=1.6,
+ org.joda.time.chrono;version=1.6,
+ org.joda.time.format;version=1.6
+Bundle-Symbolicname: joda-time
+Bundle-Name: Joda-Time
+Bundle-License: Apache 2.0
+Bundle-Version: 1.6
+Bundle-RequiredExecutionEnvironment: J2SE-1.3

@@ -25,6 +25,9 @@ Enhancements since 1.5
   standardMinutes() and standardSeconds(). These create durations of the
   length normally associated with a day/hour/minute/second
 
+- Added OSGi bundle information [1889787]
+  Joda-Time should be usable directly as an OSGi bundle
+
 
 Compatibility with 1.5
 ----------------------

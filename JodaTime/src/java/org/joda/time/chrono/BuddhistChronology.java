@@ -163,6 +163,27 @@ public final class BuddhistChronology extends AssembledChronology {
         return getInstance(zone);
     }
 
+    /**
+     * Checks if this chronology instance equals another.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.6
+     */
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    /**
+     * A suitable hash code for the chronology.
+     * 
+     * @return the hash code
+     * @since 1.6
+     */
+    public int hashCode() {
+        return "Buddhist".hashCode() * 11 + getZone().hashCode();
+    }
+
     // Output
     //-----------------------------------------------------------------------
     /**

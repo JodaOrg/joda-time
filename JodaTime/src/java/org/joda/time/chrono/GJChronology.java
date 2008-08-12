@@ -393,6 +393,28 @@ public final class GJChronology extends AssembledChronology {
         return iGregorianChronology.getMinimumDaysInFirstWeek();
     }
 
+    /**
+     * Checks if this chronology instance equals another.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.6
+     */
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    /**
+     * A suitable hash code for the chronology.
+     * 
+     * @return the hash code
+     * @since 1.6
+     */
+    public int hashCode() {
+        return "GJ".hashCode() * 11 + iJulianChronology.hashCode() +
+            iGregorianChronology.hashCode() + iCutoverInstant.hashCode();
+    }
+
     // Output
     //-----------------------------------------------------------------------
     /**

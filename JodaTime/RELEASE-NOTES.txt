@@ -28,6 +28,10 @@ Enhancements since 1.5
 - Added OSGi bundle information [1889787]
   Joda-Time should be usable directly as an OSGi bundle
 
+- Added stable Chronology hash code implementations [2018795]
+  The hash codes of each Chronology implementation is now stable.
+  This should aid large scale caching/distribution tools.
+
 
 Compatibility with 1.5
 ----------------------

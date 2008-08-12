@@ -180,6 +180,27 @@ public final class ISOChronology extends AssembledChronology {
     }
 
     /**
+     * Checks if this chronology instance equals another.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.6
+     */
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    /**
+     * A suitable hash code for the chronology.
+     * 
+     * @return the hash code
+     * @since 1.6
+     */
+    public int hashCode() {
+        return "ISO".hashCode() * 11 + getZone().hashCode();
+    }
+
+    /**
      * Serialize ISOChronology instances using a small stub. This reduces the
      * serialized size, and deserialized instances come from the cache.
      */

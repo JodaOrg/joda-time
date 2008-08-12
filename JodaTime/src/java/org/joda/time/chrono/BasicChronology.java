@@ -27,11 +27,11 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.field.DividedDateTimeField;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.MillisDurationField;
-import org.joda.time.field.ZeroIsMaxDateTimeField;
 import org.joda.time.field.OffsetDateTimeField;
 import org.joda.time.field.PreciseDateTimeField;
 import org.joda.time.field.PreciseDurationField;
 import org.joda.time.field.RemainderDateTimeField;
+import org.joda.time.field.ZeroIsMaxDateTimeField;
 
 /**
  * Abstract implementation for calendar systems that use a typical
@@ -183,6 +183,27 @@ abstract class BasicChronology extends AssembledChronology {
 
     public int getMinimumDaysInFirstWeek() {
         return iMinDaysInFirstWeek;
+    }
+
+    /**
+     * Checks if this chronology instance equals another.
+     * 
+     * @param obj  the object to compare to
+     * @return true if equal
+     * @since 1.6
+     */
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    /**
+     * A suitable hash code for the chronology.
+     * 
+     * @return the hash code
+     * @since 1.6
+     */
+    public int hashCode() {
+        return getClass().getName().hashCode() * 11 + getZone().hashCode() + getMinimumDaysInFirstWeek();
     }
 
     // Output

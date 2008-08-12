@@ -275,6 +275,16 @@ public final class IslamicChronology extends BasicChronology {
         return getInstance(zone);
     }
 
+    /**
+     * A suitable hash code for the chronology.
+     * 
+     * @return the hash code
+     * @since 1.6
+     */
+    public int hashCode() {
+        return super.hashCode() * 13 + getLeapYearPatternType().hashCode();
+    }
+
     //-----------------------------------------------------------------------
     int getYear(long instant) {
         long millisIslamic = instant - MILLIS_YEAR_1;

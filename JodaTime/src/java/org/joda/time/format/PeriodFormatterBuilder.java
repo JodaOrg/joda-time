@@ -1443,7 +1443,7 @@ public class PeriodFormatterBuilder {
                     if (isZero(period) && iFieldFormatters[iFieldType] == this) {
                         int i = Math.min(iFieldType, 8);  // line split out for IBM JDK
                         i--;                              // see bug 1660490
-                        for (; i >= 0 && i <= MAX_FIELD; i++) {
+                        for (; i >= 0 && i <= MAX_FIELD; i--) {
                             if (isSupported(type, i) && iFieldFormatters[i] != null) {
                                 return Long.MAX_VALUE;
                             }

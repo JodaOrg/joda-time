@@ -76,6 +76,10 @@ Bug fixes since 1.5
   Time zone formats were incorrectly documented as 'Z' instead of 'ZZ'
   Javadoc only change
 
+- Period formatting [2025928]
+  Formatting option printZeroRarelyFirst() did not work unless years
+  field was included.
+
 - DateTimeZone (regression from 1.4) [fix also available in v1.5.2]
   Fix getOffsetFromLocal DST gap adjustment
   Bug affected parsing of DST cutover in Autumn

@@ -646,6 +646,55 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
     }
 
+    public void testFormatPrintZeroRarelyFirstYears() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendYears().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroRarelyFirstMonths() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendMonths().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroRarelyFirstWeeks() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendWeeks().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroRarelyFirstDays() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendDays().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroRarelyFirstHours() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendHours().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroRarelyFirstMinutes() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendMinutes().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
+    public void testFormatPrintZeroRarelyFirstSeconds() {
+        PeriodFormatter f = new PeriodFormatterBuilder()
+            .printZeroRarelyFirst()
+            .appendSeconds().toFormatter();
+        assertEquals("0", f.print(EMPTY_PERIOD));
+    }
+
     public void testFormatPrintZeroIfSupported() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()

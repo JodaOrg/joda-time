@@ -8,16 +8,21 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
+    <release version="1.1" date="2008-10-11" description="Bug fix version">
+      <action dev="scolebourne" type="fix">
+        Handle null intervals stored in database [2111763].
+      </action>              
+    </release>
+
     <release version="1.0" date="2007-09-27" description="Version for Joda-Time 1.3+">
       <action dev="gjospeh" type="add">
         Add persistence for Period and Duration.
       </action>              
       <action dev="imario" type="add">
-        Add persistence for LocalDate, LocalTime and LocalDateTime.
+        Add persistence for LocalDate and LocalTime.
       </action>              
     </release>
 
-    <!-- types are add, fix, remove, update -->
     <release version="0.8" date="2005-12-29" description="Initial version">
       <action dev="imario" type="add">
         Initial version.

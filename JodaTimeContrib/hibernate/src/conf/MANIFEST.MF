@@ -1,7 +1,7 @@
 Extension-Name: @name@
 Specification-Title: Joda Time Hibernate support
 Specification-Vendor: Joda.org
-Specification-Version: 1.0
+Specification-Version: 1.1
 Implementation-Vendor: Joda.org
 Implementation-Title: org.joda.time.contrib.hibernate
 Implementation-Version: @version@

@@ -4,7 +4,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time-hibernate</artifactId>
   <name>Joda time Hibernate support</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.1</currentVersion>
   <shortDescription>Joda time Hibernate support</shortDescription>
   <description>
     Contribution to Joda-Time that adds Hibernate support

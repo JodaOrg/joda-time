@@ -12,6 +12,9 @@
       <action dev="scolebourne" type="fix">
         Handle null intervals stored in database [2111763].
       </action>              
+      <action dev="scolebourne" type="add">
+        Add persistence for LocalDateTime.
+      </action>              
     </release>
 
     <release version="1.0" date="2007-09-27" description="Version for Joda-Time 1.3+">

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2008 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
 /**
@@ -32,6 +33,7 @@ public class Event implements Serializable
 	private LocalTime localTime;
 	private LocalTime localTime2;
 	private LocalTime localTime3;
+	private LocalDateTime localDateTime;
 
 	public Event()
     {
@@ -96,4 +98,14 @@ public class Event implements Serializable
 	{
 		this.localTime3 = localTime3;
 	}
+
+    public LocalDateTime getLocalDateTime()
+    {
+        return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime)
+    {
+        this.localDateTime = localDateTime;
+    }
 }

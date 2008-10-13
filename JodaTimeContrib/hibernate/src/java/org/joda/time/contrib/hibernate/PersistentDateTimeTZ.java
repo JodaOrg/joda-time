@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2008 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 /**
- * Persist {@link org.joda.time.DateTime} via hibernate.<br />
- * The timezone will be stored in an extra column
+ * Persist {@link org.joda.time.DateTime} via hibernate.
+ * The timezone will be stored in an extra column.
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */

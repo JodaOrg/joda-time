@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2008 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -29,8 +29,8 @@ import org.joda.time.DateTime;
 import org.joda.time.TimeOfDay;
 
 /**
- * Persist {@link org.joda.time.TimeOfDay} via hibernate. <br />
- * This uses java.sql.Time and the time datatype of your database. <br />
+ * Persist {@link org.joda.time.TimeOfDay} via hibernate.
+ * This uses java.sql.Time and the time datatype of your database.
  * Notice: You might loose the milliseconds part.
  *
  * @author Mario Ivankovits (mario@ops.co.at)

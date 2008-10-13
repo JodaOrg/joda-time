@@ -27,7 +27,7 @@ import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.LocalDateTime;
 
 /**
- * Persist {@link org.joda.time.LocalDateTime} via hibernate
+ * Persist {@link org.joda.time.LocalDateTime} via hibernate.
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */

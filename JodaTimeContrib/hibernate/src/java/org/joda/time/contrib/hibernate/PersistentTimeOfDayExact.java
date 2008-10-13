@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2008 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,8 +27,8 @@ import org.joda.time.DateTime;
 import org.joda.time.TimeOfDay;
 
 /**
- * Persist {@link org.joda.time.TimeOfDay} via hibernate.<br />
- * This uses a simple integer to store the time as milliseconds since 1970-1-1. <br />
+ * Persist {@link org.joda.time.TimeOfDay} via hibernate.
+ * This uses a simple integer to store the time as milliseconds since 1970-1-1.
  * The milliseconds will survive.
  *
  * @author Mario Ivankovits (mario@ops.co.at)

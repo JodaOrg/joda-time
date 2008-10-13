@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2008 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.LocalDate;
 
 /**
- * Persist {@link org.joda.time.LocalDate} via hibernate
+ * Persist {@link org.joda.time.LocalDate} via hibernate.
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */

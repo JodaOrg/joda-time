@@ -8,7 +8,13 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="1.1" date="2008-10-11" description="Bug fix version">
+    <release version="1.2" date="2008-10-11" description="Version 1.2">
+      <action dev="scolebourne" type="fix">
+        Method deepCopy() should just return the input value [2038742]
+      </action>              
+    </release>
+
+    <release version="1.1" date="2008-10-11" description="Version 1.1">
       <action dev="scolebourne" type="fix">
         Handle null intervals stored in database [2111763].
       </action>              

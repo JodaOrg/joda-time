@@ -24,7 +24,6 @@ import java.sql.Types;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.joda.time.Period;
 
 /**
  * @author gjoseph
@@ -76,11 +75,7 @@ public abstract class AbstractStringBasedJodaType implements UserType {
     }
 
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-
-        return new Period(value);
+        return value;
     }
 
     public boolean isMutable() {

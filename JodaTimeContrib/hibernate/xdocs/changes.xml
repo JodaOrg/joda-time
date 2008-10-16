@@ -12,6 +12,9 @@
       <action dev="scolebourne" type="fix">
         Method deepCopy() should just return the input value [2038742]
       </action>              
+      <action dev="scolebourne" type="update">
+        Change to maven 1.1
+      </action>              
     </release>
 
     <release version="1.1" date="2008-10-11" description="Version 1.1">

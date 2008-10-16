@@ -37,9 +37,8 @@ Version 1.1 was released on 2008-10-12 -
 <p>
 Various documentation is available:
 <ul>
-<!--<li>The user guide - <a href="userguide.html">user guide</a></li>-->
-<li>The javadoc for the <a href="api-release/index.html">current release</a></li>
-<li>The javadoc for the <a href="apidocs/index.html">latest in development</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">current release</a></li>
+<li>The <a href="userguide.html">user guide</a></li>
 <!--li>A <a href="faq.html">FAQ</a> list</li-->
 <li>The <a href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/hibernate/">Subversion repository</a></li>
 </ul>

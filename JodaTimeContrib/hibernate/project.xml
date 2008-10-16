@@ -16,7 +16,7 @@
   <inceptionYear>2005</inceptionYear>
   <package>org.joda.time.contrib.hibernate</package>
 
-  <siteAddress>shell.sourceforge.net</siteAddress>
+  <siteAddress>web.sourceforge.net</siteAddress>
   <siteDirectory>/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</siteDirectory>
 
   <licenses>

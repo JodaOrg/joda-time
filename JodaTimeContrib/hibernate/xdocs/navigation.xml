@@ -15,7 +15,7 @@
     <menu name="Joda Time Hibernate">
       <item name="Overview" href="index.html"/>
       <item name="Users guide" href="userguide.html"/>
-      <item name="Javadoc (Release)" href="/api-release/index.html"/>
+      <item name="Javadoc (Release)" href="apidocs/index.html"/>
       <item name="License" href="licensecover.html"/>
       <item name="Release notes" href="changes-report.html"/>
       <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=174357"/>

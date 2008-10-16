@@ -1,4 +1,4 @@
-Extension-Name: @name@
+Extension-Name: joda-time-hibernate
 Specification-Title: Joda Time Hibernate support
 Specification-Vendor: Joda.org
 Specification-Version: 1.1

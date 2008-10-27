@@ -14,8 +14,17 @@ This is the same license as all of Apache, plus other open source projects such 
 The intent is to make the code available to the Java community with the minimum
 of restrictions. If the license causes you problems please contact the mailing list.
 
-*  Please also check out our related projects   *
-* http://joda-time.sourceforge.net/related.html *
+**  Please also check out our related projects   **
+** http://joda-time.sourceforge.net/related.html **
+
+********************************************************************
+ The next release will probably be v2.0
+ This will be source and binary compatible with the exception that
+ deprecated methods and classes will be removed.
+ If you rely on the deprecated methods or classes please move to
+ their replacements, or let us know why you can't move by writing
+ in https://sourceforge.net/forum/forum.php?forum_id=337835
+********************************************************************
 
 
 Enhancements since 1.5
@@ -24,6 +33,9 @@ Enhancements since 1.5
   Duration now has four factory methods, standardDays(), standardHours(),
   standardMinutes() and standardSeconds(). These create durations of the
   length normally associated with a day/hour/minute/second
+
+- Added Duration.getStandardSeconds() and Duration.toStandardSeconds()
+  These convert a duration in milliseconds to a number of seconds.
 
 - Added OSGi bundle information [1889787]
   Joda-Time should be usable directly as an OSGi bundle

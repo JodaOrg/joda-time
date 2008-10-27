@@ -250,6 +250,30 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testGetStandardSeconds() {
+        Duration test = new Duration(0L);
+        assertEquals(0, test.getStandardSeconds());
+        test = new Duration(1L);
+        assertEquals(0, test.getStandardSeconds());
+        test = new Duration(999L);
+        assertEquals(0, test.getStandardSeconds());
+        test = new Duration(1000L);
+        assertEquals(1, test.getStandardSeconds());
+        test = new Duration(1001L);
+        assertEquals(1, test.getStandardSeconds());
+        test = new Duration(1999L);
+        assertEquals(1, test.getStandardSeconds());
+        test = new Duration(2000L);
+        assertEquals(2, test.getStandardSeconds());
+        test = new Duration(-1L);
+        assertEquals(0, test.getStandardSeconds());
+        test = new Duration(-999L);
+        assertEquals(0, test.getStandardSeconds());
+        test = new Duration(-1000L);
+        assertEquals(-1, test.getStandardSeconds());
+    }
+
+    //-----------------------------------------------------------------------
     public void testToString() {
         long length = (365L + 2L * 30L + 3L * 7L + 4L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
@@ -281,7 +305,41 @@ public class TestDuration_Basics extends TestCase {
         assertNotSame(test, result);
         assertEquals(test, result);
     }
-    
+
+    //-----------------------------------------------------------------------
+    public void testToStandardSeconds() {
+        Duration test = new Duration(0L);
+        assertEquals(Seconds.seconds(0), test.toStandardSeconds());
+        test = new Duration(1L);
+        assertEquals(Seconds.seconds(0), test.toStandardSeconds());
+        test = new Duration(999L);
+        assertEquals(Seconds.seconds(0), test.toStandardSeconds());
+        test = new Duration(1000L);
+        assertEquals(Seconds.seconds(1), test.toStandardSeconds());
+        test = new Duration(1001L);
+        assertEquals(Seconds.seconds(1), test.toStandardSeconds());
+        test = new Duration(1999L);
+        assertEquals(Seconds.seconds(1), test.toStandardSeconds());
+        test = new Duration(2000L);
+        assertEquals(Seconds.seconds(2), test.toStandardSeconds());
+        test = new Duration(-1L);
+        assertEquals(Seconds.seconds(0), test.toStandardSeconds());
+        test = new Duration(-999L);
+        assertEquals(Seconds.seconds(0), test.toStandardSeconds());
+        test = new Duration(-1000L);
+        assertEquals(Seconds.seconds(-1), test.toStandardSeconds());
+    }
+
+    public void testToStandardSeconds_overflow() {
+        Duration test = new Duration(((long) Integer.MAX_VALUE) * 1000L + 1000L);
+        try {
+            test.toStandardSeconds();
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
     //-----------------------------------------------------------------------
     public void testToPeriod() {
         long length =

@@ -182,6 +182,21 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the length of this duration in seconds assuming 1000 milliseconds
+     * in a second.
+     * <p>
+     * This returns <code>getMillis() / 1000</code>.
+     * The result is an integer division, so 2999 millis returns 2 seconds.
+     *
+     * @return the length of the duration in standard seconds
+     * @since 1.6
+     */
+    public long getStandardSeconds() {
+        return getMillis() / DateTimeConstants.MILLIS_PER_SECOND;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Get this duration as an immutable <code>Duration</code> object
      * by returning <code>this</code>.
      * 
@@ -189,6 +204,21 @@ public final class Duration
      */
     public Duration toDuration() {
         return this;
+    }
+
+    /**
+     * Converts this duration to a period in seconds assuming 1000 milliseconds
+     * in a second.
+     * <p>
+     * This method allows you to convert between a duration and a period.
+     * 
+     * @return a period representing the number of standard seconds in this period, never null
+     * @throws ArithmeticException if the number of seconds is too large to be represented
+     * @since 1.6
+     */
+    public Seconds toStandardSeconds() {
+        long seconds = getStandardSeconds();
+        return Seconds.seconds(FieldUtils.safeToInt(seconds));
     }
 
     //-----------------------------------------------------------------------

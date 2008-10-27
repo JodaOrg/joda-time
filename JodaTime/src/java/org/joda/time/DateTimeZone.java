@@ -1074,6 +1074,7 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @param localDateTime  the time to check, not null
      * @return true if the given datetime refers to a gap
+     * @since 1.6
      */
     public boolean isLocalDateTimeGap(LocalDateTime localDateTime) {
         if (isFixed()) {

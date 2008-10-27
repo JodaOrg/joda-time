@@ -32,6 +32,9 @@ Enhancements since 1.5
   The hash codes of each Chronology implementation is now stable.
   This should aid large scale caching/distribution tools.
 
+- Added DateTimeZone.isLocalDateTimeGap
+  Returns true/false depending on whether the time is in a time-zone gap
+
 
 Compatibility with 1.5
 ----------------------

@@ -970,6 +970,124 @@ public abstract class DateTimeZone implements Serializable {
         return instantLocal - newZone.getOffsetFromLocal(instantLocal);
     }
 
+//    //-----------------------------------------------------------------------
+//    /**
+//     * Checks if the given {@link LocalDateTime} is within an overlap.
+//     * <p>
+//     * When switching from Daylight Savings Time to standard time there is
+//     * typically an overlap where the same clock hour occurs twice. This
+//     * method identifies whether the local datetime refers to such an overlap.
+//     * 
+//     * @param localDateTime  the time to check, not null
+//     * @return true if the given datetime refers to an overlap
+//     */
+//    public boolean isLocalDateTimeOverlap(LocalDateTime localDateTime) {
+//        if (isFixed()) {
+//            return false;
+//        }
+//        long instantLocal = localDateTime.toDateTime(DateTimeZone.UTC).getMillis();
+//        // get the offset at instantLocal (first estimate)
+//        int offsetLocal = getOffset(instantLocal);
+//        // adjust instantLocal using the estimate and recalc the offset
+//        int offset = getOffset(instantLocal - offsetLocal);
+//        // if the offsets differ, we must be near a DST boundary
+//        if (offsetLocal != offset) {
+//            long nextLocal = nextTransition(instantLocal - offsetLocal);
+//            long nextAdjusted = nextTransition(instantLocal - offset);
+//            if (nextLocal != nextAdjusted) {
+//                // in DST gap
+//                return false;
+//            }
+//            long diff = Math.abs(offset - offsetLocal);
+//            DateTime dateTime = localDateTime.toDateTime(this);
+//            DateTime adjusted = dateTime.plus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            adjusted = dateTime.minus(diff);
+//            if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                    dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                    dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//                return true;
+//            }
+//            return false;
+//        }
+//        return false;
+//    }
+//        
+//        
+//        DateTime dateTime = null;
+//        try {
+//            dateTime = localDateTime.toDateTime(this);
+//        } catch (IllegalArgumentException ex) {
+//            return false;  // it is a gap, not an overlap
+//        }
+//        long offset1 = Math.abs(getOffset(dateTime.getMillis() + 1) - getStandardOffset(dateTime.getMillis() + 1));
+//        long offset2 = Math.abs(getOffset(dateTime.getMillis() - 1) - getStandardOffset(dateTime.getMillis() - 1));
+//        long offset = Math.max(offset1, offset2);
+//        if (offset == 0) {
+//            return false;
+//        }
+//        DateTime adjusted = dateTime.plus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        adjusted = dateTime.minus(offset);
+//        if (dateTime.getHourOfDay() == adjusted.getHourOfDay() &&
+//                dateTime.getMinuteOfHour() == adjusted.getMinuteOfHour() &&
+//                dateTime.getSecondOfMinute() == adjusted.getSecondOfMinute()) {
+//            return true;
+//        }
+//        return false;
+        
+//        long millis = dateTime.getMillis();
+//        long nextTransition = nextTransition(millis);
+//        long previousTransition = previousTransition(millis);
+//        long deltaToPreviousTransition = millis - previousTransition;
+//        long deltaToNextTransition = nextTransition - millis;
+//        if (deltaToNextTransition < deltaToPreviousTransition) {
+//            int offset = getOffset(nextTransition);
+//            int standardOffset = getStandardOffset(nextTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToNextTransition) {
+//                return true;
+//            }
+//        } else  {
+//            int offset = getOffset(previousTransition);
+//            int standardOffset = getStandardOffset(previousTransition);
+//            if (Math.abs(offset - standardOffset) >= deltaToPreviousTransition) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+
+    /**
+     * Checks if the given {@link LocalDateTime} is within a gap.
+     * <p>
+     * When switching from standard time to Daylight Savings Time there is
+     * typically a gap where a clock hour is missing. This method identifies
+     * whether the local datetime refers to such a gap.
+     * 
+     * @param localDateTime  the time to check, not null
+     * @return true if the given datetime refers to a gap
+     */
+    public boolean isLocalDateTimeGap(LocalDateTime localDateTime) {
+        if (isFixed()) {
+            return false;
+        }
+        try {
+            localDateTime.toDateTime(this);
+            return false;
+        } catch (IllegalArgumentException ex) {
+            return true;
+        }
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Returns true if this time zone has no transitions.
      *

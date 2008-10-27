@@ -58,7 +58,7 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/index.html?org/jod
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 1.6 was released on 2008-XX-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX -
+Version 1.6 was released on 2008-10-27 -
 <a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
 </p>
 </section>

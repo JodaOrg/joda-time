@@ -57,7 +57,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes, except
-  - DateTimeZone data updated to version 2008i
+  - DateTimeZone data updated to version 2009a
 
 Semantic compatible - Yes
 

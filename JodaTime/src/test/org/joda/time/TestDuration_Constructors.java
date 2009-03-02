@@ -152,6 +152,18 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testFactory_millis_long() throws Throwable {
+        Duration test = Duration.millis(1);
+        assertEquals(1L, test.getMillis());
+        
+        test = Duration.millis(2);
+        assertEquals(2L, test.getMillis());
+        
+        test = Duration.millis(0);
+        assertSame(Duration.ZERO, test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_long1() throws Throwable {
         long length = 4 * DateTimeConstants.MILLIS_PER_DAY +
                 5 * DateTimeConstants.MILLIS_PER_HOUR +

@@ -137,6 +137,20 @@ public final class Duration
         return new Duration(FieldUtils.safeMultiply(seconds, DateTimeConstants.MILLIS_PER_SECOND));
     }
 
+    /**
+     * Create a duration with the specified number of milliseconds.
+     *
+     * @param millis  the number of standard milliseconds in this duration
+     * @return the duration, never null
+     * @since 2.0
+     */
+    public static Duration millis(long millis) {
+        if (millis == 0) {
+            return ZERO;
+        }
+        return new Duration(millis);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Creates a duration from the given millisecond duration.

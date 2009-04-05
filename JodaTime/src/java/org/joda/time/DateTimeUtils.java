@@ -15,6 +15,10 @@
  */
 package org.joda.time;
 
+import java.lang.reflect.Method;
+import java.text.DateFormatSymbols;
+import java.util.Locale;
+
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -324,6 +328,27 @@ public class DateTimeUtils {
             lastType = loopField.getDurationField().getType();
         }
         return true;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the {@link DateFormatSymbols} based on the given locale.
+     * <p>
+     * If JDK 6 or newer is being used, DateFormatSymbols.getInstance(locale) will
+     * be used in order to allow the use of locales defined as extensions.
+     * Otherwise, new DateFormatSymbols(locale) will be used.
+     * See JDK 6 {@link DateFormatSymbols} for further information.
+     * 
+     * @param locale  the {@link Locale} used to get the correct {@link DateFormatSymbols}
+     * @return the symbols
+     */
+    public static final DateFormatSymbols getDateFormatSymbols(Locale locale) {
+        try {        	
+        	Method method = DateFormatSymbols.class.getMethod("getInstance", new Class[] {Locale.class});        	
+        	return (DateFormatSymbols) method.invoke(null, new Object[] {locale});        	
+        } catch (Exception ex) {
+        	return new DateFormatSymbols(locale);
+        } 
     }
 
     //-----------------------------------------------------------------------

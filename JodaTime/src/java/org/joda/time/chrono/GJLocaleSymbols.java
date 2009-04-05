@@ -17,11 +17,12 @@ package org.joda.time.chrono;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormatSymbols;
-import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.TreeMap;
+import java.util.WeakHashMap;
 
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.IllegalFieldValueException;
 
 /**
@@ -128,9 +129,9 @@ class GJLocaleSymbols {
      */
     private GJLocaleSymbols(Locale locale) {
         iLocale = new WeakReference(locale);
-
-        DateFormatSymbols dfs = new DateFormatSymbols(locale);
-
+        
+        DateFormatSymbols dfs = DateTimeUtils.getDateFormatSymbols(locale);
+        
         iEras = dfs.getEras();
         iDaysOfWeek = realignDaysOfWeek(dfs.getWeekdays());
         iShortDaysOfWeek = realignDaysOfWeek(dfs.getShortWeekdays());

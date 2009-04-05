@@ -21,7 +21,10 @@ of restrictions. If the license causes you problems please contact the mailing l
 Enhancements since 1.6
 ----------------------
 - Add static factory method millis() to Duration [2648777]
-  This checks for a returns the singleton value for ZERO
+  This checks for and returns the singleton value for ZERO
+
+- Support pluggable locale text and additional locales in JDK 6 [2690370]
+  Extra info accessed by reflection if JDK 6 used
 
 
 Compatibility with 1.6

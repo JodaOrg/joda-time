@@ -19,6 +19,8 @@ import java.text.DateFormatSymbols;
 import java.util.HashMap;
 import java.util.Locale;
 
+import org.joda.time.DateTimeUtils;
+
 /**
  * The default name provider acquires localized names from
  * {@link DateFormatSymbols java.text.DateFormatSymbols}.
@@ -58,7 +60,7 @@ public class DefaultNameProvider implements NameProvider {
         HashMap byNameKeyCache = (HashMap)byIdCache.get(id);
         if (byNameKeyCache == null) {
             byIdCache.put(id, byNameKeyCache = createCache());
-            String[][] zoneStrings = new DateFormatSymbols(locale).getZoneStrings();
+            String[][] zoneStrings = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();
             for (int i=0; i<zoneStrings.length; i++) {
                 String[] set = zoneStrings[i];
                 if (set != null && set.length == 5 && id.equals(set[0])) {

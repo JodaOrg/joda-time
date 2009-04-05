@@ -44,6 +44,7 @@ Deprecations since 1.6
 
 Bug fixes since 1.6
 -------------------
+- Javadoc fix in Months [2721880]
 
 
 Feedback

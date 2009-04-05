@@ -41,7 +41,7 @@ public final class Months extends BaseSingleFieldPeriod {
 
     /** Constant representing zero months. */
     public static final Months ZERO = new Months(0);
-    /** Constant representing one day. */
+    /** Constant representing one month. */
     public static final Months ONE = new Months(1);
     /** Constant representing two months. */
     public static final Months TWO = new Months(2);
@@ -70,7 +70,7 @@ public final class Months extends BaseSingleFieldPeriod {
     /** Constant representing the minimum number of months that can be stored in this object. */
     public static final Months MIN_VALUE = new Months(Integer.MIN_VALUE);
 
-    /** The paser to use for this class. */
+    /** The parser to use for this class. */
     private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.months());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380867L;

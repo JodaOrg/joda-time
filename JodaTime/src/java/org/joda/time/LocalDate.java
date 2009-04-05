@@ -826,6 +826,9 @@ public final class LocalDate
      * Converts this object to an Interval representing the whole day
      * in the default time zone.
      * <p>
+     * The interval may have more or less than 24 hours if this is a daylight
+     * savings cutover date.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @return a interval over the day
@@ -837,6 +840,9 @@ public final class LocalDate
     /**
      * Converts this object to an Interval representing the whole day.
      * <p>
+     * The interval may have more or less than 24 hours if this is a daylight
+     * savings cutover date.
+     * <p>
      * This instance is immutable and unaffected by this method call.
      *
      * @param zone  the zone to get the Interval in, null means default
@@ -844,7 +850,9 @@ public final class LocalDate
      */
     public Interval toInterval(DateTimeZone zone) {
         zone = DateTimeUtils.getZone(zone);
-        return toDateMidnight(zone).toInterval();
+        DateTime start = toDateTimeAtStartOfDay(zone);
+        DateTime end = plusDays(1).toDateTimeAtStartOfDay(zone);
+        return new Interval(start, end);
     }
 
     //-----------------------------------------------------------------------

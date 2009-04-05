@@ -902,7 +902,7 @@ public class TestLocalDate_Basics extends TestCase {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         Interval test = base.toInterval();
         check(base, 2005, 6, 9);
-        DateTime start = base.toDateTimeAtMidnight();
+        DateTime start = base.toDateTimeAtStartOfDay();
         DateTime end = start.plus(Period.days(1));
         Interval expected = new Interval(start, end);
         assertEquals(expected, test);
@@ -913,8 +913,19 @@ public class TestLocalDate_Basics extends TestCase {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         Interval test = base.toInterval(TOKYO);
         check(base, 2005, 6, 9);
-        DateTime start = base.toDateTimeAtMidnight(TOKYO);
+        DateTime start = base.toDateTimeAtStartOfDay(TOKYO);
         DateTime end = start.plus(Period.days(1));
+        Interval expected = new Interval(start, end);
+        assertEquals(expected, test);
+    }
+
+    public void testToInterval_Zone_noMidnight() {
+        LocalDate base = new LocalDate(2006, 4, 1, ISO_LONDON);  // LONDON irrelevant
+        DateTimeZone gaza = DateTimeZone.forID("Asia/Gaza");
+        Interval test = base.toInterval(gaza);
+        check(base, 2006, 4, 1);
+        DateTime start = new DateTime(2006, 4, 1, 1, 0, 0, 0, gaza);
+        DateTime end = new DateTime(2006, 4, 2, 0, 0, 0, 0, gaza);
         Interval expected = new Interval(start, end);
         assertEquals(expected, test);
     }
@@ -923,7 +934,7 @@ public class TestLocalDate_Basics extends TestCase {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         Interval test = base.toInterval(null);
         check(base, 2005, 6, 9);
-        DateTime start = base.toDateTimeAtMidnight(LONDON);
+        DateTime start = base.toDateTimeAtStartOfDay(LONDON);
         DateTime end = start.plus(Period.days(1));
         Interval expected = new Interval(start, end);
         assertEquals(expected, test);

@@ -44,6 +44,9 @@ Deprecations since 1.6
 
 Bug fixes since 1.6
 -------------------
+- LocalDate.toInterval() [2487417]
+  Now handles time zones which have no midnight at DST cutover
+
 - Javadoc fix in Months [2721880]
 
 

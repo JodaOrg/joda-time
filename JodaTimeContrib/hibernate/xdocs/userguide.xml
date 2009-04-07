@@ -63,6 +63,11 @@ private DateTime fromDate;
 				<td>This persister uses two columns, to separately store the time value and its timezone</td>
 			</tr>
 			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentInstant</td>
+				<td>BIGINT</td>
+				<td>This persister uses one column to store the millisconds</td>
+			</tr>
+			<tr>
 				<td>org.joda.time.contrib.hibernate.PersistentInterval</td>
 				<td>TIMESTAMP, TIMESTAMP</td>
 				<td>This persister uses two columns, to store the start and end of the interval</td>

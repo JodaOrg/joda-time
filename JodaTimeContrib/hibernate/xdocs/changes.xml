@@ -8,12 +8,15 @@
   <body>
 
     <!-- types are add, fix, remove, update -->
-    <release version="1.2" date="2008-10-11" description="Version 1.2">
+    <release version="1.2" date="2009-xx-xx" description="Version 1.2">
       <action dev="scolebourne" type="fix">
         Method deepCopy() should just return the input value [2038742]
       </action>              
       <action dev="scolebourne" type="update">
         Change to maven 1.1
+      </action>              
+      <action dev="scolebourne" type="add">
+        Add persistence for Instant.
       </action>              
     </release>
 

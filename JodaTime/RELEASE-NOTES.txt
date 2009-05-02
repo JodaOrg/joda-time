@@ -45,6 +45,8 @@ Semantic compatible - Yes
 
 Deprecations since 1.6
 ----------------------
+- DateTimeFormatter.getChronolgy() [2783325]
+  Incorrect spelling - new method DateTimeFormatter.getChronology()
 
 
 Bug fixes since 1.6

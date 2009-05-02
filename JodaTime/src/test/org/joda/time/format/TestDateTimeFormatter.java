@@ -257,11 +257,11 @@ public class TestDateTimeFormatter extends TestCase {
 
     public void testWithGetChronology() {
         DateTimeFormatter f2 = f.withChronology(BUDDHIST_PARIS);
-        assertEquals(BUDDHIST_PARIS, f2.getChronolgy());
+        assertEquals(BUDDHIST_PARIS, f2.getChronology());
         assertSame(f2, f2.withChronology(BUDDHIST_PARIS));
         
         f2 = f.withChronology(null);
-        assertEquals(null, f2.getChronolgy());
+        assertEquals(null, f2.getChronology());
         assertSame(f2, f2.withChronology(null));
     }
 

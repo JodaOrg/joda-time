@@ -26,6 +26,8 @@ Enhancements since 1.6
 - Support pluggable locale text and additional locales in JDK 6 [2690370]
   Extra info accessed by reflection if JDK 6 used
 
+- Better error messages for invalid time zone ids [2781835]
+
 
 Compatibility with 1.6
 ----------------------

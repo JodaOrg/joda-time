@@ -196,7 +196,7 @@ public abstract class DateTimeZone implements Serializable {
                 return fixedOffsetZone(id, offset);
             }
         }
-        throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
+        throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
     }
 
     /**
@@ -310,8 +310,7 @@ public abstract class DateTimeZone implements Serializable {
                 }
             }
         }
-
-        throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
+        throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
     }
 
     //-----------------------------------------------------------------------

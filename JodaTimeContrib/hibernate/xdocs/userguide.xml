@@ -41,7 +41,16 @@ persist Joda-Time based date and time objects to a database using Hibernate.
 @Type(type="org.joda.time.contrib.hibernate.PersistentDateTime")
 private DateTime fromDate;
 		]]></pre>
+		<p>
+		Sometimes there are multiple columns to be specified, as with <code>PersistentDateTimeTZ</code>:
+		</p>
+		<pre><![CDATA[
+@Columns(columns={@Column(name="startTime"),@Column(name="startTimezone")})
+@Type(type="org.joda.time.contrib.hibernate.PersistentDateTimeTZ")
+private DateTime startDateTime;
+		]]></pre>
 	</subsection>
+
 	<subsection name="Available Types">
 		<p>
 			The main types which can be persisted:

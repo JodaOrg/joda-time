@@ -75,7 +75,7 @@ import org.joda.time.chrono.ISOChronology;
  *     .addRecurringSavings("PDT", 3600000, 1975, 1975, 'w', 2, 23,  0, false, 7200000)
  *     .addRecurringSavings("PDT", 3600000, 1976, 1986, 'w', 4, -1,  7, false, 7200000)
  *     .addRecurringSavings("PDT", 3600000, 1987, 2147483647, 'w', 4, 1, 7, true, 7200000)
- *     .toDateTimeZone("America/Los_Angeles");
+ *     .toDateTimeZone("America/Los_Angeles", true);
  * </pre>
  *
  * @author Brian S O'Neill
@@ -230,16 +230,16 @@ public class DateTimeZoneBuilder {
      * Adds a cutover for added rules. The standard offset at the cutover
      * defaults to 0. Call setStandardOffset afterwards to change it.
      *
-     * @param year year of cutover
+     * @param year  the year of cutover
      * @param mode 'u' - cutover is measured against UTC, 'w' - against wall
-     * offset, 's' - against standard offset.
-     * @param dayOfMonth if negative, set to ((last day of month) - ~dayOfMonth).
-     * For example, if -1, set to last day of month
-     * @param dayOfWeek if 0, ignore
-     * @param advanceDayOfWeek if dayOfMonth does not fall on dayOfWeek, advance to
-     * dayOfWeek when true, retreat when false.
-     * @param millisOfDay additional precision for specifying time of day of
-     * cutover
+     *  offset, 's' - against standard offset
+     * @param monthOfYear  the month from 1 (January) to 12 (December)
+     * @param dayOfMonth  if negative, set to ((last day of month) - ~dayOfMonth).
+     *  For example, if -1, set to last day of month
+     * @param dayOfWeek  from 1 (Monday) to 7 (Sunday), if 0 then ignore
+     * @param advanceDayOfWeek  if dayOfMonth does not fall on dayOfWeek, advance to
+     *  dayOfWeek when true, retreat when false.
+     * @param millisOfDay  additional precision for specifying time of day of cutover
      */
     public DateTimeZoneBuilder addCutover(int year,
                                           char mode,
@@ -262,6 +262,7 @@ public class DateTimeZoneBuilder {
     /**
      * Sets the standard offset to use for newly added rules until the next
      * cutover is added.
+     * @param standardOffset  the standard offset in millis
      */
     public DateTimeZoneBuilder setStandardOffset(int standardOffset) {
         getLastRuleSet().setStandardOffset(standardOffset);
@@ -279,22 +280,22 @@ public class DateTimeZoneBuilder {
     /**
      * Add a recurring daylight saving time rule.
      *
-     * @param nameKey name key of new rule
-     * @param saveMillis milliseconds to add to standard offset
-     * @param fromYear First year that rule is in effect. MIN_VALUE indicates
-     * beginning of time.
-     * @param toYear Last year (inclusive) that rule is in effect. MAX_VALUE
-     * indicates end of time.
-     * @param mode 'u' - transitions are calculated against UTC, 'w' -
-     * transitions are calculated against wall offset, 's' - transitions are
-     * calculated against standard offset.
-     * @param dayOfMonth if negative, set to ((last day of month) - ~dayOfMonth).
-     * For example, if -1, set to last day of month
-     * @param dayOfWeek if 0, ignore
-     * @param advanceDayOfWeek if dayOfMonth does not fall on dayOfWeek, advance to
-     * dayOfWeek when true, retreat when false.
-     * @param millisOfDay additional precision for specifying time of day of
-     * transitions
+     * @param nameKey  the name key of new rule
+     * @param saveMillis  the milliseconds to add to standard offset
+     * @param fromYear  the first year that rule is in effect, MIN_VALUE indicates
+     * beginning of time
+     * @param toYear  the last year (inclusive) that rule is in effect, MAX_VALUE
+     *  indicates end of time
+     * @param mode  'u' - transitions are calculated against UTC, 'w' -
+     *  transitions are calculated against wall offset, 's' - transitions are
+     *  calculated against standard offset
+     * @param monthOfYear  the month from 1 (January) to 12 (December)
+     * @param dayOfMonth  if negative, set to ((last day of month) - ~dayOfMonth).
+     *  For example, if -1, set to last day of month
+     * @param dayOfWeek  from 1 (Monday) to 7 (Sunday), if 0 then ignore
+     * @param advanceDayOfWeek  if dayOfMonth does not fall on dayOfWeek, advance to
+     *  dayOfWeek when true, retreat when false.
+     * @param millisOfDay  additional precision for specifying time of day of transitions
      */
     public DateTimeZoneBuilder addRecurringSavings(String nameKey, int saveMillis,
                                                    int fromYear, int toYear,
@@ -435,7 +436,7 @@ public class DateTimeZoneBuilder {
      * Encodes a built DateTimeZone to the given stream. Call readFrom to
      * decode the data into a DateTimeZone object.
      *
-     * @param out output stream to receive encoded DateTimeZone.
+     * @param out  the output stream to receive the encoded DateTimeZone
      * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, OutputStream out) throws IOException {
@@ -450,7 +451,7 @@ public class DateTimeZoneBuilder {
      * Encodes a built DateTimeZone to the given stream. Call readFrom to
      * decode the data into a DateTimeZone object.
      *
-     * @param out output stream to receive encoded DateTimeZone.
+     * @param out  the output stream to receive the encoded DateTimeZone
      * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, DataOutput out) throws IOException {

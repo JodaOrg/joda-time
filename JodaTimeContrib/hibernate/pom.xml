@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+    xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>joda-time</groupId>
+  <artifactId>joda-time-hibernate</artifactId>
+  <name>Joda time Hibernate support</name>
+  <version>1.1</version>
+  <description>Contribution to Joda-Time that adds Hibernate support</description>
+  <url>http://joda-time.sourceforge.net/contrib/hibernate</url>
+  <issueManagement>
+  	<system>Sourceforge</system>
+    <url>http://sourceforge.net/tracker/?atid=617889&amp;group_id=97367&amp;func=browse</url>
+  </issueManagement>
+  <inceptionYear>2005</inceptionYear>
+  <mailingLists>
+    <mailingList>
+      <name>Joda Interest list</name>
+      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
+      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+      <otherArchives>
+        <otherArchive>http://n2.nabble.com/Joda-Interest-f219941.html</otherArchive>
+      </otherArchives>
+    </mailingList>
+  </mailingLists>
+  <developers>
+    <developer>
+      <id>imario</id>
+      <name>Mario Ivankovits</name>
+      <email></email>
+      <roles>
+        <role>Lead developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>gjoseph</id>
+      <name>Gregory Joseph</name>
+      <email></email>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>scolebourne</id>
+      <name>Stephen Colebourne</name>
+      <email></email>
+      <roles>
+        <role>Website and Release manager</role>
+      </roles>
+      <timezone>0</timezone>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/</url>
+    </license>
+  </licenses>
+  <scm>
+    <connection>scm:svn:https://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/hibernate/</connection>
+    <url>http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/hibernate/</url>
+  </scm>
+  <organization>
+    <name>Joda.org</name>
+    <url>http://www.joda.org</url>
+  </organization>
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+    <resources>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <directory>.</directory>
+        <includes>
+          <include>NOTICE.txt</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <verbose>true</verbose>
+          <fork>true</fork>
+          <executable>C:\java\jdk1.4.2\bin\javac</executable>
+          <compilerVersion>1.4</compilerVersion>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <includes>
+            <include>org/joda/time/contrib/hibernate/**/Test*.java</include>
+          </includes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/main/assembly/bin.xml</descriptor>
+            <descriptor>src/main/assembly/src.xml</descriptor>
+          </descriptors>
+          <tarLongFileMode>gnu</tarLongFileMode>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+  <dependencies>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate</artifactId>
+      <version>3.0.5</version>
+    </dependency>
+  </dependencies>
+  <reporting>
+  	<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.1</version>
+        <configuration>
+          <configLocation>${basedir}/checkstyle.xml</configLocation>
+          <enableRulesSummary>false</enableRulesSummary>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <linksource>true</linksource>
+          <links>
+            <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
+            <link>http://joda-time.sourceforge.net/api-release/</link>
+          </links>
+        </configuration>
+      </plugin>
+  	</plugins>
+  </reporting>
+  <distributionManagement>
+    <site>
+      <id>default</id>
+      <name>Default Site</name>
+      <url>scp://web.sourceforge.net//home/groups/j/jo/joda-time/htdocs/contrib/hibernate</url>
+    </site>
+  </distributionManagement>
+</project>

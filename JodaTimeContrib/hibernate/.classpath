@@ -12,6 +12,6 @@
 	<classpathentry kind="var" path="MAVEN_REPO/dom4j/jars/dom4j-1.6.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/cglib/jars/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="var" path="MAVEN_REPO/jta/jars/jta-1_0_1B-classes.zip"/>
-	<classpathentry kind="var" path="MAVEN_REPO/joda-time/jars/joda-time-1.3.jar"/>
+	<classpathentry kind="var" path="MAVEN_REPO/joda-time/jars/joda-time-1.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

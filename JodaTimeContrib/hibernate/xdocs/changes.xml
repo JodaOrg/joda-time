@@ -9,6 +9,9 @@
 
     <!-- types are add, fix, remove, update -->
     <release version="1.2" date="2009-xx-xx" description="Version 1.2">
+      <action dev="scolebourne" type="update">
+        Require Joda-Time 1.6
+      </action>              
       <action dev="scolebourne" type="fix">
         Method deepCopy() should just return the input value [2038742]
       </action>              

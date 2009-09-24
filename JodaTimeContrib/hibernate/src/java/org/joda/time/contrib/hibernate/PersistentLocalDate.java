@@ -96,7 +96,7 @@ public class PersistentLocalDate implements EnhancedUserType
 		}
 		else
 		{
-			Hibernate.DATE.nullSafeSet(preparedStatement, ((LocalDate) value).toDateMidnight().toDate(), index);
+			Hibernate.DATE.nullSafeSet(preparedStatement, ((LocalDate) value).toDateTimeAtStartOfDay().toDate(), index);
 		}
 	}
 

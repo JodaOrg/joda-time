@@ -1583,10 +1583,10 @@ public class PeriodFormatterBuilder {
         private final boolean iUseBefore;
         private final boolean iUseAfter;
 
-        private PeriodPrinter iBeforePrinter;
-        private PeriodPrinter iAfterPrinter;
-        private PeriodParser iBeforeParser;
-        private PeriodParser iAfterParser;
+        private final PeriodPrinter iBeforePrinter;
+        private volatile PeriodPrinter iAfterPrinter;
+        private final PeriodParser iBeforeParser;
+        private volatile PeriodParser iAfterParser;
 
         Separator(String text, String finalText, String[] variants,
                 PeriodPrinter beforePrinter, PeriodParser beforeParser,

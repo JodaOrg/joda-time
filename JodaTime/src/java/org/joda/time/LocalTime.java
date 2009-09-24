@@ -136,11 +136,16 @@ public final class LocalTime
     //-----------------------------------------------------------------------
     /**
      * Constructs a LocalTime from a <code>java.util.Calendar</code>
-     * using exactly the same field values avoiding any time zone effects.
+     * using exactly the same field values.
      * <p>
      * Each field is queried from the Calendar and assigned to the LocalTime.
      * This is useful if you have been using the Calendar as a local time,
-     * ignoing the zone.
+     * ignoring the zone.
+     * <p>
+     * One advantage of this method is that this method is unaffected if the
+     * version of the time zone data differs between the JDK and Joda-Time.
+     * That is because the local field values are transferred, calculated using
+     * the JDK time zone data and without using the Joda-Time time zone data.
      * <p>
      * This factory method ignores the type of the calendar and always
      * creates a LocalTime with ISO chronology. It is expected that you
@@ -166,11 +171,16 @@ public final class LocalTime
 
     /**
      * Constructs a LocalTime from a <code>java.util.Date</code>
-     * using exactly the same field values avoiding any time zone effects.
+     * using exactly the same field values.
      * <p>
      * Each field is queried from the Date and assigned to the LocalTime.
      * This is useful if you have been using the Date as a local time,
-     * ignoing the zone.
+     * ignoring the zone.
+     * <p>
+     * One advantage of this method is that this method is unaffected if the
+     * version of the time zone data differs between the JDK and Joda-Time.
+     * That is because the local field values are transferred, calculated using
+     * the JDK time zone data and without using the Joda-Time time zone data.
      * <p>
      * This factory method always creates a LocalTime with ISO chronology.
      *

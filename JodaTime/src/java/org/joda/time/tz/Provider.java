@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.joda.time.tz;
 
 import java.util.Set;
+
 import org.joda.time.DateTimeZone;
 
 /**
@@ -25,6 +26,7 @@ import org.joda.time.DateTimeZone;
  * @since 1.0
  */
 public interface Provider {
+
     /**
      * Retrieves a DateTimeZone for the given id. All providers must at
      * least support id "UTC".
@@ -37,5 +39,6 @@ public interface Provider {
      * Returns an unmodifiable set of ids. All providers must at least
      * support id "UTC".
      */        
-    Set getAvailableIDs();
+    Set<String> getAvailableIDs();
+
 }

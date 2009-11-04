@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
     private static final int MAX_YEAR = 292272984;
 
     /** Cache of zone to chronology arrays */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, EthiopicChronology[]> cCache = new HashMap<DateTimeZone, EthiopicChronology[]>();
 
     /** Singleton instance of a UTC EthiopicChronology */
     private static final EthiopicChronology INSTANCE_UTC;
@@ -121,7 +121,7 @@ public final class EthiopicChronology extends BasicFixedMonthChronology {
         }
         EthiopicChronology chrono;
         synchronized (cCache) {
-            EthiopicChronology[] chronos = (EthiopicChronology[]) cCache.get(zone);
+            EthiopicChronology[] chronos = cCache.get(zone);
             if (chronos == null) {
                 chronos = new EthiopicChronology[7];
                 cCache.put(zone, chronos);

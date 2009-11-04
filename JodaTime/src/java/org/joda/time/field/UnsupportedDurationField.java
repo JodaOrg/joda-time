@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.joda.time.field;
 
 import java.io.Serializable;
 import java.util.HashMap;
+
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 
@@ -34,7 +35,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     private static final long serialVersionUID = -6390301302770925357L;
 
     /** The cache of unsupported duration field instances */
-    private static HashMap cCache;
+    private static HashMap<DurationFieldType, UnsupportedDurationField> cCache;
 
     /**
      * Gets an instance of UnsupportedDurationField for a specific named field.
@@ -46,10 +47,10 @@ public final class UnsupportedDurationField extends DurationField implements Ser
     public static synchronized UnsupportedDurationField getInstance(DurationFieldType type) {
         UnsupportedDurationField field;
         if (cCache == null) {
-            cCache = new HashMap(7);
+            cCache = new HashMap<DurationFieldType, UnsupportedDurationField>(7);
             field = null;
         } else {
-            field = (UnsupportedDurationField) cCache.get(type);
+            field = cCache.get(type);
         }
         if (field == null) {
             field = new UnsupportedDurationField(type);
@@ -222,7 +223,7 @@ public final class UnsupportedDurationField extends DurationField implements Ser
      *
      * @return zero always
      */
-    public int compareTo(Object durationField) {
+    public int compareTo(DurationField durationField) {
         return 0;
     }
 

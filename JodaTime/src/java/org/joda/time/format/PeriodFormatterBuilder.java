@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ public class PeriodFormatterBuilder {
     private PeriodFieldAffix iPrefix;
 
     // List of Printers and Parsers used to build a final formatter.
-    private List iElementPairs;
+    private List<Object> iElementPairs;
     /** Set to true if the formatter is not a printer. */
     private boolean iNotPrinter;
     /** Set to true if the formatter is not a parser. */
@@ -174,7 +174,7 @@ public class PeriodFormatterBuilder {
         iRejectSignedValues = false;
         iPrefix = null;
         if (iElementPairs == null) {
-            iElementPairs = new ArrayList();
+            iElementPairs = new ArrayList<Object>();
         } else {
             iElementPairs.clear();
         }
@@ -734,7 +734,7 @@ public class PeriodFormatterBuilder {
         clearPrefix();
         
         // optimise zero formatter case
-        List pairs = iElementPairs;
+        List<Object> pairs = iElementPairs;
         if (pairs.size() == 0) {
             if (useAfter && useBefore == false) {
                 Separator separator = new Separator(
@@ -791,7 +791,7 @@ public class PeriodFormatterBuilder {
     }
 
     //-----------------------------------------------------------------------
-    private static PeriodFormatter toFormatter(List elementPairs, boolean notPrinter, boolean notParser) {
+    private static PeriodFormatter toFormatter(List<Object> elementPairs, boolean notPrinter, boolean notParser) {
         if (notPrinter && notParser) {
             throw new IllegalStateException("Builder has created neither a printer nor a parser");
         }
@@ -812,7 +812,7 @@ public class PeriodFormatterBuilder {
         }
     }
 
-    private static Object[] createComposite(List elementPairs) {
+    private static Object[] createComposite(List<Object> elementPairs) {
         switch (elementPairs.size()) {
             case 0:
                 return new Object[] {Literal.EMPTY, Literal.EMPTY};
@@ -1600,7 +1600,7 @@ public class PeriodFormatterBuilder {
                 iParsedForms = new String[] {text};
             } else {
                 // Filter and reverse sort the parsed forms.
-                TreeSet parsedSet = new TreeSet(String.CASE_INSENSITIVE_ORDER);
+                TreeSet<String> parsedSet = new TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
                 parsedSet.add(text);
                 parsedSet.add(finalText);
                 if (variants != null) {
@@ -1608,9 +1608,9 @@ public class PeriodFormatterBuilder {
                         parsedSet.add(variants[i]);
                     }
                 }
-                ArrayList parsedList = new ArrayList(parsedSet);
+                ArrayList<String> parsedList = new ArrayList<String>(parsedSet);
                 Collections.reverse(parsedList);
-                iParsedForms = (String[]) parsedList.toArray(new String[parsedList.size()]);
+                iParsedForms = parsedList.toArray(new String[parsedList.size()]);
             }
 
             iBeforePrinter = beforePrinter;
@@ -1761,23 +1761,23 @@ public class PeriodFormatterBuilder {
         private final PeriodPrinter[] iPrinters;
         private final PeriodParser[] iParsers;
 
-        Composite(List elementPairs) {
-            List printerList = new ArrayList();
-            List parserList = new ArrayList();
+        Composite(List<Object> elementPairs) {
+            List<Object> printerList = new ArrayList<Object>();
+            List<Object> parserList = new ArrayList<Object>();
 
             decompose(elementPairs, printerList, parserList);
 
             if (printerList.size() <= 0) {
                 iPrinters = null;
             } else {
-                iPrinters = (PeriodPrinter[]) printerList.toArray(
+                iPrinters = printerList.toArray(
                         new PeriodPrinter[printerList.size()]);
             }
 
             if (parserList.size() <= 0) {
                 iParsers = null;
             } else {
-                iParsers = (PeriodParser[]) parserList.toArray(
+                iParsers = parserList.toArray(
                         new PeriodParser[parserList.size()]);
             }
         }
@@ -1831,7 +1831,7 @@ public class PeriodFormatterBuilder {
             return position;
         }
 
-        private void decompose(List elementPairs, List printerList, List parserList) {
+        private void decompose(List<Object> elementPairs, List<Object> printerList, List<Object> parserList) {
             int size = elementPairs.size();
             for (int i=0; i<size; i+=2) {
                 Object element = elementPairs.get(i);
@@ -1854,7 +1854,7 @@ public class PeriodFormatterBuilder {
             }
         }
 
-        private void addArrayToList(List list, Object[] array) {
+        private void addArrayToList(List<Object> list, Object[] array) {
             if (array != null) {
                 for (int i=0; i<array.length; i++) {
                     list.add(array[i]);

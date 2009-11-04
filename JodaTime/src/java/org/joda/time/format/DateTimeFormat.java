@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -144,7 +144,7 @@ public class DateTimeFormat {
     static final int DATETIME = 2;
 
     /** Maps patterns to formatters, patterns don't vary by locale. */
-    private static final Map cPatternedCache = new HashMap(7);
+    private static final Map<String, DateTimeFormatter> cPatternedCache = new HashMap<String, DateTimeFormatter>(7);
     /** Maps patterns to formatters, patterns don't vary by locale. */
     private static final DateTimeFormatter[] cStyleCache = new DateTimeFormatter[25];
 
@@ -676,7 +676,7 @@ public class DateTimeFormat {
         }
         DateTimeFormatter formatter = null;
         synchronized (cPatternedCache) {
-            formatter = (DateTimeFormatter) cPatternedCache.get(pattern);
+            formatter = cPatternedCache.get(pattern);
             if (formatter == null) {
                 DateTimeFormatterBuilder builder = new DateTimeFormatterBuilder();
                 parsePatternTo(builder, pattern);
@@ -764,7 +764,7 @@ public class DateTimeFormat {
     static class StyleFormatter
             implements DateTimePrinter, DateTimeParser {
 
-        private static final Map cCache = new HashMap();  // manual sync
+        private static final Map<String, DateTimeFormatter> cCache = new HashMap<String, DateTimeFormatter>();  // manual sync
         
         private final int iDateStyle;
         private final int iTimeStyle;
@@ -819,7 +819,7 @@ public class DateTimeFormat {
             String key = Integer.toString(iType + (iDateStyle << 4) + (iTimeStyle << 8)) + locale.toString();
             DateTimeFormatter f = null;
             synchronized (cCache) {
-                f = (DateTimeFormatter) cCache.get(key);
+                f = cCache.get(key);
                 if (f == null) {
                     String pattern = getPattern(locale);
                     f = DateTimeFormat.forPattern(pattern);

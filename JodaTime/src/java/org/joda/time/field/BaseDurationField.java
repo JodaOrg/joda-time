@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 package org.joda.time.field;
 
 import java.io.Serializable;
+
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 
@@ -141,8 +142,7 @@ public abstract class BaseDurationField extends DurationField implements Seriali
     }
 
     //------------------------------------------------------------------------
-    public int compareTo(Object durationField) {
-        DurationField otherField = (DurationField) durationField;
+    public int compareTo(DurationField otherField) {
         long otherMillis = otherField.getUnitMillis();
         long thisMillis = getUnitMillis();
         // cannot do (thisMillis - otherMillis) as can overflow

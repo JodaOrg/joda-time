@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ class ReadableInstantConverter extends AbstractConverter
      * 
      * @return ReadableInstant.class
      */
-    public Class getSupportedType() {
+    public Class<?> getSupportedType() {
         return ReadableInstant.class;
     }
 

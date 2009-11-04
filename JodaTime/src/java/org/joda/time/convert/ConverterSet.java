@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class ConverterSet {
      * @throws IllegalStateException if multiple converters match the type
      * equally well
      */
-    Converter select(Class type) throws IllegalStateException {
+    Converter select(Class<?> type) throws IllegalStateException {
         // Check the hashtable first.
         Entry[] entries = iSelectEntries;
         int length = entries.length;
@@ -239,14 +239,14 @@ class ConverterSet {
      * Returns the closest matching converter for the given type, but not very
      * efficiently.
      */
-    private static Converter selectSlow(ConverterSet set, Class type) {
+    private static Converter selectSlow(ConverterSet set, Class<?> type) {
         Converter[] converters = set.iConverters;
         int length = converters.length;
         Converter converter;
 
         for (int i=length; --i>=0; ) {
             converter = converters[i];
-            Class supportedType = converter.getSupportedType();
+            Class<?> supportedType = converter.getSupportedType();
 
             if (supportedType == type) {
                 // Exact match.
@@ -276,7 +276,7 @@ class ConverterSet {
         // Eliminate supertypes.
         for (int i=length; --i>=0; ) {
             converter = converters[i];
-            Class supportedType = converter.getSupportedType();
+            Class<?> supportedType = converter.getSupportedType();
             for (int j=length; --j>=0; ) {
                 if (j != i && converters[j].getSupportedType().isAssignableFrom(supportedType)) {
                     // Eliminate supertype.
@@ -304,7 +304,7 @@ class ConverterSet {
         msg.append("\" from remaining set: ");
         for (int i=0; i<length; i++) {
             converter = converters[i];
-            Class supportedType = converter.getSupportedType();
+            Class<?> supportedType = converter.getSupportedType();
 
             msg.append(converter.getClass().getName());
             msg.append('[');
@@ -316,10 +316,10 @@ class ConverterSet {
     }
 
     static class Entry {
-        final Class iType;
+        final Class<?> iType;
         final Converter iConverter;
 
-        Entry(Class type, Converter converter) {
+        Entry(Class<?> type, Converter converter) {
             iType = type;
             iConverter = converter;
         }

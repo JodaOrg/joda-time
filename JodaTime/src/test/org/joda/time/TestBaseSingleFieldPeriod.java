@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -241,18 +241,18 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         assertEquals(true, test3.compareTo(test2) > 0);
         assertEquals(true, test3.compareTo(test3) == 0);
         
-        try {
-            test1.compareTo("Hello");
-            fail();
-        } catch (ClassCastException ex) {
-            // expected
-        }
-        try {
-            test1.compareTo(new Period(0, 0, 0, 21, 0, 0, 0, 0, PeriodType.days()));
-            fail();
-        } catch (ClassCastException ex) {
-            // expected
-        }
+//        try {
+//            test1.compareTo("Hello");
+//            fail();
+//        } catch (ClassCastException ex) {
+//            // expected
+//        }
+//        try {
+//            test1.compareTo(new Period(0, 0, 0, 21, 0, 0, 0, 0, PeriodType.days()));
+//            fail();
+//        } catch (ClassCastException ex) {
+//            // expected
+//        }
         try {
             test1.compareTo(null);
             fail();

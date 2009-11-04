@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,12 +26,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -140,18 +140,16 @@ public class ZoneInfoCompiler {
     /**
      * @param zimap maps string ids to DateTimeZone objects.
      */
-    static void writeZoneInfoMap(DataOutputStream dout, Map zimap) throws IOException {
+    static void writeZoneInfoMap(DataOutputStream dout, Map<String, DateTimeZone> zimap) throws IOException {
         // Build the string pool.
-        Map idToIndex = new HashMap(zimap.size());
-        TreeMap indexToId = new TreeMap();
+        Map<String, Short> idToIndex = new HashMap<String, Short>(zimap.size());
+        TreeMap<Short, String> indexToId = new TreeMap<Short, String>();
 
-        Iterator it = zimap.entrySet().iterator();
         short count = 0;
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
+        for (Entry<String, DateTimeZone> entry : zimap.entrySet()) {
             String id = (String)entry.getKey();
             if (!idToIndex.containsKey(id)) {
-                Short index = new Short(count);
+                Short index = Short.valueOf(count);
                 idToIndex.put(id, index);
                 indexToId.put(index, id);
                 if (++count == 0) {
@@ -160,7 +158,7 @@ public class ZoneInfoCompiler {
             }
             id = ((DateTimeZone)entry.getValue()).getID();
             if (!idToIndex.containsKey(id)) {
-                Short index = new Short(count);
+                Short index = Short.valueOf(count);
                 idToIndex.put(id, index);
                 indexToId.put(index, id);
                 if (++count == 0) {
@@ -171,20 +169,17 @@ public class ZoneInfoCompiler {
 
         // Write the string pool, ordered by index.
         dout.writeShort(indexToId.size());
-        it = indexToId.values().iterator();
-        while (it.hasNext()) {
-            dout.writeUTF((String)it.next());
+        for (String id : indexToId.values()) {
+            dout.writeUTF(id);
         }
 
         // Write the mappings.
         dout.writeShort(zimap.size());
-        it = zimap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
-            String id = (String)entry.getKey();
-            dout.writeShort(((Short)idToIndex.get(id)).shortValue());
-            id = ((DateTimeZone)entry.getValue()).getID();
-            dout.writeShort(((Short)idToIndex.get(id)).shortValue());
+        for (Entry<String, DateTimeZone> entry : zimap.entrySet()) {
+            String id = entry.getKey();
+            dout.writeShort(idToIndex.get(id).shortValue());
+            id = entry.getValue().getID();
+            dout.writeShort(idToIndex.get(id).shortValue());
         }
     }
 
@@ -262,7 +257,7 @@ public class ZoneInfoCompiler {
         int offset = tz.getOffset(millis);
         String key = tz.getNameKey(millis);
 
-        List transitions = new ArrayList();
+        List<Long> transitions = new ArrayList<Long>();
 
         while (true) {
             long next = tz.nextTransition(millis);
@@ -291,7 +286,7 @@ public class ZoneInfoCompiler {
                 return false;
             }
 
-            transitions.add(new Long(millis));
+            transitions.add(Long.valueOf(millis));
 
             offset = nextOffset;
             key = nextKey;
@@ -310,7 +305,7 @@ public class ZoneInfoCompiler {
 
             millis = prev;
 
-            long trans = ((Long)transitions.get(i)).longValue();
+            long trans = transitions.get(i).longValue();
             
             if (trans - 1 != millis) {
                 System.out.println("*r* Error in " + tz.getID() + " "
@@ -327,18 +322,18 @@ public class ZoneInfoCompiler {
     }
 
     // Maps names to RuleSets.
-    private Map iRuleSets;
+    private Map<String, RuleSet> iRuleSets;
 
     // List of Zone objects.
-    private List iZones;
+    private List<Zone> iZones;
 
     // List String pairs to link.
-    private List iLinks;
+    private List<String> iLinks;
 
     public ZoneInfoCompiler() {
-        iRuleSets = new HashMap();
-        iZones = new ArrayList();
-        iLinks = new ArrayList();
+        iRuleSets = new HashMap<String, RuleSet>();
+        iZones = new ArrayList<Zone>();
+        iLinks = new ArrayList<String>();
     }
 
     /**
@@ -347,7 +342,7 @@ public class ZoneInfoCompiler {
      * @param outputDir optional directory to write compiled data files to
      * @param sources optional list of source files to parse
      */
-    public Map compile(File outputDir, File[] sources) throws IOException {
+    public Map<String, DateTimeZone> compile(File outputDir, File[] sources) throws IOException {
         if (sources != null) {
             for (int i=0; i<sources.length; i++) {
                 BufferedReader in = new BufferedReader(new FileReader(sources[i]));
@@ -365,10 +360,10 @@ public class ZoneInfoCompiler {
             }
         }
 
-        Map map = new TreeMap();
+        Map<String, DateTimeZone> map = new TreeMap<String, DateTimeZone>();
 
         for (int i=0; i<iZones.size(); i++) {
-            Zone zone = (Zone)iZones.get(i);
+            Zone zone = iZones.get(i);
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
             zone.addToBuilder(builder, iRuleSets);
             final DateTimeZone original = builder.toDateTimeZone(zone.iName, true);
@@ -400,9 +395,9 @@ public class ZoneInfoCompiler {
 
         for (int pass=0; pass<2; pass++) {
             for (int i=0; i<iLinks.size(); i += 2) {
-                String id = (String)iLinks.get(i);
-                String alias = (String)iLinks.get(i + 1);
-                DateTimeZone tz = (DateTimeZone)map.get(id);
+                String id = iLinks.get(i);
+                String alias = iLinks.get(i + 1);
+                DateTimeZone tz = map.get(id);
                 if (tz == null) {
                     if (pass > 0) {
                         System.out.println("Cannot find time zone '" + id +
@@ -424,7 +419,7 @@ public class ZoneInfoCompiler {
             OutputStream out = new FileOutputStream(file);
             DataOutputStream dout = new DataOutputStream(out);
             // Sort and filter out any duplicates that match case.
-            Map zimap = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+            Map<String, DateTimeZone> zimap = new TreeMap<String, DateTimeZone>(String.CASE_INSENSITIVE_ORDER);
             zimap.putAll(map);
             writeZoneInfoMap(dout, zimap);
             dout.close();
@@ -468,7 +463,7 @@ public class ZoneInfoCompiler {
                 String token = st.nextToken();
                 if (token.equalsIgnoreCase("Rule")) {
                     Rule r = new Rule(st);
-                    RuleSet rs = (RuleSet)iRuleSets.get(r.iName);
+                    RuleSet rs = iRuleSets.get(r.iName);
                     if (rs == null) {
                         rs = new RuleSet(r);
                         iRuleSets.put(r.iName, rs);
@@ -675,15 +670,15 @@ public class ZoneInfoCompiler {
     }
 
     private static class RuleSet {
-        private List iRules;
+        private List<Rule> iRules;
 
         RuleSet(Rule rule) {
-            iRules = new ArrayList();
+            iRules = new ArrayList<Rule>();
             iRules.add(rule);
         }
 
         void addRule(Rule rule) {
-            if (!(rule.iName.equals(((Rule)iRules.get(0)).iName))) {
+            if (!(rule.iName.equals(iRules.get(0).iName))) {
                 throw new IllegalArgumentException("Rule name mismatch");
             }
             iRules.add(rule);
@@ -694,7 +689,7 @@ public class ZoneInfoCompiler {
          */
         public void addRecurring(DateTimeZoneBuilder builder, String nameFormat) {
             for (int i=0; i<iRules.size(); i++) {
-                Rule rule = (Rule)iRules.get(i);
+                Rule rule = iRules.get(i);
                 rule.addRecurring(builder, nameFormat);
             }
         }
@@ -753,13 +748,13 @@ public class ZoneInfoCompiler {
         /**
          * Adds zone info to the builder.
          */
-        public void addToBuilder(DateTimeZoneBuilder builder, Map ruleSets) {
+        public void addToBuilder(DateTimeZoneBuilder builder, Map<String, RuleSet> ruleSets) {
             addToBuilder(this, builder, ruleSets);
         }
 
         private static void addToBuilder(Zone zone,
                                          DateTimeZoneBuilder builder,
-                                         Map ruleSets)
+                                         Map<String, RuleSet> ruleSets)
         {
             for (; zone != null; zone = zone.iNext) {
                 builder.setStandardOffset(zone.iOffsetMillis);
@@ -773,7 +768,7 @@ public class ZoneInfoCompiler {
                         builder.setFixedSavings(zone.iFormat, saveMillis);
                     }
                     catch (Exception e) {
-                        RuleSet rs = (RuleSet)ruleSets.get(zone.iRules);
+                        RuleSet rs = ruleSets.get(zone.iRules);
                         if (rs == null) {
                             throw new IllegalArgumentException
                                 ("Rules not found: " + zone.iRules);

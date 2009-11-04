@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadableDuration extends Comparable {
+public interface ReadableDuration extends Comparable<ReadableDuration> {
 
     /**
      * Gets the total length of this duration in milliseconds.
@@ -82,7 +82,7 @@ public interface ReadableDuration extends Comparable {
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the given object is not supported
      */
-    int compareTo(Object obj);
+    int compareTo(ReadableDuration obj);
 
     /**
      * Is the length of this duration equal to the duration passed in.

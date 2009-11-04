@@ -20,6 +20,8 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 1.6
 ----------------------
+- Move to Java 5, with generics
+
 - Add static factory method millis() to Duration [2648777]
   This checks for and returns the singleton value for ZERO
 

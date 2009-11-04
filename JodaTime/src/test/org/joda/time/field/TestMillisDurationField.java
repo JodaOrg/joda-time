@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -185,10 +185,10 @@ public class TestMillisDurationField extends TestCase {
         assertEquals(-1, MillisDurationField.INSTANCE.compareTo(ISOChronology.getInstance().seconds()));
         DurationField dummy = new PreciseDurationField(DurationFieldType.seconds(), 0);
         assertEquals(1, MillisDurationField.INSTANCE.compareTo(dummy));
-        try {
-            MillisDurationField.INSTANCE.compareTo("");
-            fail();
-        } catch (ClassCastException ex) {}
+//        try {
+//            MillisDurationField.INSTANCE.compareTo("");
+//            fail();
+//        } catch (ClassCastException ex) {}
         try {
             MillisDurationField.INSTANCE.compareTo(null);
             fail();

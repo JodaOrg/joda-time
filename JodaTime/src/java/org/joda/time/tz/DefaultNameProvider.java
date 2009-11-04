@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.joda.time.tz;
 import java.text.DateFormatSymbols;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.joda.time.DateTimeUtils;
 
@@ -30,9 +31,10 @@ import org.joda.time.DateTimeUtils;
  * @author Brian S O'Neill
  * @since 1.0
  */
+@SuppressWarnings("unchecked")
 public class DefaultNameProvider implements NameProvider {
     // locale -> (id -> (nameKey -> [shortName, name]))
-    private HashMap iByLocaleCache = createCache();
+    private HashMap<Locale, Map<String, Map<String, Object>>> iByLocaleCache = createCache();
 
     public DefaultNameProvider() {
     }
@@ -52,12 +54,12 @@ public class DefaultNameProvider implements NameProvider {
             return null;
         }
 
-        HashMap byIdCache = (HashMap)iByLocaleCache.get(locale);
+        Map<String, Map<String, Object>> byIdCache = iByLocaleCache.get(locale);
         if (byIdCache == null) {
             iByLocaleCache.put(locale, byIdCache = createCache());
         }
 
-        HashMap byNameKeyCache = (HashMap)byIdCache.get(id);
+        Map<String, Object> byNameKeyCache = byIdCache.get(id);
         if (byNameKeyCache == null) {
             byIdCache.put(id, byNameKeyCache = createCache());
             String[][] zoneStrings = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();

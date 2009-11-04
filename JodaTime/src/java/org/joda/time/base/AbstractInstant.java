@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -286,19 +286,17 @@ public abstract class AbstractInstant implements ReadableInstant {
      * <p>
      * All ReadableInstant instances are accepted.
      *
-     * @param instant  a readable instant to check against
+     * @param other  a readable instant to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */
-    public int compareTo(Object instant) {
-        if (this == instant) {
+    public int compareTo(ReadableInstant other) {
+        if (this == other) {
             return 0;
         }
         
-        ReadableInstant otherInstant = (ReadableInstant) instant;
-        
-        long otherMillis = otherInstant.getMillis();
+        long otherMillis = other.getMillis();
         long thisMillis = getMillis();
         
         // cannot do (thisMillis - otherMillis) as can overflow

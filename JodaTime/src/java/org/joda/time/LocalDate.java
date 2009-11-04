@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -88,7 +88,7 @@ public final class LocalDate
     /** The index of the dayOfMonth field in the field array */
     private static final int DAY_OF_MONTH = 2;
     /** Set of known duration types. */
-    private static final Set DATE_DURATION_TYPES = new HashSet();
+    private static final Set<DurationFieldType> DATE_DURATION_TYPES = new HashSet<DurationFieldType>();
     static {
         DATE_DURATION_TYPES.add(DurationFieldType.days());
         DATE_DURATION_TYPES.add(DurationFieldType.weeks());
@@ -560,7 +560,7 @@ public final class LocalDate
      *  or if it has field types that don't match
      * @throws NullPointerException if the partial is null
      */
-    public int compareTo(Object partial) {
+    public int compareTo(ReadablePartial partial) {
         // override to perform faster
         if (this == partial) {
             return 0;

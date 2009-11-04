@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.joda.time.field.FieldUtils;
  * @since 1.4
  */
 public abstract class BaseSingleFieldPeriod
-        implements ReadablePeriod, Comparable, Serializable {
+        implements ReadablePeriod, Comparable<BaseSingleFieldPeriod>, Serializable {
 
     /** Serialization version. */
     private static final long serialVersionUID = 9386874258972L;
@@ -326,11 +326,11 @@ public abstract class BaseSingleFieldPeriod
      * @throws NullPointerException if the other period is null
      * @throws ClassCastException if the other period is of a different type
      */
-    public int compareTo(Object other) {
+    public int compareTo(BaseSingleFieldPeriod other) {
         if (other.getClass() != getClass()) {
             throw new ClassCastException(getClass() + " cannot be compared to " + other.getClass());
         }
-        int otherValue = ((BaseSingleFieldPeriod) other).getValue();
+        int otherValue = other.getValue();
         int thisValue = getValue();
         if (thisValue > otherValue) {
             return 1;

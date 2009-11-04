@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ import org.joda.time.convert.InstantConverter;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public class DateTimeComparator implements Comparator, Serializable {
+public class DateTimeComparator implements Comparator<Object>, Serializable {
 
     /** Serialization lock */
     private static final long serialVersionUID = -6097339773320178364L;

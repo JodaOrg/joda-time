@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.joda.time.format.DateTimeFormatter;
  * @since 1.0
  */
 public abstract class AbstractPartial
-        implements ReadablePartial, Comparable {
+        implements ReadablePartial, Comparable<ReadablePartial> {
 
     //-----------------------------------------------------------------------
     /**
@@ -305,18 +305,17 @@ public abstract class AbstractPartial
      * The cause of this problem is that ReadablePartial doesn't define
      * the compareTo() method, however we can't change that until v2.0.
      *
-     * @param partial  an object to check against
+     * @param other  an object to check against
      * @return negative if this is less, zero if equal, positive if greater
      * @throws ClassCastException if the partial is the wrong class
      *  or if it has field types that don't match
      * @throws NullPointerException if the partial is null
      * @since 1.1
      */
-    public int compareTo(Object partial) {
-        if (this == partial) {
+    public int compareTo(ReadablePartial other) {
+        if (this == other) {
             return 0;
         }
-        ReadablePartial other = (ReadablePartial) partial;
         if (size() != other.size()) {
             throw new ClassCastException("ReadablePartial objects must have matching field types");
         }

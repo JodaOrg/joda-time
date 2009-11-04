@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -351,20 +351,20 @@ public class DateTimeParserBucket {
      * java.util.Arrays is called, which will perform a merge sort, which is
      * faster than insertion sort on large lists.
      * <p>
-     * The end result is much greater performace when computeMillis is called.
+     * The end result is much greater performance when computeMillis is called.
      * Since the amount of saved fields is small, the insertion sort is a
      * better choice. Additional performance is gained since there is no extra
      * array allocation and copying. Also, the insertion sort here does not
      * perform any casting operations. The version in java.util.Arrays performs
      * casts within the insertion sort loop.
      */
-    private static void sort(Comparable[] array, int high) {
+    private static void sort(SavedField[] array, int high) {
         if (high > 10) {
             Arrays.sort(array, 0, high);
         } else {
             for (int i=0; i<high; i++) {
                 for (int j=i; j>0 && (array[j-1]).compareTo(array[j])>0; j--) {
-                    Comparable t = array[j];
+                    SavedField t = array[j];
                     array[j] = array[j-1];
                     array[j-1] = t;
                 }
@@ -404,7 +404,7 @@ public class DateTimeParserBucket {
         }
     }
     
-    static class SavedField implements Comparable {
+    static class SavedField implements Comparable<SavedField> {
         final DateTimeField iField;
         final int iValue;
         final String iText;
@@ -441,8 +441,8 @@ public class DateTimeParserBucket {
          * null is considered infinite. If the ranges match, then the field
          * with the longer duration is ordered first.
          */
-        public int compareTo(Object obj) {
-            DateTimeField other = ((SavedField)obj).iField;
+        public int compareTo(SavedField obj) {
+            DateTimeField other = obj.iField;
             int result = compareReverse
                 (iField.getRangeDurationField(), other.getRangeDurationField());
             if (result != 0) {

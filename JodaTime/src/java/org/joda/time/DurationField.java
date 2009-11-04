@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ package org.joda.time;
  * @author Brian S O'Neill
  * @since 1.0
  */
-public abstract class DurationField implements Comparable {
+public abstract class DurationField implements Comparable<DurationField> {
 
     /**
      * Get the type of the field.
@@ -279,7 +279,7 @@ public abstract class DurationField implements Comparable {
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */
-    public abstract int compareTo(Object durationField);
+    public abstract int compareTo(DurationField durationField);
 
     /**
      * Returns a localized unit name of this field, using the given value as an

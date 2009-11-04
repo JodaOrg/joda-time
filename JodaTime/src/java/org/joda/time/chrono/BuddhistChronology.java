@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public final class BuddhistChronology extends AssembledChronology {
     private static final int BUDDHIST_OFFSET = 543;
 
     /** Cache of zone to chronology */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, BuddhistChronology> cCache = new HashMap<DateTimeZone, BuddhistChronology>();
 
     /** UTC instance of the chronology */
     private static final BuddhistChronology INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -104,7 +104,7 @@ public final class BuddhistChronology extends AssembledChronology {
         if (zone == null) {
             zone = DateTimeZone.getDefault();
         }
-        BuddhistChronology chrono = (BuddhistChronology) cCache.get(zone);
+        BuddhistChronology chrono = cCache.get(zone);
         if (chrono == null) {
             // First create without a lower limit.
             chrono = new BuddhistChronology(GJChronology.getInstance(zone, null), null);

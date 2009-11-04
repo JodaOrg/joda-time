@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package org.joda.time.base;
 import org.joda.time.Duration;
 import org.joda.time.Period;
 import org.joda.time.ReadableDuration;
+import org.joda.time.ReadableInstant;
 import org.joda.time.format.FormatUtils;
 
 /**
@@ -82,18 +83,14 @@ public abstract class AbstractDuration implements ReadableDuration {
     /**
      * Compares this duration with the specified duration based on length.
      *
-     * @param obj  a duration to check against
+     * @param other  a duration to check against
      * @return negative value if this is less, 0 if equal, or positive value if greater
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the given object is not supported
      */
-    public int compareTo(Object obj) {
-        // Comparable contract means we cannot handle null or other types gracefully
-        ReadableDuration thisDuration = (ReadableDuration) this;
-        ReadableDuration otherDuration = (ReadableDuration) obj;
-        
-        long thisMillis = thisDuration.getMillis();
-        long otherMillis = otherDuration.getMillis();
+    public int compareTo(ReadableDuration other) {
+        long thisMillis = this.getMillis();
+        long otherMillis = other.getMillis();
         
         // cannot do (thisMillis - otherMillis) as it can overflow
         if (thisMillis < otherMillis) {

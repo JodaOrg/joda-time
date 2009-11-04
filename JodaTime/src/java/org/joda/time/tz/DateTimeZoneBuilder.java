@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -220,10 +220,10 @@ public class DateTimeZoneBuilder {
     }
 
     // List of RuleSets.
-    private final ArrayList iRuleSets;
+    private final ArrayList<RuleSet> iRuleSets;
 
     public DateTimeZoneBuilder() {
-        iRuleSets = new ArrayList(10);
+        iRuleSets = new ArrayList<RuleSet>(10);
     }
 
     /**
@@ -252,7 +252,7 @@ public class DateTimeZoneBuilder {
         OfYear ofYear = new OfYear
             (mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, millisOfDay);
         if (iRuleSets.size() > 0) {
-            RuleSet lastRuleSet = (RuleSet)iRuleSets.get(iRuleSets.size() - 1);
+            RuleSet lastRuleSet = iRuleSets.get(iRuleSets.size() - 1);
             lastRuleSet.setUpperLimit(year, ofYear);
         }
         iRuleSets.add(new RuleSet());
@@ -320,7 +320,7 @@ public class DateTimeZoneBuilder {
         if (iRuleSets.size() == 0) {
             addCutover(Integer.MIN_VALUE, 'w', 1, 1, 0, false, 0);
         }
-        return (RuleSet)iRuleSets.get(iRuleSets.size() - 1);
+        return iRuleSets.get(iRuleSets.size() - 1);
     }
     
     /**
@@ -336,7 +336,7 @@ public class DateTimeZoneBuilder {
 
         // Discover where all the transitions occur and store the results in
         // these lists.
-        ArrayList transitions = new ArrayList();
+        ArrayList<Transition> transitions = new ArrayList<Transition>();
 
         // Tail zone picks up remaining transitions in the form of an endless
         // DST cycle.
@@ -347,7 +347,7 @@ public class DateTimeZoneBuilder {
             
         int ruleSetCount = iRuleSets.size();
         for (int i=0; i<ruleSetCount; i++) {
-            RuleSet rs = (RuleSet)iRuleSets.get(i);
+            RuleSet rs = iRuleSets.get(i);
             Transition next = rs.firstTransition(millis);
             if (next == null) {
                 continue;
@@ -388,7 +388,7 @@ public class DateTimeZoneBuilder {
             return buildFixedZone(id, "UTC", 0, 0);
         }
         if (transitions.size() == 1 && tailZone == null) {
-            Transition tr = (Transition)transitions.get(0);
+            Transition tr = transitions.get(0);
             return buildFixedZone(id, tr.getNameKey(),
                                   tr.getWallOffset(), tr.getStandardOffset());
         }
@@ -400,14 +400,14 @@ public class DateTimeZoneBuilder {
         return zone;
     }
 
-    private boolean addTransition(ArrayList transitions, Transition tr) {
+    private boolean addTransition(ArrayList<Transition> transitions, Transition tr) {
         int size = transitions.size();
         if (size == 0) {
             transitions.add(tr);
             return true;
         }
 
-        Transition last = (Transition)transitions.get(size - 1);
+        Transition last = transitions.get(size - 1);
         if (!tr.isTransitionFrom(last)) {
             return false;
         }
@@ -416,7 +416,7 @@ public class DateTimeZoneBuilder {
         // replace last transition with new one.
         int offsetForLast = 0;
         if (size >= 2) {
-            offsetForLast = ((Transition)transitions.get(size - 2)).getWallOffset();
+            offsetForLast = transitions.get(size - 2).getWallOffset();
         }
         int offsetForNew = last.getWallOffset();
 
@@ -950,7 +950,7 @@ public class DateTimeZoneBuilder {
         }
 
         private int iStandardOffset;
-        private ArrayList iRules;
+        private ArrayList<Rule> iRules;
 
         // Optional.
         private String iInitialNameKey;
@@ -961,7 +961,7 @@ public class DateTimeZoneBuilder {
         private OfYear iUpperOfYear;
 
         RuleSet() {
-            iRules = new ArrayList(10);
+            iRules = new ArrayList<Rule>(10);
             iUpperYear = Integer.MAX_VALUE;
         }
 
@@ -970,7 +970,7 @@ public class DateTimeZoneBuilder {
          */
         RuleSet(RuleSet rs) {
             iStandardOffset = rs.iStandardOffset;
-            iRules = new ArrayList(rs.iRules);
+            iRules = new ArrayList<Rule>(rs.iRules);
             iInitialNameKey = rs.iInitialNameKey;
             iInitialSaveMillis = rs.iInitialSaveMillis;
             iUpperYear = rs.iUpperYear;
@@ -1015,7 +1015,7 @@ public class DateTimeZoneBuilder {
             }
 
             // Make a copy before we destroy the rules.
-            ArrayList copy = new ArrayList(iRules);
+            ArrayList<Rule> copy = new ArrayList<Rule>(iRules);
 
             // Iterate through all the transitions until firstMillis is
             // reached. Use the name key and savings for whatever rule reaches
@@ -1039,9 +1039,9 @@ public class DateTimeZoneBuilder {
                         // Find first rule without savings. This way a more
                         // accurate nameKey is found even though no rule
                         // extends to the RuleSet's lower limit.
-                        Iterator it = copy.iterator();
+                        Iterator<Rule> it = copy.iterator();
                         while (it.hasNext()) {
-                            Rule rule = (Rule)it.next();
+                            Rule rule = it.next();
                             if (rule.getSaveMillis() == 0) {
                                 first = new Transition(firstMillis, rule, iStandardOffset);
                                 break;
@@ -1087,9 +1087,9 @@ public class DateTimeZoneBuilder {
             Rule nextRule = null;
             long nextMillis = Long.MAX_VALUE;
             
-            Iterator it = iRules.iterator();
+            Iterator<Rule> it = iRules.iterator();
             while (it.hasNext()) {
-                Rule rule = (Rule)it.next();
+                Rule rule = it.next();
                 long next = rule.next(instant, iStandardOffset, saveMillis);
                 if (next <= instant) {
                     it.remove();
@@ -1141,8 +1141,8 @@ public class DateTimeZoneBuilder {
          */
         public DSTZone buildTailZone(String id) {
             if (iRules.size() == 2) {
-                Rule startRule = (Rule)iRules.get(0);
-                Rule endRule = (Rule)iRules.get(1);
+                Rule startRule = iRules.get(0);
+                Rule endRule = iRules.get(1);
                 if (startRule.getToYear() == Integer.MAX_VALUE &&
                     endRule.getToYear() == Integer.MAX_VALUE) {
 
@@ -1386,7 +1386,7 @@ public class DateTimeZoneBuilder {
          * @param transitions  the list of Transition objects
          * @param tailZone  optional zone for getting info beyond precalculated tables
          */
-        static PrecalculatedZone create(String id, boolean outputID, ArrayList transitions,
+        static PrecalculatedZone create(String id, boolean outputID, ArrayList<Transition> transitions,
                                         DSTZone tailZone) {
             int size = transitions.size();
             if (size == 0) {
@@ -1400,7 +1400,7 @@ public class DateTimeZoneBuilder {
 
             Transition last = null;
             for (int i=0; i<size; i++) {
-                Transition tr = (Transition)transitions.get(i);
+                Transition tr = transitions.get(i);
 
                 if (!tr.isTransitionFrom(last)) {
                     throw new IllegalArgumentException(id);
@@ -1636,7 +1636,7 @@ public class DateTimeZoneBuilder {
             int size = iTransitions.length;
 
             // Create unique string pool.
-            Set poolSet = new HashSet();
+            Set<String> poolSet = new HashSet<String>();
             for (int i=0; i<size; i++) {
                 poolSet.add(iNameKeys[i]);
             }
@@ -1646,9 +1646,9 @@ public class DateTimeZoneBuilder {
                 throw new UnsupportedOperationException("String pool is too large");
             }
             String[] pool = new String[poolSize];
-            Iterator it = poolSet.iterator();
+            Iterator<String> it = poolSet.iterator();
             for (int i=0; it.hasNext(); i++) {
-                pool[i] = (String)it.next();
+                pool[i] = it.next();
             }
 
             // Write out the pool.

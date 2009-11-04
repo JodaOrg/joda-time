@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -244,10 +244,10 @@ public class TestPreciseDurationField extends TestCase {
         assertEquals(-1, iField.compareTo(ISOChronology.getInstance().minutes()));
         DurationField dummy = new PreciseDurationField(DurationFieldType.seconds(), 0);
         assertEquals(1, iField.compareTo(dummy));
-        try {
-            iField.compareTo("");
-            fail();
-        } catch (ClassCastException ex) {}
+//        try {
+//            iField.compareTo("");
+//            fail();
+//        } catch (ClassCastException ex) {}
         try {
             iField.compareTo(null);
             fail();

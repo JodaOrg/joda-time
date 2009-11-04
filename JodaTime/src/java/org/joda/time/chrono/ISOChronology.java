@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public final class ISOChronology extends AssembledChronology {
     private static final ISOChronology[] cFastCache;
 
     /** Cache of zone to chronology */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, ISOChronology> cCache = new HashMap<DateTimeZone, ISOChronology>();
     static {
         cFastCache = new ISOChronology[FAST_CACHE_SIZE];
         INSTANCE_UTC = new ISOChronology(GregorianChronology.getInstanceUTC());
@@ -102,7 +102,7 @@ public final class ISOChronology extends AssembledChronology {
             return chrono;
         }
         synchronized (cCache) {
-            chrono = (ISOChronology) cCache.get(zone);
+            chrono = cCache.get(zone);
             if (chrono == null) {
                 chrono = new ISOChronology(ZonedChronology.getInstance(INSTANCE_UTC, zone));
                 cCache.put(zone, chrono);

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -600,7 +600,7 @@ public final class LocalDateTime
      *  or if it has field types that don't match
      * @throws NullPointerException if the partial is null
      */
-    public int compareTo(Object partial) {
+    public int compareTo(ReadablePartial partial) {
         // override to perform faster
         if (this == partial) {
             return 0;

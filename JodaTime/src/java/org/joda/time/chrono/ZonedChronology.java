@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2008 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -150,7 +150,7 @@ public final class ZonedChronology extends AssembledChronology {
     protected void assemble(Fields fields) {
         // Keep a local cache of converted fields so as not to create redundant
         // objects.
-        HashMap converted = new HashMap();
+        HashMap<Object, Object> converted = new HashMap<Object, Object>();
 
         // Convert duration fields...
 
@@ -196,7 +196,7 @@ public final class ZonedChronology extends AssembledChronology {
         fields.halfdayOfDay = convertField(fields.halfdayOfDay, converted);
     }
 
-    private DurationField convertField(DurationField field, HashMap converted) {
+    private DurationField convertField(DurationField field, HashMap<Object, Object> converted) {
         if (field == null || !field.isSupported()) {
             return field;
         }
@@ -208,7 +208,7 @@ public final class ZonedChronology extends AssembledChronology {
         return zonedField;
     }
 
-    private DateTimeField convertField(DateTimeField field, HashMap converted) {
+    private DateTimeField convertField(DateTimeField field, HashMap<Object, Object> converted) {
         if (field == null || !field.isSupported()) {
             return field;
         }

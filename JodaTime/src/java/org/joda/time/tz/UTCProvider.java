@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.joda.time.tz;
 
 import java.util.Collections;
 import java.util.Set;
+
 import org.joda.time.DateTimeZone;
 
 /**
@@ -50,7 +51,7 @@ public final class UTCProvider implements Provider {
     /**
      * Returns a singleton collection containing only <code>"UTC"</code>.
      */    
-    public Set getAvailableIDs() {
+    public Set<String> getAvailableIDs() {
         return Collections.singleton("UTC");
     }
 

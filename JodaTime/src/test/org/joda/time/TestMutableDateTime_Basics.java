@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -302,10 +302,10 @@ public class TestMutableDateTime_Basics extends TestCase {
             test1.compareTo(null);
             fail();
         } catch (NullPointerException ex) {}
-        try {
-            test1.compareTo(new Date());
-            fail();
-        } catch (ClassCastException ex) {}
+//        try {
+//            test1.compareTo(new Date());
+//            fail();
+//        } catch (ClassCastException ex) {}
     }
     
     public void testIsEqual() {

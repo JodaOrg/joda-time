@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class PeriodType implements Serializable {
     private static final long serialVersionUID = 2274324892792009998L;
 
     /** Cache of all the known types. */
-    private static final Map cTypes = new HashMap(32);
+    private static final Map<PeriodType, Object> cTypes = new HashMap<PeriodType, Object>(32);
 
     static int YEAR_INDEX = 0;
     static int MONTH_INDEX = 1;
@@ -507,8 +507,8 @@ public class PeriodType implements Serializable {
                 throw new IllegalArgumentException("Types array must not contain null");
             }
         }
-        Map cache = cTypes;
-        if (cTypes.isEmpty()) {
+        Map<PeriodType, Object> cache = cTypes;
+        if (cache.isEmpty()) {
             cache.put(standard(), standard());
             cache.put(yearMonthDayTime(), yearMonthDayTime());
             cache.put(yearMonthDay(), yearMonthDay());
@@ -536,7 +536,7 @@ public class PeriodType implements Serializable {
             throw new IllegalArgumentException("PeriodType does not support fields: " + cached);
         }
         PeriodType type = standard();
-        List list = new ArrayList(Arrays.asList(types));
+        List<DurationFieldType> list = new ArrayList<DurationFieldType>(Arrays.asList(types));
         if (list.remove(DurationFieldType.years()) == false) {
             type = type.withYearsRemoved();
         }

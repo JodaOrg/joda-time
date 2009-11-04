@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006,2008 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -224,14 +224,14 @@ public class ISODateTimeFormat {
      * @since 1.1
      */
     public static DateTimeFormatter forFields(
-        Collection fields,
+        Collection<DateTimeFieldType> fields,
         boolean extended,
         boolean strictISO) {
         
         if (fields == null || fields.size() == 0) {
             throw new IllegalArgumentException("The fields must not be null or empty");
         }
-        Set workingFields = new HashSet(fields);
+        Set<DateTimeFieldType> workingFields = new HashSet<DateTimeFieldType>(fields);
         int inputSize = workingFields.size();
         boolean reducedPrec = false;
         DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
@@ -287,7 +287,7 @@ public class ISODateTimeFormat {
      */
     private static boolean dateByMonth(
         DateTimeFormatterBuilder bld,
-        Collection fields,
+        Collection<DateTimeFieldType> fields,
         boolean extended,
         boolean strictISO) {
         
@@ -355,7 +355,7 @@ public class ISODateTimeFormat {
      */
     private static boolean dateByOrdinal(
         DateTimeFormatterBuilder bld,
-        Collection fields,
+        Collection<DateTimeFieldType> fields,
         boolean extended,
         boolean strictISO) {
         
@@ -392,7 +392,7 @@ public class ISODateTimeFormat {
      */
     private static boolean dateByWeek(
         DateTimeFormatterBuilder bld,
-        Collection fields,
+        Collection<DateTimeFieldType> fields,
         boolean extended,
         boolean strictISO) {
         
@@ -462,7 +462,7 @@ public class ISODateTimeFormat {
      */
     private static void time(
         DateTimeFormatterBuilder bld,
-        Collection fields,
+        Collection<DateTimeFieldType> fields,
         boolean extended,
         boolean strictISO,
         boolean reducedPrec,
@@ -532,7 +532,7 @@ public class ISODateTimeFormat {
      * @param strictISO  true if only ISO formats allowed
      * @since 1.1
      */
-    private static void checkNotStrictISO(Collection fields, boolean strictISO) {
+    private static void checkNotStrictISO(Collection<DateTimeFieldType> fields, boolean strictISO) {
         if (strictISO) {
             throw new IllegalArgumentException("No valid ISO8601 format for fields: " + fields);
         }

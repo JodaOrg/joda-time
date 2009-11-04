@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ import org.joda.time.field.PreciseDateTimeField;
 public class DateTimeFormatterBuilder {
 
     /** Array of printers and parsers (alternating). */
-    private ArrayList iElementPairs;
+    private ArrayList<Object> iElementPairs;
     /** Cache of the last returned formatter. */
     private Object iFormatter;
 
@@ -81,7 +81,7 @@ public class DateTimeFormatterBuilder {
      */
     public DateTimeFormatterBuilder() {
         super();
-        iElementPairs = new ArrayList();
+        iElementPairs = new ArrayList<Object>();
     }
 
     //-----------------------------------------------------------------------
@@ -1644,7 +1644,8 @@ public class DateTimeFormatterBuilder {
     static class TextField
             implements DateTimePrinter, DateTimeParser {
 
-        private static Map cParseCache = new HashMap();
+        private static Map<Locale, Map<DateTimeFieldType, Object[]>> cParseCache =
+                    new HashMap<Locale, Map<DateTimeFieldType, Object[]>>();
         private final DateTimeFieldType iFieldType;
         private final boolean iShort;
 
@@ -1720,21 +1721,22 @@ public class DateTimeFormatterBuilder {
             return estimatePrintedLength();
         }
 
+        @SuppressWarnings("unchecked")
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
             Locale locale = bucket.getLocale();
             // handle languages which might have non ASCII A-Z or punctuation
             // bug 1788282
-            Set validValues = null;
+            Set<String> validValues = null;
             int maxLength = 0;
             synchronized (cParseCache) {
-                Map innerMap = (Map) cParseCache.get(locale);
+                Map<DateTimeFieldType, Object[]> innerMap = cParseCache.get(locale);
                 if (innerMap == null) {
-                    innerMap = new HashMap();
+                    innerMap = new HashMap<DateTimeFieldType, Object[]>();
                     cParseCache.put(locale, innerMap);
                 }
-                Object[] array = (Object[]) innerMap.get(iFieldType);
+                Object[] array = innerMap.get(iFieldType);
                 if (array == null) {
-                    validValues = new HashSet(32);
+                    validValues = new HashSet<String>(32);
                     MutableDateTime dt = new MutableDateTime(0L, DateTimeZone.UTC);
                     Property property = dt.property(iFieldType);
                     int min = property.getMinimumValueOverall();
@@ -1763,7 +1765,7 @@ public class DateTimeFormatterBuilder {
                     array = new Object[] {validValues, new Integer(maxLength)};
                     innerMap.put(iFieldType, array);
                 } else {
-                    validValues = (Set) array[0];
+                    validValues = (Set<String>) array[0];
                     maxLength = ((Integer) array[1]).intValue();
                 }
             }
@@ -2425,11 +2427,11 @@ public class DateTimeFormatterBuilder {
         private final int iPrintedLengthEstimate;
         private final int iParsedLengthEstimate;
 
-        Composite(List elementPairs) {
+        Composite(List<Object> elementPairs) {
             super();
 
-            List printerList = new ArrayList();
-            List parserList = new ArrayList();
+            List<Object> printerList = new ArrayList<Object>();
+            List<Object> parserList = new ArrayList<Object>();
 
             decompose(elementPairs, printerList, parserList);
 
@@ -2569,7 +2571,7 @@ public class DateTimeFormatterBuilder {
          * Processes the element pairs, putting results into the given printer
          * and parser lists.
          */
-        private void decompose(List elementPairs, List printerList, List parserList) {
+        private void decompose(List<Object> elementPairs, List<Object> printerList, List<Object> parserList) {
             int size = elementPairs.size();
             for (int i=0; i<size; i+=2) {
                 Object element = elementPairs.get(i);
@@ -2592,7 +2594,7 @@ public class DateTimeFormatterBuilder {
             }
         }
 
-        private void addArrayToList(List list, Object[] array) {
+        private void addArrayToList(List<Object> list, Object[] array) {
             if (array != null) {
                 for (int i=0; i<array.length; i++) {
                     list.add(array[i]);

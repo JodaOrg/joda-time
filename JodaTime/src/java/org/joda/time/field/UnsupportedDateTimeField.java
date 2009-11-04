@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
     private static final long serialVersionUID = -1934618396111902255L;
 
     /** The cache of unsupported datetime field instances */
-    private static HashMap cCache;
+    private static HashMap<DateTimeFieldType, UnsupportedDateTimeField> cCache;
 
     /**
      * Gets an instance of UnsupportedDateTimeField for a specific named field.
@@ -53,10 +53,10 @@ public final class UnsupportedDateTimeField extends DateTimeField implements Ser
 
         UnsupportedDateTimeField field;
         if (cCache == null) {
-            cCache = new HashMap(7);
+            cCache = new HashMap<DateTimeFieldType, UnsupportedDateTimeField>(7);
             field = null;
         } else {
-            field = (UnsupportedDateTimeField)cCache.get(type);
+            field = cCache.get(type);
             if (field != null && field.getDurationField() != durationField) {
                 field = null;
             }

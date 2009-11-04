@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -65,7 +65,7 @@ public final class GregorianChronology extends BasicGJChronology {
     private static final GregorianChronology INSTANCE_UTC;
 
     /** Cache of zone to chronology arrays */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, GregorianChronology[]> cCache = new HashMap<DateTimeZone, GregorianChronology[]>();
 
     static {
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -113,7 +113,7 @@ public final class GregorianChronology extends BasicGJChronology {
         }
         GregorianChronology chrono;
         synchronized (cCache) {
-            GregorianChronology[] chronos = (GregorianChronology[]) cCache.get(zone);
+            GregorianChronology[] chronos = cCache.get(zone);
             if (chronos == null) {
                 chronos = new GregorianChronology[7];
                 cCache.put(zone, chronos);

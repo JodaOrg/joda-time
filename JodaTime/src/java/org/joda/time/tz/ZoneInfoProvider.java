@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ public class ZoneInfoProvider implements Provider {
     /** The class loader to use. */
     private final ClassLoader iLoader;
     /** Maps ids to strings or SoftReferences to DateTimeZones. */
-    private final Map iZoneInfoMap;
+    private final Map<String, Object> iZoneInfoMap;
 
     /**
      * ZoneInfoProvider searches the given directory for compiled data files.
@@ -147,8 +147,10 @@ public class ZoneInfoProvider implements Provider {
             return loadZoneData(id);
         }
 
-        if (obj instanceof SoftReference) {
-            DateTimeZone tz = (DateTimeZone)((SoftReference)obj).get();
+        if (obj instanceof SoftReference<?>) {
+            @SuppressWarnings("unchecked")
+            SoftReference<DateTimeZone> ref = (SoftReference<DateTimeZone>) obj;
+            DateTimeZone tz = ref.get();
             if (tz != null) {
                 return tz;
             }
@@ -165,11 +167,11 @@ public class ZoneInfoProvider implements Provider {
      * 
      * @return the zone ids
      */
-    public synchronized Set getAvailableIDs() {
+    public synchronized Set<String> getAvailableIDs() {
         // Return a copy of the keys rather than an umodifiable collection.
         // This prevents ConcurrentModificationExceptions from being thrown by
         // some JVMs if zones are opened while this set is iterated over.
-        return new TreeSet(iZoneInfoMap.keySet());
+        return new TreeSet<String>(iZoneInfoMap.keySet());
     }
 
     /**
@@ -223,7 +225,7 @@ public class ZoneInfoProvider implements Provider {
         try {
             in = openResource(id);
             DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
-            iZoneInfoMap.put(id, new SoftReference(tz));
+            iZoneInfoMap.put(id, new SoftReference<DateTimeZone>(tz));
             return tz;
         } catch (IOException e) {
             uncaughtException(e);
@@ -246,8 +248,8 @@ public class ZoneInfoProvider implements Provider {
      * @param in  the input stream
      * @return the map
      */
-    private static Map loadZoneInfoMap(InputStream in) throws IOException {
-        Map map = new TreeMap(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, Object> loadZoneInfoMap(InputStream in) throws IOException {
+        Map<String, Object> map = new TreeMap<String, Object>(String.CASE_INSENSITIVE_ORDER);
         DataInputStream din = new DataInputStream(in);
         try {
             readZoneInfoMap(din, map);
@@ -257,7 +259,7 @@ public class ZoneInfoProvider implements Provider {
             } catch (IOException e) {
             }
         }
-        map.put("UTC", new SoftReference(DateTimeZone.UTC));
+        map.put("UTC", new SoftReference<DateTimeZone>(DateTimeZone.UTC));
         return map;
     }
 
@@ -267,7 +269,7 @@ public class ZoneInfoProvider implements Provider {
      * @param din  the input stream
      * @param zimap  gets filled with string id to string id mappings
      */
-    private static void readZoneInfoMap(DataInputStream din, Map zimap) throws IOException {
+    private static void readZoneInfoMap(DataInputStream din, Map<String, Object> zimap) throws IOException {
         // Read the string pool.
         int size = din.readUnsignedShort();
         String[] pool = new String[size];

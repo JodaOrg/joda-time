@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ package org.joda.time;
  * @author Stephen Colebourne
  * @since 1.0
  */
-public interface ReadableInstant extends Comparable {
+public interface ReadableInstant extends Comparable<ReadableInstant> {
 
     /**
      * Get the value as the number of milliseconds since
@@ -100,7 +100,7 @@ public interface ReadableInstant extends Comparable {
      * @throws NullPointerException if the object is null
      * @throws ClassCastException if the object type is not supported
      */
-    int compareTo(Object readableInstant);
+    int compareTo(ReadableInstant readableInstant);
 
     //-----------------------------------------------------------------------
     /**

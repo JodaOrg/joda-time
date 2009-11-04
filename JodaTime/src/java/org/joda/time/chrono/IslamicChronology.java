@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -139,7 +139,7 @@ public final class IslamicChronology extends BasicChronology {
     private static final long MILLIS_PER_CYCLE = ((19L * 354L + 11L * 355L) * DateTimeConstants.MILLIS_PER_DAY);
 
     /** Cache of zone to chronology arrays */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, IslamicChronology[]> cCache = new HashMap<DateTimeZone, IslamicChronology[]>();
 
     /** Singleton instance of a UTC IslamicChronology */
     private static final IslamicChronology INSTANCE_UTC;
@@ -194,7 +194,7 @@ public final class IslamicChronology extends BasicChronology {
         }
         IslamicChronology chrono;
         synchronized (cCache) {
-            IslamicChronology[] chronos = (IslamicChronology[]) cCache.get(zone);
+            IslamicChronology[] chronos = cCache.get(zone);
             if (chronos == null) {
                 chronos = new IslamicChronology[4];
                 cCache.put(zone, chronos);

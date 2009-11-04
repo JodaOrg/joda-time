@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,11 +22,13 @@ package org.joda.time.convert;
  * @since 1.0
  */
 public interface Converter {
+
     /**
      * Returns the object type that this converter supports, which may
      * specified by a class, superclass, abstract class, interface, or null.
      * 
      * @return the object type that this converter supports
      */
-    Class getSupportedType();
+    Class<?> getSupportedType();
+
 }

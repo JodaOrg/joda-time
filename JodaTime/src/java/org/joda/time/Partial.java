@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -708,7 +708,7 @@ public final class Partial
             }
             f = new DateTimeFormatter[2];
             try {
-                List list = new ArrayList(Arrays.asList(iTypes));
+                List<DateTimeFieldType> list = new ArrayList<DateTimeFieldType>(Arrays.asList(iTypes));
                 f[0] = ISODateTimeFormat.forFields(list, true, false);
                 if (list.size() == 0) {
                     f[1] = f[0];

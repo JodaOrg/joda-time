@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ public final class GJChronology extends AssembledChronology {
     static final Instant DEFAULT_CUTOVER = new Instant(-12219292800000L);
 
     /** Cache of zone to chronology list */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, ArrayList<GJChronology>> cCache = new HashMap<DateTimeZone, ArrayList<GJChronology>>();
 
     /**
      * Factory method returns instances of the default GJ cutover
@@ -196,13 +196,13 @@ public final class GJChronology extends AssembledChronology {
 
         GJChronology chrono;
 
-        ArrayList chronos = (ArrayList)cCache.get(zone);
+        ArrayList<GJChronology> chronos = cCache.get(zone);
         if (chronos == null) {
-            chronos = new ArrayList(2);
+            chronos = new ArrayList<GJChronology>(2);
             cCache.put(zone, chronos);
         } else {
             for (int i=chronos.size(); --i>=0; ) {
-                chrono = (GJChronology)chronos.get(i);
+                chrono = chronos.get(i);
                 if (minDaysInFirstWeek == chrono.getMinimumDaysInFirstWeek() &&
                     cutoverInstant.equals(chrono.getGregorianCutover())) {
                     

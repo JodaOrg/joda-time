@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -69,7 +69,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
     private static final int MAX_YEAR = 292272708;
 
     /** Cache of zone to chronology arrays */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, CopticChronology[]> cCache = new HashMap<DateTimeZone, CopticChronology[]>();
 
     /** Singleton instance of a UTC CopticChronology */
     private static final CopticChronology INSTANCE_UTC;
@@ -121,7 +121,7 @@ public final class CopticChronology extends BasicFixedMonthChronology {
         }
         CopticChronology chrono;
         synchronized (cCache) {
-            CopticChronology[] chronos = (CopticChronology[]) cCache.get(zone);
+            CopticChronology[] chronos = cCache.get(zone);
             if (chronos == null) {
                 chronos = new CopticChronology[7];
                 cCache.put(zone, chronos);

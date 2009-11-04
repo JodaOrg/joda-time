@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ public final class JulianChronology extends BasicGJChronology {
     private static final JulianChronology INSTANCE_UTC;
 
     /** Cache of zone to chronology arrays */
-    private static final Map cCache = new HashMap();
+    private static final Map<DateTimeZone, JulianChronology[]> cCache = new HashMap<DateTimeZone, JulianChronology[]>();
 
     static {
         INSTANCE_UTC = getInstance(DateTimeZone.UTC);
@@ -127,7 +127,7 @@ public final class JulianChronology extends BasicGJChronology {
         }
         JulianChronology chrono;
         synchronized (cCache) {
-            JulianChronology[] chronos = (JulianChronology[]) cCache.get(zone);
+            JulianChronology[] chronos = cCache.get(zone);
             if (chronos == null) {
                 chronos = new JulianChronology[7];
                 cCache.put(zone, chronos);

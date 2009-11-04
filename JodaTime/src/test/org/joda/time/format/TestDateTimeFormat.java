@@ -1126,6 +1126,39 @@ public class TestDateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testFormatParse_zoneId_noColon() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm Z").withZone(UTC);
+        String str = new DateTime(2007, 6, 23, 1, 2, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("01:02 +0000", str);
+        DateTime parsed = dateFormatter.parseDateTime(str);
+        assertEquals(1, parsed.getHourOfDay());
+        assertEquals(2, parsed.getMinuteOfHour());
+    }
+
+    public void testFormatParse_zoneId_noColon_parseZ() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm Z").withZone(UTC);
+        DateTime parsed = dateFormatter.parseDateTime("01:02 Z");
+        assertEquals(1, parsed.getHourOfDay());
+        assertEquals(2, parsed.getMinuteOfHour());
+    }
+
+    public void testFormatParse_zoneId_colon() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm ZZ").withZone(UTC);
+        String str = new DateTime(2007, 6, 23, 1, 2, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("01:02 +00:00", str);
+        DateTime parsed = dateFormatter.parseDateTime(str);
+        assertEquals(1, parsed.getHourOfDay());
+        assertEquals(2, parsed.getMinuteOfHour());
+    }
+
+    public void testFormatParse_zoneId_colon_parseZ() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("HH:mm ZZ").withZone(UTC);
+        DateTime parsed = dateFormatter.parseDateTime("01:02 Z");
+        assertEquals(1, parsed.getHourOfDay());
+        assertEquals(2, parsed.getMinuteOfHour());
+    }
+
+    //-----------------------------------------------------------------------
     private void check(DateTime test, int hour, int min, int sec) {
         assertEquals(hour, test.getYear());
         assertEquals(min, test.getMonthOfYear());

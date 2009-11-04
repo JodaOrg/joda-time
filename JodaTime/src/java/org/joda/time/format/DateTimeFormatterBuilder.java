@@ -972,6 +972,9 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit text and numbers to display time zone
      * offset from UTC. A parser will use the parsed time zone offset to adjust
      * the datetime.
+     * <p>
+     * If zero offset text is supplied, then it will be printed when the zone is zero.
+     * During parsing, either the zero offset text, or the offset will be parsed.
      *
      * @param zeroOffsetText Text to use if time zone offset is zero. If
      * null, offset is always shown.
@@ -986,7 +989,33 @@ public class DateTimeFormatterBuilder {
             String zeroOffsetText, boolean showSeparators,
             int minFields, int maxFields) {
         return append0(new TimeZoneOffset
-                       (zeroOffsetText, showSeparators, minFields, maxFields));
+                       (zeroOffsetText, zeroOffsetText, showSeparators, minFields, maxFields));
+    }
+
+    /**
+     * Instructs the printer to emit text and numbers to display time zone
+     * offset from UTC. A parser will use the parsed time zone offset to adjust
+     * the datetime.
+     * <p>
+     * If zero offset print text is supplied, then it will be printed when the zone is zero.
+     * If zero offset parse text is supplied, then either it or the offset will be parsed.
+     *
+     * @param zeroOffsetPrintText Text to print if time zone offset is zero. If
+     * null, offset is always shown.
+     * @param zeroOffsetParseText Text to optionally parse to indicate that the time
+     * zone offset is zero. If null, then always use the offset.
+     * @param showSeparators If true, prints ':' separator before minute and
+     * second field and prints '.' separator before fraction field.
+     * @param minFields minimum number of fields to print, stopping when no
+     * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
+     * @param maxFields maximum number of fields to print
+     * @return this DateTimeFormatterBuilder
+     */
+    public DateTimeFormatterBuilder appendTimeZoneOffset(
+            String zeroOffsetPrintText, String zeroOffsetParseText, boolean showSeparators,
+            int minFields, int maxFields) {
+        return append0(new TimeZoneOffset
+                       (zeroOffsetPrintText, zeroOffsetParseText, showSeparators, minFields, maxFields));
     }
 
     //-----------------------------------------------------------------------
@@ -1976,17 +2005,19 @@ public class DateTimeFormatterBuilder {
     static class TimeZoneOffset
             implements DateTimePrinter, DateTimeParser {
 
-        private final String iZeroOffsetText;
+        private final String iZeroOffsetPrintText;
+        private final String iZeroOffsetParseText;
         private final boolean iShowSeparators;
         private final int iMinFields;
         private final int iMaxFields;
 
-        TimeZoneOffset(String zeroOffsetText,
+        TimeZoneOffset(String zeroOffsetPrintText, String zeroOffsetParseText,
                                 boolean showSeparators,
                                 int minFields, int maxFields)
         {
             super();
-            iZeroOffsetText = zeroOffsetText;
+            iZeroOffsetPrintText = zeroOffsetPrintText;
+            iZeroOffsetParseText = zeroOffsetParseText;
             iShowSeparators = showSeparators;
             if (minFields <= 0 || maxFields < minFields) {
                 throw new IllegalArgumentException();
@@ -2004,8 +2035,8 @@ public class DateTimeFormatterBuilder {
             if (iShowSeparators) {
                 est += iMinFields - 1;
             }
-            if (iZeroOffsetText != null && iZeroOffsetText.length() > est) {
-                est = iZeroOffsetText.length();
+            if (iZeroOffsetPrintText != null && iZeroOffsetPrintText.length() > est) {
+                est = iZeroOffsetPrintText.length();
             }
             return est;
         }
@@ -2016,8 +2047,8 @@ public class DateTimeFormatterBuilder {
             if (displayZone == null) {
                 return;  // no zone
             }
-            if (displayOffset == 0 && iZeroOffsetText != null) {
-                buf.append(iZeroOffsetText);
+            if (displayOffset == 0 && iZeroOffsetPrintText != null) {
+                buf.append(iZeroOffsetPrintText);
                 return;
             }
             if (displayOffset >= 0) {
@@ -2075,8 +2106,8 @@ public class DateTimeFormatterBuilder {
             if (displayZone == null) {
                 return;  // no zone
             }
-            if (displayOffset == 0 && iZeroOffsetText != null) {
-                out.write(iZeroOffsetText);
+            if (displayOffset == 0 && iZeroOffsetPrintText != null) {
+                out.write(iZeroOffsetPrintText);
                 return;
             }
             if (displayOffset >= 0) {
@@ -2144,8 +2175,8 @@ public class DateTimeFormatterBuilder {
             int limit = text.length() - position;
 
             zeroOffset:
-            if (iZeroOffsetText != null) {
-                if (iZeroOffsetText.length() == 0) {
+            if (iZeroOffsetParseText != null) {
+                if (iZeroOffsetParseText.length() == 0) {
                     // Peek ahead, looking for sign character.
                     if (limit > 0) {
                         char c = text.charAt(position);
@@ -2156,10 +2187,9 @@ public class DateTimeFormatterBuilder {
                     bucket.setOffset(0);
                     return position;
                 }
-                if (text.regionMatches(true, position, iZeroOffsetText, 0,
-                                       iZeroOffsetText.length())) {
+                if (text.regionMatches(true, position, iZeroOffsetParseText, 0, iZeroOffsetParseText.length())) {
                     bucket.setOffset(0);
-                    return position + iZeroOffsetText.length();
+                    return position + iZeroOffsetParseText.length();
                 }
             }
 

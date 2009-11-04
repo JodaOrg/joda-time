@@ -28,6 +28,8 @@ Enhancements since 1.6
 
 - Better error messages for invalid time zone ids [2781835]
 
+- Allow 'Z' and 'ZZ' in format patterns to parse 'Z' as '+00:00' [2827359]
+
 
 Compatibility with 1.6
 ----------------------

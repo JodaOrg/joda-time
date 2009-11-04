@@ -538,9 +538,9 @@ public class DateTimeFormat {
                 break;
             case 'Z': // time zone offset
                 if (tokenLen == 1) {
-                    builder.appendTimeZoneOffset(null, false, 2, 2);
+                    builder.appendTimeZoneOffset(null, "Z", false, 2, 2);
                 } else if (tokenLen == 2) {
-                    builder.appendTimeZoneOffset(null, true, 2, 2);
+                    builder.appendTimeZoneOffset(null, "Z", true, 2, 2);
                 } else {
                     builder.appendTimeZoneId();
                 }

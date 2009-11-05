@@ -1039,9 +1039,7 @@ public class DateTimeZoneBuilder {
                         // Find first rule without savings. This way a more
                         // accurate nameKey is found even though no rule
                         // extends to the RuleSet's lower limit.
-                        Iterator<Rule> it = copy.iterator();
-                        while (it.hasNext()) {
-                            Rule rule = it.next();
+                        for (Rule rule : copy) {
                             if (rule.getSaveMillis() == 0) {
                                 first = new Transition(firstMillis, rule, iStandardOffset);
                                 break;

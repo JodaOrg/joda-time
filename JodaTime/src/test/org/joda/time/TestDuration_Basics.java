@@ -307,6 +307,108 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testToStandardDays() {
+        Duration test = new Duration(0L);
+        assertEquals(Days.days(0), test.toStandardDays());
+        test = new Duration(1L);
+        assertEquals(Days.days(0), test.toStandardDays());
+        test = new Duration(24 * 60 * 60000L - 1);
+        assertEquals(Days.days(0), test.toStandardDays());
+        test = new Duration(24 * 60 * 60000L);
+        assertEquals(Days.days(1), test.toStandardDays());
+        test = new Duration(24 * 60 * 60000L + 1);
+        assertEquals(Days.days(1), test.toStandardDays());
+        test = new Duration(2 * 24 * 60 * 60000L - 1);
+        assertEquals(Days.days(1), test.toStandardDays());
+        test = new Duration(2 * 24 * 60 * 60000L);
+        assertEquals(Days.days(2), test.toStandardDays());
+        test = new Duration(-1L);
+        assertEquals(Days.days(0), test.toStandardDays());
+        test = new Duration(-24 * 60 * 60000L + 1);
+        assertEquals(Days.days(0), test.toStandardDays());
+        test = new Duration(-24 * 60 * 60000L);
+        assertEquals(Days.days(-1), test.toStandardDays());
+    }
+
+    public void testToStandardDays_overflow() {
+        Duration test = new Duration((((long) Integer.MAX_VALUE) + 1) * 24L * 60L * 60000L);
+        try {
+            test.toStandardDays();
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardHours() {
+        Duration test = new Duration(0L);
+        assertEquals(Hours.hours(0), test.toStandardHours());
+        test = new Duration(1L);
+        assertEquals(Hours.hours(0), test.toStandardHours());
+        test = new Duration(3600000L - 1);
+        assertEquals(Hours.hours(0), test.toStandardHours());
+        test = new Duration(3600000L);
+        assertEquals(Hours.hours(1), test.toStandardHours());
+        test = new Duration(3600000L + 1);
+        assertEquals(Hours.hours(1), test.toStandardHours());
+        test = new Duration(2 * 3600000L - 1);
+        assertEquals(Hours.hours(1), test.toStandardHours());
+        test = new Duration(2 * 3600000L);
+        assertEquals(Hours.hours(2), test.toStandardHours());
+        test = new Duration(-1L);
+        assertEquals(Hours.hours(0), test.toStandardHours());
+        test = new Duration(-3600000L + 1);
+        assertEquals(Hours.hours(0), test.toStandardHours());
+        test = new Duration(-3600000L);
+        assertEquals(Hours.hours(-1), test.toStandardHours());
+    }
+
+    public void testToStandardHours_overflow() {
+        Duration test = new Duration(((long) Integer.MAX_VALUE) * 3600000L + 3600000L);
+        try {
+            test.toStandardHours();
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToStandardMinutes() {
+        Duration test = new Duration(0L);
+        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
+        test = new Duration(1L);
+        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
+        test = new Duration(60000L - 1);
+        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
+        test = new Duration(60000L);
+        assertEquals(Minutes.minutes(1), test.toStandardMinutes());
+        test = new Duration(60000L + 1);
+        assertEquals(Minutes.minutes(1), test.toStandardMinutes());
+        test = new Duration(2 * 60000L - 1);
+        assertEquals(Minutes.minutes(1), test.toStandardMinutes());
+        test = new Duration(2 * 60000L);
+        assertEquals(Minutes.minutes(2), test.toStandardMinutes());
+        test = new Duration(-1L);
+        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
+        test = new Duration(-60000L + 1);
+        assertEquals(Minutes.minutes(0), test.toStandardMinutes());
+        test = new Duration(-60000L);
+        assertEquals(Minutes.minutes(-1), test.toStandardMinutes());
+    }
+
+    public void testToStandardMinutes_overflow() {
+        Duration test = new Duration(((long) Integer.MAX_VALUE) * 60000L + 60000L);
+        try {
+            test.toStandardMinutes();
+            fail();
+        } catch (ArithmeticException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
     public void testToStandardSeconds() {
         Duration test = new Duration(0L);
         assertEquals(Seconds.seconds(0), test.toStandardSeconds());

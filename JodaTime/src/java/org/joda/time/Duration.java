@@ -196,8 +196,66 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the length of this duration in seconds assuming 1000 milliseconds
-     * in a second.
+     * Gets the length of this duration in days assuming that there are the
+     * standard number of milliseconds in a day.
+     * <p>
+     * This method assumes that there are 24 hours in a day,
+     * 60 minutes in an hour, 60 seconds in a minute and 1000 milliseconds in
+     * a second. This will be true for most days, however days with Daylight
+     * Savings changes will not have 24 hours, so use this method with care.
+     * <p>
+     * This returns <code>getMillis() / MILLIS_PER_DAY</code>.
+     * The result is an integer division, thus excess milliseconds are truncated.
+     *
+     * @return the length of the duration in standard seconds
+     * @since 2.0
+     */
+    public long getStandardDays() {
+        return getMillis() / DateTimeConstants.MILLIS_PER_DAY;
+    }
+
+    /**
+     * Gets the length of this duration in hours assuming that there are the
+     * standard number of milliseconds in an hour.
+     * <p>
+     * This method assumes that there are 60 minutes in an hour,
+     * 60 seconds in a minute and 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * <p>
+     * This returns <code>getMillis() / MILLIS_PER_HOUR</code>.
+     * The result is an integer division, thus excess milliseconds are truncated.
+     *
+     * @return the length of the duration in standard seconds
+     * @since 2.0
+     */
+    public long getStandardHours() {
+        return getMillis() / DateTimeConstants.MILLIS_PER_HOUR;
+    }
+
+    /**
+     * Gets the length of this duration in minutes assuming that there are the
+     * standard number of milliseconds in a minute.
+     * <p>
+     * This method assumes that there are 60 seconds in a minute and
+     * 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * <p>
+     * This returns <code>getMillis() / 60000</code>.
+     * The result is an integer division, thus excess milliseconds are truncated.
+     *
+     * @return the length of the duration in standard seconds
+     * @since 2.0
+     */
+    public long getStandardMinutes() {
+        return getMillis() / DateTimeConstants.MILLIS_PER_MINUTE;
+    }
+
+    /**
+     * Gets the length of this duration in seconds assuming that there are the
+     * standard number of milliseconds in a second.
+     * <p>
+     * This method assumes that there are 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
      * <p>
      * This returns <code>getMillis() / 1000</code>.
      * The result is an integer division, so 2999 millis returns 2 seconds.
@@ -221,10 +279,63 @@ public final class Duration
     }
 
     /**
-     * Converts this duration to a period in seconds assuming 1000 milliseconds
-     * in a second.
+     * Converts this duration to a period in days assuming that there are the
+     * standard number of milliseconds in a day.
      * <p>
-     * This method allows you to convert between a duration and a period.
+     * This method assumes that there are 24 hours in a day,
+     * 60 minutes in an hour, 60 seconds in a minute and 1000 milliseconds in
+     * a second. This will be true for most days, however days with Daylight
+     * Savings changes will not have 24 hours, so use this method with care.
+     * 
+     * @return a period representing the number of standard days in this period, never null
+     * @throws ArithmeticException if the number of days is too large to be represented
+     * @since 2.0
+     */
+    public Days toStandardDays() {
+        long days = getStandardDays();
+        return Days.days(FieldUtils.safeToInt(days));
+    }
+
+    /**
+     * Converts this duration to a period in hours assuming that there are the
+     * standard number of milliseconds in an hour.
+     * <p>
+     * This method assumes that there are 60 minutes in an hour,
+     * 60 seconds in a minute and 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * 
+     * @return a period representing the number of standard hours in this period, never null
+     * @throws ArithmeticException if the number of hours is too large to be represented
+     * @since 2.0
+     */
+    public Hours toStandardHours() {
+        long hours = getStandardHours();
+        return Hours.hours(FieldUtils.safeToInt(hours));
+    }
+
+    /**
+     * Converts this duration to a period in minutes assuming that there are the
+     * standard number of milliseconds in a minute.
+     * <p>
+     * This method assumes that there are 60 seconds in a minute and
+     * 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
+     * 
+     * @return a period representing the number of standard minutes in this period, never null
+     * @throws ArithmeticException if the number of minutes is too large to be represented
+     * @since 2.0
+     */
+    public Minutes toStandardMinutes() {
+        long minutes = getStandardMinutes();
+        return Minutes.minutes(FieldUtils.safeToInt(minutes));
+    }
+
+    /**
+     * Converts this duration to a period in seconds assuming that there are the
+     * standard number of milliseconds in a second.
+     * <p>
+     * This method assumes that there are 1000 milliseconds in a second.
+     * All currently supplied chronologies use this definition.
      * 
      * @return a period representing the number of standard seconds in this period, never null
      * @throws ArithmeticException if the number of seconds is too large to be represented

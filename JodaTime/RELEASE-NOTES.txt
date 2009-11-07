@@ -27,6 +27,8 @@ Enhancements since 1.6
 - Add static factory method millis() to Duration [2648777]
   This checks for and returns the singleton value for ZERO
 
+- Add methods to Duration to get standard minutes, hours and days [2862884]
+
 - Support pluggable locale text and additional locales in JDK 6 [2690370]
   Extra info accessed by reflection if JDK 6 used
 

@@ -31,7 +31,7 @@ import org.joda.time.Instant;
  *
  * @author Martin Grove (marting@optrak.co.uk))
  */
-public class PersistentInstant implements EnhancedUserType
+public class PersistentInstant implements EnhancedUserType, Serializable
 {
 	public final static PersistentInstant INSTANCE = new PersistentInstant();
 

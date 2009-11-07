@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2008 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import org.hibernate.usertype.UserType;
 /**
  * @author gjoseph
  */
-public abstract class AbstractStringBasedJodaType implements UserType {
+public abstract class AbstractStringBasedJodaType implements UserType, Serializable {
     private static final int[] SQL_TYPES = new int[]{Types.VARCHAR};
 
     public int[] sqlTypes() {

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2008 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import org.joda.time.TimeOfDay;
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */
-public class PersistentTimeOfDayExact implements EnhancedUserType
+public class PersistentTimeOfDayExact implements EnhancedUserType, Serializable
 {
 	private final DateTime timeBase = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 	public final static PersistentTimeOfDayExact INSTANCE = new PersistentTimeOfDayExact();

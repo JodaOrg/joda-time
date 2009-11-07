@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2008 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import org.joda.time.Interval;
  *
  * @author Christopher R. Gardner (chris_gardner76@yahoo.com)
  */
-public class PersistentInterval implements CompositeUserType
+public class PersistentInterval implements CompositeUserType, Serializable
 {
     private static final String[] PROPERTY_NAMES = new String[]
     {

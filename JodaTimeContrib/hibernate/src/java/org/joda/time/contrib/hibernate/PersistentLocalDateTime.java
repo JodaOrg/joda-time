@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2008 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import org.joda.time.LocalDateTime;
  *
  * @author Mario Ivankovits (mario@ops.co.at)
  */
-public class PersistentLocalDateTime implements EnhancedUserType
+public class PersistentLocalDateTime implements EnhancedUserType, Serializable
 {
 	public final static PersistentLocalDateTime INSTANCE = new PersistentLocalDateTime();
 

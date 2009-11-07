@@ -238,7 +238,7 @@ public final class Instant
      * thus calling this method we really have no zone to 'retain' and
      * hence expect to switch to the default zone.
      * <p>
-     * This method definition preserves compatability with earlier versions
+     * This method definition preserves compatibility with earlier versions
      * of Joda-Time.
      *
      * @return a DateTime using the same millis
@@ -258,7 +258,12 @@ public final class Instant
      * thus calling this method we really have no zone to 'retain' and
      * hence expect to switch to the default zone.
      * <p>
-     * This method definition preserves compatability with earlier versions
+     * This method is deprecated because it is a duplicate of {@link #toDateTime()}.
+     * However, removing it would cause the superclass implementation to be used,
+     * which would create silent bugs in any caller depending on this implementation.
+     * As such, the method itself is not currently planned to be removed.
+     * <p>
+     * This method definition preserves compatibility with earlier versions
      * of Joda-Time.
      *
      * @return a DateTime using the same millis with ISOChronology
@@ -278,7 +283,7 @@ public final class Instant
      * thus calling this method we really have no zone to 'retain' and
      * hence expect to switch to the default zone.
      * <p>
-     * This method definition preserves compatability with earlier versions
+     * This method definition preserves compatibility with earlier versions
      * of Joda-Time.
      *
      * @return a MutableDateTime using the same millis
@@ -298,7 +303,12 @@ public final class Instant
      * thus calling this method we really have no zone to 'retain' and
      * hence expect to switch to the default zone.
      * <p>
-     * This method definition preserves compatability with earlier versions
+     * This method is deprecated because it is a duplicate of {@link #toMutableDateTime()}.
+     * However, removing it would cause the superclass implementation to be used,
+     * which would create silent bugs in any caller depending on this implementation.
+     * As such, the method itself is not currently planned to be removed.
+     * <p>
+     * This method definition preserves compatibility with earlier versions
      * of Joda-Time.
      *
      * @return a MutableDateTime using the same millis with ISOChronology

@@ -216,16 +216,6 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2007-03-31", date2.toString());
     }
 
-    public void test_LocalDate_toDateTimeAtMidnight_Gaza() {
-        LocalDate date = new LocalDate(2007, 4, 1);
-        try {
-            date.toDateTimeAtMidnight(MOCK_GAZA);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            assertEquals(true, ex.getMessage().startsWith("Illegal instant due to time zone offset transition"));
-        }
-    }
-
     public void test_LocalDate_toDateMidnight_Gaza() {
         LocalDate date = new LocalDate(2007, 4, 1);
         try {
@@ -440,16 +430,6 @@ public class TestDateTimeZoneCutover extends TestCase {
         
         LocalDate date2 = new LocalDate(CUTOVER_TURK - 1, MOCK_TURK);
         assertEquals("2007-03-31", date2.toString());
-    }
-
-    public void test_LocalDate_toDateTimeAtMidnight_Turk() {
-        LocalDate date = new LocalDate(2007, 4, 1);
-        try {
-            date.toDateTimeAtMidnight(MOCK_TURK);
-            fail();
-        } catch (IllegalArgumentException ex) {
-            assertEquals(true, ex.getMessage().startsWith("Illegal instant due to time zone offset transition"));
-        }
     }
 
     public void test_LocalDate_toDateMidnight_Turk() {

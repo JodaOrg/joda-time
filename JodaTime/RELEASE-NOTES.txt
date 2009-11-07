@@ -35,9 +35,30 @@ Enhancements since 1.6
 
 Compatibility with 1.6
 ----------------------
-Binary compatible - Yes
+Binary compatible - No
+Source compatible - No
 
-Source compatible - Yes
+Deprecated methods removed:
+- Chronology.getISO()
+- Chronology.getISOUTC()
+- Chronology.getISO(DateTimeZone)
+- Chronology.getGJ()
+- Chronology.getGJUTC()
+- Chronology.getGJ(DateTimeZone)
+- Chronology.getGregorian()
+- Chronology.getGregorianUTC()
+- Chronology.getGregorian(DateTimeZone)
+- Chronology.getJulian()
+- Chronology.getJulianUTC()
+- Chronology.getJulian(DateTimeZone)
+- Chronology.getBuddhist()
+- Chronology.getBuddhistUTC()
+- Chronology.getBuddhist(DateTimeZone)
+- Chronology.getCoptic()
+- Chronology.getCopticUTC()
+- Chronology.getCoptic(DateTimeZone)
+- LocalDate.toDateTimeAtMidnight()
+- LocalDate.toDateTimeAtMidnight(DateTimeZone)
 
 Serialization compatible - Yes
 

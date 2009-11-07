@@ -45,20 +45,20 @@ public class TestLocalDate_Basics extends TestCase {
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final int OFFSET = 1;
+//    private static final int OFFSET = 1;
     private static final GJChronology GJ_UTC = GJChronology.getInstanceUTC();
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
     private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
     private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
     private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+//    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
-    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+//    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
+//    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
     private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
     private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
     private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
+//    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
 
     /** Mock zone simulating Asia/Gaza cutover at midnight 2007-04-01 */
     private static long CUTOVER_GAZA = 1175378400000L;
@@ -68,15 +68,15 @@ public class TestLocalDate_Basics extends TestCase {
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;
             
-    private long TEST_TIME1 =
-        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 12L * DateTimeConstants.MILLIS_PER_HOUR
-        + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
-        
-    private long TEST_TIME2 =
-        (365L + 31L + 28L + 31L + 30L + 7L -1L) * DateTimeConstants.MILLIS_PER_DAY
-        + 14L * DateTimeConstants.MILLIS_PER_HOUR
-        + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
+//    private long TEST_TIME1 =
+//        (31L + 28L + 31L + 6L -1L) * DateTimeConstants.MILLIS_PER_DAY
+//        + 12L * DateTimeConstants.MILLIS_PER_HOUR
+//        + 24L * DateTimeConstants.MILLIS_PER_MINUTE;
+//        
+//    private long TEST_TIME2 =
+//        (365L + 31L + 28L + 31L + 30L + 7L -1L) * DateTimeConstants.MILLIS_PER_DAY
+//        + 14L * DateTimeConstants.MILLIS_PER_HOUR
+//        + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
     private DateTimeZone zone = null;
 
@@ -670,32 +670,6 @@ public class TestLocalDate_Basics extends TestCase {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
         
         DateTime test = base.toDateTimeAtStartOfDay((DateTimeZone) null);
-        check(base, 2005, 6, 9);
-        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
-    }
-
-    //-----------------------------------------------------------------------
-    public void testToDateTimeAtMidnight() {
-        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
-        
-        DateTime test = base.toDateTimeAtMidnight();
-        check(base, 2005, 6, 9);
-        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
-    }
-
-    //-----------------------------------------------------------------------
-    public void testToDateTimeAtMidnight_Zone() {
-        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
-        
-        DateTime test = base.toDateTimeAtMidnight(TOKYO);
-        check(base, 2005, 6, 9);
-        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_TOKYO), test);
-    }
-
-    public void testToDateTimeAtMidnight_nullZone() {
-        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
-        
-        DateTime test = base.toDateTimeAtMidnight((DateTimeZone) null);
         check(base, 2005, 6, 9);
         assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
     }

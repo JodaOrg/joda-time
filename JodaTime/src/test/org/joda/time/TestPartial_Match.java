@@ -153,6 +153,11 @@ public class TestPartial_Match extends TestCase {
         
         partial = new LocalDate(2005, 6, 5);
         assertEquals(false, test.isMatch(partial));
+        
+        try {
+            test.isMatch((ReadablePartial) null);
+            fail();
+        } catch (IllegalArgumentException ex) {}
     }
 
     //-----------------------------------------------------------------------

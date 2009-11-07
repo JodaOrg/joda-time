@@ -3,7 +3,7 @@
 <document>
  <properties>
   <title>Java date and time API - Hibernate support - User Guide</title>
-  <author email="scolebourne@users.sourceforge.net">Stephen Colebourne</author>
+  <author>Stephen Colebourne</author>
  </properties>
 <body>
 
@@ -73,6 +73,11 @@ private DateTime startDateTime;
 			</tr>
 			<tr>
 				<td>org.joda.time.contrib.hibernate.PersistentInstant</td>
+				<td>TIMESTAMP</td>
+				<td>This persister uses one column to store the timestamp</td>
+			</tr>
+			<tr>
+				<td>org.joda.time.contrib.hibernate.PersistentInstantAsBigInt</td>
 				<td>BIGINT</td>
 				<td>This persister uses one column to store the millisconds</td>
 			</tr>

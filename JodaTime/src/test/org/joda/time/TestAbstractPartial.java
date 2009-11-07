@@ -134,9 +134,6 @@ public class TestAbstractPartial extends TestCase {
     }
 
     public void testGetPropertyEquals() throws Throwable {
-        MockPartial mock = new MockPartial();
-        YearMonthDay ymd = new YearMonthDay(1970, 2, 1, BuddhistChronology.getInstance());
-        
         MockProperty0 prop0 = new MockProperty0();
         assertEquals(true, prop0.equals(prop0));
         assertEquals(true, prop0.equals(new MockProperty0()));

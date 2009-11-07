@@ -110,7 +110,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
             // expected
         }
         try {
-            Single.between(start, new TimeOfDay(), zero);
+            Single.between(start, new LocalTime(), zero);
             fail();
         } catch (IllegalArgumentException ex) {
             // expected

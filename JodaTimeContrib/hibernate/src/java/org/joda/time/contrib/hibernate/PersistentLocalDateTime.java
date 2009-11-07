@@ -82,10 +82,7 @@ public class PersistentLocalDateTime implements EnhancedUserType, Serializable {
     }
 
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-        return new LocalDateTime(value);
+        return value;
     }
 
     public boolean isMutable() {

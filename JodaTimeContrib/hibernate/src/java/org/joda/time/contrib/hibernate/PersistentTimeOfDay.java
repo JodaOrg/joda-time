@@ -91,10 +91,7 @@ public class PersistentTimeOfDay implements EnhancedUserType, Serializable {
     }
 
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-        return new TimeOfDay(value);
+        return value;
     }
 
     public boolean isMutable() {

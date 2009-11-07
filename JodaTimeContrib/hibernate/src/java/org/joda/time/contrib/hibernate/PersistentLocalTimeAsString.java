@@ -85,10 +85,7 @@ public class PersistentLocalTimeAsString implements EnhancedUserType, Serializab
     }
 
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-        return new LocalTime(value);
+        return value;
     }
 
     public boolean isMutable() {

@@ -56,7 +56,6 @@ public class PersistentDateTimeTZ implements UserType, Serializable {
         }
         DateTime dtx = (DateTime) x;
         DateTime dty = (DateTime) y;
-
         return dtx.equals(dty);
     }
 
@@ -70,7 +69,6 @@ public class PersistentDateTimeTZ implements UserType, Serializable {
         if (timestamp == null || timezone == null) {
             return null;
         }
-
         return new DateTime(timestamp, DateTimeZone.forID(timezone.toString()));
     }
 
@@ -80,17 +78,13 @@ public class PersistentDateTimeTZ implements UserType, Serializable {
             Hibernate.STRING.nullSafeSet(preparedStatement, null, index + 1);
         } else {
             DateTime dt = (DateTime) value;
-
             Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, dt.toDate(), index);
             Hibernate.STRING.nullSafeSet(preparedStatement, dt.getZone().getID(), index + 1);
         }
     }
 
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-        return new DateTime(value);
+        return value;
     }
 
     public boolean isMutable() {

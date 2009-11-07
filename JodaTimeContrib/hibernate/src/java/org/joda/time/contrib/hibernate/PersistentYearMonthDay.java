@@ -83,10 +83,7 @@ public class PersistentYearMonthDay implements EnhancedUserType, Serializable {
     }
 
     public Object deepCopy(Object value) throws HibernateException {
-        if (value == null) {
-            return null;
-        }
-        return new YearMonthDay(value);
+        return value;
     }
 
     public boolean isMutable() {

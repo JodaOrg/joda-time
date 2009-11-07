@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2009 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -100,6 +100,10 @@ public class TestAll extends TestCase {
         suite.addTest(TestYearMonthDay_Basics.suite());
         suite.addTest(TestYearMonthDay_Constructors.suite());
         suite.addTest(TestYearMonthDay_Properties.suite());
+        
+        suite.addTest(TestYearMonth_Basics.suite());
+        suite.addTest(TestYearMonth_Constructors.suite());
+        suite.addTest(TestYearMonth_Properties.suite());
         
         suite.addTest(TestPartial_Basics.suite());
         suite.addTest(TestPartial_Constructors.suite());

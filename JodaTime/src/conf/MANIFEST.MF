@@ -8,11 +8,13 @@ Implementation-Title: org.joda.time
 Implementation-Version: 2.0
 Implementation-Vendor-Id: org.joda
 Bundle-ManifestVersion: 2
+Bundle-Vendor: Joda.org
+Bundle-Name: Joda-Time
+Bundle-SymbolicName: joda-time
+Bundle-Version: 2.0
 Export-Package: org.joda.time;version=2.0,
  org.joda.time.chrono;version=2.0,
  org.joda.time.format;version=2.0
-Bundle-Symbolicname: joda-time
-Bundle-Name: Joda-Time
 Bundle-License: Apache 2.0
-Bundle-Version: 2.0
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-DocURL: http://joda-time.sourceforge.net/

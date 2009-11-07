@@ -134,7 +134,7 @@ public class TestDateTimeFormatter extends TestCase {
         dt = dt.withZone(NEWYORK);
         assertEquals("Wed 2004-06-09T06:20:30-04:00", f.withZone(NEWYORK).print(dt));
         assertEquals("Wed 2004-06-09T12:20:30+02:00", f.withZone(PARIS).print(dt));
-        assertEquals("Wed 2004-06-09T10:20:30Z", f.withZone(UTC).print(dt));
+        assertEquals("Wed 2004-06-09T10:20:30Z", f.withZoneUTC().print(dt));
         assertEquals("Wed 2004-06-09T06:20:30-04:00", f.withZone(null).print(dt));
     }
 
@@ -663,7 +663,7 @@ public class TestDateTimeFormatter extends TestCase {
     public void testParseMillis_fractionOfSecondLong() {
         DateTimeFormatter f = new DateTimeFormatterBuilder()
             .appendSecondOfDay(2).appendLiteral('.').appendFractionOfSecond(1, 9)
-                .toFormatter().withZone(DateTimeZone.UTC);
+                .toFormatter().withZoneUTC();
         assertEquals(10512, f.parseMillis("10.5123456"));
         assertEquals(10512, f.parseMillis("10.512999"));
     }

@@ -273,6 +273,25 @@ public class DateTimeFormatter {
 
     //-----------------------------------------------------------------------
     /**
+     * Returns a new formatter that will use the UTC zone in preference
+     * to the zone of the printed object, or default zone on a parse.
+     * <p>
+     * When printing, UTC will be used in preference to the zone
+     * from the datetime that would otherwise be used.
+     * <p>
+     * When parsing, UTC will be set on the parsed datetime.
+     * <p>
+     * If both an override chronology and an override zone are set, the
+     * override zone will take precedence over the zone in the chronology.
+     * 
+     * @return the new formatter, never null
+     * @since 2.0
+     */
+    public DateTimeFormatter withZoneUTC() {
+        return withZone(DateTimeZone.UTC);
+    }
+
+    /**
      * Returns a new formatter that will use the specified zone in preference
      * to the zone of the printed object, or default zone on a parse.
      * <p>

@@ -20,7 +20,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeZone;
 
 /**
  * Factory that creates instances of DateTimeFormatter for the ISO8601 standard.
@@ -593,7 +592,7 @@ public class ISODateTimeFormat {
      */
     public static DateTimeFormatter localDateParser() {
         if (ldp == null) {
-            ldp = dateElementParser().withZone(DateTimeZone.UTC);
+            ldp = dateElementParser().withZoneUTC();
         }
         return ldp;
     }
@@ -677,7 +676,7 @@ public class ISODateTimeFormat {
             ltp = new DateTimeFormatterBuilder()
                 .appendOptional(literalTElement().getParser())
                 .append(timeElementParser())
-                .toFormatter().withZone(DateTimeZone.UTC);
+                .toFormatter().withZoneUTC();
         }
         return ltp;
     }
@@ -839,7 +838,7 @@ public class ISODateTimeFormat {
             ldotp = new DateTimeFormatterBuilder()
                 .append(dateElementParser())
                 .appendOptional(time)
-                .toFormatter().withZone(DateTimeZone.UTC);
+                .toFormatter().withZoneUTC();
         }
         return ldotp;
     }

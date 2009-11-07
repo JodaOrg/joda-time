@@ -33,9 +33,9 @@ import org.joda.time.LocalTime;
  */
 public class PersistentLocalTimeExact implements EnhancedUserType, Serializable
 {
-	public final static PersistentLocalTimeExact INSTANCE = new PersistentLocalTimeExact();
+    public final static PersistentLocalTimeExact INSTANCE = new PersistentLocalTimeExact();
 
-	private static final int[] SQL_TYPES = new int[]
+    private static final int[] SQL_TYPES = new int[]
     {
         Types.INTEGER,
     };
@@ -51,7 +51,7 @@ public class PersistentLocalTimeExact implements EnhancedUserType, Serializable
     }
 
     public boolean equals(Object x, Object y) throws HibernateException
-	{
+    {
         if (x == y)
         {
             return true;
@@ -72,36 +72,36 @@ public class PersistentLocalTimeExact implements EnhancedUserType, Serializable
     }
 
     public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException
-	{
-		return nullSafeGet(resultSet, strings[0]);
+    {
+        return nullSafeGet(resultSet, strings[0]);
 
-	}
+    }
 
-	public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException
-	{
-		Object timestamp = Hibernate.INTEGER.nullSafeGet(resultSet, string);
-		if (timestamp == null)
-		{
-			return null;
-		}
+    public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException
+    {
+        Object timestamp = Hibernate.INTEGER.nullSafeGet(resultSet, string);
+        if (timestamp == null)
+        {
+            return null;
+        }
 
-		return LocalTime.fromMillisOfDay(((Number) timestamp).intValue());
-	}
+        return LocalTime.fromMillisOfDay(((Number) timestamp).intValue());
+    }
 
 
-	public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
-	{
-		if (value == null)
-		{
-			Hibernate.INTEGER.nullSafeSet(preparedStatement, null, index);
-		}
-		else
-		{
-			LocalTime lt = ((LocalTime) value);
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
+    {
+        if (value == null)
+        {
+            Hibernate.INTEGER.nullSafeSet(preparedStatement, null, index);
+        }
+        else
+        {
+            LocalTime lt = ((LocalTime) value);
 
-			Hibernate.INTEGER.nullSafeSet(preparedStatement, new Integer(lt.getMillisOfDay()), index);
-		}
-	}
+            Hibernate.INTEGER.nullSafeSet(preparedStatement, new Integer(lt.getMillisOfDay()), index);
+        }
+    }
 
     public Object deepCopy(Object value) throws HibernateException
     {
@@ -133,18 +133,18 @@ public class PersistentLocalTimeExact implements EnhancedUserType, Serializable
         return original;
     }
 
-	public String objectToSQLString(Object object)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public String objectToSQLString(Object object)
+    {
+        throw new UnsupportedOperationException();
+    }
 
-	public String toXMLString(Object object)
-	{
-		return object.toString();
-	}
+    public String toXMLString(Object object)
+    {
+        return object.toString();
+    }
 
-	public Object fromXMLString(String string)
-	{
-		return new LocalTime(string);
-	}
+    public Object fromXMLString(String string)
+    {
+        return new LocalTime(string);
+    }
 }

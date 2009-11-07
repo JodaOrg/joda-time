@@ -33,113 +33,113 @@ import org.joda.time.Instant;
  */
 public class PersistentInstantAsBigInt implements EnhancedUserType, Serializable
 {
-	public final static PersistentInstantAsBigInt INSTANCE = new PersistentInstantAsBigInt();
+    public final static PersistentInstantAsBigInt INSTANCE = new PersistentInstantAsBigInt();
 
-	private static final int[] SQL_TYPES = new int[] {Types.BIGINT};
+    private static final int[] SQL_TYPES = new int[] {Types.BIGINT};
 
-	public int[] sqlTypes()
-	{
-		return SQL_TYPES;
-	}
+    public int[] sqlTypes()
+    {
+        return SQL_TYPES;
+    }
 
-	public Class returnedClass()
-	{
-		return Instant.class;
-	}
+    public Class returnedClass()
+    {
+        return Instant.class;
+    }
 
-	public boolean equals(Object x, Object y) throws HibernateException
-	{
-		if (x == y)
+    public boolean equals(Object x, Object y) throws HibernateException
+    {
+        if (x == y)
         {
-			return true;
+            return true;
         }
-		if (x == null || y == null)
+        if (x == null || y == null)
         {
-			return false;
+            return false;
         }
-		Instant ix = (Instant) x;
-		Instant iy = (Instant) y;
+        Instant ix = (Instant) x;
+        Instant iy = (Instant) y;
 
-		return ix.equals(iy);
-	}
+        return ix.equals(iy);
+    }
 
-	public int hashCode(Object object) throws HibernateException
-	{
-		return object.hashCode();
-	}
+    public int hashCode(Object object) throws HibernateException
+    {
+        return object.hashCode();
+    }
 
-	public Object nullSafeGet(ResultSet resultSet, String[] names, Object object) throws HibernateException, SQLException
-	{
-		return nullSafeGet(resultSet, names[0]);
-	}
+    public Object nullSafeGet(ResultSet resultSet, String[] names, Object object) throws HibernateException, SQLException
+    {
+        return nullSafeGet(resultSet, names[0]);
+    }
 
-	public Object nullSafeGet(ResultSet resultSet, String name) throws HibernateException, SQLException
-	{
-		Object value = Hibernate.LONG.nullSafeGet(resultSet, name);
-		if (value == null)
+    public Object nullSafeGet(ResultSet resultSet, String name) throws HibernateException, SQLException
+    {
+        Object value = Hibernate.LONG.nullSafeGet(resultSet, name);
+        if (value == null)
         {
-			return null;
-        }
-
-		return new Instant(value);
-	}
-
-	public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
-	{
-		if (value == null)
-		{
-			Hibernate.LONG.nullSafeSet(preparedStatement, null, index);
-	    }
-		else
-		{
-			Hibernate.LONG.nullSafeSet(preparedStatement, new Long(((Instant)value).getMillis()), index);
-		}
-	}
-
-	public Object deepCopy(Object value) throws HibernateException
-	{
-		if (value == null)
-        {
-			return null;
+            return null;
         }
 
-		return new Instant(value);
-	}
+        return new Instant(value);
+    }
 
-	public boolean isMutable()
-	{
-		return false;
-	}
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
+    {
+        if (value == null)
+        {
+            Hibernate.LONG.nullSafeSet(preparedStatement, null, index);
+        }
+        else
+        {
+            Hibernate.LONG.nullSafeSet(preparedStatement, new Long(((Instant)value).getMillis()), index);
+        }
+    }
 
-	public Serializable disassemble(Object value) throws HibernateException
-	{
-		return (Serializable)value;
-	}
+    public Object deepCopy(Object value) throws HibernateException
+    {
+        if (value == null)
+        {
+            return null;
+        }
 
-	public Object assemble(Serializable serializable, Object value) throws HibernateException
-	{
-		return serializable;
-	}
+        return new Instant(value);
+    }
 
-	public Object replace(Object original, Object target, Object owner) throws HibernateException
-	{
-		return original;
-	}
+    public boolean isMutable()
+    {
+        return false;
+    }
 
-	// __________ EnhancedUserType ____________________
+    public Serializable disassemble(Object value) throws HibernateException
+    {
+        return (Serializable)value;
+    }
 
-	public String objectToSQLString(Object object)
-	{
-		throw new UnsupportedOperationException();
-	}
+    public Object assemble(Serializable serializable, Object value) throws HibernateException
+    {
+        return serializable;
+    }
 
-	public String toXMLString(Object object)
-	{
-		return object.toString();
-	}
+    public Object replace(Object original, Object target, Object owner) throws HibernateException
+    {
+        return original;
+    }
 
-	public Object fromXMLString(String string)
-	{
-		return new Instant(string);
-	}
+    // __________ EnhancedUserType ____________________
+
+    public String objectToSQLString(Object object)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    public String toXMLString(Object object)
+    {
+        return object.toString();
+    }
+
+    public Object fromXMLString(String string)
+    {
+        return new Instant(string);
+    }
 }

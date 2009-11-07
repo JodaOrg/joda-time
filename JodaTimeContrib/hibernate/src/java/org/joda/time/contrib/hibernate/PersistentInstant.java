@@ -126,7 +126,7 @@ public class PersistentInstant implements EnhancedUserType
         return original;
     }
 
-	// __________ EnhancedUserType ____________________
+    // __________ EnhancedUserType ____________________
 
     public String objectToSQLString(Object object)
     {

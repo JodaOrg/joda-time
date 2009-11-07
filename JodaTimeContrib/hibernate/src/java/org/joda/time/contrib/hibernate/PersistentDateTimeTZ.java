@@ -35,9 +35,9 @@ import org.joda.time.DateTimeZone;
  */
 public class PersistentDateTimeTZ implements UserType, Serializable
 {
-	public final static PersistentDateTimeTZ INSTANCE = new PersistentDateTimeTZ();
+    public final static PersistentDateTimeTZ INSTANCE = new PersistentDateTimeTZ();
 
-	private static final int[] SQL_TYPES = new int[]
+    private static final int[] SQL_TYPES = new int[]
     {
         Types.TIMESTAMP,
         Types.VARCHAR,

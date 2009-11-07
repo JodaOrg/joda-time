@@ -32,89 +32,68 @@ import org.joda.time.Interval;
 /**
  * Persist {@link org.joda.time.Interval} via hibernate. Internally, this class
  * collaborates with {@link org.joda.time.contrib.hibernate.PersistentDateTime}
- * to convert the start and end components of an Interval to and from the 
- * database correspondents.  This class allows clients to execute hibernate or
- * JPA queries using the attribute names "start" and "end."  For example,
- * <br />
+ * to convert the start and end components of an Interval to and from the
+ * database correspondents. This class allows clients to execute hibernate or
+ * JPA queries using the attribute names "start" and "end." For example,
  * <br />
  * <blockquote>
  * "from Foo where :date is between barInterval.start and barInterval.end"
  * </blockquote>
- *
+ * 
  * @author Christopher R. Gardner (chris_gardner76@yahoo.com)
  */
-public class PersistentInterval implements CompositeUserType, Serializable
-{
-    private static final String[] PROPERTY_NAMES = new String[]
-    {
-        "start",
-        "end"
-    };
-    
-    private static final Type[] TYPES = new Type[]
-    { 
-        Hibernate.TIMESTAMP,
-        Hibernate.TIMESTAMP
-    };
+public class PersistentInterval implements CompositeUserType, Serializable {
 
-    public Object assemble(Serializable cached, SessionImplementor session,
-            Object owner) throws HibernateException
-    {
+    private static final String[] PROPERTY_NAMES = new String[] { "start", "end" };
+
+    private static final Type[] TYPES = new Type[] { Hibernate.TIMESTAMP, Hibernate.TIMESTAMP };
+
+    public Object assemble(Serializable cached, SessionImplementor session, Object owner) throws HibernateException {
         return cached;
     }
 
-    public Object deepCopy(Object value) throws HibernateException
-    {
+    public Object deepCopy(Object value) throws HibernateException {
         return value;
     }
 
-    public Serializable disassemble(Object value, SessionImplementor session)
-            throws HibernateException
-    {
+    public Serializable disassemble(Object value, SessionImplementor session) throws HibernateException {
         return (Serializable) value;
     }
 
-    public boolean equals(Object x, Object y) throws HibernateException
-    {
-        if (x == y) { return true; }
-        if (x == null || y == null) { return false; }
+    public boolean equals(Object x, Object y) throws HibernateException {
+        if (x == y) {
+            return true;
+        }
+        if (x == null || y == null) {
+            return false;
+        }
         return x.equals(y);
     }
 
-    public String[] getPropertyNames()
-    {
+    public String[] getPropertyNames() {
         return PROPERTY_NAMES;
     }
 
-    public Type[] getPropertyTypes()
-    {
+    public Type[] getPropertyTypes() {
         return TYPES;
     }
 
-    public Object getPropertyValue(Object component, int property)
-            throws HibernateException
-    {
+    public Object getPropertyValue(Object component, int property) throws HibernateException {
         Interval interval = (Interval) component;
-        return (property == 0) ? interval.getStart().toDate() : interval
-                .getEnd().toDate();
+        return (property == 0) ? interval.getStart().toDate() : interval.getEnd().toDate();
     }
 
-    public int hashCode(Object x) throws HibernateException
-    {
+    public int hashCode(Object x) throws HibernateException {
         return x.hashCode();
     }
 
-    public boolean isMutable()
-    {
+    public boolean isMutable() {
         return false;
     }
 
-    public Object nullSafeGet(ResultSet resultSet, String[] names,
-            SessionImplementor session, Object owner)
-            throws HibernateException, SQLException
-    {
-        if (resultSet == null)
-        {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, SessionImplementor session, Object owner)
+            throws HibernateException, SQLException {
+        if (resultSet == null) {
             return null;
         }
         PersistentDateTime pst = new PersistentDateTime();
@@ -126,12 +105,9 @@ public class PersistentInterval implements CompositeUserType, Serializable
         return new Interval(start, end);
     }
 
-    public void nullSafeSet(PreparedStatement statement, Object value,
-            int index, SessionImplementor session) throws HibernateException,
-            SQLException
-    {
-        if (value == null)
-        {
+    public void nullSafeSet(PreparedStatement statement, Object value, int index, SessionImplementor session)
+            throws HibernateException, SQLException {
+        if (value == null) {
             statement.setNull(index, Hibernate.TIMESTAMP.sqlType());
             statement.setNull(index + 1, Hibernate.TIMESTAMP.sqlType());
             return;
@@ -145,20 +121,17 @@ public class PersistentInterval implements CompositeUserType, Serializable
         return new Timestamp(time.getMillis());
     }
 
-    public Object replace(Object original, Object target,
-            SessionImplementor session, Object owner) throws HibernateException
-    {
+    public Object replace(Object original, Object target, SessionImplementor session, Object owner)
+            throws HibernateException {
         return original;
     }
 
-    public Class returnedClass()
-    {
+    public Class returnedClass() {
         return Interval.class;
     }
 
-    public void setPropertyValue(Object component, int property, Object value)
-            throws HibernateException
-    {
+    public void setPropertyValue(Object component, int property, Object value) throws HibernateException {
         throw new UnsupportedOperationException("Immutable Interval");
     }
+
 }

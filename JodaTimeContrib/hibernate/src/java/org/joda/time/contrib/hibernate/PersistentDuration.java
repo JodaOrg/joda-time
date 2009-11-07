@@ -20,7 +20,7 @@ import org.joda.time.Duration;
 /**
  * Converts a org.joda.time.Duration to and from Sql for Hibernate.
  * It simply stores the value as a varchar using Duration.toString.
- *
+ * 
  * @author gjoseph
  */
 public class PersistentDuration extends AbstractStringBasedJodaType {

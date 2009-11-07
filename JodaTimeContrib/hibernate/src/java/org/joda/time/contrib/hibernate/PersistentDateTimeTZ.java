@@ -28,39 +28,30 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
 /**
- * Persist {@link org.joda.time.DateTime} via hibernate.
- * The timezone will be stored in an extra column.
- *
+ * Persist {@link org.joda.time.DateTime} via hibernate. The timezone will be
+ * stored in an extra column.
+ * 
  * @author Mario Ivankovits (mario@ops.co.at)
  */
-public class PersistentDateTimeTZ implements UserType, Serializable
-{
+public class PersistentDateTimeTZ implements UserType, Serializable {
+
     public final static PersistentDateTimeTZ INSTANCE = new PersistentDateTimeTZ();
 
-    private static final int[] SQL_TYPES = new int[]
-    {
-        Types.TIMESTAMP,
-        Types.VARCHAR,
-    };
+    private static final int[] SQL_TYPES = new int[] { Types.TIMESTAMP, Types.VARCHAR, };
 
-    public int[] sqlTypes()
-    {
+    public int[] sqlTypes() {
         return SQL_TYPES;
     }
 
-    public Class returnedClass()
-    {
+    public Class returnedClass() {
         return DateTime.class;
     }
 
-    public boolean equals(Object x, Object y) throws HibernateException
-    {
-        if (x == y)
-        {
+    public boolean equals(Object x, Object y) throws HibernateException {
+        if (x == y) {
             return true;
         }
-        if (x == null || y == null)
-        {
+        if (x == null || y == null) {
             return false;
         }
         DateTime dtx = (DateTime) x;
@@ -69,66 +60,53 @@ public class PersistentDateTimeTZ implements UserType, Serializable
         return dtx.equals(dty);
     }
 
-    public int hashCode(Object object) throws HibernateException
-    {
+    public int hashCode(Object object) throws HibernateException {
         return object.hashCode();
     }
 
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException
-    {
+    public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException {
         Object timestamp = Hibernate.TIMESTAMP.nullSafeGet(resultSet, strings[0]);
         Object timezone = Hibernate.STRING.nullSafeGet(resultSet, strings[1]);
-        if (timestamp == null || timezone == null)
-        {
+        if (timestamp == null || timezone == null) {
             return null;
         }
 
         return new DateTime(timestamp, DateTimeZone.forID(timezone.toString()));
     }
 
-    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
-    {
-        if (value == null)
-        {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
+        if (value == null) {
             Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
-            Hibernate.STRING.nullSafeSet(preparedStatement, null, index+1);
-        }
-        else
-        {
+            Hibernate.STRING.nullSafeSet(preparedStatement, null, index + 1);
+        } else {
             DateTime dt = (DateTime) value;
 
             Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, dt.toDate(), index);
-            Hibernate.STRING.nullSafeSet(preparedStatement, dt.getZone().getID(), index+1);
+            Hibernate.STRING.nullSafeSet(preparedStatement, dt.getZone().getID(), index + 1);
         }
     }
 
-    public Object deepCopy(Object value) throws HibernateException
-    {
-        if (value == null)
-        {
+    public Object deepCopy(Object value) throws HibernateException {
+        if (value == null) {
             return null;
         }
-
         return new DateTime(value);
     }
 
-    public boolean isMutable()
-    {
+    public boolean isMutable() {
         return false;
     }
 
-    public Serializable disassemble(Object value) throws HibernateException
-    {
+    public Serializable disassemble(Object value) throws HibernateException {
         return (Serializable) value;
     }
 
-    public Object assemble(Serializable cached, Object value) throws HibernateException
-    {
+    public Object assemble(Serializable cached, Object value) throws HibernateException {
         return cached;
     }
 
-    public Object replace(Object original, Object target, Object owner) throws HibernateException
-    {
+    public Object replace(Object original, Object target, Object owner) throws HibernateException {
         return original;
     }
+
 }

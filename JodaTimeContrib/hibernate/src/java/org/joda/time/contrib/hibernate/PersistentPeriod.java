@@ -20,7 +20,7 @@ import org.joda.time.Period;
 /**
  * Converts a org.joda.time.Period to and from Sql for Hibernate.
  * It simply stores and retrieves the value as a varchar using Period.toString.
- *
+ * 
  * @author gjoseph
  */
 public class PersistentPeriod extends AbstractStringBasedJodaType {

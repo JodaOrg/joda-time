@@ -30,37 +30,30 @@ import org.joda.time.TimeOfDay;
  * Persist {@link org.joda.time.TimeOfDay} via hibernate.
  * This uses a simple integer to store the time as milliseconds since 1970-1-1.
  * The milliseconds will survive.
- *
+ * 
  * @author Mario Ivankovits (mario@ops.co.at)
  */
-public class PersistentTimeOfDayExact implements EnhancedUserType, Serializable
-{
+public class PersistentTimeOfDayExact implements EnhancedUserType, Serializable {
+
     private final DateTime timeBase = new DateTime(1970, 1, 1, 0, 0, 0, 0);
+
     public final static PersistentTimeOfDayExact INSTANCE = new PersistentTimeOfDayExact();
 
-    private static final int[] SQL_TYPES = new int[]
-    {
-        Types.INTEGER,
-    };
+    private static final int[] SQL_TYPES = new int[] { Types.INTEGER, };
 
-    public int[] sqlTypes()
-    {
+    public int[] sqlTypes() {
         return SQL_TYPES;
     }
 
-    public Class returnedClass()
-    {
+    public Class returnedClass() {
         return TimeOfDay.class;
     }
 
-    public boolean equals(Object x, Object y) throws HibernateException
-    {
-        if (x == y)
-        {
+    public boolean equals(Object x, Object y) throws HibernateException {
+        if (x == y) {
             return true;
         }
-        if (x == null || y == null)
-        {
+        if (x == null || y == null) {
             return false;
         }
         TimeOfDay dtx = (TimeOfDay) x;
@@ -69,82 +62,64 @@ public class PersistentTimeOfDayExact implements EnhancedUserType, Serializable
         return dtx.equals(dty);
     }
 
-    public int hashCode(Object object) throws HibernateException
-    {
+    public int hashCode(Object object) throws HibernateException {
         return object.hashCode();
     }
 
-    public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException
-    {
+    public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException {
         return nullSafeGet(resultSet, strings[0]);
 
     }
 
-    public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException
-    {
+    public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException {
         int value = resultSet.getInt(string);
-        if (resultSet.wasNull())
-        {
+        if (resultSet.wasNull()) {
             return null;
         }
-
         return new TimeOfDay(value);
     }
 
-    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
-    {
-        if (value == null)
-        {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
+        if (value == null) {
             preparedStatement.setNull(index, SQL_TYPES[0]);
-        }
-        else
-        {
+        } else {
             preparedStatement.setInt(index, (int) ((TimeOfDay) value).toDateTime(timeBase).getMillis());
         }
     }
 
-    public Object deepCopy(Object value) throws HibernateException
-    {
-        if (value == null)
-        {
+    public Object deepCopy(Object value) throws HibernateException {
+        if (value == null) {
             return null;
         }
-
         return new TimeOfDay(value);
     }
 
-    public boolean isMutable()
-    {
+    public boolean isMutable() {
         return false;
     }
 
-    public Serializable disassemble(Object value) throws HibernateException
-    {
+    public Serializable disassemble(Object value) throws HibernateException {
         return (Serializable) value;
     }
 
-    public Object assemble(Serializable cached, Object value) throws HibernateException
-    {
+    public Object assemble(Serializable cached, Object value) throws HibernateException {
         return cached;
     }
 
-    public Object replace(Object original, Object target, Object owner) throws HibernateException
-    {
+    public Object replace(Object original, Object target, Object owner) throws HibernateException {
         return original;
     }
 
-    public String objectToSQLString(Object object)
-    {
+    public String objectToSQLString(Object object) {
         throw new UnsupportedOperationException();
     }
 
-    public String toXMLString(Object object)
-    {
+    public String toXMLString(Object object) {
         return object.toString();
     }
 
-    public Object fromXMLString(String string)
-    {
+    public Object fromXMLString(String string) {
         return new TimeOfDay(string);
     }
+
 }

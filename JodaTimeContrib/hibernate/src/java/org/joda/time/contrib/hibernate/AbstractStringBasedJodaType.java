@@ -29,7 +29,8 @@ import org.hibernate.usertype.UserType;
  * @author gjoseph
  */
 public abstract class AbstractStringBasedJodaType implements UserType, Serializable {
-    private static final int[] SQL_TYPES = new int[]{Types.VARCHAR};
+
+    private static final int[] SQL_TYPES = new int[] { Types.VARCHAR };
 
     public int[] sqlTypes() {
         return SQL_TYPES;
@@ -63,10 +64,6 @@ public abstract class AbstractStringBasedJodaType implements UserType, Serializa
         if (x == null || y == null) {
             return false;
         }
-        // why do this !? .. TODO : maybe we need to check types ?
-        // Period px = (Period) x;
-        // Period py = (Period) y;
-
         return x.equals(y);
     }
 
@@ -93,4 +90,5 @@ public abstract class AbstractStringBasedJodaType implements UserType, Serializa
     public Object replace(Object original, Object target, Object owner) throws HibernateException {
         return original;
     }
+
 }

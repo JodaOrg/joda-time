@@ -28,118 +28,94 @@ import org.joda.time.Instant;
 
 /**
  * Persist {@link org.joda.time.Instant} via hibernate as a TIMESTAMP.
- *
+ * 
  * @author Olav Reinert (oreinert@sourceforge.net)
  */
-public class PersistentInstant implements EnhancedUserType
-{
+public class PersistentInstant implements EnhancedUserType {
+
     public final static PersistentInstant INSTANCE = new PersistentInstant();
 
-    private static final int[] SQL_TYPES = new int[] {Types.TIMESTAMP};
+    private static final int[] SQL_TYPES = new int[] { Types.TIMESTAMP };
 
-    public int[] sqlTypes()
-    {
+    public int[] sqlTypes() {
         return SQL_TYPES;
     }
 
-    public Class returnedClass()
-    {
+    public Class returnedClass() {
         return Instant.class;
     }
 
-    public boolean equals(Object x, Object y) throws HibernateException
-    {
-        if (x == y)
-        {
+    public boolean equals(Object x, Object y) throws HibernateException {
+        if (x == y) {
             return true;
         }
-        if (x == null || y == null)
-        {
+        if (x == null || y == null) {
             return false;
         }
         Instant ix = (Instant) x;
         Instant iy = (Instant) y;
-
         return ix.equals(iy);
     }
 
-    public int hashCode(Object object) throws HibernateException
-    {
+    public int hashCode(Object object) throws HibernateException {
         return object.hashCode();
     }
 
-    public Object nullSafeGet(ResultSet resultSet, String[] names, Object object) throws HibernateException, SQLException
-    {
+    public Object nullSafeGet(ResultSet resultSet, String[] names, Object object) throws HibernateException, SQLException {
         return nullSafeGet(resultSet, names[0]);
     }
 
-    public Object nullSafeGet(ResultSet resultSet, String name) throws SQLException
-    {
+    public Object nullSafeGet(ResultSet resultSet, String name) throws SQLException {
         Object value = Hibernate.TIMESTAMP.nullSafeGet(resultSet, name);
-        if (value == null)
-        {
+        if (value == null) {
             return null;
         }
-
         return new Instant(value);
     }
 
-    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException
-    {
-        if (value == null)
-        {
+    public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
+        if (value == null) {
             Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
-        }
-        else
-        {
+        } else {
             Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, ((Instant) value).toDate(), index);
         }
     }
 
-    public Object deepCopy(Object value) throws HibernateException
-    {
-        if (value == null)
-        {
+    public Object deepCopy(Object value) throws HibernateException {
+        if (value == null) {
             return null;
         }
-
         return new Instant(value);
     }
 
-    public boolean isMutable()
-    {
+    public boolean isMutable() {
         return false;
     }
 
-    public Serializable disassemble(Object value) throws HibernateException
-    {
+    public Serializable disassemble(Object value) throws HibernateException {
         return (Serializable) value;
     }
 
-    public Object assemble(Serializable serializable, Object value) throws HibernateException
-    {
+    public Object assemble(Serializable serializable, Object value) throws HibernateException {
         return serializable;
     }
 
-    public Object replace(Object original, Object target, Object owner) throws HibernateException
-    {
+    public Object replace(Object original, Object target, Object owner) throws HibernateException {
         return original;
     }
 
     // __________ EnhancedUserType ____________________
 
-    public String objectToSQLString(Object object)
-    {
+    public String objectToSQLString(Object object) {
         throw new UnsupportedOperationException();
     }
 
-    public String toXMLString(Object object)
-    {
+    public String toXMLString(Object object) {
         return object.toString();
     }
 
-    public Object fromXMLString(String string)
-    {
+    public Object fromXMLString(String string) {
         return new Instant(string);
     }
+
 }

@@ -683,6 +683,7 @@ public final class LocalDateTime
      * where the JDK time zone data differs from the Joda-Time time zone data.
      *
      * @return a Date initialised with this date-time, never null
+     * @since 2.0
      */
     public Date toDate() {
         int dom = getDayOfMonth();

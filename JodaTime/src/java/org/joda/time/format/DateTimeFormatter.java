@@ -23,6 +23,9 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableInstant;
@@ -656,6 +659,75 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 return bucket.computeMillis(true, text);
+            }
+        } else {
+            newPos = ~newPos;
+        }
+        throw new IllegalArgumentException(FormatUtils.createErrorMessage(text, newPos));
+    }
+
+    /**
+     * Parses only the local date from the given text, returning a new LocalDate.
+     * <p>
+     * This will parse the text fully according to the formatter, using the UTC zone.
+     * Once parsed, only the local date will be used.
+     * This means that any parsed time, time-zone or offset field is completely ignored.
+     * It also means that the zone and offset-parsed settings are ignored.
+     *
+     * @param text  the text to parse, not null
+     * @return the parsed date, never null
+     * @throws UnsupportedOperationException if parsing is not supported
+     * @throws IllegalArgumentException if the text to parse is invalid
+     */
+    public LocalDate parseLocalDate(String text) {
+        return parseLocalDateTime(text).toLocalDate();
+    }
+
+    /**
+     * Parses only the local time from the given text, returning a new LocalDate.
+     * <p>
+     * This will parse the text fully according to the formatter, using the UTC zone.
+     * Once parsed, only the local time will be used.
+     * This means that any parsed date, time-zone or offset field is completely ignored.
+     * It also means that the zone and offset-parsed settings are ignored.
+     *
+     * @param text  the text to parse, not null
+     * @return the parsed time, never null
+     * @throws UnsupportedOperationException if parsing is not supported
+     * @throws IllegalArgumentException if the text to parse is invalid
+     */
+    public LocalTime parseLocalTime(String text) {
+        return parseLocalDateTime(text).toLocalTime();
+    }
+
+    /**
+     * Parses only the local date-time from the given text, returning a new LocalDate.
+     * <p>
+     * This will parse the text fully according to the formatter, using the UTC zone.
+     * Once parsed, only the local date-time will be used.
+     * This means that any parsed time-zone or offset field is completely ignored.
+     * It also means that the zone and offset-parsed settings are ignored.
+     *
+     * @param text  the text to parse, not null
+     * @return the parsed date-time, never null
+     * @throws UnsupportedOperationException if parsing is not supported
+     * @throws IllegalArgumentException if the text to parse is invalid
+     */
+    public LocalDateTime parseLocalDateTime(String text) {
+        DateTimeParser parser = requireParser();
+        
+        Chronology chrono = selectChronology(null).withUTC();  // always use UTC, avoiding DST gaps
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
+        int newPos = parser.parseInto(bucket, text, 0);
+        if (newPos >= 0) {
+            if (newPos >= text.length()) {
+                long millis = bucket.computeMillis(true, text);
+                if (bucket.getZone() == null) {  // treat withOffsetParsed() as being true
+                    int parsedOffset = bucket.getOffset();
+                    DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
+                    chrono = chrono.withZone(parsedZone);
+                }
+                return new LocalDateTime(millis, chrono);
             }
         } else {
             newPos = ~newPos;

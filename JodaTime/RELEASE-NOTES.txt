@@ -47,6 +47,11 @@ Enhancements since 1.6
 - Add DateTimeFormatter.withZoneUTC()
   Provides easy way to set UTC, which is often required for parsing
 
+- Add DateTimeFormatter.parseLocalDate(), .parseLocalTime(), .parseLocalDateTime()
+  These parse the input string in the expected manner handing time zones and offsets.
+  For example, the LocalDate parse will parse any time or offset from the string, but
+  will completely ignore them when returning the actual LocalDate.
+
 - Add LocalDate.toDate() [2465359]
 - Add LocalDateTime.toDate()
   This provides a direct conversion to JDK Date which handles DST and

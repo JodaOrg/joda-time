@@ -32,6 +32,10 @@ Enhancements since 1.6
 
 - Allow 'Z' and 'ZZ' in format patterns to parse 'Z' as '+00:00' [2827359]
 
+- Add LocalDate.toDate() [2465359]
+  This provides a direct conversion to JDK Date which handles DST and
+  time zone data differences
+
 
 Compatibility with 1.6
 ----------------------

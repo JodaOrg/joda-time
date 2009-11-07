@@ -20,7 +20,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -911,6 +916,83 @@ public class TestLocalDate_Basics extends TestCase {
         DateTime end = start.plus(Period.days(1));
         Interval expected = new Interval(start, end);
         assertEquals(expected, test);
+    }
+
+    //-----------------------------------------------------------------------
+    public void testToDate_summer() {
+        LocalDate base = new LocalDate(2005, 7, 9, COPTIC_PARIS);
+        
+        Date test = base.toDate();
+        check(base, 2005, 7, 9);
+        
+        GregorianCalendar gcal = new GregorianCalendar();
+        gcal.clear();
+        gcal.set(Calendar.YEAR, 2005);
+        gcal.set(Calendar.MONTH, Calendar.JULY);
+        gcal.set(Calendar.DAY_OF_MONTH, 9);
+        assertEquals(gcal.getTime(), test);
+    }
+
+    public void testToDate_winter() {
+        LocalDate base = new LocalDate(2005, 1, 9, COPTIC_PARIS);
+        
+        Date test = base.toDate();
+        check(base, 2005, 1, 9);
+        
+        GregorianCalendar gcal = new GregorianCalendar();
+        gcal.clear();
+        gcal.set(Calendar.YEAR, 2005);
+        gcal.set(Calendar.MONTH, Calendar.JANUARY);
+        gcal.set(Calendar.DAY_OF_MONTH, 9);
+        assertEquals(gcal.getTime(), test);
+    }
+
+    public void testToDate_springDST() {
+        LocalDate base = new LocalDate(2007, 4, 2);
+        
+        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
+                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000);
+        TimeZone currentZone = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(testZone);
+            Date test = base.toDate();
+            check(base, 2007, 4, 2);
+            assertEquals("Mon Apr 02 01:00:00 GMT+02:00 2007", test.toString());
+        } finally {
+            TimeZone.setDefault(currentZone);
+        }
+    }
+
+    public void testToDate_springDST_2Hour40Savings() {
+        LocalDate base = new LocalDate(2007, 4, 2);
+        
+        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
+                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000, (3600000 / 6) * 16);
+        TimeZone currentZone = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(testZone);
+            Date test = base.toDate();
+            check(base, 2007, 4, 2);
+            assertEquals("Mon Apr 02 02:40:00 GMT+03:40 2007", test.toString());
+        } finally {
+            TimeZone.setDefault(currentZone);
+        }
+    }
+
+    public void testToDate_autumnDST() {
+        LocalDate base = new LocalDate(2007, 10, 2);
+        
+        SimpleTimeZone testZone = new SimpleTimeZone(3600000, "NoMidnight",
+                Calendar.APRIL, 2, 0, 0, Calendar.OCTOBER, 2, 0, 3600000);
+        TimeZone currentZone = TimeZone.getDefault();
+        try {
+            TimeZone.setDefault(testZone);
+            Date test = base.toDate();
+            check(base, 2007, 10, 2);
+            assertEquals("Tue Oct 02 00:00:00 GMT+02:00 2007", test.toString());
+        } finally {
+            TimeZone.setDefault(currentZone);
+        }
     }
 
     //-----------------------------------------------------------------------

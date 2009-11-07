@@ -7,7 +7,15 @@ Date and Calendar classes.
 This is the eighth release of Joda-Time.
 This release contains enhancements, bug fixes and a time zone update.
 
-We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+We require JDK 1.5 or later as features such as generics are used.
+It may be possible to use retroweaver to compile this under an earlier JDK but we haven't tried.
+
+******************************************************************************
+Compatibility
+The change in major version indicates compatibility issues.
+If your code just _used_ Joda-Time and had no deprecation warnings then this
+release is fully compatible. Otherwise you need to read the detailed notes.
+******************************************************************************
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.
@@ -46,8 +54,8 @@ Enhancements since 1.6
 
 Compatibility with 1.6
 ----------------------
-Binary compatible - No
-Source compatible - No
+Binary compatible - Not fully, see below:
+Source compatible - Not fully, see below:
 
 Deprecated methods removed:
 - Chronology.getISO()
@@ -70,6 +78,8 @@ Deprecated methods removed:
 - Chronology.getCoptic(DateTimeZone)
 - LocalDate.toDateTimeAtMidnight()
 - LocalDate.toDateTimeAtMidnight(DateTimeZone)
+
+Everything else still compatible, including the generics AFAIK.
 
 Serialization compatible - Yes
 

@@ -202,7 +202,7 @@ public class DateTimeFormatterBuilder {
      * Appends another formatter.
      *
      * @param formatter  the formatter to add
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if formatter is null or of an invalid type
      */
     public DateTimeFormatterBuilder append(DateTimeFormatter formatter) {
@@ -217,7 +217,7 @@ public class DateTimeFormatterBuilder {
      * built from this DateTimeFormatterBuilder.
      *
      * @param printer  the printer to add
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if printer is null or of an invalid type
      */
     public DateTimeFormatterBuilder append(DateTimePrinter printer) {
@@ -230,7 +230,7 @@ public class DateTimeFormatterBuilder {
      * built from this builder.
      *
      * @param parser  the parser to add
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if parser is null or of an invalid type
      */
     public DateTimeFormatterBuilder append(DateTimeParser parser) {
@@ -243,7 +243,7 @@ public class DateTimeFormatterBuilder {
      *
      * @param printer  the printer to add
      * @param parser  the parser to add
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if printer or parser is null or of an invalid type
      */
     public DateTimeFormatterBuilder append(DateTimePrinter printer, DateTimeParser parser) {
@@ -258,14 +258,14 @@ public class DateTimeFormatterBuilder {
      * chosen, and so on. If none of these parsers succeeds, then the failed
      * position of the parser that made the greatest progress is returned.
      * <p>
-     * Only the printer is optional. In addtion, it is illegal for any but the
+     * Only the printer is optional. In addition, it is illegal for any but the
      * last of the parser array elements to be null. If the last element is
      * null, this represents the empty parser. The presence of an empty parser
      * indicates that the entire array of parse formats is optional.
      *
      * @param printer  the printer to add
      * @param parsers  the parsers to add
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if any printer or parser is of an invalid type
      * @throws IllegalArgumentException if any parser element but the last is null
      */
@@ -300,7 +300,7 @@ public class DateTimeFormatterBuilder {
      * Appends just a parser element which is optional. With no matching
      * printer, a printer cannot be built from this DateTimeFormatterBuilder.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if parser is null or of an invalid type
      */
     public DateTimeFormatterBuilder appendOptional(DateTimeParser parser) {
@@ -353,7 +353,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a specific character, and the parser to
      * expect it. The parser is case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendLiteral(char c) {
         return append0(new CharacterLiteral(c));
@@ -363,7 +363,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit specific text, and the parser to expect
      * it. The parser is case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if text is null
      */
     public DateTimeFormatterBuilder appendLiteral(String text) {
@@ -384,11 +384,11 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as a decimal number, and the
      * parser to expect an unsigned decimal number.
      *
-     * @param fieldType type of field to append
-     * @param minDigits minumum number of digits to <i>print</i>
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param fieldType  type of field to append
+     * @param minDigits  minimum number of digits to <i>print</i>
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
     public DateTimeFormatterBuilder appendDecimal(
@@ -414,10 +414,10 @@ public class DateTimeFormatterBuilder {
      * number (smaller numbers will be left-padded with zeros), and the parser
      * to expect an unsigned decimal number with the same fixed width.
      * 
-     * @param fieldType type of field to append
-     * @param numDigits the exact number of digits to parse or print, except if
+     * @param fieldType  type of field to append
+     * @param numDigits  the exact number of digits to parse or print, except if
      * printed value requires more digits
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
      * @since 1.5
      */
@@ -436,11 +436,11 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as a decimal number, and the
      * parser to expect a signed decimal number.
      *
-     * @param fieldType type of field to append
-     * @param minDigits minumum number of digits to <i>print</i>
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param fieldType  type of field to append
+     * @param minDigits  minimum number of digits to <i>print</i>
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
     public DateTimeFormatterBuilder appendSignedDecimal(
@@ -466,10 +466,10 @@ public class DateTimeFormatterBuilder {
      * number (smaller numbers will be left-padded with zeros), and the parser
      * to expect an signed decimal number with the same fixed width.
      * 
-     * @param fieldType type of field to append
-     * @param numDigits the exact number of digits to parse or print, except if
+     * @param fieldType  type of field to append
+     * @param numDigits  the exact number of digits to parse or print, except if
      * printed value requires more digits
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null or if <code>numDigits <= 0</code>
      * @since 1.5
      */
@@ -488,8 +488,8 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as text, and the
      * parser to expect text.
      *
-     * @param fieldType type of field to append
-     * @return this DateTimeFormatterBuilder
+     * @param fieldType  type of field to append
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
     public DateTimeFormatterBuilder appendText(DateTimeFieldType fieldType) {
@@ -503,8 +503,8 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a field value as short text, and the
      * parser to expect text.
      *
-     * @param fieldType type of field to append
-     * @return this DateTimeFormatterBuilder
+     * @param fieldType  type of field to append
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
     public DateTimeFormatterBuilder appendShortText(DateTimeFieldType fieldType) {
@@ -516,15 +516,15 @@ public class DateTimeFormatterBuilder {
 
     /**
      * Instructs the printer to emit a remainder of time as a decimal fraction,
-     * sans decimal point. For example, if the field is specified as
+     * without decimal point. For example, if the field is specified as
      * minuteOfHour and the time is 12:30:45, the value printed is 75. A
      * decimal point is implied, so the fraction is 0.75, or three-quarters of
      * a minute.
      *
-     * @param fieldType type of field to append
-     * @param minDigits minumum number of digits to print.
-     * @param maxDigits maximum number of digits to print or parse.
-     * @return this DateTimeFormatterBuilder
+     * @param fieldType  type of field to append
+     * @param minDigits  minimum number of digits to print.
+     * @param maxDigits  maximum number of digits to print or parse.
+     * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if field type is null
      */
     public DateTimeFormatterBuilder appendFraction(
@@ -542,36 +542,69 @@ public class DateTimeFormatterBuilder {
     }
 
     /**
-     * @param minDigits minumum number of digits to print
-     * @param maxDigits maximum number of digits to print or parse
-     * @return this DateTimeFormatterBuilder
+     * Appends the print/parse of a fractional second.
+     * <p>
+     * This reliably handles the case where fractional digits are being handled
+     * beyond a visible decimal point. The digits parsed will always be treated
+     * as the most significant (numerically largest) digits.
+     * Thus '23' will be parsed as 230 milliseconds.
+     * Contrast this behaviour to {@link #appendMillisOfSecond}.
+     * This method does not print or parse the decimal point itself.
+     * 
+     * @param minDigits  minimum number of digits to print
+     * @param maxDigits  maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfSecond(int minDigits, int maxDigits) {
         return appendFraction(DateTimeFieldType.secondOfDay(), minDigits, maxDigits);
     }
 
     /**
-     * @param minDigits minumum number of digits to print
-     * @param maxDigits maximum number of digits to print or parse
-     * @return this DateTimeFormatterBuilder
+     * Appends the print/parse of a fractional minute.
+     * <p>
+     * This reliably handles the case where fractional digits are being handled
+     * beyond a visible decimal point. The digits parsed will always be treated
+     * as the most significant (numerically largest) digits.
+     * Thus '23' will be parsed as 0.23 minutes (converted to milliseconds).
+     * This method does not print or parse the decimal point itself.
+     * 
+     * @param minDigits  minimum number of digits to print
+     * @param maxDigits  maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfMinute(int minDigits, int maxDigits) {
         return appendFraction(DateTimeFieldType.minuteOfDay(), minDigits, maxDigits);
     }
 
     /**
-     * @param minDigits minumum number of digits to print
-     * @param maxDigits maximum number of digits to print or parse
-     * @return this DateTimeFormatterBuilder
+     * Appends the print/parse of a fractional hour.
+     * <p>
+     * This reliably handles the case where fractional digits are being handled
+     * beyond a visible decimal point. The digits parsed will always be treated
+     * as the most significant (numerically largest) digits.
+     * Thus '23' will be parsed as 0.23 hours (converted to milliseconds).
+     * This method does not print or parse the decimal point itself.
+     * 
+     * @param minDigits  minimum number of digits to print
+     * @param maxDigits  maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfHour(int minDigits, int maxDigits) {
         return appendFraction(DateTimeFieldType.hourOfDay(), minDigits, maxDigits);
     }
 
     /**
-     * @param minDigits minumum number of digits to print
-     * @param maxDigits maximum number of digits to print or parse
-     * @return this DateTimeFormatterBuilder
+     * Appends the print/parse of a fractional day.
+     * <p>
+     * This reliably handles the case where fractional digits are being handled
+     * beyond a visible decimal point. The digits parsed will always be treated
+     * as the most significant (numerically largest) digits.
+     * Thus '23' will be parsed as 0.23 days (converted to milliseconds).
+     * This method does not print or parse the decimal point itself.
+     * 
+     * @param minDigits  minimum number of digits to print
+     * @param maxDigits  maximum number of digits to print or parse
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendFractionOfDay(int minDigits, int maxDigits) {
         return appendFraction(DateTimeFieldType.dayOfYear(), minDigits, maxDigits);
@@ -587,8 +620,8 @@ public class DateTimeFormatterBuilder {
      * if you are using the field as a fraction. Instead, a fractional
      * millisecond should be produced using {@link #appendFractionOfSecond}.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMillisOfSecond(int minDigits) {
         return appendDecimal(DateTimeFieldType.millisOfSecond(), minDigits, 3);
@@ -597,8 +630,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric millisOfDay field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMillisOfDay(int minDigits) {
         return appendDecimal(DateTimeFieldType.millisOfDay(), minDigits, 8);
@@ -607,8 +640,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric secondOfMinute field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendSecondOfMinute(int minDigits) {
         return appendDecimal(DateTimeFieldType.secondOfMinute(), minDigits, 2);
@@ -617,8 +650,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric secondOfDay field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendSecondOfDay(int minDigits) {
         return appendDecimal(DateTimeFieldType.secondOfDay(), minDigits, 5);
@@ -627,8 +660,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric minuteOfHour field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMinuteOfHour(int minDigits) {
         return appendDecimal(DateTimeFieldType.minuteOfHour(), minDigits, 2);
@@ -637,8 +670,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric minuteOfDay field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMinuteOfDay(int minDigits) {
         return appendDecimal(DateTimeFieldType.minuteOfDay(), minDigits, 4);
@@ -647,8 +680,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric hourOfDay field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendHourOfDay(int minDigits) {
         return appendDecimal(DateTimeFieldType.hourOfDay(), minDigits, 2);
@@ -657,8 +690,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric clockhourOfDay field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendClockhourOfDay(int minDigits) {
         return appendDecimal(DateTimeFieldType.clockhourOfDay(), minDigits, 2);
@@ -667,8 +700,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric hourOfHalfday field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendHourOfHalfday(int minDigits) {
         return appendDecimal(DateTimeFieldType.hourOfHalfday(), minDigits, 2);
@@ -677,8 +710,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric clockhourOfHalfday field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendClockhourOfHalfday(int minDigits) {
         return appendDecimal(DateTimeFieldType.clockhourOfHalfday(), minDigits, 2);
@@ -687,8 +720,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric dayOfWeek field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfWeek(int minDigits) {
         return appendDecimal(DateTimeFieldType.dayOfWeek(), minDigits, 1);
@@ -697,8 +730,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric dayOfMonth field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfMonth(int minDigits) {
         return appendDecimal(DateTimeFieldType.dayOfMonth(), minDigits, 2);
@@ -707,8 +740,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric dayOfYear field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfYear(int minDigits) {
         return appendDecimal(DateTimeFieldType.dayOfYear(), minDigits, 3);
@@ -717,8 +750,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric weekOfWeekyear field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendWeekOfWeekyear(int minDigits) {
         return appendDecimal(DateTimeFieldType.weekOfWeekyear(), minDigits, 2);
@@ -727,10 +760,10 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric weekyear field.
      *
-     * @param minDigits minumum number of digits to <i>print</i>
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param minDigits  minimum number of digits to <i>print</i>
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendWeekyear(int minDigits, int maxDigits) {
         return appendSignedDecimal(DateTimeFieldType.weekyear(), minDigits, maxDigits);
@@ -739,8 +772,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric monthOfYear field.
      *
-     * @param minDigits minumum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @param minDigits  minimum number of digits to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMonthOfYear(int minDigits) {
         return appendDecimal(DateTimeFieldType.monthOfYear(), minDigits, 2);
@@ -749,10 +782,10 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric year field.
      *
-     * @param minDigits minumum number of digits to <i>print</i>
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param minDigits  minimum number of digits to <i>print</i>
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendYear(int minDigits, int maxDigits) {
         return appendSignedDecimal(DateTimeFieldType.year(), minDigits, maxDigits);
@@ -774,7 +807,7 @@ public class DateTimeFormatterBuilder {
      * </pre>
      *
      * @param pivot  pivot year to use when parsing
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTwoDigitYear(int pivot) {
         return appendTwoDigitYear(pivot, false);
@@ -791,7 +824,7 @@ public class DateTimeFormatterBuilder {
      * @param pivot  pivot year to use when parsing
      * @param lenientParse  when true, if digit count is not two, it is treated
      * as an absolute year
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @since 1.1
      */
     public DateTimeFormatterBuilder appendTwoDigitYear(int pivot, boolean lenientParse) {
@@ -814,7 +847,7 @@ public class DateTimeFormatterBuilder {
      * </pre>
      *
      * @param pivot  pivot weekyear to use when parsing
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot) {
         return appendTwoDigitWeekyear(pivot, false);
@@ -831,7 +864,7 @@ public class DateTimeFormatterBuilder {
      * @param pivot  pivot weekyear to use when parsing
      * @param lenientParse  when true, if digit count is not two, it is treated
      * as an absolute weekyear
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      * @since 1.1
      */
     public DateTimeFormatterBuilder appendTwoDigitWeekyear(int pivot, boolean lenientParse) {
@@ -841,10 +874,10 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric yearOfEra field.
      *
-     * @param minDigits minumum number of digits to <i>print</i>
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param minDigits  minimum number of digits to <i>print</i>
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendYearOfEra(int minDigits, int maxDigits) {
         return appendDecimal(DateTimeFieldType.yearOfEra(), minDigits, maxDigits);
@@ -853,10 +886,10 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric year of century field.
      *
-     * @param minDigits minumum number of digits to print
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param minDigits  minimum number of digits to print
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendYearOfCentury(int minDigits, int maxDigits) {
         return appendDecimal(DateTimeFieldType.yearOfCentury(), minDigits, maxDigits);
@@ -865,10 +898,10 @@ public class DateTimeFormatterBuilder {
     /**
      * Instructs the printer to emit a numeric century of era field.
      *
-     * @param minDigits minumum number of digits to print
-     * @param maxDigits maximum number of digits to <i>parse</i>, or the estimated
+     * @param minDigits  minimum number of digits to print
+     * @param maxDigits  maximum number of digits to <i>parse</i>, or the estimated
      * maximum number of digits to print
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendCenturyOfEra(int minDigits, int maxDigits) {
         return appendSignedDecimal(DateTimeFieldType.centuryOfEra(), minDigits, maxDigits);
@@ -878,7 +911,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a locale-specific AM/PM text, and the
      * parser to expect it. The parser is case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendHalfdayOfDayText() {
         return appendText(DateTimeFieldType.halfdayOfDay());
@@ -888,7 +921,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a locale-specific dayOfWeek text. The
      * parser will accept a long or short dayOfWeek text, case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfWeekText() {
         return appendText(DateTimeFieldType.dayOfWeek());
@@ -899,7 +932,7 @@ public class DateTimeFormatterBuilder {
      * text. The parser will accept a long or short dayOfWeek text,
      * case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendDayOfWeekShortText() {
         return appendShortText(DateTimeFieldType.dayOfWeek());
@@ -910,7 +943,7 @@ public class DateTimeFormatterBuilder {
      * text. The parser will accept a long or short monthOfYear text,
      * case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMonthOfYearText() { 
         return appendText(DateTimeFieldType.monthOfYear());
@@ -920,7 +953,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a locale-specific monthOfYear text. The
      * parser will accept a long or short monthOfYear text, case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendMonthOfYearShortText() {
         return appendShortText(DateTimeFieldType.monthOfYear());
@@ -930,7 +963,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit a locale-specific era text (BC/AD), and
      * the parser to expect it. The parser is case-insensitive.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendEraText() {
         return appendText(DateTimeFieldType.era());
@@ -941,7 +974,7 @@ public class DateTimeFormatterBuilder {
      * parser cannot be created from this builder if a time zone name is
      * appended.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneName() {
         return append0(new TimeZoneName(TimeZoneName.LONG_NAME), null);
@@ -952,7 +985,7 @@ public class DateTimeFormatterBuilder {
      * name. A parser cannot be created from this builder if time zone
      * name is appended.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName() {
         return append0(new TimeZoneName(TimeZoneName.SHORT_NAME), null);
@@ -962,7 +995,7 @@ public class DateTimeFormatterBuilder {
      * Instructs the printer to emit the identifier of the time zone.
      * This field cannot currently be parsed.
      *
-     * @return this DateTimeFormatterBuilder
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneId() {
         return append0(new TimeZoneName(TimeZoneName.ID), null);
@@ -976,14 +1009,14 @@ public class DateTimeFormatterBuilder {
      * If zero offset text is supplied, then it will be printed when the zone is zero.
      * During parsing, either the zero offset text, or the offset will be parsed.
      *
-     * @param zeroOffsetText Text to use if time zone offset is zero. If
+     * @param zeroOffsetText  the text to use if time zone offset is zero. If
      * null, offset is always shown.
-     * @param showSeparators If true, prints ':' separator before minute and
+     * @param showSeparators  if true, prints ':' separator before minute and
      * second field and prints '.' separator before fraction field.
-     * @param minFields minimum number of fields to print, stopping when no
+     * @param minFields  minimum number of fields to print, stopping when no
      * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
-     * @param maxFields maximum number of fields to print
-     * @return this DateTimeFormatterBuilder
+     * @param maxFields  maximum number of fields to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetText, boolean showSeparators,
@@ -1000,16 +1033,16 @@ public class DateTimeFormatterBuilder {
      * If zero offset print text is supplied, then it will be printed when the zone is zero.
      * If zero offset parse text is supplied, then either it or the offset will be parsed.
      *
-     * @param zeroOffsetPrintText Text to print if time zone offset is zero. If
+     * @param zeroOffsetPrintText  the text to print if time zone offset is zero. If
      * null, offset is always shown.
-     * @param zeroOffsetParseText Text to optionally parse to indicate that the time
+     * @param zeroOffsetParseText  the text to optionally parse to indicate that the time
      * zone offset is zero. If null, then always use the offset.
-     * @param showSeparators If true, prints ':' separator before minute and
+     * @param showSeparators  if true, prints ':' separator before minute and
      * second field and prints '.' separator before fraction field.
-     * @param minFields minimum number of fields to print, stopping when no
+     * @param minFields  minimum number of fields to print, stopping when no
      * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
-     * @param maxFields maximum number of fields to print
-     * @return this DateTimeFormatterBuilder
+     * @param maxFields  maximum number of fields to print
+     * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetPrintText, String zeroOffsetParseText, boolean showSeparators,

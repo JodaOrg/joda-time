@@ -223,6 +223,150 @@ public final class DateTime
      * @param dayOfMonth  the day of the month
      * @param hourOfDay  the hour of the day
      * @param minuteOfHour  the minute of the hour
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour) {
+        super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, 0, 0);
+    }
+
+    /**
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param zone  the time zone, null means default time zone
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            DateTimeZone zone) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, 0, 0, zone);
+    }
+
+    /**
+     * Constructs an instance from datetime field values
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param chronology  the chronology, null means ISOChronology in default zone
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            Chronology chronology) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, 0, 0, chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute) {
+        super(year, monthOfYear, dayOfMonth, hourOfDay, minuteOfHour, secondOfMinute, 0);
+    }
+
+    /**
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the specified time zone.
+     * <p>
+     * If the specified time zone is null, the default zone is used.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param zone  the time zone, null means default time zone
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            DateTimeZone zone) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, 0, zone);
+    }
+
+    /**
+     * Constructs an instance from datetime field values
+     * using the specified chronology.
+     * <p>
+     * If the chronology is null, <code>ISOChronology</code>
+     * in the default time zone is used.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
+     * @param secondOfMinute  the second of the minute
+     * @param chronology  the chronology, null means ISOChronology in default zone
+     */
+    public DateTime(
+            int year,
+            int monthOfYear,
+            int dayOfMonth,
+            int hourOfDay,
+            int minuteOfHour,
+            int secondOfMinute,
+            Chronology chronology) {
+        super(year, monthOfYear, dayOfMonth,
+              hourOfDay, minuteOfHour, secondOfMinute, 0, chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Constructs an instance from datetime field values
+     * using <code>ISOChronology</code> in the default time zone.
+     *
+     * @param year  the year
+     * @param monthOfYear  the month of the year
+     * @param dayOfMonth  the day of the month
+     * @param hourOfDay  the hour of the day
+     * @param minuteOfHour  the minute of the hour
      * @param secondOfMinute  the second of the minute
      * @param millisOfSecond  the millisecond of the second
      */

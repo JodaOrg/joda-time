@@ -494,6 +494,100 @@ public class TestDateTime_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     /**
+     * Test constructor (int, int, int, int, int)
+     */
+    public void testConstructor_int_int_int_int_int() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0);  // +01:00
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(LONDON, test.getZone());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, DateTimeZone)
+     */
+    public void testConstructor_int_int_int_int_int_DateTimeZone() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 2, 0, PARIS);  // +02:00
+        assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, DateTimeZone=null)
+     */
+    public void testConstructor_int_int_int_int_int_nullDateTimeZone() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, (DateTimeZone) null);  // +01:00
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, Chronology)
+     */
+    public void testConstructor_int_int_int_int_int_Chronology() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, GregorianChronology.getInstance());  // +01:00
+        assertEquals(GregorianChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, Chronology=null)
+     */
+    public void testConstructor_int_int_int_int_int_nullChronology() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, (Chronology) null);  // +01:00
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Test constructor (int, int, int, int, int, int)
+     */
+    public void testConstructor_int_int_int_int_int_int() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0);  // +01:00
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(LONDON, test.getZone());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, int, DateTimeZone)
+     */
+    public void testConstructor_int_int_int_int_int_int_DateTimeZone() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 2, 0, 0, PARIS);  // +02:00
+        assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, int, DateTimeZone=null)
+     */
+    public void testConstructor_int_int_int_int_int_int_nullDateTimeZone() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, (DateTimeZone) null);  // +01:00
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, int, Chronology)
+     */
+    public void testConstructor_int_int_int_int_int_int_Chronology() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, GregorianChronology.getInstance());  // +01:00
+        assertEquals(GregorianChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test constructor (int, int, int, int, int, int, Chronology=null)
+     */
+    public void testConstructor_int_int_int_int_int_int_nullChronology() throws Throwable {
+        DateTime test = new DateTime(2002, 6, 9, 1, 0, 0, (Chronology) null);  // +01:00
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Test constructor (int, int, int)
      */
     public void testConstructor_int_int_int_int_int_int_int() throws Throwable {

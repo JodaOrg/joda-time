@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.joda.time.base.BaseLocal;
 import org.joda.time.chrono.ISOChronology;
@@ -664,6 +665,53 @@ public final class LocalDateTime
      */
     public LocalTime toLocalTime() {
         return new LocalTime(getLocalMillis(), getChronology());
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Get the date time as a <code>java.util.Date</code>.
+     * <p>
+     * The <code>Date</code> object created has exactly the same fields as this
+     * date-time, except when the time would be invalid due to a daylight savings
+     * gap. In that case, the time will be set to the earliest valid time after the gap.
+     * <p>
+     * In the case of a daylight savings overlap, the earlier instant is selected.
+     * <p>
+     * Converting to a JDK Date is full of complications as the JDK Date constructor
+     * doesn't behave as you might expect around DST transitions. This method works
+     * by taking a first guess and then adjusting. This also handles the situation
+     * where the JDK time zone data differs from the Joda-Time time zone data.
+     *
+     * @return a Date initialised with this date-time, never null
+     */
+    public Date toDate() {
+        int dom = getDayOfMonth();
+        Date date = new Date(getYear() - 1900, getMonthOfYear() - 1, dom,
+                        getHourOfDay(), getMinuteOfHour(), getSecondOfMinute());
+        date.setTime(date.getTime() + getMillisOfSecond());
+        LocalDateTime check = LocalDateTime.fromDateFields(date);
+        if (check.isBefore(this)) {
+            // DST gap
+            // move forward in units of one minute until equal/after
+            while (check.isBefore(this)) {
+                date.setTime(date.getTime() + 60000);
+                check = LocalDateTime.fromDateFields(date);
+            }
+            // move back in units of one second until date wrong
+            while (check.isBefore(this) == false) {
+                date.setTime(date.getTime() - 1000);
+                check = LocalDateTime.fromDateFields(date);
+            }
+            date.setTime(date.getTime() + 1000);
+        } else if (check.equals(this)) {
+            // check for DST overlap
+            Date earlier = new Date(date.getTime() - TimeZone.getDefault().getDSTSavings());
+            check = LocalDateTime.fromDateFields(earlier);
+            if (check.equals(this)) {
+                date = earlier;
+            }
+        }
+        return date;
     }
 
     //-----------------------------------------------------------------------

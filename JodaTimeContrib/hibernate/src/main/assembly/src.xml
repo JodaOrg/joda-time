@@ -1,10 +1,10 @@
 <assembly>
-    <id>dist</id>
+    <id>src</id>
     <formats>
         <format>tar.gz</format>
         <format>zip</format>
     </formats>
-    <baseDirectory>${artifactId}-${version}</baseDirectory>
+    <baseDirectory>${artifactId}-${version}-src</baseDirectory>
     <fileSets>
         <fileSet>
             <includes>
@@ -25,6 +25,10 @@
             <includes>
                 <include>*.jar</include>
             </includes>
+            <excludes>
+                <exclude>*-sources.jar</exclude>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
         </fileSet>
     </fileSets>
 </assembly>

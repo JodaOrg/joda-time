@@ -1,17 +1,23 @@
 <assembly>
-    <id>bin</id>
+    <id>dist</id>
     <formats>
         <format>tar.gz</format>
         <format>zip</format>
     </formats>
-    <includeSiteDirectory>false</includeSiteDirectory>
+    <baseDirectory>${artifactId}-${version}</baseDirectory>
     <fileSets>
         <fileSet>
             <includes>
+                <include>checkstyle.xml</include>
                 <include>LICENSE.txt</include>
                 <include>NOTICE.txt</include>
+                <include>pom.xml</include>
+                <include>README.txt</include>
                 <include>RELEASE-NOTES.txt</include>
             </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src</directory>
         </fileSet>
         <fileSet>
             <directory>target</directory>
@@ -19,10 +25,6 @@
             <includes>
                 <include>*.jar</include>
             </includes>
-        </fileSet>
-        <fileSet>
-            <directory>target/site/apidocs</directory>
-            <outputDirectory>apidocs</outputDirectory>
         </fileSet>
     </fileSets>
 </assembly>

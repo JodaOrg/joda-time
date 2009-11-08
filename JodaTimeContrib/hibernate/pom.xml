@@ -7,7 +7,7 @@
   <groupId>joda-time</groupId>
   <artifactId>joda-time-hibernate</artifactId>
   <name>Joda time Hibernate support</name>
-  <version>1.1</version>
+  <version>1.2</version>
   <description>Contribution to Joda-Time that adds Hibernate support</description>
   <url>http://joda-time.sourceforge.net/contrib/hibernate</url>
   <issueManagement>
@@ -56,11 +56,13 @@
   <licenses>
     <license>
       <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/</url>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:https://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/hibernate/</connection>
+    <connection>scm:svn:http://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/hibernate/</connection>
+    <developerConnection>scm:svn:https://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTimeContrib/hibernate/</developerConnection>
     <url>http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/hibernate/</url>
   </scm>
   <organization>
@@ -68,13 +70,12 @@
     <url>http://www.joda.org</url>
   </organization>
   <build>
-    <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
     <resources>
       <resource>
         <targetPath>META-INF</targetPath>
         <directory>.</directory>
         <includes>
+          <include>LICENSE.txt</include>
           <include>NOTICE.txt</include>
         </includes>
       </resource>
@@ -102,8 +103,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/bin.xml</descriptor>
-            <descriptor>src/main/assembly/src.xml</descriptor>
+            <descriptor>src/main/assembly/dist.xml</descriptor>
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
@@ -121,9 +121,33 @@
       <artifactId>hibernate</artifactId>
       <version>3.0.5</version>
     </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <reporting>
   	<plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>index</report>
+              <report>dependencies</report>
+              <report>project-team</report>
+              <report>mailing-list</report>
+              <report>issue-tracking</report>
+              <report>license</report>
+              <report>scm</report>
+              <report>summary</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
@@ -145,13 +169,40 @@
           </links>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.4.2</version>
+        <configuration>
+           <showSuccess>true</showSuccess>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-changes-plugin</artifactId>
+        <reportSets>
+          <reportSet>
+            <reports>
+              <report>changes-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
   	</plugins>
   </reporting>
   <distributionManagement>
+    <repository>
+      <uniqueVersion>false</uniqueVersion>
+      <id>sf-repo-joda-time-hibernate</id>
+      <name>Sourceforge Repository</name>
+      <url>scp://web.sourceforge.net/home/groups/j/jo/joda-time/htdocs/repo</url>
+      <layout>default</layout>
+    </repository>
     <site>
-      <id>default</id>
-      <name>Default Site</name>
-      <url>scp://web.sourceforge.net//home/groups/j/jo/joda-time/htdocs/contrib/hibernate</url>
+      <id>sf-web-joda-time-hibernate</id>
+      <name>Sourceforge Site</name>
+      <url>scp://web.sourceforge.net/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</url>
     </site>
+    <downloadUrl>http://joda-time.sourceforge.net/repo</downloadUrl>
   </distributionManagement>
 </project>

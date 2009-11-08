@@ -33,7 +33,7 @@ import org.joda.time.LocalDate;
  */
 public class PersistentLocalDate implements EnhancedUserType, Serializable {
 
-    public final static PersistentLocalDate INSTANCE = new PersistentLocalDate();
+    public static final PersistentLocalDate INSTANCE = new PersistentLocalDate();
 
     private static final int[] SQL_TYPES = new int[] { Types.DATE, };
 

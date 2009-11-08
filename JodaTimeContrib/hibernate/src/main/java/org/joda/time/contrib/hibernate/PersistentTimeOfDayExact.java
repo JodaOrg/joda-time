@@ -37,7 +37,7 @@ public class PersistentTimeOfDayExact implements EnhancedUserType, Serializable 
 
     private final DateTime timeBase = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
-    public final static PersistentTimeOfDayExact INSTANCE = new PersistentTimeOfDayExact();
+    public static final PersistentTimeOfDayExact INSTANCE = new PersistentTimeOfDayExact();
 
     private static final int[] SQL_TYPES = new int[] { Types.INTEGER, };
 

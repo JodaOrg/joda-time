@@ -33,7 +33,7 @@ import org.joda.time.DateTime;
  */
 public class PersistentDateTime implements EnhancedUserType, Serializable {
 
-    public final static PersistentDateTime INSTANCE = new PersistentDateTime();
+    public static final PersistentDateTime INSTANCE = new PersistentDateTime();
 
     private static final int[] SQL_TYPES = new int[] { Types.TIMESTAMP, };
 

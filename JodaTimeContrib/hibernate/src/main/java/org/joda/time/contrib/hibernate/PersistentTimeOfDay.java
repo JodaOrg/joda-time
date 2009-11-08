@@ -39,7 +39,7 @@ public class PersistentTimeOfDay implements EnhancedUserType, Serializable {
 
     private final DateTime timeBase = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 
-    public final static PersistentTimeOfDay INSTANCE = new PersistentTimeOfDay();
+    public static final PersistentTimeOfDay INSTANCE = new PersistentTimeOfDay();
 
     private static final int[] SQL_TYPES = new int[] { Types.TIME, };
 

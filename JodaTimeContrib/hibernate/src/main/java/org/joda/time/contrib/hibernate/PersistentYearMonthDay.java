@@ -33,7 +33,7 @@ import org.joda.time.YearMonthDay;
  */
 public class PersistentYearMonthDay implements EnhancedUserType, Serializable {
 
-    public final static PersistentYearMonthDay INSTANCE = new PersistentYearMonthDay();
+    public static final PersistentYearMonthDay INSTANCE = new PersistentYearMonthDay();
 
     private static final int[] SQL_TYPES = new int[] { Types.DATE, };
 

@@ -37,7 +37,7 @@ import org.joda.time.LocalTime;
  */
 public class PersistentLocalTimeAsTime implements EnhancedUserType, Serializable {
 
-    public final static PersistentLocalTimeAsTime INSTANCE = new PersistentLocalTimeAsTime();
+    public static final PersistentLocalTimeAsTime INSTANCE = new PersistentLocalTimeAsTime();
 
     private static final int[] SQL_TYPES = new int[] { Types.TIME, };
 

@@ -33,7 +33,7 @@ import org.joda.time.Instant;
  */
 public class PersistentInstant implements EnhancedUserType {
 
-    public final static PersistentInstant INSTANCE = new PersistentInstant();
+    public static final PersistentInstant INSTANCE = new PersistentInstant();
 
     private static final int[] SQL_TYPES = new int[] { Types.TIMESTAMP };
 

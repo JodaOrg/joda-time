@@ -33,7 +33,7 @@ import org.joda.time.Instant;
  */
 public class PersistentInstantAsBigInt implements EnhancedUserType, Serializable {
 
-    public final static PersistentInstantAsBigInt INSTANCE = new PersistentInstantAsBigInt();
+    public static final PersistentInstantAsBigInt INSTANCE = new PersistentInstantAsBigInt();
 
     private static final int[] SQL_TYPES = new int[] { Types.BIGINT };
 

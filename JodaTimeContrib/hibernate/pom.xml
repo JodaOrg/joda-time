@@ -18,9 +18,9 @@
   <mailingLists>
     <mailingList>
       <name>Joda Interest list</name>
-      <subscribe>http://sourceforge.net/mail/?group_id=47291</subscribe>
-      <unsubscribe>http://sourceforge.net/mail/?group_id=47291</unsubscribe>
-      <archive>http://sourceforge.net/mailarchive/forum.php?forum_id=8530</archive>
+      <subscribe>http://lists.sourceforge.net/lists/listinfo/joda-interest</subscribe>
+      <unsubscribe>http://lists.sourceforge.net/lists/listinfo/joda-interest</unsubscribe>
+      <archive>http://sourceforge.net/mailarchive/forum.php?forum_name=joda-interest</archive>
       <otherArchives>
         <otherArchive>http://n2.nabble.com/Joda-Interest-f219941.html</otherArchive>
       </otherArchives>
@@ -114,17 +114,23 @@
     <dependency>
       <groupId>joda-time</groupId>
       <artifactId>joda-time</artifactId>
-      <version>1.6</version>
+      <version>1.5</version>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate</artifactId>
-      <version>3.0.5</version>
+      <version>3.2.7.ga</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>1.8.0.10</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -19,7 +19,7 @@ import java.sql.SQLException;
  */
 public class TestPersistentDuration extends HibernateTestCase {
     protected void setupConfiguration(Configuration cfg) {
-        cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/testmodel/SomethingThatLasts.hbm.xml"));
+        cfg.addFile(new File("src/test/java/org/joda/time/contrib/hibernate/testmodel/SomethingThatLasts.hbm.xml"));
     }
 
     private Duration[] durations = new Duration[]{

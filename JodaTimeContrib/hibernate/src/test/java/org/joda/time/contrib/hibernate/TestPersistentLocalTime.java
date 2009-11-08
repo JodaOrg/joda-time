@@ -86,7 +86,7 @@ public class TestPersistentLocalTime extends HibernateTestCase
 
 	protected void setupConfiguration(Configuration cfg)
 	{
-		cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/event.hbm.xml"));
-		cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/eventTZ.hbm.xml"));
+		cfg.addFile(new File("src/test/java/org/joda/time/contrib/hibernate/event.hbm.xml"));
+		cfg.addFile(new File("src/test/java/org/joda/time/contrib/hibernate/eventTZ.hbm.xml"));
 	}
 }

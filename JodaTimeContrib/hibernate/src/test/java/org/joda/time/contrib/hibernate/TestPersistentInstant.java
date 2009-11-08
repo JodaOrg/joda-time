@@ -75,6 +75,6 @@ public class TestPersistentInstant extends HibernateTestCase
 
 	protected void setupConfiguration(Configuration cfg)
 	{
-		cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/thingWithInstant.hbm.xml"));
+		cfg.addFile(new File("src/test/java/org/joda/time/contrib/hibernate/thingWithInstant.hbm.xml"));
 	}
 }

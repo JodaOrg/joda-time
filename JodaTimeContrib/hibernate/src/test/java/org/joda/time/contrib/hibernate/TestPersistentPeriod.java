@@ -17,7 +17,7 @@ import java.sql.SQLException;
  */
 public class TestPersistentPeriod extends HibernateTestCase {
     protected void setupConfiguration(Configuration cfg) {
-        cfg.addFile(new File("src/test/org/joda/time/contrib/hibernate/testmodel/SomethingThatHappens.hbm.xml"));
+        cfg.addFile(new File("src/test/java/org/joda/time/contrib/hibernate/testmodel/SomethingThatHappens.hbm.xml"));
     }
 
     private Period[] periods = new Period[]{

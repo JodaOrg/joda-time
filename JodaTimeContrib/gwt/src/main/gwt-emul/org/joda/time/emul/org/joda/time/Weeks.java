@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of weeks.
@@ -53,7 +54,7 @@ public final class Weeks extends BaseSingleFieldPeriod {
     public static final Weeks MIN_VALUE = new Weeks(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.weeks());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.weeks());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380866L;
 
@@ -176,11 +177,12 @@ public final class Weeks extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Weeks parseWeeks(String periodStr) {
-        if (periodStr == null) {
-            return Weeks.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Weeks.weeks(p.getWeeks());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Weeks.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Weeks.weeks(p.getWeeks());
     }
 
     //-----------------------------------------------------------------------

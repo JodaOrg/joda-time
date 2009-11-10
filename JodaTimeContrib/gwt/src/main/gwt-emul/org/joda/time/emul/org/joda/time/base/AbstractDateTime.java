@@ -23,6 +23,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * AbstractDateTime provides the common behaviour for datetime classes.
@@ -256,13 +257,14 @@ public abstract class AbstractDateTime
      * @return a localized Calendar initialised with this datetime
      */
     public Calendar toCalendar(Locale locale) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-        DateTimeZone zone = getZone();
-        Calendar cal = Calendar.getInstance(zone.toTimeZone(), locale);
-        cal.setTime(toDate());
-        return cal;
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (locale == null) {
+//            locale = Locale.getDefault();
+//        }
+//        DateTimeZone zone = getZone();
+//        Calendar cal = Calendar.getInstance(zone.toTimeZone(), locale);
+//        cal.setTime(toDate());
+//        return cal;
     }
 
     /**

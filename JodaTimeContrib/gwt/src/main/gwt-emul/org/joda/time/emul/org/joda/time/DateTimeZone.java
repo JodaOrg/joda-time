@@ -20,8 +20,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
-import java.lang.ref.Reference;
-import java.lang.ref.SoftReference;
+//import java.lang.ref.Reference;
+//import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -40,7 +40,7 @@ import org.joda.time.tz.FixedDateTimeZone;
 import org.joda.time.tz.NameProvider;
 import org.joda.time.tz.Provider;
 import org.joda.time.tz.UTCProvider;
-import org.joda.time.tz.ZoneInfoProvider;
+//import org.joda.time.tz.ZoneInfoProvider;
 
 /**
  * DateTimeZone represents a time zone.
@@ -115,14 +115,14 @@ public abstract class DateTimeZone implements Serializable {
         setNameProvider0(null);
 
         try {
-            try {
-                cDefault = forID(System.getProperty("user.timezone"));
-            } catch (RuntimeException ex) {
-                // ignored
-            }
-            if (cDefault == null) {
-                cDefault = forTimeZone(TimeZone.getDefault());
-            }
+//            try {
+//                cDefault = forID(System.getProperty("user.timezone"));
+//            } catch (RuntimeException ex) {
+//                // ignored
+//            }
+//            if (cDefault == null) {
+//                cDefault = forTimeZone(TimeZone.getDefault());
+//            }
         } catch (IllegalArgumentException ex) {
             // ignored
         }
@@ -150,10 +150,10 @@ public abstract class DateTimeZone implements Serializable {
      * @throws SecurityException if the application has insufficient security rights
      */
     public static void setDefault(DateTimeZone zone) throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setDefault"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("DateTimeZone.setDefault"));
+//        }
         if (zone == null) {
             throw new IllegalArgumentException("The datetime zone must not be null");
         }
@@ -329,16 +329,21 @@ public abstract class DateTimeZone implements Serializable {
         if (iFixedOffsetCache == null) {
             iFixedOffsetCache = new HashMap();
         }
-        DateTimeZone zone;
-        Reference ref = (Reference) iFixedOffsetCache.get(id);
-        if (ref != null) {
-            zone = (DateTimeZone) ref.get();
-            if (zone != null) {
-                return zone;
-            }
+//        DateTimeZone zone;
+//        Reference ref = (Reference) iFixedOffsetCache.get(id);
+//        if (ref != null) {
+//            zone = (DateTimeZone) ref.get();
+//            if (zone != null) {
+//                return zone;
+//            }
+//        }
+//        zone = new FixedDateTimeZone(id, null, offset, offset);
+//        iFixedOffsetCache.put(id, new SoftReference(zone));
+        DateTimeZone zone = (DateTimeZone) iFixedOffsetCache.get(id);
+        if (zone == null) {
+            zone = new FixedDateTimeZone(id, null, offset, offset);
+            iFixedOffsetCache.put(id, zone);
         }
-        zone = new FixedDateTimeZone(id, null, offset, offset);
-        iFixedOffsetCache.put(id, new SoftReference(zone));
         return zone;
     }
 
@@ -375,10 +380,10 @@ public abstract class DateTimeZone implements Serializable {
      * @throws IllegalArgumentException if the provider is invalid
      */
     public static void setProvider(Provider provider) throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setProvider"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("DateTimeZone.setProvider"));
+//        }
         setProvider0(provider);
     }
 
@@ -419,29 +424,29 @@ public abstract class DateTimeZone implements Serializable {
     private static Provider getDefaultProvider() {
         Provider provider = null;
 
-        try {
-            String providerClass =
-                System.getProperty("org.joda.time.DateTimeZone.Provider");
-            if (providerClass != null) {
-                try {
-                    provider = (Provider) Class.forName(providerClass).newInstance();
-                } catch (Exception ex) {
-                    Thread thread = Thread.currentThread();
-                    thread.getThreadGroup().uncaughtException(thread, ex);
-                }
-            }
-        } catch (SecurityException ex) {
-            // ignored
-        }
-
-        if (provider == null) {
-            try {
-                provider = new ZoneInfoProvider("org/joda/time/tz/data");
-            } catch (Exception ex) {
-                Thread thread = Thread.currentThread();
-                thread.getThreadGroup().uncaughtException(thread, ex);
-            }
-        }
+//        try {
+//            String providerClass =
+//                System.getProperty("org.joda.time.DateTimeZone.Provider");
+//            if (providerClass != null) {
+//                try {
+//                    provider = (Provider) Class.forName(providerClass).newInstance();
+//                } catch (Exception ex) {
+//                    Thread thread = Thread.currentThread();
+//                    thread.getThreadGroup().uncaughtException(thread, ex);
+//                }
+//            }
+//        } catch (SecurityException ex) {
+//            // ignored
+//        }
+//
+//        if (provider == null) {
+//            try {
+//                provider = new ZoneInfoProvider("org/joda/time/tz/data");
+//            } catch (Exception ex) {
+//                Thread thread = Thread.currentThread();
+//                thread.getThreadGroup().uncaughtException(thread, ex);
+//            }
+//        }
 
         if (provider == null) {
             provider = new UTCProvider();
@@ -474,10 +479,10 @@ public abstract class DateTimeZone implements Serializable {
      * @throws IllegalArgumentException if the provider is invalid
      */
     public static void setNameProvider(NameProvider nameProvider) throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("DateTimeZone.setNameProvider"));
+//        }
         setNameProvider0(nameProvider);
     }
 
@@ -504,19 +509,19 @@ public abstract class DateTimeZone implements Serializable {
      */
     private static NameProvider getDefaultNameProvider() {
         NameProvider nameProvider = null;
-        try {
-            String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
-            if (providerClass != null) {
-                try {
-                    nameProvider = (NameProvider) Class.forName(providerClass).newInstance();
-                } catch (Exception ex) {
-                    Thread thread = Thread.currentThread();
-                    thread.getThreadGroup().uncaughtException(thread, ex);
-                }
-            }
-        } catch (SecurityException ex) {
-            // ignore
-        }
+//        try {
+//            String providerClass = System.getProperty("org.joda.time.DateTimeZone.NameProvider");
+//            if (providerClass != null) {
+//                try {
+//                    nameProvider = (NameProvider) Class.forName(providerClass).newInstance();
+//                } catch (Exception ex) {
+//                    Thread thread = Thread.currentThread();
+//                    thread.getThreadGroup().uncaughtException(thread, ex);
+//                }
+//            }
+//        } catch (SecurityException ex) {
+//            // ignore
+//        }
 
         if (nameProvider == null) {
             nameProvider = new DefaultNameProvider();

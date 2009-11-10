@@ -21,6 +21,7 @@ import org.joda.time.base.BaseInterval;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
 import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * MutableInterval is the standard implementation of a mutable time interval.
@@ -389,11 +390,12 @@ public class MutableInterval
      * @return a clone of this object.
      */
     public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new InternalError("Clone error");
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        try {
+//            return super.clone();
+//        } catch (CloneNotSupportedException ex) {
+//            throw new InternalError("Clone error");
+//        }
     }
 
 }

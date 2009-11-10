@@ -15,6 +15,9 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.gwt.util.Arrays;
+import org.joda.time.gwt.util.ExceptionUtils;
+
 /**
  * A set of converters, which allows exact converters to be quickly
  * selected. This class is threadsafe because it is (essentially) immutable.
@@ -76,7 +79,9 @@ class ConverterSet {
         // Do all updates on a copy: slots in iSelectEntries must not be
         // updated by multiple threads as this can allow all null slots to be
         // consumed.
-        entries = (Entry[])entries.clone();
+        //entries = (Entry[])entries.clone();
+        entries = new Entry[entries.length];
+        Arrays.copy(entries, entries);
 
         // Add new entry.
         entries[index] = e;
@@ -253,12 +258,13 @@ class ConverterSet {
                 return converter;
             }
 
-            if (supportedType == null || (type != null && !supportedType.isAssignableFrom(type))) {
-                // Eliminate the impossible.
-                set = set.remove(i, null);
-                converters = set.iConverters;
-                length = converters.length;
-            }
+            throw ExceptionUtils.unsupportedInGwt();
+//            if (supportedType == null || (type != null && !supportedType.isAssignableFrom(type))) {
+//                // Eliminate the impossible.
+//                set = set.remove(i, null);
+//                converters = set.iConverters;
+//                length = converters.length;
+//            }
         }
 
         // Haven't found exact match, so check what remains in the set.
@@ -278,13 +284,14 @@ class ConverterSet {
             converter = converters[i];
             Class supportedType = converter.getSupportedType();
             for (int j=length; --j>=0; ) {
-                if (j != i && converters[j].getSupportedType().isAssignableFrom(supportedType)) {
-                    // Eliminate supertype.
-                    set = set.remove(j, null);
-                    converters = set.iConverters;
-                    length = converters.length;
-                    i = length - 1;
-                }
+                throw ExceptionUtils.unsupportedInGwt();
+//                if (j != i && converters[j].getSupportedType().isAssignableFrom(supportedType)) {
+//                    // Eliminate supertype.
+//                    set = set.remove(j, null);
+//                    converters = set.iConverters;
+//                    length = converters.length;
+//                    i = length - 1;
+//                }
             }
         }        
         

@@ -26,6 +26,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * MutableDateTime is the standard implementation of a modifiable datetime class.
@@ -1133,11 +1134,12 @@ public class MutableDateTime
      * @return a clone of this object.
      */
     public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new InternalError("Clone error");
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        try {
+//            return super.clone();
+//        } catch (CloneNotSupportedException ex) {
+//            throw new InternalError("Clone error");
+//        }
     }
 
     /**

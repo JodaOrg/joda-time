@@ -15,7 +15,7 @@
  */
 package org.joda.time.convert;
 
-import org.joda.time.JodaTimePermission;
+//import org.joda.time.JodaTimePermission;
 
 /**
  * ConverterManager controls the date and time converters.
@@ -227,10 +227,10 @@ public final class ConverterManager {
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterInstantConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterInstantConverters"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("ConverterManager.alterInstantConverters"));
+//        }
     }
 
     //-----------------------------------------------------------------------
@@ -314,10 +314,10 @@ public final class ConverterManager {
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterPartialConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPartialConverters"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPartialConverters"));
+//        }
     }
 
     //-----------------------------------------------------------------------
@@ -401,10 +401,10 @@ public final class ConverterManager {
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterDurationConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterDurationConverters"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("ConverterManager.alterDurationConverters"));
+//        }
     }
 
     //-----------------------------------------------------------------------
@@ -488,10 +488,10 @@ public final class ConverterManager {
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterPeriodConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPeriodConverters"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("ConverterManager.alterPeriodConverters"));
+//        }
     }
 
     //-----------------------------------------------------------------------
@@ -575,10 +575,10 @@ public final class ConverterManager {
      * @throws SecurityException if the user does not have the permission
      */
     private void checkAlterIntervalConverters() throws SecurityException {
-        SecurityManager sm = System.getSecurityManager();
-        if (sm != null) {
-            sm.checkPermission(new JodaTimePermission("ConverterManager.alterIntervalConverters"));
-        }
+//        SecurityManager sm = System.getSecurityManager();
+//        if (sm != null) {
+//            sm.checkPermission(new JodaTimePermission("ConverterManager.alterIntervalConverters"));
+//        }
     }
 
     //-----------------------------------------------------------------------

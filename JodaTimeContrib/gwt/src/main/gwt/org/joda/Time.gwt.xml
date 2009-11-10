@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 1.6.4//EN" "http://google-web-toolkit.googlecode.com/svn/tags/1.6.4/distro-source/core/src/gwt-module.dtd">
+<module>
+	<inherits name='com.google.gwt.user.User' />
+
+	<source path="time">
+		<exclude name="**/ZoneInfoCompiler.java" />
+		<exclude name="**/ZoneInfoProvider.java" />
+		<exclude name="**/JodaTimePermission.java" />
+	</source>
+	<super-source path="time/emul" />
+
+</module>

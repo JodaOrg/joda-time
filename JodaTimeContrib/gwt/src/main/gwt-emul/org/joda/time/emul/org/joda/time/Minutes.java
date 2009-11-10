@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of minutes.
@@ -53,7 +54,7 @@ public final class Minutes extends BaseSingleFieldPeriod {
     public static final Minutes MIN_VALUE = new Minutes(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.minutes());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.minutes());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380863L;
 
@@ -176,11 +177,12 @@ public final class Minutes extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Minutes parseMinutes(String periodStr) {
-        if (periodStr == null) {
-            return Minutes.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Minutes.minutes(p.getMinutes());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Minutes.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Minutes.minutes(p.getMinutes());
     }
 
     //-----------------------------------------------------------------------

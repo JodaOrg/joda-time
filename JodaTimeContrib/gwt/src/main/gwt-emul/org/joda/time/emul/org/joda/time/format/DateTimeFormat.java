@@ -27,6 +27,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadablePartial;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * Factory that creates instances of DateTimeFormatter from patterns and styles.
@@ -830,22 +831,23 @@ public class DateTimeFormat {
         }
 
         String getPattern(Locale locale) {
-            DateFormat f = null;
-            switch (iType) {
-                case DATE:
-                    f = DateFormat.getDateInstance(iDateStyle, locale);
-                    break;
-                case TIME:
-                    f = DateFormat.getTimeInstance(iTimeStyle, locale);
-                    break;
-                case DATETIME:
-                    f = DateFormat.getDateTimeInstance(iDateStyle, iTimeStyle, locale);
-                    break;
-            }
-            if (f instanceof SimpleDateFormat == false) {
-                throw new IllegalArgumentException("No datetime pattern for locale: " + locale);
-            }
-            return ((SimpleDateFormat) f).toPattern();
+            throw ExceptionUtils.unsupportedInGwt();
+//            DateFormat f = null;
+//            switch (iType) {
+//                case DATE:
+//                    f = DateFormat.getDateInstance(iDateStyle, locale);
+//                    break;
+//                case TIME:
+//                    f = DateFormat.getTimeInstance(iTimeStyle, locale);
+//                    break;
+//                case DATETIME:
+//                    f = DateFormat.getDateTimeInstance(iDateStyle, iTimeStyle, locale);
+//                    break;
+//            }
+//            if (f instanceof SimpleDateFormat == false) {
+//                throw new IllegalArgumentException("No datetime pattern for locale: " + locale);
+//            }
+//            return ((SimpleDateFormat) f).toPattern();
         }
     }
 

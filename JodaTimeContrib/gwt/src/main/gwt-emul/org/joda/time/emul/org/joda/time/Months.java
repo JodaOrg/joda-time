@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of months.
@@ -71,7 +72,7 @@ public final class Months extends BaseSingleFieldPeriod {
     public static final Months MIN_VALUE = new Months(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.months());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.months());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380867L;
 
@@ -189,11 +190,12 @@ public final class Months extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Months parseMonths(String periodStr) {
-        if (periodStr == null) {
-            return Months.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Months.months(p.getMonths());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Months.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Months.months(p.getMonths());
     }
 
     //-----------------------------------------------------------------------

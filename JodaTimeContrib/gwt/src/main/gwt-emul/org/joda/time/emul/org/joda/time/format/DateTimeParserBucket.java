@@ -305,7 +305,10 @@ public class DateTimeParserBucket {
         SavedField[] savedFields = iSavedFields;
         int count = iSavedFieldsCount;
         if (iSavedFieldsShared) {
-            iSavedFields = savedFields = (SavedField[])iSavedFields.clone();
+            //iSavedFields = savedFields = (SavedField[])iSavedFields.clone();
+            savedFields = new SavedField[iSavedFields.length];
+            org.joda.time.gwt.util.Arrays.copy(iSavedFields, savedFields);
+            iSavedFields = savedFields;
             iSavedFieldsShared = false;
         }
         sort(savedFields, count);

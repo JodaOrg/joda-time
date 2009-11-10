@@ -20,6 +20,7 @@ import java.io.Serializable;
 import org.joda.time.base.BasePeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * Standard mutable time period implementation.
@@ -975,11 +976,12 @@ public class MutablePeriod
      * @return a clone of this object.
      */
     public Object clone() {
-        try {
-            return super.clone();
-        } catch (CloneNotSupportedException ex) {
-            throw new InternalError("Clone error");
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        try {
+//            return super.clone();
+//        } catch (CloneNotSupportedException ex) {
+//            throw new InternalError("Clone error");
+//        }
     }
 
 }

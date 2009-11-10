@@ -34,30 +34,31 @@ public class CachedDateTimeZone extends DateTimeZone {
     private static final int cInfoCacheMask;
 
     static {
-        Integer i;
-        try {
-            i = Integer.getInteger("org.joda.time.tz.CachedDateTimeZone.size");
-        } catch (SecurityException e) {
-            i = null;
-        }
+//        Integer i;
+//        try {
+//            i = Integer.getInteger("org.joda.time.tz.CachedDateTimeZone.size");
+//        } catch (SecurityException e) {
+//            i = null;
+//        }
+//
+//        int cacheSize;
+//        if (i == null) {
+//            // With a cache size of 512, dates that lie within any 69.7 year
+//            // period have no cache collisions.
+//            cacheSize = 512; // (1 << 9)
+//        } else {
+//            cacheSize = i.intValue();
+//            // Ensure cache size is even power of 2.
+//            cacheSize--;
+//            int shift = 0;
+//            while (cacheSize > 0) {
+//                shift++;
+//                cacheSize >>= 1;
+//            }
+//            cacheSize = 1 << shift;
+//        }
 
-        int cacheSize;
-        if (i == null) {
-            // With a cache size of 512, dates that lie within any 69.7 year
-            // period have no cache collisions.
-            cacheSize = 512; // (1 << 9)
-        } else {
-            cacheSize = i.intValue();
-            // Ensure cache size is even power of 2.
-            cacheSize--;
-            int shift = 0;
-            while (cacheSize > 0) {
-                shift++;
-                cacheSize >>= 1;
-            }
-            cacheSize = 1 << shift;
-        }
-
+        int cacheSize = 512;
         cInfoCacheMask = cacheSize - 1;
     }
 

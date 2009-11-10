@@ -16,19 +16,19 @@
 package org.joda.time.tz;
 
 import java.io.DataInput;
-import java.io.DataInputStream;
+//import java.io.DataInputStream;
 import java.io.DataOutput;
-import java.io.DataOutputStream;
+//import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Set;
+//import java.util.Set;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -37,6 +37,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * DateTimeZoneBuilder allows complex DateTimeZones to be constructed. Since
@@ -92,11 +93,12 @@ public class DateTimeZoneBuilder {
      * @param id time zone id to assign
      */
     public static DateTimeZone readFrom(InputStream in, String id) throws IOException {
-        if (in instanceof DataInput) {
-            return readFrom((DataInput)in, id);
-        } else {
-            return readFrom((DataInput)new DataInputStream(in), id);
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (in instanceof DataInput) {
+//            return readFrom((DataInput)in, id);
+//        } else {
+//            return readFrom((DataInput)new DataInputStream(in), id);
+//        }
     }
 
     /**
@@ -107,21 +109,22 @@ public class DateTimeZoneBuilder {
      * @param id time zone id to assign
      */
     public static DateTimeZone readFrom(DataInput in, String id) throws IOException {
-        switch (in.readUnsignedByte()) {
-        case 'F':
-            DateTimeZone fixed = new FixedDateTimeZone
-                (id, in.readUTF(), (int)readMillis(in), (int)readMillis(in));
-            if (fixed.equals(DateTimeZone.UTC)) {
-                fixed = DateTimeZone.UTC;
-            }
-            return fixed;
-        case 'C':
-            return CachedDateTimeZone.forZone(PrecalculatedZone.readFrom(in, id));
-        case 'P':
-            return PrecalculatedZone.readFrom(in, id);
-        default:
-            throw new IOException("Invalid encoding");
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        switch (in.readUnsignedByte()) {
+//        case 'F':
+//            DateTimeZone fixed = new FixedDateTimeZone
+//                (id, in.readUTF(), (int)readMillis(in), (int)readMillis(in));
+//            if (fixed.equals(DateTimeZone.UTC)) {
+//                fixed = DateTimeZone.UTC;
+//            }
+//            return fixed;
+//        case 'C':
+//            return CachedDateTimeZone.forZone(PrecalculatedZone.readFrom(in, id));
+//        case 'P':
+//            return PrecalculatedZone.readFrom(in, id);
+//        default:
+//            throw new IOException("Invalid encoding");
+//        }
     }
 
     /**
@@ -137,77 +140,79 @@ public class DateTimeZoneBuilder {
      * Remaining bits in field form signed offset from 1970-01-01T00:00:00Z.
      */
     static void writeMillis(DataOutput out, long millis) throws IOException {
-        if (millis % (30 * 60000L) == 0) {
-            // Try to write in 30 minute units.
-            long units = millis / (30 * 60000L);
-            if (((units << (64 - 6)) >> (64 - 6)) == units) {
-                // Form 00 (6 bits effective precision)
-                out.writeByte((int)(units & 0x3f));
-                return;
-            }
-        }
-
-        if (millis % 60000L == 0) {
-            // Try to write minutes.
-            long minutes = millis / 60000L;
-            if (((minutes << (64 - 30)) >> (64 - 30)) == minutes) {
-                // Form 01 (30 bits effective precision)
-                out.writeInt(0x40000000 | (int)(minutes & 0x3fffffff));
-                return;
-            }
-        }
-        
-        if (millis % 1000L == 0) {
-            // Try to write seconds.
-            long seconds = millis / 1000L;
-            if (((seconds << (64 - 38)) >> (64 - 38)) == seconds) {
-                // Form 10 (38 bits effective precision)
-                out.writeByte(0x80 | (int)((seconds >> 32) & 0x3f));
-                out.writeInt((int)(seconds & 0xffffffff));
-                return;
-            }
-        }
-
-        // Write milliseconds either because the additional precision is
-        // required or the minutes didn't fit in the field.
-        
-        // Form 11 (64 bits effective precision, but write as if 70 bits)
-        out.writeByte(millis < 0 ? 0xff : 0xc0);
-        out.writeLong(millis);
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (millis % (30 * 60000L) == 0) {
+//            // Try to write in 30 minute units.
+//            long units = millis / (30 * 60000L);
+//            if (((units << (64 - 6)) >> (64 - 6)) == units) {
+//                // Form 00 (6 bits effective precision)
+//                out.writeByte((int)(units & 0x3f));
+//                return;
+//            }
+//        }
+//
+//        if (millis % 60000L == 0) {
+//            // Try to write minutes.
+//            long minutes = millis / 60000L;
+//            if (((minutes << (64 - 30)) >> (64 - 30)) == minutes) {
+//                // Form 01 (30 bits effective precision)
+//                out.writeInt(0x40000000 | (int)(minutes & 0x3fffffff));
+//                return;
+//            }
+//        }
+//        
+//        if (millis % 1000L == 0) {
+//            // Try to write seconds.
+//            long seconds = millis / 1000L;
+//            if (((seconds << (64 - 38)) >> (64 - 38)) == seconds) {
+//                // Form 10 (38 bits effective precision)
+//                out.writeByte(0x80 | (int)((seconds >> 32) & 0x3f));
+//                out.writeInt((int)(seconds & 0xffffffff));
+//                return;
+//            }
+//        }
+//
+//        // Write milliseconds either because the additional precision is
+//        // required or the minutes didn't fit in the field.
+//        
+//        // Form 11 (64 bits effective precision, but write as if 70 bits)
+//        out.writeByte(millis < 0 ? 0xff : 0xc0);
+//        out.writeLong(millis);
     }
 
     /**
      * Reads encoding generated by writeMillis.
      */
     static long readMillis(DataInput in) throws IOException {
-        int v = in.readUnsignedByte();
-        switch (v >> 6) {
-        case 0: default:
-            // Form 00 (6 bits effective precision)
-            v = (v << (32 - 6)) >> (32 - 6);
-            return v * (30 * 60000L);
-
-        case 1:
-            // Form 01 (30 bits effective precision)
-            v = (v << (32 - 6)) >> (32 - 30);
-            v |= (in.readUnsignedByte()) << 16;
-            v |= (in.readUnsignedByte()) << 8;
-            v |= (in.readUnsignedByte());
-            return v * 60000L;
-
-        case 2:
-            // Form 10 (38 bits effective precision)
-            long w = (((long)v) << (64 - 6)) >> (64 - 38);
-            w |= (in.readUnsignedByte()) << 24;
-            w |= (in.readUnsignedByte()) << 16;
-            w |= (in.readUnsignedByte()) << 8;
-            w |= (in.readUnsignedByte());
-            return w * 1000L;
-
-        case 3:
-            // Form 11 (64 bits effective precision)
-            return in.readLong();
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        int v = in.readUnsignedByte();
+//        switch (v >> 6) {
+//        case 0: default:
+//            // Form 00 (6 bits effective precision)
+//            v = (v << (32 - 6)) >> (32 - 6);
+//            return v * (30 * 60000L);
+//
+//        case 1:
+//            // Form 01 (30 bits effective precision)
+//            v = (v << (32 - 6)) >> (32 - 30);
+//            v |= (in.readUnsignedByte()) << 16;
+//            v |= (in.readUnsignedByte()) << 8;
+//            v |= (in.readUnsignedByte());
+//            return v * 60000L;
+//
+//        case 2:
+//            // Form 10 (38 bits effective precision)
+//            long w = (((long)v) << (64 - 6)) >> (64 - 38);
+//            w |= (in.readUnsignedByte()) << 24;
+//            w |= (in.readUnsignedByte()) << 16;
+//            w |= (in.readUnsignedByte()) << 8;
+//            w |= (in.readUnsignedByte());
+//            return w * 1000L;
+//
+//        case 3:
+//            // Form 11 (64 bits effective precision)
+//            return in.readLong();
+//        }
     }
 
     private static DateTimeZone buildFixedZone(String id, String nameKey,
@@ -439,11 +444,12 @@ public class DateTimeZoneBuilder {
      * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, OutputStream out) throws IOException {
-        if (out instanceof DataOutput) {
-            writeTo(zoneID, (DataOutput)out);
-        } else {
-            writeTo(zoneID, (DataOutput)new DataOutputStream(out));
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (out instanceof DataOutput) {
+//            writeTo(zoneID, (DataOutput)out);
+//        } else {
+//            writeTo(zoneID, (DataOutput)new DataOutputStream(out));
+//        }
     }
 
     /**
@@ -454,37 +460,38 @@ public class DateTimeZoneBuilder {
      * @since 1.5 (parameter added)
      */
     public void writeTo(String zoneID, DataOutput out) throws IOException {
-        // pass false so zone id is not written out
-        DateTimeZone zone = toDateTimeZone(zoneID, false);
-
-        if (zone instanceof FixedDateTimeZone) {
-            out.writeByte('F'); // 'F' for fixed
-            out.writeUTF(zone.getNameKey(0));
-            writeMillis(out, zone.getOffset(0));
-            writeMillis(out, zone.getStandardOffset(0));
-        } else {
-            if (zone instanceof CachedDateTimeZone) {
-                out.writeByte('C'); // 'C' for cached, precalculated
-                zone = ((CachedDateTimeZone)zone).getUncachedZone();
-            } else {
-                out.writeByte('P'); // 'P' for precalculated, uncached
-            }
-            ((PrecalculatedZone)zone).writeTo(out);
-        }
+        throw ExceptionUtils.unsupportedInGwt();
+//        // pass false so zone id is not written out
+//        DateTimeZone zone = toDateTimeZone(zoneID, false);
+//
+//        if (zone instanceof FixedDateTimeZone) {
+//            out.writeByte('F'); // 'F' for fixed
+//            out.writeUTF(zone.getNameKey(0));
+//            writeMillis(out, zone.getOffset(0));
+//            writeMillis(out, zone.getStandardOffset(0));
+//        } else {
+//            if (zone instanceof CachedDateTimeZone) {
+//                out.writeByte('C'); // 'C' for cached, precalculated
+//                zone = ((CachedDateTimeZone)zone).getUncachedZone();
+//            } else {
+//                out.writeByte('P'); // 'P' for precalculated, uncached
+//            }
+//            ((PrecalculatedZone)zone).writeTo(out);
+//        }
     }
 
     /**
      * Supports setting fields of year and moving between transitions.
      */
     private static final class OfYear {
-        static OfYear readFrom(DataInput in) throws IOException {
-            return new OfYear((char)in.readUnsignedByte(),
-                              (int)in.readUnsignedByte(),
-                              (int)in.readByte(),
-                              (int)in.readUnsignedByte(),
-                              in.readBoolean(),
-                              (int)readMillis(in));
-        }
+//        static OfYear readFrom(DataInput in) throws IOException {
+//            return new OfYear((char)in.readUnsignedByte(),
+//                              (int)in.readUnsignedByte(),
+//                              (int)in.readByte(),
+//                              (int)in.readUnsignedByte(),
+//                              in.readBoolean(),
+//                              (int)readMillis(in));
+//        }
 
         // Is 'u', 'w', or 's'.
         final char iMode;
@@ -654,14 +661,14 @@ public class DateTimeZoneBuilder {
         }
         */
 
-        public void writeTo(DataOutput out) throws IOException {
-            out.writeByte(iMode);
-            out.writeByte(iMonthOfYear);
-            out.writeByte(iDayOfMonth);
-            out.writeByte(iDayOfWeek);
-            out.writeBoolean(iAdvance);
-            writeMillis(out, iMillisOfDay);
-        }
+//        public void writeTo(DataOutput out) throws IOException {
+//            out.writeByte(iMode);
+//            out.writeByte(iMonthOfYear);
+//            out.writeByte(iDayOfMonth);
+//            out.writeByte(iDayOfWeek);
+//            out.writeBoolean(iAdvance);
+//            writeMillis(out, iMillisOfDay);
+//        }
 
         /**
          * If month-day is 02-29 and year isn't leap, advances to next leap year.
@@ -735,9 +742,9 @@ public class DateTimeZoneBuilder {
      * Extends OfYear with a nameKey and savings.
      */
     private static final class Recurrence {
-        static Recurrence readFrom(DataInput in) throws IOException {
-            return new Recurrence(OfYear.readFrom(in), in.readUTF(), (int)readMillis(in));
-        }
+//        static Recurrence readFrom(DataInput in) throws IOException {
+//            return new Recurrence(OfYear.readFrom(in), in.readUTF(), (int)readMillis(in));
+//        }
 
         final OfYear iOfYear;
         final String iNameKey;
@@ -789,11 +796,11 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
-        public void writeTo(DataOutput out) throws IOException {
-            iOfYear.writeTo(out);
-            out.writeUTF(iNameKey);
-            writeMillis(out, iSaveMillis);
-        }
+//        public void writeTo(DataOutput out) throws IOException {
+//            iOfYear.writeTo(out);
+//            out.writeUTF(iNameKey);
+//            writeMillis(out, iSaveMillis);
+//        }
 
         Recurrence rename(String nameKey) {
             return new Recurrence(iOfYear, nameKey, iSaveMillis);
@@ -1163,10 +1170,10 @@ public class DateTimeZoneBuilder {
     private static final class DSTZone extends DateTimeZone {
         private static final long serialVersionUID = 6941492635554961361L;
 
-        static DSTZone readFrom(DataInput in, String id) throws IOException {
-            return new DSTZone(id, (int)readMillis(in), 
-                               Recurrence.readFrom(in), Recurrence.readFrom(in));
-        }
+//        static DSTZone readFrom(DataInput in, String id) throws IOException {
+//            return new DSTZone(id, (int)readMillis(in), 
+//                               Recurrence.readFrom(in), Recurrence.readFrom(in));
+//        }
 
         final int iStandardOffset;
         final Recurrence iStartRecurrence;
@@ -1295,11 +1302,11 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
-        public void writeTo(DataOutput out) throws IOException {
-            writeMillis(out, iStandardOffset);
-            iStartRecurrence.writeTo(out);
-            iEndRecurrence.writeTo(out);
-        }
+//        public void writeTo(DataOutput out) throws IOException {
+//            writeMillis(out, iStandardOffset);
+//            iStartRecurrence.writeTo(out);
+//            iEndRecurrence.writeTo(out);
+//        }
 
         private Recurrence findMatchingRecurrence(long instant) {
             int standardOffset = iStandardOffset;
@@ -1337,45 +1344,45 @@ public class DateTimeZoneBuilder {
     private static final class PrecalculatedZone extends DateTimeZone {
         private static final long serialVersionUID = 7811976468055766265L;
 
-        static PrecalculatedZone readFrom(DataInput in, String id) throws IOException {
-            // Read string pool.
-            int poolSize = in.readUnsignedShort();
-            String[] pool = new String[poolSize];
-            for (int i=0; i<poolSize; i++) {
-                pool[i] = in.readUTF();
-            }
-
-            int size = in.readInt();
-            long[] transitions = new long[size];
-            int[] wallOffsets = new int[size];
-            int[] standardOffsets = new int[size];
-            String[] nameKeys = new String[size];
-            
-            for (int i=0; i<size; i++) {
-                transitions[i] = readMillis(in);
-                wallOffsets[i] = (int)readMillis(in);
-                standardOffsets[i] = (int)readMillis(in);
-                try {
-                    int index;
-                    if (poolSize < 256) {
-                        index = in.readUnsignedByte();
-                    } else {
-                        index = in.readUnsignedShort();
-                    }
-                    nameKeys[i] = pool[index];
-                } catch (ArrayIndexOutOfBoundsException e) {
-                    throw new IOException("Invalid encoding");
-                }
-            }
-
-            DSTZone tailZone = null;
-            if (in.readBoolean()) {
-                tailZone = DSTZone.readFrom(in, id);
-            }
-
-            return new PrecalculatedZone
-                (id, transitions, wallOffsets, standardOffsets, nameKeys, tailZone);
-        }
+//        static PrecalculatedZone readFrom(DataInput in, String id) throws IOException {
+//            // Read string pool.
+//            int poolSize = in.readUnsignedShort();
+//            String[] pool = new String[poolSize];
+//            for (int i=0; i<poolSize; i++) {
+//                pool[i] = in.readUTF();
+//            }
+//
+//            int size = in.readInt();
+//            long[] transitions = new long[size];
+//            int[] wallOffsets = new int[size];
+//            int[] standardOffsets = new int[size];
+//            String[] nameKeys = new String[size];
+//            
+//            for (int i=0; i<size; i++) {
+//                transitions[i] = readMillis(in);
+//                wallOffsets[i] = (int)readMillis(in);
+//                standardOffsets[i] = (int)readMillis(in);
+//                try {
+//                    int index;
+//                    if (poolSize < 256) {
+//                        index = in.readUnsignedByte();
+//                    } else {
+//                        index = in.readUnsignedShort();
+//                    }
+//                    nameKeys[i] = pool[index];
+//                } catch (ArrayIndexOutOfBoundsException e) {
+//                    throw new IOException("Invalid encoding");
+//                }
+//            }
+//
+//            DSTZone tailZone = null;
+//            if (in.readBoolean()) {
+//                tailZone = DSTZone.readFrom(in, id);
+//            }
+//
+//            return new PrecalculatedZone
+//                (id, transitions, wallOffsets, standardOffsets, nameKeys, tailZone);
+//        }
 
         /**
          * Factory to create instance from builder.
@@ -1622,57 +1629,57 @@ public class DateTimeZoneBuilder {
             return false;
         }
 
-        public void writeTo(DataOutput out) throws IOException {
-            int size = iTransitions.length;
-
-            // Create unique string pool.
-            Set poolSet = new HashSet();
-            for (int i=0; i<size; i++) {
-                poolSet.add(iNameKeys[i]);
-            }
-
-            int poolSize = poolSet.size();
-            if (poolSize > 65535) {
-                throw new UnsupportedOperationException("String pool is too large");
-            }
-            String[] pool = new String[poolSize];
-            Iterator it = poolSet.iterator();
-            for (int i=0; it.hasNext(); i++) {
-                pool[i] = (String)it.next();
-            }
-
-            // Write out the pool.
-            out.writeShort(poolSize);
-            for (int i=0; i<poolSize; i++) {
-                out.writeUTF(pool[i]);
-            }
-
-            out.writeInt(size);
-
-            for (int i=0; i<size; i++) {
-                writeMillis(out, iTransitions[i]);
-                writeMillis(out, iWallOffsets[i]);
-                writeMillis(out, iStandardOffsets[i]);
-                
-                // Find pool index and write it out.
-                String nameKey = iNameKeys[i];
-                for (int j=0; j<poolSize; j++) {
-                    if (pool[j].equals(nameKey)) {
-                        if (poolSize < 256) {
-                            out.writeByte(j);
-                        } else {
-                            out.writeShort(j);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            out.writeBoolean(iTailZone != null);
-            if (iTailZone != null) {
-                iTailZone.writeTo(out);
-            }
-        }
+//        public void writeTo(DataOutput out) throws IOException {
+//            int size = iTransitions.length;
+//
+//            // Create unique string pool.
+//            Set poolSet = new HashSet();
+//            for (int i=0; i<size; i++) {
+//                poolSet.add(iNameKeys[i]);
+//            }
+//
+//            int poolSize = poolSet.size();
+//            if (poolSize > 65535) {
+//                throw new UnsupportedOperationException("String pool is too large");
+//            }
+//            String[] pool = new String[poolSize];
+//            Iterator it = poolSet.iterator();
+//            for (int i=0; it.hasNext(); i++) {
+//                pool[i] = (String)it.next();
+//            }
+//
+//            // Write out the pool.
+//            out.writeShort(poolSize);
+//            for (int i=0; i<poolSize; i++) {
+//                out.writeUTF(pool[i]);
+//            }
+//
+//            out.writeInt(size);
+//
+//            for (int i=0; i<size; i++) {
+//                writeMillis(out, iTransitions[i]);
+//                writeMillis(out, iWallOffsets[i]);
+//                writeMillis(out, iStandardOffsets[i]);
+//                
+//                // Find pool index and write it out.
+//                String nameKey = iNameKeys[i];
+//                for (int j=0; j<poolSize; j++) {
+//                    if (pool[j].equals(nameKey)) {
+//                        if (poolSize < 256) {
+//                            out.writeByte(j);
+//                        } else {
+//                            out.writeShort(j);
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
+//
+//            out.writeBoolean(iTailZone != null);
+//            if (iTailZone != null) {
+//                iTailZone.writeTo(out);
+//            }
+//        }
 
         public boolean isCachable() {
             if (iTailZone != null) {

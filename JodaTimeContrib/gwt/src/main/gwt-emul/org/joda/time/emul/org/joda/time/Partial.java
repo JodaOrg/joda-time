@@ -243,9 +243,12 @@ public final class Partial
             lastUnitField = loopUnitField;
         }
         
-        iTypes = (DateTimeFieldType[]) types.clone();
+        //iTypes = (DateTimeFieldType[]) types.clone();
+        iTypes = new DateTimeFieldType[types.length];
+        org.joda.time.gwt.util.Arrays.copy(types, iTypes);
         chronology.validate(this, values);
-        iValues = (int[]) values.clone();
+        //iValues = (int[]) values.clone();
+        iValues = org.joda.time.gwt.util.Arrays.copyOf(values, values.length);
     }
 
     /**
@@ -353,7 +356,10 @@ public final class Partial
      * @return the array of field types (cloned), largest to smallest
      */
     public DateTimeFieldType[] getFieldTypes() {
-        return (DateTimeFieldType[]) iTypes.clone();
+        //return (DateTimeFieldType[]) iTypes.clone();
+        DateTimeFieldType[] newTypes = new DateTimeFieldType[iTypes.length];
+        org.joda.time.gwt.util.Arrays.copy(iTypes, newTypes);
+        return newTypes;
     }
 
     //-----------------------------------------------------------------------
@@ -378,7 +384,8 @@ public final class Partial
      * @return the current values of each field (cloned), largest to smallest
      */
     public int[] getValues() {
-        return (int[]) iValues.clone();
+        //return (int[]) iValues.clone();
+        return org.joda.time.gwt.util.Arrays.copyOf(iValues, iValues.length);
     }
 
     //-----------------------------------------------------------------------

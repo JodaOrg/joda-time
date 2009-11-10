@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of days.
@@ -61,7 +62,7 @@ public final class Days extends BaseSingleFieldPeriod {
     public static final Days MIN_VALUE = new Days(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.days());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.days());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380865L;
 
@@ -194,11 +195,12 @@ public final class Days extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Days parseDays(String periodStr) {
-        if (periodStr == null) {
-            return Days.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Days.days(p.getDays());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Days.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Days.days(p.getDays());
     }
 
     //-----------------------------------------------------------------------

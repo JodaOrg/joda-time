@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of seconds.
@@ -53,7 +54,7 @@ public final class Seconds extends BaseSingleFieldPeriod {
     public static final Seconds MIN_VALUE = new Seconds(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.seconds());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.seconds());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380862L;
 
@@ -176,11 +177,12 @@ public final class Seconds extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Seconds parseSeconds(String periodStr) {
-        if (periodStr == null) {
-            return Seconds.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Seconds.seconds(p.getSeconds());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Seconds.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Seconds.seconds(p.getSeconds());
     }
 
     //-----------------------------------------------------------------------

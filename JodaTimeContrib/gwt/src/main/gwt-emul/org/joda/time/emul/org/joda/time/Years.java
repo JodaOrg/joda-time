@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of years.
@@ -53,7 +54,7 @@ public final class Years extends BaseSingleFieldPeriod {
     public static final Years MIN_VALUE = new Years(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.years());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.years());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380868L;
 
@@ -153,11 +154,12 @@ public final class Years extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Years parseYears(String periodStr) {
-        if (periodStr == null) {
-            return Years.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Years.years(p.getYears());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Years.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Years.years(p.getYears());
     }
 
     //-----------------------------------------------------------------------

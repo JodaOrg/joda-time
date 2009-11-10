@@ -16,6 +16,7 @@
 package org.joda.time.tz;
 
 import org.joda.time.DateTimeZone;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * Basic DateTimeZone implementation that has a fixed name key and offsets.
@@ -74,14 +75,15 @@ public final class FixedDateTimeZone extends DateTimeZone {
      * @since 1.5
      */
     public java.util.TimeZone toTimeZone() {
-        String id = getID();
-        if (id.length() == 6 && (id.startsWith("+") || id.startsWith("-"))) {
-            // standard format offset [+-]hh:mm
-            // our ID is without any prefix, so we need to add the GMT back
-            return java.util.TimeZone.getTimeZone("GMT" + getID());
-        }
-        // unusual offset, so setup a SimpleTimeZone as best we can
-        return new java.util.SimpleTimeZone(iWallOffset, getID());
+        throw ExceptionUtils.unsupportedInGwt();
+//        String id = getID();
+//        if (id.length() == 6 && (id.startsWith("+") || id.startsWith("-"))) {
+//            // standard format offset [+-]hh:mm
+//            // our ID is without any prefix, so we need to add the GMT back
+//            return java.util.TimeZone.getTimeZone("GMT" + getID());
+//        }
+//        // unusual offset, so setup a SimpleTimeZone as best we can
+//        return new java.util.SimpleTimeZone(iWallOffset, getID());
     }
 
     public boolean equals(Object obj) {

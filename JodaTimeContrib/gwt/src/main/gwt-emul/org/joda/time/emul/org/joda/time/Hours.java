@@ -19,6 +19,7 @@ import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
 import org.joda.time.format.PeriodFormatter;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * An immutable time period representing a number of hours.
@@ -63,7 +64,7 @@ public final class Hours extends BaseSingleFieldPeriod {
     public static final Hours MIN_VALUE = new Hours(Integer.MIN_VALUE);
 
     /** The paser to use for this class. */
-    private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.hours());
+    //private static final PeriodFormatter PARSER = ISOPeriodFormat.standard().withParseType(PeriodType.hours());
     /** Serialization version. */
     private static final long serialVersionUID = 87525275727380864L;
 
@@ -196,11 +197,12 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @throws IllegalArgumentException if the string format is invalid
      */
     public static Hours parseHours(String periodStr) {
-        if (periodStr == null) {
-            return Hours.ZERO;
-        }
-        Period p = PARSER.parsePeriod(periodStr);
-        return Hours.hours(p.getHours());
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (periodStr == null) {
+//            return Hours.ZERO;
+//        }
+//        Period p = PARSER.parsePeriod(periodStr);
+//        return Hours.hours(p.getHours());
     }
 
     //-----------------------------------------------------------------------

@@ -28,6 +28,8 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.PeriodType;
 import org.joda.time.ReadWritablePeriod;
 import org.joda.time.ReadablePeriod;
+import org.joda.time.gwt.util.Arrays;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * Factory that creates complex instances of PeriodFormatter via method calls.
@@ -121,7 +123,9 @@ public class PeriodFormatterBuilder {
      */
     public PeriodFormatter toFormatter() {
         PeriodFormatter formatter = toFormatter(iElementPairs, iNotPrinter, iNotParser);
-        iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
+        //iFieldFormatters = (FieldFormatter[]) iFieldFormatters.clone();
+        iFieldFormatters = new FieldFormatter[iFieldFormatters.length];
+        Arrays.copy(iFieldFormatters, iFieldFormatters);
         return formatter;
     }
 
@@ -751,8 +755,9 @@ public class PeriodFormatterBuilder {
         for (i=pairs.size(); --i>=0; ) {
             if (pairs.get(i) instanceof Separator) {
                 lastSeparator = (Separator) pairs.get(i);
-                pairs = pairs.subList(i + 1, pairs.size());
-                break;
+                throw ExceptionUtils.unsupportedInGwt();
+                //pairs = pairs.subList(i + 1, pairs.size());
+                //break;
             }
             i--;  // element pairs
         }
@@ -798,9 +803,10 @@ public class PeriodFormatterBuilder {
         int size = elementPairs.size();
         if (size >= 2 && elementPairs.get(0) instanceof Separator) {
             Separator sep = (Separator) elementPairs.get(0);
-            PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
-            sep = sep.finish(f.getPrinter(), f.getParser());
-            return new PeriodFormatter(sep, sep);
+            throw ExceptionUtils.unsupportedInGwt();
+            //PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+            //sep = sep.finish(f.getPrinter(), f.getParser());
+            //return new PeriodFormatter(sep, sep);
         }
         Object[] comp = createComposite(elementPairs);
         if (notPrinter) {

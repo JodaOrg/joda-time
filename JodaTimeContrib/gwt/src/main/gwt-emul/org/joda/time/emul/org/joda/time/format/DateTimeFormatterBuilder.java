@@ -1717,11 +1717,15 @@ public class DateTimeFormatterBuilder {
                     for (int i = min; i <= max; i++) {
                         property.set(i);
                         validValues.add(property.getAsShortText(locale));
-                        validValues.add(property.getAsShortText(locale).toLowerCase(locale));
-                        validValues.add(property.getAsShortText(locale).toUpperCase(locale));
+                        //validValues.add(property.getAsShortText(locale).toLowerCase(locale));
+                        //validValues.add(property.getAsShortText(locale).toUpperCase(locale));
+                        validValues.add(property.getAsShortText(locale).toLowerCase());
+                        validValues.add(property.getAsShortText(locale).toUpperCase());
                         validValues.add(property.getAsText(locale));
-                        validValues.add(property.getAsText(locale).toLowerCase(locale));
-                        validValues.add(property.getAsText(locale).toUpperCase(locale));
+                        //validValues.add(property.getAsText(locale).toLowerCase(locale));
+                        //validValues.add(property.getAsText(locale).toUpperCase(locale));
+                        validValues.add(property.getAsText(locale).toLowerCase());
+                        validValues.add(property.getAsText(locale).toUpperCase());
                     }
                     if ("en".equals(locale.getLanguage()) && iFieldType == DateTimeFieldType.era()) {
                         // hack to support for parsing "BCE" and "CE" if the language is English

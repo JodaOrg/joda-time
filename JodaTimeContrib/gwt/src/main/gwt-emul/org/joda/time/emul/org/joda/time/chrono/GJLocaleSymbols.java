@@ -15,14 +15,15 @@
  */
 package org.joda.time.chrono;
 
-import java.lang.ref.WeakReference;
+//import java.lang.ref.WeakReference;
 import java.text.DateFormatSymbols;
-import java.util.WeakHashMap;
+//import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.TreeMap;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.gwt.util.ExceptionUtils;
 
 /**
  * Utility class used by a few of the GJDateTimeFields.
@@ -35,26 +36,27 @@ class GJLocaleSymbols {
 
     private static final GJLocaleSymbols[] cFastCache = new GJLocaleSymbols[FAST_CACHE_SIZE];
 
-    private static WeakHashMap cCache = new WeakHashMap();
+    //private static WeakHashMap cCache = new WeakHashMap();
 
     public static GJLocaleSymbols forLocale(Locale locale) {
-        if (locale == null) {
-            locale = Locale.getDefault();
-        }
-        int index = System.identityHashCode(locale) & (FAST_CACHE_SIZE - 1);
-        GJLocaleSymbols symbols = cFastCache[index];
-        if (symbols != null && symbols.iLocale.get() == locale) {
-            return symbols;
-        }
-        synchronized (cCache) {
-            symbols = (GJLocaleSymbols) cCache.get(locale);
-            if (symbols == null) {
-                symbols = new GJLocaleSymbols(locale);
-                cCache.put(locale, symbols);
-            }
-        }
-        cFastCache[index] = symbols;
-        return symbols;
+        throw ExceptionUtils.unsupportedInGwt();
+//        if (locale == null) {
+//            locale = Locale.getDefault();
+//        }
+//        int index = System.identityHashCode(locale) & (FAST_CACHE_SIZE - 1);
+//        GJLocaleSymbols symbols = cFastCache[index];
+//        if (symbols != null && symbols.iLocale.get() == locale) {
+//            return symbols;
+//        }
+//        synchronized (cCache) {
+//            symbols = (GJLocaleSymbols) cCache.get(locale);
+//            if (symbols == null) {
+//                symbols = new GJLocaleSymbols(locale);
+//                cCache.put(locale, symbols);
+//            }
+//        }
+//        cFastCache[index] = symbols;
+//        return symbols;
     }
 
     private static String[] realignMonths(String[] months) {
@@ -102,7 +104,7 @@ class GJLocaleSymbols {
         return max;
     }
 
-    private final WeakReference iLocale;
+    //private final WeakReference iLocale;
 
     private final String[] iEras;
     private final String[] iDaysOfWeek;
@@ -127,7 +129,7 @@ class GJLocaleSymbols {
      * @param locale must not be null
      */
     private GJLocaleSymbols(Locale locale) {
-        iLocale = new WeakReference(locale);
+        //iLocale = new WeakReference(locale);
 
         DateFormatSymbols dfs = new DateFormatSymbols(locale);
 

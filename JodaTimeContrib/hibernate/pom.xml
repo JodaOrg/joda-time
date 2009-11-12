@@ -110,6 +110,7 @@
             <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
             <link>http://joda-time.sourceforge.net/api-release/</link>
           </links>
+          <encoding>UTF-8</encoding>
         </configuration>
         <executions>
           <execution>
@@ -131,6 +132,25 @@
             <phase>package</phase>
             <goals>
               <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-repository-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-gpg-plugin</artifactId>
+        <version>1.0-alpha-4</version>
+        <executions>
+          <execution>
+            <id>sign-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>sign</goal>
             </goals>
           </execution>
         </executions>
@@ -236,16 +256,23 @@
   <distributionManagement>
     <repository>
       <uniqueVersion>false</uniqueVersion>
-      <id>sf-repo-joda-time-hibernate</id>
-      <name>Sourceforge Repository</name>
-      <url>scp://web.sourceforge.net/home/groups/j/jo/joda-time/htdocs/repo</url>
+      <id>sonatype-joda-staging</id>
+      <name>Sonatype OSS staging repository</name>
+      <url>http://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
       <layout>default</layout>
     </repository>
+    <snapshotRepository>
+      <uniqueVersion>true</uniqueVersion>
+      <id>sonatype-joda-snapshot</id>
+      <name>Sonatype OSS snapshot repository</name>
+      <url>http://oss.sonatype.org/content/repositories/joda-snapshots</url>
+      <layout>default</layout>
+    </snapshotRepository>
     <site>
       <id>sf-web-joda-time-hibernate</id>
       <name>Sourceforge Site</name>
       <url>scp://web.sourceforge.net/home/groups/j/jo/joda-time/htdocs/contrib/hibernate</url>
     </site>
-    <downloadUrl>http://joda-time.sourceforge.net/repo</downloadUrl>
+    <downloadUrl>http://oss.sonatype.org/content/repositories/joda-releases</downloadUrl>
   </distributionManagement>
 </project>

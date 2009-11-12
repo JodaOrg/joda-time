@@ -57,7 +57,6 @@
 	<!-- The test runner to execute -->
 	<property name="test.runner" value="junit.textui.TestRunner" />
 	<property name="gwt.testSet" value="**/Test*.java" />
-	<property name="gwt.test.Xmx" value="-Xmx512M" />
 
 	<!--
 		Executable Targets
@@ -112,7 +111,7 @@
 
 		<junit dir="target/test-gwt" fork="yes" printsummary="yes"
 			failureproperty="junit.failure" tempdir="target/test-gwt-tmp" jvm="${junit.jvm}">
-			<jvmarg line="${gwt.test.Xmx}" />
+			<jvmarg line="${gwt.test.args}" />
 			<classpath refid="test.gwt.run.classpath" />
 
 			<formatter type="plain" />

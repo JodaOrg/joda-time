@@ -15,26 +15,27 @@
  */
 package org.joda.time.field;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * 
  *
  * @author Brian S O'Neill
  */
-public class TestFieldUtils extends TestCase {
-    public static void main(String[] args) {
+public class TestFieldUtils extends JodaGwtTestCase {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestFieldUtils.class);
-    }
+    } */
 
-    public TestFieldUtils(String name) {
+    /* Removed for GWT public TestFieldUtils(String name) {
         super(name);
-    }
+    } */
 
     public void testSafeAddInt() {
         assertEquals(0, FieldUtils.safeAdd(0, 0));

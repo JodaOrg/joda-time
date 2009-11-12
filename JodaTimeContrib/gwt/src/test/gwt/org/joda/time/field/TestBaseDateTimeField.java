@@ -18,8 +18,9 @@ package org.joda.time.field;
 import java.util.Arrays;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeField;
@@ -29,30 +30,33 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
 import org.joda.time.base.BasePartial;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for BaseDateTimeField.
  *
  * @author Stephen Colebourne
  */
-public class TestBaseDateTimeField extends TestCase {
+public class TestBaseDateTimeField extends JodaGwtTestCase {
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestBaseDateTimeField.class);
-    }
+    } */
 
-    public TestBaseDateTimeField(String name) {
+    /* Removed for GWT public TestBaseDateTimeField(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------

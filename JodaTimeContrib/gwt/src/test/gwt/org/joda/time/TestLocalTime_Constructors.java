@@ -19,32 +19,34 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for LocalTime.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalTime_Constructors extends TestCase {
+public class TestLocalTime_Constructors extends JodaGwtTestCase {
 
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final DateTimeZone NEW_YORK = DateTimeZone.forID("America/New_York");
-    private static final ISOChronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final JulianChronology JULIAN_LONDON = JulianChronology.getInstance(LONDON);
-    private static final JulianChronology JULIAN_PARIS = JulianChronology.getInstance(PARIS);
-    private static final JulianChronology JULIAN_UTC = JulianChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
-    private static final int OFFSET_LONDON = LONDON.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
-    private static final int OFFSET_PARIS = PARIS.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    // Removed for GWT private static final DateTimeZone NEW_YORK = DateTimeZone.forID("America/New_York");
+    // Removed for GWT private static final ISOChronology ISO_UTC = ISOChronology.getInstanceUTC();
+    // Removed for GWT private static final JulianChronology JULIAN_LONDON = JulianChronology.getInstance(LONDON);
+    // Removed for GWT private static final JulianChronology JULIAN_PARIS = JulianChronology.getInstance(PARIS);
+    // Removed for GWT private static final JulianChronology JULIAN_UTC = JulianChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
+    // Removed for GWT private static final int OFFSET_LONDON = LONDON.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
+    // Removed for GWT private static final int OFFSET_PARIS = PARIS.getOffset(0L) / DateTimeConstants.MILLIS_PER_HOUR;
 
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -67,26 +69,28 @@ public class TestLocalTime_Constructors extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestLocalTime_Constructors.class);
-    }
+    } */
 
-    public TestLocalTime_Constructors(String name) {
+    /* Removed for GWT public TestLocalTime_Constructors(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
         java.util.TimeZone.setDefault(LONDON.toTimeZone());
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         java.util.TimeZone.setDefault(zone.toTimeZone());

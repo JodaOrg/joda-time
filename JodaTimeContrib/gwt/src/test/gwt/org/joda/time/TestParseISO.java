@@ -16,11 +16,13 @@
 package org.joda.time;
 
 import junit.framework.Assert;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Unit test the parsing of ISO format datetimes
@@ -28,7 +30,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * @author Guy Allard
  * @author Stephen Colebourne
  */
-public class TestParseISO extends TestCase {
+public class TestParseISO extends JodaGwtTestCase {
     
     private static final int DEFAULT = 99999;
 
@@ -36,31 +38,33 @@ public class TestParseISO extends TestCase {
      * This is the main class for this test suite.
      * @param args command line arguments.
      */
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
     
     /**
      * TestSuite suite() is a junit required method.
      * @see org.joda.test.time.BulkTest
      */
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestParseISO.class);
-    }
+    } */
     
     /**
      * Constructor.
      * @param name
      */
-    public TestParseISO(String name) {
+    /* Removed for GWT public TestParseISO(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         super.setUp();
     }
     
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         super.tearDown();
     }
     

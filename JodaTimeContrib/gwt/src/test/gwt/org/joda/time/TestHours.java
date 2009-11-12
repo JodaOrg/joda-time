@@ -15,40 +15,43 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for Hours.
  *
  * @author Stephen Colebourne
  */
-public class TestHours extends TestCase {
+public class TestHours extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestHours.class);
-    }
+    } */
 
-    public TestHours(String name) {
+    /* Removed for GWT public TestHours(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------
@@ -202,7 +205,7 @@ public class TestHours extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         Hours test = Hours.SEVEN;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -217,22 +220,22 @@ public class TestHours extends TestCase {
         ois.close();
         
         assertSame(test, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testToStandardWeeks() {
+    /* Removed for GWT public void testToStandardWeeks() {
         Hours test = Hours.hours(24 * 7 * 2);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
-    }
+    } */
 
-    public void testToStandardDays() {
+    /* Removed for GWT public void testToStandardDays() {
         Hours test = Hours.hours(24 * 2);
         Days expected = Days.days(2);
         assertEquals(expected, test.toStandardDays());
-    }
+    } */
 
-    public void testToStandardMinutes() {
+    /* Removed for GWT public void testToStandardMinutes() {
         Hours test = Hours.hours(3);
         Minutes expected = Minutes.minutes(3 * 60);
         assertEquals(expected, test.toStandardMinutes());
@@ -243,7 +246,7 @@ public class TestHours extends TestCase {
         } catch (ArithmeticException ex) {
             // expected
         }
-    }
+    } */
 
     public void testToStandardSeconds() {
         Hours test = Hours.hours(3);
@@ -258,14 +261,14 @@ public class TestHours extends TestCase {
         }
     }
 
-    public void testToStandardDuration() {
+    /* Removed for GWT public void testToStandardDuration() {
         Hours test = Hours.hours(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_HOUR);
         assertEquals(expected, test.toStandardDuration());
         
         expected = new Duration(((long) Integer.MAX_VALUE) * DateTimeConstants.MILLIS_PER_HOUR);
         assertEquals(expected, Hours.MAX_VALUE.toStandardDuration());
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

@@ -18,8 +18,9 @@ package org.joda.time.chrono;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
@@ -29,22 +30,23 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationFieldType;
 import org.joda.time.DateTime.Property;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for IslamicChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestIslamicChronology extends TestCase {
+public class TestIslamicChronology extends JodaGwtTestCase {
 
     private static long SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final Chronology ISLAMIC_UTC = IslamicChronology.getInstanceUTC();
-    private static final Chronology JULIAN_UTC = JulianChronology.getInstanceUTC();
-    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    // Removed for GWT private static final Chronology ISLAMIC_UTC = IslamicChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology JULIAN_UTC = JulianChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -58,20 +60,21 @@ public class TestIslamicChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
         return new TestSuite(TestIslamicChronology.class);
-    }
+    } */
 
-    public TestIslamicChronology(String name) {
+    /* Removed for GWT public TestIslamicChronology(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -81,7 +84,8 @@ public class TestIslamicChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);

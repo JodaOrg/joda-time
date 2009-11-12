@@ -15,40 +15,43 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for Days.
  *
  * @author Stephen Colebourne
  */
-public class TestDays extends TestCase {
+public class TestDays extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDays.class);
-    }
+    } */
 
-    public TestDays(String name) {
+    /* Removed for GWT public TestDays(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------
@@ -200,7 +203,7 @@ public class TestDays extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         Days test = Days.SEVEN;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -215,16 +218,16 @@ public class TestDays extends TestCase {
         ois.close();
         
         assertSame(test, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testToStandardWeeks() {
+    /* Removed for GWT public void testToStandardWeeks() {
         Days test = Days.days(14);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
-    }
+    } */
 
-    public void testToStandardHours() {
+    /* Removed for GWT public void testToStandardHours() {
         Days test = Days.days(2);
         Hours expected = Hours.hours(2 * 24);
         assertEquals(expected, test.toStandardHours());
@@ -235,9 +238,9 @@ public class TestDays extends TestCase {
         } catch (ArithmeticException ex) {
             // expected
         }
-    }
+    } */
 
-    public void testToStandardMinutes() {
+    /* Removed for GWT public void testToStandardMinutes() {
         Days test = Days.days(2);
         Minutes expected = Minutes.minutes(2 * 24 * 60);
         assertEquals(expected, test.toStandardMinutes());
@@ -248,7 +251,7 @@ public class TestDays extends TestCase {
         } catch (ArithmeticException ex) {
             // expected
         }
-    }
+    } */
 
     public void testToStandardSeconds() {
         Days test = Days.days(2);
@@ -263,14 +266,14 @@ public class TestDays extends TestCase {
         }
     }
 
-    public void testToStandardDuration() {
+    /* Removed for GWT public void testToStandardDuration() {
         Days test = Days.days(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_DAY);
         assertEquals(expected, test.toStandardDuration());
         
         expected = new Duration(((long) Integer.MAX_VALUE) * DateTimeConstants.MILLIS_PER_DAY);
         assertEquals(expected, Days.MAX_VALUE.toStandardDuration());
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

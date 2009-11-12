@@ -15,45 +15,47 @@
  */
 package org.joda.time.tz;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
+// Removed for GWT import java.lang.reflect.Constructor;
+// Removed for GWT import java.lang.reflect.Modifier;
 import java.util.Set;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeZone;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test for UTCProvider.
  *
  * @author Stephen Colebourne
  */
-public class TestUTCProvider extends TestCase {
+public class TestUTCProvider extends JodaGwtTestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestUTCProvider.class);
-    }
+    } */
 
-    public TestUTCProvider(String name) {
+    /* Removed for GWT public TestUTCProvider(String name) {
         super(name);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testClass() throws Exception {
+    /* Removed for GWT public void testClass() throws Exception {
         Class cls = UTCProvider.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
         
         Constructor con = cls.getDeclaredConstructor((Class[]) null);
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isPublic(con.getModifiers()));
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testGetAvailableIDs() throws Exception {

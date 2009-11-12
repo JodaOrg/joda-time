@@ -16,33 +16,36 @@
 package org.joda.time;
 
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for DurationField.
  *
  * @author Stephen Colebourne
  */
-public class TestDurationField extends TestCase {
+public class TestDurationField extends JodaGwtTestCase {
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDurationField.class);
-    }
+    } */
 
-    public TestDurationField(String name) {
+    /* Removed for GWT public TestDurationField(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------

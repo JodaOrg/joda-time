@@ -15,11 +15,11 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.Modifier;
+// Removed for GWT import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -27,31 +27,33 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 /**
  * This class is a Junit unit test for the
  * org.joda.time.DateTimeComparator class.
  *
  * @author Guy Allard
  */
-public class TestDateTimeComparator extends TestCase {
+public class TestDateTimeComparator extends JodaGwtTestCase {
 
-    private static final Chronology ISO = ISOChronology.getInstance();
+    // Removed for GWT private static final Chronology ISO = ISOChronology.getInstance();
     
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDateTimeComparator.class);
-    }
+    } */
 
-    public TestDateTimeComparator(String name) {
+    /* Removed for GWT public TestDateTimeComparator(String name) {
         super(name);
-    }
+    } */
 
     /**
      * A reference to a DateTime object.
@@ -131,7 +133,8 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Junit <code>setUp()</code> method.
      */
-    public void setUp() /* throws Exception */ {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         Chronology chrono = ISOChronology.getInstanceUTC();
 
         // super.setUp();
@@ -154,7 +157,8 @@ public class TestDateTimeComparator extends TestCase {
     /**
      * Junit <code>tearDown()</code> method.
      */
-    protected void tearDown() /* throws Exception */ {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         // super.tearDown();
         aDateTime = null;
         bDateTime = null;
@@ -175,12 +179,12 @@ public class TestDateTimeComparator extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testClass() {
+    /* Removed for GWT public void testClass() {
         assertEquals(true, Modifier.isPublic(DateTimeComparator.class.getModifiers()));
         assertEquals(false, Modifier.isFinal(DateTimeComparator.class.getModifiers()));
         assertEquals(1, DateTimeComparator.class.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isProtected(DateTimeComparator.class.getDeclaredConstructors()[0].getModifiers()));
-    }
+    } */
     
     //-----------------------------------------------------------------------
     public void testStaticGetInstance() {
@@ -263,7 +267,7 @@ public class TestDateTimeComparator extends TestCase {
     }
     
     //-----------------------------------------------------------------------
-    public void testSerialization1() throws Exception {
+    /* Removed for GWT public void testSerialization1() throws Exception {
         DateTimeField f = ISO.dayOfYear();
         f.toString();
         DateTimeComparator c = DateTimeComparator.getInstance(DateTimeFieldType.hourOfDay(), DateTimeFieldType.dayOfYear());
@@ -280,10 +284,10 @@ public class TestDateTimeComparator extends TestCase {
         ois.close();
         
         assertEquals(c, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testSerialization2() throws Exception {
+    /* Removed for GWT public void testSerialization2() throws Exception {
         DateTimeComparator c = DateTimeComparator.getInstance();
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -298,7 +302,7 @@ public class TestDateTimeComparator extends TestCase {
         ois.close();
         
         assertSame(c, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
     /**

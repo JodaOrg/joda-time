@@ -15,8 +15,8 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Calendar;
@@ -25,8 +25,9 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
@@ -38,30 +39,31 @@ import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateMidnight.
  *
  * @author Stephen Colebourne
  */
-public class TestDateMidnight_Basics extends TestCase {
+public class TestDateMidnight_Basics extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
 
     // the default time zone is set to LONDON in setUp()
     // we have to hard code LONDON here (instead of ISOChronology.getInstance() etc.)
     // as TestAll sets up a different time zone for better all-round testing
-    private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance(LONDON);
-    private static final ISOChronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final GJChronology GJ_DEFAULT = GJChronology.getInstance(LONDON);
-    private static final GregorianChronology GREGORIAN_DEFAULT = GregorianChronology.getInstance(LONDON);
-    private static final GregorianChronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
-    private static final BuddhistChronology BUDDHIST_DEFAULT = BuddhistChronology.getInstance(LONDON);
-    private static final CopticChronology COPTIC_DEFAULT = CopticChronology.getInstance(LONDON);
+    // Removed for GWT private static final ISOChronology ISO_DEFAULT = ISOChronology.getInstance(LONDON);
+    // Removed for GWT private static final ISOChronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    // Removed for GWT private static final GJChronology GJ_DEFAULT = GJChronology.getInstance(LONDON);
+    // Removed for GWT private static final GregorianChronology GREGORIAN_DEFAULT = GregorianChronology.getInstance(LONDON);
+    // Removed for GWT private static final GregorianChronology GREGORIAN_PARIS = GregorianChronology.getInstance(PARIS);
+    // Removed for GWT private static final BuddhistChronology BUDDHIST_DEFAULT = BuddhistChronology.getInstance(LONDON);
+    // Removed for GWT private static final CopticChronology COPTIC_DEFAULT = CopticChronology.getInstance(LONDON);
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -108,19 +110,20 @@ public class TestDateMidnight_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDateMidnight_Basics.class);
-    }
+    } */
 
-    public TestDateMidnight_Basics(String name) {
+    /* Removed for GWT public TestDateMidnight_Basics(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -130,7 +133,8 @@ public class TestDateMidnight_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -415,7 +419,7 @@ public class TestDateMidnight_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         DateMidnight test = new DateMidnight(TEST_TIME_NOW_UTC);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -430,7 +434,7 @@ public class TestDateMidnight_Basics extends TestCase {
         ois.close();
         
         assertEquals(test, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testToString() {

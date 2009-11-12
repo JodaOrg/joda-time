@@ -15,13 +15,14 @@
  */
 package org.joda.time.convert;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Modifier;
+// Removed for GWT import java.lang.reflect.Constructor;
+// Removed for GWT import java.lang.reflect.Modifier;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
@@ -29,6 +30,7 @@ import org.joda.time.ReadWritableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.ReadableInstant;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test for ConverterSet.
@@ -36,7 +38,7 @@ import org.joda.time.ReadableInstant;
  *
  * @author Stephen Colebourne
  */
-public class TestConverterSet extends TestCase {
+public class TestConverterSet extends JodaGwtTestCase {
 
     private static final Converter c1 = new Converter() {
         public Class getSupportedType() {return Boolean.class;}
@@ -57,20 +59,20 @@ public class TestConverterSet extends TestCase {
         public Class getSupportedType() {return Integer.class;}
     };
     
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestConverterSet.class);
-    }
+    } */
 
-    public TestConverterSet(String name) {
+    /* Removed for GWT public TestConverterSet(String name) {
         super(name);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testClass() throws Exception {
+    /* Removed for GWT public void testClass() throws Exception {
         Class cls = ConverterSet.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -81,7 +83,7 @@ public class TestConverterSet extends TestCase {
         assertEquals(false, Modifier.isPublic(con.getModifiers()));
         assertEquals(false, Modifier.isProtected(con.getModifiers()));
         assertEquals(false, Modifier.isPrivate(con.getModifiers()));
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testBigHashtable() {

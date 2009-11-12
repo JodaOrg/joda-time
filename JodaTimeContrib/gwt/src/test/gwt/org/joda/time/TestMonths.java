@@ -15,40 +15,43 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for Months.
  *
  * @author Stephen Colebourne
  */
-public class TestMonths extends TestCase {
+public class TestMonths extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestMonths.class);
-    }
+    } */
 
-    public TestMonths(String name) {
+    /* Removed for GWT public TestMonths(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------
@@ -192,7 +195,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         Months test = Months.THREE;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -207,7 +210,7 @@ public class TestMonths extends TestCase {
         ois.close();
         
         assertSame(test, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

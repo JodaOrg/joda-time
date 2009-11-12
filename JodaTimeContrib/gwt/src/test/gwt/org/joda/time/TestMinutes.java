@@ -15,40 +15,43 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for Minutes.
  *
  * @author Stephen Colebourne
  */
-public class TestMinutes extends TestCase {
+public class TestMinutes extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestMinutes.class);
-    }
+    } */
 
-    public TestMinutes(String name) {
+    /* Removed for GWT public TestMinutes(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------
@@ -192,7 +195,7 @@ public class TestMinutes extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         Minutes test = Minutes.THREE;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -207,26 +210,26 @@ public class TestMinutes extends TestCase {
         ois.close();
         
         assertSame(test, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testToStandardWeeks() {
+    /* Removed for GWT public void testToStandardWeeks() {
         Minutes test = Minutes.minutes(60 * 24 * 7 * 2);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
-    }
+    } */
 
-    public void testToStandardDays() {
+    /* Removed for GWT public void testToStandardDays() {
         Minutes test = Minutes.minutes(60 * 24 * 2);
         Days expected = Days.days(2);
         assertEquals(expected, test.toStandardDays());
-    }
+    } */
 
-    public void testToStandardHours() {
+    /* Removed for GWT public void testToStandardHours() {
         Minutes test = Minutes.minutes(3 * 60);
         Hours expected = Hours.hours(3);
         assertEquals(expected, test.toStandardHours());
-    }
+    } */
 
     public void testToStandardSeconds() {
         Minutes test = Minutes.minutes(3);
@@ -241,14 +244,14 @@ public class TestMinutes extends TestCase {
         }
     }
 
-    public void testToStandardDuration() {
+    /* Removed for GWT public void testToStandardDuration() {
         Minutes test = Minutes.minutes(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_MINUTE);
         assertEquals(expected, test.toStandardDuration());
         
         expected = new Duration(((long) Integer.MAX_VALUE) * DateTimeConstants.MILLIS_PER_MINUTE);
         assertEquals(expected, Minutes.MAX_VALUE.toStandardDuration());
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

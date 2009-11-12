@@ -17,19 +17,21 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.chrono.CopticChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for LocalDateTime.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalDateTime_Properties extends TestCase {
+public class TestLocalDateTime_Properties extends JodaGwtTestCase {
 
-    private static final CopticChronology COPTIC_UTC = CopticChronology.getInstanceUTC();
+    // Removed for GWT private static final CopticChronology COPTIC_UTC = CopticChronology.getInstanceUTC();
 
     private int MILLIS_OF_DAY =
         (int) (10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -54,25 +56,27 @@ public class TestLocalDateTime_Properties extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestLocalDateTime_Properties.class);
-    }
+    } */
 
-    public TestLocalDateTime_Properties(String name) {
+    /* Removed for GWT public TestLocalDateTime_Properties(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;

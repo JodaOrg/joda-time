@@ -15,57 +15,60 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintStream;
-import java.lang.reflect.Modifier;
-import java.security.AllPermission;
-import java.security.CodeSource;
-import java.security.Permission;
-import java.security.PermissionCollection;
-import java.security.Permissions;
-import java.security.Policy;
-import java.security.ProtectionDomain;
+// Removed for GWT import java.lang.reflect.Modifier;
+// Removed for GWT import java.security.AllPermission;
+// Removed for GWT import java.security.CodeSource;
+// Removed for GWT import java.security.Permission;
+// Removed for GWT import java.security.PermissionCollection;
+// Removed for GWT import java.security.Permissions;
+// Removed for GWT import java.security.Policy;
+// Removed for GWT import java.security.ProtectionDomain;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
+
+import org.joda.time.gwt.JodaGwtTestCase;
 import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.NameProvider;
 import org.joda.time.tz.Provider;
 import org.joda.time.tz.UTCProvider;
-import org.joda.time.tz.ZoneInfoProvider;
+//import org.joda.time.tz.ZoneInfoProvider;
 
 /**
  * This class is a JUnit test for DateTimeZone.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeZone extends TestCase {
-    private static final boolean OLD_JDK;
-    static {
-        String str = System.getProperty("java.version");
-        boolean old = true;
-        if (str.length() > 3 &&
-            str.charAt(0) == '1' &&
-            str.charAt(1) == '.' &&
-            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-            old = false;
-        }
-        OLD_JDK = old;
-    }
+public class TestDateTimeZone extends JodaGwtTestCase {
+    // Removed for GWT private static final boolean OLD_JDK;
+// Removed for GWT
+//    static {
+//        String str = System.getProperty("java.version");
+//        boolean old = true;
+//        if (str.length() > 3 &&
+//            str.charAt(0) == '1' &&
+//            str.charAt(1) == '.' &&
+//            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
+//            old = false;
+//        }
+//        OLD_JDK = old;
+//    }
     
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -96,59 +99,62 @@ public class TestDateTimeZone extends TestCase {
 //            + 14L * DateTimeConstants.MILLIS_PER_HOUR
 //            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
     
-    private static final Policy RESTRICT;
-    private static final Policy ALLOW;
-    static {
-        // don't call Policy.getPolicy()
-        RESTRICT = new Policy() {
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            public void refresh() {
-            }
-            public boolean implies(ProtectionDomain domain, Permission permission) {
-                if (permission instanceof JodaTimePermission) {
-                    return false;
-                }
-                return true;
-//                return super.implies(domain, permission);
-            }
-        };
-        ALLOW = new Policy() {
-            public PermissionCollection getPermissions(CodeSource codesource) {
-                Permissions p = new Permissions();
-                p.add(new AllPermission());  // enable everything
-                return p;
-            }
-            public void refresh() {
-            }
-        };
-    }
+    // Removed for GWT private static final Policy RESTRICT;
+    // Removed for GWT private static final Policy ALLOW;
+// Removed for GWT
+//    static {
+//        // don't call Policy.getPolicy()
+//        RESTRICT = new Policy() {
+//            public PermissionCollection getPermissions(CodeSource codesource) {
+//                Permissions p = new Permissions();
+//                p.add(new AllPermission());  // enable everything
+//                return p;
+//            }
+//            public void refresh() {
+//            }
+//            public boolean implies(ProtectionDomain domain, Permission permission) {
+//                if (permission instanceof JodaTimePermission) {
+//                    return false;
+//                }
+//                return true;
+////                return super.implies(domain, permission);
+//            }
+//        };
+//        ALLOW = new Policy() {
+//            public PermissionCollection getPermissions(CodeSource codesource) {
+//                Permissions p = new Permissions();
+//                p.add(new AllPermission());  // enable everything
+//                return p;
+//            }
+//            public void refresh() {
+//            }
+//        };
+//    }
     
     private DateTimeZone zone;
     private Locale locale;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDateTimeZone.class);
-    }
+    } */
 
-    public TestDateTimeZone(String name) {
+    /* Removed for GWT public TestDateTimeZone(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         locale = Locale.getDefault();
         zone = DateTimeZone.getDefault();
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         Locale.setDefault(locale);
         DateTimeZone.setDefault(zone);
     }
@@ -166,7 +172,7 @@ public class TestDateTimeZone extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
             
-    public void testDefaultSecurity() {
+    /* Removed for GWT public void testDefaultSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -181,7 +187,7 @@ public class TestDateTimeZone extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testForID_String() {
@@ -337,7 +343,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testProvider() {
+    /* Removed for GWT public void testProvider() {
         try {
             assertNotNull(DateTimeZone.getProvider());
         
@@ -400,9 +406,9 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setProvider(null);
             assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
         }
-    }
+    } */
     
-    public void testProviderSecurity() {
+    /* Removed for GWT public void testProviderSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -417,7 +423,7 @@ public class TestDateTimeZone extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-    }
+    } */
 
     static class MockNullIDSProvider implements Provider {
         public Set getAvailableIDs() {
@@ -469,7 +475,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testNameProvider() {
+    /* Removed for GWT public void testNameProvider() {
         try {
             assertNotNull(DateTimeZone.getNameProvider());
         
@@ -514,9 +520,9 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setNameProvider(null);
             assertEquals(DefaultNameProvider.class, DateTimeZone.getNameProvider().getClass());
         }
-    }        
+    } */        
     
-    public void testNameProviderSecurity() {
+    /* Removed for GWT public void testNameProviderSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -531,7 +537,7 @@ public class TestDateTimeZone extends TestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-    }
+    } */
 
     static class MockOKButNullNameProvider implements NameProvider {
         public String getShortName(Locale locale, String id, String nameKey) {
@@ -543,7 +549,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testConstructor() {
+    /* Removed for GWT public void testConstructor() {
         assertEquals(1, DateTimeZone.class.getDeclaredConstructors().length);
         assertTrue(Modifier.isProtected(DateTimeZone.class.getDeclaredConstructors()[0].getModifiers()));
         try {
@@ -571,7 +577,7 @@ public class TestDateTimeZone extends TestCase {
                 }
             };
         } catch (IllegalArgumentException ex) {}
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testGetID() {
@@ -863,7 +869,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization1() throws Exception {
+    /* Removed for GWT public void testSerialization1() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -878,10 +884,10 @@ public class TestDateTimeZone extends TestCase {
         ois.close();
         
         assertSame(zone, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testSerialization2() throws Exception {
+    /* Removed for GWT public void testSerialization2() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -896,7 +902,7 @@ public class TestDateTimeZone extends TestCase {
         ois.close();
         
         assertSame(zone, result);
-    }
+    } */
 
     public void testCommentParse() throws Exception {
         // A bug in ZoneInfoCompiler's handling of comments broke Europe/Athens

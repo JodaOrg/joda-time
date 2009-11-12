@@ -15,32 +15,34 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.SkipDateTimeField;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Tests IllegalFieldValueException by triggering it from other methods.
  *
  * @author Brian S O'Neill
  */
-public class TestIllegalFieldValueException extends TestCase {
-    public static void main(String[] args) {
+public class TestIllegalFieldValueException extends JodaGwtTestCase {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestIllegalFieldValueException.class);
-    }
+    } */
 
-    public TestIllegalFieldValueException(String name) {
+    /* Removed for GWT public TestIllegalFieldValueException(String name) {
         super(name);
-    }
+    } */
 
     public void testVerifyValueBounds() {
         try {

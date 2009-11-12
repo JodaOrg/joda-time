@@ -17,18 +17,19 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for Partial.
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Properties extends TestCase {
+public class TestPartial_Properties extends JodaGwtTestCase {
 
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     
     private DateTimeZone zone = null;
     private static final DateTimeFieldType[] TYPES = new DateTimeFieldType[] {
@@ -59,24 +60,26 @@ public class TestPartial_Properties extends TestCase {
         + 7L * DateTimeConstants.MILLIS_PER_SECOND
         + 8L;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestPartial_Properties.class);
-    }
+    } */
 
-    public TestPartial_Properties(String name) {
+    /* Removed for GWT public TestPartial_Properties(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeZone.setDefault(zone);
         zone = null;
     }

@@ -15,45 +15,46 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * Test case.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeConstants extends TestCase {
+public class TestDateTimeConstants extends JodaGwtTestCase {
 
     /**
      * The main method for this test program.
      * @param args command line arguments.
      */
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
     /**
      * TestSuite is a junit required method.
      */
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDateTimeConstants.class);
-    }
+    } */
 
     /**
      * TestDateTimeComparator constructor.
      * @param name
      */
-    public TestDateTimeConstants(String name) {
+    /* Removed for GWT public TestDateTimeConstants(String name) {
         super(name);
-    }
+    } */
 
     //-----------------------------------------------------------------------
-    public void testConstructor() {
+    /* Removed for GWT public void testConstructor() {
         DateTimeConstants c = new DateTimeConstants() {
         };
         c.toString();
-    }
+    } */
 
     public void testHalfdaysOfDay() {
         assertEquals(0, DateTimeConstants.AM);

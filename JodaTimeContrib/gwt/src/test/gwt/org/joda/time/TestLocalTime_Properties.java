@@ -17,17 +17,18 @@ package org.joda.time;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalTime_Properties extends TestCase {
+public class TestLocalTime_Properties extends JodaGwtTestCase {
 
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
 
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -50,25 +51,27 @@ public class TestLocalTime_Properties extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestLocalTime_Properties.class);
-    }
+    } */
 
-    public TestLocalTime_Properties(String name) {
+    /* Removed for GWT public TestLocalTime_Properties(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;

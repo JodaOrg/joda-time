@@ -15,36 +15,40 @@
  */
 package org.joda.time.chrono;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MockZone;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  *
  * @author Brian S O'Neill
  * @author Blair Martin
  */
-public class TestLenientChronology extends TestCase {
-    public static void main(String[] args) {
+public class TestLenientChronology extends JodaGwtTestCase {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestLenientChronology.class);
-    }
+    } */
 
-    public TestLenientChronology(String name) {
+    /* Removed for GWT public TestLenientChronology(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------
@@ -120,7 +124,7 @@ public class TestLenientChronology extends TestCase {
     /** Mock zone simulating America/Grand_Turk cutover at midnight 2007-04-01 */
     private static long CUTOVER_TURK = 1175403600000L;
     private static int OFFSET_TURK = -18000000;  // -05:00
-    private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK);
+    // Removed for GWT private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK);
 
     //-----------------------------------------------------------------------
     public void test_MockTurkIsCorrect() {

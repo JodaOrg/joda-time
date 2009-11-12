@@ -15,31 +15,33 @@
  */
 package org.joda.time.tz;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Test cases for DateTimeZoneBuilder.
  *
  * @author Brian S O'Neill
  */
-public class TestBuilder extends TestCase {
-    public static void main(String[] args) {
+public class TestBuilder extends JodaGwtTestCase {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestBuilder.class);
-    }
+    } */
 
     static final DateTimeFormatter OFFSET_FORMATTER = new DateTimeFormatterBuilder()
         .appendTimeZoneOffset(null, true, 2, 4)
@@ -193,16 +195,18 @@ public class TestBuilder extends TestCase {
 
     private DateTimeZone originalDateTimeZone = null;
 
-    public TestBuilder(String name) {
+    /* Removed for GWT public TestBuilder(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         originalDateTimeZone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeZone.setDefault(originalDateTimeZone);
     }
 
@@ -274,16 +278,16 @@ public class TestBuilder extends TestCase {
         }
     }
 
-    public void testSerialization() throws IOException {
+    /* Removed for GWT public void testSerialization() throws IOException {
         DateTimeZone tz = testSerialization
             (buildAmericaLosAngelesBuilder(), "America/Los_Angeles");
 
         assertEquals(false, tz.isFixed());
         testForwardTransitions(tz, AMERICA_LOS_ANGELES_DATA);
         testReverseTransitions(tz, AMERICA_LOS_ANGELES_DATA);
-    }
+    } */
 
-    static DateTimeZone testSerialization(DateTimeZoneBuilder builder, String id)
+    /* Removed for GWT static DateTimeZone testSerialization(DateTimeZoneBuilder builder, String id)
         throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -292,9 +296,9 @@ public class TestBuilder extends TestCase {
         DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
         assertEquals(id, tz.getID());
         return tz;
-    }
+    } */
 
-    public void testFixed() throws IOException {
+    /* Removed for GWT public void testFixed() throws IOException {
         DateTimeZoneBuilder builder = new DateTimeZoneBuilder()
             .setStandardOffset(3600000)
             .setFixedSavings("LMT", 0);
@@ -310,5 +314,5 @@ public class TestBuilder extends TestCase {
 
             tz = testSerialization(builder, "Test");
         }
-    }
+    } */
 }

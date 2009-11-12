@@ -15,15 +15,16 @@
  */
 package org.joda.time.convert;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+// Removed for GWT import java.lang.reflect.Constructor;
+// Removed for GWT import java.lang.reflect.Field;
+// Removed for GWT import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
@@ -37,13 +38,14 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for NullConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestNullConverter extends TestCase {
+public class TestNullConverter extends JodaGwtTestCase {
 
     private long TEST_TIME_NOW =
             20 * DateTimeConstants.MILLIS_PER_DAY
@@ -52,9 +54,9 @@ public class TestNullConverter extends TestCase {
             + 30L * DateTimeConstants.MILLIS_PER_SECOND
             + 40L;
             
-    private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    // Removed for GWT private static final DateTimeZone UTC = DateTimeZone.UTC;
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static Chronology ISO;
     private static Chronology JULIAN;
     
@@ -63,19 +65,20 @@ public class TestNullConverter extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestNullConverter.class);
-    }
+    } */
 
-    public TestNullConverter(String name) {
+    /* Removed for GWT public TestNullConverter(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -88,7 +91,8 @@ public class TestNullConverter extends TestCase {
         JULIAN = JulianChronology.getInstance();
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -99,7 +103,7 @@ public class TestNullConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSingleton() throws Exception {
+    /* Removed for GWT public void testSingleton() throws Exception {
         Class cls = NullConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -113,7 +117,7 @@ public class TestNullConverter extends TestCase {
         assertEquals(false, Modifier.isPublic(fld.getModifiers()));
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

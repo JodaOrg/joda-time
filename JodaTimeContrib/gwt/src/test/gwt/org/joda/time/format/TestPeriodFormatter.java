@@ -19,8 +19,9 @@ import java.io.CharArrayWriter;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
@@ -31,22 +32,23 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Period Formating.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodFormatter extends TestCase {
+public class TestPeriodFormatter extends JodaGwtTestCase {
 
-    private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
-    private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
-    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
+    // Removed for GWT private static final DateTimeZone UTC = DateTimeZone.UTC;
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    // Removed for GWT private static final DateTimeZone NEWYORK = DateTimeZone.forID("America/New_York");
+    // Removed for GWT private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
 
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -61,19 +63,20 @@ public class TestPeriodFormatter extends TestCase {
     private Locale originalLocale = null;
     private PeriodFormatter f = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestPeriodFormatter.class);
-    }
+    } */
 
-    public TestPeriodFormatter(String name) {
+    /* Removed for GWT public TestPeriodFormatter(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -84,7 +87,8 @@ public class TestPeriodFormatter extends TestCase {
         f = ISOPeriodFormat.standard();
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);

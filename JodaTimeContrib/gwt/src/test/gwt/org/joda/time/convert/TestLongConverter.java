@@ -15,54 +15,57 @@
  */
 package org.joda.time.convert;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+// Removed for GWT import java.lang.reflect.Constructor;
+// Removed for GWT import java.lang.reflect.Field;
+// Removed for GWT import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for LongConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestLongConverter extends TestCase {
+public class TestLongConverter extends JodaGwtTestCase {
 
-    private static final DateTimeZone UTC = DateTimeZone.UTC;
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    // Removed for GWT private static final DateTimeZone UTC = DateTimeZone.UTC;
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static Chronology JULIAN;
     private static Chronology ISO;
     
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestLongConverter.class);
-    }
+    } */
 
-    public TestLongConverter(String name) {
+    /* Removed for GWT public TestLongConverter(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------
-    public void testSingleton() throws Exception {
+    /* Removed for GWT public void testSingleton() throws Exception {
         Class cls = LongConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -76,7 +79,7 @@ public class TestLongConverter extends TestCase {
         assertEquals(false, Modifier.isPublic(fld.getModifiers()));
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

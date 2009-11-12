@@ -17,14 +17,16 @@ package org.joda.time.field;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationFieldType;
 import org.joda.time.LocalTime;
 import org.joda.time.ReadablePartial;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test to test only the UnsupportedDateTimeField class.
@@ -33,18 +35,19 @@ import org.joda.time.ReadablePartial;
  * 
  * @author Jeremy R. Rickard
  */
-public class TestUnsupportedDateTimeField extends TestCase {
+public class TestUnsupportedDateTimeField extends JodaGwtTestCase {
 
     private DurationFieldType weeks;
     private DurationFieldType months;
     private DateTimeFieldType dateTimeFieldTypeOne;
     private ReadablePartial localTime;
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestUnsupportedDateTimeField.class);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         weeks = DurationFieldType.weeks();
         months = DurationFieldType.months();
         dateTimeFieldTypeOne = DateTimeFieldType.centuryOfEra();

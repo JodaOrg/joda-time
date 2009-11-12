@@ -15,11 +15,13 @@
  */
 package org.joda.time.format;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateTimeFormatterBuilder.
@@ -27,24 +29,26 @@ import org.joda.time.DateTimeFieldType;
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  */
-public class TestDateTimeFormatterBuilder extends TestCase {
+public class TestDateTimeFormatterBuilder extends JodaGwtTestCase {
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDateTimeFormatterBuilder.class);
-    }
+    } */
 
-    public TestDateTimeFormatterBuilder(String name) {
+    /* Removed for GWT public TestDateTimeFormatterBuilder(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------

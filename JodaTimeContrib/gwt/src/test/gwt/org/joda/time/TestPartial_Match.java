@@ -15,36 +15,38 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Partial.
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Match extends TestCase {
+public class TestPartial_Match extends JodaGwtTestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final int OFFSET = 1;
-    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
-    private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
-    private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
-    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
-    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
-    private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
-    private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
+    // Removed for GWT private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
+    // Removed for GWT private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
+    // Removed for GWT private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
+    // Removed for GWT private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
+    // Removed for GWT private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
+    // Removed for GWT private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -67,25 +69,27 @@ public class TestPartial_Match extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestPartial_Match.class);
-    }
+    } */
 
-    public TestPartial_Match(String name) {
+    /* Removed for GWT public TestPartial_Match(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;

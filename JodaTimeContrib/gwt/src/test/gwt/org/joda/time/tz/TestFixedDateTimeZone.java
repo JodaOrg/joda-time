@@ -18,38 +18,42 @@ package org.joda.time.tz;
 import java.util.Date;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeZone;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Test cases for FixedDateTimeZone.
  *
  * @author Stephen Colebourne
  */
-public class TestFixedDateTimeZone extends TestCase {
+public class TestFixedDateTimeZone extends JodaGwtTestCase {
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestFixedDateTimeZone.class);
-    }
+    } */
 
     private DateTimeZone originalDateTimeZone = null;
 
-    public TestFixedDateTimeZone(String name) {
+    /* Removed for GWT public TestFixedDateTimeZone(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         originalDateTimeZone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeZone.setDefault(originalDateTimeZone);
     }
 

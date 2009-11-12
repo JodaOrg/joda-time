@@ -15,27 +15,28 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a JUnit test for PeriodType.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodType extends TestCase {
+public class TestPeriodType extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
                      366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 
@@ -66,19 +67,20 @@ public class TestPeriodType extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestPeriodType.class);
-    }
+    } */
 
-    public TestPeriodType(String name) {
+    /* Removed for GWT public TestPeriodType(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -88,7 +90,8 @@ public class TestPeriodType extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -106,7 +109,7 @@ public class TestPeriodType extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    private void assertEqualsAfterSerialization(PeriodType type) throws Exception {
+    /* Removed for GWT private void assertEqualsAfterSerialization(PeriodType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(type);
@@ -119,9 +122,9 @@ public class TestPeriodType extends TestCase {
         ois.close();
         
         assertEquals(type, result);
-    }
+    } */
 
-    private void assertSameAfterSerialization(PeriodType type) throws Exception {
+    /* Removed for GWT private void assertSameAfterSerialization(PeriodType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(type);
@@ -134,7 +137,7 @@ public class TestPeriodType extends TestCase {
         ois.close();
         
         assertEquals(type, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testStandard() throws Exception {
@@ -156,7 +159,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.standard().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -178,7 +181,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearMonthDayTime().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -196,7 +199,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearMonthDay().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -218,7 +221,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearWeekDayTime().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -236,7 +239,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearWeekDay().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -257,7 +260,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearDayTime().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -274,7 +277,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.yearDay().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -294,7 +297,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.dayTime().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -313,7 +316,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.time().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -329,7 +332,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.years().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -345,7 +348,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.months().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -361,7 +364,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.weeks().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -377,7 +380,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.days().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -393,7 +396,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.hours().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -409,7 +412,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.minutes().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -425,7 +428,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.seconds().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -441,7 +444,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals(false, type.hashCode() == PeriodType.standard().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -497,7 +500,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.forFields(types).hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     public void testForFields3() throws Exception {
@@ -517,7 +520,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(true, type.hashCode() == type.hashCode());
         assertEquals(true, type.hashCode() == PeriodType.forFields(types).hashCode());
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
-        assertSameAfterSerialization(type);
+// Removed for GWT         assertSameAfterSerialization(type);
     }
 
     public void testForFields4() throws Exception {
@@ -612,7 +615,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoYears", type.getName());
         assertEquals("PeriodType[StandardNoYears]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -634,7 +637,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoMonths", type.getName());
         assertEquals("PeriodType[StandardNoMonths]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -656,7 +659,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoWeeks", type.getName());
         assertEquals("PeriodType[StandardNoWeeks]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -678,7 +681,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoDays", type.getName());
         assertEquals("PeriodType[StandardNoDays]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -700,7 +703,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoHours", type.getName());
         assertEquals("PeriodType[StandardNoHours]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -722,7 +725,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoMinutes", type.getName());
         assertEquals("PeriodType[StandardNoMinutes]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -744,7 +747,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoSeconds", type.getName());
         assertEquals("PeriodType[StandardNoSeconds]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -766,7 +769,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoMillis", type.getName());
         assertEquals("PeriodType[StandardNoMillis]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------
@@ -786,7 +789,7 @@ public class TestPeriodType extends TestCase {
         assertEquals(false, type.hashCode() == PeriodType.millis().hashCode());
         assertEquals("StandardNoHoursNoMinutesNoSeconds", type.getName());
         assertEquals("PeriodType[StandardNoHoursNoMinutesNoSeconds]", type.toString());
-        assertEqualsAfterSerialization(type);
+// Removed for GWT         assertEqualsAfterSerialization(type);
     }
 
     //-----------------------------------------------------------------------

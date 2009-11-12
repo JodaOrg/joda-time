@@ -15,15 +15,16 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.base.AbstractInterval;
 import org.joda.time.chrono.BuddhistChronology;
@@ -31,20 +32,21 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.LenientChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Instant.
  *
  * @author Stephen Colebourne
  */
-public class TestInterval_Basics extends TestCase {
+public class TestInterval_Basics extends JodaGwtTestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
+    // Removed for GWT private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
     private Interval interval37;
     private Interval interval33;
 
@@ -77,19 +79,20 @@ public class TestInterval_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestInterval_Basics.class);
-    }
+    } */
 
-    public TestInterval_Basics(String name) {
+    /* Removed for GWT public TestInterval_Basics(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -101,7 +104,8 @@ public class TestInterval_Basics extends TestCase {
         interval33 = new Interval(3, 3);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -1015,7 +1019,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1030,7 +1034,7 @@ public class TestInterval_Basics extends TestCase {
         ois.close();
         
         assertEquals(test, result);
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testToString() {

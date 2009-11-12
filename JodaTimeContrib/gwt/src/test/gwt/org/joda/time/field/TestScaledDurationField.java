@@ -15,24 +15,26 @@
  */
 package org.joda.time.field;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for PreciseDurationField.
  *
  * @author Stephen Colebourne
  */
-public class TestScaledDurationField extends TestCase {
+public class TestScaledDurationField extends JodaGwtTestCase {
     
     private static final long LONG_INTEGER_MAX = Integer.MAX_VALUE;
     private static final int INTEGER_MAX = Integer.MAX_VALUE;
@@ -40,24 +42,26 @@ public class TestScaledDurationField extends TestCase {
     
     private ScaledDurationField iField;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestScaledDurationField.class);
-    }
+    } */
 
-    public TestScaledDurationField(String name) {
+    /* Removed for GWT public TestScaledDurationField(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DurationField base = MillisDurationField.INSTANCE;
         iField = new ScaledDurationField(base, DurationFieldType.minutes(), 90);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         iField = null;
     }
 
@@ -272,7 +276,7 @@ public class TestScaledDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         DurationField test = iField;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -287,6 +291,6 @@ public class TestScaledDurationField extends TestCase {
         ois.close();
         
         assertEquals(test, result);
-    }
+    } */
 
 }

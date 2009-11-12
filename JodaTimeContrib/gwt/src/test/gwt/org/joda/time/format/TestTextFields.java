@@ -17,29 +17,31 @@ package org.joda.time.format;
 
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Makes sure that text fields are correct for English.
  *
  * @author Brian S O'Neill
  */
-public class TestTextFields extends TestCase {
+public class TestTextFields extends JodaGwtTestCase {
 
-    private static final DateTimeZone[] ZONES = {
+    /* Removed for GWT private static final DateTimeZone[] ZONES = {
         DateTimeZone.UTC,
         DateTimeZone.forID("Europe/Paris"),
         DateTimeZone.forID("Europe/London"),
         DateTimeZone.forID("Asia/Tokyo"),
         DateTimeZone.forID("America/Los_Angeles"),
-    };
+    }; */
 
     private static final String[] MONTHS = {
         null,
@@ -59,26 +61,28 @@ public class TestTextFields extends TestCase {
     private DateTimeZone originalDateTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestTextFields.class);
-    }
+    } */
 
-    public TestTextFields(String name) {
+    /* Removed for GWT public TestTextFields(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         originalDateTimeZone = DateTimeZone.getDefault();
         originalLocale = Locale.getDefault();
         DateTimeZone.setDefault(ZONES[0]);
         Locale.setDefault(Locale.ENGLISH);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeZone.setDefault(originalDateTimeZone);
         Locale.setDefault(originalLocale);
         originalDateTimeZone = null;

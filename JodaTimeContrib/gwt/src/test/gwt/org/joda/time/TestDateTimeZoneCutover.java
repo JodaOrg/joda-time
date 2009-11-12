@@ -15,32 +15,35 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.joda.time.gwt.JodaGwtTestCase;
+
+import static org.joda.time.gwt.TestConstants.*;
 
 /**
  * This class is a JUnit test for DateTimeZone.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeZoneCutover extends TestCase {
+public class TestDateTimeZoneCutover extends JodaGwtTestCase {
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestDateTimeZoneCutover.class);
-    }
+    } */
 
-    public TestDateTimeZoneCutover(String name) {
+    /* Removed for GWT public TestDateTimeZoneCutover(String name) {
         super(name);
+    } */
+
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
     }
 
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
     }
 
     //-----------------------------------------------------------------------
@@ -52,7 +55,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     /** Mock zone simulating Asia/Gaza cutover at midnight 2007-04-01 */
     private static long CUTOVER_GAZA = 1175378400000L;
     private static int OFFSET_GAZA = 7200000;  // +02:00
-    private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA);
+    // Removed for GWT private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA);
 
     //-----------------------------------------------------------------------
     public void test_MockGazaIsCorrect() {
@@ -271,7 +274,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     /** Mock zone simulating America/Grand_Turk cutover at midnight 2007-04-01 */
     private static long CUTOVER_TURK = 1175403600000L;
     private static int OFFSET_TURK = -18000000;  // -05:00
-    private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK);
+    // Removed for GWT private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK);
 
     //-----------------------------------------------------------------------
     public void test_MockTurkIsCorrect() {
@@ -495,7 +498,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     /** America/New_York cutover from 01:59 to 03:00 on 2007-03-11 */
     private static long CUTOVER_NEW_YORK_SPRING = 1173596400000L;  // 2007-03-11T03:00:00.000-04:00
-    private static final DateTimeZone ZONE_NEW_YORK = DateTimeZone.forID("America/New_York");
+    // Removed for GWT private static final DateTimeZone ZONE_NEW_YORK = DateTimeZone.forID("America/New_York");
 //  DateTime x = new DateTime(2007, 1, 1, 0, 0, 0, 0, ZONE_NEW_YORK);
 //  System.out.println(ZONE_NEW_YORK.nextTransition(x.getMillis()));
 //  DateTime y = new DateTime(ZONE_NEW_YORK.nextTransition(x.getMillis()), ZONE_NEW_YORK);
@@ -821,7 +824,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     /** Europe/Moscow cutover from 01:59 to 03:00 on 2007-03-25 */
     private static long CUTOVER_MOSCOW_SPRING = 1174777200000L;  // 2007-03-25T03:00:00.000+04:00
-    private static final DateTimeZone ZONE_MOSCOW = DateTimeZone.forID("Europe/Moscow");
+    // Removed for GWT private static final DateTimeZone ZONE_MOSCOW = DateTimeZone.forID("Europe/Moscow");
 
     //-----------------------------------------------------------------------
     public void test_MoscowIsCorrect_Spring() {
@@ -950,7 +953,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     /** America/Guatemala cutover from 23:59 to 23:00 on 2006-09-30 */
     private static long CUTOVER_GUATEMALA_AUTUMN = 1159678800000L; // 2006-09-30T23:00:00.000-06:00
-    private static final DateTimeZone ZONE_GUATEMALA = DateTimeZone.forID("America/Guatemala");
+    // Removed for GWT private static final DateTimeZone ZONE_GUATEMALA = DateTimeZone.forID("America/Guatemala");
 
     //-----------------------------------------------------------------------
     public void test_GuatemataIsCorrect_Autumn() {

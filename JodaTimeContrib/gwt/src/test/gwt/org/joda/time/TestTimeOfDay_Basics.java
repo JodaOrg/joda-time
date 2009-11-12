@@ -15,16 +15,17 @@
  */
 package org.joda.time;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+// Removed for GWT import java.io.ByteArrayInputStream;
+// Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+
+import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
@@ -32,30 +33,31 @@ import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
  *
  * @author Stephen Colebourne
  */
-public class TestTimeOfDay_Basics extends TestCase {
+public class TestTimeOfDay_Basics extends JodaGwtTestCase {
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
-    private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
-    private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    // Removed for GWT private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
+    // Removed for GWT private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
+    // Removed for GWT private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
     private static final int OFFSET = 1;
-    private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
-    private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
-    private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
-    private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
-    private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
-    private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
-    private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
-    private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
-    private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
-    private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
-    private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
-    private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology COPTIC_LONDON = CopticChronology.getInstance(LONDON);
+    // Removed for GWT private static final Chronology COPTIC_TOKYO = CopticChronology.getInstance(TOKYO);
+    // Removed for GWT private static final Chronology COPTIC_UTC = CopticChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology ISO_LONDON = ISOChronology.getInstance(LONDON);
+    // Removed for GWT private static final Chronology ISO_TOKYO = ISOChronology.getInstance(TOKYO);
+    // Removed for GWT private static final Chronology ISO_UTC = ISOChronology.getInstanceUTC();
+    // Removed for GWT private static final Chronology BUDDHIST_PARIS = BuddhistChronology.getInstance(PARIS);
+    // Removed for GWT private static final Chronology BUDDHIST_LONDON = BuddhistChronology.getInstance(LONDON);
+    // Removed for GWT private static final Chronology BUDDHIST_TOKYO = BuddhistChronology.getInstance(TOKYO);
+    // Removed for GWT private static final Chronology BUDDHIST_UTC = BuddhistChronology.getInstanceUTC();
     
     private long TEST_TIME_NOW =
             10L * DateTimeConstants.MILLIS_PER_HOUR
@@ -78,25 +80,27 @@ public class TestTimeOfDay_Basics extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
+    /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
-    }
+    } */
 
-    public static TestSuite suite() {
+    /* Removed for GWT public static TestSuite suite() {
         return new TestSuite(TestTimeOfDay_Basics.class);
-    }
+    } */
 
-    public TestTimeOfDay_Basics(String name) {
+    /* Removed for GWT public TestTimeOfDay_Basics(String name) {
         super(name);
-    }
+    } */
 
-    protected void setUp() throws Exception {
+    protected void gwtSetUp() throws Exception {
+        super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+    protected void gwtTearDown() throws Exception {
+        super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
@@ -858,7 +862,7 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testSerialization() throws Exception {
+    /* Removed for GWT public void testSerialization() throws Exception {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -876,7 +880,7 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertTrue(Arrays.equals(test.getValues(), result.getValues()));
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
-    }
+    } */
 
     //-----------------------------------------------------------------------
     public void testToString() {

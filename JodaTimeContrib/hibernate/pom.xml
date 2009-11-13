@@ -138,17 +138,12 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-repository-plugin</artifactId>
-        <version>2.3</version>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-gpg-plugin</artifactId>
         <version>1.0-alpha-4</version>
         <executions>
           <execution>
             <id>sign-artifacts</id>
-            <phase>package</phase>
+            <phase>verify</phase>
             <goals>
               <goal>sign</goal>
             </goals>
@@ -156,6 +151,12 @@
         </executions>
       </plugin>
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-repository-plugin</artifactId>
+        <version>2.3</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
@@ -164,6 +165,15 @@
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
+        <executions>
+          <execution>
+            <id>make-assembly</id>
+            <phase>deploy</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

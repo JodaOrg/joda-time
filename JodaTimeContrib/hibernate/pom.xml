@@ -240,6 +240,7 @@
             <link>http://java.sun.com/j2se/1.4.2/docs/api/</link>
             <link>http://joda-time.sourceforge.net/api-release/</link>
           </links>
+          <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
       <plugin>

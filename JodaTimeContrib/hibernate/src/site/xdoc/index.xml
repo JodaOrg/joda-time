@@ -27,7 +27,7 @@ It aims to provide the classes necessary to persist Joda-Time objects.
   &lt;% pageContext.setAttribute("now", new org.joda.time.DateTime()); %&gt;
   <b>&lt;joda:format value="${now}" style="SM" /&gt;</b>
 </source>-->
-Version 1.2 was released on 2009-11-XX -
+Version 1.2 was released on 2009-11-15 -
 <a href="http://sourceforge.net/projects/joda-time/files/joda-time-hibernate/">Download now</a>
 </p>
 </section>

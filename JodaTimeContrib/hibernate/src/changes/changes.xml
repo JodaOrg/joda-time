@@ -13,7 +13,7 @@
         Use LocalDate.toDateTimeAtStartOfDay() [2461322]
       </action>              
       <action dev="scolebourne" type="update">
-        Require Joda-Time 1.6
+        Require Joda-Time 1.5
       </action>              
       <action dev="scolebourne" type="fix">
         Method deepCopy() should just return the input value [2038742]

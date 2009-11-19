@@ -18,12 +18,11 @@ package org.joda.time.tz;
 import java.util.Date;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeZone;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Test cases for FixedDateTimeZone.

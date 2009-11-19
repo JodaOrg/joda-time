@@ -20,7 +20,7 @@ package org.joda.time.convert;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -30,7 +30,6 @@ import org.joda.time.ReadWritableDateTime;
 import org.joda.time.ReadWritableInstant;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.ReadableInstant;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test for ConverterSet.
@@ -72,7 +71,8 @@ public class TestConverterSet extends JodaGwtTestCase {
     } */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testClass() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testClass() throws Exception {
         Class cls = ConverterSet.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -83,7 +83,8 @@ public class TestConverterSet extends JodaGwtTestCase {
         assertEquals(false, Modifier.isPublic(con.getModifiers()));
         assertEquals(false, Modifier.isProtected(con.getModifiers()));
         assertEquals(false, Modifier.isPrivate(con.getModifiers()));
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testBigHashtable() {

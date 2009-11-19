@@ -17,14 +17,13 @@ package org.joda.time;
 
 import java.util.Locale;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for YearMonthDay.

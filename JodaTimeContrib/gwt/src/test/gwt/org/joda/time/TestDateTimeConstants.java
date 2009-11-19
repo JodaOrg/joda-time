@@ -16,8 +16,8 @@
 package org.joda.time;
 
 import org.joda.time.gwt.JodaGwtTestCase;
-
 import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 /**
  * Test case.
@@ -50,11 +50,11 @@ public class TestDateTimeConstants extends JodaGwtTestCase {
     } */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testConstructor() {
+    public void testConstructor() {
         DateTimeConstants c = new DateTimeConstants() {
         };
         c.toString();
-    } */
+    }
 
     public void testHalfdaysOfDay() {
         assertEquals(0, DateTimeConstants.AM);

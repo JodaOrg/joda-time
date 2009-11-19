@@ -19,7 +19,7 @@ import java.io.CharArrayWriter;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -32,7 +32,6 @@ import org.joda.time.Period;
 import org.joda.time.PeriodType;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Period Formating.
@@ -79,20 +78,28 @@ public class TestPeriodFormatter extends JodaGwtTestCase {
         super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
-        f = ISOPeriodFormat.standard();
+        /* //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
+         f = ISOPeriodFormat.standard();
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        /* //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE */
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;

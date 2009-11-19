@@ -15,7 +15,7 @@
  */
 package org.joda.time;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -24,7 +24,6 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.SkipDateTimeField;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Tests IllegalFieldValueException by triggering it from other methods.

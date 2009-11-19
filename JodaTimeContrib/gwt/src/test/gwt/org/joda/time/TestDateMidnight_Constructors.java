@@ -17,8 +17,9 @@ package org.joda.time;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -26,7 +27,6 @@ import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.MockZeroNullIntegerConverter;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateMidnight.
@@ -100,16 +100,23 @@ public class TestDateMidnight_Constructors extends JodaGwtTestCase {
         super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         zone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(LONDON);
-        Locale.setDefault(Locale.UK);
+        /* //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        /* //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE */
         zone = null;
     }
 

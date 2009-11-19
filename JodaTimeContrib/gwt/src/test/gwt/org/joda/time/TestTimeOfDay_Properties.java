@@ -18,8 +18,8 @@ package org.joda.time;
 import java.util.Locale;
 
 import org.joda.time.gwt.JodaGwtTestCase;
-
 import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for TimeOfDay.

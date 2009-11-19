@@ -15,13 +15,12 @@
  */
 package org.joda.time.format;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateTimeFormatterBuilder.

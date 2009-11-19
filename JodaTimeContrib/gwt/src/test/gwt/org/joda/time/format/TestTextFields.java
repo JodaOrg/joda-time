@@ -16,8 +16,9 @@
 package org.joda.time.format;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -26,7 +27,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Makes sure that text fields are correct for English.
@@ -76,15 +76,22 @@ public class TestTextFields extends JodaGwtTestCase {
     protected void gwtSetUp() throws Exception {
         super.gwtSetUp();
         originalDateTimeZone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(ZONES[0]);
-        Locale.setDefault(Locale.ENGLISH);
+        /* //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.ENGLISH);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeZone.setDefault(originalDateTimeZone);
+        /* //BEGIN GWT IGNORE
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE */
         originalDateTimeZone = null;
         originalLocale = null;
     }

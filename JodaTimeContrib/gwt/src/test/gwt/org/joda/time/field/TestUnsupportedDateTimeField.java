@@ -17,7 +17,7 @@ package org.joda.time.field;
 
 import java.util.Locale;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -26,7 +26,6 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationFieldType;
 import org.joda.time.LocalTime;
 import org.joda.time.ReadablePartial;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test to test only the UnsupportedDateTimeField class.

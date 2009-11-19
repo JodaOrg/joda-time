@@ -15,7 +15,7 @@
  */
 package org.joda.time.chrono;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -23,7 +23,6 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MockZone;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  *

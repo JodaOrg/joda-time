@@ -23,7 +23,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -33,7 +33,6 @@ import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
@@ -862,7 +861,8 @@ public class TestTimeOfDay_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -880,7 +880,8 @@ public class TestTimeOfDay_Basics extends JodaGwtTestCase {
         assertTrue(Arrays.equals(test.getValues(), result.getValues()));
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testToString() {

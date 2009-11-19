@@ -19,12 +19,11 @@ package org.joda.time.tz;
 // Removed for GWT import java.lang.reflect.Modifier;
 import java.util.Set;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeZone;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test for UTCProvider.
@@ -48,14 +47,16 @@ public class TestUTCProvider extends JodaGwtTestCase {
     } */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testClass() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testClass() throws Exception {
         Class cls = UTCProvider.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
         
         Constructor con = cls.getDeclaredConstructor((Class[]) null);
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isPublic(con.getModifiers()));
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testGetAvailableIDs() throws Exception {

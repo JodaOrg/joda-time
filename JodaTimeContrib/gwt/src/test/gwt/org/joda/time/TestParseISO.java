@@ -16,13 +16,12 @@
 package org.joda.time;
 
 import junit.framework.Assert;
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Unit test the parsing of ISO format datetimes

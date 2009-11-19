@@ -18,13 +18,12 @@ package org.joda.time.format;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat parsing.
@@ -52,18 +51,26 @@ public class TestISODateTimeFormatParsing extends JodaGwtTestCase {
     protected void gwtSetUp() throws Exception {
         super.gwtSetUp();
         originalDateTimeZone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"));
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
-    }
+        /* //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
+     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeZone.setDefault(originalDateTimeZone);
+        /* //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE */
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;

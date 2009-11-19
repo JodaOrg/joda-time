@@ -24,7 +24,7 @@ package org.joda.time;
 // Removed for GWT import java.security.Policy;
 // Removed for GWT import java.security.ProtectionDomain;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -33,7 +33,6 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -43,19 +42,20 @@ import org.joda.time.gwt.JodaGwtTestCase;
 public class TestDateTimeUtils extends JodaGwtTestCase {
 
     // Removed for GWT private static final GJChronology GJ = GJChronology.getInstance();
-    // Removed for GWT private static final boolean OLD_JDK;
-// Removed for GWT
-//    static {
-//        String str = System.getProperty("java.version");
-//        boolean old = true;
-//        if (str.length() > 3 &&
-//            str.charAt(0) == '1' &&
-//            str.charAt(1) == '.' &&
-//            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-//            old = false;
-//        }
-//        OLD_JDK = old;
-//    }
+    /* //BEGIN GWT IGNORE
+    private static final boolean OLD_JDK;
+    static {
+        String str = System.getProperty("java.version");
+        boolean old = true;
+        if (str.length() > 3 &&
+            str.charAt(0) == '1' &&
+            str.charAt(1) == '.' &&
+            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
+            old = false;
+        }
+        OLD_JDK = old;
+    }
+    //END GWT IGNORE */
 
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
@@ -88,37 +88,38 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
             + 14L * DateTimeConstants.MILLIS_PER_HOUR
             + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
-    // Removed for GWT private static final Policy RESTRICT;
-    // Removed for GWT private static final Policy ALLOW;
-// Removed for GWT
-//    static {
-//        // don't call Policy.getPolicy()
-//        RESTRICT = new Policy() {
-//            public PermissionCollection getPermissions(CodeSource codesource) {
-//                Permissions p = new Permissions();
-//                p.add(new AllPermission());  // enable everything
-//                return p;
-//            }
-//            public void refresh() {
-//            }
-//            public boolean implies(ProtectionDomain domain, Permission permission) {
-//                if (permission instanceof JodaTimePermission) {
-//                    return false;
-//                }
-//                return true;
-////                return super.implies(domain, permission);
-//            }
-//        };
-//        ALLOW = new Policy() {
-//            public PermissionCollection getPermissions(CodeSource codesource) {
-//                Permissions p = new Permissions();
-//                p.add(new AllPermission());  // enable everything
-//                return p;
-//            }
-//            public void refresh() {
-//            }
-//        };
-//    }
+    /* //BEGIN GWT IGNORE
+    private static final Policy RESTRICT;
+    private static final Policy ALLOW;
+    static {
+        // don't call Policy.getPolicy()
+        RESTRICT = new Policy() {
+            public PermissionCollection getPermissions(CodeSource codesource) {
+                Permissions p = new Permissions();
+                p.add(new AllPermission());  // enable everything
+                return p;
+            }
+            public void refresh() {
+            }
+            public boolean implies(ProtectionDomain domain, Permission permission) {
+                if (permission instanceof JodaTimePermission) {
+                    return false;
+                }
+                return true;
+//                return super.implies(domain, permission);
+            }
+        };
+        ALLOW = new Policy() {
+            public PermissionCollection getPermissions(CodeSource codesource) {
+                Permissions p = new Permissions();
+                p.add(new AllPermission());  // enable everything
+                return p;
+            }
+            public void refresh() {
+            }
+        };
+    }
+    //END GWT IGNORE */
     
     /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -148,7 +149,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testClass() {
+    /* //BEGIN GWT IGNORE
+    public void testClass() {
         Class cls = DateTimeUtils.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isFinal(cls.getModifiers()));
@@ -157,7 +159,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
         assertEquals(true, Modifier.isProtected(cls.getDeclaredConstructors()[0].getModifiers()));
         
         DateTimeUtils utils = new DateTimeUtils() {};
-    } */
+    }
+    //END GWT IGNORE */
     
     //-----------------------------------------------------------------------
     public void testSystemMillis() {
@@ -168,7 +171,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSystemMillisSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testSystemMillisSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -187,7 +191,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
         } finally {
             DateTimeUtils.setCurrentMillisSystem();
         }
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testFixedMillis() {
@@ -206,7 +211,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testFixedMillisSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testFixedMillisSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -225,7 +231,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
         } finally {
             DateTimeUtils.setCurrentMillisSystem();
         }
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testOffsetMillis() {
@@ -262,7 +269,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testOffsetMillisSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testOffsetMillisSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -281,7 +289,8 @@ public class TestDateTimeUtils extends JodaGwtTestCase {
         } finally {
             DateTimeUtils.setCurrentMillisSystem();
         }
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_RI() {

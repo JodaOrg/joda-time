@@ -21,8 +21,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.joda.time.gwt.JodaGwtTestCase;
-
 import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Years.
@@ -177,7 +177,8 @@ public class TestYears extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         Years test = Years.THREE;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -192,7 +193,8 @@ public class TestYears extends JodaGwtTestCase {
         ois.close();
         
         assertSame(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

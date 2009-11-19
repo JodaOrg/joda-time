@@ -19,7 +19,7 @@ package org.joda.time.tz;
 // Removed for GWT import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -27,7 +27,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * Test cases for DateTimeZoneBuilder.
@@ -278,16 +277,19 @@ public class TestBuilder extends JodaGwtTestCase {
         }
     }
 
-    /* Removed for GWT public void testSerialization() throws IOException {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws IOException {
         DateTimeZone tz = testSerialization
             (buildAmericaLosAngelesBuilder(), "America/Los_Angeles");
 
         assertEquals(false, tz.isFixed());
         testForwardTransitions(tz, AMERICA_LOS_ANGELES_DATA);
         testReverseTransitions(tz, AMERICA_LOS_ANGELES_DATA);
-    } */
+    }
+    //END GWT IGNORE */
 
-    /* Removed for GWT static DateTimeZone testSerialization(DateTimeZoneBuilder builder, String id)
+    /* //BEGIN GWT IGNORE
+    static DateTimeZone testSerialization(DateTimeZoneBuilder builder, String id)
         throws IOException
     {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -296,9 +298,11 @@ public class TestBuilder extends JodaGwtTestCase {
         DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
         assertEquals(id, tz.getID());
         return tz;
-    } */
+    }
+    //END GWT IGNORE */
 
-    /* Removed for GWT public void testFixed() throws IOException {
+    /* //BEGIN GWT IGNORE
+    public void testFixed() throws IOException {
         DateTimeZoneBuilder builder = new DateTimeZoneBuilder()
             .setStandardOffset(3600000)
             .setFixedSavings("LMT", 0);
@@ -314,5 +318,6 @@ public class TestBuilder extends JodaGwtTestCase {
 
             tz = testSerialization(builder, "Test");
         }
-    } */
+    }
+    //END GWT IGNORE */
 }

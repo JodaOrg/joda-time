@@ -25,7 +25,7 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -39,7 +39,6 @@ import org.joda.time.field.UnsupportedDateTimeField;
 import org.joda.time.field.UnsupportedDurationField;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateMidnight.
@@ -126,19 +125,27 @@ public class TestDateMidnight_Basics extends JodaGwtTestCase {
         super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         originalDateTimeZone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        /* //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        /* //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE */
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -419,7 +426,8 @@ public class TestDateMidnight_Basics extends JodaGwtTestCase {
     }
     
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         DateMidnight test = new DateMidnight(TEST_TIME_NOW_UTC);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -434,7 +442,8 @@ public class TestDateMidnight_Basics extends JodaGwtTestCase {
         ois.close();
         
         assertEquals(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testToString() {
@@ -454,6 +463,7 @@ public class TestDateMidnight_Basics extends JodaGwtTestCase {
         assertEquals("2002-06-09T00:00:00.000+01:00", test.toString((String) null));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testToString_String_String() {
         DateMidnight test = new DateMidnight(TEST_TIME_NOW_UTC);
         assertEquals("Sun 9/6", test.toString("EEE d/M", Locale.ENGLISH));

@@ -21,13 +21,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.Partial;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat.

@@ -17,14 +17,13 @@ package org.joda.time;
 
 import java.util.Locale;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateTime.
@@ -86,16 +85,23 @@ public class TestDateMidnight_Properties extends JodaGwtTestCase {
         super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(LONDON);
-        Locale.setDefault(Locale.UK);
+        /* //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        /* //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE */
         zone = null;
     }
 
@@ -107,6 +113,7 @@ public class TestDateMidnight_Properties extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPropertyGetEra() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
         assertSame(test.getChronology().era(), test.era().getField());
@@ -221,6 +228,7 @@ public class TestDateMidnight_Properties extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPropertyGetMonthOfYear() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
         assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
@@ -453,6 +461,7 @@ public class TestDateMidnight_Properties extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPropertyGetDayOfWeek() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
         assertSame(test.getChronology().dayOfWeek(), test.dayOfWeek().getField());

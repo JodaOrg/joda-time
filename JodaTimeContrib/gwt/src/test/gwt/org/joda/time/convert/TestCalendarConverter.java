@@ -24,7 +24,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -36,7 +36,6 @@ import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for CalendarConverter.
@@ -69,7 +68,8 @@ public class TestCalendarConverter extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSingleton() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSingleton() throws Exception {
         Class cls = CalendarConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -83,7 +83,8 @@ public class TestCalendarConverter extends JodaGwtTestCase {
         assertEquals(false, Modifier.isPublic(fld.getModifiers()));
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {
@@ -121,6 +122,7 @@ public class TestCalendarConverter extends JodaGwtTestCase {
         Calendar uc = new MockUnknownCalendar(TimeZone.getTimeZone("Europe/Moscow"));
         assertEquals(ISOChronology.getInstance(PARIS), CalendarConverter.INSTANCE.getChronology(uc, PARIS));
         
+        /* //BEGIN GWT IGNORE
         try {
             Calendar bc = (Calendar) Class.forName("sun.util.BuddhistCalendar").newInstance();
             bc.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
@@ -128,6 +130,7 @@ public class TestCalendarConverter extends JodaGwtTestCase {
         } catch (ClassNotFoundException ex) {
             // ignore
         }
+        //END GWT IGNORE */
     }
 
     public void testGetChronology_Object_nullChronology() throws Exception {
@@ -152,6 +155,7 @@ public class TestCalendarConverter extends JodaGwtTestCase {
         Calendar uc = new MockUnknownCalendar(TimeZone.getTimeZone("Europe/Moscow"));
         assertEquals(ISOChronology.getInstance(MOSCOW), CalendarConverter.INSTANCE.getChronology(uc, (Chronology) null));
         
+        /* //BEGIN GWT IGNORE
         try {
             Calendar bc = (Calendar) Class.forName("sun.util.BuddhistCalendar").newInstance();
             bc.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
@@ -159,6 +163,7 @@ public class TestCalendarConverter extends JodaGwtTestCase {
         } catch (ClassNotFoundException ex) {
             // ignore
         }
+        //END GWT IGNORE */
     }
 
     public void testGetChronology_Object_Chronology() throws Exception {

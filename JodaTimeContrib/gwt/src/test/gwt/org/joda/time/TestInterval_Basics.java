@@ -22,7 +22,7 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -32,7 +32,6 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.LenientChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -95,11 +94,17 @@ public class TestInterval_Basics extends JodaGwtTestCase {
         super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(PARIS);
-        TimeZone.setDefault(PARIS.toTimeZone());
-        Locale.setDefault(Locale.FRANCE);
+        /* //BEGIN GWT IGNORE
+        //TimeZone.setDefault(PARIS.toTimeZone());
+        //Locale.setDefault(Locale.FRANCE);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
         interval37 = new Interval(3, 7);
         interval33 = new Interval(3, 3);
     }
@@ -108,8 +113,10 @@ public class TestInterval_Basics extends JodaGwtTestCase {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        /* //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE */
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -1019,7 +1026,8 @@ public class TestInterval_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -1034,7 +1042,8 @@ public class TestInterval_Basics extends JodaGwtTestCase {
         ois.close();
         
         assertEquals(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testToString() {

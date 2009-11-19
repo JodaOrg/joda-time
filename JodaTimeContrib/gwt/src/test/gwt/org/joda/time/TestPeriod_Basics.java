@@ -24,14 +24,13 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.base.BasePeriod;
 import org.joda.time.format.PeriodFormat;
 import org.joda.time.format.PeriodFormatter;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for Duration.
@@ -90,19 +89,27 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
         super.gwtSetUp();
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        /* //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        /* //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE */
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -227,7 +234,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         Period test = new Period(123L);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -242,7 +250,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
         ois.close();
         
         assertEquals(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
 //    //-----------------------------------------------------------------------
 //    public void testAddTo1() {
@@ -940,7 +949,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardWeeks() {
+    /* //BEGIN GWT IGNORE
+    public void testToStandardWeeks() {
         Period test = new Period(0, 0, 3, 4, 5, 6, 7, 8);
         assertEquals(3, test.toStandardWeeks().getWeeks());
         
@@ -969,7 +979,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
             test.toStandardWeeks();
             fail();
         } catch (ArithmeticException ex) {}
-    } */
+    }
+    //END GWT IGNORE */
 
     public void testToStandardWeeks_years() {
         Period test = Period.years(1);
@@ -1006,7 +1017,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardDays() {
+    /* //BEGIN GWT IGNORE
+    public void testToStandardDays() {
         Period test = new Period(0, 0, 0, 4, 5, 6, 7, 8);
         assertEquals(4, test.toStandardDays().getDays());
         
@@ -1034,7 +1046,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
             test.toStandardDays();
             fail();
         } catch (ArithmeticException ex) {}
-    } */
+    }
+    //END GWT IGNORE */
 
     public void testToStandardDays_years() {
         Period test = Period.years(1);
@@ -1071,7 +1084,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardHours() {
+    /* //BEGIN GWT IGNORE
+    public void testToStandardHours() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8);
         assertEquals(5, test.toStandardHours().getHours());
         
@@ -1098,7 +1112,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
             test.toStandardHours();
             fail();
         } catch (ArithmeticException ex) {}
-    } */
+    }
+    //END GWT IGNORE */
 
     public void testToStandardHours_years() {
         Period test = Period.years(1);
@@ -1135,7 +1150,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardMinutes() {
+    /* //BEGIN GWT IGNORE
+    public void testToStandardMinutes() {
         Period test = new Period(0, 0, 0, 0, 0, 6, 7, 8);
         assertEquals(6, test.toStandardMinutes().getMinutes());
         
@@ -1161,7 +1177,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
             test.toStandardMinutes();
             fail();
         } catch (ArithmeticException ex) {}
-    } */
+    }
+    //END GWT IGNORE */
 
     public void testToStandardMinutes_years() {
         Period test = Period.years(1);
@@ -1258,7 +1275,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardDuration() {
+    /* //BEGIN GWT IGNORE
+    public void testToStandardDuration() {
         Period test = new Period(0, 0, 0, 0, 0, 0, 0, 8);
         assertEquals(8, test.toStandardDuration().getMillis());
         
@@ -1288,7 +1306,8 @@ public class TestPeriod_Basics extends JodaGwtTestCase {
 //            test.toStandardDuration();
 //            fail();
 //        } catch (ArithmeticException ex) {}
-    } */
+    }
+    //END GWT IGNORE */
 
     public void testToStandardDuration_years() {
         Period test = Period.years(1);

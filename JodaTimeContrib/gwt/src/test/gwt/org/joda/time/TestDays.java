@@ -21,8 +21,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.joda.time.gwt.JodaGwtTestCase;
-
 import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Days.
@@ -203,7 +203,8 @@ public class TestDays extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         Days test = Days.SEVEN;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -218,16 +219,17 @@ public class TestDays extends JodaGwtTestCase {
         ois.close();
         
         assertSame(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardWeeks() {
+    public void testToStandardWeeks() {
         Days test = Days.days(14);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
-    } */
+    }
 
-    /* Removed for GWT public void testToStandardHours() {
+    public void testToStandardHours() {
         Days test = Days.days(2);
         Hours expected = Hours.hours(2 * 24);
         assertEquals(expected, test.toStandardHours());
@@ -238,9 +240,9 @@ public class TestDays extends JodaGwtTestCase {
         } catch (ArithmeticException ex) {
             // expected
         }
-    } */
+    }
 
-    /* Removed for GWT public void testToStandardMinutes() {
+    public void testToStandardMinutes() {
         Days test = Days.days(2);
         Minutes expected = Minutes.minutes(2 * 24 * 60);
         assertEquals(expected, test.toStandardMinutes());
@@ -251,7 +253,7 @@ public class TestDays extends JodaGwtTestCase {
         } catch (ArithmeticException ex) {
             // expected
         }
-    } */
+    }
 
     public void testToStandardSeconds() {
         Days test = Days.days(2);
@@ -266,14 +268,14 @@ public class TestDays extends JodaGwtTestCase {
         }
     }
 
-    /* Removed for GWT public void testToStandardDuration() {
+    public void testToStandardDuration() {
         Days test = Days.days(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_DAY);
         assertEquals(expected, test.toStandardDuration());
         
         expected = new Duration(((long) Integer.MAX_VALUE) * DateTimeConstants.MILLIS_PER_DAY);
         assertEquals(expected, Days.MAX_VALUE.toStandardDuration());
-    } */
+    }
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

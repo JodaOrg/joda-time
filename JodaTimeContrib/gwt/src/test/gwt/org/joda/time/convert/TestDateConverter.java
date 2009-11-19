@@ -21,7 +21,7 @@ package org.joda.time.convert;
 import java.util.Arrays;
 import java.util.Date;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -31,7 +31,6 @@ import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DateConverter.
@@ -66,7 +65,8 @@ public class TestDateConverter extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSingleton() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSingleton() throws Exception {
         Class cls = DateConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -80,7 +80,8 @@ public class TestDateConverter extends JodaGwtTestCase {
         assertEquals(false, Modifier.isPublic(fld.getModifiers()));
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

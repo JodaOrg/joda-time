@@ -20,14 +20,13 @@ package org.joda.time.field;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for PreciseDurationField.
@@ -259,7 +258,8 @@ public class TestPreciseDurationField extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         DurationField test = iField;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -274,6 +274,7 @@ public class TestPreciseDurationField extends JodaGwtTestCase {
         ois.close();
         
         assertEquals(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
 }

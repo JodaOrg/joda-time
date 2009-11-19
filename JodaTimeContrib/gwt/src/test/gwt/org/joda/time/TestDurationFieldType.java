@@ -21,12 +21,11 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 // Removed for GWT import java.lang.reflect.Constructor;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
 import org.joda.time.chrono.CopticChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for DurationFieldType.
@@ -61,7 +60,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("eras", DurationFieldType.eras().getName());
         assertEquals(CopticChronology.getInstanceUTC().eras(), DurationFieldType.eras().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().eras().isSupported(), DurationFieldType.eras().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.eras());
+        assertSerialization(DurationFieldType.eras());
     }
 
     public void test_centuries() throws Exception {
@@ -69,7 +68,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("centuries", DurationFieldType.centuries().getName());
         assertEquals(CopticChronology.getInstanceUTC().centuries(), DurationFieldType.centuries().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().centuries().isSupported(), DurationFieldType.centuries().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.centuries());
+        assertSerialization(DurationFieldType.centuries());
     }
 
     public void test_years() throws Exception {
@@ -77,7 +76,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("years", DurationFieldType.years().getName());
         assertEquals(CopticChronology.getInstanceUTC().years(), DurationFieldType.years().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().years().isSupported(), DurationFieldType.years().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.years());
+        assertSerialization(DurationFieldType.years());
     }
 
     public void test_months() throws Exception {
@@ -85,7 +84,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("months", DurationFieldType.months().getName());
         assertEquals(CopticChronology.getInstanceUTC().months(), DurationFieldType.months().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().months().isSupported(), DurationFieldType.months().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.months());
+        assertSerialization(DurationFieldType.months());
     }
 
     public void test_weekyears() throws Exception {
@@ -93,7 +92,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("weekyears", DurationFieldType.weekyears().getName());
         assertEquals(CopticChronology.getInstanceUTC().weekyears(), DurationFieldType.weekyears().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().weekyears().isSupported(), DurationFieldType.weekyears().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.weekyears());
+        assertSerialization(DurationFieldType.weekyears());
     }
 
     public void test_weeks() throws Exception {
@@ -101,7 +100,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("weeks", DurationFieldType.weeks().getName());
         assertEquals(CopticChronology.getInstanceUTC().weeks(), DurationFieldType.weeks().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().weeks().isSupported(), DurationFieldType.weeks().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.weeks());
+        assertSerialization(DurationFieldType.weeks());
     }
 
     public void test_days() throws Exception {
@@ -109,7 +108,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("days", DurationFieldType.days().getName());
         assertEquals(CopticChronology.getInstanceUTC().days(), DurationFieldType.days().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().days().isSupported(), DurationFieldType.days().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.days());
+        assertSerialization(DurationFieldType.days());
     }
 
     public void test_halfdays() throws Exception {
@@ -117,7 +116,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("halfdays", DurationFieldType.halfdays().getName());
         assertEquals(CopticChronology.getInstanceUTC().halfdays(), DurationFieldType.halfdays().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().halfdays().isSupported(), DurationFieldType.halfdays().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.halfdays());
+        assertSerialization(DurationFieldType.halfdays());
     }
 
     public void test_hours() throws Exception {
@@ -125,7 +124,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("hours", DurationFieldType.hours().getName());
         assertEquals(CopticChronology.getInstanceUTC().hours(), DurationFieldType.hours().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().hours().isSupported(), DurationFieldType.hours().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.hours());
+        assertSerialization(DurationFieldType.hours());
     }
 
     public void test_minutes() throws Exception {
@@ -133,7 +132,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("minutes", DurationFieldType.minutes().getName());
         assertEquals(CopticChronology.getInstanceUTC().minutes(), DurationFieldType.minutes().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().minutes().isSupported(), DurationFieldType.minutes().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.minutes());
+        assertSerialization(DurationFieldType.minutes());
     }
 
     public void test_seconds() throws Exception {
@@ -141,7 +140,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("seconds", DurationFieldType.seconds().getName());
         assertEquals(CopticChronology.getInstanceUTC().seconds(), DurationFieldType.seconds().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().seconds().isSupported(), DurationFieldType.seconds().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.seconds());
+        assertSerialization(DurationFieldType.seconds());
     }
 
     public void test_millis() throws Exception {
@@ -149,10 +148,11 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         assertEquals("millis", DurationFieldType.millis().getName());
         assertEquals(CopticChronology.getInstanceUTC().millis(), DurationFieldType.millis().getField(CopticChronology.getInstanceUTC()));
         assertEquals(CopticChronology.getInstanceUTC().millis().isSupported(), DurationFieldType.millis().isSupported(CopticChronology.getInstanceUTC()));
-// Removed for GWT         assertSerialization(DurationFieldType.millis());
+        assertSerialization(DurationFieldType.millis());
     }
 
-    /* Removed for GWT public void test_other() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void test_other() throws Exception {
         assertEquals(1, DurationFieldType.class.getDeclaredClasses().length);
         Class cls = DurationFieldType.class.getDeclaredClasses()[0];
         assertEquals(1, cls.getDeclaredConstructors().length);
@@ -168,15 +168,19 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         DurationFieldType result = doSerialization(type);
         assertEquals(type.getName(), result.getName());
         assertNotSame(type, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT private void assertSerialization(DurationFieldType type) throws Exception {
+    private void assertSerialization(DurationFieldType type) throws Exception {
+        /* //BEGIN GWT IGNORE
         DurationFieldType result = doSerialization(type);
         assertSame(type, result);
-    } */
+        //END GWT IGNORE */
+    }
 
-    /* Removed for GWT private DurationFieldType doSerialization(DurationFieldType type) throws Exception {
+    /* //BEGIN GWT IGNORE
+    private DurationFieldType doSerialization(DurationFieldType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(type);
@@ -188,6 +192,7 @@ public class TestDurationFieldType extends JodaGwtTestCase {
         DurationFieldType result = (DurationFieldType) ois.readObject();
         ois.close();
         return result;
-    } */
+    }
+    //END GWT IGNORE */
 
 }

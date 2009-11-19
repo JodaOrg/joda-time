@@ -33,16 +33,15 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
-import org.joda.time.gwt.JodaGwtTestCase;
 import org.joda.time.tz.DefaultNameProvider;
 import org.joda.time.tz.NameProvider;
 import org.joda.time.tz.Provider;
 import org.joda.time.tz.UTCProvider;
-//import org.joda.time.tz.ZoneInfoProvider;
+import org.joda.time.tz.ZoneInfoProvider;
 
 /**
  * This class is a JUnit test for DateTimeZone.
@@ -50,19 +49,20 @@ import org.joda.time.tz.UTCProvider;
  * @author Stephen Colebourne
  */
 public class TestDateTimeZone extends JodaGwtTestCase {
-    // Removed for GWT private static final boolean OLD_JDK;
-// Removed for GWT
-//    static {
-//        String str = System.getProperty("java.version");
-//        boolean old = true;
-//        if (str.length() > 3 &&
-//            str.charAt(0) == '1' &&
-//            str.charAt(1) == '.' &&
-//            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-//            old = false;
-//        }
-//        OLD_JDK = old;
-//    }
+    /* //BEGIN GWT IGNORE
+    private static final boolean OLD_JDK;
+    static {
+        String str = System.getProperty("java.version");
+        boolean old = true;
+        if (str.length() > 3 &&
+            str.charAt(0) == '1' &&
+            str.charAt(1) == '.' &&
+            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
+            old = false;
+        }
+        OLD_JDK = old;
+    }
+    //END GWT IGNORE */
     
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
@@ -99,37 +99,38 @@ public class TestDateTimeZone extends JodaGwtTestCase {
 //            + 14L * DateTimeConstants.MILLIS_PER_HOUR
 //            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
     
-    // Removed for GWT private static final Policy RESTRICT;
-    // Removed for GWT private static final Policy ALLOW;
-// Removed for GWT
-//    static {
-//        // don't call Policy.getPolicy()
-//        RESTRICT = new Policy() {
-//            public PermissionCollection getPermissions(CodeSource codesource) {
-//                Permissions p = new Permissions();
-//                p.add(new AllPermission());  // enable everything
-//                return p;
-//            }
-//            public void refresh() {
-//            }
-//            public boolean implies(ProtectionDomain domain, Permission permission) {
-//                if (permission instanceof JodaTimePermission) {
-//                    return false;
-//                }
-//                return true;
-////                return super.implies(domain, permission);
-//            }
-//        };
-//        ALLOW = new Policy() {
-//            public PermissionCollection getPermissions(CodeSource codesource) {
-//                Permissions p = new Permissions();
-//                p.add(new AllPermission());  // enable everything
-//                return p;
-//            }
-//            public void refresh() {
-//            }
-//        };
-//    }
+    /* //BEGIN GWT IGNORE
+    private static final Policy RESTRICT;
+    private static final Policy ALLOW;
+    static {
+        // don't call Policy.getPolicy()
+        RESTRICT = new Policy() {
+            public PermissionCollection getPermissions(CodeSource codesource) {
+                Permissions p = new Permissions();
+                p.add(new AllPermission());  // enable everything
+                return p;
+            }
+            public void refresh() {
+            }
+            public boolean implies(ProtectionDomain domain, Permission permission) {
+                if (permission instanceof JodaTimePermission) {
+                    return false;
+                }
+                return true;
+//                return super.implies(domain, permission);
+            }
+        };
+        ALLOW = new Policy() {
+            public PermissionCollection getPermissions(CodeSource codesource) {
+                Permissions p = new Permissions();
+                p.add(new AllPermission());  // enable everything
+                return p;
+            }
+            public void refresh() {
+            }
+        };
+    }
+    //END GWT IGNORE */
     
     private DateTimeZone zone;
     private Locale locale;
@@ -148,14 +149,21 @@ public class TestDateTimeZone extends JodaGwtTestCase {
 
     protected void gwtSetUp() throws Exception {
         super.gwtSetUp();
+        /* //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE */
         zone = DateTimeZone.getDefault();
-        Locale.setDefault(Locale.UK);
+        /* //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
+        /* //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE */
         DateTimeZone.setDefault(zone);
     }
 
@@ -172,7 +180,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
         } catch (IllegalArgumentException ex) {}
     }
             
-    /* Removed for GWT public void testDefaultSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testDefaultSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -187,7 +196,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testForID_String() {
@@ -343,7 +353,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testProvider() {
+    /* //BEGIN GWT IGNORE
+    public void testProvider() {
         try {
             assertNotNull(DateTimeZone.getProvider());
         
@@ -406,9 +417,11 @@ public class TestDateTimeZone extends JodaGwtTestCase {
             DateTimeZone.setProvider(null);
             assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
         }
-    } */
+    }
+    //END GWT IGNORE */
     
-    /* Removed for GWT public void testProviderSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testProviderSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -423,7 +436,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-    } */
+    }
+    //END GWT IGNORE */
 
     static class MockNullIDSProvider implements Provider {
         public Set getAvailableIDs() {
@@ -475,7 +489,7 @@ public class TestDateTimeZone extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testNameProvider() {
+    public void testNameProvider() {
         try {
             assertNotNull(DateTimeZone.getNameProvider());
         
@@ -493,6 +507,7 @@ public class TestDateTimeZone extends JodaGwtTestCase {
             DateTimeZone.setNameProvider(null);
         }
         
+        /* //BEGIN GWT IGNORE
         try {
             System.setProperty("org.joda.time.DateTimeZone.NameProvider", "org.joda.time.tz.DefaultNameProvider");
             DateTimeZone.setNameProvider(null);
@@ -520,9 +535,11 @@ public class TestDateTimeZone extends JodaGwtTestCase {
             DateTimeZone.setNameProvider(null);
             assertEquals(DefaultNameProvider.class, DateTimeZone.getNameProvider().getClass());
         }
-    } */        
+        //END GWT IGNORE */
+    }        
     
-    /* Removed for GWT public void testNameProviderSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testNameProviderSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -537,7 +554,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
             System.setSecurityManager(null);
             Policy.setPolicy(ALLOW);
         }
-    } */
+    }
+    //END GWT IGNORE */
 
     static class MockOKButNullNameProvider implements NameProvider {
         public String getShortName(Locale locale, String id, String nameKey) {
@@ -549,9 +567,11 @@ public class TestDateTimeZone extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testConstructor() {
+    public void testConstructor() {
+        /* //BEGIN GWT IGNORE
         assertEquals(1, DateTimeZone.class.getDeclaredConstructors().length);
         assertTrue(Modifier.isProtected(DateTimeZone.class.getDeclaredConstructors()[0].getModifiers()));
+        //END GWT IGNORE */
         try {
             new DateTimeZone(null) {
                 public String getNameKey(long instant) {
@@ -577,7 +597,7 @@ public class TestDateTimeZone extends JodaGwtTestCase {
                 }
             };
         } catch (IllegalArgumentException ex) {}
-    } */
+    }
 
     //-----------------------------------------------------------------------
     public void testGetID() {
@@ -610,6 +630,7 @@ public class TestDateTimeZone extends JodaGwtTestCase {
         assertEquals("Europe/London", zone.getShortName(TEST_TIME_SUMMER, Locale.ENGLISH));
     }
     
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testGetName() {
         DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER));
@@ -869,7 +890,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization1() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization1() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -884,10 +906,12 @@ public class TestDateTimeZone extends JodaGwtTestCase {
         ois.close();
         
         assertSame(zone, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization2() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization2() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -902,7 +926,8 @@ public class TestDateTimeZone extends JodaGwtTestCase {
         ois.close();
         
         assertSame(zone, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     public void testCommentParse() throws Exception {
         // A bug in ZoneInfoCompiler's handling of comments broke Europe/Athens

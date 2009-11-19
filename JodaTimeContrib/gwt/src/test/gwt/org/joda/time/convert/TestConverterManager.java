@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -52,7 +52,6 @@ import org.joda.time.ReadableInstant;
 import org.joda.time.ReadableInterval;
 import org.joda.time.TimeOfDay;
 import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a JUnit test for ConverterManager.
@@ -60,51 +59,51 @@ import org.joda.time.gwt.JodaGwtTestCase;
  * @author Stephen Colebourne
  */
 public class TestConverterManager extends JodaGwtTestCase {
-    // Removed for GWT private static final boolean OLD_JDK;
-// Removed for GWT
-//    static {
-//        String str = System.getProperty("java.version");
-//        boolean old = true;
-//        if (str.length() > 3 &&
-//            str.charAt(0) == '1' &&
-//            str.charAt(1) == '.' &&
-//            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
-//            old = false;
-//        }
-//        OLD_JDK = old;
-//    }
+    /* //BEGIN GWT IGNORE
+    private static final boolean OLD_JDK;
+    static {
+        String str = System.getProperty("java.version");
+        boolean old = true;
+        if (str.length() > 3 &&
+            str.charAt(0) == '1' &&
+            str.charAt(1) == '.' &&
+            (str.charAt(2) == '4' || str.charAt(2) == '5' || str.charAt(2) == '6')) {
+            old = false;
+        }
+        OLD_JDK = old;
+    }
 
-    // Removed for GWT private static final Policy RESTRICT;
-    // Removed for GWT private static final Policy ALLOW;
-// Removed for GWT
-//    static {
-//        // don't call Policy.getPolicy()
-//        RESTRICT = new Policy() {
-//            public PermissionCollection getPermissions(CodeSource codesource) {
-//                Permissions p = new Permissions();
-//                p.add(new AllPermission());  // enable everything
-//                return p;
-//            }
-//            public void refresh() {
-//            }
-//            public boolean implies(ProtectionDomain domain, Permission permission) {
-//                if (permission instanceof JodaTimePermission) {
-//                    return false;
-//                }
-//                return true;
-////                return super.implies(domain, permission);
-//            }
-//        };
-//        ALLOW = new Policy() {
-//            public PermissionCollection getPermissions(CodeSource codesource) {
-//                Permissions p = new Permissions();
-//                p.add(new AllPermission());  // enable everything
-//                return p;
-//            }
-//            public void refresh() {
-//            }
-//        };
-//    }
+    private static final Policy RESTRICT;
+    private static final Policy ALLOW;
+    static {
+        // don't call Policy.getPolicy()
+        RESTRICT = new Policy() {
+            public PermissionCollection getPermissions(CodeSource codesource) {
+                Permissions p = new Permissions();
+                p.add(new AllPermission());  // enable everything
+                return p;
+            }
+            public void refresh() {
+            }
+            public boolean implies(ProtectionDomain domain, Permission permission) {
+                if (permission instanceof JodaTimePermission) {
+                    return false;
+                }
+                return true;
+//                return super.implies(domain, permission);
+            }
+        };
+        ALLOW = new Policy() {
+            public PermissionCollection getPermissions(CodeSource codesource) {
+                Permissions p = new Permissions();
+                p.add(new AllPermission());  // enable everything
+                return p;
+            }
+            public void refresh() {
+            }
+        };
+    }
+    //END GWT IGNORE */
 
     /* Removed for GWT public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -119,7 +118,8 @@ public class TestConverterManager extends JodaGwtTestCase {
     } */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSingleton() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSingleton() throws Exception {
         Class cls = ConverterManager.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
         
@@ -129,7 +129,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         
         Field fld = cls.getDeclaredField("INSTANCE");
         assertEquals(true, Modifier.isPrivate(fld.getModifiers()));
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testGetInstantConverter() {
@@ -264,7 +265,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
-    /* Removed for GWT public void testAddInstantConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testAddInstantConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -280,7 +282,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testRemoveInstantConverter1() {
@@ -312,7 +315,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
-    /* Removed for GWT public void testRemoveInstantConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testRemoveInstantConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -328,7 +332,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -473,7 +478,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
-    /* Removed for GWT public void testAddPartialConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testAddPartialConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -489,7 +495,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testRemovePartialConverter1() {
@@ -522,7 +529,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
-    /* Removed for GWT public void testRemovePartialConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testRemovePartialConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -538,7 +546,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -624,7 +633,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
-    /* Removed for GWT public void testAddDurationConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testAddDurationConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -640,7 +650,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testRemoveDurationConverter1() {
@@ -670,7 +681,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
-    /* Removed for GWT public void testRemoveDurationConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testRemoveDurationConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -686,7 +698,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -774,7 +787,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    /* Removed for GWT public void testAddPeriodConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testAddPeriodConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -790,7 +804,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testRemovePeriodConverter1() {
@@ -821,7 +836,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
-    /* Removed for GWT public void testRemovePeriodConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testRemovePeriodConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -837,7 +853,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -923,7 +940,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
-    /* Removed for GWT public void testAddIntervalConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testAddIntervalConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -939,7 +957,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testRemoveIntervalConverter1() {
@@ -970,7 +989,8 @@ public class TestConverterManager extends JodaGwtTestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
-    /* Removed for GWT public void testRemoveIntervalConverterSecurity() {
+    /* //BEGIN GWT IGNORE
+    public void testRemoveIntervalConverterSecurity() {
         if (OLD_JDK) {
             return;
         }
@@ -986,7 +1006,8 @@ public class TestConverterManager extends JodaGwtTestCase {
             Policy.setPolicy(ALLOW);
         }
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testToString() {

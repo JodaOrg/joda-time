@@ -20,8 +20,9 @@ package org.joda.time.convert;
 // Removed for GWT import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -35,7 +36,6 @@ import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for StringConverter.
@@ -75,9 +75,14 @@ public class TestStringConverter extends JodaGwtTestCase {
     protected void gwtSetUp() throws Exception {
         super.gwtSetUp();
         zone = DateTimeZone.getDefault();
+        /* //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE */
         DateTimeZone.setDefault(LONDON);
-        Locale.setDefault(Locale.UK);
+        /* //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE */
         
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
@@ -86,12 +91,15 @@ public class TestStringConverter extends JodaGwtTestCase {
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeZone.setDefault(zone);
+        /* //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE */
         zone = null;
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSingleton() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSingleton() throws Exception {
         Class cls = StringConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
         assertEquals(false, Modifier.isProtected(cls.getModifiers()));
@@ -105,7 +113,8 @@ public class TestStringConverter extends JodaGwtTestCase {
         assertEquals(false, Modifier.isPublic(fld.getModifiers()));
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

@@ -18,8 +18,10 @@ package org.joda.time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -27,7 +29,6 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for TimeOfDay.
@@ -79,14 +80,19 @@ public class TestTimeOfDay_Constructors extends JodaGwtTestCase {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
-        java.util.TimeZone.setDefault(LONDON.toTimeZone());
+        /* //BEGIN GWT IGNORE
+        //java.util.TimeZone.setDefault(LONDON.toTimeZone());
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        //END GWT IGNORE */
     }
 
     protected void gwtTearDown() throws Exception {
         super.gwtTearDown();
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        /* //BEGIN GWT IGNORE
         java.util.TimeZone.setDefault(zone.toTimeZone());
+        //END GWT IGNORE */
         zone = null;
     }
 
@@ -318,6 +324,7 @@ public class TestTimeOfDay_Constructors extends JodaGwtTestCase {
     /**
      * Test constructor (Object)
      */
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testConstructor_Object2() throws Throwable {
         Calendar cal = new GregorianCalendar();
         cal.setTime(new Date(TEST_TIME1));

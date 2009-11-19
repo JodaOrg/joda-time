@@ -16,8 +16,8 @@
 package org.joda.time;
 
 import org.joda.time.gwt.JodaGwtTestCase;
-
 import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 /**
  * This class is a JUnit test for DateTimeZone.

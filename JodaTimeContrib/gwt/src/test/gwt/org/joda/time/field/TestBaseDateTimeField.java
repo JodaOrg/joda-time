@@ -18,7 +18,7 @@ package org.joda.time.field;
 import java.util.Arrays;
 import java.util.Locale;
 
-
+import org.joda.time.gwt.JodaGwtTestCase;
 import static org.joda.time.gwt.TestConstants.*;
 //import junit.framework.TestSuite;
 
@@ -30,7 +30,6 @@ import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
 import org.joda.time.base.BasePartial;
 import org.joda.time.chrono.ISOChronology;
-import org.joda.time.gwt.JodaGwtTestCase;
 
 /**
  * This class is a Junit unit test for BaseDateTimeField.

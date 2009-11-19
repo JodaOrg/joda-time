@@ -21,8 +21,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 import org.joda.time.gwt.JodaGwtTestCase;
-
 import static org.joda.time.gwt.TestConstants.*;
+//import junit.framework.TestSuite;
 
 /**
  * This class is a Junit unit test for Minutes.
@@ -195,7 +195,8 @@ public class TestMinutes extends JodaGwtTestCase {
     }
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testSerialization() throws Exception {
+    /* //BEGIN GWT IGNORE
+    public void testSerialization() throws Exception {
         Minutes test = Minutes.THREE;
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -210,26 +211,27 @@ public class TestMinutes extends JodaGwtTestCase {
         ois.close();
         
         assertSame(test, result);
-    } */
+    }
+    //END GWT IGNORE */
 
     //-----------------------------------------------------------------------
-    /* Removed for GWT public void testToStandardWeeks() {
+    public void testToStandardWeeks() {
         Minutes test = Minutes.minutes(60 * 24 * 7 * 2);
         Weeks expected = Weeks.weeks(2);
         assertEquals(expected, test.toStandardWeeks());
-    } */
+    }
 
-    /* Removed for GWT public void testToStandardDays() {
+    public void testToStandardDays() {
         Minutes test = Minutes.minutes(60 * 24 * 2);
         Days expected = Days.days(2);
         assertEquals(expected, test.toStandardDays());
-    } */
+    }
 
-    /* Removed for GWT public void testToStandardHours() {
+    public void testToStandardHours() {
         Minutes test = Minutes.minutes(3 * 60);
         Hours expected = Hours.hours(3);
         assertEquals(expected, test.toStandardHours());
-    } */
+    }
 
     public void testToStandardSeconds() {
         Minutes test = Minutes.minutes(3);
@@ -244,14 +246,14 @@ public class TestMinutes extends JodaGwtTestCase {
         }
     }
 
-    /* Removed for GWT public void testToStandardDuration() {
+    public void testToStandardDuration() {
         Minutes test = Minutes.minutes(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_MINUTE);
         assertEquals(expected, test.toStandardDuration());
         
         expected = new Duration(((long) Integer.MAX_VALUE) * DateTimeConstants.MILLIS_PER_MINUTE);
         assertEquals(expected, Minutes.MAX_VALUE.toStandardDuration());
-    } */
+    }
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

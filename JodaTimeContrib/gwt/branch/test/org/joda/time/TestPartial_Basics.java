@@ -754,6 +754,7 @@ public class TestPartial_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Partial test = createHourMinPartial(COPTIC_PARIS);
         
@@ -773,6 +774,7 @@ public class TestPartial_Basics extends TestCase {
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testGetFormatter1() {

@@ -174,6 +174,7 @@ public class TestYears extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Years test = Years.THREE;
         
@@ -190,6 +191,7 @@ public class TestYears extends TestCase {
         
         assertSame(test, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

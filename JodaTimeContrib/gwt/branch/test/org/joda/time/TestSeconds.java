@@ -189,6 +189,7 @@ public class TestSeconds extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Seconds test = Seconds.THREE;
         
@@ -205,6 +206,7 @@ public class TestSeconds extends TestCase {
         
         assertSame(test, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToStandardWeeks() {

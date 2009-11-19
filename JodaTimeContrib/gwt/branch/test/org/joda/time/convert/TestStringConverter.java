@@ -20,6 +20,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -72,9 +73,14 @@ public class TestStringConverter extends TestCase {
 
     protected void setUp() throws Exception {
         zone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
         
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
@@ -82,11 +88,14 @@ public class TestStringConverter extends TestCase {
 
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(zone);
+        //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSingleton() throws Exception {
         Class cls = StringConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -102,6 +111,7 @@ public class TestStringConverter extends TestCase {
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

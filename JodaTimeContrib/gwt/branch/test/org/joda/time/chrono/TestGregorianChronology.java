@@ -66,18 +66,26 @@ public class TestGregorianChronology extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;

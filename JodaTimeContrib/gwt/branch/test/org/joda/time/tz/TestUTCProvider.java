@@ -46,6 +46,7 @@ public class TestUTCProvider extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testClass() throws Exception {
         Class cls = UTCProvider.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
@@ -54,6 +55,7 @@ public class TestUTCProvider extends TestCase {
         assertEquals(1, cls.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isPublic(con.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testGetAvailableIDs() throws Exception {

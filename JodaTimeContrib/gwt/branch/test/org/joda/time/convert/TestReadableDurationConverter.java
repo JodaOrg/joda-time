@@ -65,6 +65,7 @@ public class TestReadableDurationConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSingleton() throws Exception {
         Class cls = ReadableDurationConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -80,6 +81,7 @@ public class TestReadableDurationConverter extends TestCase {
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

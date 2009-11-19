@@ -58,6 +58,7 @@ import org.joda.time.format.DateTimeFormatter;
  * @author Stephen Colebourne
  */
 public class TestConverterManager extends TestCase {
+    //BEGIN GWT IGNORE
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");
@@ -101,6 +102,7 @@ public class TestConverterManager extends TestCase {
             }
         };
     }
+    //END GWT IGNORE
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -115,6 +117,7 @@ public class TestConverterManager extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSingleton() throws Exception {
         Class cls = ConverterManager.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
@@ -126,6 +129,7 @@ public class TestConverterManager extends TestCase {
         Field fld = cls.getDeclaredField("INSTANCE");
         assertEquals(true, Modifier.isPrivate(fld.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testGetInstantConverter() {
@@ -260,6 +264,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testAddInstantConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -277,6 +282,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testRemoveInstantConverter1() {
@@ -308,6 +314,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testRemoveInstantConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -325,6 +332,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(6, ConverterManager.getInstance().getInstantConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -469,6 +477,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testAddPartialConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -486,6 +495,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testRemovePartialConverter1() {
@@ -518,6 +528,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testRemovePartialConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -535,6 +546,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(PARTIAL_SIZE, ConverterManager.getInstance().getPartialConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -620,6 +632,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testAddDurationConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -637,6 +650,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testRemoveDurationConverter1() {
@@ -666,6 +680,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testRemoveDurationConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -683,6 +698,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(DURATION_SIZE, ConverterManager.getInstance().getDurationConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -770,6 +786,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testAddPeriodConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -787,6 +804,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testRemovePeriodConverter1() {
@@ -817,6 +835,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testRemovePeriodConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -834,6 +853,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(PERIOD_SIZE, ConverterManager.getInstance().getPeriodConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
@@ -919,6 +939,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testAddIntervalConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -936,6 +957,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testRemoveIntervalConverter1() {
@@ -966,6 +988,7 @@ public class TestConverterManager extends TestCase {
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
 
+    //BEGIN GWT IGNORE
     public void testRemoveIntervalConverterSecurity() {
         if (OLD_JDK) {
             return;
@@ -983,6 +1006,7 @@ public class TestConverterManager extends TestCase {
         }
         assertEquals(INTERVAL_SIZE, ConverterManager.getInstance().getIntervalConverters().length);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToString() {

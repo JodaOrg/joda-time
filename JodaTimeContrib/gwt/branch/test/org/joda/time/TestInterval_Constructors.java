@@ -84,18 +84,26 @@ public class TestInterval_Constructors extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(PARIS);
-        TimeZone.setDefault(PARIS.toTimeZone());
-        Locale.setDefault(Locale.FRANCE);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(PARIS.toTimeZone());
+        //Locale.setDefault(Locale.FRANCE);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;

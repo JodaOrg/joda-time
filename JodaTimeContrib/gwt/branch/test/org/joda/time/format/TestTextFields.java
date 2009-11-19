@@ -16,6 +16,7 @@
 package org.joda.time.format;
 
 import java.util.Locale;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -73,14 +74,21 @@ public class TestTextFields extends TestCase {
 
     protected void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(ZONES[0]);
-        Locale.setDefault(Locale.ENGLISH);
+        //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.ENGLISH);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalLocale = null;
     }

@@ -87,18 +87,26 @@ public class TestPeriod_Basics extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -223,6 +231,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Period test = new Period(123L);
         
@@ -239,6 +248,7 @@ public class TestPeriod_Basics extends TestCase {
         
         assertEquals(test, result);
     }
+    //END GWT IGNORE
 
 //    //-----------------------------------------------------------------------
 //    public void testAddTo1() {
@@ -936,6 +946,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testToStandardWeeks() {
         Period test = new Period(0, 0, 3, 4, 5, 6, 7, 8);
         assertEquals(3, test.toStandardWeeks().getWeeks());
@@ -966,6 +977,7 @@ public class TestPeriod_Basics extends TestCase {
             fail();
         } catch (ArithmeticException ex) {}
     }
+    //END GWT IGNORE
 
     public void testToStandardWeeks_years() {
         Period test = Period.years(1);
@@ -1002,6 +1014,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testToStandardDays() {
         Period test = new Period(0, 0, 0, 4, 5, 6, 7, 8);
         assertEquals(4, test.toStandardDays().getDays());
@@ -1031,6 +1044,7 @@ public class TestPeriod_Basics extends TestCase {
             fail();
         } catch (ArithmeticException ex) {}
     }
+    //END GWT IGNORE
 
     public void testToStandardDays_years() {
         Period test = Period.years(1);
@@ -1067,6 +1081,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testToStandardHours() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8);
         assertEquals(5, test.toStandardHours().getHours());
@@ -1095,6 +1110,7 @@ public class TestPeriod_Basics extends TestCase {
             fail();
         } catch (ArithmeticException ex) {}
     }
+    //END GWT IGNORE
 
     public void testToStandardHours_years() {
         Period test = Period.years(1);
@@ -1131,6 +1147,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testToStandardMinutes() {
         Period test = new Period(0, 0, 0, 0, 0, 6, 7, 8);
         assertEquals(6, test.toStandardMinutes().getMinutes());
@@ -1158,6 +1175,7 @@ public class TestPeriod_Basics extends TestCase {
             fail();
         } catch (ArithmeticException ex) {}
     }
+    //END GWT IGNORE
 
     public void testToStandardMinutes_years() {
         Period test = Period.years(1);
@@ -1254,6 +1272,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testToStandardDuration() {
         Period test = new Period(0, 0, 0, 0, 0, 0, 0, 8);
         assertEquals(8, test.toStandardDuration().getMillis());
@@ -1285,6 +1304,7 @@ public class TestPeriod_Basics extends TestCase {
 //            fail();
 //        } catch (ArithmeticException ex) {}
     }
+    //END GWT IGNORE
 
     public void testToStandardDuration_years() {
         Period test = Period.years(1);

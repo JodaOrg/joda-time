@@ -66,6 +66,7 @@ public class TestCalendarConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSingleton() throws Exception {
         Class cls = CalendarConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -81,6 +82,7 @@ public class TestCalendarConverter extends TestCase {
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {
@@ -118,6 +120,7 @@ public class TestCalendarConverter extends TestCase {
         Calendar uc = new MockUnknownCalendar(TimeZone.getTimeZone("Europe/Moscow"));
         assertEquals(ISOChronology.getInstance(PARIS), CalendarConverter.INSTANCE.getChronology(uc, PARIS));
         
+        //BEGIN GWT IGNORE
         try {
             Calendar bc = (Calendar) Class.forName("sun.util.BuddhistCalendar").newInstance();
             bc.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
@@ -125,6 +128,7 @@ public class TestCalendarConverter extends TestCase {
         } catch (ClassNotFoundException ex) {
             // ignore
         }
+        //END GWT IGNORE
     }
 
     public void testGetChronology_Object_nullChronology() throws Exception {
@@ -149,6 +153,7 @@ public class TestCalendarConverter extends TestCase {
         Calendar uc = new MockUnknownCalendar(TimeZone.getTimeZone("Europe/Moscow"));
         assertEquals(ISOChronology.getInstance(MOSCOW), CalendarConverter.INSTANCE.getChronology(uc, (Chronology) null));
         
+        //BEGIN GWT IGNORE
         try {
             Calendar bc = (Calendar) Class.forName("sun.util.BuddhistCalendar").newInstance();
             bc.setTimeZone(TimeZone.getTimeZone("Europe/Moscow"));
@@ -156,6 +161,7 @@ public class TestCalendarConverter extends TestCase {
         } catch (ClassNotFoundException ex) {
             // ignore
         }
+        //END GWT IGNORE
     }
 
     public void testGetChronology_Object_Chronology() throws Exception {

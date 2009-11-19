@@ -274,6 +274,7 @@ public class TestBuilder extends TestCase {
         }
     }
 
+    //BEGIN GWT IGNORE
     public void testSerialization() throws IOException {
         DateTimeZone tz = testSerialization
             (buildAmericaLosAngelesBuilder(), "America/Los_Angeles");
@@ -282,7 +283,9 @@ public class TestBuilder extends TestCase {
         testForwardTransitions(tz, AMERICA_LOS_ANGELES_DATA);
         testReverseTransitions(tz, AMERICA_LOS_ANGELES_DATA);
     }
+    //END GWT IGNORE
 
+    //BEGIN GWT IGNORE
     static DateTimeZone testSerialization(DateTimeZoneBuilder builder, String id)
         throws IOException
     {
@@ -293,7 +296,9 @@ public class TestBuilder extends TestCase {
         assertEquals(id, tz.getID());
         return tz;
     }
+    //END GWT IGNORE
 
+    //BEGIN GWT IGNORE
     public void testFixed() throws IOException {
         DateTimeZoneBuilder builder = new DateTimeZoneBuilder()
             .setStandardOffset(3600000)
@@ -311,4 +316,5 @@ public class TestBuilder extends TestCase {
             tz = testSerialization(builder, "Test");
         }
     }
+    //END GWT IGNORE
 }

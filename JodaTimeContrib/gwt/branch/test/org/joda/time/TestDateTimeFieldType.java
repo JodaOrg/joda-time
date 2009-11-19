@@ -282,6 +282,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.millisOfSecond());
     }
 
+    //BEGIN GWT IGNORE
     public void test_other() throws Exception {
         assertEquals(1, DateTimeFieldType.class.getDeclaredClasses().length);
         Class cls = DateTimeFieldType.class.getDeclaredClasses()[0];
@@ -303,14 +304,18 @@ public class TestDateTimeFieldType extends TestCase {
         assertEquals(type.getName(), result.getName());
         assertNotSame(type, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     private void assertSerialization(DateTimeFieldType type) throws Exception {
+        //BEGIN GWT IGNORE
         DateTimeFieldType result = doSerialization(type);
         assertSame(type, result);
+        //END GWT IGNORE
     }
 
-    private DateTimeFieldType doSerialization(DateTimeFieldType type) throws Exception {
+    //BEGIN GWT IGNORE
+   private DateTimeFieldType doSerialization(DateTimeFieldType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
         oos.writeObject(type);
@@ -323,5 +328,6 @@ public class TestDateTimeFieldType extends TestCase {
         ois.close();
         return result;
     }
+   //END GWT IGNORE
 
 }

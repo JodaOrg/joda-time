@@ -77,11 +77,17 @@ public class TestDateTimeFormatter extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
         f = new DateTimeFormatterBuilder()
                 .appendDayOfWeekShortText()
                 .appendLiteral(' ')
@@ -93,8 +99,10 @@ public class TestDateTimeFormatter extends TestCase {
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -103,6 +111,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_simple() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T10:20:30Z", f.print(dt));
@@ -118,6 +127,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_locale() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("mer. 2004-06-09T10:20:30Z", f.withLocale(Locale.FRENCH).print(dt));
@@ -125,6 +135,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_zone() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T06:20:30-04:00", f.withZone(NEWYORK).print(dt));
@@ -139,6 +150,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_chrono() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T12:20:30+02:00", f.withChronology(ISO_PARIS).print(dt));
@@ -153,6 +165,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_bufferMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         StringBuffer buf = new StringBuffer();
@@ -175,6 +188,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_writerMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         CharArrayWriter out = new CharArrayWriter();
@@ -197,6 +211,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrint_chrono_and_zone() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T10:20:30Z",
@@ -302,6 +317,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertSame(f2, f3);
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPrinterParserMethods() {
         DateTimeFormatter f2 = new DateTimeFormatter(f.getPrinter(), f.getParser());
         assertEquals(f.getPrinter(), f2.getPrinter());
@@ -388,6 +404,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, h.withZone(PARIS).parseDateTime("2004-06-09T10:20:30"));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testParseDateTime_simple_precedence() {
         DateTime expect = null;
         // use correct day of week
@@ -483,6 +500,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, h.withZone(PARIS).parseMutableDateTime("2004-06-09T10:20:30"));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testParseMutableDateTime_simple_precedence() {
         MutableDateTime expect = null;
         // use correct day of week
@@ -603,6 +621,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testParseInto_simple_precedence() {
         MutableDateTime expect = null;
         MutableDateTime result = null;
@@ -670,6 +689,7 @@ public class TestDateTimeFormatter extends TestCase {
 
     //-----------------------------------------------------------------------
     // Ensure time zone name switches properly at the zone DST transition.
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testZoneNameNearTransition() {
         DateTime inDST_1  = new DateTime(2005, 10, 30, 1, 0, 0, 0, NEWYORK);
         DateTime inDST_2  = new DateTime(2005, 10, 30, 1, 59, 59, 999, NEWYORK);

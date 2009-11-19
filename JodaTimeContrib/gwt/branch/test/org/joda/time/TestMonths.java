@@ -192,6 +192,7 @@ public class TestMonths extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Months test = Months.THREE;
         
@@ -208,6 +209,7 @@ public class TestMonths extends TestCase {
         
         assertSame(test, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testPlus_int() {

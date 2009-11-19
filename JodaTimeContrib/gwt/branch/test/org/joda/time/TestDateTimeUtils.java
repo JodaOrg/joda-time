@@ -41,6 +41,7 @@ import org.joda.time.chrono.ISOChronology;
 public class TestDateTimeUtils extends TestCase {
 
     private static final GJChronology GJ = GJChronology.getInstance();
+    //BEGIN GWT IGNORE
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");
@@ -53,6 +54,7 @@ public class TestDateTimeUtils extends TestCase {
         }
         OLD_JDK = old;
     }
+    //END GWT IGNORE
 
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
@@ -85,6 +87,7 @@ public class TestDateTimeUtils extends TestCase {
             + 14L * DateTimeConstants.MILLIS_PER_HOUR
             + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
+    //BEGIN GWT IGNORE
     private static final Policy RESTRICT;
     private static final Policy ALLOW;
     static {
@@ -115,6 +118,7 @@ public class TestDateTimeUtils extends TestCase {
             }
         };
     }
+    //END GWT IGNORE
     
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -142,6 +146,7 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testClass() {
         Class cls = DateTimeUtils.class;
         assertEquals(true, Modifier.isPublic(cls.getModifiers()));
@@ -152,6 +157,7 @@ public class TestDateTimeUtils extends TestCase {
         
         DateTimeUtils utils = new DateTimeUtils() {};
     }
+    //END GWT IGNORE
     
     //-----------------------------------------------------------------------
     public void testSystemMillis() {
@@ -162,6 +168,7 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSystemMillisSecurity() {
         if (OLD_JDK) {
             return;
@@ -182,6 +189,7 @@ public class TestDateTimeUtils extends TestCase {
             DateTimeUtils.setCurrentMillisSystem();
         }
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testFixedMillis() {
@@ -200,6 +208,7 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testFixedMillisSecurity() {
         if (OLD_JDK) {
             return;
@@ -220,6 +229,7 @@ public class TestDateTimeUtils extends TestCase {
             DateTimeUtils.setCurrentMillisSystem();
         }
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testOffsetMillis() {
@@ -256,6 +266,7 @@ public class TestDateTimeUtils extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testOffsetMillisSecurity() {
         if (OLD_JDK) {
             return;
@@ -276,6 +287,7 @@ public class TestDateTimeUtils extends TestCase {
             DateTimeUtils.setCurrentMillisSystem();
         }
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testGetInstantMillis_RI() {

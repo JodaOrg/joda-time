@@ -17,6 +17,7 @@ package org.joda.time;
 
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -97,15 +98,22 @@ public class TestDateMidnight_Constructors extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         zone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE
         zone = null;
     }
 

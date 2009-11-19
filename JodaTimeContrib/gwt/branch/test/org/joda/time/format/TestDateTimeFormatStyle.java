@@ -71,18 +71,26 @@ public class TestDateTimeFormatStyle extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(UK);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -124,6 +132,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_shortDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.shortDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("S-");
@@ -141,6 +150,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(date, f.withLocale(FRANCE).parseDateTime(expect));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_shortTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.shortTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-S");
@@ -162,6 +172,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         }
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_shortDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.shortDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("SS");
@@ -180,6 +191,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_mediumDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.mediumDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("M-");
@@ -193,6 +205,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_mediumTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.mediumTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-M");
@@ -206,6 +219,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_mediumDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.mediumDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("MM");
@@ -220,6 +234,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_longDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.longDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("L-");
@@ -233,6 +248,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_longTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.longTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-L");
@@ -246,6 +262,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_longDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.longDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("LL");
@@ -260,6 +277,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testForStyle_fullDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.fullDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("F-");

@@ -175,12 +175,14 @@ public class TestDateTimeComparator extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testClass() {
         assertEquals(true, Modifier.isPublic(DateTimeComparator.class.getModifiers()));
         assertEquals(false, Modifier.isFinal(DateTimeComparator.class.getModifiers()));
         assertEquals(1, DateTimeComparator.class.getDeclaredConstructors().length);
         assertEquals(true, Modifier.isProtected(DateTimeComparator.class.getDeclaredConstructors()[0].getModifiers()));
     }
+    //END GWT IGNORE
     
     //-----------------------------------------------------------------------
     public void testStaticGetInstance() {
@@ -263,6 +265,7 @@ public class TestDateTimeComparator extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization1() throws Exception {
         DateTimeField f = ISO.dayOfYear();
         f.toString();
@@ -281,8 +284,10 @@ public class TestDateTimeComparator extends TestCase {
         
         assertEquals(c, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization2() throws Exception {
         DateTimeComparator c = DateTimeComparator.getInstance();
         
@@ -299,6 +304,7 @@ public class TestDateTimeComparator extends TestCase {
         
         assertSame(c, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     /**

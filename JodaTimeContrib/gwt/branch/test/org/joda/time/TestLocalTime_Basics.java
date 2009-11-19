@@ -757,6 +757,7 @@ public class TestLocalTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         LocalTime test = new LocalTime(10, 20, 30, 40, COPTIC_PARIS);
         
@@ -776,6 +777,7 @@ public class TestLocalTime_Basics extends TestCase {
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToString() {

@@ -858,6 +858,7 @@ public class TestTimeOfDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40, COPTIC_PARIS);
         
@@ -877,6 +878,7 @@ public class TestTimeOfDay_Basics extends TestCase {
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToString() {

@@ -954,6 +954,7 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         LocalDate test = new LocalDate(1972, 6, 9, COPTIC_PARIS);
         
@@ -973,6 +974,7 @@ public class TestLocalDate_Basics extends TestCase {
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToString() {

@@ -70,6 +70,7 @@ public class TestConverterSet extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testClass() throws Exception {
         Class cls = ConverterSet.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -82,6 +83,7 @@ public class TestConverterSet extends TestCase {
         assertEquals(false, Modifier.isProtected(con.getModifiers()));
         assertEquals(false, Modifier.isPrivate(con.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testBigHashtable() {

@@ -148,6 +148,7 @@ public class TestDurationFieldType extends TestCase {
         assertSerialization(DurationFieldType.millis());
     }
 
+    //BEGIN GWT IGNORE
     public void test_other() throws Exception {
         assertEquals(1, DurationFieldType.class.getDeclaredClasses().length);
         Class cls = DurationFieldType.class.getDeclaredClasses()[0];
@@ -165,13 +166,17 @@ public class TestDurationFieldType extends TestCase {
         assertEquals(type.getName(), result.getName());
         assertNotSame(type, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     private void assertSerialization(DurationFieldType type) throws Exception {
+        //BEGIN GWT IGNORE
         DurationFieldType result = doSerialization(type);
         assertSame(type, result);
+        //END GWT IGNORE
     }
 
+    //BEGIN GWT IGNORE
     private DurationFieldType doSerialization(DurationFieldType type) throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(baos);
@@ -185,5 +190,6 @@ public class TestDurationFieldType extends TestCase {
         ois.close();
         return result;
     }
+    //END GWT IGNORE
 
 }

@@ -272,6 +272,7 @@ public class TestScaledDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         DurationField test = iField;
         
@@ -288,5 +289,6 @@ public class TestScaledDurationField extends TestCase {
         
         assertEquals(test, result);
     }
+    //END GWT IGNORE
 
 }

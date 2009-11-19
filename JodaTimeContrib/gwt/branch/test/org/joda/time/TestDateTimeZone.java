@@ -48,6 +48,7 @@ import org.joda.time.tz.ZoneInfoProvider;
  * @author Stephen Colebourne
  */
 public class TestDateTimeZone extends TestCase {
+    //BEGIN GWT IGNORE
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");
@@ -60,6 +61,7 @@ public class TestDateTimeZone extends TestCase {
         }
         OLD_JDK = old;
     }
+    //END GWT IGNORE
     
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
@@ -96,6 +98,7 @@ public class TestDateTimeZone extends TestCase {
 //            + 14L * DateTimeConstants.MILLIS_PER_HOUR
 //            + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
     
+    //BEGIN GWT IGNORE
     private static final Policy RESTRICT;
     private static final Policy ALLOW;
     static {
@@ -126,6 +129,7 @@ public class TestDateTimeZone extends TestCase {
             }
         };
     }
+    //END GWT IGNORE
     
     private DateTimeZone zone;
     private Locale locale;
@@ -143,13 +147,20 @@ public class TestDateTimeZone extends TestCase {
     }
 
     protected void setUp() throws Exception {
+        //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE
         zone = DateTimeZone.getDefault();
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
+        //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE
         DateTimeZone.setDefault(zone);
     }
 
@@ -166,6 +177,7 @@ public class TestDateTimeZone extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
             
+    //BEGIN GWT IGNORE
     public void testDefaultSecurity() {
         if (OLD_JDK) {
             return;
@@ -182,6 +194,7 @@ public class TestDateTimeZone extends TestCase {
             Policy.setPolicy(ALLOW);
         }
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testForID_String() {
@@ -337,6 +350,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testProvider() {
         try {
             assertNotNull(DateTimeZone.getProvider());
@@ -401,7 +415,9 @@ public class TestDateTimeZone extends TestCase {
             assertEquals(ZoneInfoProvider.class, DateTimeZone.getProvider().getClass());
         }
     }
+    //END GWT IGNORE
     
+    //BEGIN GWT IGNORE
     public void testProviderSecurity() {
         if (OLD_JDK) {
             return;
@@ -418,6 +434,7 @@ public class TestDateTimeZone extends TestCase {
             Policy.setPolicy(ALLOW);
         }
     }
+    //END GWT IGNORE
 
     static class MockNullIDSProvider implements Provider {
         public Set getAvailableIDs() {
@@ -487,6 +504,7 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setNameProvider(null);
         }
         
+        //BEGIN GWT IGNORE
         try {
             System.setProperty("org.joda.time.DateTimeZone.NameProvider", "org.joda.time.tz.DefaultNameProvider");
             DateTimeZone.setNameProvider(null);
@@ -514,8 +532,10 @@ public class TestDateTimeZone extends TestCase {
             DateTimeZone.setNameProvider(null);
             assertEquals(DefaultNameProvider.class, DateTimeZone.getNameProvider().getClass());
         }
+        //END GWT IGNORE
     }        
     
+    //BEGIN GWT IGNORE
     public void testNameProviderSecurity() {
         if (OLD_JDK) {
             return;
@@ -532,6 +552,7 @@ public class TestDateTimeZone extends TestCase {
             Policy.setPolicy(ALLOW);
         }
     }
+    //END GWT IGNORE
 
     static class MockOKButNullNameProvider implements NameProvider {
         public String getShortName(Locale locale, String id, String nameKey) {
@@ -544,8 +565,10 @@ public class TestDateTimeZone extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testConstructor() {
+        //BEGIN GWT IGNORE
         assertEquals(1, DateTimeZone.class.getDeclaredConstructors().length);
         assertTrue(Modifier.isProtected(DateTimeZone.class.getDeclaredConstructors()[0].getModifiers()));
+        //END GWT IGNORE
         try {
             new DateTimeZone(null) {
                 public String getNameKey(long instant) {
@@ -604,6 +627,7 @@ public class TestDateTimeZone extends TestCase {
         assertEquals("Europe/London", zone.getShortName(TEST_TIME_SUMMER, Locale.ENGLISH));
     }
     
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testGetName() {
         DateTimeZone zone = DateTimeZone.forID("Europe/London");
         assertEquals("British Summer Time", zone.getName(TEST_TIME_SUMMER));
@@ -863,6 +887,7 @@ public class TestDateTimeZone extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization1() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
         
@@ -879,8 +904,10 @@ public class TestDateTimeZone extends TestCase {
         
         assertSame(zone, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization2() throws Exception {
         DateTimeZone zone = DateTimeZone.forID("+01:00");
         
@@ -897,6 +924,7 @@ public class TestDateTimeZone extends TestCase {
         
         assertSame(zone, result);
     }
+    //END GWT IGNORE
 
     public void testCommentParse() throws Exception {
         // A bug in ZoneInfoCompiler's handling of comments broke Europe/Athens

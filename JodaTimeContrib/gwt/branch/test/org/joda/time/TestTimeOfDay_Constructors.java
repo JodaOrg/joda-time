@@ -18,6 +18,8 @@ package org.joda.time;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -76,13 +78,18 @@ public class TestTimeOfDay_Constructors extends TestCase {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
-        java.util.TimeZone.setDefault(LONDON.toTimeZone());
+        //BEGIN GWT IGNORE
+        //java.util.TimeZone.setDefault(LONDON.toTimeZone());
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        //BEGIN GWT IGNORE
         java.util.TimeZone.setDefault(zone.toTimeZone());
+        //END GWT IGNORE
         zone = null;
     }
 
@@ -314,6 +321,7 @@ public class TestTimeOfDay_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testConstructor_Object2() throws Throwable {
         Calendar cal = new GregorianCalendar();
         cal.setTime(new Date(TEST_TIME1));

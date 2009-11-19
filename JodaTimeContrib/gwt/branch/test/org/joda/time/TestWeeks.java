@@ -191,6 +191,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Weeks test = Weeks.THREE;
         
@@ -207,6 +208,7 @@ public class TestWeeks extends TestCase {
         
         assertSame(test, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToStandardDays() {

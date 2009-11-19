@@ -196,6 +196,7 @@ public class TestMillisDurationField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         DurationField test = MillisDurationField.INSTANCE;
         
@@ -212,5 +213,6 @@ public class TestMillisDurationField extends TestCase {
         
         assertSame(test, result);
     }
+    //END GWT IGNORE
 
 }

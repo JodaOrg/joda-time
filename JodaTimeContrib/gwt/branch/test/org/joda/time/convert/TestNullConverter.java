@@ -78,11 +78,17 @@ public class TestNullConverter extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(DateTimeZone.forID("Europe/London"));
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
+        //Locale.setDefault(Locale.UK);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
         
         ISO = ISOChronology.getInstance();
         JULIAN = JulianChronology.getInstance();
@@ -91,14 +97,17 @@ public class TestNullConverter extends TestCase {
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSingleton() throws Exception {
         Class cls = NullConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -114,6 +123,7 @@ public class TestNullConverter extends TestCase {
         assertEquals(false, Modifier.isProtected(fld.getModifiers()));
         assertEquals(false, Modifier.isPrivate(fld.getModifiers()));
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testSupportedType() throws Exception {

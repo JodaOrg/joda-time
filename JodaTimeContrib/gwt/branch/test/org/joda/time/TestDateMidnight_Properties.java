@@ -83,15 +83,22 @@ public class TestDateMidnight_Properties extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         locale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(LONDON);
-        Locale.setDefault(Locale.UK);
+        //BEGIN GWT IGNORE
+        //Locale.setDefault(Locale.UK);
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
     }
 
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
+        //BEGIN GWT IGNORE
         Locale.setDefault(locale);
+        //END GWT IGNORE
         zone = null;
     }
 
@@ -103,6 +110,7 @@ public class TestDateMidnight_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPropertyGetEra() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
         assertSame(test.getChronology().era(), test.era().getField());
@@ -217,6 +225,7 @@ public class TestDateMidnight_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPropertyGetMonthOfYear() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
         assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
@@ -449,6 +458,7 @@ public class TestDateMidnight_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //GWT result depends on java.util.Locale / java.util.TimeZone
     public void testPropertyGetDayOfWeek() {
         DateMidnight test = new DateMidnight(2004, 6, 9);
         assertSame(test.getChronology().dayOfWeek(), test.dayOfWeek().getField());

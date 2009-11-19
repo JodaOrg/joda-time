@@ -92,11 +92,17 @@ public class TestInterval_Basics extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
+        //BEGIN GWT IGNORE
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
+        //END GWT IGNORE
         DateTimeZone.setDefault(PARIS);
-        TimeZone.setDefault(PARIS.toTimeZone());
-        Locale.setDefault(Locale.FRANCE);
+        //BEGIN GWT IGNORE
+        //TimeZone.setDefault(PARIS.toTimeZone());
+        //Locale.setDefault(Locale.FRANCE);
+        TimeZone.setDefault(DateTimeZone.forID("Asia/Tokyo").toTimeZone());
+        Locale.setDefault(Locale.JAPAN);
+        //END GWT IGNORE
         interval37 = new Interval(3, 7);
         interval33 = new Interval(3, 3);
     }
@@ -104,8 +110,10 @@ public class TestInterval_Basics extends TestCase {
     protected void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
+        //BEGIN GWT IGNORE
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
+        //END GWT IGNORE
         originalDateTimeZone = null;
         originalTimeZone = null;
         originalLocale = null;
@@ -1015,6 +1023,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    //BEGIN GWT IGNORE
     public void testSerialization() throws Exception {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         
@@ -1031,6 +1040,7 @@ public class TestInterval_Basics extends TestCase {
         
         assertEquals(test, result);
     }
+    //END GWT IGNORE
 
     //-----------------------------------------------------------------------
     public void testToString() {

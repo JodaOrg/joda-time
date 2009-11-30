@@ -298,6 +298,19 @@ public class TestLocalDate_Basics extends TestCase {
         assertEquals(true, test2.hashCode() == test2.hashCode());
     }
 
+    public void testEqualsHashCodeAPI() {
+        LocalDate test = new LocalDate(1970, 6, 9, COPTIC_PARIS);
+        int expected = 157;
+        expected = 23 * expected + 1970;
+        expected = 23 * expected + COPTIC_UTC.year().getType().hashCode();
+        expected = 23 * expected + 6;
+        expected = 23 * expected + COPTIC_UTC.monthOfYear().getType().hashCode();
+        expected = 23 * expected + 9;
+        expected = 23 * expected + COPTIC_UTC.dayOfMonth().getType().hashCode();
+        expected += COPTIC_UTC.hashCode();
+        assertEquals(expected, test.hashCode());
+    }
+
     //-----------------------------------------------------------------------
     public void testCompareTo() {
         LocalDate test1 = new LocalDate(2005, 6, 2);

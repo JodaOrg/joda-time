@@ -57,6 +57,9 @@ Enhancements since 1.6
   This provides a direct conversion to JDK Date which handles DST and
   time zone data differences
 
+- Cache hash code in LocalDate
+  Enhances performance
+
 - DateTime constructors without seconds/millis [1982629]
 
 

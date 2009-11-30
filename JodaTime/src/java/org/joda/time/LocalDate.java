@@ -103,8 +103,10 @@ public final class LocalDate
 
     /** The local millis from 1970-01-01T00:00:00 */
     private long iLocalMillis;
-    /** The chronology to use in UTC */
+    /** The chronology to use in UTC. */
     private Chronology iChronology;
+    /** The cached hash code. */
+    private transient volatile int iHash;
 
     //-----------------------------------------------------------------------
     /**
@@ -535,6 +537,20 @@ public final class LocalDate
             }
         }
         return super.equals(partial);
+    }
+
+    /**
+     * Gets a hash code for the instant as defined in <code>ReadablePartial</code>.
+     *
+     * @return a suitable hash code
+     */
+    public int hashCode() {
+        // override for performance
+        int hash = iHash;
+        if (hash == 0) {
+            hash = iHash = super.hashCode();
+        }
+        return hash;
     }
 
     /**

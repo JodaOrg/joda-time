@@ -32,6 +32,8 @@ Enhancements since 1.6
 
 - Add YearMonth, useful for credit card dates [1863090]
 
+- Add MonthDay, useful for birth dates without year
+
 - Add static factory method millis() to Duration [2648777]
   This checks for and returns the singleton value for ZERO
 

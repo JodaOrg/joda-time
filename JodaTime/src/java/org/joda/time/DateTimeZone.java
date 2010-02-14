@@ -29,7 +29,6 @@ import java.util.Set;
 import java.util.TimeZone;
 
 import org.joda.time.chrono.BaseChronology;
-import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -100,7 +99,7 @@ public abstract class DateTimeZone implements Serializable {
     /** The set of ID strings. */
     private static Set<String> cAvailableIDs;
     /** The default time zone. */
-    private static DateTimeZone cDefault;
+    private static volatile DateTimeZone cDefault;
     /** A formatter for printing and parsing zones. */
     private static DateTimeFormatter cOffsetFormatter;
 
@@ -113,23 +112,6 @@ public abstract class DateTimeZone implements Serializable {
     static {
         setProvider0(null);
         setNameProvider0(null);
-
-        try {
-            try {
-                cDefault = forID(System.getProperty("user.timezone"));
-            } catch (RuntimeException ex) {
-                // ignored
-            }
-            if (cDefault == null) {
-                cDefault = forTimeZone(TimeZone.getDefault());
-            }
-        } catch (IllegalArgumentException ex) {
-            // ignored
-        }
-
-        if (cDefault == null) {
-            cDefault = UTC;
-        }
     }
 
     //-----------------------------------------------------------------------
@@ -139,7 +121,32 @@ public abstract class DateTimeZone implements Serializable {
      * @return the default datetime zone object
      */
     public static DateTimeZone getDefault() {
-        return cDefault;
+        DateTimeZone zone = cDefault;
+        if (zone == null) {
+            synchronized(DateTimeZone.class) {
+                zone = cDefault;
+                if (zone == null) {
+                    DateTimeZone temp = null;
+                    try {
+                        try {
+                            temp = forID(System.getProperty("user.timezone"));
+                        } catch (RuntimeException ex) {
+                            // ignored
+                        }
+                        if (temp == null) {
+                            temp = forTimeZone(TimeZone.getDefault());
+                        }
+                    } catch (IllegalArgumentException ex) {
+                        // ignored
+                    }
+                    if (temp == null) {
+                        temp = UTC;
+                    }
+                    cDefault = zone = temp;
+                }
+            }
+        }
+        return zone;
     }
 
     /**
@@ -157,7 +164,9 @@ public abstract class DateTimeZone implements Serializable {
         if (zone == null) {
             throw new IllegalArgumentException("The datetime zone must not be null");
         }
-        cDefault = zone;
+        synchronized(DateTimeZone.class) {
+            cDefault = zone;
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -574,28 +583,22 @@ public abstract class DateTimeZone implements Serializable {
     }
 
     private static int parseOffset(String str) {
-        Chronology chrono;
-        if (cDefault != null) {
-            chrono = ISOChronology.getInstanceUTC();
-        } else {
-            // Can't use a real chronology if called during class
-            // initialization. Offset parser doesn't need it anyhow.
-            chrono = new BaseChronology() {
-                public DateTimeZone getZone() {
-                    return null;
-                }
-                public Chronology withUTC() {
-                    return this;
-                }
-                public Chronology withZone(DateTimeZone zone) {
-                    return this;
-                }
-                public String toString() {
-                    return getClass().getName();
-                }
-            };
-        }
-
+        // Can't use a real chronology if called during class
+        // initialization. Offset parser doesn't need it anyhow.
+        Chronology chrono = new BaseChronology() {
+            public DateTimeZone getZone() {
+                return null;
+            }
+            public Chronology withUTC() {
+                return this;
+            }
+            public Chronology withZone(DateTimeZone zone) {
+                return this;
+            }
+            public String toString() {
+                return getClass().getName();
+            }
+        };
         return -(int) offsetFormatter().withChronology(chrono).parseMillis(str);
     }
 

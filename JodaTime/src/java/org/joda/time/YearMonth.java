@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -35,6 +35,10 @@ import org.joda.time.format.ISODateTimeFormat;
  * <p>
  * Calculations on YearMonth are performed using a {@link Chronology}.
  * This chronology is set to be in the UTC time zone for all calculations.
+ * <p>
+ * One use case for this class is to store a credit card expiry date, as that only
+ * references the year and month.
+ * This class can be used as the gYearMonth type in XML Schema.
  * <p>
  * Each individual field can be queried in two ways:
  * <ul>
@@ -112,6 +116,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the year or month is invalid for the ISO chronology
      */
+    @SuppressWarnings("deprecation")
     public static YearMonth fromDateFields(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The date must not be null");
@@ -238,7 +243,6 @@ public final class YearMonth
      *
      * @param year  the year
      * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
      */
     public YearMonth(int year, int monthOfYear) {
         this(year, monthOfYear, null);
@@ -256,7 +260,6 @@ public final class YearMonth
      *
      * @param year  the year
      * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
      * @param chronology  the chronology, null means ISOChronology in the default zone
      */
     public YearMonth(int year, int monthOfYear, Chronology chronology) {
@@ -329,7 +332,7 @@ public final class YearMonth
     /**
      * Gets an array of the field type of each of the fields that this partial supports.
      * <p>
-     * The fields are returned largest to smallest, Year, Month
+     * The fields are returned largest to smallest, Year, Month.
      *
      * @return the array of field types (cloned), largest to smallest, never null
      */
@@ -367,14 +370,14 @@ public final class YearMonth
     /**
      * Returns a copy of this year-month with the specified field set to a new value.
      * <p>
-     * For example, if the field type is <code>dayOfMonth</code> then the day
+     * For example, if the field type is <code>monthOfYear</code> then the month
      * would be changed in the returned instance.
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * YearMonth updated = ym.withField(DateTimeFieldType.dayOfMonth(), 6);
-     * YearMonth updated = ym.dayOfMonth().setCopy(6);
-     * YearMonth updated = ym.property(DateTimeFieldType.dayOfMonth()).setCopy(6);
+     * YearMonth updated = ym.withField(DateTimeFieldType.monthOfYear(), 6);
+     * YearMonth updated = ym.monthOfYear().setCopy(6);
+     * YearMonth updated = ym.property(DateTimeFieldType.monthOfYear()).setCopy(6);
      * </pre>
      *
      * @param fieldType  the field type to set, not null
@@ -399,9 +402,9 @@ public final class YearMonth
      * <p>
      * These three lines are equivalent:
      * <pre>
-     * YearMonth added = ym.withFieldAdded(DurationFieldType.days(), 6);
-     * YearMonth added = ym.plusDays(6);
-     * YearMonth added = ym.dayOfMonth().addToCopy(6);
+     * YearMonth added = ym.withFieldAdded(DurationFieldType.months(), 6);
+     * YearMonth added = ym.plusMonths(6);
+     * YearMonth added = ym.monthOfYear().addToCopy(6);
      * </pre>
      * 
      * @param fieldType  the field type to add to, not null
@@ -696,7 +699,7 @@ public final class YearMonth
 
     //-----------------------------------------------------------------------
     /**
-     * Output the year-month in ISO8601 format (yyyy-MM-dd).
+     * Output the year-month in ISO8601 format (yyyy-MM).
      *
      * @return ISO8601 time formatted string.
      */
@@ -746,7 +749,7 @@ public final class YearMonth
         private static final long serialVersionUID = 5727734012190224363L;
 
         /** The partial */
-        private final YearMonth iYearMonth;
+        private final YearMonth iBase;
         /** The field index */
         private final int iFieldIndex;
 
@@ -758,7 +761,7 @@ public final class YearMonth
          */
         Property(YearMonth partial, int fieldIndex) {
             super();
-            iYearMonth = partial;
+            iBase = partial;
             iFieldIndex = fieldIndex;
         }
 
@@ -768,7 +771,7 @@ public final class YearMonth
          * @return the field
          */
         public DateTimeField getField() {
-            return iYearMonth.getField(iFieldIndex);
+            return iBase.getField(iFieldIndex);
         }
 
         /**
@@ -777,7 +780,7 @@ public final class YearMonth
          * @return the partial
          */
         protected ReadablePartial getReadablePartial() {
-            return iYearMonth;
+            return iBase;
         }
 
         /**
@@ -786,7 +789,7 @@ public final class YearMonth
          * @return the partial
          */
         public YearMonth getYearMonth() {
-            return iYearMonth;
+            return iBase;
         }
 
         /**
@@ -795,7 +798,7 @@ public final class YearMonth
          * @return the field value
          */
         public int get() {
-            return iYearMonth.getValue(iFieldIndex);
+            return iBase.getValue(iFieldIndex);
         }
 
         //-----------------------------------------------------------------------
@@ -817,9 +820,9 @@ public final class YearMonth
          * @throws IllegalArgumentException if the value isn't valid
          */
         public YearMonth addToCopy(int valueToAdd) {
-            int[] newValues = iYearMonth.getValues();
-            newValues = getField().add(iYearMonth, iFieldIndex, newValues, valueToAdd);
-            return new YearMonth(iYearMonth, newValues);
+            int[] newValues = iBase.getValues();
+            newValues = getField().add(iBase, iFieldIndex, newValues, valueToAdd);
+            return new YearMonth(iBase, newValues);
         }
 
         /**
@@ -841,9 +844,9 @@ public final class YearMonth
          * @throws IllegalArgumentException if the value isn't valid
          */
         public YearMonth addWrapFieldToCopy(int valueToAdd) {
-            int[] newValues = iYearMonth.getValues();
-            newValues = getField().addWrapField(iYearMonth, iFieldIndex, newValues, valueToAdd);
-            return new YearMonth(iYearMonth, newValues);
+            int[] newValues = iBase.getValues();
+            newValues = getField().addWrapField(iBase, iFieldIndex, newValues, valueToAdd);
+            return new YearMonth(iBase, newValues);
         }
 
         //-----------------------------------------------------------------------
@@ -858,9 +861,9 @@ public final class YearMonth
          * @throws IllegalArgumentException if the value isn't valid
          */
         public YearMonth setCopy(int value) {
-            int[] newValues = iYearMonth.getValues();
-            newValues = getField().set(iYearMonth, iFieldIndex, newValues, value);
-            return new YearMonth(iYearMonth, newValues);
+            int[] newValues = iBase.getValues();
+            newValues = getField().set(iBase, iFieldIndex, newValues, value);
+            return new YearMonth(iBase, newValues);
         }
 
         /**
@@ -875,9 +878,9 @@ public final class YearMonth
          * @throws IllegalArgumentException if the text value isn't valid
          */
         public YearMonth setCopy(String text, Locale locale) {
-            int[] newValues = iYearMonth.getValues();
-            newValues = getField().set(iYearMonth, iFieldIndex, newValues, text, locale);
-            return new YearMonth(iYearMonth, newValues);
+            int[] newValues = iBase.getValues();
+            newValues = getField().set(iBase, iFieldIndex, newValues, text, locale);
+            return new YearMonth(iBase, newValues);
         }
 
         /**

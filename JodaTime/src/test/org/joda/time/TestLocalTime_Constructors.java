@@ -119,11 +119,21 @@ public class TestLocalTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_FromDateFields_Date() throws Exception {
+    public void testFactory_FromDateFields_after1970() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
         LocalTime expected = new LocalTime(4, 5, 6, 7);
         assertEquals(expected, LocalTime.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_FromDateFields_before1970() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1969, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        LocalTime expected = new LocalTime(4, 5, 6, 7);
+        assertEquals(expected, LocalTime.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_FromDateFields_null() throws Exception {
         try {
             LocalTime.fromDateFields((Date) null);
             fail();

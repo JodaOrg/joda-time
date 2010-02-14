@@ -108,6 +108,9 @@ Deprecations since 1.6
 
 Bug fixes since 1.6
 -------------------
+- LocalTime.fromDateFields()
+  Now handles times based on java.util.Date before 1970
+
 - LocalDate.toInterval() [2487417]
   Now handles time zones which have no midnight at DST cutover
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import java.security.ProtectionDomain;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.DateTimeUtils.MillisProvider;
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
@@ -34,7 +35,7 @@ import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 
 /**
- * This class is a Junit unit test for Instant.
+ * This class is a Junit unit test for DateTimeUtils.
  *
  * @author Stephen Colebourne
  */
@@ -265,6 +266,54 @@ public class TestDateTimeUtils extends TestCase {
                 Policy.setPolicy(RESTRICT);
                 System.setSecurityManager(new SecurityManager());
                 DateTimeUtils.setCurrentMillisOffset(-24 * 60 *  60 * 1000);
+                fail();
+            } catch (SecurityException ex) {
+                // ok
+            } finally {
+                System.setSecurityManager(null);
+                Policy.setPolicy(ALLOW);
+            }
+        } finally {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMillisProvider() {
+        try {
+            DateTimeUtils.setCurrentMillisProvider(new MillisProvider() {
+                public long getMillis() {
+                    return 1L;
+                }
+            });
+            assertEquals(1L, DateTimeUtils.currentTimeMillis());
+        } finally {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    public void testMillisProvider_null() {
+        try {
+            DateTimeUtils.setCurrentMillisProvider(null);
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void testMillisProviderSecurity() {
+        if (OLD_JDK) {
+            return;
+        }
+        try {
+            try {
+                Policy.setPolicy(RESTRICT);
+                System.setSecurityManager(new SecurityManager());
+                DateTimeUtils.setCurrentMillisProvider(new MillisProvider() {
+                    public long getMillis() {
+                        return 0L;
+                    }
+                });
                 fail();
             } catch (SecurityException ex) {
                 // ok

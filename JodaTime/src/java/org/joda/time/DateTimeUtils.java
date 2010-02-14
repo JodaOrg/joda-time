@@ -104,6 +104,23 @@ public class DateTimeUtils {
     }
 
     /**
+     * Sets the provider of the current time to class specified.
+     * <p>
+     * This method changes the behaviour of {@link #currentTimeMillis()}.
+     * Whenever the current time is queried, the specified class will be called.
+     * 
+     * @param millisProvider  the provider of the current time to use, not null
+     * @throws SecurityException if the application does not have sufficient security rights
+     */
+    public static final void setCurrentMillisProvider(MillisProvider millisProvider) throws SecurityException {
+        if (millisProvider == null) {
+            throw new IllegalArgumentException("The MillisProvider must not be null");
+        }
+        checkPermission();
+        cMillisProvider = millisProvider;
+    }
+
+    /**
      * Checks whether the provider may be changed using permission 'CurrentTime.setProvider'.
      * 
      * @throws SecurityException if the provider may not be changed
@@ -353,25 +370,31 @@ public class DateTimeUtils {
 
     //-----------------------------------------------------------------------
     /**
-     * Base class defining a millisecond provider.
+     * A millisecond provider, allowing control of the system clock.
+     * 
+     * @author Stephen Colebourne
+     * @since 2.0 (previously private)
      */
-    abstract static class MillisProvider {
+    public static interface MillisProvider {
         /**
          * Gets the current time.
-         * @return the current time in millis
+         * <p>
+         * Implementations of this method must be thread-safe.
+         * 
+         * @return the current time in milliseconds
          */
-        abstract long getMillis();
+        long getMillis();
     }
 
     /**
      * System millis provider.
      */
-    static class SystemMillisProvider extends MillisProvider {
+    static class SystemMillisProvider implements MillisProvider {
         /**
          * Gets the current time.
          * @return the current time in millis
          */
-        long getMillis() {
+        public long getMillis() {
             return System.currentTimeMillis();
         }
     }
@@ -379,7 +402,7 @@ public class DateTimeUtils {
     /**
      * Fixed millisecond provider.
      */
-    static class FixedMillisProvider extends MillisProvider {
+    static class FixedMillisProvider implements MillisProvider {
         /** The fixed millis value. */
         private final long iMillis;
         
@@ -395,7 +418,7 @@ public class DateTimeUtils {
          * Gets the current time.
          * @return the current time in millis
          */
-        long getMillis() {
+        public long getMillis() {
             return iMillis;
         }
     }
@@ -403,7 +426,7 @@ public class DateTimeUtils {
     /**
      * Offset from system millis provider.
      */
-    static class OffsetMillisProvider extends MillisProvider {
+    static class OffsetMillisProvider implements MillisProvider {
         /** The millis offset. */
         private final long iMillis;
         
@@ -419,7 +442,7 @@ public class DateTimeUtils {
          * Gets the current time.
          * @return the current time in millis
          */
-        long getMillis() {
+        public long getMillis() {
             return System.currentTimeMillis() + iMillis;
         }
     }

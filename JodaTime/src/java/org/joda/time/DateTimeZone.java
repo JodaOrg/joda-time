@@ -925,7 +925,13 @@ public abstract class DateTimeZone implements Serializable {
             if (strict || offsetLocal < 0) {
                 // determine if we are in the DST gap
                 long nextLocal = nextTransition(instantLocal - offsetLocal);
+                if (nextLocal == (instantLocal - offsetLocal)) {
+                    nextLocal = Long.MAX_VALUE;
+                }
                 long nextAdjusted = nextTransition(instantLocal - offset);
+                if (nextAdjusted == (instantLocal - offset)) {
+                    nextAdjusted = Long.MAX_VALUE;
+                }
                 if (nextLocal != nextAdjusted) {
                     // yes we are in the DST gap
                     if (strict) {

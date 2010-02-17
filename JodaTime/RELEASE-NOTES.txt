@@ -119,6 +119,9 @@ Bug fixes since 1.6
 - LocalDate.toInterval() [2487417]
   Now handles time zones which have no midnight at DST cutover
 
+- DateTimeZone.convertLocalToUTC [2903029]
+  Now handles date after last ever DST change
+
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
 

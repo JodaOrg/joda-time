@@ -18,6 +18,8 @@ package org.joda.time;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.tz.DateTimeZoneBuilder;
+
 /**
  * This class is a JUnit test for DateTimeZone.
  *
@@ -1026,6 +1028,24 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+
+    public void test_DateTime_JustAfterLastEverOverlap() {
+        // based on America/Argentina/Catamarca in file 2009s
+        DateTimeZone zone = new DateTimeZoneBuilder()
+            .setStandardOffset(-3 * DateTimeConstants.MILLIS_PER_HOUR)
+            .addRecurringSavings("SUMMER", 1 * DateTimeConstants.MILLIS_PER_HOUR, 2000, 2008,
+                                    'w', 4, 10, 0, true, 23 * DateTimeConstants.MILLIS_PER_HOUR)
+            .addRecurringSavings("WINTER", 0, 2000, 2008,
+                                    'w', 8, 10, 0, true, 0 * DateTimeConstants.MILLIS_PER_HOUR)
+            .toDateTimeZone("Zone", false);
+        
+        LocalDate date = new LocalDate(2008, 8, 10);
+        assertEquals("2008-08-10", date.toString());
+        
+        DateTime dt = date.toDateTimeAtStartOfDay(zone);
+        System.out.println(dt);
+        assertEquals("2008-08-10T00:00:00.000-03:00", dt.toString());
+    }
 
 //    public void test_toDateMidnight_SaoPaolo() {
 //        // RFE: 1684259

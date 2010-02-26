@@ -1,5 +1,10 @@
 <project name="joda-time-gwt" default="jar" basedir=".">
 
+   <!--
+       NOTE: Part of the build is not done via ant but via maven. See README.txt
+       for instructions.
+    -->
+
 	<property file="build-user.properties" />
 	<property file="build.properties" />
 
@@ -109,12 +114,12 @@
 		<mkdir dir="target/test-gwt" />
 		<mkdir dir="target/test-gwt-tmp" />
 
-		<junit dir="target/test-gwt" fork="yes" printsummary="yes"
+		<junit dir="target/test-gwt" fork="yes" printsummary="yes" showoutput="yes"
 			failureproperty="junit.failure" tempdir="target/test-gwt-tmp" jvm="${junit.jvm}">
 			<jvmarg line="${gwt.test.args}" />
 			<classpath refid="test.gwt.run.classpath" />
 
-			<formatter type="plain" />
+ 			<formatter type="plain" />
 			<formatter type="xml" />
 
 			<batchtest fork="yes" todir="target/test-gwt">
@@ -122,6 +127,15 @@
 					<include name="${gwt.testSet}" />
 					<!-- this test gives: a script on this page is causing mozilla to run slowly -->
 					<exclude name="**/TestParseISO.java" />
+					<!-- in web mode these ones also cause mozilla to run slowly -->
+					<exclude name="**/TestTimeOfDay_Properties.java" />
+					<exclude name="**/TestBuddhistChronology.java" />
+					<exclude name="**/TestGJChronology.java" />
+					<exclude name="**/TestISOChronology.java" />
+					<exclude name="**/TestBuilder.java" />
+					<!-- starting with Test but not a test case -->
+					<exclude name="**/gj/Test*.java" />
+					<exclude name="**/gwt/TestConstants.java" />
 				</fileset>
 			</batchtest>
 		</junit>

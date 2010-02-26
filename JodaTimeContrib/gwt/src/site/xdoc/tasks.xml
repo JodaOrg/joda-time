@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - GWT port - Home</title>
+  <author>Rintcius Blok</author>
+ </properties>
+
+ <body>
+
+<section name="Tasks outstanding">
+<p>
+Joda-Time-GWT is a contributed project.
+This means that it is not maintained by the main Joda-Time authors in the same way.
+Contributions to this project are welcome.
+</p>
+<p>
+Contact the mailing lists for more details or to help.
+</p>
+</section>
+
+ </body>
+</document>

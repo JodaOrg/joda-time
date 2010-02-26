@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Joda-Time Hibernate">
+  <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
+  <bannerLeft>
+    <name>Joda.org</name>
+    <src>http://joda-time.sourceforge.net/contrib/gwt/images/joda.png</src>
+    <href>http://joda.sourceforge.net/</href>
+  </bannerLeft>
+  <bannerRight>
+    <name>Joda Time</name>
+    <src>http://joda-time.sourceforge.net/contrib/gwt/images/jodatime.png</src>
+    <href>http://joda-time.sourceforge.net/</href>
+  </bannerRight>
+
+  <body>
+    <links>
+      <item name="Joda-Time" href="../../index.html"/>
+      <item name="JSP tags" href="../jsptags/index.html"/>
+      <item name="Hibernate" href="../hibernate/index.html"/>
+      <item name="I18N" href="../i18n/index.html"/>
+      <item name="GWT" href="index.html"/>
+    </links>
+
+    <menu name="Joda Time GWT">
+      <item name="Overview" href="index.html"/>
+      <item name="Users guide" href="userguide.html"/>
+      <item name="Javadoc (Release)" href="apidocs/index.html"/>
+      <item name="License" href="licensecover.html"/>
+      <item name="Release notes" href="changes-report.html"/>
+      <item name="Download" href="http://sourceforge.net/projects/joda-time/files/joda-time-gwt/"/>
+    </menu>
+
+    <menu name="Development">
+      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
+      <item name="Mailing lists" href="mail-lists.html"/>
+      <item name="Tasks" href="tasks.html"/>
+      <item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/gwt/"/>
+      <item name="Javadoc (Development)" href="apidocs/index.html"/>
+    </menu>
+
+    <menu name="Joda">
+      <item name="Joda home" href="http://joda.sourceforge.net"/>
+      <item name="Time" href="http://joda-time.sourceforge.net/index.html"/>
+      <item name="Money" href="http://joda-money.sourceforge.net/index.html"/>
+      <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
+      <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
+    </menu>
+
+    <menu ref="reports"/>
+  </body>
+
+  <poweredBy>
+    <logo name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"
+        img="http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2" width="125" height="37" />
+  </poweredBy>
+</project>

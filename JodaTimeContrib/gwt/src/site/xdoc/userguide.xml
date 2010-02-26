@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+  <properties>
+    <title>Java date and time API - GWT port - Home</title>
+    <author>Rintcius Blok</author>
+  </properties>
+  <body>
+
+    <!-- ========================================================================= -->
+
+    <section name="User Guide">
+      <p>
+        Joda-Time-GWT is a port of Joda-Time for the GWT environment.
+        This guide presents the specifics of Joda-Time-GWT from a user's perspective.
+
+        <ol>
+          <li>Package</li>
+          <li>Server side usage</li>
+          <li>
+            Client side usage
+            <ol>
+            <li>New classes</li>
+            <li>Classes with changed semantics</li>
+            </ol>
+          </li>
+        </ol>
+      </p>
+
+      <!-- ========================================================================= -->
+
+      <subsection name="Package">
+      <p>
+        Joda Time GWT is packaged as 1 jar with maven artifact id <code>joda-time-gwt</code>.
+        Its groupid is <code>joda-time</code> (like the core Joda-Time package and the Joda-Time contributions).   
+      </p>
+      </subsection>
+
+      <subsection name="Server side usage">
+        <p>
+          Server side usage of Joda-Time-GWT is trivial, since it makes no
+          difference whether Joda-Time or Joda-Time-GWT is used. 
+		</p>
+      </subsection>
+
+      <subsection name="Client side usage">
+        <p>
+          At client side, in the browser, it is inevitable that there are some
+          differences with Joda-Time. See
+          <a href="http://code.google.com/webtoolkit/doc/latest/DevGuideCodingBasicsCompatibility.html">
+            GWT Compatibility with the Java Language and Libraries</a>
+          for a general discussion of the incompatibilities between GWT and Java.
+          However, Joda-Time-GWT still aims to maximize compatibility with Joda-Time.
+        </p>
+        <p>
+          Incompatibilities by type:
+          <ol>
+            <li>Classes that are excluded from use at client side. These are
+              <code>ZoneInfoCompiler</code>, <code>ZoneInfoProvider</code> and
+              <code>JodaTimePermission</code>
+            </li>
+            <li>Code where some aspects are ignored. This is done on areas that do not make any sense in the browser such as the code in the
+              <code>java.security</code> package and reading defaults from system properties</li>
+            <li>Code with changed semantics. This portion is kept minimal and is listed below in the section <i>Classes with changed semantics</i>.
+		    </li>
+            <li>Code that throws an <code>UnsupportedOperationException</code>, to make explicit that this
+              code is not ported to GWT (yet).
+            </li>
+          </ol>
+        </p>
+        <h5>New classes</h5>
+        <p>
+          Joda-Time-GWT introduces the following new classes:
+          <ul>
+            <li>
+              <code>org.joda.time.gwt.GwtTimeZone</code> which wraps <code>com.google.gwt.i18n.client.TimeZone</code>
+              and adapts it to its Joda-Time counterpart <code>org.joda.time.DateTimeZone</code>.
+            </li>
+            <li>
+              <code>org.joda.time.gwt.tz.GwtZoneInfoProvider</code>: a GWT specific implementation of
+              <code>org.joda.time.tz.Provider</code>.
+            </li>
+          </ul>
+        </p>
+        <h5>Classes with changed semantics</h5>
+        <ul>
+        
+        <li><strong><code>DateTimeZone</code></strong>: <p>A difference between server side and client side is regarding the default provider in 
+              <code>DateTimeZone</code>: on server side the first attempt is to set it based on a system property, then it tries to
+              create a <code>ZoneInfoProvider</code> and if it is still not set, then <code>UTCProvider</code> will be used.
+              On client side <code>UTCProvider</code> will always be used by default (system properties and 
+              <code>ZoneInfoProvider</code> are not available here).
+              Also <code>GwtZoneInfoProvider</code> is chosen not to be set by default, to avoid that this class and the time zone 
+              data it uses is unnecessarily compiled and included as javascript.</p>
+              </li>
+        </ul>
+      </subsection>
+    </section>
+
+    <!-- ========================================================================= -->
+
+  </body>
+</document>

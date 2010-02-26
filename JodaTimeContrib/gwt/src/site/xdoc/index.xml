@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - GWT port - Home</title>
+  <author>Rintcius Blok</author>
+ </properties>
+
+ <body>
+
+<section name="Joda Time - GWT port">
+<p>
+<a href="/index.html">Joda-Time</a> provides a complete quality alternative
+to the JDK date and time classes.
+<a href="http://code.google.com/webtoolkit">Google Web Toolkit (GWT)</a>  
+is a development toolkit for building and optimizing complex browser-based applications,
+which allows you to write client-side applications in Java and deploy them as JavaScript. 
+</p>
+<p>
+This sub-project was setup to be able to use <strong>Joda-Time in a GWT environment</strong>.
+To make this as easy as possible, at server side it makes no difference whether you use Joda-Time or Joda-Time-GWT.
+And for the client side, in the browser, Joda-Time-GWT maximizes the amount of code that you can still use in a transparent way. 
+Inevitably there are some exceptions though. They are discussed in detail in the <a href="userguide.html">user guide</a>. 
+</p>
+<p>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time-gwt/">Download now</a>
+</p>
+</section>
+
+
+<section name="Documentation">
+<p>
+Various documentation is available:
+<ul>
+<li>The javadoc for the <a href="apidocs/index.html">current release</a></li>
+<li>The <a href="userguide.html">user guide</a></li>
+<li>The <a href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTimeContrib/gwt/">Subversion repository</a></li>
+</ul>
+</p>
+</section>
+
+
+<section name="Releases">
+<p>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time-gwt/1.6.0.0/">Release 1.6.0.0</a>
+is the current latest release.
+Please bear in mind that this project is separate from Joda-Time itself.
+</p>
+<p>
+Note that Joda-Time-GWT uses a 4 level release numbering scheme. The first 3 levels refer to the Joda-Time release
+that Joda-Time-GWT is built upon. The fourth level indicates the fix version that is specific to Joda-Time-GWT.
+</p>
+</section>
+
+
+<section name="Support">
+<p>
+The Joda-Time-GWT library was contributed to Joda-Time by Rintcius Blok.
+Support on bugs, library usage or enhancement requests is available via:
+</p>
+<ul>
+<li>the joda-interest <a href="mail-lists.html">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
+<li>the joda-time sourceforge <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forum</a>.</li>
+</ul>
+<p>
+<br />
+</p>
+<p>
+<br />
+</p>
+</section>
+
+</body>
+</document>

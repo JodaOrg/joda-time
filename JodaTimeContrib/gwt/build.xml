@@ -71,8 +71,18 @@
 		<delete dir="target" />
 	</target>
 
+    <target name="check-deps" description="quick check to very whether the dependencies are there">
+        <available file="${joda-time.jar}" property="joda.time.jar.present"/>
+        <fail message="${joda-time.jar} is not available. Please run 'mvn dependency:copy-dependencies' first">
+            <condition>
+                <not>
+                    <isset property="joda.time.jar.present"/>
+                </not>
+            </condition>
+        </fail>
+    </target>
 
-	<target name="compile" description="Compile java source">
+	<target name="compile" depends="check-deps" description="Compile java source">
 		<mkdir dir="target/classes" />
 		<!-- using source/target 1.3 in line with joda-time -->
 		<javac srcdir="src/main/gwt" destdir="target/classes" encoding="utf-8"
@@ -164,7 +174,7 @@
 			<fileset dir="src/main/gwt"></fileset>
 			<fileset dir="src/main/gwt-emul"></fileset>
 		</copy>
-		<jar jarfile="target/joda-time-gwt.jar" basedir="target/jar">
+		<jar jarfile="target/${jar.name}" basedir="target/jar">
 			<exclude name="**/TimeDummy.gwt.xml" />
 		</jar>
 	</target>

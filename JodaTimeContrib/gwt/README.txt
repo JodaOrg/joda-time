@@ -13,6 +13,8 @@ Build steps:
    $ mvn dependency:copy-dependencies
 3. copy build.properties to build-user.properties and change the properties in build-user.properties so they fit your environment.
 4. create the jar:
+   $ mvn package
+   or
    $ ant jar
 
 To test:

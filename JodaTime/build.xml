@@ -181,7 +181,7 @@
         debuglevel="${compile.debuglevel}"
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}"
-    	    source="1.5" target="1.5">
+    	    source="1.5" target="1.5" includeantruntime="false">
       <classpath refid="compile.classpath"/>
     </javac>
   </target>
@@ -227,7 +227,7 @@
            destdir="${build.tests}"
              debug="${compile.debug}"
        deprecation="${compile.deprecation}"
-          optimize="${compile.optimize}">
+          optimize="${compile.optimize}" includeantruntime="false">
       <classpath refid="test.classpath"/>
     </javac>
     <copy    todir="${build.tests}" filtering="on">

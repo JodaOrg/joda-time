@@ -715,6 +715,7 @@ public class DateTimeFormatter {
      * @return the parsed date, never null
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
+     * @since 2.0
      */
     public LocalDate parseLocalDate(String text) {
         return parseLocalDateTime(text).toLocalDate();
@@ -732,6 +733,7 @@ public class DateTimeFormatter {
      * @return the parsed time, never null
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
+     * @since 2.0
      */
     public LocalTime parseLocalTime(String text) {
         return parseLocalDateTime(text).toLocalTime();
@@ -749,6 +751,7 @@ public class DateTimeFormatter {
      * @return the parsed date-time, never null
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
+     * @since 2.0
      */
     public LocalDateTime parseLocalDateTime(String text) {
         DateTimeParser parser = requireParser();

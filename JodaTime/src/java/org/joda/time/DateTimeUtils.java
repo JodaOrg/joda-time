@@ -110,6 +110,7 @@ public class DateTimeUtils {
      * 
      * @param millisProvider  the provider of the current time to use, not null
      * @throws SecurityException if the application does not have sufficient security rights
+     * @since 2.0
      */
     public static final void setCurrentMillisProvider(MillisProvider millisProvider) throws SecurityException {
         if (millisProvider == null) {
@@ -357,6 +358,7 @@ public class DateTimeUtils {
      * 
      * @param locale  the {@link Locale} used to get the correct {@link DateFormatSymbols}
      * @return the symbols
+     * @since 2.0
      */
     public static final DateFormatSymbols getDateFormatSymbols(Locale locale) {
         try {        	

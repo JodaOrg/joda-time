@@ -1043,6 +1043,7 @@ public class DateTimeFormatterBuilder {
      * more precision is required. 1=hours, 2=minutes, 3=seconds, 4=fraction
      * @param maxFields  maximum number of fields to print
      * @return this DateTimeFormatterBuilder, for chaining
+     * @since 2.0
      */
     public DateTimeFormatterBuilder appendTimeZoneOffset(
             String zeroOffsetPrintText, String zeroOffsetParseText, boolean showSeparators,

@@ -59,7 +59,7 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/index.html?org/jod
 }
 -->
 Version 1.6 was released on 2008-10-27 -
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Download now</a>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Download now</a>
 </p>
 </section>
 
@@ -143,7 +143,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">Release 1.6</a>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 1.6</a>
 is the current latest release.
 This release is considered stable and worthy of the 1.x tag.
 It has extensive testing suites and has been used in production.
@@ -162,7 +162,7 @@ Support on bugs, library usage or enhancement requests is available via:
 </p>
 <ul>
 <li>the joda-interest <a href="mail-lists.html">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
-<li>the joda-time sourceforge <a href="http://sourceforge.net/forum/forum.php?forum_id=337835">forum</a>.</li>
+<li>the joda-time sourceforge <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forum</a>.</li>
 </ul>
 <p>
 Alternatively, you can contact the project lead, Stephen Colebourne via scolebourne.at.users.sourceforge.net.

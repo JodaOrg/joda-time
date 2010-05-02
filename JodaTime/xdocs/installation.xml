@@ -11,7 +11,7 @@
 <section name="Download and Installation">
 <p>
 To use Joda-Time you need to
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">download the latest version</a>.
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">download the latest version</a>.
 The download will contain the joda-time-1.6.jar.
 Once you add this to your classpath you will be able to use Joda-Time.
 </p>

@@ -102,7 +102,7 @@ Everything else still compatible, including the generics AFAIK.
 Serialization compatible - Yes
 
 Data compatible - Yes, except
-  - DateTimeZone data updated to version 2009m
+  - DateTimeZone data updated to version 2010i
 
 Semantic compatible - Yes
 

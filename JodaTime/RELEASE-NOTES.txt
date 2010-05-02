@@ -67,6 +67,8 @@ Enhancements since 1.6
 
 - DateTime constructors without seconds/millis [1982629]
 
+- DateTimeFormatter convenience methods taking an Appendable [2607923]
+
 
 Compatibility with 1.6
 ----------------------

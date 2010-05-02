@@ -412,7 +412,7 @@ public class DateTimeFormatter {
     /**
      * Prints a ReadableInstant, using the chronology supplied by the instant.
      *
-     * @param buf  formatted instant is appended to this buffer
+     * @param buf  the destination to format to, not null
      * @param instant  instant to format, null means now
      */
     public void printTo(StringBuffer buf, ReadableInstant instant) {
@@ -424,7 +424,7 @@ public class DateTimeFormatter {
     /**
      * Prints a ReadableInstant, using the chronology supplied by the instant.
      *
-     * @param out  formatted instant is written out
+     * @param out  the destination to format to, not null
      * @param instant  instant to format, null means now
      */
     public void printTo(Writer out, ReadableInstant instant) throws IOException {
@@ -433,12 +433,23 @@ public class DateTimeFormatter {
         printTo(out, millis, chrono);
     }
 
+    /**
+     * Prints a ReadableInstant, using the chronology supplied by the instant.
+     *
+     * @param appendable  the destination to format to, not null
+     * @param instant  instant to format, null means now
+     * @since 2.0
+     */
+    public void printTo(Appendable appendable, ReadableInstant instant) throws IOException {
+        appendable.append(print(instant));
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * using ISO chronology in the default DateTimeZone.
      *
-     * @param buf  formatted instant is appended to this buffer
+     * @param buf  the destination to format to, not null
      * @param instant  millis since 1970-01-01T00:00:00Z
      */
     public void printTo(StringBuffer buf, long instant) {
@@ -449,11 +460,23 @@ public class DateTimeFormatter {
      * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
      * using ISO chronology in the default DateTimeZone.
      *
-     * @param out  formatted instant is written out
+     * @param out  the destination to format to, not null
      * @param instant  millis since 1970-01-01T00:00:00Z
      */
     public void printTo(Writer out, long instant) throws IOException {
         printTo(out, instant, null);
+    }
+
+    /**
+     * Prints an instant from milliseconds since 1970-01-01T00:00:00Z,
+     * using ISO chronology in the default DateTimeZone.
+     *
+     * @param appendable  the destination to format to, not null
+     * @param instant  millis since 1970-01-01T00:00:00Z
+     * @since 2.0
+     */
+    public void printTo(Appendable appendable, long instant) throws IOException {
+        appendable.append(print(instant));
     }
 
     //-----------------------------------------------------------------------
@@ -463,7 +486,7 @@ public class DateTimeFormatter {
      * Neither the override chronology nor the override zone are used
      * by this method.
      *
-     * @param buf  formatted partial is appended to this buffer
+     * @param buf  the destination to format to, not null
      * @param partial  partial to format
      */
     public void printTo(StringBuffer buf, ReadablePartial partial) {
@@ -480,7 +503,7 @@ public class DateTimeFormatter {
      * Neither the override chronology nor the override zone are used
      * by this method.
      *
-     * @param out  formatted partial is written out
+     * @param out  the destination to format to, not null
      * @param partial  partial to format
      */
     public void printTo(Writer out, ReadablePartial partial) throws IOException {
@@ -489,6 +512,20 @@ public class DateTimeFormatter {
             throw new IllegalArgumentException("The partial must not be null");
         }
         printer.printTo(out, partial, iLocale);
+    }
+
+    /**
+     * Prints a ReadablePartial.
+     * <p>
+     * Neither the override chronology nor the override zone are used
+     * by this method.
+     *
+     * @param appendable  the destination to format to, not null
+     * @param partial  partial to format
+     * @since 2.0
+     */
+    public void printTo(Appendable appendable, ReadablePartial partial) throws IOException {
+        appendable.append(print(partial));
     }
 
     //-----------------------------------------------------------------------

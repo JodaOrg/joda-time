@@ -181,7 +181,7 @@
         debuglevel="${compile.debuglevel}"
        deprecation="${compile.deprecation}"
           optimize="${compile.optimize}"
-    	    source="1.3" target="1.3">
+    	    source="1.5" target="1.5">
       <classpath refid="compile.classpath"/>
     </javac>
   </target>

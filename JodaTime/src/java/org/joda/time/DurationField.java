@@ -269,17 +269,19 @@ public abstract class DurationField implements Comparable<DurationField> {
      */
     public abstract long getDifferenceAsLong(long minuendInstant, long subtrahendInstant);
 
-    /**
-     * Compares this duration field with another duration field for ascending
-     * unit millisecond order. This ordering is inconsistent with equals, as it
-     * ignores name and precision.
-     *
-     * @param durationField  a duration field to check against
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object type is not supported
-     */
-    public abstract int compareTo(DurationField durationField);
+    // Adding this definition would be backwards incompatible with earlier subclasses
+    // This definition of compareTo was present in previous versions, and still applies
+//    /**
+//     * Compares this duration field with another duration field for ascending
+//     * unit millisecond order. This ordering is inconsistent with equals, as it
+//     * ignores name and precision.
+//     *
+//     * @param durationField  a duration field to check against
+//     * @return negative value if this is less, 0 if equal, or positive value if greater
+//     * @throws NullPointerException if the object is null
+//     * @throws ClassCastException if the object type is not supported
+//     */
+//    public abstract int compareTo(DurationField durationField);
 
     /**
      * Returns a localized unit name of this field, using the given value as an

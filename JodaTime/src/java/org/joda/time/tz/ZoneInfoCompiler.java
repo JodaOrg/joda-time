@@ -37,6 +37,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDate;
 import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.LenientChronology;
@@ -486,7 +487,7 @@ public class ZoneInfoCompiler {
         }
     }
 
-    private static class DateTimeOfYear {
+    static class DateTimeOfYear {
         public final int iMonthOfYear;
         public final int iDayOfMonth;
         public final int iDayOfWeek;
@@ -547,7 +548,17 @@ public class ZoneInfoCompiler {
                     if (st.hasMoreTokens()) {
                         str = st.nextToken();
                         zoneChar = parseZoneChar(str.charAt(str.length() - 1));
-                        millis = parseTime(str);
+                        if (str.equals("24:00")) {
+                            LocalDate date = (day == -1 ?
+                                    new LocalDate(2001, month, 1).plusMonths(1) :
+                                    new LocalDate(2001, month, day).plusDays(1));
+                            advance = (day != -1);
+                            month = date.getMonthOfYear();
+                            day = date.getDayOfMonth();
+                            dayOfWeek = ((dayOfWeek - 1 + 1) % 7) + 1;
+                        } else {
+                            millis = parseTime(str);
+                        }
                     }
                 }
             }

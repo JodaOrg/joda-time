@@ -1,18 +1,13 @@
 JodaTime ToDo list
 ==================
 
-For 2.0
+For 2.1
 -------
 
-The TODO list for 2.0 has not been set yet.
+The TODO list for 2.1 has not been set yet.
 Some of the following are likely targets, as they are interesting ideas.
 
 Join joda-interest.at.lists.sourceforge.net to help out!
-
-Bugs
-----
-- At some point a TZ update caused Asia/Amman to fail tests:
-  *d* Error in Asia/Amman 2011-03-30T22:00:00.000Z
 
 Ideas
 -----

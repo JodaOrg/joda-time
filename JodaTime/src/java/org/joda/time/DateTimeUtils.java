@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ import java.util.Locale;
 import org.joda.time.chrono.ISOChronology;
 
 /**
- * DateTimeUtils provide public utility methods for the datetime library.
+ * DateTimeUtils provide public utility methods for the date-time library.
  * <p>
  * DateTimeUtils is thread-safe although shared static variables are used.
  *
@@ -31,11 +31,10 @@ import org.joda.time.chrono.ISOChronology;
  */
 public class DateTimeUtils {
 
-    /** The singleton instance of the system millisecond provider */
+    /** The singleton instance of the system millisecond provider. */
     private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
-    
-    /** The millisecond provider currently in use */
-    private static MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
+    /** The millisecond provider currently in use. */
+    private static volatile MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
 
     /**
      * Restrictive constructor

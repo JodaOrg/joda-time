@@ -128,6 +128,8 @@ Bug fixes since 1.6
 - Classloading CachedDateTimeZone could invalidate state [2935625]
   Default time zone now lazily loaded
 
+- DateTimeUtils shared static variable now volatile [2986043]
+
 - Javadoc fix in Months [2721880]
 
 

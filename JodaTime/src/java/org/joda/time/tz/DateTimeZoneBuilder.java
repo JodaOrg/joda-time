@@ -1385,7 +1385,8 @@ public class DateTimeZoneBuilder {
          * @param transitions  the list of Transition objects
          * @param tailZone  optional zone for getting info beyond precalculated tables
          */
-        static PrecalculatedZone create(String id, boolean outputID, ArrayList transitions, DSTZone tailZone) {
+        static PrecalculatedZone create(String id, boolean outputID, ArrayList transitions,
+                                        DSTZone tailZone) {
             int size = transitions.size();
             if (size == 0) {
                 throw new IllegalArgumentException();
@@ -1422,6 +1423,9 @@ public class DateTimeZoneBuilder {
                     zoneNameData = set;
                 }
             }
+
+            Chronology chrono = ISOChronology.getInstanceUTC();
+
             for (int i = 0; i < nameKeys.length - 1; i++) {
                 String curNameKey = nameKeys[i];
                 String nextNameKey = nameKeys[i + 1];
@@ -1429,7 +1433,7 @@ public class DateTimeZoneBuilder {
                 long nextOffset = wallOffsets[i + 1];
                 long curStdOffset = standardOffsets[i];
                 long nextStdOffset = standardOffsets[i + 1];
-                Period p = new Period(trans[i], trans[i + 1], PeriodType.yearMonthDay());
+                Period p = new Period(trans[i], trans[i + 1], PeriodType.yearMonthDay(), chrono);
                 if (curOffset != nextOffset &&
                         curStdOffset == nextStdOffset &&
                         curNameKey.equals(nextNameKey) &&
@@ -1438,7 +1442,8 @@ public class DateTimeZoneBuilder {
                         curNameKey.equals(zoneNameData[4])) {
                     
                     System.out.println("Fixing duplicate name key - " + nextNameKey);
-                    System.out.println("     - " + new DateTime(trans[i]) + " - " + new DateTime(trans[i + 1]));
+                    System.out.println("     - " + new DateTime(trans[i], chrono) +
+                                       " - " + new DateTime(trans[i + 1], chrono));
                     if (curOffset > nextOffset) {
                         nameKeys[i] = (curNameKey + "-Summer").intern();
                     } else if (curOffset < nextOffset) {
@@ -1447,9 +1452,12 @@ public class DateTimeZoneBuilder {
                     }
                 }
             }
+
             if (tailZone != null) {
-                if (tailZone.iStartRecurrence.getNameKey().equals(tailZone.iEndRecurrence.getNameKey())) {
-                    System.out.println("Fixing duplicate recurrent name key - " + tailZone.iStartRecurrence.getNameKey());
+                if (tailZone.iStartRecurrence.getNameKey()
+                    .equals(tailZone.iEndRecurrence.getNameKey())) {
+                    System.out.println("Fixing duplicate recurrent name key - " +
+                                       tailZone.iStartRecurrence.getNameKey());
                     if (tailZone.iStartRecurrence.getSaveMillis() > 0) {
                         tailZone = new DSTZone(
                             tailZone.getID(),
@@ -1466,7 +1474,8 @@ public class DateTimeZoneBuilder {
                 }
             }
             
-            return new PrecalculatedZone((outputID ? id : ""), trans, wallOffsets, standardOffsets, nameKeys, tailZone);
+            return new PrecalculatedZone
+                ((outputID ? id : ""), trans, wallOffsets, standardOffsets, nameKeys, tailZone);
         }
 
         // All array fields have the same length.

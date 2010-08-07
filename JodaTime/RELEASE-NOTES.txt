@@ -40,6 +40,7 @@ Deprecations since 1.6
 
 Bug fixes since 1.6
 -------------------
+- Time zone compiler now handles non-UTC better
 
 
 Enhancements since 1.6

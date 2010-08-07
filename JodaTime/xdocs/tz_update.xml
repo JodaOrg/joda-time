@@ -35,7 +35,7 @@ you need to pick the 'FTP distribution' or 'HTTP mirror' links.
 </p>
 <p>
 Secondly, you need a source code download of Joda-Time, available via
-<a href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212">sourceforge</a>.
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">sourceforge</a>.
 </p>
 <p>
 Thirdly, you must take the time zone data files from step one, and replace those in the Joda-Time download.

@@ -21,7 +21,7 @@
       <item name="Related projects" href="/related.html"/>
       <item name="Javadoc (Release)" href="/api-release/index.html"/>
       <item name="License" href="/license.html"/>
-      <item name="Download" href="http://sourceforge.net/project/showfiles.php?group_id=97367&amp;package_id=104212"/>
+      <item name="Download" href="http://sourceforge.net/projects/joda-time/files/joda-time/"/>
     </menu>
     
     <menu name="Key concepts">
@@ -56,14 +56,17 @@
     
     <menu name="Joda">
       <item name="Joda home" href="http://joda.sourceforge.net"/>
-      <item name="Beans" href="http://joda.sourceforge.net/beans.html"/>
+      <item name="Money" href="http://joda-money.sourceforge.net/index.html"/>
       <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
+      <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
     </menu>
     
     <footer>
       <a href="http://sourceforge.net">
         <img src="http://sourceforge.net/sflogo.php?group_id=97367&amp;type=2" width="125" height="37" border="0" alt="SourceForge.net Logo" />
       </a>
+      <br />
+      <a href="privacy.html">Privacy</a>
     </footer>
   </body>
 </project>

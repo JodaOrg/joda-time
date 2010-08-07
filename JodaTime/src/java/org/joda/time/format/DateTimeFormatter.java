@@ -257,6 +257,16 @@ public class DateTimeFormatter {
      * 
      * @return the chronology to use as an override
      */
+    public Chronology getChronology() {
+        return iChrono;
+    }
+
+    /**
+     * Gets the chronology to use as an override.
+     * 
+     * @return the chronology to use as an override
+     * @deprecated Use the method with the correct spelling
+     */
     public Chronology getChronolgy() {
         return iChrono;
     }

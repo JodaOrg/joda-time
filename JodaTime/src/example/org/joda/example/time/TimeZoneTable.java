@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,8 +22,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.*;
-import org.joda.time.format.*;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 
 /**
  * Prints out all available time zones to standard out in an HTML table.
@@ -136,7 +137,11 @@ public class TimeZoneTable {
         public String getStandardOffsetStr() {
             long millis = cNow;
             while (iZone.getOffset(millis) != iZone.getStandardOffset(millis)) {
-                millis = iZone.nextTransition(millis);
+                long next = iZone.nextTransition(millis);
+                if (next == millis) {
+                    break;
+                }
+                millis = next;
             }
             return cOffsetFormatter.withZone(iZone).print(millis);
         }

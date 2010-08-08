@@ -134,6 +134,8 @@ Bug fixes since 1.6
 
 - Time zone compiler now handles 24:00 [2804258]
 
+- Time zone compiler now handles non-UTC better
+
 - Javadoc fix in Months [2721880]
 
 

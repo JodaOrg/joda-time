@@ -52,44 +52,6 @@
     </license>
   </licenses>
 
-  <versions>
-    <version>
-      <id>0.95</id>
-      <name>0.95</name>
-      <tag>v0_9_500</tag>
-    </version>
-    <version>
-      <id>0.98</id>
-      <name>0.98</name>
-      <tag>v0_9_800</tag>
-    </version>
-    <version>
-      <id>0.99</id>
-      <name>0.99</name>
-      <tag>v0_9_900</tag>
-    </version>
-    <version>
-      <id>1.0</id>
-      <name>1.0</name>
-      <tag>v1_0_000</tag>
-    </version>
-    <version>
-      <id>1.1</id>
-      <name>1.1</name>
-      <tag>v1_1_000</tag>
-    </version>
-    <version>
-      <id>1.2</id>
-      <name>1.2</name>
-      <tag>v1_2_000</tag>
-    </version>
-    <version>
-      <id>1.2.1</id>
-      <name>1.2.1</name>
-      <tag>v1_2_100</tag>
-    </version>
-  </versions>
-  
   <mailingLists>
     <mailingList>
       <name>Joda Interest list</name>

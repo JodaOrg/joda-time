@@ -43,6 +43,8 @@ Bug fixes since 1.6
 -------------------
 - Time zone compiler now handles non-UTC better
 
+- Assorted Javadoc clarifications, including [2721880]
+
 
 Enhancements since 1.6
 ----------------------

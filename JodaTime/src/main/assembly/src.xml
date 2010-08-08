@@ -13,6 +13,7 @@
                 <include>NOTICE.txt</include>
                 <include>pom.xml</include>
                 <include>RELEASE-NOTES.txt</include>
+                <include>ToDo.txt</include>
             </includes>
         </fileSet>
         <fileSet>

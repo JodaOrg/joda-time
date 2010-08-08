@@ -354,9 +354,7 @@
     </copy>
 	<delete     dir="${build.dist.src.fullname}/src/tzdata"/>
     <copy      file="build.xml" todir="${build.dist.src.fullname}"/>
-    <copy      file="maven.xml" todir="${build.dist.src.fullname}"/>
-    <copy      file="project.xml" todir="${build.dist.src.fullname}"/>
-    <copy      file="project.properties" todir="${build.dist.src.fullname}"/>
+    <copy      file="pom.xml" todir="${build.dist.src.fullname}"/>
     <copy      file="checkstyle.xml" todir="${build.dist.src.fullname}"/>
     <copy      file="ToDo.txt" todir="${build.dist.src.fullname}"/>
 	

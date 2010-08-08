@@ -44,6 +44,9 @@ Bug fixes since 1.6
 - LocalDate.toInterval() [2487417]
   Now handles time zones which have no midnight at DST cutover
 
+- Period formatting concurrency [2820871]
+  Fix possible concurrency hole in PeriodFormatBuilder.Separator
+
 - Time zone compiler now handles non-UTC better
 
 - Assorted Javadoc clarifications, including [2721880]

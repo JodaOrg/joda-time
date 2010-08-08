@@ -14,7 +14,7 @@
 <p>
 Some common questions about Joda-Time are answered here.
 <ul>
-<li><a href="#newzonerules">Does Joda-Time support the new US and Canada time zone rules?</a></li>
+<li><a href="#newzonerules">Does Joda-Time support the 2007 US and Canada time zone rules?</a></li>
 <li><a href="#datediff">How do I calculate the difference between two dates?</a></li>
 <li><a href="#iso">What is ISO8601?</a></li>
 <li><a href="#default">Why is ISO8601 the default?</a></li>
@@ -91,12 +91,12 @@ For more info, consult the <a href="key_period.html">period guide</a>.
 </subsection>
 
 <a name="iso" />
-<subsection name="What is ISO8601?">
+<subsection name="What is ISO-8601?">
 <p>
 Historically, every country has found their own solution to measuring time.
 This has often been political and religious.
 To simplify the problem, especially in the realm of computer data transfer, the
-<a href="cal_iso.html">ISO8601</a> standard was founded.
+<a href="cal_iso.html">ISO-8601</a> standard was founded.
 </p>
 <p>
 The ISO standard defines a framework for passing dates and times between computer systems in a standard way.
@@ -111,7 +111,7 @@ In addition it defines the first week of the year as the first week to have most
 This can result in the first week of a year starting in the previous year and the last week ending in the following year.
 </p>
 <p>
-The key point about ISO8601 is that it is a framework for dates not an absolute single definition.
+The key point about ISO-8601 is that it is a framework for dates not an absolute single definition.
 The most common form is YYYY-MM-DDTHH:MM:SS.SSSZ, in other words year-month-day letter 'T' hour:minute:second and fractions.
 </p>
 </subsection>

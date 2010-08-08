@@ -213,9 +213,6 @@
           <excludes>
             <exclude>**/TestAll*.java</exclude>
           </excludes>
-          <additionalClasspathElements>
-            <additionalClasspathElement>src/testdata</additionalClasspathElement>
-          </additionalClasspathElements>
         </configuration>
       </plugin>
       <plugin>

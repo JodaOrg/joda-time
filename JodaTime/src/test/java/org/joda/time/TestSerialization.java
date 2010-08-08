@@ -259,7 +259,7 @@ public class TestSerialization extends TestCase {
     }
 
     private void loadAndCompare(Serializable test, String filename, boolean same) throws Exception {
-        FileInputStream fis = new FileInputStream("src/testdata/" + filename);
+        FileInputStream fis = new FileInputStream("src/test/resources/" + filename);
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object obj = ois.readObject();
         ois.close();
@@ -429,7 +429,7 @@ public class TestSerialization extends TestCase {
 //    }
 
     private void store(Serializable test, String filename) throws Exception {
-        FileOutputStream fos = new FileOutputStream("src/testdata/" + filename);
+        FileOutputStream fos = new FileOutputStream("src/test/resources/" + filename);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
         try {
             oos.writeObject(test);

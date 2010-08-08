@@ -53,6 +53,9 @@ Bug fixes since 1.6
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
 
+- Classloading CachedDateTimeZone could invalidate state [2935625]
+  Default time zone now lazily loaded
+
 - Time zone compiler now handles non-UTC better
 
 - Assorted Javadoc clarifications, including [2721880]

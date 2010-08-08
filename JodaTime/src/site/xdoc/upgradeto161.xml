@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.6 to 1.6.1</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.6 to version 1.6.1.
+<source>
+Joda-Time version 1.6.1
+-----------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is a patch release for Joda-Time 1.6.
+This release only contains bug fixes.
+We recommend all users of 1.6 upgrade to 1.6.1.
+
+We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://joda-time.sourceforge.net/related.html **
+
+
+Compatibility with 1.6
+----------------------
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+  - DateTimeZone data updated to version 2010k
+
+Semantic compatible - Yes
+
+
+Deprecations since 1.6
+----------------------
+- DateTimeFormatter.getChronolgy() [2783325]
+  Incorrect spelling - new method DateTimeFormatter.getChronology()
+
+
+Bug fixes since 1.6
+-------------------
+- LocalTime.fromDateFields()
+  Now handles times based on java.util.Date before 1970
+
+- LocalDate.toInterval() [2487417]
+  Now handles time zones which have no midnight at DST cutover
+
+- DateTimeZone.convertLocalToUTC [2903029]
+  Now handles date after last ever DST change
+
+- Period formatting concurrency [2820871]
+  Fix possible concurrency hole in PeriodFormatBuilder.Separator
+
+- Classloading CachedDateTimeZone could invalidate state [2935625]
+  Default time zone now lazily loaded
+
+- DateTimeUtils shared static variable now volatile [2986043]
+
+- Time zone compiler now handles 24:00 [2804258]
+
+- Time zone compiler now handles non-UTC better
+
+- Assorted Javadoc clarifications, including [2721880]
+
+
+Enhancements since 1.6
+----------------------
+- None
+</source>
+</p>
+</section>
+
+</body>
+</document>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.3 to 1.4</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.3 to version 1.4.
+<source>
+Joda-Time version 1.4
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the fifth full release of Joda-Time.
+This release focuses on new features, but also include some bug fixes.
+
+We recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+*  Please also check out our related projects   *
+* http://joda-time.sourceforge.net/related.html *
+
+
+Enhancements since 1.3
+----------------------
+- Years/Months/Weeks/Days/Hours/Minutes/Seconds
+  New group of single field period classes
+  These allow applications to specify a specific field in method signatures and calculations
+  Methods are provided to convert between most of these based on standard length periods
+
+- Period.ZERO
+  Add zero-length constant to Period
+
+- PeriodFormatBuilder.append(PeriodPrinter,PeriodParser)
+  This method completes the API of PeriodFormatBuilder in the style of DateTimeFormatBuilder
+
+
+Compatibility with 1.3
+----------------------
+Binary compatible - Yes
+
+Source compatible - Yes, except
+  If you subclassed AbstractReadableInstantFieldProperty (unlikely) then
+  you now need to override getChronology() to re-enable the equals() and
+  hashCode() methods.
+
+Serialization compatible - Yes
+
+Data compatible - Yes
+  - DateTimeZone data updated to version 2006o
+
+Semantic compatible - Yes
+
+
+Deprecations since 1.3
+----------------------
+
+
+Bug fixes since 1.3
+-------------------
+- GJChronology
+  Text value of ReadablePartial fields was always a decimal number.
+
+- Comparisons of Chronology instances by identity  [1576727]
+  Some comparisons of Chronology instances were performed using ==
+  This worked fine in most cases due to agressive caching, however it failed when
+  using LenientChronology and other wrapping chronologies which do not have caching
+  Comparison is now via equals(), and involved adding equals() methods to a number
+  of classes. In addition, subclasses of AbstractReadableInstantFieldProperty must
+  now implement getChronology().
+</source>
+</p>
+</section>
+
+</body>
+</document>

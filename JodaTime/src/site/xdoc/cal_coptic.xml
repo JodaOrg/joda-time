@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Coptic calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Coptic calendar system">
+<p>
+The Coptic calendar system is based on that used in ancient Egypt.
+It is sometimes referred to as the Alexandrian Calendar.
+The calendar system is in use today by the Coptic Orthodox Church and by farmers
+tracking the seasons in Egypt.
+</p>
+<p>
+The Coptic calendar system consists of 12 months of exactly 30 days, followed by
+a 5 or 6 day intercalary month making a year of 365 or 366 days.
+Leap years (6 day intercalary month) occur every 4 years without exception (as per the Julian calendar).
+They occur when the remainder left after dividing the Coptic year by four is 3.
+The Coptic year starts on Septamber 11th/12th depending on leap years.
+The epoch date for the calendar is 0284-08-29 (Julian), which therefore is 0001-01-01 (Coptic).
+The current era is 'AM' (Anno Martyrum or Year of the Martyrs).
+</p>
+<p>
+Joda-Time implements the rules described above.
+We model the 5 or 6 day intercalary month as month 13.
+We also prevent the entry of dates before year 1.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Coptic_calendar">Wikipedia - Coptic Calendar</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using Coptic chronology in Joda-Time">
+<p>
+Within Joda-Time the Coptic calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/CopticChronology.html">CopticChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/chrono/CopticChronology.html#getInstance()">CopticChronology.getInstance()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on May Day 2004 (ISO year 2004)
+DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
+
+// find out what the same instant is using the Coptic Chronology
+DateTime dtCopt = dtISO.withChronology(CopticChronology.getInstance());
+</source>
+
+</section>
+
+</body>
+</document>

@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Time Zones</title>
+  <author>Brian S O'Neill</author>
+ </properties>
+
+ <body>
+
+<section name="Available Time Zones">
+<p>
+Time zone data is provided by the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz</a>
+database, otherwise known as the Olson database. The following table shows all the time zones
+supported by Joda-Time, using version 2010k of the tz database.
+It is also possible to update to a <a href="tz_update.html">later version of the database</a>.
+This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</code>.
+</p>
+<p>
+<table>
+<tr><th align="left">Standard Offset</th><th align="left">Canonical ID</th><th align="left">Aliases</th></tr>
+<tr><td align="left" valign="top">-12:00</td><td align="left" valign="top">Etc/GMT+12</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-11:00</td><td align="left" valign="top">Etc/GMT+11</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-11:00</td><td align="left" valign="top">Pacific/Apia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-11:00</td><td align="left" valign="top">Pacific/Midway</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-11:00</td><td align="left" valign="top">Pacific/Niue</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-11:00</td><td align="left" valign="top">Pacific/Pago_Pago</td><td align="left" valign="top">Pacific/Samoa, US/Samoa</td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">America/Adak</td><td align="left" valign="top">America/Atka, US/Aleutian</td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">Etc/GMT+10</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">HST</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">Pacific/Fakaofo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">Pacific/Honolulu</td><td align="left" valign="top">US/Hawaii</td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">Pacific/Johnston</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">Pacific/Rarotonga</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-10:00</td><td align="left" valign="top">Pacific/Tahiti</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-09:30</td><td align="left" valign="top">Pacific/Marquesas</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">America/Anchorage</td><td align="left" valign="top">US/Alaska</td></tr>
+<tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">America/Juneau</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">America/Nome</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">America/Yakutat</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">Etc/GMT+9</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">Pacific/Gambier</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Dawson</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Los_Angeles</td><td align="left" valign="top">US/Pacific, US/Pacific-New</td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Santa_Isabel</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Tijuana</td><td align="left" valign="top">America/Ensenada, Mexico/BajaNorte</td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Vancouver</td><td align="left" valign="top">Canada/Pacific</td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Whitehorse</td><td align="left" valign="top">Canada/Yukon</td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">Etc/GMT+8</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">PST8PDT</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">Pacific/Pitcairn</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Boise</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Cambridge_Bay</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Chihuahua</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Dawson_Creek</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Denver</td><td align="left" valign="top">America/Shiprock, Navajo, US/Mountain</td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Edmonton</td><td align="left" valign="top">Canada/Mountain</td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Hermosillo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Inuvik</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Mazatlan</td><td align="left" valign="top">Mexico/BajaSur</td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Ojinaga</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Phoenix</td><td align="left" valign="top">US/Arizona</td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Yellowknife</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">Etc/GMT+7</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">MST</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">MST7MDT</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Bahia_Banderas</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Belize</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Cancun</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Chicago</td><td align="left" valign="top">US/Central</td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Costa_Rica</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/El_Salvador</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Guatemala</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Indiana/Knox</td><td align="left" valign="top">America/Knox_IN, US/Indiana-Starke</td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Indiana/Tell_City</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Managua</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Matamoros</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Menominee</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Merida</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Mexico_City</td><td align="left" valign="top">Mexico/General</td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Monterrey</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/North_Dakota/Center</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/North_Dakota/New_Salem</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Rainy_River</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Rankin_Inlet</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Regina</td><td align="left" valign="top">Canada/East-Saskatchewan, Canada/Saskatchewan</td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Swift_Current</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Tegucigalpa</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Winnipeg</td><td align="left" valign="top">Canada/Central</td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">CST6CDT</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">Etc/GMT+6</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">Pacific/Easter</td><td align="left" valign="top">Chile/EasterIsland</td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">Pacific/Galapagos</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Atikokan</td><td align="left" valign="top">America/Coral_Harbour</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Bogota</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Cayman</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Detroit</td><td align="left" valign="top">US/Michigan</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Grand_Turk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Guayaquil</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Havana</td><td align="left" valign="top">Cuba</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Indiana/Indianapolis</td><td align="left" valign="top">America/Fort_Wayne, America/Indianapolis, US/East-Indiana</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Indiana/Marengo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Indiana/Petersburg</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Indiana/Vevay</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Indiana/Vincennes</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Indiana/Winamac</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Iqaluit</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Jamaica</td><td align="left" valign="top">Jamaica</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Kentucky/Louisville</td><td align="left" valign="top">America/Louisville</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Kentucky/Monticello</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Lima</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Montreal</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Nassau</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/New_York</td><td align="left" valign="top">US/Eastern</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Nipigon</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Panama</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Pangnirtung</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Port-au-Prince</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Resolute</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Thunder_Bay</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Toronto</td><td align="left" valign="top">Canada/Eastern</td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">EST</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">EST5EDT</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">Etc/GMT+5</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:30</td><td align="left" valign="top">America/Caracas</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Anguilla</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Antigua</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/San_Luis</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Aruba</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Asuncion</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Barbados</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Blanc-Sablon</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Boa_Vista</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Campo_Grande</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Cuiaba</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Curacao</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Dominica</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Eirunepe</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Glace_Bay</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Goose_Bay</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Grenada</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Guadeloupe</td><td align="left" valign="top">America/Marigot, America/St_Barthelemy</td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Guyana</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Halifax</td><td align="left" valign="top">Canada/Atlantic</td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/La_Paz</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Manaus</td><td align="left" valign="top">Brazil/West</td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Martinique</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Moncton</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Montserrat</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Port_of_Spain</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Porto_Velho</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Puerto_Rico</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Rio_Branco</td><td align="left" valign="top">America/Porto_Acre, Brazil/Acre</td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Santiago</td><td align="left" valign="top">Chile/Continental</td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Santo_Domingo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/St_Kitts</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/St_Lucia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/St_Thomas</td><td align="left" valign="top">America/Virgin</td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/St_Vincent</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Thule</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Tortola</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">Antarctica/Palmer</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">Atlantic/Bermuda</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">Atlantic/Stanley</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">Etc/GMT+4</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:30</td><td align="left" valign="top">America/St_Johns</td><td align="left" valign="top">Canada/Newfoundland</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Araguaina</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Buenos_Aires</td><td align="left" valign="top">America/Buenos_Aires</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Catamarca</td><td align="left" valign="top">America/Argentina/ComodRivadavia, America/Catamarca</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Cordoba</td><td align="left" valign="top">America/Cordoba, America/Rosario</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Jujuy</td><td align="left" valign="top">America/Jujuy</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/La_Rioja</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Mendoza</td><td align="left" valign="top">America/Mendoza</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Rio_Gallegos</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Salta</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/San_Juan</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Tucuman</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Ushuaia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Bahia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Belem</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Cayenne</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Fortaleza</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Godthab</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Maceio</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Miquelon</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Montevideo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Paramaribo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Recife</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Santarem</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Sao_Paulo</td><td align="left" valign="top">Brazil/East</td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">Antarctica/Rothera</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">Etc/GMT+3</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-02:00</td><td align="left" valign="top">America/Noronha</td><td align="left" valign="top">Brazil/DeNoronha</td></tr>
+<tr><td align="left" valign="top">-02:00</td><td align="left" valign="top">Atlantic/South_Georgia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-02:00</td><td align="left" valign="top">Etc/GMT+2</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-01:00</td><td align="left" valign="top">America/Scoresbysund</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-01:00</td><td align="left" valign="top">Atlantic/Azores</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-01:00</td><td align="left" valign="top">Atlantic/Cape_Verde</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-01:00</td><td align="left" valign="top">Etc/GMT+1</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Abidjan</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Accra</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Bamako</td><td align="left" valign="top">Africa/Timbuktu</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Banjul</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Bissau</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Casablanca</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Conakry</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Dakar</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/El_Aaiun</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Freetown</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Lome</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Monrovia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Nouakchott</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Ouagadougou</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Africa/Sao_Tome</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">America/Danmarkshavn</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Atlantic/Canary</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Atlantic/Faroe</td><td align="left" valign="top">Atlantic/Faeroe</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Atlantic/Madeira</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Atlantic/Reykjavik</td><td align="left" valign="top">Iceland</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Atlantic/St_Helena</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Etc/GMT</td><td align="left" valign="top">Etc/GMT+0, Etc/GMT-0, Etc/GMT0, Etc/Greenwich, GMT, GMT+0, GMT-0, GMT0, Greenwich</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Etc/UCT</td><td align="left" valign="top">UCT</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Etc/UTC</td><td align="left" valign="top">Etc/Universal, Etc/Zulu, Universal, Zulu</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Europe/Dublin</td><td align="left" valign="top">Eire</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Europe/Lisbon</td><td align="left" valign="top">Portugal</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">Europe/London</td><td align="left" valign="top">Europe/Belfast, Europe/Guernsey, Europe/Isle_of_Man, Europe/Jersey, GB, GB-Eire</td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">UTC</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+00:00</td><td align="left" valign="top">WET</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Algiers</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Bangui</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Brazzaville</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Ceuta</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Douala</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Kinshasa</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Lagos</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Libreville</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Luanda</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Malabo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Ndjamena</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Niamey</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Porto-Novo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Tunis</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Africa/Windhoek</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">CET</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Etc/GMT-1</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Amsterdam</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Andorra</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Belgrade</td><td align="left" valign="top">Europe/Ljubljana, Europe/Podgorica, Europe/Sarajevo, Europe/Skopje, Europe/Zagreb</td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Berlin</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Brussels</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Budapest</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Copenhagen</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Gibraltar</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Luxembourg</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Madrid</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Malta</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Monaco</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Oslo</td><td align="left" valign="top">Arctic/Longyearbyen, Atlantic/Jan_Mayen</td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Paris</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Prague</td><td align="left" valign="top">Europe/Bratislava</td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Rome</td><td align="left" valign="top">Europe/San_Marino, Europe/Vatican</td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Stockholm</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Tirane</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Vaduz</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Vienna</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Warsaw</td><td align="left" valign="top">Poland</td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">Europe/Zurich</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+01:00</td><td align="left" valign="top">MET</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Blantyre</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Bujumbura</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Cairo</td><td align="left" valign="top">Egypt</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Gaborone</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Harare</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Johannesburg</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Kigali</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Lubumbashi</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Lusaka</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Maputo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Maseru</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Mbabane</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Africa/Tripoli</td><td align="left" valign="top">Libya</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Asia/Amman</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Asia/Beirut</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Asia/Damascus</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Asia/Gaza</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Asia/Jerusalem</td><td align="left" valign="top">Asia/Tel_Aviv, Israel</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Asia/Nicosia</td><td align="left" valign="top">Europe/Nicosia</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">EET</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Etc/GMT-2</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Athens</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Bucharest</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Chisinau</td><td align="left" valign="top">Europe/Tiraspol</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Helsinki</td><td align="left" valign="top">Europe/Mariehamn</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Istanbul</td><td align="left" valign="top">Asia/Istanbul, Turkey</td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Kaliningrad</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Kiev</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Minsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Riga</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Simferopol</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Sofia</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Tallinn</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Uzhgorod</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Vilnius</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+02:00</td><td align="left" valign="top">Europe/Zaporozhye</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Addis_Ababa</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Asmara</td><td align="left" valign="top">Africa/Asmera</td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Dar_es_Salaam</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Djibouti</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Kampala</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Khartoum</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Mogadishu</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Africa/Nairobi</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Antarctica/Syowa</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Aden</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Baghdad</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Bahrain</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Kuwait</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Qatar</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Riyadh</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Etc/GMT-3</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Europe/Moscow</td><td align="left" valign="top">W-SU</td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Europe/Samara</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Europe/Volgograd</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Indian/Antananarivo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Indian/Comoro</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Indian/Mayotte</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+03:30</td><td align="left" valign="top">Asia/Tehran</td><td align="left" valign="top">Iran</td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Baku</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Dubai</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Muscat</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Tbilisi</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Yerevan</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Etc/GMT-4</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Indian/Mahe</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Indian/Mauritius</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Indian/Reunion</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+04:30</td><td align="left" valign="top">Asia/Kabul</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Antarctica/Mawson</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Aqtau</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Aqtobe</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Ashgabat</td><td align="left" valign="top">Asia/Ashkhabad</td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Dushanbe</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Karachi</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Oral</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Samarkand</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Tashkent</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Yekaterinburg</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Etc/GMT-5</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Indian/Kerguelen</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Indian/Maldives</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:30</td><td align="left" valign="top">Asia/Colombo</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:30</td><td align="left" valign="top">Asia/Kolkata</td><td align="left" valign="top">Asia/Calcutta</td></tr>
+<tr><td align="left" valign="top">+05:45</td><td align="left" valign="top">Asia/Kathmandu</td><td align="left" valign="top">Asia/Katmandu</td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Antarctica/Vostok</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Almaty</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Bishkek</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Dhaka</td><td align="left" valign="top">Asia/Dacca</td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Novokuznetsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Novosibirsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Omsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Qyzylorda</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Thimphu</td><td align="left" valign="top">Asia/Thimbu</td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Etc/GMT-6</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Indian/Chagos</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:30</td><td align="left" valign="top">Asia/Rangoon</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+06:30</td><td align="left" valign="top">Indian/Cocos</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Antarctica/Davis</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Bangkok</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Ho_Chi_Minh</td><td align="left" valign="top">Asia/Saigon</td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Hovd</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Jakarta</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Krasnoyarsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Phnom_Penh</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Pontianak</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Vientiane</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Etc/GMT-7</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Indian/Christmas</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Antarctica/Casey</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Brunei</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Choibalsan</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Chongqing</td><td align="left" valign="top">Asia/Chungking</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Harbin</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Hong_Kong</td><td align="left" valign="top">Hongkong</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Irkutsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Kashgar</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Kuala_Lumpur</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Kuching</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Macau</td><td align="left" valign="top">Asia/Macao</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Makassar</td><td align="left" valign="top">Asia/Ujung_Pandang</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Manila</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Shanghai</td><td align="left" valign="top">PRC</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Singapore</td><td align="left" valign="top">Singapore</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Taipei</td><td align="left" valign="top">ROC</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Ulaanbaatar</td><td align="left" valign="top">Asia/Ulan_Bator</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Urumqi</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Australia/Perth</td><td align="left" valign="top">Australia/West</td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Etc/GMT-8</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:45</td><td align="left" valign="top">Australia/Eucla</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Dili</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Jayapura</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Pyongyang</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Seoul</td><td align="left" valign="top">ROK</td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Tokyo</td><td align="left" valign="top">Japan</td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Yakutsk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Etc/GMT-9</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Pacific/Palau</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+09:30</td><td align="left" valign="top">Australia/Adelaide</td><td align="left" valign="top">Australia/South</td></tr>
+<tr><td align="left" valign="top">+09:30</td><td align="left" valign="top">Australia/Broken_Hill</td><td align="left" valign="top">Australia/Yancowinna</td></tr>
+<tr><td align="left" valign="top">+09:30</td><td align="left" valign="top">Australia/Darwin</td><td align="left" valign="top">Australia/North</td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Antarctica/DumontDUrville</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Asia/Sakhalin</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Asia/Vladivostok</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Brisbane</td><td align="left" valign="top">Australia/Queensland</td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Currie</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Hobart</td><td align="left" valign="top">Australia/Tasmania</td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Lindeman</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Melbourne</td><td align="left" valign="top">Australia/Victoria</td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Sydney</td><td align="left" valign="top">Australia/ACT, Australia/Canberra, Australia/NSW</td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Etc/GMT-10</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Chuuk</td><td align="left" valign="top">Pacific/Truk, Pacific/Yap</td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Guam</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Port_Moresby</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Saipan</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:30</td><td align="left" valign="top">Australia/Lord_Howe</td><td align="left" valign="top">Australia/LHI</td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Antarctica/Macquarie</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Asia/Anadyr</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Asia/Kamchatka</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Asia/Magadan</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Etc/GMT-11</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Efate</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Guadalcanal</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Kosrae</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Noumea</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Pohnpei</td><td align="left" valign="top">Pacific/Ponape</td></tr>
+<tr><td align="left" valign="top">+11:30</td><td align="left" valign="top">Pacific/Norfolk</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Antarctica/McMurdo</td><td align="left" valign="top">Antarctica/South_Pole</td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Etc/GMT-12</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Auckland</td><td align="left" valign="top">NZ</td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Fiji</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Funafuti</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Kwajalein</td><td align="left" valign="top">Kwajalein</td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Majuro</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Nauru</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Tarawa</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Wake</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Wallis</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+12:45</td><td align="left" valign="top">Pacific/Chatham</td><td align="left" valign="top">NZ-CHAT</td></tr>
+<tr><td align="left" valign="top">+13:00</td><td align="left" valign="top">Etc/GMT-13</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+13:00</td><td align="left" valign="top">Pacific/Enderbury</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+13:00</td><td align="left" valign="top">Pacific/Tongatapu</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+14:00</td><td align="left" valign="top">Etc/GMT-14</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+14:00</td><td align="left" valign="top">Pacific/Kiritimati</td><td align="left" valign="top"></td></tr>
+</table>
+</p>
+
+</section>
+</body>
+</document>

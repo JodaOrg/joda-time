@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - GregorianJulian (GJ) calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="GregorianJulian (GJ) calendar system">
+<p>
+The GregorianJulian calendar system is the fusion of the two calendar systems
+in the Christian or Roman tradition.
+This calendar system is widely used today throughout the world, and is
+especially useful for historical work.
+</p>
+<p>
+The GregorianJulian calendar is a combination of two separate calendar systems,
+the <a href="cal_gregorian.html">Gregorian</a> and the <a href="cal_julian.html">Julian</a>.
+The switch from one to the other occurs at a configurable date.
+The default date is 1582-10-15, as defined by Pope Gregory XIII.
+</p>	
+<p>
+The two calendar systems differ mainly in their accuracy of recording leap years.
+The Julian calendar defines a leap year as being once every four years.
+The Gregorian calendar adds two extra rules to state that years divisible by 100 are not leap, but those divisible by 400 are.
+</p>
+<p>
+Joda-Time defines this calendar system using the GJChronology.
+This is a replacement for the JDK GregorianCalendar.
+If you intend to only refer to modern dates (after 1583) then you should use the
+Joda-Time default of <a href="cal_iso.html">ISO</a> chronology.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Wikipedia - Gregorian Calendar</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using GregorianJulian in Joda-Time">
+<p>
+Within Joda-Time the GregorianJulian calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/GJChronology.html">GJChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/chrono/GJChronology.html#getInstance()">GJChronology.getInstance()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for the Battle of Hastings in 1066
+Chronology chrono = GJChronology.getInstance();
+DateTime dt = new DateTime(1066, 10, 14, 10, 0, 0, 0, chrono);
+</source>
+<p>
+If you want to change the cutover date between Julian and Gregorian, you will need
+to use the other factory methods on GJChronology.
+</p>
+
+</section>
+
+</body>
+</document>

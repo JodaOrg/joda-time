@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Islamic calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Islamic calendar system">
+<p>
+The Islamic, or Hijri, calendar system is a Lunar calendar used
+in many Muslim countries.
+</p>
+<p>
+The Islamic calendar system is a lunar calendar based on observation.
+The observation aspect of the calendar means that a new month can only
+be declared based on human observations of the moon, something
+which can obviously vary and is unsuited to computer calculation.
+</p>
+<p>
+Joda-Time implements the arithmetic Islamic calendar, which is an 
+approximation of the actual calendar.
+There are 12 months, each of 29 or 30 days, making a year of 354 days, or 355 in a leap year.
+The days in the month alternate, with the first month having 30 days,
+the second 29 days and so on.
+In a leap year, the twelfth month has 30 days instead of the normal 29.
+</p>
+<p>
+The definition of a leap year in the Islamic calendar varies.
+All agree on a 30 year cycle, however which years within the 30 are leap
+varies by the leap year pattern:
+</p>
+<table>
+<tr>
+<td>15-based</td>
+<td>2, 5, 7, 10, 13, 15, 18, 21, 24, 26, 29</td>
+</tr>
+<tr>
+<td>16-based</td>
+<td>2, 5, 7, 10, 13, 16, 18, 21, 24, 26, 29</td>
+</tr>
+<tr>
+<td>Indian</td>
+<td>2, 5, 8, 10, 13, 16, 19, 21, 24, 27, 29</td>
+</tr>
+<tr>
+<td>Habash al-Hasib</td>
+<td>2, 5, 8, 11, 13, 16, 19, 21, 24, 27, 30</td>
+</tr>
+</table>
+<p>
+Joda-Time allows you to choose between these leap year patterns.
+The 16-based algorithm is the most commonly used, and is the default.
+Note that Microsoft uses the 15-based pattern, and calls it the 'Kuwaiti algorithm'.
+</p>
+<p>
+The epoch of the calendar system is 0622-07-16 (Julian) which is therefore 0001-01-01 (Islamic).
+The current (and only implemented) era is 'AH' (Anno Hegirae).
+</p>
+<p>
+Days of the week are named 'the first day', 'the second day' and so on, where
+Sunday is the first day.
+The day of the week value (numeric) returned by Joda-Time however, is the same
+as the ISO day of week definition.
+Thus Sunday will return the numeric value 7, and Monday will return the numeric value 1.
+</p>
+<p>
+A day in the Islamic calendar begins at sunset on the previous 'day'.
+Joda-Time does not model this, thus times and date rollover follow standard
+ISO definitions, in other words starting at midnight.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Islamic_calendar">Wikipedia - Islamic Calendar</a></li>
+<li><a href="http://www.phys.uu.nl/~vgent/islam/islamyear_en.htm">Islamic calendar converter</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using Islamic chronology in Joda-Time">
+<p>
+Within Joda-Time the Islamic calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/IslamicChronology.html">IslamicChronology</a>.
+This is normally created via the
+<a href="apidocs/org/joda/time/chrono/IslamicChronology.html#getInstance()">IslamicChronology.getInstance()</a> factory.
+The chronology is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on May Day 2004 (ISO year 2004)
+DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
+
+// find out what the same instant is using the Islamic Chronology
+DateTime dtIslamic = dtISO.withChronology(IslamicChronology.getInstance());
+</source>
+
+</section>
+
+</body>
+</document>

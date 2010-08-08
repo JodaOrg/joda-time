@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - User Guide</title>
+  <author>Stephen Colebourne</author>
+  <author>Al Major</author>
+ </properties>
+<body>
+
+<!-- ========================================================================= -->
+
+<section name="Introduction">
+<p>
+Joda Time is like an iceberg, 9/10ths of it is invisible to user-code.
+Many, perhaps most, applications will never need to see what's below the surface.
+This document provides an introduction to the Joda-Time API for the
+average user, not for the would-be API developer.
+</p>
+<p>
+The bulk of the
+text is devoted to code snippets that display the most common usage scenarios
+in which the library classes are used. In particular, we cover the usage of the
+key <code>DateTime</code>, <code>Interval</code>, <code>Duration</code>
+and <code>Period</code> classes.
+</p>
+<p>
+We finish with a look at the important topic of formatting and parsing and a few
+more advanced topics.
+</p>
+<p>
+<ul>
+<li><a href="#Architecture_Overview">Architecture Overview</a>
+  <ul>
+    <li><a href="#Instants">Instants</a>
+      <ul>
+        <li><a href="#Fields">Fields</a></li>
+        <li><a href="#Properties">Properties</a></li>
+      </ul>
+    </li>
+    <li><a href="#Intervals">Intervals</a></li>
+    <li><a href="#Durations">Durations</a></li>
+    <li><a href="#Periods">Periods</a></li>
+    <li><a href="#Chronology">Chronology</a></li>
+    <li><a href="#TimeZones">TimeZones</a></li>
+    <li><a href="#Interface_usage">Interface usage</a></li>
+    <li><a href="#Package_structure">Package structure</a></li>
+  </ul>
+</li>
+<li><a href="#Working_with_DateTime">Working with DateTime</a>
+  <ul>
+    <li><a href="#Construction">Construction</a></li>
+    <li><a href="#JDK_Interoperability">JDK Interoperability</a></li>
+    <li><a href="#Querying_DateTimes">Querying DateTimes</a>
+      <ul>
+        <li><a href="#Accessing_fields">Acessing fields</a></li>
+        <li><a href="#Date_fields">Date fields</a></li>
+        <li><a href="#Time_fields">Time fields</a></li>
+      </ul>
+    </li>
+    <li><a href="#Manipulating_DateTimes">Manipulating DateTimes</a>
+      <ul>
+        <li><a href="#Modifying_fields">Modifying fields</a></li>
+        <li><a href="#DateTime_methods">DateTime methods</a></li>
+        <li><a href="#Using_a_MutableDateTime">Using a MutableDateTime</a></li>
+      </ul>
+    </li>
+    <li><a href="#Changing_TimeZone">Changing TimeZone</a></li>
+    <li><a href="#Changing_Chronology">Changing Chronology</a></li>
+  </ul>
+</li>
+<!---
+<li><a href="#intervals_durations_periods">Usage: Intervals, Durations and Periods</a>
+  <ul>
+    <li><a href="#interval_ex">Interval Examples</a></li>
+    <li><a href="#duration_ex">Duration Examples</a></li>
+    <li><a href="#period_ex">Period Examples</a></li>
+  </ul>
+</li>
+-->
+<li><a href="#Input_and_Output">Input and Output</a>
+<ul>
+    <li><a href="#Formatters">Formatters</a></li>
+    <li><a href="#Standard_Formatters">Standard Formatters</a></li>
+    <li><a href="#Custom_Formatters">Custom Formatters</a></li>
+    <li><a href="#Freaky_Formatters">Freaky Formatters</a></li>
+</ul>
+</li>
+<li><a href="#Advanced_features">Advanced features</a>
+<ul>
+    <li><a href="#Change_the_Current_Time">Change the Current Time</a></li>
+    <li><a href="#Converters">Converters</a></li>
+    <li><a href="#Security">Security</a></li>
+</ul>
+</li>
+</ul>
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Architecture Overview">
+<p>
+The major building blocks of joda time are introduced below. These are the concepts
+of <em>instant</em>, <em>interval</em>, <em>duration</em>, <em>period</em>,
+<em>chronology</em> and <em>timezones</em>. We then say a few words about the role
+of interfaces in the library design, which is a little different than the norm. We
+end with a few words on package structure. Usage examples for instant are delayed until the
+following sections of the guide. Examples for interval, duration and period may be
+found in the appropriate section in the "Key Concepts" part of the documentation.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Instants">
+<p>
+The most frequently used concept in Joda-Time is that of the <em>instant</em>.
+An Instant is defined as <em>a moment in the datetime continuum specified as a
+number of milliseconds from 1970-01-01T00:00Z</em>.
+This definition of milliseconds is consistent with that of the JDK in <code>Date</code>
+or <code>Calendar</code>. Interoperating between the two APIs is thus simple.
+</p>
+<p>
+Within Joda-Time an instant is represented by the
+<code>ReadableInstant</code> interface. The main implementation
+of this interface, and the class that the average API user needs to be
+most familiar with, is <code>DateTime</code>. DateTime is immutable - and once
+created the values do not change. Thus, this class can safely be passed around
+and used in multiple threads without synchronization.
+</p>
+<p>
+The millisecond instant can be converted to any date time field using a
+<em>Chronology</em>.
+To assist with this, methods are provided on
+<code>DateTime</code> that act as getters for the most common date and
+time fields.
+</p>
+<p>
+We discuss the chronology concept a litte further on in this overview.
+</p>
+<p>
+A companion mutable class to <code>DateTime</code> is
+<code>MutableDateTime</code>. Objects
+of this class can be modified and are not thread-safe.
+</p>
+<p>
+Other implementations of <code>ReadableInstant</code> include <code>Instant</code>
+and <code>DateMidnight</code>.
+</p>
+
+<subsection name="Fields">
+<p>
+The main API of <code>DateTime</code> has been kept small, limited to just
+get methods for each calendar field. So, for instance, the 'day-of-year' calendar
+field would be retrieved by calling the <code>getDayOfYear()</code> method. For
+a complete list of fields and their descriptions, see the
+<a href="field.html">field reference</a>.
+</p>
+</subsection>
+
+<subsection name="Properties">
+<p>
+There is much more power available, however, through the use of what is termed a
+<em>property</em>. Each calendar field is associated with such a property.
+Thus, 'day-of-year', whose value is directly returned by the method
+<code>getDayOfYear()</code>, is also associated with the property returned by
+the <code>dayOfYear()</code> method. The property class associated with
+<code>DateTime</code> is <code>DateTime.Property</code>.
+</p>
+<p>
+Knowing the methods on the property is the secret to making the most of the API.
+We have more to say on the usage of properties later in this document.
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Intervals">
+<p>
+An <em>interval</em> in Joda-Time represents an interval of time from one
+instant to another instant. Both instants are fully specified instants in the
+datetime continuum, complete with time zone.
+</p>
+<p>
+Intervals are implemented as <em>half-open</em>, which is to say that the start instant is
+inclusive but the end instant is exclusive. The end is always greater than or equal to the start.
+Both end-points are restricted to having the same chronology and the same time zone.
+</p>
+<p>
+Two implementations are provided, <code>Interval</code> and <code>MutableInterval</code>,
+both are specializations of <code>ReadableInterval</code>.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Durations">
+<p>
+A <em>duration</em> in Joda-Time represents a duration of time measured in milliseconds.
+The duration is often obtained from an interval.
+</p>
+<p>
+Durations are a very simple concept, and the implementation is also simple.
+They have no chronology or time zone, and consist solely of the millisecond duration.
+</p>
+<p>
+Durations can be added to an instant, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  duration  =  instant
+</source>
+</p>
+<p>
+Currently, there is only one implementation of the <code>ReadableDuration</code>
+interface: <code>Duration</code>.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Periods">
+
+<p>
+A <em>period</em> in Joda-Time represents a period of time defined in terms of fields,
+for example, 3 years 5 months 2 days and 7 hours.
+This differs from a duration in that it is inexact in terms of milliseconds.
+A period can only be resolved to an exact number of milliseconds by specifying the
+instant (including chronology and time zone) it is relative to.
+</p>
+<p>
+For example, consider a period of 1 month.
+If you add this period to the 1st February (ISO) then you will get the 1st March.
+If you add the same period to the 1st March you will get the 1st April.
+But the duration added (in milliseconds) in these two cases is very different.
+</p>
+<p>
+As a second example, consider adding 1 day at the daylight savings boundary.
+If you use a period to do the addition then either 23 or 25 hours will be added as appropriate.
+If you had created a duration equal to 24 hours, then you would end up with the wrong result.
+</p>
+<p>
+Periods are implemented as a set of <code>int</code> fields.
+The standard set of fields in a period are years, months, weeks, days, hours, minutes, seconds
+and millis.
+The <code>PeriodType</code> class allows this set
+of fields to be restricted, for example to elimate weeks.
+This is significant when converting a duration or interval to a period, as the calculation
+needs to know which period fields it should populate.
+</p>
+<p>
+Methods exist on periods to obtain each field value.
+Periods are not associated with either a chronology or a time zone.
+</p>
+<p>
+Periods can be added to an instant, or to either
+end of an interval to change those objects.
+In datetime maths you could say:
+<source>
+      instant  +  period  =  instant
+</source>
+</p>
+<p>
+There are two implementations of the <code>ReadablePeriod</code> interface,
+<code>Period</code> and <code>MutablePeriod</code>.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Chronology">
+<p>
+The Joda-Time design is based around the
+<em>Chronology</em>. It is a calculation engine that supports the complex
+rules for a calendar system. It encapsulates the field objects, which are used
+on demand to split the absolute time instant into recognisable calendar
+fields like 'day-of-week'. It is effectively a pluggable calendar system.
+</p>
+<p>
+The actual calculations of the chronology are split between the
+<code>Chronology</code> class itself and the field classes -
+<code>DateTimeField</code> and <code>DurationField</code>.
+Together, the subclasses of these three classes form the bulk of the code
+in the library.
+Most users will never need to use or refer directly to the subclasses.
+Instead, they will simply obtain the chronology and use it as a singleton, as follows:
+<source>
+Chronology coptic = CopticChronology.getInstance();
+</source>
+</p>
+<p>
+Internally, all the chronology, field, etc. classes are maintained as singletons.
+Thus there is an initial setup cost when using Joda-Time, but after that only
+the main API instance classes
+(<code>DateTime</code>, <code>Interval</code>, <code>Period</code>, etc.)
+have creation and garbage collector costs.
+</p>
+<p>
+Although the Chronology is key to the design, it is not key to using the API !!
+</p>
+<p>
+For most applications, the Chronology can be ignored as it will default to the
+ISOChronology. This is suitable for most uses.
+You would change it if you need accurate dates before October 15, 1582 when
+the Julian calendar was used, or if you need a specific calendar
+like the Coptic calendar illustrated earlier.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="TimeZones">
+<p>
+The chronology class also supports the time zone functionality.
+This is applied to the underlying chronology via the decorator design pattern.
+The <code>DateTimeZone</code> class provides
+access to the zones primarily through one factory method, as follows:
+<source>
+DateTimeZone zone = DateTimeZone.forID("Europe/London");
+</source>
+</p>
+<p>
+In addition to named time zones, Joda-Time also supports fixed time zones.
+The simplest of these is UTC, which is defined as a constant:
+<source>
+DateTimeZone zoneUTC = DateTimeZone.UTC;
+</source>
+Other fixed offset time zones can be obtained by a specialise factory method:
+<source>
+DateTimeZone zoneUTC = DateTimeZone.forOffsetHours(hours);
+</source>
+</p>
+<p>
+The TimeZone implementation is based on data provided by the public
+<a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>,
+otherwise known as the Olson database.
+A full list of timezone ids can be found <a href="timezones.html">here</a>
+</p>
+<p>
+Joda-Time provides a default time zone which is used in many operations when a
+time zone is not specified. This is similar in concept to the default time zone
+of the <code>java.util.TimeZone</code> class. The value can be accessed and updated
+via static methods:
+<source>
+DateTimeZone defaultZone = DateTimeZone.getDefault();
+DateTimeZone.setDefault(myZone);
+</source>
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Interface usage">
+<p>
+As you have seen, Joda-Time defines a number of new interfaces which are visible
+throughout the javadocs. The most important is <code>ReadableInstant</code> which
+currently has 4 implementations.
+Other significant interfaces include <code>ReadableInterval</code> and
+<code>ReadablePeriod</code>. These are currently used as generalizations for
+a value-only and a mutable class, respectively.
+</p>
+<p>
+An important point to mention here is that the Joda interfaces are used differently
+than, for instance, the JDK Collections Framework interfaces.
+When working with a Collections interface, such as <code>List</code> or <code>Map</code>
+you will normally hold your variable as a type of <code>List</code> or <code>Map</code>, 
+only referencing the concrete class when you create the object.
+<source>
+    List list = new ArrayList();
+    Map map = new HashMap();
+</source>
+In Joda-Time, the interfaces exist to allow <em>interoperation</em> between similar
+date implementations, such as a mutable and immutable version of a class.
+As such, they only offer a subset of the methods of the concrete class.
+<em>For most work, you will reference the concrete class, not the interface</em>.
+This gives access to the full power of the library.
+<source>
+    DateTime dt = new DateTime();
+</source>
+</p>
+<p>
+For maximum flexibility however, you might choose to declare your method
+parameters using the Joda-Time interface.
+A method on the interface can obtain the concrete class for use within the method.
+<source>
+    public void process(ReadableDateTime dateTime) {
+        DateTime dt = dateTime.toDateTime();
+    }
+</source>
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Package structure">
+<p>
+The package structure is designed to separate the methods in the public API
+from the private API.
+The public packages are the root package (under <code>org.joda.time</code>) and
+the <code>format</code> package.
+The private packages are the <code>base</code>, <code>chrono</code>,
+<code>convert</code>, <code>field</code> and <code>tz</code> packages.
+Most applications should not need to import classes from the private packages.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+<!-- ========================================================================= -->
+<!-- ========================================================================= -->
+
+<section name="Working with DateTime">
+<a name="construction"/>
+<subsection name="Construction">
+<p>
+A datetime object is created by using a <code>DateTime</code> constructor. The default
+constructor is used as follows
+<source>
+    DateTime dt = new DateTime();
+</source>
+and creates a datetime object representing the current date and time in milliseconds
+as determined by the system clock. It is constructed using the ISO
+calendar in the default time zone.</p>
+<p>
+To create a datetime object representing a specific date and time, you may use an
+initialization string:
+<source>
+    DateTime dt = new DateTime("2004-12-13T21:39:45.618-08:00");
+</source>
+The initialization string must be in a format that is compatible with the ISO8601
+standard.
+</p>
+<p>
+<code>DateTime</code> also provides
+<a href="apidocs/org/joda/time/DateTime.html#constructor_summary">other
+constructors</a> to create a specific date and time using a variety of standard
+fields. This also permits the use of any calendar and timezone.
+</p>
+</subsection>
+
+<subsection name="JDK Interoperability">
+<p>
+The <code>DateTime</code> class has a constructor which takes an <code>Object</code>
+as input. In particular this constructor can be passed a JDK <code>Date</code>,
+JDK <code>Calendar</code> or JDK <code>GregorianCalendar</code> (It also accepts an
+ISO8601 formatted String, or <code>Long</code> object representing milliseconds). This is one half
+of the interoperability with the JDK. The other half of interoperability with JDK
+is provided by <code>DateTime</code> methods which return JDK objects.
+</p>
+<p>
+Thus inter-conversion between Joda <code>DateTime</code> and JDK <code>Date</code>
+can be performed as follows
+<source>
+    // from Joda to JDK
+    DateTime dt = new DateTime();
+    Date jdkDate = dt.toDate();
+
+    // from JDK to Joda
+    dt = new DateTime(jdkDate);
+</source>
+</p>
+<p>
+Similarly, for JDK <code>Calendar</code>:
+<source>
+    // from Joda to JDK
+    DateTime dt = new DateTime();
+    Calendar jdkCal = dt.toCalendar(Locale.CHINESE);
+
+    // from JDK to Joda
+    dt = new DateTime(jdkCal);
+</source>
+</p>
+<p>
+and JDK <code>GregorianCalendar</code>:
+<source>
+    // from Joda to JDK
+    DateTime dt = new DateTime();
+    GregorianCalendar jdkGCal = dt.toGregorianCalendar();
+
+    // from JDK to Joda
+    dt = new DateTime(jdkGCal);
+</source>
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Querying DateTimes">
+<p>
+The separation of the calculation of calendar fields (<code>DateTimeField</code>)
+from the representation of the calendar instant (<code>DateTime</code>) makes
+for a powerful and flexible API. The connection
+between the two is maintained by the property (<code>DateTime.Property</code>)
+which provides access to the field.
+</p>
+<p>
+For instance, the direct way to get the day of week for a particular
+<code>DateTime</code>, involves calling the method
+<source>
+    int iDoW = dt.getDayOfWeek();
+</source>
+where <code>iDoW</code> can take the values (from class
+<code>DateTimeConstants</code>).
+<source>
+    public static final int MONDAY = 1;
+    public static final int TUESDAY = 2;
+    public static final int WEDNESDAY = 3;
+    public static final int THURSDAY = 4;
+    public static final int FRIDAY = 5;
+    public static final int SATURDAY = 6;
+    public static final int SUNDAY = 7;
+</source>
+</p>
+
+<subsection name="Accessing fields">
+<p>The direct methods are fine for simple usage, but more flexibility can be achieved via the
+property/field mechanism. The day of week property is obtained by
+<source>
+    DateTime.Property pDoW = dt.dayOfWeek();
+</source>
+which can be used to get richer information about the field, such as
+<source>
+    String strST = pDoW.getAsShortText(); // returns "Mon", "Tue", etc.
+    String strT = pDoW.getAsText(); // returns "Monday", "Tuesday", etc.
+</source>
+which return short and long name strings (based on the current locale)
+of the day-of-week. Localized versions of these methods are also available, thus
+<source>
+    String strTF = pDoW.getAsText(Locale.FRENCH); // returns "Lundi", etc.
+</source>
+can be used to return the day-of-week name string in French.
+</p>
+<p>
+Of course, the original integer value of the field is still accessible as
+<source>
+    iDoW = pDoW.get();
+</source>
+The property also provides access to other values associated with the field
+such as metadata on the minimum and maximum text size, leap status, related 
+durations, etc. For a complete reference, see the
+<a href="apidocs/org/joda/time/field/AbstractReadableInstantFieldProperty.html">documentation</a>
+for the base class <code>AbstractReadableInstantFieldProperty</code>
+</p>
+<p>
+In practice, one would not actually create the intermediate <code>pDoW</code>
+variable. The code is easier to read if the methods are called on anonymous
+intermediate objects. Thus, for example,
+<source>
+    strT = dt.dayOfWeek().getAsText();
+    iDoW = dt.dayOfWeek().get();
+</source>
+would be written instead of the more indirect code presented earlier.
+</p>
+<p>
+Note: For the single case of getting the numerical value of a field, we recommend
+using the get method on the main <code>DateTime</code> object as it is more efficient.
+<source>
+    iDoW = dt.getDayOfWeek();
+</source>
+</p>
+</subsection>
+
+<subsection name="Date fields">
+<p>
+The <code>DateTime</code> implementation provides a complete list of standard
+calendar fields:
+<source>
+    dt.getEra();
+    dt.getYear();
+    dt.getWeekyear();
+    dt.getCenturyOfEra();
+    dt.getYearOfEra();
+    dt.getYearOfCentury();
+    dt.getMonthOfYear();
+    dt.getWeekOfWeekyear();
+    dt.getDayOfYear();
+    dt.getDayOfMonth();
+    dt.getDayOfWeek();
+</source>
+Each of these also has a corresponding property method, which returns a
+<code>DateTime.Property</code> binding to the appropriate field, such as
+<code>year()</code> or <code>monthOfYear()</code>.
+The fields represented by these properties behave pretty much as their
+names would suggest. The precise definitions are available in the
+<a href="field.html">field reference</a>.
+</p>
+<p>
+As you would expect, all the methods we showed above in the day-of-week example
+can be applied to any of these properties. For example, to extract the standard
+month, day and year fields from a datetime, we can write
+<source>
+    String month = dt.monthOfYear().getAsText();
+    int maxDay = dt.dayOfMonth().getMaximumValue();
+    boolean leapYear = dt.yearOfEra().isLeap();
+</source>
+</p>
+</subsection>
+
+<subsection name="Time fields">
+<p>
+Another set of properties access fields representing intra-day durations for
+time calculations. Thus to compute the hours, minutes and seconds of the instant
+represented by a <code>DateTime</code>, we would write
+<source>
+    int hour = dt.getHourOfDay();
+    int min = dt.getMinuteOfHour();
+    int sec = dt.getSecondOfMinute();
+</source>
+Again each of these has a corresponding property method for more complex manipulation.
+The complete list of time fields can be found in the 
+<a href="field.html">field reference</a>.
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Manipulating DateTimes">
+<p>
+<code>DateTime</code> objects have value semantics, and cannot be modified after
+construction (they are immutable).
+Therefore, most simple manipulation of a datetime object involves
+construction of a new datetime as a modified copy of the original.
+</p>
+<p>
+WARNING: <i>A common mistake to make with immutable classes is to forget to assign
+the result to a variable. Remember that calling an add or set method on an
+immtable object has no effect on that object - only the result is updated.</i>
+</p>
+
+<subsection name="Modifying fields">
+<p>
+One way to do this is to use methods on properties. To
+return to our prior example, if we wish to modify the <code>dt</code> object
+by changing its day-of-week field to Monday we can do so by using the
+<code>setCopy</code> method of the property:
+<source>
+    DateTime result = dt.dayOfWeek().setCopy(DateTimeConstants.MONDAY);
+</source>
+Note: If the <code>DateTime</code> object is already set to Monday then the same
+object will be returned.
+</p>
+<p>
+To add to a date you could use the <code>addToCopy</code> method.
+<source>
+    DateTime result = dt.dayOfWeek().addToCopy(3);
+</source>
+</p>
+</subsection>
+
+<subsection name="DateTime methods">
+<p>
+Another means of accomplishing similar calculations is to use methods on the
+<code>DateTime</code> object itself. Thus we could add 3 days to <code>dt</code>
+directly as follows:
+<source>
+    DateTime result = dt.plusDays(3);
+</source>
+</p>
+</subsection>
+
+<subsection name="Using a MutableDateTime">
+<p>
+The methods outlined above are suitable for simple calculations involving one
+or two fields. In situations where multiple fields need to be modified, it is
+more efficient to create a mutable copy of the datetime, modify the copy and
+finally create a new value datetime.
+<source>
+    MutableDateTime mdt = dt.toMutableDateTime();
+    // perform various calculations on mdt
+    ...
+    DateTime result = mdt.toDateTime();
+</source>
+<code>MutableDateTime</code> has a number of methods, including standard setters,
+for directly modifying the datetime.
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Changing TimeZone">
+<p>
+<code>DateTime</code> comes with support for a couple of common timezone
+calculations. For instance, if you want to get the local time in London at this
+very moment, you would do the following
+<source>
+    // get current moment in default time zone
+    DateTime dt = new DateTime();
+    // translate to London local time
+    DateTime dtLondon = dt.withZone(DateTimeZone.forID("Europe/London"));
+</source>
+where <code>DateTimeZone.forID("Europe/London")</code> returns the timezone
+value for London. The resulting value <code>dtLondon</code> has the same absolute
+millisecond time, but a different set of field values.
+</p>
+<p>
+There is also support for the reverse operation, i.e. to get the datetime (absolute
+millisecond) corresponding to the moment when London has the same local time as
+exists in the default time zone <em>now</em>. This is done as follows
+<source>
+    // get current moment in default time zone
+    DateTime dt = new DateTime();
+    // find the moment when London will have / had the same time
+    dtLondonSameTime = dt.withZoneRetainFields(DateTimeZone.forID("Europe/London"));
+</source>
+</p>
+<p>
+A set of all TimeZone ID strings (such as "Europe/London") may be obtained by
+calling <code>DateTimeZone.getAvailableIDs()</code>. A full list of available
+time zones is provided <a href="timezones.html">here</a>.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Changing Chronology">
+<p>
+The <code>DateTime</code> class also has one method for changing calendars. This
+allows you to change the calendar for a given moment in time. Thus if you want to
+get the datetime for the current time, but in the Buddhist Calendar, you would do
+<source>
+    // get current moment in default time zone
+    DateTime dt = new DateTime();
+    dt.getYear();  // returns 2004
+    // change to Buddhist chronology
+    DateTime dtBuddhist = dt.withChronology(Chronology.getBuddhist());
+    dtBuddhist.getYear();  // returns 2547
+</source>
+where <code>Chronology.getBuddhist</code> is a factory method for obtaining a
+Buddhist chronology.
+</p>
+</section>
+
+<!-- ========================================================================= -->
+
+<!---
+<a name="#intervals_durations_periods"/>
+<section name="Usage: Intervals, Durations and Periods">
+
+<a name="#interval_ex"/>
+<section name="Interval Examples">
+<p>
+The code can be used in various ways:
+<source>
+// interval from start to end
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+Interval interval = new Interval(start, end);
+</source>
+Accessing other objects is easy:
+<source>
+Interval interval = ...
+DateTime start = interval.getStart();
+DateTime end = interval.getEnd();
+Chronology chrono = interval.getChronology();
+Duration duration = interval.toDuration();
+Period period = interval.toPeriod();
+</source>
+</p>
+</section>
+
+<a name="#duration_ex"/>
+<section name="Duration Examples">
+<p>
+The code can be used in various ways:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2005, 1, 1, 0, 0, 0, 0);
+
+// duration in ms between two instants
+Duration dur = new Duration(start, end);
+
+// calc will be the same as end
+DateTime calc = start.plus(dur);
+</source>
+</p>
+</section>
+
+<a name="#period_ex"/>
+<section name="Period Examples">
+<p>
+The code can be used in various ways:
+<source>
+DateTime start = new DateTime(2004, 12, 25, 0, 0, 0, 0);
+DateTime end = new DateTime(2006, 1, 1, 0, 0, 0, 0);
+
+// period of 1 year and 7 days
+Period period = new Period(start, end);
+
+// calc will equal end
+DateTime calc = start.plus(period);
+</source>
+</p>
+</section>
+</section>
+-->
+
+<!-- ========================================================================= -->
+
+<section name="Input and Output">
+<p>
+Reading date time information from external sources which have their own custom
+format is a frequent requirement for applications that have datetime
+computations. Writing to a custom format is also a common requirement.
+</p>
+<p>
+Many custom formats can be represented by date-format strings which specify
+a sequence of calendar fields along with the representation (numeric, name string,
+etc) and the field length. For example the pattern <code>"yyyy"</code> would
+represent a 4 digit year. Other formats are not so easily represented. For
+example, the pattern <code>"yy"</code> for a two digit year does not uniquely
+identify the century it belongs to. On output, this will not cause problems, but
+there is a problem of interpretation on input.
+</p>
+<p>
+In addition, there are several date/time serialization standards in common use
+today, in particular the ISO8601. These must also be supported by most datetime
+applications.
+</p>
+<p>
+Joda time supports these different requirements through a flexible architecture.
+We will now describe the various elements of this architecture.
+</p>
+
+<subsection name="Formatters">
+<p>
+All printing and parsing is performed using a <code>DateTimeFormatter</code> object.
+Given such an object <code>fmt</code>, parsing is performed as follows
+<source>
+    String strInputDateTime;
+    // string is populated with a date time string in some fashion
+    ...
+    DateTime dt = fmt.parseDateTime(strInputDateTime);
+</source>
+Thus a <code>DateTime</code> object is returned from the parse method of the
+formatter. Similarly, output is performed as
+<source>
+    String strOutputDateTime = fmt.print(dt);
+</source>
+</p>
+</subsection>
+
+<subsection name="Standard Formatters">
+<p>
+Support for standard formats based on ISO8601 is provided by the
+<code>ISODateTimeFormat</code> class. This provides a number of factory methods.
+</p>
+<p>
+For example, if you wanted to use the ISO standard format for <em>datetime</em>,
+which is <code>yyyy-MM-dd'T'HH:mm:ss.SSSZZ</code>, you would initialize
+<code>fmt</code> as
+<source>
+    DateTimeFormatter fmt = ISODateTimeFormat.dateTime();
+</source>
+You would then use <code>fmt</code> as described above, to read or write datetime
+objects in this format.
+</p>
+</subsection>
+
+<subsection name="Custom Formatters">
+<p>
+If you need a custom formatter which can be described in terms of
+a format pattern, you can use the factory method provided by the
+<code>DateTimeFormat</code> class. Thus to get a formatter for a 4 digit year,
+2 digit month and 2 digit day of month, i.e. a format of <code>yyyyMMdd</code>
+you would do
+<source>
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+</source>
+The pattern string is compatible with JDK date patterns.
+</p>
+<p>
+You may need to print or parse in a particular <code>Locale</code>.
+This is achieved by calling the <code>withLocale</code> method on a formatter,
+which returns another formatter based on the original.
+<source>
+    DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyyMMdd");
+    DateTimeFormatter frenchFmt = fmt.withLocale(Locale.FRENCH);
+    DateTimeFormatter germanFmt = fmt.withLocale(Locale.GERMAN);
+</source>
+Formatters are immutable, so the original is not altered by the
+<code>withLocale</code> method.
+</p>
+</subsection>
+
+<subsection name="Freaky Formatters">
+<p>
+Finally, if you have a format that is not easily represented by a pattern string,
+Joda Time architecture exposes a builder class that can be used to build a custom
+formatter which is programatically defined. Thus if you wanted a formatter to
+print and parse dates of the form "22-Jan-65", you could do the following:
+<source>
+    DateTimeFormatter fmt = new DateTimeFormatterBuilder()
+            .appendDayOfMonth(2)
+            .appendLiteral('-')
+            .appendMonthOfYearShortText()
+            .appendLiteral('-')
+            .appendTwoDigitYear(1956)  // pivot = 1956
+            .toFormatter();
+</source>
+Each append method appends a new field to be parsed/printed to the
+calling builder and returns a new builder. The final <code>toFormatter</code> method
+creates the actual formatter that will be used to print/parse.
+</p>
+<p>
+What is particularly interesting about this format is the two digit year. Since
+the interpretation of a two digit year is ambiguous, the
+<code>appendTwoDigitYear</code> takes an extra parameter that defines the 100 year
+range of the two digits, by specifying the mid point of the range. In this example
+the range will be (1956 - 50) = 1906, to (1956 + 49) = 2005. Thus 04 will be 2004
+but 07 will be 1907. This kind of conversion is not possible with ordinary format
+strings, highlighting the power of the Joda time formatting architecture.
+</p>
+</subsection>
+
+<subsection name="Direct access">
+<p>
+To simplify the access to the formatter architecture, methods have been
+provided on the datetime classes such as DateTime.
+<source>
+    DateTime dt = new DateTime();
+    String a = dt.toString();
+    String b = dt.toString("dd:MM:yy");
+    String c = dt.toString("EEE", Locale.FRENCH);
+    DateTimeFormatter fmt = ...;
+    String d = dt.toString(fmt);
+</source>
+Each of the four results demonstrates a different way to use the formatters.
+Result <code>a</code> is the standard ISO8601 string for the DateTime.
+Result <code>b</code> will output using the pattern 'dd:MM:yy' (note that
+patterns are cached internally).
+Result <code>c</code> will output using the pattern 'EEE' in French.
+Result <code>d</code> will output using the specified formatter, and is thus
+the same as <code>fmt.print(dt)</code>.
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+<section name="Advanced features">
+
+<subsection name="Change the Current Time">
+<p>
+Joda-Time allows you to change the current time.
+All methods that get the current time are indirected via <code>DateTimeUtils</code>.
+This allows the current time to be changed, which can be very useful for testing.
+<source>
+    // always return the same time when querying current time
+    DateTimeUtils.setCurrentMillisFixed(millis);
+    // offset the real time
+    DateTimeUtils.setCurrentMillisOffset(millis);
+</source>
+Note that changing the current time this way does not affect the system clock.
+</p>
+</subsection>
+
+<subsection name="Converters">
+<p>
+The constructors on each major concrete class in the API take an <code>Object</code>
+as a parameter.
+This is passed to the converter subsystem which is responsible for converting
+the object to one acceptable to Joda-Time.
+For example, the converters can convert a JDK <code>Date</code> object to a <code>DateTime</code>.
+If required, you can add your own converters to those supplied in Joda-Time.
+</p>
+</subsection>
+
+<subsection name="Security">
+<p>
+Joda-Time includes hooks into the standard JDK security scheme for sensitive changes.
+These include changing the time zone handler, changing the current time and changing
+the converters.
+See <code>JodaTimePermission</code> for details.
+</p>
+</subsection>
+</section>
+
+<!-- ========================================================================= -->
+
+<!--<section name="Where to Go Next">
+<p><b>list of resources</b></p>
+</section>-->
+
+</body>
+</document>

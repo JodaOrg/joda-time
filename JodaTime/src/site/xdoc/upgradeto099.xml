@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 0.98 to 0.99</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 0.98 to version 0.99.
+<source>
+Joda-Time version 0.99
+----------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the last pre-beta release of Joda-Time.
+
+We now recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+
+      ******************************************
+      *  The license of Joda-Time has changed  *
+      *                                        *
+      *    Previous license: BSD-style         *
+      *    New license: Apache License v2      *
+      ******************************************
+
+This change should have no impact on users of the code, as the licenses both have the
+same intent - that is to make the code freely available with a minimum of restrictions.
+
+
+Incompatible changes since 0.98
+-------------------------------
+Please contact the joda-interest mailing list if you have difficulties upgrading
+This release is both source and binary incompatible with 0.98
+
+- Formatting package reworked
+  This mainly affects those doing low level formatting work.
+  A deprecated interface has been added for 0.99 for some methods.
+
+  DateTimeFormatter/PeriodFormatter changed from interface to class.
+  These classes are now the main formatting API.
+  You still create them via the same factory classes, such as DateTimeFormat.
+  Most methods, and all functionality, have been retained, but some are deprecated (see below).
+
+  DateTimePrinter/DateTimeParser/PeriodPrinter/PeriodParser are now internal classes.
+  Applications will use DateTimeFormatter/PeriodFormatter.
+  Any references to DateTimePrinter/DateTimeParser/PeriodPrinter/PeriodParser in
+  your application should be changed to DateTimeFormatter/PeriodFormatter.
+  (Unless you are implementing your own printer/parser)
+
+  DateTimeFormatterBuilder usage changes
+   DateTimeFormatterBuilder.toPrinter() --> DateTimeFormatterBuilder.toFormatter()
+   DateTimeFormatterBuilder.toParser() --> DateTimeFormatterBuilder.toFormatter()
+  The isPrinter() and isParser() methods on DateTimeFormatter tell you about the status of the formatter.
+  Make similar changes for PeriodFormatterBuilder.
+
+  Format factory classes now define static methods
+   DateTimeFormat.getInstance().xxx() --> DateTimeFormat.xxx()
+   DateTimeFormat.getInstance(locale).xxx() --> DateTimeFormat.xxx().withLocale()
+  and so on for ISODateFormat, PeriodFormat and ISOPeriodFormat
+
+  DateTimeFormat.appendPatternTo(formatter, pattern) --> f.appendPattern(pattern)
+  DateTimeFormat.getPatternForStyle --> Removed, please contact mailing list
+  
+  BaseDateTimeFormatter/BasePeriodFormatter
+  Classes removed, behaviour moved into DateTimeFormatter/PeriodFormatter
+  
+- DateTimeFormat pattern change
+  The time zone pattern 'ZZZZ' previously output a time zone offset like '+08:00'.
+  Now you need a pattern of 'ZZ' to output the offset.
+  The pattern 'ZZZZ' will now output the time zone id, such as 'Europe/London'.
+
+- ReadablePartial
+  - removed methods toDateTime(), toDateTime(DateTimeZone zone), as their meaning was confused.
+  Implementations on YearMonthDay/TimeOfDay are deprecated.
+
+- DateTime/DateMidnight/MutableDateTime
+  - removed getReadableInstant() from the property classes
+  On DateTime.Property, use getDateTime().
+  On DateMidnight.Property, use getDateMidnight().
+  On MutableDateTime.Property, use getMutableDateTime().
+
+- ReadableInstant
+  - added method isSupported(DateTimeFieldType field)
+  Implemented in DateTime/DateMidnight/MutableDateTime 
+
+- YearMonthDay/TimeOfDay
+  - removed getReadablePartial() from the property classes
+  On YearMonthDay.Property, use getYearMonthDay().
+  On TimeOfDay.Property, use getTimeOfDay().
+
+- TimeOfDay
+  - semantic change to TimeOfDay.Property.addToCopy()
+  Previously, add threw an exception if the 23:59/00:00 boundary was broken.
+  Now it wraps to the next 'day', as this is the more typical use case.
+  Change to the method TimeOfDay.Property.addNoWrapToCopy() to restore the old behaviour.
+
+
+Deprecations since 0.98
+-----------------------
+** ALL deprecated methods will be removed in 1.0 **
+Please contact the joda-interest mailing list if you have difficulties upgrading
+
+- Formatting package reworked
+  Factory classes now no longer have a static getInstance() method.
+   DateTimeFormat.getInstance().xxx() --> DateTimeFormat.xxx()
+   ISODateTimeFormat.getInstance().xxx() --> ISODateTimeFormat.xxx()
+   PeriodFormat.getInstance().xxx() --> PeriodFormat.xxx()
+   PeriodFormat.getInstance(locale).xxx() --> PeriodFormat.xxx().withLocale()
+   ISOPeriodFormat.getInstance().xxx() --> ISOPeriodFormat.xxx()
+  Some DateTimeFormatter methods deprecated.
+   f.print(millis, DateTimeZone) --> f.withZone(zone).print(millis)
+   f.print(millis, Chronology) --> f.withChronology(chrono).print(millis)
+   f.parseMillis(str, Chronology) --> f.withChronology(chrono).parseMillis(str)
+   f.parseDateTime(str, Chronology) --> f.withChronology(chrono).parseDateTime(str)
+   f.parseMutableDateTime(str, Chronology) --> f.withChronology(chrono).parseMutableDateTime(str)
+  Some PeriodFormatter methods deprecated.
+   f.parsePeriod(type, str) --> f.withType(type).parsePeriod(str)
+   f.parseMutablePeriod(type, str) --> f.withType(type).parseMutablePeriod(str)
+
+- DateTimeZone - factory methods changed:
+  getInstance() -> forID/forOffsetHours/forOffsetHoursMinutes/forTimeZone
+  Aim to clarify meaning of each method
+
+- YearMonthDay/TimeOfDay
+  - deprecated methods toDateTime(), toDateTime(DateTimeZone zone), as their meaning was confused.
+  On YearMonthDay, use toDateTimeAtCurrentTime() or toDateTimeAtMidnight().
+  On TimeOfDay, use toDateTimeToday().
+
+
+Bug fixes since 0.98
+--------------------
+- Interval/MutableInterval isAfter(ReadableInterval) - fixed bug when intervals abutted
+
+- Parsing periods of the form PT... - fixed bug that prevented parsing
+
+- Period parsing now more strict - 'T' character required to separate date and
+  time in ISO periods
+
+- Fixed parsing of fractional seconds in Periods
+
+- Default time zone based on offset was being interpreted as UTC
+
+- Fixed NullPointerException in DateTimeFormat
+
+- DateTimeFormat would use date style for time style
+
+- DateTimeFormatterBuilder was using wrong time zone for text fields
+
+- Avoid NPE in property(DateTimeFieldType) methods
+
+- Parsing two digit years using a pattern now follows JDK definition
+
+
+Enhancements since 0.98
+-----------------------
+- Formatting package much more powerful, and has potential to grow after 1.0 release
+
+- YearMonthDay/TimeOfDay
+  - add toString variants that take a pattern
+  - add withField(), withFieldAdded(), withPeriodAdded(), plus() and minus()
+
+- DateTimeField
+  - Add methods getAsText(int, Locale) and getAsShortText(int, Locale) for
+    simple access to text values
+
+- Period
+  - Added support to create periods from a duration and an end instant
+  - Periods can be converted to durations by end instant too
+
+- Duration
+  - Durations can be converted to periods by end instant too
+  - Durations can be converted to intervals by end instant too
+
+</source>
+</p>
+</section>
+
+</body>
+</document>

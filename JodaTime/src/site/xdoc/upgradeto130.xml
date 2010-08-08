@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.2 to 1.3</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.2 to version 1.3.
+<source>
+Joda-Time version 1.3
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the fourth full release of Joda-Time.
+This release focuses on new features, but also include some bug fixes.
+
+We recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+** Please also check out the JSP and Hibernate contributed projects **
+
+
+Enhancements since 1.2
+----------------------
+- LocalDate/LocalTime/LocalDateTime
+  New classes representing date, time and datetime without a time zone.
+  LocalDate is the recommended replacement for YearMonthDay.
+  LocalTime is the recommended replacement for TimeOfDay.
+  These classes are implemented more flexibly than YearMonthDay and TimeOfDay
+  and thus solve the problem where you couldn't query or format fields such
+  as dayOfWeek on a YearMonthDay or millisOfDay on a TimeOfDay.
+  Neither YearMonthDay or TimeOfDay will be immediately deprecated as they
+  are in widespread use.
+  The API of the new classes has been kept as similar to YearMonthDay/TimeOfDay
+  as possible to aid migration, so this should be a search and replace change.
+
+- DateTime/DateMidnight/YearMonthDay/TimeOfDay
+  - toLocalXxx()
+  Added methods that allow conversion to the new classes, for example:
+  LocalDate date = today.toLocalDate();
+
+- DateTime/DateMidnight/YearMonthDay/TimeOfDay
+  - withXxx()
+  Added methods that allow an individul field to be changed, for example:
+  DateTime firstOfMonth = today.withDayOfMonth(1);
+  These methods are the immutable equivalent of set methods.
+  These are convenince methods for the methods on the property API.
+
+- DateTimeFormatter/DateTimeParserBucket
+  If a parsed datetime is illegal due to field range or time zone offset
+  transition, thrown exception includes text of datetime being parsed.
+
+- DateTimeFormat
+  - patternForStyle()
+  Added method to retrieve the format pattern for a given style and locale.
+
+- ISODateTimeFormat
+  - localDateParser()
+  - localTimeParser()
+  - localDateOptionalTimeParser()
+  - dateOptionalTimeParser()
+  New formats for parsing a datetime/date/time without a time zone, and for
+  parsing a date (mandatory) with an optional time
+
+
+Compatibility with 1.2
+----------------------
+Binary compatible - Yes, except
+  - PartialConverter interface has had two new methods added.
+    This is an internal interface and thus it is unlikely that you have
+    implementations that will break. If you did create your own implementation
+    and extended AbstractConverter then your code will not break.
+
+Source compatible - Yes, except
+  - PartialConverter interface, see above
+
+Serialization compatible - Yes
+
+Data compatible - Yes
+  - DateTimeZone data updated to version 2006g
+
+Semantic compatible - Yes, except
+  - YearMonthDay constructor no longer accepts time only strings
+  - TimeOfDay constructor no longer accepts strings including a date
+
+
+Deprecations since 1.2
+----------------------
+- Instant.toDateTimeISO
+- Instant.toMutableDateTimeISO
+    These were identical to the methods without the ISO suffix
+
+
+Bug fixes since 1.2
+-------------------
+- YearMonthDay
+  Constructing with String value no longer accepts a time only string
+
+- TimeOfDay
+  Constructing with String value no longer accepts date fields
+  Constructing with String now treats 'T' prefix as optional
+
+- DateTime/DateMidnight/MutableDateTime/AbstractInstant
+   Conversion methods toDateTime, toDateTimeISO, toMutableDateTime, and
+    toMutableDateTimeISO now preserve the time zone.
+    Previously calling any of these four methods would convert the result to
+    the default time zone. This was incorrect.
+    The methods have been changed to preserve the time zone.
+   The similarly named methods on Instant have not changed behaviour.
+
+- Interval.overlap/Interval.gap
+  Previously these methods returned intervals in the default time zone
+  Now, they return intervals in the time zone of the original interval
+
+- Interval/MutableInterval.overlaps(ReadableInterval)
+  Previously, these methods did not handle null correctly
+  Now, if the current millisecond instant is at the start of the interval the
+  method returns false (as defined, even if its a little unexpected)
+
+- DateTimeFormatterBuilder.MatchingParser
+  Previously didn't estimate parsed length correctly
+
+- YearMonthDay/TimeOfDay/Partial.Property
+  Hashcode was not defined
+
+- FixedDateTimeZone
+  Hashcode was not defined
+
+- ISO/Gregorian/Julian/Coptic/EthiopicChronology
+  Fixed overflow when getting year field from instants at Long.MAX_VALUE and
+  LONG.MIN_VALUE
+
+- DayOfYear field
+  Better error messages
+</source>
+</p>
+</section>
+
+</body>
+</document>

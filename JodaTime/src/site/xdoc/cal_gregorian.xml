@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Gregorian calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Gregorian calendar system">
+<p>
+The Gregorian calendar system is calendar system used by most of the modern business world.
+It was first introduced on 1582-10-15 replacing the <a href="cal_julian.html">Julian</a> calendar.
+Gregorian rules define a leap year as once every four years, except every 100, but including every 400.
+</p>
+<p>
+The Gregorian chronology in Joda-Time is equivalent* to the ISO chronology, and uses
+Gregorian rules for all time. Thus it is not historically accurate before 1583.
+This also means that the Gregorian chronology does not correspond to the java class
+<code>GregorianCalendar</code>. See <a href="cal_gj.html">GregorianJulian</a> for a
+suitable replacement.
+</p>
+<p>
+* The Gregorian and ISO chronologies do in fact differ slightly.
+The Gregorian chronology defines a century as it is spoken,
+thus 2005 is in the 21st century.
+The ISO chronology defines a century as the first two digits of the year,
+thus 2005 has a century field of 20.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Wikipedia - Gregorian Calendar</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using Gregorian chronology in Joda-Time">
+<p>
+Within Joda-Time the Gregorian calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/GregorianChronology.html">GregorianChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/chrono/GregorianChronology.html#getInstance()">GregorianChronology.getInstance()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on Christmas 2004
+Chronology chrono = GregorianChronology.getInstance();
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, chrono);
+</source>
+
+</section>
+
+</body>
+</document>

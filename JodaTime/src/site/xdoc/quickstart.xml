@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Quick start guide</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+<body>
+
+<!-- ========================================================================= -->
+
+<section name="Quick start guide">
+<p>
+This is the quick introduction guide to Joda-Time and the features on offer.
+Its designed for those of you who are too impatient to read the full
+<a href="userguide.html">user guide</a>.
+</p>
+
+<subsection name="Date and Time">
+<p>
+Joda-Time includes these key datetime classes:
+<ul>
+<li><a href="api-release/org/joda/time/DateTime.html"><code>DateTime</code></a> - Immutable replacement for JDK <code>Calendar</code></li>
+<li><a href="api-release/org/joda/time/DateMidnight.html"><code>DateMidnight</code></a> - Immutable class representing a date where the time is forced to midnight</li>
+<li><a href="api-release/org/joda/time/LocalDate.html"><code>LocalDate</code></a> - Immutable class representing a local date without a time (no time zone)</li>
+<li><a href="api-release/org/joda/time/LocalTime.html"><code>LocalTime</code></a> - Immutable class representing a time without a date (no time zone)</li>
+<li><a href="api-release/org/joda/time/LocalDateTime.html"><code>LocalDateTime</code></a> - Immutable class representing a local date and time (no time zone)</li>
+</ul>
+</p>
+
+<p>
+Each datetime class provides a variety of constructors.
+These include the <code>Object</code> constructor.
+This allows you to construct, for example, <code>DateTime</code> from
+the following objects:
+<ul>
+<li><code>Date</code> - a JDK instant</li>
+<li><code>Calendar</code> - a JDK calendar</li>
+<li><code>String</code> - in ISO8601 format</li>
+<li><code>Long</code> - in milliseconds</li>
+<li>any Joda-Time datetime class</li>
+</ul>
+This list is extensible. In other words Joda-Time sacrifices a little type-safety
+for extensibility. It does mean however, that converting from a JDK <code>Date</code>
+or <code>Calendar</code> to a Joda-Time class is easy - simply pass the JDK class
+into the constructor.
+</p>
+
+<p>
+Each datetime class provides simple easy methods
+to access the datetime <a href="field.html">fields</a>. For example, to access
+the month you can use:
+<source>
+  DateTime dt = new DateTime();
+  int month = dt.getMonthOfYear();
+</source>
+</p>
+
+<p>
+All the main datetime classes are immutable (like String) and cannot be changed
+after creation. However, simple methods have been provided to alter field values
+in a newly created object. For example, to set the year, or add 2 hours you can use:
+<source>
+  DateTime dt = new DateTime();
+  DateTime year2000 = dt.withYear(2000);
+  DateTime twoHoursLater = dt.plusHours(2);
+</source>
+</p>
+
+<p>
+In addition to the basic get methods, each datetime class provides property
+methods for each field. These provide access to the full wealth of Joda-Time
+functionality. For example, to access details about a month or year:
+<source>
+  DateTime dt = new DateTime();
+  String monthName = dt.monthOfYear().getAsText();
+  String frenchShortName = dt.monthOfYear().getAsShortText(Locale.FRENCH);
+  boolean isLeapYear = dt.year().isLeap();
+  DateTime rounded = dt.dayOfMonth().roundFloorCopy();
+</source>
+</p>
+</subsection>
+
+<subsection name="Calendar systems and time zones">
+<p>
+Joda-Time provides support for multiple calendar systems and the full range
+of time zones.
+The <a href="api-release/org/joda/time/Chronology.html"><code>Chronology</code></a>
+and <a href="api-release/org/joda/time/DateTimeZone.html"><code>DateTimeZone</code></a>
+classes provide this support.
+</p>
+<p>
+Joda-Time defaults to using the ISO calendar system (the calendar used by most
+of the business world) and the default time zone of your machine.
+These default values can be overridden whenever necessary.
+Please note that the ISO calendar system is historically inaccurate before 1583.
+</p>
+<p>
+Joda-Time uses a pluggable mechanism for calendars. (The JDK uses subclasses
+such as <code>GregorianCalendar</code>.)
+To obtain a Joda-Time calendar, use one of the factory methods on <code>Chronology</code>.
+<source>
+  Chronology coptic = CopticChronology.getInstance();
+</source>
+</p>
+<p>
+Time zones are implemented as part of the chronology.
+To obtain a Joda-Time chronology in the Tokyo time zone, you can use.
+<source>
+  DateTimeZone zone = DateTimeZone.forID("Asia/Tokyo");
+  Chronology gregorianJuian = GJChronology.getInstance(zone);
+</source>
+</p>
+</subsection>
+
+<subsection name="Intervals and time periods">
+<p>
+Joda-Time provides support for intervals and time periods.
+</p>
+<p>
+An interval is represented by the
+<a href="api-release/org/joda/time/Interval.html"><code>Interval</code></a> class.
+It holds a start and end datetime, and allows operations based around that
+range of time.
+</p>
+<p>
+A time period is represented by the
+<a href="api-release/org/joda/time/Period.html"><code>Period</code></a> class.
+This holds a period such as 6 months, 3 days and 7 hours.
+You can create a <code>Period</code> directly, or derive it from an interval.
+</p>
+<p>
+A time duration is represented by the
+<a href="api-release/org/joda/time/Duration.html"><code>Duration</code></a> class.
+This holds an exact duration in milliseconds.
+You can create a <code>Duration</code> directly, or derive it from an interval.
+</p>
+<p>
+Although a period and a duration may seem similar, they operate differently.
+For example, consider adding one day to a <code>DateTime</code> at the daylight
+savings cutover.
+<source>
+  DateTime dt = new DateTime(2005, 3, 26, 12, 0, 0, 0);
+  DateTime plusPeriod = dt.plus(Period.days(1));
+  DateTime plusDuration = dt.plus(new Duration(24L*60L*60L*1000L));
+</source>
+Adding a period will add 23 hours in this case, not 24 because of the daylight
+savings change, thus the time of the result will still be midday.
+Adding a duration will add 24 hours no matter what, thus the time of the result
+will change to 13:00.
+</p>
+</subsection>
+</section>
+</body>
+</document>

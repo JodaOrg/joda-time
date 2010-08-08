@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - ISO8601 calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="ISO8601 Java calendar system">
+<p>
+The ISO 8601 calendar system is the default implementation within Joda-Time.
+The standard formalises the <a href="cal_gregorian.html">Gregorian</a> calendar
+system used by the modern business world.
+</p>
+<p>
+The ISO8601 standard was created by the International Organization for Standards based in Geneva.
+It aims to eliminate the risk of misinterpretting dates and times when representations
+are passed between systems and across national boundaries.
+We are unable to provide a direct link to the standard as it is a paid-for document.
+However some <a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.ISO.8601.Commentary.Links">ISO8601 links</a> may be useful.
+</p>
+<p>
+The ISO8601 standard is based on the <i>proleptic Gregorian calendar</i>.
+This makes it fully compatible with the calendar system used in most countries today.
+The <i>proleptic</i> means that the Gregorian rules for leap years are applied for all time,
+thus the ISO8601 standard gives different results for dates before the year 1583 when
+the historic cutover from the Julian calendar occurred.
+</p>
+<p>
+The standard sets out a framework within which dates and times can be represented.
+It offers many choices, however in reality there are three main date representations,
+year month day, year dayOfYear and year week dayOfWeek.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://www.exit109.com/~ghealton/.dates.html#@Standards.ISO.8601.Commentary.Links">ISO8601 links</a></li>
+<li><a href="http://en.wikipedia.org/wiki/ISO8601">Wikipedia - ISO Calendar</a></li>
+</ul>
+</p>
+
+<subsection name="Month based">
+<p>
+yyyy-mm-dd<b>T</b>HH:MM:SS.SSS<br />
+This is the most common format of ISO8601 and separates the fields by dashes.
+The fields are:
+<ul>
+<li>four digit year</li>
+<li>two digit month, where 01 is Janurary and 12 is December</li>
+<li>two digit day of month, from 01 to 31</li>
+<li>two digit hour, from 00 to 23</li>
+<li>two digit minute, from 00 to 59</li>
+<li>two digit second, from 00 to 59</li>
+<li>three decimal places for milliseconds if required</li>
+</ul>
+This format is used in XML standards for passing dates and times.
+</p>
+</subsection>
+
+<subsection name="Day of Year based">
+<p>
+yyyy-ddd<b>T</b>HH:MM:SS.SSS<br />
+This format of ISO8601 has the following fields:
+<ul>
+<li>four digit year</li>
+<li>three digit day of year, from 001 to 366</li>
+<li>two digit hour, from 00 to 23</li>
+<li>two digit minute, from 00 to 59</li>
+<li>two digit second, from 00 to 59</li>
+<li>three decimal places for milliseconds if required</li>
+</ul>
+</p>
+</subsection>
+
+<subsection name="Week based">
+<p>
+yyyy-<b>W</b>ww-d<b>T</b>HH:MM:SS.SSS<br />
+This format of ISO8601 has the following fields:
+<ul>
+<li>four digit weekyear, see rules below</li>
+<li>two digit week of year, from 01 to 53</li>
+<li>one digit day of week, from 1 to 7 where 1 is Monday and 7 is Sunday</li>
+<li>two digit hour, from 00 to 23</li>
+<li>two digit minute, from 00 to 59</li>
+<li>two digit second, from 00 to 59</li>
+<li>three decimal places for milliseconds if required</li>
+</ul>
+Weeks are always complete, and the first week of a year is the one that includes the first Thursday of the year.
+This definition can mean that the first week of a year starts in the previous year, and the last week finishes in the next year.
+The weekyear field is defined to refer to the year that owns the week, which may differ from the actual year.
+</p>
+</subsection>
+
+</section>
+
+<section name="Using ISO8601 in Joda-Time">
+<p>
+Within Joda-Time the ISO8601 calendar system is the default. As such, all methods
+that take a chronology as a parameter will use the ISO chronology if null is passed in.
+There is almost always a version of the method without the chronology parameter, and this
+will default to ISO chronology.
+</p>
+<p>
+The actual chronology class is
+<a href="apidocs/org/joda/time/chrono/ISOChronology.html">ISOChronology</a>.
+This is normally created if required using the factory method
+<a href="apidocs/org/joda/time/chrono/ISOChronology.html#getInstance()">ISOChronology.getInstance()</a>.
+</p>
+<source>
+// setup date object for midday on Christmas 2004 (default time zone)
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0);
+
+// or specify the chronology explicitly
+Chronology chrono = ISOChronology.getInstance();
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, chrono);
+
+// or use the default null handling behaviour
+DateTime dt = new DateTime(2004, 12, 25, 12, 0, 0, 0, (Chronology) null);
+</source>
+
+</section>
+
+</body>
+</document>

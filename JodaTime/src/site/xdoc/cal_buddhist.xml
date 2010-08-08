@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Buddhist calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Buddhist calendar system">
+<p>
+The Buddhist calendar system implemented in Joda-Time is based on that supplied
+in the private Sun packages of a typical JDK.
+It differs from the <a href="cal_gj.html">GregorianJulian</a> calendar only in the
+year and era.
+The Buddhist calendar has one era (the current era), and has a year offset by 543
+from the current Gregorian year.
+</p>
+<p>
+It appears that Sun developed the Buddhist Calendar system to meet the needs of Thailand.
+However, the calendar is only accurate from 1941-01-01 (ISO).
+Before that date Thailand used three other calendar systems.
+The BuddhistChronology follows the design of the BuddhistCalendar.
+It is hoped that in the future an accurate Thai chronology can be developed.
+</p>
+<p>
+References
+<ul>
+<li><a href="http://en.wikipedia.org/wiki/Thai_solar_calendar">Wikipedia - Thai Solar Calendar</a></li>
+<li><a href="http://en.wikipedia.org/wiki/Thai_lunar_calendar">Wikipedia - Thai Lunar Calendar</a></li>
+<li><a href="http://www.faqs.org/faqs/thai/culture/section-5.html">Thai Calendar FAQs</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using Buddhist chronology in Joda-Time">
+<p>
+Within Joda-Time the Buddhist calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/BuddhistChronology.html">BuddhistChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/chrono/BuddhistChronology.html#getInstance()">BuddhistChronology.getInstance()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on May Day 2004 (ISO year 2004)
+DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
+
+// find out what the same instant is using the Buddhist Chronology
+DateTime dtBudd = dtISO.withChronology(BuddhistChronology.getInstance());
+</source>
+
+</section>
+
+</body>
+</document>

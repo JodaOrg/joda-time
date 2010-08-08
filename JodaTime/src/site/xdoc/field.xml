@@ -1,0 +1,488 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Fields</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Date and Time fields">
+<p>
+The library breaks up the date and time into a number of fields. This document
+defines what those fields mean.
+</p>
+<p>
+A naming convention is used to define the fields. These correspond to the common 
+names given to date and time concepts in the Gregorian calendar.
+</p>
+<p>Most fields are a view over part of the total time.
+These fields are expressed as <code>XxxOfYyy</code> where <code>Xxx</code> and <code>Yyy</code> are two date time units.
+<code>Yyy</code> will always be larger than <code>Xxx</code>.
+For example, <code>DayOfWeek</code> or <code>SecondOfMinute</code>.
+A side effect of this is that these field values cannot be negative.
+</p>
+<p>
+Certain fields extend over all time, and do not include the word 'Of' in their names.
+For example, <code>year</code> and <code>weekyear</code>.
+These fields can have negative values (see the table for details).
+</p>
+<p>
+The fields are explained in more detail below (for the GJChronology):
+</p>
+<table cols="3" border="1">
+<tr>
+<th>Name</th>
+<th>Min value (GJ)</th>
+<th>Max value (GJ)</th>
+<th>Notes</th>
+</tr><tr>
+<td><a href="#millisOfSecond">millisOfSecond</a></td>
+<td align="center">0</td>
+<td align="center">999</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#millisOfDay">millisOfDay</a></td>
+<td align="center">0</td>
+<td align="center">86 399 999</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#secondOfMinute">secondOfMinute</a></td>
+<td align="center">0</td>
+<td align="center">59</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#secondOfDay">secondOfDay</a></td>
+<td align="center">0</td>
+<td align="center">86 399</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#minuteOfHour">minuteOfHour</a></td>
+<td align="center">0</td>
+<td align="center">59</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#minuteOfDay">minuteOfDay</a></td>
+<td align="center">0</td>
+<td align="center">1439</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#hourOfDay">hourOfDay</a></td>
+<td align="center">0</td>
+<td align="center">23</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#hourOfHalfday">hourOfHalfday</a></td>
+<td align="center">0</td>
+<td align="center">11</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#hourOfDay">clockhourOfDay</a></td>
+<td align="center">1</td>
+<td align="center">24</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#hourOfHalfday">clockhourOfHalfday</a></td>
+<td align="center">1</td>
+<td align="center">12</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#halfdayOfDay">halfdayOfDay</a></td>
+<td align="center">0 (AM)</td>
+<td align="center">1 (PM)</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#dayOfWeek">dayOfWeek</a></td>
+<td align="center">1 (Monday)</td>
+<td align="center">7 (Sunday)</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#weekOfWeekyear">weekOfWeekyear</a></td>
+<td align="center">1</td>
+<td align="center">53</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#weekyear">weekyear</a></td>
+<td align="center">-292 000 000</td>
+<td align="center">292 000 000</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#dayOfMonth">dayOfMonth</a></td>
+<td align="center">1</td>
+<td align="center">31</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#dayOfYear">dayOfYear</a></td>
+<td align="center">1</td>
+<td align="center">366</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#monthOfYear">monthOfYear</a></td>
+<td align="center">1 (January)</td>
+<td align="center">12 (December)</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#year">year</a></td>
+<td align="center">-292 000 000</td>
+<td align="center">292 000 000</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#yearOfCentury">yearOfCentury</a></td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">[1]</td>
+</tr><tr>
+<td><a href="#yearOfEra">yearOfEra</a></td>
+<td align="center">1</td>
+<td align="center">292 000 000</td>
+<td><span></span></td>
+</tr><tr>
+<td><a href="#centuryOfEra">centuryOfEra</a></td>
+<td align="center">1</td>
+<td align="center">2 920 000</td>
+<td align="center">[2]</td>
+</tr><tr>
+<td><a href="#era">era</a></td>
+<td align="center">0 (BC/BCE)</td>
+<td align="center">1 (AD/CE)</td>
+<td><span></span></td>
+</tr>
+</table>
+<p>
+[1] For the ISOChronology, the year of century range is from 0 to 99.<br />
+[2] For the ISOChronology, the century of era range is from 0.<br />
+</p>
+
+<a name="millisOfSecond" />
+<subsection name="MillisOfSecond">
+<p>
+The number of milliseconds in the specified time once the second and larger parts are removed.
+</p>
+</subsection>
+
+
+<a name="millisOfDay" />
+<subsection name="MillisOfDay">
+<p>
+The number of milliseconds in the specified time once the day and larger parts are removed.
+</p>
+</subsection>
+
+
+<a name="secondOfMinute" />
+<subsection name="SecondOfMinute">
+<p>
+The number of seconds in the specified time once the minute and larger parts are removed.
+</p>
+</subsection>
+
+
+<a name="secondOfDay" />
+<subsection name="SecondOfDay">
+<p>
+The number of seconds in the specified time once the day and larger parts are removed.
+</p>
+</subsection>
+
+
+<a name="minuteOfHour" />
+<subsection name="MinuteOfHour">
+<p>
+The number of minutes in the specified time once the hour and larger parts are removed.
+</p>
+</subsection>
+
+
+<a name="minuteOfDay" />
+<subsection name="MinuteOfDay">
+<p>
+The number of minutes in the specified time once the day and larger parts are removed.
+</p>
+</subsection>
+
+
+<a name="hourOfDay" />
+<subsection name="HourOfDay">
+<p>
+The number of hours in the specified time once the day and larger parts are
+removed. The clockhour value represents midnight of the current day as 24
+instead of 0.
+</p>
+</subsection>
+
+<a name="hourOfHalfday" />
+<subsection name="HourOfHalfday">
+<p>
+The number of hours within the half day. The clockhour value represents
+midnight or noon of the current day as 12 instead of 0.
+</p>
+</subsection>
+
+<a name="halfdayOfDay" />
+<subsection name="HalfdayOfDay">
+<p>
+The AM/PM value of the day.
+</p>
+</subsection>
+
+<a name="dayOfWeek" />
+<subsection name="DayOfWeek">
+<p>
+The day of week is defined by constants in <code>DateTimeConstants</code>.
+The values used are from the ISO8601 standard.
+Monday is defined as 1, through to Sunday as 7.
+</p>
+</subsection>
+
+
+<a name="weekOfWeekyear" />
+<a name="weekyear" />
+<subsection name="WeekOfWeekyear and Weekyear">
+<p>
+A week based year is one where dates are expressed as a day of week, week number and year (week based).
+The following description is of the ISO8601 standard used by implementations of this method in this library.
+</p>
+<p>
+Weeks run from 1 to 52-53 in a week based year.
+The first day of the week is defined as Monday and given the value 1. 
+</p>
+<p>
+The first week of a year is defined as the first week that has at least four days in the year.
+As a result of this definition, week 1 may extend into the previous year, and week 52/53 may extend into the following year.
+Hence the need for the year of weekyear field.
+</p>
+<p>
+For example, 2003-01-01 was a Wednesday.
+This means that five days, Wednesday to Sunday, of that week are in 2003.
+Thus the whole week is considered to be the first week of 2003.
+Since all weeks start on Monday, the first week of 2003 started on 2002-12-30, ie. in 2002.
+</p>
+<p>
+The week based year has a specific text format.<br />
+2002-12-30 (Monday 30th December 2002) would be represented as 2003-W01-1.<br />
+2003-01-01 (Wednesday 1st January 2003) would be represented as 2003-W01-3.
+</p>
+</subsection>
+
+
+<a name="dayOfMonth" />
+<subsection name="DayOfMonth">
+<p>
+The day of the month. For the GJ and ISO chronologies, this will run from 1 through to 
+28 or 29 in February, 30 in April, June, September and November and 31 otherwise.
+</p>
+</subsection>
+
+
+<a name="dayOfYear" />
+<subsection name="DayOfYear">
+<p>
+The day of the year. This runs from 1 to 365, or 366 in leap years. 
+The exception is when a Julian to Gregorian cutover has occurred.
+In that case, the count is from 1 to 355 (typically) and is unbroken.
+</p>
+</subsection>
+
+
+<a name="monthOfYear" />
+<subsection name="MonthOfYear">
+<p>
+The month of year defined by constants in <code>DateTimeConstants</code>.
+The values used are from the ISO8601 standard.
+January is defined as 1, through to December as 12.
+</p>
+</subsection>
+
+
+<a name="year" />
+<subsection name="Year">
+<p>
+The year, using negative values to represent years in the previous era. For the
+GJ chronology, year zero is not included, unless the cutover to Gregorian is
+specified at or before 1 BCE. The ISO chronology always includes the year
+zero.
+</p>
+</subsection>
+
+<a name="centuryOfEra" />
+<a name="yearOfCentury" />
+<subsection name="CenturyOfEra and YearOfCentury">
+<p>
+The definition of these varies by chronology:
+</p>
+<table border="1">
+<tr>
+<th></th>
+<th colspan="3">GJ</th>
+<th colspan="3">ISO</th>
+</tr><tr>
+<th>year of era</th>
+<th>year</th>
+<th>century of era</th>
+<th>year of century</th>
+<th>year</th>
+<th>century of era</th>
+<th>year of century</th>
+</tr><tr>
+<td align="center">101 BCE</td>
+<td align="center">-101</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">-100</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">100 BCE</td>
+<td align="center">-100</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">-99</td>
+<td align="center">0</td>
+<td align="center">99</td>
+</tr><tr>
+<td align="center">99 BCE</td>
+<td align="center">-99</td>
+<td align="center">1</td>
+<td align="center">99</td>
+<td align="center">-98</td>
+<td align="center">0</td>
+<td align="center">98</td>
+</tr><tr>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr><tr>
+<td align="center">2 BCE</td>
+<td align="center">-2</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">-1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr><tr>
+<td align="center">1 BCE</td>
+<td align="center">-1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">1 CE</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr><tr>
+<td align="center">2 CE</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">2</td>
+<td align="center">0</td>
+<td align="center">2</td>
+</tr><tr>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr><tr>
+<td align="center">99 CE</td>
+<td align="center">99</td>
+<td align="center">1</td>
+<td align="center">99</td>
+<td align="center">99</td>
+<td align="center">0</td>
+<td align="center">99</td>
+</tr><tr>
+<td align="center">100 CE</td>
+<td align="center">100</td>
+<td align="center">1</td>
+<td align="center">100</td>
+<td align="center">100</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">101 CE</td>
+<td align="center">101</td>
+<td align="center">2</td>
+<td align="center">1</td>
+<td align="center">101</td>
+<td align="center">1</td>
+<td align="center">1</td>
+</tr><tr>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+<td align="center">...</td>
+</tr><tr>
+<td align="center">1999 CE</td>
+<td align="center">1999</td>
+<td align="center">20</td>
+<td align="center">99</td>
+<td align="center">1999</td>
+<td align="center">19</td>
+<td align="center">99</td>
+</tr><tr>
+<td align="center">2000 CE</td>
+<td align="center">2000</td>
+<td align="center">20</td>
+<td align="center">100</td>
+<td align="center">2000</td>
+<td align="center">20</td>
+<td align="center">0</td>
+</tr><tr>
+<td align="center">2001 CE</td>
+<td align="center">2001</td>
+<td align="center">21</td>
+<td align="center">1</td>
+<td align="center">2001</td>
+<td align="center">20</td>
+<td align="center">1</td>
+</tr>
+</table>
+<p>
+For GJ this is consistent with phrases such '2003 is in the 21st century'.<br />
+For ISO this represents a straight split of a textual ISO8601 year.
+</p>
+</subsection>
+
+
+<a name="yearOfEra" />
+<subsection name="YearOfEra">
+<p>
+The year as generally known (always positive).
+Both the GJ and ISO chronologies return 1 for 1BC/BCE, 2 for 2BC/BCE etc.
+In other words there is no year zero and no negative value for this field.
+</p>
+</subsection>
+
+<a name="era" />
+<subsection name="Era">
+<p>
+The era expressed as a constant, zero for BC/BCE, one for AD/CE.
+</p>
+<p>
+Other chronologies should respect the convention that one is the current era and
+zero is the previous era.
+If more eras are required the values should increase numerically over time.
+</p>
+</subsection>
+
+</section>
+</body>
+</document>

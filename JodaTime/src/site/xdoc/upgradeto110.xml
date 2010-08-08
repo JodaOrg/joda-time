@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.0 to 1.1</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.0 to version 1.1.
+<source>
+Joda-Time version 1.1
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the second full release of Joda-Time.
+
+We recommend JDK 1.3 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license cause you problems please contact the mailing list.
+
+
+Incompatible changes since 1.0
+------------------------------
+Binary compatible - Yes
+  - v1.0 and v1.1 are binary compatible in their public and protected API
+
+Source compatible - Yes
+  - v1.0 and v1.1 are source compatible in their public and protected API
+
+Serialization compatible - Yes, except:
+  - DateTime.Property, DateMidnight.Property and MutableDateTime.Property
+   serialization formats have changed to fix a bug.
+    Please note that this only affects the property classes, and not DateTime,
+   DateMidnight or MutableDateTime themselves
+    It is unlikely that you serialized one of these classes
+
+Data compatible - Yes, except:
+  - Removed time zones Asia/Riyadh87, Asia/Riyadh88 and Asia/Riyadh89.
+   These should not have been included in the 1.0 release, and do not represent
+   genuine time zones. It is unlikely that you used them.
+   If you do want to use them, please contact the joda-interest mailing list
+
+
+Warnings since 1.0
+------------------
+ReadablePartial now has a comment recommending that all implementations
+should also implement Comparable.
+This is most easily achieved by extending AbstractPartial.
+
+
+Deprecations since 1.0
+----------------------
+None
+
+
+Bug fixes since 1.0
+-------------------
+- Date and Time (ZoneInfoCompiler)
+  Greek summer time was incorrect due to a comment parsing bug.
+  This disabled DST (summer time) for Europe/Athens after 1980.
+
+- DateTimeFormat
+  Parsing of two digit year by DateTimeFormat supports parsing of more or less
+  than two digits, for compatibility with java.text.SimpleDateFormat. If not
+  two digits or if sign character is present, then year is parsed as absolute.
+
+- GJChronology
+  Range duration field of dayOfMonth was not consistent with monthOfYear. This
+  bug manifested itself when adding/subtracting periods to partials.
+
+- DateTimeParserBucket
+  Fixed parsing date where format includes era. Era must be set and rounded
+  before any other fields.
+
+- PeriodFormatterBuilder
+  Formatters that had fields which required a zero to be printed were not being
+  parsed.
+
+- DateTime.Property, DateMidnight.Property and MutableDateTime.Property
+  Could previously only be serialized in UTC.
+  The serialization format has been changed to be simpler and more reliable.
+  Unfortunately, this was an incompatible change to the serialization format.
+
+- DateTimeFormatterBuilder/PeriodFormatterBuilder
+  Number parser would accept multiple sign characters as valid.
+
+- YearMonthDay/TimeOfDay.withChronologyRetainFields
+  Previously, switching chronology did not validate the fields, so you could
+  end up with an object in an invalid state, such as a YearMonthDay where
+  dayOfMonth=31 with Coptic.
+  This method can now throw an IllegalArgumentException
+
+- Chronologies
+  Overflowed calculations involving year throw ArithmeticException rather than
+  produce a bogus result.
+
+- DateTimeFormatterBuilder.canBuildFormatter()
+  Previously this method always returned false.
+
+
+Enhancements since 1.0
+----------------------
+- Partial
+  New immutable implementation of ReadablePartial.
+  This implementation is flexible as to the fields that it stores.
+  Thus, if you want a partial holding just a year and monthOfYear (perhaps
+  for a credit card expiry date), then this class can be used.
+  Full support for almost all truncated and reduced precision ISO output
+  formats is available via use of this class.
+
+- DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay
+  Added convenience plusXxx() and minusXxx() methods to add/subtract a period
+  For example, dt.plus(Period.days(6)) can now be replaced by dt.plusDays(6)
+
+- DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay
+  Added convenience toString() method that takes a DateTimeFormatter
+  For example, dt.toString(DateTimeFormat.shortDateTime())
+
+- YearMonthDay/TimeOfDay/AbstractPartial
+  Enabled comparisons using Comparable interface
+  Added compareTo/isEqual/isAfter/isBefore methods
+  These methods were added to AbstractPartial, and are thus available to
+  all implementations of ReadablePartial
+
+- YearMonthDay/TimeOfDay
+  Extra time zone constructor
+  Allows current date and time to be accurately obtained
+
+- DateTime/DateMidnight/MutableDateTime/YearMonthDay/TimeOfDay Property
+  Added new method to property class - getAsString()
+  Gets the value as a string, not using text values like 'Monday' or 'January'
+
+- Period
+  Added constructors to create a Period from two ReadablePartials, such as
+  YearMonthDay or TimeOfDay
+
+- Period
+  Added factory to create a Period from two ReadablePartials using an
+  alternative, field-based, calculation
+
+- DateTimeUtils
+  Added isContiguous(ReadablePartial) to test if a partial is contiguous
+  (see the method for the definition)
+
+- PeriodType
+  Added factory method forFields() to allow a PeriodType to be obtained
+  from any set of DurationFieldType objects
+
+- PeriodType
+  Added three new period types - YearMonthDay, YearWeekDay and YearDay
+  These complement the existing ones but exclude the time fields.
+
+- DateTimeFormatter
+  Method withPivotYear added to allow the two digit pivot year to be controlled.
+  This is most useful after creating a format from a string pattern.
+
+- DateTimeFormatter
+  Added lenient parse option to appendTwoDigitYear and appendTwoDigitWeekyear.
+
+- Interval
+  Added overlap method that returns the actual overlap between two intervals.
+  Added gap method that returns the gap between two intervals.
+  Added abuts method that returns true if two intervals abut.
+
+- DateTimeUtils
+  Added getReadableInterval(ReadableInterval) method to handle null intervals
+
+- IllegalFieldValueException
+  Added new exception subclass of IllegalArgumentException to capture more
+  context when a field is set to an illegal value. This can be helpful in
+  interactive applications.
+
+- GJLocaleSymbols
+  Supports parsing "CE" and "BCE" as era if locale language is English.
+
+- ISODateTimeFormat
+  New method, forFields(), which gets an ISO format for a set of fields.
+  This is useful for more unusual formats such as DayHour.
+
+- ISODateTimeFormat
+  New methods to output ordinal style dates, such as 2005-161.
+
+- DateTimeZone classes updated to latest data from the Olson time zone database
+</source>
+</p>
+</section>
+
+</body>
+</document>

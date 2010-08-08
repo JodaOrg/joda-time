@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Tasks outstanding</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Tasks outstanding">
+
+<p>
+The following tasks are on the possible TODO list - contact the mailing lists for more details:
+</p>
+
+<ul>
+<li>Add more chronologies - Hebrew, Persian, Hindu, Thai, Chinese, Japanese,...</li>
+<li>Consider formatting ordinal numbers, like 1st, 2nd, 3rd</li>
+<li>Consider allowing the text output to be altered</li>
+<li>Formatter switching by locale</li>
+<li>Date matching methods to find next date matching search criteria</li>
+</ul>
+
+<p>
+Would you like to volunteer?
+Please contact scolebourne.at.users.sourceforge.net or the <a href="mail-lists.html">mailing list</a>.
+</p>
+</section>
+
+</body>
+</document>
+
+
+
+
+
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Julian calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Julian calendar system">
+<p>
+The Julian calendar system is calendar system that was widely used from about 4CE to 1582CE.
+It was replaced by the <a href="cal_gregorian.html">Gregorian</a> calendar on 1582-10-15.
+The Julian calendar defines a leap year as once every four years.
+This becomes inaccurate over time, to such an extent that by 1582, 10 days had to be
+'lost' to correct the calendar.
+</p>
+<p>
+The Julian calendar is represented in Joda-Time by the Julian chronology.
+This chronology applies Julian rules for all time.
+Normally, a more accurate historic calendar is found by using the
+<a href="cal_gj.html">GregorianJulian</a> chronology instead.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Julian_calendar">Wikipedia - Julian Calendar</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using Julian chronology in Joda-Time">
+<p>
+Within Joda-Time the Julian calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/JulianChronology.html">JulianChronology</a>.
+This is normally created using the factory method
+<a href="apidocs/org/joda/time/chrono/JulianChronology.html#getInstance()">JulianChronology.getInstance()</a>.
+This is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for the Battle of Hastings in 1066
+Chronology chrono = JulianChronology.getInstance();
+DateTime dt = new DateTime(1066, 10, 14, 10, 0, 0, 0, chrono);
+</source>
+
+</section>
+
+</body>
+</document>

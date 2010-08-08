@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+
+ <properties>
+  <title>Java date and time API - Coptic calendar system</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+ <body>
+
+<section name="Ethiopic calendar system">
+<p>
+The Ethiopic calendar system is similiar to the
+<a href="cal_coptic.html">Coptic</a> calendar and based on that used in ancient Egypt.
+The calendar system is in use today in Ethiopia.
+</p>
+<p>
+The Ethiopic calendar system consists of 12 months of exactly 30 days, followed by
+a 5 or 6 day intercalary month making a year of 365 or 366 days.
+Leap years (6 day intercalary month) occur every 4 years without exception (as per the Julian calendar).
+They occur when the remainder left after dividing the Ethiopic year by four is 3.
+The Ethiopic year starts on Septamber 11th/12th depending on leap years.
+The epoch date for the calendar is 0008-08-29 (Julian), which therefore is 0001-01-01 (Ethiopic).
+The current era is 'EE' (Ethiopian Era).
+</p>
+<p>
+Joda-Time implements the rules described above.
+We model the 5 or 6 day intercalary month as month 13.
+We also prevent the entry of dates before year 1.
+</p>
+<p>
+References
+<ul>
+<li>Calendrical Calculations - Millenium Edition - ISBN 0521777526</li>
+<li><a href="http://en.wikipedia.org/wiki/Ethiopian_calendar">Wikipedia - Ethiopic Calendar</a></li>
+</ul>
+</p>
+</section>
+
+<section name="Using Ethiopic chronology in Joda-Time">
+<p>
+Within Joda-Time the Ethiopic calendar system can be used by obtaining an
+instance of <a href="apidocs/org/joda/time/chrono/EthiopicChronology.html">EthiopicChronology</a>.
+This is normally created via the
+<a href="apidocs/org/joda/time/chrono/EthiopicChronology.html#getInstance()">EthiopicChronology.getInstance()</a> factory.
+The chronology is then passed into the constructors of the main date and time classes.
+</p>
+<source>
+// setup date object for midday on May Day 2004 (ISO year 2004)
+DateTime dtISO = new DateTime(2004, 5, 1, 12, 0, 0, 0);
+
+// find out what the same instant is using the Ethiopic Chronology
+DateTime dtEthiopic = dtISO.withChronology(EthiopicChronology.getInstance());
+</source>
+
+</section>
+
+</body>
+</document>

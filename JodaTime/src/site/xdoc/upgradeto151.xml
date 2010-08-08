@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.5 to 1.5.1</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.5 to version 1.5.1.
+<source>
+Joda-Time version 1.5.1
+-----------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is a patch release for Joda-Time 1.5.
+This release contains one bug fix and a time zone update.
+We recommend all users of 1.5 upgrade to 1.5.1.
+
+We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+*  Please also check out our related projects   *
+* http://joda-time.sourceforge.net/related.html *
+
+
+Enhancements since 1.5
+----------------------
+
+
+Compatibility with 1.5
+----------------------
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+  - DateTimeZone data updated to version 2007j
+
+Semantic compatible - Yes
+
+
+Deprecations since 1.5
+----------------------
+
+
+Bug fixes since 1.5
+-------------------
+- Parsing (regression) [1839440]
+  Support parsing all upper-case and all lower-case text
+</source>
+</p>
+</section>
+
+</body>
+</document>

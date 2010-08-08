@@ -58,6 +58,8 @@ Bug fixes since 1.6
 
 - DateTimeUtils shared static variable now volatile [2986043]
 
+- Time zone compiler now handles 24:00 [2804258]
+
 - Time zone compiler now handles non-UTC better
 
 - Assorted Javadoc clarifications, including [2721880]

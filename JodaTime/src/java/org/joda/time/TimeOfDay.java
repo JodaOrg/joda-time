@@ -148,7 +148,7 @@ public final class TimeOfDay
             date.getHours(),
             date.getMinutes(),
             date.getSeconds(),
-            (int) (date.getTime() % 1000)
+            (((int) (date.getTime() % 1000)) + 1000) % 1000
         );
     }
 

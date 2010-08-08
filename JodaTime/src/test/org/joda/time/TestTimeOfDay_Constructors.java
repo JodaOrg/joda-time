@@ -112,11 +112,21 @@ public class TestTimeOfDay_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_FromDateFields() throws Exception {
+    public void testFactory_FromDateFields_after1970() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
         TimeOfDay expected = new TimeOfDay(4, 5, 6, 7);
         assertEquals(expected, TimeOfDay.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_FromDateFields_before1970() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1969, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        TimeOfDay expected = new TimeOfDay(4, 5, 6, 7);
+        assertEquals(expected, TimeOfDay.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_FromDateFields_null() throws Exception {
         try {
             TimeOfDay.fromDateFields(null);
             fail();

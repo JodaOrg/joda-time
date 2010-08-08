@@ -42,10 +42,10 @@
 
   <!-- The directory of source files -->
   <property name="source"                  value="src"/>
-  <property name="source.home"             value="${source}/java"/>
+  <property name="source.home"             value="${source}/main/java"/>
   <property name="source.tz"               value="${source.home}/org/joda/time/tz/src"/>
   <property name="conf.home"               value="${source}/conf"/>
-  <property name="test.home"               value="${source}/test"/>
+  <property name="test.home"               value="${source}/test/java"/>
 
   <!-- The base directory for example sources -->
   <property name="example.home"            value="src/example"/>
@@ -354,9 +354,7 @@
     </copy>
 	<delete     dir="${build.dist.src.fullname}/src/tzdata"/>
     <copy      file="build.xml" todir="${build.dist.src.fullname}"/>
-    <copy      file="maven.xml" todir="${build.dist.src.fullname}"/>
-    <copy      file="project.xml" todir="${build.dist.src.fullname}"/>
-    <copy      file="project.properties" todir="${build.dist.src.fullname}"/>
+    <copy      file="pom.xml" todir="${build.dist.src.fullname}"/>
     <copy      file="checkstyle.xml" todir="${build.dist.src.fullname}"/>
     <copy      file="ToDo.txt" todir="${build.dist.src.fullname}"/>
 	

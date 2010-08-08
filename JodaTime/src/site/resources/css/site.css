@@ -52,10 +52,17 @@ p, ul {
 #banner {
   background-color: #eef;
   border-bottom: 1px solid #aaa;
+  padding: 8px;
 }
-#bannerLeft img, #bannerRight img {
-  margin:8px;
+#bannerLeft, #bannerRight {
+  font-size: 30px;
+  color:black;
+  background-color:white;
   border: 1px solid #999;
+  padding: 0px 5px;
+}
+#banner a:hover {
+  text-decoration:none;
 }
 #breadcrumbs {
   padding-top: 1px;

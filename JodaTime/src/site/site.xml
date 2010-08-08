@@ -3,12 +3,12 @@
   <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
   <bannerLeft>
     <name>Joda.org</name>
-    <src>http://joda-time.sourceforge.net/images/joda.png</src>
+    <!--src>http://joda-time.sourceforge.net/images/joda.png</src-->
     <href>http://joda.sourceforge.net/</href>
   </bannerLeft>
   <bannerRight>
-    <name>Joda Time</name>
-    <src>http://joda-time.sourceforge.net/images/jodatime.png</src>
+    <name>Joda-Time</name>
+    <!--src>http://joda-time.sourceforge.net/images/jodatime.png</src-->
     <href>http://joda-time.sourceforge.net/</href>
   </bannerRight>
 

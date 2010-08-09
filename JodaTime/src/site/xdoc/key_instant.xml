@@ -41,19 +41,19 @@ you should use the <a href="key_partial.html">partial</a> classes.
 <section name="Using Instants in Joda-Time">
 <p>
 Within Joda-Time an instant is represented by the
-<a href="api-release/index.html?org/joda/time/ReadableInstant.html">ReadableInstant</a> interface.
+<a href="api-release/org/joda/time/ReadableInstant.html">ReadableInstant</a> interface.
 There are four implementations of the interface provided:
 <ul>
-<li><a href="api-release/index.html?org/joda/time/Instant.html">Instant</a> -
+<li><a href="api-release/org/joda/time/Instant.html">Instant</a> -
 A simple immutable implementation which is restricted to the UTC time zone
 and is intended for time zone and calendar neutral data transfer</li>
-<li><a href="api-release/index.html?org/joda/time/DateTime.html">DateTime</a> -
+<li><a href="api-release/org/joda/time/DateTime.html">DateTime</a> -
 The most commonly used class in the library, and an immutable representation of a
 date and time with calendar and time zone</li>
-<li><a href="api-release/index.html?org/joda/time/DateMidnight.html">DateMidnight</a> -
+<li><a href="api-release/org/joda/time/DateMidnight.html">DateMidnight</a> -
 Similar to <code>DateTime</code> and also immutable but with the time component
 forced to be midnight (at the start of a day)</li>
-<li><a href="api-release/index.html?org/joda/time/MutableDateTime.html">MutableDateTime</a> -
+<li><a href="api-release/org/joda/time/MutableDateTime.html">MutableDateTime</a> -
 A mutable representation of date and time with calendar and time zone</li>
 </ul>
 We recommend the immutable implementations for general usage.
@@ -87,7 +87,7 @@ Note that the interface <code>ReadableInstant</code> should not be used like the
 The interface only contains the core subset of the operations of <code>DateTime</code>.
 You should use the interface only when you feel the need to be flexible about future changes
 to the object passed into a method.
-You might also want to consider the <a href="api-release/index.html?org/joda/time/ReadableDateTime.html">ReadableDateTime</a>
+You might also want to consider the <a href="api-release/org/joda/time/ReadableDateTime.html">ReadableDateTime</a>
 interface which extends <code>ReadableInstant</code> to provide additional methods.
 </p>
 

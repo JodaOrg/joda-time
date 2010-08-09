@@ -37,10 +37,10 @@ Durations implement <code>Comparable</code> which compares the lengths of the tw
 <section name="Using Durations in Joda-Time">
 <p>
 Within Joda-Time a duration is represented by the
-<a href="api-release/index.html?org/joda/time/ReadableDuration.html">ReadableDuration</a> interface.
+<a href="api-release/org/joda/time/ReadableDuration.html">ReadableDuration</a> interface.
 There is one implementation of the interface provided:
 <ul>
-<li><a href="api-release/index.html?org/joda/time/Duration.html">Duration</a> -
+<li><a href="api-release/org/joda/time/Duration.html">Duration</a> -
 An immutable implementation</li>
 </ul>
 </p>

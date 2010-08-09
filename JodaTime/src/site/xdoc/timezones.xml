@@ -13,7 +13,7 @@
 <p>
 Time zone data is provided by the public <a href="http://www.twinsun.com/tz/tz-link.htm">tz</a>
 database, otherwise known as the Olson database. The following table shows all the time zones
-supported by Joda-Time, using version 2007k of the tz database.
+supported by Joda-Time, using version 2010k of the tz database.
 It is also possible to update to a <a href="tz_update.html">later version of the database</a>.
 This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</code>.
 </p>
@@ -43,6 +43,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-09:00</td><td align="left" valign="top">Pacific/Gambier</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Dawson</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Los_Angeles</td><td align="left" valign="top">US/Pacific, US/Pacific-New</td></tr>
+<tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Santa_Isabel</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Tijuana</td><td align="left" valign="top">America/Ensenada, Mexico/BajaNorte</td></tr>
 <tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Vancouver</td><td align="left" valign="top">Canada/Pacific</td></tr>
 <tr><td align="left" valign="top">-08:00</td><td align="left" valign="top">America/Whitehorse</td><td align="left" valign="top">Canada/Yukon</td></tr>
@@ -58,11 +59,13 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Hermosillo</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Inuvik</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Mazatlan</td><td align="left" valign="top">Mexico/BajaSur</td></tr>
+<tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Ojinaga</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Phoenix</td><td align="left" valign="top">US/Arizona</td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">America/Yellowknife</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">Etc/GMT+7</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">MST</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-07:00</td><td align="left" valign="top">MST7MDT</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Bahia_Banderas</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Belize</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Cancun</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Chicago</td><td align="left" valign="top">US/Central</td></tr>
@@ -72,6 +75,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Indiana/Knox</td><td align="left" valign="top">America/Knox_IN, US/Indiana-Starke</td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Indiana/Tell_City</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Managua</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Matamoros</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Menominee</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Merida</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-06:00</td><td align="left" valign="top">America/Mexico_City</td><td align="left" valign="top">Mexico/General</td></tr>
@@ -92,7 +96,6 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Bogota</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Cayman</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Detroit</td><td align="left" valign="top">US/Michigan</td></tr>
-<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Eirunepe</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Grand_Turk</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Guayaquil</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Havana</td><td align="left" valign="top">Cuba</td></tr>
@@ -115,7 +118,6 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Pangnirtung</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Port-au-Prince</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Resolute</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Rio_Branco</td><td align="left" valign="top">America/Porto_Acre, Brazil/Acre</td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Thunder_Bay</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">America/Toronto</td><td align="left" valign="top">Canada/Eastern</td></tr>
 <tr><td align="left" valign="top">-05:00</td><td align="left" valign="top">EST</td><td align="left" valign="top"></td></tr>
@@ -124,6 +126,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-04:30</td><td align="left" valign="top">America/Caracas</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Anguilla</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Antigua</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/San_Luis</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Aruba</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Asuncion</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Barbados</td><td align="left" valign="top"></td></tr>
@@ -133,6 +136,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Cuiaba</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Curacao</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Dominica</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Eirunepe</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Glace_Bay</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Goose_Bay</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Grenada</td><td align="left" valign="top"></td></tr>
@@ -147,6 +151,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Port_of_Spain</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Porto_Velho</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Puerto_Rico</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Rio_Branco</td><td align="left" valign="top">America/Porto_Acre, Brazil/Acre</td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Santiago</td><td align="left" valign="top">Chile/Continental</td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/Santo_Domingo</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-04:00</td><td align="left" valign="top">America/St_Kitts</td><td align="left" valign="top"></td></tr>
@@ -168,6 +173,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/La_Rioja</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Mendoza</td><td align="left" valign="top">America/Mendoza</td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Rio_Gallegos</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Salta</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/San_Juan</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Tucuman</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Argentina/Ushuaia</td><td align="left" valign="top"></td></tr>
@@ -181,6 +187,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Montevideo</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Paramaribo</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Recife</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Santarem</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">America/Sao_Paulo</td><td align="left" valign="top">Brazil/East</td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">Antarctica/Rothera</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">-03:00</td><td align="left" valign="top">Etc/GMT+3</td><td align="left" valign="top"></td></tr>
@@ -313,6 +320,7 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Asia/Riyadh</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Etc/GMT-3</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Europe/Moscow</td><td align="left" valign="top">W-SU</td></tr>
+<tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Europe/Samara</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Europe/Volgograd</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Indian/Antananarivo</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+03:00</td><td align="left" valign="top">Indian/Comoro</td><td align="left" valign="top"></td></tr>
@@ -324,11 +332,11 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Tbilisi</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Asia/Yerevan</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Etc/GMT-4</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Europe/Samara</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Indian/Mahe</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Indian/Mauritius</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+04:00</td><td align="left" valign="top">Indian/Reunion</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+04:30</td><td align="left" valign="top">Asia/Kabul</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Antarctica/Mawson</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Aqtau</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Aqtobe</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Asia/Ashgabat</td><td align="left" valign="top">Asia/Ashkhabad</td></tr>
@@ -341,14 +349,14 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Etc/GMT-5</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Indian/Kerguelen</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+05:00</td><td align="left" valign="top">Indian/Maldives</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+05:30</td><td align="left" valign="top">Asia/Calcutta</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+05:30</td><td align="left" valign="top">Asia/Colombo</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+05:45</td><td align="left" valign="top">Asia/Katmandu</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Antarctica/Mawson</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+05:30</td><td align="left" valign="top">Asia/Kolkata</td><td align="left" valign="top">Asia/Calcutta</td></tr>
+<tr><td align="left" valign="top">+05:45</td><td align="left" valign="top">Asia/Kathmandu</td><td align="left" valign="top">Asia/Katmandu</td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Antarctica/Vostok</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Almaty</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Bishkek</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Dhaka</td><td align="left" valign="top">Asia/Dacca</td></tr>
+<tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Novokuznetsk</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Novosibirsk</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Omsk</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+06:00</td><td align="left" valign="top">Asia/Qyzylorda</td><td align="left" valign="top"></td></tr>
@@ -359,17 +367,18 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">+06:30</td><td align="left" valign="top">Indian/Cocos</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Antarctica/Davis</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Bangkok</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Ho_Chi_Minh</td><td align="left" valign="top">Asia/Saigon</td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Hovd</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Jakarta</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Krasnoyarsk</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Phnom_Penh</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Pontianak</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Saigon</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Asia/Vientiane</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Etc/GMT-7</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+07:00</td><td align="left" valign="top">Indian/Christmas</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Antarctica/Casey</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Brunei</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Choibalsan</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Chongqing</td><td align="left" valign="top">Asia/Chungking</td></tr>
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Harbin</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Asia/Hong_Kong</td><td align="left" valign="top">Hongkong</td></tr>
@@ -388,7 +397,6 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Australia/Perth</td><td align="left" valign="top">Australia/West</td></tr>
 <tr><td align="left" valign="top">+08:00</td><td align="left" valign="top">Etc/GMT-8</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+08:45</td><td align="left" valign="top">Australia/Eucla</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Choibalsan</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Dili</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Jayapura</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+09:00</td><td align="left" valign="top">Asia/Pyongyang</td><td align="left" valign="top"></td></tr>
@@ -410,22 +418,23 @@ This table can be rebuilt by running <code>org.joda.example.time.TimeZoneTable</
 <tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Melbourne</td><td align="left" valign="top">Australia/Victoria</td></tr>
 <tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Australia/Sydney</td><td align="left" valign="top">Australia/ACT, Australia/Canberra, Australia/NSW</td></tr>
 <tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Etc/GMT-10</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Chuuk</td><td align="left" valign="top">Pacific/Truk, Pacific/Yap</td></tr>
 <tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Guam</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Port_Moresby</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Saipan</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+10:00</td><td align="left" valign="top">Pacific/Truk</td><td align="left" valign="top">Pacific/Yap</td></tr>
 <tr><td align="left" valign="top">+10:30</td><td align="left" valign="top">Australia/Lord_Howe</td><td align="left" valign="top">Australia/LHI</td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Antarctica/Macquarie</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Asia/Anadyr</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Asia/Kamchatka</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Asia/Magadan</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Etc/GMT-11</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Efate</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Guadalcanal</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Kosrae</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Noumea</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Ponape</td><td align="left" valign="top"></td></tr>
+<tr><td align="left" valign="top">+11:00</td><td align="left" valign="top">Pacific/Pohnpei</td><td align="left" valign="top">Pacific/Ponape</td></tr>
 <tr><td align="left" valign="top">+11:30</td><td align="left" valign="top">Pacific/Norfolk</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Antarctica/McMurdo</td><td align="left" valign="top">Antarctica/South_Pole</td></tr>
-<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Asia/Anadyr</td><td align="left" valign="top"></td></tr>
-<tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Asia/Kamchatka</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Etc/GMT-12</td><td align="left" valign="top"></td></tr>
 <tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Auckland</td><td align="left" valign="top">NZ</td></tr>
 <tr><td align="left" valign="top">+12:00</td><td align="left" valign="top">Pacific/Fiji</td><td align="left" valign="top"></td></tr>

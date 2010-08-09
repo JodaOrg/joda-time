@@ -13,7 +13,7 @@
 <p>
 Time zones are a concept driven by the political situation in each country around the world.
 As such, they change frequently, and often at short notice.
-In order to manage this, Joda-Time uses the interationally recognised
+In order to manage this, Joda-Time uses the internationally recognised
 <a href="http://www.twinsun.com/tz/tz-link.htm">tz database</a>, which is also used
 in most operating systems and the JDK itself.
 </p>

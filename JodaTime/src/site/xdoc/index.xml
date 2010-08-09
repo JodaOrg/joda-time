@@ -27,38 +27,38 @@ JSR 310 has now been launched. It aims to build upon Joda-Time and include it in
 <p>
 As a flavour of Joda-Time, here's some example code:
 <source>
-public boolean isAfterPayDay(<a href="api-release/index.html?org/joda/time/DateTime.html"><b>DateTime</b></a> datetime) {
+public boolean isAfterPayDay(<a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a> datetime) {
   if (datetime.getMonthOfYear() == 2) {   // February is month 2!!
     return datetime.getDayOfMonth() > 26;
   }
   return datetime.getDayOfMonth() > 28;
 }
 
-public <a href="api-release/index.html?org/joda/time/Days.html"><b>Days</b></a> daysToNewYear(<a href="api-release/index.html?org/joda/time/LocalDate.html"><b>LocalDate</b></a> fromDate) {
-  <a href="api-release/index.html?org/joda/time/LocalDate.html"><b>LocalDate</b></a> newYear = fromDate.plusYears(1).withDayOfYear(1);
-  return <a href="api-release/index.html?org/joda/time/Days.html"><b>Days</b></a>.daysBetween(fromDate, newYear);
+public <a href="api-release/org/joda/time/Days.html"><b>Days</b></a> daysToNewYear(<a href="api-release/org/joda/time/LocalDate.html"><b>LocalDate</b></a> fromDate) {
+  <a href="api-release/org/joda/time/LocalDate.html"><b>LocalDate</b></a> newYear = fromDate.plusYears(1).withDayOfYear(1);
+  return <a href="api-release/org/joda/time/Days.html"><b>Days</b></a>.daysBetween(fromDate, newYear);
 }
 
-public boolean isRentalOverdue(<a href="api-release/index.html?org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeRented) {
-  <a href="api-release/index.html?org/joda/time/Period.html"><b>Period</b></a> rentalPeriod = new <a href="api-release/index.html?org/joda/time/Period.html"><b>Period</b></a>().withDays(2).withHours(12);
+public boolean isRentalOverdue(<a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeRented) {
+  <a href="api-release/org/joda/time/Period.html"><b>Period</b></a> rentalPeriod = new <a href="api-release/org/joda/time/Period.html"><b>Period</b></a>().withDays(2).withHours(12);
   return datetimeRented.plus(rentalPeriod).isBeforeNow();
 }
 
-public String getBirthMonthText(<a href="api-release/index.html?org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
+public String getBirthMonthText(<a href="api-release/org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
 </source>
 <!--
-public boolean isDoubleShift(<a href="api-release/index.html?org/joda/time/LocalTime.html"><b>LocalTime</b></a> startTime, <a href="api-release/index.html?org/joda/time/LocalTime.html"><b>LocalTime</b></a> endTime) {
-  <a href="api-release/index.html?org/joda/time/Hours.html"><b>Hours</b></a> hoursBetween = <a href="api-release/index.html?org/joda/time/Hours.html"><b>Hours</b></a>.hoursBetween(time1, time2);
-  return hoursBetween.isGreaterThan(<a href="api-release/index.html?org/joda/time/Hours.html"><b>Hours</b></a>.EIGHT);
+public boolean isDoubleShift(<a href="api-release/org/joda/time/LocalTime.html"><b>LocalTime</b></a> startTime, <a href="api-release/org/joda/time/LocalTime.html"><b>LocalTime</b></a> endTime) {
+  <a href="api-release/org/joda/time/Hours.html"><b>Hours</b></a> hoursBetween = <a href="api-release/org/joda/time/Hours.html"><b>Hours</b></a>.hoursBetween(time1, time2);
+  return hoursBetween.isGreaterThan(<a href="api-release/org/joda/time/Hours.html"><b>Hours</b></a>.EIGHT);
 }
-public boolean isJoinedInLastThreeMonths(<a href="api-release/index.html?org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeJoined) {
-  <a href="api-release/index.html?org/joda/time/Interval.html"><b>Interval</b></a> last3Months = new <a href="api-release/index.html?org/joda/time/Interval.html"><b>Interval</b></a>(<a href="api-release/index.html?org/joda/time/Months.html"><b>Months</b></a>.THREE, new <a href="api-release/index.html?org/joda/time/DateTime.html"><b>DateTime</b></a>());
+public boolean isJoinedInLastThreeMonths(<a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeJoined) {
+  <a href="api-release/org/joda/time/Interval.html"><b>Interval</b></a> last3Months = new <a href="api-release/org/joda/time/Interval.html"><b>Interval</b></a>(<a href="api-release/org/joda/time/Months.html"><b>Months</b></a>.THREE, new <a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a>());
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 1.6 was released on 2008-10-27 -
+Version 1.6.1 was released on 2010-08-08 -
 <a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Download now</a>
 </p>
 </section>
@@ -143,7 +143,7 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 1.6</a>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 1.6.1</a>
 is the current latest release.
 This release is considered stable and worthy of the 1.x tag.
 It has extensive testing suites and has been used in production.

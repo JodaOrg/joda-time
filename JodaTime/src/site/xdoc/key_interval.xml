@@ -37,11 +37,11 @@ If you want to compare the length of intervals you must obtain the duration of e
 <section name="Using Intervals in Joda-Time">
 <p>
 Within Joda-Time an interval is represented by the
-<a href="api-release/index.html?org/joda/time/ReadableInterval.html">ReadableInterval</a> interface.
+<a href="api-release/org/joda/time/ReadableInterval.html">ReadableInterval</a> interface.
 There are two implementations of the interface provided:
 <ul>
-<li><a href="api-release/index.html?org/joda/time/Interval.html">Interval</a> - An immutable implementation</li>
-<li><a href="api-release/index.html?org/joda/time/MutableInterval.html">MutableInterval</a> - A mutable implementation</li>
+<li><a href="api-release/org/joda/time/Interval.html">Interval</a> - An immutable implementation</li>
+<li><a href="api-release/org/joda/time/MutableInterval.html">MutableInterval</a> - A mutable implementation</li>
 </ul>
 We recommend the immutable implementation for general usage.
 </p>

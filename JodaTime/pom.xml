@@ -140,9 +140,9 @@
         <configuration>
           <verbose>true</verbose>
           <fork>true</fork>
-          <compilerVersion>1.4</compilerVersion>
-          <source>1.3</source>
-          <target>1.3</target>
+          <compilerVersion>1.5</compilerVersion>
+          <source>1.5</source>
+          <target>1.5</target>
           <debug>true</debug>
           <debuglevel>lines,source</debuglevel>
           <optimize>true</optimize>
@@ -164,7 +164,7 @@
         <configuration>
           <toolchains>
             <jdk>
-              <version>1.4</version>
+              <version>1.5</version>
               <vendor>sun</vendor>
             </jdk>
           </toolchains>

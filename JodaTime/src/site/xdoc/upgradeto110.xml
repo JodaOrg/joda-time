@@ -3,7 +3,7 @@
 <document>
  <properties>
   <title>Java date and time API - Upgrade from 1.0 to 1.1</title>
-  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
+  <author>Stephen Colebourne</author>
  </properties>
 
 <body>

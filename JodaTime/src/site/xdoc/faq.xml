@@ -4,8 +4,8 @@
 
  <properties>
   <title>Java date and time API - FAQ</title>
-  <author email="scolebourne.at.users.sourceforge.net">Stephen Colebourne</author>
-  <author email="broneill.at.users.sourceforge.net">Brian S O'Neill</author>
+  <author>Stephen Colebourne</author>
+  <author>Brian S O'Neill</author>
  </properties>
 
  <body>

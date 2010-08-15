@@ -39,7 +39,7 @@
       <item name="Period" href="key_period.html"/>
       <item name="Chronology" href="key_chronology.html"/>
     </menu>
-    
+
     <menu name="Chronologies">
       <item name="ISO8601" href="cal_iso.html"/>
       <item name="Buddhist" href="cal_buddhist.html"/>
@@ -50,7 +50,7 @@
       <item name="Islamic" href="cal_islamic.html"/>
       <item name="Julian" href="cal_julian.html"/>
     </menu>
-    
+
     <menu name="Development">
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
       <item name="Test results" href="surefire-report.html"/>
@@ -60,20 +60,19 @@
       <item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/"/>
       <item name="Javadoc (Development)" href="apidocs/index.html"/>
     </menu>
-    
+
     <menu name="Joda">
       <item name="Joda home" href="http://joda.sourceforge.net"/>
       <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
       <item name="Money" href="http://joda-money.sourceforge.net/index.html"/>
       <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
     </menu>
-    
+
     <menu ref="reports"/>
-    
+
     <menu name="Website">
       <item name="Privacy" href="privacy.html"/>
     </menu>
-    
   </body>
 
   <poweredBy>

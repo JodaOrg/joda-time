@@ -15,6 +15,11 @@
  */
 package org.joda.time.format;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
 /**
  * Factory that creates instances of PeriodFormatter.
  * <p>
@@ -32,8 +37,14 @@ package org.joda.time.format;
  */
 public class PeriodFormat {
 
-    /** An english words based formatter. */
-    private static PeriodFormatter cEnglishWords;
+    /**
+     * The resource bundle name.
+     */
+    private static final String BUNDLE_NAME = "org.joda.time.format.messages";
+    /**
+     * The created formatters.
+     */
+    private static final ConcurrentMap<Locale, PeriodFormatter> FORMATTERS = new ConcurrentHashMap<Locale, PeriodFormatter>();
 
     /**
      * Constructor.
@@ -46,43 +57,75 @@ public class PeriodFormat {
 
     //-----------------------------------------------------------------------
     /**
-     * Gets the default PeriodFormatter.
+     * Gets the default formatter that outputs words in English.
      * <p>
-     * This currently returns a word based formatter using English only.
-     * Hopefully future release will support localized period formatting.
+     * This calls {@link #wordBased(Locale)} using a locale of {@code ENGLISH}.
      * 
-     * @return the formatter
+     * @return the formatter, not null
      */
     public static PeriodFormatter getDefault() {
-        if (cEnglishWords == null) {
-            String[] variants = {" ", ",", ",and ", ", and "};
-            cEnglishWords = new PeriodFormatterBuilder()
+        return wordBased(Locale.ENGLISH);
+    }
+
+    /**
+     * Returns a word based formatter for the JDK default locale.
+     * <p>
+     * This calls {@link #wordBased(Locale)} using the {@link Locale#getDefault() default locale}.
+     * 
+     * @return the formatter, not null
+     * @since 2.0
+     */
+    public static PeriodFormatter wordBased() {
+        return wordBased(Locale.getDefault());
+    }
+
+    /**
+     * Returns a word based formatter for the specified locale.
+     * <p>
+     * The words are configured in a resource bundle text file -
+     * {@code org.joda.time.format.messages}.
+     * This can be added to via the normal classpath resource bundle mechanisms.
+     * <p>
+     * Available languages are English, German, Dutch, French, Spanish and Portuguese.
+     * 
+     * @return the formatter, not null
+     * @since 2.0
+     */
+    public static PeriodFormatter wordBased(Locale locale) {
+        PeriodFormatter pf = FORMATTERS.get(locale);
+        if (pf == null) {
+            ResourceBundle b = ResourceBundle.getBundle(BUNDLE_NAME, locale);
+            String[] variants = {
+                    b.getString("PeriodFormat.space"), b.getString("PeriodFormat.comma"),
+                    b.getString("PeriodFormat.commandand"), b.getString("PeriodFormat.commaspaceand")};
+            pf = new PeriodFormatterBuilder()
                 .appendYears()
-                .appendSuffix(" year", " years")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.year"), b.getString("PeriodFormat.years"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendMonths()
-                .appendSuffix(" month", " months")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.month"), b.getString("PeriodFormat.months"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendWeeks()
-                .appendSuffix(" week", " weeks")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.week"), b.getString("PeriodFormat.weeks"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendDays()
-                .appendSuffix(" day", " days")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.day"), b.getString("PeriodFormat.days"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendHours()
-                .appendSuffix(" hour", " hours")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.hour"), b.getString("PeriodFormat.hours"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendMinutes()
-                .appendSuffix(" minute", " minutes")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.minute"), b.getString("PeriodFormat.minutes"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendSeconds()
-                .appendSuffix(" second", " seconds")
-                .appendSeparator(", ", " and ", variants)
+                .appendSuffix(b.getString("PeriodFormat.second"), b.getString("PeriodFormat.seconds"))
+                .appendSeparator(b.getString("PeriodFormat.commaspace"), b.getString("PeriodFormat.spaceandspace"), variants)
                 .appendMillis()
-                .appendSuffix(" millisecond", " milliseconds")
+                .appendSuffix(b.getString("PeriodFormat.millisecond"), b.getString("PeriodFormat.milliseconds"))
                 .toFormatter();
+            FORMATTERS.putIfAbsent(locale, pf);
         }
-        return cEnglishWords;
+        return pf;
     }
 
 }

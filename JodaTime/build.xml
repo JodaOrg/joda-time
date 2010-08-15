@@ -38,7 +38,7 @@
 
   <!-- Dependencies -->
   <property name="lib"                     value="lib"/>
-  <property name="junit.jar"               value="${lib}/junit-3.8.1.jar"/>
+  <property name="junit.jar"               value="${lib}/junit-3.8.2.jar"/>
 
   <!-- The directory of source files -->
   <property name="source"                  value="src"/>
@@ -184,6 +184,9 @@
     	    source="1.5" target="1.5" includeantruntime="false">
       <classpath refid="compile.classpath"/>
     </javac>
+    <copy todir="${build.classes}">
+      <fileset dir="${source.home}" includes="**/*.properties"/>
+    </copy>
   </target>
 
 <!-- ====================================================================== -->
@@ -371,7 +374,7 @@
     <mkdir      dir="${build.dist.bundle}"/>
     <copy      file="LICENSE.txt" todir="${build.dist.bundle}"/>
     <copy      file="NOTICE.txt" todir="${build.dist.bundle}"/>
-    <copy      file="project.xml" todir="${build.dist.bundle}"/>
+    <copy      file="pom.xml" todir="${build.dist.bundle}"/>
     <copy      file="${build.fullname}.jar"
               todir="${build.dist.bundle}"/>
     <copy      file="${build.fullname}-sources.jar"

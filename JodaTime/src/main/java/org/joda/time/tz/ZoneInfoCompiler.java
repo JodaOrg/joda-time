@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -65,6 +65,20 @@ public class ZoneInfoCompiler {
 
     static Chronology cLenientISO;
 
+    static ThreadLocal<Boolean> cVerbose = new ThreadLocal<Boolean>();
+    static {
+        cVerbose.set(Boolean.FALSE);
+    }
+
+    /**
+     * Gets a flag indicating that verbose logging is required.
+     * @return true to log verbosely
+     */
+    public static boolean verbose() {
+        return cVerbose.get();
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Launches the ZoneInfoCompiler tool.
      *
@@ -73,6 +87,7 @@ public class ZoneInfoCompiler {
      * where possible options include:
      *   -src &lt;directory&gt;    Specify where to read source files
      *   -dst &lt;directory&gt;    Specify where to write generated files
+     *   -verbose            Output verbosely (default false)
      * </pre>
      */
     public static void main(String[] args) throws Exception {
@@ -83,6 +98,7 @@ public class ZoneInfoCompiler {
 
         File inputDir = null;
         File outputDir = null;
+        boolean verbose = false;
 
         int i;
         for (i=0; i<args.length; i++) {
@@ -91,6 +107,8 @@ public class ZoneInfoCompiler {
                     inputDir = new File(args[++i]);
                 } else if ("-dst".equals(args[i])) {
                     outputDir = new File(args[++i]);
+                } else if ("-verbose".equals(args[i])) {
+                    verbose = true;
                 } else if ("-?".equals(args[i])) {
                     printUsage();
                     return;
@@ -113,6 +131,7 @@ public class ZoneInfoCompiler {
             sources[j] = inputDir == null ? new File(args[i]) : new File(inputDir, args[i]);
         }
 
+        cVerbose.set(verbose);
         ZoneInfoCompiler zic = new ZoneInfoCompiler();
         zic.compile(outputDir, sources);
     }
@@ -122,6 +141,7 @@ public class ZoneInfoCompiler {
         System.out.println("where possible options include:");
         System.out.println("  -src <directory>    Specify where to read source files");
         System.out.println("  -dst <directory>    Specify where to write generated files");
+        System.out.println("  -verbose            Output verbosely (default false)");
     }
 
     static DateTimeOfYear getStartOfYear() {
@@ -363,6 +383,7 @@ public class ZoneInfoCompiler {
 
         Map<String, DateTimeZone> map = new TreeMap<String, DateTimeZone>();
 
+        System.out.println("Writing zoneinfo files");
         for (int i=0; i<iZones.size(); i++) {
             Zone zone = iZones.get(i);
             DateTimeZoneBuilder builder = new DateTimeZoneBuilder();
@@ -372,7 +393,9 @@ public class ZoneInfoCompiler {
             if (test(tz.getID(), tz)) {
                 map.put(tz.getID(), tz);
                 if (outputDir != null) {
-                    System.out.println("Writing " + tz.getID());
+                    if (ZoneInfoCompiler.verbose()) {
+                        System.out.println("Writing " + tz.getID());
+                    }
                     File file = new File(outputDir, tz.getID());
                     if (!file.getParentFile().exists()) {
                         file.getParentFile().mkdirs();

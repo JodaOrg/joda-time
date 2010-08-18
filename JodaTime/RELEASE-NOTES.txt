@@ -75,6 +75,8 @@ Enhancements since 1.6
 
 - DateTimeFormatter convenience methods taking an Appendable [2607923]
 
+- Reduce logging from ZoneInfoCompiler by adding a verbose flag
+
 
 Compatibility with 1.6
 ----------------------

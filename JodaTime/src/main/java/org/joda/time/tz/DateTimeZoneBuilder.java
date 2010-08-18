@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -1440,9 +1440,11 @@ public class DateTimeZoneBuilder {
                         curNameKey.equals(zoneNameData[2]) &&
                         curNameKey.equals(zoneNameData[4])) {
                     
-                    System.out.println("Fixing duplicate name key - " + nextNameKey);
-                    System.out.println("     - " + new DateTime(trans[i], chrono) +
-                                       " - " + new DateTime(trans[i + 1], chrono));
+                    if (ZoneInfoCompiler.verbose()) {
+                        System.out.println("Fixing duplicate name key - " + nextNameKey);
+                        System.out.println("     - " + new DateTime(trans[i], chrono) +
+                                           " - " + new DateTime(trans[i + 1], chrono));
+                    }
                     if (curOffset > nextOffset) {
                         nameKeys[i] = (curNameKey + "-Summer").intern();
                     } else if (curOffset < nextOffset) {
@@ -1455,8 +1457,10 @@ public class DateTimeZoneBuilder {
             if (tailZone != null) {
                 if (tailZone.iStartRecurrence.getNameKey()
                     .equals(tailZone.iEndRecurrence.getNameKey())) {
-                    System.out.println("Fixing duplicate recurrent name key - " +
-                                       tailZone.iStartRecurrence.getNameKey());
+                    if (ZoneInfoCompiler.verbose()) {
+                        System.out.println("Fixing duplicate recurrent name key - " +
+                                           tailZone.iStartRecurrence.getNameKey());
+                    }
                     if (tailZone.iStartRecurrence.getSaveMillis() > 0) {
                         tailZone = new DSTZone(
                             tailZone.getID(),

@@ -434,7 +434,7 @@ public final class MonthDay
      * This method is typically used to add multiple copies of complex
      * period instances. Adding one field is best achieved using methods
      * like {@link #withFieldAdded(DurationFieldType, int)}
-     * or {@link #plusYears(int)}.
+     * or {@link #plusMonths(int)}.
      * 
      * @param period  the period to add to this one, null means zero
      * @param scalar  the amount of times to add, such as -1 to subtract once
@@ -632,7 +632,7 @@ public final class MonthDay
      * Instead, this method returns a new instance with the value of
      * day of month changed.
      *
-     * @param dayOMonth  the day of month to set
+     * @param dayOfMonth  the day of month to set
      * @return a copy of this object with the field set, never null
      * @throws IllegalArgumentException if the value is invalid
      */

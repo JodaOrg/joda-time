@@ -693,6 +693,35 @@ public class TestLocalDate_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
+    public void testToDateTimeAtMidnight() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtMidnight();
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
+    }
+
+    //-----------------------------------------------------------------------
+    @SuppressWarnings("deprecation")
+    public void testToDateTimeAtMidnight_Zone() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtMidnight(TOKYO);
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_TOKYO), test);
+    }
+
+    @SuppressWarnings("deprecation")
+    public void testToDateTimeAtMidnight_nullZone() {
+        LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS);
+        
+        DateTime test = base.toDateTimeAtMidnight((DateTimeZone) null);
+        check(base, 2005, 6, 9);
+        assertEquals(new DateTime(2005, 6, 9, 0, 0, 0, 0, COPTIC_LONDON), test);
+    }
+
+    //-----------------------------------------------------------------------
     public void testToDateTimeAtCurrentTime() {
         LocalDate base = new LocalDate(2005, 6, 9, COPTIC_PARIS); // PARIS irrelevant
         DateTime dt = new DateTime(2004, 6, 9, 6, 7, 8, 9);

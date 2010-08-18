@@ -29,6 +29,7 @@ of restrictions. If the license causes you problems please contact the mailing l
 Enhancements since 1.6
 ----------------------
 - Move to Java 5, with generics
+  See compatability notes.
 
 - Add YearMonth, useful for credit card dates [1863090]
 
@@ -99,8 +100,6 @@ Deprecated methods removed:
 - Chronology.getCoptic()
 - Chronology.getCopticUTC()
 - Chronology.getCoptic(DateTimeZone)
-- LocalDate.toDateTimeAtMidnight()
-- LocalDate.toDateTimeAtMidnight(DateTimeZone)
 
 Apart from the removal of the deprecated methods above, everything else should be binary compatible.
 Testing has included clirr, javap and manual testing of old files with new code.
@@ -112,6 +111,10 @@ Your code will be source compatible if you extended AbstractInstant or AbstractD
 This very minor source compatability change was deemed to be the best balance of the various
 difficult options that generics offers.
 As mentioned above, erasure ensures that this source incompatibility is *not* a binary compatibility.
+
+Note that not all deprecated elements have been removed.
+Some methods and classes have been retained simply because the potential pain of binary compatability
+is greater than the gain of removing the deprecations.
 
 Serialization compatible - Yes
 

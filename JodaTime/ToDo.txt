@@ -6,6 +6,7 @@ For 2.1
 
 The TODO list for 2.1 has not been set yet.
 Some of the following are likely targets, as they are interesting ideas.
+However, JSR-310 is also ongoing and may be a better focus for new features.
 
 Join joda-interest.at.lists.sourceforge.net to help out!
 

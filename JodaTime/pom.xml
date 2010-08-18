@@ -129,6 +129,13 @@
           <include>org/joda/time/tz/data/**</include>
         </includes>
       </resource>
+      <resource>
+        <targetPath>.</targetPath>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>org/joda/time/format/*.properties</include>
+        </includes>
+      </resource>
     </resources>
     <plugins>
       <plugin>
@@ -181,14 +188,16 @@
             <phase>compile</phase>
             <configuration>
               <tasks>
-                <mkdir dir="${pom.build.outputDirectory}/org/joda/time/tz/data" />
+                <property name="tz.src" value="${pom.build.sourceDirectory}/org/joda/time/tz/src" />
+                <property name="tz.dst" value="${pom.build.outputDirectory}/org/joda/time/tz/data" />
+                <!--uptodate property="tz.build.notneeded" targetfile="${tz.dst}/ZoneInfoMap" >
+                  <srcfiles dir="${tz.src}" includes="**/*.*"/>
+                </uptodate-->
+                <mkdir dir="${tz.dst}" />
                 <java classname="org.joda.time.tz.ZoneInfoCompiler" fork="true" failonerror="true">
                   <classpath refid="maven.compile.classpath" />
-                  <!-- Override default provider since data directory doesn't exist yet -->
                   <sysproperty key="org.joda.time.DateTimeZone.Provider" value="org.joda.time.tz.UTCProvider" />
-                  <!-- Specify destination directory for compiled data files -->
-                  <arg line="-src ${pom.build.sourceDirectory}/org/joda/time/tz/src -dst ${pom.build.outputDirectory}/org/joda/time/tz/data" />
-                  <!-- Specify all the data files to compile -->
+                  <arg line="-src ${tz.src} -dst ${tz.dst}" />
                   <arg value="africa" />
                   <arg value="antarctica" />
                   <arg value="asia" />

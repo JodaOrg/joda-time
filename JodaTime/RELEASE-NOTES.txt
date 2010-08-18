@@ -119,7 +119,7 @@ is greater than the gain of removing the deprecations.
 Serialization compatible - Yes
 
 Data compatible - Yes, except
-  - DateTimeZone data updated to version 2010k
+  - DateTimeZone data updated to version 2010l
 
 Semantic compatible - Yes
 

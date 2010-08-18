@@ -25,6 +25,12 @@ package org.joda.time;
  * Methods in your application should be defined using <code>ReadableInstant</code>
  * as a parameter if the method only wants to read the instant without needing to know
  * the specific datetime fields.
+ * <p>
+ * The {@code compareTo} method is no longer defined in this class in version 2.0.
+ * Instead, the definition is simply inherited from the {@code Comparable} interface.
+ * This approach is necessary to preserve binary compatibility.
+ * The definition of the comparison is ascending order by millisecond instant.
+ * Implementors are recommended to extend {@code AbstractInstant} instead of this interface.
  *
  * @author Stephen Colebourne
  * @since 1.0
@@ -88,19 +94,20 @@ public interface ReadableInstant extends Comparable<ReadableInstant> {
     Instant toInstant();
 
     //-----------------------------------------------------------------------
-    /**
-     * Compares this object with the specified object for ascending
-     * millisecond instant order. This ordering is inconsistent with
-     * equals, as it ignores the Chronology.
-     * <p>
-     * All ReadableInstant instances are accepted.
-     *
-     * @param readableInstant  a readable instant to check against
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the object type is not supported
-     */
-    int compareTo(ReadableInstant readableInstant);
+    // Method is no longer defined here as that would break generic backwards compatibility
+//    /**
+//     * Compares this object with the specified object for ascending
+//     * millisecond instant order. This ordering is inconsistent with
+//     * equals, as it ignores the Chronology.
+//     * <p>
+//     * All ReadableInstant instances are accepted.
+//     *
+//     * @param readableInstant  a readable instant to check against
+//     * @return negative value if this is less, 0 if equal, or positive value if greater
+//     * @throws NullPointerException if the object is null
+//     * @throws ClassCastException if the object type is not supported
+//     */
+//    int compareTo(ReadableInstant readableInstant);
 
     //-----------------------------------------------------------------------
     /**

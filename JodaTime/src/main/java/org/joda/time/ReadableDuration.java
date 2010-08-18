@@ -23,6 +23,12 @@ package org.joda.time;
  * <p>
  * Methods that are passed a duration as a parameter will treat <code>null</code>
  * as a zero length duration.
+ * <p>
+ * The {@code compareTo} method is no longer defined in this class in version 2.0.
+ * Instead, the definition is simply inherited from the {@code Comparable} interface.
+ * This approach is necessary to preserve binary compatibility.
+ * The definition of the comparison is ascending order by millisecond duration.
+ * Implementors are recommended to extend {@code AbstractInstant} instead of this interface.
  *
  * @see ReadableInterval
  * @see ReadablePeriod
@@ -74,15 +80,16 @@ public interface ReadableDuration extends Comparable<ReadableDuration> {
     Period toPeriod();
 
     //-----------------------------------------------------------------------
-    /**
-     * Compares this duration with the specified duration based on length.
-     *
-     * @param obj  a duration to check against
-     * @return negative value if this is less, 0 if equal, or positive value if greater
-     * @throws NullPointerException if the object is null
-     * @throws ClassCastException if the given object is not supported
-     */
-    int compareTo(ReadableDuration obj);
+    // Method is no longer defined here as that would break generic backwards compatibility
+//    /**
+//     * Compares this duration with the specified duration based on length.
+//     *
+//     * @param obj  a duration to check against
+//     * @return negative value if this is less, 0 if equal, or positive value if greater
+//     * @throws NullPointerException if the object is null
+//     * @throws ClassCastException if the given object is not supported
+//     */
+//    int compareTo(ReadableDuration obj);
 
     /**
      * Is the length of this duration equal to the duration passed in.

@@ -74,7 +74,7 @@
   <property name="compile.debuglevel"      value="lines,source"/>
 
   <!-- Should Java compilations set the 'deprecation' compiler option? -->
-  <property name="compile.deprecation"     value="true"/>
+  <property name="compile.deprecation"     value="false"/>
 
   <!-- Should Java compilations set the 'optimize' compiler option? -->
   <property name="compile.optimize"        value="true"/>

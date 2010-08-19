@@ -8,6 +8,7 @@
     <fileSets>
         <fileSet>
             <includes>
+                <include>build.xml</include>
                 <include>checkstyle.xml</include>
                 <include>LICENSE.txt</include>
                 <include>NOTICE.txt</include>

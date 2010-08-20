@@ -64,6 +64,7 @@
     <menu name="Joda">
       <item name="Joda home" href="http://joda.sourceforge.net"/>
       <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
+      <item name="Convert" href="http://joda-convert.sourceforge.net/index.html"/>
       <item name="Money" href="http://joda-money.sourceforge.net/index.html"/>
       <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
     </menu>

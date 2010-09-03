@@ -143,6 +143,9 @@ Bug fixes since 1.6
 - DateTimeZone.convertLocalToUTC [2903029]
   Now handles date after last ever DST change
 
+- DateTimeZone.getDefault [3048468,3056104]
+  Handle missing user.timezone system property on Android that resulted in stack overflow
+
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
 

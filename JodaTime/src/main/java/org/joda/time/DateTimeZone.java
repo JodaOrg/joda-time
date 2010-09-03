@@ -129,7 +129,8 @@ public abstract class DateTimeZone implements Serializable {
                     DateTimeZone temp = null;
                     try {
                         try {
-                            temp = forID(System.getProperty("user.timezone"));
+                            String id = System.getProperty("user.timezone");
+                            temp = (id == null ? UTC : forID(id));  // null check avoids stack overflow
                         } catch (RuntimeException ex) {
                             // ignored
                         }

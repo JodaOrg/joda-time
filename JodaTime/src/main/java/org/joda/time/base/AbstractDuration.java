@@ -187,11 +187,15 @@ public abstract class AbstractDuration implements ReadableDuration {
         long millis = getMillis();
         StringBuffer buf = new StringBuffer();
         buf.append("PT");
-        FormatUtils.appendUnpaddedInteger(buf, millis / 1000);
-        long part = Math.abs(millis % 1000);
-        if (part > 0) {
-            buf.append('.');
-            FormatUtils.appendPaddedInteger(buf, part, 3);
+        boolean negative = (millis < 0);
+        FormatUtils.appendUnpaddedInteger(buf, millis);
+        while (buf.length() < (negative ? 7 : 6)) {
+            buf.insert(negative ? 3 : 2, "0");
+        }
+        if ((millis / 1000) * 1000 == millis) {
+            buf.setLength(buf.length() - 3);
+        } else {
+            buf.insert(buf.length() - 3, ".");
         }
         buf.append('S');
         return buf.toString();

@@ -38,7 +38,6 @@ public class TestDuration_Basics extends TestCase {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
-    private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     
     long y2002days = 365 + 365 + 366 + 365 + 365 + 365 + 366 + 365 + 365 + 365 + 
@@ -282,14 +281,15 @@ public class TestDuration_Basics extends TestCase {
         Duration test = new Duration(length);
         assertEquals("PT" + (length / 1000) + "." + (length % 1000) + "S", test.toString());
         
-        test = new Duration(0L);
-        assertEquals("PT0S", test.toString());
-        
-        test = new Duration(12345L);
-        assertEquals("PT12.345S", test.toString());
-        
-        test = new Duration(-12345L);
-        assertEquals("PT-12.345S", test.toString());
+        assertEquals("PT0S", new Duration(0L).toString());
+        assertEquals("PT10S", new Duration(10000L).toString());
+        assertEquals("PT1S", new Duration(1000L).toString());
+        assertEquals("PT12.345S", new Duration(12345L).toString());
+        assertEquals("PT-12.345S", new Duration(-12345L).toString());
+        assertEquals("PT-1.123S", new Duration(-1123L).toString());
+        assertEquals("PT-0.123S", new Duration(-123L).toString());
+        assertEquals("PT-0.012S", new Duration(-12L).toString());
+        assertEquals("PT-0.001S", new Duration(-1L).toString());
     }
 
     //-----------------------------------------------------------------------

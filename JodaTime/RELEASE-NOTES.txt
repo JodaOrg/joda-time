@@ -146,6 +146,9 @@ Bug fixes since 1.6
 - DateTimeZone.getDefault [3048468,3056104]
   Handle missing user.timezone system property on Android that resulted in stack overflow
 
+- Duration.toString
+  Fixed to work correctly for negative values
+
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
 

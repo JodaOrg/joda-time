@@ -34,8 +34,8 @@ of restrictions. If the license causes you problems please contact the mailing l
 ** http://joda-time.sourceforge.net/related.html **
 
 
-Compatibility with 1.6 and 1.6.1
---------------------------------
+Compatibility with 1.6.1
+------------------------
 Binary compatible - Yes
 
 Source compatible - Yes
@@ -56,6 +56,20 @@ Bug fixes since 1.6.1
 
 RELEASE NOTES for v1.6 to v1.6.1
 ================================
+
+Compatibility with 1.6
+----------------------
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+  - DateTimeZone data updated to version 2010k (2010l in v1.6.2)
+
+Semantic compatible - Yes
+
 
 Deprecations since 1.6
 ----------------------

@@ -22,6 +22,7 @@ of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 <p>
 The release notes for upgraders can be found here:
 <ul>
+<li><a href="upgradeto162.html">Version 1.6.1 to Version 1.6.2</a></li>
 <li><a href="upgradeto161.html">Version 1.6 to Version 1.6.1</a></li>
 <li><a href="upgradeto160.html">Version 1.5 to Version 1.6</a></li>
 <li><a href="upgradeto152.html">Version 1.5.1 to Version 1.5.2</a></li>

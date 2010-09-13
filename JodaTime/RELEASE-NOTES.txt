@@ -1,12 +1,12 @@
-Joda-Time version 1.6.1
+Joda-Time version 1.6.2
 -----------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
 
-This is a patch release for Joda-Time 1.6.
+This is a patch release for Joda-Time 1.6 and 1.6.1.
 This release only contains bug fixes.
-We recommend all users of 1.6 upgrade to 1.6.1.
+We recommend all users of 1.6 upgrade to 1.6.2.
 
 We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
 
@@ -19,8 +19,8 @@ of restrictions. If the license causes you problems please contact the mailing l
 ** http://joda-time.sourceforge.net/related.html **
 
 
-Compatibility with 1.6
-----------------------
+Compatibility with 1.6 and 1.6.1
+--------------------------------
 Binary compatible - Yes
 
 Source compatible - Yes
@@ -32,6 +32,15 @@ Data compatible - Yes, except
 
 Semantic compatible - Yes
 
+
+Bug fixes since 1.6.1
+---------------------
+- DateTimeZone.getDefault [3048468,3056104]
+  Handle missing user.timezone system property on Android that resulted in stack overflow
+
+
+RELEASE NOTES for v1.6 to v1.6.1
+================================
 
 Deprecations since 1.6
 ----------------------

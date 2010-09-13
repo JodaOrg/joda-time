@@ -117,6 +117,10 @@ public abstract class DateTimeZone implements Serializable {
     //-----------------------------------------------------------------------
     /**
      * Gets the default time zone.
+     * <p>
+     * The default time zone is derived from the system property {@code user.timezone}.
+     * If that is {@code null} or is not a valid identifier, then the value of the
+     * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.
      * 
      * @return the default datetime zone object
      */
@@ -129,7 +133,10 @@ public abstract class DateTimeZone implements Serializable {
                     DateTimeZone temp = null;
                     try {
                         try {
-                            temp = forID(System.getProperty("user.timezone"));
+                            String id = System.getProperty("user.timezone");
+                            if (id != null) {  // null check avoids stack overflow
+                                temp = forID(id);
+                            }
                         } catch (RuntimeException ex) {
                             // ignored
                         }
@@ -205,7 +212,7 @@ public abstract class DateTimeZone implements Serializable {
                 return fixedOffsetZone(id, offset);
             }
         }
-        throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
+        throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
     }
 
     /**
@@ -228,7 +235,7 @@ public abstract class DateTimeZone implements Serializable {
      * <p>
      * This factory is a convenient way of constructing zones with a fixed offset.
      * The minutes value is always positive and in the range 0 to 59.
-     * If constructed with the values (-2, 30), the resultiong zone is '-02:30'.
+     * If constructed with the values (-2, 30), the resulting zone is '-02:30'.
      * 
      * @param hoursOffset  the offset in hours from UTC
      * @param minutesOffset  the offset in minutes from UTC, must be between 0 and 59 inclusive
@@ -319,8 +326,7 @@ public abstract class DateTimeZone implements Serializable {
                 }
             }
         }
-
-        throw new IllegalArgumentException("The datetime zone id is not recognised: " + id);
+        throw new IllegalArgumentException("The datetime zone id '" + id + "' is not recognised");
     }
 
     //-----------------------------------------------------------------------

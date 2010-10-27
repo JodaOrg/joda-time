@@ -121,6 +121,9 @@ public abstract class DateTimeZone implements Serializable {
      * The default time zone is derived from the system property {@code user.timezone}.
      * If that is {@code null} or is not a valid identifier, then the value of the
      * JDK {@code TimeZone} default is converted. If that fails, {@code UTC} is used.
+     * <p>
+     * NOTE: If the {@code java.util.TimeZone} default is updated <i>after</i> calling this
+     * method, then the change will not be picked up here.
      * 
      * @return the default datetime zone object
      */
@@ -158,6 +161,8 @@ public abstract class DateTimeZone implements Serializable {
 
     /**
      * Sets the default time zone.
+     * <p>
+     * NOTE: Calling this method does <i>not</i> set the {@code java.util.TimeZone} default.
      * 
      * @param zone  the default datetime zone object, must not be null
      * @throws IllegalArgumentException if the zone is null

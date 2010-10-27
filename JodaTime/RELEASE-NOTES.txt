@@ -77,6 +77,8 @@ Enhancements since 1.6
 
 - Reduce logging from ZoneInfoCompiler by adding a verbose flag
 
+- Better Javadoc of DateTimeZone.default behaviour
+
 
 Compatibility with 1.6
 ----------------------

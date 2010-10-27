@@ -23,8 +23,8 @@ import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.joda.time.DateTimeZone;
 
@@ -132,7 +132,7 @@ public class ZoneInfoProvider implements Provider {
      * @param id  the id to load
      * @return the loaded zone
      */
-    public synchronized DateTimeZone getZone(String id) {
+    public DateTimeZone getZone(String id) {
         if (id == null) {
             return null;
         }
@@ -167,7 +167,7 @@ public class ZoneInfoProvider implements Provider {
      * 
      * @return the zone ids
      */
-    public synchronized Set<String> getAvailableIDs() {
+    public Set<String> getAvailableIDs() {
         // Return a copy of the keys rather than an umodifiable collection.
         // This prevents ConcurrentModificationExceptions from being thrown by
         // some JVMs if zones are opened while this set is iterated over.
@@ -249,7 +249,7 @@ public class ZoneInfoProvider implements Provider {
      * @return the map
      */
     private static Map<String, Object> loadZoneInfoMap(InputStream in) throws IOException {
-        Map<String, Object> map = new TreeMap<String, Object>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, Object> map = new ConcurrentHashMap<String, Object>();
         DataInputStream din = new DataInputStream(in);
         try {
             readZoneInfoMap(din, map);

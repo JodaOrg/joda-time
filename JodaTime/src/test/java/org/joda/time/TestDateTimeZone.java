@@ -221,6 +221,10 @@ public class TestDateTimeZone extends TestCase {
             fail();
         } catch (IllegalArgumentException ex) {}
         try {
+            DateTimeZone.forID("europe/london");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
             DateTimeZone.forID("Europe/UK");
             fail();
         } catch (IllegalArgumentException ex) {}

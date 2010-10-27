@@ -123,7 +123,8 @@ Serialization compatible - Yes
 Data compatible - Yes, except
   - DateTimeZone data updated to version 2010l
 
-Semantic compatible - Yes
+Semantic compatible - Yes, except
+Previously, DateTimeZone.forID matched time zone names case-insensitively, now it is case-sensitive
 
 
 Deprecations since 1.6
@@ -156,6 +157,9 @@ Bug fixes since 1.6
   Default time zone now lazily loaded
 
 - DateTimeUtils shared static variable now volatile [2986043]
+
+- DateTimeZone.forID(String) now case-sensitive
+  Previously, it was case-insensitive
 
 - Time zone compiler now handles 24:00 [2804258]
 

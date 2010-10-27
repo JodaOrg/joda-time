@@ -798,9 +798,11 @@ public class PeriodFormatterBuilder {
         int size = elementPairs.size();
         if (size >= 2 && elementPairs.get(0) instanceof Separator) {
             Separator sep = (Separator) elementPairs.get(0);
-            PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
-            sep = sep.finish(f.getPrinter(), f.getParser());
-            return new PeriodFormatter(sep, sep);
+            if (sep.iAfterParser == null && sep.iAfterPrinter == null) {
+                PeriodFormatter f = toFormatter(elementPairs.subList(2, size), notPrinter, notParser);
+                sep = sep.finish(f.getPrinter(), f.getParser());
+                return new PeriodFormatter(sep, sep);
+            }
         }
         Object[] comp = createComposite(elementPairs);
         if (notPrinter) {

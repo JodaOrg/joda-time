@@ -155,6 +155,9 @@ Bug fixes since 1.6
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
 
+- Period formatter builder append(PeriodFormatter) did not handle some case [2495455]
+  If the appended formatter contained a separator as the first element, it failed
+
 - Classloading CachedDateTimeZone could invalidate state [2935625]
   Default time zone now lazily loaded
 

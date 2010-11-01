@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.6 to 1.6.1</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.6 to version 2.0.
+<source>
+Joda-Time version 2.0
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the eighth release of Joda-Time.
+This release contains enhancements, bug fixes and a time zone update.
+
+We require JDK 1.5 or later as features such as generics are used.
+It may be possible to use retroweaver to compile this under an earlier JDK but we haven't tried.
+
+******************************************************************************
+Compatibility
+The change in major version indicates compatibility issues.
+If your code just _used_ Joda-Time and had no deprecation warnings then this
+release is fully compatible. Otherwise you need to read the detailed notes.
+******************************************************************************
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://joda-time.sourceforge.net/related.html **
+
+
+Enhancements since 1.6
+----------------------
+- Move to Java 5, with generics
+  See compatability notes.
+
+- Add YearMonth, useful for credit card dates [1863090]
+
+- Add MonthDay, useful for birth dates without year
+
+- System clock can now be controlled by applications
+  DateTimeUtils.MillisProvider is now public
+
+- Word based period formatters available in multiple languages [1252708]
+  PeriodFormat provides a resource bundle based language formatter
+  Currently supported (via online translators) are English, German, Dutch,
+  French, Spanish and Portuguese. Corrections and additional languages welcome.
+
+- Add static factory method millis() to Duration [2648777]
+  This checks for and returns the singleton value for ZERO
+
+- Add methods to Duration to get standard minutes, hours and days [2862884]
+
+- Support pluggable locale text and additional locales in JDK 6 [2690370]
+  Extra info accessed by reflection if JDK 6 used
+
+- Better error messages for invalid time zone ids [2781835]
+
+- Allow 'Z' and 'ZZ' in format patterns to parse 'Z' as '+00:00' [2827359]
+
+- Add DateTimeFormatter.withZoneUTC()
+  Provides easy way to set UTC, which is often required for parsing
+
+- Add DateTimeFormatter.parseLocalDate(), .parseLocalTime(), .parseLocalDateTime()
+  These parse the input string in the expected manner handing time zones and offsets.
+  For example, the LocalDate parse will parse any time or offset from the string, but
+  will completely ignore them when returning the actual LocalDate.
+
+- Add LocalDate.toDate() [2465359]
+- Add LocalDateTime.toDate()
+  This provides a direct conversion to JDK Date which handles DST and
+  time zone data differences
+
+- Cache hash code in LocalDate
+  Enhances performance
+
+- DateTime constructors without seconds/millis [1982629]
+
+- DateTimeFormatter convenience methods taking an Appendable [2607923]
+
+- Reduce logging from ZoneInfoCompiler by adding a verbose flag
+
+- Better Javadoc of DateTimeZone.default behaviour
+
+
+Compatibility with 1.6
+----------------------
+Binary compatible - Not fully, see below:
+Source compatible - Not fully, see below:
+
+Deprecated methods removed:
+- Chronology.getISO()
+- Chronology.getISOUTC()
+- Chronology.getISO(DateTimeZone)
+- Chronology.getGJ()
+- Chronology.getGJUTC()
+- Chronology.getGJ(DateTimeZone)
+- Chronology.getGregorian()
+- Chronology.getGregorianUTC()
+- Chronology.getGregorian(DateTimeZone)
+- Chronology.getJulian()
+- Chronology.getJulianUTC()
+- Chronology.getJulian(DateTimeZone)
+- Chronology.getBuddhist()
+- Chronology.getBuddhistUTC()
+- Chronology.getBuddhist(DateTimeZone)
+- Chronology.getCoptic()
+- Chronology.getCopticUTC()
+- Chronology.getCoptic(DateTimeZone)
+
+Apart from the removal of the deprecated methods above, everything else should be binary compatible.
+Testing has included clirr, javap and manual testing of old files with new code.
+If you find something that isn't binary compatible then please let us know, although it may be too late to fix it.
+
+Any direct implementations of ReadableInstant or ReadableDuration are not source compatible.
+This is because of the additional generics in Comparable.
+Your code will be source compatible if you extended AbstractInstant or AbstractDuration.
+This very minor source compatability change was deemed to be the best balance of the various
+difficult options that generics offers.
+As mentioned above, erasure ensures that this source incompatibility is *not* a binary compatibility.
+
+Note that not all deprecated elements have been removed.
+Some methods and classes have been retained simply because the potential pain of binary compatability
+is greater than the gain of removing the deprecations.
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+  - DateTimeZone data updated to version 2010o
+
+Semantic compatible - Yes, except
+Previously, DateTimeZone.forID matched time zone names case-insensitively, now it is case-sensitive
+
+
+Deprecations since 1.6
+----------------------
+- DateTimeFormatter.getChronolgy() [2783325]
+  Incorrect spelling - new method DateTimeFormatter.getChronology()
+
+
+Bug fixes since 1.6
+-------------------
+- LocalTime.fromDateFields()
+  Now handles times based on java.util.Date before 1970
+
+- LocalDate.toInterval() [2487417]
+  Now handles time zones which have no midnight at DST cutover
+
+- DateTimeZone.convertLocalToUTC [2903029]
+  Now handles date after last ever DST change
+
+- DateTimeZone.getDefault [3048468,3056104]
+  Handle missing user.timezone system property on Android that resulted in stack overflow
+
+- Duration.toString
+  Fixed to work correctly for negative values
+
+- Period formatting concurrency [2820871]
+  Fix possible concurrency hole in PeriodFormatBuilder.Separator
+
+- Period formatter builder append(PeriodFormatter) did not handle some case [2495455]
+  If the appended formatter contained a separator as the first element, it failed
+
+- Classloading CachedDateTimeZone could invalidate state [2935625]
+  Default time zone now lazily loaded
+
+- DateTimeUtils shared static variable now volatile [2986043]
+
+- DateTimeZone.forID(String) now case-sensitive
+  Previously, it was case-insensitive
+
+- Time zone compiler now handles 24:00 [2804258]
+
+- Time zone compiler now handles non-UTC better
+
+- Javadoc fix in Months [2721880]
+
+- Javadoc fix in PeriodFormatterBuilder [3100939]
+</source>
+</p>
+</section>
+
+</body>
+</document>

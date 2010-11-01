@@ -20,10 +20,6 @@ is used by XML. The Gregorian, Julian, Buddhist, Coptic, Ethiopic and Islamic sy
 are also included, and we welcome further additions. Supporting classes include
 time zone, duration, format and parsing.
 </p>
-<!--p style="color:red; margin-left:20px;">
-JSR 310 has now been launched. It aims to build upon Joda-Time and include it in the JDK.
-<a href="https://jsr-310.dev.java.net/" class="externalLink" title="External Link">More information</a>.
-</p-->
 <p>
 As a flavour of Joda-Time, here's some example code:
 <source>
@@ -58,7 +54,7 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/org/joda/time/Date
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 1.6.1 was released on 2010-08-08 -
+Version 2.0 was released on 2010-11-03 -
 <a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Download now</a>
 </p>
 </section>
@@ -143,16 +139,22 @@ Various documentation is available:
 
 <section name="Releases">
 <p>
-<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 1.6.1</a>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 2.0</a>
 is the current latest release.
-This release is considered stable and worthy of the 1.x tag.
-It has extensive testing suites and has been used in production.
-We now recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+This release is considered stable and worthy of the 2.x tag.
+It has extensive testing suites and has been used in production at many companies.
 </p>
 <p>
-We will support the 1.x product line using standard Java mechanisms.
-The main public API will remain backwards compatible for both source and binary.
-The version number will change to 2.0 to indicate a change in compatibility.
+Version 2.0 is essentially compatible with version 1.x.
+Key changes include the use of JDK 1.5 or later, generics, and the removal of some (but not all)
+deprecated methods. See the <a href="upgrade200.html">upgrade notes</a>.
+Applications should be able to drop version 2.0 in place of an earlier version without any problems
+providing they are using JDK 1.5 or later and are not using one of the deprecated methods.
+</p>
+<p>
+We will support the 2.x product line using standard Java mechanisms.
+The main public API will remain backwards compatible for both source and binary in the 2.x stream.
+The version number will change to 3.0 to indicate a significant change in compatibility.
 </p>
 </section>
 
@@ -164,9 +166,6 @@ Support on bugs, library usage or enhancement requests is available via:
 <li>the joda-interest <a href="mail-lists.html">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
 <li>the joda-time sourceforge <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forum</a>.</li>
 </ul>
-<p>
-Alternatively, you can contact the project lead, Stephen Colebourne via scolebourne.at.users.sourceforge.net.
-</p>
 </section>
 </body>
 </document>

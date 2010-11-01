@@ -954,6 +954,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertTrue(Arrays.equals(test.getValues(), result.getValues()));
         assertTrue(Arrays.equals(test.getFields(), result.getFields()));
         assertEquals(test.getChronology(), result.getChronology());
+        assertTrue(result.isSupported(DateTimeFieldType.dayOfMonth()));  // check deserialization
     }
 
     //-----------------------------------------------------------------------

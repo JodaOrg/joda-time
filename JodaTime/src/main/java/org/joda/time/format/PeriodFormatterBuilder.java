@@ -49,7 +49,7 @@ import org.joda.time.ReadablePeriod;
  *     .appendYears()
  *     .appendSuffix(" year", " years")
  *     .appendSeparator(" and ")
- *     .printZeroRarely()
+ *     .printZeroRarelyLast()
  *     .appendMonths()
  *     .appendSuffix(" month", " months")
  *     .toFormatter();

@@ -172,6 +172,8 @@ Bug fixes since 1.6
 
 - Javadoc fix in Months [2721880]
 
+- Javadoc fix in PeriodFormatterBuilder [3100939]
+
 
 Feedback
 --------

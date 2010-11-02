@@ -65,6 +65,10 @@ An immutable implementation that represents a date without a time or time zone.<
 An immutable implementation that represents a time without a date or time zone.</li>
 <li><a href="api-release/org/joda/time/LocalDateTime.html">LocalDateTime</a> -
 An immutable implementation that represents a datetime without a time zone.</li>
+<li><a href="api-release/org/joda/time/YearMonth.html">YearMonth</a> -
+An immutable implementation that represents a year and month, useful for credit card expiry dates.</li>
+<li><a href="api-release/org/joda/time/MonthDay.html">MonthDay</a> -
+An immutable implementation that represents a month and day, useful for birthdays without years.</li>
 <li><a href="api-release/org/joda/time/Partial.html">Partial</a> -
 An immutable implementation that can store any combination of datetime fields.
 For example, using this class you could create a YearMonth or DayOfWeekDayOfMonth partial.</li>

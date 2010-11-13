@@ -776,7 +776,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Parses a datetime from the given text, returning a new DateTime.
+     * Parses a date-time from the given text, returning a new DateTime.
      * <p>
      * The parse will use the zone and chronology specified on this formatter.
      * <p>
@@ -787,8 +787,8 @@ public class DateTimeFormatter {
      * Otherwise the resulting DateTime will have the zone of this formatter,
      * but the parsed zone may have caused the time to be adjusted.
      *
-     * @param text  the text to parse
-     * @return parsed value in a DateTime object
+     * @param text  the text to parse, not null
+     * @return the parsed date-time, never null
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
      */
@@ -815,7 +815,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Parses a datetime from the given text, returning a new MutableDateTime.
+     * Parses a date-time from the given text, returning a new MutableDateTime.
      * <p>
      * The parse will use the zone and chronology specified on this formatter.
      * <p>
@@ -826,8 +826,8 @@ public class DateTimeFormatter {
      * Otherwise the resulting DateTime will have the zone of this formatter,
      * but the parsed zone may have caused the time to be adjusted.
      *
-     * @param text  the text to parse
-     * @return parsed value in a MutableDateTime object
+     * @param text  the text to parse, not null
+     * @return the parsed date-time, never null
      * @throws UnsupportedOperationException if parsing is not supported
      * @throws IllegalArgumentException if the text to parse is invalid
      */

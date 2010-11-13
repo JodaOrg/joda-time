@@ -23,6 +23,7 @@ import java.util.Locale;
 
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -73,7 +74,30 @@ public final class DateMidnight
     /** Serialization lock */
     private static final long serialVersionUID = 156371964018738L;
 
-    // Constructors
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code DateMidnight} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#dateParser()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static DateMidnight parse(String str) {
+        return parse(str, ISODateTimeFormat.dateParser());
+    }
+
+    /**
+     * Parses a {@code DateMidnight} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static DateMidnight parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseDateTime(str).toDateMidnight();
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Constructs an instance set to the current system millisecond time

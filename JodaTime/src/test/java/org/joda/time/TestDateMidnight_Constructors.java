@@ -25,6 +25,7 @@ import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.MockZeroNullIntegerConverter;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  * This class is a Junit unit test for DateMidnight.
@@ -114,6 +115,16 @@ public class TestDateMidnight_Constructors extends TestCase {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW_UTC).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1_UTC).toString());
         assertEquals("2003-05-06T14:28:00.000Z", new Instant(TEST_TIME2_UTC).toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new DateMidnight(2010, 6, 30, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010-06-30"));
+        assertEquals(new DateMidnight(2010, 1, 2, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010-002"));
+    }
+
+    public void testParse_formatter() throws Throwable {
+        assertEquals(new DateMidnight(2010, 6, 30, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010--30 06", DateTimeFormat.forPattern("yyyy--dd MM")));
     }
 
     //-----------------------------------------------------------------------

@@ -31,6 +31,7 @@ import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PartialConverter;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -101,6 +102,30 @@ public final class LocalTime
     private long iLocalMillis;
     /** The chronology to use, in UTC */
     private Chronology iChronology;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code LocalTime} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#localTimeParser()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static LocalTime parse(String str) {
+        return parse(str, ISODateTimeFormat.localTimeParser());
+    }
+
+    /**
+     * Parses a {@code LocalTime} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static LocalTime parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseLocalTime(str);
+    }
 
     //-----------------------------------------------------------------------
     /**

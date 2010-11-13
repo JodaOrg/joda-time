@@ -24,6 +24,8 @@ import junit.framework.TestSuite;
 
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for YearMonth.
@@ -75,6 +77,17 @@ public class TestYearMonth_Constructors extends TestCase {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new YearMonth(2010, 6), YearMonth.parse("2010-06-30"));
+        assertEquals(new YearMonth(2010, 1), YearMonth.parse("2010-002"));
+    }
+
+    public void testParse_formatter() throws Throwable {
+        DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--MM").withChronology(ISOChronology.getInstance(PARIS));
+        assertEquals(new YearMonth(2010, 6), YearMonth.parse("2010--06", f));
     }
 
     //-----------------------------------------------------------------------

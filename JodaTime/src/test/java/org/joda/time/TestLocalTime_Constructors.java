@@ -26,6 +26,8 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for LocalTime.
@@ -104,6 +106,17 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(0, test.getMinuteOfHour());
         assertEquals(0, test.getSecondOfMinute());
         assertEquals(0, test.getMillisOfSecond());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new LocalTime(1, 20), LocalTime.parse("01:20"));
+        assertEquals(new LocalTime(14, 50, 30, 432), LocalTime.parse("14:50:30.432"));
+    }
+
+    public void testParse_formatter() throws Throwable {
+        DateTimeFormatter f = DateTimeFormat.forPattern("HH mm").withChronology(ISOChronology.getInstance(PARIS));
+        assertEquals(new LocalTime(13, 30), LocalTime.parse("13 30", f));
     }
 
     //-----------------------------------------------------------------------

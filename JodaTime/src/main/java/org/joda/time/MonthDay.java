@@ -27,6 +27,7 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractPartialFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -80,6 +81,31 @@ public final class MonthDay
     public static final int MONTH_OF_YEAR = 0;
     /** The index of the day field in the field array */
     public static final int DAY_OF_MONTH = 1;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code MonthDay} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#localDateParser()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static MonthDay parse(String str) {
+        return parse(str, ISODateTimeFormat.localDateParser());
+    }
+
+    /**
+     * Parses a {@code MonthDay} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static MonthDay parse(String str, DateTimeFormatter formatter) {
+        LocalDate date = formatter.parseLocalDate(str);
+        return new MonthDay(date.getMonthOfYear(), date.getDayOfMonth());
+    }
 
     //-----------------------------------------------------------------------
     /**

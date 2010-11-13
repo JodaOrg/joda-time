@@ -24,6 +24,8 @@ import junit.framework.TestSuite;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.MockZeroNullIntegerConverter;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for Instant.
@@ -81,6 +83,17 @@ public class TestInstant_Constructors extends TestCase {
         java.util.TimeZone.setDefault(zone.toTimeZone());
         Locale.setDefault(locale);
         zone = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new DateTime(2010, 6, 30, 0, 20, ISOChronology.getInstance(LONDON)).toInstant(), Instant.parse("2010-06-30T01:20+02:00"));
+        assertEquals(new DateTime(2010, 1, 2, 14, 50, ISOChronology.getInstance(LONDON)).toInstant(), Instant.parse("2010-002T14:50"));
+    }
+
+    public void testParse_formatter() throws Throwable {
+        DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--dd MM HH").withChronology(ISOChronology.getInstance(PARIS));
+        assertEquals(new DateTime(2010, 6, 30, 13, 0, ISOChronology.getInstance(PARIS)).toInstant(), Instant.parse("2010--30 06 13", f));
     }
 
     //-----------------------------------------------------------------------

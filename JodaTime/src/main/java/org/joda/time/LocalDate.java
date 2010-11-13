@@ -33,6 +33,7 @@ import org.joda.time.convert.PartialConverter;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -107,6 +108,30 @@ public final class LocalDate
     private Chronology iChronology;
     /** The cached hash code. */
     private transient volatile int iHash;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code LocalDate} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#localDateParser()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static LocalDate parse(String str) {
+        return parse(str, ISODateTimeFormat.localDateParser());
+    }
+
+    /**
+     * Parses a {@code LocalDate} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static LocalDate parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseLocalDate(str);
+    }
 
     //-----------------------------------------------------------------------
     /**

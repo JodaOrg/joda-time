@@ -43,6 +43,10 @@ Enhancements since 1.6
   Currently supported (via online translators) are English, German, Dutch,
   French, Spanish and Portuguese. Corrections and additional languages welcome.
 
+- Static parse() methods available on all major types
+  These allow the formatter to be controlled
+  They do not always parse the same formats as the constructor taking an object
+
 - Add static factory method millis() to Duration [2648777]
   This checks for and returns the singleton value for ZERO
 

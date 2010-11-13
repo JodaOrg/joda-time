@@ -25,6 +25,7 @@ import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
 import org.joda.time.field.FieldUtils;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -90,6 +91,30 @@ public class MutableDateTime
     private DateTimeField iRoundingField;
     /** The mode of rounding */
     private int iRoundingMode;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code MutableDateTime} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static MutableDateTime parse(String str) {
+        return parse(str, ISODateTimeFormat.dateTimeParser());
+    }
+
+    /**
+     * Parses a {@code MutableDateTime} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static MutableDateTime parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseDateTime(str).toMutableDateTime();
+    }
 
     //-----------------------------------------------------------------------
     /**

@@ -24,6 +24,7 @@ import java.util.Locale;
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -74,6 +75,30 @@ public final class DateTime
 
     /** Serialization lock */
     private static final long serialVersionUID = -5171125899451703815L;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code DateTime} from the specified string.
+     * <p>
+     * This uses {@link ISODateTimeFormat#dateTimeParser()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static DateTime parse(String str) {
+        return parse(str, ISODateTimeFormat.dateTimeParser());
+    }
+
+    /**
+     * Parses a {@code DateTime} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static DateTime parse(String str, DateTimeFormatter formatter) {
+        return formatter.parseDateTime(str);
+    }
 
     //-----------------------------------------------------------------------
     /**

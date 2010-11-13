@@ -25,6 +25,8 @@ import junit.framework.TestSuite;
 import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 /**
  * This class is a Junit unit test for LocalDate.
@@ -78,6 +80,17 @@ public class TestLocalDate_Constructors extends TestCase {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new LocalDate(2010, 6, 30), LocalDate.parse("2010-06-30"));
+        assertEquals(new LocalDate(2010, 1, 2), LocalDate.parse("2010-002"));
+    }
+
+    public void testParse_formatter() throws Throwable {
+        DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--dd MM").withChronology(ISOChronology.getInstance(PARIS));
+        assertEquals(new LocalDate(2010, 6, 30), LocalDate.parse("2010--30 06", f));
     }
 
     //-----------------------------------------------------------------------

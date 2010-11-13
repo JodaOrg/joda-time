@@ -239,27 +239,6 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(12, test.getMonthOfYear());
     }
 
-    public void testConstructor_ObjectString2() throws Throwable {
-        YearMonth test = new YearMonth("1972-12-01T+14:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(1972, test.getYear());
-        assertEquals(11, test.getMonthOfYear());  // timezone
-    }
-
-    public void testConstructor_ObjectString3() throws Throwable {
-        YearMonth test = new YearMonth("1972-12-03T10:20:30.040");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(1972, test.getYear());
-        assertEquals(12, test.getMonthOfYear());
-    }
-
-    public void testConstructor_ObjectString4() throws Throwable {
-        YearMonth test = new YearMonth("1972-12-01T10:20:30.040+14:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(1972, test.getYear());
-        assertEquals(11, test.getMonthOfYear());  // timezone
-    }
-
     public void testConstructor_ObjectString5() throws Throwable {
         YearMonth test = new YearMonth("10");
         assertEquals(ISO_UTC, test.getChronology());

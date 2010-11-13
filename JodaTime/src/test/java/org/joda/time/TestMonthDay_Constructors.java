@@ -237,27 +237,6 @@ public class TestMonthDay_Constructors extends TestCase {
         assertEquals(1, test.getDayOfMonth());
     }
 
-    public void testConstructor_ObjectString2() throws Throwable {
-        MonthDay test = new MonthDay("1972-12-01T+14:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(11, test.getMonthOfYear());  // timezone
-        assertEquals(30, test.getDayOfMonth());
-    }
-
-    public void testConstructor_ObjectString3() throws Throwable {
-        MonthDay test = new MonthDay("1972-12-03T10:20:30.040");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(12, test.getMonthOfYear());
-        assertEquals(3, test.getDayOfMonth());
-    }
-
-    public void testConstructor_ObjectString4() throws Throwable {
-        MonthDay test = new MonthDay("1972-12-01T10:20:30.040+14:00");
-        assertEquals(ISO_UTC, test.getChronology());
-        assertEquals(11, test.getMonthOfYear());  // timezone
-        assertEquals(30, test.getDayOfMonth());
-    }
-
     public void testConstructor_ObjectString5() throws Throwable {
         MonthDay test = new MonthDay("10");
         assertEquals(ISO_UTC, test.getChronology());

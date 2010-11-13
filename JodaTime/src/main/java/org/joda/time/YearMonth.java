@@ -200,7 +200,7 @@ public final class YearMonth
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
+     * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * <p>
      * The chronology used will be derived from the object, defaulting to ISO.
      *
@@ -208,7 +208,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonth(Object instant) {
-        super(instant, null, ISODateTimeFormat.dateOptionalTimeParser());
+        super(instant, null, ISODateTimeFormat.localDateParser());
     }
 
     /**
@@ -218,7 +218,7 @@ public final class YearMonth
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and
      * include ReadableInstant, String, Calendar and Date.
-     * The String formats are described by {@link ISODateTimeFormat#dateOptionalTimeParser()}.
+     * The String formats are described by {@link ISODateTimeFormat#localDateParser()}.
      * <p>
      * The constructor uses the time zone of the chronology specified.
      * Once the constructor is complete, all further calculations are performed
@@ -230,7 +230,7 @@ public final class YearMonth
      * @throws IllegalArgumentException if the instant is invalid
      */
     public YearMonth(Object instant, Chronology chronology) {
-        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.dateOptionalTimeParser());
+        super(instant, DateTimeUtils.getChronology(chronology), ISODateTimeFormat.localDateParser());
     }
 
     /**

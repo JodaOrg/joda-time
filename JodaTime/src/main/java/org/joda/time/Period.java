@@ -21,6 +21,7 @@ import org.joda.time.base.BasePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.PeriodFormatter;
 
 /**
  * An immutable time period specifying a set of duration field values.
@@ -64,6 +65,30 @@ public final class Period
 
     /** Serialization version */
     private static final long serialVersionUID = 741052353876488155L;
+
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code Period} from the specified string.
+     * <p>
+     * This uses {@link ISOPeriodFormat#standard()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static Period parse(String str) {
+        return parse(str, ISOPeriodFormat.standard());
+    }
+
+    /**
+     * Parses a {@code Period} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static Period parse(String str, PeriodFormatter formatter) {
+        return formatter.parsePeriod(str);
+    }
 
     //-----------------------------------------------------------------------
     /**

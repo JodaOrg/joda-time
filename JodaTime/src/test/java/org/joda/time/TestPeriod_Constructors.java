@@ -99,6 +99,11 @@ public class TestPeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 890), Period.parse("P1Y2M3W4DT5H6M7.890S"));
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor1() throws Throwable {
         Period test = new Period();
         assertEquals(PeriodType.standard(), test.getPeriodType());

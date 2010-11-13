@@ -104,6 +104,12 @@ public class TestDuration_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new Duration(3200), Duration.parse("PT3.2S"));
+        assertEquals(new Duration(6000), Duration.parse("PT6S"));
+    }
+
+    //-----------------------------------------------------------------------
     public void testFactory_standardDays_long() throws Throwable {
         Duration test = Duration.standardDays(1);
         assertEquals(24L * 60L * 60L * 1000L, test.getMillis());

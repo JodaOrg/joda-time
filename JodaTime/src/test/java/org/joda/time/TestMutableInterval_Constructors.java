@@ -85,7 +85,7 @@ public class TestMutableInterval_Constructors extends TestCase {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
-        DateTimeZone.setDefault(LONDON);
+        DateTimeZone.setDefault(PARIS);
         TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
         Locale.setDefault(Locale.UK);
     }
@@ -105,6 +105,15 @@ public class TestMutableInterval_Constructors extends TestCase {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
         assertEquals("2003-05-06T14:28:00.000Z", new Instant(TEST_TIME2).toString());
+    }
+
+    //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(PARIS));
+        DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(PARIS));
+        assertEquals(new MutableInterval(start, end), MutableInterval.parse("2010-06-30T12:30/2010-07-01T14:30"));
+        assertEquals(new MutableInterval(start, end), MutableInterval.parse("2010-06-30T12:30/P1DT2H"));
+        assertEquals(new MutableInterval(start, end), MutableInterval.parse("P1DT2H/2010-07-01T14:30"));
     }
 
     //-----------------------------------------------------------------------
@@ -541,7 +550,7 @@ public class TestMutableInterval_Constructors extends TestCase {
                 interval.setChronology(chrono);
                 interval.setInterval(1234L, 5678L);
             }
-            public Class getSupportedType() {
+            public Class<?> getSupportedType() {
                 return String.class;
             }
         };
@@ -567,7 +576,7 @@ public class TestMutableInterval_Constructors extends TestCase {
                 interval.setChronology(chrono);
                 interval.setInterval(1234L, 5678L);
             }
-            public Class getSupportedType() {
+            public Class<?> getSupportedType() {
                 return ReadableInterval.class;
             }
         };

@@ -98,6 +98,11 @@ public class TestMutablePeriod_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        assertEquals(new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 890), MutablePeriod.parse("P1Y2M3W4DT5H6M7.890S"));
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Test constructor ()
      */

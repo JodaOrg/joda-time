@@ -46,6 +46,19 @@ public final class Duration
 
     //-----------------------------------------------------------------------
     /**
+     * Parses a {@code Duration} from the specified string.
+     * <p>
+     * This parses the format {@code PTa.bS}, as per {@link #toString()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static Duration parse(String str) {
+        return new Duration(str);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Create a duration with the specified number of days assuming that
      * there are the standard number of milliseconds in a day.
      * <p>

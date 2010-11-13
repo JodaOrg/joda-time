@@ -102,6 +102,15 @@ public class TestInterval_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testParse_noFormatter() throws Throwable {
+        DateTime start = new DateTime(2010, 6, 30, 12, 30, ISOChronology.getInstance(PARIS));
+        DateTime end = new DateTime(2010, 7, 1, 14, 30, ISOChronology.getInstance(PARIS));
+        assertEquals(new Interval(start, end), Interval.parse("2010-06-30T12:30/2010-07-01T14:30"));
+        assertEquals(new Interval(start, end), Interval.parse("2010-06-30T12:30/P1DT2H"));
+        assertEquals(new Interval(start, end), Interval.parse("P1DT2H/2010-07-01T14:30"));
+    }
+
+    //-----------------------------------------------------------------------
     public void testConstructor_long_long1() throws Throwable {
         DateTime dt1 = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime dt2 = new DateTime(2005, 7, 10, 1, 1, 1, 1);
@@ -565,7 +574,7 @@ public class TestInterval_Constructors extends TestCase {
                 interval.setChronology(chrono);
                 interval.setInterval(1234L, 5678L);
             }
-            public Class getSupportedType() {
+            public Class<?> getSupportedType() {
                 return String.class;
             }
         };
@@ -591,7 +600,7 @@ public class TestInterval_Constructors extends TestCase {
                 interval.setChronology(chrono);
                 interval.setInterval(1234L, 5678L);
             }
-            public Class getSupportedType() {
+            public Class<?> getSupportedType() {
                 return ReadableInterval.class;
             }
         };

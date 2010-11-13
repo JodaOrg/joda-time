@@ -20,6 +20,7 @@ import java.io.Serializable;
 import org.joda.time.base.BasePeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
+import org.joda.time.format.PeriodFormatter;
 
 /**
  * Standard mutable time period implementation.
@@ -58,6 +59,31 @@ public class MutablePeriod
     /** Serialization version */
     private static final long serialVersionUID = 3436451121567212165L;
 
+    //-----------------------------------------------------------------------
+    /**
+     * Parses a {@code MutablePeriod} from the specified string.
+     * <p>
+     * This uses {@link ISOPeriodFormat#standard()}.
+     * 
+     * @param str  the string to parse, not null
+     * @since 2.0
+     */
+    public static MutablePeriod parse(String str) {
+        return parse(str, ISOPeriodFormat.standard());
+    }
+
+    /**
+     * Parses a {@code MutablePeriod} from the specified string using a formatter.
+     * 
+     * @param str  the string to parse, not null
+     * @param formatter  the formatter to use, not null
+     * @since 2.0
+     */
+    public static MutablePeriod parse(String str, PeriodFormatter formatter) {
+        return formatter.parsePeriod(str).toMutablePeriod();
+    }
+
+    //-----------------------------------------------------------------------
     /**
      * Creates a zero-length period using the standard period type.
      */

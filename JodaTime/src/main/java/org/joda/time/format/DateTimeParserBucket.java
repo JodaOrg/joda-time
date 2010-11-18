@@ -24,6 +24,7 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
+import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
 
 /**
@@ -64,6 +65,8 @@ public class DateTimeParserBucket {
     private Locale iLocale;
     /** Used for parsing two-digit years. */
     private Integer iPivotYear;
+    /** Used for parsing month/day without year. */
+    private int iDefaultYear;
 
     private SavedField[] iSavedFields = new SavedField[8];
     private int iSavedFieldsCount;
@@ -72,18 +75,20 @@ public class DateTimeParserBucket {
     private Object iSavedState;
 
     /**
-     * Constucts a bucket.
+     * Constructs a bucket.
      * 
      * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
      * @param chrono  the chronology to use
      * @param locale  the locale to use
+     * @deprecated Use longer constructor
      */
+    @Deprecated
     public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale) {
-        this(instantLocal, chrono, locale, null);
+        this(instantLocal, chrono, locale, null, 2000);
     }
 
     /**
-     * Constucts a bucket, with the option of specifying the pivot year for
+     * Constructs a bucket, with the option of specifying the pivot year for
      * two-digit year parsing.
      *
      * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
@@ -91,8 +96,25 @@ public class DateTimeParserBucket {
      * @param locale  the locale to use
      * @param pivotYear  the pivot year to use when parsing two-digit years
      * @since 1.1
+     * @deprecated Use longer constructor
      */
+    @Deprecated
     public DateTimeParserBucket(long instantLocal, Chronology chrono, Locale locale, Integer pivotYear) {
+        this(instantLocal, chrono, locale, pivotYear, 2000);
+    }
+
+    /**
+     * Constructs a bucket, with the option of specifying the pivot year for
+     * two-digit year parsing.
+     *
+     * @param instantLocal  the initial millis from 1970-01-01T00:00:00, local time
+     * @param chrono  the chronology to use
+     * @param locale  the locale to use
+     * @param pivotYear  the pivot year to use when parsing two-digit years
+     * @since 2.0
+     */
+    public DateTimeParserBucket(long instantLocal, Chronology chrono,
+            Locale locale, Integer pivotYear, int defaultYear) {
         super();
         chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
@@ -100,6 +122,7 @@ public class DateTimeParserBucket {
         iLocale = (locale == null ? Locale.getDefault() : locale);
         setZone(chrono.getZone());
         iPivotYear = pivotYear;
+        iDefaultYear = defaultYear;
     }
 
     //-----------------------------------------------------------------------
@@ -162,9 +185,13 @@ public class DateTimeParserBucket {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns the pivot year used for parsing two-digit years.
+     * Returns the default year used when information is incomplete.
      * <p>
-     * If null is returned, this indicates default behaviour
+     * This is used for two-digit years and when the largest parsed field is
+     * months or days.
+     * <p>
+     * A null value for two-digit years means to use the value from DateTimeFormatterBuilder.
+     * A null value for month/day only parsing will cause the default of 2000 to be used.
      *
      * @return Integer value of the pivot year, null if not set
      * @since 1.1
@@ -309,6 +336,16 @@ public class DateTimeParserBucket {
             iSavedFieldsShared = false;
         }
         sort(savedFields, count);
+        if (count > 0) {
+            // alter base year for parsing if first field is month or day
+            DurationField months = DurationFieldType.months().getField(iChrono);
+            DurationField days = DurationFieldType.days().getField(iChrono);
+            DurationField first = savedFields[0].iField.getDurationField();
+            if (compareReverse(first, months) >= 0 && compareReverse(first, days) <= 0) {
+                saveField(DateTimeFieldType.year(), iDefaultYear);
+                return computeMillis(resetFields, text);
+            }
+        }
 
         long millis = iMillis;
         try {
@@ -451,18 +488,18 @@ public class DateTimeParserBucket {
             return compareReverse
                 (iField.getDurationField(), other.getDurationField());
         }
-        
-        private int compareReverse(DurationField a, DurationField b) {
-            if (a == null || !a.isSupported()) {
-                if (b == null || !b.isSupported()) {
-                    return 0;
-                }
-                return -1;
-            }
+    }
+
+    static int compareReverse(DurationField a, DurationField b) {
+        if (a == null || !a.isSupported()) {
             if (b == null || !b.isSupported()) {
-                return 1;
+                return 0;
             }
-            return -a.compareTo(b);
+            return -1;
         }
+        if (b == null || !b.isSupported()) {
+            return 1;
+        }
+        return -a.compareTo(b);
     }
 }

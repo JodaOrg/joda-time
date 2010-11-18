@@ -47,6 +47,11 @@ Enhancements since 1.6
   These allow the formatter to be controlled
   They do not always parse the same formats as the constructor taking an object
 
+- Parsing of month and day without year now handles February 29th
+  This is achieved by changing the default year from 1970 to 2000 when parsing
+  a month or day without a year. This behaviour can be controlled using the new
+  withDefaultYear() setting on the formatter (set to 1970 for the old behaviour).
+
 - Add static factory method millis() to Duration [2648777]
   This checks for and returns the singleton value for ZERO
 
@@ -131,6 +136,15 @@ Data compatible - Yes, except
 
 Semantic compatible - Yes, except
 Previously, DateTimeZone.forID matched time zone names case-insensitively, now it is case-sensitive
+
+Previously, parsing a string where only the month and/or day is present would use 1970 as
+the base year. This failed to handle February 29th. The new behaviour is as follows:
+If the parse includes a field with a duration between months and days inclusive and does not include
+any field larger than months, then the default year is changed to the value of getDefaultYear() on
+DateTimeFormatter, which is the year 2000 by default.
+In effect, this means that a pattern "ddMMM" which would previously have parsed to dates
+in 1970 will now parse to dates in 2000 unless further customised.
+The old behaviour can be simulated by calling withDefautYear(1970) on the formatter.
 
 
 Deprecations since 1.6

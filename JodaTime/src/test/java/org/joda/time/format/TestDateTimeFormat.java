@@ -971,7 +971,17 @@ public class TestDateTimeFormat extends TestCase {
         String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
         assertEquals("23 juin", str);
         DateTime date = dateFormatter.parseDateTime(str);
-        check(date, 1970, 6, 23);
+        check(date, 2000, 6, 23);
+    }
+
+    public void testFormatParse_textMonthAtEnd_France_withSpecifiedDefault() {
+        DateTimeFormatter dateFormatter = DateTimeFormat.forPattern("dd MMM")
+            .withLocale(Locale.FRANCE).withZoneUTC().withDefaultYear(1980);
+        
+        String str = new DateTime(2007, 6, 23, 0, 0, 0, 0, UTC).toString(dateFormatter);
+        assertEquals("23 juin", str);
+        DateTime date = dateFormatter.parseDateTime(str);
+        check(date, 1980, 6, 23);
     }
 
     public void testFormatParse_textMonthApr_Korean() {

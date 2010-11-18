@@ -33,6 +33,7 @@ import org.joda.time.LocalTime;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadablePartial;
 import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 
 /**
@@ -372,6 +373,55 @@ public class TestDateTimeFormatter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+    public void testParseLocalDate_yearOfEra() {
+        Chronology chrono = GJChronology.getInstanceUTC();
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("YYYY-MM GG")
+            .withChronology(chrono)
+            .withLocale(Locale.UK);
+        
+        LocalDate date = new LocalDate(2005, 10, 1, chrono);
+        assertEquals(date, f.parseLocalDate("2005-10 AD"));
+        assertEquals(date, f.parseLocalDate("2005-10 CE"));
+        
+        date = new LocalDate(-2005, 10, 1, chrono);
+        assertEquals(date, f.parseLocalDate("2005-10 BC"));
+        assertEquals(date, f.parseLocalDate("2005-10 BCE"));
+    }
+
+    public void testParseLocalDate_yearOfCentury() {
+        Chronology chrono = GJChronology.getInstanceUTC();
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("yy M d")
+            .withChronology(chrono)
+            .withLocale(Locale.UK)
+            .withPivotYear(2050);
+        
+        LocalDate date = new LocalDate(2050, 8, 4, chrono);
+        assertEquals(date, f.parseLocalDate("50 8 4"));
+    }
+
+    public void testParseLocalDate_monthDay_feb29() {
+        Chronology chrono = GJChronology.getInstanceUTC();
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("M d")
+            .withChronology(chrono)
+            .withLocale(Locale.UK);
+        
+        assertEquals(new LocalDate(2000, 2, 29, chrono), f.parseLocalDate("2 29"));
+    }
+
+    public void testParseLocalDate_monthDay_withDefaultYear_feb29() {
+        Chronology chrono = GJChronology.getInstanceUTC();
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("M d")
+            .withChronology(chrono)
+            .withLocale(Locale.UK)
+            .withDefaultYear(2012);
+        
+        assertEquals(new LocalDate(2012, 2, 29, chrono), f.parseLocalDate("2 29"));
+    }
+
     //-----------------------------------------------------------------------
     public void testParseLocalTime_simple() {
         assertEquals(new LocalTime(10, 20, 30), g.parseLocalTime("2004-06-09T10:20:30Z"));
@@ -396,6 +446,27 @@ public class TestDateTimeFormatter extends TestCase {
             g.parseDateTime("ABC");
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    public void testParseLocalDateTime_monthDay_feb29() {
+        Chronology chrono = GJChronology.getInstanceUTC();
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("M d H m")
+            .withChronology(chrono)
+            .withLocale(Locale.UK);
+        
+        assertEquals(new LocalDateTime(2000, 2, 29, 13, 40, 0, 0, chrono), f.parseLocalDateTime("2 29 13 40"));
+    }
+
+    public void testParseLocalDateTime_monthDay_withDefaultYear_feb29() {
+        Chronology chrono = GJChronology.getInstanceUTC();
+        DateTimeFormatter f = DateTimeFormat
+            .forPattern("M d H m")
+            .withChronology(chrono)
+            .withLocale(Locale.UK)
+            .withDefaultYear(2012);
+        
+        assertEquals(new LocalDateTime(2012, 2, 29, 13, 40, 0, 0, chrono), f.parseLocalDateTime("2 29 13 40"));
     }
 
     //-----------------------------------------------------------------------

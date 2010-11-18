@@ -90,8 +90,10 @@ public class DateTimeFormatter {
     private final Chronology iChrono;
     /** The zone to use as an override. */
     private final DateTimeZone iZone;
-    /* The pivot year to use for two-digit year parsing. */
+    /** The pivot year to use for two-digit year parsing. */
     private final Integer iPivotYear;
+    /** The default year for parsing month/day without year. */
+    private final int iDefaultYear;
 
     /**
      * Creates a new formatter, however you will normally use the factory
@@ -110,6 +112,7 @@ public class DateTimeFormatter {
         iChrono = null;
         iZone = null;
         iPivotYear = null;
+        iDefaultYear = 2000;
     }
 
     /**
@@ -119,7 +122,7 @@ public class DateTimeFormatter {
             DateTimePrinter printer, DateTimeParser parser,
             Locale locale, boolean offsetParsed,
             Chronology chrono, DateTimeZone zone,
-            Integer pivotYear) {
+            Integer pivotYear, int defaultYear) {
         super();
         iPrinter = printer;
         iParser = parser;
@@ -128,6 +131,7 @@ public class DateTimeFormatter {
         iChrono = chrono;
         iZone = zone;
         iPivotYear = pivotYear;
+        iDefaultYear = defaultYear;
     }
 
     //-----------------------------------------------------------------------
@@ -184,7 +188,7 @@ public class DateTimeFormatter {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, locale,
-                iOffsetParsed, iChrono, iZone, iPivotYear);
+                iOffsetParsed, iChrono, iZone, iPivotYear, iDefaultYear);
     }
 
     /**
@@ -217,7 +221,7 @@ public class DateTimeFormatter {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, iLocale,
-                true, iChrono, null, iPivotYear);
+                true, iChrono, null, iPivotYear, iDefaultYear);
     }
 
     /**
@@ -252,7 +256,7 @@ public class DateTimeFormatter {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, iLocale,
-                iOffsetParsed, chrono, iZone, iPivotYear);
+                iOffsetParsed, chrono, iZone, iPivotYear, iDefaultYear);
     }
 
     /**
@@ -315,7 +319,7 @@ public class DateTimeFormatter {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, iLocale,
-                false, iChrono, zone, iPivotYear);
+                false, iChrono, zone, iPivotYear, iDefaultYear);
     }
 
     /**
@@ -362,7 +366,7 @@ public class DateTimeFormatter {
             return this;
         }
         return new DateTimeFormatter(iPrinter, iParser, iLocale,
-                iOffsetParsed, iChrono, iZone, pivotYear);
+                iOffsetParsed, iChrono, iZone, pivotYear, iDefaultYear);
     }
 
     /**
@@ -406,6 +410,40 @@ public class DateTimeFormatter {
      */
     public Integer getPivotYear() {
       return iPivotYear;
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Returns a new formatter that will use the specified default year.
+     * <p>
+     * The default year is used when parsing in the case where there is a
+     * month or a day but not a year. Specifically, it is used if there is
+     * a field parsed with a duration between the length of a month and the
+     * length of a day inclusive.
+     * <p>
+     * This value is typically used to move the year from 1970 to a leap year
+     * to enable February 29th to be parsed.
+     * Unless customised, the year 2000 is used.
+     * <p>
+     * This setting has no effect when printing.
+     *
+     * @param defaultYear  the default year to use
+     * @return the new formatter, not null
+     * @since 2.0
+     */
+    public DateTimeFormatter withDefaultYear(int defaultYear) {
+        return new DateTimeFormatter(iPrinter, iParser, iLocale,
+                iOffsetParsed, iChrono, iZone, iPivotYear, defaultYear);
+    }
+
+    /**
+     * Gets the default year for parsing months and days.
+     *
+     * @return the default year for parsing months and days
+     * @since 2.0
+     */
+    public int getDefaultYear() {
+      return iDefaultYear;
     }
 
     //-----------------------------------------------------------------------
@@ -662,8 +700,8 @@ public class DateTimeFormatter {
         long instantLocal = instantMillis + chrono.getZone().getOffset(instantMillis);
         chrono = selectChronology(chrono);
         
-        DateTimeParserBucket bucket = new DateTimeParserBucket
-            (instantLocal, chrono, iLocale, iPivotYear);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(
+            instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis(false, text));
         if (iOffsetParsed && bucket.getZone() == null) {
@@ -691,7 +729,7 @@ public class DateTimeFormatter {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(iChrono);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -757,7 +795,7 @@ public class DateTimeFormatter {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(null).withUTC();  // always use UTC, avoiding DST gaps
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -796,7 +834,7 @@ public class DateTimeFormatter {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(null);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {
@@ -835,7 +873,7 @@ public class DateTimeFormatter {
         DateTimeParser parser = requireParser();
         
         Chronology chrono = selectChronology(null);
-        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear);
+        DateTimeParserBucket bucket = new DateTimeParserBucket(0, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, 0);
         if (newPos >= 0) {
             if (newPos >= text.length()) {

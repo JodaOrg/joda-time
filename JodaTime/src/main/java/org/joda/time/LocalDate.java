@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,6 +26,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.joda.convert.FromString;
+import org.joda.convert.ToString;
 import org.joda.time.base.BaseLocal;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
@@ -118,6 +120,7 @@ public final class LocalDate
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static LocalDate parse(String str) {
         return parse(str, ISODateTimeFormat.localDateParser());
     }
@@ -1716,6 +1719,7 @@ public final class LocalDate
      *
      * @return ISO8601 time formatted string.
      */
+    @ToString
     public String toString() {
         return ISODateTimeFormat.date().print(this);
     }

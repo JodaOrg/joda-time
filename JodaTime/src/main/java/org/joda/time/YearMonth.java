@@ -20,6 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.joda.convert.FromString;
+import org.joda.convert.ToString;
 import org.joda.time.base.BasePartial;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractPartialFieldProperty;
@@ -89,6 +91,7 @@ public final class YearMonth
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static YearMonth parse(String str) {
         return parse(str, ISODateTimeFormat.localDateParser());
     }
@@ -729,6 +732,7 @@ public final class YearMonth
      *
      * @return ISO8601 time formatted string.
      */
+    @ToString
     public String toString() {
         return ISODateTimeFormat.yearMonth().print(this);
     }

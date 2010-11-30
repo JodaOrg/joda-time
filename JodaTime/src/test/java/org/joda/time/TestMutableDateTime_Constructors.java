@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ public class TestMutableDateTime_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {
-        assertEquals(new MutableDateTime(2010, 6, 30, 0, 20, 0, 0, ISOChronology.getInstance(LONDON)), MutableDateTime.parse("2010-06-30T01:20+02:00"));
+        assertEquals(new MutableDateTime(2010, 6, 30, 1, 20, 0, 0, ISOChronology.getInstance(DateTimeZone.forOffsetHours(2))), MutableDateTime.parse("2010-06-30T01:20+02:00"));
         assertEquals(new MutableDateTime(2010, 1, 2, 14, 50, 0, 0, ISOChronology.getInstance(LONDON)), MutableDateTime.parse("2010-002T14:50"));
     }
 

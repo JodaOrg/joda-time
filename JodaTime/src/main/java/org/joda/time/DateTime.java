@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.joda.convert.FromString;
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
@@ -85,8 +86,9 @@ public final class DateTime
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static DateTime parse(String str) {
-        return parse(str, ISODateTimeFormat.dateTimeParser());
+        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
     }
 
     /**

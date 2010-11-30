@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005,2008 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.convert.FromString;
 import org.joda.time.base.BaseDuration;
 import org.joda.time.field.FieldUtils;
 
@@ -53,6 +54,7 @@ public final class Duration
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static Duration parse(String str) {
         return new Duration(str);
     }

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.joda.time;
 
 import java.io.Serializable;
 
+import org.joda.convert.FromString;
 import org.joda.time.base.BasePeriod;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.FieldUtils;
@@ -75,6 +76,7 @@ public final class Period
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static Period parse(String str) {
         return parse(str, ISOPeriodFormat.standard());
     }

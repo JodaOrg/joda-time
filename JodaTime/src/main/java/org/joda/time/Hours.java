@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package org.joda.time;
 
+import org.joda.convert.FromString;
+import org.joda.convert.ToString;
 import org.joda.time.base.BaseSingleFieldPeriod;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.ISOPeriodFormat;
@@ -195,6 +197,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      * @return the period in hours
      * @throws IllegalArgumentException if the string format is invalid
      */
+    @FromString
     public static Hours parseHours(String periodStr) {
         if (periodStr == null) {
             return Hours.ZERO;
@@ -479,6 +482,7 @@ public final class Hours extends BaseSingleFieldPeriod {
      *
      * @return the value as an ISO8601 string
      */
+    @ToString
     public String toString() {
         return "PT" + String.valueOf(getValue()) + "H";
     }

@@ -22,12 +22,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.convert.FromString;
+import org.joda.convert.ToString;
 import org.joda.time.base.BasePartial;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractPartialFieldProperty;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.DateTimeFormatterBuilder;
 import org.joda.time.format.ISODateTimeFormat;
 
 /**
@@ -77,6 +80,11 @@ public final class MonthDay
         DateTimeFieldType.monthOfYear(),
         DateTimeFieldType.dayOfMonth(), };
 
+    /** The singleton set of field types */
+    private static final DateTimeFormatter PARSER = new DateTimeFormatterBuilder()
+        .appendOptional(ISODateTimeFormat.localDateParser().getParser())
+        .appendOptional(DateTimeFormat.forPattern("--MM-dd").getParser()).toFormatter();
+
     /** The index of the monthOfYear field in the field array */
     public static final int MONTH_OF_YEAR = 0;
     /** The index of the day field in the field array */
@@ -86,13 +94,14 @@ public final class MonthDay
     /**
      * Parses a {@code MonthDay} from the specified string.
      * <p>
-     * This uses {@link ISODateTimeFormat#localDateParser()}.
+     * This uses {@link ISODateTimeFormat#localDateParser()} or the format {@code --MM-dd}.
      * 
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static MonthDay parse(String str) {
-        return parse(str, ISODateTimeFormat.localDateParser());
+        return parse(str, PARSER);
     }
 
     /**
@@ -706,6 +715,7 @@ public final class MonthDay
      *
      * @return ISO8601 time formatted string.
      */
+    @ToString
     public String toString() {
         List<DateTimeFieldType> fields = new ArrayList<DateTimeFieldType>();
         fields.add(DateTimeFieldType.monthOfYear());

@@ -79,6 +79,8 @@ public class TestMonthDay_Constructors extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {
+        assertEquals(new MonthDay(6, 30), MonthDay.parse("--06-30"));
+        assertEquals(new MonthDay(2, 29), MonthDay.parse("--02-29"));
         assertEquals(new MonthDay(6, 30), MonthDay.parse("2010-06-30"));
         assertEquals(new MonthDay(1, 2), MonthDay.parse("2010-002"));
     }

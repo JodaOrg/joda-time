@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.joda.time.base;
 
 import java.util.Date;
 
+import org.joda.convert.ToString;
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
@@ -418,6 +419,7 @@ public abstract class AbstractInstant implements ReadableInstant {
      * 
      * @return ISO8601 time formatted string.
      */
+    @ToString
     public String toString() {
         return ISODateTimeFormat.dateTime().print(this);
     }

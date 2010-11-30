@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.joda.time.base;
 
+import org.joda.convert.ToString;
 import org.joda.time.DurationFieldType;
 import org.joda.time.MutablePeriod;
 import org.joda.time.Period;
@@ -200,6 +201,7 @@ public abstract class AbstractPeriod implements ReadablePeriod {
      *
      * @return the value as an ISO8601 string
      */
+    @ToString
     public String toString() {
         return ISOPeriodFormat.standard().print(this);
     }

@@ -84,6 +84,9 @@ Enhancements since 1.6
 
 - DateTimeFormatter convenience methods taking an Appendable [2607923]
 
+- Add @FromString/@ToString annotations from joda-convert
+  This does NOT require the inclusion of joda-convert at runtime!
+
 - Reduce logging from ZoneInfoCompiler by adding a verbose flag
 
 - Better Javadoc of DateTimeZone.default behaviour

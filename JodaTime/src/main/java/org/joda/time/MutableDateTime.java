@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2010 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Locale;
 
+import org.joda.convert.FromString;
+import org.joda.convert.ToString;
 import org.joda.time.base.BaseDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractReadableInstantFieldProperty;
@@ -35,7 +37,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * This class uses a Chronology internally. The Chronology determines how the
  * millisecond instant value is converted into the date time fields.
  * The default Chronology is <code>ISOChronology</code> which is the agreed
- * international standard and compatable with the modern Gregorian calendar.
+ * international standard and compatible with the modern Gregorian calendar.
  * <p>
  * Each individual field can be accessed in two ways:
  * <ul>
@@ -49,7 +51,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * <li>set numeric value
  * <li>add to numeric value
  * <li>add to numeric value wrapping with the field
- * <li>get text vlaue
+ * <li>get text value
  * <li>get short text value
  * <li>set text value
  * <li>field maximum value
@@ -101,8 +103,9 @@ public class MutableDateTime
      * @param str  the string to parse, not null
      * @since 2.0
      */
+    @FromString
     public static MutableDateTime parse(String str) {
-        return parse(str, ISODateTimeFormat.dateTimeParser());
+        return parse(str, ISODateTimeFormat.dateTimeParser().withOffsetParsed());
     }
 
     /**
@@ -1170,6 +1173,7 @@ public class MutableDateTime
      * 
      * @return ISO8601 time formatted string.
      */
+    @ToString
     public String toString() {
         return ISODateTimeFormat.dateTime().print(this);
     }

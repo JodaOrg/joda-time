@@ -19,15 +19,17 @@ public class MockZone extends DateTimeZone {
 
     long transition;
     int winterOffset;
+    int sizeMillis;
 
-    public MockZone(long transition, int winterOffset) {
+    public MockZone(long transition, int winterOffset, int sizeSecs) {
         super("MockZone");
         this.transition = transition;
         this.winterOffset = winterOffset;
+        this.sizeMillis = sizeSecs * 1000;
     }
 
     public int getOffset(long instant) {
-        return (instant < transition ? winterOffset : winterOffset + 3600000);
+        return (instant < transition ? winterOffset : winterOffset + sizeMillis);
     }
 
     public int getStandardOffset(long instant) {

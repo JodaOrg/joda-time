@@ -68,7 +68,7 @@ public class TestLocalDate_Basics extends TestCase {
     /** Mock zone simulating Asia/Gaza cutover at midnight 2007-04-01 */
     private static long CUTOVER_GAZA = 1175378400000L;
     private static int OFFSET_GAZA = 7200000;  // +02:00
-    private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA);
+    private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA, 3600);
 
     private long TEST_TIME_NOW =
             (31L + 28L + 31L + 30L + 31L + 9L -1L) * DateTimeConstants.MILLIS_PER_DAY;

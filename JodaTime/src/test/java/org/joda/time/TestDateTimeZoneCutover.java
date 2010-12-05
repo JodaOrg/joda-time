@@ -18,6 +18,7 @@ package org.joda.time;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.tz.DateTimeZoneBuilder;
 
 /**
@@ -54,7 +55,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     /** Mock zone simulating Asia/Gaza cutover at midnight 2007-04-01 */
     private static long CUTOVER_GAZA = 1175378400000L;
     private static int OFFSET_GAZA = 7200000;  // +02:00
-    private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA);
+    private static final DateTimeZone MOCK_GAZA = new MockZone(CUTOVER_GAZA, OFFSET_GAZA, 3600);
 
     //-----------------------------------------------------------------------
     public void test_MockGazaIsCorrect() {
@@ -263,7 +264,7 @@ public class TestDateTimeZoneCutover extends TestCase {
     /** Mock zone simulating America/Grand_Turk cutover at midnight 2007-04-01 */
     private static long CUTOVER_TURK = 1175403600000L;
     private static int OFFSET_TURK = -18000000;  // -05:00
-    private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK);
+    private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK, 3600);
 
     //-----------------------------------------------------------------------
     public void test_MockTurkIsCorrect() {
@@ -1043,7 +1044,6 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2008-08-10", date.toString());
         
         DateTime dt = date.toDateTimeAtStartOfDay(zone);
-        System.out.println(dt);
         assertEquals("2008-08-10T00:00:00.000-03:00", dt.toString());
     }
 
@@ -1056,6 +1056,137 @@ public class TestDateTimeZoneCutover extends TestCase {
 //        DateTime dt = baseDate.toDateTimeAtMidnight(zone);
 //        assertEquals("2006-11-05T00:00:00.000-03:00", dt.toString());
 //    }
+
+    //-----------------------------------------------------------------------
+    private static final DateTimeZone ZONE_PARIS = DateTimeZone.forID("Europe/Paris");
+
+    public void testWithMinuteOfHourInDstChange_mockZone() {
+        DateTime cutover = new DateTime(2010, 10, 31, 1, 15, DateTimeZone.forOffsetHoursMinutes(0, 30));
+        assertEquals("2010-10-31T01:15:00.000+00:30", cutover.toString());
+        DateTimeZone halfHourZone = new MockZone(cutover.getMillis(), 3600000, -1800);
+        DateTime pre = new DateTime(2010, 10, 31, 1, 0, halfHourZone);
+        assertEquals("2010-10-31T01:00:00.000+01:00", pre.toString());
+        DateTime post = new DateTime(2010, 10, 31, 1, 59, halfHourZone);
+        assertEquals("2010-10-31T01:59:00.000+00:30", post.toString());
+        
+        DateTime testPre1 = pre.withMinuteOfHour(30);
+        assertEquals("2010-10-31T01:30:00.000+01:00", testPre1.toString());  // retain offset
+        DateTime testPre2 = pre.withMinuteOfHour(50);
+        assertEquals("2010-10-31T01:50:00.000+00:30", testPre2.toString());
+        
+        DateTime testPost1 = post.withMinuteOfHour(30);
+        assertEquals("2010-10-31T01:30:00.000+00:30", testPost1.toString());  // retain offset
+        DateTime testPost2 = post.withMinuteOfHour(10);
+        assertEquals("2010-10-31T01:10:00.000+01:00", testPost2.toString());
+    }
+
+    public void testWithHourOfDayInDstChange() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.withHourOfDay(2);
+        assertEquals("2010-10-31T02:30:10.123+02:00", test.toString());
+    }
+
+    public void testWithMinuteOfHourInDstChange() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.withMinuteOfHour(0);
+        assertEquals("2010-10-31T02:00:10.123+02:00", test.toString());
+    }
+
+    public void testWithSecondOfMinuteInDstChange() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.withSecondOfMinute(0);
+        assertEquals("2010-10-31T02:30:00.123+02:00", test.toString());
+    }
+
+    public void testWithMillisOfSecondInDstChange_Paris_summer() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.withMillisOfSecond(0);
+        assertEquals("2010-10-31T02:30:10.000+02:00", test.toString());
+    }
+
+    public void testWithMillisOfSecondInDstChange_Paris_winter() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+01:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+01:00", dateTime.toString());
+        DateTime test = dateTime.withMillisOfSecond(0);
+        assertEquals("2010-10-31T02:30:10.000+01:00", test.toString());
+    }
+
+    public void testWithMillisOfSecondInDstChange_NewYork_summer() {
+        DateTime dateTime = new DateTime("2007-11-04T01:30:00.123-04:00", ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.123-04:00", dateTime.toString());
+        DateTime test = dateTime.withMillisOfSecond(0);
+        assertEquals("2007-11-04T01:30:00.000-04:00", test.toString());
+    }
+
+    public void testWithMillisOfSecondInDstChange_NewYork_winter() {
+        DateTime dateTime = new DateTime("2007-11-04T01:30:00.123-05:00", ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.123-05:00", dateTime.toString());
+        DateTime test = dateTime.withMillisOfSecond(0);
+        assertEquals("2007-11-04T01:30:00.000-05:00", test.toString());
+    }
+
+    public void testPlusMinutesInDstChange() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.plusMinutes(1);
+        assertEquals("2010-10-31T02:31:10.123+02:00", test.toString());
+    }
+
+    public void testPlusSecondsInDstChange() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.plusSeconds(1);
+        assertEquals("2010-10-31T02:30:11.123+02:00", test.toString());
+    }
+
+    public void testPlusMillisInDstChange() {
+        DateTime dateTime = new DateTime("2010-10-31T02:30:10.123+02:00", ZONE_PARIS);
+        assertEquals("2010-10-31T02:30:10.123+02:00", dateTime.toString());
+        DateTime test = dateTime.plusMillis(1);
+        assertEquals("2010-10-31T02:30:10.124+02:00", test.toString());
+    }
+
+    public void testBug2182444_usCentral() {
+        Chronology chronUSCentral = GregorianChronology.getInstance(DateTimeZone.forID("US/Central"));
+        Chronology chronUTC = GregorianChronology.getInstance(DateTimeZone.UTC);
+        DateTime usCentralStandardInUTC = new DateTime(2008, 11, 2, 7, 0, 0, 0, chronUTC);
+        DateTime usCentralDaylightInUTC = new DateTime(2008, 11, 2, 6, 0, 0, 0, chronUTC);
+        assertTrue("Should be standard time", chronUSCentral.getZone().isStandardOffset(usCentralStandardInUTC.getMillis()));
+        assertFalse("Should be daylight time", chronUSCentral.getZone().isStandardOffset(usCentralDaylightInUTC.getMillis()));
+        
+        DateTime usCentralStandardInUSCentral = usCentralStandardInUTC.toDateTime(chronUSCentral);
+        DateTime usCentralDaylightInUSCentral = usCentralDaylightInUTC.toDateTime(chronUSCentral);
+        assertEquals(1, usCentralStandardInUSCentral.getHourOfDay());
+        assertEquals(usCentralStandardInUSCentral.getHourOfDay(), usCentralDaylightInUSCentral.getHourOfDay());
+        assertTrue(usCentralStandardInUSCentral.getMillis() != usCentralDaylightInUSCentral.getMillis());
+        assertEquals(usCentralStandardInUSCentral, usCentralStandardInUSCentral.withHourOfDay(1));
+        assertEquals(usCentralStandardInUSCentral.getMillis() + 3, usCentralStandardInUSCentral.withMillisOfSecond(3).getMillis());
+        assertEquals(usCentralDaylightInUSCentral, usCentralDaylightInUSCentral.withHourOfDay(1));
+        assertEquals(usCentralDaylightInUSCentral.getMillis() + 3, usCentralDaylightInUSCentral.withMillisOfSecond(3).getMillis());
+    }
+
+    public void testBug2182444_ausNSW() {
+        Chronology chronAusNSW = GregorianChronology.getInstance(DateTimeZone.forID("Australia/NSW"));
+        Chronology chronUTC = GregorianChronology.getInstance(DateTimeZone.UTC);
+        DateTime australiaNSWStandardInUTC = new DateTime(2008, 4, 5, 16, 0, 0, 0, chronUTC);
+        DateTime australiaNSWDaylightInUTC = new DateTime(2008, 4, 5, 15, 0, 0, 0, chronUTC);
+        assertTrue("Should be standard time", chronAusNSW.getZone().isStandardOffset(australiaNSWStandardInUTC.getMillis()));
+        assertFalse("Should be daylight time", chronAusNSW.getZone().isStandardOffset(australiaNSWDaylightInUTC.getMillis()));
+        
+        DateTime australiaNSWStandardInAustraliaNSW = australiaNSWStandardInUTC.toDateTime(chronAusNSW);
+        DateTime australiaNSWDaylightInAusraliaNSW = australiaNSWDaylightInUTC.toDateTime(chronAusNSW);
+        assertEquals(2, australiaNSWStandardInAustraliaNSW.getHourOfDay());
+        assertEquals(australiaNSWStandardInAustraliaNSW.getHourOfDay(), australiaNSWDaylightInAusraliaNSW.getHourOfDay());
+        assertTrue(australiaNSWStandardInAustraliaNSW.getMillis() != australiaNSWDaylightInAusraliaNSW.getMillis());
+        assertEquals(australiaNSWStandardInAustraliaNSW, australiaNSWStandardInAustraliaNSW.withHourOfDay(2));
+        assertEquals(australiaNSWStandardInAustraliaNSW.getMillis() + 3, australiaNSWStandardInAustraliaNSW.withMillisOfSecond(3).getMillis());
+        assertEquals(australiaNSWDaylightInAusraliaNSW, australiaNSWDaylightInAusraliaNSW.withHourOfDay(2));
+        assertEquals(australiaNSWDaylightInAusraliaNSW.getMillis() + 3, australiaNSWDaylightInAusraliaNSW.withMillisOfSecond(3).getMillis());
+    }
 
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------

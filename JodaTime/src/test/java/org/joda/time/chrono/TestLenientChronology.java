@@ -120,7 +120,7 @@ public class TestLenientChronology extends TestCase {
     /** Mock zone simulating America/Grand_Turk cutover at midnight 2007-04-01 */
     private static long CUTOVER_TURK = 1175403600000L;
     private static int OFFSET_TURK = -18000000;  // -05:00
-    private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK);
+    private static final DateTimeZone MOCK_TURK = new MockZone(CUTOVER_TURK, OFFSET_TURK, 3600);
 
     //-----------------------------------------------------------------------
     public void test_MockTurkIsCorrect() {

@@ -149,6 +149,9 @@ In effect, this means that a pattern "ddMMM" which would previously have parsed 
 in 1970 will now parse to dates in 2000 unless further customised.
 The old behaviour can be simulated by calling withDefautYear(1970) on the formatter.
 
+Previously, calling various methods during a daylight savings overlap would change the offset.
+Now, most methods (such as withMillis/withSeconds/withMinutes/...) will retain the offset wherever possible.
+
 
 Deprecations since 1.6
 ----------------------
@@ -163,6 +166,11 @@ Bug fixes since 1.6
 
 - LocalDate.toInterval() [2487417]
   Now handles time zones which have no midnight at DST cutover
+
+- DateTimeZone.convertLocalToUTC [3102760,2182444,2553453]
+  New method now retains the offset wherever possible during calculations
+  This affects higher methods like withHourOfDay/withMinuteOfHour/withSecondOfMinute/withMillisOfSecond
+  which now do not change offset when called within a DST overlap
 
 - DateTimeZone.convertLocalToUTC [2903029]
   Now handles date after last ever DST change

@@ -72,6 +72,6 @@ public class LenientDateTimeField extends DelegatedDateTimeField {
         long localInstant = iBase.getZone().convertUTCToLocal(instant);
         long difference = FieldUtils.safeSubtract(value, get(instant));
         localInstant = getType().getField(iBase.withUTC()).add(localInstant, difference);
-        return iBase.getZone().convertLocalToUTC(localInstant, false);
+        return iBase.getZone().convertLocalToUTC(localInstant, false, instant);
     }
 }

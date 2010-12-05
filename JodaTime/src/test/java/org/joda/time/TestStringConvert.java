@@ -113,12 +113,12 @@ public class TestStringConvert extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-//    public void testTimeZone() {
-//        DateTimeZone test = DateTimeZone.forID("Europe/Paris");
-//        String str = StringConvert.INSTANCE.convertToString(test);
-//        assertEquals("Europe/Paris", str);
-//        assertEquals(test, StringConvert.INSTANCE.convertFromString(DateTimeZone.class, str));
-//    }
+    public void testTimeZone() {
+        DateTimeZone test = DateTimeZone.forID("Europe/Paris");
+        String str = StringConvert.INSTANCE.convertToString(test);
+        assertEquals("Europe/Paris", str);
+        assertEquals(test, StringConvert.INSTANCE.convertFromString(DateTimeZone.class, str));
+    }
 
 //    public void testInterval() {
 //        DateTime a = new DateTime(2010, 6, 30, 2, 30, 50, 678, ISOChronology.getInstance(ZONE));

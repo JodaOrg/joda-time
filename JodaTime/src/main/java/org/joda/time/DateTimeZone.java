@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
+import org.joda.convert.FromString;
+import org.joda.convert.ToString;
 import org.joda.time.chrono.BaseChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -197,6 +199,7 @@ public abstract class DateTimeZone implements Serializable {
      * @return the DateTimeZone object for the ID
      * @throws IllegalArgumentException if the ID is not recognised
      */
+    @FromString
     public static DateTimeZone forID(String id) {
         if (id == null) {
             return getDefault();
@@ -697,6 +700,7 @@ public abstract class DateTimeZone implements Serializable {
      * 
      * @return the ID of this datetime zone
      */
+    @ToString
     public final String getID() {
         return iID;
     }

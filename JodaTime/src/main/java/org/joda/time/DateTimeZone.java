@@ -866,18 +866,22 @@ public abstract class DateTimeZone implements Serializable {
      * Input: 02:00  Output: 02:00<br />
      * Input: 02:30  Output: 02:30<br />
      * <p>
-     * NOTE: The behaviour of this method changed in v1.5, with the emphasis
-     * on returning a consistent result later along the time-line (shown above).
+     * During a DST overlap (where the local time is ambiguous) this method will return
+     * the earlier instant. The combination of these two rules is to always favour
+     * daylight (summer) time over standard (winter) time.
+     * <p>
+     * NOTE: Prior to v2.0, the DST overlap behaviour was not defined and varied by hemisphere.
+     * Prior to v1.5, the DST gap behaviour was also not defined.
      *
-     * @param instantLocal  the millisecond instant, relative to this time zone, to
-     * get the offset for
+     * @param instantLocal  the millisecond instant, relative to this time zone, to get the offset for
      * @return the millisecond offset to subtract from local time to get UTC time
      */
     public int getOffsetFromLocal(long instantLocal) {
         // get the offset at instantLocal (first estimate)
-        int offsetLocal = getOffset(instantLocal);
+        final int offsetLocal = getOffset(instantLocal);
         // adjust instantLocal using the estimate and recalc the offset
-        int offsetAdjusted = getOffset(instantLocal - offsetLocal);
+        final long instantAdjusted = instantLocal - offsetLocal;
+        final int offsetAdjusted = getOffset(instantAdjusted);
         // if the offsets differ, we must be near a DST boundary
         if (offsetLocal != offsetAdjusted) {
             // we need to ensure that time is always after the DST gap
@@ -886,10 +890,19 @@ public abstract class DateTimeZone implements Serializable {
                 // if we just return offsetAdjusted then the time is pushed
                 // back before the transition, whereas it should be
                 // on or after the transition
-                long nextLocal = nextTransition(instantLocal - offsetLocal);
+                long nextLocal = nextTransition(instantAdjusted);
                 long nextAdjusted = nextTransition(instantLocal - offsetAdjusted);
                 if (nextLocal != nextAdjusted) {
                     return offsetLocal;
+                }
+            }
+        } else if (offsetLocal > 0) {
+            long prev = previousTransition(instantAdjusted);
+            if (prev < instantAdjusted) {
+                int offsetPrev = getOffset(prev);
+                int diff = offsetPrev - offsetLocal;
+                if (instantAdjusted - prev <= diff) {
+                    return offsetPrev;
                 }
             }
         }

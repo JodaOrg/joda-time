@@ -659,6 +659,11 @@ public class TestDateTimeZoneCutover extends TestCase {
         doTest_getOffsetFromLocal(11, 4, 8, 0, "2007-11-04T08:00:00.000-05:00", ZONE_NEW_YORK);
     }
 
+    public void test_DateTime_constructor_NewYork_Autumn() {
+        DateTime dt = new DateTime(2007, 11, 4, 1, 30, ZONE_NEW_YORK);
+        assertEquals("2007-11-04T01:30:00.000-04:00", dt.toString());
+    }
+
     public void test_DateTime_plusHour_NewYork_Autumn() {
         DateTime dt = new DateTime(2007, 11, 3, 18, 0, 0, 0, ZONE_NEW_YORK);
         assertEquals("2007-11-03T18:00:00.000-04:00", dt.toString());
@@ -881,24 +886,41 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("2007-10-28T02:00:00.001+03:00", post.toString());
     }
 
-    // broken, and getOffsetFromLocal has no obvious way to determine which is correct
-//    public void test_getOffsetFromLocal_Moscow_Autumn() {
-//        doTest_getOffsetFromLocal(10, 28, 0, 0, "2007-10-28T00:00:00.000+04:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 0,30, "2007-10-28T00:30:00.000+04:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 1, 0, "2007-10-28T01:00:00.000+04:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 1,30, "2007-10-28T01:30:00.000+04:00", ZONE_MOSCOW);
-//        
-//        doTest_getOffsetFromLocal(10, 28, 2, 0, "2007-10-28T02:00:00.000+04:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 2,30, "2007-10-28T02:30:00.000+04:00", ZONE_MOSCOW);
-//        
-//        doTest_getOffsetFromLocal(10, 28, 3, 0, "2007-10-28T03:00:00.000+03:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 3,30, "2007-10-28T03:30:00.000+03:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 4, 0, "2007-10-28T04:00:00.000+03:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 5, 0, "2007-10-28T05:00:00.000+03:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 6, 0, "2007-10-28T06:00:00.000+03:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 7, 0, "2007-10-28T07:00:00.000+03:00", ZONE_MOSCOW);
-//        doTest_getOffsetFromLocal(10, 28, 8, 0, "2007-10-28T08:00:00.000+03:00", ZONE_MOSCOW);
-//    }
+    public void test_getOffsetFromLocal_Moscow_Autumn() {
+        doTest_getOffsetFromLocal(10, 28, 0, 0, "2007-10-28T00:00:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 0,30, "2007-10-28T00:30:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 1, 0, "2007-10-28T01:00:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 1,30, "2007-10-28T01:30:00.000+04:00", ZONE_MOSCOW);
+        
+        doTest_getOffsetFromLocal(10, 28, 2, 0, "2007-10-28T02:00:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,30, "2007-10-28T02:30:00.000+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,30,59,999, "2007-10-28T02:30:59.999+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,59,59,998, "2007-10-28T02:59:59.998+04:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 2,59,59,999, "2007-10-28T02:59:59.999+04:00", ZONE_MOSCOW);
+        
+        doTest_getOffsetFromLocal(10, 28, 3, 0, "2007-10-28T03:00:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 3,30, "2007-10-28T03:30:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 4, 0, "2007-10-28T04:00:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 5, 0, "2007-10-28T05:00:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 6, 0, "2007-10-28T06:00:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 7, 0, "2007-10-28T07:00:00.000+03:00", ZONE_MOSCOW);
+        doTest_getOffsetFromLocal(10, 28, 8, 0, "2007-10-28T08:00:00.000+03:00", ZONE_MOSCOW);
+    }
+
+    public void test_getOffsetFromLocal_Moscow_Autumn_overlap_mins() {
+        for (int min = 0; min < 60; min++) {
+            if (min < 10) {
+                doTest_getOffsetFromLocal(10, 28, 2, min, "2007-10-28T02:0" + min + ":00.000+04:00", ZONE_MOSCOW);
+            } else {
+                doTest_getOffsetFromLocal(10, 28, 2, min, "2007-10-28T02:" + min + ":00.000+04:00", ZONE_MOSCOW);
+            }
+        }
+    }
+
+    public void test_DateTime_constructor_Moscow_Autumn() {
+        DateTime dt = new DateTime(2007, 10, 28, 2, 30, ZONE_MOSCOW);
+        assertEquals("2007-10-28T02:30:00.000+04:00", dt.toString());
+    }
 
     public void test_DateTime_plusHour_Moscow_Autumn() {
         DateTime dt = new DateTime(2007, 10, 27, 19, 0, 0, 0, ZONE_MOSCOW);
@@ -1191,16 +1213,20 @@ public class TestDateTimeZoneCutover extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
-    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min,
-                                           String expected, DateTimeZone zone)
-    {
-        doTest_getOffsetFromLocal(2007, month, day, hour, min, expected, zone);
+    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, String expected, DateTimeZone zone) {
+        doTest_getOffsetFromLocal(2007, month, day, hour, min, 0, 0, expected, zone);
     }
 
-    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min,
-                                           String expected, DateTimeZone zone)
-    {
-        DateTime dt = new DateTime(year, month, day, hour, min, 0, 0, DateTimeZone.UTC);
+    private void doTest_getOffsetFromLocal(int month, int day, int hour, int min, int sec, int milli, String expected, DateTimeZone zone) {
+        doTest_getOffsetFromLocal(2007, month, day, hour, min, sec, milli, expected, zone);
+    }
+
+    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min, String expected, DateTimeZone zone) {
+        doTest_getOffsetFromLocal(year, month, day, hour, min, 0, 0, expected, zone);
+    }
+
+    private void doTest_getOffsetFromLocal(int year, int month, int day, int hour, int min, int sec, int milli, String expected, DateTimeZone zone) {
+        DateTime dt = new DateTime(year, month, day, hour, min, sec, milli, DateTimeZone.UTC);
         int offset = zone.getOffsetFromLocal(dt.getMillis());
         DateTime res = new DateTime(dt.getMillis() - offset, zone);
         assertEquals(res.toString(), expected, res.toString());

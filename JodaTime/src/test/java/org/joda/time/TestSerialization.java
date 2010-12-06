@@ -18,6 +18,7 @@ package org.joda.time;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -130,79 +131,85 @@ public class TestSerialization extends TestCase {
     //-----------------------------------------------------------------------
     public void testSerializedInstant() throws Exception {
         Instant test = new Instant();
-        loadAndCompare(test, "Instant.dat", false);
+        loadAndCompare(test, "Instant", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedDateTime() throws Exception {
         DateTime test = new DateTime();
-        loadAndCompare(test, "DateTime.dat", false);
+        loadAndCompare(test, "DateTime", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedDateTimeProperty() throws Exception {
         DateTime.Property test = new DateTime().hourOfDay();
-        loadAndCompare(test, "DateTimeProperty.dat", false);
+        loadAndCompare(test, "DateTimeProperty", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedMutableDateTime() throws Exception {
         MutableDateTime test = new MutableDateTime();
-        loadAndCompare(test, "MutableDateTime.dat", false);
+        loadAndCompare(test, "MutableDateTime", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedMutableDateTimeProperty() throws Exception {
         MutableDateTime.Property test = new MutableDateTime().hourOfDay();
-        loadAndCompare(test, "MutableDateTimeProperty.dat", false);
+        loadAndCompare(test, "MutableDateTimeProperty", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedDateMidnight() throws Exception {
         DateMidnight test = new DateMidnight();
-        loadAndCompare(test, "DateMidnight.dat", false);
+        loadAndCompare(test, "DateMidnight", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedDateMidnightProperty() throws Exception {
         DateMidnight.Property test = new DateMidnight().monthOfYear();
-        loadAndCompare(test, "DateMidnightProperty.dat", false);
+        loadAndCompare(test, "DateMidnightProperty", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedLocalDate() throws Exception {
         LocalDate test = new LocalDate();
-        loadAndCompare(test, "LocalDate.dat", false);
+        loadAndCompare(test, "LocalDate", false);
+        inlineCompare(test, false);
+    }
+
+    public void testSerializedLocalDateBuddhist() throws Exception {
+        LocalDate test = new LocalDate(BuddhistChronology.getInstanceUTC());
+        loadAndCompare(test, "LocalDateBuddhist", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedLocalTime() throws Exception {
         LocalTime test = new LocalTime();
-        loadAndCompare(test, "LocalTime.dat", false);
+        loadAndCompare(test, "LocalTime", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedLocalDateTime() throws Exception {
         LocalDateTime test = new LocalDateTime();
-        loadAndCompare(test, "LocalDateTime.dat", false);
+        loadAndCompare(test, "LocalDateTime", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedYearMonthDay() throws Exception {
         YearMonthDay test = new YearMonthDay();
-        loadAndCompare(test, "YearMonthDay.dat", false);
+        loadAndCompare(test, "YearMonthDay", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedTimeOfDay() throws Exception {
         TimeOfDay test = new TimeOfDay();
-        loadAndCompare(test, "TimeOfDay.dat", false);
+        loadAndCompare(test, "TimeOfDay", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedDateTimeZoneUTC() throws Exception {
         DateTimeZone test = DateTimeZone.UTC;
-        loadAndCompare(test, "DateTimeZoneUTC.dat", true);
+        loadAndCompare(test, "DateTimeZoneUTC", true);
         inlineCompare(test, true);
     }
 
@@ -210,61 +217,61 @@ public class TestSerialization extends TestCase {
         // have to re-get the zone, as TestDateTimeZone may have
         // changed the cache, or a SoftReference may have got cleared
         DateTimeZone test = DateTimeZone.forID("Europe/Paris");
-        loadAndCompare(test, "DateTimeZone.dat", true);
+        loadAndCompare(test, "DateTimeZone", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedCopticChronology() throws Exception {
         CopticChronology test = CopticChronology.getInstance(LONDON);
-        loadAndCompare(test, "CopticChronology.dat", true);
+        loadAndCompare(test, "CopticChronology", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedISOChronology() throws Exception {
         ISOChronology test = ISOChronology.getInstance(PARIS);
-        loadAndCompare(test, "ISOChronology.dat", true);
+        loadAndCompare(test, "ISOChronology", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedGJChronology() throws Exception {
         GJChronology test = GJChronology.getInstance(TOKYO);
-        loadAndCompare(test, "GJChronology.dat", true);
+        loadAndCompare(test, "GJChronology", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedGJChronologyChangedInternals() throws Exception {
         GJChronology test = GJChronology.getInstance(PARIS, 123L, 2);
-        loadAndCompare(test, "GJChronologyChangedInternals.dat", true);
+        loadAndCompare(test, "GJChronologyChangedInternals", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedGregorianChronology() throws Exception {
         GregorianChronology test = GregorianChronology.getInstance(PARIS);
-        loadAndCompare(test, "GregorianChronology.dat", true);
+        loadAndCompare(test, "GregorianChronology", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedJulianChronology() throws Exception {
         JulianChronology test = JulianChronology.getInstance(PARIS);
-        loadAndCompare(test, "JulianChronology.dat", true);
+        loadAndCompare(test, "JulianChronology", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedBuddhistChronology() throws Exception {
         BuddhistChronology test = BuddhistChronology.getInstance(PARIS);
-        loadAndCompare(test, "BuddhistChronology.dat", true);
+        loadAndCompare(test, "BuddhistChronology", true);
         inlineCompare(test, true);
     }
 
     public void testSerializedPeriodType() throws Exception {
         PeriodType test = PeriodType.dayTime();
-        loadAndCompare(test, "PeriodType.dat", false);
+        loadAndCompare(test, "PeriodType", false);
         inlineCompare(test, false);
     }
 
     public void testSerializedDateTimeFieldType() throws Exception {
         DateTimeFieldType test = DateTimeFieldType.clockhourOfDay();
-        loadAndCompare(test, "DateTimeFieldType.dat", true);
+        loadAndCompare(test, "DateTimeFieldType", true);
         inlineCompare(test, true);
     }
 
@@ -272,12 +279,12 @@ public class TestSerialization extends TestCase {
         UnsupportedDateTimeField test = UnsupportedDateTimeField.getInstance(
                 DateTimeFieldType.year(),
                 UnsupportedDurationField.getInstance(DurationFieldType.years()));
-        loadAndCompare(test, "UnsupportedDateTimeField.dat", true);
+        loadAndCompare(test, "UnsupportedDateTimeField", true);
         inlineCompare(test, true);
     }
 
     private void loadAndCompare(Serializable test, String filename, boolean same) throws Exception {
-        FileInputStream fis = new FileInputStream("src/test/resources/" + filename);
+        FileInputStream fis = new FileInputStream("src/test/resources/" + filename + ".dat");
         ObjectInputStream ois = new ObjectInputStream(fis);
         Object obj = ois.readObject();
         ois.close();
@@ -285,6 +292,20 @@ public class TestSerialization extends TestCase {
             assertSame(test, obj);
         } else {
             assertEquals(test, obj);
+        }
+        
+        try {
+            fis = new FileInputStream("src/test/resources/" + filename + "2.dat");
+            ois = new ObjectInputStream(fis);
+            obj = ois.readObject();
+            ois.close();
+            if (same) {
+                assertSame(test, obj);
+            } else {
+                assertEquals(test, obj);
+            }
+        } catch (FileNotFoundException ex) {
+            // ignore
         }
     }
 
@@ -330,6 +351,11 @@ public class TestSerialization extends TestCase {
 //    public void testStoreSerializedLocalDate() throws Exception {
 //        LocalDate test = new LocalDate();
 //        store(test, "LocalDate.dat");
+//    }
+//
+//    public void testStoreSerializedLocalDateBuddhist() throws Exception {
+//        LocalDate test = new LocalDate(BuddhistChronology.getInstanceUTC());
+//        store(test, "LocalDateBuddhist.dat");
 //    }
 //
 //    public void testStoreSerializedLocalTime() throws Exception {

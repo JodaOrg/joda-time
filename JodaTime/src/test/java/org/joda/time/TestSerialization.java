@@ -170,6 +170,24 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, false);
     }
 
+    public void testSerializedLocalDate() throws Exception {
+        LocalDate test = new LocalDate();
+        loadAndCompare(test, "LocalDate.dat", false);
+        inlineCompare(test, false);
+    }
+
+    public void testSerializedLocalTime() throws Exception {
+        LocalTime test = new LocalTime();
+        loadAndCompare(test, "LocalTime.dat", false);
+        inlineCompare(test, false);
+    }
+
+    public void testSerializedLocalDateTime() throws Exception {
+        LocalDateTime test = new LocalDateTime();
+        loadAndCompare(test, "LocalDateTime.dat", false);
+        inlineCompare(test, false);
+    }
+
     public void testSerializedYearMonthDay() throws Exception {
         YearMonthDay test = new YearMonthDay();
         loadAndCompare(test, "YearMonthDay.dat", false);
@@ -307,6 +325,21 @@ public class TestSerialization extends TestCase {
 //    public void testStoreSerializedDateMidnight() throws Exception {
 //        DateMidnight test = new DateMidnight();
 //        store(test, "DateMidnight.dat");
+//    }
+//
+//    public void testStoreSerializedLocalDate() throws Exception {
+//        LocalDate test = new LocalDate();
+//        store(test, "LocalDate.dat");
+//    }
+//
+//    public void testStoreSerializedLocalTime() throws Exception {
+//        LocalTime test = new LocalTime();
+//        store(test, "LocalTime.dat");
+//    }
+//
+//    public void testStoreSerializedLocalDateTime() throws Exception {
+//        LocalDateTime test = new LocalDateTime();
+//        store(test, "LocalDateTime.dat");
 //    }
 //
 //    public void testStoreSerializedYearMonthDay() throws Exception {

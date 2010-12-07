@@ -1210,6 +1210,13 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals(australiaNSWDaylightInAusraliaNSW.getMillis() + 3, australiaNSWDaylightInAusraliaNSW.withMillisOfSecond(3).getMillis());
     }
 
+    public void testPeriod() {
+        DateTime a = new DateTime("2010-10-31T02:00:00.000+02:00", ZONE_PARIS);
+        DateTime b = new DateTime("2010-10-31T02:01:00.000+02:00", ZONE_PARIS);
+        Period period = new Period(a, b, PeriodType.standard());
+        assertEquals("PT1M", period.toString());
+    }
+
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------

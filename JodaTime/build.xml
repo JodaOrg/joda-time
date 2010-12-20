@@ -39,6 +39,7 @@
   <!-- Dependencies -->
   <property name="lib"                     value="lib"/>
   <property name="junit.jar"               value="${lib}/junit-3.8.2.jar"/>
+  <property name="jodaconvert.jar"         value="${lib}/joda-convert-1.1.jar"/>
 
   <!-- The directory of source files -->
   <property name="source"                  value="src"/>
@@ -82,6 +83,7 @@
   <!-- Construct compile classpath -->
   <path id="compile.classpath">
     <pathelement location="${build.classes}"/>
+    <pathelement location="${jodaconvert.jar}"/>
   </path>
 
 
@@ -92,6 +94,7 @@
     <pathelement location="${build.classes}"/>
     <pathelement location="${build.tests}"/>
     <pathelement location="${junit.jar}"/>
+    <pathelement location="${jodaconvert.jar}"/>
   </path>
 
   <!-- Should all tests fail if one does? -->
@@ -120,6 +123,7 @@
     <filter token="version"               value="${component.version}"/>
     <available property="junit.ant" classname="junit.framework.Test"/>
     <available property="junit.present" file="${junit.jar}"/>
+    <available property="jodaconvert.present" file="${jodaconvert.jar}"/>
     <uptodate property="tz.build.notneeded" targetfile="${build.tz}/ZoneInfoMap" >
       <srcfiles dir= "${source.tz}" includes="**/*.*"/>
     </uptodate>
@@ -128,10 +132,16 @@
 <!-- ====================================================================== -->
 
   <target name="getjunit" unless="junit.present">
-    <echo message="Getting junit from http://www.ibiblio.org/maven/junit"/>
+    <echo message="Getting junit from http://repo2.maven.org/maven2/junit/junit/3.8.2"/>
     <setproxy />
     <mkdir dir="${lib}"/>
-    <get dest="${junit.jar}" usetimestamp="true" ignoreerrors="true" src="http://www.ibiblio.org/maven/junit/jars/junit-3.8.1.jar" />
+    <get dest="${junit.jar}" usetimestamp="true" ignoreerrors="true" src="http://repo2.maven.org/maven2/junit/junit/3.8.2/junit-3.8.2.jar" />
+  </target>
+  <target name="getjodaconvert" unless="jodaconvert.present">
+    <echo message="Getting joda-convert from http://repo1.maven.org/maven2/org/joda/joda-convert/1.1"/>
+    <setproxy />
+    <mkdir dir="${lib}"/>
+    <get dest="${jodaconvert.jar}" usetimestamp="true" ignoreerrors="true" src="http://repo1.maven.org/maven2/org/joda/joda-convert/1.1/joda-convert-1.1.jar" />
   </target>
 
 <!-- ====================================================================== -->
@@ -149,7 +159,7 @@
 
 <!-- ====================================================================== -->
 
-  <target name="prepare" depends="init,getjunit,installjunit"
+  <target name="prepare" depends="init,getjunit,installjunit,getjodaconvert"
           description="Prepare build directory">
     <mkdir dir="${build}"/>
     <mkdir dir="${build.classes}"/>

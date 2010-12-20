@@ -101,9 +101,9 @@ public final class LocalTime
     }
 
     /** The local millis from 1970-01-01T00:00:00 */
-    private long iLocalMillis;
+    private final long iLocalMillis;
     /** The chronology to use, in UTC */
-    private Chronology iChronology;
+    private final Chronology iChronology;
 
     //-----------------------------------------------------------------------
     /**
@@ -458,6 +458,17 @@ public final class LocalTime
             0L, hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
         iChronology = chronology;
         iLocalMillis = instant;
+    }
+
+    /**
+     * Handle broken serialization from other tools.
+     * @return the resolved object, not null
+     */
+    private Object readResolve() {
+        if (DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
+            return new LocalTime(iLocalMillis, iChronology.withUTC());
+        }
+        return this;
     }
 
     //-----------------------------------------------------------------------

@@ -205,6 +205,9 @@ Bug fixes since 1.6
 - DateTimeZone.forID(String) now case-sensitive
   Previously, it was case-insensitive
 
+- Handle broken serialization in other tools [3117678]
+  Some tools can't handle the joda-time stub serialization, kludge a fix for them
+
 - Time zone compiler now handles 24:00 [2804258]
 
 - Time zone compiler now handles non-UTC better

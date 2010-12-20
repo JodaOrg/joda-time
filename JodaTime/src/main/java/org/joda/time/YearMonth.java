@@ -315,6 +315,17 @@ public final class YearMonth
         super(partial, chrono);
     }
 
+    /**
+     * Handle broken serialization from other tools.
+     * @return the resolved object, not null
+     */
+    private Object readResolve() {
+        if (DateTimeZone.UTC.equals(getChronology().getZone()) == false) {
+            return new YearMonth(this, getChronology().withUTC());
+        }
+        return this;
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Gets the number of fields in this partial, which is two.

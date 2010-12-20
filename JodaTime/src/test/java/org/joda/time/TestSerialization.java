@@ -18,7 +18,6 @@ package org.joda.time;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -293,20 +292,19 @@ public class TestSerialization extends TestCase {
         } else {
             assertEquals(test, obj);
         }
-        
-        try {
-            fis = new FileInputStream("src/test/resources/" + filename + "2.dat");
-            ois = new ObjectInputStream(fis);
-            obj = ois.readObject();
-            ois.close();
-            if (same) {
-                assertSame(test, obj);
-            } else {
-                assertEquals(test, obj);
-            }
-        } catch (FileNotFoundException ex) {
-            // ignore
-        }
+//        try {
+//            fis = new FileInputStream("src/test/resources/" + filename + "2.dat");
+//            ois = new ObjectInputStream(fis);
+//            obj = ois.readObject();
+//            ois.close();
+//            if (same) {
+//                assertSame(test, obj);
+//            } else {
+//                assertEquals(test, obj);
+//            }
+//        } catch (FileNotFoundException ex) {
+//            // ignore
+//        }
     }
 
     public void inlineCompare(Serializable test, boolean same) throws Exception {

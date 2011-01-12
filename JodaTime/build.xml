@@ -412,6 +412,7 @@
         <pathelement location="${build.classes}"/>
         <pathelement location="${build.tests}"/>
         <pathelement location="${build.tz}"/>
+        <pathelement location="${jodaconvert.jar}"/>
         <pathelement path="${java.class.path}"/>
       </classpath>
 
@@ -432,6 +433,7 @@
         <pathelement location="${build.fullname}.jar"/>
         <pathelement location="${build.tests}"/>
         <pathelement location="${junit.jar}"/>
+        <pathelement location="${jodaconvert.jar}"/>
         <pathelement path="${java.class.path}"/>
       </classpath>
 

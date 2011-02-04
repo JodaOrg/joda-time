@@ -32,6 +32,7 @@ import java.io.Serializable;
  * If required, you can create your own field, for example a quarterOfYear.
  * You must create a subclass of <code>DateTimeFieldType</code> that defines the field type.
  * This class returns the actual calculation engine from {@link #getField(Chronology)}.
+ * The subclass should implement equals and hashCode.
  *
  * @author Stephen Colebourne
  * @author Brian S O'Neill
@@ -454,6 +455,24 @@ public abstract class DateTimeFieldType implements Serializable {
         /** @inheritdoc */
         public DurationFieldType getRangeDurationType() {
             return iRangeType;
+        }
+
+        /** @inheritdoc */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj instanceof StandardDateTimeFieldType) {
+                return iOrdinal == ((StandardDateTimeFieldType) obj).iOrdinal;
+            }
+            return false;
+        }
+
+        /** @inheritdoc */
+        @Override
+        public int hashCode() {
+            return iOrdinal;
         }
 
         /** @inheritdoc */

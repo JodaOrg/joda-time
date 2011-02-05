@@ -1030,8 +1030,8 @@ public abstract class DateTimeZone implements Serializable {
         if (newZone == this) {
             return oldInstant;
         }
-        long instantLocal = oldInstant + getOffset(oldInstant);
-        return instantLocal - newZone.getOffsetFromLocal(instantLocal);
+        long instantLocal = convertUTCToLocal(oldInstant);
+        return newZone.convertLocalToUTC(instantLocal, false, oldInstant);
     }
 
 //    //-----------------------------------------------------------------------

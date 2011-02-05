@@ -157,6 +157,9 @@ earlier instant in the Western hemisphere and the later instant in the Eastern h
 Now, it always returns the earlier instant (summer time) during an overlap.
 This affects the constructor of DateTime and other methods.
 
+Previously, DateTimeZone.getMillisKeepLocal used DateTimeZone.getOffsetFromLocal, now it uses
+DateTimeZone.convertUTCToLocal and DateTimeZone.convertLocalToUTC retaining the offset where possible
+
 
 Deprecations since 1.6
 ----------------------
@@ -184,6 +187,10 @@ Bug fixes since 1.6
   The behaviour during DST overlaps is now defined to always return the earlier instant
   which is normally known as daylight or summer time. Previously, the result varied by hemisphere
   This affects the constructor of DateTime and other methods
+
+- DateTimeZone.getMillisKeepLocal
+  The behaviour now retains the offset when changing zones where possible
+  This affects DateTime.withZoneRetainFields and MutableDateTime.setZoneRetainFields
 
 - DateTimeZone.getDefault [3048468,3056104]
   Handle missing user.timezone system property on Android that resulted in stack overflow

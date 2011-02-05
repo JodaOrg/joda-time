@@ -1217,6 +1217,18 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals("PT1M", period.toString());
     }
 
+    public void testForum4013394_retainOffsetWhenRetainFields_sameOffsetsDifferentZones() {
+        final DateTimeZone fromDTZ = DateTimeZone.forID("Europe/London");
+        final DateTimeZone toDTZ = DateTimeZone.forID("Europe/Lisbon");
+        DateTime baseBefore = new DateTime(2007, 10, 28, 1, 15, fromDTZ).minusHours(1);
+        DateTime baseAfter = new DateTime(2007, 10, 28, 1, 15, fromDTZ);
+        DateTime testBefore = baseBefore.withZoneRetainFields(toDTZ);
+        DateTime testAfter = baseAfter.withZoneRetainFields(toDTZ);
+        // toString ignores time-zone but includes offset
+        assertEquals(baseBefore.toString(), testBefore.toString());
+        assertEquals(baseAfter.toString(), testAfter.toString());
+    }
+
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------

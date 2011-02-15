@@ -160,6 +160,9 @@ This affects the constructor of DateTime and other methods.
 Previously, DateTimeZone.getMillisKeepLocal used DateTimeZone.getOffsetFromLocal, now it uses
 DateTimeZone.convertUTCToLocal and DateTimeZone.convertLocalToUTC retaining the offset where possible
 
+Previously, some parses of mixed weekyear and month formats would yield a result about a year out
+Now, most (but not all) of these give a more appropriate result
+
 
 Deprecations since 1.6
 ----------------------
@@ -216,6 +219,10 @@ Bug fixes since 1.6
   Some tools can't handle the joda-time stub serialization, kludge a fix for them
 
 - Standard DateTimeFieldType implements hashCode and equals for stability across serialization
+
+- Conversion from parsed values to a date-time handles weird sets of fields better [3161586]
+  This change is mostly for combinations like weekyear-month-week
+  The new code doesn't handle all combinations perfectly, but its better than it was
 
 - Time zone compiler now handles 24:00 [2804258]
 

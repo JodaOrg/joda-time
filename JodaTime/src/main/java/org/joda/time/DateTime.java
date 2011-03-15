@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -598,6 +598,46 @@ public final class DateTime
         
         long millis = originalZone.getMillisKeepLocal(newZone, getMillis());
         return new DateTime(millis, getChronology().withZone(newZone));
+    }
+
+    /**
+     * Returns a copy of this ZonedDateTime changing the zone offset to the earlier
+     * of the two valid offsets at a local time-line overlap.
+     * <p>
+     * This method only has any effect when the local time-line overlaps, such as at
+     * an autumn daylight savings cutover. In this scenario, there are two valid offsets
+     * for the local date-time. Calling this method will return a date-time with the
+     * earlier of the two selected.
+     * <p>
+     * If this method is called when it is not an overlap, this is returned.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @return a copy of this datetime with the earliest valid offset for the local datetime
+     */
+    public DateTime withEarlierOffsetAtOverlap() {
+        long newMillis = getZone().adjustOffset(getMillis(), false);
+        return withMillis(newMillis);
+    }
+
+    /**
+     * Returns a copy of this ZonedDateTime changing the zone offset to the later
+     * of the two valid offsets at a local time-line overlap.
+     * <p>
+     * This method only has any effect when the local time-line overlaps, such as at
+     * an autumn daylight savings cutover. In this scenario, there are two valid offsets
+     * for the local date-time. Calling this method will return a date-time with the
+     * later of the two selected.
+     * <p>
+     * If this method is called when it is not an overlap, this is returned.
+     * <p>
+     * This instance is immutable and unaffected by this method call.
+     *
+     * @return a copy of this datetime with the latest valid offset for the local datetime
+     */
+    public DateTime withLaterOffsetAtOverlap() {
+        long newMillis = getZone().adjustOffset(getMillis(), true);
+        return withMillis(newMillis);
     }
 
     //-----------------------------------------------------------------------

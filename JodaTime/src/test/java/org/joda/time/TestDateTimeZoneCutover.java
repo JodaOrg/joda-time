@@ -1229,6 +1229,21 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals(baseAfter.toString(), testAfter.toString());
     }
 
+    public void testBug3192457_adjustOffset() {
+        final DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
+        DateTime base = new DateTime(2007, 10, 28, 3, 15, zone);
+        DateTime baseBefore = base.minusHours(2);
+        DateTime baseAfter = base.minusHours(1);
+        
+        assertSame(base, base.withEarlierOffsetAtOverlap());
+        assertSame(base, base.withLaterOffsetAtOverlap());
+        assertSame(baseBefore, baseBefore.withEarlierOffsetAtOverlap());
+        assertSame(baseAfter, baseAfter.withLaterOffsetAtOverlap());
+        
+        assertEquals(baseBefore, baseAfter.withEarlierOffsetAtOverlap());
+        assertEquals(baseAfter, baseAfter.withLaterOffsetAtOverlap());
+    }
+
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------

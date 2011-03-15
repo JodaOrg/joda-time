@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -1152,6 +1152,23 @@ public abstract class DateTimeZone implements Serializable {
         }
     }
 
+    /**
+     * Adjusts the offset to be the earlier or later one during an overlap.
+     * 
+     * @param instant  the instant to adjust
+     * @param earlierOrLater  false for earlier, true for later
+     * @return the adjusted instant millis
+     */
+    public long adjustOffset(long instant, boolean earlierOrLater) {
+        long before = convertUTCToLocal(instant - 3 * DateTimeConstants.MILLIS_PER_HOUR);
+        long after = convertUTCToLocal(instant + 3 * DateTimeConstants.MILLIS_PER_HOUR);
+        if (before == after) {
+            return instant;
+        }
+        long local = convertUTCToLocal(instant);
+        return convertLocalToUTC(local, false, earlierOrLater ? after : before);
+    }
+
     //-----------------------------------------------------------------------
     /**
      * Returns true if this time zone has no transitions.
@@ -1256,4 +1273,5 @@ public abstract class DateTimeZone implements Serializable {
             return forID(iID);
         }
     }
+
 }

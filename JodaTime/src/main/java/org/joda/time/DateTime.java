@@ -2135,6 +2135,10 @@ public final class DateTime
          * DateTime lastDayOfMonth = dt.dayOfMonth().withMaximumValue();
          * </pre>
          * <p>
+         * Where possible, the offset from UTC will be retained, thus applications
+         * may need to call {@link DateTime#withLaterOffsetAtOverlap()} on the result
+         * to force the later time during a DST overlap if desired.
+         * <p>
          * The DateTime attached to this property is unchanged by this call.
          *
          * @return a copy of the DateTime with this field set to its maximum
@@ -2147,6 +2151,10 @@ public final class DateTime
         /**
          * Returns a new DateTime with this field set to the minimum value
          * for this field.
+         * <p>
+         * Where possible, the offset from UTC will be retained, thus applications
+         * may need to call {@link DateTime#withEarlierOffsetAtOverlap()} on the result
+         * to force the earlier time during a DST overlap if desired.
          * <p>
          * The DateTime attached to this property is unchanged by this call.
          *

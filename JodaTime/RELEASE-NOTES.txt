@@ -166,6 +166,15 @@ DateTimeZone.convertUTCToLocal and DateTimeZone.convertLocalToUTC retaining the 
 Previously, some parses of mixed weekyear and month formats would yield a result about a year out
 Now, most (but not all) of these give a more appropriate result
 
+Previously, java.util.TimeZone "MET" was incorrectly mapped to "Asia/Tehran".
+It is now mapped to "CET" (Central European Time).
+
+Previously, java.util.TimeZone "EET", "WET", "ECT" were mapped to European cities.
+They are now mapped to "EET", "WET" and "CET" respectively.
+
+Previously, java.util.TimeZone "IET", "AGT", "IST" and "VST" were mapped to old time-zone IDs.
+They are now mapped to the newer IDs "America/Indiana/Indianapolis", "America/Argentina/Buenos_Aires", "Asia/Kolkata" and "Asia/Ho_Chi_Minh".
+
 
 Deprecations since 1.6
 ----------------------
@@ -200,6 +209,10 @@ Bug fixes since 1.6
 
 - DateTimeZone.getDefault [3048468,3056104]
   Handle missing user.timezone system property on Android that resulted in stack overflow
+
+- DateTimeZone.forTimeZone [3216471]
+  Time-zone ID "MET" from java.util.TimeZone is now mapped correctly.
+  See compatibility notes above.
 
 - Duration.toString
   Fixed to work correctly for negative values

@@ -217,6 +217,10 @@ Bug fixes since 1.6
 - Duration.toString
   Fixed to work correctly for negative values
 
+- Duraton.toPeriod(), new Period(long), new MutablePeriod(long) [3264409]
+  Fixed to obey Javadoc.
+  Previously, they didn't obey the Javadoc if the default time-zone had no daylight savings.
+
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
 

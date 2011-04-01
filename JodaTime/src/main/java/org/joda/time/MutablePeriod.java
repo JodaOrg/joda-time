@@ -177,7 +177,7 @@ public class MutablePeriod
      * @param duration  the duration, in milliseconds
      */
     public MutablePeriod(long duration) {
-        super(duration, null, null);
+        super(duration);
     }
 
     /**

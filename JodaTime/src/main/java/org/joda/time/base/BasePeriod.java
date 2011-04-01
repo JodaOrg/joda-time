@@ -28,6 +28,7 @@ import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadablePartial;
 import org.joda.time.ReadablePeriod;
+import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.PeriodConverter;
 import org.joda.time.field.FieldUtils;
@@ -207,6 +208,24 @@ public abstract class BasePeriod
         Chronology chrono = DateTimeUtils.getInstantChronology(endInstant);
         iType = type;
         iValues = chrono.get(this, startMillis, endMillis);
+    }
+
+    /**
+     * Creates a period from the given millisecond duration with the standard period type
+     * and ISO rules, ensuring that the calculation is performed with the time-only period type.
+     * <p>
+     * The calculation uses the hour, minute, second and millisecond fields.
+     *
+     * @param duration  the duration, in milliseconds
+     */
+    protected BasePeriod(long duration) {
+        super();
+        // bug [3264409]
+        iType = PeriodType.time();
+        int[] values = ISOChronology.getInstanceUTC().get(this, duration);
+        iType = PeriodType.standard();
+        iValues = new int[8];
+        System.arraycopy(values, 0, iValues, 4, 4);
     }
 
     /**

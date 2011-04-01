@@ -379,7 +379,7 @@ public final class Period
      * @param duration  the duration, in milliseconds
      */
     public Period(long duration) {
-        super(duration, null, null);
+        super(duration);
     }
 
     /**

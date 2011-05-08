@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,9 +21,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.SessionImplementor;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.hibernate.usertype.CompositeUserType;
 import org.joda.time.DateTime;
@@ -46,7 +46,7 @@ public class PersistentInterval implements CompositeUserType, Serializable {
 
     private static final String[] PROPERTY_NAMES = new String[] { "start", "end" };
 
-    private static final Type[] TYPES = new Type[] { Hibernate.TIMESTAMP, Hibernate.TIMESTAMP };
+    private static final Type[] TYPES = new Type[] { StandardBasicTypes.TIMESTAMP, StandardBasicTypes.TIMESTAMP };
 
     public Object assemble(Serializable cached, SessionImplementor session, Object owner) throws HibernateException {
         return cached;
@@ -108,8 +108,8 @@ public class PersistentInterval implements CompositeUserType, Serializable {
     public void nullSafeSet(PreparedStatement statement, Object value, int index, SessionImplementor session)
             throws HibernateException, SQLException {
         if (value == null) {
-            statement.setNull(index, Hibernate.TIMESTAMP.sqlType());
-            statement.setNull(index + 1, Hibernate.TIMESTAMP.sqlType());
+            statement.setNull(index, StandardBasicTypes.TIMESTAMP.sqlType());
+            statement.setNull(index + 1, StandardBasicTypes.TIMESTAMP.sqlType());
             return;
         }
         Interval interval = (Interval) value;

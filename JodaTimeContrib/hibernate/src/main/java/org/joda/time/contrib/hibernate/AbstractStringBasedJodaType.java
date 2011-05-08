@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.UserType;
 
 /**
@@ -37,7 +37,7 @@ public abstract class AbstractStringBasedJodaType implements UserType, Serializa
     }
 
     public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException {
-        String s = (String) Hibernate.STRING.nullSafeGet(resultSet, strings[0]);
+        String s = (String) StandardBasicTypes.STRING.nullSafeGet(resultSet, strings[0]);
         if (s == null) {
             return null;
         }
@@ -49,9 +49,9 @@ public abstract class AbstractStringBasedJodaType implements UserType, Serializa
 
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
         if (value == null) {
-            Hibernate.STRING.nullSafeSet(preparedStatement, null, index);
+            StandardBasicTypes.STRING.nullSafeSet(preparedStatement, null, index);
         } else {
-            Hibernate.STRING.nullSafeSet(preparedStatement, toNonNullString(value), index);
+            StandardBasicTypes.STRING.nullSafeSet(preparedStatement, toNonNullString(value), index);
         }
     }
 

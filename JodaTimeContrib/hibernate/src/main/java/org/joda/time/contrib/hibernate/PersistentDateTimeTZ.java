@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.UserType;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -64,8 +64,8 @@ public class PersistentDateTimeTZ implements UserType, Serializable {
     }
 
     public Object nullSafeGet(ResultSet resultSet, String[] strings, Object object) throws HibernateException, SQLException {
-        Object timestamp = Hibernate.TIMESTAMP.nullSafeGet(resultSet, strings[0]);
-        Object timezone = Hibernate.STRING.nullSafeGet(resultSet, strings[1]);
+        Object timestamp = StandardBasicTypes.TIMESTAMP.nullSafeGet(resultSet, strings[0]);
+        Object timezone = StandardBasicTypes.STRING.nullSafeGet(resultSet, strings[1]);
         if (timestamp == null || timezone == null) {
             return null;
         }
@@ -74,12 +74,12 @@ public class PersistentDateTimeTZ implements UserType, Serializable {
 
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
         if (value == null) {
-            Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
-            Hibernate.STRING.nullSafeSet(preparedStatement, null, index + 1);
+            StandardBasicTypes.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
+            StandardBasicTypes.STRING.nullSafeSet(preparedStatement, null, index + 1);
         } else {
             DateTime dt = (DateTime) value;
-            Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, dt.toDate(), index);
-            Hibernate.STRING.nullSafeSet(preparedStatement, dt.getZone().getID(), index + 1);
+            StandardBasicTypes.TIMESTAMP.nullSafeSet(preparedStatement, dt.toDate(), index);
+            StandardBasicTypes.STRING.nullSafeSet(preparedStatement, dt.getZone().getID(), index + 1);
         }
     }
 

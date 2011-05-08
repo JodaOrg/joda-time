@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -21,8 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.DateTime;
 
@@ -68,7 +68,7 @@ public class PersistentDateTime implements EnhancedUserType, Serializable {
     }
 
     public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException {
-        Object timestamp = Hibernate.TIMESTAMP.nullSafeGet(resultSet, string);
+        Object timestamp = StandardBasicTypes.TIMESTAMP.nullSafeGet(resultSet, string);
         if (timestamp == null) {
             return null;
         }
@@ -78,9 +78,9 @@ public class PersistentDateTime implements EnhancedUserType, Serializable {
 
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
         if (value == null) {
-            Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
+            StandardBasicTypes.TIMESTAMP.nullSafeSet(preparedStatement, null, index);
         } else {
-            Hibernate.TIMESTAMP.nullSafeSet(preparedStatement, ((DateTime) value).toDate(), index);
+            StandardBasicTypes.TIMESTAMP.nullSafeSet(preparedStatement, ((DateTime) value).toDate(), index);
         }
     }
 

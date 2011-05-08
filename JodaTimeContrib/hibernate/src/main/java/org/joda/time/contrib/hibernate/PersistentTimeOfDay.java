@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,8 +22,8 @@ import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Types;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.EnhancedUserType;
 import org.joda.time.DateTime;
 import org.joda.time.TimeOfDay;
@@ -73,7 +73,7 @@ public class PersistentTimeOfDay implements EnhancedUserType, Serializable {
     }
 
     public Object nullSafeGet(ResultSet resultSet, String string) throws SQLException {
-        Object date = Hibernate.TIME.nullSafeGet(resultSet, string);
+        Object date = StandardBasicTypes.TIME.nullSafeGet(resultSet, string);
         if (date == null) {
             return null;
         }
@@ -83,9 +83,9 @@ public class PersistentTimeOfDay implements EnhancedUserType, Serializable {
 
     public void nullSafeSet(PreparedStatement preparedStatement, Object value, int index) throws HibernateException, SQLException {
         if (value == null) {
-            Hibernate.TIME.nullSafeSet(preparedStatement, null, index);
+            StandardBasicTypes.TIME.nullSafeSet(preparedStatement, null, index);
         } else {
-            Hibernate.TIME.nullSafeSet(preparedStatement,
+            StandardBasicTypes.TIME.nullSafeSet(preparedStatement,
                     new Time(((TimeOfDay) value).toDateTime(timeBase).getMillis()), index);
         }
     }

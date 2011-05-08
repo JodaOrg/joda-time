@@ -1244,6 +1244,22 @@ public class TestDateTimeZoneCutover extends TestCase {
         assertEquals(baseAfter, baseAfter.withLaterOffsetAtOverlap());
     }
 
+    // ensure Summer time picked
+    //-----------------------------------------------------------------------
+    public void testDateTimeCreation_europe() {
+        DateTimeZone zone = DateTimeZone.forID("Europe/Athens");
+        DateTime base = new DateTime(2011, 10, 30, 3, 15, zone);
+        assertEquals("2011-10-30T03:15:00.000+03:00", base.toString());
+        assertEquals("2011-10-30T03:15:00.000+02:00", base.plusHours(1).toString());
+    }
+
+    public void testDateTimeCreation_us() {
+        DateTimeZone zone = DateTimeZone.forID("America/Los_Angeles");
+        DateTime base = new DateTime(2010, 11, 7, 1, 15, zone);
+        assertEquals("2010-11-07T01:15:00.000-07:00", base.toString());
+        assertEquals("2010-11-07T01:15:00.000-08:00", base.plusHours(1).toString());
+    }
+
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------

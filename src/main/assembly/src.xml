@@ -1,0 +1,35 @@
+<assembly>
+    <id>src</id>
+    <formats>
+        <format>tar.gz</format>
+        <format>zip</format>
+    </formats>
+    <baseDirectory>${artifactId}-${version}-src</baseDirectory>
+    <fileSets>
+        <fileSet>
+            <includes>
+                <include>build.xml</include>
+                <include>checkstyle.xml</include>
+                <include>LICENSE.txt</include>
+                <include>NOTICE.txt</include>
+                <include>pom.xml</include>
+                <include>RELEASE-NOTES.txt</include>
+                <include>ToDo.txt</include>
+            </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src</directory>
+        </fileSet>
+        <fileSet>
+            <directory>target</directory>
+            <outputDirectory></outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <excludes>
+                <exclude>*-sources.jar</exclude>
+                <exclude>*-javadoc.jar</exclude>
+            </excludes>
+        </fileSet>
+    </fileSets>
+</assembly>

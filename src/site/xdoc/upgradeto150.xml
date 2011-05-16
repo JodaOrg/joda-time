@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.4 to 1.5</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.4 to version 1.5.
+<source>
+Joda-Time version 1.5
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the sixth full release of Joda-Time.
+This release focuses on new features, but also include some bug fixes.
+
+We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+*  Please also check out our related projects   *
+* http://joda-time.sourceforge.net/related.html *
+
+
+Enhancements since 1.4
+----------------------
+- LocalDate
+  - add toDateTimeAtStartOfDay(), toDateTimeAtStartOfDay(DateTimeZone)
+  methods to replace toDateTimeAtMidnight() which avoid issues with time zones
+  that do not have midnight at spring DST cutover
+
+- LocalDate
+  - add toLocalDateTime()
+    provide mechanism to create LocalDateTime from LocalDate and LocalTime
+
+- Performance enhancement for LocalDate, LocalTime and LocalDateTime
+  - equals, compareTo, Period construction
+
+- Partial
+  - add isMatch(ReadablePartial)
+    provide mechanism to match a Partial, such as 'Friday the Thirteenth' to
+    another partial, such as a LocalDate
+
+- Period
+  - add toStandardDuration()
+  - add toStandardWeeks(), toStandardDays(), toStandardHours(),
+    toStandardMinutes(), toStandardSeconds()
+  methods to convert a period to other types using the standard
+  conversions (7 day week, 24 hour day, ...)
+
+- Period
+  - add plus(ReadablePeriod), minus(ReadablePeriod)
+  methods to add and subtract whole periods rather than just single fields
+
+- Period
+  - add normalizedStandard(), normalizedStandard(PeriodType)
+  methods to normalize the period back to standard field ranges, such as
+  normalizing 1 year 15 months to 2 years 3 months
+
+- Period.toString(PeriodFormatter), MutablePeriod.toString(PeriodFormatter)
+  - allow periods to be directly formatted, as with datetimes
+
+- DateTimeZone
+  - add isStandardOffset()
+  assists in determining if DST applies
+
+- Interval
+  - add (long,long,DateTimeZone) constructor
+  constructor emphasises that intervals include a time zone
+
+- DateTimeFormatterBuilder
+  - add appendFixedDecimal(DateTimeFieldType,int),
+        appendFixedSignedDecimal(DateTimeFieldType,int)
+  methods for printing and parsing fields which must have a fixed number of digits
+
+
+Compatibility with 1.4
+----------------------
+Binary compatible - Yes, except
+  - Internal class LenientDateTimeField has an incompatible change to
+    getInstance() and the constructor
+  - Internal class DateTimeZoneBuilder has an incompatible change to
+    toDateTime() and writeTo()
+
+Source compatible - Yes, except
+  - Internal class LenientDateTimeField has an incompatible change to
+    getInstance() and the constructor
+  - Internal class DateTimeZoneBuilder has an incompatible change to
+    toDateTime() and writeTo()
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+  - Format of time zone data files changed slightly to fix bug
+    This mainly affects Australia
+  - DateTimeZone data updated to version 2007h
+
+Semantic compatible - Yes
+
+
+Deprecations since 1.4
+----------------------
+- YearMonthDay
+  - use LocalDate
+- TimeOfDay
+  - use LocalTime
+  - LocalDate and LocalTime have a much better internal implementation and have
+    been available since v1.3. Both have been effectively deprecated in the javadoc
+    for over a year to enable a gentle transition. In this release, they are now
+    formally deprecated, however they won't be removed until a v2.0 which won't
+    occur until 2009 at the earliest.
+
+- LocalDate.toDateTimeAtMidnight()
+  LocalDate.toDateTimeAtMidnight(DateTimeZone)
+  - use toDateTimeAtStartOfDay() instead because it avoids exceptions
+
+
+Bug fixes since 1.4
+-------------------
+- Daylight savings cutover in Spring incorrect
+  A problem with DST cutover in Spring meant that the result of many
+  methods would be different depending on whether the time zone was in the
+  Eastern or Western hemisphere. Now, the DST cutover is consistent, such
+  that if a time is requested within the cutover, it will be pushed forwards
+  into summer time. [1710316, 1747219, 1755158]
+
+- LenientChronology and time zones
+  LenientChronology could throw exceptions when the time being created
+  didn't exist dies to the time zone [1755161]
+
+- LocalDate/LocalTime constructors did not set internal state correctly
+  This problem was exposed when Days.daysBetween() and similar methods
+  failed to give the right results
+
+- Period.plusXxx(), minusXxx(), withXxx()
+  Fix to throw correct exception as per javadoc (UnsupportedOperationException) when
+  changing an unsupported field
+
+- ZoneInfoProvider now returns a copy of its internal state on getAvailableIDs
+  This avoids race conditions on some JVMs
+
+- Period formating threw NegativeArraySizeException during formatting
+  This happened for certain period values, notably zero
+
+- Period formatting could end up in an infinite loop on IBM JDK 1.4.2
+  This appears to be an IBM JDK issue, not a Joda-Time issue, but we should
+  not have ended up in an infinite loop whatever happens
+
+- DateTimeZone did not properly convert fixed offset zones to java.util.TimeZone [1682152]
+
+- DateTimeZone names were incorrect when abbreviation is the same in winter
+  and summer, notably in Australia [1716305]
+
+- Avoid compilation issue reported by Apache Harmony [1699760]
+
+- LenientChronology might incorrectly adjust a valid hour field near DST transition
+
+- DateTimeFormat javadoc now explains time zone parsing restriction better [OpenDiscussion 1721909]
+
+- Period javadoc now explains toDurationFrom() and toDurationTo() better
+
+- DateTime/Instant/LocalDateTime javadoc improved
+
+- DateTimeZone
+  Clarify javadoc of forTimeZone to indicate that application created
+  SimpleTimeZone rules are not parsed [1705180]
+
+- Defect in localized Gregorian/Julian symbol cache severely impacted formatting
+  performance when using null (default) locale.
+
+- DateTimeFormatter specified with locale of null could produce mismatched
+  symbols if default locale changed concurrently.
+
+- DateTime parsing of text failed when the text for the locale contained characters
+  other than letters. [1788282]
+  For French, the short text for months ends with '.'.
+  For Korean, the text for months contains a number.
+  The parser was also too greedy, and would absorb all letters it found, preventing
+  parsing a format such as '23JunSat' (month followed by day of week, or any other text).
+  The parser has been rewritten to only match the text that can be produced by the
+  formatter.
+</source>
+</p>
+</section>
+
+</body>
+</document>

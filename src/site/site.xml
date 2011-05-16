@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Joda-Time">
+  <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
+  <bannerLeft>
+    <name>Joda.org</name>
+    <!--src>http://joda-time.sourceforge.net/images/joda.png</src-->
+    <href>http://joda.sourceforge.net/</href>
+  </bannerLeft>
+  <bannerRight>
+    <name>Joda-Time</name>
+    <!--src>http://joda-time.sourceforge.net/images/jodatime.png</src-->
+    <href>http://joda-time.sourceforge.net/</href>
+  </bannerRight>
+
+  <body>
+    <links>
+      <item name="Joda-Time" href="/index.html"/>
+      <item name="JSP tags" href="/contrib/jsptags/index.html"/>
+      <item name="Hibernate" href="/contrib/hibernate/index.html"/>
+      <item name="I18N" href="/contrib/i18n/index.html"/>
+    </links>
+
+    <menu name="Joda Time">
+      <item name="Overview" href="index.html"/>
+      <item name="Quick start guide" href="quickstart.html"/>
+      <item name="User guide" href="userguide.html"/>
+      <item name="FAQ" href="faq.html"/>
+      <item name="Related projects" href="related.html"/>
+      <item name="Javadoc (Release)" href="api-release/index.html"/>
+      <item name="License" href="license.html"/>
+      <item name="Download" href="http://sourceforge.net/projects/joda-time/files/joda-time/"/>
+    </menu>
+
+    <menu name="Key concepts">
+      <item name="Instant" href="key_instant.html"/>
+      <item name="Partial" href="key_partial.html"/>
+      <item name="Interval" href="key_interval.html"/>
+      <item name="Duration" href="key_duration.html"/>
+      <item name="Period" href="key_period.html"/>
+      <item name="Chronology" href="key_chronology.html"/>
+    </menu>
+
+    <menu name="Chronologies">
+      <item name="ISO8601" href="cal_iso.html"/>
+      <item name="Buddhist" href="cal_buddhist.html"/>
+      <item name="Coptic" href="cal_coptic.html"/>
+      <item name="Ethiopic" href="cal_ethiopic.html"/>
+      <item name="Gregorian" href="cal_gregorian.html"/>
+      <item name="GregorianJulian" href="cal_gj.html"/>
+      <item name="Islamic" href="cal_islamic.html"/>
+      <item name="Julian" href="cal_julian.html"/>
+    </menu>
+
+    <menu name="Development">
+      <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
+      <item name="Test results" href="surefire-report.html"/>
+      <!--item name="Test coverage" href="coverage/index.html"/-->
+      <item name="Mailing lists" href="mail-lists.html"/>
+      <item name="Tasks" href="tasks.html"/>
+      <item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/"/>
+      <item name="Javadoc (Development)" href="apidocs/index.html"/>
+    </menu>
+
+    <menu name="Joda">
+      <item name="Joda home" href="http://joda.sourceforge.net"/>
+      <item name="Beans" href="http://joda-beans.sourceforge.net/index.html"/>
+      <item name="Convert" href="http://joda-convert.sourceforge.net/index.html"/>
+      <item name="Money" href="http://joda-money.sourceforge.net/index.html"/>
+      <item name="Primitives" href="http://joda-primitives.sourceforge.net/index.html"/>
+    </menu>
+
+    <menu ref="reports"/>
+
+    <menu name="Website">
+      <item name="Privacy" href="privacy.html"/>
+    </menu>
+  </body>
+
+  <poweredBy>
+    <logo name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"
+        img="http://sourceforge.net/sflogo.php?group_id=274452&amp;type=2" width="125" height="37" />
+  </poweredBy>
+</project>

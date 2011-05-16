@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.5 to 1.6</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from
+version 1.5 to version 1.6.
+<source>
+Joda-Time version 1.6
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the seventh release of Joda-Time.
+This release contains enhancements, bug fixes and a time zone update.
+
+We recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://joda-time.sourceforge.net/related.html **
+
+********************************************************************
+ The next release will probably be v2.0
+ This will be source and binary compatible with the exception that
+ deprecated methods and classes will be removed.
+ If you rely on the deprecated methods or classes please move to
+ their replacements, or let us know why you can't move by writing
+ in https://sourceforge.net/forum/forum.php?forum_id=337835
+********************************************************************
+
+
+Enhancements since 1.5
+----------------------
+- Add static factory methods to Duration [1909376]
+  Duration now has four factory methods, standardDays(), standardHours(),
+  standardMinutes() and standardSeconds(). These create durations of the
+  length normally associated with a day/hour/minute/second
+
+- Added Duration.getStandardSeconds() and Duration.toStandardSeconds()
+  These convert a duration in milliseconds to a number of seconds.
+
+- Added OSGi bundle information [1889787]
+  Joda-Time should be usable directly as an OSGi bundle
+
+- Added stable Chronology hash code implementations [2018795]
+  The hash codes of each Chronology implementation is now stable.
+  This should aid large scale caching/distribution tools.
+
+- Added DateTimeZone.isLocalDateTimeGap
+  Returns true/false depending on whether the time is in a time-zone gap
+
+
+Compatibility with 1.5
+----------------------
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+  - DateTimeZone data updated to version 2008i
+
+Semantic compatible - Yes
+
+
+Deprecations since 1.5
+----------------------
+
+
+Bug fixes since 1.5
+-------------------
+- ISODateTimeFormat millisecond parsing broken
+  Millisecond parsing would parse 12:00:00.4 as 4 milliseconds rather
+  than 400 milliseconds
+
+- ISODateTimeFormat basic field parsing too lenient
+  The basic parsers in ISODateTimeFormat were too lenient
+  They have been changed to only accept the correct number of digits as
+  per the ISO-8601 standard. The non basic parsers are unaffected
+
+- DateTimeFormat.forFields(List) method can't handle immutable [1877843]
+  Fix so that the method does not throw an exception when an unmodifiable
+  list is passed in
+
+- Fixed offset time zones calculated incorrect periods
+  ZonedChronology.ZonedDuration.isPrecise() did not take into account
+  the decorated isPrecise() value. This meant that date fields for fixed
+  offset time zones were always considered precise. The result was periods
+  containing months and years when they should not have done.
+
+- ZonedChronology (regression from 1.4) [1887104]
+  Fix to roundFloor/roundCeiling
+  Bug affected DST cutover in Autumn for time fields (not date fields)
+  
+- Clarify Javadoc time zone formats
+  Time zone formats were incorrectly documented as 'Z' instead of 'ZZ'
+  Javadoc only change
+
+- Period formatting [2025928]
+  Formatting option printZeroRarelyFirst() did not work unless years
+  field was included.
+
+- DateTimeZone (regression from 1.4) [fix also available in v1.5.2]
+  Fix getOffsetFromLocal DST gap adjustment
+  Bug affected parsing of DST cutover in Autumn
+
+- Parsing (regression from 1.4) [1839440] [fix also available in v1.5.1]
+  Support parsing all upper-case and all lower-case text
+
+- Javadoc clarity enhancements [fix also available in v1.5.1]
+  - Constants in Years/Months/Weeks/Days/Hours/Minutes/Seconds etc.
+  - Period/Interval Object constructors
+</source>
+</p>
+</section>
+
+</body>
+</document>

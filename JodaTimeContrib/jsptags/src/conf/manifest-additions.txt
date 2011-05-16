@@ -1,3 +1,0 @@
-Specification-Version: 1.0
-Implementation-Version: 1.0.2
-Implementation-Vendor-Id: org.joda

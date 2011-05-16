@@ -104,9 +104,9 @@
     </license>
   </licenses>
   <scm>
-    <connection>scm:svn:http://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTime/</connection>
-    <developerConnection>scm:svn:https://joda-time.svn.sourceforge.net/svnroot/joda-time/trunk/JodaTime/</developerConnection>
-    <url>http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/</url>
+    <connection>scm:git:git@github.com:JodaOrg/joda-time.git</connection>
+    <developerConnection>scm:git:git@github.com:JodaOrg/joda-time.git</developerConnection>
+    <url>https://github.com/JodaOrg/joda-time</url>
   </scm>
   <organization>
     <name>Joda.org</name>
@@ -277,8 +277,7 @@
         <artifactId>maven-assembly-plugin</artifactId>
         <configuration>
           <descriptors>
-            <descriptor>src/main/assembly/src.xml</descriptor>
-            <descriptor>src/main/assembly/bin.xml</descriptor>
+            <descriptor>src/main/assembly/dist.xml</descriptor>
           </descriptors>
           <tarLongFileMode>gnu</tarLongFileMode>
         </configuration>
@@ -363,6 +362,17 @@
         <artifactId>maven-jxr-plugin</artifactId>
         <version>2.2</version>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <linkXref>true</linkXref>
+          <sourceEncoding>utf-8</sourceEncoding>
+          <minimumTokens>100</minimumTokens>
+          <targetJdk>1.5</targetJdk>
+        </configuration>
+      </plugin>
   	</plugins>
   </reporting>
   <distributionManagement>
@@ -382,7 +392,7 @@
     <site>
       <id>sf-web-joda-time</id>
       <name>Sourceforge Site</name>
-      <url>scp://shell.sourceforge.net/home/groups/j/jo/joda-time/htdocs</url>
+      <url>scpexe://shell.sourceforge.net/home/project-web/joda-time/htdocs</url>
     </site>
     <downloadUrl>http://oss.sonatype.org/content/repositories/joda-releases</downloadUrl>
   </distributionManagement>

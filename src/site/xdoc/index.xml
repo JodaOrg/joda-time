@@ -54,7 +54,8 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/org/joda/time/Date
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 2.0 was released on 2010-11-03 -
+Version 1.6.2 was released on 2010-09-14 -
+<!--Version 2.0 was released on 2010-11-03 - -->
 <a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Download now</a>
 </p>
 </section>
@@ -129,16 +130,29 @@ Various documentation is available:
 <li>Two user guides - <a href="quickstart.html">quick</a> and <a href="userguide.html">full</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
 <li>The javadoc for the <a href="api-release/index.html">current release</a></li>
-<li>The javadoc for the <a href="apidocs/index.html">latest code in development</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">latest source code</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>
-<li>The <a href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/">Subversion repository</a></li>
+<li>The <a href="https://github.com/JodaOrg/joda-time">GitHub</a> source repository</li>
 </ul>
 </p>
 </section>
 
 <section name="Releases">
 <p>
+<a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 1.6.2</a>
+is the current latest release.
+This release is considered stable and worthy of the 1.x tag.
+It has extensive testing suites and has been used in production.
+We now recommend JDK 1.4 or later, and have performed no testing on earlier JDKs.
+</p>
+<p>
+We will support the 1.x product line using standard Java mechanisms.
+The main public API will remain backwards compatible for both source and binary.
+The version number will change to 2.0 to indicate a change in compatibility.
+</p>
+
+<!--p>
 <a href="http://sourceforge.net/projects/joda-time/files/joda-time/">Release 2.0</a>
 is the current latest release.
 This release is considered stable and worthy of the 2.x tag.
@@ -155,7 +169,7 @@ providing they are using JDK 1.5 or later and are not using one of the deprecate
 We will support the 2.x product line using standard Java mechanisms.
 The main public API will remain backwards compatible for both source and binary in the 2.x stream.
 The version number will change to 3.0 to indicate a significant change in compatibility.
-</p>
+</p-->
 </section>
 
 <section name="Support">

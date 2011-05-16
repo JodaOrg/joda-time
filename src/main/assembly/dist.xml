@@ -1,5 +1,5 @@
 <assembly>
-    <id>bin</id>
+    <id>dist</id>
     <formats>
         <format>tar.gz</format>
         <format>zip</format>
@@ -8,11 +8,17 @@
     <fileSets>
         <fileSet>
             <includes>
+                <include>build.xml</include>
+                <include>checkstyle.xml</include>
                 <include>LICENSE.txt</include>
                 <include>NOTICE.txt</include>
                 <include>pom.xml</include>
                 <include>RELEASE-NOTES.txt</include>
+                <include>ToDo.txt</include>
             </includes>
+        </fileSet>
+        <fileSet>
+            <directory>src</directory>
         </fileSet>
         <fileSet>
             <directory>target</directory>

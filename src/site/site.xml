@@ -38,6 +38,7 @@
       <item name="Duration" href="key_duration.html"/>
       <item name="Period" href="key_period.html"/>
       <item name="Chronology" href="key_chronology.html"/>
+      <item name="Time zone update" href="tz_update.html"/>
     </menu>
 
     <menu name="Chronologies">
@@ -52,12 +53,13 @@
     </menu>
 
     <menu name="Development">
+      <item name="GitHub (Source code)" href="https://github.com/JodaOrg/joda-time"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
       <item name="Test results" href="surefire-report.html"/>
       <!--item name="Test coverage" href="coverage/index.html"/-->
       <item name="Mailing lists" href="mail-lists.html"/>
       <item name="Tasks" href="tasks.html"/>
-      <item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/"/>
+      <!--item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/"/-->
       <item name="Javadoc (Development)" href="apidocs/index.html"/>
     </menu>
 

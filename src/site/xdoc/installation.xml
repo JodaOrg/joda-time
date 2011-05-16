@@ -12,17 +12,18 @@
 <p>
 To use Joda-Time you need to
 <a href="http://sourceforge.net/projects/joda-time/files/joda-time/">download the latest version</a>.
-The download will contain the joda-time-2.0.jar.
+The download will contain the joda-time jar file.
 Once you add this to your classpath you will be able to use Joda-Time.
 </p>
 <p>
-The binary download also includes joda-time-2.0-sources.jar, which is a jar file
+The binary download also includes joda-time-sources.jar, which is a jar file
 of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 </p>
 <p>
 The release notes for upgraders can be found here:
 <ul>
-<li><a href="upgradeto200.html">Version 1.6 to Version 2.0</a></li>
+<!--li><a href="upgradeto200.html">Version 1.6 to Version 2.0</a></li-->
+<li><a href="upgradeto162.html">Version 1.6 to Version 1.6.2</a></li>
 <li><a href="upgradeto161.html">Version 1.6 to Version 1.6.1</a></li>
 <li><a href="upgradeto160.html">Version 1.5 to Version 1.6</a></li>
 <li><a href="upgradeto152.html">Version 1.5.1 to Version 1.5.2</a></li>
@@ -38,14 +39,8 @@ The release notes for upgraders can be found here:
 </p>
 <p>
 If you want to build Joda-Time from source you will need
-<a href="http://ant.apache.org">Apache Ant</a>.
-Simply call <code>ant jar</code> to compile and create a jar file.
-</p>
-<p>
-Compilation is also available using
-<a href="http://maven.apache.org">Apache Maven</a>.
-Maven is intended to be used primarily as a website generation tool.
-Ant is our preferred build tool.
+<a href="http://ant.apache.org">Apache Ant</a> or <a href="http://maven.apache.org">Apache Maven</a>.
+Search to find out more about building using those tools.
 </p>
 </section>
 </body>

@@ -75,6 +75,9 @@ Enhancements since 1.6
 - Add DateTime.withEarlierOffsetAtOverlap() .withLaterOffsetAtOverlap() [3192457]
   Allow fine grained control of the offset during a DST overlap
 
+- Add DateTime.withTimeAtStartOfDay() [3304757]
+  Provide a simple, reliable way to get the start of day from DateTime.
+
 - Add LocalDate.toDate() [2465359]
 - Add LocalDateTime.toDate()
   This provides a direct conversion to JDK Date which handles DST and

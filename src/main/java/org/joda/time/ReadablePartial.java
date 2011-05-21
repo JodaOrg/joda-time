@@ -19,14 +19,18 @@ package org.joda.time;
  * Defines a partial time that does not support every datetime field, and is
  * thus a local time.
  * <p>
- * A <code>ReadablePartial</code> supports a subset of those fields on the chronology.
- * It cannot be compared to a <code>ReadableInstant</code>, as it does not fully
+ * A {@code ReadablePartial} supports a subset of those fields on the chronology.
+ * It cannot be compared to a {@code ReadableInstant}, as it does not fully
  * specify an instant in time. The time it does specify is a local time, and does
  * not include a time zone.
  * <p>
- * A <code>ReadablePartial</code> can be converted to a <code>ReadableInstant</code>
- * using the <code>toDateTime</code> method. This works by providing a full base
+ * A {@code ReadablePartial} can be converted to a {@code ReadableInstant}
+ * using the {@code toDateTime} method. This works by providing a full base
  * instant that can be used to 'fill in the gaps' and specify a time zone.
+ * <p>
+ * {@code ReadablePartial} is {@code Comparable} from v2.0.
+ * The comparison is based on the fields, compared in order, from largest to smallest.
+ * The first field that is non-equal is used to determine the result.
  *
  * @author Stephen Colebourne
  * @since 1.0
@@ -145,27 +149,28 @@ public interface ReadablePartial extends Comparable<ReadablePartial> {
     int hashCode();
 
     //-----------------------------------------------------------------------
-    /**
-     * Compares this partial with another returning an integer
-     * indicating the order.
-     * <p>
-     * The fields are compared in order, from largest to smallest.
-     * The first field that is non-equal is used to determine the result.
-     * Thus a year-hour partial will first be compared on the year, and then
-     * on the hour.
-     * <p>
-     * The specified object must be a partial instance whose field types
-     * match those of this partial. If the partial instance has different
-     * fields then a {@code ClassCastException} is thrown.
-     *
-     * @param partial  an object to check against
-     * @return negative if this is less, zero if equal, positive if greater
-     * @throws ClassCastException if the partial is the wrong class
-     *  or if it has field types that don't match
-     * @throws NullPointerException if the partial is null
-     * @since 2.0, previously on {@code AbstractPartial}
-     */
-    int compareTo(ReadablePartial partial);
+//  This is commented out to improve backwards compatibility
+//    /**
+//     * Compares this partial with another returning an integer
+//     * indicating the order.
+//     * <p>
+//     * The fields are compared in order, from largest to smallest.
+//     * The first field that is non-equal is used to determine the result.
+//     * Thus a year-hour partial will first be compared on the year, and then
+//     * on the hour.
+//     * <p>
+//     * The specified object must be a partial instance whose field types
+//     * match those of this partial. If the partial instance has different
+//     * fields then a {@code ClassCastException} is thrown.
+//     *
+//     * @param partial  an object to check against
+//     * @return negative if this is less, zero if equal, positive if greater
+//     * @throws ClassCastException if the partial is the wrong class
+//     *  or if it has field types that don't match
+//     * @throws NullPointerException if the partial is null
+//     * @since 2.0, previously on {@code AbstractPartial}
+//     */
+//    int compareTo(ReadablePartial partial);
 
     //-----------------------------------------------------------------------
     /**

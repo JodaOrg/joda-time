@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -297,13 +297,8 @@ public abstract class AbstractPartial
      * The specified object must be a partial instance whose field types
      * match those of this partial.
      * <p>
-     * NOTE: This implementation violates the Comparable contract.
-     * This method will accept any instance of ReadablePartial as input.
-     * However, it is possible that some implementations of ReadablePartial
-     * exist that do not extend AbstractPartial, and thus will throw a
-     * ClassCastException if compared in the opposite direction.
-     * The cause of this problem is that ReadablePartial doesn't define
-     * the compareTo() method, however we can't change that until v2.0.
+     * NOTE: Prior to v2.0, the {@code Comparable} interface was only implemented
+     * in this class and not in the {@code ReadablePartial} interface.
      *
      * @param other  an object to check against
      * @return negative if this is less, zero if equal, positive if greater

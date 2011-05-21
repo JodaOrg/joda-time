@@ -103,6 +103,11 @@ Compatibility with 1.6
 Binary compatible - Not fully, see below:
 Source compatible - Not fully, see below:
 
+Where possible, changes are binary compatible and source compatible.
+The primary binary incompatible changes are the removal of the deprecated methods and
+the addition of Comparable to ReadablePartial.
+Testing has included clirr, javap and manual testing of old files with new code.
+
 Deprecated methods removed:
 - Chronology.getISO()
 - Chronology.getISOUTC()
@@ -123,9 +128,9 @@ Deprecated methods removed:
 - Chronology.getCopticUTC()
 - Chronology.getCoptic(DateTimeZone)
 
-Apart from the removal of the deprecated methods above, everything else should be binary compatible.
-Testing has included clirr, javap and manual testing of old files with new code.
-If you find something that isn't binary compatible then please let us know, although it may be too late to fix it.
+ReadablePartial has had the Comparable interface added (was previously just Javadoc).
+Any implementation that extended AbstractPartial should have no problems, however any implementation
+that extended ReadablePartial directly without implementing Comparable will be incompatible.
 
 Any direct implementations of ReadableInstant or ReadableDuration are not source compatible.
 This is because of the additional generics in Comparable.

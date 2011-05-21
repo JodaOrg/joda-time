@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -1470,6 +1470,11 @@ public final class LocalDateTime
 
     /**
      * Get the week of weekyear field value.
+     * <p>
+     * This field is associated with the "weekyear" via {@link #getWeekyear()}.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
      *
      * @return the week of a week based year
      */
@@ -1633,6 +1638,12 @@ public final class LocalDateTime
     /**
      * Returns a copy of this datetime with the weekyear field updated.
      * <p>
+     * The weekyear is the year that matches with the weekOfWeekyear field.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
+     * The weekyear allows you to query the effective year for that day.
+     * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of
      * weekyear changed.
@@ -1662,6 +1673,11 @@ public final class LocalDateTime
 
     /**
      * Returns a copy of this datetime with the week of weekyear field updated.
+     * <p>
+     * This field is associated with the "weekyear" via {@link #withWeekyear(int)}.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
      * <p>
      * LocalDateTime is immutable, so there are no set methods.
      * Instead, this method returns a new instance with the value of

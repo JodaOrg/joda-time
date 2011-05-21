@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -58,6 +58,11 @@ public interface ReadableDateTime extends ReadableInstant {
 
     /**
      * Get the week of weekyear field value.
+     * <p>
+     * This field is associated with the "weekyear" via {@link #getWeekyear()}.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
      * 
      * @return the week of a week based year
      */
@@ -65,6 +70,12 @@ public interface ReadableDateTime extends ReadableInstant {
 
     /**
      * Get the weekyear field value.
+     * <p>
+     * The weekyear is the year that matches with the weekOfWeekyear field.
+     * In the standard ISO8601 week algorithm, the first week of the year
+     * is that in which at least 4 days are in the year. As a result of this
+     * definition, day 1 of the first week may be in the previous year.
+     * The weekyear allows you to query the effective year for that day.
      * 
      * @return the year of a week based year
      */

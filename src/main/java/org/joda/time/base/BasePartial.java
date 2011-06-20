@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -48,9 +48,9 @@ public abstract class BasePartial
     private static final long serialVersionUID = 2353678632973660L;
 
     /** The chronology in use */
-    private Chronology iChronology;
+    private final Chronology iChronology;
     /** The values of each field in this partial */
-    private int[] iValues;
+    private final int[] iValues;
 
     //-----------------------------------------------------------------------
     /**
@@ -251,7 +251,11 @@ public abstract class BasePartial
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the value of the field at the specifed index.
+     * Sets the value of the field at the specified index.
+     * <p>
+     * In version 2.0 and later, this method copies the array into the original.
+     * This is because the instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      * 
      * @param index  the index
      * @param value  the value to set
@@ -259,17 +263,22 @@ public abstract class BasePartial
      */
     protected void setValue(int index, int value) {
         DateTimeField field = getField(index);
-        iValues = field.set(this, index, iValues, value);
+        int[] values = field.set(this, index, iValues, value);
+        System.arraycopy(values, 0, iValues, 0, iValues.length);
     }
 
     /**
      * Sets the values of all fields.
+     * <p>
+     * In version 2.0 and later, this method copies the array into the original.
+     * This is because the instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      * 
      * @param values  the array of values
      */
     protected void setValues(int[] values) {
         getChronology().validate(this, values);
-        iValues = values;
+        System.arraycopy(values, 0, iValues, 0, iValues.length);
     }
 
     //-----------------------------------------------------------------------

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2007 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -53,11 +53,22 @@ public abstract class BasePeriod
 
     /** Serialization version */
     private static final long serialVersionUID = -2110953284060001145L;
+    /** Serialization version */
+    private static final ReadablePeriod DUMMY_PERIOD = new AbstractPeriod() {
+        @Override
+        public int getValue(int index) {
+            return 0;
+        }
+        @Override
+        public PeriodType getPeriodType() {
+            return PeriodType.time();
+        }
+    };
 
     /** The type of period */
-    private PeriodType iType;
+    private final PeriodType iType;
     /** The values */
-    private int[] iValues;
+    private final int[] iValues;
 
     //-----------------------------------------------------------------------
     /**
@@ -81,7 +92,7 @@ public abstract class BasePeriod
         super();
         type = checkPeriodType(type);
         iType = type;
-        setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis); // internal method
+        iValues = setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis); // internal method
     }
 
     /**
@@ -221,9 +232,10 @@ public abstract class BasePeriod
     protected BasePeriod(long duration) {
         super();
         // bug [3264409]
-        iType = PeriodType.time();
-        int[] values = ISOChronology.getInstanceUTC().get(this, duration);
+        // calculation uses period type from a period object (bad design)
+        // thus we use a dummy period object with the time type
         iType = PeriodType.standard();
+        int[] values = ISOChronology.getInstanceUTC().get(DUMMY_PERIOD, duration);
         iValues = new int[8];
         System.arraycopy(values, 0, iValues, 4, 4);
     }
@@ -308,27 +320,6 @@ public abstract class BasePeriod
         return iType;
     }
 
-    //-----------------------------------------------------------------------
-    /**
-     * Gets the number of fields that this period supports.
-     *
-     * @return the number of fields supported
-     */
-    public int size() {
-        return iType.size();
-    }
-
-    /**
-     * Gets the field type at the specified index.
-     *
-     * @param index  the index to retrieve
-     * @return the field at the specified index
-     * @throws IndexOutOfBoundsException if the index is invalid
-     */
-    public DurationFieldType getFieldType(int index) {
-        return iType.getFieldType(index);
-    }
-
     /**
      * Gets the value at the specified index.
      *
@@ -391,7 +382,7 @@ public abstract class BasePeriod
     //-----------------------------------------------------------------------
     /**
      * Checks whether a field type is supported, and if so adds the new value
-     * to the relevent index in the specified array.
+     * to the relevant index in the specified array.
      * 
      * @param type  the field type
      * @param values  the array to update
@@ -434,7 +425,7 @@ public abstract class BasePeriod
             int value = period.getValue(i);
             checkAndUpdate(type, newValues, value);
         }
-        iValues = newValues;
+        setValues(newValues);
     }
 
     /**
@@ -452,13 +443,14 @@ public abstract class BasePeriod
      */
     protected void setPeriod(int years, int months, int weeks, int days,
                              int hours, int minutes, int seconds, int millis) {
-        setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis);
+        int[] newValues = setPeriodInternal(years, months, weeks, days, hours, minutes, seconds, millis);
+        setValues(newValues);
     }
 
     /**
      * Private method called from constructor.
      */
-    private void setPeriodInternal(int years, int months, int weeks, int days,
+    private int[] setPeriodInternal(int years, int months, int weeks, int days,
                                    int hours, int minutes, int seconds, int millis) {
         int[] newValues = new int[size()];
         checkAndUpdate(DurationFieldType.years(), newValues, years);
@@ -469,7 +461,7 @@ public abstract class BasePeriod
         checkAndUpdate(DurationFieldType.minutes(), newValues, minutes);
         checkAndUpdate(DurationFieldType.seconds(), newValues, seconds);
         checkAndUpdate(DurationFieldType.millis(), newValues, millis);
-        iValues = newValues;
+        return newValues;
     }
 
     //-----------------------------------------------------------------------
@@ -543,7 +535,7 @@ public abstract class BasePeriod
      */
     protected void mergePeriod(ReadablePeriod period) {
         if (period != null) {
-            iValues = mergePeriodInto(getValues(), period);
+            setValues(mergePeriodInto(getValues(), period));
         }
     }
 
@@ -572,7 +564,7 @@ public abstract class BasePeriod
      */
     protected void addPeriod(ReadablePeriod period) {
         if (period != null) {
-            iValues = addPeriodInto(getValues(), period);
+            setValues(addPeriodInto(getValues(), period));
         }
     }
 
@@ -603,7 +595,7 @@ public abstract class BasePeriod
 
     //-----------------------------------------------------------------------
     /**
-     * Sets the value of the field at the specifed index.
+     * Sets the value of the field at the specified index.
      * 
      * @param index  the index
      * @param value  the value to set
@@ -615,11 +607,15 @@ public abstract class BasePeriod
 
     /**
      * Sets the values of all fields.
+     * <p>
+     * In version 2.0 and later, this method copies the array into the original.
+     * This is because the instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      * 
      * @param values  the array of values
      */
     protected void setValues(int[] values) {
-        iValues = values;
+        System.arraycopy(values, 0, iValues, 0, iValues.length);
     }
 
 }

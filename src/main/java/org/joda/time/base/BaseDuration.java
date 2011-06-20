@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ public abstract class BaseDuration
     private static final long serialVersionUID = 2581698638990L;
 
     /** The duration length */
-    private long iMillis;
+    private final long iMillis;
 
     /**
      * Creates a duration from the given millisecond duration.
@@ -118,11 +118,15 @@ public abstract class BaseDuration
     //-----------------------------------------------------------------------
     /**
      * Sets the length of this duration in milliseconds.
+     * <p>
+     * In version 2.0 and later, this method uses reflection. This is because the
+     * instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      * 
      * @param duration  the new length of the duration
      */
     protected void setMillis(long duration) {
-        iMillis = duration;
+        MutableHelper.setDurationMillis(this, duration);
     }
 
     //-----------------------------------------------------------------------

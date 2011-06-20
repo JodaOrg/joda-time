@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -48,9 +48,9 @@ public abstract class BaseDateTime
     private static final long serialVersionUID = -6728882245981L;
 
     /** The millis from 1970-01-01T00:00:00Z */
-    private long iMillis;
+    private final long iMillis;
     /** The chronology to use */
-    private Chronology iChronology;
+    private final Chronology iChronology;
 
     //-----------------------------------------------------------------------
     /**
@@ -310,11 +310,16 @@ public abstract class BaseDateTime
      * <p>
      * All changes to the millisecond field occurs via this method.
      * Override and block this method to make a subclass immutable.
+     * <p>
+     * In version 2.0 and later, this method uses reflection. This is because the
+     * instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      *
      * @param instant  the milliseconds since 1970-01-01T00:00:00Z to set the datetime to
      */
     protected void setMillis(long instant) {
-        iMillis = checkInstant(instant, iChronology);
+        instant = checkInstant(instant, iChronology);
+        MutableHelper.setDateTimeMillis(this, instant);
     }
 
     /**
@@ -322,11 +327,16 @@ public abstract class BaseDateTime
      * <p>
      * All changes to the chronology field occurs via this method.
      * Override and block this method to make a subclass immutable.
+     * <p>
+     * In version 2.0 and later, this method uses reflection. This is because the
+     * instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      *
      * @param chronology  the chronology to set
      */
     protected void setChronology(Chronology chronology) {
-        iChronology = checkChronology(chronology);
+        chronology = checkChronology(chronology);
+        MutableHelper.setDateTimeChrono(this, chronology);
     }
 
 }

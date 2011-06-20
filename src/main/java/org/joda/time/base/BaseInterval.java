@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import java.io.Serializable;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.MutableInterval;
-import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadableInterval;
@@ -53,11 +52,11 @@ public abstract class BaseInterval
     private static final long serialVersionUID = 576586928732749278L;
 
     /** The chronology of the interval */
-    private Chronology iChronology;
+    private final Chronology iChronology;
     /** The start of the interval */
-    private long iStartMillis;
+    private final long iStartMillis;
     /** The end of the interval */
-    private long iEndMillis;
+    private final long iEndMillis;
 
     /**
      * Constructs an interval from a start and end instant.
@@ -193,8 +192,6 @@ public abstract class BaseInterval
             iChronology = (chrono != null ? chrono : input.getChronology());
             iStartMillis = input.getStartMillis();
             iEndMillis = input.getEndMillis();
-        } else if (this instanceof ReadWritableInterval) {
-            converter.setInto((ReadWritableInterval) this, interval, chrono);
         } else {
             MutableInterval mi = new MutableInterval();
             converter.setInto(mi, interval, chrono);
@@ -238,6 +235,10 @@ public abstract class BaseInterval
     //-----------------------------------------------------------------------
     /**
      * Sets this interval from two millisecond instants and a chronology.
+     * <p>
+     * In version 2.0 and later, this method uses reflection. This is because the
+     * instance variable has been changed to be final to satisfy the Java Memory Model.
+     * This only impacts subclasses that are mutable.
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
@@ -246,9 +247,7 @@ public abstract class BaseInterval
      */
     protected void setInterval(long startInstant, long endInstant, Chronology chrono) {
         checkInterval(startInstant, endInstant);
-        iStartMillis = startInstant;
-        iEndMillis = endInstant;
-        iChronology = DateTimeUtils.getChronology(chrono);
+        MutableHelper.setInterval(this, startInstant, endInstant, DateTimeUtils.getChronology(chrono));
     }
 
 }

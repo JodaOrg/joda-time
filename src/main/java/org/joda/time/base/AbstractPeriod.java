@@ -47,6 +47,28 @@ public abstract class AbstractPeriod implements ReadablePeriod {
 
     //-----------------------------------------------------------------------
     /**
+     * Gets the number of fields that this period supports.
+     *
+     * @return the number of fields supported
+     * @since 2.0 (previously on BasePeriod)
+     */
+    public int size() {
+        return getPeriodType().size();
+    }
+
+    /**
+     * Gets the field type at the specified index.
+     *
+     * @param index  the index to retrieve
+     * @return the field at the specified index
+     * @throws IndexOutOfBoundsException if the index is invalid
+     * @since 2.0 (previously on BasePeriod)
+     */
+    public DurationFieldType getFieldType(int index) {
+        return getPeriodType().getFieldType(index);
+    }
+
+    /**
      * Gets an array of the field types that this period supports.
      * <p>
      * The fields are returned largest to smallest, for example Hours, Minutes, Seconds.

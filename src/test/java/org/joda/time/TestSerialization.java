@@ -220,6 +220,12 @@ public class TestSerialization extends TestCase {
         inlineCompare(test, true);
     }
 
+    public void testDuration() throws Exception {
+        Duration test = Duration.millis(12345);
+        loadAndCompare(test, "Duration", false);
+        inlineCompare(test, false);
+    }
+
     public void testSerializedCopticChronology() throws Exception {
         CopticChronology test = CopticChronology.getInstance(LONDON);
         loadAndCompare(test, "CopticChronology", true);
@@ -483,6 +489,11 @@ public class TestSerialization extends TestCase {
 //    public void testStoreSerializedDateMidnightProperty() throws Exception {
 //        DateMidnight.Property test = new DateMidnight().monthOfYear();
 //        store(test, "DateMidnightProperty.dat");
+//    }
+//
+//    public void testStoreSerializedDateMidnightProperty() throws Exception {
+//        Duration test = Duration.millis(12345);
+//        store(test, "Duration.dat");
 //    }
 
     private void store(Serializable test, String filename) throws Exception {

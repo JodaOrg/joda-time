@@ -11,10 +11,11 @@ We require JDK 1.5 or later as features such as generics are used.
 It may be possible to use retroweaver to compile this under an earlier JDK but we haven't tried.
 
 ******************************************************************************
-Compatibility
-The change in major version indicates compatibility issues.
-If your code just _used_ Joda-Time and had no deprecation warnings then this
-release is fully compatible. Otherwise you need to read the detailed notes.
+ Compatibility
+ The change in major version indicates compatibility issues.
+ Please read the detailed notes below.
+ If your code just _used_ Joda-Time and had no deprecation warnings then you
+ will _probably_ see no issues. 
 ******************************************************************************
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.

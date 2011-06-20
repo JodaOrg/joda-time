@@ -26,10 +26,11 @@ We require JDK 1.5 or later as features such as generics are used.
 It may be possible to use retroweaver to compile this under an earlier JDK but we haven't tried.
 
 ******************************************************************************
-Compatibility
-The change in major version indicates compatibility issues.
-If your code just _used_ Joda-Time and had no deprecation warnings then this
-release is fully compatible. Otherwise you need to read the detailed notes.
+ Compatibility
+ The change in major version indicates compatibility issues.
+ Please read the detailed notes below.
+ If your code just _used_ Joda-Time and had no deprecation warnings then you
+ will _probably_ see no issues. 
 ******************************************************************************
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
@@ -58,6 +59,15 @@ Enhancements since 1.6
   Currently supported (via online translators) are English, German, Dutch,
   French, Spanish and Portuguese. Corrections and additional languages welcome.
 
+- Static parse() methods available on all major types
+  These allow the formatter to be controlled
+  They do not always parse the same formats as the constructor taking an object
+
+- Parsing of month and day without year now handles February 29th
+  This is achieved by changing the default year from 1970 to 2000 when parsing
+  a month or day without a year. This behaviour can be controlled using the new
+  withDefaultYear() setting on the formatter (set to 1970 for the old behaviour).
+
 - Add static factory method millis() to Duration [2648777]
   This checks for and returns the singleton value for ZERO
 
@@ -78,6 +88,12 @@ Enhancements since 1.6
   For example, the LocalDate parse will parse any time or offset from the string, but
   will completely ignore them when returning the actual LocalDate.
 
+- Add DateTime.withEarlierOffsetAtOverlap() .withLaterOffsetAtOverlap() [3192457]
+  Allow fine grained control of the offset during a DST overlap
+
+- Add DateTime.withTimeAtStartOfDay() [3304757]
+  Provide a simple, reliable way to get the start of day from DateTime.
+
 - Add LocalDate.toDate() [2465359]
 - Add LocalDateTime.toDate()
   This provides a direct conversion to JDK Date which handles DST and
@@ -90,6 +106,9 @@ Enhancements since 1.6
 
 - DateTimeFormatter convenience methods taking an Appendable [2607923]
 
+- Add @FromString/@ToString annotations from joda-convert
+  This does NOT require the inclusion of joda-convert at runtime!
+
 - Reduce logging from ZoneInfoCompiler by adding a verbose flag
 
 - Better Javadoc of DateTimeZone.default behaviour
@@ -99,6 +118,11 @@ Compatibility with 1.6
 ----------------------
 Binary compatible - Not fully, see below:
 Source compatible - Not fully, see below:
+
+Where possible, changes are binary compatible and source compatible.
+The primary binary incompatible changes are the removal of the deprecated methods and
+the addition of Comparable to ReadablePartial.
+Testing has included clirr, javap and manual testing of old files with new code.
 
 Deprecated methods removed:
 - Chronology.getISO()
@@ -120,28 +144,65 @@ Deprecated methods removed:
 - Chronology.getCopticUTC()
 - Chronology.getCoptic(DateTimeZone)
 
-Apart from the removal of the deprecated methods above, everything else should be binary compatible.
-Testing has included clirr, javap and manual testing of old files with new code.
-If you find something that isn't binary compatible then please let us know, although it may be too late to fix it.
+ReadablePartial has had the Comparable interface added (was previously just Javadoc).
+Any implementation that extended AbstractPartial should have no problems, however any implementation
+that extended ReadablePartial directly without implementing Comparable will be incompatible.
 
 Any direct implementations of ReadableInstant or ReadableDuration are not source compatible.
 This is because of the additional generics in Comparable.
 Your code will be source compatible if you extended AbstractInstant or AbstractDuration.
-This very minor source compatability change was deemed to be the best balance of the various
+This minor source incompatibility for a very few users was deemed to be the best balance of the various
 difficult options that generics offers.
 As mentioned above, erasure ensures that this source incompatibility is *not* a binary compatibility.
 
+The fields in the Base* classes, such as BaseDateTime and BaseDuration have been made final.
+This was necessary to comply with the Java Memory Model to ensure correct immutable behaviour
+The setters have been altered to set the variable via reflection (which can avoid the final field restriction).
+This may have an adverse effect on performance of mutable classes (use the immutable classes instead).
+
 Note that not all deprecated elements have been removed.
-Some methods and classes have been retained simply because the potential pain of binary compatability
+Some methods and classes have been retained simply because the potential pain of binary incompatability
 is greater than the gain of removing the deprecations.
 
 Serialization compatible - Yes
 
 Data compatible - Yes, except
-  - DateTimeZone data updated to version 2010o
+  - DateTimeZone data updated to version 2011g
 
 Semantic compatible - Yes, except
 Previously, DateTimeZone.forID matched time zone names case-insensitively, now it is case-sensitive
+
+Previously, parsing a string where only the month and/or day is present would use 1970 as
+the base year. This failed to handle February 29th. The new behaviour is as follows:
+If the parse includes a field with a duration between months and days inclusive and does not include
+any field larger than months, then the default year is changed to the value of getDefaultYear() on
+DateTimeFormatter, which is the year 2000 by default.
+In effect, this means that a pattern "ddMMM" which would previously have parsed to dates
+in 1970 will now parse to dates in 2000 unless further customised.
+The old behaviour can be simulated by calling withDefautYear(1970) on the formatter.
+
+Previously, calling various methods during a daylight savings overlap would change the offset.
+Now, most methods (such as withMillis/withSeconds/withMinutes/...) will retain the offset wherever possible.
+
+Previously, calling DateTimeZone.getOffsetFromLocal during a daylight savings overlap chose the
+earlier instant in the Western hemisphere and the later instant in the Eastern hemisphere.
+Now, it always returns the earlier instant (summer time) during an overlap.
+This affects the constructor of DateTime and other methods.
+
+Previously, DateTimeZone.getMillisKeepLocal used DateTimeZone.getOffsetFromLocal, now it uses
+DateTimeZone.convertUTCToLocal and DateTimeZone.convertLocalToUTC retaining the offset where possible
+
+Previously, some parses of mixed weekyear and month formats would yield a result about a year out
+Now, most (but not all) of these give a more appropriate result
+
+Previously, java.util.TimeZone "MET" was incorrectly mapped to "Asia/Tehran".
+It is now mapped to "CET" (Central European Time).
+
+Previously, java.util.TimeZone "EET", "WET", "ECT" were mapped to European cities.
+They are now mapped to "EET", "WET" and "CET" respectively.
+
+Previously, java.util.TimeZone "IET", "AGT", "IST" and "VST" were mapped to old time-zone IDs.
+They are now mapped to the newer IDs "America/Indiana/Indianapolis", "America/Argentina/Buenos_Aires", "Asia/Kolkata" and "Asia/Ho_Chi_Minh".
 
 
 Deprecations since 1.6
@@ -158,14 +219,36 @@ Bug fixes since 1.6
 - LocalDate.toInterval() [2487417]
   Now handles time zones which have no midnight at DST cutover
 
+- DateTimeZone.convertLocalToUTC [3102760,2182444,2553453]
+  New method now retains the offset wherever possible during calculations
+  This affects higher methods like withHourOfDay/withMinuteOfHour/withSecondOfMinute/withMillisOfSecond
+  which now do not change offset when called within a DST overlap
+
 - DateTimeZone.convertLocalToUTC [2903029]
   Now handles date after last ever DST change
+
+- DateTimeZone.getOffsetFromLocal [2952991]
+  The behaviour during DST overlaps is now defined to always return the earlier instant
+  which is normally known as daylight or summer time. Previously, the result varied by hemisphere
+  This affects the constructor of DateTime and other methods
+
+- DateTimeZone.getMillisKeepLocal
+  The behaviour now retains the offset when changing zones where possible
+  This affects DateTime.withZoneRetainFields and MutableDateTime.setZoneRetainFields
 
 - DateTimeZone.getDefault [3048468,3056104]
   Handle missing user.timezone system property on Android that resulted in stack overflow
 
+- DateTimeZone.forTimeZone [3216471]
+  Time-zone ID "MET" from java.util.TimeZone is now mapped correctly.
+  See compatibility notes above.
+
 - Duration.toString
   Fixed to work correctly for negative values
+
+- Duraton.toPeriod(), new Period(long), new MutablePeriod(long) [3264409]
+  Fixed to obey Javadoc.
+  Previously, they didn't obey the Javadoc if the default time-zone had no daylight savings.
 
 - Period formatting concurrency [2820871]
   Fix possible concurrency hole in PeriodFormatBuilder.Separator
@@ -181,9 +264,20 @@ Bug fixes since 1.6
 - DateTimeZone.forID(String) now case-sensitive
   Previously, it was case-insensitive
 
+- Handle broken serialization in other tools [3117678]
+  Some tools can't handle the joda-time stub serialization, kludge a fix for them
+
+- Standard DateTimeFieldType implements hashCode and equals for stability across serialization
+
+- Conversion from parsed values to a date-time handles weird sets of fields better [3161586]
+  This change is mostly for combinations like weekyear-month-week
+  The new code doesn't handle all combinations perfectly, but its better than it was
+
 - Time zone compiler now handles 24:00 [2804258]
 
 - Time zone compiler now handles non-UTC better
+
+- Remove OSGi BundleExecutionEnvironment [3175068,3175612]
 
 - Javadoc fix in Months [2721880]
 

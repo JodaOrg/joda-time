@@ -151,7 +151,7 @@ is greater than the gain of removing the deprecations.
 Serialization compatible - Yes
 
 Data compatible - Yes, except
-  - DateTimeZone data updated to version 2010o
+  - DateTimeZone data updated to version 2011g
 
 Semantic compatible - Yes, except
 Previously, DateTimeZone.forID matched time zone names case-insensitively, now it is case-sensitive

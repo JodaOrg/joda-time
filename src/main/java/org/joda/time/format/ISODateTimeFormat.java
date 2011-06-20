@@ -554,6 +554,7 @@ public class ISODateTimeFormat {
     //-----------------------------------------------------------------------
     /**
      * Returns a generic ISO date parser for parsing dates with a possible zone.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * date              = date-element ['T' offset]
@@ -599,6 +600,7 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a generic ISO date parser for parsing dates.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * date-element      = std-date-element | ord-date-element | week-date-element
@@ -636,6 +638,8 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a generic ISO time parser for parsing times with a possible zone.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * time           = ['T'] time-element [offset]
@@ -660,6 +664,7 @@ public class ISODateTimeFormat {
     /**
      * Returns a generic ISO time parser for parsing local times.
      * This parser is initialised with the local (UTC) time zone.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * <p>
      * It accepts formats described by the following syntax:
      * <pre>
@@ -682,8 +687,10 @@ public class ISODateTimeFormat {
     }
 
     /**
-     * Returns a generic ISO time parser. It accepts formats described by
-     * the following syntax:
+     * Returns a generic ISO time parser.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
+     * <p>
+     * It accepts formats described by the following syntax:
      * <pre>
      * time-element   = HH [minute-element] | [fraction]
      * minute-element = ':' mm [second-element] | [fraction]
@@ -746,7 +753,9 @@ public class ISODateTimeFormat {
 
     /**
      * Returns a generic ISO datetime parser which parses either a date or
-     * a time or both. It accepts formats described by the following syntax:
+     * a time or both. The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
+     * <p>
+     * It accepts formats described by the following syntax:
      * <pre>
      * datetime          = time | date-opt-time
      * time              = 'T' time-element [offset]
@@ -781,6 +790,8 @@ public class ISODateTimeFormat {
     /**
      * Returns a generic ISO datetime parser where the date is mandatory and
      * the time is optional. This parser can parse zoned datetimes.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
+     * <p>
      * It accepts formats described by the following syntax:
      * <pre>
      * date-opt-time     = date-element ['T' [time-element] [offset]]
@@ -814,6 +825,7 @@ public class ISODateTimeFormat {
      * Returns a generic ISO datetime parser where the date is mandatory and
      * the time is optional. This parser only parses local datetimes.
      * This parser is initialised with the local (UTC) time zone.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * <p>
      * It accepts formats described by the following syntax:
      * <pre>
@@ -859,6 +871,7 @@ public class ISODateTimeFormat {
      * hour, two digit second of minute, three digit fraction of second, and
      * time zone offset (HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for HH:mm:ss.SSSZZ
      */
@@ -876,6 +889,7 @@ public class ISODateTimeFormat {
      * Returns a formatter for a two digit hour of day, two digit minute of
      * hour, two digit second of minute, and time zone offset (HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for HH:mm:ssZZ
      */
@@ -894,6 +908,7 @@ public class ISODateTimeFormat {
      * hour, two digit second of minute, three digit fraction of second, and
      * time zone offset prefixed by 'T' ('T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for 'T'HH:mm:ss.SSSZZ
      */
@@ -912,6 +927,7 @@ public class ISODateTimeFormat {
      * hour, two digit second of minute, and time zone offset prefixed
      * by 'T' ('T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for 'T'HH:mm:ssZZ
      */
@@ -929,6 +945,7 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full date and time, separated by a 'T'
      * (yyyy-MM-dd'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ss.SSSZZ
      */
@@ -946,6 +963,7 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full date and time without millis,
      * separated by a 'T' (yyyy-MM-dd'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyy-MM-dd'T'HH:mm:ssZZ
      */
@@ -980,6 +998,7 @@ public class ISODateTimeFormat {
      * Returns a formatter for a full ordinal date and time, using a four
      * digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyy-DDD'T'HH:mm:ss.SSSZZ
      * @since 1.1
@@ -998,6 +1017,7 @@ public class ISODateTimeFormat {
      * Returns a formatter for a full ordinal date and time without millis,
      * using a four digit year and three digit dayOfYear (yyyy-DDD'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyy-DDD'T'HH:mm:ssZZ
      * @since 1.1
@@ -1026,6 +1046,7 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full weekyear date and time,
      * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ss.SSSZZ
      */
@@ -1043,6 +1064,7 @@ public class ISODateTimeFormat {
      * Returns a formatter that combines a full weekyear date and time without millis,
      * separated by a 'T' (xxxx-'W'ww-e'T'HH:mm:ssZZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HH:mm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for xxxx-'W'ww-e'T'HH:mm:ssZZ
      */
@@ -1079,6 +1101,7 @@ public class ISODateTimeFormat {
      * of hour, two digit second of minute, three digit millis, and time zone
      * offset (HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for HHmmss.SSSZ
      */
@@ -1100,6 +1123,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter for a two digit hour of day, two digit minute
      * of hour, two digit second of minute, and time zone offset (HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for HHmmssZ
      */
@@ -1120,6 +1144,7 @@ public class ISODateTimeFormat {
      * of hour, two digit second of minute, three digit millis, and time zone
      * offset prefixed by 'T' ('T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for 'T'HHmmss.SSSZ
      */
@@ -1138,6 +1163,7 @@ public class ISODateTimeFormat {
      * of hour, two digit second of minute, and time zone offset prefixed by 'T'
      * ('T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for 'T'HHmmssZ
      */
@@ -1155,6 +1181,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter that combines a basic date and time, separated
      * by a 'T' (yyyyMMdd'T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyyMMdd'T'HHmmss.SSSZ
      */
@@ -1172,6 +1199,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter that combines a basic date and time without millis,
      * separated by a 'T' (yyyyMMdd'T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyyMMdd'T'HHmmssZ
      */
@@ -1206,6 +1234,7 @@ public class ISODateTimeFormat {
      * Returns a formatter for a full ordinal date and time, using a four
      * digit year and three digit dayOfYear (yyyyDDD'T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyyDDD'T'HHmmss.SSSZ
      * @since 1.1
@@ -1224,6 +1253,7 @@ public class ISODateTimeFormat {
      * Returns a formatter for a full ordinal date and time without millis,
      * using a four digit year and three digit dayOfYear (yyyyDDD'T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for yyyyDDD'T'HHmmssZ
      * @since 1.1
@@ -1260,6 +1290,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter that combines a basic weekyear date and time,
      * separated by a 'T' (xxxx'W'wwe'T'HHmmss.SSSZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for xxxx'W'wwe'T'HHmmss.SSSZ
      */
@@ -1277,6 +1308,7 @@ public class ISODateTimeFormat {
      * Returns a basic formatter that combines a basic weekyear date and time
      * without millis, separated by a 'T' (xxxx'W'wwe'T'HHmmssZ).
      * The time zone offset is 'Z' for zero, and of the form '\u00b1HHmm' for non-zero.
+     * The parser is strict by default, thus time string {@code 24:00} cannot be parsed.
      * 
      * @return a formatter for xxxx'W'wwe'T'HHmmssZ
      */

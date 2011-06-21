@@ -50,7 +50,7 @@ public abstract class BaseSingleFieldPeriod
     private static final long serialVersionUID = 9386874258972L;
 
     /** The period in the units of this period. */
-    private final int iPeriod;
+    private volatile int iPeriod;
 
     //-----------------------------------------------------------------------
     /**
@@ -169,15 +169,11 @@ public abstract class BaseSingleFieldPeriod
     /**
      * Sets the amount of this period.
      * To make a subclass immutable you must declare it final, or block this method.
-     * <p>
-     * In version 2.0 and later, this method uses reflection. This is because the
-     * instance variable has been changed to be final to satisfy the Java Memory Model.
-     * This only impacts subclasses that are mutable.
      *
      * @param value  the period value
      */
     protected void setValue(int value) {
-        MutableHelper.setSingleFieldPeriodValue(this, value);
+        iPeriod = value;
     }
 
     //-----------------------------------------------------------------------

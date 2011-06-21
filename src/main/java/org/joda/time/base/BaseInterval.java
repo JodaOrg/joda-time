@@ -20,6 +20,7 @@ import java.io.Serializable;
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.MutableInterval;
+import org.joda.time.ReadWritableInterval;
 import org.joda.time.ReadableDuration;
 import org.joda.time.ReadableInstant;
 import org.joda.time.ReadableInterval;
@@ -52,11 +53,11 @@ public abstract class BaseInterval
     private static final long serialVersionUID = 576586928732749278L;
 
     /** The chronology of the interval */
-    private final Chronology iChronology;
+    private volatile Chronology iChronology;
     /** The start of the interval */
-    private final long iStartMillis;
+    private volatile long iStartMillis;
     /** The end of the interval */
-    private final long iEndMillis;
+    private volatile long iEndMillis;
 
     /**
      * Constructs an interval from a start and end instant.
@@ -192,6 +193,8 @@ public abstract class BaseInterval
             iChronology = (chrono != null ? chrono : input.getChronology());
             iStartMillis = input.getStartMillis();
             iEndMillis = input.getEndMillis();
+        } else if (this instanceof ReadWritableInterval) {
+            converter.setInto((ReadWritableInterval) this, interval, chrono);
         } else {
             MutableInterval mi = new MutableInterval();
             converter.setInto(mi, interval, chrono);
@@ -235,10 +238,6 @@ public abstract class BaseInterval
     //-----------------------------------------------------------------------
     /**
      * Sets this interval from two millisecond instants and a chronology.
-     * <p>
-     * In version 2.0 and later, this method uses reflection. This is because the
-     * instance variable has been changed to be final to satisfy the Java Memory Model.
-     * This only impacts subclasses that are mutable.
      *
      * @param startInstant  the start of the time interval
      * @param endInstant  the start of the time interval
@@ -247,7 +246,9 @@ public abstract class BaseInterval
      */
     protected void setInterval(long startInstant, long endInstant, Chronology chrono) {
         checkInterval(startInstant, endInstant);
-        MutableHelper.setInterval(this, startInstant, endInstant, DateTimeUtils.getChronology(chrono));
+        iStartMillis = startInstant;
+        iEndMillis = endInstant;
+        iChronology = DateTimeUtils.getChronology(chrono);
     }
 
 }

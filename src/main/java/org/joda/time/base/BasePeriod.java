@@ -55,11 +55,9 @@ public abstract class BasePeriod
     private static final long serialVersionUID = -2110953284060001145L;
     /** Serialization version */
     private static final ReadablePeriod DUMMY_PERIOD = new AbstractPeriod() {
-        @Override
         public int getValue(int index) {
             return 0;
         }
-        @Override
         public PeriodType getPeriodType() {
             return PeriodType.time();
         }

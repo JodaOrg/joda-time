@@ -144,6 +144,18 @@ public final class MillisDurationField extends DurationField implements Serializ
         }
     }
 
+    public boolean equals(Object o) {
+        if (o instanceof MillisDurationField) {
+            return getUnitMillis() == ((MillisDurationField) o).getUnitMillis();
+        }
+
+        return false;
+    }
+
+    public int hashCode() {
+        return (int)getUnitMillis();
+    }
+
     /**
      * Get a suitable debug string.
      * 

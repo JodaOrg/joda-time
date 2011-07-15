@@ -1796,7 +1796,7 @@ public class DateTimeFormatterBuilder {
                         validValues.add("ce");
                         maxLength = 3;
                     }
-                    array = new Object[] {validValues, new Integer(maxLength)};
+                    array = new Object[] {validValues, Integer.valueOf(maxLength)};
                     innerMap.put(iFieldType, array);
                 } else {
                     validValues = (Set<String>) array[0];

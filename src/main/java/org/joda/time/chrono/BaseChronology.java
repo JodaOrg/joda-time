@@ -186,13 +186,13 @@ public abstract class BaseChronology
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue()) {
                 throw new IllegalFieldValueException
-                    (field.getType(), new Integer(value),
-                     new Integer(field.getMinimumValue()), null);
+                    (field.getType(), Integer.valueOf(value),
+                     Integer.valueOf(field.getMinimumValue()), null);
             }
             if (value > field.getMaximumValue()) {
                 throw new IllegalFieldValueException
-                    (field.getType(), new Integer(value),
-                     null, new Integer(field.getMaximumValue()));
+                    (field.getType(), Integer.valueOf(value),
+                     null, Integer.valueOf(field.getMaximumValue()));
             }
         }
         // check values in specific range, catching really odd cases like 30th Feb
@@ -201,13 +201,13 @@ public abstract class BaseChronology
             DateTimeField field = partial.getField(i);
             if (value < field.getMinimumValue(partial, values)) {
                 throw new IllegalFieldValueException
-                    (field.getType(), new Integer(value),
-                     new Integer(field.getMinimumValue(partial, values)), null);
+                    (field.getType(), Integer.valueOf(value),
+                     Integer.valueOf(field.getMinimumValue(partial, values)), null);
             }
             if (value > field.getMaximumValue(partial, values)) {
                 throw new IllegalFieldValueException
-                    (field.getType(), new Integer(value),
-                     null, new Integer(field.getMaximumValue(partial, values)));
+                    (field.getType(), Integer.valueOf(value),
+                     null, Integer.valueOf(field.getMaximumValue(partial, values)));
             }
         }
     }

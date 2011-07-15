@@ -704,7 +704,7 @@ public final class GJChronology extends AssembledChronology {
                     // Verify that new value stuck.
                     if (get(instant) != value) {
                         throw new IllegalFieldValueException
-                            (iGregorianField.getType(), new Integer(value), null, null);
+                            (iGregorianField.getType(), Integer.valueOf(value), null, null);
                     }
                 }
             } else {
@@ -717,7 +717,7 @@ public final class GJChronology extends AssembledChronology {
                     // Verify that new value stuck.
                     if (get(instant) != value) {
                        throw new IllegalFieldValueException
-                            (iJulianField.getType(), new Integer(value), null, null);
+                            (iJulianField.getType(), Integer.valueOf(value), null, null);
                     }
                 }
             }

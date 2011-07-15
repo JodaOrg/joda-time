@@ -401,8 +401,11 @@ public class ZoneInfoCompiler {
                         file.getParentFile().mkdirs();
                     }
                     OutputStream out = new FileOutputStream(file);
-                    builder.writeTo(zone.iName, out);
-                    out.close();
+                    try {
+                        builder.writeTo(zone.iName, out);
+                    } finally {
+                        out.close();
+                    }
 
                     // Test if it can be read back.
                     InputStream in = new FileInputStream(file);
@@ -442,11 +445,14 @@ public class ZoneInfoCompiler {
 
             OutputStream out = new FileOutputStream(file);
             DataOutputStream dout = new DataOutputStream(out);
-            // Sort and filter out any duplicates that match case.
-            Map<String, DateTimeZone> zimap = new TreeMap<String, DateTimeZone>(String.CASE_INSENSITIVE_ORDER);
-            zimap.putAll(map);
-            writeZoneInfoMap(dout, zimap);
-            dout.close();
+            try {
+                // Sort and filter out any duplicates that match case.
+                Map<String, DateTimeZone> zimap = new TreeMap<String, DateTimeZone>(String.CASE_INSENSITIVE_ORDER);
+                zimap.putAll(map);
+                writeZoneInfoMap(dout, zimap);
+            } finally {
+                dout.close();
+            }
         }
 
         return map;

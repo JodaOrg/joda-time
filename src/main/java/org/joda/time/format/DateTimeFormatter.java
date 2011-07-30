@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -704,12 +704,17 @@ public class DateTimeFormatter {
             instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis(false, text));
-        if (iOffsetParsed && bucket.getZone() == null) {
+        if (iOffsetParsed && bucket.getOffset() != null) {
             int parsedOffset = bucket.getOffset();
             DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
             chrono = chrono.withZone(parsedZone);
+        } else if (bucket.getZone() != null) {
+            chrono = chrono.withZone(bucket.getZone());
         }
         instant.setChronology(chrono);
+        if (iZone != null) {
+            instant.setZone(iZone);
+        }
         return newPos;
     }
 
@@ -800,10 +805,12 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true, text);
-                if (bucket.getZone() == null) {  // treat withOffsetParsed() as being true
+                if (bucket.getOffset() != null) {  // treat withOffsetParsed() as being true
                     int parsedOffset = bucket.getOffset();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     chrono = chrono.withZone(parsedZone);
+                } else if (bucket.getZone() != null) {
+                    chrono = chrono.withZone(bucket.getZone());
                 }
                 return new LocalDateTime(millis, chrono);
             }
@@ -839,12 +846,18 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true, text);
-                if (iOffsetParsed && bucket.getZone() == null) {
+                if (iOffsetParsed && bucket.getOffset() != null) {
                     int parsedOffset = bucket.getOffset();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     chrono = chrono.withZone(parsedZone);
+                } else if (bucket.getZone() != null) {
+                    chrono = chrono.withZone(bucket.getZone());
                 }
-                return new DateTime(millis, chrono);
+                DateTime dt = new DateTime(millis, chrono);
+                if (iZone != null) {
+                    dt = dt.withZone(iZone);
+                }
+                return dt;
             }
         } else {
             newPos = ~newPos;
@@ -878,12 +891,18 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true, text);
-                if (iOffsetParsed && bucket.getZone() == null) {
+                if (iOffsetParsed && bucket.getOffset() != null) {
                     int parsedOffset = bucket.getOffset();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     chrono = chrono.withZone(parsedZone);
+                } else if (bucket.getZone() != null) {
+                    chrono = chrono.withZone(bucket.getZone());
                 }
-                return new MutableDateTime(millis, chrono);
+                MutableDateTime dt = new MutableDateTime(millis, chrono);
+                if (iZone != null) {
+                    dt.setZone(iZone);
+                }
+                return dt;
             }
         } else {
             newPos = ~newPos;

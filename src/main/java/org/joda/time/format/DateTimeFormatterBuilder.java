@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -993,12 +993,12 @@ public class DateTimeFormatterBuilder {
 
     /**
      * Instructs the printer to emit the identifier of the time zone.
-     * This field cannot currently be parsed.
+     * From version 2.0, this field can be parsed.
      *
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneId() {
-        return append0(new TimeZoneName(TimeZoneName.ID), null);
+        return append0(TimeZoneId.INSTANCE, TimeZoneId.INSTANCE);
     }
 
     /**
@@ -2402,7 +2402,6 @@ public class DateTimeFormatterBuilder {
 
         static final int LONG_NAME = 0;
         static final int SHORT_NAME = 1;
-        static final int ID = 2;
 
         private final int iType;
 
@@ -2436,8 +2435,6 @@ public class DateTimeFormatterBuilder {
                     return displayZone.getName(instant, locale);
                 case SHORT_NAME:
                     return displayZone.getShortName(instant, locale);
-                case ID:
-                    return displayZone.getID();
             }
             return "";
         }
@@ -2448,6 +2445,61 @@ public class DateTimeFormatterBuilder {
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    static enum TimeZoneId
+            implements DateTimePrinter, DateTimeParser {
+
+        INSTANCE;
+        static final Set<String> ALL_IDS = DateTimeZone.getAvailableIDs();
+        static final int MAX_LENGTH;
+        static {
+            int max = 0;
+            for (String id : ALL_IDS) {
+                max = Math.max(max, id.length());
+            }
+            MAX_LENGTH = max;
+        }
+
+        public int estimatePrintedLength() {
+            return MAX_LENGTH;
+        }
+
+        public void printTo(
+                StringBuffer buf, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) {
+            buf.append(displayZone != null ? displayZone.getID() : "");
+        }
+
+        public void printTo(
+                Writer out, long instant, Chronology chrono,
+                int displayOffset, DateTimeZone displayZone, Locale locale) throws IOException {
+            out.write(displayZone != null ? displayZone.getID() : "");
+        }
+
+        public void printTo(StringBuffer buf, ReadablePartial partial, Locale locale) {
+            // no zone info
+        }
+
+        public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
+            // no zone info
+        }
+
+        public int estimateParsedLength() {
+            return MAX_LENGTH;
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            String str = text.substring(position);
+            for (String id : ALL_IDS) {
+                if (str.startsWith(id)) {
+                    bucket.setZone(DateTimeZone.forID(id));
+                    return position + id.length();
+                }
+            }
+            return ~position;
         }
     }
 

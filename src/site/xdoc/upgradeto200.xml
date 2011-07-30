@@ -85,6 +85,8 @@ Enhancements since 1.6
 
 - Allow 'Z' and 'ZZ' in format patterns to parse 'Z' as '+00:00' [2827359]
 
+- Support parsing of date-time zone IDs like Europe/London
+
 - Add DateTimeFormatter.withZoneUTC()
   Provides easy way to set UTC, which is often required for parsing
 
@@ -191,6 +193,10 @@ This affects the constructor of DateTime and other methods.
 
 Previously, DateTimeZone.getMillisKeepLocal used DateTimeZone.getOffsetFromLocal, now it uses
 DateTimeZone.convertUTCToLocal and DateTimeZone.convertLocalToUTC retaining the offset where possible
+
+Previously, the internals of DateTimeParserBucket linked the parsed offset and zone.
+This has now changed so that they are independent to allow the parsing of time-zone IDs.
+If you implemented the DateTimeParser interface (unlikely), you should re-test your logic.
 
 Previously, some parses of mixed weekyear and month formats would yield a result about a year out
 Now, most (but not all) of these give a more appropriate result

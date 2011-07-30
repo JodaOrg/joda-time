@@ -60,7 +60,7 @@ public class DateTimeParserBucket {
     
     // TimeZone to switch to in computeMillis. If null, use offset.
     private DateTimeZone iZone;
-    private int iOffset;
+    private Integer iOffset;
     /** The locale to use for parsing. */
     private Locale iLocale;
     /** Used for parsing two-digit years. */
@@ -118,9 +118,9 @@ public class DateTimeParserBucket {
         super();
         chrono = DateTimeUtils.getChronology(chrono);
         iMillis = instantLocal;
+        iZone = chrono.getZone();
         iChrono = chrono.withUTC();
         iLocale = (locale == null ? Locale.getDefault() : locale);
-        setZone(chrono.getZone());
         iPivotYear = pivotYear;
         iDefaultYear = defaultYear;
     }
@@ -145,42 +145,36 @@ public class DateTimeParserBucket {
 
     //-----------------------------------------------------------------------
     /**
-     * Returns the time zone used by computeMillis, or null if an offset is
-     * used instead.
+     * Returns the time zone used by computeMillis.
      */
     public DateTimeZone getZone() {
         return iZone;
     }
-    
+
     /**
-     * Set a time zone to be used when computeMillis is called, which
-     * overrides any set time zone offset.
+     * Set a time zone to be used when computeMillis is called.
      *
-     * @param zone the date time zone to operate in, or null if UTC
+     * @param zone the date time zone to operate in, not null
      */
     public void setZone(DateTimeZone zone) {
         iSavedState = null;
-        iZone = zone == DateTimeZone.UTC ? null : zone;
-        iOffset = 0;
+        iZone = zone;
     }
-    
+
     //-----------------------------------------------------------------------
     /**
-     * Returns the time zone offset in milliseconds used by computeMillis,
-     * unless getZone doesn't return null.
+     * Returns the time zone offset in milliseconds used by computeMillis.
      */
-    public int getOffset() {
+    public Integer getOffset() {
         return iOffset;
     }
-    
+
     /**
-     * Set a time zone offset to be used when computeMillis is called, which
-     * overrides the time zone.
+     * Set a time zone offset to be used when computeMillis is called.
      */
-    public void setOffset(int offset) {
+    public void setOffset(Integer offset) {
         iSavedState = null;
         iOffset = offset;
-        iZone = null;
     }
 
     //-----------------------------------------------------------------------
@@ -364,9 +358,9 @@ public class DateTimeParserBucket {
             throw e;
         }
         
-        if (iZone == null) {
+        if (iOffset != null) {
             millis -= iOffset;
-        } else {
+        } else if (iZone != null) {
             int offset = iZone.getOffsetFromLocal(millis);
             millis -= offset;
             if (offset != iZone.getOffset(millis)) {
@@ -416,7 +410,7 @@ public class DateTimeParserBucket {
 
     class SavedState {
         final DateTimeZone iZone;
-        final int iOffset;
+        final Integer iOffset;
         final SavedField[] iSavedFields;
         final int iSavedFieldsCount;
         

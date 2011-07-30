@@ -150,11 +150,10 @@ public class DelegatedDurationField extends DurationField implements Serializabl
         return iField.compareTo(durationField);
     }
 
-    public boolean equals(Object o) {
-        if (o instanceof DelegatedDurationField) {
-            return iField.equals(((DelegatedDurationField) o).iField);
+    public boolean equals(Object obj) {
+        if (obj instanceof DelegatedDurationField) {
+            return iField.equals(((DelegatedDurationField) obj).iField);
         }
-
         return false;
     }
 

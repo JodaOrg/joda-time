@@ -970,25 +970,54 @@ public class DateTimeFormatterBuilder {
     }
 
     /**
-     * Instructs the printer to emit a locale-specific time zone name. A
-     * parser cannot be created from this builder if a time zone name is
-     * appended.
+     * Instructs the printer to emit a locale-specific time zone name.
+     * Using this method prevents parsing, because time zone names are not unique.
+     * See {@link #appendTimeZoneName(Map)}.
      *
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneName() {
-        return append0(new TimeZoneName(TimeZoneName.LONG_NAME), null);
+        return append0(new TimeZoneName(TimeZoneName.LONG_NAME, null), null);
     }
 
     /**
-     * Instructs the printer to emit a short locale-specific time zone
-     * name. A parser cannot be created from this builder if time zone
-     * name is appended.
+     * Instructs the printer to emit a locale-specific time zone name, providing a lookup for parsing.
+     * Time zone names are not unique, thus the API forces you to supply the lookup.
+     * The names are searched in the order of the map, thus it is strongly recommended
+     * to use a {@code LinkedHashMap} or similar.
+     *
+     * @param parseLookup  the table of names, not null
+     * @return this DateTimeFormatterBuilder, for chaining
+     */
+    public DateTimeFormatterBuilder appendTimeZoneName(Map<String, DateTimeZone> parseLookup) {
+        TimeZoneName pp = new TimeZoneName(TimeZoneName.LONG_NAME, parseLookup);
+        return append0(pp, pp);
+    }
+
+    /**
+     * Instructs the printer to emit a short locale-specific time zone name.
+     * Using this method prevents parsing, because time zone names are not unique.
+     * See {@link #appendTimeZoneShortName(Map)}.
      *
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName() {
-        return append0(new TimeZoneName(TimeZoneName.SHORT_NAME), null);
+        return append0(new TimeZoneName(TimeZoneName.SHORT_NAME, null), null);
+    }
+
+    /**
+     * Instructs the printer to emit a short locale-specific time zone
+     * name, providing a lookup for parsing.
+     * Time zone names are not unique, thus the API forces you to supply the lookup.
+     * The names are searched in the order of the map, thus it is strongly recommended
+     * to use a {@code LinkedHashMap} or similar.
+     *
+     * @param parseLookup  the table of names, not null
+     * @return this DateTimeFormatterBuilder, for chaining
+     */
+    public DateTimeFormatterBuilder appendTimeZoneShortName(Map<String, DateTimeZone> parseLookup) {
+        TimeZoneName pp = new TimeZoneName(TimeZoneName.SHORT_NAME, parseLookup);
+        return append0(pp, pp);
     }
 
     /**
@@ -2398,16 +2427,18 @@ public class DateTimeFormatterBuilder {
 
     //-----------------------------------------------------------------------
     static class TimeZoneName
-            implements DateTimePrinter {
+            implements DateTimePrinter, DateTimeParser {
 
         static final int LONG_NAME = 0;
         static final int SHORT_NAME = 1;
 
+        private final Map<String, DateTimeZone> iParseLookup;
         private final int iType;
 
-        TimeZoneName(int type) {
+        TimeZoneName(int type, Map<String, DateTimeZone> parseLookup) {
             super();
             iType = type;
+            iParseLookup = parseLookup;
         }
 
         public int estimatePrintedLength() {
@@ -2445,6 +2476,21 @@ public class DateTimeFormatterBuilder {
 
         public void printTo(Writer out, ReadablePartial partial, Locale locale) throws IOException {
             // no zone info
+        }
+
+        public int estimateParsedLength() {
+            return (iType == SHORT_NAME ? 4 : 20);
+        }
+
+        public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            String str = text.substring(position);
+            for (String name : iParseLookup.keySet()) {
+                if (str.startsWith(name)) {
+                    bucket.setZone(iParseLookup.get(name));
+                    return position + name.length();
+                }
+            }
+            return ~position;
         }
     }
 

@@ -87,6 +87,11 @@ Enhancements since 1.6
 
 - Support parsing of date-time zone IDs like Europe/London
 
+- Support parsing of date-time zone names like "EST" and "British Summer Time"
+  These names are not unique, so the new API methods on the builder require you
+  to pass in a map listing all the names you want to be able to parse.
+  The existing method is unaltered and does not permit parsing.
+
 - Add DateTimeFormatter.withZoneUTC()
   Provides easy way to set UTC, which is often required for parsing
 

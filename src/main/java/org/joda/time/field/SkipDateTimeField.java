@@ -89,7 +89,7 @@ public final class SkipDateTimeField extends DelegatedDateTimeField {
         if (value <= iSkip) {
             if (value == iSkip) {
                 throw new IllegalFieldValueException
-                    (DateTimeFieldType.year(), new Integer(value), null, null);
+                    (DateTimeFieldType.year(), Integer.valueOf(value), null, null);
             }
             value++;
         }

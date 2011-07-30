@@ -140,7 +140,7 @@ class GJLocaleSymbols {
 
         Integer[] integers = new Integer[13];
         for (int i=0; i<13; i++) {
-            integers[i] = new Integer(i);
+            integers[i] = Integer.valueOf(i);
         }
 
         iParseEras = new TreeMap<String, Integer>(String.CASE_INSENSITIVE_ORDER);

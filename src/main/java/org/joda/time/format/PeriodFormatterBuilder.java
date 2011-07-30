@@ -1719,7 +1719,7 @@ public class PeriodFormatterBuilder {
                         periodStr.regionMatches
                         (true, position, parsedForm, 0, parsedForm.length())) {
                         
-                        position += parsedForm.length();
+                        position += (parsedForm == null) ? 0 : parsedForm.length();
                         found = true;
                         break;
                     }

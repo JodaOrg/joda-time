@@ -249,9 +249,9 @@ public class DateTimeZoneBuilder {
                                           boolean advanceDayOfWeek,
                                           int millisOfDay)
     {
-        OfYear ofYear = new OfYear
-            (mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, millisOfDay);
         if (iRuleSets.size() > 0) {
+            OfYear ofYear = new OfYear
+                (mode, monthOfYear, dayOfMonth, dayOfWeek, advanceDayOfWeek, millisOfDay);
             RuleSet lastRuleSet = iRuleSets.get(iRuleSets.size() - 1);
             lastRuleSet.setUpperLimit(year, ofYear);
         }

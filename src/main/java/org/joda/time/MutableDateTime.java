@@ -96,6 +96,48 @@ public class MutableDateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Obtains a {@code MutableDateTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * 
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static MutableDateTime now() {
+        return new MutableDateTime();
+    }
+
+    /**
+     * Obtains a {@code MutableDateTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     *
+     * @param zone  the time zone, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static MutableDateTime now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new MutableDateTime(zone);
+    }
+
+    /**
+     * Obtains a {@code MutableDateTime} set to the current system millisecond time
+     * using the specified chronology.
+     *
+     * @param chronology  the chronology, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static MutableDateTime now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new MutableDateTime(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Parses a {@code MutableDateTime} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
@@ -123,6 +165,8 @@ public class MutableDateTime
     /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
+     * 
+     * @see #now()
      */
     public MutableDateTime() {
         super();
@@ -135,6 +179,7 @@ public class MutableDateTime
      * If the specified time zone is null, the default zone is used.
      *
      * @param zone  the time zone, null means default zone
+     * @see #now(DateTimeZone)
      */
     public MutableDateTime(DateTimeZone zone) {
         super(zone);
@@ -148,6 +193,7 @@ public class MutableDateTime
      * in the default time zone is used.
      *
      * @param chronology  the chronology, null means ISOChronology in default zone
+     * @see #now(Chronology)
      */
     public MutableDateTime(Chronology chronology) {
         super(chronology);

@@ -77,6 +77,51 @@ public final class DateMidnight
 
     //-----------------------------------------------------------------------
     /**
+     * Obtains a {@code DateMidnight} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * The constructed object will have a local time of midnight.
+     * 
+     * @return the current date, not null
+     * @since 2.0
+     */
+    public static DateMidnight now() {
+        return new DateMidnight();
+    }
+
+    /**
+     * Obtains a {@code DateMidnight} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * The constructed object will have a local time of midnight.
+     *
+     * @param zone  the time zone, not null
+     * @return the current date, not null
+     * @since 2.0
+     */
+    public static DateMidnight now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new DateMidnight(zone);
+    }
+
+    /**
+     * Obtains a {@code DateMidnight} set to the current system millisecond time
+     * using the specified chronology.
+     * The constructed object will have a local time of midnight.
+     *
+     * @param chronology  the chronology, not null
+     * @return the current date, not null
+     * @since 2.0
+     */
+    public static DateMidnight now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new DateMidnight(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Parses a {@code DateMidnight} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
@@ -105,6 +150,8 @@ public final class DateMidnight
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
      * The constructed object will have a local time of midnight.
+     * 
+     * @see #now()
      */
     public DateMidnight() {
         super();
@@ -118,6 +165,7 @@ public final class DateMidnight
      * If the specified time zone is null, the default zone is used.
      *
      * @param zone  the time zone, null means default zone
+     * @see #now(DateTimeZone)
      */
     public DateMidnight(DateTimeZone zone) {
         super(zone);
@@ -132,6 +180,7 @@ public final class DateMidnight
      * in the default time zone is used.
      *
      * @param chronology  the chronology, null means ISOChronology in default zone
+     * @see #now(Chronology)
      */
     public DateMidnight(Chronology chronology) {
         super(chronology);

@@ -64,6 +64,10 @@ Enhancements since 1.6
   Currently supported (via online translators) are English, German, Dutch,
   French, Spanish and Portuguese. Corrections and additional languages welcome.
 
+- Static now() methods available on all major types [3134566]
+  These should be used instead of the constructors when creating the current date/time
+  Unlike the constructors, these methods validate any argument to ensure it is non-null
+
 - Static parse() methods available on all major types
   These allow the formatter to be controlled
   They do not always parse the same formats as the constructor taking an object

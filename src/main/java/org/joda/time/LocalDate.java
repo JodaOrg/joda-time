@@ -113,6 +113,48 @@ public final class LocalDate
 
     //-----------------------------------------------------------------------
     /**
+     * Obtains a {@code LocalDate} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * 
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static LocalDate now() {
+        return new LocalDate();
+    }
+
+    /**
+     * Obtains a {@code LocalDate} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     *
+     * @param zone  the time zone, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static LocalDate now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new LocalDate(zone);
+    }
+
+    /**
+     * Obtains a {@code LocalDate} set to the current system millisecond time
+     * using the specified chronology.
+     *
+     * @param chronology  the chronology, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static LocalDate now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new LocalDate(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Parses a {@code LocalDate} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#localDateParser()}.
@@ -209,6 +251,8 @@ public final class LocalDate
      * ISO chronology in the default zone.
      * <p>
      * Once the constructor is completed, the zone is no longer used.
+     * 
+     * @see #now()
      */
     public LocalDate() {
         this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance());
@@ -222,6 +266,7 @@ public final class LocalDate
      * Once the constructor is completed, the zone is no longer used.
      *
      * @param zone  the time zone, null means default zone
+     * @see #now(DateTimeZone)
      */
     public LocalDate(DateTimeZone zone) {
         this(DateTimeUtils.currentTimeMillis(), ISOChronology.getInstance(zone));
@@ -235,6 +280,7 @@ public final class LocalDate
      * Once the constructor is completed, the zone is no longer used.
      *
      * @param chronology  the chronology, null means ISOChronology in default zone
+     * @see #now(Chronology)
      */
     public LocalDate(Chronology chronology) {
         this(DateTimeUtils.currentTimeMillis(), chronology);

@@ -105,6 +105,54 @@ public class TestDateTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Test now ()
+     */
+    public void test_now() throws Throwable {
+        DateTime test = DateTime.now();
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test now (DateTimeZone)
+     */
+    public void test_now_DateTimeZone() throws Throwable {
+        DateTime test = DateTime.now(PARIS);
+        assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test now (DateTimeZone=null)
+     */
+    public void test_now_nullDateTimeZone() throws Throwable {
+        try {
+            DateTime.now((DateTimeZone) null);
+            fail();
+        } catch (NullPointerException ex) {}
+    }
+
+    /**
+     * Test now (Chronology)
+     */
+    public void test_now_Chronology() throws Throwable {
+        DateTime test = DateTime.now(GregorianChronology.getInstance());
+        assertEquals(GregorianChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test now (Chronology=null)
+     */
+    public void test_now_nullChronology() throws Throwable {
+        try {
+            DateTime.now((Chronology) null);
+            fail();
+        } catch (NullPointerException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new DateTime(2010, 6, 30, 1, 20, ISOChronology.getInstance(DateTimeZone.forOffsetHours(2))), DateTime.parse("2010-06-30T01:20+02:00"));
         assertEquals(new DateTime(2010, 1, 2, 14, 50, ISOChronology.getInstance(LONDON)), DateTime.parse("2010-002T14:50"));

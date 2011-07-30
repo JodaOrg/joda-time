@@ -79,6 +79,48 @@ public final class DateTime
 
     //-----------------------------------------------------------------------
     /**
+     * Obtains a {@code DateTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * 
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static DateTime now() {
+        return new DateTime();
+    }
+
+    /**
+     * Obtains a {@code DateTime} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     *
+     * @param zone  the time zone, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static DateTime now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new DateTime(zone);
+    }
+
+    /**
+     * Obtains a {@code DateTime} set to the current system millisecond time
+     * using the specified chronology.
+     *
+     * @param chronology  the chronology, not null
+     * @return the current date-time, not null
+     * @since 2.0
+     */
+    public static DateTime now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new DateTime(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Parses a {@code DateTime} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#dateTimeParser()}.
@@ -106,6 +148,8 @@ public final class DateTime
     /**
      * Constructs an instance set to the current system millisecond time
      * using <code>ISOChronology</code> in the default time zone.
+     * 
+     * @see #now()
      */
     public DateTime() {
         super();
@@ -118,6 +162,7 @@ public final class DateTime
      * If the specified time zone is null, the default zone is used.
      *
      * @param zone  the time zone, null means default zone
+     * @see #now(DateTimeZone)
      */
     public DateTime(DateTimeZone zone) {
         super(zone);
@@ -131,6 +176,7 @@ public final class DateTime
      * in the default time zone is used.
      *
      * @param chronology  the chronology, null means ISOChronology in default zone
+     * @see #now(Chronology)
      */
     public DateTime(Chronology chronology) {
         super(chronology);

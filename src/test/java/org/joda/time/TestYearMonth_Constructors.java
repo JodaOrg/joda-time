@@ -123,6 +123,7 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(1970, test.getYear());
         assertEquals(6, test.getMonthOfYear());
+        assertEquals(test, YearMonth.now());
     }
 
     /**
@@ -137,11 +138,13 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(2005, test.getYear());
         assertEquals(6, test.getMonthOfYear());
+        assertEquals(test, YearMonth.now(LONDON));
         
         test = new YearMonth(PARIS);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(2005, test.getYear());
         assertEquals(7, test.getMonthOfYear());
+        assertEquals(test, YearMonth.now(PARIS));
     }
 
     /**
@@ -166,6 +169,7 @@ public class TestYearMonth_Constructors extends TestCase {
         assertEquals(GREGORIAN_UTC, test.getChronology());
         assertEquals(1970, test.getYear());
         assertEquals(6, test.getMonthOfYear());
+        assertEquals(test, YearMonth.now(GREGORIAN_PARIS));
     }
 
     /**

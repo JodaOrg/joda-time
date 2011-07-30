@@ -124,6 +124,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(1970, test.getYear());
         assertEquals(6, test.getMonthOfYear());
         assertEquals(9, test.getDayOfMonth());
+        assertEquals(test, LocalDate.now());
     }
 
     public void testConstructor_DateTimeZone() throws Throwable {
@@ -136,12 +137,14 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(2005, test.getYear());
         assertEquals(6, test.getMonthOfYear());
         assertEquals(8, test.getDayOfMonth());
+        assertEquals(test, LocalDate.now(LONDON));
         
         test = new LocalDate(PARIS);
         assertEquals(ISO_UTC, test.getChronology());
         assertEquals(2005, test.getYear());
         assertEquals(6, test.getMonthOfYear());
         assertEquals(9, test.getDayOfMonth());
+        assertEquals(test, LocalDate.now(PARIS));
     }
 
     public void testConstructor_nullDateTimeZone() throws Throwable {
@@ -162,6 +165,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(1970, test.getYear());
         assertEquals(6, test.getMonthOfYear());
         assertEquals(9, test.getDayOfMonth());
+        assertEquals(test, LocalDate.now(GREGORIAN_PARIS));
     }
 
     public void testConstructor_nullChronology() throws Throwable {

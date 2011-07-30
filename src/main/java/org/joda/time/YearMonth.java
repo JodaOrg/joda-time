@@ -84,6 +84,51 @@ public final class YearMonth
 
     //-----------------------------------------------------------------------
     /**
+     * Obtains a {@code YearMonth} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the default time zone.
+     * The resulting object does not use the zone.
+     * 
+     * @return the current year-month, not null
+     * @since 2.0
+     */
+    public static YearMonth now() {
+        return new YearMonth();
+    }
+
+    /**
+     * Obtains a {@code YearMonth} set to the current system millisecond time
+     * using <code>ISOChronology</code> in the specified time zone.
+     * The resulting object does not use the zone.
+     *
+     * @param zone  the time zone, not null
+     * @return the current year-month, not null
+     * @since 2.0
+     */
+    public static YearMonth now(DateTimeZone zone) {
+        if (zone == null) {
+            throw new NullPointerException("Zone must not be null");
+        }
+        return new YearMonth(zone);
+    }
+
+    /**
+     * Obtains a {@code YearMonth} set to the current system millisecond time
+     * using the specified chronology.
+     * The resulting object does not use the zone.
+     *
+     * @param chronology  the chronology, not null
+     * @return the current year-month, not null
+     * @since 2.0
+     */
+    public static YearMonth now(Chronology chronology) {
+        if (chronology == null) {
+            throw new NullPointerException("Chronology must not be null");
+        }
+        return new YearMonth(chronology);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Parses a {@code YearMonth} from the specified string.
      * <p>
      * This uses {@link ISODateTimeFormat#localDateParser()}.
@@ -161,6 +206,8 @@ public final class YearMonth
      * The constructor uses the default time zone, resulting in the local time
      * being initialised. Once the constructor is complete, all further calculations
      * are performed without reference to a time-zone (by switching to UTC).
+     * 
+     * @see #now()
      */
     public YearMonth() {
         super();
@@ -175,6 +222,7 @@ public final class YearMonth
      * are performed without reference to a time-zone (by switching to UTC).
      * 
      * @param zone  the zone to use, null means default zone
+     * @see #now(DateTimeZone)
      */
     public YearMonth(DateTimeZone zone) {
         super(ISOChronology.getInstance(zone));
@@ -189,6 +237,7 @@ public final class YearMonth
      * without reference to a time-zone (by switching to UTC).
      *
      * @param chronology  the chronology, null means ISOChronology in the default zone
+     * @see #now(Chronology)
      */
     public YearMonth(Chronology chronology) {
         super(chronology);

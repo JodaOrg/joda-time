@@ -190,6 +190,7 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+        assertEquals(test, LocalTime.now());
     }
 
     //-----------------------------------------------------------------------
@@ -204,6 +205,7 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(59, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+        assertEquals(test, LocalTime.now(LONDON));
         
         test = new LocalTime(PARIS);
         assertEquals(ISO_UTC, test.getChronology());
@@ -211,6 +213,7 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(59, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+        assertEquals(test, LocalTime.now(PARIS));
     }
 
     public void testConstructor_nullDateTimeZone() throws Throwable {
@@ -234,6 +237,7 @@ public class TestLocalTime_Constructors extends TestCase {
         assertEquals(20, test.getMinuteOfHour());
         assertEquals(30, test.getSecondOfMinute());
         assertEquals(40, test.getMillisOfSecond());
+        assertEquals(test, LocalTime.now(JULIAN_LONDON));
     }
 
     public void testConstructor_nullChronology() throws Throwable {

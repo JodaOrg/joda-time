@@ -105,6 +105,54 @@ public class TestMutableDateTime_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Test now ()
+     */
+    public void test_now() throws Throwable {
+        MutableDateTime test = MutableDateTime.now();
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test now (DateTimeZone)
+     */
+    public void test_now_DateTimeZone() throws Throwable {
+        MutableDateTime test = MutableDateTime.now(PARIS);
+        assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test now (DateTimeZone=null)
+     */
+    public void test_now_nullDateTimeZone() throws Throwable {
+        try {
+            MutableDateTime.now((DateTimeZone) null);
+            fail();
+        } catch (NullPointerException ex) {}
+    }
+
+    /**
+     * Test now (Chronology)
+     */
+    public void test_now_Chronology() throws Throwable {
+        MutableDateTime test = MutableDateTime.now(GregorianChronology.getInstance());
+        assertEquals(GregorianChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW, test.getMillis());
+    }
+
+    /**
+     * Test now (Chronology=null)
+     */
+    public void test_now_nullChronology() throws Throwable {
+        try {
+            MutableDateTime.now((Chronology) null);
+            fail();
+        } catch (NullPointerException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new MutableDateTime(2010, 6, 30, 1, 20, 0, 0, ISOChronology.getInstance(DateTimeZone.forOffsetHours(2))), MutableDateTime.parse("2010-06-30T01:20+02:00"));
         assertEquals(new MutableDateTime(2010, 1, 2, 14, 50, 0, 0, ISOChronology.getInstance(LONDON)), MutableDateTime.parse("2010-002T14:50"));

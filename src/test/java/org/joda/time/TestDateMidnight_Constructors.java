@@ -118,6 +118,57 @@ public class TestDateMidnight_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    /**
+     * Test now ()
+     */
+    public void test_now() throws Throwable {
+        DateMidnight test = DateMidnight.now();
+        assertEquals(ISOChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
+        assertEquals(2002, test.getYear());
+        assertEquals(6, test.getMonthOfYear());
+        assertEquals(9, test.getDayOfMonth());
+    }
+
+    /**
+     * Test now (DateTimeZone)
+     */
+    public void test_now_DateTimeZone() throws Throwable {
+        DateMidnight test = DateMidnight.now(PARIS);
+        assertEquals(ISOChronology.getInstance(PARIS), test.getChronology());
+        assertEquals(TEST_TIME_NOW_PARIS, test.getMillis());
+    }
+
+    /**
+     * Test now (DateTimeZone=null)
+     */
+    public void test_now_nullDateTimeZone() throws Throwable {
+        try {
+            DateMidnight.now((DateTimeZone) null);
+            fail();
+        } catch (NullPointerException ex) {}
+    }
+
+    /**
+     * Test now (Chronology)
+     */
+    public void test_now_Chronology() throws Throwable {
+        DateMidnight test = DateMidnight.now(GregorianChronology.getInstance());
+        assertEquals(GregorianChronology.getInstance(), test.getChronology());
+        assertEquals(TEST_TIME_NOW_LONDON, test.getMillis());
+    }
+
+    /**
+     * Test now (Chronology=null)
+     */
+    public void test_now_nullChronology() throws Throwable {
+        try {
+            DateMidnight.now((Chronology) null);
+            fail();
+        } catch (NullPointerException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new DateMidnight(2010, 6, 30, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010-06-30"));
         assertEquals(new DateMidnight(2010, 1, 2, ISOChronology.getInstance(LONDON)), DateMidnight.parse("2010-002"));

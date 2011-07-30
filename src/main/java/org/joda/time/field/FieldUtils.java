@@ -213,8 +213,8 @@ public class FieldUtils {
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalFieldValueException
-                (field.getType(), new Integer(value),
-                 new Integer(lowerBound), new Integer(upperBound));
+                (field.getType(), Integer.valueOf(value),
+                 Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
         }
     }
 
@@ -231,8 +231,8 @@ public class FieldUtils {
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalFieldValueException
-                (fieldType, new Integer(value),
-                 new Integer(lowerBound), new Integer(upperBound));
+                (fieldType, Integer.valueOf(value),
+                 Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
         }
     }
 
@@ -248,8 +248,8 @@ public class FieldUtils {
                                          int value, int lowerBound, int upperBound) {
         if ((value < lowerBound) || (value > upperBound)) {
             throw new IllegalFieldValueException
-                (fieldName, new Integer(value),
-                 new Integer(lowerBound), new Integer(upperBound));
+                (fieldName, Integer.valueOf(value),
+                 Integer.valueOf(lowerBound), Integer.valueOf(upperBound));
         }
     }
 

@@ -466,7 +466,7 @@ public final class ZonedChronology extends AssembledChronology {
             localInstant = iField.set(localInstant, value);
             long result = iZone.convertLocalToUTC(localInstant, false, instant);
             if (get(result) != value) {
-                throw new IllegalFieldValueException(iField.getType(), new Integer(value),
+                throw new IllegalFieldValueException(iField.getType(), Integer.valueOf(value),
                     "Illegal instant due to time zone offset transition: " +
                     DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(localInstant)) +
                     " (" + iZone.getID() + ")");

@@ -399,7 +399,7 @@ public class DateTimeFormatter {
      * @since 1.1
      */
     public DateTimeFormatter withPivotYear(int pivotYear) {
-        return withPivotYear(new Integer(pivotYear));
+        return withPivotYear(Integer.valueOf(pivotYear));
     }
 
     /**

@@ -78,7 +78,7 @@ public final class JulianChronology extends BasicGJChronology {
         if (year <= 0) {
             if (year == 0) {
                 throw new IllegalFieldValueException
-                    (DateTimeFieldType.year(), new Integer(year), null, null);
+                    (DateTimeFieldType.year(), Integer.valueOf(year), null, null);
             }
             year++;
         }

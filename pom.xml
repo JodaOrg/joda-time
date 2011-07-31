@@ -130,13 +130,7 @@
         <directory>src/main/java</directory>
         <includes>
           <include>org/joda/time/tz/data/**</include>
-        </includes>
-      </resource>
-      <resource>
-        <targetPath>.</targetPath>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>org/joda/time/format/*.properties</include>
+          <include>**/*.properties</include>
         </includes>
       </resource>
     </resources>
@@ -218,6 +212,9 @@
           <archive>
             <manifestFile>src/conf/MANIFEST.MF</manifestFile>
           </archive>
+          <archiverConfig>
+            <duplicateBehavior>skip</duplicateBehavior>
+          </archiverConfig>
         </configuration>
       </plugin>
       <plugin>
@@ -264,6 +261,11 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <archiverConfig>
+            <duplicateBehavior>skip</duplicateBehavior>
+          </archiverConfig>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

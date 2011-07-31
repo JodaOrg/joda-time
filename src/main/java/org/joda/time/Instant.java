@@ -310,6 +310,7 @@ public final class Instant
      * @return a DateTime using the same millis with ISOChronology
      * @deprecated Use toDateTime() as it is identical
      */
+    @Deprecated
     public DateTime toDateTimeISO() {
         return toDateTime();
     }
@@ -355,6 +356,7 @@ public final class Instant
      * @return a MutableDateTime using the same millis with ISOChronology
      * @deprecated Use toMutableDateTime() as it is identical
      */
+    @Deprecated
     public MutableDateTime toMutableDateTimeISO() {
         return toMutableDateTime();
     }

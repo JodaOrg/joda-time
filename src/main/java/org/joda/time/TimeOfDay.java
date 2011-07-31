@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ import org.joda.time.format.ISODateTimeFormat;
  * @deprecated Use LocalTime which has a much better internal implementation and
  *  has been available since 1.3
  */
+@Deprecated
 public final class TimeOfDay
         extends BasePartial
         implements ReadablePartial, Serializable {
@@ -1013,6 +1014,7 @@ public final class TimeOfDay
      * @since 1.0
      * @deprecated Use LocalTime which has a much better internal implementation
      */
+    @Deprecated
     public static class Property extends AbstractPartialFieldProperty implements Serializable {
 
         /** Serialization version */

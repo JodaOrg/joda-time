@@ -1510,6 +1510,7 @@ public final class DateTime
      * @return a YearMonthDay using the same millis and chronology
      * @deprecated Use LocalDate instead of YearMonthDay
      */
+    @Deprecated
     public YearMonthDay toYearMonthDay() {
         return new YearMonthDay(getMillis(), getChronology());
     }
@@ -1521,6 +1522,7 @@ public final class DateTime
      * @return a TimeOfDay using the same millis and chronology
      * @deprecated Use LocalTime instead of TimeOfDay
      */
+    @Deprecated
     public TimeOfDay toTimeOfDay() {
         return new TimeOfDay(getMillis(), getChronology());
     }

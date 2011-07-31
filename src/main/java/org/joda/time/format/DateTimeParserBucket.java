@@ -58,8 +58,9 @@ public class DateTimeParserBucket {
     private final Chronology iChrono;
     private final long iMillis;
     
-    // TimeZone to switch to in computeMillis. If null, use offset.
+    /** The parsed zone, initialised to formatter zone. */
     private DateTimeZone iZone;
+    /** The parsed offset. */
     private Integer iOffset;
     /** The locale to use for parsing. */
     private Locale iLocale;
@@ -153,8 +154,6 @@ public class DateTimeParserBucket {
 
     /**
      * Set a time zone to be used when computeMillis is called.
-     *
-     * @param zone the date time zone to operate in, not null
      */
     public void setZone(DateTimeZone zone) {
         iSavedState = null;
@@ -164,9 +163,28 @@ public class DateTimeParserBucket {
     //-----------------------------------------------------------------------
     /**
      * Returns the time zone offset in milliseconds used by computeMillis.
+     * @deprecated use Integer version
      */
-    public Integer getOffset() {
+    @Deprecated
+    public int getOffset() {
+        return (iOffset != null ? iOffset : 0);
+    }
+
+    /**
+     * Returns the time zone offset in milliseconds used by computeMillis.
+     */
+    public Integer getOffsetInteger() {
         return iOffset;
+    }
+
+    /**
+     * Set a time zone offset to be used when computeMillis is called.
+     * @deprecated use Integer version
+     */
+    @Deprecated
+    public void setOffset(int offset) {
+        iSavedState = null;
+        iOffset = offset;
     }
 
     /**

@@ -705,8 +705,8 @@ public class DateTimeFormatter {
             instantLocal, chrono, iLocale, iPivotYear, iDefaultYear);
         int newPos = parser.parseInto(bucket, text, position);
         instant.setMillis(bucket.computeMillis(false, text));
-        if (iOffsetParsed && bucket.getOffset() != null) {
-            int parsedOffset = bucket.getOffset();
+        if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+            int parsedOffset = bucket.getOffsetInteger();
             DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
             chrono = chrono.withZone(parsedZone);
         } else if (bucket.getZone() != null) {
@@ -806,8 +806,8 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true, text);
-                if (bucket.getOffset() != null) {  // treat withOffsetParsed() as being true
-                    int parsedOffset = bucket.getOffset();
+                if (bucket.getOffsetInteger() != null) {  // treat withOffsetParsed() as being true
+                    int parsedOffset = bucket.getOffsetInteger();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     chrono = chrono.withZone(parsedZone);
                 } else if (bucket.getZone() != null) {
@@ -847,8 +847,8 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true, text);
-                if (iOffsetParsed && bucket.getOffset() != null) {
-                    int parsedOffset = bucket.getOffset();
+                if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+                    int parsedOffset = bucket.getOffsetInteger();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     chrono = chrono.withZone(parsedZone);
                 } else if (bucket.getZone() != null) {
@@ -892,8 +892,8 @@ public class DateTimeFormatter {
         if (newPos >= 0) {
             if (newPos >= text.length()) {
                 long millis = bucket.computeMillis(true, text);
-                if (iOffsetParsed && bucket.getOffset() != null) {
-                    int parsedOffset = bucket.getOffset();
+                if (iOffsetParsed && bucket.getOffsetInteger() != null) {
+                    int parsedOffset = bucket.getOffsetInteger();
                     DateTimeZone parsedZone = DateTimeZone.forOffsetMillis(parsedOffset);
                     chrono = chrono.withZone(parsedZone);
                 } else if (bucket.getZone() != null) {

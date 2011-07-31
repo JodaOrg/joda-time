@@ -2249,11 +2249,11 @@ public class DateTimeFormatterBuilder {
                             break zeroOffset;
                         }
                     }
-                    bucket.setOffset(0);
+                    bucket.setOffset(Integer.valueOf(0));
                     return position;
                 }
                 if (text.regionMatches(true, position, iZeroOffsetParseText, 0, iZeroOffsetParseText.length())) {
-                    bucket.setOffset(0);
+                    bucket.setOffset(Integer.valueOf(0));
                     return position + iZeroOffsetParseText.length();
                 }
             }
@@ -2403,7 +2403,7 @@ public class DateTimeFormatterBuilder {
                 }
             }
 
-            bucket.setOffset(negative ? -offset : offset);
+            bucket.setOffset(Integer.valueOf(negative ? -offset : offset));
             return position;
         }
 

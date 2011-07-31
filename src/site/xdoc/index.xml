@@ -54,7 +54,7 @@ public boolean isJoinedInLastThreeMonths(<a href="api-release/org/joda/time/Date
   return last3Months.contains(datetimeJoined);
 }
 -->
-Version 2.0 was released on 2011-07-30 -
+Version 2.0 was released on 2011-07-31 -
 <a href="https://sourceforge.net/projects/joda-time/files/joda-time/2.0/">Download now</a>
 </p>
 </section>

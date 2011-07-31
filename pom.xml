@@ -212,9 +212,6 @@
           <archive>
             <manifestFile>src/conf/MANIFEST.MF</manifestFile>
           </archive>
-          <archiverConfig>
-            <duplicateBehavior>skip</duplicateBehavior>
-          </archiverConfig>
         </configuration>
       </plugin>
       <plugin>
@@ -261,10 +258,11 @@
             </goals>
           </execution>
         </executions>
+        <!-- work around maven bug where properties files added twice -->
         <configuration>
-          <archiverConfig>
-            <duplicateBehavior>skip</duplicateBehavior>
-          </archiverConfig>
+          <excludes>
+            <exclude>**/*.properties</exclude>
+          </excludes>
         </configuration>
       </plugin>
       <plugin>

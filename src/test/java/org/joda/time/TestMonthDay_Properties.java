@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ public class TestMonthDay_Properties extends TestCase {
         + 28L * DateTimeConstants.MILLIS_PER_MINUTE;
         
     private DateTimeZone zone = null;
+    private Locale locale = null;
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -62,6 +63,8 @@ public class TestMonthDay_Properties extends TestCase {
     protected void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
+        locale = Locale.getDefault();
+        Locale.setDefault(Locale.UK);
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
@@ -69,6 +72,8 @@ public class TestMonthDay_Properties extends TestCase {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
+        Locale.setDefault(locale);
+        locale = null;
     }
 
     //-----------------------------------------------------------------------

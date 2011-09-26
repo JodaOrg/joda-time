@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.joda.time;
 
+import java.util.Locale;
 import java.util.TimeZone;
 
 import junit.framework.Test;
@@ -49,6 +50,9 @@ public class TestAllPackages extends TestCase {
     public static void main(String args[]) {
         // setup a time zone other than one tester is in
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+        
+        // setup a locale other than one the tester is in
+        Locale.setDefault(new Locale("th", "TH"));
         
         // run tests
         String[] testCaseName = {

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -540,7 +540,7 @@ public class MutablePeriod
      * 
      * @param startInstant  interval start, in milliseconds
      * @param endInstant  interval end, in milliseconds
-     * @param chrono  the chronology to use, not null
+     * @param chrono  the chronology to use, null means ISO chronology
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long startInstant, long endInstant, Chronology chrono) {
@@ -603,7 +603,7 @@ public class MutablePeriod
      * available precise field.
      * 
      * @param duration  the duration, in milliseconds
-     * @param chrono  the chronology to use, not null
+     * @param chrono  the chronology to use, null means ISO chronology
      * @throws ArithmeticException if the set exceeds the capacity of the period
      */
     public void setPeriod(long duration, Chronology chrono) {

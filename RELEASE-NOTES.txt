@@ -49,6 +49,8 @@ Bug fixes since 1.6
   Names now returned in locales other than English
   The names may differ between JDK1.5 and 1.6 due to the underlying JDK data
 
+- Javadoc fix to MutablePeriod [3413869]
+
 
 Feedback
 --------

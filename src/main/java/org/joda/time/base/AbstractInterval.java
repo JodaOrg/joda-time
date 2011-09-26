@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -476,8 +476,10 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     /**
      * Output a string in ISO8601 interval format.
+     * <p>
+     * From version 2.1, the string includes the time zone offset.
      *
-     * @return re-parsable string
+     * @return re-parsable string (in the default zone)
      */
     public String toString() {
         DateTimeFormatter printer = ISODateTimeFormat.dateTime();

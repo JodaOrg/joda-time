@@ -37,17 +37,21 @@ Data compatible - Yes, except
 Semantic compatible - Yes, except
  Time-zone names now return correct results on JDK1.6 for non-English locales
 
+ Interval/MutableInterval toString() now contains the time-zone offset
+
 
 Deprecations since 2.0
 ----------------------
 None
 
 
-Bug fixes since 1.6
+Bug fixes since 2.0
 -------------------
 - Time-zone names [3412910]
   Names now returned in locales other than English
   The names may differ between JDK1.5 and 1.6 due to the underlying JDK data
+
+- Interval/MutableInterval toString() now contains the time-zone offset [https://github.com/JodaOrg/joda-time/pull/2]
 
 - Javadoc fix to MutablePeriod [3413869]
 

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -1038,6 +1038,13 @@ public class TestInterval_Basics extends TestCase {
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.UTC);
         Interval test = new Interval(dt1, dt2);
         assertEquals("2004-06-09T07:08:09.010Z/2005-08-13T12:14:16.018Z", test.toString());
+    }
+
+    public void testToString_reparse() {
+        DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, DateTimeZone.getDefault());
+        DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.getDefault());
+        Interval test = new Interval(dt1, dt2);
+        assertEquals(test, new Interval(test.toString()));
     }
 
     //-----------------------------------------------------------------------

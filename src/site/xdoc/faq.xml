@@ -14,6 +14,8 @@
 <p>
 Some common questions about Joda-Time are answered here.
 <ul>
+<li><a href="#illegalinstant">What does "Illegal instant due to time zone offset transition" mean?</a></li>
+<li><a href="#rulesoutofdate">Are the time-zone rules are out of date?</a></li>
 <li><a href="#newzonerules">Does Joda-Time support the 2007 US and Canada time zone rules?</a></li>
 <li><a href="#datediff">How do I calculate the difference between two dates?</a></li>
 <li><a href="#iso">What is ISO8601?</a></li>
@@ -28,9 +30,55 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#numberclasses">There are lots of classes, do I need to learn them all?</a></li>
 <li><a href="#tzreimplement">Why reimplement TimeZone?</a></li>
 <li><a href="#joda">What is with the name 'joda'?</a></li>
+<li><a href="#pronounce">How do you pronounce 'joda'?</a></li>
 </ul>
 Question not answered? Suggest one via the <a href="mail-lists.html">mailing list</a>.<br></br>
 </p>
+
+
+<a name="illegalinstant" />
+<subsection name="What does 'Illegal instant due to time zone offset transition' mean?">
+<p>
+Joda-Time only allows the key classes to store valid date-times.
+For example, 31st February is not a valid date so it can't be stored (except in <code>Partial</code>).
+</p>
+<p>
+The same principle of valid date-times applies to daylight savings time (DST).
+In many places DST is used, where the local clock moves forward by an hour in spring and back by an hour in autumn/fall.
+This means that in spring, there is a "gap" where a local time does not exist.
+</p>
+<p>
+The error "Illegal instant due to time zone offset transition" refers to this gap.
+It means that your application tried to create a date-time inside the gap - a time that did not exist.
+Since Joda-Time objects must be valid, this is not allowed.
+</p>
+<p>
+Possible solutions may be as follows:<br />
+Use <code>LocalDateTime</code>, as all local date-times are valid.<br />
+When converting a <code>LocalDate</code> to a <code>DateTime</code>, then use <code>toDateTimeAsStartOfDay()</code>
+as this handles and manages any gaps.<br />
+When parsing, use <code>parseLocalDateTime()</code> if the string being parsed has no time-zone.
+</p>
+<p>
+Not all cases of this error have a simple solution.
+Hopefully this FAQ has explained what the error means allowing you to work out what the correct solution will be.
+</p>
+</subsection>
+
+
+<a name="rulesoutofdate" />
+<subsection name="Are the time-zone rules are out of date?">
+<p>
+Joda-Time releases only occur infrequently.
+But time-zone changes happen all the time.
+As such, it may well be that the rules are out of date.
+</p>
+<p>
+Between the Joda-Time releases, it is your responsibility to update the jar file with the latest time-zone rules.
+You must update <i>both</i> the JDK and Joda-Time rules to the same version at the same time to avoid problems.
+See the <a href="tz_update.html">update time-zone rules guide</a> for more details.
+</p>
+</subsection>
 
 
 <a name="newzonerules" />
@@ -280,6 +328,18 @@ With perhaps 8 releases of the time zone rules per year this can be quite signif
 <p>
 'Joda' is a short, four letter name, beginning with 'j' whose domain name was free.
 It is not an acronym.
+</p>
+</subsection>
+
+
+<a name="pronounce" />
+<subsection name="How do you pronounce 'joda'?">
+<p>
+The 'J' in 'Joda' is pronounced the same as the 'J' in <a href="http://dictionary.reference.com/browse/Java">'Java'</a>.
+The project is not capable of wielding a <a href="http://en.wikipedia.org/wiki/Yoda">light saber</a> and is thus pronounced differently.
+</p>
+<p>
+<br />
 </p>
 </subsection>
 

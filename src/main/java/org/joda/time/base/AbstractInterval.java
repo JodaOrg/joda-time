@@ -480,7 +480,7 @@ public abstract class AbstractInterval implements ReadableInterval {
      * @return re-parsable string
      */
     public String toString() {
-        DateTimeFormatter printer = ISODateTimeFormat.dateHourMinuteSecondFraction();
+        DateTimeFormatter printer = ISODateTimeFormat.dateTime();
         printer = printer.withChronology(getChronology());
         StringBuffer buf = new StringBuffer(48);
         printer.printTo(buf, getStartMillis());

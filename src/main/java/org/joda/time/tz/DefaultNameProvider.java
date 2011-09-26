@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2011 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -62,25 +62,37 @@ public class DefaultNameProvider implements NameProvider {
         Map<String, Object> byNameKeyCache = byIdCache.get(id);
         if (byNameKeyCache == null) {
             byIdCache.put(id, byNameKeyCache = createCache());
-            String[][] zoneStrings = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();
-            for (int i=0; i<zoneStrings.length; i++) {
-                String[] set = zoneStrings[i];
-                if (set != null && set.length == 5 && id.equals(set[0])) {
-                    byNameKeyCache.put(set[2], new String[] {set[2], set[1]});
-                    // need to handle case where summer and winter have the same
-                    // abbreviation, such as EST in Australia [1716305]
-                    // we handle this by appending "-Summer", cf ZoneInfoCompiler
-                    if (set[2].equals(set[4])) {
-                        byNameKeyCache.put(set[4] + "-Summer", new String[] {set[4], set[3]});
-                    } else {
-                        byNameKeyCache.put(set[4], new String[] {set[4], set[3]});
-                    }
-                    break;
-                }
+            
+            String[][] zoneStringsEn = DateTimeUtils.getDateFormatSymbols(Locale.ENGLISH).getZoneStrings();
+            String[] setEn = null;
+            for (String[] strings : zoneStringsEn) {
+              if (strings != null && strings.length == 5 && id.equals(strings[0])) {
+                setEn = strings;
+                break;
+              }
+            }
+            String[][] zoneStringsLoc = DateTimeUtils.getDateFormatSymbols(locale).getZoneStrings();
+            String[] setLoc = null;
+            for (String[] strings : zoneStringsLoc) {
+              if (strings != null && strings.length == 5 && id.equals(strings[0])) {
+                setLoc = strings;
+                break;
+              }
+            }
+            
+            if (setEn != null && setLoc != null) {
+              byNameKeyCache.put(setEn[2], new String[] {setLoc[2], setLoc[1]});
+              // need to handle case where summer and winter have the same
+              // abbreviation, such as EST in Australia [1716305]
+              // we handle this by appending "-Summer", cf ZoneInfoCompiler
+              if (setEn[2].equals(setEn[4])) {
+                  byNameKeyCache.put(setEn[4] + "-Summer", new String[] {setLoc[4], setLoc[3]});
+              } else {
+                  byNameKeyCache.put(setEn[4], new String[] {setLoc[4], setLoc[3]});
+              }
             }
         }
-
-        return (String[])byNameKeyCache.get(nameKey);
+        return (String[]) byNameKeyCache.get(nameKey);
     }
 
     private HashMap createCache() {

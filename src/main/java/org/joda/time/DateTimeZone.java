@@ -897,7 +897,7 @@ public abstract class DateTimeZone implements Serializable {
                     return offsetLocal;
                 }
             }
-        } else if (offsetLocal > 0) {
+        } else if (offsetLocal >= 0) {
             long prev = previousTransition(instantAdjusted);
             if (prev < instantAdjusted) {
                 int offsetPrev = getOffset(prev);

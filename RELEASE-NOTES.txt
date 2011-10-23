@@ -32,12 +32,14 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes, except
-  - DateTimeZone data updated to version 2011h
+ - DateTimeZone data updated to version 2011h
 
 Semantic compatible - Yes, except
- Time-zone names now return correct results on JDK1.6 for non-English locales
+ -  Date-time for time-zones with DST based on an offset of 00:00 now pick summer time when ambiguous
 
- Interval/MutableInterval toString() now contains the time-zone offset
+ -  Time-zone names now return correct results on JDK1.6 for non-English locales
+
+ - Interval/MutableInterval toString() now contains the time-zone offset
 
 
 Deprecations since 2.0
@@ -47,6 +49,10 @@ None
 
 Bug fixes since 2.0
 -------------------
+- Ambiguous date-time when in zone with offset of 00:00 [3424669]
+  A date-time constructor with an ambiguous time due to DST should choose summer time
+  but for a zone with an offset of 00:00 it chose winter time
+
 - Time-zone names [3412910]
   Names now returned in locales other than English
   The names may differ between JDK1.5 and 1.6 due to the underlying JDK data

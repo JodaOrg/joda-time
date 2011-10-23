@@ -1246,14 +1246,35 @@ public class TestDateTimeZoneCutover extends TestCase {
 
     // ensure Summer time picked
     //-----------------------------------------------------------------------
-    public void testDateTimeCreation_europe() {
+    public void testDateTimeCreation_athens() {
         DateTimeZone zone = DateTimeZone.forID("Europe/Athens");
         DateTime base = new DateTime(2011, 10, 30, 3, 15, zone);
         assertEquals("2011-10-30T03:15:00.000+03:00", base.toString());
         assertEquals("2011-10-30T03:15:00.000+02:00", base.plusHours(1).toString());
     }
 
-    public void testDateTimeCreation_us() {
+    public void testDateTimeCreation_paris() {
+        DateTimeZone zone = DateTimeZone.forID("Europe/Paris");
+        DateTime base = new DateTime(2011, 10, 30, 2, 15, zone);
+        assertEquals("2011-10-30T02:15:00.000+02:00", base.toString());
+        assertEquals("2011-10-30T02:15:00.000+01:00", base.plusHours(1).toString());
+    }
+
+    public void testDateTimeCreation_london() {
+        DateTimeZone zone = DateTimeZone.forID("Europe/London");
+        DateTime base = new DateTime(2011, 10, 30, 1, 15, zone);
+        assertEquals("2011-10-30T01:15:00.000+01:00", base.toString());
+        assertEquals("2011-10-30T01:15:00.000Z", base.plusHours(1).toString());
+    }
+
+    public void testDateTimeCreation_newYork() {
+        DateTimeZone zone = DateTimeZone.forID("America/New_York");
+        DateTime base = new DateTime(2010, 11, 7, 1, 15, zone);
+        assertEquals("2010-11-07T01:15:00.000-04:00", base.toString());
+        assertEquals("2010-11-07T01:15:00.000-05:00", base.plusHours(1).toString());
+    }
+
+    public void testDateTimeCreation_losAngeles() {
         DateTimeZone zone = DateTimeZone.forID("America/Los_Angeles");
         DateTime base = new DateTime(2010, 11, 7, 1, 15, zone);
         assertEquals("2010-11-07T01:15:00.000-07:00", base.toString());

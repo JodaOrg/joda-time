@@ -331,5 +331,9 @@ public abstract class DurationFieldType implements Serializable {
             }
         }
 
+	@Override
+	public int hashCode() {
+	    return new Integer(iOrdinal).hashCode();
+	}
     }
 }

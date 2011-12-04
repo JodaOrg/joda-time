@@ -360,9 +360,22 @@ public final class GJChronology extends AssembledChronology {
         }
 
         // Assume date is Gregorian.
-        long instant = iGregorianChronology.getDateTimeMillis
-            (year, monthOfYear, dayOfMonth,
-             hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        long instant;
+        try {
+            instant = iGregorianChronology.getDateTimeMillis
+                (year, monthOfYear, dayOfMonth,
+                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+        } catch (IllegalFieldValueException ex) {
+            if (monthOfYear != 2 || dayOfMonth != 29) {
+                throw ex;
+            }
+            instant = iGregorianChronology.getDateTimeMillis
+                (year, monthOfYear, 28,
+                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
+            if (instant >= iCutoverMillis) {
+                throw ex;
+            }
+        }
         if (instant < iCutoverMillis) {
             // Maybe it's Julian.
             instant = iJulianChronology.getDateTimeMillis

@@ -28,6 +28,7 @@ import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
+import org.joda.time.IllegalFieldValueException;
 import org.joda.time.Instant;
 import org.joda.time.Period;
 import org.joda.time.TimeOfDay;
@@ -489,4 +490,23 @@ public class TestGJChronology extends TestCase {
         assertEquals("January", new YearMonthDay("2005-01-01", chrono).monthOfYear().getAsText());
         assertEquals("Jan", new YearMonthDay("2005-01-01", chrono).monthOfYear().getAsShortText());
     }
+
+    public void testLeapYearRulesConstruction() {
+        // 1500 not leap in Gregorian, but is leap in Julian
+        DateMidnight dt = new DateMidnight(1500, 2, 29, GJChronology.getInstanceUTC());
+        assertEquals(dt.getYear(), 1500);
+        assertEquals(dt.getMonthOfYear(), 2);
+        assertEquals(dt.getDayOfMonth(), 29);
+    }
+
+    public void testLeapYearRulesConstructionInvalid() {
+        // 1500 not leap in Gregorian, but is leap in Julian
+        try {
+            new DateMidnight(1500, 2, 30, GJChronology.getInstanceUTC());
+            fail();
+        } catch (IllegalFieldValueException ex) {
+            // good
+        }
+    }
+
 }

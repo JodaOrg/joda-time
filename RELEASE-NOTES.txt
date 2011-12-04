@@ -54,6 +54,9 @@ Bug fixes since 2.0
   A date-time constructor with an ambiguous time due to DST should choose summer time
   but for a zone with an offset of 00:00 it chose winter time
 
+- Fix GJChronology to allow some leap year dates in JulianChronology to be created [3446915]
+  Creating February 29th in Julian leap years was not always possible
+
 - Time-zone names [3412910]
   Names now returned in locales other than English
   The names may differ between JDK1.5 and 1.6 due to the underlying JDK data

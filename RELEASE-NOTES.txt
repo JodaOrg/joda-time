@@ -21,6 +21,7 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.0
 ----------------------
+- Make DurationFieldType hash code deterministic
 
 
 Compatibility with 2.0

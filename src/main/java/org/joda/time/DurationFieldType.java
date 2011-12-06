@@ -275,7 +275,7 @@ public abstract class DurationFieldType implements Serializable {
         /** @inheritdoc */
         @Override
         public int hashCode() {
-            return iOrdinal;
+            return (1 << iOrdinal);
         }
 
         public DurationField getField(Chronology chronology) {

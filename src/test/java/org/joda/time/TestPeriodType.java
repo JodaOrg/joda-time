@@ -593,6 +593,22 @@ public class TestPeriodType extends TestCase {
         }
     }
 
+    // ensure hash key distribution
+    public void testForFields7() throws Exception {
+        DurationFieldType[] types = new DurationFieldType[] {
+            DurationFieldType.weeks(),
+            DurationFieldType.months(),
+        };
+        DurationFieldType[] types2 = new DurationFieldType[] {
+            DurationFieldType.seconds(),
+        };
+        PeriodType type = PeriodType.forFields(types);
+        PeriodType type2 = PeriodType.forFields(types2);
+        assertEquals(false, type == type2);
+        assertEquals(false, type.equals(type2));
+        assertEquals(false, type.hashCode() == type2.hashCode());
+    }
+
     //-----------------------------------------------------------------------
     public void testMaskYears() throws Exception {
         PeriodType type = PeriodType.standard().withYearsRemoved();

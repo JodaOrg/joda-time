@@ -57,6 +57,9 @@ Bug fixes since 2.0
 - Fix GJChronology to allow some leap year dates in JulianChronology to be created [3446915]
   Creating February 29th in Julian leap years was not always possible
 
+- Fix PeriodType caching
+  The caching could go wrong if the DurationFieldType instances were in the wrong order
+
 - Time-zone names [3412910]
   Names now returned in locales other than English
   The names may differ between JDK1.5 and 1.6 due to the underlying JDK data

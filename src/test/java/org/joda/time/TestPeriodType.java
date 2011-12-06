@@ -523,10 +523,12 @@ public class TestPeriodType extends TestCase {
     public void testForFields4() throws Exception {
         DurationFieldType[] types = new DurationFieldType[] {
             DurationFieldType.weeks(),
+            DurationFieldType.days(),  // adding this makes this test unique, so cache is not pre-populated
             DurationFieldType.months(),
         };
         DurationFieldType[] types2 = new DurationFieldType[] {
             DurationFieldType.months(),
+            DurationFieldType.days(),
             DurationFieldType.weeks(),
         };
         PeriodType type = PeriodType.forFields(types);

@@ -451,6 +451,9 @@ public final class LocalDate
      * @return the resolved object, not null
      */
     private Object readResolve() {
+        if (iChronology == null) {
+            return new LocalDate(iLocalMillis, ISOChronology.getInstanceUTC());
+        }
         if (DateTimeZone.UTC.equals(iChronology.getZone()) == false) {
             return new LocalDate(iLocalMillis, iChronology.withUTC());
         }

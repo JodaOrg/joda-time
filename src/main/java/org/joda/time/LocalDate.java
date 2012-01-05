@@ -1167,6 +1167,8 @@ public final class LocalDate
     /**
      * Returns a copy of this date plus the specified number of years.
      * <p>
+     * This adds the specified number of years to the date.
+     * If adding years makes the day-of-month invalid, it is adjusted to the last valid day in the month.
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
@@ -1190,6 +1192,9 @@ public final class LocalDate
     /**
      * Returns a copy of this date plus the specified number of months.
      * <p>
+     * This adds the specified number of months to the date.
+     * The addition may change the year, but the day-of-month is normally unchanged.
+     * If adding months makes the day-of-month invalid, it is adjusted to the last valid day in the month.
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
@@ -1281,6 +1286,8 @@ public final class LocalDate
     /**
      * Returns a copy of this date minus the specified number of years.
      * <p>
+     * This subtracts the specified number of years from the date.
+     * If subtracting years makes the day-of-month invalid, it is adjusted to the last valid day in the month.
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:
@@ -1304,6 +1311,9 @@ public final class LocalDate
     /**
      * Returns a copy of this date minus the specified number of months.
      * <p>
+     * This subtracts the specified number of months from the date.
+     * The subtraction may change the year, but the day-of-month is normally unchanged.
+     * If subtracting months makes the day-of-month invalid, it is adjusted to the last valid day in the month.
      * This LocalDate instance is immutable and unaffected by this method call.
      * <p>
      * The following three lines are identical in effect:

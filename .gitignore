@@ -3,3 +3,4 @@ target/
 *.log
 src/tz-data/
 *TempTest*
+/test-output/

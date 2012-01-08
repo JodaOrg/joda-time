@@ -17,6 +17,7 @@ Some common questions about Joda-Time are answered here.
 <li><a href="#illegalinstant">What does "Illegal instant due to time zone offset transition" mean?</a></li>
 <li><a href="#rulesoutofdate">Are the time-zone rules are out of date?</a></li>
 <li><a href="#newzonerules">Does Joda-Time support the 2007 US and Canada time zone rules?</a></li>
+<li><a href="#wrongoffset">Why is the offset for a time-zone different to the JDK?</a></li>
 <li><a href="#datediff">How do I calculate the difference between two dates?</a></li>
 <li><a href="#iso">What is ISO8601?</a></li>
 <li><a href="#default">Why is ISO8601 the default?</a></li>
@@ -100,6 +101,28 @@ For the Bahamas (America/Nassau) you need Joda-Time 1.5.
 </p>
 <p>
 For any future, or similar time zone change, you can upgrade your Joda-Time jar by following <a href="tz_update.html">these instructions</a>.
+</p>
+</subsection>
+
+<a name="wrongoffset" />
+<subsection name="Why is the offset for a time-zone different to the JDK?">
+<p>
+There are two main reasons for this.
+</p>
+<p>
+The first reason is that both the JDK and Joda-Time have time-zone data files.
+It is important to keep both up to date and in sync if you want to compare the offset between the two.
+</p>
+<p>
+The second reason affects date-times before the modern time-zone system was introduced.
+The time-zone data is obtained from the <a href="http://www.iana.org/time-zones">time-zone database</a>.
+The database contains information on "Local Mean Time" (LMT) which is the local time that would have been
+observed at the location following the Sun's movements.
+</p>
+<p>
+Joda-Time uses the LMT information for all times prior to the first time-zone offset being chosen in a location.
+By contrast, the JDK ignores the LMT information.
+As such, the time-zone offset returned by the JDK and Joda-Time are different for date-times before the modern time-zone system.
 </p>
 </subsection>
 

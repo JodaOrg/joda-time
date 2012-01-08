@@ -726,10 +726,10 @@ get the datetime for the current time, but in the Buddhist Calendar, you would d
     DateTime dt = new DateTime();
     dt.getYear();  // returns 2004
     // change to Buddhist chronology
-    DateTime dtBuddhist = dt.withChronology(Chronology.getBuddhist());
+    DateTime dtBuddhist = dt.withChronology(BuddhistChronology.getInstance());
     dtBuddhist.getYear();  // returns 2547
 </source>
-where <code>Chronology.getBuddhist</code> is a factory method for obtaining a
+where <code>BuddhistChronology.getInstance</code> is a factory method for obtaining a
 Buddhist chronology.
 </p>
 </section>

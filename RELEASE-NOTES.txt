@@ -67,6 +67,9 @@ Bug fixes since 2.0
 - Time zone id parsing fixed for some longer time zones [3427389]
   Time zones like "America/Dawson_Creek" were not parsed as "America/Dawson" was matched first
 
+- Time zone later/earlier offset methods failed in Western hemisphere [3476684]
+  Previously, withLaterOffset() failed in the Americas, Now rewritten
+
 - Enhance readResolve() from LocalDate/LocalTime/LocalDateTime [3461008]
   Handle even more weird deserialization problems with other tools
 

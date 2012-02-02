@@ -70,6 +70,8 @@ Bug fixes since 2.0
 - Enhance readResolve() from LocalDate/LocalTime/LocalDateTime [3461008]
   Handle even more weird deserialization problems with other tools
 
+- Tweaks to cached time-zone to try and avoid a NPE [3470276]
+
 - Interval/MutableInterval toString() now contains the time-zone offset [https://github.com/JodaOrg/joda-time/pull/2]
 
 - Javadoc fix to MutablePeriod [3413869]

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2012 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ public class TestAll extends TestCase {
         suite.addTest(TestUTCProvider.suite());
         suite.addTest(TestBuilder.suite());
         suite.addTest(TestCompiler.suite());
+        suite.addTest(TestCachedDateTimeZone.suite());
         suite.addTest(TestFixedDateTimeZone.suite());
         return suite;
     }

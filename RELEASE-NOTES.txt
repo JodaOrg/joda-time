@@ -72,6 +72,10 @@ Bug fixes since 2.0
 
 - Tweaks to cached time-zone to try and avoid a NPE [3470276]
 
+- Fix multi-lingual period format for using English from another language default [3471414]
+  Previously, the word-based methods on PeriodFormat ignored the argument of English if the default
+  locale was non-English, now fixed
+
 - Interval/MutableInterval toString() now contains the time-zone offset [https://github.com/JodaOrg/joda-time/pull/2]
 
 - Javadoc fix to MutablePeriod [3413869]

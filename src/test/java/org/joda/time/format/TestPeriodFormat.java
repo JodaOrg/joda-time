@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2012 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import org.joda.time.Period;
  */
 public class TestPeriodFormat extends TestCase {
     
+    private static final Locale EN = new Locale("en");
     private static final Locale FR = new Locale("fr");
     private static final Locale PT = new Locale("pt");
     private static final Locale ES = new Locale("es");
@@ -51,7 +52,7 @@ public class TestPeriodFormat extends TestCase {
 
     protected void setUp() throws Exception {
         originalLocale = Locale.getDefault();
-        Locale.setDefault(Locale.UK);
+        Locale.setDefault(DE);
     }
 
     protected void tearDown() throws Exception {
@@ -102,6 +103,14 @@ public class TestPeriodFormat extends TestCase {
     //-----------------------------------------------------------------------
     public void test_getDefault_cached() {
         assertSame(PeriodFormat.getDefault(), PeriodFormat.getDefault());
+    }
+
+    //-----------------------------------------------------------------------
+    // wordBased() - default locale (de)
+    //-----------------------------------------------------------------------
+    public void test_wordBased_default() {
+        Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
+        assertEquals("1 Tag, 5 Stunden, 6 Minuten, 7 Sekunden und 8 Millisekunden", PeriodFormat.wordBased().print(p));
     }
 
     //-----------------------------------------------------------------------
@@ -288,5 +297,32 @@ public class TestPeriodFormat extends TestCase {
     public void test_wordBased_nl_cached() {
         assertSame(PeriodFormat.wordBased(NL), PeriodFormat.wordBased(NL));
     }
+
+    //-----------------------------------------------------------------------
+    // Cross check languages
+    //-----------------------------------------------------------------------
+    public void test_wordBased_fr_from_de() {
+      Locale.setDefault(DE);
+      Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
+      assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat.wordBased(FR).print(p));
+  }
+
+    public void test_wordBased_fr_from_nl() {
+      Locale.setDefault(NL);
+      Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
+      assertEquals("1 jour, 5 heures, 6 minutes, 7 secondes et 8 millisecondes", PeriodFormat.wordBased(FR).print(p));
+  }
+
+    public void test_wordBased_en_from_de() {
+      Locale.setDefault(DE);
+      Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
+      assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat.wordBased(EN).print(p));
+  }
+
+    public void test_wordBased_en_from_nl() {
+      Locale.setDefault(NL);
+      Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
+      assertEquals("1 day, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", PeriodFormat.wordBased(EN).print(p));
+  }
 
 }

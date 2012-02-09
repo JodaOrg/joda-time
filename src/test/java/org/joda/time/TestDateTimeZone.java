@@ -363,9 +363,18 @@ public class TestDateTimeZone extends TestCase {
         assertEquals(DateTimeConstants.MILLIS_PER_HOUR + (23L * DateTimeConstants.MILLIS_PER_MINUTE),
                 zone.getOffset(TEST_TIME_SUMMER));
         
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+1:23"));
+        assertEquals("+01:23", zone.getID());
+        assertEquals(DateTimeConstants.MILLIS_PER_HOUR + (23L * DateTimeConstants.MILLIS_PER_MINUTE),
+                zone.getOffset(TEST_TIME_SUMMER));
+        
         zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT-02:00"));
         assertEquals("-02:00", zone.getID());
         assertEquals((-2L * DateTimeConstants.MILLIS_PER_HOUR), zone.getOffset(TEST_TIME_SUMMER));
+        
+        zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("GMT+2"));
+        assertEquals("+02:00", zone.getID());
+        assertEquals((2L * DateTimeConstants.MILLIS_PER_HOUR), zone.getOffset(TEST_TIME_SUMMER));
         
         zone = DateTimeZone.forTimeZone(TimeZone.getTimeZone("EST"));
         assertEquals("America/New_York", zone.getID());

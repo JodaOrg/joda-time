@@ -322,7 +322,7 @@ public abstract class DateTimeZone implements Serializable {
 
         // Support GMT+/-hh:mm formats
         if (convId == null) {
-            convId = zone.getDisplayName();
+            convId = zone.getID();
             if (convId.startsWith("GMT+") || convId.startsWith("GMT-")) {
                 convId = convId.substring(3);
                 int offset = parseOffset(convId);

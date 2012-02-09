@@ -70,6 +70,9 @@ Bug fixes since 2.0
 - Time zone later/earlier offset methods failed in Western hemisphere [3476684]
   Previously, withLaterOffset() failed in the Americas, Now rewritten
 
+ - Time zone id parsing of GMT offsets failed on Dalvik
+  This may be related to a JDK specification change between Java 1.6 and 1.7
+
 - Enhance readResolve() from LocalDate/LocalTime/LocalDateTime [3461008]
   Handle even more weird deserialization problems with other tools
 

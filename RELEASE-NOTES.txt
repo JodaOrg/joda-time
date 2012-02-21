@@ -88,6 +88,9 @@ Bug fixes since 2.0
 
 - Fix multiplication of Long.MIN_VALUE by -1 in safeMultiply()
 
+- Fix validation in BasicChronology.getDateTimeMillis
+ Previously this allowed a millisOfDay value one too large
+
 - Javadoc fix to MutablePeriod [3413869]
 
 

@@ -86,6 +86,8 @@ Bug fixes since 2.0
 
 - Interval/MutableInterval toString() now contains the time-zone offset [https://github.com/JodaOrg/joda-time/pull/2]
 
+- Fix multiplication of Long.MIN_VALUE by -1 in safeMultiply()
+
 - Javadoc fix to MutablePeriod [3413869]
 
 

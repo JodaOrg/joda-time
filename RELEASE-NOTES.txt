@@ -23,6 +23,8 @@ Enhancements since 2.0
 ----------------------
 - Make DurationFieldType hash code deterministic
 
+- Add Period.multipliedBy(int) and Period.negated()
+
 
 Compatibility with 2.0
 ----------------------

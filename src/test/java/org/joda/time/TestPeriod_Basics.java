@@ -936,6 +936,83 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+    public void testMultipliedBy() {
+        Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        
+        Period test = base.multipliedBy(1);
+        assertSame(base, test);
+        
+        test = base.multipliedBy(0);
+        assertEquals(Period.ZERO, test);
+        
+        test = base.multipliedBy(2);
+        assertEquals(2, test.getYears());
+        assertEquals(4, test.getMonths());
+        assertEquals(6, test.getWeeks());
+        assertEquals(8, test.getDays());
+        assertEquals(10, test.getHours());
+        assertEquals(12, test.getMinutes());
+        assertEquals(14, test.getSeconds());
+        assertEquals(16, test.getMillis());
+        
+        test = base.multipliedBy(3);
+        assertEquals(3, test.getYears());
+        assertEquals(6, test.getMonths());
+        assertEquals(9, test.getWeeks());
+        assertEquals(12, test.getDays());
+        assertEquals(15, test.getHours());
+        assertEquals(18, test.getMinutes());
+        assertEquals(21, test.getSeconds());
+        assertEquals(24, test.getMillis());
+        
+        test = base.multipliedBy(-4);
+        assertEquals(-4, test.getYears());
+        assertEquals(-8, test.getMonths());
+        assertEquals(-12, test.getWeeks());
+        assertEquals(-16, test.getDays());
+        assertEquals(-20, test.getHours());
+        assertEquals(-24, test.getMinutes());
+        assertEquals(-28, test.getSeconds());
+        assertEquals(-32, test.getMillis());
+        
+        try {
+            Period.days(Integer.MAX_VALUE).multipliedBy(2);
+            fail();
+        } catch (ArithmeticException ex) {}
+        
+        try {
+            Period.days(Integer.MIN_VALUE).multipliedBy(2);
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void testNegated() {
+        Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
+        
+        Period test = Period.ZERO.negated();
+        assertEquals(Period.ZERO, test);
+        
+        test = base.negated();
+        assertEquals(-1, test.getYears());
+        assertEquals(-2, test.getMonths());
+        assertEquals(-3, test.getWeeks());
+        assertEquals(-4, test.getDays());
+        assertEquals(-5, test.getHours());
+        assertEquals(-6, test.getMinutes());
+        assertEquals(-7, test.getSeconds());
+        assertEquals(-8, test.getMillis());
+        
+        test = Period.days(Integer.MAX_VALUE).negated();
+        assertEquals(-Integer.MAX_VALUE, test.getDays());
+        
+        try {
+            Period.days(Integer.MIN_VALUE).negated();
+            fail();
+        } catch (ArithmeticException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
     public void testToStandardWeeks() {
         Period test = new Period(0, 0, 3, 4, 5, 6, 7, 8);
         assertEquals(3, test.toStandardWeeks().getWeeks());

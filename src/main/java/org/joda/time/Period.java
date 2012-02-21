@@ -1289,6 +1289,36 @@ public final class Period
 
     //-----------------------------------------------------------------------
     /**
+     * Returns a new instance with each element in this period multiplied
+     * by the specified scalar.
+     *
+     * @param scalar  the scalar to multiply by, not null
+     * @return a {@code Period} based on this period with the amounts multiplied by the scalar, never null
+     * @throws ArithmeticException if the capacity of any field is exceeded
+     */
+    public Period multipliedBy(int scalar) {
+        if (this == ZERO || scalar == 1) {
+            return this;
+        }
+        int[] values = getValues();  // cloned
+        for (int i = 0; i < values.length; i++) {
+            values[i] = FieldUtils.safeMultiply(values[i], scalar);
+        }
+        return new Period(values, getPeriodType());
+    }
+
+    /**
+     * Returns a new instance with each amount in this period negated.
+     *
+     * @return a {@code Period} based on this period with the amounts negated, never null
+     * @throws ArithmeticException if any field has the minimum value
+     */
+    public Period negated() {
+        return multipliedBy(-1);
+    }
+
+    //-----------------------------------------------------------------------
+    /**
      * Converts this period to a period in weeks assuming a
      * 7 day week, 24 hour day, 60 minute hour and 60 second minute.
      * <p>

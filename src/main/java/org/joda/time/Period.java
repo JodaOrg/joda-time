@@ -1295,6 +1295,7 @@ public final class Period
      * @param scalar  the scalar to multiply by, not null
      * @return a {@code Period} based on this period with the amounts multiplied by the scalar, never null
      * @throws ArithmeticException if the capacity of any field is exceeded
+     * @since 2.1
      */
     public Period multipliedBy(int scalar) {
         if (this == ZERO || scalar == 1) {
@@ -1312,6 +1313,7 @@ public final class Period
      *
      * @return a {@code Period} based on this period with the amounts negated, never null
      * @throws ArithmeticException if any field has the minimum value
+     * @since 2.1
      */
     public Period negated() {
         return multipliedBy(-1);

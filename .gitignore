@@ -1,4 +1,6 @@
 bin/
+build/
+lib/
 target/
 *.log
 src/tz-data/

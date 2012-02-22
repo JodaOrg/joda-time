@@ -27,8 +27,8 @@
   <property name="component.title"         value="Joda date and time"/>
 
   <!-- The current version number of this component -->
-  <property name="component.version"       value="2.0"/>
-  <property name="previous.version"        value="1.6"/>
+  <property name="component.version"       value="2.1"/>
+  <property name="previous.version"        value="2.0"/>
 
   <!-- The current version number of this component -->
   <property name="component.fullname"      value="${component.name}-${component.version}"/>
@@ -39,7 +39,8 @@
   <!-- Dependencies -->
   <property name="lib"                     value="lib"/>
   <property name="junit.jar"               value="${lib}/junit-3.8.2.jar"/>
-  <property name="jodaconvert.jar"         value="${lib}/joda-convert-1.1.jar"/>
+  <property name="jodaconvert.jar"         value="${lib}/joda-convert-1.2.jar"/>
+  <property name="jodaprevious.jar"        value="${lib}/joda-time-${previous.version}.jar"/>
 
   <!-- The directory of source files -->
   <property name="source"                  value="src"/>
@@ -65,8 +66,6 @@
   <property name="build.dist.fullname"     value="${build.dist}/${component.fullname}"/>
   <property name="build.dist.src.fullname" value="${build.dist.fullname}-src"/>
   <property name="build.dist.bundle"       value="${build.dist.fullname}-bundle"/>
-
-  <property name="repo" value="${user.home}/.maven/repository" />
 
 <!-- ========== Compiler Defaults ========================================= -->
 
@@ -124,6 +123,7 @@
     <available property="junit.ant" classname="junit.framework.Test"/>
     <available property="junit.present" file="${junit.jar}"/>
     <available property="jodaconvert.present" file="${jodaconvert.jar}"/>
+    <available property="jodaprevious.present" file="${jodaprevious.jar}"/>
     <uptodate property="tz.build.notneeded" targetfile="${build.tz}/ZoneInfoMap" >
       <srcfiles dir= "${source.tz}" includes="**/*.*"/>
     </uptodate>
@@ -138,10 +138,16 @@
     <get dest="${junit.jar}" usetimestamp="true" ignoreerrors="true" src="http://repo2.maven.org/maven2/junit/junit/3.8.2/junit-3.8.2.jar" />
   </target>
   <target name="getjodaconvert" unless="jodaconvert.present">
-    <echo message="Getting joda-convert from http://repo1.maven.org/maven2/org/joda/joda-convert/1.1"/>
+    <echo message="Getting joda-convert from http://repo2.maven.org/maven2/org/joda/joda-convert/1.2"/>
     <setproxy />
     <mkdir dir="${lib}"/>
-    <get dest="${jodaconvert.jar}" usetimestamp="true" ignoreerrors="true" src="http://repo1.maven.org/maven2/org/joda/joda-convert/1.1/joda-convert-1.1.jar" />
+    <get dest="${jodaconvert.jar}" usetimestamp="true" ignoreerrors="true" src="http://repo2.maven.org/maven2/org/joda/joda-convert/1.2/joda-convert-1.2.jar" />
+  </target>
+  <target name="getjodaprevious" unless="jodaprevious.present">
+    <echo message="Getting joda-convert from http://repo2.maven.org/maven2/joda-time/joda-time/${previous.version}"/>
+    <setproxy />
+    <mkdir dir="${lib}"/>
+    <get dest="${jodaprevious.jar}" usetimestamp="true" ignoreerrors="true" src="http://repo2.maven.org/maven2/joda-time/joda-time/${previous.version}/joda-time-${previous.version}.jar" />
   </target>
 
 <!-- ====================================================================== -->
@@ -445,13 +451,11 @@
     </junit>
   </target>
 
-  <target name="clirr" depends="jar" description="clirr binary compatibility">
-  	<echo message="${repo}/clirr/jars/clirr-core-0.6-uber.jar"></echo>
-    <taskdef classpath="${repo}/clirr/jars/clirr-core-0.6-uber.jar"
-        resource="clirrtask.properties"/>
-
+  <target name="clirr" depends="getjodaprevious,jar" description="clirr binary compatibility">
+  	<echo message="Clirr must be manually downloaded to ${lib}/clirr-core-0.6-uber.jar"></echo>
+    <taskdef classpath="${lib}/clirr-core-0.6-uber.jar" resource="clirrtask.properties"/>
     <clirr>
-      <origfiles dir="${repo}/${component.name}/jars" includes="${component.name}-${previous.version}.jar"/>
+      <origfiles dir="." includes="${jodaprevious.jar}"/>
       <newfiles dir="." includes="${build.fullname}.jar"/>
       <formatter type="xml" outfile="build/clirr.xml" />
     </clirr>

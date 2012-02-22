@@ -361,12 +361,12 @@ public class DateTimeUtils {
      * @since 2.0
      */
     public static final DateFormatSymbols getDateFormatSymbols(Locale locale) {
-        try {        	
-        	Method method = DateFormatSymbols.class.getMethod("getInstance", new Class[] {Locale.class});        	
-        	return (DateFormatSymbols) method.invoke(null, new Object[] {locale});        	
+        try {
+            Method method = DateFormatSymbols.class.getMethod("getInstance", new Class[] {Locale.class});
+            return (DateFormatSymbols) method.invoke(null, new Object[] {locale});
         } catch (Exception ex) {
-        	return new DateFormatSymbols(locale);
-        } 
+            return new DateFormatSymbols(locale);
+        }
     }
 
     //-----------------------------------------------------------------------

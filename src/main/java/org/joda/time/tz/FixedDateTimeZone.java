@@ -89,7 +89,7 @@ public final class FixedDateTimeZone extends DateTimeZone {
             return true;
         }
         if (obj instanceof FixedDateTimeZone) {
-            FixedDateTimeZone other = (FixedDateTimeZone)obj;
+            FixedDateTimeZone other = (FixedDateTimeZone) obj;
             return
                 getID().equals(other.getID()) &&
                 iStandardOffset == other.iStandardOffset &&

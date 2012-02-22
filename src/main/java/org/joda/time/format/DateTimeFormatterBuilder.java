@@ -2542,9 +2542,9 @@ public class DateTimeFormatterBuilder {
             String best = null;
             for (String id : ALL_IDS) {
                 if (str.startsWith(id)) {
-                	if (best == null || id.length() > best.length()) {
-                		best = id;
-                	}
+                    if (best == null || id.length() > best.length()) {
+                        best = id;
+                    }
                 }
             }
             if (best != null) {

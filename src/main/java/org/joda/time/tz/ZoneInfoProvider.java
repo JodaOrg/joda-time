@@ -227,8 +227,8 @@ public class ZoneInfoProvider implements Provider {
             DateTimeZone tz = DateTimeZoneBuilder.readFrom(in, id);
             iZoneInfoMap.put(id, new SoftReference<DateTimeZone>(tz));
             return tz;
-        } catch (IOException e) {
-            uncaughtException(e);
+        } catch (IOException ex) {
+            uncaughtException(ex);
             iZoneInfoMap.remove(id);
             return null;
         } finally {
@@ -236,7 +236,7 @@ public class ZoneInfoProvider implements Provider {
                 if (in != null) {
                     in.close();
                 }
-            } catch (IOException e) {
+            } catch (IOException ex) {
             }
         }
     }
@@ -256,7 +256,7 @@ public class ZoneInfoProvider implements Provider {
         } finally {
             try {
                 din.close();
-            } catch (IOException e) {
+            } catch (IOException ex) {
             }
         }
         map.put("UTC", new SoftReference<DateTimeZone>(DateTimeZone.UTC));
@@ -282,7 +282,7 @@ public class ZoneInfoProvider implements Provider {
         for (int i=0; i<size; i++) {
             try {
                 zimap.put(pool[din.readUnsignedShort()], pool[din.readUnsignedShort()]);
-            } catch (ArrayIndexOutOfBoundsException e) {
+            } catch (ArrayIndexOutOfBoundsException ex) {
                 throw new IOException("Corrupt zone info map");
             }
         }

@@ -94,6 +94,13 @@ Bug fixes since 2.0
 - Javadoc fix to MutablePeriod [3413869]
 
 
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+
+
 Feedback
 --------
 All feedback is welcomed via the joda-interest mailing list.

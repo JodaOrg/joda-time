@@ -310,7 +310,7 @@
       <artifactId>joda-convert</artifactId>
       <version>1.1</version>
       <scope>compile</scope>
-      <optional>true</optional>
+      <optional>true</optional><!-- mandatory in Scala -->
     </dependency>
     <dependency>
       <groupId>junit</groupId>

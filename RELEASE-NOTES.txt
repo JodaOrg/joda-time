@@ -35,7 +35,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes, except
- - DateTimeZone data updated to version 2011h
+ - DateTimeZone data updated to version 2011n
 
 Semantic compatible - Yes, except
  -  Date-time for time-zones with DST based on an offset of 00:00 now pick summer time when ambiguous

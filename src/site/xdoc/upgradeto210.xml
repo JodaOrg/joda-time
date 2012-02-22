@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 1.6 to 1.6.1</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.0 to version 2.1.
+<source>
+Joda-Time version 2.1
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the ninth release of Joda-Time.
+This release contains enhancements, bug fixes and a time zone update.
+
+We require JDK 1.5 or later as features such as generics are used.
+It may be possible to use retroweaver to compile this under an earlier JDK but we haven't tried.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://joda-time.sourceforge.net/related.html **
+
+
+Enhancements since 2.0
+----------------------
+- Make DurationFieldType hash code deterministic
+
+- Add Period.multipliedBy(int) and Period.negated()
+
+
+Compatibility with 2.0
+----------------------
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+ - DateTimeZone data updated to version 2011n
+
+Semantic compatible - Yes, except
+ -  Date-time for time-zones with DST based on an offset of 00:00 now pick summer time when ambiguous
+
+ -  Time-zone names now return correct results on JDK1.6 for non-English locales
+
+ - Interval/MutableInterval toString() now contains the time-zone offset
+
+
+Deprecations since 2.0
+----------------------
+None
+
+
+Bug fixes since 2.0
+-------------------
+- Ambiguous date-time when in zone with offset of 00:00 [3424669]
+  A date-time constructor with an ambiguous time due to DST should choose summer time
+  but for a zone with an offset of 00:00 it chose winter time
+
+- Fix GJChronology to allow some leap year dates in JulianChronology to be created [3446915]
+  Creating February 29th in Julian leap years was not always possible
+
+- Fix PeriodType caching
+  The caching could go wrong if the DurationFieldType instances were in the wrong order
+
+- Time-zone names [3412910]
+  Names now returned in locales other than English
+  The names may differ between JDK1.5 and 1.6 due to the underlying JDK data
+
+- Time zone id parsing fixed for some longer time zones [3427389]
+  Time zones like "America/Dawson_Creek" were not parsed as "America/Dawson" was matched first
+
+- Time zone later/earlier offset methods failed in Western hemisphere [3476684]
+  Previously, withLaterOffset() failed in the Americas, Now rewritten
+
+ - Time zone id parsing of GMT offsets failed on Dalvik
+  This may be related to a JDK specification change between Java 1.6 and 1.7
+
+- Enhance readResolve() from LocalDate/LocalTime/LocalDateTime [3461008]
+  Handle even more weird deserialization problems with other tools
+
+- Tweaks to cached time-zone to try and avoid a NPE [3470276]
+
+- Fix multi-lingual period format for using English from another language default [3471414]
+  Previously, the word-based methods on PeriodFormat ignored the argument of English if the default
+  locale was non-English, now fixed
+
+- Interval/MutableInterval toString() now contains the time-zone offset [https://github.com/JodaOrg/joda-time/pull/2]
+
+- Fix multiplication of Long.MIN_VALUE by -1 in safeMultiply()
+
+- Fix validation in BasicChronology.getDateTimeMillis
+ Previously this allowed a millisOfDay value one too large
+
+- Javadoc fix to MutablePeriod [3413869]
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

@@ -174,7 +174,7 @@ public abstract class BaseChronology
      * and {@link DateTimeField#getMaximumValue(ReadablePartial, int[])}.
      *
      * @param partial  the partial instant to validate
-     * @param values  the values to validate, not null
+     * @param values  the values to validate, not null unless the partial is empty
      * @throws IllegalArgumentException if the instant is invalid
      */
     public void validate(ReadablePartial partial, int[] values) {

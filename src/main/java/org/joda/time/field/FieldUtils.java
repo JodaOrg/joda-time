@@ -118,8 +118,7 @@ public class FieldUtils {
     public static int safeMultiply(int val1, int val2) {
         long total = (long) val1 * (long) val2;
         if (total < Integer.MIN_VALUE || total > Integer.MAX_VALUE) {
-            throw new ArithmeticException
-                ("The calculation caused an overflow: " + val1 + " * " + val2);
+          throw new ArithmeticException("Multiplication overflows an int: " + val1 + " * " + val2);
         }
         return (int) total;
     }
@@ -128,24 +127,26 @@ public class FieldUtils {
      * Multiply two values throwing an exception if overflow occurs.
      * 
      * @param val1  the first value
-     * @param scalar  the second value
+     * @param val2  the second value
      * @return the new total
      * @throws ArithmeticException if the value is too big or too small
      * @since 1.2
      */
-    public static long safeMultiply(long val1, int scalar) {
-        switch (scalar) {
-        case -1:
-            return -val1;
-        case 0:
-            return 0L;
-        case 1:
-            return val1;
+    public static long safeMultiply(long val1, int val2) {
+        switch (val2) {
+            case -1:
+                if (val1 == Long.MIN_VALUE) {
+                    throw new ArithmeticException("Multiplication overflows a long: " + val1 + " * " + val2);
+                }
+                return -val1;
+            case 0:
+                return 0L;
+            case 1:
+                return val1;
         }
-        long total = val1 * scalar;
-        if (total / scalar != val1) {
-            throw new ArithmeticException
-                ("The calculation caused an overflow: " + val1 + " * " + scalar);
+        long total = val1 * val2;
+        if (total / val2 != val1) {
+          throw new ArithmeticException("Multiplication overflows a long: " + val1 + " * " + val2);
         }
         return total;
     }

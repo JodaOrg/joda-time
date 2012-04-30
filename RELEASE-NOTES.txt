@@ -32,7 +32,7 @@ Source compatible - Yes
 Serialization compatible - Yes
 
 Data compatible - Yes, except
- - DateTimeZone data updated to version 2011n
+ - DateTimeZone data updated to version 2012c
 
 Semantic compatible - Yes, except
  - DateTimeFormatter.parseInto() retains the year if only month parsed (as it did in v1.x)

@@ -59,9 +59,19 @@ public class TestReadableDurationConverter extends TestCase {
         super(name);
     }
 
+    @Override
     protected void setUp() throws Exception {
+        super.setUp();
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
+        zone = DateTimeZone.getDefault();
+        DateTimeZone.setDefault(PARIS);
+    }
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        DateTimeZone.setDefault(zone);
     }
 
     //-----------------------------------------------------------------------

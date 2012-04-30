@@ -53,6 +53,9 @@ Bug fixes since 2.1
 - FieldUtils.safeMultiply(long,int) [3520651]
   Fix implementation to throw exception for (Long.MIN_VALUE, -1)
 
+- Fix TestReadableDurationConverter [3515086]
+  Test case didn't work if deafult time zone was UTC
+
 - Javadoc fix to BaseChronology [3513326]
 
 

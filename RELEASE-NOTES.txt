@@ -1,10 +1,10 @@
-Joda-Time version 2.1
+Joda-Time version 2.2
 ---------------------
 
 Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
 
-This is the ninth release of Joda-Time.
+This is the tenth release of Joda-Time.
 This release contains enhancements, bug fixes and a time zone update.
 
 We require JDK 1.5 or later as features such as generics are used.
@@ -19,14 +19,11 @@ of restrictions. If the license causes you problems please contact the mailing l
 ** http://joda-time.sourceforge.net/related.html **
 
 
-Enhancements since 2.0
+Enhancements since 2.1
 ----------------------
-- Make DurationFieldType hash code deterministic
-
-- Add Period.multipliedBy(int) and Period.negated()
 
 
-Compatibility with 2.0
+Compatibility with 2.1
 ----------------------
 Binary compatible - Yes
 
@@ -38,60 +35,22 @@ Data compatible - Yes, except
  - DateTimeZone data updated to version 2011n
 
 Semantic compatible - Yes, except
- -  Date-time for time-zones with DST based on an offset of 00:00 now pick summer time when ambiguous
-
- -  Time-zone names now return correct results on JDK1.6 for non-English locales
-
- - Interval/MutableInterval toString() now contains the time-zone offset
+ - DateTimeFormatter.parseInto() retains the year if only month parsed (as it did in v1.x)
 
 
-Deprecations since 2.0
+Deprecations since 2.1
 ----------------------
 None
 
 
-Bug fixes since 2.0
+Bug fixes since 2.1
 -------------------
-- Ambiguous date-time when in zone with offset of 00:00 [3424669]
-  A date-time constructor with an ambiguous time due to DST should choose summer time
-  but for a zone with an offset of 00:00 it chose winter time
+- DateTimeFormatter.parseInto() [3522138]
+  The v2.0 changes to handle parsing of month/day on their own (for Feb 29th) cause
+  parseInto() to lose the year. This fix reverts behaviour to v1.x so that parseInto()
+  will use the supplied year, not the default year of the formatter.
 
-- Fix GJChronology to allow some leap year dates in JulianChronology to be created [3446915]
-  Creating February 29th in Julian leap years was not always possible
-
-- Fix PeriodType caching
-  The caching could go wrong if the DurationFieldType instances were in the wrong order
-
-- Time-zone names [3412910]
-  Names now returned in locales other than English
-  The names may differ between JDK1.5 and 1.6 due to the underlying JDK data
-
-- Time zone id parsing fixed for some longer time zones [3427389]
-  Time zones like "America/Dawson_Creek" were not parsed as "America/Dawson" was matched first
-
-- Time zone later/earlier offset methods failed in Western hemisphere [3476684]
-  Previously, withLaterOffset() failed in the Americas, Now rewritten
-
- - Time zone id parsing of GMT offsets failed on Dalvik
-  This may be related to a JDK specification change between Java 1.6 and 1.7
-
-- Enhance readResolve() from LocalDate/LocalTime/LocalDateTime [3461008]
-  Handle even more weird deserialization problems with other tools
-
-- Tweaks to cached time-zone to try and avoid a NPE [3470276]
-
-- Fix multi-lingual period format for using English from another language default [3471414]
-  Previously, the word-based methods on PeriodFormat ignored the argument of English if the default
-  locale was non-English, now fixed
-
-- Interval/MutableInterval toString() now contains the time-zone offset [https://github.com/JodaOrg/joda-time/pull/2]
-
-- Fix multiplication of Long.MIN_VALUE by -1 in safeMultiply()
-
-- Fix validation in BasicChronology.getDateTimeMillis
- Previously this allowed a millisOfDay value one too large
-
-- Javadoc fix to MutablePeriod [3413869]
+- Javadoc fix to BaseChronology [3513326]
 
 
 Scala

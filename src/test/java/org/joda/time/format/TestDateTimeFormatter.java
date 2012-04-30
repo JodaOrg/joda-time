@@ -863,6 +863,55 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+    public void testParseInto_monthOnly() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
+        MutableDateTime result = new MutableDateTime(2004, 1, 9, 12, 20, 30, 0, LONDON);
+        assertEquals(1, f.parseInto(result, "5", 0));
+        assertEquals(new MutableDateTime(2004, 5, 9, 12, 20, 30, 0, LONDON), result);
+    }
+
+    public void testParseInto_monthOnly_baseStartYear() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
+        MutableDateTime result = new MutableDateTime(2004, 1, 1, 12, 20, 30, 0, TOKYO);
+        assertEquals(1, f.parseInto(result, "5", 0));
+        assertEquals(new MutableDateTime(2004, 5, 1, 12, 20, 30, 0, TOKYO), result);
+    }
+
+    public void testParseInto_monthOnly_parseStartYear() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
+        MutableDateTime result = new MutableDateTime(2004, 2, 1, 12, 20, 30, 0, TOKYO);
+        assertEquals(1, f.parseInto(result, "1", 0));
+        assertEquals(new MutableDateTime(2004, 1, 1, 12, 20, 30, 0, TOKYO), result);
+    }
+
+    public void testParseInto_monthOnly_baseEndYear() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
+        MutableDateTime result = new MutableDateTime(2004, 12, 31, 12, 20, 30, 0, TOKYO);
+        assertEquals(1, f.parseInto(result, "5", 0));
+        assertEquals(new MutableDateTime(2004, 5, 31, 12, 20, 30, 0, TOKYO), result);
+   }
+
+    public void testParseInto_monthOnly_parseEndYear() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
+        MutableDateTime result = new MutableDateTime(2004, 1, 31, 12, 20, 30, 0,TOKYO);
+        assertEquals(2, f.parseInto(result, "12", 0));
+        assertEquals(new MutableDateTime(2004, 12, 31, 12, 20, 30, 0, TOKYO), result);
+    }
+
+    public void testParseInto_monthDay_feb29() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M d").withLocale(Locale.UK);
+        MutableDateTime result = new MutableDateTime(2004, 1, 9, 12, 20, 30, 0, LONDON);
+        assertEquals(4, f.parseInto(result, "2 29", 0));
+        assertEquals(new MutableDateTime(2004, 2, 29, 12, 20, 30, 0, LONDON), result);
+    }
+
+    public void testParseInto_monthDay_withDefaultYear_feb29() {
+        DateTimeFormatter f = DateTimeFormat.forPattern("M d").withDefaultYear(2012);
+        MutableDateTime result = new MutableDateTime(2004, 1, 9, 12, 20, 30, 0, LONDON);
+        assertEquals(4, f.parseInto(result, "2 29", 0));
+        assertEquals(new MutableDateTime(2004, 2, 29, 12, 20, 30, 0, LONDON), result);
+    }
+
     public void testParseMillis_fractionOfSecondLong() {
         DateTimeFormatter f = new DateTimeFormatterBuilder()
             .appendSecondOfDay(2).appendLiteral('.').appendFractionOfSecond(1, 9)

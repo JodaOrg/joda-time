@@ -448,6 +448,34 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+    public void testPlusMonths_int_fromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.plusMonths(1);
+        MonthDay expected = new MonthDay(3, 29, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testPlusMonths_int_negativeFromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.plusMonths(-1);
+        MonthDay expected = new MonthDay(1, 29, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testPlusMonths_int_endOfMonthAdjust() {
+        MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
+        MonthDay result = test.plusMonths(1);
+        MonthDay expected = new MonthDay(4, 30, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testPlusMonths_int_negativeEndOfMonthAdjust() {
+        MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
+        MonthDay result = test.plusMonths(-1);
+        MonthDay expected = new MonthDay(2, 29, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
     public void testPlusMonths_int_same() {
         MonthDay test = new MonthDay(6, 5, ISO_UTC);
         MonthDay result = test.plusMonths(0);
@@ -468,10 +496,25 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+    //-------------------------------------------------------------------------
     public void testPlusDays_int() {
         MonthDay test = new MonthDay(5, 10, BuddhistChronology.getInstance());
         MonthDay result = test.plusDays(1);
         MonthDay expected = new MonthDay(5, 11, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testPlusDays_int_fromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.plusDays(1);
+        MonthDay expected = new MonthDay(3, 1, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testPlusDays_int_negativeFromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.plusDays(-1);
+        MonthDay expected = new MonthDay(2, 28, ISOChronology.getInstance());
         assertEquals(expected, result);
     }
 
@@ -499,6 +542,34 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+    public void testMinusMonths_int_fromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.minusMonths(1);
+        MonthDay expected = new MonthDay(1, 29, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testMinusMonths_int_negativeFromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.minusMonths(-1);
+        MonthDay expected = new MonthDay(3, 29, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testMinusMonths_int_endOfMonthAdjust() {
+        MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
+        MonthDay result = test.minusMonths(1);
+        MonthDay expected = new MonthDay(2, 29, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testMinusMonths_int_negativeEndOfMonthAdjust() {
+        MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
+        MonthDay result = test.minusMonths(-1);
+        MonthDay expected = new MonthDay(4, 30, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
     public void testMinusMonths_int_same() {
         MonthDay test = new MonthDay(6, 5, ISO_UTC);
         MonthDay result = test.minusMonths(0);
@@ -519,10 +590,25 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+    //-------------------------------------------------------------------------
     public void testMinusDays_int() {
         MonthDay test = new MonthDay(5, 11, BuddhistChronology.getInstance());
         MonthDay result = test.minusDays(1);
         MonthDay expected = new MonthDay(5, 10, BuddhistChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testMinusDays_int_fromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.minusDays(1);
+        MonthDay expected = new MonthDay(2, 28, ISOChronology.getInstance());
+        assertEquals(expected, result);
+    }
+
+    public void testMinusDays_int_negativeFromLeap() {
+        MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
+        MonthDay result = test.minusDays(-1);
+        MonthDay expected = new MonthDay(3, 1, ISOChronology.getInstance());
         assertEquals(expected, result);
     }
 

@@ -214,7 +214,7 @@ abstract class BasicChronology extends AssembledChronology {
      * @return a debugging string
      */
     public String toString() {
-        StringBuffer sb = new StringBuffer(60);
+        StringBuilder sb = new StringBuilder(60);
         String name = getClass().getName();
         int index = name.lastIndexOf('.');
         if (index >= 0) {

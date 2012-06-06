@@ -203,7 +203,7 @@ public class ZoneInfoProvider implements Provider {
                 in = ClassLoader.getSystemResourceAsStream(path);
             }
             if (in == null) {
-                StringBuffer buf = new StringBuffer(40)
+                StringBuilder buf = new StringBuilder(40)
                     .append("Resource not found: \"")
                     .append(path)
                     .append("\" ClassLoader: ")

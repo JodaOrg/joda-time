@@ -38,7 +38,7 @@ public class IllegalFieldValueException extends IllegalArgumentException {
      */
     private static String createMessage(String fieldName, Number value,
                                         Number lowerBound, Number upperBound, String explain) {
-        StringBuffer buf = new StringBuffer()
+        StringBuilder buf = new StringBuilder()
             .append("Value ").append(value).append(" for ").append(fieldName).append(' ');
 
         if (lowerBound == null) {

@@ -571,7 +571,7 @@ public class DateTimeFormat {
      * @return the parsed token
      */
     private static String parseToken(String pattern, int[] indexRef) {
-        StringBuffer buf = new StringBuffer();
+        StringBuilder buf = new StringBuilder();
 
         int i = indexRef[0];
         int length = pattern.length();

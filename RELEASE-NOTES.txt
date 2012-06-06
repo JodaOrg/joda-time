@@ -21,6 +21,7 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.1
 ----------------------
+- Change some StringBuffer uses to StringBuilder [3532330]
 
 
 Compatibility with 2.1

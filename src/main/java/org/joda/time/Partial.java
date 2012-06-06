@@ -760,7 +760,7 @@ public final class Partial
      */
     public String toStringList() {
         int size = size();
-        StringBuffer buf = new StringBuffer(20 * size);
+        StringBuilder buf = new StringBuilder(20 * size);
         buf.append('[');
         for (int i = 0; i < size; i++) {
             if (i > 0) {

@@ -441,8 +441,8 @@ public final class LocalTime
      * Constructs an instance set to the specified time
      * using <code>ISOChronology</code>.
      *
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
+     * @param hourOfDay  the hour of the day, from 0 to 23
+     * @param minuteOfHour  the minute of the hour, from 0 to 59
      */
     public LocalTime(
             int hourOfDay,
@@ -454,9 +454,9 @@ public final class LocalTime
      * Constructs an instance set to the specified time
      * using <code>ISOChronology</code>.
      *
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
+     * @param hourOfDay  the hour of the day, from 0 to 23
+     * @param minuteOfHour  the minute of the hour, from 0 to 59
+     * @param secondOfMinute  the second of the minute, from 0 to 59
      */
     public LocalTime(
             int hourOfDay,
@@ -469,10 +469,10 @@ public final class LocalTime
      * Constructs an instance set to the specified time
      * using <code>ISOChronology</code>.
      *
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
+     * @param hourOfDay  the hour of the day, from 0 to 23
+     * @param minuteOfHour  the minute of the hour, from 0 to 59
+     * @param secondOfMinute  the second of the minute, from 0 to 59
+     * @param millisOfSecond  the millisecond of the second, from 0 to 999
      */
     public LocalTime(
             int hourOfDay,
@@ -489,10 +489,10 @@ public final class LocalTime
      * <p>
      * If the chronology is null, <code>ISOChronology</code> is used.
      *
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
+     * @param hourOfDay  the hour of the day, valid values defined by the chronology
+     * @param minuteOfHour  the minute of the hour, valid values defined by the chronology
+     * @param secondOfMinute  the second of the minute, valid values defined by the chronology
+     * @param millisOfSecond  the millisecond of the second, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public LocalTime(

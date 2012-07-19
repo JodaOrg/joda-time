@@ -408,10 +408,10 @@ public final class LocalDateTime
      * using <code>ISOChronology</code>.
      *
      * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth  the day of the month, from 1 to 31
+     * @param hourOfDay  the hour of the day, from 0 to 23
+     * @param minuteOfHour  the minute of the hour, from 0 to 59
      */
     public LocalDateTime(
             int year,
@@ -428,11 +428,11 @@ public final class LocalDateTime
      * using <code>ISOChronology</code>.
      *
      * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth  the day of the month, from 1 to 31
+     * @param hourOfDay  the hour of the day, from 0 to 23
+     * @param minuteOfHour  the minute of the hour, from 0 to 59
+     * @param secondOfMinute  the second of the minute, from 0 to 59
      */
     public LocalDateTime(
             int year,
@@ -450,12 +450,12 @@ public final class LocalDateTime
      * using <code>ISOChronology</code>.
      *
      * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth  the day of the month, from 1 to 31
+     * @param hourOfDay  the hour of the day, from 0 to 23
+     * @param minuteOfHour  the minute of the hour, from 0 to 59
+     * @param secondOfMinute  the second of the minute, from 0 to 59
+     * @param millisOfSecond  the millisecond of the second, from 0 to 999
      */
     public LocalDateTime(
             int year,
@@ -475,13 +475,13 @@ public final class LocalDateTime
      * <p>
      * If the chronology is null, <code>ISOChronology</code> is used.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
-     * @param hourOfDay  the hour of the day
-     * @param minuteOfHour  the minute of the hour
-     * @param secondOfMinute  the second of the minute
-     * @param millisOfSecond  the millisecond of the second
+     * @param year  the year, valid values defined by the chronology
+     * @param monthOfYear  the month of the year, valid values defined by the chronology
+     * @param dayOfMonth  the day of the month, valid values defined by the chronology
+     * @param hourOfDay  the hour of the day, valid values defined by the chronology
+     * @param minuteOfHour  the minute of the hour, valid values defined by the chronology
+     * @param secondOfMinute  the second of the minute, valid values defined by the chronology
+     * @param millisOfSecond  the millisecond of the second, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public LocalDateTime(

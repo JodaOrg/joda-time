@@ -303,8 +303,8 @@ public final class DateMidnight
      * The constructed object will have a local time of midnight.
      *
      * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth  the day of the month, from 1 to 31
      */
     public DateMidnight(int year, int monthOfYear, int dayOfMonth) {
         super(year, monthOfYear, dayOfMonth, 0, 0, 0, 0);
@@ -318,8 +318,8 @@ public final class DateMidnight
      * If the specified time zone is null, the default zone is used.
      *
      * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth  the day of the month, from 1 to 31
      * @param zone  the time zone, null means default time zone
      */
     public DateMidnight(int year, int monthOfYear, int dayOfMonth, DateTimeZone zone) {
@@ -334,9 +334,9 @@ public final class DateMidnight
      * If the chronology is null, <code>ISOChronology</code>
      * in the default time zone is used.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
+     * @param year  the year, valid values defined by the chronology
+     * @param monthOfYear  the month of the year, valid values defined by the chronology
+     * @param dayOfMonth  the day of the month, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public DateMidnight(int year, int monthOfYear, int dayOfMonth, Chronology chronology) {

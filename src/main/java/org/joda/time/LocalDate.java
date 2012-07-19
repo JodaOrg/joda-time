@@ -413,8 +413,8 @@ public final class LocalDate
      * using <code>ISOChronology</code>.
      *
      * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
+     * @param monthOfYear  the month of the year, from 1 to 12
+     * @param dayOfMonth  the day of the month, from 1 to 31
      */
     public LocalDate(
             int year,
@@ -429,9 +429,9 @@ public final class LocalDate
      * <p>
      * If the chronology is null, <code>ISOChronology</code> is used.
      *
-     * @param year  the year
-     * @param monthOfYear  the month of the year
-     * @param dayOfMonth  the day of the month
+     * @param year  the year, valid values defined by the chronology
+     * @param monthOfYear  the month of the year, valid values defined by the chronology
+     * @param dayOfMonth  the day of the month, valid values defined by the chronology
      * @param chronology  the chronology, null means ISOChronology in default zone
      */
     public LocalDate(

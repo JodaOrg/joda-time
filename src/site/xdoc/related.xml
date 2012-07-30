@@ -25,7 +25,7 @@ A simple library that provides additional internationalization data for Joda-Tim
 <li><a href="http://objectlabkit.sourceforge.net/">ObjectLab Holiday calculation</a>
 Support for working and non-working days, plus how to calculate and resolve holidays, from a finance industry perspective.</li>
 <li><a href="http://jollyday.sourceforge.net/">Jollyday holiday calculation</a>
-Provides classes to handle claculation of holidays.</li>
+Provides classes to handle calculation of holidays.</li>
 <li><a href="http://code.google.com/p/google-rfc-2445/">Recurrance (RFC 2445)</a>
 Support for the RFC2445 recurrence specification, as found in iCal.</li>
 <li><a href="http://www.datanucleus.org/plugins/store.types.jodatime.html">DataNucleus support</a>

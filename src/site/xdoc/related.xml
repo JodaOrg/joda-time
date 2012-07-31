@@ -32,6 +32,8 @@ Support for the RFC2445 recurrence specification, as found in iCal.</li>
 A library providing persistence via the DataNucleus platform.</li>
 <li><a href="http://blog.bdoughan.com/2011/05/jaxb-and-joda-time-dates-and-times.html">JAXB</a>
 Notes on Joda-Time and JAXB.</li>
+<li><a href="https://github.com/muuki88/joda-osgi">P2 update site</a>
+Eclipse P2 update site.</li>
 </ul>
 <p>
 If your open source library provides a value added feature on top of Joda-Time, then let us know!

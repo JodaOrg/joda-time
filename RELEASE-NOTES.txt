@@ -37,6 +37,7 @@ Data compatible - Yes, except
 
 Semantic compatible - Yes, except
  - DateTimeFormatter.parseInto() retains the year if only month parsed (as it did in v1.x)
+ - If a formatter cannot print or parse, it will now throw an exception instead of ignoring it
 
 
 Deprecations since 2.1
@@ -49,12 +50,17 @@ Bug fixes since 2.1
 - MonthDay add/subtract [3528941]
   Addition and subtraction in MonthDay was fixed.
   It previously didn't work when the start value was 29th February.
-  
 
 - DateTimeFormatter.parseInto() [3522138]
   The v2.0 changes to handle parsing of month/day on their own (for Feb 29th) cause
   parseInto() to lose the year. This fix reverts behaviour to v1.x so that parseInto()
   will use the supplied year, not the default year of the formatter.
+
+- DateTimeFormatter.isPrinter()/isParser() and related
+  The Javadoc for DateTimeFormatterBuilder specified behaviour when the formatter
+  could not print or could not parse, but the code didn't implement it
+  Now it does, which means that DateTimeFormatter.isPrinter()/isParser() are now correct.
+  The formatter will also now throw UnsupportedOperationException when unable to print/parse.
 
 - FieldUtils.safeMultiply(long,int) [3520651]
   Fix implementation to throw exception for (Long.MIN_VALUE, -1)

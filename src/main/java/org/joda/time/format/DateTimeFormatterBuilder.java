@@ -216,7 +216,7 @@ public class DateTimeFormatterBuilder {
      * Appends just a printer. With no matching parser, a parser cannot be
      * built from this DateTimeFormatterBuilder.
      *
-     * @param printer  the printer to add
+     * @param printer  the printer to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if printer is null or of an invalid type
      */
@@ -229,7 +229,7 @@ public class DateTimeFormatterBuilder {
      * Appends just a parser. With no matching printer, a printer cannot be
      * built from this builder.
      *
-     * @param parser  the parser to add
+     * @param parser  the parser to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if parser is null or of an invalid type
      */
@@ -241,8 +241,8 @@ public class DateTimeFormatterBuilder {
     /**
      * Appends a printer/parser pair.
      *
-     * @param printer  the printer to add
-     * @param parser  the parser to add
+     * @param printer  the printer to add, not null
+     * @param parser  the parser to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if printer or parser is null or of an invalid type
      */
@@ -2573,7 +2573,7 @@ public class DateTimeFormatterBuilder {
 
             decompose(elementPairs, printerList, parserList);
 
-            if (printerList.size() <= 0) {
+            if (printerList.contains(null) || printerList.isEmpty()) {
                 iPrinters = null;
                 iPrintedLengthEstimate = 0;
             } else {
@@ -2588,7 +2588,7 @@ public class DateTimeFormatterBuilder {
                 iPrintedLengthEstimate = printEst;
             }
 
-            if (parserList.size() <= 0) {
+            if (parserList.contains(null) || parserList.isEmpty()) {
                 iParsers = null;
                 iParsedLengthEstimate = 0;
             } else {
@@ -2713,21 +2713,17 @@ public class DateTimeFormatterBuilder {
             int size = elementPairs.size();
             for (int i=0; i<size; i+=2) {
                 Object element = elementPairs.get(i);
-                if (element instanceof DateTimePrinter) {
-                    if (element instanceof Composite) {
-                        addArrayToList(printerList, ((Composite)element).iPrinters);
-                    } else {
-                        printerList.add(element);
-                    }
+                if (element instanceof Composite) {
+                    addArrayToList(printerList, ((Composite)element).iPrinters);
+                } else {
+                    printerList.add(element);
                 }
 
                 element = elementPairs.get(i + 1);
-                if (element instanceof DateTimeParser) {
-                    if (element instanceof Composite) {
-                        addArrayToList(parserList, ((Composite)element).iParsers);
-                    } else {
-                        parserList.add(element);
-                    }
+                if (element instanceof Composite) {
+                    addArrayToList(parserList, ((Composite)element).iParsers);
+                } else {
+                    parserList.add(element);
                 }
             }
         }

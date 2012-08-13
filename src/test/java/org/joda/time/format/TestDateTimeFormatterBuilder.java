@@ -133,7 +133,101 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         bld2.appendLiteral('X');
         bld2.append(p);
         bld2.appendLiteral('Z');
-        assertEquals("XYZ", bld2.toFormatter().print(0L));
+        DateTimeFormatter f = bld2.toFormatter();
+        assertEquals(true, f.isPrinter());
+        assertEquals(false, f.isParser());
+        assertEquals("XYZ", f.print(0L));
+    }
+
+    public void test_append_nullPrinter() {
+        try {
+            DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+            bld2.append((DateTimePrinter) null);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_append_Parser() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        bld.appendLiteral('Y');
+        DateTimeParser p = bld.toParser();
+        
+        DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+        bld2.appendLiteral('X');
+        bld2.append(p);
+        bld2.appendLiteral('Z');
+        DateTimeFormatter f = bld2.toFormatter();
+        assertEquals(false, f.isPrinter());
+        assertEquals(true, f.isParser());
+        assertEquals(0, f.withZoneUTC().parseMillis("XYZ"));
+    }
+
+    public void test_append_nullParser() {
+        try {
+            DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+            bld2.append((DateTimeParser) null);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_append_Printer_nullParser() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        bld.appendLiteral('Y');
+        DateTimePrinter p = bld.toPrinter();
+        
+        try {
+            DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+            bld2.append(p, (DateTimeParser) null);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    public void test_append_nullPrinter_Parser() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        bld.appendLiteral('Y');
+        DateTimeParser p = bld.toParser();
+        
+        try {
+            DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+            bld2.append((DateTimePrinter) null, p);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_appendOptional_Parser() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder();
+        bld.appendLiteral('Y');
+        DateTimeParser p = bld.toParser();
+        
+        DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+        bld2.appendLiteral('X');
+        bld2.appendOptional(p);
+        bld2.appendLiteral('Z');
+        DateTimeFormatter f = bld2.toFormatter();
+        assertEquals(false, f.isPrinter());
+        assertEquals(true, f.isParser());
+        assertEquals(0, f.withZoneUTC().parseMillis("XYZ"));
+    }
+
+    public void test_appendOptional_nullParser() {
+        try {
+            DateTimeFormatterBuilder bld2 = new DateTimeFormatterBuilder();
+            bld2.appendOptional((DateTimeParser) null);
+            fail();
+        } catch (IllegalArgumentException ex) {
+            // expected
+        }
     }
 
     //-----------------------------------------------------------------------
@@ -374,6 +468,8 @@ public class TestDateTimeFormatterBuilder extends TestCase {
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneShortName();
         DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
         
+        assertEquals(true, f.isPrinter());
+        assertEquals(false, f.isParser());
         DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
         assertEquals("2011-01-04 12:30 GMT", f.print(dt1));
         DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
@@ -381,7 +477,7 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         try {
             f.parseDateTime("2007-03-04 12:30 GMT");
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (UnsupportedOperationException e) {
         }
     }
 
@@ -393,6 +489,8 @@ public class TestDateTimeFormatterBuilder extends TestCase {
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneShortName(lookup);
         DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
         
+        assertEquals(true, f.isPrinter());
+        assertEquals(true, f.isParser());
         DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
         assertEquals("2011-01-04 12:30 GMT", f.print(dt1));
         DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
@@ -413,6 +511,8 @@ public class TestDateTimeFormatterBuilder extends TestCase {
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneName();
         DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
         
+        assertEquals(true, f.isPrinter());
+        assertEquals(false, f.isParser());
         DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
         assertEquals("2011-01-04 12:30 Greenwich Mean Time", f.print(dt1));
         DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);
@@ -420,7 +520,7 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         try {
             f.parseDateTime("2007-03-04 12:30 GMT");
             fail();
-        } catch (IllegalArgumentException e) {
+        } catch (UnsupportedOperationException e) {
         }
     }
 
@@ -432,6 +532,8 @@ public class TestDateTimeFormatterBuilder extends TestCase {
             .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneName(lookup);
         DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
         
+        assertEquals(true, f.isPrinter());
+        assertEquals(true, f.isParser());
         DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, LONDON);
         assertEquals("2011-01-04 12:30 Greenwich Mean Time", f.print(dt1));
         DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, LONDON);

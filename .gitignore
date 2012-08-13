@@ -6,3 +6,4 @@ target/
 src/tz-data/
 *TempTest*
 /test-output/
+/.settings/

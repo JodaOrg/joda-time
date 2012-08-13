@@ -22,20 +22,20 @@ of the source code suitable for linking to the jar file in IDEs such as Eclipse.
 <p>
 The release notes for upgraders can be found here:
 <ul>
-<li><a href="upgradeto210.html">Version 2.0 to Version 2.1</a></li>
-<li><a href="upgradeto200.html">Version 1.6 to Version 2.0</a></li>
-<li><a href="upgradeto162.html">Version 1.6 to Version 1.6.2</a></li>
-<li><a href="upgradeto161.html">Version 1.6 to Version 1.6.1</a></li>
-<li><a href="upgradeto160.html">Version 1.5 to Version 1.6</a></li>
-<li><a href="upgradeto152.html">Version 1.5.1 to Version 1.5.2</a></li>
-<li><a href="upgradeto151.html">Version 1.5 to Version 1.5.1</a></li>
-<li><a href="upgradeto150.html">Version 1.4 to Version 1.5</a></li>
-<li><a href="upgradeto140.html">Version 1.3 to Version 1.4</a></li>
-<li><a href="upgradeto130.html">Version 1.2 to Version 1.3</a></li>
-<li><a href="upgradeto120.html">Version 1.1 to Version 1.2</a></li>
-<li><a href="upgradeto110.html">Version 1.0 to Version 1.1</a></li>
-<li><a href="upgradeto100.html">Version 0.99 to Version 1.0</a></li>
-<li><a href="upgradeto099.html">Version 0.98 to Version 0.99</a></li>
+<li><a href="upgradeto210.html">Version 2.1</a> - upgrade from Version 2.0</li>
+<li><a href="upgradeto200.html">Version 2.0</a> - upgrade from Version 1.6</li>
+<li><a href="upgradeto162.html">Version 1.6.2</a> - upgrade from Version 1.6.1</li>
+<li><a href="upgradeto161.html">Version 1.6.1</a> - upgrade from Version 1.6</li>
+<li><a href="upgradeto160.html">Version 1.6</a> - upgrade from Version 1.5</li>
+<li><a href="upgradeto152.html">Version 1.5.2</a> - upgrade from Version 1.5.1</li>
+<li><a href="upgradeto151.html">Version 1.5.1</a> - upgrade from Version 1.5</li>
+<li><a href="upgradeto150.html">Version 1.5</a> - upgrade from Version 1.4</li>
+<li><a href="upgradeto140.html">Version 1.4</a> - upgrade from Version 1.3</li>
+<li><a href="upgradeto130.html">Version 1.3</a> - upgrade from Version 1.2</li>
+<li><a href="upgradeto120.html">Version 1.2</a> - upgrade from Version 1.1</li>
+<li><a href="upgradeto110.html">Version 1.1</a> - upgrade from Version 1.0</li>
+<li><a href="upgradeto100.html">Version 1.0</a> - upgrade from Version 0.99</li>
+<li><a href="upgradeto099.html">Version 0.99</a> - upgrade from Version 0.98</li>
 </ul>
 </p>
 <p>

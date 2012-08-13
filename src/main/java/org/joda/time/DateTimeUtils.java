@@ -17,7 +17,11 @@ package org.joda.time;
 
 import java.lang.reflect.Method;
 import java.text.DateFormatSymbols;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.joda.time.chrono.ISOChronology;
 
@@ -35,6 +39,32 @@ public class DateTimeUtils {
     private static final SystemMillisProvider SYSTEM_MILLIS_PROVIDER = new SystemMillisProvider();
     /** The millisecond provider currently in use. */
     private static volatile MillisProvider cMillisProvider = SYSTEM_MILLIS_PROVIDER;
+    /** The millisecond provider currently in use. */
+    private static volatile Map<String, DateTimeZone> cZoneNames;
+    static {
+        // names from RFC-822 / JDK
+        // this is all very US-centric and dubious, but perhaps it will help some
+        Map<String, DateTimeZone> map = new LinkedHashMap<String, DateTimeZone>();
+        map.put("UT", DateTimeZone.UTC);
+        map.put("UTC", DateTimeZone.UTC);
+        map.put("GMT", DateTimeZone.UTC);
+        put(map, "EST", "America/New_York");
+        put(map, "EDT", "America/New_York");
+        put(map, "CST", "America/Chigaco");
+        put(map, "CDT", "America/Chigaco");
+        put(map, "MST", "America/Denver");
+        put(map, "MDT", "America/Denver");
+        put(map, "PST", "America/Los_Angeles");
+        put(map, "PDT", "America/Los_Angeles");
+        cZoneNames = Collections.unmodifiableMap(map);
+    }
+    private static void put(Map<String, DateTimeZone> map, String name, String id) {
+        try {
+            map.put(name, DateTimeZone.forID(id));
+        } catch (RuntimeException ex) {
+            // ignore
+        }
+    }
 
     /**
      * Restrictive constructor
@@ -367,6 +397,31 @@ public class DateTimeUtils {
         } catch (Exception ex) {
             return new DateFormatSymbols(locale);
         }
+    }
+
+    //-----------------------------------------------------------------------
+    /**
+     * Gets the default map of time zone names.
+     * <p>
+     * This can be changed by {@link #setDefaultTimeZoneNames}.
+     * 
+     * @return the unmodifiable map of abbreviations to zones, not null
+     * @since 2.2
+     */
+    public static final Map<String, DateTimeZone> getDefaultTimeZoneNames() {
+        return cZoneNames;
+    }
+
+    /**
+     * Sets the default map of time zone names.
+     * <p>
+     * The map is copied before storage.
+     * 
+     * @param names  the map of abbreviations to zones, not null
+     * @since 2.2
+     */
+    public static final void setDefaultTimeZoneNames(Map<String, DateTimeZone> names) {
+        cZoneNames = Collections.unmodifiableMap(new HashMap<String, DateTimeZone>(names));
     }
 
     //-----------------------------------------------------------------------

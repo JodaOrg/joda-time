@@ -38,6 +38,8 @@ public class TestDateTimeFormatterBuilder extends TestCase {
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone TOKYO = DateTimeZone.forID("Asia/Tokyo");
+    private static final DateTimeZone NEW_YORK = DateTimeZone.forID("America/New_York");
+    private static final DateTimeZone LOS_ANGELES = DateTimeZone.forID("America/Los_Angeles");
 
     public static void main(String[] args) {
         junit.textui.TestRunner.run(suite());
@@ -500,6 +502,33 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals(dt2, f.parseDateTime("2011-07-04 12:30 BST"));
         try {
             f.parseDateTime("2007-03-04 12:30 EST");
+            fail();
+        } catch (IllegalArgumentException e) {
+        }
+    }
+
+    public void test_printParseShortNameWithAutoLookup() {
+        DateTimeFormatterBuilder bld = new DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm ").appendTimeZoneShortName(null);
+        DateTimeFormatter f = bld.toFormatter().withLocale(Locale.ENGLISH);
+        
+        assertEquals(true, f.isPrinter());
+        assertEquals(true, f.isParser());
+        DateTime dt1 = new DateTime(2011, 1, 4, 12, 30, 0, NEW_YORK);
+        assertEquals("2011-01-04 12:30 EST", f.print(dt1));
+        DateTime dt2 = new DateTime(2011, 7, 4, 12, 30, 0, NEW_YORK);
+        assertEquals("2011-07-04 12:30 EDT", f.print(dt2));
+        DateTime dt3 = new DateTime(2011, 1, 4, 12, 30, 0, LOS_ANGELES);
+        assertEquals("2011-01-04 12:30 PST", f.print(dt3));
+        DateTime dt4 = new DateTime(2011, 7, 4, 12, 30, 0, LOS_ANGELES);
+        assertEquals("2011-07-04 12:30 PDT", f.print(dt4));
+        
+        assertEquals(dt1.getZone() + " " + f.parseDateTime("2011-01-04 12:30 EST").getZone(), dt1, f.parseDateTime("2011-01-04 12:30 EST"));
+        assertEquals(dt2, f.parseDateTime("2011-07-04 12:30 EDT"));
+        assertEquals(dt3, f.parseDateTime("2011-01-04 12:30 PST"));
+        assertEquals(dt4, f.parseDateTime("2011-07-04 12:30 PDT"));
+        try {
+            f.parseDateTime("2007-03-04 12:30 PPP");
             fail();
         } catch (IllegalArgumentException e) {
         }

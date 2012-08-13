@@ -38,6 +38,7 @@ Data compatible - Yes, except
 Semantic compatible - Yes, except
  - DateTimeFormatter.parseInto() retains the year if only month parsed (as it did in v1.x)
  - If a formatter cannot print or parse, it will now throw an exception instead of ignoring it
+ - Format pattern "z" now has limited parsing abilities
 
 
 Deprecations since 2.1
@@ -61,6 +62,11 @@ Bug fixes since 2.1
   could not print or could not parse, but the code didn't implement it
   Now it does, which means that DateTimeFormatter.isPrinter()/isParser() are now correct.
   The formatter will also now throw UnsupportedOperationException when unable to print/parse.
+
+- Parsing of US short time-zone names
+  The time-zone names EST/EDT/CST/CDT/MST/MDT/PST/PDT/UT/UTC/GMT can now be parsed in a limited way.
+  This is enabled for formatter patterns of "z" (and "zz" or "zzz").
+  The builder continues to offer a better way of manually managing this.
 
 - FieldUtils.safeMultiply(long,int) [3520651]
   Fix implementation to throw exception for (Long.MIN_VALUE, -1)

@@ -29,6 +29,7 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.ReadablePartial;
@@ -1012,7 +1013,7 @@ public class DateTimeFormatterBuilder {
      * The names are searched in the order of the map, thus it is strongly recommended
      * to use a {@code LinkedHashMap} or similar.
      *
-     * @param parseLookup  the table of names, not null
+     * @param parseLookup  the table of names, null to use the {@link DateTimeUtils#getDefaultTimeZoneNames() default names}
      * @return this DateTimeFormatterBuilder, for chaining
      */
     public DateTimeFormatterBuilder appendTimeZoneShortName(Map<String, DateTimeZone> parseLookup) {
@@ -2483,10 +2484,12 @@ public class DateTimeFormatterBuilder {
         }
 
         public int parseInto(DateTimeParserBucket bucket, String text, int position) {
+            Map<String, DateTimeZone> parseLookup = iParseLookup;
+            parseLookup = (parseLookup != null ? parseLookup : DateTimeUtils.getDefaultTimeZoneNames());
             String str = text.substring(position);
-            for (String name : iParseLookup.keySet()) {
+            for (String name : parseLookup.keySet()) {
                 if (str.startsWith(name)) {
-                    bucket.setZone(iParseLookup.get(name));
+                    bucket.setZone(parseLookup.get(name));
                     return position + name.length();
                 }
             }

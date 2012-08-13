@@ -533,7 +533,7 @@ public class DateTimeFormat {
                 if (tokenLen >= 4) {
                     builder.appendTimeZoneName();
                 } else {
-                    builder.appendTimeZoneShortName();
+                    builder.appendTimeZoneShortName(null);
                 }
                 break;
             case 'Z': // time zone offset

@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2012 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
 
 /**
  * This class is a Junit unit test for DateTimeUtils.
@@ -466,6 +467,49 @@ public class TestDateTimeUtils extends TestCase {
             DateTimeUtils.isContiguous((ReadablePartial) null);
             fail();
         } catch (IllegalArgumentException ex) {}
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_julianDay() {
+        DateTime base = new DateTime(1970, 1, 1, 0, 0, DateTimeZone.UTC);
+        
+        assertEquals(2440587.5d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(2440588, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(2440587.5d));
+        
+        base = base.plusHours(6);
+        assertEquals(2440587.75d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(2440588, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(2440587.75d));
+        
+        base = base.plusHours(6);
+        assertEquals(2440588d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(2440588, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(2440588d));
+        
+        base = base.plusHours(6);
+        assertEquals(2440588.25d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(2440588, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(2440588.25d));
+        
+        base = base.plusHours(6);
+        assertEquals(2440588.5d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(2440589, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(2440588.5d));
+        
+        base = new DateTime(2012, 8, 31, 23, 50, DateTimeZone.UTC);
+        assertEquals(2456171.4930555555, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(2456171, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        
+        base = new DateTime(-4713, 1, 1, 12, 0, JulianChronology.getInstanceUTC());
+        assertEquals(0d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(0, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(0d));
+        
+        base = new DateTime(-4713, 1, 1, 0, 0, JulianChronology.getInstanceUTC());
+        assertEquals(-0.5d, DateTimeUtils.toJulianDay(base.getMillis()), 0.0001d);
+        assertEquals(0, DateTimeUtils.toJulianDayNumber(base.getMillis()));
+        assertEquals(base.getMillis(), DateTimeUtils.fromJulianDay(-0.5d));
     }
 
 }

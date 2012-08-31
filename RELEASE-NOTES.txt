@@ -23,6 +23,9 @@ Enhancements since 2.1
 ----------------------
 - Change some StringBuffer uses to StringBuilder [3532330]
 
+- Add method to calculate the Julian Day
+  See DateTimeUtils
+
 
 Compatibility with 2.1
 ----------------------

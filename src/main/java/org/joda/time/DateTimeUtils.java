@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2012 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -422,6 +422,67 @@ public class DateTimeUtils {
      */
     public static final void setDefaultTimeZoneNames(Map<String, DateTimeZone> names) {
         cZoneNames = Collections.unmodifiableMap(new HashMap<String, DateTimeZone>(names));
+    }
+
+    //-------------------------------------------------------------------------
+    /**
+     * Calculates the astronomical Julian Day for an instant.
+     * <p>
+     * The <a href="http://en.wikipedia.org/wiki/Julian_day">Julian day</a> is a well-known
+     * system of time measurement for scientific use by the astronomy community.
+     * It expresses the interval of time in days and fractions of a day since
+     * January 1, 4713 BC (Julian) Greenwich noon.
+     * <p>
+     * Each day starts at midday (not midnight) and time is expressed as a fraction.
+     * Thus the fraction 0.25 is 18:00. equal to one quarter of the day from midday to midday.
+     * <p>
+     * Note that this method has nothing to do with the day-of-year.
+     * 
+     * @param epochMillis  the epoch millis from 1970-01-01Z
+     * @return the astronomical Julian Day represented by the specified instant
+     * @since 2.2
+     */
+    public static final double toJulianDay(long epochMillis) {
+        // useful links
+        // http://en.wikipedia.org/wiki/Julian_day#cite_note-13 - Wikipedia
+        // http://aa.usno.navy.mil/data/docs/JulianDate.php" - USNO
+        // http://users.zoominternet.net/~matto/Java/Julian%20Date%20Converter.htm - Julian Date Converter by Matt Oltersdorf
+        // http://ssd.jpl.nasa.gov/tc.cgi#top - CalTech
+        double epochDay = epochMillis / 86400000d;
+        return epochDay + 2440587.5d;
+    }
+
+    /**
+     * Calculates the astronomical Julian Day Number for an instant.
+     * <p>
+     * The {@link #toJulianDay(long)} method calculates the astronomical Julian Day
+     * with a fraction based on days starting at midday.
+     * This method calculates the variant where days start at midnight.
+     * JDN 0 is used for the date equivalent to Monday January 1, 4713 BC (Julian).
+     * Thus these days start 12 hours before those of the fractional Julian Day.
+     * <p>
+     * Note that this method has nothing to do with the day-of-year.
+     * 
+     * @param epochMillis  the epoch millis from 1970-01-01Z
+     * @return the astronomical Julian Day represented by the specified instant
+     * @since 2.2
+     */
+    public static final long toJulianDayNumber(long epochMillis) {
+        return (long) Math.floor(toJulianDay(epochMillis) + 0.5d);
+    }
+
+    /**
+     * Creates a date-time from a Julian Day.
+     * <p>
+     * Returns the {@code DateTime} object equal to the specified Julian Day.
+     * 
+     * @param julianDay  the Julian Day
+     * @return the epoch millis from 1970-01-01Z
+     * @since 2.2
+     */
+    public static final long fromJulianDay(double julianDay) {
+        double epochDay = julianDay - 2440587.5d;
+        return (long) (epochDay * 86400000d);
     }
 
     //-----------------------------------------------------------------------

@@ -66,6 +66,9 @@ Bug fixes since 2.1
   Now it does, which means that DateTimeFormatter.isPrinter()/isParser() are now correct.
   The formatter will also now throw UnsupportedOperationException when unable to print/parse.
 
+- Period formatter [3564249]
+  Formatting did not correctly output values for negative milliseconds between zero and -1 second
+
 - Parsing of US short time-zone names
   The time-zone names EST/EDT/CST/CDT/MST/MDT/PST/PDT/UT/UTC/GMT can now be parsed in a limited way.
   This is enabled for formatter patterns of "z" (and "zz" or "zzz").

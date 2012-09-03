@@ -99,7 +99,7 @@ public class TestISOPeriodFormat extends TestCase {
 
     //-----------------------------------------------------------------------
     public void testFormatStandard() {
-        Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
+        Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("P1Y2M3W4DT5H6M7.008S", ISOPeriodFormat.standard().print(p));
         p = new Period(1, 2, 3, 4, 5, 6 ,7, 0);
         assertEquals("P1Y2M3W4DT5H6M7S", ISOPeriodFormat.standard().print(p));
@@ -113,6 +113,26 @@ public class TestISOPeriodFormat extends TestCase {
         assertEquals("PT0S", ISOPeriodFormat.standard().print(EMPTY_YEAR_DAY_PERIOD));
         assertEquals("P1Y2M3W4D", ISOPeriodFormat.standard().print(DATE_PERIOD));
         assertEquals("PT5H6M7.008S", ISOPeriodFormat.standard().print(TIME_PERIOD));
+    }
+
+    public void testFormatStandard_negative() {
+        Period p = new Period(-1, -2, -3, -4, -5, -6, -7, -8);
+        assertEquals("P-1Y-2M-3W-4DT-5H-6M-7.008S", ISOPeriodFormat.standard().print(p));
+        
+        p = Period.years(-54);
+        assertEquals("P-54Y", ISOPeriodFormat.standard().print(p));
+        
+        p = Period.seconds(4).withMillis(-8);
+        assertEquals("PT3.992S", ISOPeriodFormat.standard().print(p));
+        
+        p = Period.seconds(-4).withMillis(8);
+        assertEquals("PT-3.992S", ISOPeriodFormat.standard().print(p));
+        
+        p = Period.seconds(-23);
+        assertEquals("PT-23S", ISOPeriodFormat.standard().print(p));
+        
+        p = Period.millis(-8);
+        assertEquals("PT-0.008S", ISOPeriodFormat.standard().print(p));
     }
 
     //-----------------------------------------------------------------------

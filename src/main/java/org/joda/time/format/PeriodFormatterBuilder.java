@@ -1094,8 +1094,8 @@ public class PeriodFormatterBuilder {
             int sum = Math.max(FormatUtils.calculateDigitCount(valueLong), iMinPrintedDigits);
             if (iFieldType >= SECONDS_MILLIS) {
                 // valueLong contains the seconds and millis fields
-                // the minimum output is 0.000, which is 4 digits
-                sum = Math.max(sum, 4);
+                // the minimum output is 0.000, which is 4 or 5 digits with a negative
+                sum = (valueLong < 0 ? Math.max(sum, 5) : Math.max(sum, 4));
                 // plus one for the decimal point
                 sum++;
                 if (iFieldType == SECONDS_OPTIONAL_MILLIS &&
@@ -1130,6 +1130,7 @@ public class PeriodFormatterBuilder {
             if (iPrefix != null) {
                 iPrefix.printTo(buf, value);
             }
+            int bufLen = buf.length();
             int minDigits = iMinPrintedDigits;
             if (minDigits <= 1) {
                 FormatUtils.appendUnpaddedInteger(buf, value);
@@ -1139,6 +1140,9 @@ public class PeriodFormatterBuilder {
             if (iFieldType >= SECONDS_MILLIS) {
                 int dp = (int) (Math.abs(valueLong) % DateTimeConstants.MILLIS_PER_SECOND);
                 if (iFieldType == SECONDS_MILLIS || dp > 0) {
+                    if (valueLong < 0 && valueLong > -DateTimeConstants.MILLIS_PER_SECOND) {
+                        buf.insert(bufLen, '-');
+                    }
                     buf.append('.');
                     FormatUtils.appendPaddedInteger(buf, dp, 3);
                 }

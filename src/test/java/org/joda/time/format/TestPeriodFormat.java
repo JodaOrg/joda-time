@@ -192,31 +192,31 @@ public class TestPeriodFormat extends TestCase {
     //-----------------------------------------------------------------------
     public void test_wordBased_es_formatStandard() {
         Period p = new Period(0, 0, 0, 1, 5, 6 ,7, 8);
-        assertEquals("1 dia, 5 horas, 6 minutos, 7 segundos y 8 milisegundos", PeriodFormat.wordBased(ES).print(p));
+        assertEquals("1 d\u00EDa, 5 horas, 6 minutos, 7 segundos y 8 milisegundos", PeriodFormat.wordBased(ES).print(p));
     }
 
     //-----------------------------------------------------------------------
     public void test_wordBased_es_FormatOneField() {
         Period p = Period.days(2);
-        assertEquals("2 dias", PeriodFormat.wordBased(ES).print(p));
+        assertEquals("2 d\u00EDas", PeriodFormat.wordBased(ES).print(p));
     }
 
     //-----------------------------------------------------------------------
     public void test_wordBased_es_formatTwoFields() {
         Period p = Period.days(2).withHours(5);
-        assertEquals("2 dias y 5 horas", PeriodFormat.wordBased(ES).print(p));
+        assertEquals("2 d\u00EDas y 5 horas", PeriodFormat.wordBased(ES).print(p));
     }
 
     //-----------------------------------------------------------------------
     public void test_wordBased_es_parseOneField() {
         Period p = Period.days(2);
-        assertEquals(p, PeriodFormat.wordBased(ES).parsePeriod("2 dias"));
+        assertEquals(p, PeriodFormat.wordBased(ES).parsePeriod("2 d\u00EDas"));
     }
 
     //-----------------------------------------------------------------------
     public void test_wordBased_es_parseTwoFields() {
         Period p = Period.days(2).withHours(5);
-        assertEquals(p, PeriodFormat.wordBased(ES).parsePeriod("2 dias y 5 horas"));
+        assertEquals(p, PeriodFormat.wordBased(ES).parsePeriod("2 d\u00EDas y 5 horas"));
     }
 
     //-----------------------------------------------------------------------

@@ -86,6 +86,9 @@ Bug fixes since 2.1
 
 - Javadoc fix to BaseChronology [3513326]
 
+- Fixed Spanish translation of day - dia now has accented i
+  https://github.com/JodaOrg/joda-time/pull/5
+
 
 Scala
 --------

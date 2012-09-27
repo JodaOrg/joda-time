@@ -28,13 +28,14 @@ import org.joda.time.Period;
  * @author Stephen Colebourne
  */
 public class TestPeriodFormat extends TestCase {
-    
+
     private static final Locale EN = new Locale("en");
     private static final Locale FR = new Locale("fr");
     private static final Locale PT = new Locale("pt");
     private static final Locale ES = new Locale("es");
     private static final Locale DE = new Locale("de");
     private static final Locale NL = new Locale("nl");
+    private static final Locale DA = new Locale("da");
 
     private Locale originalLocale = null;
 
@@ -296,6 +297,19 @@ public class TestPeriodFormat extends TestCase {
     //-----------------------------------------------------------------------
     public void test_wordBased_nl_cached() {
         assertSame(PeriodFormat.wordBased(NL), PeriodFormat.wordBased(NL));
+    }
+
+    //-----------------------------------------------------------------------
+    // wordBased(Locale da)
+    //-----------------------------------------------------------------------
+    public void test_wordBased_da_formatMultiple() {
+        Period p = new Period(2, 3, 4, 2, 5, 6 ,7, 8);
+        assertEquals("2 \u00E5r, 3 m\u00E5neder, 4 uger, 2 dage, 5 timer, 6 minutter, 7 sekunder og 8 millisekunder", PeriodFormat.wordBased(DA).print(p));
+    }
+
+    public void test_wordBased_da_formatSinglular() {
+        Period p = new Period(1, 1, 1, 1, 1, 1, 1, 1);
+        assertEquals("1 \u00E5r, 1 m\u00E5ned, 1 uge, 1 dag, 1 time, 1 minut, 1 sekund og 1 millisekund", PeriodFormat.wordBased(DA).print(p));
     }
 
     //-----------------------------------------------------------------------

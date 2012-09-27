@@ -26,6 +26,8 @@ Enhancements since 2.1
 - Add method to calculate the Julian Day
   See DateTimeUtils
 
+- Add Danish translation of word-based periods
+
 
 Compatibility with 2.1
 ----------------------
@@ -86,7 +88,7 @@ Bug fixes since 2.1
 
 - Javadoc fix to BaseChronology [3513326]
 
-- Fixed Spanish translation of day - dia now has accented i
+- Fixed Spanish translation of day for periods - dia now has accented i
   https://github.com/JodaOrg/joda-time/pull/5
 
 

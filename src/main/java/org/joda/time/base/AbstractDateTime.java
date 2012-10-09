@@ -23,6 +23,9 @@ import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.ReadableDateTime;
 import org.joda.time.format.DateTimeFormat;
+import org.joda.time.publicholiday.CountrySupport;
+import org.joda.time.publicholiday.PublicHoliday;
+import org.joda.time.publicholiday.PublicHolidayBuilder;
 
 /**
  * AbstractDateTime provides the common behaviour for datetime classes.
@@ -297,6 +300,17 @@ public abstract class AbstractDateTime
         return cal;
     }
 
+    /**
+     * Get the current year public holidays of country
+     *
+     * @param countrySupport
+     * @return a PublicHoliday initialized with list of public holidays
+     */
+    public PublicHoliday getPublicHoliday(CountrySupport countrySupport) {
+    	return new PublicHolidayBuilder()
+    		.country(countrySupport).year(getYear()).build();
+    }
+    
     //-----------------------------------------------------------------------
     /**
      * Output the instant using the specified format pattern.

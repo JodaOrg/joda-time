@@ -275,6 +275,45 @@ public class TestMutableDateTime_Sets extends TestCase {
         assertEquals(501, test.getMillisOfSecond());
     }
 
+    public void testSetDate_RI_same() {
+        MutableDateTime setter = new MutableDateTime(2010, 12, 3, 2, 24, 48, 501, DateTimeZone.forID("America/Los_Angeles"));
+        MutableDateTime test = new MutableDateTime(2010, 12, 3, 2, 24, 48, 501, DateTimeZone.forID("America/Los_Angeles"));
+        test.setDate(setter);
+        assertEquals(2010, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(3, test.getDayOfMonth());
+        assertEquals(2, test.getHourOfDay());
+        assertEquals(24, test.getMinuteOfHour());
+        assertEquals(48, test.getSecondOfMinute());
+        assertEquals(501, test.getMillisOfSecond());
+    }
+
+    public void testSetDate_RI_different1() {
+        MutableDateTime setter = new MutableDateTime(2010, 12, 1, 0, 0, 0, 0, DateTimeZone.forID("America/Los_Angeles"));
+        MutableDateTime test = new MutableDateTime(2010, 12, 3, 2, 24, 48, 501, DateTimeZone.forID("Europe/Moscow"));
+        test.setDate(setter);
+        assertEquals(2010, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+        assertEquals(2, test.getHourOfDay());
+        assertEquals(24, test.getMinuteOfHour());
+        assertEquals(48, test.getSecondOfMinute());
+        assertEquals(501, test.getMillisOfSecond());
+    }
+
+    public void testSetDate_RI_different2() {
+        MutableDateTime setter = new MutableDateTime(2010, 12, 1, 0, 0, 0, 0, DateTimeZone.forID("Europe/Moscow"));
+        MutableDateTime test = new MutableDateTime(2010, 12, 3, 2, 24, 48, 501, DateTimeZone.forID("America/Los_Angeles"));
+        test.setDate(setter);
+        assertEquals(2010, test.getYear());
+        assertEquals(12, test.getMonthOfYear());
+        assertEquals(1, test.getDayOfMonth());
+        assertEquals(2, test.getHourOfDay());
+        assertEquals(24, test.getMinuteOfHour());
+        assertEquals(48, test.getSecondOfMinute());
+        assertEquals(501, test.getMillisOfSecond());
+    }
+
     //-----------------------------------------------------------------------
     public void testSetTime_int_int_int_int1() {
         MutableDateTime test = new MutableDateTime(2002, 6, 9, 12, 24, 48, 501);

@@ -61,6 +61,9 @@ Bug fixes since 2.1
   This used to fail before 1970 when the input had a milli-of-second field
   Fixed to not throw an exception
 
+- MutableDateTime.setDate(ReadableInstant)
+  Fixed to handle cross-time-zone issues properly rather than always using UTC
+
 - DateTimeFormatter.parseInto() [3522138]
   The v2.0 changes to handle parsing of month/day on their own (for Feb 29th) cause
   parseInto() to lose the year. This fix reverts behaviour to v1.x so that parseInto()

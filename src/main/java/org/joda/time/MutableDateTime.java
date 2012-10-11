@@ -896,16 +896,22 @@ public class MutableDateTime
     /**
      * Set the date from another instant.
      * The time part of this object will be unaffected.
+     * <p>
+     * If the input is a {@code ReadableDateTime} then it is converted to the
+     * same time-zone as this object before using the instant millis.
      *
      * @param instant  an instant to copy the date from, time part ignored
      * @throws IllegalArgumentException if the object is invalid
      */
     public void setDate(final ReadableInstant instant) {
         long instantMillis = DateTimeUtils.getInstantMillis(instant);
-        Chronology instantChrono = DateTimeUtils.getInstantChronology(instant);
-        DateTimeZone zone = instantChrono.getZone();
-        if (zone != null) {
-            instantMillis = zone.getMillisKeepLocal(DateTimeZone.UTC, instantMillis);
+        if (instant instanceof ReadableDateTime) {
+            ReadableDateTime rdt = (ReadableDateTime) instant;
+            Chronology instantChrono = DateTimeUtils.getChronology(rdt.getChronology());
+            DateTimeZone zone = instantChrono.getZone();
+            if (zone != null) {
+                instantMillis = zone.getMillisKeepLocal(getZone(), instantMillis);
+            }
         }
         setDate(instantMillis);
     }

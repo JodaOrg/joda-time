@@ -61,7 +61,7 @@ Bug fixes since 2.1
   This used to fail before 1970 when the input had a milli-of-second field
   Fixed to not throw an exception
 
-- MutableDateTime.setDate(ReadableInstant)
+- MutableDateTime.setDate(ReadableInstant)  [163]
   Fixed to handle cross-time-zone issues properly rather than always using UTC
 
 - DateTimeFormatter.parseInto() [3522138]

@@ -50,8 +50,8 @@ public class DateTimeUtils {
         map.put("GMT", DateTimeZone.UTC);
         put(map, "EST", "America/New_York");
         put(map, "EDT", "America/New_York");
-        put(map, "CST", "America/Chigaco");
-        put(map, "CDT", "America/Chigaco");
+        put(map, "CST", "America/Chicago");
+        put(map, "CDT", "America/Chicago");
         put(map, "MST", "America/Denver");
         put(map, "MDT", "America/Denver");
         put(map, "PST", "America/Los_Angeles");

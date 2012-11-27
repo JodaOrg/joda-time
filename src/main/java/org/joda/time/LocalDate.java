@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -207,7 +208,7 @@ public final class LocalDate
             throw new IllegalArgumentException("The calendar must not be null");
         }
         return new LocalDate(
-            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.YEAR) * (calendar.get(Calendar.ERA) == GregorianCalendar.AD ? 1 : -1),
             calendar.get(Calendar.MONTH) + 1,
             calendar.get(Calendar.DAY_OF_MONTH)
         );

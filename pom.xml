@@ -319,6 +319,17 @@
       <version>3.8.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+     <groupId>org.easytesting</groupId>
+     <artifactId>fest-assert</artifactId>
+     <version>1.4</version>
+    </dependency>
+    <dependency>
+     <groupId>com.google.guava</groupId>
+	 <artifactId>guava</artifactId>
+     <version>11.0.2</version>
+    </dependency>
+
   </dependencies>
   <reporting>
   	<plugins>

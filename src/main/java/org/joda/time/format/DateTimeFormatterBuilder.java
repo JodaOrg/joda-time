@@ -201,6 +201,13 @@ public class DateTimeFormatterBuilder {
     //-----------------------------------------------------------------------
     /**
      * Appends another formatter.
+     * <p>
+     * This extracts the underlying printer and parser and appends them
+     * The printer and parser interfaces are the low-level part of the formatting API.
+     * Normally, instances are extracted from another formatter.
+     * Note however that any formatter specific information, such as the locale,
+     * time-zone, chronology, offset parsing or pivot/default year, will not be
+     * extracted by this method.
      *
      * @param formatter  the formatter to add
      * @return this DateTimeFormatterBuilder, for chaining
@@ -216,6 +223,12 @@ public class DateTimeFormatterBuilder {
     /**
      * Appends just a printer. With no matching parser, a parser cannot be
      * built from this DateTimeFormatterBuilder.
+     * <p>
+     * The printer interface is part of the low-level part of the formatting API.
+     * Normally, instances are extracted from another formatter.
+     * Note however that any formatter specific information, such as the locale,
+     * time-zone, chronology, offset parsing or pivot/default year, will not be
+     * extracted by this method.
      *
      * @param printer  the printer to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
@@ -229,6 +242,12 @@ public class DateTimeFormatterBuilder {
     /**
      * Appends just a parser. With no matching printer, a printer cannot be
      * built from this builder.
+     * <p>
+     * The parser interface is part of the low-level part of the formatting API.
+     * Normally, instances are extracted from another formatter.
+     * Note however that any formatter specific information, such as the locale,
+     * time-zone, chronology, offset parsing or pivot/default year, will not be
+     * extracted by this method.
      *
      * @param parser  the parser to add, not null
      * @return this DateTimeFormatterBuilder, for chaining
@@ -241,6 +260,12 @@ public class DateTimeFormatterBuilder {
 
     /**
      * Appends a printer/parser pair.
+     * <p>
+     * The printer and parser interfaces are the low-level part of the formatting API.
+     * Normally, instances are extracted from another formatter.
+     * Note however that any formatter specific information, such as the locale,
+     * time-zone, chronology, offset parsing or pivot/default year, will not be
+     * extracted by this method.
      *
      * @param printer  the printer to add, not null
      * @param parser  the parser to add, not null
@@ -263,6 +288,12 @@ public class DateTimeFormatterBuilder {
      * last of the parser array elements to be null. If the last element is
      * null, this represents the empty parser. The presence of an empty parser
      * indicates that the entire array of parse formats is optional.
+     * <p>
+     * The printer and parser interfaces are the low-level part of the formatting API.
+     * Normally, instances are extracted from another formatter.
+     * Note however that any formatter specific information, such as the locale,
+     * time-zone, chronology, offset parsing or pivot/default year, will not be
+     * extracted by this method.
      *
      * @param printer  the printer to add
      * @param parsers  the parsers to add
@@ -300,6 +331,12 @@ public class DateTimeFormatterBuilder {
     /**
      * Appends just a parser element which is optional. With no matching
      * printer, a printer cannot be built from this DateTimeFormatterBuilder.
+     * <p>
+     * The parser interface is part of the low-level part of the formatting API.
+     * Normally, instances are extracted from another formatter.
+     * Note however that any formatter specific information, such as the locale,
+     * time-zone, chronology, offset parsing or pivot/default year, will not be
+     * extracted by this method.
      *
      * @return this DateTimeFormatterBuilder, for chaining
      * @throws IllegalArgumentException if parser is null or of an invalid type

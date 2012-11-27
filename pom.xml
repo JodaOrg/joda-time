@@ -164,8 +164,8 @@
             <phase>compile</phase>
             <configuration>
               <target>
-                <property name="tz.src" value="${pom.build.sourceDirectory}/org/joda/time/tz/src" />
-                <property name="tz.dst" value="${pom.build.outputDirectory}/org/joda/time/tz/data" />
+                <property name="tz.src" value="${project.build.sourceDirectory}/org/joda/time/tz/src" />
+                <property name="tz.dst" value="${project.build.outputDirectory}/org/joda/time/tz/data" />
                 <!--uptodate property="tz.build.notneeded" targetfile="${tz.dst}/ZoneInfoMap" >
                   <srcfiles dir="${tz.src}" includes="**/*.*"/>
                 </uptodate-->
@@ -325,6 +325,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>2.5.1</version>
         <reportSets>
           <reportSet>
             <reports>

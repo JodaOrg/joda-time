@@ -21,6 +21,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -186,8 +187,8 @@ public final class LocalDateTime
      * will only pass in instances of <code>GregorianCalendar</code> however
      * this is not validated.
      *
-     * @param calendar  the Calendar to extract fields from
-     * @return the created LocalDateTime
+     * @param calendar  the Calendar to extract fields from, not null
+     * @return the created local date-time, not null
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
@@ -195,8 +196,10 @@ public final class LocalDateTime
         if (calendar == null) {
             throw new IllegalArgumentException("The calendar must not be null");
         }
+        int era = calendar.get(Calendar.ERA);
+        int yearOfEra = calendar.get(Calendar.YEAR);
         return new LocalDateTime(
-            calendar.get(Calendar.YEAR),
+            (era == GregorianCalendar.AD ? yearOfEra : 1 - yearOfEra),
             calendar.get(Calendar.MONTH) + 1,
             calendar.get(Calendar.DAY_OF_MONTH),
             calendar.get(Calendar.HOUR_OF_DAY),
@@ -221,8 +224,8 @@ public final class LocalDateTime
      * <p>
      * This factory method always creates a LocalDateTime with ISO chronology.
      *
-     * @param date  the Date to extract fields from
-     * @return the created LocalDateTime
+     * @param date  the Date to extract fields from, not null
+     * @return the created local date-time, not null
      * @throws IllegalArgumentException if the calendar is null
      * @throws IllegalArgumentException if the date is invalid for the ISO chronology
      */
@@ -230,6 +233,12 @@ public final class LocalDateTime
     public static LocalDateTime fromDateFields(Date date) {
         if (date == null) {
             throw new IllegalArgumentException("The date must not be null");
+        }
+        if (date.getTime() < 0) {
+            // handle years in era BC
+            GregorianCalendar cal = new GregorianCalendar();
+            cal.setTime(date);
+            return fromCalendarFields(cal);
         }
         return new LocalDateTime(
             date.getYear() + 1900,

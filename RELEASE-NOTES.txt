@@ -61,6 +61,10 @@ Bug fixes since 2.1
   This used to fail before 1970 when the input had a milli-of-second field
   Fixed to not throw an exception
 
+- LocalDateTime.fromCalendarFields()/LocalDateTime.fromDateFields()
+  This used to fail before year 1 as the era was ignored
+  Fixed to return the correct year
+
 - MutableDateTime.setDate(ReadableInstant)  [163]
   Fixed to handle cross-time-zone issues properly rather than always using UTC
 

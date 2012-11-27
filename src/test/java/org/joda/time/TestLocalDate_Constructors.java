@@ -94,11 +94,30 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_FromCalendarFields() throws Exception {
+    public void testFactory_fromCalendarFields() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
         LocalDate expected = new LocalDate(1970, 2, 3);
         assertEquals(expected, LocalDate.fromCalendarFields(cal));
+    }
+
+    public void testFactory_fromCalendarFields_beforeYearZero1() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1, 1, 3, 4, 5, 6);
+        cal.set(Calendar.ERA, GregorianCalendar.BC);
+        cal.set(Calendar.MILLISECOND, 7);
+        LocalDate expected = new LocalDate(0, 2, 3);
+        assertEquals(expected, LocalDate.fromCalendarFields(cal));
+    }
+
+    public void testFactory_fromCalendarFields_beforeYearZero3() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(3, 1, 3, 4, 5, 6);
+        cal.set(Calendar.ERA, GregorianCalendar.BC);
+        cal.set(Calendar.MILLISECOND, 7);
+        LocalDate expected = new LocalDate(-2, 2, 3);
+        assertEquals(expected, LocalDate.fromCalendarFields(cal));
+    }
+
+    public void testFactory_fromCalendarFields_null() throws Exception {
         try {
             LocalDate.fromCalendarFields((Calendar) null);
             fail();
@@ -106,11 +125,37 @@ public class TestLocalDate_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
-    public void testFactory_FromDateFields() throws Exception {
+    public void testFactory_fromDateFields_after1970() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(1970, 1, 3, 4, 5, 6);
         cal.set(Calendar.MILLISECOND, 7);
         LocalDate expected = new LocalDate(1970, 2, 3);
         assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_fromDateFields_before1970() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1969, 1, 3, 4, 5, 6);
+        cal.set(Calendar.MILLISECOND, 7);
+        LocalDate expected = new LocalDate(1969, 2, 3);
+        assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_fromDateFields_beforeYearZero1() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(1, 1, 3, 4, 5, 6);
+        cal.set(Calendar.ERA, GregorianCalendar.BC);
+        cal.set(Calendar.MILLISECOND, 7);
+        LocalDate expected = new LocalDate(0, 2, 3);
+        assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_fromDateFields_beforeYearZero3() throws Exception {
+        GregorianCalendar cal = new GregorianCalendar(3, 1, 3, 4, 5, 6);
+        cal.set(Calendar.ERA, GregorianCalendar.BC);
+        cal.set(Calendar.MILLISECOND, 7);
+        LocalDate expected = new LocalDate(-2, 2, 3);
+        assertEquals(expected, LocalDate.fromDateFields(cal.getTime()));
+    }
+
+    public void testFactory_fromDateFields_null() throws Exception {
         try {
             LocalDate.fromDateFields((Date) null);
             fail();
@@ -383,6 +428,7 @@ public class TestLocalDate_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
     }
 
+    @SuppressWarnings("deprecation")
     public void testConstructor_ObjectYearMonthDay() throws Throwable {
         YearMonthDay date = new YearMonthDay(1970, 4, 6, BUDDHIST_UTC);
         LocalDate test = new LocalDate(date);

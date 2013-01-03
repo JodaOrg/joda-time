@@ -36,6 +36,7 @@ public class TestPeriodFormat extends TestCase {
     private static final Locale DE = new Locale("de");
     private static final Locale NL = new Locale("nl");
     private static final Locale DA = new Locale("da");
+    private static final Locale JA = new Locale("ja");
 
     private Locale originalLocale = null;
 
@@ -101,6 +102,16 @@ public class TestPeriodFormat extends TestCase {
         assertEquals(p, PeriodFormat.getDefault().parsePeriod("2 days and 5 hours"));
     }
 
+    //-----------------------------------------------------------------------
+    public void test_getDefault_checkRedundantSeparator() {
+        try {
+            PeriodFormat.getDefault().parsePeriod("2 days and 5 hours ");
+            fail("No exception was caught");
+        } catch (Exception e) {
+            assertEquals(IllegalArgumentException.class, e.getClass());
+        }
+    }    
+    
     //-----------------------------------------------------------------------
     public void test_getDefault_cached() {
         assertSame(PeriodFormat.getDefault(), PeriodFormat.getDefault());
@@ -307,11 +318,59 @@ public class TestPeriodFormat extends TestCase {
         assertEquals("2 \u00E5r, 3 m\u00E5neder, 4 uger, 2 dage, 5 timer, 6 minutter, 7 sekunder og 8 millisekunder", PeriodFormat.wordBased(DA).print(p));
     }
 
+    //-----------------------------------------------------------------------
     public void test_wordBased_da_formatSinglular() {
         Period p = new Period(1, 1, 1, 1, 1, 1, 1, 1);
         assertEquals("1 \u00E5r, 1 m\u00E5ned, 1 uge, 1 dag, 1 time, 1 minut, 1 sekund og 1 millisekund", PeriodFormat.wordBased(DA).print(p));
     }
+    
+    //-----------------------------------------------------------------------
+    public void test_wordBased_da_cached() {
+        assertSame(PeriodFormat.wordBased(DA), PeriodFormat.wordBased(DA));
+    }
+    
+    //-----------------------------------------------------------------------
+    // wordBased(Locale ja)
+    //-----------------------------------------------------------------------
+    public void test_wordBased_ja_formatMultiple() {
+        Period p = new Period(2, 3, 4, 2, 5, 6 ,7, 8);
+        assertEquals("2\u5E743\u304B\u67084\u9031\u95932\u65E55\u6642\u95936\u52067\u79D28\u30DF\u30EA\u79D2", PeriodFormat.wordBased(JA).print(p));
+    }
 
+    //-----------------------------------------------------------------------
+    public void test_wordBased_ja_formatSingular() {
+        Period p = new Period(1, 1, 1, 1, 1, 1, 1, 1);
+        assertEquals("1\u5E741\u304B\u67081\u9031\u95931\u65E51\u6642\u95931\u52061\u79D21\u30DF\u30EA\u79D2", PeriodFormat.wordBased(JA).print(p));
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_wordBased_ja_cached() {
+        assertSame(PeriodFormat.wordBased(JA), PeriodFormat.wordBased(JA));
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_wordBased_ja_parseOneField() {
+        Period p = Period.days(2);
+        assertEquals(p, PeriodFormat.wordBased(JA).parsePeriod("2\u65E5"));
+    }
+
+    //-----------------------------------------------------------------------
+    public void test_wordBased_ja_parseTwoFields() {
+        Period p = Period.days(2).withHours(5);
+        assertEquals(p, PeriodFormat.wordBased(JA).parsePeriod("2\u65E55\u6642\u9593"));
+    }
+    
+    //-----------------------------------------------------------------------
+    public void test_wordBased_ja_checkRedundantSeparator() {
+        try {
+            // Spaces are not valid separators in Japanese
+            PeriodFormat.wordBased(JA).parsePeriod("2\u65E5 ");
+            fail("No exception was caught");
+        } catch (Exception e) {
+            assertEquals(IllegalArgumentException.class, e.getClass());
+        }
+    }   
+    
     //-----------------------------------------------------------------------
     // Cross check languages
     //-----------------------------------------------------------------------

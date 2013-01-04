@@ -26,7 +26,15 @@ Enhancements since 2.1
 - Add method to calculate the Julian Day
   See DateTimeUtils
 
-- Add Danish translation of word-based periods
+- Add Danish translation of word-based periods (Kasper Laudrup)
+
+- Add Japanese translation of word-based periods (Hajime Senuma)
+  https://github.com/JodaOrg/joda-time/pull/9
+
+- Parsing of US short time-zone names
+  The time-zone names EST/EDT/CST/CDT/MST/MDT/PST/PDT/UT/UTC/GMT can now be parsed in a limited way.
+  This is enabled for formatter patterns of "z" (and "zz" or "zzz").
+  The builder continues to offer a better way of manually managing this.
 
 
 Compatibility with 2.1
@@ -64,6 +72,7 @@ Bug fixes since 2.1
 - LocalDateTime.fromCalendarFields()/LocalDateTime.fromDateFields()
   This used to fail before year 1 as the era was ignored
   Fixed to return the correct year
+  https://github.com/JodaOrg/joda-time/pull/8
 
 - MutableDateTime.setDate(ReadableInstant)  [163]
   Fixed to handle cross-time-zone issues properly rather than always using UTC
@@ -84,11 +93,6 @@ Bug fixes since 2.1
 
 - Period formatter [3564249]
   Formatting did not correctly output values for negative milliseconds between zero and -1 second
-
-- Parsing of US short time-zone names
-  The time-zone names EST/EDT/CST/CDT/MST/MDT/PST/PDT/UT/UTC/GMT can now be parsed in a limited way.
-  This is enabled for formatter patterns of "z" (and "zz" or "zzz").
-  The builder continues to offer a better way of manually managing this.
 
 - FieldUtils.safeMultiply(long,int) [3520651]
   Fix implementation to throw exception for (Long.MIN_VALUE, -1)

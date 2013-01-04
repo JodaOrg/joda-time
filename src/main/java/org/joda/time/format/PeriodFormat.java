@@ -86,7 +86,7 @@ public class PeriodFormat {
      * {@code org.joda.time.format.messages}.
      * This can be added to via the normal classpath resource bundle mechanisms.
      * <p>
-     * Available languages are Danish, Dutch, English, French, German, Japanese, Portuguese, and Spanish.
+     * Available languages are English, Danish, Dutch, French, German, Japanese, Portuguese, and Spanish.
      * 
      * @return the formatter, not null
      * @since 2.0

@@ -1713,6 +1713,7 @@ public class PeriodFormatterBuilder {
             }
 
             boolean found = false;
+            int parsedFormLength = -1;
             if (position > oldPos) {
                 // Consume this separator.
                 String[] parsedForms = iParsedForms;
@@ -1723,7 +1724,8 @@ public class PeriodFormatterBuilder {
                         periodStr.regionMatches
                         (true, position, parsedForm, 0, parsedForm.length())) {
                         
-                        position += (parsedForm == null ? 0 : parsedForm.length());
+                        parsedFormLength = (parsedForm == null ? 0 : parsedForm.length());
+                        position += parsedFormLength;
                         found = true;
                         break;
                     }
@@ -1737,7 +1739,7 @@ public class PeriodFormatterBuilder {
                 return position;
             }
 
-            if (found && position == oldPos) {
+            if (found && position == oldPos && parsedFormLength > 0) {
                 // Separator should not have been supplied.
                 return ~oldPos;
             }

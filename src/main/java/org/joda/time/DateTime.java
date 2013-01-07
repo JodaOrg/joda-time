@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -2218,13 +2218,25 @@ public final class DateTime
          * may need to call {@link DateTime#withLaterOffsetAtOverlap()} on the result
          * to force the later time during a DST overlap if desired.
          * <p>
+         * From v2.2, this method handles a daylight svaings time gap, setting the
+         * time to the last instant before the gap.
+         * <p>
          * The DateTime attached to this property is unchanged by this call.
          *
          * @return a copy of the DateTime with this field set to its maximum
          * @since 1.2
          */
         public DateTime withMaximumValue() {
-            return setCopy(getMaximumValue());
+            try {
+                return setCopy(getMaximumValue());
+            } catch (RuntimeException ex) {
+                if (IllegalInstantException.isIllegalInstant(ex)) {
+                    // adding MILLIS_PER_DAY is not perfect, but will work in almost all situations
+                    long beforeGap = getChronology().getZone().previousTransition(getMillis() + DateTimeConstants.MILLIS_PER_DAY);
+                    return new DateTime(beforeGap, getChronology());
+                }
+                throw ex;
+            }
         }
         
         /**
@@ -2235,13 +2247,25 @@ public final class DateTime
          * may need to call {@link DateTime#withEarlierOffsetAtOverlap()} on the result
          * to force the earlier time during a DST overlap if desired.
          * <p>
+         * From v2.2, this method handles a daylight svaings time gap, setting the
+         * time to the first instant after the gap.
+         * <p>
          * The DateTime attached to this property is unchanged by this call.
          *
          * @return a copy of the DateTime with this field set to its minimum
          * @since 1.2
          */
         public DateTime withMinimumValue() {
-            return setCopy(getMinimumValue());
+            try {
+                return setCopy(getMinimumValue());
+            } catch (RuntimeException ex) {
+                if (IllegalInstantException.isIllegalInstant(ex)) {
+                    // subtracting MILLIS_PER_DAY is not perfect, but will work in almost all situations
+                    long afterGap = getChronology().getZone().nextTransition(getMillis() - DateTimeConstants.MILLIS_PER_DAY);
+                    return new DateTime(afterGap, getChronology());
+                }
+                throw ex;
+            }
         }
         
         //-----------------------------------------------------------------------

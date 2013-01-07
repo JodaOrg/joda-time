@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2005 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -643,11 +643,25 @@ public class TestDateTime_Properties extends TestCase {
         assertEquals("2004-06-30T00:00:00.000+01:00", copy.toString());
     }
 
+    public void testPropertyWithMaximumValueMillisOfDayDSTGap() {
+        DateTimeZone paris = DateTimeZone.forID("Europe/Paris");
+        DateTime dt = new DateTime(1926, 4, 17, 18, 0, 0, 0, paris);  // DST gap 23:00 to 00:00
+        DateTime test = dt.millisOfDay().withMaximumValue();
+        assertEquals("1926-04-17T22:59:59.999Z", test.toString());
+    }
+
     public void testPropertyWithMinimumValueDayOfMonth() {
         DateTime test = new DateTime(2004, 6, 9, 0, 0, 0, 0);
         DateTime copy = test.dayOfMonth().withMinimumValue();
         assertEquals("2004-06-09T00:00:00.000+01:00", test.toString());
         assertEquals("2004-06-01T00:00:00.000+01:00", copy.toString());
+    }
+
+    public void testPropertyWithMinimumValueMillisOfDayDSTGap() {
+        DateTimeZone gaza = DateTimeZone.forID("Asia/Gaza");
+        DateTime dt = new DateTime(2001, 4, 20, 18, 0, 0, 0, gaza);  // DST gap 00:00 to 01:00
+        DateTime test = dt.millisOfDay().withMinimumValue();
+        assertEquals("2001-04-20T01:00:00.000+03:00", test.toString());
     }
 
     public void testPropertyCompareToDayOfMonth() {

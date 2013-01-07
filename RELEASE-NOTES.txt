@@ -68,6 +68,10 @@ None
 
 Bug fixes since 2.1
 -------------------
+- DateTime.millisOfDay().withMaximumValue()/withMinimumValue() [159]
+  Now handle daylight savings gaps
+  https://sourceforge.net/p/joda-time/bugs/159/
+
 - MonthDay add/subtract [3528941]
   Addition and subtraction in MonthDay was fixed.
   It previously didn't work when the start value was 29th February.

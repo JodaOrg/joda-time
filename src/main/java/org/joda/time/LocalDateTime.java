@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -391,6 +391,10 @@ public final class LocalDateTime
      * <p>
      * If the chronology is null, ISO in the default time zone is used.
      * Once the constructor is completed, the zone is no longer used.
+     * If the instant contains a chronology, it will be ignored.
+     * For example, passing a {@code LocalDate} and a different chronology
+     * will return a date with the year/month/day from the date applied
+     * unaltered to the specified chronology.
      * <p>
      * The recognised object types are defined in
      * {@link org.joda.time.convert.ConverterManager ConverterManager} and

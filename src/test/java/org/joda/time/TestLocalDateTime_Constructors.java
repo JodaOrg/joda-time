@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2006 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -584,6 +584,19 @@ public class TestLocalDateTime_Constructors extends TestCase {
         assertEquals(6, test.getDayOfMonth());
         assertEquals(12 + OFFSET_PARIS, test.getHourOfDay());
         assertEquals(24, test.getMinuteOfHour());
+        assertEquals(0, test.getSecondOfMinute());
+        assertEquals(0, test.getMillisOfSecond());
+    }
+
+    public void testConstructor_Object_Chronology_crossChronology() throws Throwable {
+        LocalDateTime input = new LocalDateTime(1970, 4, 6, 12, 30, 0, 0, ISO_UTC);
+        LocalDateTime test = new LocalDateTime(input, BUDDHIST_UTC);
+        assertEquals(BUDDHIST_UTC, test.getChronology());
+        assertEquals(1970, test.getYear());
+        assertEquals(4, test.getMonthOfYear());
+        assertEquals(6, test.getDayOfMonth());
+        assertEquals(12, test.getHourOfDay());
+        assertEquals(30, test.getMinuteOfHour());
         assertEquals(0, test.getSecondOfMinute());
         assertEquals(0, test.getMillisOfSecond());
     }

@@ -8,7 +8,7 @@
   <artifactId>joda-time</artifactId>
   <packaging>jar</packaging>
   <name>Joda time</name>
-  <version>2.1</version>
+  <version>2.2-SNAPSHOT</version>
   <description>Date and time library to replace JDK date handling</description>
   <url>http://joda-time.sourceforge.net</url>
   <issueManagement>
@@ -124,6 +124,9 @@
   <build>
     <resources>
       <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
         <targetPath>META-INF</targetPath>
         <directory>.</directory>
         <includes>
@@ -163,42 +166,45 @@
         </configuration>
       </plugin>
       <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
+        <groupId>org.codehaus.mojo</groupId>      
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
         <executions>
           <execution>
             <phase>compile</phase>
-            <configuration>
-              <target>
-                <property name="tz.src" value="${project.build.sourceDirectory}/org/joda/time/tz/src" />
-                <property name="tz.dst" value="${project.build.outputDirectory}/org/joda/time/tz/data" />
-                <!--uptodate property="tz.build.notneeded" targetfile="${tz.dst}/ZoneInfoMap" >
-                  <srcfiles dir="${tz.src}" includes="**/*.*"/>
-                </uptodate-->
-                <mkdir dir="${tz.dst}" />
-                <java classname="org.joda.time.tz.ZoneInfoCompiler" fork="true" failonerror="true">
-                  <classpath refid="maven.compile.classpath" />
-                  <sysproperty key="org.joda.time.DateTimeZone.Provider" value="org.joda.time.tz.UTCProvider" />
-                  <arg line="-src ${tz.src} -dst ${tz.dst}" />
-                  <arg value="africa" />
-                  <arg value="antarctica" />
-                  <arg value="asia" />
-                  <arg value="australasia" />
-                  <arg value="europe" />
-                  <arg value="northamerica" />
-                  <arg value="southamerica" />
-                  <arg value="pacificnew" />
-                  <arg value="etcetera" />
-                  <arg value="backward" />
-                  <arg value="systemv" />
-                </java>
-              </target>
-            </configuration>
             <goals>
-              <goal>run</goal>
+              <goal>java</goal>
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <mainClass>org.joda.time.tz.ZoneInfoCompiler</mainClass>
+          <classpathScope>compile</classpathScope>
+          <verbose>true</verbose>
+          <systemProperties>
+            <systemProperty>
+              <key>org.joda.time.DateTimeZone.Provider</key>
+              <value>org.joda.time.tz.UTCProvider</value>
+            </systemProperty>
+          </systemProperties>
+          <arguments>
+            <argument>-src</argument>
+            <argument>${pom.build.sourceDirectory}/org/joda/time/tz/src</argument>
+            <argument>-dst</argument>
+            <argument>${pom.build.outputDirectory}/org/joda/time/tz/data</argument>
+            <argument>africa</argument>
+            <argument>antarctica</argument>
+            <argument>asia</argument>
+            <argument>australasia</argument>
+            <argument>europe</argument>
+            <argument>northamerica</argument>
+            <argument>southamerica</argument>
+            <argument>pacificnew</argument>
+            <argument>etcetera</argument>
+            <argument>backward</argument>
+            <argument>systemv</argument>
+          </arguments>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

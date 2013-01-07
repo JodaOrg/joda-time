@@ -107,6 +107,9 @@ Bug fixes since 2.1
 - Fixed Spanish translation of day for periods - dia now has accented i
   https://github.com/JodaOrg/joda-time/pull/5
 
+- Change maven build to use exec-maven-plugin [158]
+  https://sourceforge.net/p/joda-time/bugs/158/
+
 
 Scala
 --------

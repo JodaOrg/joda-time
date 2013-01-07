@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -374,7 +374,9 @@ public class ZoneInfoCompiler {
 
         if (outputDir != null) {
             if (!outputDir.exists()) {
-                throw new IOException("Destination directory doesn't exist: " + outputDir);
+                if (!outputDir.mkdirs()) {
+                    throw new IOException("Destination directory doesn't exist and cannot be created: " + outputDir);
+                }
             }
             if (!outputDir.isDirectory()) {
                 throw new IOException("Destination is not a directory: " + outputDir);

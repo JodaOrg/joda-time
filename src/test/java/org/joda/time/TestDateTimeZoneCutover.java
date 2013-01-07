@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2012 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -224,7 +224,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         try {
             date.toDateMidnight(MOCK_GAZA);
             fail();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             assertEquals(true, ex.getMessage().startsWith("Illegal instant due to time zone offset transition"));
         }
     }
@@ -233,7 +233,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         try {
             new DateTime(2007, 4, 1, 0, 0, 0, 0, MOCK_GAZA);
             fail();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
         }
     }
@@ -253,7 +253,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         try {
             new DateTime("2007-04-01T00:00", MOCK_GAZA);
             fail();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
         }
     }
@@ -440,7 +440,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         try {
             date.toDateMidnight(MOCK_TURK);
             fail();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             assertEquals(true, ex.getMessage().startsWith("Illegal instant due to time zone offset transition"));
         }
     }
@@ -449,7 +449,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         try {
             new DateTime(2007, 4, 1, 0, 0, 0, 0, MOCK_TURK);
             fail();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
         }
     }
@@ -468,7 +468,7 @@ public class TestDateTimeZoneCutover extends TestCase {
         try {
             new DateTime("2007-04-01T00:00", MOCK_TURK);
             fail();
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             assertEquals(true, ex.getMessage().indexOf("Illegal instant due to time zone offset transition") >= 0);
         }
     }

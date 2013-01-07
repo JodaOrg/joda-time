@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2009 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,11 +24,10 @@ import org.joda.time.DateTimeField;
 import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.IllegalFieldValueException;
-import org.joda.time.Instant;
+import org.joda.time.IllegalInstantException;
 import org.joda.time.ReadablePartial;
 import org.joda.time.field.BaseDateTimeField;
 import org.joda.time.field.BaseDurationField;
-import org.joda.time.format.DateTimeFormat;
 
 /**
  * Wraps another Chronology to add support for time zones.
@@ -132,19 +131,17 @@ public final class ZonedChronology extends AssembledChronology {
     }
 
     /**
-     * @param instant instant from 1970-01-01T00:00:00 local time
-     * @return instant from 1970-01-01T00:00:00Z
+     * @param localInstant  the instant from 1970-01-01T00:00:00 local time
+     * @return the instant from 1970-01-01T00:00:00Z
      */
-    private long localToUTC(long instant) {
+    private long localToUTC(long localInstant) {
         DateTimeZone zone = getZone();
-        int offset = zone.getOffsetFromLocal(instant);
-        instant -= offset;
-        if (offset != zone.getOffset(instant)) {
-            throw new IllegalArgumentException
-                ("Illegal instant due to time zone offset transition: " +
-                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(instant)));
+        int offset = zone.getOffsetFromLocal(localInstant);
+        localInstant -= offset;
+        if (offset != zone.getOffset(localInstant)) {
+            throw new IllegalInstantException(localInstant, zone.getID());
         }
-        return instant;
+        return localInstant;
     }
 
     protected void assemble(Fields fields) {
@@ -466,10 +463,10 @@ public final class ZonedChronology extends AssembledChronology {
             localInstant = iField.set(localInstant, value);
             long result = iZone.convertLocalToUTC(localInstant, false, instant);
             if (get(result) != value) {
-                throw new IllegalFieldValueException(iField.getType(), Integer.valueOf(value),
-                    "Illegal instant due to time zone offset transition: " +
-                    DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(localInstant)) +
-                    " (" + iZone.getID() + ")");
+                IllegalInstantException cause = new IllegalInstantException(localInstant,  iZone.getID());
+                IllegalFieldValueException ex = new IllegalFieldValueException(iField.getType(), Integer.valueOf(value), cause.getMessage());
+                ex.initCause(cause);
+                throw ex;
             }
             return result;
         }

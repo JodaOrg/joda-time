@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2012 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -966,7 +966,7 @@ public abstract class DateTimeZone implements Serializable {
      * @param strict  whether the conversion should reject non-existent local times
      * @return the UTC instant with the same local time, 
      * @throws ArithmeticException if the result overflows a long
-     * @throws IllegalArgumentException if the zone has no equivalent local time
+     * @throws IllegalInstantException if the zone has no equivalent local time
      * @since 1.5
      */
     public long convertLocalToUTC(long instantLocal, boolean strict) {
@@ -993,9 +993,7 @@ public abstract class DateTimeZone implements Serializable {
                     // yes we are in the DST gap
                     if (strict) {
                         // DST gap is not acceptable
-                        throw new IllegalArgumentException("Illegal instant due to time zone offset transition: " +
-                                DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS").print(new Instant(instantLocal)) +
-                                " (" + getID() + ")");
+                        throw new IllegalInstantException(instantLocal, getID());
                     } else {
                         // DST gap is acceptable, but for the Western hemisphere
                         // the offset is wrong and will result in local times
@@ -1148,7 +1146,7 @@ public abstract class DateTimeZone implements Serializable {
         try {
             localDateTime.toDateTime(this);
             return false;
-        } catch (IllegalArgumentException ex) {
+        } catch (IllegalInstantException ex) {
             return true;
         }
     }

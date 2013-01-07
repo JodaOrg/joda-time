@@ -36,6 +36,10 @@ Enhancements since 2.1
   This is enabled for formatter patterns of "z" (and "zz" or "zzz").
   The builder continues to offer a better way of manually managing this.
 
+- Add new exception, IllegalInstantException
+  This allows applications to better capture problems with daylight savings gaps
+  The exception is a subclass of IllegalArgumentException, so existing logic will still work
+
 
 Compatibility with 2.1
 ----------------------

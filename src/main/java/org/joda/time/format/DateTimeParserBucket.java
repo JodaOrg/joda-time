@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2011 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.IllegalFieldValueException;
+import org.joda.time.IllegalInstantException;
 
 /**
  * DateTimeParserBucket is an advanced class, intended mainly for parser
@@ -382,12 +383,11 @@ public class DateTimeParserBucket {
             int offset = iZone.getOffsetFromLocal(millis);
             millis -= offset;
             if (offset != iZone.getOffset(millis)) {
-                String message =
-                    "Illegal instant due to time zone offset transition (" + iZone + ')';
+                String message = "Illegal instant due to time zone offset transition (" + iZone + ')';
                 if (text != null) {
                     message = "Cannot parse \"" + text + "\": " + message;
                 }
-                throw new IllegalArgumentException(message);
+                throw new IllegalInstantException(message);
             }
         }
         

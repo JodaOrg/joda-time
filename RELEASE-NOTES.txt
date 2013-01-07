@@ -39,6 +39,9 @@ Enhancements since 2.1
 
 Compatibility with 2.1
 ----------------------
+Build system - No
+ - Ant build removed. Build only on Maven now.
+
 Binary compatible - Yes
 
 Source compatible - Yes

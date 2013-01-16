@@ -1,5 +1,5 @@
 /*
- *  Copyright 2001-2010 Stephen Colebourne
+ *  Copyright 2001-2013 Stephen Colebourne
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ import org.joda.time.format.PeriodFormatter;
  * An immutable time period representing a number of years.
  * <p>
  * <code>Years</code> is an immutable period that can only store years.
- * It does not store years, days or hours for example. As such it is a
+ * It does not store months, days or hours for example. As such it is a
  * type-safe way of representing a number of years in an application.
  * <p>
  * The number of years is set in the constructor, and may be queried using

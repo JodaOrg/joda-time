@@ -113,6 +113,8 @@ Bug fixes since 2.1
 
 - Javadoc fix to BaseChronology [3513326]
 
+- Javadoc fix to Years [169]
+
 - Javadoc clarify on formatter builder [mailing list email]
 
 - Fixed Spanish translation of day for periods - dia now has accented i

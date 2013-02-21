@@ -1290,7 +1290,7 @@ public final class LocalTime
 
     //-----------------------------------------------------------------------
     /**
-     * Output the time in ISO8601 format (HH:mm:ss.SSSZZ).
+     * Output the time in ISO8601 format (HH:mm:ss.SSS).
      * 
      * @return ISO8601 time formatted string.
      */

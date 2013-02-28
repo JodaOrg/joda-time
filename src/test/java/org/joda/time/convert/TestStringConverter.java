@@ -302,6 +302,15 @@ public class TestStringConverter extends TestCase {
         millis = StringConverter.INSTANCE.getDurationMillis("pt-12.32s");
         assertEquals(-12320, millis);
         
+        millis = StringConverter.INSTANCE.getDurationMillis("pt-0.32s");
+        assertEquals(-320, millis);
+
+        millis = StringConverter.INSTANCE.getDurationMillis("pt-0.0s");
+        assertEquals(0, millis);
+
+        millis = StringConverter.INSTANCE.getDurationMillis("pt0.0s");
+        assertEquals(0, millis);
+
         millis = StringConverter.INSTANCE.getDurationMillis("pt12.3456s");
         assertEquals(12345, millis);
     }
@@ -337,6 +346,10 @@ public class TestStringConverter extends TestCase {
         } catch (IllegalArgumentException ex) {}
         try {
             StringConverter.INSTANCE.getDurationMillis("PT0-00S");
+            fail();
+        } catch (IllegalArgumentException ex) {}
+        try {
+            StringConverter.INSTANCE.getDurationMillis("PT-.001S");
             fail();
         } catch (IllegalArgumentException ex) {}
     }

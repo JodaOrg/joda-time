@@ -112,11 +112,14 @@ class StringConverter extends AbstractConverter
         }
         str = str.substring(2, len - 1);
         int dot = -1;
+        boolean negative = false;
         for (int i = 0; i < str.length(); i++) {
-            if ((str.charAt(i) >= '0' && str.charAt(i) <= '9') ||
-                (i == 0 && str.charAt(0) == '-')) {
+            if (str.charAt(i) >= '0' && str.charAt(i) <= '9') {
                 // ok
-            } else if (i > 0 && str.charAt(i) == '.' && dot == -1) {
+            } else if (i == 0 && str.charAt(0) == '-') {
+            	// ok
+            	negative = true;
+            } else if (i > (negative ? 1 : 0) && str.charAt(i) == '.' && dot == -1) {
                 // ok
                 dot = i;
             } else {
@@ -124,18 +127,23 @@ class StringConverter extends AbstractConverter
             }
         }
         long millis = 0, seconds = 0;
+        int firstDigit = negative ? 1 : 0;
         if (dot > 0) {
-            seconds = Long.parseLong(str.substring(0, dot));
+            seconds = Long.parseLong(str.substring(firstDigit, dot));
             str = str.substring(dot + 1);
             if (str.length() != 3) {
                 str = (str + "000").substring(0, 3);
             }
             millis = Integer.parseInt(str);
-        } else {
+        } else if (negative) {
+        	seconds = Long.parseLong(str.substring(firstDigit, str.length()));
+        }
+        else {
             seconds = Long.parseLong(str);
         }
-        if (seconds < 0) {
-            return FieldUtils.safeAdd(FieldUtils.safeMultiply(seconds, 1000), -millis);
+        assert(seconds >= 0L);
+        if (negative) {
+            return FieldUtils.safeAdd(FieldUtils.safeMultiply(-seconds, 1000), -millis);
         } else {
             return FieldUtils.safeAdd(FieldUtils.safeMultiply(seconds, 1000), millis);
         }

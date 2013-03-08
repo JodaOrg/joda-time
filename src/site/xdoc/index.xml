@@ -23,34 +23,34 @@ time zone, duration, format and parsing.
 <p>
 As a flavour of Joda-Time, here's some example code:
 <source>
-public boolean isAfterPayDay(<a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a> datetime) {
+public boolean isAfterPayDay(<a href="apidocs/org/joda/time/DateTime.html"><b>DateTime</b></a> datetime) {
   if (datetime.getMonthOfYear() == 2) {   // February is month 2!!
     return datetime.getDayOfMonth() > 26;
   }
   return datetime.getDayOfMonth() > 28;
 }
 
-public <a href="api-release/org/joda/time/Days.html"><b>Days</b></a> daysToNewYear(<a href="api-release/org/joda/time/LocalDate.html"><b>LocalDate</b></a> fromDate) {
-  <a href="api-release/org/joda/time/LocalDate.html"><b>LocalDate</b></a> newYear = fromDate.plusYears(1).withDayOfYear(1);
-  return <a href="api-release/org/joda/time/Days.html"><b>Days</b></a>.daysBetween(fromDate, newYear);
+public <a href="apidocs/org/joda/time/Days.html"><b>Days</b></a> daysToNewYear(<a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> fromDate) {
+  <a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> newYear = fromDate.plusYears(1).withDayOfYear(1);
+  return <a href="apidocs/org/joda/time/Days.html"><b>Days</b></a>.daysBetween(fromDate, newYear);
 }
 
-public boolean isRentalOverdue(<a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeRented) {
-  <a href="api-release/org/joda/time/Period.html"><b>Period</b></a> rentalPeriod = new <a href="api-release/org/joda/time/Period.html"><b>Period</b></a>().withDays(2).withHours(12);
+public boolean isRentalOverdue(<a href="apidocs/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeRented) {
+  <a href="apidocs/org/joda/time/Period.html"><b>Period</b></a> rentalPeriod = new <a href="apidocs/org/joda/time/Period.html"><b>Period</b></a>().withDays(2).withHours(12);
   return datetimeRented.plus(rentalPeriod).isBeforeNow();
 }
 
-public String getBirthMonthText(<a href="api-release/org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
+public String getBirthMonthText(<a href="apidocs/org/joda/time/LocalDate.html"><b>LocalDate</b></a> dateOfBirth) {
   return dateOfBirth.monthOfYear().getAsText(Locale.ENGLISH);
 }
 </source>
 <!--
-public boolean isDoubleShift(<a href="api-release/org/joda/time/LocalTime.html"><b>LocalTime</b></a> startTime, <a href="api-release/org/joda/time/LocalTime.html"><b>LocalTime</b></a> endTime) {
-  <a href="api-release/org/joda/time/Hours.html"><b>Hours</b></a> hoursBetween = <a href="api-release/org/joda/time/Hours.html"><b>Hours</b></a>.hoursBetween(time1, time2);
-  return hoursBetween.isGreaterThan(<a href="api-release/org/joda/time/Hours.html"><b>Hours</b></a>.EIGHT);
+public boolean isDoubleShift(<a href="apidocs/org/joda/time/LocalTime.html"><b>LocalTime</b></a> startTime, <a href="apidocs/org/joda/time/LocalTime.html"><b>LocalTime</b></a> endTime) {
+  <a href="apidocs/org/joda/time/Hours.html"><b>Hours</b></a> hoursBetween = <a href="apidocs/org/joda/time/Hours.html"><b>Hours</b></a>.hoursBetween(time1, time2);
+  return hoursBetween.isGreaterThan(<a href="apidocs/org/joda/time/Hours.html"><b>Hours</b></a>.EIGHT);
 }
-public boolean isJoinedInLastThreeMonths(<a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeJoined) {
-  <a href="api-release/org/joda/time/Interval.html"><b>Interval</b></a> last3Months = new <a href="api-release/org/joda/time/Interval.html"><b>Interval</b></a>(<a href="api-release/org/joda/time/Months.html"><b>Months</b></a>.THREE, new <a href="api-release/org/joda/time/DateTime.html"><b>DateTime</b></a>());
+public boolean isJoinedInLastThreeMonths(<a href="apidocs/org/joda/time/DateTime.html"><b>DateTime</b></a> datetimeJoined) {
+  <a href="apidocs/org/joda/time/Interval.html"><b>Interval</b></a> last3Months = new <a href="apidocs/org/joda/time/Interval.html"><b>Interval</b></a>(<a href="apidocs/org/joda/time/Months.html"><b>Months</b></a>.THREE, new <a href="apidocs/org/joda/time/DateTime.html"><b>DateTime</b></a>());
   return last3Months.contains(datetimeJoined);
 }
 -->
@@ -107,7 +107,7 @@ Joda-Time has a comprehensive set of developer tests, providing assurance of the
 
 <li><b>Complete Documentation</b>.
 There is a full <a href="userguide.html">User Guide</a> which provides an overview and covers
-common usage scenarios. The <a href="api-release/index.html">javadoc</a>
+common usage scenarios. The <a href="apidocs/index.html">javadoc</a>
 is extremely detailed and covers the rest of the API.</li>
 
 <li><b>Maturity</b>.
@@ -128,7 +128,7 @@ Various documentation is available:
 <ul>
 <li>Two user guides - <a href="quickstart.html">quick</a> and <a href="userguide.html">full</a></li>
 <li>The key concepts and chronology documents in the left navigation area</li>
-<li>The javadoc for the <a href="api-release/index.html">current release</a></li>
+<li>The javadoc for the <a href="apidocs/index.html">current release</a></li>
 <li>The javadoc for the <a href="apidocs/index.html">latest source code</a></li>
 <li>A <a href="faq.html">FAQ</a> list</li>
 <li>Information on <a href="installation.html">downloading and installing</a> Joda-Time</li>

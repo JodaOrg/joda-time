@@ -3,12 +3,10 @@
   <publishDate position="navigation-bottom" format="yyyy-MM-dd"/>
   <bannerLeft>
     <name>Joda.org</name>
-    <!--src>http://joda-time.sourceforge.net/images/joda.png</src-->
     <href>http://joda.sourceforge.net/</href>
   </bannerLeft>
   <bannerRight>
     <name>Joda-Time</name>
-    <!--src>http://joda-time.sourceforge.net/images/jodatime.png</src-->
     <href>http://joda-time.sourceforge.net/</href>
   </bannerRight>
 
@@ -26,9 +24,9 @@
       <item name="User guide" href="userguide.html"/>
       <item name="FAQ" href="faq.html"/>
       <item name="Related projects" href="related.html"/>
-      <item name="Javadoc (Release)" href="api-release/index.html"/>
+      <item name="Javadoc" href="apidocs/index.html"/>
       <item name="License" href="license.html"/>
-      <item name="Download" href="https://sourceforge.net/projects/joda-time/files/joda-time/2.2/"/>
+      <item name="Download" href="https://sourceforge.net/projects/joda-time/files/joda-time/"/>
     </menu>
 
     <menu name="Key concepts">
@@ -56,11 +54,8 @@
       <item name="GitHub (Source code)" href="https://github.com/JodaOrg/joda-time"/>
       <item name="Sourceforge" href="http://sourceforge.net/projects/joda-time/"/>
       <item name="Test results" href="surefire-report.html"/>
-      <!--item name="Test coverage" href="coverage/index.html"/-->
       <item name="Mailing lists" href="mail-lists.html"/>
       <item name="Tasks" href="tasks.html"/>
-      <!--item name="Subversion" href="http://joda-time.svn.sourceforge.net/viewvc/joda-time/trunk/JodaTime/"/-->
-      <item name="Javadoc (Development)" href="apidocs/index.html"/>
     </menu>
 
     <menu name="Joda">

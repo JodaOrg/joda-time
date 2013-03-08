@@ -131,7 +131,7 @@ As such, the time-zone offset returned by the JDK and Joda-Time are different fo
 <p>
 This question has more than one answer!
 If you just want the number of whole days between two dates, then you can use the
-new <a href="api-release/org/joda/time/Days.html">Days</a> class
+new <a href="apidocs/org/joda/time/Days.html">Days</a> class
 in version 1.4 of Joda-Time.
 <source>
   Days d = Days.daysBetween(startDate, endDate);
@@ -142,14 +142,14 @@ designed to operate well with the JDK5 static import facility.
 </p>
 <p>
 If however you want to calculate the number of days, weeks, months and years between
-the two dates, then you need a <a href="api-release/org/joda/time/Period.html">Period</a>
+the two dates, then you need a <a href="apidocs/org/joda/time/Period.html">Period</a>
 By default, this will split the difference between the two datetimes into parts,
 such as "1 month, 2 weeks, 4 days and 7 hours".
 <source>
   Period p = new Period(startDate, endDate);
 </source>
 You can control which fields get extracted using a
-<a href="api-release/org/joda/time/PeriodType.html">PeriodType</a>.
+<a href="apidocs/org/joda/time/PeriodType.html">PeriodType</a>.
 <source>
   Period p = new Period(startDate, endDate, PeriodType.yearMonthDay());
 </source>

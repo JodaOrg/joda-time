@@ -20,11 +20,11 @@ Its designed for those of you who are too impatient to read the full
 <p>
 Joda-Time includes these key datetime classes:
 <ul>
-<li><a href="api-release/org/joda/time/DateTime.html"><code>DateTime</code></a> - Immutable replacement for JDK <code>Calendar</code></li>
-<li><a href="api-release/org/joda/time/DateMidnight.html"><code>DateMidnight</code></a> - Immutable class representing a date where the time is forced to midnight</li>
-<li><a href="api-release/org/joda/time/LocalDate.html"><code>LocalDate</code></a> - Immutable class representing a local date without a time (no time zone)</li>
-<li><a href="api-release/org/joda/time/LocalTime.html"><code>LocalTime</code></a> - Immutable class representing a time without a date (no time zone)</li>
-<li><a href="api-release/org/joda/time/LocalDateTime.html"><code>LocalDateTime</code></a> - Immutable class representing a local date and time (no time zone)</li>
+<li><a href="apidocs/org/joda/time/DateTime.html"><code>DateTime</code></a> - Immutable replacement for JDK <code>Calendar</code></li>
+<li><a href="apidocs/org/joda/time/DateMidnight.html"><code>DateMidnight</code></a> - Immutable class representing a date where the time is forced to midnight</li>
+<li><a href="apidocs/org/joda/time/LocalDate.html"><code>LocalDate</code></a> - Immutable class representing a local date without a time (no time zone)</li>
+<li><a href="apidocs/org/joda/time/LocalTime.html"><code>LocalTime</code></a> - Immutable class representing a time without a date (no time zone)</li>
+<li><a href="apidocs/org/joda/time/LocalDateTime.html"><code>LocalDateTime</code></a> - Immutable class representing a local date and time (no time zone)</li>
 </ul>
 </p>
 
@@ -85,8 +85,8 @@ functionality. For example, to access details about a month or year:
 <p>
 Joda-Time provides support for multiple calendar systems and the full range
 of time zones.
-The <a href="api-release/org/joda/time/Chronology.html"><code>Chronology</code></a>
-and <a href="api-release/org/joda/time/DateTimeZone.html"><code>DateTimeZone</code></a>
+The <a href="apidocs/org/joda/time/Chronology.html"><code>Chronology</code></a>
+and <a href="apidocs/org/joda/time/DateTimeZone.html"><code>DateTimeZone</code></a>
 classes provide this support.
 </p>
 <p>
@@ -119,19 +119,19 @@ Joda-Time provides support for intervals and time periods.
 </p>
 <p>
 An interval is represented by the
-<a href="api-release/org/joda/time/Interval.html"><code>Interval</code></a> class.
+<a href="apidocs/org/joda/time/Interval.html"><code>Interval</code></a> class.
 It holds a start and end datetime, and allows operations based around that
 range of time.
 </p>
 <p>
 A time period is represented by the
-<a href="api-release/org/joda/time/Period.html"><code>Period</code></a> class.
+<a href="apidocs/org/joda/time/Period.html"><code>Period</code></a> class.
 This holds a period such as 6 months, 3 days and 7 hours.
 You can create a <code>Period</code> directly, or derive it from an interval.
 </p>
 <p>
 A time duration is represented by the
-<a href="api-release/org/joda/time/Duration.html"><code>Duration</code></a> class.
+<a href="apidocs/org/joda/time/Duration.html"><code>Duration</code></a> class.
 This holds an exact duration in milliseconds.
 You can create a <code>Duration</code> directly, or derive it from an interval.
 </p>

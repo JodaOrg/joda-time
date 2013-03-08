@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+ <properties>
+  <title>Java date and time API - Upgrade from 2.1 to 2.2</title>
+  <author>Stephen Colebourne</author>
+ </properties>
+
+<body>
+
+<section name="Upgrade">
+<p>
+These are the release notes and advice for upgrading Joda-Time from version 2.1 to version 2.2.
+<source>
+Joda-Time version 2.2
+---------------------
+
+Joda-Time is a date and time handling library that seeks to replace the JDK
+Date and Calendar classes.
+
+This is the tenth release of Joda-Time.
+This release contains enhancements, bug fixes and a time zone update.
+JDK 1.5 or later is required.
+
+Joda-Time is licensed under the business-friendly Apache License Version 2.
+This is the same license as all of Apache, plus other open source projects such as Spring.
+The intent is to make the code available to the Java community with the minimum
+of restrictions. If the license causes you problems please contact the mailing list.
+
+**  Please also check out our related projects   **
+** http://joda-time.sourceforge.net/related.html **
+
+
+Enhancements since 2.1
+----------------------
+- Change some StringBuffer uses to StringBuilder [3532330]
+
+- Add method to calculate the Julian Day
+  See DateTimeUtils
+
+- Add Danish translation of word-based periods (Kasper Laudrup)
+
+- Add Japanese translation of word-based periods (Hajime Senuma)
+  https://github.com/JodaOrg/joda-time/pull/9
+
+- Parsing of US short time-zone names
+  The time-zone names EST/EDT/CST/CDT/MST/MDT/PST/PDT/UT/UTC/GMT can now be parsed in a limited way.
+  This is enabled for formatter patterns of "z" (and "zz" or "zzz").
+  The builder continues to offer a better way of manually managing this.
+
+- Add new exception, IllegalInstantException
+  This allows applications to better capture problems with daylight savings gaps
+  The exception is a subclass of IllegalArgumentException, so existing logic will still work
+
+
+Compatibility with 2.1
+----------------------
+Build system - No
+ - Ant build removed. Build only on Maven now.
+
+Binary compatible - Yes
+
+Source compatible - Yes
+
+Serialization compatible - Yes
+
+Data compatible - Yes, except
+ - DateTimeZone data updated to version 2012j
+
+Semantic compatible - Yes, except
+ - DateTimeFormatter.parseInto() retains the year if only month parsed (as it did in v1.x)
+ - If a formatter cannot print or parse, it will now throw an exception instead of ignoring it
+ - Format pattern "z" now has limited parsing abilities
+
+
+Deprecations since 2.1
+----------------------
+None
+
+
+Bug fixes since 2.1
+-------------------
+- DateTime.millisOfDay().withMaximumValue()/withMinimumValue() [159]
+  Now handle daylight savings gaps
+  https://sourceforge.net/p/joda-time/bugs/159/
+
+- MonthDay add/subtract [3528941]
+  Addition and subtraction in MonthDay was fixed.
+  It previously didn't work when the start value was 29th February.
+
+- LocalDateTime.fromDateFields()
+  This used to fail before 1970 when the input had a milli-of-second field
+  Fixed to not throw an exception
+
+- LocalDateTime.fromCalendarFields()/LocalDateTime.fromDateFields()
+  This used to fail before year 1 as the era was ignored
+  Fixed to return the correct year
+  https://github.com/JodaOrg/joda-time/pull/8
+
+- MutableDateTime.setDate(ReadableInstant)  [163]
+  Fixed to handle cross-time-zone issues properly rather than always using UTC
+
+- BasicGJChronology.getDaysInMonthMaxForSet  [165]
+  Fixed calculate the correct maximum length if the input day-of-month value is less than 1
+
+- DateTimeFormatter.parseInto() [3522138]
+  The v2.0 changes to handle parsing of month/day on their own (for Feb 29th) cause
+  parseInto() to lose the year. This fix reverts behaviour to v1.x so that parseInto()
+  will use the supplied year, not the default year of the formatter.
+
+- DateTimeFormatter.isPrinter()/isParser() and related
+  The Javadoc for DateTimeFormatterBuilder specified behaviour when the formatter
+  could not print or could not parse, but the code didn't implement it
+  Now it does, which means that DateTimeFormatter.isPrinter()/isParser() are now correct.
+  The formatter will also now throw UnsupportedOperationException when unable to print/parse.
+
+- Period formatter [3564249]
+  Formatting did not correctly output values for negative milliseconds between zero and -1 second
+
+- FieldUtils.safeMultiply(long,int) [3520651]
+  Fix implementation to throw exception for (Long.MIN_VALUE, -1)
+
+- Fix TestReadableDurationConverter [3515086]
+  Test case didn't work if deafult time zone was UTC
+
+- Fix Duration string parsing for small negative numbers
+  Values between 0 and -1 exclusive previously parsed incorrectly
+  https://github.com/JodaOrg/joda-time/pull/10
+
+- Javadoc fix to BaseChronology [3513326]
+
+- Javadoc fix to Years [169]
+
+- Javadoc fix to LocalTime [171]
+
+- Javadoc clarify on formatter builder [mailing list email]
+
+- Fixed Spanish translation of day for periods - dia now has accented i
+  https://github.com/JodaOrg/joda-time/pull/5
+
+- Change maven build to use exec-maven-plugin [158]
+  https://sourceforge.net/p/joda-time/bugs/158/
+
+
+Scala
+--------
+Joda-Time uses annotations from Joda-Convert.
+In the Java programming language, this dependency is optional, however in Scala it is not.
+Scala users must manually add the Joda-Convert v1.2 dependency.
+</source>
+</p>
+</section>
+
+</body>
+</document>

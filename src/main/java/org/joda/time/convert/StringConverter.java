@@ -137,11 +137,9 @@ class StringConverter extends AbstractConverter
             millis = Integer.parseInt(str);
         } else if (negative) {
         	seconds = Long.parseLong(str.substring(firstDigit, str.length()));
-        }
-        else {
+        } else {
             seconds = Long.parseLong(str);
         }
-        assert(seconds >= 0L);
         if (negative) {
             return FieldUtils.safeAdd(FieldUtils.safeMultiply(-seconds, 1000), -millis);
         } else {

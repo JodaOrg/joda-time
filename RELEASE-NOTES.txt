@@ -111,6 +111,10 @@ Bug fixes since 2.1
 - Fix TestReadableDurationConverter [3515086]
   Test case didn't work if deafult time zone was UTC
 
+- Fix Duration string parsing for small negative numbers
+  Values between 0 and -1 exclusive previously parsed incorrectly
+  https://github.com/JodaOrg/joda-time/pull/10
+
 - Javadoc fix to BaseChronology [3513326]
 
 - Javadoc fix to Years [169]

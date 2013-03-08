@@ -151,7 +151,7 @@ See the <a href="upgradeto220.html">upgrade notes</a> for full details.
 <p>
 Version 2.x is almost completely source and binary compatible with version 1.x.
 Key changes include the use of JDK 1.5 or later, generics, and the removal of some (but not all)
-deprecated methods. See the <a href="upgradeto220.html">upgrade notes</a> for full details
+deprecated methods. See the <a href="upgradeto200.html">upgrade notes</a> for full details
 including information on the corner cases that are not compatible.
 </p>
 <p>

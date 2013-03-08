@@ -172,12 +172,22 @@ releases in the v1.x product line.
 
 <section name="Support">
 <p>
-Support on bugs, library usage or enhancement requests is available via:
+Support on bugs, library usage or enhancement requests is available on a best efforts basis.
+The best approach is to use <a href="https://github.com/JodaOrg/joda-time/issues/">GitHub issues</a> and Pull Requests.
 </p>
-<ul>
-<li>the joda-interest <a href="mail-lists.html">mailing list</a>. Due to spam, you must be subscribed to post to the mailing list.</li>
-<li>the joda-time sourceforge <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forum</a>.</li>
-</ul>
+<p>
+Alternative approaches include the joda-interest <a href="mail-lists.html">mailing list</a> (subscription required)
+and the joda-time <a href="http://sourceforge.net/projects/joda-time/forums/forum/337835">forum</a>.
+</p>
+<p>
+<br />
+</p>
+<p>
+<br />
+</p>
+<p>
+<br />
+</p>
 </section>
 </body>
 </document>

@@ -12,8 +12,8 @@
   <description>Date and time library to replace JDK date handling</description>
   <url>http://joda-time.sourceforge.net</url>
   <issueManagement>
-  	<system>Sourceforge</system>
-    <url>https://sourceforge.net/tracker/?group_id=97367&amp;atid=617889</url>
+    <system>GitHub</system>
+    <url>https://github.com/JodaOrg/joda-time/issues</url>
   </issueManagement>
   <inceptionYear>2002</inceptionYear>
   <mailingLists>

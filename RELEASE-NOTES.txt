@@ -137,7 +137,10 @@ Scala users must manually add the Joda-Convert v1.2 dependency.
 
 Feedback
 --------
-All feedback is welcomed via the joda-interest mailing list.
+Feedback is best received using GitHub issues and Pull Requests.
+https://github.com/JodaOrg/joda-time/
+
+Feedback is also welcomed via the joda-interest mailing list.
 
 The Joda team
 http://joda-time.sourceforge.net

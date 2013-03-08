@@ -6,9 +6,7 @@ Date and Calendar classes.
 
 This is the tenth release of Joda-Time.
 This release contains enhancements, bug fixes and a time zone update.
-
-We require JDK 1.5 or later as features such as generics are used.
-It may be possible to use retroweaver to compile this under an earlier JDK but we haven't tried.
+JDK 1.5 or later is required.
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.

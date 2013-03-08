@@ -33,6 +33,7 @@
         <role>Project Lead</role>
       </roles>
       <timezone>0</timezone>
+      <url>https://github.com/jodastephen</url>
     </developer>
     <developer>
       <id>broneill</id>
@@ -41,6 +42,7 @@
       <roles>
         <role>Senior Developer</role>
       </roles>
+      <url>https://github.com/broneill</url>
     </developer>
   </developers>
   <contributors>
@@ -52,12 +54,20 @@
     </contributor>
     <contributor>
       <name>Dave Brosius</name>
+      <url>https://github.com/mebigfatguy</url>
+    </contributor>
+    <contributor>
+      <name>Dan Cojocar</name>
+      <url>https://github.com/dancojocar</url>
     </contributor>
     <contributor>
       <name>Jeroen van Erp</name>
     </contributor>
     <contributor>
       <name>Gwyn Evans</name>
+    </contributor>
+    <contributor>
+      <name>John Fletcher</name>
     </contributor>
     <contributor>
       <name>Sean Geoghegan</name>
@@ -70,7 +80,15 @@
       <url>https://github.com/mkneissl</url>
     </contributor>
     <contributor>
+      <name>Vidar Larsen</name>
+      <url>https://github.com/vlarsen</url>
+    </contributor>
+    <contributor>
       <name>Kasper Laudrup</name>
+    </contributor>
+    <contributor>
+      <name>Jeff Lavallee</name>
+      <url>https://github.com/jlavallee</url>
     </contributor>
     <contributor>
       <name>Antonio Leitao</name>
@@ -95,6 +113,7 @@
     </contributor>
     <contributor>
       <name>Hajime Senuma</name>
+      <url>https://github.com/hajimes</url>
     </contributor>
     <contributor>
       <name>Kandarp Shah</name>

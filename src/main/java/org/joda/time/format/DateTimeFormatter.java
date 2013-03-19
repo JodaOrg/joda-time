@@ -771,7 +771,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Parses only the local time from the given text, returning a new LocalDate.
+     * Parses only the local time from the given text, returning a new LocalTime.
      * <p>
      * This will parse the text fully according to the formatter, using the UTC zone.
      * Once parsed, only the local time will be used.
@@ -789,7 +789,7 @@ public class DateTimeFormatter {
     }
 
     /**
-     * Parses only the local date-time from the given text, returning a new LocalDate.
+     * Parses only the local date-time from the given text, returning a new LocalDateTime.
      * <p>
      * This will parse the text fully according to the formatter, using the UTC zone.
      * Once parsed, only the local date-time will be used.

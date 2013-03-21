@@ -85,12 +85,14 @@ public class TimeMachine {
 	 *             If the code throws an exception when running
 	 */
 	public <T> T andExecute(Callable<T> code) throws Exception {
-		MillisProvider millisProviderInUse = DateTimeUtils.getCurrentMillisProvider();
-		DateTimeUtils.setCurrentMillisFixed(somewhereInTime.getMillis());
-		try {
-			return code.call();
-		} finally {
-			DateTimeUtils.setCurrentMillisProvider(millisProviderInUse);
+		synchronized (DateTimeUtils.class) {
+			MillisProvider millisProviderInUse = DateTimeUtils.getCurrentMillisProvider();
+			DateTimeUtils.setCurrentMillisFixed(somewhereInTime.getMillis());
+			try {
+				return code.call();
+			} finally {
+				DateTimeUtils.setCurrentMillisProvider(millisProviderInUse);
+			}
 		}
 	}
 

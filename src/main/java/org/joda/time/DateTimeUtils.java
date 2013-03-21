@@ -151,6 +151,16 @@ public class DateTimeUtils {
     }
 
     /**
+     * Gets the provider of current time in use.
+     *
+     * @return the provider of current time in use
+     */
+    public static final MillisProvider getCurrentMillisProvider() throws SecurityException {
+    	checkPermission();
+    	return cMillisProvider;
+    }
+
+    /**
      * Checks whether the provider may be changed using permission 'CurrentTime.setProvider'.
      * 
      * @throws SecurityException if the provider may not be changed

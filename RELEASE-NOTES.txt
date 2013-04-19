@@ -43,6 +43,9 @@ None
 
 Bug fixes since 2.2
 -------------------
+- ZoneInfoCompiler and DateTimeZoneBuilder multi-threading [#18]
+  A thread local variable was previously only initialised in one thread causing NPE
+  https://github.com/JodaOrg/joda-time/issues/18
 
 
 Scala

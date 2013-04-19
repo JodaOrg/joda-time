@@ -5,7 +5,7 @@ Joda-Time is a date and time handling library that seeks to replace the JDK
 Date and Calendar classes.
 
 This release contains enhancements, bug fixes and a time zone update.
-JDK 1.5 or later is required.
+The release runs on JDK 5 or later.
 
 Joda-Time is licensed under the business-friendly Apache License Version 2.
 This is the same license as all of Apache, plus other open source projects such as Spring.

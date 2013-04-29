@@ -219,9 +219,9 @@
           </systemProperties>
           <arguments>
             <argument>-src</argument>
-            <argument>${pom.build.sourceDirectory}/org/joda/time/tz/src</argument>
+            <argument>${project.build.sourceDirectory}/org/joda/time/tz/src</argument>
             <argument>-dst</argument>
-            <argument>${pom.build.outputDirectory}/org/joda/time/tz/data</argument>
+            <argument>${project.build.outputDirectory}/org/joda/time/tz/data</argument>
             <argument>africa</argument>
             <argument>antarctica</argument>
             <argument>asia</argument>

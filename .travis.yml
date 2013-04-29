@@ -1,0 +1,12 @@
+# This file enables the Travis continuous integration system, which
+# automatically builds and tests joda-money for each GitHub commit or 
+# pull request on three separate JDKs.
+#
+# For more information, see https://travis-ci.org
+
+language: java
+
+jdk: 
+  - oraclejdk7
+  - openjdk7
+  - openjdk6

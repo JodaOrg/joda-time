@@ -242,6 +242,19 @@ public abstract class AbstractInterval implements ReadableInterval {
 
     //-----------------------------------------------------------------------
     /**
+     * Is this interval equal to the specified interval ignoring the chronology.
+     * <p>
+     * This compares the underlying instants, ignoring the chronology.
+     *
+     * @param other  a readable interval to check against
+     * @return true if the intervals are equal comparing the start and end millis
+     */
+    public boolean isEqual(ReadableInterval other) {
+        return getStartMillis() == other.getStartMillis() &&
+                getEndMillis() == other.getEndMillis();
+    }
+
+    /**
      * Is this time interval before the specified millisecond instant.
      * <p>
      * Intervals are inclusive of the start instant and exclusive of the end.
@@ -443,7 +456,8 @@ public abstract class AbstractInterval implements ReadableInterval {
      * to get the durations and compare those.
      *
      * @param readableInterval  a readable interval to check against
-     * @return true if the start and end millis are equal
+     * @return true if the intervals are equal comparing the start millis,
+     *  end millis and chronology
      */
     public boolean equals(Object readableInterval) {
         if (this == readableInterval) {

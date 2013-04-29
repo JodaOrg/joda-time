@@ -18,6 +18,9 @@ of restrictions. If the license causes you problems please contact the mailing l
 
 Enhancements since 2.2
 ----------------------
+- Interval/MutableInterval .isEqual() [#20]
+  Add method to compare intervals ignoring the chronology
+  https://github.com/JodaOrg/joda-time/issues/20
 
 
 Compatibility with 2.2

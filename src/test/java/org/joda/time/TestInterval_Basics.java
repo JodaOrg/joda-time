@@ -816,7 +816,13 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false,  interval37.abuts((ReadableInterval) null));  // gap after
     }
 
-    // -----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    public void testIsEqual_RI() {
+        assertEquals(false, interval37.isEqual(interval33));
+        assertEquals(true, interval37.isEqual(interval37));
+    }
+
+    //-----------------------------------------------------------------------
     public void testIsBefore_long() {
         assertEquals(false, interval37.isBefore(2));
         assertEquals(false, interval37.isBefore(3));

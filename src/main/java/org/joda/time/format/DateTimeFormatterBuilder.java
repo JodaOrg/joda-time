@@ -2524,11 +2524,17 @@ public class DateTimeFormatterBuilder {
             Map<String, DateTimeZone> parseLookup = iParseLookup;
             parseLookup = (parseLookup != null ? parseLookup : DateTimeUtils.getDefaultTimeZoneNames());
             String str = text.substring(position);
+            String matched = null;
             for (String name : parseLookup.keySet()) {
                 if (str.startsWith(name)) {
-                    bucket.setZone(parseLookup.get(name));
-                    return position + name.length();
+                    if (matched == null || name.length() > matched.length()) {
+                        matched = name;
+                    }
                 }
+            }
+            if (matched != null) {
+                bucket.setZone(parseLookup.get(matched));
+                return position + matched.length();
             }
             return ~position;
         }

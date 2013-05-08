@@ -50,6 +50,9 @@ Bug fixes since 2.2
   A thread local variable was previously only initialised in one thread causing NPE
   https://github.com/JodaOrg/joda-time/issues/18
 
+- Short time-zone name parsing failed to match the longest name
+  This affected two short names where one is a short form of the second such as "UT" and "UTC"
+
 
 Scala
 --------

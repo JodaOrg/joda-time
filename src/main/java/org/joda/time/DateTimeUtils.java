@@ -404,6 +404,21 @@ public class DateTimeUtils {
      * Gets the default map of time zone names.
      * <p>
      * This can be changed by {@link #setDefaultTimeZoneNames}.
+     * <p>
+     * The default set of short time zone names is as follows:
+     * <ul>
+     * <li>UT - UTC
+     * <li>UTC - UTC
+     * <li>GMT - UTC
+     * <li>EST - America/New_York
+     * <li>EDT - America/New_York
+     * <li>CST - America/Chicago
+     * <li>CDT - America/Chicago
+     * <li>MST - America/Denver
+     * <li>MDT - America/Denver
+     * <li>PST - America/Los_Angeles
+     * <li>PDT - America/Los_Angeles
+     * </ul>
      * 
      * @return the unmodifiable map of abbreviations to zones, not null
      * @since 2.2

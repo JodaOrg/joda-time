@@ -532,11 +532,15 @@ public class TestDateTimeFormatterBuilder extends TestCase {
         assertEquals("2011-01-04 12:30 PST", f.print(dt3));
         DateTime dt4 = new DateTime(2011, 7, 4, 12, 30, 0, LOS_ANGELES);
         assertEquals("2011-07-04 12:30 PDT", f.print(dt4));
+        DateTime dt5 = new DateTime(2011, 7, 4, 12, 30, 0, DateTimeZone.UTC);
+        assertEquals("2011-07-04 12:30 UTC", f.print(dt5));
         
         assertEquals(dt1.getZone() + " " + f.parseDateTime("2011-01-04 12:30 EST").getZone(), dt1, f.parseDateTime("2011-01-04 12:30 EST"));
         assertEquals(dt2, f.parseDateTime("2011-07-04 12:30 EDT"));
         assertEquals(dt3, f.parseDateTime("2011-01-04 12:30 PST"));
         assertEquals(dt4, f.parseDateTime("2011-07-04 12:30 PDT"));
+        assertEquals(dt5, f.parseDateTime("2011-07-04 12:30 UT"));
+        assertEquals(dt5, f.parseDateTime("2011-07-04 12:30 UTC"));
         try {
             f.parseDateTime("2007-03-04 12:30 PPP");
             fail();

@@ -15,25 +15,25 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Partial;
+
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat.
  *
  * @author Stephen Colebourne
  */
-public class TestISODateTimeFormat extends TestCase {
+public class TestISODateTimeFormat  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -52,19 +52,8 @@ public class TestISODateTimeFormat extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestISODateTimeFormat.class);
-    }
-
-    public TestISODateTimeFormat(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -74,7 +63,8 @@ public class TestISODateTimeFormat extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -85,6 +75,7 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSubclassableConstructor() {
         ISODateTimeFormat f = new ISODateTimeFormat() {
             // test constructor is protected
@@ -93,6 +84,7 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_date() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
@@ -104,6 +96,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
     }
 
+   @Test
     public void testFormat_date_partial() {
         Partial dt = new Partial(
                 new DateTimeFieldType[] {DateTimeFieldType.year(), DateTimeFieldType.monthOfYear(), DateTimeFieldType.dayOfMonth()},
@@ -111,6 +104,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09", ISODateTimeFormat.date().print(dt));
     }
 
+   @Test
     public void testFormat_time() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30.040Z", ISODateTimeFormat.time().print(dt));
@@ -122,6 +116,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12:20:30.040+02:00", ISODateTimeFormat.time().print(dt));
     }
 
+   @Test
     public void testFormat_time_partial() {
         Partial dt = new Partial(
                 new DateTimeFieldType[] {DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
@@ -130,6 +125,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("10:20:30.040", ISODateTimeFormat.time().print(dt));
     }
 
+   @Test
     public void testFormat_timeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30Z", ISODateTimeFormat.timeNoMillis().print(dt));
@@ -141,6 +137,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12:20:30+02:00", ISODateTimeFormat.timeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_timeNoMillis_partial() {
         Partial dt = new Partial(
                 new DateTimeFieldType[] {DateTimeFieldType.hourOfDay(), DateTimeFieldType.minuteOfHour(),
@@ -149,6 +146,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("10:20:30", ISODateTimeFormat.timeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_tTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("T10:20:30.040Z", ISODateTimeFormat.tTime().print(dt));
@@ -160,6 +158,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("T12:20:30.040+02:00", ISODateTimeFormat.tTime().print(dt));
     }
 
+   @Test
     public void testFormat_tTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("T10:20:30Z", ISODateTimeFormat.tTimeNoMillis().print(dt));
@@ -171,6 +170,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("T12:20:30+02:00", ISODateTimeFormat.tTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_dateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.dateTime().print(dt));
@@ -194,6 +194,7 @@ public class TestISODateTimeFormat extends TestCase {
 //        assertEquals("2004-06-09T10:20:30.040Z", ISODateTimeFormat.getInstance(CopticChronology.getInstance()).dateTime().print(dt));
     }
 
+   @Test
     public void testFormat_dateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10:20:30Z", ISODateTimeFormat.dateTimeNoMillis().print(dt));
@@ -205,6 +206,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09T12:20:30+02:00", ISODateTimeFormat.dateTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_ordinalDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-161", ISODateTimeFormat.ordinalDate().print(dt));
@@ -216,6 +218,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-161", ISODateTimeFormat.ordinalDate().print(dt));
     }
 
+   @Test
     public void testFormat_ordinalDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-161T10:20:30.040Z", ISODateTimeFormat.ordinalDateTime().print(dt));
@@ -227,6 +230,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-161T12:20:30.040+02:00", ISODateTimeFormat.ordinalDateTime().print(dt));
     }
 
+   @Test
     public void testFormat_ordinalDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-161T10:20:30Z", ISODateTimeFormat.ordinalDateTimeNoMillis().print(dt));
@@ -238,6 +242,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-161T12:20:30+02:00", ISODateTimeFormat.ordinalDateTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_weekDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-W24-3", ISODateTimeFormat.weekDate().print(dt));
@@ -249,6 +254,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-W24-3", ISODateTimeFormat.weekDate().print(dt));
     }
 
+   @Test
     public void testFormat_weekDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-W24-3T10:20:30.040Z", ISODateTimeFormat.weekDateTime().print(dt));
@@ -260,6 +266,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-W24-3T12:20:30.040+02:00", ISODateTimeFormat.weekDateTime().print(dt));
     }
 
+   @Test
     public void testFormat_weekDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-W24-3T10:20:30Z", ISODateTimeFormat.weekDateTimeNoMillis().print(dt));
@@ -272,6 +279,7 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_basicDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("20040609", ISODateTimeFormat.basicDate().print(dt));
@@ -283,6 +291,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("20040609", ISODateTimeFormat.basicDate().print(dt));
     }
 
+   @Test
     public void testFormat_basicTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("102030.040Z", ISODateTimeFormat.basicTime().print(dt));
@@ -294,6 +303,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("122030.040+0200", ISODateTimeFormat.basicTime().print(dt));
     }
 
+   @Test
     public void testFormat_basicTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("102030Z", ISODateTimeFormat.basicTimeNoMillis().print(dt));
@@ -305,6 +315,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("122030+0200", ISODateTimeFormat.basicTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_basicTTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("T102030.040Z", ISODateTimeFormat.basicTTime().print(dt));
@@ -316,6 +327,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("T122030.040+0200", ISODateTimeFormat.basicTTime().print(dt));
     }
 
+   @Test
     public void testFormat_basicTTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("T102030Z", ISODateTimeFormat.basicTTimeNoMillis().print(dt));
@@ -327,6 +339,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("T122030+0200", ISODateTimeFormat.basicTTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_basicDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("20040609T102030.040Z", ISODateTimeFormat.basicDateTime().print(dt));
@@ -338,6 +351,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("20040609T122030.040+0200", ISODateTimeFormat.basicDateTime().print(dt));
     }
 
+   @Test
     public void testFormat_basicDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("20040609T102030Z", ISODateTimeFormat.basicDateTimeNoMillis().print(dt));
@@ -349,6 +363,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("20040609T122030+0200", ISODateTimeFormat.basicDateTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_basicOrdinalDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004161", ISODateTimeFormat.basicOrdinalDate().print(dt));
@@ -360,6 +375,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004161", ISODateTimeFormat.basicOrdinalDate().print(dt));
     }
 
+   @Test
     public void testFormat_basicOrdinalDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004161T102030.040Z", ISODateTimeFormat.basicOrdinalDateTime().print(dt));
@@ -371,6 +387,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004161T122030.040+0200", ISODateTimeFormat.basicOrdinalDateTime().print(dt));
     }
 
+   @Test
     public void testFormat_basicOrdinalDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004161T102030Z", ISODateTimeFormat.basicOrdinalDateTimeNoMillis().print(dt));
@@ -382,6 +399,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004161T122030+0200", ISODateTimeFormat.basicOrdinalDateTimeNoMillis().print(dt));
     }
 
+   @Test
     public void testFormat_basicWeekDate() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004W243", ISODateTimeFormat.basicWeekDate().print(dt));
@@ -393,6 +411,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004W243", ISODateTimeFormat.basicWeekDate().print(dt));
     }
 
+   @Test
     public void testFormat_basicWeekDateTime() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004W243T102030.040Z", ISODateTimeFormat.basicWeekDateTime().print(dt));
@@ -404,6 +423,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004W243T122030.040+0200", ISODateTimeFormat.basicWeekDateTime().print(dt));
     }
 
+   @Test
     public void testFormat_basicWeekDateTimeNoMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004W243T102030Z", ISODateTimeFormat.basicWeekDateTimeNoMillis().print(dt));
@@ -416,6 +436,7 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_year() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004", ISODateTimeFormat.year().print(dt));
@@ -427,6 +448,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004", ISODateTimeFormat.year().print(dt));
     }
 
+   @Test
     public void testFormat_yearMonth() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06", ISODateTimeFormat.yearMonth().print(dt));
@@ -438,6 +460,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06", ISODateTimeFormat.yearMonth().print(dt));
     }
 
+   @Test
     public void testFormat_yearMonthDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09", ISODateTimeFormat.yearMonthDay().print(dt));
@@ -449,6 +472,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09", ISODateTimeFormat.yearMonthDay().print(dt));
     }
 
+   @Test
     public void testFormat_weekyear() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004", ISODateTimeFormat.weekyear().print(dt));
@@ -460,6 +484,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004", ISODateTimeFormat.weekyear().print(dt));
     }
 
+   @Test
     public void testFormat_weekyearWeek() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-W24", ISODateTimeFormat.weekyearWeek().print(dt));
@@ -471,6 +496,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-W24", ISODateTimeFormat.weekyearWeek().print(dt));
     }
 
+   @Test
     public void testFormat_weekyearWeekDay() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-W24-3", ISODateTimeFormat.weekyearWeekDay().print(dt));
@@ -483,6 +509,7 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_hour() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10", ISODateTimeFormat.hour().print(dt));
@@ -494,6 +521,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12", ISODateTimeFormat.hour().print(dt));
     }
 
+   @Test
     public void testFormat_hourMinute() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20", ISODateTimeFormat.hourMinute().print(dt));
@@ -505,6 +533,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12:20", ISODateTimeFormat.hourMinute().print(dt));
     }
 
+   @Test
     public void testFormat_hourMinuteSecond() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30", ISODateTimeFormat.hourMinuteSecond().print(dt));
@@ -516,6 +545,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12:20:30", ISODateTimeFormat.hourMinuteSecond().print(dt));
     }
 
+   @Test
     public void testFormat_hourMinuteSecondMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30.040", ISODateTimeFormat.hourMinuteSecondMillis().print(dt));
@@ -527,6 +557,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("12:20:30.040", ISODateTimeFormat.hourMinuteSecondMillis().print(dt));
     }
 
+   @Test
     public void testFormat_hourMinuteSecondFraction() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("10:20:30.040", ISODateTimeFormat.hourMinuteSecondFraction().print(dt));
@@ -539,6 +570,7 @@ public class TestISODateTimeFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormat_dateHour() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10", ISODateTimeFormat.dateHour().print(dt));
@@ -550,6 +582,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09T12", ISODateTimeFormat.dateHour().print(dt));
     }
 
+   @Test
     public void testFormat_dateHourMinute() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10:20", ISODateTimeFormat.dateHourMinute().print(dt));
@@ -561,6 +594,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09T12:20", ISODateTimeFormat.dateHourMinute().print(dt));
     }
 
+   @Test
     public void testFormat_dateHourMinuteSecond() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10:20:30", ISODateTimeFormat.dateHourMinuteSecond().print(dt));
@@ -572,6 +606,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09T12:20:30", ISODateTimeFormat.dateHourMinuteSecond().print(dt));
     }
 
+   @Test
     public void testFormat_dateHourMinuteSecondMillis() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10:20:30.040", ISODateTimeFormat.dateHourMinuteSecondMillis().print(dt));
@@ -583,6 +618,7 @@ public class TestISODateTimeFormat extends TestCase {
         assertEquals("2004-06-09T12:20:30.040", ISODateTimeFormat.dateHourMinuteSecondMillis().print(dt));
     }
 
+   @Test
     public void testFormat_dateHourMinuteSecondFraction() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("2004-06-09T10:20:30.040", ISODateTimeFormat.dateHourMinuteSecondFraction().print(dt));

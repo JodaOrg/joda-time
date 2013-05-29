@@ -15,54 +15,47 @@
  */
 package org.joda.time.convert;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Date;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Arrays;
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+
+
 
 /**
  * This class is a Junit unit test for DateConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestDateConverter extends TestCase {
+public class TestDateConverter  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);
     private static Chronology ISO;
     private static Chronology JULIAN;
     private static Chronology COPTIC;
-    
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
 
-    public static TestSuite suite() {
-        return new TestSuite(TestDateConverter.class);
-    }
-
-    public TestDateConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         COPTIC = CopticChronology.getInstance();
         ISO = ISOChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = DateConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -80,11 +73,13 @@ public class TestDateConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(Date.class, DateConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         Date date = new Date(123L);
         long millis = DateConverter.INSTANCE.getInstantMillis(date, JULIAN);
@@ -93,17 +88,20 @@ public class TestDateConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetChronology_Object_Zone() throws Exception {
         assertEquals(ISO_PARIS, DateConverter.INSTANCE.getChronology(new Date(123L), PARIS));
         assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L), (DateTimeZone) null));
     }
 
+   @Test
     public void testGetChronology_Object_Chronology() throws Exception {
         assertEquals(JULIAN, DateConverter.INSTANCE.getChronology(new Date(123L), JULIAN));
         assertEquals(ISO, DateConverter.INSTANCE.getChronology(new Date(123L), (Chronology) null));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialValues() throws Exception {
         TimeOfDay tod = new TimeOfDay();
         int[] expected = COPTIC.get(tod, 12345678L);
@@ -112,6 +110,7 @@ public class TestDateConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[java.util.Date]", DateConverter.INSTANCE.toString());
     }

@@ -15,29 +15,27 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.CharArrayWriter;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.MutablePeriod;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.ISOChronology;
+
 
 /**
  * This class is a Junit unit test for Period Formating.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodFormatter extends TestCase {
+public class TestPeriodFormatter  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -60,20 +58,8 @@ public class TestPeriodFormatter extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
     private PeriodFormatter f = null;
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPeriodFormatter.class);
-    }
-
-    public TestPeriodFormatter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -84,7 +70,8 @@ public class TestPeriodFormatter extends TestCase {
         f = ISOPeriodFormat.standard();
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -96,12 +83,14 @@ public class TestPeriodFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_simple() {
         Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("P1Y2M3W4DT5H6M7.008S", f.print(p));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_bufferMethods() throws Exception {
         Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         StringBuffer buf = new StringBuffer();
@@ -116,6 +105,7 @@ public class TestPeriodFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_writerMethods() throws Exception {
         Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         CharArrayWriter out = new CharArrayWriter();
@@ -130,6 +120,7 @@ public class TestPeriodFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithGetLocaleMethods() {
         PeriodFormatter f2 = f.withLocale(Locale.FRENCH);
         assertEquals(Locale.FRENCH, f2.getLocale());
@@ -140,6 +131,7 @@ public class TestPeriodFormatter extends TestCase {
         assertSame(f2, f2.withLocale(null));
     }
 
+   @Test
     public void testWithGetParseTypeMethods() {
         PeriodFormatter f2 = f.withParseType(PeriodType.dayTime());
         assertEquals(PeriodType.dayTime(), f2.getParseType());
@@ -150,6 +142,7 @@ public class TestPeriodFormatter extends TestCase {
         assertSame(f2, f2.withParseType(null));
     }
 
+   @Test
     public void testPrinterParserMethods() {
         Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         PeriodFormatter f2 = new PeriodFormatter(f.getPrinter(), f.getParser());
@@ -184,6 +177,7 @@ public class TestPeriodFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParsePeriod_simple() {
         Period expect = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals(expect, f.parsePeriod("P1Y2M3W4DT5H6M7.008S"));
@@ -194,6 +188,7 @@ public class TestPeriodFormatter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testParsePeriod_parseType() {
         Period expect = new Period(0, 0, 0, 4, 5, 6, 7, 8, PeriodType.dayTime());
         assertEquals(expect, f.withParseType(PeriodType.dayTime()).parsePeriod("P4DT5H6M7.008S"));
@@ -204,6 +199,7 @@ public class TestPeriodFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseMutablePeriod_simple() {
         MutablePeriod expect = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals(expect, f.parseMutablePeriod("P1Y2M3W4DT5H6M7.008S"));
@@ -215,6 +211,7 @@ public class TestPeriodFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseInto_simple() {
         MutablePeriod expect = new MutablePeriod(1, 2, 3, 4, 5, 6, 7, 8);
         MutablePeriod result = new MutablePeriod();

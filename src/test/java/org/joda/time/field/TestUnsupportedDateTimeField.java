@@ -15,16 +15,15 @@
  */
 package org.joda.time.field;
 
+import org.joda.time.*;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.DurationFieldType;
-import org.joda.time.LocalTime;
-import org.joda.time.ReadablePartial;
+
 
 /**
  * This class is a JUnit test to test only the UnsupportedDateTimeField class.
@@ -33,18 +32,15 @@ import org.joda.time.ReadablePartial;
  * 
  * @author Jeremy R. Rickard
  */
-public class TestUnsupportedDateTimeField extends TestCase {
+public class TestUnsupportedDateTimeField  {
 
     private DurationFieldType weeks;
     private DurationFieldType months;
     private DateTimeFieldType dateTimeFieldTypeOne;
     private ReadablePartial localTime;
 
-    public static TestSuite suite() {
-        return new TestSuite(TestUnsupportedDateTimeField.class);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         weeks = DurationFieldType.weeks();
         months = DurationFieldType.months();
         dateTimeFieldTypeOne = DateTimeFieldType.centuryOfEra();
@@ -55,6 +51,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * Passing null values into UnsupportedDateTimeField.getInstance() should
      * throw an IllegalArguementsException
      */
+   @Test
     public void testNullValuesToGetInstanceThrowsException() {
 
         try {
@@ -76,6 +73,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * instance should be the same for a unique pairing of
      * DateTimeFieldType/DurationField
      */
+   @Test
     public void testDifferentDurationReturnDifferentObjects() {
 
         /**
@@ -105,6 +103,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * of the DateTimeFieldType that was used to create the instance.
      * 
      */
+   @Test
     public void testPublicGetNameMethod() {
         DateTimeField fieldOne = UnsupportedDateTimeField.getInstance(
                 dateTimeFieldTypeOne, UnsupportedDurationField
@@ -118,6 +117,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * always return false, as they are not supported. Verify that each method
      * correctly returns null.
      */
+   @Test
     public void testAlwaysFalseReturnTypes() {
         DateTimeField fieldOne = UnsupportedDateTimeField.getInstance(
                 dateTimeFieldTypeOne, UnsupportedDurationField
@@ -133,6 +133,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * Ensure that these are in fact null.
      */
 
+   @Test
     public void testMethodsThatShouldAlwaysReturnNull() {
         DateTimeField fieldOne = UnsupportedDateTimeField.getInstance(
                 dateTimeFieldTypeOne, UnsupportedDurationField
@@ -173,6 +174,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * fieldIndex, int[] values, int newValue) * set(ReadablePartial instant,
      * int fieldIndex, int[] values, String text, Locale locale)
      */
+   @Test
     public void testUnsupportedMethods() {
         DateTimeField fieldOne = UnsupportedDateTimeField.getInstance(
                 dateTimeFieldTypeOne, UnsupportedDurationField
@@ -545,6 +547,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
      * method correctly throws this exception when appropriate and delegates
      * correctly based on the Duration used to get the instance.
      */
+   @Test
     public void testDelegatedMethods() {
         DateTimeField fieldOne = UnsupportedDateTimeField.getInstance(
                 dateTimeFieldTypeOne, UnsupportedDurationField
@@ -645,6 +648,7 @@ public class TestUnsupportedDateTimeField extends TestCase {
     * 0 (and not null)
     * 
     */
+   @Test
     public void testToString() {
         DateTimeField fieldOne = UnsupportedDateTimeField.getInstance(
                 dateTimeFieldTypeOne, UnsupportedDurationField

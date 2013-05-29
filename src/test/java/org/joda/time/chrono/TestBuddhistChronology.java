@@ -15,26 +15,22 @@
  */
 package org.joda.time.chrono;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeField;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
+import static org.junit.Assert.*;
 
 /**
  * This class is a Junit unit test for BuddhistChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestBuddhistChronology extends TestCase {
+public class TestBuddhistChronology  {
 
     private static int SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
     
@@ -59,20 +55,8 @@ public class TestBuddhistChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestBuddhistChronology.class);
-    }
-
-    public TestBuddhistChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -82,7 +66,8 @@ public class TestBuddhistChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -93,16 +78,19 @@ public class TestBuddhistChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactoryUTC() {
         assertEquals(DateTimeZone.UTC, BuddhistChronology.getInstanceUTC().getZone());
         assertSame(BuddhistChronology.class, BuddhistChronology.getInstanceUTC().getClass());
     }
 
+   @Test
     public void testFactory() {
         assertEquals(LONDON, BuddhistChronology.getInstance().getZone());
         assertSame(BuddhistChronology.class, BuddhistChronology.getInstance().getClass());
     }
 
+   @Test
     public void testFactory_Zone() {
         assertEquals(TOKYO, BuddhistChronology.getInstance(TOKYO).getZone());
         assertEquals(PARIS, BuddhistChronology.getInstance(PARIS).getZone());
@@ -111,6 +99,7 @@ public class TestBuddhistChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEquality() {
         assertSame(BuddhistChronology.getInstance(TOKYO), BuddhistChronology.getInstance(TOKYO));
         assertSame(BuddhistChronology.getInstance(LONDON), BuddhistChronology.getInstance(LONDON));
@@ -119,6 +108,7 @@ public class TestBuddhistChronology extends TestCase {
         assertSame(BuddhistChronology.getInstance(), BuddhistChronology.getInstance(LONDON));
     }
 
+   @Test
     public void testWithUTC() {
         assertSame(BuddhistChronology.getInstanceUTC(), BuddhistChronology.getInstance(LONDON).withUTC());
         assertSame(BuddhistChronology.getInstanceUTC(), BuddhistChronology.getInstance(TOKYO).withUTC());
@@ -126,6 +116,7 @@ public class TestBuddhistChronology extends TestCase {
         assertSame(BuddhistChronology.getInstanceUTC(), BuddhistChronology.getInstance().withUTC());
     }
 
+   @Test
     public void testWithZone() {
         assertSame(BuddhistChronology.getInstance(TOKYO), BuddhistChronology.getInstance(TOKYO).withZone(TOKYO));
         assertSame(BuddhistChronology.getInstance(LONDON), BuddhistChronology.getInstance(TOKYO).withZone(LONDON));
@@ -135,6 +126,7 @@ public class TestBuddhistChronology extends TestCase {
         assertSame(BuddhistChronology.getInstance(PARIS), BuddhistChronology.getInstanceUTC().withZone(PARIS));
     }
 
+   @Test
     public void testToString() {
         assertEquals("BuddhistChronology[Europe/London]", BuddhistChronology.getInstance(LONDON).toString());
         assertEquals("BuddhistChronology[Asia/Tokyo]", BuddhistChronology.getInstance(TOKYO).toString());
@@ -143,6 +135,7 @@ public class TestBuddhistChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDurationFields() {
         assertEquals("eras", BuddhistChronology.getInstance().eras().getName());
         assertEquals("centuries", BuddhistChronology.getInstance().centuries().getName());
@@ -208,6 +201,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, BuddhistChronology.getInstance(gmt).millis().isPrecise());
     }
 
+   @Test
     public void testDateFields() {
         assertEquals("era", BuddhistChronology.getInstance().era().getName());
         assertEquals("centuryOfEra", BuddhistChronology.getInstance().centuryOfEra().getName());
@@ -236,6 +230,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(true, BuddhistChronology.getInstance().dayOfWeek().isSupported());
     }
 
+   @Test
     public void testTimeFields() {
         assertEquals("halfdayOfDay", BuddhistChronology.getInstance().halfdayOfDay().getName());
         assertEquals("clockhourOfHalfday", BuddhistChronology.getInstance().clockhourOfHalfday().getName());
@@ -263,11 +258,13 @@ public class TestBuddhistChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEpoch() {
         DateTime epoch = new DateTime(1, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
         assertEquals(new DateTime(-543, 1, 1, 0, 0, 0, 0, JULIAN_UTC), epoch.withChronology(JULIAN_UTC));
     }
 
+   @Test
     public void testEra() {
         assertEquals(1, BuddhistChronology.BE);
         try {
@@ -276,6 +273,7 @@ public class TestBuddhistChronology extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testKeyYears() {
         DateTime bd = new DateTime(2513, 1, 1, 0, 0, 0, 0, BUDDHIST_UTC);
         DateTime jd = new DateTime(1970, 1, 1, 0, 0, 0, 0, GJ_UTC);
@@ -320,6 +318,7 @@ public class TestBuddhistChronology extends TestCase {
         assertEquals(1, bd.plus(Period.weeks(1)).getWeekyear());
     }
 
+   @Test
     public void testCalendar() {
         if (TestAll.FAST) {
             return;

@@ -15,25 +15,29 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.text.DateFormat;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
+
 
 /**
  * This class is a Junit unit test for DateTimeFormat styles.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeFormatStyle extends TestCase {
+public class TestDateTimeFormatStyle  {
 
     private static final Locale UK = Locale.UK;
     private static final Locale US = Locale.US;
@@ -56,19 +60,8 @@ public class TestDateTimeFormatStyle extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeFormatStyle.class);
-    }
-
-    public TestDateTimeFormatStyle(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -78,7 +71,8 @@ public class TestDateTimeFormatStyle extends TestCase {
         Locale.setDefault(UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -89,6 +83,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_stringLengths() {
         try {
             DateTimeFormat.forStyle(null);
@@ -108,6 +103,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testForStyle_invalidStrings() {
         try {
             DateTimeFormat.forStyle("AA");
@@ -124,6 +120,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_shortDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.shortDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("S-");
@@ -141,6 +138,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(date, f.withLocale(FRANCE).parseDateTime(expect));
     }
 
+   @Test
     public void testForStyle_shortTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.shortTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-S");
@@ -162,6 +160,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         }
     }
 
+   @Test
     public void testForStyle_shortDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.shortDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("SS");
@@ -180,6 +179,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_mediumDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.mediumDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("M-");
@@ -193,6 +193,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_mediumTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.mediumTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-M");
@@ -206,6 +207,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_mediumDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.mediumDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("MM");
@@ -220,6 +222,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_longDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.longDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("L-");
@@ -233,6 +236,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_longTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.longTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-L");
@@ -246,6 +250,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_longDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.longDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("LL");
@@ -260,6 +265,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_fullDate() throws Exception {
         DateTimeFormatter f = DateTimeFormat.fullDate();
         DateTimeFormatter g = DateTimeFormat.forStyle("F-");
@@ -273,6 +279,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_fullTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.fullTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("-F");
@@ -286,6 +293,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_fullDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.fullDateTime();
         DateTimeFormatter g = DateTimeFormat.forStyle("FF");
@@ -300,6 +308,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_shortMediumDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.forStyle("SM");
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 0);
@@ -311,6 +320,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_shortLongDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.forStyle("SL");
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 0);
@@ -322,6 +332,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_shortFullDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.forStyle("SF");
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 0);
@@ -334,6 +345,7 @@ public class TestDateTimeFormatStyle extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForStyle_mediumShortDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.forStyle("MS");
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 0);
@@ -345,6 +357,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_mediumLongDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.forStyle("ML");
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 0);
@@ -356,6 +369,7 @@ public class TestDateTimeFormatStyle extends TestCase {
         assertEquals(expect, f.withLocale(FRANCE).print(dt));
     }
 
+   @Test
     public void testForStyle_mediumFullDateTime() throws Exception {
         DateTimeFormatter f = DateTimeFormat.forStyle("MF");
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 0);

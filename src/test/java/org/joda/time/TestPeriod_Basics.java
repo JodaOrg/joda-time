@@ -15,6 +15,13 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.BasePeriod;
+import org.joda.time.format.PeriodFormat;
+import org.joda.time.format.PeriodFormatter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -24,19 +31,16 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.base.BasePeriod;
-import org.joda.time.format.PeriodFormat;
-import org.joda.time.format.PeriodFormatter;
+
 
 /**
  * This class is a Junit unit test for Duration.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriod_Basics extends TestCase {
+public class TestPeriod_Basics  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -72,19 +76,8 @@ public class TestPeriod_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPeriod_Basics.class);
-    }
-
-    public TestPeriod_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -94,7 +87,8 @@ public class TestPeriod_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -105,6 +99,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -112,11 +107,13 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodType() {
         Period test = new Period(0L);
         assertEquals(PeriodType.standard(), test.getPeriodType());
     }
 
+   @Test
     public void testGetMethods() {
         Period test = new Period(0L);
         assertEquals(0, test.getYears());
@@ -129,6 +126,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.getMillis());
     }
 
+   @Test
     public void testValueIndexMethods() {
         Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
         assertEquals(6, test.size());
@@ -141,6 +139,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(true, Arrays.equals(new int[] {1, 4, 5, 6, 7, 8}, test.getValues()));
     }
 
+   @Test
     public void testTypeIndexMethods() {
         Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
         assertEquals(6, test.size());
@@ -156,6 +155,7 @@ public class TestPeriod_Basics extends TestCase {
             test.getFieldTypes()));
     }
 
+   @Test
     public void testIsSupported() {
         Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
         assertEquals(true, test.isSupported(DurationFieldType.years()));
@@ -168,6 +168,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(true, test.isSupported(DurationFieldType.millis()));
     }        
 
+   @Test
     public void testIndexOf() {
         Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
         assertEquals(0, test.indexOf(DurationFieldType.years()));
@@ -180,6 +181,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(5, test.indexOf(DurationFieldType.millis()));
     }
 
+   @Test
     public void testGet() {
         Period test = new Period(1, 0, 0, 4, 5, 6, 7, 8, PeriodType.yearDayTime());
         assertEquals(1, test.get(DurationFieldType.years()));
@@ -192,6 +194,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(8, test.get(DurationFieldType.millis()));
     }
 
+   @Test
     public void testEqualsHashCode() {
         Period test1 = new Period(123L);
         Period test2 = new Period(123L);
@@ -223,6 +226,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Period test = new Period(123L);
         
@@ -466,6 +470,7 @@ public class TestPeriod_Basics extends TestCase {
 //    }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString());
@@ -478,6 +483,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_PeriodFormatter() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes, 7 seconds and 8 milliseconds", test.toString(PeriodFormat.getDefault()));
@@ -486,18 +492,21 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals("0 milliseconds", test.toString(PeriodFormat.getDefault()));
     }
 
+   @Test
     public void testToString_nullPeriodFormatter() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("P1Y2M3W4DT5H6M7.008S", test.toString((PeriodFormatter) null));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod() {
         Period test = new Period(123L);
         Period result = test.toPeriod();
         assertSame(test, result);
     }
 
+   @Test
     public void testToMutablePeriod() {
         Period test = new Period(123L);
         MutablePeriod result = test.toMutablePeriod();
@@ -510,23 +519,27 @@ public class TestPeriod_Basics extends TestCase {
 //        assertEquals(123L, test.toDurationMillisFrom(0L, null));
 //    }
 
+   @Test
     public void testToDurationFrom() {
         Period test = new Period(123L);
         assertEquals(new Duration(123L), test.toDurationFrom(new Instant(0L)));
     }
 
+   @Test
     public void testToDurationTo() {
         Period test = new Period(123L);
         assertEquals(new Duration(123L), test.toDurationTo(new Instant(123L)));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithPeriodType1() {
         Period test = new Period(123L);
         Period result = test.withPeriodType(PeriodType.standard());
         assertSame(test, result);
     }
 
+   @Test
     public void testWithPeriodType2() {
         Period test = new Period(3123L);
         Period result = test.withPeriodType(PeriodType.dayTime());
@@ -535,6 +548,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(PeriodType.dayTime(), result.getPeriodType());
     }
 
+   @Test
     public void testWithPeriodType3() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8, PeriodType.standard());
         try {
@@ -543,6 +557,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithPeriodType4() {
         Period test = new Period(3123L);
         Period result = test.withPeriodType(null);
@@ -551,6 +566,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(PeriodType.standard(), result.getPeriodType());
     }
 
+   @Test
     public void testWithPeriodType5() {
         Period test = new Period(1, 2, 0, 4, 5, 6, 7, 8, PeriodType.standard());
         Period result = test.withPeriodType(PeriodType.yearMonthDayTime());
@@ -566,6 +582,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFields1() {
         Period test1 = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         Period test2 = new Period(0, 0, 0, 0, 0, 0, 0, 9, PeriodType.millis());
@@ -576,6 +593,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(1, 2, 3, 4, 5, 6, 7, 9), result);
     }
 
+   @Test
     public void testWithFields2() {
         Period test1 = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         Period test2 = null;
@@ -585,6 +603,7 @@ public class TestPeriod_Basics extends TestCase {
         assertSame(test1, result);
     }
 
+   @Test
     public void testWithFields3() {
         Period test1 = new Period(0, 0, 0, 0, 0, 0, 0, 9, PeriodType.millis());
         Period test2 = new Period(1, 2, 3, 4, 5, 6, 7, 8);
@@ -597,6 +616,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField1() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         Period result = test.withField(DurationFieldType.years(), 6);
@@ -605,6 +625,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(6, 2, 3, 4, 5, 6, 7, 8), result);
     }
 
+   @Test
     public void testWithField2() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         try {
@@ -613,6 +634,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField3() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
         try {
@@ -621,6 +643,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField4() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
         Period result = test.withField(DurationFieldType.years(), 0);
@@ -628,6 +651,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded1() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         Period result = test.withFieldAdded(DurationFieldType.years(), 6);
@@ -636,6 +660,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(7, 2, 3, 4, 5, 6, 7, 8), result);
     }
 
+   @Test
     public void testWithFieldAdded2() {
         Period test = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         try {
@@ -644,6 +669,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded3() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
         try {
@@ -652,6 +678,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded4() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8, PeriodType.time());
         Period result = test.withFieldAdded(DurationFieldType.years(), 0);
@@ -659,6 +686,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPeriodStatics() {
         Period test;
         test = Period.years(1);
@@ -680,6 +708,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWith() {
         Period test;
         test = Period.years(5).withYears(1);
@@ -707,6 +736,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus() {
         Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
@@ -781,6 +811,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus() {
         Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         Period baseDaysOnly = new Period(0, 0, 0, 10, 0, 0, 0, 0, PeriodType.days());
@@ -855,6 +886,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlusFields() {
         Period test;
         test = Period.years(1).plusYears(1);
@@ -881,6 +913,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (UnsupportedOperationException ex) {}
     }
 
+   @Test
     public void testPlusFieldsZero() {
         Period test, result;
         test = Period.years(1);
@@ -909,6 +942,7 @@ public class TestPeriod_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusFields() {
         Period test;
         test = Period.years(3).minusYears(1);
@@ -936,6 +970,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMultipliedBy() {
         Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         
@@ -987,6 +1022,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testNegated() {
         Period base = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         
@@ -1013,6 +1049,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardWeeks() {
         Period test = new Period(0, 0, 3, 4, 5, 6, 7, 8);
         assertEquals(3, test.toStandardWeeks().getWeeks());
@@ -1044,6 +1081,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testToStandardWeeks_years() {
         Period test = Period.years(1);
         try {
@@ -1061,6 +1099,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.toStandardWeeks().getWeeks());
     }
 
+   @Test
     public void testToStandardWeeks_months() {
         Period test = Period.months(1);
         try {
@@ -1079,6 +1118,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardDays() {
         Period test = new Period(0, 0, 0, 4, 5, 6, 7, 8);
         assertEquals(4, test.toStandardDays().getDays());
@@ -1109,6 +1149,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testToStandardDays_years() {
         Period test = Period.years(1);
         try {
@@ -1126,6 +1167,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.toStandardDays().getDays());
     }
 
+   @Test
     public void testToStandardDays_months() {
         Period test = Period.months(1);
         try {
@@ -1144,6 +1186,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardHours() {
         Period test = new Period(0, 0, 0, 0, 5, 6, 7, 8);
         assertEquals(5, test.toStandardHours().getHours());
@@ -1173,6 +1216,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testToStandardHours_years() {
         Period test = Period.years(1);
         try {
@@ -1190,6 +1234,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.toStandardHours().getHours());
     }
 
+   @Test
     public void testToStandardHours_months() {
         Period test = Period.months(1);
         try {
@@ -1208,6 +1253,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardMinutes() {
         Period test = new Period(0, 0, 0, 0, 0, 6, 7, 8);
         assertEquals(6, test.toStandardMinutes().getMinutes());
@@ -1236,6 +1282,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testToStandardMinutes_years() {
         Period test = Period.years(1);
         try {
@@ -1253,6 +1300,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.toStandardMinutes().getMinutes());
     }
 
+   @Test
     public void testToStandardMinutes_months() {
         Period test = Period.months(1);
         try {
@@ -1271,6 +1319,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardSeconds() {
         Period test = new Period(0, 0, 0, 0, 0, 0, 7, 8);
         assertEquals(7, test.toStandardSeconds().getSeconds());
@@ -1296,6 +1345,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testToStandardSeconds_years() {
         Period test = Period.years(1);
         try {
@@ -1313,6 +1363,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.toStandardSeconds().getSeconds());
     }
 
+   @Test
     public void testToStandardSeconds_months() {
         Period test = Period.months(1);
         try {
@@ -1331,6 +1382,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardDuration() {
         Period test = new Period(0, 0, 0, 0, 0, 0, 0, 8);
         assertEquals(8, test.toStandardDuration().getMillis());
@@ -1363,6 +1415,7 @@ public class TestPeriod_Basics extends TestCase {
 //        } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testToStandardDuration_years() {
         Period test = Period.years(1);
         try {
@@ -1380,6 +1433,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(0, test.toStandardDuration().getMillis());
     }
 
+   @Test
     public void testToStandardDuration_months() {
         Period test = Period.months(1);
         try {
@@ -1398,6 +1452,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testNormalizedStandard_yearMonth1() {
         Period test = new Period(1, 15, 0, 0, 0, 0, 0, 0);
         Period result = test.normalizedStandard();
@@ -1405,6 +1460,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(2, 3, 0, 0, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_yearMonth2() {
         Period test = new Period(Integer.MAX_VALUE, 15, 0, 0, 0, 0, 0, 0);
         try {
@@ -1413,6 +1469,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testNormalizedStandard_weekDay1() {
         Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
         Period result = test.normalizedStandard();
@@ -1420,6 +1477,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(0, 0, 2, 5, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_weekDay2() {
         Period test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
         try {
@@ -1428,6 +1486,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testNormalizedStandard_yearMonthWeekDay() {
         Period test = new Period(1, 15, 1, 12, 0, 0, 0, 0);
         Period result = test.normalizedStandard();
@@ -1435,6 +1494,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(2, 3, 2, 5, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_yearMonthDay() {
         Period test = new Period(1, 15, 0, 36, 0, 0, 0, 0);
         Period result = test.normalizedStandard();
@@ -1442,6 +1502,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(2, 3, 5, 1, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_negative() {
         Period test = new Period(0, 0, 0, 0, 2, -10, 0, 0);
         Period result = test.normalizedStandard();
@@ -1449,6 +1510,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(0, 0, 0, 0, 1, 50, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_fullNegative() {
         Period test = new Period(0, 0, 0, 0, 1, -70, 0, 0);
         Period result = test.normalizedStandard();
@@ -1457,6 +1519,7 @@ public class TestPeriod_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testNormalizedStandard_periodType_yearMonth1() {
         Period test = new Period(1, 15, 0, 0, 0, 0, 0, 0);
         Period result = test.normalizedStandard((PeriodType) null);
@@ -1464,6 +1527,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(2, 3, 0, 0, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_periodType_yearMonth2() {
         Period test = new Period(Integer.MAX_VALUE, 15, 0, 0, 0, 0, 0, 0);
         try {
@@ -1472,6 +1536,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testNormalizedStandard_periodType_yearMonth3() {
         Period test = new Period(1, 15, 3, 4, 0, 0, 0, 0);
         try {
@@ -1480,6 +1545,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (UnsupportedOperationException ex) {}
     }
 
+   @Test
     public void testNormalizedStandard_periodType_weekDay1() {
         Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
         Period result = test.normalizedStandard((PeriodType) null);
@@ -1487,6 +1553,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(0, 0, 2, 5, 0, 0, 0, 0), result);
     }
 
+   @Test
     public void testNormalizedStandard_periodType_weekDay2() {
         Period test = new Period(0, 0, Integer.MAX_VALUE, 7, 0, 0, 0, 0);
         try {
@@ -1495,6 +1562,7 @@ public class TestPeriod_Basics extends TestCase {
         } catch (ArithmeticException ex) {}
     }
 
+   @Test
     public void testNormalizedStandard_periodType_weekDay3() {
         Period test = new Period(0, 0, 1, 12, 0, 0, 0, 0);
         Period result = test.normalizedStandard(PeriodType.dayTime());
@@ -1502,6 +1570,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(0, 0, 0, 19, 0, 0, 0, 0, PeriodType.dayTime()), result);
     }
 
+   @Test
     public void testNormalizedStandard_periodType_yearMonthWeekDay() {
         Period test = new Period(1, 15, 1, 12, 0, 0, 0, 0);
         Period result = test.normalizedStandard(PeriodType.yearMonthDayTime());
@@ -1509,6 +1578,7 @@ public class TestPeriod_Basics extends TestCase {
         assertEquals(new Period(2, 3, 0, 19, 0, 0, 0, 0, PeriodType.yearMonthDayTime()), result);
     }
 
+   @Test
     public void testNormalizedStandard_periodType_yearMonthDay() {
         Period test = new Period(1, 15, 0, 36, 27, 0, 0, 0);
         Period result = test.normalizedStandard(PeriodType.yearMonthDayTime());

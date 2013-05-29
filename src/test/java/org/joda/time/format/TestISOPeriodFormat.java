@@ -15,24 +15,25 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+
 
 /**
  * This class is a Junit unit test for ISOPeriodFormat.
  *
  * @author Stephen Colebourne
  */
-public class TestISOPeriodFormat extends TestCase {
+public class TestISOPeriodFormat  {
     
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);
@@ -57,19 +58,8 @@ public class TestISOPeriodFormat extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestISOPeriodFormat.class);
-    }
-
-    public TestISOPeriodFormat(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -79,7 +69,8 @@ public class TestISOPeriodFormat extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -90,6 +81,7 @@ public class TestISOPeriodFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSubclassableConstructor() {
         ISOPeriodFormat f = new ISOPeriodFormat() {
             // test constructor is protected
@@ -98,6 +90,7 @@ public class TestISOPeriodFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatStandard() {
         Period p = new Period(1, 2, 3, 4, 5, 6, 7, 8);
         assertEquals("P1Y2M3W4DT5H6M7.008S", ISOPeriodFormat.standard().print(p));
@@ -115,6 +108,7 @@ public class TestISOPeriodFormat extends TestCase {
         assertEquals("PT5H6M7.008S", ISOPeriodFormat.standard().print(TIME_PERIOD));
     }
 
+   @Test
     public void testFormatStandard_negative() {
         Period p = new Period(-1, -2, -3, -4, -5, -6, -7, -8);
         assertEquals("P-1Y-2M-3W-4DT-5H-6M-7.008S", ISOPeriodFormat.standard().print(p));
@@ -136,6 +130,7 @@ public class TestISOPeriodFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatAlternate() {
         Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
         assertEquals("P00010204T050607.008", ISOPeriodFormat.alternate().print(p));
@@ -154,6 +149,7 @@ public class TestISOPeriodFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatAlternateExtended() {
         Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
         assertEquals("P0001-02-04T05:06:07.008", ISOPeriodFormat.alternateExtended().print(p));
@@ -172,6 +168,7 @@ public class TestISOPeriodFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatAlternateWithWeeks() {
         Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
         assertEquals("P0001W0304T050607.008", ISOPeriodFormat.alternateWithWeeks().print(p));
@@ -190,6 +187,7 @@ public class TestISOPeriodFormat extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatAlternateExtendedWithWeeks() {
         Period p = new Period(1, 2, 3, 4, 5, 6 ,7, 8);
         assertEquals("P0001-W03-04T05:06:07.008", ISOPeriodFormat.alternateExtendedWithWeeks().print(p));

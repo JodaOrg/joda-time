@@ -15,43 +15,38 @@
  */
 package org.joda.time;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
+
 
 /**
  * This class is a Junit unit test for Weeks.
  *
  * @author Stephen Colebourne
  */
-public class TestWeeks extends TestCase {
+public class TestWeeks  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
+   @Before
+   public void setUp() throws Exception {
     }
 
-    public static TestSuite suite() {
-        return new TestSuite(TestWeeks.class);
-    }
-
-    public TestWeeks(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testConstants() {
         assertEquals(0, Weeks.ZERO.getWeeks());
         assertEquals(1, Weeks.ONE.getWeeks());
@@ -62,6 +57,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_weeks_int() {
         assertSame(Weeks.ZERO, Weeks.weeks(0));
         assertSame(Weeks.ONE, Weeks.weeks(1));
@@ -74,6 +70,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_weeksBetween_RInstant() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 30, 12, 0, 0, 0, PARIS);
@@ -86,6 +83,7 @@ public class TestWeeks extends TestCase {
         assertEquals(6, Weeks.weeksBetween(start, end2).getWeeks());
     }
 
+   @Test
     public void testFactory_weeksBetween_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 30);
@@ -98,6 +96,7 @@ public class TestWeeks extends TestCase {
         assertEquals(6, Weeks.weeksBetween(start, end2).getWeeks());
     }
 
+   @Test
     public void testFactory_weeksIn_RInterval() {
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
         DateTime end1 = new DateTime(2006, 6, 30, 12, 0, 0, 0, PARIS);
@@ -110,6 +109,7 @@ public class TestWeeks extends TestCase {
         assertEquals(6, Weeks.weeksIn(new Interval(start, end2)).getWeeks());
     }
 
+   @Test
     public void testFactory_standardWeeksIn_RPeriod() {
         assertEquals(0, Weeks.standardWeeksIn((ReadablePeriod) null).getWeeks());
         assertEquals(0, Weeks.standardWeeksIn(Period.ZERO).getWeeks());
@@ -127,6 +127,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testFactory_parseWeeks_String() {
         assertEquals(0, Weeks.parseWeeks((String) null).getWeeks());
         assertEquals(0, Weeks.parseWeeks("P0W").getWeeks());
@@ -149,22 +150,26 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMethods() {
         Weeks test = Weeks.weeks(20);
         assertEquals(20, test.getWeeks());
     }
 
+   @Test
     public void testGetFieldType() {
         Weeks test = Weeks.weeks(20);
         assertEquals(DurationFieldType.weeks(), test.getFieldType());
     }
 
+   @Test
     public void testGetPeriodType() {
         Weeks test = Weeks.weeks(20);
         assertEquals(PeriodType.weeks(), test.getPeriodType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsGreaterThan() {
         assertEquals(true, Weeks.THREE.isGreaterThan(Weeks.TWO));
         assertEquals(false, Weeks.THREE.isGreaterThan(Weeks.THREE));
@@ -173,6 +178,7 @@ public class TestWeeks extends TestCase {
         assertEquals(false, Weeks.weeks(-1).isGreaterThan(null));
     }
 
+   @Test
     public void testIsLessThan() {
         assertEquals(false, Weeks.THREE.isLessThan(Weeks.TWO));
         assertEquals(false, Weeks.THREE.isLessThan(Weeks.THREE));
@@ -182,6 +188,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         Weeks test = Weeks.weeks(20);
         assertEquals("P20W", test.toString());
@@ -191,6 +198,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Weeks test = Weeks.THREE;
         
@@ -209,6 +217,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardDays() {
         Weeks test = Weeks.weeks(2);
         Days expected = Days.days(14);
@@ -222,6 +231,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardHours() {
         Weeks test = Weeks.weeks(2);
         Hours expected = Hours.hours(2 * 7 * 24);
@@ -235,6 +245,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardMinutes() {
         Weeks test = Weeks.weeks(2);
         Minutes expected = Minutes.minutes(2 * 7 * 24 * 60);
@@ -248,6 +259,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardSeconds() {
         Weeks test = Weeks.weeks(2);
         Seconds expected = Seconds.seconds(2 * 7 * 24 * 60 * 60);
@@ -261,6 +273,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testToStandardDuration() {
         Weeks test = Weeks.weeks(20);
         Duration expected = new Duration(20L * DateTimeConstants.MILLIS_PER_WEEK);
@@ -271,6 +284,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_int() {
         Weeks test2 = Weeks.weeks(2);
         Weeks result = test2.plus(3);
@@ -287,6 +301,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testPlus_Weeks() {
         Weeks test2 = Weeks.weeks(2);
         Weeks test3 = Weeks.weeks(3);
@@ -306,6 +321,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_int() {
         Weeks test2 = Weeks.weeks(2);
         Weeks result = test2.minus(3);
@@ -322,6 +338,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testMinus_Weeks() {
         Weeks test2 = Weeks.weeks(2);
         Weeks test3 = Weeks.weeks(3);
@@ -341,6 +358,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testMultipliedBy_int() {
         Weeks test = Weeks.weeks(2);
         assertEquals(6, test.multipliedBy(3).getWeeks());
@@ -357,6 +375,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testDividedBy_int() {
         Weeks test = Weeks.weeks(12);
         assertEquals(6, test.dividedBy(2).getWeeks());
@@ -375,6 +394,7 @@ public class TestWeeks extends TestCase {
         }
     }
 
+   @Test
     public void testNegated() {
         Weeks test = Weeks.weeks(12);
         assertEquals(-12, test.negated().getWeeks());
@@ -389,6 +409,7 @@ public class TestWeeks extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddToLocalDate() {
         Weeks test = Weeks.weeks(3);
         LocalDate date = new LocalDate(2006, 6, 1);

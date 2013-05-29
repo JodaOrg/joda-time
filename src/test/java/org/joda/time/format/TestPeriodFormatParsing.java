@@ -15,24 +15,24 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+
 
 /**
  * This class is a Junit unit test for PeriodFormat.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodFormatParsing extends TestCase {
+public class TestPeriodFormatParsing  {
 
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);
@@ -56,19 +56,8 @@ public class TestPeriodFormatParsing extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPeriodFormatParsing.class);
-    }
-
-    public TestPeriodFormatParsing(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -78,7 +67,8 @@ public class TestPeriodFormatParsing extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -89,12 +79,14 @@ public class TestPeriodFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseStandard1() {
         PeriodFormatter parser = PeriodFormat.getDefault();
         Period p = parser.parsePeriod("6 years, 3 months and 2 days");
         assertEquals(new Period(6, 3, 0, 2, 0, 0, 0, 0), p);
     }
 
+   @Test
     public void testParseCustom1() {
         PeriodFormatter formatter = new PeriodFormatterBuilder()
             .printZeroAlways()

@@ -15,51 +15,32 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Test case.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeConstants extends TestCase {
-
-    /**
-     * The main method for this test program.
-     * @param args command line arguments.
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    /**
-     * TestSuite is a junit required method.
-     */
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeConstants.class);
-    }
-
-    /**
-     * TestDateTimeComparator constructor.
-     * @param name
-     */
-    public TestDateTimeConstants(String name) {
-        super(name);
-    }
-
+public class TestDateTimeConstants  {
     //-----------------------------------------------------------------------
+   @Test
     public void testConstructor() {
         DateTimeConstants c = new DateTimeConstants() {
         };
         c.toString();
     }
 
+   @Test
     public void testHalfdaysOfDay() {
         assertEquals(0, DateTimeConstants.AM);
         assertEquals(1, DateTimeConstants.PM);
     }
 
+   @Test
     public void testDaysOfWeek() {
         assertEquals(1, DateTimeConstants.MONDAY);
         assertEquals(2, DateTimeConstants.TUESDAY);
@@ -70,6 +51,7 @@ public class TestDateTimeConstants extends TestCase {
         assertEquals(7, DateTimeConstants.SUNDAY);
     }
 
+   @Test
     public void testMonthsOfYear() {
         assertEquals(1, DateTimeConstants.JANUARY);
         assertEquals(2, DateTimeConstants.FEBRUARY);
@@ -85,6 +67,7 @@ public class TestDateTimeConstants extends TestCase {
         assertEquals(12, DateTimeConstants.DECEMBER);
     }
 
+   @Test
     public void testEras() {
         assertEquals(0, DateTimeConstants.BC);
         assertEquals(0, DateTimeConstants.BCE);
@@ -92,6 +75,7 @@ public class TestDateTimeConstants extends TestCase {
         assertEquals(1, DateTimeConstants.CE);
     }
 
+   @Test
     public void testMaths() {
         assertEquals(1000, DateTimeConstants.MILLIS_PER_SECOND);
         assertEquals(60 * 1000, DateTimeConstants.MILLIS_PER_MINUTE);

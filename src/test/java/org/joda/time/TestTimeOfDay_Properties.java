@@ -15,17 +15,21 @@
  */
 package org.joda.time;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
+
 
 /**
  * This class is a Junit unit test for TimeOfDay.
  *
  * @author Stephen Colebourne
  */
-public class TestTimeOfDay_Properties extends TestCase {
+public class TestTimeOfDay_Properties  {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -51,31 +55,22 @@ public class TestTimeOfDay_Properties extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestTimeOfDay_Properties.class);
-    }
-
-    public TestTimeOfDay_Properties(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertSame(test.getChronology().hourOfDay(), test.hourOfDay().getField());
@@ -95,6 +90,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(2, test.hourOfDay().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertEquals(0, test.hourOfDay().getMinimumValue());
@@ -103,6 +99,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(23, test.hourOfDay().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyAddHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().addToCopy(9);
@@ -125,6 +122,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 23, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddNoWrapHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().addNoWrapToCopy(9);
@@ -153,6 +151,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddWrapFieldHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().addWrapFieldToCopy(9);
@@ -169,6 +168,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 19, 20, 30, 40);
     }
 
+   @Test
     public void testPropertySetHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().setCopy(12);
@@ -185,6 +185,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().setCopy("12");
@@ -192,6 +193,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 12, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyWithMaximumValueHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().withMaximumValue();
@@ -199,6 +201,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 23, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyWithMinimumValueHour() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.hourOfDay().withMinimumValue();
@@ -206,6 +209,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 0, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyCompareToHour() {
         TimeOfDay test1 = new TimeOfDay(TEST_TIME1);
         TimeOfDay test2 = new TimeOfDay(TEST_TIME2);
@@ -229,6 +233,7 @@ public class TestTimeOfDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertSame(test.getChronology().minuteOfHour(), test.minuteOfHour().getField());
@@ -248,6 +253,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(2, test.minuteOfHour().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertEquals(0, test.minuteOfHour().getMinimumValue());
@@ -256,6 +262,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(59, test.minuteOfHour().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyAddMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.minuteOfHour().addToCopy(9);
@@ -296,6 +303,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 23, 59, 30, 40);
     }
 
+   @Test
     public void testPropertyAddNoWrapMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.minuteOfHour().addNoWrapToCopy(9);
@@ -342,6 +350,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddWrapFieldMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.minuteOfHour().addWrapFieldToCopy(9);
@@ -355,6 +364,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 10, 33, 30, 40);
     }
 
+   @Test
     public void testPropertySetMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.minuteOfHour().setCopy(12);
@@ -371,6 +381,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextMinute() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.minuteOfHour().setCopy("12");
@@ -378,6 +389,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 10, 12, 30, 40);
     }
 
+   @Test
     public void testPropertyCompareToMinute() {
         TimeOfDay test1 = new TimeOfDay(TEST_TIME1);
         TimeOfDay test2 = new TimeOfDay(TEST_TIME2);
@@ -401,6 +413,7 @@ public class TestTimeOfDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertSame(test.getChronology().secondOfMinute(), test.secondOfMinute().getField());
@@ -420,6 +433,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(2, test.secondOfMinute().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertEquals(0, test.secondOfMinute().getMinimumValue());
@@ -428,6 +442,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(59, test.secondOfMinute().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyAddSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.secondOfMinute().addToCopy(9);
@@ -465,6 +480,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 23, 59, 59, 40);
     }
 
+   @Test
     public void testPropertyAddNoWrapSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.secondOfMinute().addNoWrapToCopy(9);
@@ -508,6 +524,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddWrapFieldSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.secondOfMinute().addWrapFieldToCopy(9);
@@ -521,6 +538,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 10, 20, 43, 40);
     }
 
+   @Test
     public void testPropertySetSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.secondOfMinute().setCopy(12);
@@ -537,6 +555,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextSecond() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.secondOfMinute().setCopy("12");
@@ -544,6 +563,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 10, 20, 12, 40);
     }
 
+   @Test
     public void testPropertyCompareToSecond() {
         TimeOfDay test1 = new TimeOfDay(TEST_TIME1);
         TimeOfDay test2 = new TimeOfDay(TEST_TIME2);
@@ -567,6 +587,7 @@ public class TestTimeOfDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertSame(test.getChronology().millisOfSecond(), test.millisOfSecond().getField());
@@ -586,6 +607,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(3, test.millisOfSecond().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         assertEquals(0, test.millisOfSecond().getMinimumValue());
@@ -594,6 +616,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         assertEquals(999, test.millisOfSecond().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyAddMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.millisOfSecond().addToCopy(9);
@@ -628,6 +651,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 23, 59, 59, 999);
     }
 
+   @Test
     public void testPropertyAddNoWrapMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.millisOfSecond().addNoWrapToCopy(9);
@@ -668,6 +692,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(test, 10, 20, 30, 40);
     }
 
+   @Test
     public void testPropertyAddWrapFieldMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.millisOfSecond().addWrapFieldToCopy(9);
@@ -681,6 +706,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 10, 20, 30, 993);
     }
 
+   @Test
     public void testPropertySetMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.millisOfSecond().setCopy(12);
@@ -697,6 +723,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextMilli() {
         TimeOfDay test = new TimeOfDay(10, 20, 30, 40);
         TimeOfDay copy = test.millisOfSecond().setCopy("12");
@@ -704,6 +731,7 @@ public class TestTimeOfDay_Properties extends TestCase {
         check(copy, 10, 20, 30, 12);
     }
 
+   @Test
     public void testPropertyCompareToMilli() {
         TimeOfDay test1 = new TimeOfDay(TEST_TIME1);
         TimeOfDay test2 = new TimeOfDay(TEST_TIME2);

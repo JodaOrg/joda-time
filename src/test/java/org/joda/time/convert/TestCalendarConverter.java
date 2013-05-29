@@ -15,57 +15,42 @@
  */
 package org.joda.time.convert;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
+import org.joda.time.chrono.*;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+
+
 
 /**
  * This class is a Junit unit test for CalendarConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestCalendarConverter extends TestCase {
+public class TestCalendarConverter  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");
     private static Chronology JULIAN;
     private static Chronology ISO;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestCalendarConverter.class);
-    }
-
-    public TestCalendarConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = CalendarConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -83,11 +68,13 @@ public class TestCalendarConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(Calendar.class, CalendarConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetInstantMillis_Object_Chronology() throws Exception {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date(123L));
@@ -96,6 +83,7 @@ public class TestCalendarConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetChronology_Object_Zone() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Paris"));
         assertEquals(GJChronology.getInstance(MOSCOW), CalendarConverter.INSTANCE.getChronology(cal, MOSCOW));
@@ -127,6 +115,7 @@ public class TestCalendarConverter extends TestCase {
         }
     }
 
+   @Test
     public void testGetChronology_Object_nullChronology() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Paris"));
         assertEquals(GJChronology.getInstance(PARIS), CalendarConverter.INSTANCE.getChronology(cal, (Chronology) null));
@@ -158,12 +147,14 @@ public class TestCalendarConverter extends TestCase {
         }
     }
 
+   @Test
     public void testGetChronology_Object_Chronology() throws Exception {
         GregorianCalendar cal = new GregorianCalendar(TimeZone.getTimeZone("Europe/Paris"));
         assertEquals(JULIAN, CalendarConverter.INSTANCE.getChronology(cal, JULIAN));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPartialValues() throws Exception {
         GregorianCalendar cal = new GregorianCalendar();
         cal.setTime(new Date(12345678L));
@@ -174,6 +165,7 @@ public class TestCalendarConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[java.util.Calendar]", CalendarConverter.INSTANCE.toString());
     }

@@ -16,36 +16,20 @@
 package org.joda.time;
 
 import org.joda.time.chrono.ISOChronology;
+import org.junit.Test;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 /**
  * This class is a Junit unit test for DurationField.
  *
  * @author Stephen Colebourne
  */
-public class TestDurationField extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDurationField.class);
-    }
-
-    public TestDurationField(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
+public class TestDurationField  {
     //-----------------------------------------------------------------------
+   @Test
     public void test_subtract() throws Exception {
         DurationField fld = ISOChronology.getInstanceUTC().millis();
         assertEquals(900, fld.subtract(1000L, 100));

@@ -15,22 +15,26 @@
  */
 package org.joda.time.chrono;
 
-import java.util.Locale;
-import java.util.TimeZone;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Locale;
+import java.util.TimeZone;
+
+import static org.junit.Assert.*;
+
+
 
 /**
  * This class is a Junit unit test for JulianChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestJulianChronology extends TestCase {
+public class TestJulianChronology  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -48,19 +52,8 @@ public class TestJulianChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestJulianChronology.class);
-    }
-
-    public TestJulianChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -70,7 +63,8 @@ public class TestJulianChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -81,16 +75,19 @@ public class TestJulianChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactoryUTC() {
         assertEquals(DateTimeZone.UTC, JulianChronology.getInstanceUTC().getZone());
         assertSame(JulianChronology.class, JulianChronology.getInstanceUTC().getClass());
     }
 
+   @Test
     public void testFactory() {
         assertEquals(LONDON, JulianChronology.getInstance().getZone());
         assertSame(JulianChronology.class, JulianChronology.getInstance().getClass());
     }
 
+   @Test
     public void testFactory_Zone() {
         assertEquals(TOKYO, JulianChronology.getInstance(TOKYO).getZone());
         assertEquals(PARIS, JulianChronology.getInstance(PARIS).getZone());
@@ -98,6 +95,7 @@ public class TestJulianChronology extends TestCase {
         assertSame(JulianChronology.class, JulianChronology.getInstance(TOKYO).getClass());
     }
 
+   @Test
     public void testFactory_Zone_int() {
         JulianChronology chrono = JulianChronology.getInstance(TOKYO, 2);
         assertEquals(TOKYO, chrono.getZone());
@@ -114,6 +112,7 @@ public class TestJulianChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEquality() {
         assertSame(JulianChronology.getInstance(TOKYO), JulianChronology.getInstance(TOKYO));
         assertSame(JulianChronology.getInstance(LONDON), JulianChronology.getInstance(LONDON));
@@ -122,6 +121,7 @@ public class TestJulianChronology extends TestCase {
         assertSame(JulianChronology.getInstance(), JulianChronology.getInstance(LONDON));
     }
 
+   @Test
     public void testWithUTC() {
         assertSame(JulianChronology.getInstanceUTC(), JulianChronology.getInstance(LONDON).withUTC());
         assertSame(JulianChronology.getInstanceUTC(), JulianChronology.getInstance(TOKYO).withUTC());
@@ -129,6 +129,7 @@ public class TestJulianChronology extends TestCase {
         assertSame(JulianChronology.getInstanceUTC(), JulianChronology.getInstance().withUTC());
     }
 
+   @Test
     public void testWithZone() {
         assertSame(JulianChronology.getInstance(TOKYO), JulianChronology.getInstance(TOKYO).withZone(TOKYO));
         assertSame(JulianChronology.getInstance(LONDON), JulianChronology.getInstance(TOKYO).withZone(LONDON));
@@ -138,6 +139,7 @@ public class TestJulianChronology extends TestCase {
         assertSame(JulianChronology.getInstance(PARIS), JulianChronology.getInstanceUTC().withZone(PARIS));
     }
 
+   @Test
     public void testToString() {
         assertEquals("JulianChronology[Europe/London]", JulianChronology.getInstance(LONDON).toString());
         assertEquals("JulianChronology[Asia/Tokyo]", JulianChronology.getInstance(TOKYO).toString());
@@ -147,6 +149,7 @@ public class TestJulianChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDurationFields() {
         assertEquals("eras", JulianChronology.getInstance().eras().getName());
         assertEquals("centuries", JulianChronology.getInstance().centuries().getName());
@@ -212,6 +215,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals(true, JulianChronology.getInstance(gmt).millis().isPrecise());
     }
 
+   @Test
     public void testDateFields() {
         assertEquals("era", JulianChronology.getInstance().era().getName());
         assertEquals("centuryOfEra", JulianChronology.getInstance().centuryOfEra().getName());
@@ -240,6 +244,7 @@ public class TestJulianChronology extends TestCase {
         assertEquals(true, JulianChronology.getInstance().dayOfWeek().isSupported());
     }
 
+   @Test
     public void testTimeFields() {
         assertEquals("halfdayOfDay", JulianChronology.getInstance().halfdayOfDay().getName());
         assertEquals("clockhourOfHalfday", JulianChronology.getInstance().clockhourOfHalfday().getName());

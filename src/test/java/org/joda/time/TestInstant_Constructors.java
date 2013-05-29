@@ -15,24 +15,29 @@
  */
 package org.joda.time;
 
-import java.util.Date;
-import java.util.Locale;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.convert.ConverterManager;
 import org.joda.time.convert.MockZeroNullIntegerConverter;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Date;
+import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 
 /**
  * This class is a Junit unit test for Instant.
  *
  * @author Stephen Colebourne
  */
-public class TestInstant_Constructors extends TestCase {
+public class TestInstant_Constructors  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -56,19 +61,8 @@ public class TestInstant_Constructors extends TestCase {
     private DateTimeZone zone = null;
     private Locale locale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestInstant_Constructors.class);
-    }
-
-    public TestInstant_Constructors(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         locale = Locale.getDefault();
@@ -77,7 +71,8 @@ public class TestInstant_Constructors extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         java.util.TimeZone.setDefault(zone.toTimeZone());
@@ -89,6 +84,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test now ()
      */
+   @Test
     public void test_now() throws Throwable {
         Instant test = Instant.now();
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
@@ -96,11 +92,13 @@ public class TestInstant_Constructors extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParse_noFormatter() throws Throwable {
         assertEquals(new DateTime(2010, 6, 30, 0, 20, ISOChronology.getInstance(LONDON)).toInstant(), Instant.parse("2010-06-30T01:20+02:00"));
         assertEquals(new DateTime(2010, 1, 2, 14, 50, ISOChronology.getInstance(LONDON)).toInstant(), Instant.parse("2010-002T14:50"));
     }
 
+   @Test
     public void testParse_formatter() throws Throwable {
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy--dd MM HH").withChronology(ISOChronology.getInstance(PARIS));
         assertEquals(new DateTime(2010, 6, 30, 13, 0, ISOChronology.getInstance(PARIS)).toInstant(), Instant.parse("2010--30 06 13", f));
@@ -110,6 +108,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor ()
      */
+   @Test
     public void testConstructor() throws Throwable {
         Instant test = new Instant();
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
@@ -120,6 +119,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor (long)
      */
+   @Test
     public void testConstructor_long1() throws Throwable {
         Instant test = new Instant(TEST_TIME1);
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
@@ -129,6 +129,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor (long)
      */
+   @Test
     public void testConstructor_long2() throws Throwable {
         Instant test = new Instant(TEST_TIME2);
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
@@ -139,6 +140,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+   @Test
     public void testConstructor_Object() throws Throwable {
         Date date = new Date(TEST_TIME1);
         Instant test = new Instant(date);
@@ -149,6 +151,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor (Object)
      */
+   @Test
     public void testConstructor_invalidObject() throws Throwable {
         try {
             new Instant(new Object());
@@ -159,6 +162,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor (Object=null)
      */
+   @Test
     public void testConstructor_nullObject() throws Throwable {
         Instant test = new Instant((Object) null);
         assertEquals(ISOChronology.getInstanceUTC(), test.getChronology());
@@ -168,6 +172,7 @@ public class TestInstant_Constructors extends TestCase {
     /**
      * Test constructor (Object=null)
      */
+   @Test
     public void testConstructor_badconverterObject() throws Throwable {
         try {
             ConverterManager.getInstance().addInstantConverter(MockZeroNullIntegerConverter.INSTANCE);

@@ -15,35 +15,29 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.*;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
+import java.util.*;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+
 
 /**
  * This class is a Junit unit test for LocalDate.
  *
  * @author Stephen Colebourne
  */
-public class TestLocalDateTime_Basics extends TestCase {
+public class TestLocalDateTime_Basics  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -87,19 +81,8 @@ public class TestLocalDateTime_Basics extends TestCase {
 
     private Locale systemDefaultLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestLocalDateTime_Basics.class);
-    }
-
-    public TestLocalDateTime_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW_UTC);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
@@ -107,7 +90,8 @@ public class TestLocalDateTime_Basics extends TestCase {
         Locale.setDefault(Locale.ENGLISH);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
@@ -116,6 +100,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet_DateTimeFieldType() {
         LocalDateTime test = new LocalDateTime(1970, 6, 9, 10, 20, 30, 40);
         assertEquals(1970, test.get(DateTimeFieldType.year()));
@@ -156,11 +141,13 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSize() {
         LocalDateTime test = new LocalDateTime();
         assertEquals(4, test.size());
     }
 
+   @Test
     public void testGetFieldType_int() {
         LocalDateTime test = new LocalDateTime(COPTIC_PARIS);
         assertSame(DateTimeFieldType.year(), test.getFieldType(0));
@@ -175,6 +162,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldTypes() {
         LocalDateTime test = new LocalDateTime(COPTIC_PARIS);
         DateTimeFieldType[] fields = test.getFieldTypes();
@@ -185,6 +173,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
+   @Test
     public void testGetField_int() {
         LocalDateTime test = new LocalDateTime(COPTIC_PARIS);
         assertSame(COPTIC_UTC.year(), test.getField(0));
@@ -199,6 +188,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFields() {
         LocalDateTime test = new LocalDateTime(COPTIC_PARIS);
         DateTimeField[] fields = test.getFields();
@@ -209,6 +199,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertNotSame(test.getFields(), test.getFields());
     }
 
+   @Test
     public void testGetValue_int() {
         LocalDateTime test = new LocalDateTime(ISO_UTC);
         assertEquals(1970, test.getValue(0));
@@ -223,6 +214,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetValues() {
         LocalDateTime test = new LocalDateTime(ISO_UTC);
         int[] values = test.getValues();
@@ -233,6 +225,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertNotSame(test.getValues(), test.getValues());
     }
 
+   @Test
     public void testIsSupported_DateTimeFieldType() {
         LocalDateTime test = new LocalDateTime();
         assertEquals(true, test.isSupported(DateTimeFieldType.year()));
@@ -263,6 +256,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(false, test.isSupported((DateTimeFieldType) null));
     }
 
+   @Test
     public void testIsSupported_DurationFieldType() {
         LocalDateTime test = new LocalDateTime();
         assertEquals(false, test.isSupported(DurationFieldType.eras()));
@@ -282,6 +276,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(false, test.isSupported((DurationFieldType) null));
     }
 
+   @Test
     public void testEqualsHashCode() {
         LocalDateTime test1 = new LocalDateTime(1970, 6, 9, 10, 20, 30, 40, COPTIC_PARIS);
         LocalDateTime test2 = new LocalDateTime(1970, 6, 9, 10, 20, 30, 40, COPTIC_PARIS);
@@ -331,6 +326,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCompareTo() {
         LocalDateTime test1 = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
         LocalDateTime test1a = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
@@ -384,6 +380,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_LocalDateTime() {
         LocalDateTime test1 = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
         LocalDateTime test1a = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
@@ -408,6 +405,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_LocalDateTime() {
         LocalDateTime test1 = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
         LocalDateTime test1a = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
@@ -432,6 +430,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_LocalDateTime() {
         LocalDateTime test1 = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
         LocalDateTime test1a = new LocalDateTime(2005, 6, 2, 10, 20, 30, 40);
@@ -456,6 +455,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDate() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         LocalDateTime result = test.withDate(2006, 2, 1);
@@ -465,6 +465,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithTime() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         LocalDateTime result = test.withTime(9, 8, 7, 6);
@@ -474,6 +475,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField_DateTimeFieldType_int_1() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         LocalDateTime result = test.withField(DateTimeFieldType.year(), 2006);
@@ -482,6 +484,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(new LocalDateTime(2006, 6, 9, 10, 20, 30, 40), result);
     }
 
+   @Test
     public void testWithField_DateTimeFieldType_int_2() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         try {
@@ -490,6 +493,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField_DateTimeFieldType_int_3() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         LocalDateTime result = test.withField(DateTimeFieldType.year(), 2004);
@@ -498,6 +502,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_1() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         LocalDateTime result = test.withFieldAdded(DurationFieldType.years(), 6);
@@ -506,6 +511,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(new LocalDateTime(2010, 6, 9, 10, 20, 30, 40), result);
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_2() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         try {
@@ -514,6 +520,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_3() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         try {
@@ -522,6 +529,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_DurationFieldType_int_4() {
         LocalDateTime test = new LocalDateTime(2004, 6, 9, 10, 20, 30, 40);
         LocalDateTime result = test.withFieldAdded(DurationFieldType.years(), 0);
@@ -529,6 +537,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_RP() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plus(new Period(1, 2, 3, 4, 29, 6, 7, 8));
@@ -539,6 +548,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusYears_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusYears(1);
@@ -549,6 +559,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMonths_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusMonths(1);
@@ -559,6 +570,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusWeeks_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusWeeks(1);
@@ -569,6 +581,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusDays_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusDays(1);
@@ -579,6 +592,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusHours_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusHours(1);
@@ -589,6 +603,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMinutes_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusMinutes(1);
@@ -599,6 +614,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusSeconds_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusSeconds(1);
@@ -609,6 +625,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMillis_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.plusMillis(1);
@@ -620,6 +637,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_RP() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -631,6 +649,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusYears_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusYears(1);
@@ -641,6 +660,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMonths_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusMonths(1);
@@ -651,6 +671,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusWeeks_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusWeeks(1);
@@ -661,6 +682,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusDays_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusDays(1);
@@ -671,6 +693,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusHours_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusHours(1);
@@ -681,6 +704,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMinutes_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusMinutes(1);
@@ -691,6 +715,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusSeconds_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusSeconds(1);
@@ -701,6 +726,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMillis_int() {
         LocalDateTime test = new LocalDateTime(2002, 5, 3, 10, 20, 30, 40, BUDDHIST_LONDON);
         LocalDateTime result = test.minusMillis(1);
@@ -712,6 +738,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetters() {
         LocalDateTime test = new LocalDateTime(1970, 6, 9, 10, 20, 30, 40, GJ_UTC);
         assertEquals(1970, test.getYear());
@@ -733,6 +760,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithers() {
         LocalDateTime test = new LocalDateTime(1970, 6, 9, 10, 20, 30, 40, GJ_UTC);
         check(test.withYear(2000), 2000, 6, 9, 10, 20, 30, 40);
@@ -762,6 +790,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 6, 7, 8, 9, COPTIC_PARIS); // PARIS irrelevant
         
@@ -772,6 +801,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_Zone() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 6, 7, 8, 9, COPTIC_PARIS); // PARIS irrelevant
         
@@ -781,6 +811,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_nullZone() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 6, 7, 8, 9, COPTIC_PARIS); // PARIS irrelevant
         
@@ -791,12 +822,14 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToLocalDate() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 6, 7, 8, 9, COPTIC_PARIS); // PARIS irrelevant
         LocalDate expected = new LocalDate(2005, 6, 9, COPTIC_LONDON);
         assertEquals(expected,base.toLocalDate());
     }
 
+   @Test
     public void testToLocalTime() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 6, 7, 8, 9, COPTIC_PARIS); // PARIS irrelevant
         LocalTime expected = new LocalTime(6, 7, 8, 9, COPTIC_LONDON);
@@ -804,6 +837,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_RI() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 10, 20, 30, 40, COPTIC_PARIS);
         DateTime dt = new DateTime(2002, 1, 3, 4, 5, 6, 7, BUDDHIST_TOKYO);
@@ -814,6 +848,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_nullRI() {
         LocalDateTime base = new LocalDateTime(2005, 6, 9, 10, 20, 30, 40, COPTIC_PARIS);
         
@@ -824,6 +859,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDate_summer() {
         LocalDateTime base = new LocalDateTime(2005, 7, 9, 10, 20, 30, 40, COPTIC_PARIS);
         
@@ -842,6 +878,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(gcal.getTime(), test);
     }
 
+   @Test
     public void testToDate_winter() {
         LocalDateTime base = new LocalDateTime(2005, 1, 9, 10, 20, 30, 40, COPTIC_PARIS);
         
@@ -860,6 +897,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         assertEquals(gcal.getTime(), test);
     }
 
+   @Test
     public void testToDate_springDST() {
         LocalDateTime base = new LocalDateTime(2007, 4, 2, 0, 20, 0, 0);
         
@@ -876,6 +914,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testToDate_springDST_2Hour40Savings() {
         LocalDateTime base = new LocalDateTime(2007, 4, 2, 0, 20, 0, 0);
         
@@ -892,6 +931,7 @@ public class TestLocalDateTime_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testToDate_autumnDST() {
         LocalDateTime base = new LocalDateTime(2007, 10, 2, 0, 20, 30, 0);
         
@@ -909,6 +949,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProperty() {
         LocalDateTime test = new LocalDateTime(2005, 6, 9, 10, 20, 30, 40, GJ_UTC);
         assertEquals(test.year(), test.property(DateTimeFieldType.year()));
@@ -936,6 +977,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         LocalDateTime test = new LocalDateTime(1972, 6, 9, 10, 20, 30, 40, COPTIC_PARIS);
         
@@ -958,12 +1000,14 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         LocalDateTime test = new LocalDateTime(2002, 6, 9, 10, 20, 30, 40);
         assertEquals("2002-06-09T10:20:30.040", test.toString());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String() {
         LocalDateTime test = new LocalDateTime(2002, 6, 9, 10, 20, 30, 40);
         assertEquals("2002 10", test.toString("yyyy HH"));
@@ -971,6 +1015,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String_Locale() {
         LocalDateTime test = new LocalDateTime(1970, 6, 9, 10, 20, 30, 40);
         assertEquals("Tue 9/6", test.toString("EEE d/M", Locale.ENGLISH));
@@ -981,6 +1026,7 @@ public class TestLocalDateTime_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_DTFormatter() {
         LocalDateTime test = new LocalDateTime(2002, 6, 9, 10, 20, 30, 40);
         assertEquals("2002 10", test.toString(DateTimeFormat.forPattern("yyyy HH")));

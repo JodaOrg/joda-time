@@ -15,31 +15,24 @@
  */
 package org.joda.time.chrono;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeFieldType;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.DurationField;
-import org.joda.time.DurationFieldType;
-import org.joda.time.IllegalFieldValueException;
-import org.joda.time.Partial;
-import org.joda.time.TimeOfDay;
-import org.joda.time.YearMonthDay;
+
 
 /**
  * This class is a Junit unit test for ISOChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestISOChronology extends TestCase {
+public class TestISOChronology  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -57,19 +50,8 @@ public class TestISOChronology extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestISOChronology.class);
-    }
-
-    public TestISOChronology(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -79,7 +61,8 @@ public class TestISOChronology extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -90,16 +73,19 @@ public class TestISOChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFactoryUTC() {
         assertEquals(DateTimeZone.UTC, ISOChronology.getInstanceUTC().getZone());
         assertSame(ISOChronology.class, ISOChronology.getInstanceUTC().getClass());
     }
 
+   @Test
     public void testFactory() {
         assertEquals(LONDON, ISOChronology.getInstance().getZone());
         assertSame(ISOChronology.class, ISOChronology.getInstance().getClass());
     }
 
+   @Test
     public void testFactory_Zone() {
         assertEquals(TOKYO, ISOChronology.getInstance(TOKYO).getZone());
         assertEquals(PARIS, ISOChronology.getInstance(PARIS).getZone());
@@ -108,6 +94,7 @@ public class TestISOChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEquality() {
         assertSame(ISOChronology.getInstance(TOKYO), ISOChronology.getInstance(TOKYO));
         assertSame(ISOChronology.getInstance(LONDON), ISOChronology.getInstance(LONDON));
@@ -116,6 +103,7 @@ public class TestISOChronology extends TestCase {
         assertSame(ISOChronology.getInstance(), ISOChronology.getInstance(LONDON));
     }
 
+   @Test
     public void testWithUTC() {
         assertSame(ISOChronology.getInstanceUTC(), ISOChronology.getInstance(LONDON).withUTC());
         assertSame(ISOChronology.getInstanceUTC(), ISOChronology.getInstance(TOKYO).withUTC());
@@ -123,6 +111,7 @@ public class TestISOChronology extends TestCase {
         assertSame(ISOChronology.getInstanceUTC(), ISOChronology.getInstance().withUTC());
     }
 
+   @Test
     public void testWithZone() {
         assertSame(ISOChronology.getInstance(TOKYO), ISOChronology.getInstance(TOKYO).withZone(TOKYO));
         assertSame(ISOChronology.getInstance(LONDON), ISOChronology.getInstance(TOKYO).withZone(LONDON));
@@ -132,6 +121,7 @@ public class TestISOChronology extends TestCase {
         assertSame(ISOChronology.getInstance(PARIS), ISOChronology.getInstanceUTC().withZone(PARIS));
     }
 
+   @Test
     public void testToString() {
         assertEquals("ISOChronology[Europe/London]", ISOChronology.getInstance(LONDON).toString());
         assertEquals("ISOChronology[Asia/Tokyo]", ISOChronology.getInstance(TOKYO).toString());
@@ -140,6 +130,7 @@ public class TestISOChronology extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testDurationFields() {
         assertEquals("eras", ISOChronology.getInstance().eras().getName());
         assertEquals("centuries", ISOChronology.getInstance().centuries().getName());
@@ -218,6 +209,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstance(offset).millis().isPrecise());
     }
 
+   @Test
     public void testDateFields() {
         assertEquals("era", ISOChronology.getInstance().era().getName());
         assertEquals("centuryOfEra", ISOChronology.getInstance().centuryOfEra().getName());
@@ -246,6 +238,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstance().dayOfWeek().isSupported());
     }
 
+   @Test
     public void testTimeFields() {
         assertEquals("halfdayOfDay", ISOChronology.getInstance().halfdayOfDay().getName());
         assertEquals("clockhourOfHalfday", ISOChronology.getInstance().clockhourOfHalfday().getName());
@@ -272,6 +265,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(true, ISOChronology.getInstance().millisOfSecond().isSupported());
     }
 
+   @Test
     public void testMaxYear() {
         final ISOChronology chrono = ISOChronology.getInstanceUTC();
         final int maxYear = chrono.year().getMaximumValue();
@@ -305,6 +299,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(maxYear + 1, chrono.year().get(Long.MAX_VALUE));
     }
 
+   @Test
     public void testMinYear() {
         final ISOChronology chrono = ISOChronology.getInstanceUTC();
         final int minYear = chrono.year().getMinimumValue();
@@ -338,6 +333,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(minYear - 1, chrono.year().get(Long.MIN_VALUE));
     }
 
+   @Test
     public void testCutoverAddYears() {
         testAdd("1582-01-01", DurationFieldType.years(), 1, "1583-01-01");
         testAdd("1582-02-15", DurationFieldType.years(), 1, "1583-02-15");
@@ -356,6 +352,7 @@ public class TestISOChronology extends TestCase {
         testAdd("1580-12-31", DurationFieldType.years(), 4, "1584-12-31");
     }
 
+   @Test
     public void testAddMonths() {
         testAdd("1582-01-01", DurationFieldType.months(), 1, "1582-02-01");
         testAdd("1582-01-01", DurationFieldType.months(), 6, "1582-07-01");
@@ -393,6 +390,7 @@ public class TestISOChronology extends TestCase {
         }
     }
 
+   @Test
     public void testTimeOfDayAdd() {
         TimeOfDay start = new TimeOfDay(12, 30);
         TimeOfDay end = new TimeOfDay(10, 30);
@@ -402,6 +400,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(start, end.minusMinutes(22 * 60));
     }
 
+   @Test
     public void testPartialDayOfYearAdd() {
         Partial start = new Partial().with(DateTimeFieldType.year(), 2000).with(DateTimeFieldType.dayOfYear(), 366);
         Partial end = new Partial().with(DateTimeFieldType.year(), 2004).with(DateTimeFieldType.dayOfYear(), 366);
@@ -409,6 +408,7 @@ public class TestISOChronology extends TestCase {
         assertEquals(start, end.withFieldAdded(DurationFieldType.days(), -(365 + 365 + 365 + 366)));
     }
 
+   @Test
     public void testMaximumValue() {
         DateMidnight dt = new DateMidnight(1570, 1, 1);
         while (dt.getYear() < 1590) {

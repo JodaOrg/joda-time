@@ -15,20 +15,17 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.DateMidnight;
-import org.joda.time.DateTime;
-import org.joda.time.ReadWritableDateTime;
-import org.joda.time.ReadWritableInstant;
-import org.joda.time.ReadableDateTime;
-import org.joda.time.ReadableInstant;
+
 
 /**
  * This class is a JUnit test for ConverterSet.
@@ -36,7 +33,7 @@ import org.joda.time.ReadableInstant;
  *
  * @author Stephen Colebourne
  */
-public class TestConverterSet extends TestCase {
+public class TestConverterSet  {
 
     private static final Converter c1 = new Converter() {
         public Class getSupportedType() {return Boolean.class;}
@@ -56,20 +53,9 @@ public class TestConverterSet extends TestCase {
     private static final Converter c5 = new Converter() {
         public Class getSupportedType() {return Integer.class;}
     };
-    
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestConverterSet.class);
-    }
-
-    public TestConverterSet(String name) {
-        super(name);
-    }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testClass() throws Exception {
         Class cls = ConverterSet.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -84,6 +70,7 @@ public class TestConverterSet extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testBigHashtable() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -111,6 +98,7 @@ public class TestConverterSet extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAddNullRemoved1() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -121,6 +109,7 @@ public class TestConverterSet extends TestCase {
         assertEquals(5, result.size());
     }
 
+   @Test
     public void testAddNullRemoved2() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -130,6 +119,7 @@ public class TestConverterSet extends TestCase {
         assertSame(set, result);
     }
 
+   @Test
     public void testAddNullRemoved3() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -142,6 +132,7 @@ public class TestConverterSet extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemoveNullRemoved1() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -152,6 +143,7 @@ public class TestConverterSet extends TestCase {
         assertEquals(3, result.size());
     }
 
+   @Test
     public void testRemoveNullRemoved2() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -162,6 +154,7 @@ public class TestConverterSet extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testRemoveBadIndex1() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,
@@ -174,6 +167,7 @@ public class TestConverterSet extends TestCase {
         assertEquals(4, set.size());
     }
 
+   @Test
     public void testRemoveBadIndex2() {
         Converter[] array = new Converter[] {
             c1, c2, c3, c4,

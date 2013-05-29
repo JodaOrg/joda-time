@@ -15,23 +15,27 @@
  */
 package org.joda.time.format;
 
-import java.util.Locale;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+
+
 
 /**
  * Makes sure that text fields are correct for English.
  *
  * @author Brian S O'Neill
  */
-public class TestTextFields extends TestCase {
+public class TestTextFields  {
 
     private static final DateTimeZone[] ZONES = {
         DateTimeZone.UTC,
@@ -59,26 +63,16 @@ public class TestTextFields extends TestCase {
     private DateTimeZone originalDateTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestTextFields.class);
-    }
-
-    public TestTextFields(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalLocale = Locale.getDefault();
         DateTimeZone.setDefault(ZONES[0]);
         Locale.setDefault(Locale.ENGLISH);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
         Locale.setDefault(originalLocale);
         originalDateTimeZone = null;
@@ -86,6 +80,7 @@ public class TestTextFields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMonthNames_monthStart() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
@@ -97,6 +92,7 @@ public class TestTextFields extends TestCase {
         }
     }
 
+   @Test
     public void testMonthNames_monthMiddle() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
@@ -108,6 +104,7 @@ public class TestTextFields extends TestCase {
         }
     }
 
+   @Test
     public void testMonthNames_monthEnd() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("MMMM");
         for (int i=0; i<ZONES.length; i++) {
@@ -122,6 +119,7 @@ public class TestTextFields extends TestCase {
         }
     }
 
+   @Test
     public void testWeekdayNames() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("EEEE");
         for (int i=0; i<ZONES.length; i++) {
@@ -135,6 +133,7 @@ public class TestTextFields extends TestCase {
         }
     }
 
+   @Test
     public void testHalfdayNames() {
         DateTimeFormatter printer = DateTimeFormat.forPattern("a");
         for (int i=0; i<ZONES.length; i++) {

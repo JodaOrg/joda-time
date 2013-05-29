@@ -15,33 +15,28 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.GJChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.CharArrayWriter;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
-import org.joda.time.LocalTime;
-import org.joda.time.MutableDateTime;
-import org.joda.time.ReadablePartial;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.ISOChronology;
+
 
 /**
  * This class is a Junit unit test for DateTime Formating.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeFormatter extends TestCase {
+public class TestDateTimeFormatter  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -66,19 +61,8 @@ public class TestDateTimeFormatter extends TestCase {
     private DateTimeFormatter f = null;
     private DateTimeFormatter g = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeFormatter.class);
-    }
-
-    public TestDateTimeFormatter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -94,7 +78,8 @@ public class TestDateTimeFormatter extends TestCase {
         g = ISODateTimeFormat.dateTimeNoMillis();
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -107,6 +92,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_simple() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T10:20:30Z", f.print(dt));
@@ -122,6 +108,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_locale() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("mer. 2004-06-09T10:20:30Z", f.withLocale(Locale.FRENCH).print(dt));
@@ -129,6 +116,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_zone() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T06:20:30-04:00", f.withZone(NEWYORK).print(dt));
@@ -143,6 +131,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_chrono() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T12:20:30+02:00", f.withChronology(ISO_PARIS).print(dt));
@@ -157,6 +146,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_bufferMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         StringBuffer buf = new StringBuffer();
@@ -179,6 +169,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_writerMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         CharArrayWriter out = new CharArrayWriter();
@@ -201,6 +192,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_appendableMethods() throws Exception {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         StringBuilder buf = new StringBuilder();
@@ -223,6 +215,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPrint_chrono_and_zone() {
         DateTime dt = new DateTime(2004, 6, 9, 10, 20, 30, 40, UTC);
         assertEquals("Wed 2004-06-09T10:20:30Z",
@@ -261,6 +254,7 @@ public class TestDateTimeFormatter extends TestCase {
                 f.withChronology(null).withZone(NEWYORK).print(dt));
     }
 
+   @Test
     public void testWithGetLocale() {
         DateTimeFormatter f2 = f.withLocale(Locale.FRENCH);
         assertEquals(Locale.FRENCH, f2.getLocale());
@@ -271,6 +265,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertSame(f2, f2.withLocale(null));
     }
 
+   @Test
     public void testWithGetZone() {
         DateTimeFormatter f2 = f.withZone(PARIS);
         assertEquals(PARIS, f2.getZone());
@@ -281,6 +276,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertSame(f2, f2.withZone(null));
     }
 
+   @Test
     public void testWithGetChronology() {
         DateTimeFormatter f2 = f.withChronology(BUDDHIST_PARIS);
         assertEquals(BUDDHIST_PARIS, f2.getChronology());
@@ -291,6 +287,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertSame(f2, f2.withChronology(null));
     }
 
+   @Test
     public void testWithGetPivotYear() {
         DateTimeFormatter f2 = f.withPivotYear(13);
         assertEquals(new Integer(13), f2.getPivotYear());
@@ -305,6 +302,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertSame(f2, f2.withPivotYear(null));
     }
 
+   @Test
     public void testWithGetOffsetParsedMethods() {
         DateTimeFormatter f2 = f;
         assertEquals(false, f2.isOffsetParsed());
@@ -328,6 +326,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertSame(f2, f3);
     }
 
+   @Test
     public void testPrinterParserMethods() {
         DateTimeFormatter f2 = new DateTimeFormatter(f.getPrinter(), f.getParser());
         assertEquals(f.getPrinter(), f2.getPrinter());
@@ -361,6 +360,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseLocalDate_simple() {
         assertEquals(new LocalDate(2004, 6, 9), g.parseLocalDate("2004-06-09T10:20:30Z"));
         assertEquals(new LocalDate(2004, 6, 9), g.parseLocalDate("2004-06-09T10:20:30+18:00"));
@@ -373,6 +373,7 @@ public class TestDateTimeFormatter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testParseLocalDate_yearOfEra() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat
@@ -389,6 +390,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(date, f.parseLocalDate("2005-10 BCE"));
     }
 
+   @Test
     public void testParseLocalDate_yearOfCentury() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat
@@ -401,6 +403,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(date, f.parseLocalDate("50 8 4"));
     }
 
+   @Test
     public void testParseLocalDate_monthDay_feb29() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat
@@ -411,6 +414,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new LocalDate(2000, 2, 29, chrono), f.parseLocalDate("2 29"));
     }
 
+   @Test
     public void testParseLocalDate_monthDay_withDefaultYear_feb29() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat
@@ -422,18 +426,21 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new LocalDate(2012, 2, 29, chrono), f.parseLocalDate("2 29"));
     }
 
+   @Test
     public void testParseLocalDate_weekyear_month_week_2010() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("xxxx-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2010, 1, 4, chrono), f.parseLocalDate("2010-01-01"));
     }
 
+   @Test
     public void testParseLocalDate_weekyear_month_week_2011() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("xxxx-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2011, 1, 3, chrono), f.parseLocalDate("2011-01-01"));
     }
 
+   @Test
     public void testParseLocalDate_weekyear_month_week_2012() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("xxxx-MM-ww").withChronology(chrono);
@@ -448,42 +455,49 @@ public class TestDateTimeFormatter extends TestCase {
 //        assertEquals(new LocalDate(2012, 12, 31, chrono), f.parseLocalDate("2013-01-01"));
 //    }
 
+   @Test
     public void testParseLocalDate_year_month_week_2010() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2010, 1, 4, chrono), f.parseLocalDate("2010-01-01"));
     }
 
+   @Test
     public void testParseLocalDate_year_month_week_2011() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2011, 1, 3, chrono), f.parseLocalDate("2011-01-01"));
     }
 
+   @Test
     public void testParseLocalDate_year_month_week_2012() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2012, 1, 2, chrono), f.parseLocalDate("2012-01-01"));
     }
 
+   @Test
     public void testParseLocalDate_year_month_week_2013() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2012, 12, 31, chrono), f.parseLocalDate("2013-01-01"));  // 2013-01-01 would be better, but this is OK
     }
 
+   @Test
     public void testParseLocalDate_year_month_week_2014() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2013, 12, 30, chrono), f.parseLocalDate("2014-01-01"));  // 2014-01-01 would be better, but this is OK
     }
 
+   @Test
     public void testParseLocalDate_year_month_week_2015() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
         assertEquals(new LocalDate(2014, 12, 29, chrono), f.parseLocalDate("2015-01-01"));  // 2015-01-01 would be better, but this is OK
     }
 
+   @Test
     public void testParseLocalDate_year_month_week_2016() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat.forPattern("yyyy-MM-ww").withChronology(chrono);
@@ -491,6 +505,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseLocalTime_simple() {
         assertEquals(new LocalTime(10, 20, 30), g.parseLocalTime("2004-06-09T10:20:30Z"));
         assertEquals(new LocalTime(10, 20, 30), g.parseLocalTime("2004-06-09T10:20:30+18:00"));
@@ -504,6 +519,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseLocalDateTime_simple() {
         assertEquals(new LocalDateTime(2004, 6, 9, 10, 20, 30), g.parseLocalDateTime("2004-06-09T10:20:30Z"));
         assertEquals(new LocalDateTime(2004, 6, 9, 10, 20, 30), g.parseLocalDateTime("2004-06-09T10:20:30+18:00"));
@@ -516,6 +532,7 @@ public class TestDateTimeFormatter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testParseLocalDateTime_monthDay_feb29() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat
@@ -526,6 +543,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new LocalDateTime(2000, 2, 29, 13, 40, 0, 0, chrono), f.parseLocalDateTime("2 29 13 40"));
     }
 
+   @Test
     public void testParseLocalDateTime_monthDay_withDefaultYear_feb29() {
         Chronology chrono = GJChronology.getInstanceUTC();
         DateTimeFormatter f = DateTimeFormat
@@ -538,6 +556,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseDateTime_simple() {
         DateTime expect = null;
         expect = new DateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -549,6 +568,7 @@ public class TestDateTimeFormatter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testParseDateTime_zone() {
         DateTime expect = null;
         expect = new DateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -561,6 +581,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withZone(PARIS).parseDateTime("2004-06-09T10:20:30Z"));
     }
 
+   @Test
     public void testParseDateTime_zone2() {
         DateTime expect = null;
         expect = new DateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -573,6 +594,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withZone(PARIS).parseDateTime("2004-06-09T06:20:30-04:00"));
     }
 
+   @Test
     public void testParseDateTime_zone3() {
         DateTimeFormatter h = new DateTimeFormatterBuilder()
         .append(ISODateTimeFormat.date())
@@ -591,6 +613,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, h.withZone(PARIS).parseDateTime("2004-06-09T10:20:30"));
     }
 
+   @Test
     public void testParseDateTime_simple_precedence() {
         DateTime expect = null;
         // use correct day of week
@@ -603,6 +626,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, f.parseDateTime("Mon 2004-06-09T10:20:30Z"));
     }
 
+   @Test
     public void testParseDateTime_offsetParsed() {
         DateTime expect = null;
         expect = new DateTime(2004, 6, 9, 10, 20, 30, 0, UTC);
@@ -617,6 +641,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withOffsetParsed().withZone(PARIS).parseDateTime("2004-06-09T10:20:30Z"));
     }
 
+   @Test
     public void testParseDateTime_chrono() {
         DateTime expect = null;
         expect = new DateTime(2004, 6, 9, 12, 20, 30, 0, PARIS);
@@ -633,6 +658,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseMutableDateTime_simple() {
         MutableDateTime expect = null;
         expect = new MutableDateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -644,6 +670,7 @@ public class TestDateTimeFormatter extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testParseMutableDateTime_zone() {
         MutableDateTime expect = null;
         expect = new MutableDateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -656,6 +683,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withZone(PARIS).parseMutableDateTime("2004-06-09T10:20:30Z"));
     }
 
+   @Test
     public void testParseMutableDateTime_zone2() {
         MutableDateTime expect = null;
         expect = new MutableDateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -668,6 +696,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withZone(PARIS).parseMutableDateTime("2004-06-09T06:20:30-04:00"));
     }
 
+   @Test
     public void testParseMutableDateTime_zone3() {
         DateTimeFormatter h = new DateTimeFormatterBuilder()
         .append(ISODateTimeFormat.date())
@@ -686,6 +715,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, h.withZone(PARIS).parseMutableDateTime("2004-06-09T10:20:30"));
     }
 
+   @Test
     public void testParseMutableDateTime_simple_precedence() {
         MutableDateTime expect = null;
         // use correct day of week
@@ -698,6 +728,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, f.parseDateTime("Mon 2004-06-09T10:20:30Z"));
     }
 
+   @Test
     public void testParseMutableDateTime_offsetParsed() {
         MutableDateTime expect = null;
         expect = new MutableDateTime(2004, 6, 9, 10, 20, 30, 0, UTC);
@@ -712,6 +743,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, g.withOffsetParsed().withZone(PARIS).parseMutableDateTime("2004-06-09T10:20:30Z"));
     }
 
+   @Test
     public void testParseMutableDateTime_chrono() {
         MutableDateTime expect = null;
         expect = new MutableDateTime(2004, 6, 9, 12, 20, 30, 0, PARIS);
@@ -728,6 +760,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testParseInto_simple() {
         MutableDateTime expect = null;
         expect = new MutableDateTime(2004, 6, 9, 11, 20, 30, 0, LONDON);
@@ -745,6 +778,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(~13, g.parseInto(result, "XX2004-06-09T", 2));
     }
 
+   @Test
     public void testParseInto_zone() {
         MutableDateTime expect = null;
         MutableDateTime result = null;
@@ -764,6 +798,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+   @Test
     public void testParseInto_zone2() {
         MutableDateTime expect = null;
         MutableDateTime result = null;
@@ -781,6 +816,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+   @Test
     public void testParseInto_zone3() {
         DateTimeFormatter h = new DateTimeFormatterBuilder()
         .append(ISODateTimeFormat.date())
@@ -806,6 +842,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+   @Test
     public void testParseInto_simple_precedence() {
         MutableDateTime expect = null;
         MutableDateTime result = null;
@@ -816,6 +853,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+   @Test
     public void testParseInto_offsetParsed() {
         MutableDateTime expect = null;
         MutableDateTime result = null;
@@ -839,6 +877,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+   @Test
     public void testParseInto_chrono() {
         MutableDateTime expect = null;
         MutableDateTime result = null;
@@ -863,6 +902,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(expect, result);
     }
 
+   @Test
     public void testParseInto_monthOnly() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
         MutableDateTime result = new MutableDateTime(2004, 1, 9, 12, 20, 30, 0, LONDON);
@@ -870,6 +910,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 5, 9, 12, 20, 30, 0, LONDON), result);
     }
 
+   @Test
     public void testParseInto_monthOnly_baseStartYear() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
         MutableDateTime result = new MutableDateTime(2004, 1, 1, 12, 20, 30, 0, TOKYO);
@@ -877,6 +918,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 5, 1, 12, 20, 30, 0, TOKYO), result);
     }
 
+   @Test
     public void testParseInto_monthOnly_parseStartYear() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
         MutableDateTime result = new MutableDateTime(2004, 2, 1, 12, 20, 30, 0, TOKYO);
@@ -884,6 +926,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 1, 1, 12, 20, 30, 0, TOKYO), result);
     }
 
+   @Test
     public void testParseInto_monthOnly_baseEndYear() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
         MutableDateTime result = new MutableDateTime(2004, 12, 31, 12, 20, 30, 0, TOKYO);
@@ -891,6 +934,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 5, 31, 12, 20, 30, 0, TOKYO), result);
    }
 
+   @Test
     public void testParseInto_monthOnly_parseEndYear() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M").withLocale(Locale.UK);
         MutableDateTime result = new MutableDateTime(2004, 1, 31, 12, 20, 30, 0,TOKYO);
@@ -898,6 +942,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 12, 31, 12, 20, 30, 0, TOKYO), result);
     }
 
+   @Test
     public void testParseInto_monthDay_feb29() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M d").withLocale(Locale.UK);
         MutableDateTime result = new MutableDateTime(2004, 1, 9, 12, 20, 30, 0, LONDON);
@@ -905,6 +950,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 2, 29, 12, 20, 30, 0, LONDON), result);
     }
 
+   @Test
     public void testParseInto_monthDay_withDefaultYear_feb29() {
         DateTimeFormatter f = DateTimeFormat.forPattern("M d").withDefaultYear(2012);
         MutableDateTime result = new MutableDateTime(2004, 1, 9, 12, 20, 30, 0, LONDON);
@@ -912,6 +958,7 @@ public class TestDateTimeFormatter extends TestCase {
         assertEquals(new MutableDateTime(2004, 2, 29, 12, 20, 30, 0, LONDON), result);
     }
 
+   @Test
     public void testParseMillis_fractionOfSecondLong() {
         DateTimeFormatter f = new DateTimeFormatterBuilder()
             .appendSecondOfDay(2).appendLiteral('.').appendFractionOfSecond(1, 9)
@@ -922,6 +969,7 @@ public class TestDateTimeFormatter extends TestCase {
 
     //-----------------------------------------------------------------------
     // Ensure time zone name switches properly at the zone DST transition.
+   @Test
     public void testZoneNameNearTransition() {
         DateTime inDST_1  = new DateTime(2005, 10, 30, 1, 0, 0, 0, NEWYORK);
         DateTime inDST_2  = new DateTime(2005, 10, 30, 1, 59, 59, 999, NEWYORK);
@@ -938,6 +986,7 @@ public class TestDateTimeFormatter extends TestCase {
     }
 
     // Ensure time zone name switches properly at the zone DST transition.
+   @Test
     public void testZoneShortNameNearTransition() {
         DateTime inDST_1  = new DateTime(2005, 10, 30, 1, 0, 0, 0, NEWYORK);
         DateTime inDST_2  = new DateTime(2005, 10, 30, 1, 59, 59, 999, NEWYORK);

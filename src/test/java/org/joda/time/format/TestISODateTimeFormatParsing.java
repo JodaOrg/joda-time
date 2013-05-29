@@ -15,39 +15,33 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat parsing.
  *
  * @author Stephen Colebourne
  */
-public class TestISODateTimeFormatParsing extends TestCase {
+public class TestISODateTimeFormatParsing  {
 
     private DateTimeZone originalDateTimeZone = null;
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestISODateTimeFormatParsing.class);
-    }
-
-    public TestISODateTimeFormatParsing(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
         originalLocale = Locale.getDefault();
@@ -56,7 +50,8 @@ public class TestISODateTimeFormatParsing extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
         Locale.setDefault(originalLocale);
@@ -66,6 +61,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_dateParser() {
         DateTimeFormatter parser = ISODateTimeFormat.dateParser();
         assertParse(parser, true, "2006-06-09");
@@ -94,6 +90,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_localDateParser() {
         DateTimeFormatter parser = ISODateTimeFormat.localDateParser();
         assertEquals(DateTimeZone.UTC, parser.getZone());
@@ -123,6 +120,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_dateElementParser() {
         DateTimeFormatter parser = ISODateTimeFormat.dateElementParser();
         assertParse(parser, "2006-06-09", new DateTime(2006, 6, 9, 0, 0, 0, 0));
@@ -154,6 +152,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_timeParser() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.timeParser();
@@ -186,6 +185,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_localTimeParser() {
         DateTimeFormatter parser = ISODateTimeFormat.localTimeParser();
         assertEquals(DateTimeZone.UTC, parser.getZone());
@@ -218,6 +218,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_timeElementParser() {
         DateTimeFormatter parser = ISODateTimeFormat.timeElementParser();
         assertParse(parser, false, "2006-06-09");
@@ -250,6 +251,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_dateTimeParser() {
         DateTimeFormatter parser = ISODateTimeFormat.dateTimeParser();
         assertParse(parser, true, "2006-06-09");
@@ -278,6 +280,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_dateOptionalTimeParser() {
         DateTimeFormatter parser = ISODateTimeFormat.dateOptionalTimeParser();
         assertParse(parser, true, "2006-06-09");
@@ -306,6 +309,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_localDateOptionalTimeParser() {
         DateTimeFormatter parser = ISODateTimeFormat.localDateOptionalTimeParser();
         assertEquals(DateTimeZone.UTC, parser.getZone());
@@ -337,6 +341,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void test_date() {
         DateTimeFormatter parser = ISODateTimeFormat.date();
         assertParse(parser, "2006-02-04", new DateTime(2006, 2, 4, 0, 0, 0, 0));
@@ -351,6 +356,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_time() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.time();
@@ -366,6 +372,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_timeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.timeNoMillis();
@@ -378,6 +385,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_tTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.tTime();
@@ -393,6 +401,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_tTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.tTimeNoMillis();
@@ -405,6 +414,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_dateTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.dateTime();
@@ -430,6 +440,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_dateTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.dateTimeNoMillis();
@@ -452,6 +463,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_ordinalDate() {
         DateTimeFormatter parser = ISODateTimeFormat.ordinalDate();
         assertParse(parser, "2006-123", new DateTime(2006, 1, 1, 0, 0, 0, 0).withDayOfYear(123));
@@ -462,6 +474,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_ordinalDateTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.ordinalDateTime();
@@ -481,6 +494,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_ordinalDateTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.ordinalDateTimeNoMillis();
@@ -497,6 +511,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_weekDate() {
         DateTimeFormatter parser = ISODateTimeFormat.weekDate();
         assertParse(parser, "2006-W27-3", new DateTime(2006, 6, 1, 0, 0, 0, 0).withWeekOfWeekyear(27).withDayOfWeek(3));
@@ -509,6 +524,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_weekDateTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.weekDateTime();
@@ -529,6 +545,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_weekDateTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.weekDateTimeNoMillis();
@@ -548,6 +565,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicDate() {
         DateTimeFormatter parser = ISODateTimeFormat.basicDate();
         assertParse(parser, "20060204", new DateTime(2006, 2, 4, 0, 0, 0, 0));
@@ -558,6 +576,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicTime();
@@ -573,6 +592,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicTimeNoMillis();
@@ -585,6 +605,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicTTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicTTime();
@@ -600,6 +621,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicTTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicTTimeNoMillis();
@@ -612,6 +634,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicDateTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicDateTime();
@@ -634,6 +657,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicDateTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicDateTimeNoMillis();
@@ -653,6 +677,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicOrdinalDate() {
         DateTimeFormatter parser = ISODateTimeFormat.basicOrdinalDate();
         assertParse(parser, "2006123", new DateTime(2006, 1, 1, 0, 0, 0, 0).withDayOfYear(123));
@@ -662,6 +687,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicOrdinalDateTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicOrdinalDateTime();
@@ -683,6 +709,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicOrdinalDateTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicOrdinalDateTimeNoMillis();
@@ -701,6 +728,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicWeekDate() {
         DateTimeFormatter parser = ISODateTimeFormat.basicWeekDate();
         assertParse(parser, "2006W273", new DateTime(2006, 6, 1, 0, 0, 0, 0).withWeekOfWeekyear(27).withDayOfWeek(3));
@@ -710,6 +738,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicWeekDateTime() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicWeekDateTime();
@@ -727,6 +756,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_basicWeekDateTimeNoMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.basicWeekDateTimeNoMillis();
@@ -743,6 +773,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void test_hourMinute() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.hourMinute();
@@ -758,6 +789,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_hourMinuteSecond() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.hourMinuteSecond();
@@ -773,6 +805,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_hourMinuteSecondMillis() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.hourMinuteSecondMillis();
@@ -788,6 +821,7 @@ public class TestISODateTimeFormatParsing extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_hourMinuteSecondFraction() {
         DateTimeZone.setDefault(DateTimeZone.UTC);
         DateTimeFormatter parser = ISODateTimeFormat.hourMinuteSecondFraction();

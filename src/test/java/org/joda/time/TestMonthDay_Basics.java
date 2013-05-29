@@ -15,6 +15,16 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.BuddhistChronology;
+import org.joda.time.chrono.CopticChronology;
+import org.joda.time.chrono.GregorianChronology;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,20 +32,14 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GregorianChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+
 
 /**
  * This class is a Junit unit test for MonthDay. Based on {@link TestYearMonth_Basics} 
  */
-public class TestMonthDay_Basics extends TestCase {
+public class TestMonthDay_Basics  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
@@ -58,31 +62,22 @@ public class TestMonthDay_Basics extends TestCase {
 
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMonthDay_Basics.class);
-    }
-
-    public TestMonthDay_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(LONDON);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGet() {
         MonthDay test = new MonthDay();
         assertEquals(6, test.get(DateTimeFieldType.monthOfYear()));
@@ -97,11 +92,13 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSize() {
         MonthDay test = new MonthDay();
         assertEquals(2, test.size());
     }
 
+   @Test
     public void testGetFieldType() {
         MonthDay test = new MonthDay(COPTIC_PARIS);
         assertSame(DateTimeFieldType.monthOfYear(), test.getFieldType(0));
@@ -115,6 +112,7 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFieldTypes() {
         MonthDay test = new MonthDay(COPTIC_PARIS);
         DateTimeFieldType[] fields = test.getFieldTypes();
@@ -124,6 +122,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertNotSame(test.getFieldTypes(), test.getFieldTypes());
     }
 
+   @Test
     public void testGetField() {
         MonthDay test = new MonthDay(COPTIC_PARIS);
         assertSame(COPTIC_UTC.monthOfYear(), test.getField(0));
@@ -136,6 +135,7 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetFields() {
         MonthDay test = new MonthDay(COPTIC_PARIS);
         DateTimeField[] fields = test.getFields();
@@ -145,6 +145,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertNotSame(test.getFields(), test.getFields());
     }
 
+   @Test
     public void testGetValue() {
         MonthDay test = new MonthDay();
         assertEquals(6, test.getValue(0));
@@ -157,6 +158,7 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IndexOutOfBoundsException ex) {}
     }
 
+   @Test
     public void testGetValues() {
         MonthDay test = new MonthDay();
         int[] values = test.getValues();
@@ -166,6 +168,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertNotSame(test.getValues(), test.getValues());
     }
 
+   @Test
     public void testIsSupported() {
         MonthDay test = new MonthDay(COPTIC_PARIS);
         assertEquals(false, test.isSupported(DateTimeFieldType.year()));
@@ -174,6 +177,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(false, test.isSupported(DateTimeFieldType.hourOfDay()));
     }
 
+   @Test
     public void testEqualsHashCode() {
         MonthDay test1 = new MonthDay(10, 6, COPTIC_PARIS);
         MonthDay test2 = new MonthDay(10, 6, COPTIC_PARIS);
@@ -220,6 +224,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testCompareTo() {
         MonthDay test1 = new MonthDay(6, 6);
         MonthDay test1a = new MonthDay(6, 6);
@@ -263,6 +268,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_MD() {
         MonthDay test1 = new MonthDay(6, 6);
         MonthDay test1a = new MonthDay(6, 6);
@@ -287,6 +293,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_MD() {
         MonthDay test1 = new MonthDay(6, 6);
         MonthDay test1a = new MonthDay(6, 6);
@@ -311,6 +318,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_MD() {
         MonthDay test1 = new MonthDay(6, 6);
         MonthDay test1a = new MonthDay(6, 6);
@@ -335,6 +343,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testWithChronologyRetainFields_Chrono() {
         MonthDay base = new MonthDay(6, 6, COPTIC_PARIS);
         MonthDay test = base.withChronologyRetainFields(BUDDHIST_TOKYO);
@@ -344,12 +353,14 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(BUDDHIST_UTC, test.getChronology());
     }
 
+   @Test
     public void testWithChronologyRetainFields_sameChrono() {
         MonthDay base = new MonthDay(6, 6, COPTIC_PARIS);
         MonthDay test = base.withChronologyRetainFields(COPTIC_TOKYO);
         assertSame(base, test);
     }
 
+   @Test
     public void testWithChronologyRetainFields_nullChrono() {
         MonthDay base = new MonthDay(6, 6, COPTIC_PARIS);
         MonthDay test = base.withChronologyRetainFields(null);
@@ -360,6 +371,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithField() {
         MonthDay test = new MonthDay(9, 6);
         MonthDay result = test.withField(DateTimeFieldType.monthOfYear(), 10);
@@ -368,6 +380,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(new MonthDay(10, 6), result);
     }
 
+   @Test
     public void testWithField_nullField() {
         MonthDay test = new MonthDay(9, 6);
         try {
@@ -376,6 +389,7 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField_unknownField() {
         MonthDay test = new MonthDay(9, 6);
         try {
@@ -384,6 +398,7 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithField_same() {
         MonthDay test = new MonthDay(9, 6);
         MonthDay result = test.withField(DateTimeFieldType.monthOfYear(), 9);
@@ -392,6 +407,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithFieldAdded() {
         MonthDay test = new MonthDay(9, 6);
         MonthDay result = test.withFieldAdded(DurationFieldType.months(), 1);
@@ -400,6 +416,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(new MonthDay(10, 6), result);
     }
 
+   @Test
     public void testWithFieldAdded_nullField_zero() {
         MonthDay test = new MonthDay(9, 6);
         try {
@@ -408,6 +425,7 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_nullField_nonZero() {
         MonthDay test = new MonthDay(9, 6);
         try {
@@ -416,12 +434,14 @@ public class TestMonthDay_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithFieldAdded_zero() {
         MonthDay test = new MonthDay(9, 6);
         MonthDay result = test.withFieldAdded(DurationFieldType.months(), 0);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithFieldAdded_unknownField() {
         MonthDay test = new MonthDay(9, 6);
         try {
@@ -431,6 +451,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_RP() {
         MonthDay test = new MonthDay(6, 5, BuddhistChronology.getInstance());
         MonthDay result = test.plus(new Period(1, 2, 3, 4, 5, 6, 7, 8));
@@ -441,6 +462,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMonths_int() {
         MonthDay test = new MonthDay(6, 5, BuddhistChronology.getInstance());
         MonthDay result = test.plusMonths(1);
@@ -448,6 +470,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusMonths_int_fromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.plusMonths(1);
@@ -455,6 +478,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusMonths_int_negativeFromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.plusMonths(-1);
@@ -462,6 +486,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusMonths_int_endOfMonthAdjust() {
         MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
         MonthDay result = test.plusMonths(1);
@@ -469,6 +494,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusMonths_int_negativeEndOfMonthAdjust() {
         MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
         MonthDay result = test.plusMonths(-1);
@@ -476,12 +502,14 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusMonths_int_same() {
         MonthDay test = new MonthDay(6, 5, ISO_UTC);
         MonthDay result = test.plusMonths(0);
         assertSame(test, result);
     }
 
+   @Test
     public void testPlusMonths_int_wrap() {
         MonthDay test = new MonthDay(6, 5, ISO_UTC);
         MonthDay result = test.plusMonths(10);
@@ -489,6 +517,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusMonths_int_adjust() {
         MonthDay test = new MonthDay(7, 31, ISO_UTC);
         MonthDay result = test.plusMonths(2);
@@ -497,6 +526,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-------------------------------------------------------------------------
+   @Test
     public void testPlusDays_int() {
         MonthDay test = new MonthDay(5, 10, BuddhistChronology.getInstance());
         MonthDay result = test.plusDays(1);
@@ -504,6 +534,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusDays_int_fromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.plusDays(1);
@@ -511,6 +542,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusDays_int_negativeFromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.plusDays(-1);
@@ -518,6 +550,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testPlusDays_same() {
         MonthDay test = new MonthDay(5, 10, BuddhistChronology.getInstance());
         MonthDay result = test.plusDays(0);
@@ -525,6 +558,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_RP() {
         MonthDay test = new MonthDay(6, 5, BuddhistChronology.getInstance());
         MonthDay result = test.minus(new Period(1, 1, 1, 1, 1, 1, 1, 1));
@@ -535,6 +569,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMonths_int() {
         MonthDay test = new MonthDay(6, 5, BuddhistChronology.getInstance());
         MonthDay result = test.minusMonths(1);
@@ -542,6 +577,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusMonths_int_fromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.minusMonths(1);
@@ -549,6 +585,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusMonths_int_negativeFromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.minusMonths(-1);
@@ -556,6 +593,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusMonths_int_endOfMonthAdjust() {
         MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
         MonthDay result = test.minusMonths(1);
@@ -563,6 +601,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusMonths_int_negativeEndOfMonthAdjust() {
         MonthDay test = new MonthDay(3, 31, ISOChronology.getInstanceUTC());
         MonthDay result = test.minusMonths(-1);
@@ -570,12 +609,14 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusMonths_int_same() {
         MonthDay test = new MonthDay(6, 5, ISO_UTC);
         MonthDay result = test.minusMonths(0);
         assertSame(test, result);
     }
 
+   @Test
     public void testMinusMonths_int_wrap() {
         MonthDay test = new MonthDay(6, 5, ISO_UTC);
         MonthDay result = test.minusMonths(10);
@@ -583,6 +624,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusMonths_int_adjust() {
         MonthDay test = new MonthDay(7, 31, ISO_UTC);
         MonthDay result = test.minusMonths(3);
@@ -591,6 +633,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-------------------------------------------------------------------------
+   @Test
     public void testMinusDays_int() {
         MonthDay test = new MonthDay(5, 11, BuddhistChronology.getInstance());
         MonthDay result = test.minusDays(1);
@@ -598,6 +641,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusDays_int_fromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.minusDays(1);
@@ -605,6 +649,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusDays_int_negativeFromLeap() {
         MonthDay test = new MonthDay(2, 29, ISOChronology.getInstanceUTC());
         MonthDay result = test.minusDays(-1);
@@ -612,6 +657,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, result);
     }
 
+   @Test
     public void testMinusDays_same() {
         MonthDay test = new MonthDay(5, 11, BuddhistChronology.getInstance());
         MonthDay result = test.minusDays(0);
@@ -619,6 +665,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testToLocalDate() {
         MonthDay base = new MonthDay(6, 6, COPTIC_UTC);
         LocalDate test = base.toLocalDate(2009);
@@ -630,6 +677,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDateTime_RI() {
         MonthDay base = new MonthDay(6, 6, COPTIC_PARIS);
         DateTime dt = new DateTime(2002, 1, 3, 4, 5, 6, 7);
@@ -642,6 +690,7 @@ public class TestMonthDay_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToDateTime_nullRI() {
         MonthDay base = new MonthDay(6, 6);
         DateTime dt = new DateTime(2002, 1, 3, 4, 5, 6, 7);
@@ -656,6 +705,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithers() {
         MonthDay test = new MonthDay(10, 6);
         check(test.withMonthOfYear(5), 5, 6);
@@ -671,6 +721,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testProperty() {
         MonthDay test = new MonthDay(6, 6);
         assertEquals(test.monthOfYear(), test.property(DateTimeFieldType.monthOfYear()));
@@ -686,6 +737,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         MonthDay test = new MonthDay(5, 6, COPTIC_PARIS);
         
@@ -707,12 +759,14 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         MonthDay test = new MonthDay(5, 6);
         assertEquals("--05-06", test.toString());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String() {
         MonthDay test = new MonthDay(5, 6);
         assertEquals("05 \ufffd\ufffd", test.toString("MM HH"));
@@ -720,6 +774,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_String_Locale() {
         MonthDay test = new MonthDay(5, 6);
         assertEquals("\ufffd 6/5", test.toString("EEE d/M", Locale.ENGLISH));
@@ -730,6 +785,7 @@ public class TestMonthDay_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString_DTFormatter() {
         MonthDay test = new MonthDay(5, 6);
         assertEquals("05 \ufffd\ufffd", test.toString(DateTimeFormat.forPattern("MM HH")));

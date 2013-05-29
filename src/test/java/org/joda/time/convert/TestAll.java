@@ -15,9 +15,8 @@
  */
 package org.joda.time.convert;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
 /**
  * Entry point for all tests in this package.
@@ -26,35 +25,22 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+        TestConverterManager.class,
+        TestConverterSet.class,
 
-    public TestAll(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(TestConverterManager.suite());
-        suite.addTest(TestConverterSet.suite());
-        
-        suite.addTest(TestCalendarConverter.suite());
-        suite.addTest(TestDateConverter.suite());
-        suite.addTest(TestLongConverter.suite());
-        suite.addTest(TestNullConverter.suite());
-        suite.addTest(TestReadableDurationConverter.suite());
-        suite.addTest(TestReadableIntervalConverter.suite());
-        suite.addTest(TestReadableInstantConverter.suite());
-        suite.addTest(TestReadablePartialConverter.suite());
-        suite.addTest(TestReadablePeriodConverter.suite());
-        suite.addTest(TestStringConverter.suite());
-        return suite;
-    }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-
+        TestCalendarConverter.class,
+        TestDateConverter.class,
+        TestLongConverter.class,
+        TestNullConverter.class,
+        TestReadableDurationConverter.class,
+        TestReadableIntervalConverter.class,
+        TestReadableInstantConverter.class,
+        TestReadablePartialConverter.class,
+        TestReadablePeriodConverter.class,
+        TestStringConverter.class
+}
+)
+public class TestAll {
 }

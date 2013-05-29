@@ -15,9 +15,9 @@
  */
 package org.joda.time.format;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
 
 /**
  * Entry point for all tests in this package.
@@ -26,40 +26,26 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
+@RunWith( Suite.class )
+@Suite.SuiteClasses( {
 
-    public TestAll(String testName) {
-        super(testName);
-    }
+        TestDateTimeFormatter.class,
+        TestDateTimeFormat.class,
+        TestDateTimeFormatStyle.class,
+        TestISODateTimeFormat.class,
+        TestISODateTimeFormat_Fields.class,
+        TestISODateTimeFormatParsing.class,
+        TestDateTimeFormatterBuilder.class,
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        
-        suite.addTest(TestDateTimeFormatter.suite());
-        suite.addTest(TestDateTimeFormat.suite());
-        suite.addTest(TestDateTimeFormatStyle.suite());
-        suite.addTest(TestISODateTimeFormat.suite());
-        suite.addTest(TestISODateTimeFormat_Fields.suite());
-        suite.addTest(TestISODateTimeFormatParsing.suite());
-        suite.addTest(TestDateTimeFormatterBuilder.suite());
-        
-        suite.addTest(TestPeriodFormatter.suite());
-        suite.addTest(TestPeriodFormat.suite());
-        suite.addTest(TestISOPeriodFormat.suite());
-        suite.addTest(TestISOPeriodFormatParsing.suite());
-        suite.addTest(TestPeriodFormatParsing.suite());
-        suite.addTest(TestPeriodFormatterBuilder.suite());
+        TestPeriodFormatter.class,
+        TestPeriodFormat.class,
+        TestISOPeriodFormat.class,
+        TestISOPeriodFormatParsing.class,
+        TestPeriodFormatParsing.class,
+        TestPeriodFormatterBuilder.class,
 
-        suite.addTest(TestTextFields.suite());
-
-        return suite;
-    }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
-    }
+        TestTextFields.class
+} )
+public class TestAll {
 
 }

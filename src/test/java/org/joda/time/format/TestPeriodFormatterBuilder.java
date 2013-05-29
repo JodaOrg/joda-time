@@ -15,24 +15,24 @@
  */
 package org.joda.time.format;
 
+import org.joda.time.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.DateTimeConstants;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+
 
 /**
  * This class is a Junit unit test for PeriodFormatterBuilder.
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodFormatterBuilder extends TestCase {
+public class TestPeriodFormatterBuilder  {
     
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);
@@ -59,19 +59,8 @@ public class TestPeriodFormatterBuilder extends TestCase {
     
     private PeriodFormatterBuilder builder;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestPeriodFormatterBuilder.class);
-    }
-
-    public TestPeriodFormatterBuilder(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -83,7 +72,8 @@ public class TestPeriodFormatterBuilder extends TestCase {
         builder = new PeriodFormatterBuilder();
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -94,6 +84,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToFormatterPrinterParser() {
         builder.appendYears();
         assertNotNull(builder.toFormatter());
@@ -102,6 +93,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatYears() {
         PeriodFormatter f = builder.appendYears().toFormatter();
         assertEquals("1", f.print(PERIOD));
@@ -114,6 +106,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatMonths() {
         PeriodFormatter f = builder.appendMonths().toFormatter();
         assertEquals("2", f.print(PERIOD));
@@ -126,6 +119,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatWeeks() {
         PeriodFormatter f = builder.appendWeeks().toFormatter();
         assertEquals("3", f.print(PERIOD));
@@ -138,6 +132,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatDays() {
         PeriodFormatter f = builder.appendDays().toFormatter();
         assertEquals("4", f.print(PERIOD));
@@ -150,6 +145,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatHours() {
         PeriodFormatter f = builder.appendHours().toFormatter();
         assertEquals("5", f.print(PERIOD));
@@ -162,6 +158,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatMinutes() {
         PeriodFormatter f = builder.appendMinutes().toFormatter();
         assertEquals("6", f.print(PERIOD));
@@ -174,6 +171,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSeconds() {
         PeriodFormatter f = builder.appendSeconds().toFormatter();
         assertEquals("7", f.print(PERIOD));
@@ -186,6 +184,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSecondsWithMillis() {
         PeriodFormatter f = builder.appendSecondsWithMillis().toFormatter();
         Period p = new Period(0, 0, 0, 0, 0, 0, 7, 0);
@@ -234,6 +233,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSecondsWithOptionalMillis() {
         PeriodFormatter f = builder.appendSecondsWithOptionalMillis().toFormatter();
         Period p = new Period(0, 0, 0, 0, 0, 0, 7, 0);
@@ -282,6 +282,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatMillis() {
         PeriodFormatter f = builder.appendMillis().toFormatter();
         assertEquals("8", f.print(PERIOD));
@@ -294,6 +295,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatMillis3Digit() {
         PeriodFormatter f = builder.appendMillis3Digit().toFormatter();
         assertEquals("008", f.print(PERIOD));
@@ -307,6 +309,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatPrefixSimple1() {
         PeriodFormatter f = builder.appendPrefix("Years:").appendYears().toFormatter();
         assertEquals("Years:1", f.print(PERIOD));
@@ -319,6 +322,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrefixSimple2() {
         PeriodFormatter f = builder.appendPrefix("Hours:").appendHours().toFormatter();
         assertEquals("Hours:5", f.print(PERIOD));
@@ -331,6 +335,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrefixSimple3() {
         try {
             builder.appendPrefix(null);
@@ -338,6 +343,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormatPrefixPlural1() {
         PeriodFormatter f = builder.appendPrefix("Year:", "Years:").appendYears().toFormatter();
         assertEquals("Year:1", f.print(PERIOD));
@@ -350,6 +356,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrefixPlural2() {
         PeriodFormatter f = builder.appendPrefix("Hour:", "Hours:").appendHours().toFormatter();
         assertEquals("Hours:5", f.print(PERIOD));
@@ -362,6 +369,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrefixPlural3() {
         try {
             builder.appendPrefix(null, "");
@@ -378,6 +386,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatSuffixSimple1() {
         PeriodFormatter f = builder.appendYears().appendSuffix(" years").toFormatter();
         assertEquals("1 years", f.print(PERIOD));
@@ -390,6 +399,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSuffixSimple2() {
         PeriodFormatter f = builder.appendHours().appendSuffix(" hours").toFormatter();
         assertEquals("5 hours", f.print(PERIOD));
@@ -402,6 +412,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSuffixSimple3() {
         try {
             builder.appendSuffix(null);
@@ -409,6 +420,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormatSuffixSimple4() {
         try {
             builder.appendSuffix(" hours");
@@ -416,6 +428,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalStateException ex) {}
     }
 
+   @Test
     public void testFormatSuffixPlural1() {
         PeriodFormatter f = builder.appendYears().appendSuffix(" year", " years").toFormatter();
         assertEquals("1 year", f.print(PERIOD));
@@ -428,6 +441,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSuffixPlural2() {
         PeriodFormatter f = builder.appendHours().appendSuffix(" hour", " hours").toFormatter();
         assertEquals("5 hours", f.print(PERIOD));
@@ -440,6 +454,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(p, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSuffixPlural3() {
         try {
             builder.appendSuffix(null, "");
@@ -455,6 +470,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormatSuffixPlural4() {
         try {
             builder.appendSuffix(" hour", " hours");
@@ -463,6 +479,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatPrefixSuffix() {
         PeriodFormatter f = builder.appendPrefix("P").appendYears().appendSuffix("Y").toFormatter();
         assertEquals("P1Y", f.print(PERIOD));
@@ -476,6 +493,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatSeparatorSimple() {
         PeriodFormatter f = builder.appendYears().appendSeparator("T").appendHours().toFormatter();
         assertEquals("1T5", f.print(PERIOD));
@@ -491,6 +509,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(DATE_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSeparatorComplex() {
         PeriodFormatter f = builder
             .appendYears().appendSeparator(", ", " and ")
@@ -510,6 +529,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(DATE_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSeparatorIfFieldsAfter() {
         PeriodFormatter f = builder.appendYears().appendSeparatorIfFieldsAfter("T").appendHours().toFormatter();
         assertEquals("1T5", f.print(PERIOD));
@@ -525,6 +545,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(DATE_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatSeparatorIfFieldsBefore() {
         PeriodFormatter f = builder.appendYears().appendSeparatorIfFieldsBefore("T").appendHours().toFormatter();
         assertEquals("1T5", f.print(PERIOD));
@@ -541,6 +562,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatLiteral() {
         PeriodFormatter f = builder.appendLiteral("HELLO").toFormatter();
         assertEquals("HELLO", f.print(PERIOD));
@@ -548,6 +570,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(0, f.getPrinter().countFieldsToPrint(PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatAppendFormatter() {
         PeriodFormatter base = builder.appendYears().appendLiteral("-").toFormatter();
         PeriodFormatter f = new PeriodFormatterBuilder().append(base).appendYears().toFormatter();
@@ -556,6 +579,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(2, f.getPrinter().countFieldsToPrint(PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatMinDigits() {
         PeriodFormatter f = new PeriodFormatterBuilder().minimumPrintedDigits(4).appendYears().toFormatter();
         assertEquals("0001", f.print(PERIOD));
@@ -564,6 +588,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatPrintZeroDefault() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
@@ -596,6 +621,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyLast() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
@@ -621,6 +647,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirst() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
@@ -646,6 +673,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(1, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstYears() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -653,6 +681,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstMonths() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -660,6 +689,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstWeeks() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -667,6 +697,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstDays() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -674,6 +705,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstHours() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -681,6 +713,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstMinutes() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -688,6 +721,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroRarelyFirstSeconds() {
         PeriodFormatter f = new PeriodFormatterBuilder()
             .printZeroRarelyFirst()
@@ -695,6 +729,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals("0", f.print(EMPTY_PERIOD));
     }
 
+   @Test
     public void testFormatPrintZeroIfSupported() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
@@ -720,6 +755,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(4, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrintZeroAlways() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
@@ -745,6 +781,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(4, f.getPrinter().countFieldsToPrint(EMPTY_PERIOD, Integer.MAX_VALUE, null));
     }
 
+   @Test
     public void testFormatPrintZeroNever() {
         PeriodFormatter f =
             new PeriodFormatterBuilder()
@@ -771,6 +808,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testFormatAppend_PrinterParser_null_null() {
         try {
             new PeriodFormatterBuilder().append(null, null);
@@ -778,6 +816,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testFormatAppend_PrinterParser_Printer_null() {
         PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
         PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(printer, null).appendMonths();
@@ -792,6 +831,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (UnsupportedOperationException ex) {}
     }
 
+   @Test
     public void testFormatAppend_PrinterParser_null_Parser() {
         PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
         PeriodFormatterBuilder bld = new PeriodFormatterBuilder().append(null, parser).appendMonths();
@@ -806,6 +846,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(new Period(0, 2, 1, 0, 0, 0, 0, 0), f.parsePeriod("1-2"));
     }
 
+   @Test
     public void testFormatAppend_PrinterParser_PrinterParser() {
         PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
         PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
@@ -818,6 +859,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertEquals(new Period(0, 2, 1, 0, 0, 0, 0, 0), f.parsePeriod("1-2"));
     }
 
+   @Test
     public void testFormatAppend_PrinterParser_Printer_null_null_Parser() {
         PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
         PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
@@ -831,6 +873,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         } catch (IllegalStateException ex) {}
     }
 
+   @Test
     public void testFormatAppend_PrinterParserThenClear() {
         PeriodPrinter printer = new PeriodFormatterBuilder().appendYears().appendLiteral("-").toPrinter();
         PeriodParser parser = new PeriodFormatterBuilder().appendWeeks().appendLiteral("-").toParser();
@@ -843,6 +886,7 @@ public class TestPeriodFormatterBuilder extends TestCase {
         assertNotNull(bld.toParser());
     }
 
+   @Test
     public void testBug2495455() {
         PeriodFormatter pfmt1 = new PeriodFormatterBuilder()
             .appendLiteral("P")

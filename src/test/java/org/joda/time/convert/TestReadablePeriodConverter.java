@@ -15,28 +15,26 @@
  */
 package org.joda.time.convert;
 
+import org.joda.time.*;
+import org.joda.time.chrono.ISOChronology;
+import org.joda.time.chrono.JulianChronology;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
 
-import org.joda.time.Chronology;
-import org.joda.time.DateTimeZone;
-import org.joda.time.PeriodType;
-import org.joda.time.MutablePeriod;
-import org.joda.time.ReadablePeriod;
-import org.joda.time.Period;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.JulianChronology;
+
 
 /**
  * This class is a Junit unit test for ReadablePeriodConverter.
  *
  * @author Stephen Colebourne
  */
-public class TestReadablePeriodConverter extends TestCase {
+public class TestReadablePeriodConverter  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
@@ -46,24 +44,14 @@ public class TestReadablePeriodConverter extends TestCase {
     
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestReadablePeriodConverter.class);
-    }
-
-    public TestReadablePeriodConverter(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         JULIAN = JulianChronology.getInstance();
         ISO = ISOChronology.getInstance();
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSingleton() throws Exception {
         Class cls = ReadablePeriodConverter.class;
         assertEquals(false, Modifier.isPublic(cls.getModifiers()));
@@ -81,11 +69,13 @@ public class TestReadablePeriodConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSupportedType() throws Exception {
         assertEquals(ReadablePeriod.class, ReadablePeriodConverter.INSTANCE.getSupportedType());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetPeriodType_Object() throws Exception {
         assertEquals(PeriodType.standard(),
             ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.standard())));
@@ -93,6 +83,7 @@ public class TestReadablePeriodConverter extends TestCase {
             ReadablePeriodConverter.INSTANCE.getPeriodType(new Period(123L, PeriodType.yearMonthDayTime())));
     }
 
+   @Test
     public void testSetInto_Object() throws Exception {
         MutablePeriod m = new MutablePeriod(PeriodType.yearMonthDayTime());
         ReadablePeriodConverter.INSTANCE.setInto(m, new Period(0, 0, 0, 3, 0, 4, 0, 5), null);
@@ -107,6 +98,7 @@ public class TestReadablePeriodConverter extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         assertEquals("Converter[org.joda.time.ReadablePeriod]", ReadablePeriodConverter.INSTANCE.toString());
     }

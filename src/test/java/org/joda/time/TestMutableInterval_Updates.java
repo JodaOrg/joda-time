@@ -15,21 +15,26 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.AbstractInterval;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
-import org.joda.time.base.AbstractInterval;
-import org.joda.time.chrono.ISOChronology;
+
 
 /**
  * This class is a Junit unit test for Instant.
  *
  * @author Stephen Colebourne
  */
-public class TestMutableInterval_Updates extends TestCase {
+public class TestMutableInterval_Updates  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -65,19 +70,8 @@ public class TestMutableInterval_Updates extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestMutableInterval_Updates.class);
-    }
-
-    public TestMutableInterval_Updates(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -87,7 +81,8 @@ public class TestMutableInterval_Updates extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -98,6 +93,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -105,6 +101,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetInterval_long_long1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setInterval(TEST_TIME1 - 1, TEST_TIME2 + 1);
@@ -112,6 +109,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
+   @Test
     public void testSetInterval_long_long2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -121,6 +119,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetInterval_RI_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setInterval(new Instant(TEST_TIME1 - 1), new Instant(TEST_TIME2 + 1));
@@ -128,6 +127,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
+   @Test
     public void testSetInterval_RI_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -136,6 +136,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetInterval_RI_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setInterval(null, new Instant(TEST_TIME2 + 1));
@@ -143,6 +144,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
+   @Test
     public void testSetInterval_RI_RI4() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setInterval(new Instant(TEST_TIME1 - 1), null);
@@ -150,6 +152,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME_NOW, test.getEndMillis());
     }
 
+   @Test
     public void testSetInterval_RI_RI5() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setInterval(null, null);
@@ -158,6 +161,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetInterval_RInterval1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setInterval(new Interval(TEST_TIME1 - 1, TEST_TIME2 + 1));
@@ -165,6 +169,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
+   @Test
     public void testSetInterval_RInterval2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -185,6 +190,7 @@ public class TestMutableInterval_Updates extends TestCase {
         }
     }
 
+   @Test
     public void testSetInterval_RInterval3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -194,6 +200,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testSetStartMillis_long1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setStartMillis(TEST_TIME1 - 1);
@@ -201,6 +208,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
 
+   @Test
     public void testSetStartMillis_long2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -210,6 +218,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetStart_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setStart(new Instant(TEST_TIME1 - 1));
@@ -217,6 +226,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
 
+   @Test
     public void testSetStart_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -225,6 +235,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetStart_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setStart(null);
@@ -233,6 +244,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetEndMillis_long1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setEndMillis(TEST_TIME2 + 1);
@@ -240,6 +252,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
+   @Test
     public void testSetEndMillis_long2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -249,6 +262,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetEnd_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setEnd(new Instant(TEST_TIME2 + 1));
@@ -256,6 +270,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2 + 1, test.getEndMillis());
     }
 
+   @Test
     public void testSetEnd_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -264,6 +279,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetEnd_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setEnd(null);
@@ -272,6 +288,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetDurationAfterStart_long1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setDurationAfterStart(123L);
@@ -279,6 +296,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME1 + 123L, test.getEndMillis());
     }
 
+   @Test
     public void testSeDurationAfterStart_long2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -288,6 +306,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetDurationAfterStart_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setDurationAfterStart(new Duration(123L));
@@ -295,6 +314,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME1 + 123L, test.getEndMillis());
     }
 
+   @Test
     public void testSeDurationAfterStart_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -303,6 +323,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetDurationAfterStart_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setDurationAfterStart(null);
@@ -311,6 +332,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetDurationBeforeEnd_long1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setDurationBeforeEnd(123L);
@@ -318,6 +340,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
 
+   @Test
     public void testSeDurationBeforeEnd_long2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -327,6 +350,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetDurationBeforeEnd_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setDurationBeforeEnd(new Duration(123L));
@@ -334,6 +358,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
 
+   @Test
     public void testSeDurationBeforeEnd_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -342,6 +367,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetDurationBeforeEnd_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setDurationBeforeEnd(null);
@@ -350,6 +376,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetPeriodAfterStart_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setPeriodAfterStart(new Period(123L));
@@ -357,6 +384,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME1 + 123L, test.getEndMillis());
     }
 
+   @Test
     public void testSePeriodAfterStart_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -365,6 +393,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetPeriodAfterStart_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setPeriodAfterStart(null);
@@ -373,6 +402,7 @@ public class TestMutableInterval_Updates extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetPeriodBeforeEnd_RI1() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setPeriodBeforeEnd(new Period(123L));
@@ -380,6 +410,7 @@ public class TestMutableInterval_Updates extends TestCase {
         assertEquals(TEST_TIME2, test.getEndMillis());
     }
 
+   @Test
     public void testSePeriodBeforeEnd_RI2() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         try {
@@ -388,6 +419,7 @@ public class TestMutableInterval_Updates extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testSetPeriodBeforeEnd_RI3() {
         MutableInterval test = new MutableInterval(TEST_TIME1, TEST_TIME2);
         test.setPeriodBeforeEnd(null);

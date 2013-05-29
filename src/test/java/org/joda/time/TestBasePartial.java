@@ -15,17 +15,22 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.base.BasePartial;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
  * @author Stephen Colebourne
  */
-public class TestBasePartial extends TestCase {
+public class TestBasePartial  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     
@@ -44,31 +49,22 @@ public class TestBasePartial extends TestCase {
         
     private DateTimeZone zone = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestBasePartial.class);
-    }
-
-    public TestBasePartial(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSetMethods() throws Throwable {
         MockPartial mock = new MockPartial();
         assertEquals(1970, mock.getYear());

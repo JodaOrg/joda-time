@@ -15,21 +15,25 @@
  */
 package org.joda.time;
 
-import java.util.Locale;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import java.util.Locale;
+
+import static org.junit.Assert.*;
+
+
 
 /**
  * This class is a Junit unit test for YearMonthDay.
  *
  * @author Stephen Colebourne
  */
-public class TestYearMonthDay_Properties extends TestCase {
+public class TestYearMonthDay_Properties  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);
@@ -51,19 +55,8 @@ public class TestYearMonthDay_Properties extends TestCase {
 
     private Locale systemDefaultLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestYearMonthDay_Properties.class);
-    }
-
-    public TestYearMonthDay_Properties(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         zone = DateTimeZone.getDefault();
         DateTimeZone.setDefault(DateTimeZone.UTC);
@@ -71,7 +64,8 @@ public class TestYearMonthDay_Properties extends TestCase {
         Locale.setDefault(Locale.ENGLISH);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(zone);
         zone = null;
@@ -80,6 +74,7 @@ public class TestYearMonthDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertSame(test.getChronology().year(), test.year().getField());
@@ -99,6 +94,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(9, test.year().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertEquals(-292275054, test.year().getMinimumValue());
@@ -107,6 +103,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(292278993, test.year().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyAddYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.year().addToCopy(9);
@@ -138,6 +135,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(test, 1972, 6, 9);
     }
 
+   @Test
     public void testPropertyAddWrapFieldYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.year().addWrapFieldToCopy(9);
@@ -154,6 +152,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 292278993, 6, 9);
     }
 
+   @Test
     public void testPropertySetYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.year().setCopy(12);
@@ -161,6 +160,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 12, 6, 9);
     }
 
+   @Test
     public void testPropertySetTextYear() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.year().setCopy("12");
@@ -168,6 +168,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 12, 6, 9);
     }
 
+   @Test
     public void testPropertyCompareToYear() {
         YearMonthDay test1 = new YearMonthDay(TEST_TIME1);
         YearMonthDay test2 = new YearMonthDay(TEST_TIME2);
@@ -191,6 +192,7 @@ public class TestYearMonthDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertSame(test.getChronology().monthOfYear(), test.monthOfYear().getField());
@@ -213,6 +215,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals("juil.", test.monthOfYear().getAsShortText(Locale.FRENCH));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertEquals(1, test.monthOfYear().getMinimumValue());
@@ -221,6 +224,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(12, test.monthOfYear().getMaximumValueOverall());
     }
 
+   @Test
     public void testPropertyAddMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.monthOfYear().addToCopy(6);
@@ -251,6 +255,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1971, 2, 28);
     }
 
+   @Test
     public void testPropertyAddWrapFieldMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.monthOfYear().addWrapFieldToCopy(4);
@@ -278,6 +283,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1971, 2, 28);
     }
 
+   @Test
     public void testPropertySetMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.monthOfYear().setCopy(12);
@@ -298,6 +304,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.monthOfYear().setCopy("12");
@@ -313,6 +320,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1972, 12, 9);
     }
 
+   @Test
     public void testPropertyCompareToMonth() {
         YearMonthDay test1 = new YearMonthDay(TEST_TIME1);
         YearMonthDay test2 = new YearMonthDay(TEST_TIME2);
@@ -336,6 +344,7 @@ public class TestYearMonthDay_Properties extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPropertyGetDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertSame(test.getChronology().dayOfMonth(), test.dayOfMonth().getField());
@@ -355,6 +364,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(2, test.dayOfMonth().getMaximumShortTextLength(null));
     }
 
+   @Test
     public void testPropertyGetMaxMinValuesDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         assertEquals(1, test.dayOfMonth().getMinimumValue());
@@ -369,6 +379,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(28, test.dayOfMonth().getMaximumValue());
     }
 
+   @Test
     public void testPropertyAddDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.dayOfMonth().addToCopy(9);
@@ -406,6 +417,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1971, 12, 31);
     }
 
+   @Test
     public void testPropertyAddWrapFieldDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.dayOfMonth().addWrapFieldToCopy(21);
@@ -432,6 +444,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1972, 7, 28);
     }
 
+   @Test
     public void testPropertySetDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.dayOfMonth().setCopy(12);
@@ -448,6 +461,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertySetTextDay() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.dayOfMonth().setCopy("12");
@@ -455,6 +469,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1972, 6, 12);
     }
 
+   @Test
     public void testPropertyWithMaximumValueDayOfMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.dayOfMonth().withMaximumValue();
@@ -462,6 +477,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1972, 6, 30);
     }
 
+   @Test
     public void testPropertyWithMinimumValueDayOfMonth() {
         YearMonthDay test = new YearMonthDay(1972, 6, 9);
         YearMonthDay copy = test.dayOfMonth().withMinimumValue();
@@ -469,6 +485,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         check(copy, 1972, 6, 1);
     }
 
+   @Test
     public void testPropertyCompareToDay() {
         YearMonthDay test1 = new YearMonthDay(TEST_TIME1);
         YearMonthDay test2 = new YearMonthDay(TEST_TIME2);
@@ -491,6 +508,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testPropertyEquals() {
         YearMonthDay test1 = new YearMonthDay(2005, 11, 8);
         YearMonthDay test2 = new YearMonthDay(2005, 11, 9);
@@ -516,6 +534,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(false, test1.dayOfMonth().equals(test3.dayOfMonth()));
     }
 
+   @Test
     public void testPropertyHashCode() {
         YearMonthDay test1 = new YearMonthDay(2005, 11, 8);
         YearMonthDay test2 = new YearMonthDay(2005, 11, 9);
@@ -525,6 +544,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(true, test1.monthOfYear().hashCode() == test2.monthOfYear().hashCode());
     }
 
+   @Test
     public void testPropertyEqualsHashCodeLenient() {
         YearMonthDay test1 = new YearMonthDay(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
         YearMonthDay test2 = new YearMonthDay(1970, 6, 9, LenientChronology.getInstance(COPTIC_PARIS));
@@ -537,6 +557,7 @@ public class TestYearMonthDay_Properties extends TestCase {
         assertEquals(true, test2.dayOfMonth().hashCode() == test2.dayOfMonth().hashCode());
     }
 
+   @Test
     public void testPropertyEqualsHashCodeStrict() {
         YearMonthDay test1 = new YearMonthDay(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));
         YearMonthDay test2 = new YearMonthDay(1970, 6, 9, StrictChronology.getInstance(COPTIC_PARIS));

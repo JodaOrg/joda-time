@@ -15,43 +15,27 @@
  */
 package org.joda.time;
 
+import org.joda.time.chrono.CopticChronology;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.chrono.CopticChronology;
+
 
 /**
  * This class is a Junit unit test for Chronology.
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeFieldType extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDateTimeFieldType.class);
-    }
-
-    public TestDateTimeFieldType(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
+public class TestDateTimeFieldType  {
     //-----------------------------------------------------------------------
+   @Test
     public void test_era() throws Exception {
         assertEquals(DateTimeFieldType.era(), DateTimeFieldType.era());
         assertEquals("era", DateTimeFieldType.era().getName());
@@ -62,6 +46,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.era());
     }
 
+   @Test
     public void test_centuryOfEra() throws Exception {
         assertEquals(DateTimeFieldType.centuryOfEra(), DateTimeFieldType.centuryOfEra());
         assertEquals("centuryOfEra", DateTimeFieldType.centuryOfEra().getName());
@@ -72,6 +57,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.centuryOfEra());
     }
 
+   @Test
     public void test_yearOfCentury() throws Exception {
         assertEquals(DateTimeFieldType.yearOfCentury(), DateTimeFieldType.yearOfCentury());
         assertEquals("yearOfCentury", DateTimeFieldType.yearOfCentury().getName());
@@ -82,6 +68,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.yearOfCentury());
     }
 
+   @Test
     public void test_yearOfEra() throws Exception {
         assertEquals(DateTimeFieldType.yearOfEra(), DateTimeFieldType.yearOfEra());
         assertEquals("yearOfEra", DateTimeFieldType.yearOfEra().getName());
@@ -92,6 +79,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.yearOfEra());
     }
 
+   @Test
     public void test_year() throws Exception {
         assertEquals(DateTimeFieldType.year(), DateTimeFieldType.year());
         assertEquals("year", DateTimeFieldType.year().getName());
@@ -102,6 +90,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.year());
     }
 
+   @Test
     public void test_monthOfYear() throws Exception {
         assertEquals(DateTimeFieldType.monthOfYear(), DateTimeFieldType.monthOfYear());
         assertEquals("monthOfYear", DateTimeFieldType.monthOfYear().getName());
@@ -112,6 +101,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.monthOfYear());
     }
 
+   @Test
     public void test_weekyearOfCentury() throws Exception {
         assertEquals(DateTimeFieldType.weekyearOfCentury(), DateTimeFieldType.weekyearOfCentury());
         assertEquals("weekyearOfCentury", DateTimeFieldType.weekyearOfCentury().getName());
@@ -122,6 +112,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.weekyearOfCentury());
     }
 
+   @Test
     public void test_weekyear() throws Exception {
         assertEquals(DateTimeFieldType.weekyear(), DateTimeFieldType.weekyear());
         assertEquals("weekyear", DateTimeFieldType.weekyear().getName());
@@ -132,6 +123,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.weekyear());
     }
 
+   @Test
     public void test_weekOfWeekyear() throws Exception {
         assertEquals(DateTimeFieldType.weekOfWeekyear(), DateTimeFieldType.weekOfWeekyear());
         assertEquals("weekOfWeekyear", DateTimeFieldType.weekOfWeekyear().getName());
@@ -142,6 +134,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.weekOfWeekyear());
     }
 
+   @Test
     public void test_dayOfYear() throws Exception {
         assertEquals(DateTimeFieldType.dayOfYear(), DateTimeFieldType.dayOfYear());
         assertEquals("dayOfYear", DateTimeFieldType.dayOfYear().getName());
@@ -152,6 +145,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.dayOfYear());
     }
 
+   @Test
     public void test_dayOfMonth() throws Exception {
         assertEquals(DateTimeFieldType.dayOfMonth(), DateTimeFieldType.dayOfMonth());
         assertEquals("dayOfMonth", DateTimeFieldType.dayOfMonth().getName());
@@ -162,6 +156,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.dayOfMonth());
     }
 
+   @Test
     public void test_dayOfWeek() throws Exception {
         assertEquals(DateTimeFieldType.dayOfWeek(), DateTimeFieldType.dayOfWeek());
         assertEquals("dayOfWeek", DateTimeFieldType.dayOfWeek().getName());
@@ -172,6 +167,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.dayOfWeek());
     }
 
+   @Test
     public void test_halfdayOfDay() throws Exception {
         assertEquals(DateTimeFieldType.halfdayOfDay(), DateTimeFieldType.halfdayOfDay());
         assertEquals("halfdayOfDay", DateTimeFieldType.halfdayOfDay().getName());
@@ -182,6 +178,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.halfdayOfDay());
     }
 
+   @Test
     public void test_clockhourOfDay() throws Exception {
         assertEquals(DateTimeFieldType.clockhourOfDay(), DateTimeFieldType.clockhourOfDay());
         assertEquals("clockhourOfDay", DateTimeFieldType.clockhourOfDay().getName());
@@ -192,6 +189,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.clockhourOfDay());
     }
 
+   @Test
     public void test_clockhourOfHalfday() throws Exception {
         assertEquals(DateTimeFieldType.clockhourOfHalfday(), DateTimeFieldType.clockhourOfHalfday());
         assertEquals("clockhourOfHalfday", DateTimeFieldType.clockhourOfHalfday().getName());
@@ -202,6 +200,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.clockhourOfHalfday());
     }
 
+   @Test
     public void test_hourOfHalfday() throws Exception {
         assertEquals(DateTimeFieldType.hourOfHalfday(), DateTimeFieldType.hourOfHalfday());
         assertEquals("hourOfHalfday", DateTimeFieldType.hourOfHalfday().getName());
@@ -212,6 +211,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.hourOfHalfday());
     }
 
+   @Test
     public void test_hourOfDay() throws Exception {
         assertEquals(DateTimeFieldType.hourOfDay(), DateTimeFieldType.hourOfDay());
         assertEquals("hourOfDay", DateTimeFieldType.hourOfDay().getName());
@@ -222,6 +222,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.hourOfDay());
     }
 
+   @Test
     public void test_minuteOfDay() throws Exception {
         assertEquals(DateTimeFieldType.minuteOfDay(), DateTimeFieldType.minuteOfDay());
         assertEquals("minuteOfDay", DateTimeFieldType.minuteOfDay().getName());
@@ -232,6 +233,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.minuteOfDay());
     }
 
+   @Test
     public void test_minuteOfHour() throws Exception {
         assertEquals(DateTimeFieldType.minuteOfHour(), DateTimeFieldType.minuteOfHour());
         assertEquals("minuteOfHour", DateTimeFieldType.minuteOfHour().getName());
@@ -242,6 +244,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.minuteOfHour());
     }
 
+   @Test
     public void test_secondOfDay() throws Exception {
         assertEquals(DateTimeFieldType.secondOfDay(), DateTimeFieldType.secondOfDay());
         assertEquals("secondOfDay", DateTimeFieldType.secondOfDay().getName());
@@ -252,6 +255,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.secondOfDay());
     }
 
+   @Test
     public void test_secondOfMinute() throws Exception {
         assertEquals(DateTimeFieldType.secondOfMinute(), DateTimeFieldType.secondOfMinute());
         assertEquals("secondOfMinute", DateTimeFieldType.secondOfMinute().getName());
@@ -262,6 +266,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.secondOfMinute());
     }
 
+   @Test
     public void test_millisOfDay() throws Exception {
         assertEquals(DateTimeFieldType.millisOfDay(), DateTimeFieldType.millisOfDay());
         assertEquals("millisOfDay", DateTimeFieldType.millisOfDay().getName());
@@ -272,6 +277,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.millisOfDay());
     }
 
+   @Test
     public void test_millisOfSecond() throws Exception {
         assertEquals(DateTimeFieldType.millisOfSecond(), DateTimeFieldType.millisOfSecond());
         assertEquals("millisOfSecond", DateTimeFieldType.millisOfSecond().getName());
@@ -282,6 +288,7 @@ public class TestDateTimeFieldType extends TestCase {
         assertSerialization(DateTimeFieldType.millisOfSecond());
     }
 
+   @Test
     public void test_other() throws Exception {
         assertEquals(1, DateTimeFieldType.class.getDeclaredClasses().length);
         Class cls = DateTimeFieldType.class.getDeclaredClasses()[0];

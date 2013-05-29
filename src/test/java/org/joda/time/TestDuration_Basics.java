@@ -15,6 +15,13 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.AbstractDuration;
+import org.joda.time.base.BaseDuration;
+import org.joda.time.chrono.ISOChronology;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,19 +29,16 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.base.AbstractDuration;
-import org.joda.time.base.BaseDuration;
-import org.joda.time.chrono.ISOChronology;
+
 
 /**
  * This class is a Junit unit test for Duration.
  *
  * @author Stephen Colebourne
  */
-public class TestDuration_Basics extends TestCase {
+public class TestDuration_Basics  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -69,19 +73,8 @@ public class TestDuration_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestDuration_Basics.class);
-    }
-
-    public TestDuration_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -91,7 +84,8 @@ public class TestDuration_Basics extends TestCase {
         Locale.setDefault(Locale.UK);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -102,6 +96,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -109,6 +104,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMillis() {
         Duration test = new Duration(0L);
         assertEquals(0, test.getMillis());
@@ -117,6 +113,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(1234567890L, test.getMillis());
     }
 
+   @Test
     public void testEqualsHashCode() {
         Duration test1 = new Duration(123L);
         Duration test2 = new Duration(123L);
@@ -143,7 +140,7 @@ public class TestDuration_Basics extends TestCase {
     class MockDuration extends AbstractDuration {
         private final long iValue;
         public MockDuration(long value) {
-            super();
+
             iValue = value;
         }
         public long getMillis() {
@@ -151,6 +148,7 @@ public class TestDuration_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testCompareTo() {
         Duration test1 = new Duration(123L);
         Duration test1a = new Duration(123L);
@@ -176,6 +174,7 @@ public class TestDuration_Basics extends TestCase {
 //        } catch (ClassCastException ex) {}
     }
 
+   @Test
     public void testIsEqual() {
         Duration test1 = new Duration(123L);
         Duration test1a = new Duration(123L);
@@ -194,6 +193,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(true, new Duration(0L).isEqual(null));
     }
     
+   @Test
     public void testIsBefore() {
         Duration test1 = new Duration(123L);
         Duration test1a = new Duration(123L);
@@ -212,6 +212,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(false, new Duration(0L).isShorterThan(null));
     }
     
+   @Test
     public void testIsAfter() {
         Duration test1 = new Duration(123L);
         Duration test1a = new Duration(123L);
@@ -231,6 +232,7 @@ public class TestDuration_Basics extends TestCase {
     }
     
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Duration test = new Duration(123L);
         
@@ -249,6 +251,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetStandardSeconds() {
         Duration test = new Duration(0L);
         assertEquals(0, test.getStandardSeconds());
@@ -273,6 +276,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         long length = (365L + 2L * 30L + 3L * 7L + 4L) * DateTimeConstants.MILLIS_PER_DAY +
             5L * DateTimeConstants.MILLIS_PER_HOUR +
@@ -293,12 +297,14 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToDuration1() {
         Duration test = new Duration(123L);
         Duration result = test.toDuration();
         assertSame(test, result);
     }
     
+   @Test
     public void testToDuration2() {
         MockDuration test = new MockDuration(123L);
         Duration result = test.toDuration();
@@ -307,6 +313,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardDays() {
         Duration test = new Duration(0L);
         assertEquals(Days.days(0), test.toStandardDays());
@@ -330,6 +337,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(Days.days(-1), test.toStandardDays());
     }
 
+   @Test
     public void testToStandardDays_overflow() {
         Duration test = new Duration((((long) Integer.MAX_VALUE) + 1) * 24L * 60L * 60000L);
         try {
@@ -341,6 +349,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardHours() {
         Duration test = new Duration(0L);
         assertEquals(Hours.hours(0), test.toStandardHours());
@@ -364,6 +373,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(Hours.hours(-1), test.toStandardHours());
     }
 
+   @Test
     public void testToStandardHours_overflow() {
         Duration test = new Duration(((long) Integer.MAX_VALUE) * 3600000L + 3600000L);
         try {
@@ -375,6 +385,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardMinutes() {
         Duration test = new Duration(0L);
         assertEquals(Minutes.minutes(0), test.toStandardMinutes());
@@ -398,6 +409,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(Minutes.minutes(-1), test.toStandardMinutes());
     }
 
+   @Test
     public void testToStandardMinutes_overflow() {
         Duration test = new Duration(((long) Integer.MAX_VALUE) * 60000L + 60000L);
         try {
@@ -409,6 +421,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToStandardSeconds() {
         Duration test = new Duration(0L);
         assertEquals(Seconds.seconds(0), test.toStandardSeconds());
@@ -432,6 +445,7 @@ public class TestDuration_Basics extends TestCase {
         assertEquals(Seconds.seconds(-1), test.toStandardSeconds());
     }
 
+   @Test
     public void testToStandardSeconds_overflow() {
         Duration test = new Duration(((long) Integer.MAX_VALUE) * 1000L + 1000L);
         try {
@@ -443,6 +457,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod() {
         DateTimeZone zone = DateTimeZone.getDefault();
         try {
@@ -467,6 +482,7 @@ public class TestDuration_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testToPeriod_fixedZone() throws Throwable {
         DateTimeZone zone = DateTimeZone.getDefault();
         try {
@@ -492,6 +508,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod_PeriodType() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -505,6 +522,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod_Chronology() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -518,6 +536,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod_PeriodType_Chronology() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -531,6 +550,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriodFrom() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -544,6 +564,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriodFrom_PeriodType() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -557,6 +578,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriodTo() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -570,6 +592,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriodTo_PeriodType() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -583,6 +606,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToIntervalFrom() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -596,6 +620,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToIntervalTo() {
         long length =
             (4L + (3L * 7L) + (2L * 30L) + 365L) * DateTimeConstants.MILLIS_PER_DAY +
@@ -609,12 +634,14 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithMillis1() {
         Duration test = new Duration(123L);
         Duration result = test.withMillis(123L);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithMillis2() {
         Duration test = new Duration(123L);
         Duration result = test.withMillis(1234567890L);
@@ -622,30 +649,35 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_long_int1() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(8000L, 1);
         assertEquals(8123L, result.getMillis());
     }
 
+   @Test
     public void testWithDurationAdded_long_int2() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(8000L, 2);
         assertEquals(16123L, result.getMillis());
     }
 
+   @Test
     public void testWithDurationAdded_long_int3() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(8000L, -1);
         assertEquals((123L - 8000L), result.getMillis());
     }
 
+   @Test
     public void testWithDurationAdded_long_int4() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(0L, 1);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithDurationAdded_long_int5() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(8000L, 0);
@@ -653,12 +685,14 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_long1() {
         Duration test = new Duration(123L);
         Duration result = test.plus(8000L);
         assertEquals(8123L, result.getMillis());
     }
 
+   @Test
     public void testPlus_long2() {
         Duration test = new Duration(123L);
         Duration result = test.plus(0L);
@@ -666,12 +700,14 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_long1() {
         Duration test = new Duration(123L);
         Duration result = test.minus(8000L);
         assertEquals(123L - 8000L, result.getMillis());
     }
 
+   @Test
     public void testMinus_long2() {
         Duration test = new Duration(123L);
         Duration result = test.minus(0L);
@@ -679,36 +715,42 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAdded_RD_int1() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(8000L), 1);
         assertEquals(8123L, result.getMillis());
     }
 
+   @Test
     public void testWithDurationAdded_RD_int2() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(8000L), 2);
         assertEquals(16123L, result.getMillis());
     }
 
+   @Test
     public void testWithDurationAdded_RD_int3() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(8000L), -1);
         assertEquals((123L - 8000L), result.getMillis());
     }
 
+   @Test
     public void testWithDurationAdded_RD_int4() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(0L), 1);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithDurationAdded_RD_int5() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(new Duration(8000L), 0);
         assertSame(test, result);
     }
 
+   @Test
     public void testWithDurationAdded_RD_int6() {
         Duration test = new Duration(123L);
         Duration result = test.withDurationAdded(null, 0);
@@ -716,18 +758,21 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testPlus_RD1() {
         Duration test = new Duration(123L);
         Duration result = test.plus(new Duration(8000L));
         assertEquals(8123L, result.getMillis());
     }
 
+   @Test
     public void testPlus_RD2() {
         Duration test = new Duration(123L);
         Duration result = test.plus(new Duration(0L));
         assertSame(test, result);
     }
 
+   @Test
     public void testPlus_RD3() {
         Duration test = new Duration(123L);
         Duration result = test.plus(null);
@@ -735,18 +780,21 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMinus_RD1() {
         Duration test = new Duration(123L);
         Duration result = test.minus(new Duration(8000L));
         assertEquals(123L - 8000L, result.getMillis());
     }
 
+   @Test
     public void testMinus_RD2() {
         Duration test = new Duration(123L);
         Duration result = test.minus(new Duration(0L));
         assertSame(test, result);
     }
 
+   @Test
     public void testMinus_RD3() {
         Duration test = new Duration(123L);
         Duration result = test.minus(null);
@@ -754,6 +802,7 @@ public class TestDuration_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testMutableDuration() {
         // no MutableDuration, so...
         MockMutableDuration test = new MockMutableDuration(123L);

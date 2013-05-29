@@ -15,6 +15,12 @@
  */
 package org.joda.time;
 
+import org.joda.time.base.AbstractInterval;
+import org.joda.time.chrono.*;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
@@ -22,22 +28,16 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.Assert.*;
 
-import org.joda.time.base.AbstractInterval;
-import org.joda.time.chrono.BuddhistChronology;
-import org.joda.time.chrono.CopticChronology;
-import org.joda.time.chrono.GJChronology;
-import org.joda.time.chrono.ISOChronology;
-import org.joda.time.chrono.LenientChronology;
+
 
 /**
  * This class is a Junit unit test for Instant.
  *
  * @author Stephen Colebourne
  */
-public class TestInterval_Basics extends TestCase {
+public class TestInterval_Basics  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 
@@ -77,19 +77,8 @@ public class TestInterval_Basics extends TestCase {
     private TimeZone originalTimeZone = null;
     private Locale originalLocale = null;
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestInterval_Basics.class);
-    }
-
-    public TestInterval_Basics(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
+   @Before
+   public void setUp() throws Exception {
         DateTimeUtils.setCurrentMillisFixed(TEST_TIME_NOW);
         originalDateTimeZone = DateTimeZone.getDefault();
         originalTimeZone = TimeZone.getDefault();
@@ -101,7 +90,8 @@ public class TestInterval_Basics extends TestCase {
         interval33 = new Interval(3, 3);
     }
 
-    protected void tearDown() throws Exception {
+   @After
+   public void tearDown() throws Exception {
         DateTimeUtils.setCurrentMillisSystem();
         DateTimeZone.setDefault(originalDateTimeZone);
         TimeZone.setDefault(originalTimeZone);
@@ -112,6 +102,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testTest() {
         assertEquals("2002-06-09T00:00:00.000Z", new Instant(TEST_TIME_NOW).toString());
         assertEquals("2002-04-05T12:24:00.000Z", new Instant(TEST_TIME1).toString());
@@ -119,6 +110,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetMillis() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME1, test.getStartMillis());
@@ -129,17 +121,20 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
+   @Test
     public void testGetDuration1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         assertEquals(TEST_TIME2 - TEST_TIME1, test.toDurationMillis());
         assertEquals(TEST_TIME2 - TEST_TIME1, test.toDuration().getMillis());
     }
 
+   @Test
     public void testGetDuration2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME1);
         assertSame(Duration.ZERO, test.toDuration());
     }
 
+   @Test
     public void testEqualsHashCode() {
         Interval test1 = new Interval(TEST_TIME1, TEST_TIME2);
         Interval test2 = new Interval(TEST_TIME1, TEST_TIME2);
@@ -186,7 +181,7 @@ public class TestInterval_Basics extends TestCase {
 
     class MockInterval extends AbstractInterval {
         public MockInterval() {
-            super();
+
         }
         public Chronology getChronology() {
             return ISOChronology.getInstance();
@@ -199,6 +194,7 @@ public class TestInterval_Basics extends TestCase {
         }
     }
 
+   @Test
     public void testEqualsHashCodeLenient() {
         Interval test1 = new Interval(
                 new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
@@ -215,6 +211,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, test2.hashCode() == test2.hashCode());
     }
 
+   @Test
     public void testEqualsHashCodeStrict() {
         Interval test1 = new Interval(
                 new DateTime(TEST_TIME1, LenientChronology.getInstance(COPTIC_PARIS)),
@@ -232,6 +229,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_useCase_ContainsOverlapAbutGap() {
         // this is a simple test to ensure that the use case of these methods is OK
         // when comparing any two intervals they can be in one and only one of these states
@@ -335,6 +333,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_useCase_ContainsOverlapAbutGap_zeroDuration() {
         // this is a simple test to ensure that the use case of these methods
         // is OK when considering a zero duration inerval
@@ -400,6 +399,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_useCase_ContainsOverlapAbutGap_bothZeroDuration() {
         // this is a simple test to ensure that the use case of these methods
         // is OK when considering two zero duration inervals
@@ -426,6 +426,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testContains_long() {
         assertEquals(false, interval37.contains(2));  // value before
         assertEquals(true,  interval37.contains(3));
@@ -436,6 +437,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.contains(8));  // value after
     }
 
+   @Test
     public void testContains_long_zeroDuration() {
         assertEquals(false, interval33.contains(2));  // value before
         assertEquals(false, interval33.contains(3));  // zero length duration contains nothing
@@ -443,6 +445,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testContainsNow() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.containsNow());  // value before
@@ -466,6 +469,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testContains_RI() {
         assertEquals(false, interval37.contains(new Instant(2)));  // value before
         assertEquals(true,  interval37.contains(new Instant(3)));
@@ -476,6 +480,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.contains(new Instant(8)));  // value after
     }
 
+   @Test
     public void testContains_RI_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.contains((ReadableInstant) null));  // value before
@@ -491,6 +496,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.contains((ReadableInstant) null));  // value after
     }
 
+   @Test
     public void testContains_RI_zeroDuration() {
         assertEquals(false, interval33.contains(new Instant(2)));  // value before
         assertEquals(false, interval33.contains(new Instant(3)));  // zero length duration contains nothing
@@ -498,6 +504,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testContains_RInterval() {
         assertEquals(false, interval37.contains(new Interval(1, 2)));  // gap before
         assertEquals(false, interval37.contains(new Interval(2, 2)));  // gap before
@@ -534,6 +541,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.contains(new Interval(9, 9)));  // gap after
     }
 
+   @Test
     public void testContains_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.contains((ReadableInterval) null));  // gap before
@@ -549,6 +557,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.contains((ReadableInterval) null));  // gap after
     }
 
+   @Test
     public void testContains_RInterval_zeroDuration() {
         assertEquals(false, interval33.contains(interval33));  // zero length duration contains nothing
         assertEquals(false, interval33.contains(interval37));  // zero-duration cannot contain anything
@@ -566,6 +575,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testOverlaps_RInterval() {
         assertEquals(false, interval37.overlaps(new Interval(1, 2)));  // gap before
         assertEquals(false, interval37.overlaps(new Interval(2, 2)));  // gap before
@@ -602,6 +612,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.overlaps(new Interval(9, 9)));  // gap after
     }
 
+   @Test
     public void testOverlaps_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.overlaps((ReadableInterval) null));  // gap before
@@ -620,6 +631,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval33.overlaps((ReadableInterval) null));  // abuts before and after
     }
 
+   @Test
     public void testOverlaps_RInterval_zeroDuration() {
         assertEquals(false, interval33.overlaps(interval33));  // abuts before and after
         assertEquals(false, interval33.overlaps(interval37));  // abuts before
@@ -630,6 +642,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testOverlap_RInterval() {
         assertEquals(null, interval37.overlap(new Interval(1, 2)));  // gap before
         assertEquals(null, interval37.overlap(new Interval(2, 2)));  // gap before
@@ -657,6 +670,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(null, interval37.overlap(new Interval(8, 8)));  // gap after
     }
 
+   @Test
     public void testOverlap_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(null, interval37.overlap((ReadableInterval) null));  // gap before
@@ -675,6 +689,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(null, interval33.overlap((ReadableInterval) null));  // abuts before and after
     }
 
+   @Test
     public void testOverlap_RInterval_zone() {
         Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
         assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
@@ -689,6 +704,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
     }
 
+   @Test
     public void testOverlap_RInterval_zoneUTC() {
         Interval testA = new Interval(new Instant(3), new Instant(7));
         assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
@@ -701,6 +717,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGap_RInterval() {
         assertEquals(new Interval(1, 3), interval37.gap(new Interval(0, 1)));
         assertEquals(new Interval(1, 3), interval37.gap(new Interval(1, 1)));
@@ -724,6 +741,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(7, 9), interval37.gap(new Interval(9, 9)));
     }
 
+   @Test
     public void testGap_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(new Interval(2, 3),  interval37.gap((ReadableInterval) null));
@@ -739,6 +757,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(7, 8),  interval37.gap((ReadableInterval) null));
     }
 
+   @Test
     public void testGap_RInterval_zone() {
         Interval testA = new Interval(new DateTime(3, LONDON), new DateTime(7, LONDON));
         assertEquals(ISOChronology.getInstance(LONDON), testA.getChronology());
@@ -753,6 +772,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(ISOChronology.getInstance(MOSCOW), resultBA.getChronology());
     }
 
+   @Test
     public void testGap_RInterval_zoneUTC() {
         Interval testA = new Interval(new Instant(3), new Instant(7));
         assertEquals(ISOChronology.getInstanceUTC(), testA.getChronology());
@@ -765,6 +785,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testAbuts_RInterval() {
         assertEquals(false, interval37.abuts(new Interval(1, 2)));  // gap before
         assertEquals(false, interval37.abuts(new Interval(2, 2)));  // gap before
@@ -801,6 +822,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.abuts(new Interval(9, 9)));  // gap after
     }
 
+   @Test
     public void testAbuts_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false,  interval37.abuts((ReadableInterval) null));  // gap before
@@ -817,12 +839,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsEqual_RI() {
         assertEquals(false, interval37.isEqual(interval33));
         assertEquals(true, interval37.isEqual(interval37));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsBefore_long() {
         assertEquals(false, interval37.isBefore(2));
         assertEquals(false, interval37.isBefore(3));
@@ -833,6 +857,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true,  interval37.isBefore(8));
     }
 
+   @Test
     public void testIsBeforeNow() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.isBeforeNow());
@@ -848,6 +873,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, interval37.isBeforeNow());
     }
 
+   @Test
     public void testIsBefore_RI() {
         assertEquals(false, interval37.isBefore(new Instant(2)));
         assertEquals(false, interval37.isBefore(new Instant(3)));
@@ -858,6 +884,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true,  interval37.isBefore(new Instant(8)));
     }
 
+   @Test
     public void testIsBefore_RI_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.isBefore((ReadableInstant) null));
@@ -873,6 +900,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, interval37.isBefore((ReadableInstant) null));
     }
 
+   @Test
     public void testIsBefore_RInterval() {
         assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 2)));
         assertEquals(false, interval37.isBefore(new Interval(Long.MIN_VALUE, 3)));
@@ -883,6 +911,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(true, interval37.isBefore(new Interval(8, Long.MAX_VALUE)));
     }
 
+   @Test
     public void testIsBefore_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(false, interval37.isBefore((ReadableInterval) null));
@@ -899,6 +928,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testIsAfter_long() {
         assertEquals(true,  interval37.isAfter(2));
         assertEquals(false, interval37.isAfter(3));
@@ -909,6 +939,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.isAfter(8));
     }
 
+   @Test
     public void testIsAfterNow() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(true, interval37.isAfterNow());
@@ -924,6 +955,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.isAfterNow());
     }
 
+   @Test
     public void testIsAfter_RI() {
         assertEquals(true,  interval37.isAfter(new Instant(2)));
         assertEquals(false, interval37.isAfter(new Instant(3)));
@@ -934,6 +966,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.isAfter(new Instant(8)));
     }
 
+   @Test
     public void testIsAfter_RI_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(true, interval37.isAfter((ReadableInstant) null));
@@ -949,6 +982,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.isAfter((ReadableInstant) null));
     }
 
+   @Test
     public void testIsAfter_RInterval() {
         assertEquals(true, interval37.isAfter(new Interval(Long.MIN_VALUE, 2)));
         assertEquals(true, interval37.isAfter(new Interval(Long.MIN_VALUE, 3)));
@@ -959,6 +993,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(false, interval37.isAfter(new Interval(8, Long.MAX_VALUE)));
     }
 
+   @Test
     public void testIsAfter_RInterval_null() {
         DateTimeUtils.setCurrentMillisFixed(2);
         assertEquals(true, interval37.isAfter((ReadableInterval) null));
@@ -975,6 +1010,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToInterval1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval result = test.toInterval();
@@ -982,6 +1018,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToMutableInterval1() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         MutableInterval result = test.toMutableInterval();
@@ -989,6 +1026,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
@@ -1000,6 +1038,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod_PeriodType1() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, COPTIC_PARIS);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, COPTIC_PARIS);
@@ -1010,6 +1049,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(expected, test);
     }
 
+   @Test
     public void testToPeriod_PeriodType2() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18);
@@ -1021,6 +1061,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testSerialization() throws Exception {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         
@@ -1039,6 +1080,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToString() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, DateTimeZone.UTC);
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.UTC);
@@ -1046,6 +1088,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals("2004-06-09T07:08:09.010Z/2005-08-13T12:14:16.018Z", test.toString());
     }
 
+   @Test
     public void testToString_reparse() {
         DateTime dt1 = new DateTime(2004, 6, 9, 7, 8, 9, 10, DateTimeZone.getDefault());
         DateTime dt2 = new DateTime(2005, 8, 13, 12, 14, 16, 18, DateTimeZone.getDefault());
@@ -1054,18 +1097,21 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithChronology1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withChronology(BuddhistChronology.getInstance());
         assertEquals(new Interval(TEST_TIME1, TEST_TIME2, BuddhistChronology.getInstance()), test);
     }
 
+   @Test
     public void testWithChronology2() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withChronology(null);
         assertEquals(new Interval(TEST_TIME1, TEST_TIME2, ISOChronology.getInstance()), test);
     }
 
+   @Test
     public void testWithChronology3() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withChronology(COPTIC_PARIS);
@@ -1073,12 +1119,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithStartMillis_long1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withStartMillis(TEST_TIME1 - 1);
         assertEquals(new Interval(TEST_TIME1 - 1, TEST_TIME2, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithStartMillis_long2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         try {
@@ -1087,6 +1135,7 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithStartMillis_long3() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withStartMillis(TEST_TIME1);
@@ -1094,12 +1143,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithStartInstant_RI1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withStart(new Instant(TEST_TIME1 - 1));
         assertEquals(new Interval(TEST_TIME1 - 1, TEST_TIME2, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithStartInstant_RI2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         try {
@@ -1108,6 +1159,7 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithStartInstant_RI3() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withStart(null);
@@ -1115,12 +1167,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithEndMillis_long1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withEndMillis(TEST_TIME2 - 1);
         assertEquals(new Interval(TEST_TIME1, TEST_TIME2 - 1, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithEndMillis_long2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         try {
@@ -1129,6 +1183,7 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithEndMillis_long3() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withEndMillis(TEST_TIME2);
@@ -1136,12 +1191,14 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithEndInstant_RI1() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withEnd(new Instant(TEST_TIME2 - 1));
         assertEquals(new Interval(TEST_TIME1, TEST_TIME2 - 1, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithEndInstant_RI2() {
         Interval test = new Interval(TEST_TIME1, TEST_TIME2);
         try {
@@ -1150,6 +1207,7 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithEndInstant_RI3() {
         Interval base = new Interval(TEST_TIME1, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withEnd(null);
@@ -1157,6 +1215,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationAfterStart1() throws Throwable {
         Duration dur = new Duration(TEST_TIME2 - TEST_TIME_NOW);
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
@@ -1165,6 +1224,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithDurationAfterStart2() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withDurationAfterStart(null);
@@ -1172,6 +1232,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithDurationAfterStart3() throws Throwable {
         Duration dur = new Duration(-1);
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
@@ -1181,6 +1242,7 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithDurationAfterStart4() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withDurationAfterStart(base.toDuration());
@@ -1189,6 +1251,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithDurationBeforeEnd1() throws Throwable {
         Duration dur = new Duration(TEST_TIME_NOW - TEST_TIME1);
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS);
@@ -1197,6 +1260,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME1, TEST_TIME_NOW, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithDurationBeforeEnd2() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withDurationBeforeEnd(null);
@@ -1204,6 +1268,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME2, TEST_TIME2, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithDurationBeforeEnd3() throws Throwable {
         Duration dur = new Duration(-1);
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
@@ -1213,6 +1278,7 @@ public class TestInterval_Basics extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void testWithDurationBeforeEnd4() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withDurationBeforeEnd(base.toDuration());
@@ -1221,6 +1287,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithPeriodAfterStart1() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW, COPTIC_PARIS);
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
@@ -1230,6 +1297,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(dt, dur), test);
     }
 
+   @Test
     public void testWithPeriodAfterStart2() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withPeriodAfterStart(null);
@@ -1237,6 +1305,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME_NOW, TEST_TIME_NOW, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithPeriodAfterStart3() throws Throwable {
         Period per = new Period(0, 0, 0, 0, 0, 0, 0, -1);
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);
@@ -1247,6 +1316,7 @@ public class TestInterval_Basics extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testWithPeriodBeforeEnd1() throws Throwable {
         DateTime dt = new DateTime(TEST_TIME_NOW, COPTIC_PARIS);
         Period dur = new Period(0, 6, 0, 0, 1, 0, 0, 0);
@@ -1256,6 +1326,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(dur, dt), test);
     }
 
+   @Test
     public void testWithPeriodBeforeEnd2() throws Throwable {
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME2, COPTIC_PARIS);
         Interval test = base.withPeriodBeforeEnd(null);
@@ -1263,6 +1334,7 @@ public class TestInterval_Basics extends TestCase {
         assertEquals(new Interval(TEST_TIME2, TEST_TIME2, COPTIC_PARIS), test);
     }
 
+   @Test
     public void testWithPeriodBeforeEnd3() throws Throwable {
         Period per = new Period(0, 0, 0, 0, 0, 0, 0, -1);
         Interval base = new Interval(TEST_TIME_NOW, TEST_TIME_NOW);

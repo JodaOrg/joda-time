@@ -15,44 +15,29 @@
  */
 package org.joda.time.field;
 
-import java.util.Arrays;
-import java.util.Locale;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.ISOChronology;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 
 /**
  * This class is a Junit unit test for PreciseDateTimeField.
  *
  * @author Stephen Colebourne
  */
-public class TestOffsetDateTimeField extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestOffsetDateTimeField.class);
-    }
-
-    public TestOffsetDateTimeField(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
+public class TestOffsetDateTimeField  {
     //-----------------------------------------------------------------------
+   @Test
     public void test_constructor1() {
         OffsetDateTimeField field = new OffsetDateTimeField(
             ISOChronology.getInstance().secondOfMinute(), 3
@@ -77,6 +62,7 @@ public class TestOffsetDateTimeField extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void test_constructor2() {
         OffsetDateTimeField field = new OffsetDateTimeField(
             ISOChronology.getInstance().secondOfMinute(), DateTimeFieldType.secondOfDay(), 3
@@ -100,6 +86,7 @@ public class TestOffsetDateTimeField extends TestCase {
         } catch (IllegalArgumentException ex) {}
     }
 
+   @Test
     public void test_getType() {
         OffsetDateTimeField field = new OffsetDateTimeField(
             ISOChronology.getInstance().secondOfMinute(), 3
@@ -107,6 +94,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(DateTimeFieldType.secondOfMinute(), field.getType());
     }
 
+   @Test
     public void test_getName() {
         OffsetDateTimeField field = new OffsetDateTimeField(
             ISOChronology.getInstance().secondOfMinute(), 3
@@ -114,6 +102,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals("secondOfMinute", field.getName());
     }
 
+   @Test
     public void test_toString() {
         OffsetDateTimeField field = new OffsetDateTimeField(
             ISOChronology.getInstance().secondOfMinute(), 3
@@ -121,16 +110,19 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals("DateTimeField[secondOfMinute]", field.toString());
     }
 
+   @Test
     public void test_isSupported() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(true, field.isSupported());
     }
 
+   @Test
     public void test_isLenient() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(false, field.isLenient());
     }
 
+   @Test
     public void test_getOffset() {
         OffsetDateTimeField field = new OffsetDateTimeField(
             ISOChronology.getInstance().secondOfMinute(), 5
@@ -138,6 +130,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(5, field.getOffset());
     }
 
+   @Test
     public void test_get() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0 + 3, field.get(0));
@@ -145,29 +138,34 @@ public class TestOffsetDateTimeField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getAsText_long_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("32", field.getAsText(1000L * 29, Locale.ENGLISH));
         assertEquals("32", field.getAsText(1000L * 29, null));
     }
 
+   @Test
     public void test_getAsText_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("32", field.getAsText(1000L * 29));
     }
 
+   @Test
     public void test_getAsText_RP_int_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("20", field.getAsText(new TimeOfDay(12, 30, 40, 50), 20, Locale.ENGLISH));
         assertEquals("20", field.getAsText(new TimeOfDay(12, 30, 40, 50), 20, null));
     }
 
+   @Test
     public void test_getAsText_RP_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("40", field.getAsText(new TimeOfDay(12, 30, 40, 50), Locale.ENGLISH));
         assertEquals("40", field.getAsText(new TimeOfDay(12, 30, 40, 50), null));
     }
 
+   @Test
     public void test_getAsText_int_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("80", field.getAsText(80, Locale.ENGLISH));
@@ -175,29 +173,34 @@ public class TestOffsetDateTimeField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getAsShortText_long_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("32", field.getAsShortText(1000L * 29, Locale.ENGLISH));
         assertEquals("32", field.getAsShortText(1000L * 29, null));
     }
 
+   @Test
     public void test_getAsShortText_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("32", field.getAsShortText(1000L * 29));
     }
 
+   @Test
     public void test_getAsShortText_RP_int_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("20", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), 20, Locale.ENGLISH));
         assertEquals("20", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), 20, null));
     }
 
+   @Test
     public void test_getAsShortText_RP_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("40", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), Locale.ENGLISH));
         assertEquals("40", field.getAsShortText(new TimeOfDay(12, 30, 40, 50), null));
     }
 
+   @Test
     public void test_getAsShortText_int_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals("80", field.getAsShortText(80, Locale.ENGLISH));
@@ -205,16 +208,19 @@ public class TestOffsetDateTimeField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_add_long_int() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(1001, field.add(1L, 1));
     }
 
+   @Test
     public void test_add_long_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(1001, field.add(1L, 1L));
     }
 
+   @Test
     public void test_add_RP_int_intarray_int() {
         int[] values = new int[] {10, 20, 30, 40};
         int[] expected = new int[] {10, 20, 30, 40};
@@ -261,6 +267,7 @@ public class TestOffsetDateTimeField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_addWrapField_long_int() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(29 * 1000L, field.addWrapField(1000L * 29, 0));
@@ -268,6 +275,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(0L, field.addWrapField(1000L * 29, 31));
     }
 
+   @Test
     public void test_addWrapField_RP_int_intarray_int() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         int[] values = new int[] {10, 20, 30, 40};
@@ -287,17 +295,20 @@ public class TestOffsetDateTimeField extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getDifference_long_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(-21, field.getDifference(20000L, 41000L));
     }
 
+   @Test
     public void test_getDifferenceAsLong_long_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(-21L, field.getDifferenceAsLong(20000L, 41000L));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_set_long_int() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3120L, field.set(2120L, 6));
@@ -305,6 +316,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(57120L, field.set(2120L, 60));
     }
 
+   @Test
     public void test_set_RP_int_intarray_int() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         int[] values = new int[] {10, 20, 30, 40};
@@ -334,18 +346,21 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(true, Arrays.equals(values, expected));
     }
 
+   @Test
     public void test_set_long_String_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3050L, field.set(50L, "6", null));
         assertEquals(26050L, field.set(50L, "29", Locale.ENGLISH));
     }
 
+   @Test
     public void test_set_long_String() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3050L, field.set(50L, "6"));
         assertEquals(26050L, field.set(50L, "29"));
     }
 
+   @Test
     public void test_set_RP_int_intarray_String_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         int[] values = new int[] {10, 20, 30, 40};
@@ -375,6 +390,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(true, Arrays.equals(values, expected));
     }
 
+   @Test
     public void test_convertText() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0, field.convertText("0", null));
@@ -394,74 +410,88 @@ public class TestOffsetDateTimeField extends TestCase {
 //
 //    public abstract DurationField getRangeDurationField();
 
+   @Test
     public void test_isLeap_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(false, field.isLeap(0L));
     }
 
+   @Test
     public void test_getLeapAmount_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0, field.getLeapAmount(0L));
     }
 
+   @Test
     public void test_getLeapDurationField() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(null, field.getLeapDurationField());
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getMinimumValue() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3, field.getMinimumValue());
     }
 
+   @Test
     public void test_getMinimumValue_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3, field.getMinimumValue(0L));
     }
 
+   @Test
     public void test_getMinimumValue_RP() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3, field.getMinimumValue(new TimeOfDay()));
     }
 
+   @Test
     public void test_getMinimumValue_RP_intarray() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(3, field.getMinimumValue(new TimeOfDay(), new int[4]));
     }
 
+   @Test
     public void test_getMaximumValue() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(62, field.getMaximumValue());
     }
 
+   @Test
     public void test_getMaximumValue_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(62, field.getMaximumValue(0L));
     }
 
+   @Test
     public void test_getMaximumValue_RP() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(62, field.getMaximumValue(new TimeOfDay()));
     }
 
+   @Test
     public void test_getMaximumValue_RP_intarray() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(62, field.getMaximumValue(new TimeOfDay(), new int[4]));
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void test_getMaximumTextLength_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(2, field.getMaximumTextLength(Locale.ENGLISH));
     }
 
+   @Test
     public void test_getMaximumShortTextLength_Locale() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(2, field.getMaximumShortTextLength(Locale.ENGLISH));
     }
 
     //------------------------------------------------------------------------
+   @Test
     public void test_roundFloor_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(-2000L, field.roundFloor(-1001L));
@@ -476,6 +506,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(1000L, field.roundFloor(1000L));
     }
 
+   @Test
     public void test_roundCeiling_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(-1000L, field.roundCeiling(-1001L));
@@ -490,6 +521,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(1000L, field.roundCeiling(1000L));
     }
 
+   @Test
     public void test_roundHalfFloor_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0L, field.roundHalfFloor(0L));
@@ -499,6 +531,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(1000L, field.roundHalfFloor(1000L));
     }
 
+   @Test
     public void test_roundHalfCeiling_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0L, field.roundHalfCeiling(0L));
@@ -508,6 +541,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(1000L, field.roundHalfCeiling(1000L));
     }
 
+   @Test
     public void test_roundHalfEven_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0L, field.roundHalfEven(0L));
@@ -520,6 +554,7 @@ public class TestOffsetDateTimeField extends TestCase {
         assertEquals(2000L, field.roundHalfEven(1501L));
     }
 
+   @Test
     public void test_remainder_long() {
         OffsetDateTimeField field = new MockOffsetDateTimeField();
         assertEquals(0L, field.remainder(0L));
@@ -538,7 +573,7 @@ public class TestOffsetDateTimeField extends TestCase {
 
     static class MockStandardDateTimeField extends MockOffsetDateTimeField {
         protected MockStandardDateTimeField() {
-            super();
+
         }
         public DurationField getDurationField() {
             return ISOChronology.getInstanceUTC().seconds();

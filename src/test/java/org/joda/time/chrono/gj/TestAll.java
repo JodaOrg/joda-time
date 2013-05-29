@@ -15,10 +15,8 @@
  */
 package org.joda.time.chrono.gj;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 /**
  * Entry point for all tests in this package.
  * 
@@ -26,24 +24,9 @@ import junit.framework.TestSuite;
  * 
  * @author Stephen Colebourne
  */
-public class TestAll extends TestCase {
-
-    public TestAll(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        TestSuite suite = new TestSuite();
-        suite.addTest(new MainTest(1000, 0, 1345435247779935L));
-        suite.addTest(new MainTest(1000, 1, 1345435247779935L));
-        return suite;
-    }
-
-    public static void main(String args[]) {
-        String[] testCaseName = {
-            TestAll.class.getName()
-        };
-        junit.textui.TestRunner.main(testCaseName);
-    }
-
+@RunWith(Suite.class)
+@Suite.SuiteClasses(
+        MainTest.class
+)
+public class TestAll  {
 }

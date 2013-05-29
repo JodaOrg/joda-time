@@ -15,40 +15,26 @@
  */
 package org.joda.time;
 
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.base.BaseSingleFieldPeriod;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 
 /**
  * This class is a Junit unit test for BaseSingleFieldPeriod.
  *
  * @author Stephen Colebourne
  */
-public class TestBaseSingleFieldPeriod extends TestCase {
+public class TestBaseSingleFieldPeriod {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
 
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestBaseSingleFieldPeriod.class);
-    }
-
-    public TestBaseSingleFieldPeriod(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
     //-----------------------------------------------------------------------
+   @Test
     public void testFactory_between_RInstant() {
         // test using Days
         DateTime start = new DateTime(2006, 6, 9, 12, 0, 0, 0, PARIS);
@@ -80,6 +66,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         }
     }
 
+   @Test
     public void testFactory_between_RPartial() {
         LocalDate start = new LocalDate(2006, 6, 9);
         LocalDate end1 = new LocalDate(2006, 6, 12);
@@ -132,6 +119,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         }
     }
 
+   @Test
     public void testFactory_standardPeriodIn_RPeriod() {
         assertEquals(0, Single.standardPeriodIn((ReadablePeriod) null, DateTimeConstants.MILLIS_PER_DAY));
         assertEquals(0, Single.standardPeriodIn(Period.ZERO, DateTimeConstants.MILLIS_PER_DAY));
@@ -151,6 +139,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testValueIndexMethods() {
         Single test = new Single(20);
         assertEquals(1, test.size());
@@ -163,6 +152,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         }
     }
 
+   @Test
     public void testFieldTypeIndexMethods() {
         Single test = new Single(20);
         assertEquals(1, test.size());
@@ -175,6 +165,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         }
     }
 
+   @Test
     public void testIsSupported() {
         Single test = new Single(20);
         assertEquals(false, test.isSupported(DurationFieldType.years()));
@@ -187,6 +178,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         assertEquals(false, test.isSupported(DurationFieldType.millis()));
     }        
 
+   @Test
     public void testGet() {
         Single test = new Single(20);
         assertEquals(0, test.get(DurationFieldType.years()));
@@ -200,6 +192,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testEqualsHashCode() {
         Single testA = new Single(20);
         Single testB = new Single(20);
@@ -227,6 +220,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
         assertEquals(false, testA.equals(null));
     }
 
+   @Test
     public void testCompareTo() {
         Single test1 = new Single(21);
         Single test2 = new Single(22);
@@ -262,12 +256,14 @@ public class TestBaseSingleFieldPeriod extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testToPeriod() {
         Single test = new Single(20);
         Period expected = Period.days(20);
         assertEquals(expected, test.toPeriod());
     }
 
+   @Test
     public void testToMutablePeriod() {
         Single test = new Single(20);
         MutablePeriod expected = new MutablePeriod(0, 0, 0, 20, 0, 0, 0, 0);
@@ -286,6 +282,7 @@ public class TestBaseSingleFieldPeriod extends TestCase {
 //
 
     //-----------------------------------------------------------------------
+   @Test
     public void testGetSetValue() {
         Single test = new Single(20);
         assertEquals(20, test.getValue());

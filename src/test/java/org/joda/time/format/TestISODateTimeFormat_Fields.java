@@ -15,44 +15,25 @@
  */
 package org.joda.time.format;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.Partial;
+import org.junit.Test;
+
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+
 
 /**
  * This class is a Junit unit test for ISODateTimeFormat.
  *
  * @author Stephen Colebourne
  */
-public class TestISODateTimeFormat_Fields extends TestCase {
-
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
-    public static TestSuite suite() {
-        return new TestSuite(TestISODateTimeFormat_Fields.class);
-    }
-
-    public TestISODateTimeFormat_Fields(String name) {
-        super(name);
-    }
-
-    protected void setUp() throws Exception {
-    }
-
-    protected void tearDown() throws Exception {
-    }
-
+public class TestISODateTimeFormat_Fields  {
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_null() {
         try {
             ISODateTimeFormat.forFields((Collection) null, true, true);
@@ -61,6 +42,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_empty() {
         try {
             ISODateTimeFormat.forFields(new ArrayList(), true, true);
@@ -71,6 +53,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_YMD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -100,6 +83,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_YMD_unmodifiable() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -119,6 +103,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_YMD_duplicates() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -144,6 +129,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_Y() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -171,6 +157,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_M() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.monthOfYear(),
@@ -198,6 +185,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_D() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.dayOfMonth(),
@@ -225,6 +213,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_YM() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -253,6 +242,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_MD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.monthOfYear(),
@@ -281,6 +271,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_calBased_YD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -313,6 +304,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_YWD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.weekyear(),
@@ -342,6 +334,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_Y() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.weekyear(),
@@ -369,6 +362,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_W() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.weekOfWeekyear(),
@@ -396,6 +390,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_D() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.dayOfWeek(),
@@ -423,6 +418,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_YW() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.weekyear(),
@@ -451,6 +447,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_WD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.weekOfWeekyear(),
@@ -479,6 +476,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_weekBased_YD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.weekyear(),
@@ -511,6 +509,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_ordinalBased_YD() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -539,6 +538,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_ordinalBased_Y() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -566,6 +566,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_ordinalBased_D() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.dayOfYear(),
@@ -595,6 +596,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_HMSm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -625,6 +627,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_HMS() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -654,6 +657,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_HM() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -682,6 +686,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_H() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -709,6 +714,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_MSm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.minuteOfHour(),
@@ -738,6 +744,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_MS() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.minuteOfHour(),
@@ -766,6 +773,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_M() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.minuteOfHour(),
@@ -793,6 +801,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_Sm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.secondOfMinute(),
@@ -821,6 +830,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_S() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.secondOfMinute(),
@@ -848,6 +858,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_m() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.millisOfSecond(),
@@ -877,6 +888,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_Hm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -907,6 +919,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_HS() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -937,6 +950,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_Mm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.minuteOfHour(),
@@ -967,6 +981,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_HSm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -998,6 +1013,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_time_HMm() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.hourOfDay(),
@@ -1031,6 +1047,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_datetime_YMDH() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -1061,6 +1078,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_datetime_DH() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.dayOfMonth(),
@@ -1089,6 +1107,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_datetime_YH() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.year(),
@@ -1119,6 +1138,7 @@ public class TestISODateTimeFormat_Fields extends TestCase {
     }
 
     //-----------------------------------------------------------------------
+   @Test
     public void testForFields_datetime_DM() {
         DateTimeFieldType[] fields = new DateTimeFieldType[] {
                 DateTimeFieldType.dayOfMonth(),

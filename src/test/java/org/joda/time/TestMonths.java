@@ -15,7 +15,6 @@
  */
 package org.joda.time;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -23,13 +22,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import static org.junit.Assert.*;
+
 
 /**
  * This class is a Junit unit test for Months.
  *
  * @author Stephen Colebourne
  */
-public class TestMonths extends Assert {
+public class TestMonths  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

@@ -20,7 +20,6 @@ import org.joda.time.DateTimeConstants;
 import org.joda.time.DateTimeUtils;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +28,8 @@ import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
+import static org.junit.Assert.*;
+
 
 
 /**
@@ -36,7 +37,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeFormatStyle extends Assert {
+public class TestDateTimeFormatStyle  {
 
     private static final Locale UK = Locale.UK;
     private static final Locale US = Locale.US;

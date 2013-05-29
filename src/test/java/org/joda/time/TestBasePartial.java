@@ -17,9 +17,11 @@ package org.joda.time;
 
 import org.joda.time.base.BasePartial;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -28,7 +30,7 @@ import org.junit.Test;
  *
  * @author Stephen Colebourne
  */
-public class TestBasePartial extends Assert {
+public class TestBasePartial  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     

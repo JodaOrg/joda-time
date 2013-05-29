@@ -18,7 +18,6 @@ package org.joda.time;
 import org.joda.time.tz.*;
 import org.joda.time.tz.Provider;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +27,8 @@ import java.security.*;
 import java.text.DateFormatSymbols;
 import java.util.*;
 
+import static org.junit.Assert.*;
+
 
 
 /**
@@ -35,7 +36,7 @@ import java.util.*;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeZone extends Assert {
+public class TestDateTimeZone  {
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");

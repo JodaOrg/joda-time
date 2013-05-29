@@ -18,11 +18,13 @@ package org.joda.time;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -31,7 +33,7 @@ import java.util.Arrays;
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Constructors extends Assert {
+public class TestPartial_Constructors  {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

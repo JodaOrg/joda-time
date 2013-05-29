@@ -16,11 +16,13 @@
 package org.joda.time;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 
 /**
@@ -29,7 +31,7 @@ import java.util.Locale;
  * @author Stephen Colebourne
  * @author Mike Schrag
  */
-public class TestMutableDateTime_Properties extends Assert {
+public class TestMutableDateTime_Properties  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 

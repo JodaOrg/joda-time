@@ -19,12 +19,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.tz.ZoneInfoCompiler.DateTimeOfYear;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.*;
 import java.util.StringTokenizer;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 
@@ -33,7 +35,7 @@ import java.util.StringTokenizer;
  *
  * @author Brian S O'Neill
  */
-public class TestCompiler extends Assert {
+public class TestCompiler  {
     static final String AMERICA_LOS_ANGELES_FILE =
         "# Rules for building just America/Los_Angeles time zone.\n" + 
         "\n" + 

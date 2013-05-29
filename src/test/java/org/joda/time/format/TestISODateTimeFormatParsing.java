@@ -18,12 +18,14 @@ package org.joda.time.format;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -32,7 +34,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestISODateTimeFormatParsing extends Assert {
+public class TestISODateTimeFormatParsing  {
 
     private DateTimeZone originalDateTimeZone = null;
     private TimeZone originalTimeZone = null;

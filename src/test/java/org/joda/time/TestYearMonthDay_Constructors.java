@@ -20,13 +20,15 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -35,7 +37,7 @@ import java.util.GregorianCalendar;
  *
  * @author Stephen Colebourne
  */
-public class TestYearMonthDay_Constructors extends Assert {
+public class TestYearMonthDay_Constructors  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");

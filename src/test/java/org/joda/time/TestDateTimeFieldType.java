@@ -16,7 +16,6 @@
 package org.joda.time;
 
 import org.joda.time.chrono.CopticChronology;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
@@ -25,6 +24,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Constructor;
 
+import static org.junit.Assert.*;
+
 
 
 /**
@@ -32,7 +33,7 @@ import java.lang.reflect.Constructor;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeFieldType extends Assert {
+public class TestDateTimeFieldType  {
     //-----------------------------------------------------------------------
    @Test
     public void test_era() throws Exception {

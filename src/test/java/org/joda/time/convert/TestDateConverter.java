@@ -21,7 +21,6 @@ import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,6 +30,8 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
+
 
 
 /**
@@ -38,7 +39,7 @@ import java.util.Date;
  *
  * @author Stephen Colebourne
  */
-public class TestDateConverter extends Assert {
+public class TestDateConverter  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology ISO_PARIS = ISOChronology.getInstance(PARIS);

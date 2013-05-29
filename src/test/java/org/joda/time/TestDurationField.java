@@ -16,8 +16,10 @@
 package org.joda.time;
 
 import org.joda.time.chrono.ISOChronology;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -25,7 +27,7 @@ import org.junit.Test;
  *
  * @author Stephen Colebourne
  */
-public class TestDurationField extends Assert {
+public class TestDurationField  {
     //-----------------------------------------------------------------------
    @Test
     public void test_subtract() throws Exception {

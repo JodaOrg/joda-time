@@ -20,10 +20,11 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.field.AbstractPartialFieldProperty;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -31,7 +32,7 @@ import org.junit.Test;
  *
  * @author Stephen Colebourne
  */
-public class TestAbstractPartial extends Assert {
+public class TestAbstractPartial  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     

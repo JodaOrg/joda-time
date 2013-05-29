@@ -15,8 +15,10 @@
  */
 package org.joda.time.field;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 /**
@@ -24,7 +26,7 @@ import org.junit.Test;
  *
  * @author Brian S O'Neill
  */
-public class TestFieldUtils extends Assert {
+public class TestFieldUtils  {
    @Test
     public void testSafeAddInt() {
         assertEquals(0, FieldUtils.safeAdd(0, 0));

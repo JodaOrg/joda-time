@@ -20,11 +20,13 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.ISOChronology;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -33,7 +35,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestPreciseDurationDateTimeField extends Assert {
+public class TestPreciseDurationDateTimeField  {
     //-----------------------------------------------------------------------
    @Test
     public void test_constructor() {

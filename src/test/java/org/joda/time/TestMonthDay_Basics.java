@@ -22,7 +22,6 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,12 +32,14 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
+import static org.junit.Assert.*;
+
 
 
 /**
  * This class is a Junit unit test for MonthDay. Based on {@link TestYearMonth_Basics} 
  */
-public class TestMonthDay_Basics extends Assert {
+public class TestMonthDay_Basics  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");

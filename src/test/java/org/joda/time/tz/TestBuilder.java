@@ -20,13 +20,14 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.DateTimeFormatterBuilder;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 
 
@@ -35,7 +36,7 @@ import java.io.IOException;
  *
  * @author Brian S O'Neill
  */
-public class TestBuilder extends Assert {
+public class TestBuilder  {
     static final DateTimeFormatter OFFSET_FORMATTER = new DateTimeFormatterBuilder()
         .appendTimeZoneOffset(null, true, 2, 4)
         .toFormatter();

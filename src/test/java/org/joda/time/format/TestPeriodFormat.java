@@ -17,11 +17,12 @@ package org.joda.time.format;
 
 import org.joda.time.Period;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 
 
@@ -30,7 +31,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestPeriodFormat extends Assert {
+public class TestPeriodFormat  {
 
     private static final Locale EN = new Locale("en");
     private static final Locale FR = new Locale("fr");

@@ -18,12 +18,14 @@ package org.joda.time;
 import org.joda.time.base.AbstractInterval;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -32,7 +34,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestMutableInterval_Updates extends Assert {
+public class TestMutableInterval_Updates  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 

@@ -20,7 +20,6 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +28,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
 
+import static org.junit.Assert.assertEquals;
+
 
 
 /**
@@ -36,7 +37,7 @@ import java.util.Arrays;
  *
  * @author Stephen Colebourne
  */
-public class TestLongConverter extends Assert {
+public class TestLongConverter  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

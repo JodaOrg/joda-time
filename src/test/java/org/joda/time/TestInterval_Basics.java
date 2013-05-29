@@ -18,7 +18,6 @@ package org.joda.time;
 import org.joda.time.base.AbstractInterval;
 import org.joda.time.chrono.*;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +28,8 @@ import java.io.ObjectOutputStream;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static org.junit.Assert.*;
+
 
 
 /**
@@ -36,7 +37,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestInterval_Basics extends Assert {
+public class TestInterval_Basics  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 

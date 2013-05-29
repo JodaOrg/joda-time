@@ -20,7 +20,6 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +29,9 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Locale;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 
 /**
@@ -37,7 +39,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestStringConverter extends Assert {
+public class TestStringConverter  {
 
     private static final DateTimeZone ONE_HOUR = DateTimeZone.forOffsetHours(1);
     private static final DateTimeZone SIX = DateTimeZone.forOffsetHours(6);

@@ -17,11 +17,12 @@ package org.joda.time;
 
 import org.joda.time.chrono.CopticChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 
 
@@ -30,7 +31,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestLocalDateTime_Properties extends Assert {
+public class TestLocalDateTime_Properties  {
 
     private static final CopticChronology COPTIC_UTC = CopticChronology.getInstanceUTC();
 

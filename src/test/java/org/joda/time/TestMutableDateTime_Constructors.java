@@ -22,12 +22,14 @@ import org.joda.time.convert.MockZeroNullIntegerConverter;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -36,7 +38,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestMutableDateTime_Constructors extends Assert {
+public class TestMutableDateTime_Constructors  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 

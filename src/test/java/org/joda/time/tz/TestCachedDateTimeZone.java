@@ -17,7 +17,6 @@ package org.joda.time.tz;
 
 import org.joda.time.DateTimeZone;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,6 +25,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
+
 
 
 /**
@@ -33,7 +35,7 @@ import java.io.ObjectOutputStream;
  *
  * @author Stephen Colebourne
  */
-public class TestCachedDateTimeZone extends Assert {
+public class TestCachedDateTimeZone  {
     private DateTimeZone originalDateTimeZone = null;
 
    @Before

@@ -19,18 +19,19 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 
 
 /**
  * This class is a Junit unit test for MonthDay. Based on {@link TestYearMonth_Properties}
  */
-public class TestMonthDay_Properties extends Assert {
+public class TestMonthDay_Properties  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final Chronology COPTIC_PARIS = CopticChronology.getInstance(PARIS);

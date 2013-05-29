@@ -21,7 +21,6 @@ import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +31,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static org.junit.Assert.assertEquals;
+
 
 
 /**
@@ -39,7 +40,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestNullConverter extends Assert {
+public class TestNullConverter  {
 
     private long TEST_TIME_NOW =
             20 * DateTimeConstants.MILLIS_PER_DAY

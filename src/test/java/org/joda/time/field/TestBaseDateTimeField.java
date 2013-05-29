@@ -18,11 +18,13 @@ package org.joda.time.field;
 import org.joda.time.*;
 import org.joda.time.base.BasePartial;
 import org.joda.time.chrono.ISOChronology;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -31,7 +33,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestBaseDateTimeField extends Assert {
+public class TestBaseDateTimeField  {
     //-----------------------------------------------------------------------
    @Test
     public void test_constructor() {

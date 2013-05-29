@@ -19,8 +19,10 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.MockZone;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -29,7 +31,7 @@ import org.junit.Test;
  * @author Brian S O'Neill
  * @author Blair Martin
  */
-public class TestLenientChronology extends Assert {
+public class TestLenientChronology  {
     //-----------------------------------------------------------------------
    @Test
     public void test_setYear() {

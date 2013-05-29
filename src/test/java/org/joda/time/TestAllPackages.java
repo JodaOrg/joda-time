@@ -15,7 +15,6 @@
  */
 package org.joda.time;
 
-import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
@@ -41,7 +40,7 @@ import java.util.TimeZone;
         org.joda.time.tz.TestAll.class
 }
 )
-public class TestAllPackages extends Assert {
+public class TestAllPackages  {
 
     //TODO: need this?
     public static void main(String args[]) {

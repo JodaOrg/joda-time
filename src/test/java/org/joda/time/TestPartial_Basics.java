@@ -21,7 +21,6 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,6 +31,8 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Locale;
 
+import static org.junit.Assert.*;
+
 
 
 /**
@@ -39,7 +40,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Basics extends Assert {
+public class TestPartial_Basics  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");

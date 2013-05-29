@@ -18,11 +18,12 @@ package org.joda.time;
 import org.joda.time.DateTimeUtils.MillisProvider;
 import org.joda.time.base.AbstractInstant;
 import org.joda.time.chrono.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Modifier;
 import java.security.*;
+
+import static org.junit.Assert.*;
 
 
 
@@ -31,7 +32,7 @@ import java.security.*;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeUtils extends Assert {
+public class TestDateTimeUtils  {
 
     private static final GJChronology GJ = GJChronology.getInstance();
     private static final boolean OLD_JDK;

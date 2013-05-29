@@ -18,12 +18,13 @@ package org.joda.time.chrono;
 import org.joda.time.*;
 import org.joda.time.DateTime.Property;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static org.junit.Assert.*;
 
 
 
@@ -32,7 +33,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestCopticChronology extends Assert {
+public class TestCopticChronology  {
 
     private static final int MILLIS_PER_DAY = DateTimeConstants.MILLIS_PER_DAY;
 

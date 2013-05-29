@@ -17,12 +17,14 @@ package org.joda.time.format;
 
 import org.joda.time.*;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 
@@ -31,7 +33,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestISODateTimeFormat extends Assert {
+public class TestISODateTimeFormat  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

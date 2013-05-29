@@ -19,7 +19,6 @@ import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +27,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 
 /**
@@ -35,7 +37,7 @@ import java.io.ObjectOutputStream;
  *
  * @author Stephen Colebourne
  */
-public class TestPreciseDurationField extends Assert {
+public class TestPreciseDurationField  {
     
     private static final long LONG_INTEGER_MAX = Integer.MAX_VALUE;
     private static final int INTEGER_MAX = Integer.MAX_VALUE;

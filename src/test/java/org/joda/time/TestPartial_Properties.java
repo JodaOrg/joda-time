@@ -16,11 +16,12 @@
 package org.joda.time;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -28,7 +29,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestPartial_Properties extends Assert {
+public class TestPartial_Properties  {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

@@ -20,8 +20,10 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.chrono.JulianChronology;
 import org.joda.time.field.FieldUtils;
 import org.joda.time.field.SkipDateTimeField;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -30,7 +32,7 @@ import org.junit.Test;
  *
  * @author Brian S O'Neill
  */
-public class TestIllegalFieldValueException extends Assert {
+public class TestIllegalFieldValueException  {
    @Test
     public void testVerifyValueBounds() {
         try {

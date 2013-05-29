@@ -17,10 +17,12 @@ package org.joda.time.format;
 
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.Partial;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -29,7 +31,7 @@ import java.util.*;
  *
  * @author Stephen Colebourne
  */
-public class TestISODateTimeFormat_Fields extends Assert {
+public class TestISODateTimeFormat_Fields  {
     //-----------------------------------------------------------------------
    @Test
     public void testForFields_null() {

@@ -17,8 +17,9 @@ package org.joda.time;
 
 import org.joda.convert.StringConvert;
 import org.joda.time.chrono.ISOChronology;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 
@@ -27,7 +28,7 @@ import org.junit.Test;
  *
  * @author Stephen Colebourne
  */
-public class TestStringConvert extends Assert {
+public class TestStringConvert  {
 
     private static final DateTimeZone ZONE = DateTimeZone.forID("+02:00");
     //-----------------------------------------------------------------------

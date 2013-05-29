@@ -16,13 +16,14 @@
 package org.joda.time.convert;
 
 import org.joda.time.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import static org.junit.Assert.*;
 
 
 
@@ -32,7 +33,7 @@ import java.util.GregorianCalendar;
  *
  * @author Stephen Colebourne
  */
-public class TestConverterSet extends Assert {
+public class TestConverterSet  {
 
     private static final Converter c1 = new Converter() {
         public Class getSupportedType() {return Boolean.class;}

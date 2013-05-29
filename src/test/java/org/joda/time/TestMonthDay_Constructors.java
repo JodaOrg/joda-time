@@ -20,7 +20,6 @@ import org.joda.time.chrono.ISOChronology;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,12 +27,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 
 /**
  * This class is a Junit unit test for MonthDay. Based on {@link TestYearMonth_Constructors}
  */
-public class TestMonthDay_Constructors extends Assert {
+public class TestMonthDay_Constructors  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");

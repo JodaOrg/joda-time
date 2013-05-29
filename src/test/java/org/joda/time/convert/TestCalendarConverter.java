@@ -19,7 +19,6 @@ import org.joda.time.Chronology;
 import org.joda.time.DateTimeZone;
 import org.joda.time.TimeOfDay;
 import org.joda.time.chrono.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +27,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import static org.junit.Assert.assertEquals;
+
 
 
 /**
@@ -35,7 +36,7 @@ import java.util.*;
  *
  * @author Stephen Colebourne
  */
-public class TestCalendarConverter extends Assert {
+public class TestCalendarConverter  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone MOSCOW = DateTimeZone.forID("Europe/Moscow");

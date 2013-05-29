@@ -18,13 +18,14 @@ package org.joda.time.field;
 import org.joda.time.DurationField;
 import org.joda.time.DurationFieldType;
 import org.joda.time.chrono.ISOChronology;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
+import static org.junit.Assert.*;
 
 
 
@@ -33,7 +34,7 @@ import java.io.ObjectOutputStream;
  *
  * @author Stephen Colebourne
  */
-public class TestMillisDurationField extends Assert {
+public class TestMillisDurationField  {
     //-----------------------------------------------------------------------
    @Test
     public void test_getType() {

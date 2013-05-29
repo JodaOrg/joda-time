@@ -15,8 +15,9 @@
  */
 package org.joda.time;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -24,7 +25,7 @@ import org.junit.Test;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeConstants extends Assert {
+public class TestDateTimeConstants  {
     //-----------------------------------------------------------------------
    @Test
     public void testConstructor() {

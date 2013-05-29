@@ -19,11 +19,12 @@ import org.joda.time.chrono.CopticChronology;
 import org.joda.time.chrono.LenientChronology;
 import org.joda.time.chrono.StrictChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 
 
@@ -33,7 +34,7 @@ import java.util.Locale;
  * @author Stephen Colebourne
  * @author Mike Schrag
  */
-public class TestDateTime_Properties extends Assert {
+public class TestDateTime_Properties  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
 

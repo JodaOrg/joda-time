@@ -16,7 +16,6 @@
 package org.joda.time;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,13 +24,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+import static org.junit.Assert.*;
+
 
 /**
  * This class is a Junit unit test for Weeks.
  *
  * @author Stephen Colebourne
  */
-public class TestWeeks extends Assert {
+public class TestWeeks  {
     // Test in 2002/03 as time zones are more well known
     // (before the late 90's they were all over the place)
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

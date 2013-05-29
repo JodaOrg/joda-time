@@ -20,7 +20,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeField;
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.chrono.JulianChronology;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -28,6 +27,8 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
+
+import static org.junit.Assert.fail;
 
 /**
  * Tests either the Julian or Gregorian chronology from org.joda.time.chrono.gj
@@ -52,7 +53,7 @@ import java.util.Random;
  * @author Brian S O'Neill
  */
 @RunWith(Parameterized.class)
-public class MainTest extends Assert {
+public class MainTest  {
     public static final int GREGORIAN_MODE = 0;
     public static final int JULIAN_MODE = 1;
 

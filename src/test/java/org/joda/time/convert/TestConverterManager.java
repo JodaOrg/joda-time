@@ -17,7 +17,6 @@ package org.joda.time.convert;
 
 import org.joda.time.*;
 import org.joda.time.format.DateTimeFormatter;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -29,6 +28,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 
 /**
@@ -36,7 +38,7 @@ import java.util.GregorianCalendar;
  *
  * @author Stephen Colebourne
  */
-public class TestConverterManager extends Assert {
+public class TestConverterManager  {
     private static final boolean OLD_JDK;
     static {
         String str = System.getProperty("java.version");

@@ -17,19 +17,20 @@ package org.joda.time.chrono;
 
 import org.joda.time.*;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
 
+import static org.junit.Assert.*;
+
 /**
  * This class is a Junit unit test for BuddhistChronology.
  *
  * @author Stephen Colebourne
  */
-public class TestBuddhistChronology extends Assert {
+public class TestBuddhistChronology  {
 
     private static int SKIP = 1 * DateTimeConstants.MILLIS_PER_DAY;
     

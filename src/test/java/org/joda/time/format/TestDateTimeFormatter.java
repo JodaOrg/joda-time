@@ -20,13 +20,14 @@ import org.joda.time.chrono.BuddhistChronology;
 import org.joda.time.chrono.GJChronology;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.CharArrayWriter;
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static org.junit.Assert.*;
 
 
 
@@ -35,7 +36,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeFormatter extends Assert {
+public class TestDateTimeFormatter  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

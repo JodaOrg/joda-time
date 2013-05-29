@@ -17,13 +17,14 @@ package org.joda.time.convert;
 
 import org.joda.time.*;
 import org.joda.time.chrono.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
+import static org.junit.Assert.assertEquals;
 
 
 
@@ -32,7 +33,7 @@ import java.lang.reflect.Modifier;
  *
  * @author Stephen Colebourne
  */
-public class TestReadableIntervalConverter extends Assert {
+public class TestReadableIntervalConverter  {
 
     private static final DateTimeZone UTC = DateTimeZone.UTC;
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

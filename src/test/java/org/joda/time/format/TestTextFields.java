@@ -21,11 +21,12 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.MutableDateTime;
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
 
 
 
@@ -34,7 +35,7 @@ import java.util.Locale;
  *
  * @author Brian S O'Neill
  */
-public class TestTextFields extends Assert {
+public class TestTextFields  {
 
     private static final DateTimeZone[] ZONES = {
         DateTimeZone.UTC,

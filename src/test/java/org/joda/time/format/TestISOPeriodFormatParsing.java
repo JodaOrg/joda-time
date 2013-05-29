@@ -17,12 +17,14 @@ package org.joda.time.format;
 
 import org.joda.time.*;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
 import java.util.TimeZone;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -31,7 +33,7 @@ import java.util.TimeZone;
  *
  * @author Stephen Colebourne
  */
-public class TestISOPeriodFormatParsing extends Assert {
+public class TestISOPeriodFormatParsing  {
 
     private static final Period PERIOD = new Period(1, 2, 3, 4, 5, 6, 7, 8);
     private static final Period EMPTY_PERIOD = new Period(0, 0, 0, 0, 0, 0, 0, 0);

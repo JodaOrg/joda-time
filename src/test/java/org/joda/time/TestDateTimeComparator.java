@@ -17,7 +17,6 @@ package org.joda.time;
 
 import org.joda.time.chrono.ISOChronology;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +27,8 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import static org.junit.Assert.*;
+
 
 /**
  * This class is a Junit unit test for the
@@ -35,7 +36,7 @@ import java.util.*;
  *
  * @author Guy Allard
  */
-public class TestDateTimeComparator extends Assert {
+public class TestDateTimeComparator  {
 
     private static final Chronology ISO = ISOChronology.getInstance();
 

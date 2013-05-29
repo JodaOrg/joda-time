@@ -21,12 +21,14 @@ import org.joda.time.convert.MockZeroNullIntegerConverter;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Date;
 import java.util.Locale;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 
 
@@ -35,7 +37,7 @@ import java.util.Locale;
  *
  * @author Stephen Colebourne
  */
-public class TestInstant_Constructors extends Assert {
+public class TestInstant_Constructors  {
 
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");

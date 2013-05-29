@@ -19,12 +19,13 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeFieldType;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import static org.junit.Assert.*;
 
 
 
@@ -34,7 +35,7 @@ import java.util.Map;
  * @author Stephen Colebourne
  * @author Brian S O'Neill
  */
-public class TestDateTimeFormatterBuilder extends Assert {
+public class TestDateTimeFormatterBuilder  {
 
     private static final DateTimeZone LONDON = DateTimeZone.forID("Europe/London");
     private static final DateTimeZone PARIS = DateTimeZone.forID("Europe/Paris");

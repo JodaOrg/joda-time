@@ -16,12 +16,14 @@
 package org.joda.time.tz;
 
 import org.joda.time.DateTimeZone;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 
 
@@ -30,7 +32,7 @@ import java.util.Set;
  *
  * @author Stephen Colebourne
  */
-public class TestUTCProvider extends Assert {
+public class TestUTCProvider  {
 
     private DateTimeZone zone = null;
 

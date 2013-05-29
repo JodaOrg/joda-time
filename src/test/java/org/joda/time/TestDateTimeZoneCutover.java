@@ -17,8 +17,9 @@ package org.joda.time;
 
 import org.joda.time.chrono.GregorianChronology;
 import org.joda.time.tz.DateTimeZoneBuilder;
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 
 
@@ -27,7 +28,7 @@ import org.junit.Test;
  *
  * @author Stephen Colebourne
  */
-public class TestDateTimeZoneCutover extends Assert {
+public class TestDateTimeZoneCutover  {
     //-----------------------------------------------------------------------
     //------------------------ Bug [1710316] --------------------------------
     //-----------------------------------------------------------------------

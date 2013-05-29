@@ -16,11 +16,12 @@
 package org.joda.time.field;
 
 import org.joda.time.*;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.Locale;
+
+import static org.junit.Assert.*;
 
 
 
@@ -31,7 +32,7 @@ import java.util.Locale;
  * 
  * @author Jeremy R. Rickard
  */
-public class TestUnsupportedDateTimeField extends Assert {
+public class TestUnsupportedDateTimeField  {
 
     private DurationFieldType weeks;
     private DurationFieldType months;
